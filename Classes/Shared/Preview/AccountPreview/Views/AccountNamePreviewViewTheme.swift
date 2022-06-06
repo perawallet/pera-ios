@@ -31,12 +31,12 @@ struct AccountNamePreviewViewTheme:
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main)
         ]
-        titleContentEdgeInsets = (2, 0, 0, 0)
+        titleContentEdgeInsets = (2, 0, 2, 0)
         subtitle = [
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter)
         ]
-        subtitleContentEdgeInsets = (2, 0, 2, 0)
+        subtitleContentEdgeInsets = (0, 0, 2, 0)
     }
 }
 
