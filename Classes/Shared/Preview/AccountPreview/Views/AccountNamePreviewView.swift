@@ -57,6 +57,8 @@ final class AccountNamePreviewView:
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let preferredHeight =
+        theme.titleContentEdgeInsets.top +
+        theme.titleContentEdgeInsets.bottom +
         titleSize.height +
         theme.subtitleContentEdgeInsets.top +
         theme.subtitleContentEdgeInsets.bottom +
@@ -84,7 +86,7 @@ extension AccountNamePreviewView {
             hugging: .defaultLow,
             compression: .required
         )
-
+        titleView.contentEdgeInsets = theme.titleContentEdgeInsets
         titleView.snp.makeConstraints {
             $0.setPaddings(
                 (0, 0, .noMetric, 0)

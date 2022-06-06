@@ -19,35 +19,30 @@ import MacaroonUIKit
 struct AccountNamePreviewViewTheme:
     LayoutSheet,
     StyleSheet {
-    var contentPaddings: LayoutPaddings
-    var background: ViewStyle
     var title: TextStyle
+    var titleContentEdgeInsets: LayoutPaddings
     var subtitle: TextStyle
     var subtitleContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
-        contentPaddings = (0, 24, 0, .noMetric)
-
-        background = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
-        ]
-
         title = [
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main)
         ]
+        titleContentEdgeInsets = (2, 0, 0, 0)
         subtitle = [
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter)
         ]
-        subtitleContentEdgeInsets = (2, 0, 0, 0)
+        subtitleContentEdgeInsets = (2, 0, 2, 0)
     }
 }
 
 extension AccountNamePreviewViewTheme {
     mutating func configureForAccountPreviewView() {
+        titleContentEdgeInsets = (0, 0, 0, 0)
         subtitleContentEdgeInsets = (0, 0, 0, 0)
     }
 }
