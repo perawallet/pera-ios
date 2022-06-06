@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-selection-uncheck.pdf",
+      "filename" : "radio-unselected.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icn-unchck.pdf",
+      "filename" : "radio-unselected-dark.pdf",
       "idiom" : "universal"
     }
   ],
