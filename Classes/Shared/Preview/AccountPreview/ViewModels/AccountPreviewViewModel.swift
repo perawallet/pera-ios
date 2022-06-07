@@ -146,7 +146,7 @@ extension AccountPreviewViewModel {
     mutating func bindIcon(
         _ account: Account
     ) {
-        icon = account.image
+        icon = account.typeImage
     }
     
     mutating func bindTitle(
@@ -225,7 +225,7 @@ extension AccountPreviewViewModel {
     mutating func bindIcon(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        icon = iconWithShortAddressDraft.account.image
+        icon = iconWithShortAddressDraft.account.typeImage
     }
 
     mutating func bindTitle(

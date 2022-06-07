@@ -255,7 +255,7 @@ extension ReceiveCollectibleAccountListLayout {
 
         let width = calculateContentWidth(for: listView)
         let sampleAccountPreview = CustomAccountPreview(
-            icon: "standard-orange".uiImage,
+            icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )

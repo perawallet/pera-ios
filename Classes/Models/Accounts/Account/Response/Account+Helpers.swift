@@ -115,7 +115,6 @@ extension Account {
         receivesNotification = localAccount.receivesNotification
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
-        accountImage = localAccount.accountImage
     }
     
     func removeDeletedAssets() {
@@ -209,31 +208,22 @@ extension Account {
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
-        accountImage = account.accountImage
 
         if let updatedName = account.name {
             name = updatedName
         }
     }
     
-    func accountTypeImage() -> UIImage? {
+    var typeImage: UIImage {
         if isWatchAccount() {
-            return img("icon-account-type-watch")
+            return "icon-watch-account".uiImage
         } else if isRekeyed() {
-            return img("icon-account-type-rekeyed")
+            return "icon-rekeyed-account".uiImage
         } else if isLedger() {
-            return img("img-ledger-small")
+            return "icon-ledger-account".uiImage
         } else {
-            return img("icon-account-type-standard")
+            return "icon-standard-account".uiImage
         }
-    }
-
-    var image: UIImage? {
-        guard let accountImage = accountImage else {
-            return nil
-        }
-
-        return img("\(type.rawValue)-\(accountImage)")
     }
 
     func isOwner(of asset: AssetID) -> Bool {

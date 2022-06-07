@@ -41,7 +41,7 @@ extension AccountNameViewModel {
             return
         }
 
-        image = account.image ?? accountType.image(for: AccountImageType.getRandomImage(for: accountType))
+        image = account.typeImage
     }
 
     private func bindImage(from contact: Contact, with hasImage: Bool) {
