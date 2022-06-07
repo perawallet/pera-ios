@@ -187,6 +187,21 @@ class Router:
         }
         
         switch style {
+        case .root:
+            if let currentViewController = self as? StatusBarConfigurable,
+               let nextViewController = viewController as? StatusBarConfigurable {
+
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+
+            guard let navigationController = sourceViewController.navigationController else {
+                return nil
+            }
+
+            navigationController.setViewControllers([viewController], animated: animated)
         case .push:
             if let currentViewController = self as? StatusBarConfigurable,
                let nextViewController = viewController as? StatusBarConfigurable {

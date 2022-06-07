@@ -37,6 +37,14 @@ final class HomeViewController:
         bannerController: bannerController
     )
 
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator =
+        SendTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var receiveTransactionFlowCoordinator =
+        ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator =
+        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
@@ -281,36 +289,25 @@ extension HomeViewController {
         cell.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
-
-            self.launchBuyAlgo()
-        }
-
-        cell.observe(event: .receive) {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.open(
-                .accountSelection(transactionAction: .receive, delegate: self),
-                by: .present
-            )
+            self.buyAlgoFlowCoordinator.launch()
         }
 
         cell.observe(event: .send) {
             [weak self] in
             guard let self = self else { return }
+            self.sendTransactionFlowCoordinator.launch()
+        }
 
-            self.open(
-                .accountSelection(transactionAction: .send, delegate: self),
-                by: .present
-            )
+        cell.observe(event: .receive) {
+            [weak self] in
+            guard let self = self else { return }
+            self.receiveTransactionFlowCoordinator.launch()
         }
 
         cell.observe(event: .scanQR) {
             [weak self] in
             guard let self = self else { return }
-
-            let qrScannerViewController = self.open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
-            qrScannerViewController?.delegate = self
+            self.scanQRFlowCoordinator.launch()
         }
     }
 
@@ -547,94 +544,6 @@ extension HomeViewController {
             ,
             by: .presentWithoutNavigationController
         )
-    }
-}
-
-extension HomeViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
-        switch qrText.mode {
-        case .address:
-            open(.addContact(address: qrText.address, name: qrText.label), by: .push)
-        case .algosRequest:
-            guard let address = qrText.address,
-                  let amount = qrText.amount else {
-                      return
-                  }
-
-            let toAccount = Account(address: address, type: .standard)
-
-            var draft = SendTransactionDraft(from: toAccount, transactionMode: .algo)
-            draft.note = qrText.note
-            draft.lockedNote = qrText.lockedNote
-            draft.amount = amount.toAlgos
-
-            self.sendTransactionDraft = draft
-
-            open(
-                .accountSelection(transactionAction: .send, delegate: self),
-                by: .present
-            )
-
-            return
-        case .assetRequest:
-            guard let address = qrText.address,
-                  let amount = qrText.amount,
-                  let assetId = qrText.asset else {
-                      return
-                  }
-
-            var asset: Asset?
-
-            for accountHandle in sharedDataController.accountCollection.sorted() {
-                for anAsset in accountHandle.value.allAssets where anAsset.id == assetId {
-                    asset = anAsset
-                    break
-                }
-            }
-
-            guard let asset = asset else {
-                let assetAlertDraft = AssetAlertDraft(
-                    account: nil,
-                    assetId: assetId,
-                    asset: nil,
-                    title: "asset-support-your-add-title".localized,
-                    detail: "asset-support-your-add-message".localized,
-                    actionTitle: "title-approve".localized,
-                    cancelTitle: "title-cancel".localized
-                )
-
-                modalTransition.perform(
-                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
-                    by: .presentWithoutNavigationController
-                )
-                return
-            }
-
-            let toAccount = Account(address: address, type: .standard)
-            var draft = SendTransactionDraft(from: toAccount, transactionMode: .asset(asset))
-            draft.amount = Decimal(amount)
-            draft.note = qrText.note
-            draft.lockedNote = qrText.lockedNote
-
-            self.sendTransactionDraft = draft
-
-            open(
-                .accountSelection(transactionAction: .send, delegate: self),
-                by: .present
-            )
-
-            return
-        case .mnemonic:
-            break
-        }
-    }
-
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = completionHandler {
-                handler()
-            }
-        }
     }
 }
 

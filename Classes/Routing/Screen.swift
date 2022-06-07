@@ -157,6 +157,7 @@ extension Screen {
 
 extension Screen.Transition {
     enum Open: Equatable {
+        case root
         case push
         case present
         case presentWithoutNavigationController
