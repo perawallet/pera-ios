@@ -190,18 +190,18 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountHeaderItem item: HomeAccountSectionHeaderViewModel
+        sizeForAccountHeaderItem item: ManagementItemViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = TitleWithAccessorySupplementaryCell.reuseIdentifier
+        let sizeCacheIdentifier = ManagementItemCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
         
         let width = calculateContentWidth(for: listView)
-        let newSize = TitleWithAccessorySupplementaryCell.calculatePreferredSize(
+        let newSize = ManagementItemCell.calculatePreferredSize(
             item,
-            for: TitleWithAccessorySupplementaryCell.theme,
+            for: ManagementItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         

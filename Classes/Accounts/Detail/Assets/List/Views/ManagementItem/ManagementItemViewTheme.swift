@@ -12,19 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetManagementItemCell.swift
+//   AssetManagementItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class AssetManagementItemCell:
-    CollectionCell<AssetManagementItemView>,
-    UIInteractionObservable {
-    static let theme = AssetManagementItemViewTheme()
+struct ManagementItemViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    let primaryButton: ButtonStyle
+    let secondaryButton: ButtonStyle
+    let buttonHeight: LayoutMetric
+    let spacing: LayoutMetric
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.primaryButton = [
+            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+        ]
+        self.secondaryButton = [
+            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+        ]
+        self.buttonHeight = 40
+        self.spacing = 16
     }
 }

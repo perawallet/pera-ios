@@ -184,7 +184,7 @@ extension HomeAPIDataController {
             
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.standard))
+                    .header(ManagementItemViewModel(.account))
                 accountItems.insert(
                     .account(headerItem),
                     at: 0
@@ -196,7 +196,7 @@ extension HomeAPIDataController {
                     toSection: .accounts
                 )
             }
-            
+
             return snapshot
         }
     }
