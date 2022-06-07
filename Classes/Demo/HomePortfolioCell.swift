@@ -32,3 +32,14 @@ final class HomePortfolioCell:
         contextView.customize(Self.theme)
     }
 }
+
+extension HomePortfolioCell: NavigationBarLargeTitleView {
+    var title: EditText? {
+        get { contextView.titleView.editText }
+        set { contextView.titleView.editText = newValue }
+    }
+
+    var scrollEdgeOffset: CGFloat {
+        return bounds.height - contextView.frame.maxY
+    }
+}

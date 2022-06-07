@@ -199,6 +199,8 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func makeTransfer() {
+        closeKeyboard()
+
         cancelOngoingFetchAccountsEnpoint()
 
         guard let recipientAddress = sendCollectibleActionView.addressInputViewText else {
@@ -263,6 +265,11 @@ extension SendCollectibleViewController {
                 )
             case .failure(let error, _):
                 if error.isHttpNotFound {
+                    self.draft.toAccount = Account(
+                        address: recipientAddress,
+                        type: .standard
+                    )
+
                     self.openAskRecipientToOptIn()
                     return
                 }

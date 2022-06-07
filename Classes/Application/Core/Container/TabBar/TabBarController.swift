@@ -21,6 +21,7 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
+    var qrScanningHandler: (() -> Void)?
     
     var selectedTab: TabBarItemID? {
         get {
@@ -271,18 +272,7 @@ extension TabBarController {
 
     private func navigateToQRScanner() {
         toggleTransactionOptions()
-
-// <todo>: Complete qr scanner navigation
-//        let qrScannerViewController =
-//        (selectedScreen as? UINavigationController)?
-//            .topViewController?
-//            .open(
-//                .qrScanner(
-//                    canReadWCSession: true
-//                ),
-//                by: .push
-//        )  as? QRScannerViewController
-//        qrScannerViewController?.delegate = self
+        qrScanningHandler?()
     }
 }
 

@@ -71,7 +71,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                 switch item {
                 case .header(let headerItem):
                     let cell = collectionView.dequeue(
-                        TitleWithAccessorySupplementaryCell.self,
+                        ManagementItemCell.self,
                         at: indexPath
                     )
                     cell.bindData(headerItem)
@@ -85,9 +85,9 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                     return cell
                 }
 
-            case .buyAlgo:
+            case .quickActions:
                 return collectionView.dequeue(
-                    BuyAlgoCell.self,
+                    QuickActionsCell.self,
                     at: indexPath
                 )
             }
@@ -99,7 +99,8 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
             HomePortfolioCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
-            BuyAlgoCell.self,
+            ManagementItemCell.self,
+            QuickActionsCell.self,
             TitleWithAccessorySupplementaryCell.self,
             AccountPreviewCell.self
         ].forEach {
