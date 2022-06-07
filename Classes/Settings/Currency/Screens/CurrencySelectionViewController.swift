@@ -93,7 +93,7 @@ final class CurrencySelectionViewController: BaseViewController {
             self.sharedDataController.stopPolling()
             
             self.api?.session.preferredCurrency = selectedCurrency.id
-            self.dataController.load()
+            self.dataController.setSelectedCurrency()
             
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
             
@@ -101,8 +101,6 @@ final class CurrencySelectionViewController: BaseViewController {
                 name: Self.didChangePreferredCurrency,
                 object: self
             )
-            
-            
         }
     }
     
