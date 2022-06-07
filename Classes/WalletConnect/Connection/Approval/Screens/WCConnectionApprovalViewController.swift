@@ -58,7 +58,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
         connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
         if let account = selectedAccount?.value {
-            connectionApprovalView.bindData(AccountPreviewViewModel(account))
+            connectionApprovalView.bindData(WCConnectionAccountSelectionViewModel(account))
         }
     }
 
@@ -142,7 +142,7 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
         viewController.popScreen()
 
         selectedAccount = account
-        connectionApprovalView.bindData(AccountPreviewViewModel(account.value))
+        connectionApprovalView.bindData(WCConnectionAccountSelectionViewModel(account.value))
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
