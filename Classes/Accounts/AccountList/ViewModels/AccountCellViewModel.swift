@@ -79,6 +79,6 @@ extension AccountCellViewModel {
     }
 
     private func bindAccountImageTypeImage(_ account: Account) {
-        accountImageTypeImage = account.image
+        accountImageTypeImage = account.typeImage
     }
 }

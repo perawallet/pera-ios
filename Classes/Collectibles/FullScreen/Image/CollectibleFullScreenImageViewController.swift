@@ -49,7 +49,7 @@ final class CollectibleFullScreenImageViewController:
             expectedImageSize: CGSize((width, width))
         )
 
-        imageView.imageContainer.image = draft.image
+        imageView.imageContainer.image = viewModel.image
 
         imageView.load(from: viewModel.imageSource)
     }

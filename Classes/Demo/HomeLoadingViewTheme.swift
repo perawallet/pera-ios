@@ -24,23 +24,17 @@ struct HomeLoadingViewTheme:
     LayoutSheet {
     var portfolioText: EditText
     var portfolioMargin: LayoutMargins
+    var infoAction: ButtonStyle
+    var spacingBetweenTitleAndInfoAction: LayoutMetric
     var portfolioLoadingMargin: LayoutMargins
     var portfolioLoadingSize: LayoutSize
+    var portfolioCurrencyLoadingMargin: LayoutMargins
+    var portfolioCurrencyLoadingSize: LayoutSize
 
-    var algoHoldingText: EditText
-    var assetHoldingText: EditText
     var loadingCorner: Corner
 
-    var holdingsContainerMargin: LayoutMargins
-    var holdingsContainerHeight: LayoutMetric
-
-    var algoHoldingLoadingLeadingInset: LayoutMetric
-    var algoHoldingLoadingSize: LayoutSize
-    var algoHoldingLoadingTopInset: LayoutMetric
-
-    var buyAlgoButtonTheme: ButtonTheme
-    var buyAlgoButtonMargin: LayoutMargins
-    var buyAlgoButtonHeight: LayoutMetric
+    var quickActionsTheme: QuickActionsViewTheme
+    var quickActionsMargin: LayoutMargins
 
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
@@ -68,47 +62,20 @@ struct HomeLoadingViewTheme:
             )
 
         self.portfolioMargin = (8, 24, .noMetric, .noMetric)
-        self.portfolioLoadingMargin = (18, .noMetric, .noMetric, .noMetric)
-        self.portfolioLoadingSize = (128, 38)
-
-        self.algoHoldingText = .attributedString(
-            "portfolio-algo-holdings-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
-
-        self.assetHoldingText = .attributedString(
-            "portfolio-asset-holdings-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
+        self.infoAction = [
+            .icon([ .normal("icon-info-20".templateImage) ]),
+            .tintColor(AppColors.Components.Text.gray)
+        ]
+        self.spacingBetweenTitleAndInfoAction = 8
+        self.portfolioLoadingMargin = (10, .noMetric, .noMetric, .noMetric)
+        self.portfolioLoadingSize = (181, 48)
+        self.portfolioCurrencyLoadingMargin = (8, .noMetric, .noMetric, .noMetric)
+        self.portfolioCurrencyLoadingSize = (97, 20)
 
         self.loadingCorner = Corner(radius: 4)
 
-        self.holdingsContainerMargin = (80, 24, .noMetric, 24)
-        self.holdingsContainerHeight = 63
-
-        self.algoHoldingLoadingLeadingInset = 12
-        self.algoHoldingLoadingSize = (57, 20)
-        self.algoHoldingLoadingTopInset = 13
-
-        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
-        self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
-        self.buyAlgoButtonHeight = 52
+        self.quickActionsTheme = QuickActionsViewTheme(family)
+        self.quickActionsMargin = (43, 24, .noMetric, 24)
 
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),
@@ -116,8 +83,16 @@ struct HomeLoadingViewTheme:
             .textOverflow(FittingText()),
             .text("accounts-title".localized)
         ]
-        self.accountsLabelMargin = (44, 24, .noMetric, 24)
+        self.accountsLabelMargin = (80, 24, .noMetric, 24)
         self.accountLoadingMargin = (4, 24, .noMetric, 24)
         self.accountLoadingHeight = 72
+    }
+
+    func accountLabelTopInset() -> LayoutMetric {
+        return 214
+    }
+
+    func quickActionsBottomInset() -> LayoutMetric {
+        return 36
     }
 }

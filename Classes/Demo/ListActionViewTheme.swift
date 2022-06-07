@@ -36,7 +36,8 @@ struct ListActionViewTheme:
     ) {
         self.icon = [
             .contentMode(.left),
-            .isInteractable(false)
+            .isInteractable(false),
+            .tintColor(AppColors.Components.Text.main)
         ]
         self.iconContentEdgeInsets = (20, 0)
         self.iconAlignment = .centered

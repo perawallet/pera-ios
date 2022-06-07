@@ -24,8 +24,7 @@ struct AccountPreviewViewModel:
     Hashable {
     private(set) var address: String?
     private(set) var icon: UIImage?
-    private(set) var title: EditText?
-    private(set) var subtitle: EditText?
+    private(set) var namePreviewViewModel: AccountNamePreviewViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
     private(set) var accessoryIcon: UIImage?
@@ -45,10 +44,9 @@ extension AccountPreviewViewModel {
             address = accountPortfolio.account.value.address
             
             accountPortfolio.calculate()
-            
+
             bindIcon(accountPortfolio)
-            bindTitle(accountPortfolio)
-            bindSubtitle(accountPortfolio)
+            bindNamePreviewViewModel(accountPortfolio)
             bindPrimaryAccessory(accountPortfolio)
             bindSecondaryAccessory(accountPortfolio)
             bindAccessoryIcon(accountPortfolio)
@@ -60,8 +58,7 @@ extension AccountPreviewViewModel {
             address = account.address
             
             bindIcon(account)
-            bindTitle(account)
-            bindSubtitle(account)
+            bindNamePreviewViewModel(account)
             bindPrimaryAccessory(account)
             bindSecondaryAccessory(account)
             bindAccessoryIcon(account)
@@ -71,8 +68,7 @@ extension AccountPreviewViewModel {
         
         if let customAccountPreview = model as? CustomAccountPreview {
             bindIcon(customAccountPreview)
-            bindTitle(customAccountPreview)
-            bindSubtitle(customAccountPreview)
+            bindNamePreviewViewModel(customAccountPreview)
             bindPrimaryAccessory(customAccountPreview)
             bindSecondaryAccessory(customAccountPreview)
             bindAccessoryIcon(customAccountPreview)
@@ -84,7 +80,7 @@ extension AccountPreviewViewModel {
             address = iconWithShortAddressDraft.account.address
 
             bindIcon(iconWithShortAddressDraft)
-            bindTitle(iconWithShortAddressDraft)
+            bindNamePreviewViewModel(iconWithShortAddressDraft)
 
             return
         }
@@ -98,23 +94,11 @@ extension AccountPreviewViewModel {
         bindIcon(accountPortfolio.account.value)
     }
     
-    mutating func bindTitle(
+    mutating func bindNamePreviewViewModel(
         _ accountPortfolio: AccountPortfolio
     ) {
-        bindTitle(accountPortfolio.account.value)
-    }
-    
-    mutating func bindSubtitle(
-        _ accountPortfolio: AccountPortfolio
-    ) {
-        if accountPortfolio.valueResult.isFailure {
-            subtitle = nil
-            return
-        }
-        
-        bindSubtitle(
-            numberOfAssets: accountPortfolio.account.value.standardAssets.count,
-            numberOfCollectibles: accountPortfolio.account.value.collectibleAssets.count
+        bindNamePreviewViewModel(
+            accountPortfolio.account.value
         )
     }
     
@@ -146,22 +130,7 @@ extension AccountPreviewViewModel {
     mutating func bindIcon(
         _ account: Account
     ) {
-        icon = account.image
-    }
-    
-    mutating func bindTitle(
-        _ account: Account
-    ) {
-        bindTitle(account.name)
-    }
-    
-    mutating func bindSubtitle(
-        _ account: Account
-    ) {
-        bindSubtitle(
-            numberOfAssets: account.standardAssets.count,
-            numberOfCollectibles: account.collectibleAssets.count
-        )
+        icon = account.typeImage
     }
     
     mutating func bindPrimaryAccessory(
@@ -190,16 +159,14 @@ extension AccountPreviewViewModel {
         icon = customAccountPreview.icon
     }
     
-    mutating func bindTitle(
+    mutating func bindNamePreviewViewModel(
         _ customAccountPreview: CustomAccountPreview
     ) {
-        bindTitle(customAccountPreview.title)
-    }
-    
-    mutating func bindSubtitle(
-        _ customAccountPreview: CustomAccountPreview
-    ) {
-        bindSubtitle(customAccountPreview.subtitle)
+        namePreviewViewModel = AccountNamePreviewViewModel(
+            title: customAccountPreview.title,
+            subtitle: customAccountPreview.subtitle,
+            with: .left
+        )
     }
     
     mutating func bindPrimaryAccessory(
@@ -225,91 +192,25 @@ extension AccountPreviewViewModel {
     mutating func bindIcon(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        icon = iconWithShortAddressDraft.account.image
+        icon = iconWithShortAddressDraft.account.typeImage
     }
 
-    mutating func bindTitle(
+    mutating func bindNamePreviewViewModel(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        let account = iconWithShortAddressDraft.account
-
-        let title = account.name.unwrap(
-            or: account.address.shortAddressDisplay
+        bindNamePreviewViewModel(
+            iconWithShortAddressDraft.account
         )
-
-        bindTitle(title)
     }
 }
 
 extension AccountPreviewViewModel {
-    mutating func bindTitle(
-        _ aTitle: String?
+    mutating func bindNamePreviewViewModel(
+        _ account: Account
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
-        title = .attributedString(
-            (aTitle ?? "title-unknown".localized).attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
-        )
-    }
-    
-    mutating func bindSubtitle(
-        numberOfAssets: Int,
-        numberOfCollectibles: Int
-    ) {
-        let numberOfAssetsDescription: String
-        let numberOfCollectiblesDescription: String
-        /// <todo>
-        /// Support singulars/plurals as localization feature
-        if numberOfAssets > 0 {
-            numberOfAssetsDescription =
-                "title-plus-asset-count".localized(params: "\(numberOfAssets + 1)")
-        } else {
-            numberOfAssetsDescription = "title-plus-asset-singular-count".localized(params: "1")
-        }
-
-        var subtitle = numberOfAssetsDescription
-
-        if numberOfCollectibles > 0 {
-            if numberOfCollectibles > 1 {
-                numberOfCollectiblesDescription = "title-plus-collectible-count".localized(params: "\(numberOfCollectibles)")
-            } else {
-                numberOfCollectiblesDescription = "title-plus-collectible-singular-count".localized(params: "1")
-            }
-
-            subtitle += ", " + numberOfCollectiblesDescription
-        }
-
-        bindSubtitle(subtitle)
-    }
-    
-    mutating func bindSubtitle(
-        _ aSubtitle: String?
-    ) {
-        guard let aSubtitle = aSubtitle else {
-            subtitle = nil
-            return
-        }
-        
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-        
-        subtitle = .attributedString(
-            aSubtitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+        namePreviewViewModel = AccountNamePreviewViewModel(
+            account: account,
+            with: .left
         )
     }
     
@@ -320,21 +221,13 @@ extension AccountPreviewViewModel {
             primaryAccessory = nil
             return
         }
-        
-        let font = Fonts.DMMono.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
+
         primaryAccessory = .attributedString(
-            accessory.attributed([
-                .font(font),
-                .letterSpacing(-0.3),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.right)
-                ])
-            ])
+            accessory.bodyMedium(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail,
+                hasMultilines: false
+            )
         )
     }
     
@@ -346,20 +239,12 @@ extension AccountPreviewViewModel {
             return
         }
         
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.18
-        
         secondaryAccessory = .attributedString(
-            accessory.attributed([
-                .font(font),
-                .letterSpacing(-0.3),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.right)
-                ])
-            ])
+            accessory.footnoteRegular(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail,
+                hasMultilines: false
+            )
         )
     }
     

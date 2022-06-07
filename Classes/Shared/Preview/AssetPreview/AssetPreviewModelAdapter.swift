@@ -43,17 +43,6 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adapt(_ asset: Asset) -> AssetPreviewModel {
-        return AssetPreviewModel(
-            icon: .url(nil, title: asset.presentation.name),
-            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
-            title: asset.presentation.name,
-            subtitle: asset.presentation.unitName,
-            primaryAccessory: nil,
-            secondaryAccessory: String(asset.id)
-        )
-    }
-
     static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(

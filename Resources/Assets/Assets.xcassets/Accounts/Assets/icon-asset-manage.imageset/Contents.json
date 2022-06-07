@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "settings-2.pdf",
+      "filename" : "customize.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "settings-3.pdf",
+      "filename" : "customize-1.pdf",
       "idiom" : "universal"
     }
   ],
