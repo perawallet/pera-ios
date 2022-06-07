@@ -94,7 +94,7 @@ extension AccountNamePreviewViewModel {
         let subtitle: String? =
         (account.name != nil && account.name != account.address.shortAddressDisplay)
         ? account.address.shortAddressDisplay
-        : account.type.title
+        : account.typeTitle
 
         self.subtitle = getSubtitle(
             subtitle,

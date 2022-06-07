@@ -41,7 +41,7 @@ extension WCConnectionAccountSelectionViewModel {
     private mutating func bindIcon(
         _ account: Account
     ) {
-        icon = account.image
+        icon = account.typeImage
     }
 
     private mutating func bindNamePreviewViewModel(

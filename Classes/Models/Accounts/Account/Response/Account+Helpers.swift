@@ -213,17 +213,31 @@ extension Account {
             name = updatedName
         }
     }
+
+    var typeTitle: String? {
+        if isWatchAccount() {
+            return "title-watch-account".localized
+        }
+        if isRekeyed() {
+            return "title-rekeyed-account".localized
+        }
+        if isLedger() {
+            return "title-ledger-account".localized
+        }
+        return nil
+    }
     
     var typeImage: UIImage {
         if isWatchAccount() {
             return "icon-watch-account".uiImage
-        } else if isRekeyed() {
-            return "icon-rekeyed-account".uiImage
-        } else if isLedger() {
-            return "icon-ledger-account".uiImage
-        } else {
-            return "icon-standard-account".uiImage
         }
+        if isRekeyed() {
+            return "icon-rekeyed-account".uiImage
+        }
+        if isLedger() {
+            return "icon-ledger-account".uiImage
+        }
+        return "icon-standard-account".uiImage
     }
 
     func isOwner(of asset: AssetID) -> Bool {
