@@ -3018,6 +3018,12 @@
 		D4092BBD276B5E690009722D /* WCSessionShortListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */; };
 		D4092BBE276B5E690009722D /* WCSessionShortListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */; };
 		D4092BBF276B5E690009722D /* WCSessionShortListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */; };
+		D40A9023283CEFCF0091A746 /* TooltipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9022283CEFCF0091A746 /* TooltipViewModel.swift */; };
+		D40A9024283CEFCF0091A746 /* TooltipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9022283CEFCF0091A746 /* TooltipViewModel.swift */; };
+		D40A9025283CEFCF0091A746 /* TooltipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9022283CEFCF0091A746 /* TooltipViewModel.swift */; };
+		D40A9027283CFE040091A746 /* TooltipViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9026283CFE040091A746 /* TooltipViewTheme.swift */; };
+		D40A9028283CFE040091A746 /* TooltipViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9026283CFE040091A746 /* TooltipViewTheme.swift */; };
+		D40A9029283CFE040091A746 /* TooltipViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A9026283CFE040091A746 /* TooltipViewTheme.swift */; };
 		D40C294D26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
 		D40C294E26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
 		D40C294F26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
@@ -3337,6 +3343,9 @@
 		D443A07927E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */; };
 		D443A07A27E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */; };
 		D443A07B27E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */; };
+		D44500F4283BA2A5003E9D59 /* TooltipUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44500F3283BA2A5003E9D59 /* TooltipUIController.swift */; };
+		D44500F5283BA2A5003E9D59 /* TooltipUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44500F3283BA2A5003E9D59 /* TooltipUIController.swift */; };
+		D44500F6283BA2A5003E9D59 /* TooltipUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44500F3283BA2A5003E9D59 /* TooltipUIController.swift */; };
 		D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73E272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73F272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
@@ -5584,6 +5593,8 @@
 		D4092BB4276B56020009722D /* WCSessionShortListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListItemCell.swift; sourceTree = "<group>"; };
 		D4092BB8276B5D810009722D /* WCSessionShortListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListItemViewTheme.swift; sourceTree = "<group>"; };
 		D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListLayout.swift; sourceTree = "<group>"; };
+		D40A9022283CEFCF0091A746 /* TooltipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewModel.swift; sourceTree = "<group>"; };
+		D40A9026283CFE040091A746 /* TooltipViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewTheme.swift; sourceTree = "<group>"; };
 		D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseBackUpViewController+Theme.swift"; sourceTree = "<group>"; };
 		D40C295026E2A25C0037A0F4 /* BottomWarningViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BottomWarningViewController+Theme.swift"; sourceTree = "<group>"; };
 		D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecoverOptionsViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -5698,6 +5709,7 @@
 		D443A06E27E2398B00D2E52F /* SendCollectibleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleViewController.swift; sourceTree = "<group>"; };
 		D443A07327E23A8900D2E52F /* SendCollectibleActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleActionView.swift; sourceTree = "<group>"; };
 		D443A07827E267BB00D2E52F /* SendCollectibleActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleActionViewTheme.swift; sourceTree = "<group>"; };
+		D44500F3283BA2A5003E9D59 /* TooltipUIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipUIController.swift; sourceTree = "<group>"; };
 		D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionView.swift; sourceTree = "<group>"; };
 		D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionViewTheme.swift; sourceTree = "<group>"; };
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -12430,6 +12442,7 @@
 		2BF7280227471E4700CCAC30 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D44500F2283BA292003E9D59 /* Tooltip */,
 				2BE4D0F82594D328005F5764 /* AppStoreReview */,
 				2B288ACD268F157500BC6FB6 /* Assets */,
 				2B0F5F3724E5684E00DA22A6 /* Banner */,
@@ -13569,6 +13582,16 @@
 				D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */,
 			);
 			path = QRScanner;
+			sourceTree = "<group>";
+		};
+		D44500F2283BA292003E9D59 /* Tooltip */ = {
+			isa = PBXGroup;
+			children = (
+				D44500F3283BA2A5003E9D59 /* TooltipUIController.swift */,
+				D40A9026283CFE040091A746 /* TooltipViewTheme.swift */,
+				D40A9022283CEFCF0091A746 /* TooltipViewModel.swift */,
+			);
+			path = Tooltip;
 			sourceTree = "<group>";
 		};
 		D446A748272ABEC90081D60B /* Rekey */ = {
@@ -15326,6 +15349,7 @@
 				D411B37A26EA1070004FF980 /* AccountPreviewViewModel.swift in Sources */,
 				D48FDFED27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */,
 				F0DB41A92794B62800EA437D /* HomeLoadingCell.swift in Sources */,
+				D40A9029283CFE040091A746 /* TooltipViewTheme.swift in Sources */,
 				D4BAFA9027DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift in Sources */,
 				D419433F273570630055EC70 /* AssetListViewDataSource.swift in Sources */,
 				2B6B3F002774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
@@ -16022,6 +16046,7 @@
 				2BD36DFE2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
 				2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2B38C92D24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
+				D40A9025283CEFCF0091A746 /* TooltipViewModel.swift in Sources */,
 				17BD4EC02292F1260003E49A /* AlignedButton.swift in Sources */,
 				2BA4B41B267911010041586B /* WCSessionList.swift in Sources */,
 				2BA4B4072678A9400041586B /* WCSessionListDataSource.swift in Sources */,
@@ -16400,6 +16425,7 @@
 				2BCCB5BC27D755CA00C5E497 /* AssetPreviewWithActionViewTheme.swift in Sources */,
 				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				D473CA5226E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
+				D44500F6283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
 				2BCFD67E2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */,
 				2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */,
 				95C95910278A113A003D0D78 /* WCSingleTransactionRequestBottomViewTheme.swift in Sources */,
@@ -16769,6 +16795,7 @@
 				D49D77E42789FF42001FD5F6 /* FloatingActionItemButton.swift in Sources */,
 				2B69823B278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
 				D4DF3F6826F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */,
+				D40A9028283CFE040091A746 /* TooltipViewTheme.swift in Sources */,
 				2B0F61C624EC129D00DA22A6 /* LoadingIndicator.swift in Sources */,
 				D48D11EC274297BA000061CE /* NotificationFilterView.swift in Sources */,
 				D4BAFA9F27DF58810077B781 /* SendCollectibleAccountListAPIDataController.swift in Sources */,
@@ -17467,6 +17494,7 @@
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
 				2BCCB5B727D755B200C5E497 /* AssetPreviewWithActionView.swift in Sources */,
 				2B5F6F852768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
+				D40A9024283CEFCF0091A746 /* TooltipViewModel.swift in Sources */,
 				2B5A277E27F6DBEB006C469B /* ManageAssetsListLayout.swift in Sources */,
 				2B0F62AE24EC129D00DA22A6 /* AlignedButton.swift in Sources */,
 				D45E77CC277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift in Sources */,
@@ -17843,6 +17871,7 @@
 				2B0F632024EC129D00DA22A6 /* NSAttributedString+Additions.swift in Sources */,
 				D473CA5126E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
 				2BAD6CB427F88CDF0016E869 /* Collectible3DVideoViewController.swift in Sources */,
+				D44500F5283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
 				2BB0B12427830DDF00A16494 /* AccountAssetListLayout.swift in Sources */,
 				D47C4ABE2791CF380012D7A6 /* AccountSelectSearchNoContentViewModel.swift in Sources */,
 				2B0F632124EC129D00DA22A6 /* TouchDetectingScrollView.swift in Sources */,
@@ -18212,6 +18241,7 @@
 				D4BAFA8E27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift in Sources */,
 				D46BB380277CE86E00F50F44 /* TransactionContactInformationViewModel.swift in Sources */,
 				2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */,
+				D40A9027283CFE040091A746 /* TooltipViewTheme.swift in Sources */,
 				2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				2BC1827423D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
 				F0DB41A32794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
@@ -18909,6 +18939,7 @@
 				D4F856BF27E1260D00F109ED /* AssetSearchListTitleSupplementaryCell.swift in Sources */,
 				95AF1C9C27B16927001AB131 /* AlgoTransactionHistoryLoadingViewCommonTheme.swift in Sources */,
 				2BD36DFC2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
+				D40A9023283CEFCF0091A746 /* TooltipViewModel.swift in Sources */,
 				2B3E3A0924796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
 				2B6B3EF22774C003006379F4 /* WalletRatingView.swift in Sources */,
@@ -19286,6 +19317,7 @@
 				2BCCB5BA27D755CA00C5E497 /* AssetPreviewWithActionViewTheme.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2BAD6CB327F88CDF0016E869 /* Collectible3DVideoViewController.swift in Sources */,
+				D44500F4283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
 				2BA4B3E22673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				D473CA5026E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
