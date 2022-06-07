@@ -313,7 +313,6 @@ extension CollectibleDetailViewController {
             switch event {
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
-            default: break
             }
         }
     }
@@ -527,8 +526,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if let urlString = item.source?.url,
-               let url = URL(string: urlString) {
+            if let url = item.source?.url {
                 self.open(url)
             }
         }
@@ -640,6 +638,12 @@ extension CollectibleDetailViewController {
         default:
             break
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    var currentVisibleMediaCell: UICollectionViewCell? {
+        return mediaPreviewController.currentVisibleCell
     }
 }
 

@@ -102,7 +102,10 @@ extension AccountAssetListAPIDataController {
             var assetItems: [AccountAssetsItem] = []
             
             if !self.accountHandle.value.isWatchAccount() {
-                assetItems.append(.assetManagement)
+                let titleItem: AccountAssetsItem = .assetManagement(
+                    ManagementItemViewModel(.asset)
+                )
+                assetItems.append(titleItem)
             } else {
                 let titleItem: AccountAssetsItem = .assetTitle(
                     AssetSearchListHeaderViewModel("accounts-title-assets".localized)

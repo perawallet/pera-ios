@@ -61,24 +61,20 @@ extension HomeListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.top = 72
+            insets.top = 16
             return insets
         case .portfolio:
-            insets.top = 72
+            insets.top = 16
             return insets
         case .announcement:
-            insets.top = 36
             return insets
         case .accounts:
             insets.top = 36
             insets.bottom = 8
             return insets
-        case .watchAccounts:
-            insets.top = 24
-            insets.bottom = 8
-            return insets
-        case .buyAlgo:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 44
+        case .quickActions:
+            insets.top = 44
+            insets.bottom = 36
             return insets
         }
     }
@@ -118,7 +114,7 @@ extension HomeListLayout {
                 layout: collectionViewLayout,
                 sizeForAnnouncementCellItem: item
             )
-        case .buyAlgo:
+        case .quickActions:
             return listViewBuyAlgo(
                 collectionView,
                 layout: collectionViewLayout
@@ -194,18 +190,18 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountHeaderItem item: HomeAccountSectionHeaderViewModel
+        sizeForAccountHeaderItem item: ManagementItemViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = TitleWithAccessorySupplementaryCell.reuseIdentifier
+        let sizeCacheIdentifier = ManagementItemCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
         
         let width = calculateContentWidth(for: listView)
-        let newSize = TitleWithAccessorySupplementaryCell.calculatePreferredSize(
+        let newSize = ManagementItemCell.calculatePreferredSize(
             item,
-            for: TitleWithAccessorySupplementaryCell.theme,
+            for: ManagementItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         
@@ -227,7 +223,7 @@ extension HomeListLayout {
         
         let width = calculateContentWidth(for: listView)
         let sampleAccountPreview = CustomAccountPreview(
-            icon: "standard-orange".uiImage,
+            icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
@@ -271,8 +267,8 @@ extension HomeListLayout {
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
 
-        return BuyAlgoCell.calculatePreferredSize(
-            for: BuyAlgoViewTheme(),
+        return QuickActionsCell.calculatePreferredSize(
+            for: QuickActionsViewTheme(),
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
     }

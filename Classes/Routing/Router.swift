@@ -403,6 +403,8 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case .assetManagement:
+            viewController = AssetManagementViewController(configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
@@ -695,6 +697,16 @@ class Router:
             viewController = Collectible3DVideoViewController(
                 image: image,
                 url: url,
+                configuration: configuration
+            )
+        case .collectibleFullScreenImage(let draft):
+            viewController = CollectibleFullScreenImageViewController(
+                draft: draft,
+                configuration: configuration
+            )
+        case .collectibleFullScreenVideo(let draft):
+            viewController = CollectibleFullScreenVideoViewController(
+                draft: draft,
                 configuration: configuration
             )
         case .buyAlgoHome(let draft, let delegate):

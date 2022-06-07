@@ -42,7 +42,7 @@ extension AlgoAccountViewModel {
     }
 
     private func bindImage(_ account: Account) {
-        image = account.image ?? account.type.image(for: AccountImageType.getRandomImage(for: account.type))
+        image = account.typeImage
     }
 
     private func bindAmount(_ account: Account) {

@@ -55,21 +55,34 @@ extension AssetPreviewViewModel {
             bindVerifiedIcon(preview.verifiedIcon)
             bindSubtitle(preview.subtitle)
             bindPrimaryAccessory(preview.primaryAccessory)
-            bindSecondAccessory(preview.secondaryAccessory)
+            bindSecondaryAccessory(preview.secondaryAccessory)
             return
         }
 
-        if let collectibleAsset = model as? CollectibleAsset {
-            bindAssetID(collectibleAsset)
-            bindTitle(collectibleAsset)
-            bindImage(collectibleAsset)
-            bindSubtitle(collectibleAsset)
-            bindSecondAccessory(collectibleAsset)
+        /// <todo>
+        /// We should think about the draft approach. (e.g Create container views for each case.)
+        if let standardAssetPreviewAddition = model as? StandardAssetPreviewAdditionDraft {
+            bindAssetID(standardAssetPreviewAddition)
+            bindVerifiedIcon(standardAssetPreviewAddition)
+            bindTitle(standardAssetPreviewAddition)
+            bindImage(standardAssetPreviewAddition)
+            bindSubtitle(standardAssetPreviewAddition)
+            bindPrimaryAccessory(standardAssetPreviewAddition)
             return
         }
 
-        if let collectibleAssetSelectionDraft = model as? CollectibleAssetSelectionDraft {
+        if let collectibleAssetPreviewAddition = model as? CollectibleAssetPreviewAdditionDraft {
+            bindAssetID(collectibleAssetPreviewAddition)
+            bindVerifiedIcon(collectibleAssetPreviewAddition)
+            bindTitle(collectibleAssetPreviewAddition)
+            bindImage(collectibleAssetPreviewAddition)
+            bindSubtitle(collectibleAssetPreviewAddition)
+            bindPrimaryAccessory(collectibleAssetPreviewAddition)
+        }
+
+        if let collectibleAssetSelectionDraft = model as? CollectibleAssetPreviewSelectionDraft {
             bindAssetID(collectibleAssetSelectionDraft)
+            bindVerifiedIcon(collectibleAssetSelectionDraft)
             bindTitle(collectibleAssetSelectionDraft)
             bindImage(collectibleAssetSelectionDraft)
             bindSubtitle(collectibleAssetSelectionDraft)
@@ -133,7 +146,9 @@ extension AssetPreviewViewModel {
         )
     }
     
-    private mutating func bindPrimaryAccessory(_ accessory: String?) {
+    private mutating func bindPrimaryAccessory(
+        _ accessory: String?
+    ) {
         guard let accessory = accessory else {
             return
         }
@@ -144,6 +159,7 @@ extension AssetPreviewViewModel {
         primaryAccessory = .attributedString(
             accessory
                 .attributed([
+                    .textColor(AppColors.Components.Text.main.uiColor),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
@@ -155,7 +171,7 @@ extension AssetPreviewViewModel {
         )
     }
 
-    private mutating func bindSecondAccessory(_ accessory: String?) {
+    private mutating func bindSecondaryAccessory(_ accessory: String?) {
         guard let accessory = accessory else {
             return
         }
@@ -166,6 +182,133 @@ extension AssetPreviewViewModel {
         secondaryAccessory = .attributedString(
             accessory
                 .attributed([
+                    .textColor(AppColors.Components.Text.grayLighter.uiColor),
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.right)
+                    ])
+                ])
+        )
+    }
+}
+
+extension AssetPreviewViewModel {
+    private mutating func bindAssetID(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        assetID = assetAddition.asset.id
+    }
+
+    private mutating func bindVerifiedIcon(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+
+        bindVerifiedIcon(icon)
+    }
+
+    private mutating func bindImage(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        bindAssetImageView(
+            .url(
+                nil,
+                title: assetAddition.asset.presentation.name
+            )
+        )
+    }
+
+    private mutating func bindTitle(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        bindTitle(assetAddition.asset.presentation.name)
+    }
+
+    private mutating func bindSubtitle(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        bindSubtitle(assetAddition.asset.presentation.unitName)
+    }
+
+    private mutating func bindPrimaryAccessory(
+        _ assetAddition: StandardAssetPreviewAdditionDraft
+    ) {
+        let accessory =  String(assetAddition.asset.id)
+
+        let font = Fonts.DMMono.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        primaryAccessory = .attributedString(
+            accessory
+                .attributed([
+                    .textColor(AppColors.Components.Text.gray),
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.right)
+                    ])
+                ])
+        )
+    }
+}
+
+extension AssetPreviewViewModel {
+    private mutating func bindAssetID(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        assetID = assetAddition.asset.id
+    }
+
+    private mutating func bindVerifiedIcon(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+
+        bindVerifiedIcon(icon)
+    }
+
+    private mutating func bindImage(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        let asset = assetAddition.asset
+
+        bindAssetImageView(
+            .url(
+                asset.thumbnailImage,
+                title: asset.presentation.name
+            )
+        )
+    }
+
+    private mutating func bindTitle(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        bindTitle(assetAddition.asset.presentation.name)
+    }
+
+    private mutating func bindSubtitle(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        bindSubtitle(assetAddition.asset.presentation.unitName)
+    }
+
+    private mutating func bindPrimaryAccessory(
+        _ assetAddition: CollectibleAssetPreviewAdditionDraft
+    ) {
+        let accessory =  String(assetAddition.asset.id)
+
+        let font = Fonts.DMMono.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        primaryAccessory = .attributedString(
+            accessory
+                .attributed([
+                    .textColor(AppColors.Components.Text.gray),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
@@ -208,19 +351,27 @@ extension AssetPreviewViewModel {
     private mutating func bindSecondAccessory(
         _ asset: CollectibleAsset
     ) {
-        bindSecondAccessory(String(asset.id))
+        bindSecondaryAccessory(String(asset.id))
     }
 }
 
 extension AssetPreviewViewModel {
     private mutating func bindAssetID(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         assetID = draft.asset.id
     }
 
+    private mutating func bindVerifiedIcon(
+        _ draft: CollectibleAssetPreviewSelectionDraft
+    ) {
+        let icon = draft.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+
+        bindVerifiedIcon(icon)
+    }
+
     private mutating func bindImage(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         bindAssetImageView(
             .url(draft.asset.thumbnailImage, title: draft.asset.name)
@@ -228,19 +379,19 @@ extension AssetPreviewViewModel {
     }
 
     private mutating func bindTitle(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         bindTitle(draft.asset.name)
     }
 
     private mutating func bindSubtitle(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         bindSubtitle("ID \(draft.asset.id)")
     }
 
     private mutating func bindPrimaryAccessory(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         let asset = draft.asset
 
@@ -252,7 +403,7 @@ extension AssetPreviewViewModel {
     }
 
     private mutating func bindSecondaryAccessory(
-        _ draft: CollectibleAssetSelectionDraft
+        _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
         let asset = draft.asset
 
@@ -268,7 +419,7 @@ extension AssetPreviewViewModel {
         currencyUSDValue
 
         if currencyValue > 0 {
-            bindPrimaryAccessory(
+            bindSecondaryAccessory(
                 currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
             )
         }
@@ -302,7 +453,15 @@ extension AssetPreviewViewModel {
     }
 }
 
-struct CollectibleAssetSelectionDraft {
+struct CollectibleAssetPreviewSelectionDraft {
     let currency: Currency?
+    let asset: CollectibleAsset
+}
+
+struct StandardAssetPreviewAdditionDraft {
+    let asset: StandardAsset
+}
+
+struct CollectibleAssetPreviewAdditionDraft {
     let asset: CollectibleAsset
 }

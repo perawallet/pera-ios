@@ -51,6 +51,12 @@ final class ManageAssetsListLocalDataController:
         return searchResults[safe: index]
     }
     
+    subscript (assetId: AssetID) -> Asset? {
+        return searchResults.first { asset in
+            asset.id == assetId
+        }
+    }
+    
     func hasSection() -> Bool {
         return !searchResults.isEmpty
     }
@@ -158,7 +164,7 @@ extension ManageAssetsListLocalDataController {
                 let viewModel: AssetPreviewViewModel
 
                 if let collectibleAsset = asset as? CollectibleAsset {
-                    let draft = CollectibleAssetSelectionDraft(
+                    let draft = CollectibleAssetPreviewSelectionDraft(
                         currency: currency,
                         asset: collectibleAsset
                     )
@@ -168,7 +174,11 @@ extension ManageAssetsListLocalDataController {
                     viewModel = AssetPreviewViewModel(assetPreviewModel)
                 }
 
-                let assetItem: ManageAssetSearchItem = .asset(viewModel)
+                let assetItem: ManageAssetSearchItem = .asset(
+                    AssetPreviewWithRemoveActionViewModel(
+                        contentViewModel: viewModel
+                    )
+                )
                 assetItems.append(assetItem)
             }
 

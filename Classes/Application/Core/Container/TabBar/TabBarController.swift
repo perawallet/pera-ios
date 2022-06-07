@@ -21,6 +21,7 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
+    var qrScanningHandler: (() -> Void)?
     
     var selectedTab: TabBarItemID? {
         get {
@@ -123,6 +124,11 @@ extension TabBarController {
         
         let aView = TransactionOptionsView()
         aView.customize(theme)
+        aView.observe(event: .buyAlgo) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToBuyAlgo()
+        }
         aView.observe(event: .send) {
             [weak self] in
             guard let self = self else { return }
@@ -133,10 +139,10 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
         }
-        aView.observe(event: .buyAlgo) {
+        aView.observe(event: .scanQRCode) {
             [weak self] in
             guard let self = self else { return }
-            self.navigateToBuyAlgo()
+            self.navigateToQRScanner()
         }
         aView.observe(event: .close) {
             [weak self] in
@@ -262,6 +268,11 @@ extension TabBarController {
         toggleTransactionOptions()
 
         launchBuyAlgo()
+    }
+
+    private func navigateToQRScanner() {
+        toggleTransactionOptions()
+        qrScanningHandler?()
     }
 }
 

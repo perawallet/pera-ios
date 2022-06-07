@@ -26,7 +26,7 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
             
             switch itemIdentifier {
             case let .asset(item):
-                let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
+                let cell = collectionView.dequeue(AssetPreviewWithActionCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
             case .empty(let item):
@@ -36,7 +36,7 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
             }
         }
         
-        collectionView.register(AssetPreviewDeleteCell.self)
+        collectionView.register(AssetPreviewWithActionCell.self)
         collectionView.register(NoContentCell.self)
     }
 }
