@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonBottomSheet
+import MacaroonStorySheet
 import MacaroonUIKit
 import UIKit
 
@@ -72,6 +73,19 @@ extension BaseScrollViewController {
 }
 
 extension BottomSheetPresentable where Self: BaseScrollViewController {
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+
+    var presentedScrollView: UIScrollView? {
+        return scrollView
+    }
+    var presentedScrollContentView: UIView? {
+        return contentView
+    }
+}
+
+extension StorySheetPresentable where Self: BaseScrollViewController {
     var modalHeight: ModalHeight {
         return .compressed
     }
