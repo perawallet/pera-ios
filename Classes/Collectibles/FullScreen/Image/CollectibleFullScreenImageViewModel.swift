@@ -68,26 +68,14 @@ extension CollectibleFullScreenImageViewModel {
         for media: Media,
         expectedImageSize: CGSize
     ) -> URL? {
-        switch media.mediaExtension {
-        case .webp:
-            guard let imageURL = media.downloadURL else {
-                return nil
-            }
-
-            return PrismURL(baseURL: imageURL)
-                .setExpectedImageSize(expectedImageSize)
-                .setImageQuality(.normal)
-                .build()
-        default:
-            guard let imageURL = media.previewURL else {
-                return nil
-            }
-
-            return PrismURL(baseURL: imageURL)
-                .setExpectedImageSize(expectedImageSize)
-                .setImageQuality(.normal)
-                .build()
+        guard let imageURL = media.previewURL else {
+            return nil
         }
+
+        return PrismURL(baseURL: imageURL)
+            .setExpectedImageSize(expectedImageSize)
+            .setImageQuality(.normal)
+            .build()
     }
 
     private func getImageSource(

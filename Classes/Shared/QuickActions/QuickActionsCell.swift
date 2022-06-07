@@ -12,23 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoViewTheme.swift
+//   QuickActionsCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BuyAlgoViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var buyAlgoButton: ButtonTheme
-    var buyAlgoButtonHeight: LayoutMetric
+final class QuickActionsCell:
+    CollectionCell<QuickActionsView>,
+    UIInteractionObservable {
+    static let theme = QuickActionsViewTheme()
 
-    init(
-        _ family: LayoutFamily
+    override init(
+        frame: CGRect
     ) {
-
-        self.buyAlgoButton = ButtonPrimaryTheme(family)
-        self.buyAlgoButtonHeight = 52
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+    
+    class func calculatePreferredSize(
+        for theme: QuickActionsViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        return ContextView.calculatePreferredSize(for: theme, fittingIn: size)
     }
 }
