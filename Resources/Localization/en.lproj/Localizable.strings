@@ -1040,6 +1040,12 @@
 "moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
 "moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
 
+//MARK: QuickActions
+"quick-actions-buy-algo-title" = "Buy ALGO";
+"quick-actions-send-title" = "Send";
+"quick-actions-receive-title" = "Receive";
+"quick-actions-scan-qr-title" = "Scan QR";
+
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
 "transaction-option-list-send-subtitle" = "Algo or any ASA to another account";

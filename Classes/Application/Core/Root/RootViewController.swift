@@ -99,7 +99,12 @@ extension RootViewController {
             ),
             configuration: configuration
         )
-        let homeTab = HomeTabBarItem(NavigationContainer(rootViewController: homeViewController))
+        let homeTab = HomeTabBarItem(
+            NavigationContainer(
+                theme: GrayNavigationContainerTheme(),
+                rootViewController: homeViewController
+            )
+        )
         
         let algoStatisticsViewController =
             AlgoStatisticsViewController(
