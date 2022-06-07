@@ -363,8 +363,30 @@ extension HomeViewController {
         for item: ManagementItemViewModel
     ) {
         cell.observe(event: .primaryAction) {
-            /// <todo>
-            /// Add "sorting" action
+            let eventHandler: SortAccountListViewController.EventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .didReorder: self.dataController.reload()
+                    }
+                }
+            }
+
+            self.open(
+                .sortAccountList(
+                    dataController: SortAccountListLocalDataController(
+                        session: self.session!,
+                        sharedDataController: self.sharedDataController
+                    ),
+                     eventHandler: eventHandler
+                ),
+                by: .present
+            )
         }
         cell.observe(event: .secondaryAction) {
             self.open(

@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   OrderAccountListViewController+Theme.swift
+//   TitleViewTheme+SortAccountList.swift
 
-import Foundation
-import UIKit
-import MacaroonUIKit
-
-extension OrderAccountListViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let itemHeight: LayoutMetric
-
-        init(_ family: LayoutFamily) {
-            self.itemHeight = 72
-        }
+extension TitleViewTheme {
+    mutating func configureForSortAccountListHeader() {
+        paddings = (20, 24, 12, 24)
     }
 }

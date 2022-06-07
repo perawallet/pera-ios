@@ -76,6 +76,12 @@ extension AccountPreviewViewModel {
             return
         }
 
+        if let accountOrderingDraft = model as? AccountOrderingDraft {
+            bindIcon(accountOrderingDraft)
+            bindNamePreviewViewModel(accountOrderingDraft)
+            bindAccessoryIcon(accountOrderingDraft)
+        }
+
         if let iconWithShortAddressDraft = model as? IconWithShortAddressDraft {
             address = iconWithShortAddressDraft.account.address
 
@@ -205,6 +211,26 @@ extension AccountPreviewViewModel {
 }
 
 extension AccountPreviewViewModel {
+    mutating func bindIcon(
+        _ accountOrderingDraft: AccountOrderingDraft
+    ) {
+        icon = accountOrderingDraft.account.typeImage
+    }
+
+    mutating func bindNamePreviewViewModel(
+        _ accountOrderingDraft: AccountOrderingDraft
+    ) {
+        bindNamePreviewViewModel(accountOrderingDraft.account)
+    }
+
+    mutating func bindAccessoryIcon(
+        _ accountOrderingDraft: AccountOrderingDraft
+    ) {
+        accessoryIcon = "icon-order".templateImage
+    }
+}
+
+extension AccountPreviewViewModel {
     mutating func bindNamePreviewViewModel(
         _ account: Account
     ) {
@@ -309,4 +335,8 @@ struct IconWithShortAddressDraft {
     ) {
         self.account = account
     }
+}
+
+struct AccountOrderingDraft {
+    let account: Account
 }

@@ -17,6 +17,8 @@
 
 import Foundation
 
+/// <todo>
+/// Remove AccountOrdering
 struct AccountOrdering {
     let sharedDataController: SharedDataController
     let session: Session
@@ -39,14 +41,5 @@ struct AccountOrdering {
         }
 
         return lastNonWatchAccount.value.preferredOrder + 1
-    }
-
-    func reorder(_ accounts: [AccountHandle], with type: AccountType) {
-        for (index, account) in accounts.enumerated() {
-            let newAccountOrder = type == .watch ? index + watchAccountOrderOffset : index
-            sharedDataController.accountCollection[account.value.address]?.value.preferredOrder = newAccountOrder
-            account.value.preferredOrder = newAccountOrder
-            session.authenticatedUser?.updateLocalAccount(account.value)
-        }
     }
 }
