@@ -42,15 +42,23 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                 let cell = collectionView.dequeue(TransactionHistoryTitleCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case let .reward(item):
+            case let .algoTransaction(item):
                 let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case let .transaction(item):
+            case .assetTransaction(let item):
                 let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case let .pending(item):
+            case .appCallTransaction(let item):
+                let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
+            case .assetConfigTransaction(let item):
+                let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
+            case let .pendingTransaction(item):
                 let cell = collectionView.dequeue(PendingTransactionCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
