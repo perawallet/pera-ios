@@ -850,6 +850,7 @@
 
 "wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
 "wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-asset-config" = "Asset Configuration";
 "wallet-connect-transaction-title-app-create" = "Application Creation";
 "wallet-connect-transaction-title-app-update" = "Application Call Update";
 "wallet-connect-transaction-title-app-delete" = "Application Call Delete";
