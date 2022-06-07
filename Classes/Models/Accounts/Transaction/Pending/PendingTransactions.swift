@@ -236,7 +236,6 @@ extension PendingTransaction.APIModel {
         var snd: String?
         var xaid: Int64?
         var type: Transaction.TransferType?
-        var xaid: Int64?
 
         init() {
             self.amt = nil
@@ -250,7 +249,6 @@ extension PendingTransaction.APIModel {
             self.snd = nil
             self.xaid = nil
             self.type = nil
-            self.xaid = nil
         }
     }
 }
