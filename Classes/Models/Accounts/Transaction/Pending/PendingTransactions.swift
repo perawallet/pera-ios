@@ -234,6 +234,7 @@ extension PendingTransaction.APIModel {
         var rcv: String?
         var arcv: String?
         var snd: String?
+        var xaid: Int64?
         var type: Transaction.TransferType?
         var xaid: Int64?
 
@@ -247,6 +248,7 @@ extension PendingTransaction.APIModel {
             self.rcv = nil
             self.arcv = nil
             self.snd = nil
+            self.xaid = nil
             self.type = nil
             self.xaid = nil
         }

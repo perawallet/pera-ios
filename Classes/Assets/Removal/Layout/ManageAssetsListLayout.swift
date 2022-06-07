@@ -87,9 +87,9 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel?
+        sizeForAssetCellItem item: AssetPreviewWithRemoveActionViewModel?
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewDeleteCell.reuseIdentifier
+        let sizeCacheIdentifier = AssetPreviewWithActionCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -106,11 +106,13 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             secondaryAccessory: "title-unkown".localized
         )
         
-        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
-        
-        let newSize = AssetPreviewDeleteCell.calculatePreferredSize(
+        let sampleAssetItem = AssetPreviewWithRemoveActionViewModel(
+            contentViewModel: AssetPreviewViewModel(sampleAssetPreview)
+        )
+
+        let newSize = AssetPreviewWithActionCell.calculatePreferredSize(
             sampleAssetItem,
-            for: AssetPreviewDeleteCell.theme,
+            for: AssetPreviewWithActionCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         

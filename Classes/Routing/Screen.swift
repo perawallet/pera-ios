@@ -44,6 +44,7 @@ indirect enum Screen {
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
+    case assetManagement
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
     case rewardDetail(account: Account, calculatedRewards: Decimal)
     case verifiedAssetInformation
@@ -88,7 +89,10 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
-    case orderAccountList(accountType: AccountType, eventHandler: OrderAccountListViewController.EventHandler)
+    case sortAccountList(
+        dataController: SortAccountListDataController,
+        eventHandler: SortAccountListViewController.EventHandler
+    )
     case accountSelection(
         transactionAction: TransactionAction,
         delegate: SelectAccountViewControllerDelegate?
@@ -143,6 +147,7 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
+    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
 }
 
 extension Screen {

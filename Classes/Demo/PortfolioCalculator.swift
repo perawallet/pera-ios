@@ -118,4 +118,11 @@ extension Result where Success == PortfolioValue {
         case .failure: return "N/A"
         }
     }
+
+    var amount: Decimal {
+        switch self {
+        case .success(let value): return value.amount
+        case .failure: return .zero
+        }
+    }
 }

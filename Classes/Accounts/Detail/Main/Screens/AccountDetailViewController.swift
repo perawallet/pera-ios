@@ -43,7 +43,7 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
-    private lazy var accountTitleView = ImageWithTitleView()
+    private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
 
     private var accountHandle: AccountHandle
 
@@ -126,10 +126,14 @@ extension AccountDetailViewController {
     }
 
     private func addTitleView() {
-        accountTitleView.customize(AccountNameViewSmallTheme())
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
-
-        navigationItem.titleView = accountTitleView
+        accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
+        navigationItem.titleView = accountNamePreviewTitleView
     }
 }
 
@@ -202,11 +206,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             by: .present
         )
     }
-    
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
-        let controller = open(.removeAsset(account: accountHandle.value), by: .present) as? ManageAssetsViewController
-        controller?.delegate = self
-    }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         displayRemoveAccountAlert()
@@ -255,7 +254,12 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
     }
 }
 

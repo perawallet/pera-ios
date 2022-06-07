@@ -403,6 +403,8 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case .assetManagement:
+            viewController = AssetManagementViewController(configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
@@ -570,8 +572,11 @@ class Router:
             let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .orderAccountList(accountType, eventHandler):
-            let aViewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
+        case let .sortAccountList(dataController, eventHandler):
+            let aViewController  = SortAccountListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .accountSelection(transactionAction, delegate):
@@ -716,6 +721,10 @@ class Router:
             viewController = buyAlgoHomeScreen
         case let .buyAlgoTransaction(buyAlgoParams):
             viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
+        case .copyAddressStory(let eventHandler):
+            let screen = CopyAddressStoryScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

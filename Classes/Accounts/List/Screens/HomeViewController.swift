@@ -24,8 +24,11 @@ final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
 
+    private lazy var storyTransition = StoryTransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var navigationView = HomePortfolioNavigationView()
+    private lazy var listViewWhiteBackgroundView = UIView(frame: .zero)
       
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -33,8 +36,9 @@ final class HomeViewController:
         api: api!,
         bannerController: bannerController
     )
-    
+
     private let onceWhenViewDidAppear = Once()
+    private let storyOnceWhenViewDidAppear = Once()
 
     override var name: AnalyticsScreenName? {
         return .accounts
@@ -73,6 +77,16 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
+
+        navigationView.prepareLayout(NoLayoutSheet())
+
+        navigationItem.titleView = navigationView
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
     }
 
     override func viewDidLoad() {
@@ -86,6 +100,9 @@ final class HomeViewController:
             case .didUpdate(let snapshot):
                 self.configureWalletConnectIfNeeded()
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.bindNavigation()
+                self.applyWhiteBackground(snapshot: snapshot)
+                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()
@@ -94,6 +111,7 @@ final class HomeViewController:
         pushNotificationController.sendDeviceDetails()
 
         requestAppReview()
+
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -131,6 +149,14 @@ final class HomeViewController:
         super.linkInteractors()
         listView.delegate = self
     }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let visibleIndexPaths = listView.indexPathsForVisibleItems
+
+        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
+
+        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
+    }
 }
 
 extension HomeViewController {
@@ -150,28 +176,53 @@ extension HomeViewController {
             self.open(.notifications, by: .push)
         }
 
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let self = self else {
-                return
-            }
+        rightBarButtonItems = [notificationBarButtonItem]
+    }
 
-            let qrScannerViewController = self.open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
-            qrScannerViewController?.delegate = self
+    private func bindNavigation() {
+        guard let title = dataController.portfolioViewModel?.value?.string else {
+            return
         }
 
-        let addBarButtonItem = ALGBarButtonItem(kind: .circleAdd) { [weak self] in
-            guard let self = self else {
-                return
+        let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
+
+        navigationView.bind(title: title, subtitle: subtitle)
+    }
+
+    private func applyWhiteBackground(snapshot: HomeDataController.Snapshot) {
+        guard sharedDataController.isPollingAvailable else {
+            return
+        }
+
+        let sectionIndex = snapshot.indexOfSection(.announcement) ?? snapshot.indexOfSection(.quickActions)
+        let loadingTheme = HomeLoadingViewTheme()
+
+        if let index = sectionIndex, let quickActionsAttribute = listView.collectionViewLayout.layoutAttributesForItem(
+            at: IndexPath(item: 0, section: index)
+        ) {
+            var originY = quickActionsAttribute.frame.maxY
+
+            if sectionIndex == snapshot.indexOfSection(.quickActions) {
+                originY += loadingTheme.quickActionsBottomInset()
             }
 
-            self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: originY, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
+        } else {
+            let actionSize = QuickActionsView.calculatePreferredSize(
+                for: QuickActionsViewTheme(),
+                fittingIn: CGSize(width: UIScreen.main.bounds.width - 48,
+                                  height: .greatestFiniteMagnitude)
             )
+            let height = loadingTheme.accountLabelTopInset() + actionSize.height
+            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: height, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
         }
 
-        leftBarButtonItems = [notificationBarButtonItem]
-        rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
+        if !listView.subviews.contains(listViewWhiteBackgroundView) {
+            listViewWhiteBackgroundView.backgroundColor = AppColors.Shared.System.background.uiColor
+            listView.addSubview(listViewWhiteBackgroundView)
+            listViewWhiteBackgroundView.layer.zPosition = -999
+            listViewWhiteBackgroundView.isUserInteractionEnabled = false
+        }
     }
 }
 
@@ -225,13 +276,41 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
-        _ cell: BuyAlgoCell
+        _ cell: QuickActionsCell
     ) {
         cell.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
 
             self.launchBuyAlgo()
+        }
+
+        cell.observe(event: .receive) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.open(
+                .accountSelection(transactionAction: .receive, delegate: self),
+                by: .present
+            )
+        }
+
+        cell.observe(event: .send) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.open(
+                .accountSelection(transactionAction: .send, delegate: self),
+                by: .present
+            )
+        }
+
+        cell.observe(event: .scanQR) {
+            [weak self] in
+            guard let self = self else { return }
+
+            let qrScannerViewController = self.open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
+            qrScannerViewController?.delegate = self
         }
     }
 
@@ -280,56 +359,43 @@ extension HomeViewController {
     }
     
     private func linkInteractors(
-        _ cell: TitleWithAccessorySupplementaryCell,
-        for item: HomeAccountSectionHeaderViewModel
+        _ cell: ManagementItemCell,
+        for item: ManagementItemViewModel
     ) {
-        cell.observe(event: .performAccessory) {
-            [weak self] in
-            guard let self = self else { return }
-            
-            let eventHandler: AccountListOptionsViewController.EventHandler = {
+        cell.observe(event: .primaryAction) {
+            let eventHandler: SortAccountListViewController.EventHandler = {
                 [weak self] event in
                 guard let self = self else { return }
-                
+
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self = self else { return }
-                    
+
                     switch event {
-                    case .addAccount:
-                        self.open(
-                            .welcome(flow: .addNewAccount(mode: .none)),
-                            by: .customPresent(
-                                presentationStyle: .fullScreen,
-                                transitionStyle: nil,
-                                transitioningDelegate: nil
-                            )
-                        )
-                    case .arrangeAccounts(let accountType):
-                        let eventHandler: OrderAccountListViewController.EventHandler = {
-                            [weak self] event in
-                            guard let self = self else { return }
-                            
-                            self.dismiss(animated: true) {
-                                [weak self] in
-                                guard let self = self else { return }
-                                
-                                switch event {
-                                case .didReorder: self.dataController.reload()
-                                }
-                            }
-                        }
-                        self.open(
-                            .orderAccountList(accountType: accountType, eventHandler: eventHandler),
-                            by: .present
-                        )
+                    case .didReorder: self.dataController.reload()
                     }
                 }
             }
-            
-            self.modalTransition.perform(
-                .accountListOptions(accountType: item.type, eventHandler: eventHandler),
-                by: .presentWithoutNavigationController
+
+            self.open(
+                .sortAccountList(
+                    dataController: SortAccountListLocalDataController(
+                        session: self.session!,
+                        sharedDataController: self.sharedDataController
+                    ),
+                     eventHandler: eventHandler
+                ),
+                by: .present
+            )
+        }
+        cell.observe(event: .secondaryAction) {
+            self.open(
+                .welcome(flow: .addNewAccount(mode: .none)),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
             )
         }
     }
@@ -388,6 +454,55 @@ extension HomeViewController {
         peraAppLaunchStore.isOnboarded = true
 
         open(.peraIntroduction, by: .present)
+    }
+}
+
+extension HomeViewController {
+    private func presentCopyAddressStoryIfNeeded() {
+        /// note: If any screen presented on top of home screen, it will prevent opening story screen here
+        guard sharedDataController.isAvailable, presentedViewController == nil else {
+            return
+        }
+        
+        storyOnceWhenViewDidAppear.execute { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.presentCopyAddressStory()
+        }
+    }
+    
+    private func presentCopyAddressStory() {
+        guard let session = session,
+              session.hasAuthentication() else {
+            return
+        }
+
+        var copyAddressDisplayStore = CopyAddressDisplayStore()
+
+        if !copyAddressDisplayStore.shouldAskForCopyAddress(sharedDataController.accountCollection.count) {
+            return
+        }
+
+        copyAddressDisplayStore.increaseAppOpenCount()
+        
+        let eventHandler: CopyAddressStoryScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .close:
+                self.dismiss(animated: true)
+            }
+        }
+
+        self.storyTransition.perform(
+            .copyAddressStory(
+                eventHandler: eventHandler
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -577,14 +692,14 @@ extension HomeViewController {
             switch item {
             case .header(let headerItem):
                 linkInteractors(
-                    cell as! TitleWithAccessorySupplementaryCell,
+                    cell as! ManagementItemCell,
                     for: headerItem
                 )
             default:
                 break
             }
-        case .buyAlgo:
-            linkInteractors(cell as! BuyAlgoCell)
+        case .quickActions:
+            linkInteractors(cell as! QuickActionsCell)
         case .announcement(let item):
             if item.isGeneric {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)
@@ -669,6 +784,33 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
     ) {
         /// <todo> Why we don't have account.isAvailable check like in didSelect method
         guard transactionAction == .send, let draft = sendTransactionDraft else {
+
+            switch transactionAction {
+            case .send:
+                selectAccountViewController.open(
+                    .assetSelection(
+                        filter: nil,
+                        account: account
+                    ),
+                    by: .push
+                )
+            case .receive:
+                selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+                    self.open(
+                        .qrGenerator(
+                            title: account.name ?? account.address.shortAddressDisplay,
+                            draft: draft, isTrackable: true),
+                        by: .present
+                    )
+                }
+            case .buyAlgo:
+                return
+            }
             return
         }
 
@@ -817,5 +959,27 @@ struct PasscodeSettingDisplayStore: Storable {
 
     var shouldAskForPasscode: Bool {
         return appOpenCount % appOpenCountToAskPasscode == 0
+    }
+}
+
+struct CopyAddressDisplayStore: Storable {
+    typealias Object = Any
+
+    let accountLimit = 1
+    let appOpenCountCopyAddress = 2
+
+    private let appOpenCountKey = "com.algorand.algorand.copy.address.count.key"
+    private let dontAskAgainKey = "com.algorand.algorand.copy.address.dont.ask.again"
+
+    var appOpenCount: Int {
+        return userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func increaseAppOpenCount() {
+        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    }
+    
+    func shouldAskForCopyAddress(_ addressCount: Int) -> Bool {
+        return addressCount >= accountLimit && appOpenCount < appOpenCountCopyAddress
     }
 }
