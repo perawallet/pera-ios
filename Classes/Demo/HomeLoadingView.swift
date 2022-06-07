@@ -94,12 +94,18 @@ extension HomeLoadingView {
     private func addQuickActionsView() {
         quickActionsView.customize(theme.quickActionsTheme)
 
+        let actionSize = QuickActionsView.calculatePreferredSize(
+            for: theme.quickActionsTheme,
+            fittingIn: CGSize(width: UIScreen.main.bounds.width - theme.quickActionsMargin.trailing - theme.quickActionsMargin.leading,
+                              height: .greatestFiniteMagnitude)
+        )
+
         addSubview(quickActionsView)
         quickActionsView.snp.makeConstraints {
-            $0.top.equalTo(portfolioCurrencyLoading.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
+            $0.top.equalTo(portfolioCurrencyLoading.snp.bottom).offset(theme.quickActionsMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(80)
+            $0.height.equalTo(actionSize.height)
         }
     }
 

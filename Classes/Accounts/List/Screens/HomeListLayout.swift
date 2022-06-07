@@ -67,18 +67,14 @@ extension HomeListLayout {
             insets.top = 16
             return insets
         case .announcement:
-            insets.top = 36
             return insets
         case .accounts:
             insets.top = 36
             insets.bottom = 8
             return insets
-        case .watchAccounts:
-            insets.top = 24
-            insets.bottom = 8
-            return insets
-        case .buyAlgo:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 44
+        case .quickActions:
+            insets.top = 44
+            insets.bottom = 36
             return insets
         }
     }
@@ -118,7 +114,7 @@ extension HomeListLayout {
                 layout: collectionViewLayout,
                 sizeForAnnouncementCellItem: item
             )
-        case .buyAlgo:
+        case .quickActions:
             return listViewBuyAlgo(
                 collectionView,
                 layout: collectionViewLayout

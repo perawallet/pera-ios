@@ -96,7 +96,12 @@ extension RootViewController {
             dataController: HomeAPIDataController(appConfiguration.sharedDataController, announcementDataController: announcementAPIDataController),
             configuration: configuration
         )
-        let homeTab = HomeTabBarItem(NavigationContainer(rootViewController: homeViewController))
+        let homeTab = HomeTabBarItem(
+            NavigationContainer(
+                theme: GrayNavigationContainerTheme(),
+                rootViewController: homeViewController
+            )
+        )
         
         let algoStatisticsViewController =
             AlgoStatisticsViewController(

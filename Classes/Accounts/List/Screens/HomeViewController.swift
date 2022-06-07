@@ -27,6 +27,7 @@ final class HomeViewController:
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var navigationView = HomePortfolioNavigationView()
+    private lazy var listViewWhiteBackgroundView = UIView(frame: .zero)
       
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -34,7 +35,7 @@ final class HomeViewController:
         api: api!,
         bannerController: bannerController
     )
-    
+
     private let onceWhenViewDidAppear = Once()
 
     override var name: AnalyticsScreenName? {
@@ -80,6 +81,12 @@ final class HomeViewController:
         navigationItem.titleView = navigationView
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,6 +99,7 @@ final class HomeViewController:
                 self.configureWalletConnectIfNeeded()
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
                 self.bindNavigation()
+                self.applyWhiteBackground(snapshot: snapshot)
             }
         }
         dataController.load()
@@ -101,16 +109,6 @@ final class HomeViewController:
 
         requestAppReview()
 
-    }
-
-    private func bindNavigation() {
-        guard let title = dataController.portfolioViewModel?.value?.string else {
-            return
-        }
-
-        let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
-
-        navigationView.bind(title: title, subtitle: subtitle)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -147,8 +145,6 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
-
-        view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -199,6 +195,52 @@ extension HomeViewController {
 
         leftBarButtonItems = [notificationBarButtonItem]
         rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
+    }
+
+    private func bindNavigation() {
+        guard let title = dataController.portfolioViewModel?.value?.string else {
+            return
+        }
+
+        let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
+
+        navigationView.bind(title: title, subtitle: subtitle)
+    }
+
+    private func applyWhiteBackground(snapshot: HomeDataController.Snapshot) {
+        guard sharedDataController.isPollingAvailable else {
+            return
+        }
+
+        let sectionIndex = snapshot.indexOfSection(.announcement) ?? snapshot.indexOfSection(.quickActions)
+        let loadingTheme = HomeLoadingViewTheme()
+
+        if let index = sectionIndex, let quickActionsAttribute = listView.collectionViewLayout.layoutAttributesForItem(
+            at: IndexPath(item: 0, section: index)
+        ) {
+            var originY = quickActionsAttribute.frame.maxY
+
+            if sectionIndex == snapshot.indexOfSection(.quickActions) {
+                originY += loadingTheme.quickActionsBottomInset()
+            }
+
+            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: originY, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
+        } else {
+            let actionSize = QuickActionsView.calculatePreferredSize(
+                for: QuickActionsViewTheme(),
+                fittingIn: CGSize(width: UIScreen.main.bounds.width - 48,
+                                  height: .greatestFiniteMagnitude)
+            )
+            let height = loadingTheme.accountLabelTopInset() + actionSize.height
+            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: height, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
+        }
+
+        if !listView.subviews.contains(listViewWhiteBackgroundView) {
+            listViewWhiteBackgroundView.backgroundColor = AppColors.Shared.System.background.uiColor
+            listView.addSubview(listViewWhiteBackgroundView)
+            listViewWhiteBackgroundView.layer.zPosition = -999
+            listViewWhiteBackgroundView.isUserInteractionEnabled = false
+        }
     }
 }
 
@@ -259,6 +301,34 @@ extension HomeViewController {
             guard let self = self else { return }
 
             self.launchBuyAlgo()
+        }
+
+        cell.observe(event: .receive) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.open(
+                .accountSelection(transactionAction: .receive, delegate: self),
+                by: .present
+            )
+        }
+
+        cell.observe(event: .send) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.open(
+                .accountSelection(transactionAction: .send, delegate: self),
+                by: .present
+            )
+        }
+
+        cell.observe(event: .scanQR) {
+            [weak self] in
+            guard let self = self else { return }
+
+            let qrScannerViewController = self.open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
+            qrScannerViewController?.delegate = self
         }
     }
 
@@ -610,7 +680,7 @@ extension HomeViewController {
             default:
                 break
             }
-        case .buyAlgo:
+        case .quickActions:
             linkInteractors(cell as! QuickActionsCell)
         case .announcement(let item):
             if item.isGeneric {
@@ -696,6 +766,33 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
     ) {
         /// <todo> Why we don't have account.isAvailable check like in didSelect method
         guard transactionAction == .send, let draft = sendTransactionDraft else {
+
+            switch transactionAction {
+            case .send:
+                selectAccountViewController.open(
+                    .assetSelection(
+                        filter: nil,
+                        account: account
+                    ),
+                    by: .push
+                )
+            case .receive:
+                selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+                    self.open(
+                        .qrGenerator(
+                            title: account.name ?? account.address.shortAddressDisplay,
+                            draft: draft, isTrackable: true),
+                        by: .present
+                    )
+                }
+            case .buyAlgo:
+                return
+            }
             return
         }
 

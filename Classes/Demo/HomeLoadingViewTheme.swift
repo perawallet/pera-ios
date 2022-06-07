@@ -34,8 +34,7 @@ struct HomeLoadingViewTheme:
     var loadingCorner: Corner
 
     var quickActionsTheme: QuickActionsViewTheme
-    var buyAlgoButtonMargin: LayoutMargins
-    var buyAlgoButtonHeight: LayoutMetric
+    var quickActionsMargin: LayoutMargins
 
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
@@ -67,17 +66,16 @@ struct HomeLoadingViewTheme:
             .icon([ .normal("icon-info-20".templateImage) ]),
             .tintColor(AppColors.Components.Text.gray)
         ]
-        self.spacingBetweenTitleAndInfoAction = 10
-        self.portfolioLoadingMargin = (18, .noMetric, .noMetric, .noMetric)
+        self.spacingBetweenTitleAndInfoAction = 8
+        self.portfolioLoadingMargin = (10, .noMetric, .noMetric, .noMetric)
         self.portfolioLoadingSize = (181, 48)
-        self.portfolioCurrencyLoadingMargin = (12, .noMetric, .noMetric, .noMetric)
+        self.portfolioCurrencyLoadingMargin = (8, .noMetric, .noMetric, .noMetric)
         self.portfolioCurrencyLoadingSize = (97, 20)
 
         self.loadingCorner = Corner(radius: 4)
 
         self.quickActionsTheme = QuickActionsViewTheme(family)
-        self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
-        self.buyAlgoButtonHeight = 52
+        self.quickActionsMargin = (43, 24, .noMetric, 24)
 
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),
@@ -85,8 +83,16 @@ struct HomeLoadingViewTheme:
             .textOverflow(FittingText()),
             .text("accounts-title".localized)
         ]
-        self.accountsLabelMargin = (44, 24, .noMetric, 24)
+        self.accountsLabelMargin = (80, 24, .noMetric, 24)
         self.accountLoadingMargin = (4, 24, .noMetric, 24)
         self.accountLoadingHeight = 72
+    }
+
+    func accountLabelTopInset() -> LayoutMetric {
+        return 214
+    }
+
+    func quickActionsBottomInset() -> LayoutMetric {
+        return 36
     }
 }

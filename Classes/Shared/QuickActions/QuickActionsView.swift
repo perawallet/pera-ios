@@ -28,7 +28,7 @@ final class QuickActionsView:
         .buyAlgo: UIControlInteraction(),
         .send: UIControlInteraction(),
         .receive: UIControlInteraction(),
-        .scanQR: UIViewTapInteraction()
+        .scanQR: UIControlInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()
@@ -72,7 +72,6 @@ final class QuickActionsView:
         
         let firstMax = max(firstSize.height.rounded(), secondSize.height.rounded())
         let secondMax = max(thirdSize.height.rounded(), fourthSize.height.rounded())
-        
         
         let imageHeight = theme.buyAlgoAction.icon?[.normal]?.height ?? 48.0
         

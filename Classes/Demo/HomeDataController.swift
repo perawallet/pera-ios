@@ -40,9 +40,8 @@ enum HomeSection:
     case loading
     case portfolio
     case announcement
-    case buyAlgo
+    case quickActions
     case accounts
-    case watchAccounts
 }
 
 enum HomeItem: Hashable {
@@ -50,7 +49,7 @@ enum HomeItem: Hashable {
     case portfolio(HomePortfolioViewModel)
     case announcement(AnnouncementViewModel)
     case account(HomeAccountItem)
-    case buyAlgo
+    case quickActions
 }
 
 enum HomeEmptyItem: Hashable {
