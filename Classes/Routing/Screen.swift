@@ -147,6 +147,7 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
+    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
 }
 
 extension Screen {

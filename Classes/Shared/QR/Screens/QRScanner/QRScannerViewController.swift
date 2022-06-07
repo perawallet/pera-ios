@@ -65,6 +65,11 @@ final class QRScannerViewController: BaseViewController {
     deinit {
         wcConnectionRepeater?.invalidate()
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

@@ -26,6 +26,7 @@ final class AccountPreviewView:
     private lazy var iconView = ImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
+    private lazy var namePreviewView = AccountNamePreviewView()
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
     private lazy var accessoryView = UIView()
@@ -53,8 +54,7 @@ final class AccountPreviewView:
         _ viewModel: AccountPreviewViewModel?
     ) {
         iconView.image = viewModel?.icon
-        titleView.editText = viewModel?.title
-        subtitleView.editText = viewModel?.subtitle
+        namePreviewView.bindData(viewModel?.namePreviewViewModel)
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
         accessoryIconView.image = viewModel?.accessoryIcon
@@ -74,13 +74,10 @@ final class AccountPreviewView:
         /// none of them has the multi-line texts.
         let width = size.width
         let iconSize = viewModel.icon?.size ?? .zero
-        let titleSize = viewModel.title.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let subtitleSize = viewModel.subtitle.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        let namePreviewView = AccountNamePreviewView.calculatePreferredSize(
+            viewModel.namePreviewViewModel,
+            for: theme.namePreviewView,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         let primaryAccessorySize = viewModel.primaryAccessory.boundingSize(
             multiline: false,
@@ -91,7 +88,7 @@ final class AccountPreviewView:
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let accessoryIconSize = viewModel.accessoryIcon?.size ?? .zero
-        let contentHeight = titleSize.height + subtitleSize.height
+        let contentHeight = namePreviewView.height
         let accessoryTextHeight = primaryAccessorySize.height + secondaryAccessorySize.height
         let accessoryHeight = max(accessoryTextHeight, accessoryIconSize.height)
         let preferredHeight = max(iconSize.height, max(contentHeight, accessoryHeight))
@@ -106,11 +103,11 @@ extension AccountPreviewView {
         iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
-        iconView.contentEdgeInsets = theme.iconContentEdgeInsets
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.centerY == 0
             $0.leading == 0
+            $0.fitToSize(theme.iconSize)
         }
     }
 
@@ -120,7 +117,7 @@ extension AccountPreviewView {
         addSubview(contentAndAccessoryContextView)
         contentAndAccessoryContextView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == iconView.snp.trailing
+            $0.leading == iconView.snp.trailing + theme.horizontalPadding
             $0.bottom == 0
         }
 
@@ -133,60 +130,24 @@ extension AccountPreviewView {
     ) {
         contentAndAccessoryContextView.addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.width >= contentAndAccessoryContextView.snp.width * theme.contentMinWidthRatio
+            $0.width >= contentAndAccessoryContextView * theme.contentMinWidthRatio
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0
         }
 
-        addTitle(theme)
-        addSubtitle(theme)
+        addNamePreview(theme)
     }
 
-    private func addTitle(
+    private func addNamePreview(
         _ theme: AccountPreviewViewTheme
     ) {
-        titleView.customizeAppearance(theme.title)
+        namePreviewView.customize(theme.namePreviewView)
 
-        contentView.addSubview(titleView)
-        titleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
-
-        titleView.fitToVerticalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        titleView.fitToHorizontalIntrinsicSize(
-            hugging: .required,
-            compression: .defaultLow
-        )
-
-        titleView.snp.makeConstraints {
+        contentView.addSubview(namePreviewView)
+        
+        namePreviewView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == 0
-            $0.trailing <= 0
-        }
-    }
-
-    private func addSubtitle(
-        _ theme: AccountPreviewViewTheme
-    ) {
-        subtitleView.customizeAppearance(theme.subtitle)
-        titleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
-
-        contentView.addSubview(subtitleView)
-        subtitleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
-
-        subtitleView.fitToVerticalIntrinsicSize(
-            hugging: .required,
-            compression: .defaultLow
-        )
-        subtitleView.fitToHorizontalIntrinsicSize(
-            hugging: .required,
-            compression: .defaultLow
-        )
-
-        subtitleView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
             $0.trailing <= 0
@@ -224,6 +185,7 @@ extension AccountPreviewView {
             compression: .required
         )
 
+        primaryAccessoryView.contentEdgeInsets.leading = theme.horizontalPadding
         primaryAccessoryView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -250,6 +212,7 @@ extension AccountPreviewView {
             compression: .defaultLow
         )
 
+        secondaryAccessoryView.contentEdgeInsets.leading = theme.horizontalPadding
         secondaryAccessoryView.snp.makeConstraints {
             $0.top == primaryAccessoryView.snp.bottom
             $0.leading == 0

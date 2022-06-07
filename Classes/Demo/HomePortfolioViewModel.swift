@@ -26,8 +26,7 @@ struct HomePortfolioViewModel:
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
     private(set) var value: EditText?
-    private(set) var algoHoldings: HomePortfolioItemViewModel?
-    private(set) var assetHoldings: HomePortfolioItemViewModel?
+    private(set) var secondaryValue: EditText?
     
     init(
         _ model: Portfolio
@@ -45,8 +44,30 @@ extension HomePortfolioViewModel {
         
         bindTitle(mPortfolio)
         bindValue(mPortfolio)
-        bindAlgoHoldings(mPortfolio)
-        bindAssetHoldings(mPortfolio)
+        
+        if let algoCurrency = portfolio.currency.value as? AlgoCurrency {
+            
+            var secondaryPortfolio = Portfolio(
+                accounts: portfolio.accounts,
+                currency: .ready(currency: algoCurrency.currency, lastUpdateDate: Date()),
+                calculator: ALGPortfolioCalculator()
+            )
+            
+            secondaryPortfolio.calculate()
+            
+            bindSecondaryValue(secondaryPortfolio)
+        } else {
+            
+            var secondaryPortfolio = Portfolio(
+                accounts: portfolio.accounts,
+                currency: .ready(currency: AlgoCurrency(currency: portfolio.currency.value!), lastUpdateDate: Date()),
+                calculator: ALGPortfolioCalculator()
+            )
+            
+            secondaryPortfolio.calculate()
+            
+            bindSecondaryValue(secondaryPortfolio)
+        }
     }
     
     mutating func bindTitle(
@@ -80,42 +101,41 @@ extension HomePortfolioViewModel {
     ) {
         totalValueResult = portfolio.totalValueResult
         
-        let font = Fonts.DMMono.regular.make(36)
+        let font = Fonts.DMSans.medium.make(36)
         let lineHeightMultiplier = 1.02
         
         value = .attributedString(
             totalValueResult.uiDescription.attributed([
                 .font(font),
-                .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
                 ])
             ])
         )
     }
     
-    mutating func bindAlgoHoldings(
+    mutating func bindSecondaryValue(
         _ portfolio: Portfolio
     ) {
-        let item = PortfolioItem(
-            title: "portfolio-algo-holdings-title".localized,
-            icon: "icon-algo-circle-green-24",
-            valueResult: portfolio.coinsValueResult
+        totalValueResult = portfolio.totalValueResult
+        
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.02
+        
+        secondaryValue = .attributedString(
+            ("≈ " + totalValueResult.uiDescription).attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
+                ])
+            ])
         )
-        algoHoldings = HomePortfolioItemViewModel(item)
-    }
-    
-    mutating func bindAssetHoldings(
-        _ portfolio: Portfolio
-    ) {
-        let item = PortfolioItem(
-            title: "portfolio-asset-holdings-title".localized,
-            icon: nil,
-            valueResult: portfolio.assetsValueResult
-        )
-        assetHoldings = HomePortfolioItemViewModel(item)
     }
 }
 
@@ -124,8 +144,6 @@ extension HomePortfolioViewModel {
         into hasher: inout Hasher
     ) {
         hasher.combine(value)
-        hasher.combine(algoHoldings)
-        hasher.combine(assetHoldings)
     }
     
     static func == (
@@ -133,8 +151,6 @@ extension HomePortfolioViewModel {
         rhs: HomePortfolioViewModel
     ) -> Bool {
         return
-            lhs.value == rhs.value &&
-            lhs.algoHoldings == rhs.algoHoldings &&
-            lhs.assetHoldings == rhs.assetHoldings
+            lhs.value == rhs.value
     }
 }

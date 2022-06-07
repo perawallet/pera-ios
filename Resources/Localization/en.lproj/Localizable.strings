@@ -50,6 +50,7 @@
 "title-not-available" = "Not available";
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-press-hold-copy-address" = "Press and hold to copy address";
 "title-buy-algo" = "Buy ALGO";
 "title-sort" = "Sort";
 "title-alphabetically-a-to-z" = "Alphabetically A to Z";
@@ -63,6 +64,9 @@
 "title-price" = "Price";
 "title-collectibles" = "Collectibles";
 "settings-title" = "Settings";
+"title-watch-account" = "Watch Account";
+"title-ledger-account" = "Ledger Account";
+"title-rekeyed-account" = "Rekeyed Account";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -411,7 +415,6 @@
 "transaction-detail-close-amount" = "Close Amount";
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
-"transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
@@ -612,7 +615,6 @@
 "ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed on both Ledger and this device, open the Algorand Ledger app.";
 
 // MARK: Watch Account
-"title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a watch\naccount";
 "watch-account-button" = "Create a Watch Account";
 "watch-account-paste" = "Paste";
@@ -1045,6 +1047,16 @@
 "moonpay-transaction-waitingPayment-title" = "Almost there!";
 "moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
 "moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+
+//MARK: Story
+"story-copy-address-title" = "Press and hold to “Copy Address”";
+"story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
+
+//MARK: QuickActions
+"quick-actions-buy-algo-title" = "Buy ALGO";
+"quick-actions-send-title" = "Send";
+"quick-actions-receive-title" = "Receive";
+"quick-actions-scan-qr-title" = "Scan QR";
 
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";

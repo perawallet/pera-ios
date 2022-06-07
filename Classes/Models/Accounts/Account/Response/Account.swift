@@ -52,7 +52,6 @@ final class Account: ALGEntityModel {
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
-    var accountImage: String?
 
     private(set) var standardAssets: [StandardAsset] = []
     private var standardAssetsIndexer: StandardAssetIndexer = [:]
@@ -84,7 +83,6 @@ final class Account: ALGEntityModel {
         appsTotalSchema = apiModel.appsTotalSchema
         receivesNotification = true
         preferredOrder = AccountInformation.invalidOrder
-        accountImage = AccountImageType.getRandomImage(for: type).rawValue
         totalCreatedApps = apiModel.totalCreatedApps
     }
 
@@ -109,7 +107,6 @@ final class Account: ALGEntityModel {
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
-        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
         self.totalCreatedApps = 0
     }
     
@@ -127,7 +124,6 @@ final class Account: ALGEntityModel {
         self.receivesNotification = localAccount.receivesNotification
         self.rekeyDetail = localAccount.rekeyDetail
         self.preferredOrder = localAccount.preferredOrder
-        self.accountImage = localAccount.accountImage
         self.totalCreatedApps = 0
     }
 
