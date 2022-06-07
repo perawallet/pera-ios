@@ -12,28 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AssetConfigTransaction.swift
+//   AppCallTransaction.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetConfigTransaction: ALGAPIModel {
-    let id: Int64?
-    let asset: AssetDetail.APIModel?
+final class AppCallTransaction: ALGAPIModel {
+    let appID: Int64?
+    let onCompletion: String?
+    let accounts: [PublicKey]?
 
     init() {
-        self.id = nil
-        self.asset = nil
+        self.appID = nil
+        self.onCompletion = nil
+        self.accounts = nil
     }
 }
 
-extension AssetConfigTransaction {
+extension AppCallTransaction {
     private enum CodingKeys:
         String,
         CodingKey {
-        case id = "asset-id"
-        case asset = "params"
+        case appID = "application-id"
+        case onCompletion = "on-completion"
+        case accounts
     }
 }
