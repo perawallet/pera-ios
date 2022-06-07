@@ -66,9 +66,11 @@ extension TransactionContactInformationView: ViewModelBindable {
             titleLabel.text = title
         }
 
-        if let contactDisplayViewModel = viewModel?.contactDisplayViewModel {
-            contactDisplayView.bindData(contactDisplayViewModel)
-        }
+        contactDisplayView.bindData(viewModel?.contactDisplayViewModel)
+    }
+
+    func removeAccessoryViews() {
+        contactDisplayView.removeAccessoryViews()
     }
 }
 
