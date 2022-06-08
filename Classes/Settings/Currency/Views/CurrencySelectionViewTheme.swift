@@ -28,11 +28,11 @@ struct CurrencySelectionViewTheme:
 
     let description: TextStyle
     let descriptionTopPadding: LayoutMetric
-    let descriptionBottomPadding: LayoutMetric
+    let descriptionTrailingPadding: LayoutMetric
     
     let searchInputViewTheme: SearchInputViewTheme
     let searchViewTopPadding: LayoutMetric
-    
+
     let collectionViewEdgeInsets: LayoutPaddings
     let collectionViewTopPadding: LayoutMetric
     
@@ -46,18 +46,19 @@ struct CurrencySelectionViewTheme:
         self.titleTopPadding = 28
 
         self.description = [
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(AppColors.Components.Text.gray),
+            .textOverflow(FittingText())
         ]
         self.descriptionTopPadding = 8
-        self.descriptionBottomPadding = 0
+        self.descriptionTrailingPadding = 54
 
         self.searchInputViewTheme = SearchInputViewCommonTheme(
             placeholder: "settings-currency-search".localized,
             family: family
         )
         self.searchViewTopPadding = 24
-        
-        self.collectionViewEdgeInsets = (16, 0, 0, 0)
-        self.collectionViewTopPadding = 12
+
+        self.collectionViewEdgeInsets = (6, 0, 0, 0)
+        self.collectionViewTopPadding = 6
     }
 }

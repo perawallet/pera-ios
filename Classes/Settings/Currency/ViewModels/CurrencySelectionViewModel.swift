@@ -22,7 +22,7 @@ struct CurrencySelectionViewModel: ViewModel {
     private(set) var description: NSAttributedString?
 
     init(
-        currency: String
+        currency: String?
     ) {
         bindTitle()
         bindDescription(currency)
@@ -41,8 +41,12 @@ extension CurrencySelectionViewModel {
     }
 
     private mutating func bindDescription(
-        _ currency: String
+        _ currency: String?
     ) {
+        guard let currency = currency else {
+            return
+        }
+
         let secondaryCurrency = (currency == "ALGO")
         ? "USD"
         : "ALGO"
@@ -59,14 +63,14 @@ extension CurrencySelectionViewModel {
         let mainCurrencyRange = (descriptionText as NSString).range(of: currency)
         attributedDescriptionText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main,
+            value: AppColors.Components.Text.main.uiColor,
             range: mainCurrencyRange
         )
 
         let secondaryCurrencyRange = (descriptionText as NSString).range(of: secondaryCurrency)
         attributedDescriptionText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main,
+            value: AppColors.Components.Text.main.uiColor,
             range: secondaryCurrencyRange
         )
 

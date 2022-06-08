@@ -17,7 +17,9 @@
 import MacaroonUIKit
 import UIKit
 
-final class CurrencySelectionView: View {
+final class CurrencySelectionView:
+    View,
+    ViewModelBindable {
     private lazy var theme = CurrencySelectionViewTheme()
 
     private lazy var titleLabel = Label()
@@ -45,6 +47,11 @@ final class CurrencySelectionView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func bindData(_ viewModel: CurrencySelectionViewModel?) {
+        titleLabel.editText = viewModel?.title
+        descriptionLabel.attributedText = viewModel?.description
+    }
 }
 
 extension CurrencySelectionView {
@@ -64,7 +71,8 @@ extension CurrencySelectionView {
         addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.trailing.equalToSuperview().inset(theme.descriptionTrailingPadding)
         }
     }
 

@@ -47,6 +47,9 @@ final class CurrencySelectionViewController: BaseViewController {
             switch event {
             case .didUpdate(let snapshot):
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.contextView.bindData(
+                    CurrencySelectionViewModel(currency: self.api?.session.preferredCurrency)
+                )
             }
         }
         
