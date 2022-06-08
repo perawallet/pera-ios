@@ -20,38 +20,79 @@ import MacaroonUIKit
 import UIKit
 
 final class NavigationContainer: MacaroonUIKit.NavigationContainer {
-    let theme: NavigationContainerTheme
-
-    init(theme: NavigationContainerTheme, rootViewController: UIViewController) {
-        self.theme = theme
-        super.init(rootViewController: rootViewController)
-    }
-
-    /// note: Default theme is WhiteNavigtionContainerTheme
-    override init(rootViewController: UIViewController) {
-        self.theme = WhiteNavigationContainerTheme()
-        super.init(rootViewController: rootViewController)
-    }
-
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func customizeNavigationBarAppearance() {
-        navigationBar.customizeAppearance(
-            theme.navigationStyle
-        )
+        customizeNavigationBarDefaultAppearance()
     }
-    
+
     override func customizeViewAppearance() {
         view.customizeAppearance(
-            theme.viewStyle
+            [
+                .backgroundColor(AppColors.Shared.System.background)
+            ]
         )
     }
 }
 
-protocol NavigationContainerTheme: StyleSheet, LayoutSheet {
-    var navigationStyle: NavigationBarStyle { get }
-    var viewStyle: ViewStyle { get }
+extension NavigationContainer {
+    func customizeNavigationBarDefaultAppearance() {
+        let titleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+        let largeTitleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(32)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+
+        navigationBar.customizeAppearance(
+            [
+                .backgroundColor(AppColors.Shared.System.background),
+                .backImage("icon-back"),
+                .isOpaque(true),
+                .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),
+                .shadowImage(UIImage()),
+                .shadowColor(nil),
+                .tintColor(AppColors.Components.Text.main),
+                .titleAttributes(titleAttributeGroup.asSystemAttributes())
+            ]
+        )
+    }
+
+    func customizeNavigationBarHighlightedAppearance() {
+        let titleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+        let largeTitleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(32)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+
+        navigationBar.customizeAppearance(
+            [
+                .backgroundColor(AppColors.Shared.Helpers.heroBackground),
+                .backImage("icon-back"),
+                .isOpaque(true),
+                .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),
+                .shadowImage(UIImage()),
+                .shadowColor(nil),
+                .tintColor(AppColors.Components.Text.main),
+                .titleAttributes(titleAttributeGroup.asSystemAttributes())
+            ]
+        )
+    }
+}
+
+extension UIViewController {
+    private var navigationContainer: NavigationContainer? {
+        return navigationController as? NavigationContainer
+    }
+
+    func switchToDefaultNavigationBarAppearance() {
+        navigationContainer?.customizeNavigationBarDefaultAppearance()
+    }
+
+    func switchToHighlightedNavigationBarAppearance() {
+        navigationContainer?.customizeNavigationBarHighlightedAppearance()
+    }
 }

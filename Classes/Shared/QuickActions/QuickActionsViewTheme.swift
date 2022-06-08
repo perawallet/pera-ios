@@ -21,44 +21,64 @@ import UIKit
 struct QuickActionsViewTheme:
     StyleSheet,
     LayoutSheet {
-    var contentSafeAreaInsets: UIEdgeInsets
+    var maxContentHorizontalInsets: LayoutHorizontalPaddings
     var spacingBetweenActions: LayoutMetric
-    var sendAction: ButtonStyle
-    var receiveAction: ButtonStyle
-    var buyAlgoAction: ButtonStyle
-    var qrAction: ButtonStyle
+    var buyAlgoAction: QuickActionViewTheme
+    var sendAction: QuickActionViewTheme
+    var receiveAction: QuickActionViewTheme
+    var scanAction: QuickActionViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
-        let actionFont = Fonts.DMSans.regular.make(13)
-        let actionTitleColor = AppColors.Components.Text.main
+        self.maxContentHorizontalInsets = (12, 12)
+        self.spacingBetweenActions = 5
 
-        self.contentSafeAreaInsets = .zero
-        self.spacingBetweenActions = 32
-        self.buyAlgoAction = [
-            .font(actionFont),
-            .icon([ .normal("buy-algo-icon") ]),
-            .title("quick-actions-buy-algo-title".localized),
-            .titleColor([ .normal(actionTitleColor) ]),
-        ]
-        self.sendAction = [
-            .font(actionFont),
-            .icon([ .normal("send-icon") ]),
-            .title("quick-actions-send-title".localized),
-            .titleColor([ .normal(actionTitleColor) ])
-        ]
-        self.receiveAction = [
-            .font(actionFont),
-            .icon([ .normal("receive-icon") ]),
-            .title("quick-actions-receive-title".localized),
-            .titleColor([ .normal(actionTitleColor) ])
-        ]
-        self.qrAction = [
-            .font(actionFont),
-            .icon([ .normal("scan-qr-icon") ]),
-            .title("quick-actions-scan-qr-title".localized),
-            .titleColor([ .normal(actionTitleColor) ])
+        var buyAlgoAction = QuickActionViewTheme(family)
+        buyAlgoAction.icon = "buy-algo-icon"
+        buyAlgoAction.title = "quick-actions-buy-algo-title".localized
+        self.buyAlgoAction = buyAlgoAction
+
+        var sendAction = QuickActionViewTheme(family)
+        sendAction.icon = "send-icon"
+        sendAction.title = "quick-actions-send-title".localized
+        self.sendAction = sendAction
+
+        var receiveAction = QuickActionViewTheme(family)
+        receiveAction.icon = "receive-icon"
+        receiveAction.title = "quick-actions-receive-title".localized
+        self.receiveAction = receiveAction
+
+        var scanAction = QuickActionViewTheme(family)
+        scanAction.icon = "scan-qr-icon"
+        scanAction.title = "quick-actions-scan-qr-title".localized
+        self.scanAction = scanAction
+    }
+}
+
+struct QuickActionViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: Image? {
+        didSet { style.icon = icon.unwrap { [ .normal($0) ] } }
+    }
+    var title: String? {
+        didSet { style.title = title }
+    }
+
+    private(set) var style: ButtonStyle
+
+    let width: CGFloat
+
+    static let spacingBetweenIconAndTitle: CGFloat = 15
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.width = 64
+        self.style = [
+            .font(Fonts.DMSans.regular.make(13)),
+            .titleColor([ .normal(AppColors.Components.Text.main) ])
         ]
     }
 }

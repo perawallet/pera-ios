@@ -17,19 +17,18 @@
 
 import Foundation
 import UIKit
-import MacaroonUtils
 import MacaroonUIKit
+import MacaroonUtils
 
 final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-
     private lazy var storyTransition = StoryTransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var navigationView = HomePortfolioNavigationView()
-    private lazy var listViewWhiteBackgroundView = UIView(frame: .zero)
-      
+
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
@@ -52,16 +51,9 @@ final class HomeViewController:
         return .accounts
     }
 
-    private lazy var listView: UICollectionView = {
-        let collectionViewLayout = HomeListLayout.build()
-        let collectionView =
-        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = .clear
-        return collectionView
-    }()
+    private lazy var listView =
+        UICollectionView(frame: .zero, collectionViewLayout: HomeListLayout.build())
+    private lazy var listBackgroundView = UIView()
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
@@ -91,14 +83,14 @@ final class HomeViewController:
         navigationItem.titleView = navigationView
     }
 
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        addUI()
         
         dataController.eventHandler = {
             [weak self] event in
@@ -107,9 +99,12 @@ final class HomeViewController:
             switch event {
             case .didUpdate(let snapshot):
                 self.configureWalletConnectIfNeeded()
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+
                 self.bindNavigation()
-                self.applyWhiteBackground(snapshot: snapshot)
+
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.updateUIWhenListDidReload()
+
                 self.presentCopyAddressStoryIfNeeded()
             }
         }
@@ -119,7 +114,21 @@ final class HomeViewController:
         pushNotificationController.sendDeviceDetails()
 
         requestAppReview()
+    }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if !listView.frame.isEmpty {
+            updateUIWhenViewDidLayoutSubviews()
+        }
+    }
+
+    override func viewWillAppear(
+        _ animated: Bool
+    ) {
+        super.viewWillAppear(animated)
+        switchToHighlightedNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -136,6 +145,16 @@ final class HomeViewController:
         
         dataController.fetchAnnouncements()
     }
+
+    override func viewWillDisappear(
+        _ animated: Bool
+    ) {
+        super.viewWillDisappear(animated)
+
+        if presentedViewController == nil {
+            switchToDefaultNavigationBarAppearance()
+        }
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -143,38 +162,9 @@ final class HomeViewController:
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.stopAnimating()
     }
-
-    override func customizeTabBarAppearence() {
-        tabBarHidden = false
-    }
-
-    override func prepareLayout() {
-        super.prepareLayout()
-        addListView()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        listView.delegate = self
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let visibleIndexPaths = listView.indexPathsForVisibleItems
-
-        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
-
-        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
-    }
 }
 
 extension HomeViewController {
-    private func addListView() {
-        view.addSubview(listView)
-        listView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
     private func addBarButtons() {
         let notificationBarButtonItem = ALGBarButtonItem(kind: .notification) { [weak self] in
             guard let self = self else {
@@ -186,7 +176,79 @@ extension HomeViewController {
 
         rightBarButtonItems = [notificationBarButtonItem]
     }
+}
 
+extension HomeViewController {
+    private func addUI() {
+        addListBackground()
+        addList()
+    }
+
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateUIWhenListDidReload() {
+        updateListBackgroundWhenListDidReload()
+    }
+
+    private func updateUIWhenListDidScroll() {
+        updateListBackgroundWhenListDidScroll()
+    }
+
+    private func addListBackground() {
+        listBackgroundView.customizeAppearance(
+            [
+                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            ]
+        )
+
+        view.addSubview(listBackgroundView)
+        listBackgroundView.snp.makeConstraints {
+            $0.fitToHeight(0)
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+    }
+
+    private func updateListBackgroundWhenListDidReload() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateListBackgroundWhenListDidScroll() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        listBackgroundView.snp.updateConstraints {
+            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+        }
+    }
+
+    private func addList() {
+        listView.customizeAppearance(
+            [
+                .backgroundColor(UIColor.clear)
+            ]
+        )
+
+        view.addSubview(listView)
+        listView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.delegate = self
+    }
+}
+
+extension HomeViewController {
     private func bindNavigation() {
         guard let title = dataController.portfolioViewModel?.value?.string else {
             return
@@ -195,42 +257,6 @@ extension HomeViewController {
         let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
 
         navigationView.bind(title: title, subtitle: subtitle)
-    }
-
-    private func applyWhiteBackground(snapshot: HomeDataController.Snapshot) {
-        guard sharedDataController.isPollingAvailable else {
-            return
-        }
-
-        let sectionIndex = snapshot.indexOfSection(.announcement) ?? snapshot.indexOfSection(.quickActions)
-        let loadingTheme = HomeLoadingViewTheme()
-
-        if let index = sectionIndex, let quickActionsAttribute = listView.collectionViewLayout.layoutAttributesForItem(
-            at: IndexPath(item: 0, section: index)
-        ) {
-            var originY = quickActionsAttribute.frame.maxY
-
-            if sectionIndex == snapshot.indexOfSection(.quickActions) {
-                originY += loadingTheme.quickActionsBottomInset()
-            }
-
-            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: originY, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
-        } else {
-            let actionSize = QuickActionsView.calculatePreferredSize(
-                for: QuickActionsViewTheme(),
-                fittingIn: CGSize(width: UIScreen.main.bounds.width - 48,
-                                  height: .greatestFiniteMagnitude)
-            )
-            let height = loadingTheme.accountLabelTopInset() + actionSize.height
-            listViewWhiteBackgroundView.frame = CGRect(x: 0, y: height, width: listView.frame.width, height: listView.contentSize.height + UIScreen.main.bounds.height)
-        }
-
-        if !listView.subviews.contains(listViewWhiteBackgroundView) {
-            listViewWhiteBackgroundView.backgroundColor = AppColors.Shared.System.background.uiColor
-            listView.addSubview(listViewWhiteBackgroundView)
-            listViewWhiteBackgroundView.layer.zPosition = -999
-            listViewWhiteBackgroundView.isUserInteractionEnabled = false
-        }
     }
 }
 
@@ -284,7 +310,7 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
-        _ cell: QuickActionsCell
+        _ cell: HomeQuickActionsCell
     ) {
         cell.observe(event: .buyAlgo) {
             [weak self] in
@@ -593,10 +619,21 @@ extension HomeViewController {
                 linkInteractors(cell as! NoContentWithActionCell)
             }
         case .portfolio(let item):
-            linkInteractors(
-                cell as! HomePortfolioCell,
-                for: item
-            )
+            switch item {
+            case .portfolio(let portfolioItem):
+                linkInteractors(
+                    cell as! HomePortfolioCell,
+                    for: portfolioItem
+                )
+            case .quickActions:
+                linkInteractors(cell as! HomeQuickActionsCell)
+            }
+        case .announcement(let item):
+            if item.isGeneric {
+                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+            } else {
+                linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+            }
         case .account(let item):
             switch item {
             case .header(let headerItem):
@@ -606,14 +643,6 @@ extension HomeViewController {
                 )
             default:
                 break
-            }
-        case .quickActions:
-            linkInteractors(cell as! QuickActionsCell)
-        case .announcement(let item):
-            if item.isGeneric {
-                linkInteractors(cell as! GenericAnnouncementCell, for: item)
-            } else {
-                linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
             }
         }
     }
@@ -685,54 +714,16 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for transactionAction: TransactionAction
+extension HomeViewController {
+    func scrollViewDidScroll(
+        _ scrollView: UIScrollView
     ) {
-        /// <todo> Why we don't have account.isAvailable check like in didSelect method
-        guard transactionAction == .send, let draft = sendTransactionDraft else {
+        let visibleIndexPaths = listView.indexPathsForVisibleItems
+        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
 
-            switch transactionAction {
-            case .send:
-                selectAccountViewController.open(
-                    .assetSelection(
-                        filter: nil,
-                        account: account
-                    ),
-                    by: .push
-                )
-            case .receive:
-                selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
+        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
 
-                    let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-                    self.open(
-                        .qrGenerator(
-                            title: account.name ?? account.address.shortAddressDisplay,
-                            draft: draft, isTrackable: true),
-                        by: .present
-                    )
-                }
-            case .buyAlgo:
-                return
-            }
-            return
-        }
-
-        var transactionDraft = SendTransactionDraft(
-            from: account,
-            toAccount: draft.from,
-            amount: draft.amount,
-            transactionMode: draft.transactionMode
-        )
-        transactionDraft.note = draft.note
-        transactionDraft.lockedNote = draft.lockedNote
-
-        selectAccountViewController.open(.sendTransaction(draft: transactionDraft), by: .push)
+        updateUIWhenListDidScroll()
     }
 }
 

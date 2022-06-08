@@ -12,21 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QuickActionsCell.swift
+//   HomeQuickActionsCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class QuickActionsCell:
+final class HomeQuickActionsCell:
     CollectionCell<QuickActionsView>,
     UIInteractionObservable {
+    override class var contextPaddings: LayoutPaddings {
+        return (36, 24, 36, 24)
+    }
+
     static let theme = QuickActionsViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
+
+        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
     }
     
@@ -34,6 +40,17 @@ final class QuickActionsCell:
         for theme: QuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
-        return ContextView.calculatePreferredSize(for: theme, fittingIn: size)
+        let contextPaddings = Self.contextPaddings
+        let contextWidth = size.width - contextPaddings.leading - contextPaddings.trailing
+        let contextMaxSize = CGSize(width: contextWidth, height: .greatestFiniteMagnitude)
+        let contextPreferredSize = ContextView.calculatePreferredSize(
+            for: theme,
+            fittingIn: contextMaxSize
+        )
+        let preferredHeight =
+            contextPreferredSize.height +
+            contextPaddings.top +
+            contextPaddings.bottom
+        return CGSize(width: size.width, height: min(preferredHeight, size.height))
     }
 }

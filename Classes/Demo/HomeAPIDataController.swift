@@ -23,9 +23,8 @@ final class HomeAPIDataController:
 
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
+    private(set) var lastSnapshot: Snapshot?
     private(set) var portfolioViewModel: HomePortfolioViewModel?
-
-    private var lastSnapshot: Snapshot?
     
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
@@ -112,10 +111,10 @@ extension HomeAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.loading])
+            snapshot.appendSections([.empty])
             snapshot.appendItems(
                 [.empty(.loading)],
-                toSection: .loading
+                toSection: .empty
             )
             return snapshot
         }
@@ -165,14 +164,16 @@ extension HomeAPIDataController {
             self.portfolioViewModel = portfolioItem
 
             snapshot.appendItems(
-                [.portfolio(portfolioItem)],
+                [.portfolio(.portfolio(portfolioItem))],
                 toSection: .portfolio
             )
 
             /// note: If accounts empty which means there is no any authenticated account, quick actions will be hidden
             if !accounts.isEmpty {
-                snapshot.appendSections([.quickActions])
-                snapshot.appendItems([.quickActions], toSection: .quickActions)
+                snapshot.appendItems(
+                    [.portfolio(.quickActions)],
+                    toSection: .portfolio
+                )
             }
 
             if let visibleAnnouncement = self.visibleAnnouncement {
