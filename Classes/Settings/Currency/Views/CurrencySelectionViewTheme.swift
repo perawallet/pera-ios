@@ -23,8 +23,10 @@ struct CurrencySelectionViewTheme:
     let backgroundColor: Color
     let horizontalPadding: LayoutMetric
 
+    let title: TextStyle
     let titleTopPadding: LayoutMetric
 
+    let description: TextStyle
     let descriptionTopPadding: LayoutMetric
     let descriptionBottomPadding: LayoutMetric
     
@@ -38,8 +40,14 @@ struct CurrencySelectionViewTheme:
         self.backgroundColor = AppColors.Shared.System.background
         self.horizontalPadding = 24
 
+        self.title = [
+            .textColor(AppColors.Components.Text.main)
+        ]
         self.titleTopPadding = 28
 
+        self.description = [
+            .textColor(AppColors.Components.Text.gray)
+        ]
         self.descriptionTopPadding = 8
         self.descriptionBottomPadding = 0
 

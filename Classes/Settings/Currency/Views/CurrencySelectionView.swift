@@ -49,6 +49,8 @@ final class CurrencySelectionView: View {
 
 extension CurrencySelectionView {
     private func addTitle(_ theme: CurrencySelectionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.titleTopPadding)
@@ -57,6 +59,8 @@ extension CurrencySelectionView {
     }
 
     private func addDescription(_ theme: CurrencySelectionViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
         addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopPadding)

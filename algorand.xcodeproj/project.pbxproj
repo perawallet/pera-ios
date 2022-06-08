@@ -806,6 +806,9 @@
 		2B28DB64276B3E57005C5986 /* NodeSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB63276B3E57005C5986 /* NodeSettingsViewController+Theme.swift */; };
 		2B28DB65276B3E57005C5986 /* NodeSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB63276B3E57005C5986 /* NodeSettingsViewController+Theme.swift */; };
 		2B28DB66276B3E57005C5986 /* NodeSettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28DB63276B3E57005C5986 /* NodeSettingsViewController+Theme.swift */; };
+		2B2A49792850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */; };
+		2B2A497A2850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */; };
+		2B2A497B2850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */; };
 		2B2A9F41232A403600450DB0 /* TransactionTrackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */; };
 		2B2A9F42232A403600450DB0 /* TransactionTrackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */; };
 		2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
@@ -4771,6 +4774,7 @@
 		2B288AEE2694E74B00BC6FB6 /* WCTransactionOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionOption.swift; sourceTree = "<group>"; };
 		2B28DB5B276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeveloperSettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B28DB63276B3E57005C5986 /* NodeSettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NodeSettingsViewController+Theme.swift"; sourceTree = "<group>"; };
+		2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionViewModel.swift; sourceTree = "<group>"; };
 		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
 		2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyEvent.swift; sourceTree = "<group>"; };
 		2B2AACAD250A7E5F00B8C5C5 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
@@ -6860,6 +6864,7 @@
 			isa = PBXGroup;
 			children = (
 				2B2DF28A28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift */,
+				2B2A49782850B79B00A5050F /* CurrencySelectionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -15340,6 +15345,7 @@
 				17BD4E1B2292F1260003E49A /* ALGAPI.swift in Sources */,
 				2BC1826F23D8DEE800888476 /* AlgosTransactionDraft.swift in Sources */,
 				2B0A6A9A265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */,
+				2B2A497B2850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */,
 				2BF727B527459BBA00CCAC30 /* LedgerPairWarningViewController.swift in Sources */,
 				17BD4E1C2292F1260003E49A /* StatusBarConfigurable.swift in Sources */,
 				2B055FC4279839E4004E3CA0 /* AssetSearchDataSource.swift in Sources */,
@@ -16798,6 +16804,7 @@
 				2B0F61A624EC129D00DA22A6 /* Date+Additions.swift in Sources */,
 				2B055FC3279839E4004E3CA0 /* AssetSearchDataSource.swift in Sources */,
 				2B0F61A724EC129D00DA22A6 /* ALGAPI.swift in Sources */,
+				2B2A497A2850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */,
 				D4A6479F278479B8009DE241 /* TransactionHistoryTitleCell.swift in Sources */,
 				D4C85B5727690F5000655238 /* ButtonStyles.swift in Sources */,
 				2B7E3072267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift in Sources */,
@@ -18256,6 +18263,7 @@
 				2B80C54B2773241D00BB071E /* SearchBarItemView.swift in Sources */,
 				D4AEC3BA27CAF15C00507965 /* CollectibleListItemLoadingViewCell.swift in Sources */,
 				2B5BE0512518E4F200324BEE /* WatchAccountAdditionViewController.swift in Sources */,
+				2B2A49792850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */,
 				2B9EF2F825D5761E004BCCC4 /* TutorialView.swift in Sources */,
 				2B4EEEC824BF453500059A16 /* NotificationMessage.swift in Sources */,
 				2B5715AE2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
