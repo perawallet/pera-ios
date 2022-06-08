@@ -15372,7 +15372,6 @@
 				D48FDFC927CEBA0900C39FC7 /* ReceiveCollectibleAccountListLayout.swift in Sources */,
 				2B7E3041267A51ED00E89EE3 /* WCGroupTransactionItemView.swift in Sources */,
 				D431506127EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
-				2B6B424327BECD7F0036BF9E /* ManageAssetsListActionViewModel.swift in Sources */,
 				D4C601D62843705D00CDF6CB /* SortAccountListDataSource.swift in Sources */,
 				D4AC1FB8272D3AB10027353F /* AccountListViewTheme.swift in Sources */,
 				2B6B423F27BECCA00036BF9E /* RenameAccountListActionViewModel.swift in Sources */,

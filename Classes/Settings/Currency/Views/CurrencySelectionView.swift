@@ -19,7 +19,9 @@ import UIKit
 
 final class CurrencySelectionView: View {
     private lazy var theme = CurrencySelectionViewTheme()
-    
+
+    private lazy var titleLabel = Label()
+    private lazy var descriptionLabel = Label()
     private lazy var searchInputView = SearchInputView()
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -34,6 +36,8 @@ final class CurrencySelectionView: View {
     }()
     
     func customize(_ theme: CurrencySelectionViewTheme) {
+        addTitle(theme)
+        addDescription(theme)
         addSearchInputView(theme)
         addCollectionView(theme)
     }
@@ -44,12 +48,28 @@ final class CurrencySelectionView: View {
 }
 
 extension CurrencySelectionView {
+    private func addTitle(_ theme: CurrencySelectionViewTheme) {
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.titleTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
+    private func addDescription(_ theme: CurrencySelectionViewTheme) {
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
     private func addSearchInputView(_ theme: CurrencySelectionViewTheme) {
         searchInputView.customize(theme.searchInputViewTheme)
         
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.searchViewTopPadding)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.searchViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
