@@ -331,30 +331,24 @@ extension CollectibleListLocalDataController {
         }
 
         deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return Snapshot() }
-
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.search, .header, .collectibles])
-
-            snapshot.appendItems(
-                [
-                    .header(
-                        SelectionValue(
-                            value: CollectibleListInfoWithFilterViewModel(
-                                collectibleCount: collectibleItems.count
-                            ),
-                            isSelected: self.currentFilter == .all
-                        )
-                    )
-                ],
-                toSection: .header
-            )
+            snapshot.appendSections([.header, .search, .collectibles])
 
             snapshot.appendItems(
                 [.search],
                 toSection: .search
+            )
+
+            snapshot.appendItems(
+                [
+                    .header(
+                        ManagementItemViewModel(
+                            .collectible(count: collectibleItems.count)
+                        )
+                    )
+                ],
+                toSection: .header
             )
 
             snapshot.appendItems(
@@ -366,13 +360,6 @@ extension CollectibleListLocalDataController {
                 collectibleItems,
                 toSection: .collectibles
             )
-
-            if !self.isWatchAccount {
-                snapshot.appendItems(
-                    [.collectible(.footer)],
-                    toSection: .collectibles
-                )
-            }
 
             return snapshot
         }

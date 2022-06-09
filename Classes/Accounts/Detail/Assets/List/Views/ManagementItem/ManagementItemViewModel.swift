@@ -58,10 +58,22 @@ extension ManagementItemViewModel {
                         hasMultilines: false
                     )
             )
-        case .watchAccount:
+        case .collectible(let count):
+            if count < 2 {
+                self.title = .attributedString(
+                    "title-plus-collectible-singular-count"
+                        .localized(params: "\(count)")
+                        .bodyMedium(
+                            lineBreakMode: .byTruncatingTail,
+                            hasMultilines: false
+                        )
+                )
+                return
+            }
+
             self.title = .attributedString(
-                "portfolio-title-watchlist"
-                    .localized
+                "title-plus-collectible-count"
+                    .localized(params: "\(count)")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail,
                         hasMultilines: false
@@ -74,14 +86,14 @@ extension ManagementItemViewModel {
         _ type: ManagementItemType
     ) {
         switch type {
-        case .account, .watchAccount:
+        case .account:
             self.primaryButtonTitle = .attributedString(
                 "options-sort-title"
                     .localized
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
-        case .asset:
+        case .asset, .collectible(_):
             self.primaryButtonTitle = .attributedString(
                 "asset-manage-button"
                     .localized
@@ -102,7 +114,7 @@ extension ManagementItemViewModel {
 enum ManagementItemType {
     case asset
     case account
-    case watchAccount
+    case collectible(count: Int)
 }
 
 extension ManagementItemViewModel {

@@ -49,7 +49,7 @@ enum CollectibleSection:
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
     case search
-    case header(SelectionValue<CollectibleListInfoWithFilterViewModel>)
+    case header(ManagementItemViewModel)
     case collectible(CollectibleItem)
 }
 
@@ -61,7 +61,6 @@ enum CollectibleEmptyItem: Hashable {
 
 enum CollectibleItem: Hashable {
     case cell(CollectibleCellItem)
-    case footer
 }
 
 enum CollectibleCellItem: Hashable {

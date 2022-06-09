@@ -24,6 +24,8 @@ final class CollectibleListViewController:
 
     var eventHandler: EventHandler?
 
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
         let collectionView = UICollectionView(
@@ -192,7 +194,7 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
-            linkInteractors(cell as! CollectibleListInfoWithFilterCell)
+            linkInteractors(cell as! ManagementItemCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
@@ -209,8 +211,6 @@ extension CollectibleListViewController {
             switch item {
             case .cell(let item):
                 linkInteractors(cell, item: item)
-            default:
-                break
             }
         }
     }
@@ -271,8 +271,6 @@ extension CollectibleListViewController {
                         thumbnailImage: cell?.contextView.currentImage
                     )
                 }
-            case .footer:
-                openReceiveCollectibleAccountList()
             }
         default:
             break
@@ -317,31 +315,14 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleListInfoWithFilterCell
+        _ cell: ManagementItemCell
     ) {
-        cell.observe(event: .showFilterSelection) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
+        cell.observe(event: .primaryAction) {
+            self.openCollectiblesManagementScreen()
+        }
 
-            let controller = self.open(
-                .collectiblesFilterSelection(
-                    filter: self.dataController.currentFilter
-                ),
-                by: .present
-            ) as? CollectiblesFilterSelectionViewController
-
-            controller?.handlers.didChangeFilter = {
-                [weak self] filter in
-                guard let self = self else {
-                    return
-                }
-
-                self.dataController.filter(
-                    by: filter
-                )
-            }
+        cell.observe(event: .secondaryAction) {
+            self.openReceiveCollectibleAccountList()
         }
     }
 
@@ -380,6 +361,13 @@ extension CollectibleListViewController {
 
     private func openReceiveCollectibleAccountList() {
         eventHandler?(.didTapReceive)
+    }
+
+    private func openCollectiblesManagementScreen() {
+        self.modalTransition.perform(
+            .assetManagement,
+            by: .present
+        )
     }
 }
 
