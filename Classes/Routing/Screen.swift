@@ -44,7 +44,7 @@ indirect enum Screen {
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
-    case assetManagement
+    case managementOptions(managementType: ManagementOptionsViewController.ManagementType)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
     case rewardDetail(account: Account, calculatedRewards: Decimal)
     case verifiedAssetInformation

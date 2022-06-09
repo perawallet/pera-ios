@@ -433,8 +433,8 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
-        case .assetManagement:
-            viewController = AssetManagementViewController(configuration: configuration)
+        case let .managementOptions(managementType):
+            viewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate

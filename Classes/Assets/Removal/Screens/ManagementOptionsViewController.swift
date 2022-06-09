@@ -19,14 +19,30 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 import SwiftUI
 
-final class AssetManagementViewController:
+final class ManagementOptionsViewController:
     BaseScrollViewController,
     BottomSheetPresentable {
     private lazy var theme = Theme()
     private lazy var contextView = VStackView()
-    
+
+    private let managementType: ManagementType
+
+    init(
+        managementType: ManagementType,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.managementType = managementType
+
+        super.init(configuration: configuration)
+    }
+
     override func configureAppearance() {
-        title = "options-manage-assets".localized
+        switch managementType {
+        case .asset:
+            title = "options-manage-assets".localized
+        case .collectible:
+            title = "options-manage-collectibles".localized
+        }
     }
     
     override func configureNavigationBarAppearance() {
@@ -54,7 +70,7 @@ final class AssetManagementViewController:
     }
 }
 
-extension AssetManagementViewController {
+extension ManagementOptionsViewController {
     private func addBackground() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
@@ -72,16 +88,19 @@ extension AssetManagementViewController {
         contextView.isLayoutMarginsRelativeArrangement = true
 
         contextView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+            $0.edges.equalToSuperview()
         }
     }
     
     private func addActions() {
-        addSortAction()
-        addRemoveAction()
+        switch managementType {
+        case .asset:
+            addSortAction()
+            addRemoveAction()
+        case .collectible:
+            addSortAction()
+            addfilterAction()
+        }
     }
     
     private func addSortAction() {
@@ -95,6 +114,13 @@ extension AssetManagementViewController {
         addAction(
             RemoveAssetsListActionViewModel(),
             #selector(removeAssets)
+        )
+    }
+
+    private func addfilterAction() {
+        addAction(
+            FilterCollectiblesActionViewModel(),
+            #selector(filterCollectibles)
         )
     }
     
@@ -116,10 +142,20 @@ extension AssetManagementViewController {
     }
 }
 
-extension AssetManagementViewController {
+extension ManagementOptionsViewController {
     @objc
     private func sort() {}
 
     @objc
     private func removeAssets() {}
+
+    @objc
+    private func filterCollectibles() {}
+}
+
+extension ManagementOptionsViewController {
+    enum ManagementType {
+        case asset
+        case collectible
+    }
 }

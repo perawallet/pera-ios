@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetManagementViewController+Theme.swift
+//   FilterCollectiblesActionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-extension ManagementOptionsViewController {
-    struct Theme:
-        StyleSheet,
-        LayoutSheet {
-        let backgroundColor: Color
-        let contentPaddings: LayoutPaddings
-        let listActionViewTheme: ListActionViewTheme
-        
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (16, 24, 16, 24)
-            self.listActionViewTheme = ListActionViewTheme(family)
-        }
+struct FilterCollectiblesActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+
+    init() {
+        self.icon = "icon-collectibles-filter"
+        self.title = Self.getTitle("opitons-collectibles-filter".localized)
+        self.subtitle = nil
     }
 }

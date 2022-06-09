@@ -365,7 +365,7 @@ extension CollectibleListViewController {
 
     private func openCollectiblesManagementScreen() {
         self.modalTransition.perform(
-            .assetManagement,
+            .managementOptions(managementType: .collectible),
             by: .present
         )
     }
