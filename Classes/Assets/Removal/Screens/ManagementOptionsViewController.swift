@@ -22,6 +22,8 @@ import SwiftUI
 final class ManagementOptionsViewController:
     BaseScrollViewController,
     BottomSheetPresentable {
+    weak var delegate: ManagementOptionsViewControllerDelegate?
+
     private lazy var theme = Theme()
     private lazy var contextView = VStackView()
 
@@ -144,13 +146,33 @@ extension ManagementOptionsViewController {
 
 extension ManagementOptionsViewController {
     @objc
-    private func sort() {}
+    private func sort() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.delegate?.managementOptionsViewControllerDidTapSort(self)
+        }
+    }
+    @objc
+    private func removeAssets() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.delegate?.managementOptionsViewControllerDidTapRemove(self)
+        }
+    }
 
     @objc
-    private func removeAssets() {}
+    private func filterCollectibles() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
 
-    @objc
-    private func filterCollectibles() {}
+            self.delegate?.managementOptionsViewControllerDidTapFilter(self)
+        }
+    }
 }
 
 extension ManagementOptionsViewController {
@@ -158,4 +180,16 @@ extension ManagementOptionsViewController {
         case asset
         case collectible
     }
+}
+
+protocol ManagementOptionsViewControllerDelegate: AnyObject {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    )
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    )
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    )
 }

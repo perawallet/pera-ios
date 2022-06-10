@@ -365,7 +365,10 @@ extension CollectibleListViewController {
 
     private func openCollectiblesManagementScreen() {
         self.modalTransition.perform(
-            .managementOptions(managementType: .collectible),
+            .managementOptions(
+                managementType: .collectible,
+                delegate: self
+            ),
             by: .present
         )
     }
@@ -388,6 +391,38 @@ extension CollectibleListViewController: SearchInputViewDelegate {
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
     }
+}
+
+extension CollectibleListViewController: ManagementOptionsViewControllerDelegate {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let controller = self.open(
+            .collectiblesFilterSelection(
+                filter: self.dataController.currentFilter
+            ),
+            by: .present
+        ) as? CollectiblesFilterSelectionViewController
+
+        controller?.handlers.didChangeFilter = {
+            [weak self] filter in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.filter(
+                by: filter
+            )
+        }
+    }
+
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension CollectibleListViewController {
