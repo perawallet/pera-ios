@@ -12,13 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  Reward.swift
+//   AppCallTransaction.swift
 
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-struct Reward: TransactionItem, Hashable {
-    let transactionID: String?
-    let amount: UInt64
-    let date: Date?
+final class AppCallTransaction: ALGAPIModel {
+    let appID: Int64?
+    let onCompletion: String?
+    let accounts: [PublicKey]?
+
+    init() {
+        self.appID = nil
+        self.onCompletion = nil
+        self.accounts = nil
+    }
+}
+
+extension AppCallTransaction {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case appID = "application-id"
+        case onCompletion = "on-completion"
+        case accounts
+    }
 }

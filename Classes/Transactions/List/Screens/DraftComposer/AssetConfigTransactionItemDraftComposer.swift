@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AssetConfigTransaction.swift
+//   AssetConfigTransactionItemDraftComposer.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
 
-final class AssetConfigTransaction: ALGAPIModel {
-    let id: Int64?
-    let asset: AssetDetail.APIModel?
+struct AssetConfigTransactionItemDraftComposer: TransactionListItemDraftComposer {
+    let draft: TransactionListing
 
-    init() {
-        self.id = nil
-        self.asset = nil
+    init(
+        draft: TransactionListing
+    ) {
+        self.draft = draft
     }
-}
 
-extension AssetConfigTransaction {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case id = "asset-id"
-        case asset = "params"
+    func composeTransactionItemPresentationDraft(
+        from transaction: TransactionItem
+    ) -> TransactionViewModelDraft? {
+        let draft = TransactionViewModelDraft(
+            account: draft.accountHandle.value,
+            asset: nil,
+            transaction: transaction,
+            localAccounts: []
+        )
+
+        return draft
     }
 }

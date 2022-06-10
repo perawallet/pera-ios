@@ -59,7 +59,7 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             )
         case .filter:
             return CGSize(theme.transactionHistoryFilterCellSize)
-        case .transaction, .pending, .reward:
+        case .algoTransaction, .assetTransaction, .appCallTransaction, .assetConfigTransaction, .pendingTransaction:
             return CGSize(theme.transactionHistoryCellSize)
         case .title:
             return CGSize(theme.transactionHistoryTitleCellSize)
@@ -141,7 +141,7 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             default:
                 break
             }
-        case .pending:
+        case .pendingTransaction:
             guard let pendingTransactionCell = cell as? PendingTransactionCell else {
                 return
             }

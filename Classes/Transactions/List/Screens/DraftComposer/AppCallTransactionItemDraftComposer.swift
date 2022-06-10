@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  RewardViewModel.swift
+//   AppCallTransactionItemDraftComposer.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct RewardViewModel:
-    PairedViewModel,
-    Hashable {
-    private(set) var amountViewModel: TransactionAmountViewModel?
-    private(set) var date: String?
-    
+struct AppCallTransactionItemDraftComposer: TransactionListItemDraftComposer {
+    let draft: TransactionListing
+
     init(
-        _ reward: Reward
+        draft: TransactionListing
     ) {
-        bindAmountViewModel(reward)
-        bindDate(reward)
-    }
-}
-
-extension RewardViewModel {
-    private mutating func bindAmountViewModel(_ reward: Reward) {
-        amountViewModel = TransactionAmountViewModel(.positive(amount: reward.amount.toAlgos))
+        self.draft = draft
     }
 
-    private mutating func bindDate(_ reward: Reward) {
-        date = reward.date?.toFormat("MMMM dd, yyyy")
+    func composeTransactionItemPresentationDraft(
+        from transaction: TransactionItem
+    ) -> TransactionViewModelDraft? {
+        let draft = TransactionViewModelDraft(
+            account: draft.accountHandle.value,
+            asset: nil,
+            transaction: transaction,
+            localAccounts: []
+        )
+
+        return draft
     }
 }

@@ -13,22 +13,14 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryCell.swift
+//  TransactionViewModelDraft.swift
 
-import UIKit
+import Foundation
 
-final class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(TransactionHistoryContextViewTheme())
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.prepareForReuse()
-    }
-    
-    func bindData(_ viewModel: TransactionListItemViewModel) {
-        contextView.bindData(viewModel)
-    }
+struct TransactionViewModelDraft {
+    let account: Account
+    let asset: AssetDecoration?
+    let transaction: TransactionItem
+    var contact: Contact?
+    let localAccounts: [Account]
 }

@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionViewModelDependencies.swift
+//   AlgoTransactionListGrouping.swift
 
 import Foundation
 
-struct TransactionViewModelDependencies {
-    let account: Account
-    let asset: AssetDecoration?
-    let transaction: TransactionItem
-    var contact: Contact?
-    let localAccounts: [Account]
+struct AlgoTransactionListGrouping: TranactionListGrouping {
+    func groupTransactions(
+        _ transactions: [Transaction]
+    ) -> [Transaction] {
+        let filteredTransactions = transactions.filter { transaction in
+            return transaction.type == .payment
+        }
+
+        return filteredTransactions
+    }
 }

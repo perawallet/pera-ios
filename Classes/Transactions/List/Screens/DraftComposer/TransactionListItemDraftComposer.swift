@@ -12,23 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionHistoryCell.swift
+//   TransactionListItemDraftComposer.swift
 
-import UIKit
+import Foundation
 
-final class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(TransactionHistoryContextViewTheme())
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.prepareForReuse()
-    }
-    
-    func bindData(_ viewModel: TransactionListItemViewModel) {
-        contextView.bindData(viewModel)
-    }
+protocol TransactionListItemDraftComposer {
+    var draft: TransactionListing { get }
+
+    func composeTransactionItemPresentationDraft(
+        from transaction: TransactionItem
+    ) -> TransactionViewModelDraft?
 }

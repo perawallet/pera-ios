@@ -23,7 +23,7 @@ extension TransactionsViewController: CSVExportable {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         fetchAllTransactions(
-            between: dataController.getTransactionFilterDates(),
+            between: dataController.filterOption.getDateRanges(),
             nextToken: nil
         )
     }
@@ -109,7 +109,7 @@ extension TransactionsViewController: CSVExportable {
             fileName = "\(accountHandle.value.name ?? "")_algos"
         }
 
-        let dates = dataController.getTransactionFilterDates()
+        let dates = dataController.filterOption.getDateRanges()
         if let fromDate = dates.from,
            let toDate = dates.to {
             if filterOption == .today {

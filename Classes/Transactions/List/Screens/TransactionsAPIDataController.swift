@@ -36,7 +36,7 @@ final class TransactionsAPIDataController:
 
     private let api: ALGAPI
     private var draft: TransactionListing
-    private var filterOption: TransactionFilterViewController.FilterOption
+    private(set) var filterOption: TransactionFilterViewController.FilterOption
     private let sharedDataController: SharedDataController
 
     private var lastSnapshot: Snapshot?
@@ -164,21 +164,18 @@ extension TransactionsAPIDataController {
 
 extension TransactionsAPIDataController {
     func loadTransactions() {
-        let dates = getTransactionFilterDates()
         var assetId: String?
         if let id = draft.asset?.id {
             assetId = String(id)
         }
 
-        let transactionType = transactionTransferType(for: assetId)
-
         let draft = TransactionFetchDraft(
             account: draft.accountHandle.value,
-            dates: dates,
+            dates: filterOption.getDateRanges(),
             nextToken: nil,
             assetId: assetId,
             limit: 30,
-            transactionType: transactionType
+            transactionType: draft.type.currentTransactionType
         )
 
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
@@ -210,6 +207,11 @@ extension TransactionsAPIDataController {
 
         let assets = transactions.compactMap {
             $0.assetTransfer?.assetId
+        }
+
+        if assets.isEmpty {
+            handler()
+            return
         }
 
         for asset in assets {
@@ -246,21 +248,18 @@ extension TransactionsAPIDataController {
     }
 
     func loadNextTransactions() {
-        let dates = getTransactionFilterDates()
         var assetId: String?
         if let id = draft.asset?.id {
             assetId = String(id)
         }
 
-        let transactionType = transactionTransferType(for: assetId)
-
         let draft = TransactionFetchDraft(
             account: draft.accountHandle.value,
-            dates: dates,
+            dates: filterOption.getDateRanges(),
             nextToken: nextToken,
             assetId: assetId,
             limit: 30,
-            transactionType: transactionType
+            transactionType: draft.type.currentTransactionType
         )
 
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
@@ -283,37 +282,6 @@ extension TransactionsAPIDataController {
             }
         }
     }
-
-    func getTransactionFilterDates() -> (from: Date?, to: Date?) {
-        switch filterOption {
-        case .allTime:
-            return (nil, nil)
-        case .today:
-            return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
-        case .yesterday:
-            let yesterday = Date().dateAt(.yesterday)
-            let endOfYesterday = yesterday.dateAt(.endOfDay)
-            return (yesterday, endOfYesterday)
-        case .lastWeek:
-            let prevOfLastWeek = Date().dateAt(.prevWeek)
-            let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
-            return (prevOfLastWeek, endOfLastWeek)
-        case .lastMonth:
-            let prevOfLastMonth = Date().dateAt(.prevMonth)
-            let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
-            return (prevOfLastMonth, endOfLastMonth)
-        case let .customRange(from, to):
-            return (from, to)
-        }
-    }
-    
-    private func transactionTransferType(for assetId: String?) -> Transaction.TransferType? {
-        if assetId == nil && draft.type == .algos {
-            return .payment
-        }
-        
-        return nil
-    }
 }
 
 extension TransactionsAPIDataController {
@@ -330,7 +298,6 @@ extension TransactionsAPIDataController {
         case .didFinishRunning:
             if let updatedAccountHandle = sharedDataController.accountCollection[draft.accountHandle.value.address] {
                 if updatedAccountHandle.value.amount != draft.accountHandle.value.amount ||
-                    updatedAccountHandle.value.rewards != draft.accountHandle.value.rewards ||
                     updatedAccountHandle.value.hasDifferentAssets(than: draft.accountHandle.value) ||
                     updatedAccountHandle.value.hasDifferentApps(than: draft.accountHandle.value) {
                     draft.accountHandle = updatedAccountHandle
@@ -350,121 +317,24 @@ extension TransactionsAPIDataController {
     ) {
         switch draft.type {
         case .algos:
-            groupAlgoTransactions(
-                transactions,
-                isPaginated: isPaginated
-            )
+            let algoTransactionGrouping = AlgoTransactionListGrouping()
+            let groupedTransactions = algoTransactionGrouping.groupTransactions(transactions)
+            setTransactionItems(groupedTransactions)
         case .asset:
-            groupAssetTransactions(
-                transactions,
-                isPaginated: isPaginated
-            )
+            let assetTransactionGrouping = AssetTransactionListGrouping(draft: draft)
+            let groupedTransactions = assetTransactionGrouping.groupTransactions(transactions)
+            setTransactionItems(groupedTransactions)
         case .all:
-            groupAllTransactions(
-                transactions,
-                isPaginated: isPaginated
-            )
-        }
-    }
-
-    private func groupAlgoTransactions(
-        _ transactions: [Transaction],
-        isPaginated: Bool
-    ) {
-        let filteredTransactions = transactions.filter { transaction in
-            if transaction.isAssetAdditionTransaction(for: draft.accountHandle.value.address) {
-                return true
-            }
-
-            return transaction.payment != nil
+            let allTransactionGrouping = AllTransactionListGrouping()
+            let groupedTransactions = allTransactionGrouping.groupTransactions(transactions)
+            setTransactionItems(groupedTransactions)
         }
 
-        if api.session.rewardDisplayPreference == .allowed {
-            setTransactionsWithRewards(
-                filteredTransactions,
-                isPaginated: isPaginated
-            )
-            return
+        func setTransactionItems(
+            _ newTransactions: [TransactionItem]
+        ) {
+            self.transactions = isPaginated ? self.transactions + newTransactions : newTransactions
         }
-
-
-        setTransactionItems(
-            filteredTransactions,
-            isPaginated: isPaginated
-        )
-    }
-
-    private func groupAssetTransactions(
-        _ transactions: [Transaction],
-        isPaginated: Bool
-    ) {
-        let filteredTransactions = transactions.filter { transaction in
-            guard let assetId = transaction.assetTransfer?.assetId,
-                  !transaction.isAssetCreationTransaction(for: draft.accountHandle.value.address) else {
-                return false
-            }
-
-            return assetId == draft.asset?.id
-        }
-
-        setTransactionItems(
-            filteredTransactions,
-            isPaginated: isPaginated
-        )
-    }
-
-    private func groupAllTransactions(
-        _ transactions: [Transaction],
-        isPaginated: Bool
-    ) {
-        let filteredTransactions = transactions.filter { transaction in
-            return transaction.type == .assetTransfer || transaction.type == .payment
-        }
-
-        if api.session.rewardDisplayPreference == .allowed {
-            setTransactionsWithRewards(
-                filteredTransactions,
-                isPaginated: isPaginated
-            )
-            return
-        }
-
-        setTransactionItems(
-            filteredTransactions,
-            isPaginated: isPaginated
-        )
-    }
-
-    private func setTransactionsWithRewards(
-        _ transactions: [Transaction],
-        isPaginated: Bool
-    ) {
-        var transactionsWithRewards: [TransactionItem] = []
-
-        for transaction in transactions {
-            transactionsWithRewards.append(transaction)
-            if let rewards = transaction.getRewards(for: draft.accountHandle.value.address),
-               rewards > 0 {
-                let reward = Reward(
-                    transactionID: transaction.id,
-                    amount: UInt64(rewards),
-                    date: transaction.date
-                )
-                transactionsWithRewards.append(reward)
-            }
-        }
-
-        setTransactionItems(
-            transactionsWithRewards,
-            isPaginated: isPaginated
-        )
-    }
-
-    private func setTransactionItems(
-        _ newTransactions: [TransactionItem],
-        isPaginated: Bool
-    ) {
-        self.transactions = isPaginated ? self.transactions + newTransactions : newTransactions
     }
 }
 
@@ -478,30 +348,28 @@ extension TransactionsAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
 
-            if self.draft is AccountTransactionListing {
+            switch self.draft.type {
+            case .all:
                 snapshot.appendItems(
                     [.empty(.transactionHistoryLoading)],
                     toSection: .empty
                 )
-            } else {
-
-                if self.draft.type == .algos {
-                    snapshot.appendItems(
-                        [
-                            .empty(.algoTransactionHistoryLoading),
-                            .empty(.transactionHistoryLoading)
-                        ],
-                        toSection: .empty
-                    )
-                } else if self.draft.type == .asset {
-                    snapshot.appendItems(
-                        [
-                            .empty(.assetTransactionHistoryLoading),
-                            .empty(.transactionHistoryLoading)
-                        ],
-                        toSection: .empty
-                    )
-                }
+            case .algos:
+                snapshot.appendItems(
+                    [
+                        .empty(.algoTransactionHistoryLoading),
+                        .empty(.transactionHistoryLoading)
+                    ],
+                    toSection: .empty
+                )
+            case .asset:
+                snapshot.appendItems(
+                    [
+                        .empty(.assetTransactionHistoryLoading),
+                        .empty(.transactionHistoryLoading)
+                    ],
+                    toSection: .empty
+                )
             }
 
             return snapshot
@@ -568,9 +436,19 @@ extension TransactionsAPIDataController {
         to snapshot: inout Snapshot
     ) {
         if !pendingTransactions.isEmpty {
-            let pendingTransactionsItems: [TransactionsItem] = pendingTransactions.map {
-                let viewModel = composePendingTransactionItemViewModel(with: $0, for: $0.receiver == draft.accountHandle.value.address ? $0.sender : $0.receiver)
-                return .pending(viewModel)
+            let pendingTransactionsItems: [TransactionsItem] = pendingTransactions.compactMap { transaction in
+                let viewModelDraftComposer = PendingTransactionItemDraftComposer(
+                    draft: draft,
+                    sharedDataController: sharedDataController,
+                    contacts: contacts
+                )
+
+                guard let draft = viewModelDraftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                    return nil
+                }
+
+                let viewModel = PendingTransactionItemViewModel(draft)
+                return .pendingTransaction(viewModel)
             }
 
             snapshot.appendItems(
@@ -624,118 +502,80 @@ extension TransactionsAPIDataController {
                 }
 
                 if let transaction = transaction as? Transaction {
-                    guard let transactionID = transaction.id else {
+                    guard let transactionID = transaction.id,
+                          let transactionType = transaction.type else {
                         continue
                     }
 
-                    if let assetTransaction = transaction.assetTransfer {
-                        let viewModel = composeTransactionItemViewModel(
-                            with: transaction,
-                            for: assetTransaction.receiverAddress == draft.accountHandle.value.address ? transaction.sender : assetTransaction.receiverAddress
+                    switch transactionType {
+                    case .payment:
+                        let draftComposer = AlgoTransactionItemDraftComposer(
+                            draft: draft,
+                            sharedDataController: sharedDataController,
+                            contacts: contacts
                         )
 
+                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                            continue
+                        }
+
+                        let viewModel = AlgoTransactionItemViewModel(viewModelDraft)
+
                         if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.transaction(viewModel))
+                            transactionItems.append(.algoTransaction(viewModel))
                             addedItemIDs[transactionID] = true
                         }
-                    } else if let payment = transaction.payment {
-                        let viewModel = composeTransactionItemViewModel(
-                            with: transaction,
-                            for: payment.receiver == draft.accountHandle.value.address ? transaction.sender : transaction.payment?.receiver
+                    case .assetTransfer:
+                        let draftComposer = AssetTransactionItemDraftComposer(
+                            draft: draft,
+                            sharedDataController: sharedDataController,
+                            contacts: contacts
                         )
 
+                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                            continue
+                        }
+
+                        let viewModel = AssetTransactionItemViewModel(viewModelDraft)
+
                         if addedItemIDs[transactionID] == nil {
-                            transactionItems.append(.transaction(viewModel))
+                            transactionItems.append(.assetTransaction(viewModel))
                             addedItemIDs[transactionID] = true
                         }
-                    }
-                } else if let reward = transaction as? Reward {
-                    guard let transactionID = reward.transactionID else {
-                        continue
-                    }
+                    case .assetConfig:
+                        let draftComposer = AssetConfigTransactionItemDraftComposer(draft: draft)
 
-                    if addedItemIDs[transactionID] == nil {
-                        transactionItems.append(.reward(TransactionHistoryContextViewModel(reward)))
-                        addedItemIDs[transactionID] = true
+                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                            continue
+                        }
+
+                        let viewModel = AssetConfigTransactionItemViewModel(viewModelDraft)
+
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.assetConfigTransaction(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
+                    case .applicationCall:
+                        let draftComposer = AppCallTransactionItemDraftComposer(draft: draft)
+
+                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                            continue
+                        }
+
+                        let viewModel = AppCallTransactionItemViewModel(viewModelDraft)
+
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.appCallTransaction(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
+                    default:
+                        break
                     }
                 }
             }
         }
 
         return transactionItems
-    }
-}
-
-extension TransactionsAPIDataController {
-    private func composeTransactionItemViewModel(
-        with transaction: Transaction,
-        for address: String?
-    ) -> TransactionHistoryContextViewModel {
-        var asset: AssetDecoration?
-        if let assetID = transaction.assetTransfer?.assetId,
-           let anAsset = sharedDataController.assetDetailCollection[assetID] {
-            asset = anAsset
-        }
-
-        if let contact = contacts.first(where: { contact in
-            contact.address == address
-        }) {
-            transaction.contact = contact
-
-            let config = TransactionViewModelDependencies(
-                account: draft.accountHandle.value,
-                asset: asset,
-                transaction: transaction,
-                contact: contact,
-                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
-            )
-
-            return TransactionHistoryContextViewModel(config)
-        }
-
-        let config = TransactionViewModelDependencies(
-            account: draft.accountHandle.value,
-            asset: asset,
-            transaction: transaction,
-            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
-        )
-
-        return TransactionHistoryContextViewModel(config)
-    }
-
-    private func composePendingTransactionItemViewModel(
-        with transaction: PendingTransaction,
-        for address: String?
-    ) -> TransactionHistoryContextViewModel {
-        var asset: AssetDecoration?
-        if let assetID = transaction.xaid,
-           let anAsset = sharedDataController.assetDetailCollection[assetID] {
-            asset = anAsset
-        }
-
-        if let contact = contacts.first(where: { contact  in
-            contact.address == address
-        }) {
-            transaction.contact = contact
-            let config = TransactionViewModelDependencies(
-                account: draft.accountHandle.value,
-                asset: asset,
-                transaction: transaction,
-                contact: contact,
-                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
-            )
-
-            return TransactionHistoryContextViewModel(config)
-        }
-
-        let config = TransactionViewModelDependencies(
-            account: draft.accountHandle.value,
-            asset: asset,
-            transaction: transaction,
-            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
-        )
-
-        return TransactionHistoryContextViewModel(config)
     }
 }
 
@@ -754,7 +594,10 @@ extension TransactionsAPIDataController {
 }
 
 extension TransactionsAPIDataController: RewardCalculatorDelegate {
-    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
+    func rewardCalculator(
+        _ rewardCalculator: RewardCalculator,
+        didCalculate rewards: Decimal
+    ) {
         guard rewards != self.reward else {
             return
         }
