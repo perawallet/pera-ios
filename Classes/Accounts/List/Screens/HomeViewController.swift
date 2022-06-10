@@ -731,7 +731,7 @@ extension HomeViewController {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
 
-        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
+        navigationView.animateTitleVisible(!headerVisible)
         updateUIWhenListDidScroll()
     }
 }
