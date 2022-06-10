@@ -476,8 +476,8 @@ extension String {
     ) -> NSAttributedString {
         let font =
             supportsDynamicType
-            ? Fonts.DMSans.medium.make(13, .footnote).uiFont
-            : Fonts.DMSans.medium.make(13).uiFont
+            ? Fonts.DMSans.bold.make(13, .footnote).uiFont
+            : Fonts.DMSans.bold.make(13).uiFont
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -657,8 +657,8 @@ extension String {
     ) -> NSAttributedString {
         let font =
             supportsDynamicType
-            ? Fonts.DMSans.bold.make(11, .caption1).uiFont
-            : Fonts.DMSans.bold.make(11).uiFont
+            ? Fonts.DMSans.regular.make(11, .caption1).uiFont
+            : Fonts.DMSans.regular.make(11).uiFont
         let lineHeightMultiplier = 1.12
 
         return attributed(
