@@ -34,9 +34,7 @@ extension CurrencySelectionViewModel {
         self.title = .attributedString(
             "settings-currency-title"
                 .localized
-                .bodyMedium(
-                    hasMultilines: false
-                )
+                .bodyMedium()
         )
     }
 

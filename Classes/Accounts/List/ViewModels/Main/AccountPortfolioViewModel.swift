@@ -42,39 +42,23 @@ extension AccountPortfolioViewModel {
     mutating func bindTitle(
         _ portfolio: AccountPortfolio
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
         title = .attributedString(
             "account-detail-portfolio-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
-            )
+                .bodyRegular()
+        )
     }
     
     mutating func bindValue(
         _ portfolio: AccountPortfolio
     ) {
         let totalPortfolio = portfolio.account.value.totalPortfolio
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-        
+
         value = .attributedString(
-            totalPortfolio.uiDescription.attributed([
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            totalPortfolio.uiDescription
+                .largeTitleMonoRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

@@ -32,20 +32,10 @@ struct RewardInfoViewModel: ViewModel, Hashable {
 
 extension RewardInfoViewModel {
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         title = .attributedString(
             "rewards-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
     private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
@@ -53,19 +43,10 @@ extension RewardInfoViewModel {
                 (account.pendingRewards.toAlgos + calculatedRewards).toAlgosStringForLabel else {
                     return
                 }
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.13
 
         self.rewardAmount = .attributedString(
             rewardAmount
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteMonoRegular()
         )
     }
 }

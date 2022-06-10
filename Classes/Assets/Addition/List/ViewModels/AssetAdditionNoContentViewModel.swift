@@ -29,22 +29,13 @@ struct AssetAdditionNoContentViewModel: NoContentViewModel {
 }
 
 extension AssetAdditionNoContentViewModel {
-    private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-        
+    private mutating func bindTitle() {        
         title = .attributedString(
             "asset-not-found-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 }

@@ -68,7 +68,9 @@ extension AssetActionConfirmationViewModel {
             return
         }
 
-        let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
+        let attributedDetailText = NSMutableAttributedString(
+            attributedString: detailText.bodyRegular()
+        )
 
         guard let asset = draft.asset,
               let unitName = asset.unitName,

@@ -45,8 +45,7 @@ extension ManagementItemViewModel {
                 "accounts-title"
                     .localized
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         case .asset:
@@ -54,8 +53,7 @@ extension ManagementItemViewModel {
                 "accounts-title-assets"
                     .localized
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         case .watchAccount:
@@ -63,8 +61,7 @@ extension ManagementItemViewModel {
                 "portfolio-title-watchlist"
                     .localized
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         }

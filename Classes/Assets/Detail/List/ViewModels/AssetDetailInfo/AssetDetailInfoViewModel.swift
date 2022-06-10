@@ -56,20 +56,10 @@ extension AssetDetailInfoViewModel {
     }
 
     private mutating func bindYourBalanceTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         yourBalanceTitle = .attributedString(
             "accounts-transaction-your-balance"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .bodyRegular()
         )
     }
 
@@ -82,19 +72,9 @@ extension AssetDetailInfoViewModel {
     private mutating func bindName(
         from assetDetail: StandardAsset
     ) {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         name = .attributedString(
             assetDetail.presentation.displayNames.primaryName
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .bodyMedium()
         )
     }
 
@@ -106,19 +86,9 @@ extension AssetDetailInfoViewModel {
             return
         }
 
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-
         amount = .attributedString(
             fractionStringForLabel
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .largeTitleMonoRegular()
         )
     }
 
@@ -138,19 +108,9 @@ extension AssetDetailInfoViewModel {
            let currenyStringForLabel =
             currencyValue.toCurrencyStringForLabel(with: currency.symbol) {
 
-            let font = Fonts.DMMono.regular.make(15)
-            let lineHeightMultiplier = 1.23
-
             secondaryValue = .attributedString(
                 currenyStringForLabel
-                    .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                    .bodyMonoRegular()
             )
         }
     }
@@ -158,19 +118,9 @@ extension AssetDetailInfoViewModel {
     private mutating func bindID(
         from assetDetail: StandardAsset
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         ID = .attributedString(
             "asset-detail-id-title".localized(params: "\(assetDetail.id)")
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .bodyRegular()
         )
     }
 }

@@ -73,20 +73,11 @@ extension HomePortfolioViewModel {
     mutating func bindTitle(
         _ portfolio: Portfolio
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
         title = .attributedString(
             "portfolio-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
-            )
+                .bodyRegular()
+        )
         
         switch portfolio.totalValueResult {
         case .success:
@@ -100,20 +91,13 @@ extension HomePortfolioViewModel {
         _ portfolio: Portfolio
     ) {
         totalValueResult = portfolio.totalValueResult
-        
-        let font = Fonts.DMSans.medium.make(36)
-        let lineHeightMultiplier = 1.02
-        
+
         value = .attributedString(
-            totalValueResult.uiDescription.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.center)
-                ])
-            ])
+            totalValueResult.uiDescription
+                .largeTitleMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
     
@@ -122,19 +106,12 @@ extension HomePortfolioViewModel {
     ) {
         totalValueResult = portfolio.totalValueResult
         
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.02
-        
         secondaryValue = .attributedString(
-            ("≈ " + totalValueResult.uiDescription).attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.center)
-                ])
-            ])
+            ("≈ " + totalValueResult.uiDescription)
+                .bodyMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

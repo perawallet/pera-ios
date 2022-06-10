@@ -42,20 +42,10 @@ struct AlgosDetailInfoViewModel:
 
 extension AlgosDetailInfoViewModel {
     private mutating func bindYourBalanceTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         yourBalanceTitle = .attributedString(
             "accounts-transaction-your-balance"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .bodyRegular()
         )
     }
     
@@ -67,19 +57,9 @@ extension AlgosDetailInfoViewModel {
                 }
         
 
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-
         self.totalAmount = .attributedString(
             totalAmount
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .largeTitleMonoRegular()
         )
     }
 
@@ -97,19 +77,9 @@ extension AlgosDetailInfoViewModel {
             return
         }
 
-        let font = Fonts.DMMono.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         self.secondaryValue = .attributedString(
             secondaryValue
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+                .bodyMonoRegular()
         )
     }
 
