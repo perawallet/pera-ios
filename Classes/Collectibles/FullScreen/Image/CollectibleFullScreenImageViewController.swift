@@ -49,9 +49,18 @@ final class CollectibleFullScreenImageViewController:
             expectedImageSize: CGSize((width, width))
         )
 
+        isZoomingEnabled = false
+
         imageView.imageContainer.image = viewModel.image
 
-        imageView.load(from: viewModel.imageSource)
+        imageView.load(from: viewModel.imageSource) {
+            [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.isZoomingEnabled = true
+        }
     }
 }
 
