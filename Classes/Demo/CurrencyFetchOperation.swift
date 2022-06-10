@@ -22,9 +22,14 @@ import MagpieHipo
 
 final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
     typealias Error = HIPNetworkError<NoAPIModel>
-    typealias CompletionHandler = (Result<Output, Error>) -> Void
+    typealias Result = Swift.Result<Output, Error>
+    typealias CompletionHandler = (Result) -> Void
     
     var completionHandler: CompletionHandler?
+
+    private(set) var result: Result = .failure(
+        .unexpected(UnexpectedError(responseData: nil, underlyingError: nil))
+    )
     
     private var ongoingEndpoint: EndpointOperatable?
 
@@ -66,10 +71,16 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
                     }
                     
                     let output = Output(currency: outputCurrency)
-                    self.completionHandler?(.success(output))
+                    let result: Result = .success(output)
+
+                    self.result = result
+                    self.completionHandler?(result)
                 case .failure(let apiError, let apiErrorDetail):
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                    self.completionHandler?(.failure(error))
+                    let result: Result = .failure(error)
+
+                    self.result = result
+                    self.completionHandler?(result)
                 }
                 
                 self.finish()
@@ -81,7 +92,9 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
             return false
         }
 
+        result = .failure(.connection(.init(reason: .cancelled)))
         completionHandler?(.failure(.connection(.init(reason: .cancelled))))
+
         finish()
 
         return true

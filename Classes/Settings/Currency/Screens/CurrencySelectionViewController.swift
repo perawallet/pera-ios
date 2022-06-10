@@ -47,6 +47,9 @@ final class CurrencySelectionViewController: BaseViewController {
             switch event {
             case .didUpdate(let snapshot):
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.contextView.bindData(
+                    CurrencySelectionViewModel(currency: self.api?.session.preferredCurrency)
+                )
             }
         }
         
@@ -93,7 +96,7 @@ final class CurrencySelectionViewController: BaseViewController {
             self.sharedDataController.stopPolling()
             
             self.api?.session.preferredCurrency = selectedCurrency.id
-            self.dataController.load()
+            self.dataController.setSelectedCurrency()
             
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
             
@@ -101,8 +104,6 @@ final class CurrencySelectionViewController: BaseViewController {
                 name: Self.didChangePreferredCurrency,
                 object: self
             )
-            
-            
         }
     }
     

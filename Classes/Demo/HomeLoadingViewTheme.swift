@@ -22,77 +22,55 @@ import UIKit
 struct HomeLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-    var portfolioText: EditText
-    var portfolioMargin: LayoutMargins
-    var infoAction: ButtonStyle
-    var spacingBetweenTitleAndInfoAction: LayoutMetric
-    var portfolioLoadingMargin: LayoutMargins
-    var portfolioLoadingSize: LayoutSize
-    var portfolioCurrencyLoadingMargin: LayoutMargins
-    var portfolioCurrencyLoadingSize: LayoutSize
-
-    var loadingCorner: Corner
-
-    var quickActionsTheme: QuickActionsViewTheme
-    var quickActionsMargin: LayoutMargins
-
-    var accountsLabelStyle: TextStyle
-    var accountsLabelMargin: LayoutMargins
-
-    var accountLoadingMargin: LayoutMargins
-    var accountLoadingHeight: LayoutMetric
+    var background: ViewStyle
+    var contentEdgeInsets: LayoutPaddings
+    var portfolioTitle: TextStyle
+    var portfolioTitleTopPadding: LayoutMetric
+    var portfolioInfoAction: ButtonStyle
+    var spacingBetweenPortfolioTitleAndPortfolioInfoAction: LayoutMetric
+    var primaryPortfolioValueSize: LayoutSize
+    var spacingBetweenPortfolioTitleAndPrimaryPortfolioValue: LayoutMetric
+    var secondaryPortfolioValueSize: LayoutSize
+    var spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue: LayoutMetric
+    var portfolioValueCorner: Corner
+    var quickActions: QuickActionsViewTheme
+    var spacingBetweenQuickActionsAndSecondaryPortfolioValue: LayoutMetric
+    var quickActionsBottomPadding: LayoutMetric
+    var accountsHeader: ManagementItemViewTheme
+    var spacingBetweenAccountsHeaderAndPortfolio: LayoutMetric
+    var accountsContentEdgeInsets: NSDirectionalEdgeInsets
+    var account: PreviewLoadingViewTheme
+    var accountHeight: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
-        self.portfolioText = .attributedString(
-            "portfolio-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
-
-        self.portfolioMargin = (8, 24, .noMetric, .noMetric)
-        self.infoAction = [
+        self.background = [
+            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+        ]
+        self.contentEdgeInsets = (16, 24, 0, 24)
+        self.portfolioTitle = [
+            .text("portfolio-title".localized.bodyRegular()),
+            .textColor(AppColors.Components.Text.gray)
+        ]
+        self.portfolioTitleTopPadding = 8
+        self.portfolioInfoAction = [
             .icon([ .normal("icon-info-20".templateImage) ]),
-            .tintColor(AppColors.Components.Text.gray)
+            .tintColor(AppColors.Components.Text.grayLighter)
         ]
-        self.spacingBetweenTitleAndInfoAction = 8
-        self.portfolioLoadingMargin = (10, .noMetric, .noMetric, .noMetric)
-        self.portfolioLoadingSize = (181, 48)
-        self.portfolioCurrencyLoadingMargin = (8, .noMetric, .noMetric, .noMetric)
-        self.portfolioCurrencyLoadingSize = (97, 20)
-
-        self.loadingCorner = Corner(radius: 4)
-
-        self.quickActionsTheme = QuickActionsViewTheme(family)
-        self.quickActionsMargin = (43, 24, .noMetric, 24)
-
-        self.accountsLabelStyle = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText()),
-            .text("accounts-title".localized)
-        ]
-        self.accountsLabelMargin = (80, 24, .noMetric, 24)
-        self.accountLoadingMargin = (4, 24, .noMetric, 24)
-        self.accountLoadingHeight = 72
-    }
-
-    func accountLabelTopInset() -> LayoutMetric {
-        return 214
-    }
-
-    func quickActionsBottomInset() -> LayoutMetric {
-        return 36
+        self.spacingBetweenPortfolioTitleAndPortfolioInfoAction = 8
+        self.primaryPortfolioValueSize = (181, 44)
+        self.spacingBetweenPortfolioTitleAndPrimaryPortfolioValue = 8
+        self.secondaryPortfolioValueSize = (97, 20)
+        self.spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue = 12
+        self.portfolioValueCorner = Corner(radius: 4)
+        self.quickActions = QuickActionsViewTheme(family)
+        self.spacingBetweenQuickActionsAndSecondaryPortfolioValue = 48
+        self.quickActionsBottomPadding = 36
+        self.accountsHeader = ManagementItemViewTheme()
+        self.spacingBetweenAccountsHeaderAndPortfolio = 36
+        self.accountsContentEdgeInsets = .init(top: 8, leading: 0, bottom: 24, trailing: 0)
+        self.account = PreviewLoadingViewCommonTheme()
+        self.accountHeight = 76
     }
 }

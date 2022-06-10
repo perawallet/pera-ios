@@ -91,7 +91,7 @@ extension ALGBlockProcessor {
     ) {        
         publish(blockEvent: .willStart(round))
         
-        var currencyFetchOperation: Operation?
+        var currencyFetchOperation: CurrencyFetchOperation?
 
         if newBlockRequest.cachedCurrency.isExpired {
             publish(blockEvent: .willFetchCurrency)
@@ -120,12 +120,25 @@ extension ALGBlockProcessor {
         newBlockRequest.localAccounts.forEach { localAccount in
             publish(blockEvent: .willFetchAccount(localAccount))
 
-            let accountFetchOperation =
-                AccountDetailFetchOperation(input: .init(localAccount: localAccount), api: api)
-            let assetDetailGroupFetchOperation =
-                AssetDetailGroupFetchOperation(input: .init(), api: api)
+            let accountFetchOperationInput = AccountDetailFetchOperation.Input(
+                localAccount: localAccount
+            )
+            let accountFetchOperation = AccountDetailFetchOperation(
+                input: accountFetchOperationInput,
+                api: api
+            )
+            let assetDetailGroupFetchOperationInput = AssetDetailGroupFetchOperation.Input()
+            let assetDetailGroupFetchOperation = AssetDetailGroupFetchOperation(
+                input: assetDetailGroupFetchOperationInput,
+                api: api
+            )
             let adapterOperation = BlockOperation {
-                [weak self, unowned accountFetchOperation, unowned assetDetailGroupFetchOperation] in
+                [
+                    weak self,
+                    unowned currencyFetchOperation,
+                    unowned accountFetchOperation,
+                    unowned assetDetailGroupFetchOperation
+                ] in
                 guard let self = self else { return }
                 
                 var input = AssetDetailGroupFetchOperation.Input()
@@ -139,6 +152,18 @@ extension ALGBlockProcessor {
                     input.account = account
                     input.cachedAccounts = newBlockRequest.cachedAccounts
                     input.cachedAssetDetails = newBlockRequest.cachedAssetDetails
+
+                    switch currencyFetchOperation?.result {
+                    case .success(let output):
+                        input.cachedCurrency = .ready(
+                            currency: output.currency,
+                            lastUpdateDate: Date()
+                        )
+                    case .failure(let error):
+                        input.cachedCurrency = .failed(error)
+                    case .none:
+                        input.cachedCurrency = newBlockRequest.cachedCurrency
+                    }
                     
                     self.publish(blockEvent: .willFetchAssetDetails(account))
                 case .failure(let error):

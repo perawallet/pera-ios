@@ -49,7 +49,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
         super.init(configuration: configuration)
 
         if !hasMultipleAccounts {
-            selectedAccount = sharedDataController.accountCollection.sorted().first
+            selectedAccount = sharedDataController.sortedAccounts().first
         }
     }
 

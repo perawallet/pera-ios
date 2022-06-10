@@ -189,8 +189,8 @@ extension SortAccountListLayout {
         for listView: UICollectionView
     ) -> LayoutMetric {
         return listView.bounds.width -
-        listView.contentInset.horizontal -
-        sectionHorizontalInsets.leading -
-        sectionHorizontalInsets.trailing
+            listView.contentInset.horizontal -
+            sectionHorizontalInsets.leading -
+            sectionHorizontalInsets.trailing
     }
 }

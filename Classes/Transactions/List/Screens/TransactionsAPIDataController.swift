@@ -687,7 +687,7 @@ extension TransactionsAPIDataController {
                 asset: asset,
                 transaction: transaction,
                 contact: contact,
-                localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
+                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
             )
 
             return TransactionHistoryContextViewModel(config)
@@ -697,7 +697,7 @@ extension TransactionsAPIDataController {
             account: draft.accountHandle.value,
             asset: asset,
             transaction: transaction,
-            localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
+            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
         )
 
         return TransactionHistoryContextViewModel(config)
@@ -722,7 +722,7 @@ extension TransactionsAPIDataController {
                 asset: asset,
                 transaction: transaction,
                 contact: contact,
-                localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
+                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
             )
 
             return TransactionHistoryContextViewModel(config)
@@ -732,7 +732,7 @@ extension TransactionsAPIDataController {
             account: draft.accountHandle.value,
             asset: asset,
             transaction: transaction,
-            localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
+            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
         )
 
         return TransactionHistoryContextViewModel(config)

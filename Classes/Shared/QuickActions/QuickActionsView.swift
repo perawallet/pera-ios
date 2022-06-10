@@ -33,16 +33,6 @@ final class QuickActionsView:
 
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var actionsView = HStackView()
-    private lazy var buyAlgoActionView =
-        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
-    private lazy var sendActionView =
-        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
-    private lazy var receiveActionView =
-        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
-    private lazy var scanQRActionView =
-        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
-
-    private static let spacingBetweenActionIconAndTitle: CGFloat = 15
 
     func customize(
         _ theme: QuickActionsViewTheme
@@ -62,21 +52,49 @@ final class QuickActionsView:
         for theme: QuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
-        let oneButtonWidth = (size.width - (3 * theme.spacingBetweenActions)) / 4
-        let font = theme.buyAlgoAction.font?.uiFont
-        
-        let firstSize = theme.buyAlgoAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
-        let secondSize = theme.sendAction.title?.text.string?.boundingSize(attributes: .font(font), fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
-        let thirdSize = theme.receiveAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
-        let fourthSize = theme.qrAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
-        
-        let firstMax = max(firstSize.height.rounded(), secondSize.height.rounded())
-        let secondMax = max(thirdSize.height.rounded(), fourthSize.height.rounded())
-        
-        let imageHeight = theme.buyAlgoAction.icon?[.normal]?.height ?? 48.0
-        
-        let totalHeight = max(firstMax, secondMax) + imageHeight + spacingBetweenActionIconAndTitle
-        return CGSize((size.width, totalHeight))
+        let maxActionSize = CGSize(width: size.width, height: .greatestFiniteMagnitude)
+        let buyActionSize = calculateActionPreferredSize(
+            for: theme.buyAlgoAction,
+            fittingIn: maxActionSize
+        )
+        let sendActionSize = calculateActionPreferredSize(
+            for: theme.sendAction,
+            fittingIn: maxActionSize
+        )
+        let receiveActionSize = calculateActionPreferredSize(
+            for: theme.receiveAction,
+            fittingIn: maxActionSize
+        )
+        let scanActionSize = calculateActionPreferredSize(
+            for: theme.scanAction,
+            fittingIn: maxActionSize
+        )
+        let preferredHeight = [
+            buyActionSize.height,
+            sendActionSize.height,
+            receiveActionSize.height,
+            scanActionSize.height
+        ].max()!
+        return CGSize(width: size.width, height: min(preferredHeight.ceil(), size.height))
+    }
+
+    class func calculateActionPreferredSize(
+        for theme: QuickActionViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let font = theme.style.font?.uiFont
+        let maxWidth = min(theme.width, size.width)
+        let iconSize = theme.icon?.uiImage.size
+        let titleSize = theme.title?.boundingSize(
+            attributes: .font(font),
+            multiline: true,
+            fittingSize: CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        )
+        let preferredHeight =
+            (iconSize?.height ?? 48) +
+            QuickActionViewTheme.spacingBetweenIconAndTitle +
+            (titleSize?.height ?? 20)
+        return CGSize(width: maxWidth, height: min(preferredHeight.ceil(), size.height))
     }
 }
 
@@ -86,13 +104,14 @@ extension QuickActionsView {
         _ theme: QuickActionsViewTheme
     ) {
         addSubview(actionsView)
-        actionsView.distribution = .fillEqually
+        actionsView.distribution = .equalSpacing
         actionsView.spacing = theme.spacingBetweenActions
         actionsView.snp.makeConstraints {
+            $0.centerX == 0
             $0.top == 0
-            $0.leading == 0
+            $0.leading <= theme.maxContentHorizontalInsets.leading
             $0.bottom == 0
-            $0.trailing == 0
+            $0.trailing >= theme.maxContentHorizontalInsets.trailing
         }
 
         addBuyAction(theme)
@@ -104,7 +123,7 @@ extension QuickActionsView {
     private func addBuyAction(
         _ theme: QuickActionsViewTheme
     ) {
-        buyAlgoActionView.customizeAppearance(theme.buyAlgoAction)
+        let buyAlgoActionView = createAction(theme.buyAlgoAction)
         actionsView.addArrangedSubview(buyAlgoActionView)
 
         startPublishing(
@@ -116,7 +135,7 @@ extension QuickActionsView {
     private func addSendAction(
         _ theme: QuickActionsViewTheme
     ) {
-        sendActionView.customizeAppearance(theme.sendAction)
+        let sendActionView = createAction(theme.sendAction)
         actionsView.addArrangedSubview(sendActionView)
 
         startPublishing(
@@ -128,7 +147,7 @@ extension QuickActionsView {
     private func addReceiveAction(
         _ theme: QuickActionsViewTheme
     ) {
-        receiveActionView.customizeAppearance(theme.receiveAction)
+        let receiveActionView = createAction(theme.receiveAction)
         actionsView.addArrangedSubview(receiveActionView)
 
         startPublishing(
@@ -140,13 +159,29 @@ extension QuickActionsView {
     private func addQRAction(
         _ theme: QuickActionsViewTheme
     ) {
-        scanQRActionView.customizeAppearance(theme.qrAction)
-        actionsView.addArrangedSubview(scanQRActionView)
+        let scanActionView = createAction(theme.scanAction)
+        actionsView.addArrangedSubview(scanActionView)
 
         startPublishing(
             event: .scanQR,
-            for: scanQRActionView
+            for: scanActionView
         )
+    }
+
+    private func createAction(
+        _ theme: QuickActionViewTheme
+    ) -> UIControl {
+        let actionView = MacaroonUIKit.Button(
+            .imageAtTopmost(
+                padding: 0,
+                titleAdjustmentY: QuickActionViewTheme.spacingBetweenIconAndTitle
+            )
+        )
+        actionView.customizeAppearance(theme.style)
+        actionView.snp.makeConstraints {
+            $0.fitToWidth(theme.width)
+        }
+        return actionView
     }
 }
 

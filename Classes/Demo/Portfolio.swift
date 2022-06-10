@@ -19,9 +19,9 @@ import Foundation
 import MacaroonUIKit
 
 struct Portfolio {
-    var coinsValueResult: PortfolioCalculator.Result = .failure(.idle)
-    var assetsValueResult: PortfolioCalculator.Result = .failure(.idle)
-    var totalValueResult: PortfolioCalculator.Result = .failure(.idle)
+    var coinsValueResult: PortfolioHandle = .failure(.idle)
+    var assetsValueResult: PortfolioHandle = .failure(.idle)
+    var totalValueResult: PortfolioHandle = .failure(.idle)
     
     let accounts: [AccountHandle]
     let currency: CurrencyHandle
@@ -48,5 +48,5 @@ extension Portfolio {
 struct PortfolioItem {
     let title: String
     let icon: Image?
-    let valueResult: PortfolioCalculator.Result
+    let valueResult: PortfolioHandle
 }

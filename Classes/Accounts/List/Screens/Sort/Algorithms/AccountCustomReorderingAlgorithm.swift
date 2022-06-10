@@ -12,29 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SortAccountListTitleSupplementaryHeader.swift
+//   AccountManualReorderingAlgorithm.swift
 
-import UIKit
+import Foundation
 
-final class SortAccountListTitleSupplementaryHeader:
-    BaseSupplementaryView<TitleView> {
-    static let theme: TitleViewTheme = {
-        var theme = TitleViewTheme()
-        theme.configureForSortAccountListHeader()
-        return theme
-    }()
+struct AccountCustomReorderingAlgorithm: AccountSortingAlgorithm {
+    let id: String
+    let name: String
+    let isCustom: Bool
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme)
+    init() {
+        self.id = "cache.value.accountCustomReorderingAlgorithm"
+        self.name = "title-manually".localized
+        self.isCustom = true
     }
+}
 
-    func bindData(
-        _ viewModel: TitleViewModel
-    ) {
-        contextView.bindData(viewModel)
+extension AccountCustomReorderingAlgorithm {
+    func getFormula(
+        account: AccountHandle,
+        otherAccount: AccountHandle
+    ) -> Bool {
+        return account.value.preferredOrder < otherAccount.value.preferredOrder
     }
 }

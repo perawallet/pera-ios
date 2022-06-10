@@ -50,6 +50,7 @@ final class SingleSelectionViewModel: Hashable {
     }
     
     static func == (lhs: SingleSelectionViewModel, rhs: SingleSelectionViewModel) -> Bool {
-        return lhs.title == rhs.title
+        return lhs.title == rhs.title &&
+        lhs.isSelected == rhs.isSelected
     }
 }

@@ -41,7 +41,7 @@ final class AccountSelectScreenDataSource: NSObject {
         self.sharedDataController = sharedDataController
         super.init()
 
-        accounts = sharedDataController.accountCollection.sorted()
+        accounts = sharedDataController.sortedAccounts()
     }
 
     func loadData() {

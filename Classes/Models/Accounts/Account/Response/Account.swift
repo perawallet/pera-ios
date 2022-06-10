@@ -53,6 +53,11 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
 
+    /// <note>
+    /// This value should be calculated first, then assign to the account since it requires
+    /// additional items for the calculation.
+    var totalPortfolio: PortfolioHandle = .failure(.idle)
+
     private(set) var standardAssets: [StandardAsset] = []
     private var standardAssetsIndexer: StandardAssetIndexer = [:]
 

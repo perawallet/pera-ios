@@ -22,7 +22,7 @@ import UIKit
 struct HomePortfolioViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var totalValueResult: PortfolioCalculator.Result = .failure(.idle)
+    private(set) var totalValueResult: PortfolioHandle = .failure(.idle)
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
     private(set) var value: EditText?

@@ -12,10 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleViewTheme+SortAccountList.swift
+//   SortAccountListTitleSupplementaryHeader.swift
 
-extension TitleViewTheme {
-    mutating func configureForSortAccountListHeader() {
-        paddings = (20, 24, 12, 24)
+import UIKit
+
+final class SortAccountListTitleSupplementaryHeader:
+    BaseSupplementaryView<TitleView> {
+    static let theme: TitleViewTheme = {
+        var theme = TitleViewTheme()
+        theme.paddings = (20, 24, 12, 24)
+        return theme
+    }()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+
+        contextView.customize(Self.theme)
+    }
+
+    func bindData(
+        _ viewModel: TitleViewModel
+    ) {
+        contextView.bindData(viewModel)
     }
 }

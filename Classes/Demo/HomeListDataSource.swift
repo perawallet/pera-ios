@@ -45,12 +45,20 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                     return cell
                 }
             case .portfolio(let item):
-                let cell = collectionView.dequeue(
-                    HomePortfolioCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+                switch item {
+                case .portfolio(let portfolioItem):
+                    let cell = collectionView.dequeue(
+                        HomePortfolioCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(portfolioItem)
+                    return cell
+                case .quickActions:
+                    return collectionView.dequeue(
+                        HomeQuickActionsCell.self,
+                        at: indexPath
+                    )
+                }
             case .announcement(let item):
                 if item.isGeneric {
                     let cell = collectionView.dequeue(
@@ -84,12 +92,6 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                     cell.bindData(cellItem)
                     return cell
                 }
-
-            case .quickActions:
-                return collectionView.dequeue(
-                    QuickActionsCell.self,
-                    at: indexPath
-                )
             }
         }
 
@@ -97,10 +99,10 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
             HomeLoadingCell.self,
             NoContentWithActionCell.self,
             HomePortfolioCell.self,
+            HomeQuickActionsCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
             ManagementItemCell.self,
-            QuickActionsCell.self,
             TitleWithAccessorySupplementaryCell.self,
             AccountPreviewCell.self
         ].forEach {

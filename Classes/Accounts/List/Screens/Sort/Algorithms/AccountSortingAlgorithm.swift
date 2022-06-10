@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CurrencySelectionListLayout+Theme.swift
+//   AccountSortingAlgorithm.swift
 
-import UIKit
-import MacaroonUIKit
+import Foundation
 
-extension CurrencySelectionListLayout {
-    struct Theme:
-        LayoutSheet,
-        StyleSheet {
-        let horizontalPaddings: LayoutHorizontalPaddings
-        let cellSize: LayoutSize
+protocol AccountSortingAlgorithm {
+    var id: String { get }
+    var name: String { get }
+    /// <note>
+    /// If it is true, then there is no predefined formula for sorting.
+    var isCustom: Bool { get }
 
-        init(_ family: LayoutFamily) {
-            self.horizontalPaddings = (24, 24)
-            self.cellSize = (UIScreen.main.bounds.width - 48, 64)
-        }
-    }
+    func getFormula(
+        account: AccountHandle,
+        otherAccount: AccountHandle
+    ) -> Bool
 }
