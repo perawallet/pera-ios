@@ -43,7 +43,12 @@ final class HomeViewController:
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+        ScanQRFlowCoordinator(
+            sharedDataController: sharedDataController,
+            presentingScreen: self,
+            api: api!,
+            bannerController: bannerController!
+        )
 
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
@@ -719,6 +724,8 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
                 }
             case .buyAlgo:
                 return
+            case .optIn:
+                break
             }
             return
         }

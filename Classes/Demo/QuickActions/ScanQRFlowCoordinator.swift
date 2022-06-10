@@ -21,19 +21,29 @@ import UIKit
 /// This should be removed after the routing refactor.
 final class ScanQRFlowCoordinator:
     QRScannerViewControllerDelegate,
-    SelectAccountViewControllerDelegate {
+    SelectAccountViewControllerDelegate,
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionControllerDelegate {
     private var lastTransactionDraft: SendTransactionDraft?
     private var assetConfirmationTransition: BottomSheetTransition?
 
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
     private unowned let presentingScreen: UIViewController
     private let sharedDataController: SharedDataController
+    private var api: ALGAPI
+    private let bannerController: BannerController
 
     init(
         sharedDataController: SharedDataController,
-        presentingScreen: UIViewController
+        presentingScreen: UIViewController,
+        api: ALGAPI,
+        bannerController: BannerController
     ) {
         self.sharedDataController = sharedDataController
         self.presentingScreen = presentingScreen
+        self.api = api
+        self.bannerController = bannerController
     }
 }
 
@@ -77,6 +87,11 @@ extension ScanQRFlowCoordinator {
                 controller,
                 accountMnemonicWasDetected: qrText
             )
+        case .optInRequest:
+            qrScanner(
+                controller,
+                assetOptInWasDetected: qrText
+            )
         }
     }
 
@@ -85,11 +100,15 @@ extension ScanQRFlowCoordinator {
         didFail error: QRScannerError,
         completionHandler: EmptyHandler?
     ) {
-//        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-//            if let handler = completionHandler {
-//                handler()
-//            }
-//        }
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        visibleScreen.displaySimpleAlertWith(
+            title: "title-error".localized,
+            message: "qr-scan-should-scan-valid-qr".localized
+        ) { _ in
+            if let handler = completionHandler {
+                handler()
+            }
+        }
     }
 }
 
@@ -100,6 +119,54 @@ extension ScanQRFlowCoordinator {
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
         for transactionAction: TransactionAction
+    ) {
+        switch transactionAction {
+        case .optIn(let asset):
+            requestOptingInToAsset(
+                asset,
+                to: account
+            )
+        default:
+            sendTransaction(
+                from: selectAccountViewController,
+                for: account
+            )
+        }
+
+    }
+
+    private func requestOptingInToAsset(
+        _ asset: AssetID,
+        to account: Account
+    ) {
+        if account.containsAsset(asset) {
+            bannerController.presentInfoBanner("asset-you-already-own-message".localized)
+            return
+        }
+
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetId: asset,
+            asset: nil,
+            transactionFee: Transaction.Constant.minimumFee,
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
+        )
+
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func sendTransaction(
+        from selectAccountViewController: SelectAccountViewController,
+        for account: Account
     ) {
         guard let lastTransactionDraft = lastTransactionDraft else {
             return
@@ -123,6 +190,141 @@ extension ScanQRFlowCoordinator {
 
         clearLastDetectedTransaction()
     }
+}
+
+/// <todo>
+/// Should be handled for each specific transaction separately.
+extension ScanQRFlowCoordinator {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmAction asset: AssetDecoration
+    ) {
+        let draft = assetActionConfirmationViewController.draft
+
+        guard let account = draft.account,
+              !account.isWatchAccount() else {
+            return
+        }
+
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: Int64(draft.assetId)
+        )
+        let transactionController = TransactionController(
+            api: api,
+            bannerController: bannerController
+        )
+
+        transactionController.delegate = self
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+    }
+}
+
+/// <todo>
+/// Should be handled for each specific transaction separately.
+extension ScanQRFlowCoordinator {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        switch error {
+        case let .network(apiError):
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        visibleScreen.dismissScreen()
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            bannerController.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let visibleScreen = presentingScreen.findVisibleScreen()
+            let bottomTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) { }
+
+    func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
 }
 
 extension ScanQRFlowCoordinator {
@@ -208,6 +410,25 @@ extension ScanQRFlowCoordinator {
         _ qrScannerScreen: QRScannerViewController,
         accountMnemonicWasDetected qr: QRText
     ) {}
+
+    private func qrScanner(
+        _ qrScannerScreen: QRScannerViewController,
+        assetOptInWasDetected qr: QRText
+    ) {
+        guard let assetID = qr.asset else {
+            return
+        }
+
+        let screen: Screen = .accountSelection(
+            transactionAction: .optIn(asset: assetID),
+            delegate: self
+        )
+
+        presentingScreen.open(
+            screen,
+            by: .present
+        )
+    }
 
     private func saveLastDetectedAlgosTransactionForLater(
         from qr: QRText

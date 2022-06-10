@@ -41,7 +41,12 @@ final class TabBarController: TabBarContainer {
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+        ScanQRFlowCoordinator(
+            sharedDataController: sharedDataController,
+            presentingScreen: self,
+            api: api,
+            bannerController: bannerController
+        )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
@@ -49,11 +54,17 @@ final class TabBarController: TabBarContainer {
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
     private let sharedDataController: SharedDataController
+    private let api: ALGAPI
+    private let bannerController: BannerController
 
     init(
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        api: ALGAPI,
+        bannerController: BannerController
     ) {
         self.sharedDataController = sharedDataController
+        self.api = api
+        self.bannerController = bannerController
     }
     
     override func addTabBar() {
