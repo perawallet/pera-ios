@@ -31,8 +31,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(36, .largeTitle).uiFont
             : Fonts.DMSans.medium.make(36).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.02 : 0
+        let lineHeightMultiplier = 1.02
 
         return attributed(
             [
@@ -58,8 +57,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.regular.make(36, .largeTitle).uiFont
             : Fonts.DMSans.regular.make(36).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.02 : 0
+        let lineHeightMultiplier = 1.02
 
         return attributed(
             [
@@ -85,8 +83,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.medium.make(36, .largeTitle).uiFont
             : Fonts.DMMono.medium.make(36).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.02 : 0
+        let lineHeightMultiplier = 1.02
 
         return attributed(
             [
@@ -112,8 +109,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(36, .largeTitle).uiFont
             : Fonts.DMMono.regular.make(36).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.02 : 0
+        let lineHeightMultiplier = 1.02
 
         return attributed(
             [
@@ -139,8 +135,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.bold.make(32, .largeTitle).uiFont
             : Fonts.DMSans.bold.make(32).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 0.96 : 0
+        let lineHeightMultiplier = 0.96
 
         return attributed(
             [
@@ -166,8 +161,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(32, .title1).uiFont
             : Fonts.DMSans.medium.make(32).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 0.96 : 0
+        let lineHeightMultiplier = 0.96
 
         return attributed(
             [
@@ -193,8 +187,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(36, .title1).uiFont
             : Fonts.DMMono.regular.make(36).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 0.85 : 0
+        let lineHeightMultiplier = 0.85
 
         return attributed(
             [
@@ -220,8 +213,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.bold.make(28, .title2).uiFont
             : Fonts.DMSans.bold.make(28).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 0.99 : 0
+        let lineHeightMultiplier = 0.99
 
         return attributed(
             [
@@ -247,8 +239,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(28, .title2).uiFont
             : Fonts.DMSans.medium.make(28).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 0.99 : 0
+        let lineHeightMultiplier = 0.99
 
         return attributed(
             [
@@ -278,8 +269,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(19, .body).uiFont
             : Fonts.DMSans.medium.make(19).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.13 : 0
+        let lineHeightMultiplier = 1.13
 
         return attributed(
             [
@@ -304,8 +294,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.regular.make(19, .body).uiFont
             : Fonts.DMSans.regular.make(19).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.13 : 0
+        let lineHeightMultiplier = 1.13
 
         return attributed(
             [
@@ -330,8 +319,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(19, .body).uiFont
             : Fonts.DMMono.regular.make(19).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.13 : 0
+        let lineHeightMultiplier = 1.13
 
         return attributed(
             [
@@ -357,8 +345,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.bold.make(15, .body).uiFont
             : Fonts.DMSans.bold.make(15).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.23 : 0
+        let lineHeightMultiplier = 1.23
 
         return attributed(
             [
@@ -383,8 +370,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(15, .body).uiFont
             : Fonts.DMSans.medium.make(15).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.23 : 0
+        let lineHeightMultiplier = 1.23
 
         return attributed(
             [
@@ -409,8 +395,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.regular.make(15, .body).uiFont
             : Fonts.DMSans.regular.make(15).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.23 : 0
+        let lineHeightMultiplier = 1.23
 
         return attributed(
             [
@@ -435,8 +420,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.medium.make(15, .body).uiFont
             : Fonts.DMMono.medium.make(15).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.23 : 0
+        let lineHeightMultiplier = 1.23
 
         return attributed(
             [
@@ -462,8 +446,7 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(15, .body).uiFont
             : Fonts.DMMono.regular.make(15).uiFont
-
-        let lineHeightMultiplier = hasMultilines ? 1.23 : 0
+        let lineHeightMultiplier = 1.23
 
         return attributed(
             [
@@ -495,7 +478,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(13, .footnote).uiFont
             : Fonts.DMSans.medium.make(13).uiFont
-
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -522,7 +504,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(13, .footnote).uiFont
             : Fonts.DMSans.medium.make(13).uiFont
-
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -548,7 +529,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.regular.make(13, .footnote).uiFont
             : Fonts.DMSans.regular.make(13).uiFont
-
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -574,7 +554,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.medium.make(13, .footnote).uiFont
             : Fonts.DMMono.medium.make(13).uiFont
-
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -601,7 +580,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(13, .footnote).uiFont
             : Fonts.DMMono.regular.make(13).uiFont
-
         let lineHeightMultiplier = 1.18
 
         return attributed(
@@ -631,7 +609,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.bold.make(11, .caption1).uiFont
             : Fonts.DMSans.bold.make(11).uiFont
-
         let lineHeightMultiplier = 1.12
 
         return attributed(
@@ -657,7 +634,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.medium.make(11, .caption1).uiFont
             : Fonts.DMSans.medium.make(11).uiFont
-
         let lineHeightMultiplier = 1.12
 
         return attributed(
@@ -683,7 +659,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMSans.bold.make(11, .caption1).uiFont
             : Fonts.DMSans.bold.make(11).uiFont
-
         let lineHeightMultiplier = 1.12
 
         return attributed(
@@ -709,7 +684,6 @@ extension String {
             supportsDynamicType
             ? Fonts.DMMono.regular.make(11, .caption1).uiFont
             : Fonts.DMMono.regular.make(11).uiFont
-
         let lineHeightMultiplier = 1.12
 
         return attributed(
