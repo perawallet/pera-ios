@@ -27,6 +27,9 @@ final class SharedAPIDataController:
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     var assetDetailCollection: AssetDetailCollection = []
+    var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? {
+        didSet { cache.accountSortingAlgorithmName = selectedAccountSortingAlgorithm?.name }
+    }
 
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
@@ -39,6 +42,14 @@ final class SharedAPIDataController:
     var isPollingAvailable: Bool {
         return session.authenticatedUser.unwrap { !$0.accounts.isEmpty } ?? false
     }
+
+    let accountSortingAlgorithms: [AccountSortingAlgorithm] = [
+        AccountAscendingTitleAlgorithm(),
+        AccountDescendingTitleAlgorithm(),
+        AccountAscendingTotalPortfolioValueAlgorithm(),
+        AccountDescendingTotalPortfolioValueAlgorithm(),
+        AccountCustomReorderingAlgorithm()
+    ]
 
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
@@ -53,13 +64,21 @@ final class SharedAPIDataController:
     
     private let session: Session
     private let api: ALGAPI
-    
+    private let cache: Cache
+
     init(
         session: Session,
         api: ALGAPI
     ) {
+        let cache = Cache()
+
         self.session = session
         self.api = api
+        self.cache = Cache()
+
+        self.selectedAccountSortingAlgorithm = accountSortingAlgorithms.first {
+            $0.name == cache.accountSortingAlgorithmName
+        } ?? AccountCustomReorderingAlgorithm()
     }
 }
 
@@ -105,6 +124,23 @@ extension SharedAPIDataController {
     func resetPollingAfterPreferredCurrencyWasChanged() {
         currency = .idle
         resetPolling()
+    }
+}
+
+extension SharedAPIDataController {
+    func getPreferredOrderForNewAccount() -> Int {
+        if let lastLocalAccount = session.authenticatedUser?.accounts.last {
+            return lastLocalAccount.preferredOrder + 1
+        }
+
+        let reorderingAlgorithm = AccountCustomReorderingAlgorithm()
+        let sortedAccounts = accountCollection.sorted(reorderingAlgorithm)
+
+        if let lastAccount = sortedAccounts.last {
+            return lastAccount.value.preferredOrder + 1
+        }
+
+        return 0
     }
 }
 
@@ -346,6 +382,22 @@ extension SharedAPIDataController {
         ) {
             self.observer = observer
         }
+    }
+}
+
+extension SharedAPIDataController {
+    private final class Cache: Storable {
+        typealias Object = Any
+
+        var accountSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: accountSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"
     }
 }
 

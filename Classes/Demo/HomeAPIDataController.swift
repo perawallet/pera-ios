@@ -136,18 +136,16 @@ extension HomeAPIDataController {
             let currency = self.sharedDataController.currency
             let calculator = ALGPortfolioCalculator()
             
-            self.sharedDataController.accountCollection
-                .sorted()
-                .forEach {
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-                    let cellItem: HomeAccountItem =
-                        .cell(AccountPreviewViewModel(accountPortfolio))
-                    let item: HomeItem = .account(cellItem)
+            self.sharedDataController.sortedAccounts().forEach {
+                let accountPortfolio =
+                    AccountPortfolio(account: $0)
+                let cellItem: HomeAccountItem =
+                    .cell(AccountPreviewViewModel(accountPortfolio))
+                let item: HomeItem = .account(cellItem)
 
-                    accounts.append($0)
-                    accountItems.append(item)
-                }
+                accounts.append($0)
+                accountItems.append(item)
+            }
             
             var snapshot = Snapshot()
             

@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccounPortfolio.swift
+//   AccountSortingAlgorithm.swift
 
 import Foundation
 
-/// <todo>
-/// Rethink this approach later.
-struct AccountPortfolio {
-    let account: AccountHandle
+protocol AccountSortingAlgorithm {
+    var id: String { get }
+    var name: String { get }
+    /// <note>
+    /// If it is true, then there is no predefined formula for sorting.
+    var isCustom: Bool { get }
+
+    func getFormula(
+        account: AccountHandle,
+        otherAccount: AccountHandle
+    ) -> Bool
 }

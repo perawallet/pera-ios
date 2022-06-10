@@ -207,7 +207,7 @@ extension TransactionSignChecking where Self: BaseViewController {
            return false
         }
 
-        let accounts = sharedDataController.accountCollection.sorted().map { $0.value }
+        let accounts = sharedDataController.sortedAccounts().map { $0.value }
 
         /// Check whether auth address exists for the selected account.
         if let authAddress = selectedAccount.authAddress {

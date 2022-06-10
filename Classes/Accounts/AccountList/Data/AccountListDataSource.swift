@@ -28,7 +28,7 @@ final class AccountListDataSource: NSObject {
         self.mode = mode
         super.init()
         
-        let userAccounts = sharedDataController.accountCollection.sorted()
+        let userAccounts = sharedDataController.sortedAccounts()
 
         switch mode {
         case .walletConnect:

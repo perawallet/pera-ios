@@ -105,7 +105,9 @@ final class HomeViewController:
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
                 self.updateUIWhenListDidReload()
 
-                self.presentCopyAddressStoryIfNeeded()
+                /// <todo>
+                /// It is disabled at the moment.
+//                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()
@@ -395,7 +397,7 @@ extension HomeViewController {
                     guard let self = self else { return }
 
                     switch event {
-                    case .didReorder: self.dataController.reload()
+                    case .didComplete: self.dataController.reload()
                     }
                 }
             }
@@ -694,6 +696,9 @@ extension HomeViewController {
                         guard let self = self else { return }
                         
                         switch event {
+                        case .didEdit:
+                            self.popScreen()
+                            self.dataController.reload()
                         case .didRemove:
                             self.popScreen()
                             self.dataController.reload()

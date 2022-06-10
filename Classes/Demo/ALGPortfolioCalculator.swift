@@ -22,7 +22,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
     func calculateCoinsValue(
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
-    ) -> Self.Result {
+    ) -> PortfolioHandle {
         guard
             let currencyValue = currency.value,
             let currencyPriceValue = currencyValue.priceValue
@@ -47,7 +47,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
     func calculateAssetsValue(
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
-    ) -> Self.Result {
+    ) -> PortfolioHandle {
         guard
             let currencyValue = currency.value,
             let currencyUSDValue = currencyValue.usdValue

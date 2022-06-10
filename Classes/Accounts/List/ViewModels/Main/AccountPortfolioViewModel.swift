@@ -35,11 +35,8 @@ extension AccountPortfolioViewModel {
     mutating func bind(
         _ portfolio: AccountPortfolio
     ) {
-        var mPortfolio = portfolio
-        mPortfolio.calculate()
-        
-        bindTitle(mPortfolio)
-        bindValue(mPortfolio)
+        bindTitle(portfolio)
+        bindValue(portfolio)
     }
     
     mutating func bindTitle(
@@ -64,11 +61,12 @@ extension AccountPortfolioViewModel {
     mutating func bindValue(
         _ portfolio: AccountPortfolio
     ) {
+        let totalPortfolio = portfolio.account.value.totalPortfolio
         let font = Fonts.DMMono.regular.make(36)
         let lineHeightMultiplier = 1.02
         
         value = .attributedString(
-            portfolio.valueResult.uiDescription.attributed([
+            totalPortfolio.uiDescription.attributed([
                 .font(font),
                 .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),

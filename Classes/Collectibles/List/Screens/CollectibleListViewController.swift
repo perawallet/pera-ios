@@ -128,7 +128,7 @@ final class CollectibleListViewController:
 
                     accounts = [account]
                 case .all:
-                    accounts = self.sharedDataController.accountCollection.sorted()
+                    accounts = self.sharedDataController.sortedAccounts()
                 }
 
                 self.eventHandler?(.didUpdate(accounts))

@@ -90,7 +90,7 @@ extension SelectAccountAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+        let filteredAccounts = sharedDataController.sortedAccounts().filter {
             $0.value.type != .watch
         }
 
@@ -106,34 +106,28 @@ extension SelectAccountAPIDataController {
             var accounts: [AccountHandle] = []
             var accountItems: [SelectAccountListViewItem] = []
 
-            let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
-
-            self.sharedDataController.accountCollection
-                .sorted()
-                .forEach { accountHandle in
-                    let isWatchAccount = accountHandle.value.type == .watch
-
-                    if isWatchAccount {
-                        return
-                    }
-
-                    let cellItem: SelectAccountListViewItem
-
-                    if self.transactionAction == .buyAlgo {
-                        let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
-
-                        cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
-                    } else {
-                        let accountPortfolio =
-                            AccountPortfolio(account: accountHandle, currency: currency, calculator: calculator)
-
-                        cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
-                    }
-
-                    accounts.append(accountHandle)
-                    accountItems.append(cellItem)
+            self.sharedDataController.sortedAccounts().forEach { accountHandle in
+                let isWatchAccount = accountHandle.value.type == .watch
+                
+                if isWatchAccount {
+                    return
                 }
+                
+                let cellItem: SelectAccountListViewItem
+                
+                if self.transactionAction == .buyAlgo {
+                    let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
+                    
+                    cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
+                } else {
+                    let accountPortfolio = AccountPortfolio(account: accountHandle)
+                    
+                    cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
+                }
+                
+                accounts.append(accountHandle)
+                accountItems.append(cellItem)
+            }
 
             var snapshot = Snapshot()
 

@@ -21,11 +21,10 @@ protocol SortAccountListDataController: AnyObject {
 
     var eventHandler: ((SortAccountListDataControllerEvent) -> Void)? { get set }
 
-    var accounts: [AccountHandle] { get }
-    var selectedAccountSorting: AccountSorting { get }
+    var selectedSortingAlgorithm: AccountSortingAlgorithm { get }
 
     func load()
-    func reorder()
+
     func selectItem(
         at indexPath: IndexPath
     )
@@ -33,6 +32,8 @@ protocol SortAccountListDataController: AnyObject {
         from source: IndexPath,
         to destination: IndexPath
     )
+
+    func performChanges()
 }
 
 enum SortAccountListSection:
@@ -52,10 +53,12 @@ enum SortAccountListOrderItem: Hashable {
 
 enum SortAccountListDataControllerEvent {
     case didUpdate(SortAccountListDataController.Snapshot)
+    case didComplete
 
     var snapshot: SortAccountListDataController.Snapshot? {
         switch self {
         case .didUpdate(let snapshot): return snapshot
+        default: return nil
         }
     }
 }

@@ -72,7 +72,9 @@ final class SortAccountListViewController:
             
             switch event {
             case .didUpdate(let snapshot):
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(snapshot, animatingDifferences: false)
+            case .didComplete:
+                self.eventHandler?(.didComplete)
             }
         }
         
@@ -111,8 +113,7 @@ extension SortAccountListViewController {
                 return
             }
 
-            self.dataController.reorder()
-            self.eventHandler?(.didReorder)
+            self.dataController.performChanges()
         }
 
         rightBarButtonItems = [addBarButtonItem]
@@ -167,7 +168,7 @@ extension SortAccountListViewController {
             )
         case .changed:
             listView.updateInteractiveMovementTargetPosition(
-                gesture.location(in: listView)
+                CGPoint(x: listView.center.x, y: gesture.location(in: listView).y)
             )
         case .ended:
             listView.endInteractiveMovement()
@@ -303,6 +304,6 @@ extension SortAccountListViewController {
 
 extension SortAccountListViewController {
     enum Event {
-        case didReorder
+        case didComplete
     }
 }
