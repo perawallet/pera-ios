@@ -50,18 +50,7 @@ final class QRText: Codable {
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if try values.decodeIfPresent(String.self, forKey: .mnemonic) != nil {
-            mode = .mnemonic
-        } else if try values.decodeIfPresent(String.self, forKey: .asset) != nil,
-            try values.decodeIfPresent(String.self, forKey: .amount) != nil {
-            mode = .assetRequest
-        } else if try values.decodeIfPresent(String.self, forKey: .amount) != nil {
-            mode = .algosRequest
-        } else {
-            mode = .address
-        }
-        
+
         address = try values.decodeIfPresent(String.self, forKey: .address)
         label = try values.decodeIfPresent(String.self, forKey: .label)
         mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
@@ -76,6 +65,21 @@ final class QRText: Codable {
 
         note = try values.decodeIfPresent(String.self, forKey: .note)
         lockedNote = try values.decodeIfPresent(String.self, forKey: .lockedNote)
+
+        if mnemonic != nil {
+            mode = .mnemonic
+        } else if asset != nil,
+                  amount != nil {
+            if amount == 0 && address == nil {
+                mode = .optInRequest
+            } else {
+                mode = .assetRequest
+            }
+        } else if try values.decodeIfPresent(String.self, forKey: .amount) != nil {
+            mode = .algosRequest
+        } else {
+            mode = .address
+        }
     }
     
     func encode(to encoder: Encoder) throws {
@@ -121,6 +125,13 @@ final class QRText: Codable {
             }
             if let lockedNote = lockedNote {
                 try container.encode(lockedNote, forKey: .lockedNote)
+            }
+        case .optInRequest:
+            if let amount = amount {
+                try container.encode(amount, forKey: .amount)
+            }
+            if let asset = asset {
+                try container.encode(asset, forKey: .asset)
             }
         }
     }
@@ -185,6 +196,16 @@ extension QRText {
             }
 
             return "\(base)\(address)\(query)"
+        case .optInRequest:
+            var query = ""
+
+            if let asset = asset,
+               !query.isEmpty {
+                query += "?\(CodingKeys.amount.rawValue)=0"
+                query += "&\(CodingKeys.asset.rawValue)=\(asset)"
+            }
+
+            return "\(base)\(query)"
         }
         return ""
     }

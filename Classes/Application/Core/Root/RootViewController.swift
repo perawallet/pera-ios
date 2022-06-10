@@ -40,8 +40,11 @@ class RootViewController: UIViewController {
         return areTabsVisible ? mainContainer : nil
     }
     
-    private lazy var mainContainer =
-        TabBarController(sharedDataController: appConfiguration.sharedDataController)
+    private lazy var mainContainer = TabBarController(
+        sharedDataController: appConfiguration.sharedDataController,
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController
+    )
     
     private lazy var pushNotificationController = PushNotificationController(
         target: target,

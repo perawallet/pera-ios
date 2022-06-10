@@ -42,7 +42,12 @@ final class HomeViewController:
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+        ScanQRFlowCoordinator(
+            sharedDataController: sharedDataController,
+            presentingScreen: self,
+            api: api!,
+            bannerController: bannerController!
+        )
 
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
@@ -727,7 +732,6 @@ extension HomeViewController {
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
 
         navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
-
         updateUIWhenListDidScroll()
     }
 }
