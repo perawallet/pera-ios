@@ -100,7 +100,7 @@ indirect enum Screen {
     case assetSelection(filter: AssetType?, account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)
-    case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
+    case portfolioCalculationInfo(result: PortfolioHandle, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
     case invalidAccount(
         account: AccountHandle,
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
@@ -157,6 +157,7 @@ extension Screen {
 
 extension Screen.Transition {
     enum Open: Equatable {
+        case root
         case push
         case present
         case presentWithoutNavigationController

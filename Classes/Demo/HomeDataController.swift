@@ -24,6 +24,7 @@ protocol HomeDataController: AnyObject {
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
 
     var portfolioViewModel: HomePortfolioViewModel? { get }
+    var lastSnapshot: Snapshot? { get }
     
     subscript (address: String?) -> AccountHandle? { get }
     
@@ -37,24 +38,26 @@ enum HomeSection:
     Int,
     Hashable {
     case empty
-    case loading
     case portfolio
     case announcement
-    case quickActions
     case accounts
 }
 
 enum HomeItem: Hashable {
     case empty(HomeEmptyItem)
-    case portfolio(HomePortfolioViewModel)
+    case portfolio(HomePortfolioItem)
     case announcement(AnnouncementViewModel)
     case account(HomeAccountItem)
-    case quickActions
 }
 
 enum HomeEmptyItem: Hashable {
     case loading
     case noContent
+}
+
+enum HomePortfolioItem: Hashable {
+    case portfolio(HomePortfolioViewModel)
+    case quickActions
 }
 
 enum HomeAccountItem: Hashable {

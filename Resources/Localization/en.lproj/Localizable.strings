@@ -167,7 +167,7 @@
 "recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
-"qr-scan-overlay-title" = "Find a code to scan";
+"qr-scan-overlay-title" = "Scan a QR code";
 "qr-scan-title" = "Scan QR Code";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
@@ -346,6 +346,8 @@
 "settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
+"settings-currency-title" = "Main Currency";
+"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
 "settings-currency-header-title" = "Currency Preferences";
 "settings-currency-search" = "Search";
 "settings-currency-not-found-title" = "No currency found";

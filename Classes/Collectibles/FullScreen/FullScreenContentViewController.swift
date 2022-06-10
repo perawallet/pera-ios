@@ -37,6 +37,12 @@ class FullScreenContentViewController:
 
     private let theme: FullScreenContentViewControllerTheme
 
+    var isZoomingEnabled = false {
+        didSet {
+            scrollView.isUserInteractionEnabled = isZoomingEnabled
+        }
+    }
+
     init(
         theme: FullScreenContentViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
@@ -45,8 +51,8 @@ class FullScreenContentViewController:
         super.init(configuration: configuration)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func prepareLayout() {
+        super.prepareLayout()
 
         addBackgroundView()
         addScrollView()

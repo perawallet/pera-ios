@@ -40,7 +40,8 @@ class RootViewController: UIViewController {
         return areTabsVisible ? mainContainer : nil
     }
     
-    private lazy var mainContainer = TabBarController()
+    private lazy var mainContainer =
+        TabBarController(sharedDataController: appConfiguration.sharedDataController)
     
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -100,10 +101,7 @@ extension RootViewController {
             configuration: configuration
         )
         let homeTab = HomeTabBarItem(
-            NavigationContainer(
-                theme: GrayNavigationContainerTheme(),
-                rootViewController: homeViewController
-            )
+            NavigationContainer(rootViewController: homeViewController)
         )
         
         let algoStatisticsViewController =
@@ -135,17 +133,6 @@ extension RootViewController {
             collectiblesTab,
             settingsTab
         ]
-        /// <todo>
-        /// This approach was being made temporarly to fix the flow, it should be refactored with the routing refactor.
-        mainContainer.qrScanningHandler = {
-            [weak homeViewController] in
-
-            let qrScannerViewController = homeViewController?.open(
-                .qrScanner(canReadWCSession: true),
-                by: .push
-            ) as? QRScannerViewController
-            qrScannerViewController?.delegate = homeViewController
-        }
     }
     
     func launch(
@@ -155,7 +142,6 @@ extension RootViewController {
     }
     
     func terminateTabs() {
-        mainContainer.qrScanningHandler = nil
         mainContainer.items = []
     }
 }

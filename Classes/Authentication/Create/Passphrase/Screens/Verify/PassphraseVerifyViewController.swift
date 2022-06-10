@@ -30,11 +30,6 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         
     private lazy var theme = Theme()
 
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: sharedDataController,
-        session: session!
-    )
-
     private lazy var dataSource: PassphraseVerifyDataSource = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseVerifyDataSource(privateKey: privateKey)
@@ -176,7 +171,7 @@ extension PassphraseVerifyViewController {
             address: address,
             name: address.shortAddressDisplay,
             type: .standard,
-            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")

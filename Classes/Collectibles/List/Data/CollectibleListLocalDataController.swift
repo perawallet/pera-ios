@@ -75,7 +75,7 @@ final class CollectibleListLocalDataController:
         case .single(let account):
             accounts = [account.value]
         case .all:
-            accounts = sharedDataController.accountCollection.sorted().map(\.value)
+            accounts = sharedDataController.sortedAccounts().map(\.value)
         }
 
         self.sharedDataController = sharedDataController
@@ -159,7 +159,7 @@ extension CollectibleListLocalDataController {
                     deliverContentSnapshot()
                 }
             case .all:
-                let accounts = sharedDataController.accountCollection.sorted()
+                let accounts = sharedDataController.sortedAccounts()
 
                 for account in accounts {
                     if case .failed = account.status {

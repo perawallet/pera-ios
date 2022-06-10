@@ -87,7 +87,8 @@ extension QRCreationViewController {
             [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
-        
+
+        hidesCloseBarButtonItem = true
         leftBarButtonItems = [closeBarButtonItem]
     }
 }

@@ -21,7 +21,6 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
-    var qrScanningHandler: (() -> Void)?
     
     var selectedTab: TabBarItemID? {
         get {
@@ -36,10 +35,26 @@ final class TabBarController: TabBarContainer {
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
 
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator =
+        SendTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var receiveTransactionFlowCoordinator =
+        ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator =
+        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
+
+    private let sharedDataController: SharedDataController
+
+    init(
+        sharedDataController: SharedDataController
+    ) {
+        self.sharedDataController = sharedDataController
+    }
     
     override func addTabBar() {
         super.addTabBar()
@@ -132,12 +147,12 @@ extension TabBarController {
         aView.observe(event: .send) {
             [weak self] in
             guard let self = self else { return }
-            self.navigateToAccountSelection(.send)
+            self.navigateToSendTransaction()
         }
         aView.observe(event: .receive) {
             [weak self] in
             guard let self = self else { return }
-            self.navigateToAccountSelection(.receive)
+            self.navigateToReceiveTransaction()
         }
         aView.observe(event: .scanQRCode) {
             [weak self] in
@@ -246,65 +261,29 @@ extension TabBarController {
 }
 
 extension TabBarController {
-    private func navigateToAccountSelection(
-        _ action: TransactionAction
-    ) {
+    private func navigateToSendTransaction() {
         toggleTransactionOptions()
-        
-        open(
-            .accountSelection(transactionAction: action, delegate: self),
-            by: .present
-        )
-        
-        switch action {
-        case .send: log(SendTabEvent())
-        case .receive: log(ReceiveTabEvent())
-        case .buyAlgo:
-            break
-        }
+        sendTransactionFlowCoordinator.launch()
+
+        log(SendTabEvent())
+    }
+
+    private func navigateToReceiveTransaction() {
+        toggleTransactionOptions()
+        receiveTransactionFlowCoordinator.launch()
+
+        log(ReceiveTabEvent())
     }
 
     private func navigateToBuyAlgo() {
         toggleTransactionOptions()
-
-        launchBuyAlgo()
+        buyAlgoFlowCoordinator.launch()
     }
 
     private func navigateToQRScanner() {
         toggleTransactionOptions()
-        qrScanningHandler?()
-    }
-}
+        scanQRFlowCoordinator.launch()
 
-extension TabBarController: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for transactionAction: TransactionAction
-    ) {
-        if transactionAction == .send {
-            selectAccountViewController.open(
-                .assetSelection(
-                    filter: nil,
-                    account: account
-                ),
-                by: .push
-            )
-        } else {
-            selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-                self.open(
-                    .qrGenerator(
-                        title: account.name ?? account.address.shortAddressDisplay,
-                        draft: draft, isTrackable: true),
-                    by: .present
-                )
-            }
-        }
     }
 }
 

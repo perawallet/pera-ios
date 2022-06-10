@@ -12,28 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QuickActionsCell.swift
+//   BuyAlgoCoordinator.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
 
-final class QuickActionsCell:
-    CollectionCell<QuickActionsView>,
-    UIInteractionObservable {
-    static let theme = QuickActionsViewTheme()
+/// <todo>
+/// This should be removed after the routing refactor.
+final class BuyAlgoFlowCoordinator {
+    private unowned let presentingScreen: UIViewController
 
-    override init(
-        frame: CGRect
+    init(
+        presentingScreen: UIViewController
     ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+        self.presentingScreen = presentingScreen
     }
-    
-    class func calculatePreferredSize(
-        for theme: QuickActionsViewTheme,
-        fittingIn size: CGSize
-    ) -> CGSize {
-        return ContextView.calculatePreferredSize(for: theme, fittingIn: size)
+}
+
+extension BuyAlgoFlowCoordinator {
+    func launch() {
+        presentingScreen.launchBuyAlgo()
     }
 }

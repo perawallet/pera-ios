@@ -85,6 +85,10 @@ extension CurrencySelectionListAPIDataController {
             self.deliverContentSnapshot()
         }
     }
+
+    func setSelectedCurrency() {
+        self.deliverContentSnapshot()
+    }
     
     private func isCurrencyContainsID(_ currency: Currency, query: String) -> Bool {
         return currency.id.localizedCaseInsensitiveContains(query)

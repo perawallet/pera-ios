@@ -61,9 +61,7 @@ final class ALGAppLaunchController:
         /// <todo>
         /// Authenticated user is decoded everytime its getter is called.
         let authenticatedUser = session.authenticatedUser
-        
         setupPreferredNetwork(authenticatedUser)
-        setupAccountsPreordering(authenticatedUser)
     }
     
     func launch(
@@ -252,25 +250,6 @@ extension ALGAppLaunchController {
         network: ALGAPI.Network
     ) {
         api.setupNetworkBase(network)
-    }
-}
-
-extension ALGAppLaunchController {
-    /// <todo>
-    /// Another way? It will be called everytime the application is launched.
-    private func setupAccountsPreordering(
-        _ authenticatedUser: User?
-    ) {        
-        authenticatedUser?.accounts
-            .enumerated()
-            .forEach { index, account in
-                if !account.isOrderred {
-                    let initialOffset = account.type == .watch ? 100000 : 0
-                    account.preferredOrder = initialOffset + index
-                }
-            }
-        authenticatedUser?.syncronize()
-        session.authenticatedUser = authenticatedUser
     }
 }
 
