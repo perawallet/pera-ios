@@ -22,24 +22,43 @@ struct CurrencySelectionViewTheme:
     LayoutSheet {
     let backgroundColor: Color
     let horizontalPadding: LayoutMetric
+
+    let title: TextStyle
+    let titleTopPadding: LayoutMetric
+
+    let description: TextStyle
+    let descriptionTopPadding: LayoutMetric
+    let descriptionTrailingPadding: LayoutMetric
     
     let searchInputViewTheme: SearchInputViewTheme
     let searchViewTopPadding: LayoutMetric
-    
+
     let collectionViewEdgeInsets: LayoutPaddings
     let collectionViewTopPadding: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.horizontalPadding = 24
-        
+
+        self.title = [
+            .textColor(AppColors.Components.Text.main)
+        ]
+        self.titleTopPadding = 28
+
+        self.description = [
+            .textColor(AppColors.Components.Text.gray),
+            .textOverflow(FittingText())
+        ]
+        self.descriptionTopPadding = 8
+        self.descriptionTrailingPadding = 54
+
         self.searchInputViewTheme = SearchInputViewCommonTheme(
             placeholder: "settings-currency-search".localized,
             family: family
         )
-        self.searchViewTopPadding = 20
-        
-        self.collectionViewEdgeInsets = (16, 0, 0, 0)
-        self.collectionViewTopPadding = 12
+        self.searchViewTopPadding = 24
+
+        self.collectionViewEdgeInsets = (6, 0, 0, 0)
+        self.collectionViewTopPadding = 6
     }
 }

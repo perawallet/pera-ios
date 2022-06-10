@@ -22,15 +22,11 @@ extension CurrencySelectionListLayout {
         LayoutSheet,
         StyleSheet {
         let horizontalPaddings: LayoutHorizontalPaddings
-        let topContentInset: LayoutMetric
         let cellSize: LayoutSize
-        let headerSize: LayoutSize
-        
+
         init(_ family: LayoutFamily) {
             self.horizontalPaddings = (24, 24)
-            self.topContentInset = 16
             self.cellSize = (UIScreen.main.bounds.width - 48, 64)
-            self.headerSize = (UIScreen.main.bounds.width, 28)
         }
     }
 }

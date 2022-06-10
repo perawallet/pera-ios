@@ -346,6 +346,8 @@
 "settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
+"settings-currency-title" = "Main Currency";
+"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
 "settings-currency-header-title" = "Currency Preferences";
 "settings-currency-search" = "Search";
 "settings-currency-not-found-title" = "No currency found";
