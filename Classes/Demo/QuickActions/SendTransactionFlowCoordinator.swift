@@ -30,10 +30,39 @@ final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate 
 }
 
 extension SendTransactionFlowCoordinator {
-    func launch() {
+    func launch(with account: Account? = nil) {
+        guard let account = account else {
+            openAccountSelection()
+            return
+        }
+
+        openAssetSelection(with: account)
+    }
+
+    private func openAccountSelection() {
         presentingScreen.open(
             .accountSelection(transactionAction: .send, delegate: self),
             by: .present
+        )
+    }
+
+    private func openAssetSelection(with account: Account, on screen: UIViewController? = nil) {
+        let assetSelectionScreen: Screen = .assetSelection(
+            filter: nil,
+            account: account
+        )
+
+        guard let screen = screen else {
+            presentingScreen.open(
+                assetSelectionScreen,
+                by: .present
+            )
+            return
+        }
+
+        screen.open(
+            assetSelectionScreen,
+            by: .root
         )
     }
 }
@@ -50,14 +79,6 @@ extension SendTransactionFlowCoordinator {
             return
         }
 
-        let screen: Screen = .assetSelection(
-            filter: nil,
-            account: account
-        )
-
-        selectAccountViewController.open(
-            screen,
-            by: .push
-        )
+        openAssetSelection(with: account, on: selectAccountViewController)
     }
 }
