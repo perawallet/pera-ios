@@ -23,6 +23,7 @@ struct AccountPortfolioViewModel:
     Hashable {
     private(set) var title: EditText?
     private(set) var value: EditText?
+    private(set) var secondaryValue: EditText?
 
     init(
         _ model: AccountPortfolio
@@ -40,6 +41,30 @@ extension AccountPortfolioViewModel {
         
         bindTitle(mPortfolio)
         bindValue(mPortfolio)
+
+        if let algoCurrency = portfolio.currency.value as? AlgoCurrency {
+
+            var secondaryPortfolio = AccountPortfolio(
+                account: portfolio.account,
+                currency: .ready(currency: algoCurrency.currency, lastUpdateDate: Date()),
+                calculator: ALGPortfolioCalculator()
+            )
+
+            secondaryPortfolio.calculate()
+
+            bindSecondaryValue(secondaryPortfolio)
+        } else {
+
+            var secondaryPortfolio = AccountPortfolio(
+                account: portfolio.account,
+                currency: .ready(currency: AlgoCurrency(currency: portfolio.currency.value!), lastUpdateDate: Date()),
+                calculator: ALGPortfolioCalculator()
+            )
+
+            secondaryPortfolio.calculate()
+
+            bindSecondaryValue(secondaryPortfolio)
+        }
     }
     
     mutating func bindTitle(
@@ -64,17 +89,36 @@ extension AccountPortfolioViewModel {
     mutating func bindValue(
         _ portfolio: AccountPortfolio
     ) {
-        let font = Fonts.DMMono.regular.make(36)
+        let font = Fonts.DMSans.medium.make(36)
         let lineHeightMultiplier = 1.02
-        
+
         value = .attributedString(
             portfolio.valueResult.uiDescription.attributed([
                 .font(font),
-                .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
+                ])
+            ])
+        )
+    }
+
+    mutating func bindSecondaryValue(
+        _ portfolio: AccountPortfolio
+    ) {
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.02
+
+        secondaryValue = .attributedString(
+            ("≈ " + portfolio.valueResult.uiDescription).attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
                 ])
             ])
         )

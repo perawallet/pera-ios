@@ -56,9 +56,12 @@ final class SelectAssetViewController:
         self.theme = theme
         super.init(configuration: configuration)
     }
-    
-    override func configureAppearance() {
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
         navigationItem.title = "send-select-asset".localized
+        addBarButtons()
     }
     
     override func setListeners() {
@@ -86,6 +89,16 @@ extension SelectAssetViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+    }
+
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+
+        hidesCloseBarButtonItem = true
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

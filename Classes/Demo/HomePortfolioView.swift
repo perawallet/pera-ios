@@ -33,7 +33,6 @@ final class HomePortfolioView:
     private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
     private lazy var secondaryValueView = Label()
-    private lazy var buyAlgoButton = Button()
     
     func customize(
         _ theme: HomePortfolioViewTheme

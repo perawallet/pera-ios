@@ -98,6 +98,12 @@ extension AccountAssetListAPIDataController {
                 toSection: .portfolio
             )
 
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems(
+                [.quickActions],
+                toSection: .quickActions
+            )
+
             var assets: [StandardAsset] = []
             var assetItems: [AccountAssetsItem] = []
             

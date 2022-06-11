@@ -33,7 +33,7 @@ struct HomeLoadingViewTheme:
     var secondaryPortfolioValueSize: LayoutSize
     var spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue: LayoutMetric
     var portfolioValueCorner: Corner
-    var quickActions: QuickActionsViewTheme
+    var quickActions: HomeQuickActionsViewTheme
     var spacingBetweenQuickActionsAndSecondaryPortfolioValue: LayoutMetric
     var quickActionsBottomPadding: LayoutMetric
     var accountsHeader: ManagementItemViewTheme
@@ -64,7 +64,7 @@ struct HomeLoadingViewTheme:
         self.secondaryPortfolioValueSize = (97, 20)
         self.spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue = 12
         self.portfolioValueCorner = Corner(radius: 4)
-        self.quickActions = QuickActionsViewTheme(family)
+        self.quickActions = HomeQuickActionsViewTheme(family)
         self.spacingBetweenQuickActionsAndSecondaryPortfolioValue = 48
         self.quickActionsBottomPadding = 36
         self.accountsHeader = ManagementItemViewTheme()

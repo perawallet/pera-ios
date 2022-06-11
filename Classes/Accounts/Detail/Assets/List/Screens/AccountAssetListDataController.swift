@@ -30,6 +30,7 @@ enum AccountAssetsSection:
     Int,
     Hashable {
     case portfolio
+    case quickActions
     case assets
 }
 
@@ -40,6 +41,7 @@ enum AccountAssetsItem: Hashable {
     case pendingAsset(PendingAssetPreviewViewModel)
     case assetManagement(ManagementItemViewModel)
     case assetTitle(AssetSearchListHeaderViewModel)
+    case quickActions
 }
 
 enum AccountAssetListDataControllerEvent {

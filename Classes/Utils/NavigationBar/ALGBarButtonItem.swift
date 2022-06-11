@@ -144,6 +144,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .account(let image):
+            return ImageContent(normal: image)
         }
     }
     
@@ -225,6 +227,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .notification:
             return .explicit(CGSize(width: 40, height: 40))
+        case .account:
+            return .explicit(CGSize(width: 28, height: 28))
         }
     }
     
@@ -263,6 +267,7 @@ extension ALGBarButtonItem {
         case share
         case filter
         case troubleshoot
+        case account(UIImage)
     }
 }
 

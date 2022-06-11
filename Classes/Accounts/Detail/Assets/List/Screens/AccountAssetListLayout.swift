@@ -31,6 +31,9 @@ final class AccountAssetListLayout: NSObject {
     private let isWatchAccount: Bool
     private let listDataSource: AccountAssetListDataSource
 
+    private let quickActionsSectionHorizontalInsets: LayoutHorizontalPaddings = (36, 36)
+
+
     init(
         isWatchAccount: Bool,
         listDataSource: AccountAssetListDataSource
@@ -86,6 +89,39 @@ extension AccountAssetListLayout {
             )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
+        case .quickActions:
+            let width = calculateContentWidth(for: collectionView)
+
+            return AccountQuickActionsCell.calculatePreferredSize(
+                for: AccountQuickActionsViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        let insets: UIEdgeInsets = .zero
+
+        switch listSection {
+        case .quickActions:
+            return UIEdgeInsets(
+                top: 0,
+                left: quickActionsSectionHorizontalInsets.leading,
+                bottom: 36,
+                right: quickActionsSectionHorizontalInsets.trailing
+            )
+        default:
+            return insets
         }
     }
 }

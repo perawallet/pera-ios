@@ -51,6 +51,11 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case .quickActions:
+                return collectionView.dequeue(
+                    AccountQuickActionsCell.self,
+                    at: indexPath
+                )
             }
         }
 
@@ -61,6 +66,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             SearchBarItemCell.self,
             AssetPreviewCell.self,
             PendingAssetPreviewCell.self,
+            AccountQuickActionsCell.self
         ].forEach {
             collectionView.register($0)
         }

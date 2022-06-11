@@ -12,28 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioCell.swift
+//   MoreTransactionOptionListActionViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class AccountPortfolioCell:
-    CollectionCell<AccountPortfolioView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
-    }
-    
-    static let theme = AccountPortfolioViewTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
+struct MoreTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
-        contextView.customize(Self.theme)
+    init() {
+        icon = "icon-transaction-option-list-more"
+        title = Self.getTitle("title-more".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-more-subtitle".localized)
     }
 }

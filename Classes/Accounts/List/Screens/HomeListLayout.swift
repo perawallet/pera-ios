@@ -190,7 +190,7 @@ extension HomeListLayout {
             forSectionAt: section
         )
         let newSize = HomeQuickActionsCell.calculatePreferredSize(
-            for: QuickActionsViewTheme(),
+            for: HomeQuickActionsViewTheme(),
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QuickActionsView.swift
+//   AccountQuickActionsView.swift
 
 import Foundation
 import MacaroonUIKit
 import SnapKit
 import UIKit
 
-final class QuickActionsView:
+final class AccountQuickActionsView:
     View,
     ListReusable,
     UIInteractionObservable,
@@ -27,15 +27,15 @@ final class QuickActionsView:
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: UIControlInteraction(),
         .send: UIControlInteraction(),
-        .receive: UIControlInteraction(),
-        .scanQR: UIControlInteraction()
+        .address: UIControlInteraction(),
+        .more: UIControlInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var actionsView = HStackView()
 
     func customize(
-        _ theme: QuickActionsViewTheme
+        _ theme: AccountQuickActionsViewTheme
     ) {
         addActions(theme)
     }
@@ -49,7 +49,7 @@ final class QuickActionsView:
     ) {}
 
     class func calculatePreferredSize(
-        for theme: QuickActionsViewTheme,
+        for theme: AccountQuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let maxActionSize = CGSize(width: size.width, height: .greatestFiniteMagnitude)
@@ -61,25 +61,25 @@ final class QuickActionsView:
             for: theme.sendAction,
             fittingIn: maxActionSize
         )
-        let receiveActionSize = calculateActionPreferredSize(
-            for: theme.receiveAction,
+        let addressActionSize = calculateActionPreferredSize(
+            for: theme.addressAction,
             fittingIn: maxActionSize
         )
-        let scanActionSize = calculateActionPreferredSize(
-            for: theme.scanAction,
+        let moreActionSize = calculateActionPreferredSize(
+            for: theme.moreAction,
             fittingIn: maxActionSize
         )
         let preferredHeight = [
             buyActionSize.height,
             sendActionSize.height,
-            receiveActionSize.height,
-            scanActionSize.height
+            addressActionSize.height,
+            moreActionSize.height
         ].max()!
         return CGSize(width: size.width, height: min(preferredHeight.ceil(), size.height))
     }
 
     class func calculateActionPreferredSize(
-        for theme: QuickActionViewTheme,
+        for theme: AccountQuickActionViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let font = theme.style.font?.uiFont
@@ -92,16 +92,16 @@ final class QuickActionsView:
         )
         let preferredHeight =
             (iconSize?.height ?? 48) +
-            QuickActionViewTheme.spacingBetweenIconAndTitle +
+            HomeQuickActionViewTheme.spacingBetweenIconAndTitle +
             (titleSize?.height ?? 20)
         return CGSize(width: maxWidth, height: min(preferredHeight.ceil(), size.height))
     }
 }
 
 
-extension QuickActionsView {
+extension AccountQuickActionsView {
     private func addActions(
-        _ theme: QuickActionsViewTheme
+        _ theme: AccountQuickActionsViewTheme
     ) {
         addSubview(actionsView)
         actionsView.distribution = .equalSpacing
@@ -116,12 +116,12 @@ extension QuickActionsView {
 
         addBuyAction(theme)
         addSendAction(theme)
-        addReceiveAction(theme)
-        addQRAction(theme)
+        addAddressAction(theme)
+        addMoreAction(theme)
     }
 
     private func addBuyAction(
-        _ theme: QuickActionsViewTheme
+        _ theme: AccountQuickActionsViewTheme
     ) {
         let buyAlgoActionView = createAction(theme.buyAlgoAction)
         actionsView.addArrangedSubview(buyAlgoActionView)
@@ -133,7 +133,7 @@ extension QuickActionsView {
     }
 
     private func addSendAction(
-        _ theme: QuickActionsViewTheme
+        _ theme: AccountQuickActionsViewTheme
     ) {
         let sendActionView = createAction(theme.sendAction)
         actionsView.addArrangedSubview(sendActionView)
@@ -144,37 +144,37 @@ extension QuickActionsView {
         )
     }
 
-    private func addReceiveAction(
-        _ theme: QuickActionsViewTheme
+    private func addAddressAction(
+        _ theme: AccountQuickActionsViewTheme
     ) {
-        let receiveActionView = createAction(theme.receiveAction)
-        actionsView.addArrangedSubview(receiveActionView)
+        let addressActionView = createAction(theme.addressAction)
+        actionsView.addArrangedSubview(addressActionView)
 
         startPublishing(
-            event: .receive,
-            for: receiveActionView
+            event: .address,
+            for: addressActionView
         )
     }
 
-    private func addQRAction(
-        _ theme: QuickActionsViewTheme
+    private func addMoreAction(
+        _ theme: AccountQuickActionsViewTheme
     ) {
-        let scanActionView = createAction(theme.scanAction)
-        actionsView.addArrangedSubview(scanActionView)
+        let moreActionView = createAction(theme.moreAction)
+        actionsView.addArrangedSubview(moreActionView)
 
         startPublishing(
-            event: .scanQR,
-            for: scanActionView
+            event: .more,
+            for: moreActionView
         )
     }
 
     private func createAction(
-        _ theme: QuickActionViewTheme
+        _ theme: AccountQuickActionViewTheme
     ) -> UIControl {
         let actionView = MacaroonUIKit.Button(
             .imageAtTopmost(
                 padding: 0,
-                titleAdjustmentY: QuickActionViewTheme.spacingBetweenIconAndTitle
+                titleAdjustmentY: AccountQuickActionViewTheme.spacingBetweenIconAndTitle
             )
         )
         actionView.customizeAppearance(theme.style)
@@ -185,11 +185,11 @@ extension QuickActionsView {
     }
 }
 
-extension QuickActionsView {
+extension AccountQuickActionsView {
     enum Event {
         case buyAlgo
         case send
-        case receive
-        case scanQR
+        case address
+        case more
     }
 }
