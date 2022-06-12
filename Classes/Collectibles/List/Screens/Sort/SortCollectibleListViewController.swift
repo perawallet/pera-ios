@@ -17,9 +17,15 @@
 import Foundation
 import UIKit
 
-final class SortCollectibleListViewController: BaseViewController {
+final class SortCollectibleListViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewLayout()
+        let collectionViewLayout = SortCollectibleListLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -30,6 +36,25 @@ final class SortCollectibleListViewController: BaseViewController {
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+
+    private lazy var listLayout = SortCollectibleListLayout(
+        listDataSource: listDataSource
+    )
+
+    private lazy var listDataSource = SortCollectibleListDataSource(
+        listView,
+        dataController: dataController
+    )
+
+    private let dataController: SortCollectibleListDataController
+
+    init(
+        dataController: SortCollectibleListDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
@@ -62,5 +87,37 @@ extension SortCollectibleListViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+    }
+}
+
+
+extension SortCollectibleListViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+}
+
+extension SortCollectibleListViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard listDataSource.itemIdentifier(for: indexPath) != nil else { return }
+
+        dataController.selectItem(at: indexPath)
+    }
+}
+
+extension SortCollectibleListViewController {
+    enum Event {
+        case didComplete
     }
 }
