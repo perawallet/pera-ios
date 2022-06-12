@@ -673,6 +673,13 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .sortCollectibleList(dataController, eventHandler):
+            let aViewController = SortCollectibleListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .collectiblesFilterSelection(filter):
             viewController = CollectiblesFilterSelectionViewController(
                 filter: filter,
