@@ -2089,6 +2089,9 @@
 		2BB350EC258A64D400A03BAC /* LedgerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB350EB258A64D400A03BAC /* LedgerMessage.swift */; };
 		2BB350ED258A64D400A03BAC /* LedgerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB350EB258A64D400A03BAC /* LedgerMessage.swift */; };
 		2BB350EE258A64D400A03BAC /* LedgerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB350EB258A64D400A03BAC /* LedgerMessage.swift */; };
+		2BB3653F28537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3653E28537EEB004F07E2 /* SortCollectibleListViewController.swift */; };
+		2BB3654028537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3653E28537EEB004F07E2 /* SortCollectibleListViewController.swift */; };
+		2BB3654128537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3653E28537EEB004F07E2 /* SortCollectibleListViewController.swift */; };
 		2BB37B0F2405650100F58662 /* BLEConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */; };
 		2BB37B102405650100F58662 /* BLEConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */; };
 		2BB37B122405CF6400F58662 /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B112405CF6400F58662 /* Data+Hex.swift */; };
@@ -5350,6 +5353,7 @@
 		2BB350D92589892300A03BAC /* LedgerAccountDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailViewModel.swift; sourceTree = "<group>"; };
 		2BB350E4258A233800A03BAC /* AccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameViewModel.swift; sourceTree = "<group>"; };
 		2BB350EB258A64D400A03BAC /* LedgerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerMessage.swift; sourceTree = "<group>"; };
+		2BB3653E28537EEB004F07E2 /* SortCollectibleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortCollectibleListViewController.swift; sourceTree = "<group>"; };
 		2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionManager.swift; sourceTree = "<group>"; };
 		2BB37B112405CF6400F58662 /* Data+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Hex.swift"; sourceTree = "<group>"; };
 		2BB37B1824069F7500F58662 /* LedgerBLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerBLEController.swift; sourceTree = "<group>"; };
@@ -8107,6 +8111,7 @@
 		2B7A1EF727DB7A230010F52E /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				2BB3653D28537EBA004F07E2 /* Sort */,
 				2B4334B727CEE89600A3D9D6 /* CollectibleListViewController.swift */,
 				D477A74827FB8CB700E2D790 /* CollectibleListViewControllerTheme.swift */,
 				D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */,
@@ -11048,6 +11053,14 @@
 				D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BB3653D28537EBA004F07E2 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				2BB3653E28537EEB004F07E2 /* SortCollectibleListViewController.swift */,
+			);
+			path = Sort;
 			sourceTree = "<group>";
 		};
 		2BB37B142405D1B000F58662 /* Ledger */ = {
@@ -16283,6 +16296,7 @@
 				D421178626D8ED6800C032B2 /* BlockingLoadingController.swift in Sources */,
 				D4AEDD2D271C6E0A00AD2725 /* AlgoStatisticsFooterView.swift in Sources */,
 				17BD4EBE2292F1260003E49A /* Notification.Name+Additions.swift in Sources */,
+				2BB3654128537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */,
 				2B77FAA3280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
 				95AF1C8D27B13F38001AB131 /* TransactionHistoryLoadingItemViewCommonTheme.swift in Sources */,
 				2BB8483427E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift in Sources */,
@@ -18151,6 +18165,7 @@
 				2B0E7CB627E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */,
 				2B9E2F4326F0D332003D824A /* WCAssetCreationTransactionViewModel.swift in Sources */,
 				2B0F631D24EC129D00DA22A6 /* Optional+Nil.swift in Sources */,
+				2BB3654028537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */,
 				2B88F51027E2ADCD00E6E296 /* CollectibleMediaImagePreviewViewTheme.swift in Sources */,
 				2B233B4A27C452B200D16B82 /* BuyAlgoHomeViewTheme.swift in Sources */,
 				2B0322DE269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
@@ -19211,6 +19226,7 @@
 				D41F934D272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */,
 				D47C4AB52791C1E80012D7A6 /* WCSessionListNoContentViewModel.swift in Sources */,
 				F0DB419B279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */,
+				2BB3653F28537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */,
 				D4241FC226E763BD0064CDD0 /* FloatingTextInputFieldViewTheme.swift in Sources */,
 				D4AEDD33271C6FC400AD2725 /* AlgoStatisticsInfoView.swift in Sources */,
 				D459E28127DD345200F7FC33 /* ApproveCollectibleTransactionViewControllerTheme.swift in Sources */,
