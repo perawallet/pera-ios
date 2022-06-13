@@ -197,7 +197,7 @@ extension AssetPreviewView {
 
         subtitleView.fitToVerticalIntrinsicSize(
             hugging: .required,
-            compression: .defaultLow
+            compression: .defaultHigh
         )
         subtitleView.fitToHorizontalIntrinsicSize(
             hugging: .required,
