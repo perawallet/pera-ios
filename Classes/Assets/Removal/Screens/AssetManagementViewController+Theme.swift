@@ -27,7 +27,7 @@ extension ManagementOptionsViewController {
         
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (16, 24, 16, 24)
+            self.contentPaddings = (16, 24, 20, 24)
             self.listActionViewTheme = ListActionViewTheme(family)
         }
     }
