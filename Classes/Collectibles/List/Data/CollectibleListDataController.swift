@@ -42,15 +42,15 @@ enum CollectibleSection:
     Hashable {
     case empty
     case loading
-    case search
     case header
+    case search
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
-    case search
     case header(ManagementItemViewModel)
+    case search
     case collectible(CollectibleItem)
 }
 
