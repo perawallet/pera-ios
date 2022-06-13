@@ -100,7 +100,13 @@ extension AccountAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            let portfolio = AccountPortfolio(account: self.accountHandle)
+            let currencyHandle = self.sharedDataController.currency
+
+            let portfolio = Portfolio(
+                accounts: [self.accountHandle],
+                currency: currencyHandle,
+                calculator: ALGPortfolioCalculator()
+            )
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
@@ -132,15 +138,13 @@ extension AccountAssetListAPIDataController {
 
             assetItems.append(.search)
 
-            let currency = self.sharedDataController.currency.value
-
             self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
             self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
             self.load(with: self.searchKeyword)
 
             if self.isKeywordContainsAlgo() {
-                assetItems.append(.algo(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
+                assetItems.append(.algo(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currencyHandle.value)))))
             }
 
             self.searchResults.forEach { asset in
@@ -150,7 +154,7 @@ extension AccountAssetListAPIDataController {
 
                 assets.append(asset)
                 
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currencyHandle.value))
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
