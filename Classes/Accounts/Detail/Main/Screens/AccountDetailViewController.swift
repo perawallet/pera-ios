@@ -139,8 +139,8 @@ extension AccountDetailViewController {
                     .transactionOptions(delegate: self),
                     by: .presentWithoutNavigationController
                 )
-            default:
-                return
+            case .more:
+                self.presentOptionsScreen()
             }
         }
     }
