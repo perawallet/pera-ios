@@ -97,7 +97,7 @@ extension CollectibleListLocalDataController {
     }
 
     func reload() {
-        deliverContentSnapshot()
+        deliverContentSnapshot(with: lastQuery)
     }
 
     func search(for query: String) {
