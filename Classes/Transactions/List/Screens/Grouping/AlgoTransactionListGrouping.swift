@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  Reward.swift
+//   AlgoTransactionListGrouping.swift
 
 import Foundation
 
-struct Reward: TransactionItem, Hashable {
-    let transactionID: String?
-    let amount: UInt64
-    let date: Date?
+struct AlgoTransactionListGrouping: TranactionListGrouping {
+    func groupTransactions(
+        _ transactions: [Transaction]
+    ) -> [Transaction] {
+        let filteredTransactions = transactions.filter { transaction in
+            return transaction.type == .payment
+        }
+
+        return filteredTransactions
+    }
 }

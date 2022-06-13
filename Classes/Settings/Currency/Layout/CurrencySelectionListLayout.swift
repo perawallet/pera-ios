@@ -36,28 +36,6 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
-        
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-        
-        var insets = UIEdgeInsets((0, theme.horizontalPaddings.leading, 0, theme.horizontalPaddings.trailing))
-        
-        switch listSection {
-        case .currencies:
-            insets.top = theme.topContentInset
-            return insets
-        default:
-            return insets
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
@@ -86,25 +64,6 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
             )
             
             return newSize
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
-        
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-        
-        switch listSection {
-        case .currencies:
-            return CGSize(theme.headerSize)
-        default:
-            return .zero
         }
     }
     

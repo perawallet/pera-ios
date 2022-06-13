@@ -33,12 +33,12 @@ final class PortfolioCalculationInfoViewController:
     private lazy var closeActionView =
         ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
-    private let result: PortfolioCalculator.Result
+    private let result: PortfolioHandle
 
     private let theme: PortfolioCalculationInfoViewControllerTheme
     
     init(
-        result: PortfolioCalculator.Result,
+        result: PortfolioHandle,
         configuration: ViewControllerConfiguration,
         theme: PortfolioCalculationInfoViewControllerTheme = .init()
     ) {

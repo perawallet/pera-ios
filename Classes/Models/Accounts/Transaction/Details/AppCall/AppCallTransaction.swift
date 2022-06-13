@@ -12,10 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleViewTheme+SortAccountList.swift
+//   AppCallTransaction.swift
 
-extension TitleViewTheme {
-    mutating func configureForSortAccountListHeader() {
-        paddings = (20, 24, 12, 24)
+import Foundation
+import MagpieCore
+import MacaroonUtils
+
+final class AppCallTransaction: ALGAPIModel {
+    let appID: Int64?
+    let onCompletion: String?
+    let accounts: [PublicKey]?
+
+    init() {
+        self.appID = nil
+        self.onCompletion = nil
+        self.accounts = nil
+    }
+}
+
+extension AppCallTransaction {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case appID = "application-id"
+        case onCompletion = "on-completion"
+        case accounts
     }
 }

@@ -100,11 +100,7 @@ extension AccountAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            let portfolio = AccountPortfolio(
-                account: self.accountHandle,
-                currency: self.sharedDataController.currency,
-                calculator: ALGPortfolioCalculator()
-            )
+            let portfolio = AccountPortfolio(account: self.accountHandle)
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])

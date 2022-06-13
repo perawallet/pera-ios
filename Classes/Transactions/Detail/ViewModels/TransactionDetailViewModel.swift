@@ -72,7 +72,6 @@ extension TransactionDetailViewModel {
 
         bindDate(for: transaction)
         bindRound(for: transaction)
-        opponentViewTitle = "transaction-detail-from".localized
         if let sender = transaction.sender {
             bindOpponent(for: transaction, with: sender)
         }
@@ -84,7 +83,7 @@ extension TransactionDetailViewModel {
 
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
 
-            if transaction.isSelfTransaction() {
+            if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             } else {
                 transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
@@ -93,7 +92,7 @@ extension TransactionDetailViewModel {
         } else if let payment = transaction.payment {
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            if transaction.isSelfTransaction() {
+            if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
             } else {
                 transactionAmountViewMode = .positive(amount: amount)
@@ -102,6 +101,10 @@ extension TransactionDetailViewModel {
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
             bindReward(for: transaction)
+        } else if transaction.applicationCall != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            transactionAmountViewMode = nil
         }
 
         transactionID = transaction.id
@@ -128,7 +131,6 @@ extension TransactionDetailViewModel {
 
         bindDate(for: transaction)
         bindRound(for: transaction)
-        opponentViewTitle = "transaction-detail-to".localized
 
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
@@ -138,7 +140,7 @@ extension TransactionDetailViewModel {
             if let assetDetail = assetDetail {
                 let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
 
-                if transaction.isSelfTransaction() {
+                if transaction.isSelfTransaction {
                     transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
                 } else {
                     transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
@@ -146,12 +148,12 @@ extension TransactionDetailViewModel {
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
-        } else if let payment = transaction.payment {
+        }  else if let payment = transaction.payment {
             bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            if transaction.isSelfTransaction() {
+            if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
             } else {
                 transactionAmountViewMode = .negative(amount: amount)
@@ -159,6 +161,9 @@ extension TransactionDetailViewModel {
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
+        } else if transaction.applicationCall != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
         }
 
         transactionID = transaction.id
@@ -168,6 +173,8 @@ extension TransactionDetailViewModel {
 
 extension TransactionDetailViewModel {
     func bindOpponent(for transaction: Transaction, with address: String) {
+        opponentViewTitle = "transaction-detail-to".localized
+
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             opponentViewContact = contact

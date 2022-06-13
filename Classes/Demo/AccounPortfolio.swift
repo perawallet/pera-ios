@@ -17,19 +17,8 @@
 
 import Foundation
 
+/// <todo>
+/// Rethink this approach later.
 struct AccountPortfolio {
-    var valueResult: PortfolioCalculator.Result = .failure(.idle)
-    
     let account: AccountHandle
-    let currency: CurrencyHandle
-    let calculator: PortfolioCalculator
-}
-
-extension AccountPortfolio {
-    mutating func calculate() {
-        valueResult = calculator.calculateTotalValue(
-            [account],
-            as: currency
-        )
-    }
 }

@@ -347,6 +347,8 @@
 "settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
+"settings-currency-title" = "Main Currency";
+"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
 "settings-currency-header-title" = "Currency Preferences";
 "settings-currency-search" = "Search";
 "settings-currency-not-found-title" = "No currency found";
@@ -861,6 +863,7 @@
 
 "wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
 "wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-asset-config" = "Asset Configuration";
 "wallet-connect-transaction-title-app-create" = "Application Creation";
 "wallet-connect-transaction-title-app-update" = "Application Call Update";
 "wallet-connect-transaction-title-app-delete" = "Application Call Delete";

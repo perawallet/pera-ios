@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionViewModelDependencies.swift
+//   TransactionListItemDraftComposer.swift
 
 import Foundation
 
-struct TransactionViewModelDependencies {
-    let account: Account
-    let asset: AssetDecoration?
-    let transaction: TransactionItem
-    var contact: Contact?
-    let localAccounts: [Account]
+protocol TransactionListItemDraftComposer {
+    var draft: TransactionListing { get }
+
+    func composeTransactionItemPresentationDraft(
+        from transaction: TransactionItem
+    ) -> TransactionViewModelDraft?
 }

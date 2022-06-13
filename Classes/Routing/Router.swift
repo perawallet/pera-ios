@@ -22,9 +22,12 @@ import UIKit
 
 class Router:
     AssetActionConfirmationViewControllerDelegate,
+    NotificationObserver,
+    SelectAccountViewControllerDelegate,
+    TransactionControllerDelegate,
     WalletConnectorDelegate,
-    WCConnectionApprovalViewControllerDelegate,
-    NotificationObserver {
+    WCConnectionApprovalViewControllerDelegate
+    {
     var notificationObservations: [NSObjectProtocol] = []
     
     unowned let rootViewController: RootViewController
@@ -35,6 +38,10 @@ class Router:
     private var qrSendDraft: QRSendTransactionDraft?
 
     private unowned let appConfiguration: AppConfiguration
+
+    /// <todo>
+    /// Change after refactoring routing
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     init(
         rootViewController: RootViewController,
@@ -169,6 +176,14 @@ class Router:
             self.route(
                 to: .buyAlgoHome(transactionDraft: draft, delegate: self),
                 from: self.findVisibleScreen(over: self.rootViewController),
+                by: .present
+            )
+        case .accountSelect(let asset):
+            launch(tab: .home)
+
+            route(
+                to: .accountSelection(transactionAction: .optIn(asset: asset), delegate: self),
+                from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
         }
@@ -836,6 +851,7 @@ extension Router {
             bannerController: appConfiguration.bannerController
         )
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
@@ -957,16 +973,36 @@ extension Router {
     }
 }
 
-extension Router: SelectAccountViewControllerDelegate {
+extension Router {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
         for transactionAction: TransactionAction
     ) {
+        switch transactionAction {
+        case .send:
+            sendTransction(
+                from: selectAccountViewController,
+                for: account
+            )
+        case .optIn(let asset):
+            requestOptingInToAsset(
+                asset,
+                to: account
+            )
+        default:
+            break
+        }
+    }
+
+    private func sendTransction(
+        from selectAccountViewController: SelectAccountViewController,
+        for account: Account
+    ) {
         guard let qrDraft = self.qrSendDraft else {
             return
         }
-        
+
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
@@ -976,9 +1012,45 @@ extension Router: SelectAccountViewControllerDelegate {
             lockedNote: qrDraft.lockedNote
         )
 
-        selectAccountViewController.open(.sendTransaction(draft: draft), by: .push)
+        selectAccountViewController.open(
+            .sendTransaction(
+                draft: draft
+            ),
+            by: .push
+        )
 
         self.qrSendDraft = nil
+    }
+
+    private func requestOptingInToAsset(
+        _ asset: AssetID,
+        to account: Account
+    ) {
+        if account.containsAsset(asset) {
+            appConfiguration.bannerController.presentInfoBanner("asset-you-already-own-message".localized)
+            return
+        }
+
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetId: asset,
+            asset: nil,
+            transactionFee: Transaction.Constant.minimumFee,
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
+        )
+
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        ongoingTransitions.append(transition)
+
+        transition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -1004,4 +1076,115 @@ extension Router: BuyAlgoHomeScreenDelegate {
             by: .presentWithoutNavigationController
         )
     }
+}
+
+/// <todo>
+/// Should be handled for each specific transaction separately.
+extension Router {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        switch error {
+        case let .network(apiError):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        visibleScreen.dismissScreen()
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            ongoingTransitions.append(transition)
+
+            transition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        ongoingTransitions.append(ledgerApprovalTransition)
+
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) { }
+
+    func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
 }

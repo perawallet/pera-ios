@@ -339,6 +339,8 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
                 with: .center
             )
         )
+
+        eventHandler?(.didEdit)
     }
 }
 
@@ -418,6 +420,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     enum Event {
+        case didEdit
         case didRemove
     }
 }

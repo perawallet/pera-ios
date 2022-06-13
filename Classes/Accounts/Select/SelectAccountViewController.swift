@@ -59,11 +59,14 @@ final class SelectAccountViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        guard transactionAction != .buyAlgo else {
-            return
+        switch transactionAction {
+        case .send,
+            .receive,
+            .optIn:
+            addBarButtons()
+        default:
+            break
         }
-
-        addBarButtons()
     }
 
     override func configureAppearance() {
@@ -161,10 +164,11 @@ extension SelectAccountViewController: SharedDataControllerObserver {
     }
 }
 
-enum TransactionAction {
+enum TransactionAction: Equatable {
     case send
     case receive
     case buyAlgo
+    case optIn(asset: AssetID)
 }
 
 protocol SelectAccountViewControllerDelegate: AnyObject {

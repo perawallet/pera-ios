@@ -26,7 +26,7 @@ struct AccountPortfolioViewModel:
     private(set) var secondaryValue: EditText?
 
     init(
-        _ model: AccountPortfolio
+        _ model: Portfolio
     ) {
         bind(model)
     }
@@ -34,7 +34,7 @@ struct AccountPortfolioViewModel:
 
 extension AccountPortfolioViewModel {
     mutating func bind(
-        _ portfolio: AccountPortfolio
+        _ portfolio: Portfolio
     ) {
         var mPortfolio = portfolio
         mPortfolio.calculate()
@@ -44,8 +44,8 @@ extension AccountPortfolioViewModel {
 
         if let algoCurrency = portfolio.currency.value as? AlgoCurrency {
 
-            var secondaryPortfolio = AccountPortfolio(
-                account: portfolio.account,
+            var secondaryPortfolio = Portfolio(
+                accounts: portfolio.accounts,
                 currency: .ready(currency: algoCurrency.currency, lastUpdateDate: Date()),
                 calculator: ALGPortfolioCalculator()
             )
@@ -55,8 +55,8 @@ extension AccountPortfolioViewModel {
             bindSecondaryValue(secondaryPortfolio)
         } else {
 
-            var secondaryPortfolio = AccountPortfolio(
-                account: portfolio.account,
+            var secondaryPortfolio = Portfolio(
+                accounts: portfolio.accounts,
                 currency: .ready(currency: AlgoCurrency(currency: portfolio.currency.value!), lastUpdateDate: Date()),
                 calculator: ALGPortfolioCalculator()
             )
@@ -68,7 +68,7 @@ extension AccountPortfolioViewModel {
     }
     
     mutating func bindTitle(
-        _ portfolio: AccountPortfolio
+        _ portfolio: Portfolio
     ) {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
@@ -87,13 +87,13 @@ extension AccountPortfolioViewModel {
     }
     
     mutating func bindValue(
-        _ portfolio: AccountPortfolio
+        _ portfolio: Portfolio
     ) {
         let font = Fonts.DMSans.medium.make(36)
         let lineHeightMultiplier = 1.02
 
         value = .attributedString(
-            portfolio.valueResult.uiDescription.attributed([
+            portfolio.totalValueResult.uiDescription.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
@@ -106,13 +106,13 @@ extension AccountPortfolioViewModel {
     }
 
     mutating func bindSecondaryValue(
-        _ portfolio: AccountPortfolio
+        _ portfolio: Portfolio
     ) {
         let font = Fonts.DMSans.medium.make(15)
         let lineHeightMultiplier = 1.02
 
         secondaryValue = .attributedString(
-            ("≈ " + portfolio.valueResult.uiDescription).attributed([
+            ("≈ " + portfolio.totalValueResult.uiDescription).attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([

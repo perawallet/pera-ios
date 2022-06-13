@@ -40,10 +40,8 @@ extension AccountPreviewViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
-        if var accountPortfolio = model as? AccountPortfolio {
+        if let accountPortfolio = model as? AccountPortfolio {
             address = accountPortfolio.account.value.address
-            
-            accountPortfolio.calculate()
 
             bindIcon(accountPortfolio)
             bindNamePreviewViewModel(accountPortfolio)
@@ -111,12 +109,14 @@ extension AccountPreviewViewModel {
     mutating func bindPrimaryAccessory(
         _ accountPortfolio: AccountPortfolio
     ) {
-        if accountPortfolio.valueResult.isFailure {
+        let totalPortfolio = accountPortfolio.account.value.totalPortfolio
+
+        if totalPortfolio.isFailure {
             primaryAccessory = nil
             return
         }
         
-        bindPrimaryAccessory(accountPortfolio.valueResult.abbreviatedUiDescription)
+        bindPrimaryAccessory(totalPortfolio.abbreviatedUiDescription)
     }
     
     mutating func bindSecondaryAccessory(
@@ -128,7 +128,8 @@ extension AccountPreviewViewModel {
     mutating func bindAccessoryIcon(
         _ accountPortfolio: AccountPortfolio
     ) {
-        bindAccessoryIcon(isValid: accountPortfolio.valueResult.isSuccess)
+        let totalPortfolio = accountPortfolio.account.value.totalPortfolio
+        bindAccessoryIcon(isValid: totalPortfolio.isSuccess)
     }
 }
 

@@ -20,7 +20,7 @@ final class SortAccountListTitleSupplementaryHeader:
     BaseSupplementaryView<TitleView> {
     static let theme: TitleViewTheme = {
         var theme = TitleViewTheme()
-        theme.configureForSortAccountListHeader()
+        theme.paddings = (20, 24, 12, 24)
         return theme
     }()
 

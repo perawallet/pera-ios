@@ -42,7 +42,12 @@ final class HomeViewController:
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(sharedDataController: sharedDataController, presentingScreen: self)
+        ScanQRFlowCoordinator(
+            sharedDataController: sharedDataController,
+            presentingScreen: self,
+            api: api!,
+            bannerController: bannerController!
+        )
 
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
@@ -105,7 +110,9 @@ final class HomeViewController:
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
                 self.updateUIWhenListDidReload()
 
-                self.presentCopyAddressStoryIfNeeded()
+                /// <todo>
+                /// It is disabled at the moment.
+//                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()
@@ -395,7 +402,7 @@ extension HomeViewController {
                     guard let self = self else { return }
 
                     switch event {
-                    case .didReorder: self.dataController.reload()
+                    case .didComplete: self.dataController.reload()
                     }
                 }
             }
@@ -694,6 +701,9 @@ extension HomeViewController {
                         guard let self = self else { return }
                         
                         switch event {
+                        case .didEdit:
+                            self.popScreen()
+                            self.dataController.reload()
                         case .didRemove:
                             self.popScreen()
                             self.dataController.reload()
@@ -721,8 +731,7 @@ extension HomeViewController {
         let visibleIndexPaths = listView.indexPathsForVisibleItems
         let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
 
-        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
-
+        navigationView.animateTitleVisible(!headerVisible)
         updateUIWhenListDidScroll()
     }
 }

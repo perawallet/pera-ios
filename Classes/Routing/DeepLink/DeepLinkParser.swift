@@ -218,6 +218,17 @@ extension DeepLinkParser {
         )
         return .success(.sendTransaction(draft: qrDraft))
     }
+
+    private func makeAssetOptInRequestScreen(
+        _ qr: QRText,
+        for url: URL
+    ) -> Result? {
+        guard let assetID = qr.asset else {
+            return nil
+        }
+
+        return .success(.accountSelect(asset: assetID))
+    }
     
     private func extractAccountAddress(
         from url: URL
@@ -302,6 +313,11 @@ extension DeepLinkParser {
                 qr,
                 for: url
             )
+        case .optInRequest:
+            return makeAssetOptInRequestScreen(
+                qr,
+                for: url
+            )
         case .mnemonic:
             return nil
         }
@@ -319,6 +335,7 @@ extension DeepLinkParser {
         case sendTransaction(draft: QRSendTransactionDraft)
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
         case buyAlgo(draft: BuyAlgoDraft)
+        case accountSelect(asset: AssetID)
     }
     
     enum Error: Swift.Error {

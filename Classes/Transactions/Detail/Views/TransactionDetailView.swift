@@ -340,6 +340,8 @@ extension TransactionDetailView: ViewModelBindable {
                     transactionViewModel: TransactionAmountViewModel(transactionAmountViewMode)
                 )
             )
+        } else {
+            amountView.isHidden = true
         }
 
         bindOpponentViewDetail(viewModel)
@@ -364,6 +366,8 @@ extension TransactionDetailView: ViewModelBindable {
                     contactDisplayViewModel: ContactDisplayViewModel(localAddress: localAddress)
                 )
             )
+        } else {
+            opponentView.removeAccessoryViews()
         }
     }
 }
