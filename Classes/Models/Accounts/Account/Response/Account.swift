@@ -312,3 +312,11 @@ extension Account: Hashable {
         hasher.combine(address.hashValue)
     }
 }
+
+extension Array where Self.Element == CollectibleAsset {
+    func sorted(
+        _ algorithm: CollectibleSortingAlgorithm
+    ) -> Self {
+        return sorted(by: algorithm.getFormula)
+    }
+}

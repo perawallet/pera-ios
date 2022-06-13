@@ -96,6 +96,10 @@ extension CollectibleListLocalDataController {
         sharedDataController.add(self)
     }
 
+    func reload() {
+        deliverContentSnapshot()
+    }
+
     func search(for query: String) {
         lastQuery = query
 
@@ -219,7 +223,9 @@ extension CollectibleListLocalDataController {
             )
 
             account
-                .collectibleAssets
+                .sortedCollectibleAssets(
+                    sharedDataController.selectedCollectibleSortingAlgorithm
+                )
                 .forEach { collectibleAsset in
                     if currentFilter == .owned,
                        !collectibleAsset.isOwned {

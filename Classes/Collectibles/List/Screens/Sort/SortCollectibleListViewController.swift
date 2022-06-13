@@ -42,8 +42,7 @@ final class SortCollectibleListViewController:
     )
 
     private lazy var listDataSource = SortCollectibleListDataSource(
-        listView,
-        dataController: dataController
+        listView
     )
 
     private let dataController: SortCollectibleListDataController
@@ -53,6 +52,7 @@ final class SortCollectibleListViewController:
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+
         super.init(configuration: configuration)
     }
 
@@ -61,17 +61,60 @@ final class SortCollectibleListViewController:
         bindNavigationItemTitle()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+            }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: false)
+            case .didComplete:
+                self.eventHandler?(.didComplete)
+            }
+        }
+
+        dataController.load()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
+
         addList()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        linkListViewInteractors()
     }
 }
 
 extension SortCollectibleListViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(
-            kind: .doneGreen
-        ) {}
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dismissScreen()
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.performChanges()
+        }
 
         rightBarButtonItems = [doneBarButtonItem]
     }
@@ -90,8 +133,25 @@ extension SortCollectibleListViewController {
     }
 }
 
+extension SortCollectibleListViewController {
+    private func linkListViewInteractors() {
+        listView.delegate = self
+    }
+}
 
 extension SortCollectibleListViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -110,9 +170,16 @@ extension SortCollectibleListViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard listDataSource.itemIdentifier(for: indexPath) != nil else { return }
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
 
-        dataController.selectItem(at: indexPath)
+        switch itemIdentifier {
+        case .sortOption:
+            dataController.selectItem(
+                at: indexPath
+            )
+        }
     }
 }
 

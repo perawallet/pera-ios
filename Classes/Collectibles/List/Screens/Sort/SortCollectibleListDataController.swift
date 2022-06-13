@@ -18,10 +18,7 @@ import Foundation
 import UIKit
 
 protocol SortCollectibleListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<
-        SortCollectibleListSection,
-        SortCollectibleListItem
-    >
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SortCollectibleListSection, SortCollectibleListItem>
 
     var eventHandler: ((SortCollectibleListDataControllerEvent) -> Void)? { get set }
 
@@ -37,11 +34,11 @@ protocol SortCollectibleListDataController: AnyObject {
 }
 
 enum SortCollectibleListSection: Hashable {
-    case sort
+    case sortOptions
 }
 
 enum SortCollectibleListItem: Hashable {
-    case sortType(SelectionValue<SingleSelectionViewModel>)
+    case sortOption(SelectionValue<SingleSelectionViewModel>)
 }
 
 enum SortCollectibleListDataControllerEvent {

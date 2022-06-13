@@ -396,7 +396,32 @@ extension CollectibleListViewController: SearchInputViewDelegate {
 extension CollectibleListViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapSort(
         _ managementOptionsViewController: ManagementOptionsViewController
-    ) {}
+    ) {
+        let eventHandler: SortCollectibleListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                switch event {
+                case .didComplete: self.dataController.reload()
+                }
+            }
+        }
+
+        open(
+            .sortCollectibleList(
+                dataController: SortCollectibleListLocalDataController(
+                    session: session!,
+                    sharedDataController: sharedDataController
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
 
     func managementOptionsViewControllerDidTapFilter(
         _ managementOptionsViewController: ManagementOptionsViewController

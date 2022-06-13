@@ -18,31 +18,30 @@ import Foundation
 import UIKit
 
 final class SortCollectibleListDataSource:
-    UICollectionViewDiffableDataSource<
-        SortCollectibleListSection,
-        SortCollectibleListItem
-> {
-    weak var dataController: SortCollectibleListDataController?
-
+    UICollectionViewDiffableDataSource<SortCollectibleListSection, SortCollectibleListItem> {
     init(
-        _ collectionView: UICollectionView,
-        dataController: SortCollectibleListDataController
+        _ collectionView: UICollectionView
     ) {
-        self.dataController = dataController
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case .sortType(let item):
+            case .sortOption(let item):
                 let cell = collectionView.dequeue(
                     SingleSelectionCell.self,
                     at: indexPath
                 )
-                cell.bindData(item.value)
+                cell.bindData(
+                    item.value
+                )
                 return cell
             }
         }
-
-        collectionView.register(SingleSelectionCell.self)
+        
+        [
+            SingleSelectionCell.self,
+        ].forEach {
+            collectionView.register($0)
+        }
     }
 }

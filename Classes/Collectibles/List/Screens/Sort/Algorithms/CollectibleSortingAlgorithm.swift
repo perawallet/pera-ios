@@ -21,7 +21,7 @@ protocol CollectibleSortingAlgorithm {
     var name: String { get }
 
     func getFormula(
-        collectible: Collectible,
-        otherCollectible: Collectible
+        collectible: CollectibleAsset,
+        otherCollectible: CollectibleAsset
     ) -> Bool
 }

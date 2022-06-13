@@ -19,7 +19,11 @@ import MacaroonUIKit
 import UIKit
 
 final class SortCollectibleListLayout: NSObject {
+    private var sizeCache: [String: CGSize] = [:]
+
     private let listDataSource: SortCollectibleListDataSource
+
+    private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
     init(
         listDataSource: SortCollectibleListDataSource
@@ -31,7 +35,6 @@ final class SortCollectibleListLayout: NSObject {
     class func build() -> UICollectionViewLayout {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsets(LayoutPaddings(20, 24, 16, 24))
         return flowLayout
     }
 }
@@ -40,16 +43,65 @@ extension SortCollectibleListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        var insets = UIEdgeInsets(
+            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        )
+
+        switch listSection {
+        case .sortOptions:
+            insets.top = 20
+            insets.bottom = 8
+            return insets
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard listDataSource.itemIdentifier(for: indexPath) != nil else {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return CGSize((collectionView.bounds.width, 0))
         }
 
-        return CGSize(
-            width: calculateContentWidth(for: collectionView),
-            height: 56
+        switch itemIdentifier {
+        case .sortOption:
+            return sizeForSingleSelectionCell(
+                collectionView,
+                layout: collectionViewLayout
+            )
+        }
+    }
+}
+
+extension SortCollectibleListLayout {
+    private func sizeForSingleSelectionCell(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = SingleSelectionCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = CGSize(
+            width: width,
+            height: 56 /// <todo>: Calculate height
         )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
     }
 }
 
@@ -58,7 +110,8 @@ extension SortCollectibleListLayout {
         for listView: UICollectionView
     ) -> LayoutMetric {
         return listView.bounds.width -
-            listView.contentInset.horizontal -
-            (24 + 24)
+        listView.contentInset.horizontal -
+        sectionHorizontalInsets.leading -
+        sectionHorizontalInsets.trailing
     }
 }

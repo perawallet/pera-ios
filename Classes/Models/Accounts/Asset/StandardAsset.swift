@@ -21,6 +21,7 @@ final class StandardAsset: Asset {
     let amount: UInt64
     let isFrozen: Bool?
     let isDeleted: Bool?
+    let optedInAtRound: UInt64?
     let name: String?
     let unitName: String?
     let decimals: Int
@@ -62,6 +63,7 @@ final class StandardAsset: Asset {
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.isDeleted = asset.isDeleted
+        self.optedInAtRound = asset.optedInAtRound
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.decimals = decoration.decimals
@@ -106,7 +108,8 @@ extension StandardAsset: Comparable {
             lhs.unitName == rhs.unitName &&
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
-            lhs.isVerified == rhs.isVerified
+            lhs.isVerified == rhs.isVerified &&
+            lhs.optedInAtRound == rhs.optedInAtRound
     }
 
     static func < (lhs: StandardAsset, rhs: StandardAsset) -> Bool {

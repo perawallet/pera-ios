@@ -26,8 +26,10 @@ final class SortAccountListViewController:
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = SortAccountListLayout.build()
-        let collectionView =
-        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
@@ -107,7 +109,7 @@ extension SortAccountListViewController {
 
         leftBarButtonItems = [closeBarButtonItem]
 
-        let addBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
             [weak self] in
             guard let self = self else {
                 return
@@ -116,7 +118,7 @@ extension SortAccountListViewController {
             self.dataController.performChanges()
         }
 
-        rightBarButtonItems = [addBarButtonItem]
+        rightBarButtonItems = [doneBarButtonItem]
     }
 
     private func bindNavigationItemTitle() {
@@ -273,7 +275,7 @@ extension SortAccountListViewController {
         }
 
         switch itemIdentifier {
-        case .sort:
+        case .sortOption:
             dataController.selectItem(
                 at: indexPath
             )
