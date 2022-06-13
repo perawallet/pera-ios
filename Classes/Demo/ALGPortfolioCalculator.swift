@@ -23,10 +23,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
     ) -> PortfolioHandle {
-        guard
-            let currencyValue = currency.value,
-            let currencyPriceValue = currencyValue.priceValue
-        else {
+        guard let currencyValue = currency.value else {
             return .failure(.currencyFailed)
         }
         
@@ -38,9 +35,14 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
             
             totalMicroAlgos += account.value.amount
         }
-        
-        let totalAmount = totalMicroAlgos.toAlgos * currencyPriceValue
-        let algosValue = PortfolioValue(amount: totalAmount, currency: currencyValue)
+
+        guard let algosValue = getPorfolioValue(
+            for: totalMicroAlgos.toAlgos,
+            from: currencyValue
+        ) else {
+            return .failure(.currencyFailed)
+        }
+
         return .success(algosValue)
     }
     
@@ -77,8 +79,14 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
                 return 0
             }
         }
-        
-        let assetsValue = PortfolioValue(amount: totalAmount, currency: currencyValue)
+
+        guard let assetsValue = getPorfolioValue(
+            for: totalAmount,
+            from: currencyValue
+        ) else {
+            return .failure(.currencyFailed)
+        }
+
         return .success(assetsValue)
     }
 }
@@ -105,5 +113,30 @@ extension ALGPortfolioCalculator {
         default:
             return false
         }
+    }
+
+    private func getPorfolioValue(
+        for primaryAmount: Decimal,
+        from currency: Currency
+    ) -> PortfolioValue? {
+        guard
+            let currencyPriceValue = currency.priceValue,
+            let currencyUSDValue = currency.usdValue
+        else {
+            return nil
+        }
+
+        let secondaryAmount: Decimal
+        if currency is AlgoCurrency {
+            secondaryAmount = primaryAmount / currencyUSDValue
+        } else {
+            secondaryAmount = primaryAmount * currencyPriceValue
+        }
+
+        return PortfolioValue(
+            primaryAmount: primaryAmount,
+            secondaryAmount: secondaryAmount,
+            currency: currency
+        )
     }
 }

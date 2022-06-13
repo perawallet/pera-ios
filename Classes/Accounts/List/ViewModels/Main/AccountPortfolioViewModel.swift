@@ -66,7 +66,7 @@ extension AccountPortfolioViewModel {
         let lineHeightMultiplier = 1.02
         
         value = .attributedString(
-            totalPortfolio.uiDescription.attributed([
+            totalPortfolio.primaryUIDescription.attributed([
                 .font(font),
                 .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),

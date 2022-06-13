@@ -44,30 +44,7 @@ extension HomePortfolioViewModel {
         
         bindTitle(mPortfolio)
         bindValue(mPortfolio)
-        
-        if let algoCurrency = portfolio.currency.value as? AlgoCurrency {
-            
-            var secondaryPortfolio = Portfolio(
-                accounts: portfolio.accounts,
-                currency: .ready(currency: algoCurrency.currency, lastUpdateDate: Date()),
-                calculator: ALGPortfolioCalculator()
-            )
-            
-            secondaryPortfolio.calculate()
-            
-            bindSecondaryValue(secondaryPortfolio)
-        } else {
-            
-            var secondaryPortfolio = Portfolio(
-                accounts: portfolio.accounts,
-                currency: .ready(currency: AlgoCurrency(currency: portfolio.currency.value!), lastUpdateDate: Date()),
-                calculator: ALGPortfolioCalculator()
-            )
-            
-            secondaryPortfolio.calculate()
-            
-            bindSecondaryValue(secondaryPortfolio)
-        }
+        bindSecondaryValue(mPortfolio.totalValueResult)
     }
     
     mutating func bindTitle(
@@ -105,7 +82,7 @@ extension HomePortfolioViewModel {
         let lineHeightMultiplier = 1.02
         
         value = .attributedString(
-            totalValueResult.uiDescription.attributed([
+            totalValueResult.primaryUIDescription.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
@@ -118,15 +95,15 @@ extension HomePortfolioViewModel {
     }
     
     mutating func bindSecondaryValue(
-        _ portfolio: Portfolio
+        _ totalValue: PortfolioHandle
     ) {
-        totalValueResult = portfolio.totalValueResult
+        totalValueResult = totalValue
         
         let font = Fonts.DMSans.medium.make(15)
         let lineHeightMultiplier = 1.02
         
         secondaryValue = .attributedString(
-            ("≈ " + totalValueResult.uiDescription).attributed([
+            ("≈ " + totalValueResult.secondaryUIDescription).attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([

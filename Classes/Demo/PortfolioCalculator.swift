@@ -74,15 +74,42 @@ extension PortfolioCalculator {
 typealias PortfolioHandle = Swift.Result<PortfolioValue, PortfolioValueError>
 
 struct PortfolioValue {
-    var formattedAmount: String {
-        return amount.toCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+    var primaryFormattedAmount: String {
+        if currency is AlgoCurrency {
+            return primaryAmount.toCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+        }
+
+        return secondaryAmount.toCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+    }
+
+    var secondaryFormattedAmount: String {
+        if let algoCurrency = currency as? AlgoCurrency {
+            return secondaryAmount.toCurrencyStringForLabel(with: algoCurrency.currency.symbol) ?? "N/A"
+        }
+
+        let algoCurrency = AlgoCurrency(currency: currency)
+        return primaryAmount.toCurrencyStringForLabel(with: algoCurrency.symbol) ?? "N/A"
     }
     
-    var abbreviatedFormattedAmount: String {
-        return amount.abbreviatedCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+    var primaryAbbreviatedFormattedAmount: String {
+        if currency is AlgoCurrency {
+            return primaryAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+        }
+
+        return secondaryAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
     }
-    
-    let amount: Decimal
+
+    var secondaryAbbreviatedFormattedAmount: String {
+        if let algoCurrency = currency as? AlgoCurrency {
+            return secondaryAmount.abbreviatedCurrencyStringForLabel(with: algoCurrency.currency.symbol) ?? "N/A"
+        }
+
+        let algoCurrency = AlgoCurrency(currency: currency)
+        return primaryAmount.abbreviatedCurrencyStringForLabel(with: algoCurrency.symbol) ?? "N/A"
+    }
+
+    let primaryAmount: Decimal
+    let secondaryAmount: Decimal
     let currency: Currency
 }
 
@@ -95,8 +122,13 @@ extension PortfolioValue {
             return nil
         }
         
-        let totalAmount = lhs.amount + rhs.amount
-        return PortfolioValue(amount: totalAmount, currency: lhs.currency)
+        let totalPrimaryAmount = lhs.primaryAmount + rhs.primaryAmount
+        let totalSecondaryAmount = lhs.secondaryAmount + rhs.secondaryAmount
+        return PortfolioValue(
+            primaryAmount: totalPrimaryAmount,
+            secondaryAmount: totalSecondaryAmount,
+            currency: lhs.currency
+        )
     }
 }
 
@@ -107,23 +139,44 @@ enum PortfolioValueError: Error {
 }
 
 extension Result where Success == PortfolioValue {
-    var uiDescription: String {
+    var primaryUIDescription: String {
         switch self {
-        case .success(let value): return value.formattedAmount
-        case .failure: return "N/A"
-        }
-    }
-    
-    var abbreviatedUiDescription: String {
-        switch self {
-        case .success(let value): return value.abbreviatedFormattedAmount
+        case .success(let value): return value.primaryFormattedAmount
         case .failure: return "N/A"
         }
     }
 
-    var amount: Decimal {
+    var secondaryUIDescription: String {
         switch self {
-        case .success(let value): return value.amount
+        case .success(let value): return value.secondaryFormattedAmount
+        case .failure: return "N/A"
+        }
+    }
+    
+    var primaryAbbreviatedUiDescription: String {
+        switch self {
+        case .success(let value): return value.primaryAbbreviatedFormattedAmount
+        case .failure: return "N/A"
+        }
+    }
+
+    var secondaryAbbreviatedUiDescription: String {
+        switch self {
+        case .success(let value): return value.secondaryAbbreviatedFormattedAmount
+        case .failure: return "N/A"
+        }
+    }
+
+    var primaryAmount: Decimal {
+        switch self {
+        case .success(let value): return value.primaryAmount
+        case .failure: return .zero
+        }
+    }
+
+    var secondaryAmount: Decimal {
+        switch self {
+        case .success(let value): return value.secondaryAmount
         case .failure: return .zero
         }
     }

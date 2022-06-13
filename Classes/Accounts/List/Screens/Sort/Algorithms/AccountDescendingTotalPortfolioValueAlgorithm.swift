@@ -33,8 +33,8 @@ extension AccountDescendingTotalPortfolioValueAlgorithm {
         account: AccountHandle,
         otherAccount: AccountHandle
     ) -> Bool {
-        let accountTotalPortfolioValue = account.value.totalPortfolio.amount
-        let otherAccountTotalPortfolioValue = otherAccount.value.totalPortfolio.amount
+        let accountTotalPortfolioValue = account.value.totalPortfolio.primaryAmount
+        let otherAccountTotalPortfolioValue = otherAccount.value.totalPortfolio.primaryAmount
         return accountTotalPortfolioValue > otherAccountTotalPortfolioValue
     }
 }
