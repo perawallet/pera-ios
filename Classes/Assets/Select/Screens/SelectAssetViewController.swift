@@ -61,7 +61,6 @@ final class SelectAssetViewController:
         super.configureNavigationBarAppearance()
 
         navigationItem.title = "send-select-asset".localized
-        addBarButtons()
     }
     
     override func setListeners() {
@@ -76,6 +75,14 @@ final class SelectAssetViewController:
     private func build() {
         addBackground()
         addListView()
+    }
+
+    /// <todo>: It will be moved to configureNavigationBarAppearance method
+    /// currently if we do in configure method, both back and dismiss buttons will be visible
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        addBarButtons()
     }
 }
 
@@ -92,13 +99,16 @@ extension SelectAssetViewController {
     }
 
     private func addBarButtons() {
+        if canGoBack() {
+            return
+        }
+        
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
             [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
-
-        hidesCloseBarButtonItem = true
         leftBarButtonItems = [closeBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 

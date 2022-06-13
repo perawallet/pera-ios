@@ -81,7 +81,7 @@ extension AccountAssetListLayout {
             return CGSize(theme.assetTitleItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
-        case .asset(let item):
+        case let .asset(item), let .algo(item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -95,6 +95,11 @@ extension AccountAssetListLayout {
             return AccountQuickActionsCell.calculatePreferredSize(
                 for: AccountQuickActionsViewTheme(),
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        case .empty(let item):
+            return sizeForNoContent(
+                collectionView,
+                item: item
             )
         }
     }
@@ -120,6 +125,8 @@ extension AccountAssetListLayout {
                 bottom: 36,
                 right: quickActionsSectionHorizontalInsets.trailing
             )
+        case .assets:
+            return UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
         default:
             return insets
         }
@@ -167,6 +174,29 @@ extension AccountAssetListLayout {
         let newSize = AssetPreviewCell.calculatePreferredSize(
             item,
             for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func sizeForNoContent(
+        _ listView: UICollectionView,
+        item: AssetListSearchNoContentViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = NoContentCell.calculatePreferredSize(
+            item,
+            for: NoContentCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

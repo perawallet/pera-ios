@@ -69,7 +69,7 @@ extension ReceiveTransactionFlowCoordinator {
 
         screen.open(
             qrGeneratorScreen,
-            by: .root
+            by: .push
         )
     }
 }

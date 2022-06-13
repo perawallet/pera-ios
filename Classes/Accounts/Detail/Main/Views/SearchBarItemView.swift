@@ -18,8 +18,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class SearchBarItemView: View {
-    private lazy var searchInputView = SearchInputView()
+final class SearchBarItemView:
+    View,
+    ListReusable {
+    private(set) lazy var searchInputView = SearchInputView()
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -38,7 +40,6 @@ final class SearchBarItemView: View {
 extension SearchBarItemView {
     private func addSearchInputView(_ theme: SearchBarItemViewTheme) {
         searchInputView.customize(theme.searchInput)
-        searchInputView.isUserInteractionEnabled = false
 
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
@@ -48,6 +49,6 @@ extension SearchBarItemView {
     }
 }
 
-final class SearchBarItemCell: BaseCollectionViewCell<SearchBarItemView> {
-    
+final class SearchBarItemCell:
+    CollectionCell<SearchBarItemView>{
 }

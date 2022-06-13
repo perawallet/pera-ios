@@ -254,15 +254,23 @@ extension SearchInputView {
 
         return false
     }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        delegate?.searchInputViewDidBeginEditing(self)
+    }
 }
 
 protocol SearchInputViewDelegate: AnyObject {
     func searchInputViewDidEdit(_ view: SearchInputView)
+    func searchInputViewDidBeginEditing(_ view: SearchInputView)
     func searchInputViewDidReturn(_ view: SearchInputView)
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView)
 }
 
 extension SearchInputViewDelegate {
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+    }
+
+    func searchInputViewDidBeginEditing(_ view: SearchInputView) {
     }
 }

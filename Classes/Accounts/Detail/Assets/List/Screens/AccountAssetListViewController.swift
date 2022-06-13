@@ -51,7 +51,9 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var listBackgroundView = UIView()
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
-    
+
+    private var keyboardController = KeyboardController()
+
     private var accountHandle: AccountHandle
 
     init(
@@ -105,11 +107,13 @@ final class AccountAssetListViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
+        keyboardController.dataSource = self
     }
 
     override func setListeners() {
         super.setListeners()
         setTransactionActionButtonAction()
+        keyboardController.beginTracking()
     }
 }
 
@@ -240,6 +244,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     
                     self.eventHandler?(.addAsset)
                 }
+            case .search:
+                guard let item = cell as? SearchBarItemCell else {
+                    return
+                }
+
+                item.contextView.searchInputView.delegate = self
             default:
                 return
             }
@@ -326,27 +336,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
-            case .search:
-                let cell = collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
-                if let quickActionsAttribute = listView.collectionViewLayout.layoutAttributesForItem(
-                    at: indexPath
-                ) {
-                    let originY = quickActionsAttribute.frame.minY
-                    collectionView.setContentOffset(
-                        CGPoint(x: .zero, y: originY), animated: true)
-                }
+            case .algo:
+                openAlgoDetail()
             case .asset:
-                let algoIndex = 2
+                let assetIndex = indexPath.item
                 
-                if indexPath.item == algoIndex {
-                    openAlgoDetail()
-                    return
-                }
-
-                /// Reduce management and algos cells from index
-                let assetIndex = indexPath.item - (algoIndex + 1)
-                
-                if let assetDetail = accountHandle.value.standardAssets[safe: assetIndex] {
+                if let assetDetail = dataController[assetIndex] {
                     self.openAssetDetail(assetDetail, on: self)
                 }
             default:
@@ -401,7 +396,45 @@ extension AccountAssetListViewController {
     }
 }
 
+extension AccountAssetListViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        dataController.search(for: view.text)
+    }
 
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+
+    func searchInputViewDidBeginEditing(_ view: SearchInputView) {
+        guard let indexPath = listDataSource.indexPath(for: .search) else {
+            return
+        }
+
+        listView.scrollToItem(at: indexPath, at: .top, animated: true)
+    }
+}
+
+extension AccountAssetListViewController: KeyboardControllerDataSource {
+    var scrollView: UIScrollView {
+        return listView
+    }
+
+    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
+        return 20
+    }
+
+    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
+        return nil
+    }
+
+    func containerView(for keyboardController: KeyboardController) -> UIView {
+        return listView
+    }
+
+    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
+        return 20
+    }
+}
 
 extension AccountAssetListViewController {
     func addAsset(_ assetDetail: StandardAsset) {

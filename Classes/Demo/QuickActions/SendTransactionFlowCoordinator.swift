@@ -62,7 +62,7 @@ extension SendTransactionFlowCoordinator {
 
         screen.open(
             assetSelectionScreen,
-            by: .root
+            by: .push
         )
     }
 }

@@ -65,7 +65,7 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         watchAccountAdditionView.linkInteractors()
         keyboardController.dataSource = self
         watchAccountAdditionView.delegate = self
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
     }
     
     override func prepareLayout() {
