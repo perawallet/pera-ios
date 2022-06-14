@@ -62,13 +62,13 @@ extension CollectibleListLayout {
         case .loading:
             return insets
         case .header:
-            insets.top = 24
+            insets.top = 28
             return insets
         case .search:
-            insets.top = 20
+            insets.top = 16
             return insets
         case .collectibles:
-            insets.top = 16
+            insets.top = 20
             insets.bottom = 8
             return insets
         }
@@ -106,7 +106,7 @@ extension CollectibleListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForHeaderItem: item.value
+                sizeForHeaderItem: item
             )
         case .search:
             return sizeForSearch(
@@ -120,11 +120,6 @@ extension CollectibleListLayout {
                     collectionView,
                     layout: collectionViewLayout,
                     sizeForCollectibleItem: item
-                )
-            case .footer:
-                return sizeForFooter(
-                    collectionView,
-                    layout: collectionViewLayout
                 )
             }
         }
@@ -224,7 +219,7 @@ extension CollectibleListLayout {
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForHeaderItem item: CollectibleListInfoWithFilterViewModel
+        sizeForHeaderItem item: ManagementItemViewModel
     )-> CGSize {
         let sizeCacheIdentifier = CollectibleListInfoWithFilterCell.reuseIdentifier
 
@@ -233,30 +228,11 @@ extension CollectibleListLayout {
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = CollectibleListInfoWithFilterCell.calculatePreferredSize(
+        let newSize = ManagementItemCell.calculatePreferredSize(
             item,
-            for: CollectibleListInfoWithFilterCell.theme,
+            for: ManagementItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
-    }
-
-    private func sizeForFooter(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout
-    ) -> CGSize {
-        let sizeCacheIdentifier = CollectibleListItemReceiveCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateGridCellWidth(listView, layout: listViewLayout)
-
-        let newSize = CGSize(width: width.float(), height: width.float())
 
         sizeCache[sizeCacheIdentifier] = newSize
 

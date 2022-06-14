@@ -433,8 +433,10 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
-        case .assetManagement:
-            viewController = AssetManagementViewController(configuration: configuration)
+        case let .managementOptions(managementType, delegate):
+            let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
+            managementOptionsViewController.delegate = delegate
+            viewController = managementOptionsViewController
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
@@ -671,6 +673,13 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .sortCollectibleList(dataController, eventHandler):
+            let aViewController = SortCollectibleListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .collectiblesFilterSelection(filter):
             viewController = CollectiblesFilterSelectionViewController(
                 filter: filter,

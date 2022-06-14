@@ -57,6 +57,8 @@
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
 "title-lowest-value-to-highest" = "Lowest Value to Highest";
 "title-highest-value-to-lowest" = "Highest Value to Lowest";
+"title-newest-to-oldest" = "Newest to Oldest";
+"title-oldest-to-newest" = "Oldest to Newest";
 "title-manually" = "Manually";
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -297,7 +299,9 @@
 "options-unmute-notification" = "Unmute Notifications";
 "options-copy-address" = "Copy Address";
 "options-manage-assets" = "Manage Assets";
+"options-manage-collectibles" = "Manage Collectibles";
 "options-sort-title" = "Sort";
+"opitons-collectibles-filter" = "Filter NFTs";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -949,7 +953,7 @@
 
 // MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
-"collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-list-input-placeholder" = "Search NFTs";
 "collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
 // MARK: Collectible Filter Selection

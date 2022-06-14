@@ -21,6 +21,7 @@ final class CollectibleAsset: Asset {
     let amount: UInt64
     let isFrozen: Bool?
     let isDeleted: Bool?
+    let optedInAtRound: UInt64?
     let creator: AssetCreator?
     let name: String?
     let unitName: String?
@@ -90,6 +91,7 @@ final class CollectibleAsset: Asset {
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.isDeleted = asset.isDeleted
+        self.optedInAtRound = asset.optedInAtRound
         self.creator = decoration.creator
         self.name = decoration.name
         self.unitName = decoration.unitName
@@ -130,7 +132,8 @@ extension CollectibleAsset: Comparable {
             lhs.isVerified == rhs.isVerified &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
-            lhs.collectionName == rhs.collectionName
+            lhs.collectionName == rhs.collectionName &&
+            lhs.optedInAtRound == rhs.optedInAtRound
     }
 
     static func < (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {

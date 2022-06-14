@@ -12,48 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SortAccountListDataController.swift
+//   SortCollectibleListDataController.swift
 
+import Foundation
 import UIKit
 
-protocol SortAccountListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<SortAccountListSection, SortAccountListItem>
+protocol SortCollectibleListDataController: AnyObject {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SortCollectibleListSection, SortCollectibleListItem>
 
-    var eventHandler: ((SortAccountListDataControllerEvent) -> Void)? { get set }
+    var eventHandler: ((SortCollectibleListDataControllerEvent) -> Void)? { get set }
 
-    var selectedSortingAlgorithm: AccountSortingAlgorithm { get }
+    var selectedSortingAlgorithm: CollectibleSortingAlgorithm { get }
 
     func load()
 
     func selectItem(
         at indexPath: IndexPath
     )
-    func moveItem(
-        from source: IndexPath,
-        to destination: IndexPath
-    )
 
     func performChanges()
 }
 
-enum SortAccountListSection:
-    Hashable {
+enum SortCollectibleListSection: Hashable {
     case sortOptions
-    case reordering
 }
 
-enum SortAccountListItem: Hashable {
+enum SortCollectibleListItem: Hashable {
     case sortOption(SelectionValue<SingleSelectionViewModel>)
-    case reordering(AccountPreviewViewModel)
 }
 
-enum SortAccountListDataControllerEvent {
-    case didUpdate(SortAccountListDataController.Snapshot)
+enum SortCollectibleListDataControllerEvent {
+    case didUpdate(SortCollectibleListDataController.Snapshot)
     case didComplete
 
-    var snapshot: SortAccountListDataController.Snapshot? {
+    var snapshot: SortCollectibleListDataController.Snapshot? {
         switch self {
-        case .didUpdate(let snapshot): return snapshot
+        case .didUpdate(let snapshot):
+            return snapshot
         default: return nil
         }
     }

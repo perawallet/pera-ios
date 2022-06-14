@@ -31,7 +31,7 @@ final class SortAccountListDataSource:
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case .sort(let item):
+            case .sortOption(let item):
                 let cell = collectionView.dequeue(
                     SingleSelectionCell.self,
                     at: indexPath
@@ -40,25 +40,22 @@ final class SortAccountListDataSource:
                     item.value
                 )
                 return cell
-            case .order(let item):
-                switch item {
-                case .cell(let item):
-                    let cell = collectionView.dequeue(
-                        AccountOrderingPreviewCell.self,
-                        at: indexPath
-                    )
-                    cell.bindData(
-                        item
-                    )
-                    return cell
-                }
+            case .reordering(let item):
+                let cell = collectionView.dequeue(
+                    AccountOrderingPreviewCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
+                return cell
             }
         }
 
         supplementaryViewProvider = {
             [weak self] collectionView, kind, indexPath in
             guard let section = self?.snapshot().sectionIdentifiers[safe: indexPath.section],
-                  section == .order,
+                  section == .reordering,
                   kind == UICollectionView.elementKindSectionHeader else {
                 return nil
             }
@@ -97,7 +94,7 @@ final class SortAccountListDataSource:
             return false
         }
 
-        return listSection == .order
+        return listSection == .reordering
     }
 
     override func collectionView(

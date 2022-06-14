@@ -44,7 +44,10 @@ indirect enum Screen {
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
-    case assetManagement
+    case managementOptions(
+        managementType: ManagementOptionsViewController.ManagementType,
+        delegate: ManagementOptionsViewControllerDelegate
+    )
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
     case rewardDetail(account: Account, calculatedRewards: Decimal)
     case verifiedAssetInformation
@@ -116,6 +119,10 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case sortCollectibleList(
+        dataController: SortCollectibleListDataController,
+        eventHandler: SortCollectibleListViewController.EventHandler
+    )
     case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController

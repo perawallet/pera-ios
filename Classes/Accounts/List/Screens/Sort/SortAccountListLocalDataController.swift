@@ -160,13 +160,13 @@ extension SortAccountListLocalDataController {
                 value: viewModel,
                 isSelected: isSelected
             )
-            return .sort(value)
+            return .sortOption(value)
         }
         
-        snapshot.appendSections([.sort])
+        snapshot.appendSections([.sortOptions])
         snapshot.appendItems(
             items,
-            toSection: .sort
+            toSection: .sortOptions
         )
     }
 
@@ -180,14 +180,14 @@ extension SortAccountListLocalDataController {
             reorderedAccountItems = reorderedAccounts.map {
                 let draft = AccountOrderingDraft(account: $0.value)
                 let viewModel = AccountPreviewViewModel(draft)
-                return .order(.cell(viewModel))
+                return .reordering(viewModel)
             }
         }
 
-        snapshot.appendSections([.order])
+        snapshot.appendSections([.reordering])
         snapshot.appendItems(
             reorderedAccountItems,
-            toSection: .order
+            toSection: .reordering
         )
     }
 

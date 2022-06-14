@@ -12,23 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetManagementViewController+Theme.swift
+//   CollectibleSortingAlgorithm.swift
 
 import Foundation
-import MacaroonUIKit
 
-extension ManagementOptionsViewController {
-    struct Theme:
-        StyleSheet,
-        LayoutSheet {
-        let backgroundColor: Color
-        let contentPaddings: LayoutPaddings
-        let listActionViewTheme: ListActionViewTheme
-        
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (16, 24, 20, 24)
-            self.listActionViewTheme = ListActionViewTheme(family)
-        }
-    }
+protocol CollectibleSortingAlgorithm {
+    var id: String { get }
+    var name: String { get }
+
+    func getFormula(
+        collectible: CollectibleAsset,
+        otherCollectible: CollectibleAsset
+    ) -> Bool
 }
