@@ -21,16 +21,19 @@ import UIKit
 /// This should be removed after the routing refactor.
 final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
     private unowned let presentingScreen: UIViewController
+    private let account: Account?
 
     init(
-        presentingScreen: UIViewController
+        presentingScreen: UIViewController,
+        account: Account? = nil
     ) {
         self.presentingScreen = presentingScreen
+        self.account = account
     }
 }
 
 extension SendTransactionFlowCoordinator {
-    func launch(with account: Account? = nil) {
+    func launch() {
         guard let account = account else {
             openAccountSelection()
             return

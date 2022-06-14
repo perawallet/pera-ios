@@ -44,9 +44,9 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-        SendTransactionFlowCoordinator(presentingScreen: self)
+    SendTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
     private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
@@ -131,9 +131,9 @@ extension AccountDetailViewController {
             case .buyAlgo:
                 self.buyAlgoFlowCoordinator.launch()
             case .send:
-                self.sendTransactionFlowCoordinator.launch(with: self.accountHandle.value)
+                self.sendTransactionFlowCoordinator.launch()
             case .address:
-                self.receiveTransactionFlowCoordinator.launch(with: self.accountHandle.value)
+                self.receiveTransactionFlowCoordinator.launch()
             case .transactionOption:
                 self.modalTransition.perform(
                     .transactionOptions(delegate: self),
@@ -146,7 +146,7 @@ extension AccountDetailViewController {
     }
 }
 
-extension AccountDetailViewController: TransactionOptionsScreenDelegate {
+extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
@@ -157,14 +157,14 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-            self?.sendTransactionFlowCoordinator.launch(with: self?.accountHandle.value)
+            self?.sendTransactionFlowCoordinator.launch()
         }
     }
 
     func transactionOptionsScreenDidReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-            self?.receiveTransactionFlowCoordinator.launch(with: self?.accountHandle.value)
+            self?.receiveTransactionFlowCoordinator.launch()
         }
     }
 
