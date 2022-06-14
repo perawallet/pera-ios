@@ -56,7 +56,6 @@ extension ManagementItemView {
         primaryButton.customizeAppearance(theme.primaryButton)
 
         addSubview(primaryButton)
-        primaryButton.fitToIntrinsicSize()
         primaryButton.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.trailing.equalTo(secondaryButton.snp.leading).offset(-theme.spacing)

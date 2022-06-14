@@ -96,6 +96,10 @@ extension CollectibleListLocalDataController {
         sharedDataController.add(self)
     }
 
+    func reload() {
+        deliverContentSnapshot(with: lastQuery)
+    }
+
     func search(for query: String) {
         lastQuery = query
 
@@ -219,7 +223,9 @@ extension CollectibleListLocalDataController {
             )
 
             account
-                .collectibleAssets
+                .sortedCollectibleAssets(
+                    sharedDataController.selectedCollectibleSortingAlgorithm
+                )
                 .forEach { collectibleAsset in
                     if currentFilter == .owned,
                        !collectibleAsset.isOwned {
@@ -331,24 +337,21 @@ extension CollectibleListLocalDataController {
         }
 
         deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.header, .search, .collectibles])
+            self.addHeaderContent(
+                withCollectibleCount: collectibleItems.count,
+                to: &snapshot
+            )
+
+            snapshot.appendSections([.search, .collectibles])
 
             snapshot.appendItems(
                 [.search],
                 toSection: .search
-            )
-
-            snapshot.appendItems(
-                [
-                    .header(
-                        ManagementItemViewModel(
-                            .collectible(count: collectibleItems.count)
-                        )
-                    )
-                ],
-                toSection: .header
             )
 
             snapshot.appendItems(
@@ -391,7 +394,16 @@ extension CollectibleListLocalDataController {
 
     private func deliverSearchNoContentSnapshot() {
         deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
             var snapshot = Snapshot()
+
+            self.addHeaderContent(
+                withCollectibleCount: .zero,
+                to: &snapshot
+            )
+
             snapshot.appendSections([.search, .empty])
 
             snapshot.appendItems(
@@ -406,6 +418,23 @@ extension CollectibleListLocalDataController {
 
             return snapshot
         }
+    }
+
+    private func addHeaderContent(
+        withCollectibleCount count: Int,
+        to snapshot: inout Snapshot
+    ) {
+        let headerItem: CollectibleListItem = .header(
+            ManagementItemViewModel(
+                .collectible(count: count)
+            )
+        )
+
+        snapshot.appendSections([.header])
+        snapshot.appendItems(
+            [headerItem],
+            toSection: .header
+        )
     }
 
     private func deliverSnapshot(

@@ -56,11 +56,11 @@ extension SortAccountListLayout {
         )
 
         switch listSection {
-        case .sort:
+        case .sortOptions:
             insets.top = 20
             insets.bottom = 8
             return insets
-        case .order:
+        case .reordering:
             insets.left = 0
             insets.right = 0
             insets.bottom = 8
@@ -76,7 +76,7 @@ extension SortAccountListLayout {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: section],
-              listSection == .order else {
+              listSection == .reordering else {
             return .zero
         }
 
@@ -91,7 +91,7 @@ extension SortAccountListLayout {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: section],
-              listSection == .order else {
+              listSection == .reordering else {
             return CGSize((collectionView.bounds.width, 0))
         }
 
@@ -112,26 +112,45 @@ extension SortAccountListLayout {
         }
 
         switch itemIdentifier {
-        case .sort(_):
-            return CGSize(
-                width: calculateContentWidth(for: collectionView),
-                height: 56
-            ) /// <todo>: Calculate height
-        case .order(let item):
-            switch item {
-            case .cell(let item):
-                let size = listView(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    sizeForAccountCellItem: item
-                )
-                return size
-            }
+        case .sortOption:
+            return sizeForSingleSelectionCell(
+                collectionView,
+                layout: collectionViewLayout
+            )
+        case .reordering(let item):
+            let size = listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountCellItem: item
+            )
+            return size
         }
     }
 }
 
 extension SortAccountListLayout {
+    private func sizeForSingleSelectionCell(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = SingleSelectionCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = CGSize(
+            width: width,
+            height: 56 /// <todo>: Calculate height
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,

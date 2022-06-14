@@ -28,6 +28,7 @@ protocol CollectibleListDataController: AnyObject {
     var galleryAccount: CollectibleGalleryAccount { get }
 
     func load()
+    func reload()
     func search(for query: String)
     func resetSearch()
     var currentFilter: CollectiblesFilterSelectionViewController.Filter { get }
@@ -41,15 +42,15 @@ enum CollectibleSection:
     Hashable {
     case empty
     case loading
-    case search
     case header
+    case search
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
-    case search
     case header(ManagementItemViewModel)
+    case search
     case collectible(CollectibleItem)
 }
 
