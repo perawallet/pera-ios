@@ -29,7 +29,6 @@ struct HomePortfolioViewTheme:
     var secondaryValue: TextStyle
     var spacingBetweenTitleAndInfoAction: LayoutMetric
     var spacingBetweenTitleAndValue: LayoutMetric
-    var minSpacingBetweenAlgoHoldingsAndAssetHoldings: LayoutMetric
     
     init(
         _ family: LayoutFamily
@@ -51,6 +50,5 @@ struct HomePortfolioViewTheme:
         ]
         self.spacingBetweenTitleAndInfoAction = 8
         self.spacingBetweenTitleAndValue = 8
-        self.minSpacingBetweenAlgoHoldingsAndAssetHoldings = 8
     }
 }

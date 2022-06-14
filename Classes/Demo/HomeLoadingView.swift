@@ -31,7 +31,7 @@ final class HomeLoadingView:
     private lazy var portfolioInfoView = MacaroonUIKit.Button()
     private lazy var portfolioPrimaryValueView = ShimmerView()
     private lazy var portfolioSecondaryValueView = ShimmerView()
-    private lazy var quickActionsView = QuickActionsView()
+    private lazy var quickActionsView = HomeQuickActionsView()
     private lazy var accountsHeaderView = ManagementItemView()
     private lazy var accountsView = VStackView()
     private lazy var backgroundView = UIView()
@@ -131,7 +131,7 @@ extension HomeLoadingView {
 
         /// <todo>
         /// It should calculate its own size.
-        let quickctionsSize = QuickActionsView.calculatePreferredSize(
+        let quickActionsSize = HomeQuickActionsView.calculatePreferredSize(
             for: quickActionsTheme,
             fittingIn: CGSize(
                 width: UIScreen.main.bounds.width -
@@ -143,7 +143,7 @@ extension HomeLoadingView {
 
         portfolioView.addSubview(quickActionsView)
         quickActionsView.snp.makeConstraints {
-            $0.fitToHeight(quickctionsSize.height)
+            $0.fitToHeight(quickActionsSize.height)
             $0.top == portfolioSecondaryValueView.snp.bottom +
                 theme.spacingBetweenQuickActionsAndSecondaryPortfolioValue
             $0.leading == 0

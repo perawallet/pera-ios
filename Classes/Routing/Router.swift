@@ -764,6 +764,10 @@ class Router:
             let screen = CopyAddressStoryScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
+        case .transactionOptions(let delegate):
+            let aViewController = TransactionOptionsScreen(configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         }
 
         return viewController as? T

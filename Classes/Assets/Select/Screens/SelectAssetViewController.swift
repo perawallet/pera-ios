@@ -56,8 +56,10 @@ final class SelectAssetViewController:
         self.theme = theme
         super.init(configuration: configuration)
     }
-    
-    override func configureAppearance() {
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
         navigationItem.title = "send-select-asset".localized
     }
     
@@ -74,6 +76,14 @@ final class SelectAssetViewController:
         addBackground()
         addListView()
     }
+
+    /// <todo>: It will be moved to configureNavigationBarAppearance method
+    /// currently if we do in configure method, both back and dismiss buttons will be visible
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        addBarButtons()
+    }
 }
 
 extension SelectAssetViewController {
@@ -86,6 +96,19 @@ extension SelectAssetViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+    }
+
+    private func addBarButtons() {
+        if canGoBack() {
+            return
+        }
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        leftBarButtonItems = [closeBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 

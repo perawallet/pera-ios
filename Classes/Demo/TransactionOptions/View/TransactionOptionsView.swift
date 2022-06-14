@@ -42,7 +42,12 @@ final class TransactionOptionsView:
     private var contentStartLayout: [Constraint] = []
     private var contentEndLayout: [Constraint] = []
 
-    private let actions = Action.allCases
+    private let actions: [Action]
+
+    init(actions: [Action] = Action.allCases) {
+        self.actions = actions
+        super.init(frame: .zero)
+    }
         
     func customize(
         _ theme: TransactionOptionsViewTheme

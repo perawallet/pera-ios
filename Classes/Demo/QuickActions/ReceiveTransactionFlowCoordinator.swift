@@ -30,10 +30,46 @@ final class ReceiveTransactionFlowCoordinator: SelectAccountViewControllerDelega
 }
 
 extension ReceiveTransactionFlowCoordinator {
-    func launch() {
+    func launch(with account: Account? = nil) {
+        guard let account = account else {
+            openAccountSelection()
+            return
+        }
+
+        openQRGenerator(with: account)
+    }
+
+    private func openAccountSelection() {
         presentingScreen.open(
             .accountSelection(transactionAction: .receive, delegate: self),
             by: .present
+        )
+    }
+
+    private func openQRGenerator(with account: Account, on screen: UIViewController? = nil) {
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: accountName
+        )
+        let qrGeneratorScreen: Screen = .qrGenerator(
+            title: accountName,
+            draft: draft,
+            isTrackable: true
+        )
+
+        guard let screen = screen else {
+            presentingScreen.open(
+                qrGeneratorScreen,
+                by: .present
+            )
+            return
+        }
+
+        screen.open(
+            qrGeneratorScreen,
+            by: .push
         )
     }
 }
@@ -50,21 +86,6 @@ extension ReceiveTransactionFlowCoordinator {
             return
         }
 
-        let accountName = account.name ?? account.address.shortAddressDisplay
-        let draft = QRCreationDraft(
-            address: account.address,
-            mode: .address,
-            title: accountName
-        )
-        let screen: Screen = .qrGenerator(
-            title: accountName,
-            draft: draft,
-            isTrackable: true
-        )
-
-        selectAccountViewController.open(
-            screen,
-            by: .root
-        )
+        openQRGenerator(with: account, on: selectAccountViewController)
     }
 }

@@ -31,6 +31,9 @@ final class AccountAssetListLayout: NSObject {
     private let isWatchAccount: Bool
     private let listDataSource: AccountAssetListDataSource
 
+    private let quickActionsSectionHorizontalInsets: LayoutHorizontalPaddings = (36, 36)
+
+
     init(
         isWatchAccount: Bool,
         listDataSource: AccountAssetListDataSource
@@ -78,7 +81,7 @@ extension AccountAssetListLayout {
             return CGSize(theme.assetTitleItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
-        case .asset(let item):
+        case let .asset(item), let .algo(item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -86,6 +89,46 @@ extension AccountAssetListLayout {
             )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
+        case .quickActions:
+            let width = calculateContentWidth(for: collectionView)
+
+            return AccountQuickActionsCell.calculatePreferredSize(
+                for: AccountQuickActionsViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        case .empty(let item):
+            return sizeForNoContent(
+                collectionView,
+                item: item
+            )
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        let insets: UIEdgeInsets = .zero
+
+        switch listSection {
+        case .quickActions:
+            return UIEdgeInsets(
+                top: 0,
+                left: quickActionsSectionHorizontalInsets.leading,
+                bottom: 36,
+                right: quickActionsSectionHorizontalInsets.trailing
+            )
+        case .assets:
+            return UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        default:
+            return insets
         }
     }
 }
@@ -131,6 +174,29 @@ extension AccountAssetListLayout {
         let newSize = AssetPreviewCell.calculatePreferredSize(
             item,
             for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func sizeForNoContent(
+        _ listView: UICollectionView,
+        item: AssetListSearchNoContentViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = NoContentCell.calculatePreferredSize(
+            item,
+            for: NoContentCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

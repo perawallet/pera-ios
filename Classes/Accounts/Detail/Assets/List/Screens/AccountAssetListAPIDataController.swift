@@ -26,6 +26,9 @@ final class AccountAssetListAPIDataController:
     private var accountHandle: AccountHandle
     private var assets: [StandardAsset] = []
 
+    private var searchKeyword: String? = nil
+    private var searchResults: [StandardAsset] = []
+
     var addedAssetDetails: [StandardAsset] = []
     var removedAssetDetails: [StandardAsset] = []
 
@@ -33,6 +36,8 @@ final class AccountAssetListAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
+
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
     init(
         _ accountHandle: AccountHandle,
@@ -44,6 +49,16 @@ final class AccountAssetListAPIDataController:
 
     deinit {
         sharedDataController.remove(self)
+    }
+
+    subscript(index: Int) -> StandardAsset? {
+        var searchResultIndex = index - 2
+
+        if isKeywordContainsAlgo() {
+            searchResultIndex = searchResultIndex.advanced(by: -1)
+        }
+
+        return searchResults[safe: searchResultIndex]
     }
 }
 
@@ -85,13 +100,25 @@ extension AccountAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            let portfolio = AccountPortfolio(account: self.accountHandle)
+            let currencyHandle = self.sharedDataController.currency
+
+            let portfolio = Portfolio(
+                accounts: [self.accountHandle],
+                currency: currencyHandle,
+                calculator: ALGPortfolioCalculator()
+            )
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
             snapshot.appendItems(
                 [.portfolio(portfolioItem)],
                 toSection: .portfolio
+            )
+
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems(
+                [.quickActions],
+                toSection: .quickActions
             )
 
             var assets: [StandardAsset] = []
@@ -110,22 +137,24 @@ extension AccountAssetListAPIDataController {
             }
 
             assetItems.append(.search)
-            
-            let currency = self.sharedDataController.currency.value
-
-            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
 
             self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
             self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
-            self.accountHandle.value.standardAssets.forEach { asset in
+            self.load(with: self.searchKeyword)
+
+            if self.isKeywordContainsAlgo() {
+                assetItems.append(.algo(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currencyHandle.value)))))
+            }
+
+            self.searchResults.forEach { asset in
                 if self.removedAssetDetails.contains(asset) {
                     return
                 }
 
                 assets.append(asset)
                 
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currencyHandle.value))
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
@@ -145,6 +174,15 @@ extension AccountAssetListAPIDataController {
                 assetItems,
                 toSection: .assets
             )
+
+            if self.searchResults.isEmpty && !self.isKeywordContainsAlgo() {
+                snapshot.appendSections([.empty])
+
+                snapshot.appendItems(
+                    [ .empty(AssetListSearchNoContentViewModel(hasBody: true)) ],
+                    toSection: .empty
+                )
+            }
 
             return snapshot
         }
@@ -184,5 +222,68 @@ extension AccountAssetListAPIDataController {
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
         removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }.uniqueElements()
+    }
+}
+
+/// <mark>: Search
+extension AccountAssetListAPIDataController {
+    func search(for query: String?) {
+        searchThrottler.performNext {
+            [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            self.resetSearch()
+
+            self.load(with: query)
+            self.deliverContentSnapshot()
+        }
+    }
+
+    private func load(with query: String?) {
+        if query.isNilOrEmpty {
+            searchKeyword = nil
+        } else {
+            searchKeyword = query
+        }
+
+        guard let searchKeyword = searchKeyword else {
+            searchResults = accountHandle.value.standardAssets
+            return
+        }
+
+        searchResults = accountHandle.value.standardAssets.filter { asset in
+            isAssetContainsID(asset, query: searchKeyword) ||
+            isAssetContainsName(asset, query: searchKeyword) ||
+            isAssetContainsUnitName(asset, query: searchKeyword)
+        }
+    }
+
+    private func resetSearch() {
+        searchResults = accountHandle.value.standardAssets
+        deliverContentSnapshot()
+    }
+
+    private func isAssetContainsID(_ asset: StandardAsset, query: String) -> Bool {
+        return String(asset.id).localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsName(_ asset: StandardAsset, query: String) -> Bool {
+        return asset.name.someString.localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsUnitName(_ asset: StandardAsset, query: String) -> Bool {
+        return asset.unitName.someString.localizedCaseInsensitiveContains(query)
+    }
+
+    private func isKeywordContainsAlgo() -> Bool {
+        guard let keyword = searchKeyword, !keyword.isEmptyOrBlank else {
+            /// <note>: If keyword doesn't contain any word or it's empty, it should return true for adding algo to asset list
+            return true
+        }
+
+        return "algo".containsCaseInsensitive(keyword)
     }
 }
