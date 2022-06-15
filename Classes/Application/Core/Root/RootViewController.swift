@@ -101,6 +101,7 @@ extension RootViewController {
                 appConfiguration.sharedDataController,
                 announcementDataController: announcementAPIDataController
             ),
+            copyToClipboardController: ALGCopyToClipboardController(),
             configuration: configuration
         )
         let homeTab = HomeTabBarItem(
