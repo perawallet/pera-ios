@@ -75,6 +75,12 @@ extension AccountAssetListLayout {
                 layout: collectionViewLayout,
                 sizeForPortfolioItem: item
             )
+        case .watchPortfolio(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForWatchPortfolioItem: item
+            )
         case .assetManagement:
             return CGSize(theme.assetManagementItemSize)
         case .assetTitle:
@@ -127,6 +133,8 @@ extension AccountAssetListLayout {
             )
         case .assets:
             return UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        case .portfolio:
+            return UIEdgeInsets(top: 0, left: 0, bottom: isWatchAccount ? 36 : 0, right: 0)
         default:
             return insets
         }
@@ -153,6 +161,28 @@ extension AccountAssetListLayout {
         
         sizeCache[sizeCacheIdentifier] = newSize
         
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForWatchPortfolioItem item: AccountPortfolioViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = WatchAccountPortfolioCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = WatchAccountPortfolioCell.calculatePreferredSize(
+            item,
+            for: WatchAccountPortfolioCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude)))
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
         return newSize
     }
 

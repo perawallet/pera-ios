@@ -768,6 +768,13 @@ class Router:
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
+        case .sortAccountAsset(let dataController, let eventHandler):
+            let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T

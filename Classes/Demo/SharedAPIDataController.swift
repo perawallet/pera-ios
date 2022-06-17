@@ -34,6 +34,9 @@ final class SharedAPIDataController:
     var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? {
         didSet { cache.collectibleSortingAlgorithmName = selectedCollectibleSortingAlgorithm?.name }
     }
+    var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? {
+        didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
+    }
 
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
@@ -60,6 +63,13 @@ final class SharedAPIDataController:
         CollectibleAscendingOptedInRoundAlgorithm(),
         CollectibleAscendingTitleAlgorithm(),
         CollectibleDescendingTitleAlgorithm()
+    ]
+
+    let accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
+        AccountAssetAscendingTitleAlgorithm(),
+        AccountAssetDescendingTitleAlgorithm(),
+        AccountAssetDescendingAmountAlgorithm(),
+        AccountAssetAscendingAmountAlgorithm()
     ]
 
     private lazy var blockProcessor = createBlockProcessor()
@@ -94,6 +104,10 @@ final class SharedAPIDataController:
         self.selectedCollectibleSortingAlgorithm = collectibleSortingAlgorithms.first {
             $0.name == cache.collectibleSortingAlgorithmName
         } ?? CollectibleDescendingOptedInRoundAlgorithm()
+
+        self.selectedAccountAssetSortingAlgorithm = accountAssetSortingAlgorithms.first {
+            $0.name == cache.accountAssetSortingAlgorithmName
+        } ?? AccountAssetAscendingTitleAlgorithm()
     }
 }
 
@@ -420,8 +434,17 @@ extension SharedAPIDataController {
             }
         }
 
+        var accountAssetSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: accountAssetSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
         private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"
         private let collectibleSortingAlgorithmNameKey = "cache.key.collectibleSortingAlgorithmName"
+        private let accountAssetSortingAlgorithmNameKey = "cache.key.accountAssetSortingAlgorithmName"
     }
 }
 

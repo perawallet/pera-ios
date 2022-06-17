@@ -27,7 +27,9 @@ enum AssetPreviewModelAdapter {
             title: adaptee.asset.presentation.name,
             subtitle: adaptee.asset.presentation.unitName,
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount
+            secondaryAccessory: assetViewModel.currencyAmount,
+            currencyAmount: assetViewModel.currencyDecimal ?? 0,
+            asset: adaptee.asset
         )
     }
 
@@ -39,7 +41,9 @@ enum AssetPreviewModelAdapter {
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
-            secondaryAccessory: algoAssetViewModel.currencyAmount
+            secondaryAccessory: algoAssetViewModel.currencyAmount,
+            currencyAmount: algoAssetViewModel.currencyDecimal ?? 0,
+            asset: nil
         )
     }
 
@@ -51,7 +55,9 @@ enum AssetPreviewModelAdapter {
             title: adaptee.asset.presentation.name,
             subtitle: "ID \(adaptee.asset.id)",
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount
+            secondaryAccessory: assetViewModel.currencyAmount,
+            currencyAmount: assetViewModel.currencyDecimal ?? 0,
+            asset: adaptee.asset
         )
     }
 
