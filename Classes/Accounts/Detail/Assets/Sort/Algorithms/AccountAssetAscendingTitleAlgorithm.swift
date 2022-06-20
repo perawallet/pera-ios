@@ -40,11 +40,11 @@ extension AccountAssetAscendingTitleAlgorithm {
         otherAssetPreview.title ??
         otherAssetPreview.subtitle
 
-        guard let assetTitle = firstAssetTitle else {
+        guard let assetTitle = firstAssetTitle, !assetTitle.isEmptyOrBlank else {
             return false
         }
 
-        guard let otherAssetTitle = secondAssetTitle else {
+        guard let otherAssetTitle = secondAssetTitle, !otherAssetTitle.isEmptyOrBlank else {
             return true
         }
 

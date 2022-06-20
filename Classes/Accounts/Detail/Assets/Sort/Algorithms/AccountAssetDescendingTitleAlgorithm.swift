@@ -40,12 +40,12 @@ extension AccountAssetDescendingTitleAlgorithm {
         otherAssetPreview.title ??
         otherAssetPreview.subtitle
 
-        guard let assetTitle = firstAssetTitle else {
-            return false
+        guard let assetTitle = firstAssetTitle, !assetTitle.isEmptyOrBlank else {
+            return true
         }
 
-        guard let otherAssetTitle = secondAssetTitle else {
-            return true
+        guard let otherAssetTitle = secondAssetTitle, !otherAssetTitle.isEmptyOrBlank else {
+            return false
         }
 
         let comparison = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
