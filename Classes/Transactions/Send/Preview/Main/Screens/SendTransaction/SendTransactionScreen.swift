@@ -47,6 +47,8 @@ final class SendTransactionScreen: BaseViewController {
     private var amount: String = "0"
     private var isAmountResetted: Bool = true
 
+    private lazy var amountValidator = TransactionAmountValidator(account: draft.from)
+
     private var note: String? {
         didSet {
             if draft.lockedNote != nil {
@@ -273,14 +275,6 @@ extension SendTransactionScreen {
 }
 
 extension SendTransactionScreen {
-    private func addBarButtons() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.displayTransactionTutorial(isInitialDisplay: false)
-        }
-
-        rightBarButtonItems = [infoBarButtonItem]
-    }
-    
     private func displayTransactionTutorial(isInitialDisplay: Bool) {
         modalTransition.perform(
             .transactionTutorial(
@@ -291,7 +285,16 @@ extension SendTransactionScreen {
     }
 }
 
+// MARK: - Layout
 extension SendTransactionScreen {
+    private func addBarButtons() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.displayTransactionTutorial(isInitialDisplay: false)
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
+    }
+
     private func addNextButton() {
         nextButton.customize(theme.nextButtonStyle)
         nextButton.setTitle("title-next".localized, for: .normal)
@@ -381,6 +384,7 @@ extension SendTransactionScreen {
     }
 }
 
+// MARK: - Actions
 extension SendTransactionScreen: TransactionSignChecking {
     @objc
     private func didTapNext() {
@@ -390,62 +394,12 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         let validation = validate(value: amount)
 
-        let errorTitle: String
-        let errorMessage: String
-
         switch validation {
-        case .otherAlgo:
-            errorTitle = "title-error".localized
-            errorMessage = "send-algos-minimum-amount-error".localized
-        case .minimumAmountAlgoError:
-            errorTitle = "title-error".localized
-            errorMessage = "send-algos-minimum-amount-error".localized
-        case .maximumAmountAlgoError:
-            errorTitle = "title-error".localized
-            errorMessage = "send-algos-amount-error".localized
-        case .minimumAmountAssetError:
-            errorTitle = "title-error".localized
-            errorMessage = "send-asset-amount-error".localized
-        case .otherAsset:
-            errorTitle = "title-error".localized
-            errorMessage = "send-asset-amount-error".localized
-        case .valid:
-            draft.amount = amount.decimalAmount
-
-            if draft.hasReceiver {
-                redirectToPreview()
-                return
-            }
-
-            let controller = open(
-                .transactionAccountSelect(draft: draft),
-                by: .push
-            ) as? AccountSelectScreen
-
-            controller?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
-                switch event {
-                case .didCompleteTransaction:
-                    self.eventHandler?(.didCompleteTransaction)
-                }
-            }
-            return
-        case .algoParticipationKeyWarning:
-            self.presentParticipationKeyWarningForMaxTransaction()
-            return
-        case .maxAlgo:
-            self.displayMaxTransactionWarning()
-            return
-        case .requiredMinAlgo:
-            self.displayRequiredMinAlgoWarning()
-            return
+        case .success:
+            handleSuccessAmountValidation()
+        case .failure(let validationError):
+            handleFailureAmountError(validationError)
         }
-
-        bannerController?.presentErrorBanner(
-            title: errorTitle,
-            message: errorMessage
-        )
     }
 
     @objc
@@ -485,6 +439,130 @@ extension SendTransactionScreen: TransactionSignChecking {
     }
 }
 
+// MARK: - Validation
+extension SendTransactionScreen {
+    private func handleSuccessAmountValidation() {
+        draft.amount = amount.decimalAmount
+
+        if draft.hasReceiver {
+            redirectToPreview()
+            return
+        }
+
+        let controller = open(
+            .transactionAccountSelect(draft: draft),
+            by: .push
+        ) as? AccountSelectScreen
+
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            }
+        }
+    }
+
+    private func handleFailureAmountError(_ validation: TransactionAmountValidationError) {
+        switch validation {
+        case .asset(let assetTransactionAmountError):
+            handleFailureAssetAmountError(assetTransactionAmountError)
+        case .algo(let algoTransactionAmountError):
+            handleFailureAlgoAmountError(algoTransactionAmountError)
+        case .transactionParamsMissing, .unexpected:
+            handleErrorMessage("default-error-message".localized)
+        }
+    }
+
+    private func handleFailureAssetAmountError(_ validation: TransactionAmountAssetError) {
+        switch validation {
+        case .exceededLimit:
+            handleErrorMessage("send-asset-amount-error".localized)
+        case .requiredMinimumBalance:
+            displayRequiredMinAlgoWarning()
+        }
+    }
+
+    private func handleFailureAlgoAmountError(_ validation: TransactionAmountAlgoError) {
+        switch validation {
+        case .exceededLimit:
+            handleErrorMessage("send-algos-amount-error".localized)
+        case .requiredMinimumBalance:
+            displayMaxTransactionWarning()
+        case .participationKey:
+            presentParticipationKeyWarningForMaxTransaction()
+        case .lowBalance:
+            displayRequiredMinAlgoWarning()
+        }
+    }
+
+    private func handleErrorMessage(_ errorMessage: String) {
+        let errorTitle = "title-error".localized
+
+        bannerController?.presentErrorBanner(
+            title: errorTitle,
+            message: errorMessage
+        )
+    }
+}
+
+// MARK: - Warning Sheets
+extension SendTransactionScreen {
+    private func displayRequiredMinAlgoWarning() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "required-min-balance-title".localized,
+            description: .plain("required-min-balance-description".localized),
+            secondaryActionButtonTitle: "title-got-it".localized
+        )
+
+        self.modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func displayMaxTransactionWarning() {
+        guard let transactionParams = transactionParams else {
+            return
+        }
+
+        let viewModel = MaximumBalanceWarningViewModel(draft.from, transactionParams)
+
+        var bottomWarningDescription: BottomWarningViewConfigurator.BottomWarningDescription?
+
+        if let description = viewModel.description {
+            bottomWarningDescription = .plain(description)
+        }
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "min-balance-title".localized,
+            description: bottomWarningDescription,
+            primaryActionButtonTitle: "title-continue".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.draft.amount = maxAmount.decimalAmount
+
+                self.open(.transactionAccountSelect(draft: self.draft), by: .push)
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+// MARK: - NumpadViewDelegate
 extension SendTransactionScreen: NumpadViewDelegate {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadButton.NumpadKey) {
         var newValue = amount
@@ -534,62 +612,21 @@ extension SendTransactionScreen: NumpadViewDelegate {
         bindAmount()
     }
 
-    private func validate(value: String) -> TransactionValidation {
+    private func validate(value: String) -> TransactionAmountValidation {
+        guard let decimalAmount = value.decimalAmount else {
+            return .failure(.unexpected)
+        }
+
+        let asset: Asset?
+
         switch draft.transactionMode {
         case .algo:
-            return validateAlgo(for: value)
-        case .asset(let asset):
-            return validateAsset(for: value, on: asset)
+            asset = nil
+        case .asset(let selectedAsset):
+            asset = selectedAsset
         }
 
-    }
-
-    private func validateAlgo(for value: String) -> TransactionValidation {
-        guard let decimalAmount = value.decimalAmount else {
-            return .otherAlgo
-        }
-
-        if draft.from.amount < UInt64(decimalAmount.toMicroAlgos) {
-            return .maximumAmountAlgoError
-        }
-
-        if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < calculateMininmumAmount(for: draft.from) {
-
-            if !draft.from.hasDifferentMinBalance {
-                return .valid
-            }
-            
-            if Int(decimalAmount.toMicroAlgos) <= Int(calculateMininmumAmount(for: draft.from)) + Int(minimumFee) {
-                return .requiredMinAlgo
-            }
-            
-            return .maxAlgo
-        }
-
-        if isMaxTransaction {
-            if draft.from.doesAccountHasParticipationKey() {
-                return .algoParticipationKeyWarning
-            } else if draft.from.hasDifferentMinBalance || draft.from.isRekeyed() {
-                displayMaxTransactionWarning()
-                return .maxAlgo
-            }
-        }
-
-        return .valid
-    }
-
-    private func validateAsset(for value: String, on asset: Asset) -> TransactionValidation {
-        guard let decimalAmount = value.decimalAmount else {
-            return .otherAsset
-        }
-
-        let assetAmount = asset.amountWithFraction
-
-        if assetAmount < decimalAmount {
-            return .minimumAmountAssetError
-        }
-
-        return .valid
+        return amountValidator.validate(amount: decimalAmount, on: asset)
     }
 
     private func presentParticipationKeyWarningForMaxTransaction() {
@@ -620,77 +657,15 @@ extension SendTransactionScreen: NumpadViewDelegate {
             switch response {
             case let .success(params):
                 self.transactionParams = params
+                self.amountValidator.setTransactionParams(params)
             case .failure:
                 break
             }
         }
     }
-    
-    private func displayRequiredMinAlgoWarning() {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "required-min-balance-title".localized,
-            description: .plain("required-min-balance-description".localized),
-            secondaryActionButtonTitle: "title-got-it".localized
-        )
-
-        self.modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func displayMaxTransactionWarning() {
-        guard let transactionParams = transactionParams else {
-            return
-        }
-
-        let viewModel = MaximumBalanceWarningViewModel(draft.from, transactionParams)
-
-        var bottomWarningDescription: BottomWarningViewConfigurator.BottomWarningDescription?
-
-        if let description = viewModel.description {
-            bottomWarningDescription = .plain(description)
-        }
-
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "min-balance-title".localized,
-            description: bottomWarningDescription,
-            primaryActionButtonTitle: "title-continue".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
-            primaryAction: {
-                [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
-                self.draft.amount = maxAmount.decimalAmount
-                
-                self.open(.transactionAccountSelect(draft: self.draft), by: .push)
-            }
-        )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func calculateMininmumAmount(for account: Account) -> UInt64 {
-        let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: transactionParams)
-        let calculatedFee = transactionParams?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
-        let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
-            for: account,
-               with: .algosTransaction,
-               calculatedFee: calculatedFee,
-               isAfterTransaction: true
-        ) - calculatedFee
-        return minimumAmountForAccount
-    }
 }
 
+// MARK: - EditNoteScreenDelegate
 extension SendTransactionScreen: EditNoteScreenDelegate {
     func editNoteScreen(
         _ editNoteScreen: EditNoteScreen,
@@ -701,20 +676,7 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
     }
 }
 
-extension SendTransactionScreen {
-    enum TransactionValidation {
-        case otherAlgo
-        case otherAsset
-        case minimumAmountAlgoError
-        case maximumAmountAlgoError
-        case minimumAmountAssetError
-        case valid
-        case algoParticipationKeyWarning
-        case maxAlgo
-        case requiredMinAlgo
-    }
-}
-
+// MARK: - TransactionControllerDelegate
 extension SendTransactionScreen: TransactionControllerDelegate {
     func transactionController(
         _ transactionController: TransactionController,
@@ -810,6 +772,7 @@ extension SendTransactionScreen: TransactionControllerDelegate {
     }
 }
 
+// MARK: - TransactionSendControllerDelegate
 extension SendTransactionScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
         stopLoadingIfNeeded { [weak self] in
@@ -902,6 +865,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
     }
 }
 
+// MARK: - Compose Transaction
 extension SendTransactionScreen {
     private func composeAlgosTransactionData() {
         var transactionDraft = AlgosTransactionSendDraft(

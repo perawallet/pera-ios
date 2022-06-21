@@ -44,7 +44,11 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        account: accountHandle.value
+    )
     private lazy var receiveTransactionFlowCoordinator =
     ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
 
