@@ -1019,11 +1019,20 @@ extension Router {
             return
         }
 
+        let newMode: TransactionMode
+
+        if case let .asset(asset) = qrDraft.transactionMode {
+            let foundAsset = account[asset.id] ?? asset
+            newMode = .asset(foundAsset)
+        } else {
+            newMode = .algo
+        }
+
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
             amount: qrDraft.amount,
-            transactionMode: qrDraft.transactionMode,
+            transactionMode: newMode,
             note: qrDraft.note,
             lockedNote: qrDraft.lockedNote
         )
