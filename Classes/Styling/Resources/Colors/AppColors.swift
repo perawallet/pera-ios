@@ -140,6 +140,14 @@ extension AppColors.Components {
     }
 }
 
+extension AppColors.Components {
+    enum Toast: String, Color {
+        case background = "Components/Toast/bg"
+        case description = "Components/Toast/description"
+        case title = "Components/Toast/title"
+    }
+}
+
 extension AppColors.SendTransaction {
     enum Shadow: String, Color {
         case first = "SendTransaction/Shadow/account-first"

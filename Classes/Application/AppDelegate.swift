@@ -66,7 +66,8 @@ class AppDelegate:
         sharedDataController: sharedDataController,
         walletConnector: walletConnector,
         loadingController: loadingController,
-        bannerController: bannerController
+        bannerController: bannerController,
+        toastPresentationController: toastPresentationController
     )
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -78,6 +79,7 @@ class AppDelegate:
     private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
+    private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
     
     private lazy var router =
