@@ -52,7 +52,11 @@ final class Account: ALGEntityModel {
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
-    var accountImage: String?
+
+    /// <note>
+    /// This value should be calculated first, then assign to the account since it requires
+    /// additional items for the calculation.
+    var totalPortfolio: PortfolioHandle = .failure(.idle)
 
     private(set) var standardAssets: [StandardAsset] = []
     private var standardAssetsIndexer: StandardAssetIndexer = [:]
@@ -84,7 +88,6 @@ final class Account: ALGEntityModel {
         appsTotalSchema = apiModel.appsTotalSchema
         receivesNotification = true
         preferredOrder = AccountInformation.invalidOrder
-        accountImage = AccountImageType.getRandomImage(for: type).rawValue
         totalCreatedApps = apiModel.totalCreatedApps
     }
 
@@ -109,7 +112,6 @@ final class Account: ALGEntityModel {
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
-        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
         self.totalCreatedApps = 0
     }
     
@@ -127,7 +129,6 @@ final class Account: ALGEntityModel {
         self.receivesNotification = localAccount.receivesNotification
         self.rekeyDetail = localAccount.rekeyDetail
         self.preferredOrder = localAccount.preferredOrder
-        self.accountImage = localAccount.accountImage
         self.totalCreatedApps = 0
     }
 
@@ -309,5 +310,13 @@ extension Account: Equatable {
 extension Account: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(address.hashValue)
+    }
+}
+
+extension Array where Self.Element == CollectibleAsset {
+    func sorted(
+        _ algorithm: CollectibleSortingAlgorithm
+    ) -> Self {
+        return sorted(by: algorithm.getFormula)
     }
 }

@@ -27,7 +27,8 @@ class BaseViewController:
     var isStatusBarHidden = false
     var hidesStatusBarWhenAppeared = false
     var hidesStatusBarWhenPresented = false
-    
+
+    var hidesCloseBarButtonItem = false
     var leftBarButtonItems: [BarButtonItemRef] = []
     var rightBarButtonItems: [BarButtonItemRef] = []
     
@@ -42,9 +43,6 @@ class BaseViewController:
     
     var shouldShowNavigationBar: Bool {
         return true
-    }
-    var hidesCloseBarButtonItem: Bool {
-        return false
     }
     var prefersLargeTitle: Bool {
         return false

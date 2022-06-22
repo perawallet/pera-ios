@@ -87,7 +87,8 @@ extension QRCreationViewController {
             [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
-        
+
+        hidesCloseBarButtonItem = true
         leftBarButtonItems = [closeBarButtonItem]
     }
 }
@@ -120,11 +121,12 @@ extension QRCreationViewController: QRCreationViewDelegate {
         UIPasteboard.general.string = draft.address
         bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
-}
+} 
 
 enum QRMode {
     case address
     case mnemonic
     case algosRequest
     case assetRequest
+    case optInRequest
 }

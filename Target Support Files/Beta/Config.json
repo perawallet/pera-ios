@@ -8,13 +8,15 @@
     "deeplink_config": {
         "qr": {
             "acceptedSchemes": [
-                "algorand"
+                "algorand",
+                "perawallet"
             ],
             "preferredScheme": "algorand"
         },
         "wallet_connect": {
             "acceptedSchemes": [
                 "algorand-wc"
+                "perawallet-wc"
             ],
             "preferredScheme": "algorand-wc"
         },

@@ -33,8 +33,9 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case .assetManagement:
-                let cell = collectionView.dequeue(AssetManagementItemCell.self, at: indexPath)
+            case .assetManagement(let titleItem):
+                let cell = collectionView.dequeue(ManagementItemCell.self, at: indexPath)
+                cell.bindData(titleItem)
                 return cell
             case let .assetTitle(item):
                 let cell = collectionView.dequeue(AssetTitleItemCell.self, at: indexPath)
@@ -42,7 +43,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 return cell
             case .search:
                 return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
-            case let .asset(item):
+            case let .asset(item), let .algo(item):
                 let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
@@ -50,16 +51,27 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case .quickActions:
+                return collectionView.dequeue(
+                    AccountQuickActionsCell.self,
+                    at: indexPath
+                )
+            case .empty(let item):
+                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
             }
         }
 
         [
             AccountPortfolioCell.self,
-            AssetManagementItemCell.self,
+            ManagementItemCell.self,
             AssetTitleItemCell.self,
             SearchBarItemCell.self,
             AssetPreviewCell.self,
             PendingAssetPreviewCell.self,
+            AccountQuickActionsCell.self,
+            NoContentCell.self
         ].forEach {
             collectionView.register($0)
         }

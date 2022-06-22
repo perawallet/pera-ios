@@ -16,6 +16,7 @@
 //   AccountDetailViewController.swift
 
 import Foundation
+import MacaroonUIKit
 import UIKit
 
 final class AccountDetailViewController: PageContainer {
@@ -41,9 +42,15 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator =
+    SendTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    private lazy var receiveTransactionFlowCoordinator =
+    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+
     private lazy var localAuthenticator = LocalAuthenticator()
 
-    private lazy var accountTitleView = ImageWithTitleView()
+    private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
 
     private var accountHandle: AccountHandle
 
@@ -58,8 +65,33 @@ final class AccountDetailViewController: PageContainer {
         addTitleView()
     }
 
+    override func viewWillAppear(
+        _ animated: Bool
+    ) {
+        super.viewWillAppear(animated)
+        switchToHighlightedNavigationBarAppearance()
+    }
+
+    override func viewWillDisappear(
+        _ animated: Bool
+    ) {
+        super.viewWillDisappear(animated)
+
+        if presentedViewController == nil {
+            switchToDefaultNavigationBarAppearance()
+        }
+    }
+
     override func configureNavigationBarAppearance() {
         addOptionsBarButton()
+    }
+
+    override func customizePageBarAppearance() {
+        super.customizePageBarAppearance()
+
+        pageBar.customizeAppearance([
+            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+        ])
     }
 
     override func configureAppearance() {
@@ -96,25 +128,72 @@ extension AccountDetailViewController {
             case .addAsset:
                 let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
                 controller?.delegate = self
+            case .buyAlgo:
+                self.buyAlgoFlowCoordinator.launch()
+            case .send:
+                self.sendTransactionFlowCoordinator.launch()
+            case .address:
+                self.receiveTransactionFlowCoordinator.launch()
+            case .transactionOption:
+                self.modalTransition.perform(
+                    .transactionOptions(delegate: self),
+                    by: .presentWithoutNavigationController
+                )
+            case .more:
+                self.presentOptionsScreen()
             }
+        }
+    }
+}
+
+extension AccountDetailViewController: TransactionOptionsScreenDelegate {
+    func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.buyAlgoFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.sendTransactionFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.receiveTransactionFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.presentOptionsScreen()
         }
     }
 }
 
 extension AccountDetailViewController {
     private func addOptionsBarButton() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [weak self] in
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) { [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.modalTransition.perform(
-                .options(account: self.accountHandle.value, delegate: self),
-                by: .presentWithoutNavigationController
-            )
+            self.presentOptionsScreen()
         }
 
         rightBarButtonItems = [optionsBarButtonItem]
+    }
+
+    private func presentOptionsScreen() {
+        modalTransition.perform(
+            .options(account: self.accountHandle.value, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func setPageBarItems() {
@@ -126,10 +205,14 @@ extension AccountDetailViewController {
     }
 
     private func addTitleView() {
-        accountTitleView.customize(AccountNameViewSmallTheme())
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
-
-        navigationItem.titleView = accountTitleView
+        accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
+        navigationItem.titleView = accountNamePreviewTitleView
     }
 }
 
@@ -202,11 +285,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             by: .present
         )
     }
-    
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
-        let controller = open(.removeAsset(account: accountHandle.value), by: .present) as? ManageAssetsViewController
-        controller?.delegate = self
-    }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         displayRemoveAccountAlert()
@@ -255,7 +333,14 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
+
+        eventHandler?(.didEdit)
     }
 }
 
@@ -335,6 +420,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     enum Event {
+        case didEdit
         case didRemove
     }
 }

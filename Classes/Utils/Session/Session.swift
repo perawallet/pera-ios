@@ -111,19 +111,6 @@ class Session: Storable {
         }
     }
     
-    var rewardDisplayPreference: RewardPreference {
-        get {
-            guard let rewardPreference = string(with: rewardsPrefenceKey, to: .defaults),
-                let rewardDisplayPreference = RewardPreference(rawValue: rewardPreference) else {
-                    return .allowed
-            }
-            return rewardDisplayPreference
-        }
-        set {
-            self.save(newValue.rawValue, for: rewardsPrefenceKey, to: .defaults)
-        }
-    }
-    
     var userInterfaceStyle: UserInterfaceStyle {
         get {
             guard let appearance = string(with: userInterfacePrefenceKey, to: .defaults),
@@ -192,13 +179,6 @@ class Session: Storable {
 extension Session {
     func hasAuthentication() -> Bool {
         return authenticatedUser != nil
-    }
-}
-
-extension Session {
-    enum RewardPreference: String {
-        case allowed = "allowed"
-        case disabled = "disabled"
     }
 }
 

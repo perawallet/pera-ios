@@ -44,6 +44,10 @@ indirect enum Screen {
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
+    case managementOptions(
+        managementType: ManagementOptionsViewController.ManagementType,
+        delegate: ManagementOptionsViewControllerDelegate
+    )
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
     case rewardDetail(account: Account, calculatedRewards: Decimal)
     case verifiedAssetInformation
@@ -88,7 +92,10 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
-    case orderAccountList(accountType: AccountType, eventHandler: OrderAccountListViewController.EventHandler)
+    case sortAccountList(
+        dataController: SortAccountListDataController,
+        eventHandler: SortAccountListViewController.EventHandler
+    )
     case accountSelection(
         transactionAction: TransactionAction,
         delegate: SelectAccountViewControllerDelegate?
@@ -96,7 +103,7 @@ indirect enum Screen {
     case assetSelection(filter: AssetType?, account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)
-    case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
+    case portfolioCalculationInfo(result: PortfolioHandle, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
     case invalidAccount(
         account: AccountHandle,
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
@@ -112,6 +119,10 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case sortCollectibleList(
+        dataController: SortCollectibleListDataController,
+        eventHandler: SortCollectibleListViewController.EventHandler
+    )
     case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
@@ -143,6 +154,8 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
+    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
+    case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
 }
 
 extension Screen {
@@ -152,6 +165,7 @@ extension Screen {
 
 extension Screen.Transition {
     enum Open: Equatable {
+        case root
         case push
         case present
         case presentWithoutNavigationController

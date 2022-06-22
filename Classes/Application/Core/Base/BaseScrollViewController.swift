@@ -17,11 +17,12 @@
 
 import Foundation
 import MacaroonBottomSheet
+import MacaroonStorySheet
 import MacaroonUIKit
 import UIKit
 
 class BaseScrollViewController: BaseViewController {
-    private(set) lazy var scrollView: TouchDetectingScrollView = {
+    private(set) lazy var scrollView: UIScrollView = {
         let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -72,6 +73,19 @@ extension BaseScrollViewController {
 }
 
 extension BottomSheetPresentable where Self: BaseScrollViewController {
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+
+    var presentedScrollView: UIScrollView? {
+        return scrollView
+    }
+    var presentedScrollContentView: UIView? {
+        return contentView
+    }
+}
+
+extension StorySheetPresentable where Self: BaseScrollViewController {
     var modalHeight: ModalHeight {
         return .compressed
     }

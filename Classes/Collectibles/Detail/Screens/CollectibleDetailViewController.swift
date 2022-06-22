@@ -526,8 +526,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if let urlString = item.source?.url,
-               let url = URL(string: urlString) {
+            if let url = item.source?.url {
                 self.open(url)
             }
         }

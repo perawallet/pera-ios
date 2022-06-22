@@ -24,6 +24,8 @@ final class CollectibleListViewController:
 
     var eventHandler: EventHandler?
 
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
         let collectionView = UICollectionView(
@@ -128,7 +130,7 @@ final class CollectibleListViewController:
 
                     accounts = [account]
                 case .all:
-                    accounts = self.sharedDataController.accountCollection.sorted()
+                    accounts = self.sharedDataController.sortedAccounts()
                 }
 
                 self.eventHandler?(.didUpdate(accounts))
@@ -192,7 +194,7 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
-            linkInteractors(cell as! CollectibleListInfoWithFilterCell)
+            linkInteractors(cell as! ManagementItemCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
@@ -209,8 +211,6 @@ extension CollectibleListViewController {
             switch item {
             case .cell(let item):
                 linkInteractors(cell, item: item)
-            default:
-                break
             }
         }
     }
@@ -271,8 +271,6 @@ extension CollectibleListViewController {
                         thumbnailImage: cell?.contextView.currentImage
                     )
                 }
-            case .footer:
-                openReceiveCollectibleAccountList()
             }
         default:
             break
@@ -317,31 +315,14 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleListInfoWithFilterCell
+        _ cell: ManagementItemCell
     ) {
-        cell.observe(event: .showFilterSelection) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
+        cell.observe(event: .primaryAction) {
+            self.openCollectiblesManagementScreen()
+        }
 
-            let controller = self.open(
-                .collectiblesFilterSelection(
-                    filter: self.dataController.currentFilter
-                ),
-                by: .present
-            ) as? CollectiblesFilterSelectionViewController
-
-            controller?.handlers.didChangeFilter = {
-                [weak self] filter in
-                guard let self = self else {
-                    return
-                }
-
-                self.dataController.filter(
-                    by: filter
-                )
-            }
+        cell.observe(event: .secondaryAction) {
+            self.openReceiveCollectibleAccountList()
         }
     }
 
@@ -381,6 +362,16 @@ extension CollectibleListViewController {
     private func openReceiveCollectibleAccountList() {
         eventHandler?(.didTapReceive)
     }
+
+    private func openCollectiblesManagementScreen() {
+        self.modalTransition.perform(
+            .managementOptions(
+                managementType: .collectible,
+                delegate: self
+            ),
+            by: .present
+        )
+    }
 }
 
 extension CollectibleListViewController: SearchInputViewDelegate {
@@ -400,6 +391,63 @@ extension CollectibleListViewController: SearchInputViewDelegate {
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
     }
+}
+
+extension CollectibleListViewController: ManagementOptionsViewControllerDelegate {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let eventHandler: SortCollectibleListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                switch event {
+                case .didComplete: self.dataController.reload()
+                }
+            }
+        }
+
+        open(
+            .sortCollectibleList(
+                dataController: SortCollectibleListLocalDataController(
+                    session: session!,
+                    sharedDataController: sharedDataController
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
+
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let controller = self.open(
+            .collectiblesFilterSelection(
+                filter: self.dataController.currentFilter
+            ),
+            by: .present
+        ) as? CollectiblesFilterSelectionViewController
+
+        controller?.handlers.didChangeFilter = {
+            [weak self] filter in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.filter(
+                by: filter
+            )
+        }
+    }
+
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension CollectibleListViewController {

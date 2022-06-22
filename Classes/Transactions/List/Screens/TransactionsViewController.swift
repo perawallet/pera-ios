@@ -232,7 +232,19 @@ extension TransactionsViewController {
             }
 
             switch itemIdentifier {
-            case .transaction(let item):
+            case .algoTransaction(let item):
+                if let transaction = self.dataController[item.id] {
+                    self.openTransactionDetail(transaction)
+                }
+            case .assetTransaction(let item):
+                if let transaction = self.dataController[item.id] {
+                    self.openTransactionDetail(transaction)
+                }
+            case .appCallTransaction(let item):
+                if let transaction = self.dataController[item.id] {
+                    self.openTransactionDetail(transaction)
+                }
+            case .assetConfigTransaction(let item):
                 if let transaction = self.dataController[item.id] {
                     self.openTransactionDetail(transaction)
                 }
@@ -289,7 +301,7 @@ extension TransactionsViewController {
                 default:
                     break
                 }
-            case .pending:
+            case .pendingTransaction:
                 let pendingCell = cell as! PendingTransactionCell
                 pendingCell.startAnimating()
             default:

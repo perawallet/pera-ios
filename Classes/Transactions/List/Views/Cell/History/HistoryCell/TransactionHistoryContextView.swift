@@ -91,7 +91,7 @@ extension TransactionHistoryContextView {
 
 extension TransactionHistoryContextView {
     func bindData(
-        _ viewModel: TransactionHistoryContextViewModel?
+        _ viewModel: TransactionListItemViewModel?
     ) {
         titleLabel.editText = viewModel?.title
         subtitleLabel.editText = viewModel?.subtitle
@@ -102,7 +102,7 @@ extension TransactionHistoryContextView {
     }
 
     class func calculatePreferredSize(
-        _ viewModel: TransactionHistoryContextViewModel?,
+        _ viewModel: TransactionListItemViewModel?,
         for theme: TransactionHistoryContextViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {

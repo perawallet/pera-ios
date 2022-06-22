@@ -22,9 +22,12 @@ import UIKit
 
 class Router:
     AssetActionConfirmationViewControllerDelegate,
+    NotificationObserver,
+    SelectAccountViewControllerDelegate,
+    TransactionControllerDelegate,
     WalletConnectorDelegate,
-    WCConnectionApprovalViewControllerDelegate,
-    NotificationObserver {
+    WCConnectionApprovalViewControllerDelegate
+    {
     var notificationObservations: [NSObjectProtocol] = []
     
     unowned let rootViewController: RootViewController
@@ -35,6 +38,10 @@ class Router:
     private var qrSendDraft: QRSendTransactionDraft?
 
     private unowned let appConfiguration: AppConfiguration
+
+    /// <todo>
+    /// Change after refactoring routing
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     init(
         rootViewController: RootViewController,
@@ -171,6 +178,14 @@ class Router:
                 from: self.findVisibleScreen(over: self.rootViewController),
                 by: .present
             )
+        case .accountSelect(let asset):
+            launch(tab: .home)
+
+            route(
+                to: .accountSelection(transactionAction: .optIn(asset: asset), delegate: self),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
     }
     
@@ -187,6 +202,21 @@ class Router:
         }
         
         switch style {
+        case .root:
+            if let currentViewController = self as? StatusBarConfigurable,
+               let nextViewController = viewController as? StatusBarConfigurable {
+
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+
+            guard let navigationController = sourceViewController.navigationController else {
+                return nil
+            }
+
+            navigationController.setViewControllers([viewController], animated: animated)
         case .push:
             if let currentViewController = self as? StatusBarConfigurable,
                let nextViewController = viewController as? StatusBarConfigurable {
@@ -403,6 +433,10 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case let .managementOptions(managementType, delegate):
+            let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
+            managementOptionsViewController.delegate = delegate
+            viewController = managementOptionsViewController
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
@@ -570,8 +604,11 @@ class Router:
             let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .orderAccountList(accountType, eventHandler):
-            let aViewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
+        case let .sortAccountList(dataController, eventHandler):
+            let aViewController  = SortAccountListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .accountSelection(transactionAction, delegate):
@@ -636,6 +673,13 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .sortCollectibleList(dataController, eventHandler):
+            let aViewController = SortCollectibleListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .collectiblesFilterSelection(filter):
             viewController = CollectiblesFilterSelectionViewController(
                 filter: filter,
@@ -716,6 +760,14 @@ class Router:
             viewController = buyAlgoHomeScreen
         case let .buyAlgoTransaction(buyAlgoParams):
             viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
+        case .copyAddressStory(let eventHandler):
+            let screen = CopyAddressStoryScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .transactionOptions(let delegate):
+            let aViewController = TransactionOptionsScreen(configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         }
 
         return viewController as? T
@@ -808,6 +860,7 @@ extension Router {
             bannerController: appConfiguration.bannerController
         )
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
@@ -929,16 +982,36 @@ extension Router {
     }
 }
 
-extension Router: SelectAccountViewControllerDelegate {
+extension Router {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
         for transactionAction: TransactionAction
     ) {
+        switch transactionAction {
+        case .send:
+            sendTransction(
+                from: selectAccountViewController,
+                for: account
+            )
+        case .optIn(let asset):
+            requestOptingInToAsset(
+                asset,
+                to: account
+            )
+        default:
+            break
+        }
+    }
+
+    private func sendTransction(
+        from selectAccountViewController: SelectAccountViewController,
+        for account: Account
+    ) {
         guard let qrDraft = self.qrSendDraft else {
             return
         }
-        
+
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
@@ -948,9 +1021,45 @@ extension Router: SelectAccountViewControllerDelegate {
             lockedNote: qrDraft.lockedNote
         )
 
-        selectAccountViewController.open(.sendTransaction(draft: draft), by: .push)
+        selectAccountViewController.open(
+            .sendTransaction(
+                draft: draft
+            ),
+            by: .push
+        )
 
         self.qrSendDraft = nil
+    }
+
+    private func requestOptingInToAsset(
+        _ asset: AssetID,
+        to account: Account
+    ) {
+        if account.containsAsset(asset) {
+            appConfiguration.bannerController.presentInfoBanner("asset-you-already-own-message".localized)
+            return
+        }
+
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetId: asset,
+            asset: nil,
+            transactionFee: Transaction.Constant.minimumFee,
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
+        )
+
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        ongoingTransitions.append(transition)
+
+        transition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -976,4 +1085,115 @@ extension Router: BuyAlgoHomeScreenDelegate {
             by: .presentWithoutNavigationController
         )
     }
+}
+
+/// <todo>
+/// Should be handled for each specific transaction separately.
+extension Router {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        switch error {
+        case let .network(apiError):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        visibleScreen.dismissScreen()
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            ongoingTransitions.append(transition)
+
+            transition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        ongoingTransitions.append(ledgerApprovalTransition)
+
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) { }
+
+    func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
 }

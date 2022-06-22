@@ -93,7 +93,7 @@ extension ReceiveCollectibleAccountListAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+        let filteredAccounts = sharedDataController.sortedAccounts().filter {
             $0.value.type != .watch
         }
 
@@ -103,19 +103,13 @@ extension ReceiveCollectibleAccountListAPIDataController {
         }
         
         deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return Snapshot() }
-
             var accounts: [AccountHandle] = []
             var accountItems: [ReceiveCollectibleAccountListItem] = []
-
-            let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
 
             filteredAccounts
                 .forEach {
                     let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
+                        AccountPortfolio(account: $0)
 
                     let cellItem: ReceiveCollectibleAccountListItem = .account(
                         AccountPreviewViewModel(

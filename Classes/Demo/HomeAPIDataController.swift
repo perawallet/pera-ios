@@ -20,9 +20,11 @@ import Foundation
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
+
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
-    private var lastSnapshot: Snapshot?
+    private(set) var lastSnapshot: Snapshot?
+    private(set) var portfolioViewModel: HomePortfolioViewModel?
     
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
@@ -109,10 +111,10 @@ extension HomeAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.loading])
+            snapshot.appendSections([.empty])
             snapshot.appendItems(
                 [.empty(.loading)],
-                toSection: .loading
+                toSection: .empty
             )
             return snapshot
         }
@@ -130,43 +132,47 @@ extension HomeAPIDataController {
             
             var accounts: [AccountHandle] = []
             var accountItems: [HomeItem] = []
-            var watchAccounts: [AccountHandle] = []
-            var watchAccountItems: [HomeItem] = []
             
             let currency = self.sharedDataController.currency
             let calculator = ALGPortfolioCalculator()
             
-            self.sharedDataController.accountCollection
-                .sorted()
-                .forEach {
-                    let isNonWatchAccount = !$0.value.isWatchAccount()
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-                    let cellItem: HomeAccountItem =
-                        .cell(AccountPreviewViewModel(accountPortfolio))
-                    let item: HomeItem = .account(cellItem)
-                
-                    if isNonWatchAccount {
-                        accounts.append($0)
-                        accountItems.append(item)
-                    } else {
-                        watchAccounts.append($0)
-                        watchAccountItems.append(item)
-                    }
-                }
+            self.sharedDataController.sortedAccounts().forEach {
+                let accountPortfolio =
+                    AccountPortfolio(account: $0)
+                let cellItem: HomeAccountItem =
+                    .cell(AccountPreviewViewModel(accountPortfolio))
+                let item: HomeItem = .account(cellItem)
+
+                accounts.append($0)
+                accountItems.append(item)
+            }
             
             var snapshot = Snapshot()
             
             snapshot.appendSections([.portfolio])
             
             let portfolio =
-                Portfolio(accounts: accounts, currency: currency, calculator: calculator)
+                Portfolio(
+                    accounts: accounts.filter { !$0.value.isWatchAccount() },
+                    currency: currency,
+                    calculator: calculator
+                )
             let portfolioItem = HomePortfolioViewModel(portfolio)
 
+            self.portfolioViewModel = portfolioItem
+
             snapshot.appendItems(
-                [.portfolio(portfolioItem)],
+                [.portfolio(.portfolio(portfolioItem))],
                 toSection: .portfolio
             )
+
+            /// note: If accounts empty which means there is no any authenticated account, quick actions will be hidden
+            if !accounts.isEmpty {
+                snapshot.appendItems(
+                    [.portfolio(.quickActions)],
+                    toSection: .portfolio
+                )
+            }
 
             if let visibleAnnouncement = self.visibleAnnouncement {
                 snapshot.appendSections([.announcement])
@@ -174,16 +180,10 @@ extension HomeAPIDataController {
                 let announcementItem = AnnouncementViewModel(visibleAnnouncement)
                 snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
             }
-
-            /// note: If accounts empty which means there is no any authenticated account, buy button will be hidden
-            if !accounts.isEmpty {
-                snapshot.appendSections([.buyAlgo])
-                snapshot.appendItems([.buyAlgo], toSection: .buyAlgo)
-            }
             
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.standard))
+                    .header(ManagementItemViewModel(.account))
                 accountItems.insert(
                     .account(headerItem),
                     at: 0
@@ -195,22 +195,7 @@ extension HomeAPIDataController {
                     toSection: .accounts
                 )
             }
-            
-            if !watchAccounts.isEmpty {
-                let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.watch))
-                watchAccountItems.insert(
-                    .account(headerItem),
-                    at: 0
-                )
-                
-                snapshot.appendSections([.watchAccounts])
-                snapshot.appendItems(
-                    watchAccountItems,
-                    toSection: .watchAccounts
-                )
-            }
-            
+
             return snapshot
         }
     }

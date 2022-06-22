@@ -40,7 +40,11 @@ class RootViewController: UIViewController {
         return areTabsVisible ? mainContainer : nil
     }
     
-    private lazy var mainContainer = TabBarController()
+    private lazy var mainContainer = TabBarController(
+        sharedDataController: appConfiguration.sharedDataController,
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController
+    )
     
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -93,10 +97,15 @@ extension RootViewController {
         )
 
         let homeViewController = HomeViewController(
-            dataController: HomeAPIDataController(appConfiguration.sharedDataController, announcementDataController: announcementAPIDataController),
+            dataController: HomeAPIDataController(
+                appConfiguration.sharedDataController,
+                announcementDataController: announcementAPIDataController
+            ),
             configuration: configuration
         )
-        let homeTab = HomeTabBarItem(NavigationContainer(rootViewController: homeViewController))
+        let homeTab = HomeTabBarItem(
+            NavigationContainer(rootViewController: homeViewController)
+        )
         
         let algoStatisticsViewController =
             AlgoStatisticsViewController(

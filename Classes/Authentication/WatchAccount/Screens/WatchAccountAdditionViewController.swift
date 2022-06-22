@@ -29,11 +29,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     private lazy var theme = Theme()
     
     private var keyboardController = KeyboardController()
-
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: sharedDataController,
-        session: session!
-    )
     
     private let accountSetupFlow: AccountSetupFlow
     
@@ -65,7 +60,7 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         watchAccountAdditionView.linkInteractors()
         keyboardController.dataSource = self
         watchAccountAdditionView.delegate = self
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
     }
     
     override func prepareLayout() {
@@ -137,7 +132,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             address: address,
             name: name,
             type: .watch,
-            preferredOrder: accountOrdering.getNewAccountIndex(for: .watch)
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         let user: User
         

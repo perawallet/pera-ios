@@ -28,12 +28,9 @@ extension URL {
     }
     
     func buildQRText() -> QRText? {
-        guard let address = host else {
-            return nil
-        }
-        
         guard let queryParameters = queryParameters else {
-            if address.isValidatedAddress {
+            if let address = host,
+               address.isValidatedAddress {
                 return QRText(mode: .address, address: address)
             }
             return nil
@@ -41,17 +38,33 @@ extension URL {
         
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
            let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
-            return QRText(
-                mode: .assetRequest,
-                address: address,
-                amount: UInt64(amount),
-                asset: Int64(asset),
-                note: queryParameters[QRText.CodingKeys.note.rawValue],
-                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-            )
+            if let address = host {
+                return QRText(
+                    mode: .assetRequest,
+                    address: address,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            if amount == "0" {
+                return QRText(
+                    mode: .optInRequest,
+                    address: nil,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            return nil
         }
         
-        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
+        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
+           let address = host {
             return QRText(
                 mode: .algosRequest,
                 address: address,
@@ -61,7 +74,8 @@ extension URL {
             )
         }
         
-        if let label = queryParameters[QRText.CodingKeys.label.rawValue] {
+        if let label = queryParameters[QRText.CodingKeys.label.rawValue],
+           let address = host {
             return QRText(mode: .address, address: address, label: label)
         }
         

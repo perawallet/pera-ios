@@ -22,6 +22,9 @@ protocol HomeDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>
     
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
+
+    var portfolioViewModel: HomePortfolioViewModel? { get }
+    var lastSnapshot: Snapshot? { get }
     
     subscript (address: String?) -> AccountHandle? { get }
     
@@ -35,20 +38,16 @@ enum HomeSection:
     Int,
     Hashable {
     case empty
-    case loading
     case portfolio
     case announcement
-    case buyAlgo
     case accounts
-    case watchAccounts
 }
 
 enum HomeItem: Hashable {
     case empty(HomeEmptyItem)
-    case portfolio(HomePortfolioViewModel)
+    case portfolio(HomePortfolioItem)
     case announcement(AnnouncementViewModel)
     case account(HomeAccountItem)
-    case buyAlgo
 }
 
 enum HomeEmptyItem: Hashable {
@@ -56,8 +55,13 @@ enum HomeEmptyItem: Hashable {
     case noContent
 }
 
+enum HomePortfolioItem: Hashable {
+    case portfolio(HomePortfolioViewModel)
+    case quickActions
+}
+
 enum HomeAccountItem: Hashable {
-    case header(HomeAccountSectionHeaderViewModel)
+    case header(ManagementItemViewModel)
     case cell(AccountPreviewViewModel)
 }
 

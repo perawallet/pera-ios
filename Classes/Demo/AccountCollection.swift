@@ -92,10 +92,10 @@ extension AccountCollection {
 }
 
 extension AccountCollection {
-    func sorted() -> [AccountHandle] {
-        return sorted {
-            $0.value.preferredOrder < $1.value.preferredOrder
-        }
+    func sorted(
+        _ algorithm: AccountSortingAlgorithm
+    ) -> [AccountHandle] {
+        return sorted(by: algorithm.getFormula)
     }
 }
 

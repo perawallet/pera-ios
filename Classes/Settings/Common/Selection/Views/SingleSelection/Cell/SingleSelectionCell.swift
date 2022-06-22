@@ -28,6 +28,6 @@ final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
     }
     
     func bindData(_ viewModel: SingleSelectionViewModel) {
-        contextView.bind(viewModel)
+        contextView.bindData(viewModel)
     }
 }

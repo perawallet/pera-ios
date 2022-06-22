@@ -17,24 +17,24 @@
 
 import Foundation
 
+/// <todo>
+/// Rethink this approach later.
 protocol PortfolioCalculator {
-    typealias Result = Swift.Result<PortfolioValue, PortfolioValueError>
-    
     func calculateCoinsValue(
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
-    ) -> Result
+    ) -> PortfolioHandle
     func calculateAssetsValue(
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
-    ) -> Result
+    ) -> PortfolioHandle
 }
 
 extension PortfolioCalculator {
     func calculateTotalValue(
         _ accounts: [AccountHandle],
         as currency: CurrencyHandle
-    ) -> Result {
+    ) -> PortfolioHandle {
         let coinsValueResult = calculateCoinsValue(
             accounts,
             as: currency
@@ -56,9 +56,9 @@ extension PortfolioCalculator {
     }
     
     func calculateTotalValue(
-        coinsValueResult: Result,
-        assetsValueResult: Result
-    ) -> Result {
+        coinsValueResult: PortfolioHandle,
+        assetsValueResult: PortfolioHandle
+    ) -> PortfolioHandle {
         switch (coinsValueResult, assetsValueResult) {
         case (.success(let coinsValue), .success(let assetsValue)):
             let totalValue = coinsValue + assetsValue
@@ -70,6 +70,8 @@ extension PortfolioCalculator {
         }
     }
 }
+
+typealias PortfolioHandle = Swift.Result<PortfolioValue, PortfolioValueError>
 
 struct PortfolioValue {
     var formattedAmount: String {
@@ -116,6 +118,13 @@ extension Result where Success == PortfolioValue {
         switch self {
         case .success(let value): return value.abbreviatedFormattedAmount
         case .failure: return "N/A"
+        }
+    }
+
+    var amount: Decimal {
+        switch self {
+        case .success(let value): return value.amount
+        case .failure: return .zero
         }
     }
 }

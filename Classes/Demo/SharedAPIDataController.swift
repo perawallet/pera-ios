@@ -28,6 +28,13 @@ final class SharedAPIDataController:
 
     var assetDetailCollection: AssetDetailCollection = []
 
+    var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? {
+        didSet { cache.accountSortingAlgorithmName = selectedAccountSortingAlgorithm?.name }
+    }
+    var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? {
+        didSet { cache.collectibleSortingAlgorithmName = selectedCollectibleSortingAlgorithm?.name }
+    }
+
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
 
@@ -39,6 +46,21 @@ final class SharedAPIDataController:
     var isPollingAvailable: Bool {
         return session.authenticatedUser.unwrap { !$0.accounts.isEmpty } ?? false
     }
+
+    let accountSortingAlgorithms: [AccountSortingAlgorithm] = [
+        AccountAscendingTitleAlgorithm(),
+        AccountDescendingTitleAlgorithm(),
+        AccountAscendingTotalPortfolioValueAlgorithm(),
+        AccountDescendingTotalPortfolioValueAlgorithm(),
+        AccountCustomReorderingAlgorithm()
+    ]
+
+    let collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] = [
+        CollectibleDescendingOptedInRoundAlgorithm(),
+        CollectibleAscendingOptedInRoundAlgorithm(),
+        CollectibleAscendingTitleAlgorithm(),
+        CollectibleDescendingTitleAlgorithm()
+    ]
 
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
@@ -53,13 +75,25 @@ final class SharedAPIDataController:
     
     private let session: Session
     private let api: ALGAPI
-    
+    private let cache: Cache
+
     init(
         session: Session,
         api: ALGAPI
     ) {
+        let cache = Cache()
+
         self.session = session
         self.api = api
+        self.cache = Cache()
+
+        self.selectedAccountSortingAlgorithm = accountSortingAlgorithms.first {
+            $0.name == cache.accountSortingAlgorithmName
+        } ?? AccountCustomReorderingAlgorithm()
+
+        self.selectedCollectibleSortingAlgorithm = collectibleSortingAlgorithms.first {
+            $0.name == cache.collectibleSortingAlgorithmName
+        } ?? CollectibleDescendingOptedInRoundAlgorithm()
     }
 }
 
@@ -105,6 +139,23 @@ extension SharedAPIDataController {
     func resetPollingAfterPreferredCurrencyWasChanged() {
         currency = .idle
         resetPolling()
+    }
+}
+
+extension SharedAPIDataController {
+    func getPreferredOrderForNewAccount() -> Int {
+        if let lastLocalAccount = session.authenticatedUser?.accounts.last {
+            return lastLocalAccount.preferredOrder + 1
+        }
+
+        let reorderingAlgorithm = AccountCustomReorderingAlgorithm()
+        let sortedAccounts = accountCollection.sorted(reorderingAlgorithm)
+
+        if let lastAccount = sortedAccounts.last {
+            return lastAccount.value.preferredOrder + 1
+        }
+
+        return 0
     }
 }
 
@@ -346,6 +397,31 @@ extension SharedAPIDataController {
         ) {
             self.observer = observer
         }
+    }
+}
+
+extension SharedAPIDataController {
+    private final class Cache: Storable {
+        typealias Object = Any
+
+        var accountSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: accountSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        var collectibleSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: collectibleSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"
+        private let collectibleSortingAlgorithmNameKey = "cache.key.collectibleSortingAlgorithmName"
     }
 }
 
