@@ -1982,9 +1982,6 @@
 "transaction-detail-id" = "ID de transacción";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "Se copió al portapapeles el ID de la transacción";
-
-/* (No Comment) */
 "transaction-detail-id-copied-title" = "ID copiado al portapapeles";
 
 /* (No Comment) */

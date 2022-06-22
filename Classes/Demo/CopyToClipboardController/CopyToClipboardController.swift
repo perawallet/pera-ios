@@ -27,18 +27,53 @@ extension CopyToClipboardController {
     func copyAddress(
         _ account: Account
     ) {
-        let addressCopy = account.address
-        let interaction = AccountAddressClipboardInteraction(account)
-        let item = ClipboardItem(copy: addressCopy, interaction: interaction)
+        copyAddress(account.address)
+    }
+
+    func copyAddress(
+        _ address: String
+    ) {
+        let interaction = CopyToClipboardInteraction(
+            title: "qr-creation-copied".localized,
+            body: address.shortAddressDisplay
+        )
+        let item = ClipboardItem(copy: address, interaction: interaction)
         copy(item)
     }
 
     func copyID(
         _ asset: Asset
     ) {
-        let idCopy = asset.id
-        let interaction = AssetIDClipboardInteraction(asset)
-        let item = ClipboardItem(copy: String(idCopy), interaction: interaction)
+        let idCopy = String(asset.id)
+        let interaction = CopyToClipboardInteraction(
+            title: "asset-id-copied-title".localized,
+            body: "#\(idCopy)"
+        )
+        let item = ClipboardItem(copy: idCopy, interaction: interaction)
+        return copy(item)
+    }
+
+    func copyID(
+        _ transaction: Transaction
+    ) {
+        let idCopy = transaction.id.someString
+        let interaction = CopyToClipboardInteraction(
+            title: "transaction-detail-id-copied-title".localized,
+            body: "#\(idCopy)"
+        )
+        let item = ClipboardItem(copy: idCopy, interaction: interaction)
+        return copy(item)
+    }
+
+    func copyNote(
+        _ transaction: Transaction
+    ) {
+        let noteCopy = transaction.noteRepresentation().someString
+        let interaction = CopyToClipboardInteraction(
+            title: "transaction-detail-note-copied".localized,
+            body: nil
+        )
+        let item = ClipboardItem(copy: noteCopy, interaction: interaction)
         return copy(item)
     }
 }
@@ -59,36 +94,17 @@ struct ClipboardItem {
 
 protocol ClipboardInteraction: ToastViewModel {}
 
-struct AccountAddressClipboardInteraction: ClipboardInteraction {
+struct CopyToClipboardInteraction: ClipboardInteraction {
     private(set) var title: TextProvider?
     private(set) var body: TextProvider?
 
     init(
-        _ account: Account
+        title: String?,
+        body: String?
     ) {
-        self.title = "qr-creation-copied"
-            .localized
+        self.title = title?
             .bodyMedium(alignment: .center)
-        self.body = account.address
-            .shortAddressDisplay
-            .footnoteRegular(
-                alignment: .center
-            )
-    }
-}
-
-struct AssetIDClipboardInteraction: ClipboardInteraction {
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
-
-    init(
-        _ asset: Asset
-    ) {
-        self.title = "asset-id-copied-title"
-            .localized
-            .bodyMedium(alignment: .center)
-        self.body = asset.id
-            .stringWithHashtag
+        self.body = body?
             .footnoteRegular(
                 alignment: .center
             )

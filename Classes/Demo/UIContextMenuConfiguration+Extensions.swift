@@ -78,4 +78,18 @@ struct UIActionItem {
             image: "icon-copy-gray".uiImage
         )
     }
+
+    static var copyTransactionID: UIActionItem {
+        return UIActionItem(
+            title: "transaction-menu-copy-id".localized,
+            image: "icon-copy-gray".uiImage
+        )
+    }
+
+    static var copyTransactionNote: UIActionItem {
+        return UIActionItem(
+            title: "transaction-menu-copy-note".localized,
+            image: "icon-copy-gray".uiImage
+        )
+    }
 }

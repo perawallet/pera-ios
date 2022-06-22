@@ -411,6 +411,9 @@ class Router:
                 transaction: transaction,
                 transactionType: transactionType,
                 assetDetail: assetDetail,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .assetDetail(draft):

@@ -35,18 +35,23 @@ final class TransactionDetailViewController: BaseScrollViewController {
         account: account,
         assetDetail: assetDetail
     )
+
+    private let copyToClipboardController: CopyToClipboardController
     
     init(
         account: Account,
         transaction: Transaction,
         transactionType: TransactionType,
         assetDetail: StandardAsset?,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
         self.transaction = transaction
         self.transactionType = transactionType
         self.assetDetail = assetDetail
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
     
@@ -129,43 +134,75 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         }
         open(.addContact(address: address), by: .push)
     }
-    
-    func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView) {
-        guard let opponentType = transactionDetailViewModel.opponentType else {
-            return
+
+    func contextMenuInteractionForUser(
+        in transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyAddress(self.account)
+            }
+            return UIMenu(children: [ copyActionItem ])
         }
-        
-        switch opponentType {
-        case let .contact(address),
-             let .localAccount(address),
-             let .address(address):
-            UIPasteboard.general.string = address
-        }
-        
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
-    }
-    
-    func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.payment?.closeAddress
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
+    func contextMenuInteractionForOpponent(
+        in transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                let address = (self.transactionDetailViewModel.opponentType?.address).someString
+                self.copyToClipboardController.copyAddress(address)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForCloseTo(
+        in transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                let address = (self.transaction.payment?.closeAddress).someString
+                self.copyToClipboardController.copyAddress(address)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForTransactionID(
+        in transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForTransactionNote(
+        in transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionNote) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyNote(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+    
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
         if let api = api,
            let transactionId = transaction.id,
            let url = explorer.transactionURL(with: transactionId, in: api.network) {
             open(url)
         }
-    }
-    
-    func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.noteRepresentation()
-        bannerController?.presentInfoBanner("transaction-detail-note-copied".localized)
-    }
-
-    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.id
-        bannerController?.presentInfoBanner("transaction-detail-id-copied-title".localized)
     }
 }
 
