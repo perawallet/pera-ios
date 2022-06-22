@@ -27,34 +27,43 @@ extension CopyToClipboardController {
     func copy(
         _ account: Account
     ) {
-        let copyText = account.address
-        let feedbackTitle = "qr-creation-copied\n".localized
-            .bodyMedium(
-                alignment: .center
-            )
-        let feedbackBody = account.address
-            .shortAddressDisplay
-            .footnoteRegular(
-                alignment: .center,
-                lineBreakMode: .byTruncatingMiddle
-            )
-        let feedbackText = feedbackTitle + feedbackBody
-        let item = ClipboardItem(copyText: copyText, feedbackText: feedbackText)
-
+        let addressCopy = account.address
+        let interaction = AccountAddressClipboardInteraction(account)
+        let item = ClipboardItem(copy: addressCopy, interaction: interaction)
         copy(item)
     }
 }
 
 struct ClipboardItem {
-    let copyText: String
-    /// The message to give feedback to the user as the result of the copy action.
-    let feedbackText: TextProvider?
+    let copy: String
+    /// The message to interact with the user as the result of the copy action.
+    let interaction: ClipboardInteraction?
 
     init(
-        copyText: String,
-        feedbackText: TextProvider? = nil
+        copy: String,
+        interaction: ClipboardInteraction? = nil
     ) {
-        self.copyText = copyText
-        self.feedbackText = feedbackText
+        self.copy = copy
+        self.interaction = interaction
+    }
+}
+
+protocol ClipboardInteraction: ToastViewModel {}
+
+struct AccountAddressClipboardInteraction: ClipboardInteraction {
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
+
+    init(
+        _ account: Account
+    ) {
+        self.title = "qr-creation-copied"
+            .localized
+            .bodyMedium(alignment: .center)
+        self.body = account.address
+            .shortAddressDisplay
+            .footnoteRegular(
+                alignment: .center
+            )
     }
 }

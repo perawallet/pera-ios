@@ -66,18 +66,10 @@ final class ToastPresentationController: ToastUIPresentationController {
 
 extension ToastPresentationController {
     func present(
-        _ message: String
+        _ viewModel: ToastViewModel
     ) {
         let view = makeToast()
-        view.bindData(message)
-        present(view)
-    }
-
-    func present(
-        _ message: NSAttributedString
-    ) {
-        let view = makeToast()
-        view.bindData(message)
+        view.bindData(viewModel)
         present(view)
     }
 }

@@ -18,14 +18,23 @@ import Foundation
 import MacaroonUtils
 
 final class ALGCopyToClipboardController: CopyToClipboardController {
-    init() {}
+    private let toastPresentationController: ToastPresentationController
+
+    init(
+        toastPresentationController: ToastPresentationController
+    ) {
+        self.toastPresentationController = toastPresentationController
+    }
 }
 
 extension ALGCopyToClipboardController {
     func copy(
         _ item: ClipboardItem
     ) {
-        item.copyText.copyToClipboard()
-        print("Copy to clipboard - \(item.copyText)")
+        item.copy.copyToClipboard()
+
+        if let interaction = item.interaction {
+            toastPresentationController.present(interaction)
+        }
     }
 }

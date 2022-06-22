@@ -22,8 +22,10 @@ struct ToastViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var message: TextStyle
-    var messagePaddings: UIEdgeInsets
+    var contentPaddings: UIEdgeInsets
+    var title: TextStyle
+    var body: TextStyle
+    var bodyPaddings: UIEdgeInsets
 
     init(
         _ family: LayoutFamily
@@ -31,12 +33,19 @@ struct ToastViewTheme:
         self.background = [
             .backgroundColor(AppColors.Components.Toast.background)
         ]
-        self.message = [
+        self.contentPaddings = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        self.title = [
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Toast.title),
             .textAlignment(.center),
             .textOverflow(FittingText(lineBreakMode: .byWordWrapping))
         ]
-        self.messagePaddings = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        self.body = [
+            .font(Fonts.DMSans.regular.make(13)),
+            .textColor(AppColors.Components.Toast.description),
+            .textAlignment(.center),
+            .textOverflow(FittingText(lineBreakMode: .byWordWrapping))
+        ]
+        self.bodyPaddings = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
     }
 }

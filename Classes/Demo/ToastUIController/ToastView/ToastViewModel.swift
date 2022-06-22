@@ -18,15 +18,6 @@ import Foundation
 import MacaroonUIKit
 
 protocol ToastViewModel: ViewModel {
-    var message: TextProvider? { get }
-}
-
-extension String: ToastViewModel {}
-
-extension NSAttributedString: ToastViewModel {}
-
-extension TextProvider where Self: ToastViewModel {
-    var message: TextProvider? {
-        return self
-    }
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }

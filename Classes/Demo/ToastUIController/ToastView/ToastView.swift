@@ -22,17 +22,21 @@ import UIKit
 final class ToastView:
     View,
     ViewModelBindable {
-    private lazy var messageView: UILabel = .init()
+    private lazy var titleView: Label = .init()
+    private lazy var bodyView: Label = .init()
 
-    private var messagePaddings: UIEdgeInsets?
+    private var contentPaddings: UIEdgeInsets?
+    private var bodyPaddings: UIEdgeInsets?
 
     func customize(
         _ theme: ToastViewTheme
     ) {
-        messagePaddings = theme.messagePaddings
+        contentPaddings = theme.contentPaddings
+        bodyPaddings = theme.bodyPaddings
 
         addBackground(theme)
-        addMessage(theme)
+        addTitle(theme)
+        addBody(theme)
     }
 
     func customizeAppearance(
@@ -46,24 +50,38 @@ final class ToastView:
     func bindData(
         _ viewModel: ToastViewModel?
     ) {
-        if let message = viewModel?.message {
-            message.load(in: messageView)
+        if let title = viewModel?.title {
+            title.load(in: titleView)
         } else {
-            messageView.mc_text = nil
-            messageView.attributedText = nil
+            titleView.mc_text = nil
+            titleView.attributedText = nil
+        }
+
+        if let body = viewModel?.body {
+            body.load(in: bodyView)
+        } else {
+            bodyView.mc_text = nil
+            bodyView.mc_attributedText = nil
         }
     }
 
     override func sizeThatFits(
         _ size: CGSize
     ) -> CGSize {
-        let someMessagePaddings = messagePaddings ?? .zero
-        let messageMaxWidth = size.width - someMessagePaddings.horizontal
-        let messageMaxHeight = size.height - someMessagePaddings.vertical
-        let messageMaxSize = CGSize(width: messageMaxWidth, height: messageMaxHeight)
-        let messageSize = messageView.sizeThatFits(messageMaxSize)
-        let width = min(messageSize.width + someMessagePaddings.horizontal, size.width)
-        let height = min(messageSize.height + someMessagePaddings.vertical, size.height)
+        let someContentPaddings = contentPaddings ?? .zero
+        let titleMaxWidth = size.width - someContentPaddings.horizontal
+        let titleMaxHeight = size.height - someContentPaddings.vertical
+        let titleMaxSize = CGSize(width: titleMaxWidth, height: titleMaxHeight)
+        let titleSize = titleView.sizeThatFits(titleMaxSize)
+        let bodySize = bodyView.sizeThatFits(titleMaxSize)
+        let width = min(
+            max(titleSize.width, bodySize.width) + someContentPaddings.horizontal,
+            size.width
+        )
+        let height = min(
+            titleSize.height + bodySize.height + someContentPaddings.vertical,
+            size.height
+        )
         return CGSize(width: width, height: height)
     }
 }
@@ -75,18 +93,40 @@ extension ToastView {
         customizeAppearance(theme.background)
     }
 
-    private func addMessage(
+    private func addTitle(
         _ theme: ToastViewTheme
     ) {
-        messageView.customizeAppearance(theme.message)
+        titleView.customizeAppearance(theme.title)
 
-        addSubview(messageView)
-        messageView.fitToIntrinsicSize()
-        messageView.snp.makeConstraints {
-            $0.top == theme.messagePaddings.top
-            $0.leading == theme.messagePaddings.left
-            $0.bottom == theme.messagePaddings.bottom
-            $0.trailing == theme.messagePaddings.right
+        addSubview(titleView)
+        titleView.fitToIntrinsicSize()
+        titleView.snp.makeConstraints {
+            $0.top == theme.contentPaddings.top
+            $0.leading >= theme.contentPaddings.left
+            $0.trailing <= theme.contentPaddings.right
+            $0.centerX == 0
+        }
+    }
+
+    private func addBody(
+        _ theme: ToastViewTheme
+    ) {
+        bodyView.customizeAppearance(theme.body)
+
+        addSubview(bodyView)
+        bodyView.fitToIntrinsicSize()
+        bodyView.contentEdgeInsets = (
+            theme.bodyPaddings.top,
+            theme.bodyPaddings.left,
+            theme.bodyPaddings.bottom,
+            theme.bodyPaddings.right
+        )
+        bodyView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom
+            $0.leading >= theme.contentPaddings.left
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.right
+            $0.centerX == 0
         }
     }
 }
