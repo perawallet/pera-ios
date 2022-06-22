@@ -100,7 +100,7 @@ extension AlgoStatisticsDataController {
     func reset() {
         cancelLoadingAlgoPrice()
         
-        $algoPriceViewModels.modify { $0 = [:] }
+        $algoPriceViewModels.mutate { $0 = [:] }
         eventHandler?(.didUpdateAlgoPrice(nil))
         
         loadAlgoPrice()
@@ -173,7 +173,7 @@ extension AlgoStatisticsDataController {
            return
         }
         
-        $currency.modify { $0 = newCurrency }
+        $currency.mutate { $0 = newCurrency }
         
         /// <note>
         /// Currency updates aren't needed to be proceeded immediately.
@@ -382,7 +382,7 @@ extension AlgoStatisticsDataController {
             [weak self] in
             guard let self = self else { return }
             
-            self.$algoPriceValues.modify {
+            self.$algoPriceValues.mutate {
                 $0[lastSelectedAlgoPriceTimeFrame] = .failure(.network(error))
             }
 
@@ -436,7 +436,7 @@ extension AlgoStatisticsDataController {
             finalAlgoPriceValues = timeFrameAlgoPriceValues
         }
         
-        $algoPriceValues.modify {
+        $algoPriceValues.mutate {
             $0[timeFrame] = .success(finalAlgoPriceValues)
         }
         
@@ -545,13 +545,13 @@ extension AlgoStatisticsDataController {
         _ viewModel: AlgoPriceViewModel,
         for timeFrame: AlgoPriceTimeFrameSelection
     ) {
-        $algoPriceViewModels.modify { $0[timeFrame] = viewModel }
+        $algoPriceViewModels.mutate { $0[timeFrame] = viewModel }
     }
     
     private func deleteCache(
         for timeFrame: AlgoPriceTimeFrameSelection
     ) {
-        $algoPriceViewModels.modify { $0[timeFrame] = nil }
+        $algoPriceViewModels.mutate { $0[timeFrame] = nil }
     }
 }
 

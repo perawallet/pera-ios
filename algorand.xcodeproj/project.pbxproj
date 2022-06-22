@@ -4448,6 +4448,18 @@
 		F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
+		F04BD2CC28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
+		F04BD2CD28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
+		F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
+		F05E6C4D28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
+		F05E6C4E28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
+		F05E6C4F28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
+		F05E6C5128617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
+		F05E6C5228617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
+		F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */; };
+		F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C542863009C004E33D6 /* MacaroonToastUIKit */; };
+		F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */; };
+		F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */; };
 		F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0C27D7640700511615 /* GoogleService-Info.plist */; };
 		F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0E27D7641200511615 /* GoogleService-Info.plist */; };
 		F06FF4BC27E1BE780047A20E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */; };
@@ -4575,6 +4587,9 @@
 		F0C64B1F277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
 		F0C64B20277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
 		F0C64B21277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
+		F0C72830283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C7282F283CA4B30088CDA8 /* ToastPresentationController.swift */; };
+		F0C72831283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C7282F283CA4B30088CDA8 /* ToastPresentationController.swift */; };
+		F0C72832283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C7282F283CA4B30088CDA8 /* ToastPresentationController.swift */; };
 		F0CF6B5A2851631A007C30E4 /* AccountSortingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B592851631A007C30E4 /* AccountSortingAlgorithm.swift */; };
 		F0CF6B5B2851631A007C30E4 /* AccountSortingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B592851631A007C30E4 /* AccountSortingAlgorithm.swift */; };
 		F0CF6B5C2851631A007C30E4 /* AccountSortingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B592851631A007C30E4 /* AccountSortingAlgorithm.swift */; };
@@ -6220,6 +6235,9 @@
 		F0261A9727C4E28D009D8BF4 /* AppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthChecker.swift; sourceTree = "<group>"; };
 		F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppAuthChecker.swift; sourceTree = "<group>"; };
 		F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		F04BD2CB28611C4100F43878 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewTheme.swift; sourceTree = "<group>"; };
+		F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModel.swift; sourceTree = "<group>"; };
 		F060AD0C27D7640700511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F060AD0E27D7641200511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -6266,6 +6284,7 @@
 		F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceStyleController.swift; sourceTree = "<group>"; };
 		F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkSource.swift; sourceTree = "<group>"; };
 		F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailCollection.swift; sourceTree = "<group>"; };
+		F0C7282F283CA4B30088CDA8 /* ToastPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresentationController.swift; sourceTree = "<group>"; };
 		F0CF6B592851631A007C30E4 /* AccountSortingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSortingAlgorithm.swift; sourceTree = "<group>"; };
 		F0CF6B5D2851637A007C30E4 /* AccountAscendingTitleAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAscendingTitleAlgorithm.swift; sourceTree = "<group>"; };
 		F0CF6B61285163AE007C30E4 /* AccountDescendingTitleAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDescendingTitleAlgorithm.swift; sourceTree = "<group>"; };
@@ -6322,6 +6341,7 @@
 				CBAD472C2745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
+				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
@@ -6356,6 +6376,7 @@
 				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
+				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
@@ -6390,6 +6411,7 @@
 				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
+				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
 				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
@@ -14634,6 +14656,16 @@
 			path = Macaroon;
 			sourceTree = "<group>";
 		};
+		F05E6C4B2861756D004E33D6 /* ToastView */ = {
+			isa = PBXGroup;
+			children = (
+				F04BD2CB28611C4100F43878 /* ToastView.swift */,
+				F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */,
+				F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */,
+			);
+			path = ToastView;
+			sourceTree = "<group>";
+		};
 		F060AD0627D7634A00511615 /* Target Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -14756,6 +14788,7 @@
 				2B6B423827BEC7030036BF9E /* MuteNotificationsListActionViewModel.swift */,
 				2B6B423C27BECCA00036BF9E /* RenameAccountListActionViewModel.swift */,
 				2B6B424427BECE380036BF9E /* RemoveAccountListActionViewModel.swift */,
+				F0C7282E283C0E610088CDA8 /* ToastUIController */,
 				2BCE8F9A284A5BA800C6FD6C /* RemoveAssetsListActionViewModel.swift */,
 				2BCE8F9E284A5C8F00C6FD6C /* SortListActionViewModel.swift */,
 				F0E72183284F6A3600865419 /* QuickActions */,
@@ -14825,6 +14858,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		F0C7282E283C0E610088CDA8 /* ToastUIController */ = {
+			isa = PBXGroup;
+			children = (
+				F0C7282F283CA4B30088CDA8 /* ToastPresentationController.swift */,
+				F05E6C4B2861756D004E33D6 /* ToastView */,
+			);
+			path = ToastUIController;
+            sourceTree = "<group>";
+        };
 		F0CF6B58285162F9007C30E4 /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
@@ -14931,6 +14973,7 @@
 				D4A241DF27D2BF1C00641FF0 /* Prism */,
 				D4B33AB027F1E65900523CEA /* ActiveLabel */,
 				2B77FAB1280D7FD30020376D /* KingfisherWebP */,
+				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
 				179085EE283647520098D53F /* MacaroonStorySheet */,
 			);
 			productName = algorand;
@@ -14977,6 +15020,7 @@
 				D4A241DD27D2BF1300641FF0 /* Prism */,
 				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
 				2B77FAAF280D7FC90020376D /* KingfisherWebP */,
+				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
 				179085EC283647410098D53F /* MacaroonStorySheet */,
 			);
 			productName = algorand;
@@ -15023,6 +15067,7 @@
 				D499D27D27C7D40B00641FF5 /* Prism */,
 				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
 				2B77FAAD280D7F900020376D /* KingfisherWebP */,
+				F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */,
 				179085EA2836473C0098D53F /* MacaroonStorySheet */,
 			);
 			productName = algorand;
@@ -15385,6 +15430,7 @@
 				2B3E39F5247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */,
 				D4BC640926DE3CD6000CFD28 /* ButtonCommonViewModel.swift in Sources */,
 				17BD4DF22292F1260003E49A /* AdaptiveLayout.swift in Sources */,
+				F05E6C4F28617580004E33D6 /* ToastViewTheme.swift in Sources */,
 				D47C4AAF2791BD310012D7A6 /* NotificationsNoContentViewModel.swift in Sources */,
 				95AF1C7827B13084001AB131 /* TransactionHistoryLoadingView.swift in Sources */,
 				2B79A14823167BFC00766021 /* RewardDetailView.swift in Sources */,
@@ -15753,6 +15799,8 @@
 				2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2BCBBAEB24A66AFD002CD56F /* TransactionFilterOptionCell.swift in Sources */,
 				2B68A23626A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift in Sources */,
+				F0C72832283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */,
+				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				D4D3AE7F284A723200D51A08 /* AccountNamePreviewViewModel.swift in Sources */,
 				2B7E3067267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
@@ -16353,6 +16401,7 @@
 				95D11D022770BF95001B2C37 /* AccountSelectScreenDataSource.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				95BB6C0927A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
+				F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */,
 				D48281C627A01AE6004412D5 /* TransactionTutorialViewTheme.swift in Sources */,
 				2B262735284EBF2D00ADE371 /* PendingTransactionItemDraftComposer.swift in Sources */,
 				D479D0FE26D4FB1F00110E04 /* BannerViewModel.swift in Sources */,
@@ -16555,6 +16604,7 @@
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
+				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C625892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				954DFF2D2794607A0066FFF6 /* WCUnsignedRequestViewTheme.swift in Sources */,
@@ -16882,6 +16932,7 @@
 				2B698248278C90CC008EC669 /* PendingAssetPreviewViewTheme.swift in Sources */,
 				D4EC4C632777A3E600428A3C /* AlgosDetailInfoView.swift in Sources */,
 				2B56B8332505013600AC7B8D /* RekeyInstructionsViewController.swift in Sources */,
+				F05E6C4E28617580004E33D6 /* ToastViewTheme.swift in Sources */,
 				2B7E3083267BC0A100E89EE3 /* WCSingleTransactionViewController.swift in Sources */,
 				95D11D0E2771D704001B2C37 /* TitleHeaderViewModel.swift in Sources */,
 				2B7A1F8227DE639C0010F52E /* CollectibleExternalSourceViewModel.swift in Sources */,
@@ -17248,6 +17299,7 @@
 				D43A0C5B2790DA63007430B9 /* ResultViewTheme.swift in Sources */,
 				2B0F61CF24EC129D00DA22A6 /* AssetAdditionDraft.swift in Sources */,
 				2B2AACD1250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
+				F0C72831283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */,
 				2B0F61D124EC129D00DA22A6 /* Reusable.swift in Sources */,
 				D4D3AE7E284A723200D51A08 /* AccountNamePreviewViewModel.swift in Sources */,
 				2B68A22C26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift in Sources */,
@@ -17847,6 +17899,7 @@
 				04F153B5274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
 				2B32A2602552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				2B9A3E7C26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
+				F05E6C5228617C9E004E33D6 /* ToastViewModel.swift in Sources */,
 				D48281C527A01AE6004412D5 /* TransactionTutorialViewTheme.swift in Sources */,
 				2B262734284EBF2D00ADE371 /* PendingTransactionItemDraftComposer.swift in Sources */,
 				D4AEDD30271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
@@ -18047,6 +18100,7 @@
 				046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				954DFF2C2794607A0066FFF6 /* WCUnsignedRequestViewTheme.swift in Sources */,
 				2BF90F7525FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
+				F04BD2CD28611C4100F43878 /* ToastView.swift in Sources */,
 				95BB6BFF27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				2BB350C525892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				F0DB41B02794C64600EA437D /* AddAccountListActionViewModel.swift in Sources */,
@@ -18377,6 +18431,7 @@
 				D45C47FB277E1737001853A3 /* RangeSelectionViewModel.swift in Sources */,
 				D459E27F27DD332900F7FC33 /* ApproveCollectibleTransactionViewController.swift in Sources */,
 				D4092BAC276B522C0009722D /* WCSessionShortListViewTheme.swift in Sources */,
+				F05E6C4D28617580004E33D6 /* ToastViewTheme.swift in Sources */,
 				2B055FC2279839E4004E3CA0 /* AssetSearchDataSource.swift in Sources */,
 				F0DB4177279444AE00EA437D /* PortfolioCalculationErrorViewModel.swift in Sources */,
 				D482273D272C0DA8004CB9BF /* BadgedImageViewTheme.swift in Sources */,
@@ -18745,6 +18800,7 @@
 				2B698268278DF651008EC669 /* TransactionsListLayout+Theme.swift in Sources */,
 				2B8E5F1625471F7D001D8E30 /* ReceiveShareCompleteEvent.swift in Sources */,
 				2B698232278C61B5008EC669 /* TransactionsListLayout.swift in Sources */,
+				F0C72830283CA4B30088CDA8 /* ToastPresentationController.swift in Sources */,
 				D411B38126EA22F2004FF980 /* AssetPreviewView.swift in Sources */,
 				D4D3AE7D284A723200D51A08 /* AccountNamePreviewViewModel.swift in Sources */,
 				D4DDF3B227395CAA00BC8F42 /* TextFormatter.swift in Sources */,
@@ -19342,6 +19398,7 @@
 				D4C45BEF2726B59D00F4AE31 /* ContactDetailViewTheme.swift in Sources */,
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
 				F08708F62790877300BEE5C2 /* HomeDataController.swift in Sources */,
+				F05E6C5128617C9E004E33D6 /* ToastViewModel.swift in Sources */,
 				2BF811CF25E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
 				2B262733284EBF2D00ADE371 /* PendingTransactionItemDraftComposer.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
@@ -19543,6 +19600,7 @@
 				D473CA5826E2412300558598 /* NumpadViewTheme.swift in Sources */,
 				2B68A22F26A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift in Sources */,
 				2B4EEECC24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
+				F04BD2CC28611C4100F43878 /* ToastView.swift in Sources */,
 				D48D11CF27425368000061CE /* NotificationViewTheme.swift in Sources */,
 				D4B91DA32736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */,
 				D48FDFAF27CE327700C39FC7 /* TitleViewTheme.swift in Sources */,
@@ -20963,6 +21021,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
+		};
+		F05E6C542863009C004E33D6 /* MacaroonToastUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonToastUIKit;
+		};
+		F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonToastUIKit;
+		};
+		F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonToastUIKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 
