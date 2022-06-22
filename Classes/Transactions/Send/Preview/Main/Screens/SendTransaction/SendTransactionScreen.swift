@@ -548,10 +548,8 @@ extension SendTransactionScreen {
                     return
                 }
 
-                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
-                self.draft.amount = maxAmount.decimalAmount
-
-                self.open(.transactionAccountSelect(draft: self.draft), by: .push)
+                self.amount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.handleSuccessAmountValidation()
             }
         )
 
