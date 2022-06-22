@@ -71,4 +71,11 @@ struct UIActionItem {
             image: "icon-copy-gray".uiImage
         )
     }
+
+    static var copyAssetID: UIActionItem {
+        return UIActionItem(
+            title: "asset-copy-id".localized,
+            image: "icon-copy-gray".uiImage
+        )
+    }
 }

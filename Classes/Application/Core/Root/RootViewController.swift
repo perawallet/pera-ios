@@ -123,6 +123,9 @@ extension RootViewController {
         )
         
         let collectibleListViewController = CollectiblesViewController(
+            copyToClipboardController: ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            ),
             configuration: configuration
         )
         let collectiblesTab =

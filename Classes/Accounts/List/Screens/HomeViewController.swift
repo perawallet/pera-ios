@@ -728,7 +728,7 @@ extension HomeViewController {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
-                self.copyToClipboardController.copy(account)
+                self.copyToClipboardController.copyAddress(account)
             }
             return UIMenu(children: [ copyActionItem ])
         }

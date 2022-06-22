@@ -29,11 +29,13 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
     private lazy var collectibleListScreen = AccountCollectibleListViewController(
         account: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
     
@@ -54,8 +56,16 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
-    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 

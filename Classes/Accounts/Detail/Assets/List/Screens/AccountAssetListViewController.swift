@@ -56,11 +56,16 @@ final class AccountAssetListViewController: BaseViewController {
 
     private var accountHandle: AccountHandle
 
+    private let copyToClipboardController: CopyToClipboardController
+
     init(
         accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
@@ -351,6 +356,24 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             break
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = getAsset(at: indexPath) else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
 }
 
 extension AccountAssetListViewController {
@@ -443,6 +466,22 @@ extension AccountAssetListViewController {
 
     func removeAsset(_ assetDetail: StandardAsset) {
         dataController.removedAssetDetails.append(assetDetail)
+    }
+}
+
+extension AccountAssetListViewController {
+    private func getAsset(
+        at indexPath: IndexPath
+    ) -> StandardAsset? {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
+        guard case AccountAssetsItem.asset = itemIdentifier else {
+            return nil
+        }
+
+        return dataController[indexPath.item]
     }
 }
 

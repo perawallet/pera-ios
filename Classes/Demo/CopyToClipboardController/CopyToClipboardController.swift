@@ -24,13 +24,22 @@ protocol CopyToClipboardController {
 }
 
 extension CopyToClipboardController {
-    func copy(
+    func copyAddress(
         _ account: Account
     ) {
         let addressCopy = account.address
         let interaction = AccountAddressClipboardInteraction(account)
         let item = ClipboardItem(copy: addressCopy, interaction: interaction)
         copy(item)
+    }
+
+    func copyID(
+        _ asset: Asset
+    ) {
+        let idCopy = asset.id
+        let interaction = AssetIDClipboardInteraction(asset)
+        let item = ClipboardItem(copy: String(idCopy), interaction: interaction)
+        return copy(item)
     }
 }
 
@@ -62,6 +71,24 @@ struct AccountAddressClipboardInteraction: ClipboardInteraction {
             .bodyMedium(alignment: .center)
         self.body = account.address
             .shortAddressDisplay
+            .footnoteRegular(
+                alignment: .center
+            )
+    }
+}
+
+struct AssetIDClipboardInteraction: ClipboardInteraction {
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
+
+    init(
+        _ asset: Asset
+    ) {
+        self.title = "asset-id-copied-title"
+            .localized
+            .bodyMedium(alignment: .center)
+        self.body = asset.id
+            .stringWithHashtag
             .footnoteRegular(
                 alignment: .center
             )
