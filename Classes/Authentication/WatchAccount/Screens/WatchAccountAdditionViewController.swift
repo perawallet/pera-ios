@@ -31,10 +31,21 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     private var keyboardController = KeyboardController()
     
     private let accountSetupFlow: AccountSetupFlow
+    private var address: PublicKey?
     
-    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+    init(
+        accountSetupFlow: AccountSetupFlow,
+        address: PublicKey?,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountSetupFlow = accountSetupFlow
+        self.address = address
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
     }
     
     override func setListeners() {
@@ -83,11 +94,28 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     }
 
     override func bindData() {
+        if let address = address {
+            watchAccountAdditionView.addressInputView.text = address
+        }
+
         pasteFromClipboard()
     }
 }
 
 extension WatchAccountAdditionViewController {
+    private func addBarButtons() {
+        // Add dismiss option if presented from the QR or deeplink
+        if address.isNilOrEmpty {
+            return
+        }
+
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+    
     @objc
     func pasteFromClipboard() {
         watchAccountAdditionView.bindData(WatchAccountAdditionViewModel(UIPasteboard.general.string))

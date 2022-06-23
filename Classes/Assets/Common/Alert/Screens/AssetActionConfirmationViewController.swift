@@ -84,11 +84,18 @@ extension AssetActionConfirmationViewController {
 
                     switch response {
                     case let .success(assetResponse):
+                        if assetResponse.results.isEmpty {
+                            self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-found".localized, message: "")
+                            self.closeScreen()
+                            return
+                        }
+
                         if let result = assetResponse.results[safe: 0] {
                             self.handleAssetDetailSetup(with: result)
                         }
                     case .failure:
-                        self.loadingController?.stopLoading()
+                        self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-fetched".localized, message: "")
+                        self.closeScreen()
                     }
                 }
             }
@@ -99,6 +106,11 @@ extension AssetActionConfirmationViewController {
         self.loadingController?.stopLoading()
         draft.asset = asset
         assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
+    }
+
+    private func closeScreen() {
+        loadingController?.stopLoading()
+        dismissScreen()
     }
 }
 
@@ -116,7 +128,7 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
     }
     
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        dismissScreen()
+        closeScreen()
     }
 
     func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?) {
