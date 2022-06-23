@@ -21,10 +21,16 @@ import MacaroonUIKit
 struct AlgoAssetViewModel: ViewModel {
     private(set) var amount: String?
     private(set) var currencyAmount: String?
+    private(set) var currencyDecimal: Decimal?
 
     init(account: Account, currency: Currency?) {
         bindAmount(from: account)
-        bindCurrencyAmount(from: account, with: currency)
+
+        if let algoCurrency = currency as? AlgoCurrency {
+            bindCurrencyAmount(from: account, with: algoCurrency.currency, isAlgoCurrency: true)
+        } else {
+            bindCurrencyAmount(from: account, with: currency, isAlgoCurrency: false)
+        }
     }
 }
 
@@ -33,18 +39,23 @@ extension AlgoAssetViewModel {
         amount = account.amount.toAlgos.toFullAlgosStringForLabel
     }
 
-    private mutating func bindCurrencyAmount(from account: Account, with currency: Currency?) {
+    private mutating func bindCurrencyAmount(
+        from account: Account,
+        with currency: Currency?,
+        isAlgoCurrency: Bool = false
+    ) {
         guard let currency = currency,
               let currencyPriceValue = currency.priceValue else {
-            return
-        }
-        
-        if let algoCurrency = currency as? AlgoCurrency {
-            bindCurrencyAmount(from: account, with: algoCurrency.currency)
             return
         }
 
         let totalAmount = account.amount.toAlgos * currencyPriceValue
         currencyAmount = totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
+
+        if isAlgoCurrency {
+            currencyDecimal = account.amount.toAlgos
+        } else {
+            currencyDecimal = totalAmount
+        }
     }
 }

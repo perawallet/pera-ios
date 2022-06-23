@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionTextInformationViewCommonTheme.swift
+//   AccountAssetSortingAlgorithm.swift
 
-import MacaroonUIKit
+import Foundation
 
-struct TransactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme {
-    let detail: TextStyle
+protocol AccountAssetSortingAlgorithm {
+    var id: String { get }
+    var name: String { get }
 
-    init(_ family: LayoutFamily) {
-        self.detail = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
-    }
+    func getFormula(
+        assetPreview: AssetPreviewModel,
+        otherAssetPreview: AssetPreviewModel
+    ) -> Bool
 }

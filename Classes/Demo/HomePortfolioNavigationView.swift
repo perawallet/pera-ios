@@ -58,8 +58,6 @@ final class HomePortfolioNavigationView: View {
     func animateTitleVisible(
         _ visible: Bool
     ) {
-        print("Current \(self.isVisible)")
-        print("Next \(isVisible)")
         if visible == isVisible {
             return
         }

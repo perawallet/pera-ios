@@ -466,7 +466,7 @@ extension ScanQRFlowCoordinator {
             from: Account(address: address, type: .standard),
             transactionMode: .asset(asset)
         )
-        draft.amount = Decimal(amount)
+        draft.amount = amount.assetAmount(fromFraction: asset.decimals)
         draft.note = qr.note
         draft.lockedNote = qr.lockedNote
 

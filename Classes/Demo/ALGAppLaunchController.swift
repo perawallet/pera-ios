@@ -365,7 +365,7 @@ extension ALGAppLaunchController {
     private func suspend(
         deeplinkWithSource src: DeeplinkSource
     ) {
-        $pendingDeeplinkSource.modify { $0 = src }
+        $pendingDeeplinkSource.mutate { $0 = src }
     }
     
     private func resumePendingDeeplink() {
@@ -375,11 +375,11 @@ extension ALGAppLaunchController {
     }
     
     private func completePendingDeeplink() {
-        $pendingDeeplinkSource.modify { $0 = nil }
+        $pendingDeeplinkSource.mutate { $0 = nil }
     }
     
     private func cancelPendingDeeplink() {
-        $pendingDeeplinkSource.modify { $0 = nil }
+        $pendingDeeplinkSource.mutate { $0 = nil }
     }
 }
 

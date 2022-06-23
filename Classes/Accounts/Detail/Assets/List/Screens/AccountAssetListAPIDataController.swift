@@ -32,6 +32,8 @@ final class AccountAssetListAPIDataController:
     var addedAssetDetails: [StandardAsset] = []
     var removedAssetDetails: [StandardAsset] = []
 
+    private var listItems: [AssetPreviewModel] = []
+
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
@@ -52,19 +54,18 @@ final class AccountAssetListAPIDataController:
     }
 
     subscript(index: Int) -> StandardAsset? {
-        var searchResultIndex = index - 2
-
-        if isKeywordContainsAlgo() {
-            searchResultIndex = searchResultIndex.advanced(by: -1)
-        }
-
-        return searchResults[safe: searchResultIndex]
+        let searchResultIndex = index - 2
+        return listItems[safe: searchResultIndex]?.asset as? StandardAsset
     }
 }
 
 extension AccountAssetListAPIDataController {
     func load() {
         sharedDataController.add(self)
+    }
+
+    func reload() {
+        deliverContentSnapshot()
     }
 }
 
@@ -101,6 +102,7 @@ extension AccountAssetListAPIDataController {
             var snapshot = Snapshot()
 
             let currencyHandle = self.sharedDataController.currency
+            let isWatchAccount = self.accountHandle.value.isWatchAccount()
 
             let portfolio = Portfolio(
                 accounts: [self.accountHandle],
@@ -110,21 +112,30 @@ extension AccountAssetListAPIDataController {
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
-            snapshot.appendItems(
-                [.portfolio(portfolioItem)],
-                toSection: .portfolio
-            )
 
-            snapshot.appendSections([.quickActions])
-            snapshot.appendItems(
-                [.quickActions],
-                toSection: .quickActions
-            )
+            if isWatchAccount {
+                snapshot.appendItems(
+                    [.watchPortfolio(portfolioItem)],
+                    toSection: .portfolio
+                )
+            } else {
+                snapshot.appendItems(
+                    [.portfolio(portfolioItem)],
+                    toSection: .portfolio
+                )
+            }
 
-            var assets: [StandardAsset] = []
+            if !isWatchAccount {
+                snapshot.appendSections([.quickActions])
+                snapshot.appendItems(
+                    [.quickActions],
+                    toSection: .quickActions
+                )
+            }
+
             var assetItems: [AccountAssetsItem] = []
             
-            if !self.accountHandle.value.isWatchAccount() {
+            if !isWatchAccount {
                 let titleItem: AccountAssetsItem = .assetManagement(
                     ManagementItemViewModel(.asset)
                 )
@@ -143,8 +154,12 @@ extension AccountAssetListAPIDataController {
 
             self.load(with: self.searchKeyword)
 
+            var assetPreviewModels: [AssetPreviewModel] = []
+
             if self.isKeywordContainsAlgo() {
-                assetItems.append(.algo(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currencyHandle.value)))))
+                assetPreviewModels.append(
+                    AssetPreviewModelAdapter.adapt((self.accountHandle.value, currencyHandle.value))
+                )
             }
 
             self.searchResults.forEach { asset in
@@ -152,11 +167,41 @@ extension AccountAssetListAPIDataController {
                     return
                 }
 
-                assets.append(asset)
-                
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currencyHandle.value))
-                let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
-                assetItems.append(assetItem)
+                assetPreviewModels.append(
+                    AssetPreviewModelAdapter.adaptAssetSelection((asset, currencyHandle.value))
+                )
+            }
+
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                self.listItems = assetPreviewModels.sorted(
+                    by: selectedAccountSortingAlgorithm.getFormula
+                )
+                assetItems.append(
+                    contentsOf: self.listItems.map({
+                        let viewModel = AssetPreviewViewModel($0)
+
+                        switch $0.icon {
+                        case .algo:
+                            return .algo(viewModel)
+                        default:
+                            return .asset(viewModel)
+                        }
+                    })
+                )
+            } else {
+                self.listItems = assetPreviewModels
+                assetItems.append(
+                    contentsOf: self.listItems.map({
+                        let viewModel = AssetPreviewViewModel($0)
+
+                        switch $0.icon {
+                        case .algo:
+                            return .algo(viewModel)
+                        default:
+                            return .asset(viewModel)
+                        }
+                    })
+                )
             }
 
             self.addedAssetDetails.forEach {

@@ -29,11 +29,13 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
     private lazy var collectibleListScreen = AccountCollectibleListViewController(
         account: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
     
@@ -44,7 +46,11 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        account: accountHandle.value
+    )
     private lazy var receiveTransactionFlowCoordinator =
     ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
 
@@ -54,8 +60,16 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
-    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
@@ -123,8 +137,13 @@ extension AccountDetailViewController {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
             case .manageAssets:
-                let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
-                controller?.delegate = self
+                self.modalTransition.perform(
+                    .managementOptions(
+                        managementType: .asset,
+                        delegate: self
+                    ),
+                    by: .present
+                )
             case .addAsset:
                 let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
                 controller?.delegate = self
@@ -371,6 +390,48 @@ extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
                 CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
             ]
         )
+    }
+}
+
+extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let eventHandler: SortAccountAssetListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                switch event {
+                case .didComplete: self.assetListScreen.reload()
+                }
+            }
+        }
+
+        open(
+            .sortAccountAsset(
+                dataController: SortAccountAssetListLocalDataController(
+                    session: session!,
+                    sharedDataController: sharedDataController
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
+
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+        controller?.delegate = self
     }
 }
 

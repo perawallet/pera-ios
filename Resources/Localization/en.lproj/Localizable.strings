@@ -216,7 +216,7 @@
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
-"asset-remove-confirmation-title" = "Manage asset";
+"asset-remove-confirmation-title" = "Remove Asset";
 "asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
 "title-add-asset" = "Add New Asset";
@@ -420,8 +420,7 @@
 "transaction-detail-note" = "Note";
 "transaction-detail-close-to" = "Close To";
 "transaction-detail-close-amount" = "Close Amount";
-"transaction-detail-note-copied" = "Transaction note copied to clipboard";
-"transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-note-copied" = "Note copied to clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
@@ -430,6 +429,8 @@
 "transaction-detail-pending" = "Pending";
 "transaction-detail-failed" = "Failed";
 "transaction-detail-id-copied-title" = "ID copied to clipboard";
+"transaction-menu-copy-id" = "Copy ID";
+"transaction-menu-copy-note" = "Copy Note";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -898,7 +899,7 @@
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
-"account-detail-assets-search" = "Search your assets";
+"account-detail-assets-search" = "Search assets";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";

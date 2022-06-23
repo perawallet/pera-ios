@@ -411,6 +411,9 @@ class Router:
                 transaction: transaction,
                 transactionType: transactionType,
                 assetDetail: assetDetail,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .assetDetail(draft):
@@ -418,7 +421,11 @@ class Router:
         case let .algosDetail(draft):
             viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
         case let .accountDetail(accountHandle, eventHandler):
-            let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
+            let aViewController = AccountDetailViewController(
+                accountHandle: accountHandle,
+                copyToClipboardController: ALGCopyToClipboardController(toastPresentationController: appConfiguration.toastPresentationController),
+                configuration: configuration
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .assetSearch(accountHandle, dataController):
@@ -768,6 +775,13 @@ class Router:
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
+        case .sortAccountAsset(let dataController, let eventHandler):
+            let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T
@@ -1012,11 +1026,20 @@ extension Router {
             return
         }
 
+        let newMode: TransactionMode
+
+        if case let .asset(asset) = qrDraft.transactionMode {
+            let foundAsset = account[asset.id] ?? asset
+            newMode = .asset(foundAsset)
+        } else {
+            newMode = .algo
+        }
+
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
             amount: qrDraft.amount,
-            transactionMode: qrDraft.transactionMode,
+            transactionMode: newMode,
             note: qrDraft.note,
             lockedNote: qrDraft.lockedNote
         )

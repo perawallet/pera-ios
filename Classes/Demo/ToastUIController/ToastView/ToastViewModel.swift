@@ -12,20 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionTextInformationViewTransactionIDTheme.swift
+//   ToastViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct TransactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme {
-    let detail: TextStyle
-
-    init(_ family: LayoutFamily) {
-        self.detail = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(15))
-        ]
-    }
+protocol ToastViewModel: ViewModel {
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }

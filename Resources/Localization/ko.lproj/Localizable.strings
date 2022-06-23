@@ -1982,9 +1982,6 @@
 "transaction-detail-id" = "트랜잭션 ID";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "트랜잭션 ID 클립보드로 복사 완료";
-
-/* (No Comment) */
 "transaction-detail-id-copied-title" = "ID를 클립보드로 복사 완료";
 
 /* (No Comment) */
