@@ -44,63 +44,68 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             return CGSize((collectionView.bounds.width, 0))
         }
 
-        switch itemIdentifier {
-        case .algosInfo(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForAlgosDetailInfo: item
-            )
-        case .assetInfo(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForAssetDetailInfo: item
-            )
-        case .filter:
-            return CGSize(theme.transactionHistoryFilterCellSize)
-        case .algoTransaction, .assetTransaction, .appCallTransaction, .assetConfigTransaction, .pendingTransaction:
-            return CGSize(theme.transactionHistoryCellSize)
-        case .title:
-            return CGSize(theme.transactionHistoryTitleCellSize)
-        case .empty(let emptyState):
-            switch emptyState {
-            case .algoTransactionHistoryLoading:
-                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
-                theme.buyAlgoVisible = !draft.accountHandle.value.isWatchAccount()
-                
-                let cellHeight = AlgoTransactionHistoryLoadingCell.height(
-                    for: theme
+        func cellSize() -> CGSize {
+            switch itemIdentifier {
+            case .algosInfo(let item):
+                return listView(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    sizeForAlgosDetailInfo: item
                 )
-                return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
-            case .assetTransactionHistoryLoading:
-                let cellHeight = AssetTransactionHistoryLoadingCell.height(
-                    for: AssetTransactionHistoryLoadingViewCommonTheme()
+            case .assetInfo(let item):
+                return listView(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    sizeForAssetDetailInfo: item
                 )
-                return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
-            case .transactionHistoryLoading:
-                return CGSize(width: collectionView.bounds.width - 48, height: 500)
-            default:
-                let width = collectionView.bounds.width
-                var height = collectionView.bounds.height -
-                collectionView.adjustedContentInset.bottom -
-                collectionView.contentInset.top -
-                theme.transactionHistoryTitleCellSize.h
-                if draft.type != .all {
-                    let sizeCacheIdentifier = draft.type == .algos ?
-                    AlgosDetailInfoViewCell.reuseIdentifier : AssetDetailInfoViewCell.reuseIdentifier
-                    let cachedInfoSize = sizeCache[sizeCacheIdentifier]
+            case .filter:
+                return CGSize(theme.transactionHistoryFilterCellSize)
+            case .algoTransaction, .assetTransaction, .appCallTransaction, .assetConfigTransaction, .pendingTransaction:
+                return CGSize(theme.transactionHistoryCellSize)
+            case .title:
+                return CGSize(theme.transactionHistoryTitleCellSize)
+            case .empty(let emptyState):
+                switch emptyState {
+                case .algoTransactionHistoryLoading:
+                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                    theme.buyAlgoVisible = !draft.accountHandle.value.isWatchAccount()
 
-                    if let cachedInfoSize = cachedInfoSize {
-                        height -= cachedInfoSize.height
+                    let cellHeight = AlgoTransactionHistoryLoadingCell.height(
+                        for: theme
+                    )
+                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
+                case .assetTransactionHistoryLoading:
+                    let cellHeight = AssetTransactionHistoryLoadingCell.height(
+                        for: AssetTransactionHistoryLoadingViewCommonTheme()
+                    )
+                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
+                case .transactionHistoryLoading:
+                    return CGSize(width: collectionView.bounds.width - 48, height: 500)
+                default:
+                    let width = collectionView.bounds.width
+                    var height = collectionView.bounds.height -
+                    collectionView.adjustedContentInset.bottom -
+                    collectionView.contentInset.top -
+                    theme.transactionHistoryTitleCellSize.h
+                    if draft.type != .all {
+                        let sizeCacheIdentifier = draft.type == .algos ?
+                        AlgosDetailInfoViewCell.reuseIdentifier : AssetDetailInfoViewCell.reuseIdentifier
+                        let cachedInfoSize = sizeCache[sizeCacheIdentifier]
+
+                        if let cachedInfoSize = cachedInfoSize {
+                            height -= cachedInfoSize.height
+                        }
                     }
+                    return CGSize((width, height))
                 }
-                return CGSize((width, height))
-            }
 
-        case .nextList:
-            return CGSize((collectionView.bounds.width, 100))
+            case .nextList:
+                return CGSize((collectionView.bounds.width, 100))
+            }
         }
+
+        return cellSize().nonNegativeSize
+
     }
 
     func collectionView(
