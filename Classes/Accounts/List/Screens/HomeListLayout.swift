@@ -51,7 +51,7 @@ extension HomeListLayout {
         }
         
         switch listSection {
-        case .accounts: return UIEdgeInsets(top: 36, left: 24, bottom: 24, right: 24)
+        case .accounts: return UIEdgeInsets(top: 36, left: 0, bottom: 24, right: 0)
         default: return .zero
         }
     }
@@ -229,7 +229,7 @@ extension HomeListLayout {
         sizeForAccountHeaderItem item: ManagementItemViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = ManagementItemCell.reuseIdentifier
+        let sizeCacheIdentifier = HomeAccountsHeader.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -239,9 +239,9 @@ extension HomeListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = ManagementItemCell.calculatePreferredSize(
+        let newSize = HomeAccountsHeader.calculatePreferredSize(
             item,
-            for: ManagementItemCell.theme,
+            for: HomeAccountsHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         
@@ -256,7 +256,7 @@ extension HomeListLayout {
         sizeForAccountCellItem item: AccountPreviewViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = HomeAccountCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -272,9 +272,9 @@ extension HomeListLayout {
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
         let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = AccountPreviewCell.calculatePreferredSize(
+        let newSize = HomeAccountCell.calculatePreferredSize(
             sampleAccountItem,
-            for: AccountPreviewCell.theme,
+            for: HomeAccountCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         

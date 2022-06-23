@@ -44,7 +44,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             case .search:
                 return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
             case let .asset(item), let .algo(item):
-                let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
+                let cell = collectionView.dequeue(AccountAssetCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
             case let .pendingAsset(item):
@@ -68,7 +68,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             ManagementItemCell.self,
             AssetTitleItemCell.self,
             SearchBarItemCell.self,
-            AssetPreviewCell.self,
+            AccountAssetCell.self,
             PendingAssetPreviewCell.self,
             AccountQuickActionsCell.self,
             NoContentCell.self

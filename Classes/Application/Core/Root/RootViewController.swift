@@ -101,6 +101,9 @@ extension RootViewController {
                 appConfiguration.sharedDataController,
                 announcementDataController: announcementAPIDataController
             ),
+            copyToClipboardController: ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            ),
             configuration: configuration
         )
         let homeTab = HomeTabBarItem(
@@ -120,6 +123,9 @@ extension RootViewController {
         )
         
         let collectibleListViewController = CollectiblesViewController(
+            copyToClipboardController: ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            ),
             configuration: configuration
         )
         let collectiblesTab =

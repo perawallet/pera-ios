@@ -427,8 +427,7 @@
 "transaction-detail-note" = "Note";
 "transaction-detail-close-to" = "Close To";
 "transaction-detail-close-amount" = "Close Amount";
-"transaction-detail-note-copied" = "Transaction note copied to clipboard";
-"transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-note-copied" = "Note copied to clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
@@ -437,6 +436,8 @@
 "transaction-detail-pending" = "Pending";
 "transaction-detail-failed" = "Failed";
 "transaction-detail-id-copied-title" = "ID copied to clipboard";
+"transaction-menu-copy-id" = "Copy ID";
+"transaction-menu-copy-note" = "Copy Note";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
