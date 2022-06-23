@@ -185,7 +185,7 @@ protocol SelectAccountViewControllerDelegate: AnyObject {
 
 struct SelectAccountDraft {
     let transactionAction: TransactionAction
-    let requiresAssetSelection: Bool
-    var transactionDraft: TransactionSendDraft?
-    var receiver: String?
+    let requiresAssetSelection: Bool // Asset selection screen should be presented after account selection
+    var transactionDraft: TransactionSendDraft? // Transaction is already created
+    var receiver: String? // Receiver is already set for the transaction
 }
