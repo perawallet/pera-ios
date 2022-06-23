@@ -103,7 +103,9 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,
             primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unkown".localized
+            secondaryAccessory: "title-unkown".localized,
+            currencyAmount: 0,
+            asset: nil
         )
         
         let sampleAssetItem = AssetPreviewWithRemoveActionViewModel(

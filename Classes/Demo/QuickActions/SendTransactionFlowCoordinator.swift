@@ -21,14 +21,28 @@ import UIKit
 /// This should be removed after the routing refactor.
 final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
     private unowned let presentingScreen: UIViewController
-    private let account: Account?
+    private let sharedDataController: SharedDataController
+    private var account: Account?
 
     init(
         presentingScreen: UIViewController,
+        sharedDataController: SharedDataController,
         account: Account? = nil
     ) {
         self.presentingScreen = presentingScreen
+        self.sharedDataController = sharedDataController
         self.account = account
+
+        guard account != nil else {
+            return
+        }
+
+        sharedDataController.add(self)
+    }
+
+
+    deinit {
+        sharedDataController.remove(self)
     }
 }
 
@@ -83,5 +97,27 @@ extension SendTransactionFlowCoordinator {
         }
 
         openAssetSelection(with: account, on: selectAccountViewController)
+    }
+}
+
+/// <mark>
+/// SharedDataController
+extension SendTransactionFlowCoordinator: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            guard let address = account?.address else {
+                return
+            }
+
+            if let updatedAccountHandle = sharedDataController.accountCollection[address] {
+                self.account = updatedAccountHandle.value
+            }
+        default:
+            break
+        }
     }
 }

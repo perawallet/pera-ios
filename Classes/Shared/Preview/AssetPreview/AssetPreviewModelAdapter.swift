@@ -21,13 +21,16 @@ import UIKit
 enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
+        let title = adaptee.asset.presentation.name.isNilOrEmpty ? "title-unknown".localized : adaptee.asset.presentation.name
         return AssetPreviewModel(
-            icon: .url(nil, title: adaptee.asset.presentation.name),
+            icon: .url(nil, title: title),
             verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
-            title: adaptee.asset.presentation.name,
+            title: title,
             subtitle: adaptee.asset.presentation.unitName,
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount
+            secondaryAccessory: assetViewModel.currencyAmount,
+            currencyAmount: assetViewModel.currencyDecimal ?? 0,
+            asset: adaptee.asset
         )
     }
 
@@ -39,19 +42,24 @@ enum AssetPreviewModelAdapter {
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
-            secondaryAccessory: algoAssetViewModel.currencyAmount
+            secondaryAccessory: algoAssetViewModel.currencyAmount,
+            currencyAmount: algoAssetViewModel.currencyDecimal ?? 0,
+            asset: nil
         )
     }
 
     static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
+        let title = adaptee.asset.presentation.name.isNilOrEmpty ? "title-unknown".localized : adaptee.asset.presentation.name
         return AssetPreviewModel(
             icon: .url(nil, title: adaptee.asset.presentation.name),
             verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
-            title: adaptee.asset.presentation.name,
+            title: title,
             subtitle: "ID \(adaptee.asset.id)",
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount
+            secondaryAccessory: assetViewModel.currencyAmount,
+            currencyAmount: assetViewModel.currencyDecimal ?? 0,
+            asset: adaptee.asset
         )
     }
 

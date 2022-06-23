@@ -156,6 +156,10 @@ indirect enum Screen {
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
     case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case sortAccountAsset(
+        dataController: SortAccountAssetListDataController,
+        eventHandler: SortAccountAssetListViewController.EventHandler
+    )
 }
 
 extension Screen {

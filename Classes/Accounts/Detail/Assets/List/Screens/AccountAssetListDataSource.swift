@@ -33,6 +33,10 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case let .watchPortfolio(item):
+                let cell = collectionView.dequeue(WatchAccountPortfolioCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
             case .assetManagement(let titleItem):
                 let cell = collectionView.dequeue(ManagementItemCell.self, at: indexPath)
                 cell.bindData(titleItem)
@@ -65,6 +69,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
 
         [
             AccountPortfolioCell.self,
+            WatchAccountPortfolioCell.self,
             ManagementItemCell.self,
             AssetTitleItemCell.self,
             SearchBarItemCell.self,

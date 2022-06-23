@@ -38,7 +38,10 @@ final class HomeViewController:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-        SendTransactionFlowCoordinator(presentingScreen: self)
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =

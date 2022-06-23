@@ -25,6 +25,8 @@ struct AssetPreviewModel {
     let subtitle: String?
     let primaryAccessory: String?
     let secondaryAccessory: String?
+    let currencyAmount: Decimal
+    let asset: Asset?
 }
 
 struct AssetPreviewViewModel:

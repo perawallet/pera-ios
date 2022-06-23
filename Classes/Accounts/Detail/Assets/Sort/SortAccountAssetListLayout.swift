@@ -12,16 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SelectAssetViewControllerListLayout.swift
+//   SortAccountAssetListLayout.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class SelectAssetViewControllerListLayout: NSObject {
+final class SortAccountAssetListLayout: NSObject {
     private var sizeCache: [String: CGSize] = [:]
-    
+
+    private let listDataSource: SortAccountAssetListDataSource
+
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
+
+    init(
+        listDataSource: SortAccountAssetListDataSource
+    ) {
+        self.listDataSource = listDataSource
+        super.init()
+    }
 
     class func build() -> UICollectionViewLayout {
         let flowLayout = UICollectionViewFlowLayout()
@@ -30,19 +39,28 @@ final class SelectAssetViewControllerListLayout: NSObject {
     }
 }
 
-extension SelectAssetViewControllerListLayout {
+extension SortAccountAssetListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
         var insets = UIEdgeInsets(
             (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
         )
 
-        insets.top = 28
-
-        return insets
+        switch listSection {
+        case .sortOptions:
+            insets.top = 20
+            insets.bottom = 8
+            return insets
+        }
     }
 
     func collectionView(
@@ -50,43 +68,35 @@ extension SelectAssetViewControllerListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return sizeForAssetCellItem(
-            collectionView,
-            layout: collectionViewLayout
-        )
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
+        }
+
+        switch itemIdentifier {
+        case .sortOption:
+            return sizeForSingleSelectionCell(
+                collectionView,
+                layout: collectionViewLayout
+            )
+        }
     }
 }
 
-extension SelectAssetViewControllerListLayout {
-    private func sizeForAssetCellItem(
+extension SortAccountAssetListLayout {
+    private func sizeForSingleSelectionCell(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = SingleSelectionCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-
-        let sampleAssetPreview = AssetPreviewModel(
-            icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized,
-            primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unknown".localized,
-            currencyAmount: 0,
-            asset: nil
-        )
-
-        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
-
-        let newSize = AssetPreviewCell.calculatePreferredSize(
-            sampleAssetItem,
-            for: AssetPreviewCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        let newSize = CGSize(
+            width: width,
+            height: 56 /// <todo>: Calculate height
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
@@ -95,7 +105,7 @@ extension SelectAssetViewControllerListLayout {
     }
 }
 
-extension SelectAssetViewControllerListLayout {
+extension SortAccountAssetListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView
     ) -> LayoutMetric {
