@@ -38,9 +38,20 @@ final class CollectiblesViewController: BaseViewController {
             galleryAccount: .all,
             sharedDataController: sharedDataController
         ),
+        copyToClipboardController: copyToClipboardController,
         theme: .common,
         configuration: configuration
     )
+
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.copyToClipboardController = copyToClipboardController
+        super.init(configuration: configuration)
+    }
 
     override func configureNavigationBarAppearance() {
         addBarButtons()

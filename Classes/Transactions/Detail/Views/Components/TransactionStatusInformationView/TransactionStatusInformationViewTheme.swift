@@ -19,12 +19,15 @@ import MacaroonUIKit
 import UIKit
 
 struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
-    let title: TextStyle
+    var contentPaddings: NSDirectionalEdgeInsets
+    var title: TextStyle
+    var statusLeadingPadding: LayoutMetric
+    var transactionStatusViewTheme: TransactionStatusViewTheme
 
-    let statusLeadingPadding: LayoutMetric
-    let transactionStatusViewTheme: TransactionStatusViewTheme
-
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentPaddings = NSDirectionalEdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
         self.title = [
             .text("transaction-detail-status".localized),
             .textAlignment(.left),
@@ -34,5 +37,13 @@ struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
         ]
         self.statusLeadingPadding = 137
         self.transactionStatusViewTheme = TransactionStatusViewTheme()
+    }
+}
+
+extension TransactionStatusInformationViewTheme {
+    func configuredForInteraction() -> TransactionStatusInformationViewTheme {
+        var theme = TransactionStatusInformationViewTheme()
+        theme.contentPaddings = .init(top: 12, leading: 24, bottom: 12, trailing: 24)
+        return theme
     }
 }

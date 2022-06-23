@@ -31,9 +31,6 @@ final class AccountAssetListLayout: NSObject {
     private let isWatchAccount: Bool
     private let listDataSource: AccountAssetListDataSource
 
-    private let quickActionsSectionHorizontalInsets: LayoutHorizontalPaddings = (36, 36)
-
-
     init(
         isWatchAccount: Bool,
         listDataSource: AccountAssetListDataSource
@@ -73,13 +70,15 @@ extension AccountAssetListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForPortfolioItem: item
+                sizeForPortfolioItem: item,
+                atSection: indexPath.section
             )
         case .watchPortfolio(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForWatchPortfolioItem: item
+                sizeForWatchPortfolioItem: item,
+                section: indexPath.section
             )
         case .assetManagement:
             return CGSize(theme.assetManagementItemSize)
@@ -91,12 +90,16 @@ extension AccountAssetListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetCellItem: item
+                sizeForAssetCellItem: item,
+                atSection: indexPath.section
             )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
         case .quickActions:
-            let width = calculateContentWidth(for: collectionView)
+            let width = calculateContentWidth(
+                collectionView,
+                forSectionAt: indexPath.section
+            )
 
             return AccountQuickActionsCell.calculatePreferredSize(
                 for: AccountQuickActionsViewTheme(),
@@ -105,7 +108,8 @@ extension AccountAssetListLayout {
         case .empty(let item):
             return sizeForNoContent(
                 collectionView,
-                item: item
+                item: item,
+                atSection: indexPath.section
             )
         }
     }
@@ -125,12 +129,7 @@ extension AccountAssetListLayout {
 
         switch listSection {
         case .quickActions:
-            return UIEdgeInsets(
-                top: 0,
-                left: quickActionsSectionHorizontalInsets.leading,
-                bottom: 36,
-                right: quickActionsSectionHorizontalInsets.trailing
-            )
+            return UIEdgeInsets(top: 0, left: 0, bottom: 36, right: 0)
         case .assets:
             return UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
         case .portfolio:
@@ -145,15 +144,19 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPortfolioItem item: AccountPortfolioViewModel
+        sizeForPortfolioItem item: AccountPortfolioViewModel,
+        atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = AccountPortfolioCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
-        
-        let width = calculateContentWidth(for: listView)
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let newSize = AccountPortfolioCell.calculatePreferredSize(
             item,
             for: AccountPortfolioCell.theme,
@@ -167,7 +170,8 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForWatchPortfolioItem item: AccountPortfolioViewModel
+        sizeForWatchPortfolioItem item: AccountPortfolioViewModel,
+        section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = WatchAccountPortfolioCell.reuseIdentifier
 
@@ -175,7 +179,7 @@ extension AccountAssetListLayout {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
+        let width = calculateContentWidth(listView, forSectionAt: section)
         let newSize = WatchAccountPortfolioCell.calculatePreferredSize(
             item,
             for: WatchAccountPortfolioCell.theme,
@@ -189,21 +193,22 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel
+        sizeForAssetCellItem item: AssetPreviewViewModel,
+        atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = AccountAssetCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
-        let horizontalPadding: LayoutMetric = 24
-        let width =
-        calculateContentWidth(for: listView) - (2 * horizontalPadding)
-
-        let newSize = AssetPreviewCell.calculatePreferredSize(
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = AccountAssetCell.calculatePreferredSize(
             item,
-            for: AssetPreviewCell.theme,
+            for: AccountAssetCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -214,7 +219,8 @@ extension AccountAssetListLayout {
 
     private func sizeForNoContent(
         _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel
+        item: AssetListSearchNoContentViewModel,
+        atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = NoContentCell.reuseIdentifier
 
@@ -222,8 +228,10 @@ extension AccountAssetListLayout {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
-
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
@@ -238,9 +246,19 @@ extension AccountAssetListLayout {
 
 extension AccountAssetListLayout {
     private func calculateContentWidth(
-        for listView: UICollectionView
+        _ collectionView: UICollectionView,
+        forSectionAt section: Int
     ) -> LayoutMetric {
-        return listView.bounds.width - listView.contentInset.horizontal
+        let sectionInset = self.collectionView(
+            collectionView,
+            layout: collectionView.collectionViewLayout,
+            insetForSectionAt: section
+        )
+        return
+            collectionView.bounds.width -
+            collectionView.contentInset.horizontal -
+            sectionInset.left -
+            sectionInset.right
     }
 }
 

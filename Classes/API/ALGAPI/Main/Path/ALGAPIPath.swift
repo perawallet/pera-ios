@@ -54,7 +54,7 @@ extension EndpointBuilder {
 
     @discardableResult
     func path(_ aPath: ALGAPIPath, args: CVarArg...) -> Self {
-        let vPath = MagpieCore.Path(aPath.rawValue, args: args)
+        let vPath = MagpieCore.Path(format: aPath.rawValue, arguments: args)
         return path(vPath)
     }
 }

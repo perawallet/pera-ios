@@ -35,6 +35,7 @@ final class AccountCollectibleListViewController: BaseViewController {
             galleryAccount: .single(account),
             sharedDataController: sharedDataController
         ),
+        copyToClipboardController: copyToClipboardController,
         theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
             .current,
             listContentBottomInset: 88
@@ -46,11 +47,16 @@ final class AccountCollectibleListViewController: BaseViewController {
     
     private var account: AccountHandle
 
+    private let copyToClipboardController: CopyToClipboardController
+
     init(
         account: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 

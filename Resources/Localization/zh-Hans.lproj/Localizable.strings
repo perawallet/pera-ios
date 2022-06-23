@@ -1982,9 +1982,6 @@
 "transaction-detail-id" = "交易编号";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "交易编号已复制到剪贴板";
-
-/* (No Comment) */
 "transaction-detail-id-copied-title" = "ID已复制到剪贴板";
 
 /* (No Comment) */

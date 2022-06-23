@@ -45,7 +45,8 @@ extension TransactionContactInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
         }
     }
 
@@ -54,8 +55,10 @@ extension TransactionContactInformationView {
 
         addSubview(contactDisplayView)
         contactDisplayView.snp.makeConstraints {
-            $0.top.bottom.trailing.equalToSuperview()
-            $0.leading.equalToSuperview().offset(theme.contactDisplayLeadingPadding)
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.contactDisplayLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing == theme.contentPaddings.trailing
         }
     }
 }

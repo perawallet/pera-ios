@@ -113,17 +113,17 @@ final class SharedAPIDataController:
 
 extension SharedAPIDataController {
     func startPolling() {
-        $status.modify { $0 = .running }
+        $status.mutate { $0 = .running }
         blockProcessor.start()
     }
     
     func stopPolling() {
-        $status.modify { $0 = .suspended }
+        $status.mutate { $0 = .suspended }
         blockProcessor.stop()
     }
     
     func resetPolling() {
-        $status.modify { $0 = .suspended }
+        $status.mutate { $0 = .suspended }
         blockProcessor.cancel()
         
         deleteData()
@@ -252,7 +252,7 @@ extension SharedAPIDataController {
     private func blockProcessorWillStart(
         for round: BlockRound?
     ) {
-        $status.modify { $0 = .running }
+        $status.mutate { $0 = .running }
         
         lastRound = round
         nextAccountCollection = []
@@ -354,13 +354,13 @@ extension SharedAPIDataController {
         accountCollection = nextAccountCollection
         nextAccountCollection = []
         
-        $isFirstPollingRoundCompleted.modify { $0 = true }
+        $isFirstPollingRoundCompleted.mutate { $0 = true }
 
         if status != .running {
             return
         }
 
-        $status.modify { $0 = .completed }
+        $status.mutate { $0 = .completed }
         
         publish(.didFinishRunning)
     }
@@ -368,8 +368,8 @@ extension SharedAPIDataController {
     private func blockDidReset() {
         lastRound = nil
         
-        $isFirstPollingRoundCompleted.modify { $0 = false }
-        $status.modify { $0 = .idle }
+        $isFirstPollingRoundCompleted.mutate { $0 = false }
+        $status.mutate { $0 = .idle }
         
         publish(.didBecomeIdle)
     }

@@ -227,6 +227,10 @@ extension BaseViewController {
     var bannerController: BannerController? {
         return configuration.bannerController
     }
+    
+    var toastPresentationController: ToastPresentationController? {
+        return configuration.toastPresentationController
+    }
 
     var sharedDataController: SharedDataController {
         return configuration.sharedDataController
