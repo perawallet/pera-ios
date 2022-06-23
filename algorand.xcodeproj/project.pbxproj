@@ -1144,6 +1144,7 @@
 		2B50807C2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
 		2B50807D2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
 		2B50807E2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
+		2B508FDF2864930C00220D83 /* TransactionViewModelDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */; };
 		2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
@@ -17928,6 +17929,7 @@
 				D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
 				2BD4E5072855EB2A003D57A4 /* SortCollectibleListDataSource.swift in Sources */,
 				2B77FAA2280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
+				2B508FDF2864930C00220D83 /* TransactionViewModelDraft.swift in Sources */,
 				2BA1734E264B270100A613C4 /* AlgorandChartViewAxisCustomizable.swift in Sources */,
 				2B0F7E1E25D6E3C100B16B85 /* WelcomeViewController.swift in Sources */,
 				2B0F626C24EC129D00DA22A6 /* LedgerTutorialInstructionListView.swift in Sources */,
