@@ -66,7 +66,7 @@ extension Account {
 }
 
 extension Account {
-    func doesAccountHasParticipationKey() -> Bool {
+    func hasParticipationKey() -> Bool {
         return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 

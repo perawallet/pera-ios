@@ -170,6 +170,10 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
+    case sortAccountAsset(
+        dataController: SortAccountAssetListDataController,
+        eventHandler: SortAccountAssetListViewController.EventHandler
+    )
 }
 
 extension Screen {

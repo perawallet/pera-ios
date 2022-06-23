@@ -46,6 +46,7 @@ final class AccountAssetListViewController: BaseViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
+        collectionView.keyboardDismissMode = .interactive
         return collectionView
     }()
     private lazy var listBackgroundView = UIView()
@@ -119,6 +120,10 @@ final class AccountAssetListViewController: BaseViewController {
         super.setListeners()
         setTransactionActionButtonAction()
         keyboardController.beginTracking()
+    }
+
+    func reload() {
+        dataController.reload()
     }
 }
 

@@ -876,6 +876,13 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .sortAccountAsset(let dataController, let eventHandler):
+            let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T
@@ -1157,13 +1164,10 @@ extension Router {
         for account: Account
     ) -> TransactionMode {
         var transactionMode = draft.transactionMode
-        switch transactionMode {
-        case .asset(let asset):
-            if let updatedAsset = account.allAssets.first(matching: (\.id, asset.id)) {
-                transactionMode = .asset(updatedAsset)
-            }
-        default:
-            break
+
+        if case let .asset(asset) = draft.transactionMode {
+            let foundAsset = account[asset.id] ?? asset
+            transactionMode = .asset(foundAsset)
         }
 
         return transactionMode

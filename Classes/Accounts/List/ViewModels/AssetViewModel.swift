@@ -21,6 +21,7 @@ import MacaroonUIKit
 struct AssetViewModel: ViewModel {
     private(set) var amount: String?
     private(set) var currencyAmount: String?
+    private(set) var currencyDecimal: Decimal?
 
     init(
         asset: Asset?,
@@ -59,5 +60,6 @@ extension AssetViewModel {
         if currencyValue > 0 {
             currencyAmount = currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
         }
+        currencyDecimal = currencyValue
     }
 }
