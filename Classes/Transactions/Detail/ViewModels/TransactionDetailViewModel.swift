@@ -244,5 +244,14 @@ extension TransactionDetailViewModel {
         case localAccount(address: String)
         case contact(address: String)
         case address(address: String)
+
+        var address: String {
+            switch self {
+            case .localAccount(let address),
+                 .contact(let address),
+                 .address(let address):
+                return address
+            }
+        }
     }
 }

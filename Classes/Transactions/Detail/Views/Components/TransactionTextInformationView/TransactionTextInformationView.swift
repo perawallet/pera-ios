@@ -38,7 +38,8 @@ extension TransactionTextInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
         }
     }
     
@@ -47,9 +48,10 @@ extension TransactionTextInformationView {
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().offset(theme.detailLabelLeadingPadding)
-            $0.trailing.lessThanOrEqualToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.detailLabelLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.trailing
         }
     }
 }

@@ -12,20 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionTextInformationViewCommonTheme.swift
+//   HomeAccountsHeader.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct TransactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme {
-    let detail: TextStyle
+final class HomeAccountsHeader:
+    CollectionCell<ManagementItemView>,
+    ViewModelBindable,
+    UIInteractionObservable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
 
-    init(_ family: LayoutFamily) {
-        self.detail = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
+    static let theme = ManagementItemViewTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

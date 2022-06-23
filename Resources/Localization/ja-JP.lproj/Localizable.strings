@@ -1982,9 +1982,6 @@
 "transaction-detail-id" = "トランザクションID";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "トランザクションIDがクリップボードにコピーされました";
-
-/* (No Comment) */
 "transaction-detail-id-copied-title" = "IDがクリップボードにコピーされました";
 
 /* (No Comment) */

@@ -24,6 +24,7 @@ protocol Asset {
     var isDeleted: Bool? { get }
     var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
+    var decimals: Int { get }
 
     /// Asset management actions
     var state: AssetState { get set }

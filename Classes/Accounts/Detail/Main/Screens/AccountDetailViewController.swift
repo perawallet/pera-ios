@@ -29,11 +29,13 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
     private lazy var collectibleListScreen = AccountCollectibleListViewController(
         account: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
     
@@ -44,7 +46,11 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        account: accountHandle.value
+    )
     private lazy var receiveTransactionFlowCoordinator =
     ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
 
@@ -54,8 +60,16 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
-    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 

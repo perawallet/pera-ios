@@ -45,15 +45,20 @@ final class CollectibleListViewController:
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private let dataController: CollectibleListDataController
+    private let copyToClipboardController: CopyToClipboardController
+
     private let theme: CollectibleListViewControllerTheme
 
     init(
         dataController: CollectibleListDataController,
+        copyToClipboardController: CopyToClipboardController,
         theme: CollectibleListViewControllerTheme,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
         self.theme = theme
+
         super.init(configuration: configuration)
     }
 
@@ -276,6 +281,24 @@ extension CollectibleListViewController {
             break
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = getCollectibleItem(at: indexPath)?.asset else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
 }
 
 extension CollectibleListViewController {
@@ -448,6 +471,31 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {}
+}
+
+extension CollectibleListViewController {
+    private func getCollectibleItem(
+        at indexPath: IndexPath
+    ) -> CollectibleCellItemContainer<CollectibleListItemViewModel>? {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
+        switch itemIdentifier {
+        case .collectible(let collectibleItem):
+            switch collectibleItem {
+            case .cell(let collectibleCellItem):
+                switch collectibleCellItem {
+                case .owner(let item),
+                     .optedIn(let item),
+                     .pending(let item):
+                    return item
+                }
+            }
+        default:
+            return nil
+        }
+    }
 }
 
 extension CollectibleListViewController {
