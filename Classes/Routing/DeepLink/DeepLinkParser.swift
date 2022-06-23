@@ -141,13 +141,13 @@ extension DeepLinkParser {
         return nil
     }
     
-    private func makeAccountAdditionScreen(
+    private func makeActionSelectionScreen(
         _ qr: QRText,
         for url: URL
     ) -> Result? {
         let address = extractAccountAddress(from: url)
         return address.unwrap {
-            .success(.addContact(address: $0, name: qr.label))
+            .success(.actionSelection(address: $0, label: qr.label))
         }
     }
     
@@ -299,7 +299,7 @@ extension DeepLinkParser {
 
         switch qr.mode {
         case .address:
-            return makeAccountAdditionScreen(
+            return makeActionSelectionScreen(
                 qr,
                 for: url
             )
@@ -328,7 +328,7 @@ extension DeepLinkParser {
     typealias Result = Swift.Result<Screen, Error>
     
     enum Screen {
-        case addContact(address: String, name: String?)
+        case actionSelection(address: String, label: String?)
         case algosDetail(draft: TransactionListing)
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)

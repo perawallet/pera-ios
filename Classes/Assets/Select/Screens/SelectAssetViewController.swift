@@ -43,16 +43,19 @@ final class SelectAssetViewController:
     
     private let filter: AssetType?
     private let account: Account
+    private let receiver: String?
     private let theme: SelectAssetViewControllerTheme
 
     init(
         filter: AssetType?,
         account: Account,
+        receiver: String?,
         theme: SelectAssetViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.filter = filter
         self.account = account
+        self.receiver = receiver
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -143,11 +146,20 @@ extension SelectAssetViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        var receiverAccount: Account?
+        if let receiver = receiver {
+            receiverAccount = Account(
+                address: receiver,
+                type: .standard
+            )
+        }
+
         if filter != .collectible,
            indexPath.item == .zero {
 
             let draft = SendTransactionDraft(
                 from: account,
+                toAccount: receiverAccount,
                 transactionMode: .algo
             )
 
@@ -168,6 +180,7 @@ extension SelectAssetViewController {
 
         let draft = SendTransactionDraft(
             from: account,
+            toAccount: receiverAccount,
             transactionMode: .asset(asset)
         )
         open(.sendTransaction(draft: draft), by: .push)
