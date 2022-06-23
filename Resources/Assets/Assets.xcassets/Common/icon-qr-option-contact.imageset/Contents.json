@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "İcon-qr-option-contact.pdf",
+      "filename" : "icon-qr-option-contact.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "İcon-qr-option-contact-1.pdf",
+      "filename" : "icon-qr-option-contact-1.pdf",
       "idiom" : "universal"
     }
   ],
