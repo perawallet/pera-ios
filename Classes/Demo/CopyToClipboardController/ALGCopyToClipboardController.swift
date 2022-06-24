@@ -32,9 +32,21 @@ extension ALGCopyToClipboardController {
         _ item: ClipboardItem
     ) {
         item.copy.copyToClipboard()
+        notifyForInteractionIfNeeded(item.interaction)
+    }
+}
 
-        if let interaction = item.interaction {
-            toastPresentationController.present(interaction)
+extension ALGCopyToClipboardController {
+    private func notifyForInteractionIfNeeded(
+        _ interaction: ClipboardInteraction?
+    ) {
+        guard let interaction = interaction else {
+            return
         }
+
+        toastPresentationController.present(
+            message: interaction.message,
+            theme: interaction.theme
+        )
     }
 }

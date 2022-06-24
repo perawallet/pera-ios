@@ -117,9 +117,7 @@ final class HomeViewController:
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
                 self.updateUIWhenListDidReload()
 
-                /// <todo>
-                /// It is disabled at the moment.
-//                self.presentCopyAddressStoryIfNeeded()
+                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()

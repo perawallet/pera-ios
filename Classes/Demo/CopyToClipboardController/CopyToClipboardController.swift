@@ -92,21 +92,45 @@ struct ClipboardItem {
     }
 }
 
-protocol ClipboardInteraction: ToastViewModel {}
+protocol ClipboardInteraction {
+    typealias Message = ToastViewModel
+    typealias Theme = ToastViewTheme
+
+    var message: Message { get }
+    var theme: Theme { get }
+}
 
 struct CopyToClipboardInteraction: ClipboardInteraction {
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
+    private(set) var message: Message
+    private(set) var theme: Theme
 
     init(
         title: String?,
-        body: String?
+        body: String?,
+        customTheme: Theme? = nil
     ) {
-        self.title = title?
-            .bodyMedium(alignment: .center)
-        self.body = body?
-            .footnoteRegular(
-                alignment: .center
+        self.message = InMessage(title: title, body: body)
+        self.theme = customTheme ?? ToastViewTheme().configuredForSingleLineBody()
+    }
+}
+
+extension CopyToClipboardInteraction {
+    private struct InMessage: Message {
+        var title: TextProvider?
+        var body: TextProvider?
+
+        init(
+            title: String?,
+            body: String?
+        ) {
+            self.title = title?.bodyMedium(
+                alignment: .center,
+                lineBreakMode: .byWordWrapping
             )
+            self.body = body?.footnoteRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingMiddle
+            )
+        }
     }
 }

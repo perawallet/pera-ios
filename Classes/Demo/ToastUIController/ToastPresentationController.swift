@@ -66,18 +66,30 @@ final class ToastPresentationController: ToastUIPresentationController {
 
 extension ToastPresentationController {
     func present(
-        _ viewModel: ToastViewModel
+        message: ToastViewModel
     ) {
-        let view = makeToast()
-        view.bindData(viewModel)
+        let theme = ToastViewTheme()
+        let view = makeToast(theme)
+        view.bindData(message)
+        present(view)
+    }
+
+    func present(
+        message: ToastViewModel,
+        theme: ToastViewTheme
+    ) {
+        let view = makeToast(theme)
+        view.bindData(message)
         present(view)
     }
 }
 
 extension ToastPresentationController {
-    private func makeToast() -> ToastView {
+    private func makeToast(
+        _ theme: ToastViewTheme
+    ) -> ToastView {
         let view = ToastView()
-        view.customize(ToastViewTheme())
+        view.customize(theme)
         return view
     }
 }

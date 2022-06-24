@@ -49,3 +49,13 @@ struct ToastViewTheme:
         self.bodyPaddings = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
     }
 }
+
+extension ToastViewTheme {
+    func configuredForSingleLineBody(
+        _ lineBreakMode: NSLineBreakMode = .byTruncatingMiddle
+    ) -> ToastViewTheme {
+        var theme = ToastViewTheme()
+        theme.body.textOverflow = SingleLineText(lineBreakMode: lineBreakMode)
+        return theme
+    }
+}
