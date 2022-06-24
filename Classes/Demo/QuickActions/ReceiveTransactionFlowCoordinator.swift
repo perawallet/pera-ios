@@ -43,8 +43,13 @@ extension ReceiveTransactionFlowCoordinator {
     }
 
     private func openAccountSelection() {
+        let draft = SelectAccountDraft(
+            transactionAction: .receive,
+            requiresAssetSelection: false
+        )
+
         presentingScreen.open(
-            .accountSelection(transactionAction: .receive, delegate: self),
+            .accountSelection(draft: draft, delegate: self),
             by: .present
         )
     }
@@ -83,9 +88,9 @@ extension ReceiveTransactionFlowCoordinator {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        if transactionAction != .receive {
+        if draft.transactionAction != .receive {
             return
         }
 

@@ -38,7 +38,7 @@ class AccountPortfolioCell:
     }
 }
 
-class WatchAccountPortfolioCell: AccountPortfolioCell {
+class WatchAccountPortfolioCell: AccountPortfolioCell {
     override class var contextPaddings: LayoutPaddings {
         return (16, 24, 36, 24)
     }

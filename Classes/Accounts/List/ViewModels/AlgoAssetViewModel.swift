@@ -26,7 +26,7 @@ struct AlgoAssetViewModel: ViewModel {
     init(account: Account, currency: Currency?) {
         bindAmount(from: account)
 
-        if let algoCurrency = currency as? AlgoCurrency {
+        if let algoCurrency = currency as? AlgoCurrency {
             bindCurrencyAmount(from: account, with: algoCurrency.currency, isAlgoCurrency: true)
         } else {
             bindCurrencyAmount(from: account, with: currency, isAlgoCurrency: false)

@@ -57,8 +57,13 @@ extension SendTransactionFlowCoordinator {
     }
 
     private func openAccountSelection() {
+        let draft = SelectAccountDraft(
+            transactionAction: .send,
+            requiresAssetSelection: true
+        )
+
         presentingScreen.open(
-            .accountSelection(transactionAction: .send, delegate: self),
+            .accountSelection(draft: draft, delegate: self),
             by: .present
         )
     }
@@ -90,9 +95,9 @@ extension SendTransactionFlowCoordinator {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        if transactionAction != .send {
+        if draft.transactionAction != .send {
             return
         }
 

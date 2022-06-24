@@ -25,7 +25,10 @@ indirect enum Screen {
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
     case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
-    case accountRecover(flow: AccountSetupFlow)
+    case accountRecover(
+        flow: AccountSetupFlow,
+        initialMnemonic: String? = nil
+    )
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
@@ -68,7 +71,10 @@ indirect enum Screen {
     case developerSettings
     case currencySelection
     case appearanceSelection
-    case watchAccountAddition(flow: AccountSetupFlow)
+    case watchAccountAddition(
+        flow: AccountSetupFlow,
+        address: String? = nil
+    )
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
@@ -97,10 +103,14 @@ indirect enum Screen {
         eventHandler: SortAccountListViewController.EventHandler
     )
     case accountSelection(
-        transactionAction: TransactionAction,
+        draft: SelectAccountDraft,
         delegate: SelectAccountViewControllerDelegate?
     )
-    case assetSelection(filter: AssetType?, account: Account)
+    case assetSelection(
+        filter: AssetType?,
+        account: Account,
+        receiver: String? = nil
+    )
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)
     case portfolioCalculationInfo(result: PortfolioHandle, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
@@ -156,6 +166,10 @@ indirect enum Screen {
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
     case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case qrScanOptions(
+        address: PublicKey,
+        eventHandler: QRScanOptionsViewController.EventHandler
+    )
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler

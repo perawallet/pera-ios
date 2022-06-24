@@ -1144,6 +1144,7 @@
 		2B50807C2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
 		2B50807D2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
 		2B50807E2852456B007D787E /* FilterCollectiblesActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50807B2852456B007D787E /* FilterCollectiblesActionViewModel.swift */; };
+		2B508FDF2864930C00220D83 /* TransactionViewModelDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */; };
 		2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
@@ -1395,6 +1396,27 @@
 		2B698268278DF651008EC669 /* TransactionsListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B698267278DF651008EC669 /* TransactionsListLayout+Theme.swift */; };
 		2B698269278DF652008EC669 /* TransactionsListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B698267278DF651008EC669 /* TransactionsListLayout+Theme.swift */; };
 		2B69826A278DF652008EC669 /* TransactionsListLayout+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B698267278DF651008EC669 /* TransactionsListLayout+Theme.swift */; };
+		2B69A9BC285B7B64004014E2 /* QRScanOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */; };
+		2B69A9BD285B7B65004014E2 /* QRScanOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */; };
+		2B69A9BE285B7B65004014E2 /* QRScanOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */; };
+		2B69A9C0285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */; };
+		2B69A9C1285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */; };
+		2B69A9C2285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */; };
+		2B69A9C428617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C328617B5A004014E2 /* QRScanOptionListActionViewModel.swift */; };
+		2B69A9C528617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C328617B5A004014E2 /* QRScanOptionListActionViewModel.swift */; };
+		2B69A9C628617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C328617B5A004014E2 /* QRScanOptionListActionViewModel.swift */; };
+		2B69A9C828617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C728617D46004014E2 /* QRAddContactOptionViewModel.swift */; };
+		2B69A9C928617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C728617D46004014E2 /* QRAddContactOptionViewModel.swift */; };
+		2B69A9CA28617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9C728617D46004014E2 /* QRAddContactOptionViewModel.swift */; };
+		2B69A9CC28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CB28617D55004014E2 /* QRSendTransactionOptionViewModel.swift */; };
+		2B69A9CD28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CB28617D55004014E2 /* QRSendTransactionOptionViewModel.swift */; };
+		2B69A9CE28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CB28617D55004014E2 /* QRSendTransactionOptionViewModel.swift */; };
+		2B69A9D028617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CF28617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift */; };
+		2B69A9D128617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CF28617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift */; };
+		2B69A9D228617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9CF28617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift */; };
+		2B69A9D628622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9D528622FB8004014E2 /* QRScanOptionsViewModel.swift */; };
+		2B69A9D728622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9D528622FB8004014E2 /* QRScanOptionsViewModel.swift */; };
+		2B69A9D828622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69A9D528622FB8004014E2 /* QRScanOptionsViewModel.swift */; };
 		2B69BD902785A836008BD8D0 /* HomeListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69BD8F2785A836008BD8D0 /* HomeListLayout.swift */; };
 		2B69BD912785A836008BD8D0 /* HomeListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69BD8F2785A836008BD8D0 /* HomeListLayout.swift */; };
 		2B69BD922785A836008BD8D0 /* HomeListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B69BD8F2785A836008BD8D0 /* HomeListLayout.swift */; };
@@ -5179,6 +5201,13 @@
 		2B69824F278C9C21008EC669 /* PendingAssetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetImageView.swift; sourceTree = "<group>"; };
 		2B698253278C9D7B008EC669 /* PendingAssetImageViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetImageViewTheme.swift; sourceTree = "<group>"; };
 		2B698267278DF651008EC669 /* TransactionsListLayout+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionsListLayout+Theme.swift"; sourceTree = "<group>"; };
+		2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanOptionsViewController.swift; sourceTree = "<group>"; };
+		2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanOptionsViewControllerTheme.swift; sourceTree = "<group>"; };
+		2B69A9C328617B5A004014E2 /* QRScanOptionListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanOptionListActionViewModel.swift; sourceTree = "<group>"; };
+		2B69A9C728617D46004014E2 /* QRAddContactOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddContactOptionViewModel.swift; sourceTree = "<group>"; };
+		2B69A9CB28617D55004014E2 /* QRSendTransactionOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSendTransactionOptionViewModel.swift; sourceTree = "<group>"; };
+		2B69A9CF28617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddWatchAccountOptionViewModel.swift; sourceTree = "<group>"; };
+		2B69A9D528622FB8004014E2 /* QRScanOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanOptionsViewModel.swift; sourceTree = "<group>"; };
 		2B69BD8F2785A836008BD8D0 /* HomeListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListLayout.swift; sourceTree = "<group>"; };
 		2B6B3EF12774C003006379F4 /* WalletRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingView.swift; sourceTree = "<group>"; };
 		2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingViewTheme.swift; sourceTree = "<group>"; };
@@ -14238,7 +14267,12 @@
 		D4710B20276A6DA800F35F74 /* QRScanner */ = {
 			isa = PBXGroup;
 			children = (
+				2B69A9C728617D46004014E2 /* QRAddContactOptionViewModel.swift */,
+				2B69A9CF28617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift */,
 				D4710B1B276A6BED00F35F74 /* QRScannerOverlayViewModel.swift */,
+				2B69A9C328617B5A004014E2 /* QRScanOptionListActionViewModel.swift */,
+				2B69A9CB28617D55004014E2 /* QRSendTransactionOptionViewModel.swift */,
+				2B69A9D528622FB8004014E2 /* QRScanOptionsViewModel.swift */,
 			);
 			path = QRScanner;
 			sourceTree = "<group>";
@@ -14384,6 +14418,8 @@
 			isa = PBXGroup;
 			children = (
 				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+				2B69A9BB285B7B64004014E2 /* QRScanOptionsViewController.swift */,
+				2B69A9BF285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift */,
 			);
 			path = QRScanner;
 			sourceTree = "<group>";
@@ -15784,6 +15820,7 @@
 				17BD4E1F2292F1260003E49A /* AccountRecoverViewController.swift in Sources */,
 				17BD4E202292F1260003E49A /* AccountNameSetupViewController.swift in Sources */,
 				2B857633247E988E002F9DA8 /* QRCreationDraft.swift in Sources */,
+				2B69A9C628617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */,
 				F0CF6B602851637A007C30E4 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				95AF1C6627AD59F5001AB131 /* PreviewLoadingViewTheme.swift in Sources */,
 				D45038E52842C81C009EDE44 /* String+Typography.swift in Sources */,
@@ -15893,6 +15930,7 @@
 				D4DF3F6926F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */,
 				17CADC8D2853DC43001D19A8 /* MoreTransactionOptionListActionViewModel.swift in Sources */,
 				D48D11ED274297BA000061CE /* NotificationFilterView.swift in Sources */,
+				2B69A9D828622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */,
 				170A651727ED992B006AC9DF /* AnnouncementViewTheme.swift in Sources */,
 				D4F8F28C273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */,
 				2B8E5F1825471F7D001D8E30 /* ReceiveShareCompleteEvent.swift in Sources */,
@@ -15913,6 +15951,7 @@
 				2BED6573266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
 				2B83D05926C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				2BECB4F325A30A0E0081870A /* NotificationFilterResponse.swift in Sources */,
+				2B69A9CE28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */,
 				9565CF6F27ABE9D900A8095C /* AssetListViewAPIDataController.swift in Sources */,
 				D43B23E627180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift in Sources */,
 				D412C18E27F1AFBD00E79308 /* SendCollectibleViewTheme.swift in Sources */,
@@ -15922,6 +15961,7 @@
 				2B77473725FFE92E0083EFFA /* InputSuggestionView.swift in Sources */,
 				2B80C5742773695400BB071E /* AssetPortfolioItemView.swift in Sources */,
 				2B5F6F8A2768D80F00C9B780 /* SettingsDetailView.swift in Sources */,
+				2B69A9D228617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
 				95004BB627BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */,
 				2B0AD81C2756AE9F00F83660 /* AssetCreator.swift in Sources */,
 				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
@@ -15944,6 +15984,7 @@
 				D4BAFAB027DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift in Sources */,
 				D43A0C2E2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
 				D459E26C27DBB50300F7FC33 /* ActionableBannerViewTheme.swift in Sources */,
+				2B69A9BE285B7B65004014E2 /* QRScanOptionsViewController.swift in Sources */,
 				2BA979DA284E216800EDA5EA /* ManagementItemView.swift in Sources */,
 				2B0F5EEE24DD4F7100DA22A6 /* RekeyConfirmationView.swift in Sources */,
 				D4710B1D276A6C2700F35F74 /* QRScannerOverlayViewModel.swift in Sources */,
@@ -16009,6 +16050,7 @@
 				D459E28527DDF48000F7FC33 /* ApproveCollectibleTransactionViewControllerTheme.swift in Sources */,
 				2B69823C278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
+				2B69A9CA28617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
 				D48FDFF927CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */,
 				F08708FC2790878900BEE5C2 /* HomeAPIDataController.swift in Sources */,
 				1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
@@ -16848,6 +16890,7 @@
 				17BD4EE82292F1260003E49A /* ChoosePasswordView.swift in Sources */,
 				F096087C27962EF800CFBB90 /* TabBarButtonItem.swift in Sources */,
 				2BE4D06825938448005F5764 /* AnalyticsTracker.swift in Sources */,
+				2B69A9C2285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */,
 				D48FDF7C27CB7DA200C39FC7 /* AssetPreviewCell.swift in Sources */,
 				17BD4EE92292F1260003E49A /* BaseView.swift in Sources */,
 				2B6B3EF42774C003006379F4 /* WalletRatingView.swift in Sources */,
@@ -17147,6 +17190,7 @@
 				2B77471C25FFE84F0083EFFA /* InputSuggestionLayoutBuilder.swift in Sources */,
 				95BB6BE7279FD0C800F2A2F1 /* WCAssetCreationTransactionViewTheme.swift in Sources */,
 				2BA015952636F507009EC914 /* LedgerAccountVerificationStatusViewModel.swift in Sources */,
+				2B69A9C928617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
 				D47956862769D16F003766D2 /* WCSessionListViewTheme.swift in Sources */,
 				D4411D272837E35E00080911 /* TransactionOptionListActionViewModel.swift in Sources */,
 				2B0F617A24EC129D00DA22A6 /* LedgerDetail.swift in Sources */,
@@ -17291,6 +17335,7 @@
 				2B0AD8252757D9DE00F83660 /* AccountPortfolioViewModel.swift in Sources */,
 				F08709232791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */,
 				D46C648A26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
+				2B69A9C528617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */,
 				D44265C9277481D00094E2CA /* TransactionHistoryContextViewTheme.swift in Sources */,
 				D48FDFC827CEBA0800C39FC7 /* ReceiveCollectibleAccountListLayout.swift in Sources */,
 				D4B6EA53276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */,
@@ -17319,6 +17364,7 @@
 				F08708F72790877300BEE5C2 /* HomeDataController.swift in Sources */,
 				2B0F61B224EC129D00DA22A6 /* QRCreationDraft.swift in Sources */,
 				9568ADE127C7827300668053 /* BuyAlgoDraft.swift in Sources */,
+				2B69A9D128617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
 				2B0F61B624EC129D00DA22A6 /* AssetDetail.swift in Sources */,
 				2B0F61B724EC129D00DA22A6 /* LedgerBLEController.swift in Sources */,
 				2B65602625CE1DDD0028FE12 /* PassphraseCellViewModel.swift in Sources */,
@@ -17338,6 +17384,7 @@
 				D45C2D2E27B910360015420F /* SendTransactionPreviewViewTheme.swift in Sources */,
 				D4FC5F4A27F5039E0017E81F /* InfoCell.swift in Sources */,
 				2B4334B427CEE21600A3D9D6 /* NoContentWithActionViewIllustratedTheme.swift in Sources */,
+				2B69A9BD285B7B65004014E2 /* QRScanOptionsViewController.swift in Sources */,
 				D459E29527DE589600F7FC33 /* CollectibleTransactionInfoViewModel.swift in Sources */,
 				2B0F61BF24EC129D00DA22A6 /* RootViewController.swift in Sources */,
 				D411B37926EA1070004FF980 /* AccountPreviewViewModel.swift in Sources */,
@@ -17679,6 +17726,7 @@
 				2B4334C227CEEA3200A3D9D6 /* CollectibleListDataSource.swift in Sources */,
 				2B5F6F952768D8CC00C9B780 /* SettingsToggleViewTheme.swift in Sources */,
 				2B0F622C24EC129D00DA22A6 /* LedgerApprovalViewController.swift in Sources */,
+				2B69A9D728622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */,
 				95E7754C276DEFB5004E13F2 /* TransactionResultScreen.swift in Sources */,
 				F0DB418827948DC300EA437D /* ListActionView.swift in Sources */,
 				D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */,
@@ -17881,6 +17929,7 @@
 				D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
 				2BD4E5072855EB2A003D57A4 /* SortCollectibleListDataSource.swift in Sources */,
 				2B77FAA2280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
+				2B508FDF2864930C00220D83 /* TransactionViewModelDraft.swift in Sources */,
 				2BA1734E264B270100A613C4 /* AlgorandChartViewAxisCustomizable.swift in Sources */,
 				2B0F7E1E25D6E3C100B16B85 /* WelcomeViewController.swift in Sources */,
 				2B0F626C24EC129D00DA22A6 /* LedgerTutorialInstructionListView.swift in Sources */,
@@ -18032,6 +18081,7 @@
 				2BAD6CAC27F884FB0016E869 /* Collectible3DCardDisplayable.swift in Sources */,
 				2B0F629924EC129D00DA22A6 /* String+Address.swift in Sources */,
 				2B0F629A24EC129D00DA22A6 /* Transaction.swift in Sources */,
+				2B69A9C1285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */,
 				D4AEDD3D271C711100AD2725 /* AlgoStatisticsInfoViewTheme.swift in Sources */,
 				0467678E2756A65F00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,
 				95EE6FDB278C670600E9F1E1 /* WCSingleTransactionRequestScreen+Theme.swift in Sources */,
@@ -18234,6 +18284,7 @@
 				D4A6479727846367009DE241 /* TransactionsViewController+Theme.swift in Sources */,
 				D450DE6C2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */,
 				2B5BE06825190B7D00324BEE /* AccountTypeView.swift in Sources */,
+				2B69A9CD28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */,
 				95D11D2227731F82001B2C37 /* AccountClipboardViewTheme.swift in Sources */,
 				F09608702795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
 				2B4FD20B27C654A60097AB65 /* BuyAlgoTransactionDataController.swift in Sources */,
@@ -19010,6 +19061,7 @@
 				D4F856C727E126EB00F109ED /* AssetSearchListHeaderViewModel.swift in Sources */,
 				F08708EA278E0F8900BEE5C2 /* HIPNetworkError+Extensions.swift in Sources */,
 				F01264392836FACE00380C4E /* WalletConnectConfig.swift in Sources */,
+				2B69A9C828617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
 				2BA9F012268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift in Sources */,
 				D419005F273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
 				2B270391263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
@@ -19256,6 +19308,7 @@
 				F040FE0F2858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift in Sources */,
 				046767812756A65F00C88F21 /* SingleSelectionView.swift in Sources */,
 				95266BFC27B538B800E99EC7 /* SelectAccountAPIDataController.swift in Sources */,
+				2B69A9C428617B5B004014E2 /* QRScanOptionListActionViewModel.swift in Sources */,
 				D459E28727DE03A900F7FC33 /* ApproveCollectibleTransactionViewModel.swift in Sources */,
 				D4C68D81277DB2F90019C882 /* TransactionFilterViewController+Theme.swift in Sources */,
 				2B6B3EF62774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
@@ -19285,6 +19338,7 @@
 				2BF8120425E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
 				2B698254278C9D7B008EC669 /* PendingAssetImageViewTheme.swift in Sources */,
 				D4822735272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
+				2B69A9D628622FB9004014E2 /* QRScanOptionsViewModel.swift in Sources */,
 				D4411D162837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				F0DB418B27948DC900EA437D /* ListActionViewModel.swift in Sources */,
@@ -19305,6 +19359,7 @@
 				2B3D73BC23C3638900597D32 /* LimitQuery.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				D443A07927E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */,
+				2B69A9C0285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */,
 				F012642F2835A46800380C4E /* ALGDeeplinkConfig.swift in Sources */,
 				F0DB41B32794C68A00EA437D /* ArrangeListListActionVIewModel.swift in Sources */,
 				2BE9373E2464AFC800322C1E /* TransactionContactInformationView.swift in Sources */,
@@ -19320,6 +19375,7 @@
 				2B6B422D27BEA6D00036BF9E /* ScanQRCodeListActionViewModel.swift in Sources */,
 				2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,
 				D421179026D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */,
+				2B69A9BC285B7B64004014E2 /* QRScanOptionsViewController.swift in Sources */,
 				2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
 				95CA71FC27CD5D7800424626 /* BuyAlgoSignDraft.swift in Sources */,
 				2B6B424527BECE380036BF9E /* RemoveAccountListActionViewModel.swift in Sources */,
@@ -19404,6 +19460,7 @@
 				2B262711284D667C00ADE371 /* AssetConfigTransactionItemDraftComposer.swift in Sources */,
 				F0261A9C27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */,
 				2BB8483C27E90B9A004F2E39 /* CollectibleMediaErrorViewTheme.swift in Sources */,
+				2B69A9D028617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
 				2B9352CB27F3B9F2000DA8DB /* AccountShareViewTheme.swift in Sources */,
 				D4411D122837AE5900080911 /* UIViewTapInteraction.swift in Sources */,
 				2B5F6F882768D80F00C9B780 /* SettingsDetailView.swift in Sources */,
@@ -19532,6 +19589,7 @@
 				F0E7218D284F6AA100865419 /* BuyAlgoFlowCoordinator.swift in Sources */,
 				D45E191726E91FA500A32744 /* AccountNameSetupViewController+Theme.swift in Sources */,
 				2BE937302464AEB600322C1E /* LineSeparatorView.swift in Sources */,
+				2B69A9CC28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */,
 				D44265C027746E3C0094E2CA /* TransactionHistoryHeaderViewTheme.swift in Sources */,
 				D4C45BEF2726B59D00F4AE31 /* ContactDetailViewTheme.swift in Sources */,
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,

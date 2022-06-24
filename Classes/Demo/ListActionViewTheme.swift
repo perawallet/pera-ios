@@ -67,4 +67,11 @@ extension ListActionViewTheme {
             .textColor(AppColors.Components.Text.gray)
         ]
     }
+
+    mutating func configureForQRScanOptionsView() {
+        self.iconContentEdgeInsets = (16, 0)
+        self.contentVerticalPaddings = (8, 8)
+        self.contentMinHeight = 68
+        self.spacingBetweenTitleAndSubtitle = 0
+    }
 }

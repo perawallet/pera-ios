@@ -183,6 +183,11 @@
 "qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
 "qr-scan-connected-app-count" = "%@ apps connected";
 "qr-scan-connected-app-singular-count" = "%@ app connected";
+"qr-scan-option-title" = "Address scanned!";
+"qr-scan-option-scanned-title" = "Scanned account address";
+"qr-scan-option-send-transaction" = "Send transaction";
+"qr-scan-option-add-watch" = "Add Watch account";
+"qr-scan-option-add-contact" = "Add new contact";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -225,6 +230,8 @@
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-removing-status" = "Removing Asset";
+"asset-confirmation-not-found" = "Asset could not be found.";
+"asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
