@@ -40,15 +40,12 @@ final class SortAccountListDataSource:
                     item.value
                 )
                 return cell
-            case .reordering(let itemViewModel):
+            case .reordering(let item):
                 let cell = collectionView.dequeue(
                     AccountOrderingPreviewCell.self,
                     at: indexPath
                 )
-                let viewModel = dataController.accountPreviewViewModel(at: indexPath.item) ?? itemViewModel
-
-                cell.bindData(viewModel)
-
+                cell.bindData(item)
                 return cell
             }
         }
@@ -107,5 +104,22 @@ final class SortAccountListDataSource:
             from: sourceIndexPath,
             to: destinationIndexPath
         )
+
+        guard
+            let sourceItem = itemIdentifier(for: sourceIndexPath),
+            let destinationItem = itemIdentifier(for: destinationIndexPath)
+        else {
+            return
+        }
+
+        var snapshot = snapshot()
+
+        if sourceIndexPath > destinationIndexPath {
+            snapshot.moveItem(sourceItem, beforeItem: destinationItem)
+        } else {
+            snapshot.moveItem(sourceItem, afterItem: destinationItem)
+        }
+
+        apply(snapshot, animatingDifferences: false)
     }
 }

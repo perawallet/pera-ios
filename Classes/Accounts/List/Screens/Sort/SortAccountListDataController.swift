@@ -34,8 +34,6 @@ protocol SortAccountListDataController: AnyObject {
     )
 
     func performChanges()
-
-    func accountPreviewViewModel(at index: Int) -> AccountPreviewViewModel?
 }
 
 enum SortAccountListSection:
