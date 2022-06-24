@@ -40,14 +40,15 @@ final class SortAccountListDataSource:
                     item.value
                 )
                 return cell
-            case .reordering(let item):
+            case .reordering(let itemViewModel):
                 let cell = collectionView.dequeue(
                     AccountOrderingPreviewCell.self,
                     at: indexPath
                 )
-                cell.bindData(
-                    item
-                )
+                let viewModel = dataController.accountPreviewViewModel(at: indexPath.item) ?? itemViewModel
+
+                cell.bindData(viewModel)
+
                 return cell
             }
         }

@@ -79,6 +79,18 @@ extension SortAccountListLocalDataController {
             to: destination.item
         )
     }
+
+    func accountPreviewViewModel(at index: Int) -> AccountPreviewViewModel? {
+        guard let item = reorderedAccountItems[safe: index] else {
+            return nil
+        }
+
+        if case let .reordering(viewModel) = item {
+            return viewModel
+        }
+
+        return nil
+    }
 }
 
 extension SortAccountListLocalDataController {
