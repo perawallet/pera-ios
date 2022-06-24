@@ -331,6 +331,7 @@ extension SendTransactionScreen {
 
     private func addNumpad() {
         numpadView.customize(TransactionNumpadViewTheme())
+        numpadView.deleteButtonIsHidden = self.amount == "0"
 
         view.addSubview(numpadView)
         numpadView.snp.makeConstraints { make in
