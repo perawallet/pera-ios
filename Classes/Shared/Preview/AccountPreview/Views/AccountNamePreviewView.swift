@@ -103,7 +103,7 @@ extension AccountNamePreviewView {
 
         subtitleView.fitToVerticalIntrinsicSize(
             hugging: .required,
-            compression: .defaultLow
+            compression: .defaultHigh
         )
         subtitleView.contentEdgeInsets = theme.subtitleContentEdgeInsets
         subtitleView.snp.makeConstraints {

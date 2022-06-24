@@ -23,6 +23,7 @@ struct AccountPortfolioViewModel:
     Hashable {
     private(set) var title: EditText?
     private(set) var value: EditText?
+    private(set) var secondaryValue: EditText?
 
     init(
         _ model: AccountPortfolio
@@ -37,6 +38,7 @@ extension AccountPortfolioViewModel {
     ) {
         bindTitle(portfolio)
         bindValue(portfolio)
+        bindSecondaryValue(portfolio)
     }
     
     mutating func bindTitle(
@@ -62,17 +64,37 @@ extension AccountPortfolioViewModel {
         _ portfolio: AccountPortfolio
     ) {
         let totalPortfolio = portfolio.account.value.totalPortfolio
-        let font = Fonts.DMMono.regular.make(36)
+        let font = Fonts.DMSans.medium.make(36)
         let lineHeightMultiplier = 1.02
-        
+
         value = .attributedString(
             totalPortfolio.primaryUIDescription.attributed([
                 .font(font),
-                .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
+                ])
+            ])
+        )
+    }
+
+    mutating func bindSecondaryValue(
+        _ portfolio: AccountPortfolio
+    ) {
+        let totalPortfolio = portfolio.account.value.totalPortfolio
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.02
+
+        secondaryValue = .attributedString(
+            ("≈ " + totalPortfolio.secondaryUIDescription).attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.center)
                 ])
             ])
         )

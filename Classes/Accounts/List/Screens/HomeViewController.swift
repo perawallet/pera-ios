@@ -38,7 +38,10 @@ final class HomeViewController:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator =
-        SendTransactionFlowCoordinator(presentingScreen: self)
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
@@ -71,12 +74,16 @@ final class HomeViewController:
     private var isViewFirstAppeared = true
 
     private let dataController: HomeDataController
+    private let copyToClipboardController: CopyToClipboardController
 
     init(
         dataController: HomeDataController,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
@@ -110,9 +117,7 @@ final class HomeViewController:
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
                 self.updateUIWhenListDidReload()
 
-                /// <todo>
-                /// It is disabled at the moment.
-//                self.presentCopyAddressStoryIfNeeded()
+                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()
@@ -389,7 +394,7 @@ extension HomeViewController {
     }
     
     private func linkInteractors(
-        _ cell: ManagementItemCell,
+        _ cell: HomeAccountsHeader,
         for item: ManagementItemViewModel
     ) {
         cell.observe(event: .primaryAction) {
@@ -645,7 +650,7 @@ extension HomeViewController {
             switch item {
             case .header(let headerItem):
                 linkInteractors(
-                    cell as! ManagementItemCell,
+                    cell as! HomeAccountsHeader,
                     for: headerItem
                 )
             default:
@@ -681,45 +686,52 @@ extension HomeViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+        guard let account = getAccount(at: indexPath) else {
             return
         }
 
-        switch itemIdentifier {
-        case .account(let item):
-            switch item {
-            case .cell(let cellItem):
-                guard let account = dataController[cellItem.address] else {
-                    return
-                }
+        selectedAccountHandle = account
 
-                self.selectedAccountHandle = account
-                
-                if account.isAvailable {
-                    let eventHandler: AccountDetailViewController.EventHandler = {
-                        [weak self] event in
-                        guard let self = self else { return }
-                        
-                        switch event {
-                        case .didEdit:
-                            self.popScreen()
-                            self.dataController.reload()
-                        case .didRemove:
-                            self.popScreen()
-                            self.dataController.reload()
-                        }
-                    }
-                    open(
-                        .accountDetail(accountHandle: account, eventHandler: eventHandler),
-                        by: .push
-                    )
-                } else {
-                    presentOptions(for: account)
-                }
-            default:
-                break
+        if !account.isAvailable {
+            presentOptions(for: account)
+            return
+        }
+
+        let eventHandler: AccountDetailViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didEdit:
+                self.popScreen()
+                self.dataController.reload()
+            case .didRemove:
+                self.popScreen()
+                self.dataController.reload()
             }
-        default: break
+        }
+
+        open(
+            .accountDetail(accountHandle: account, eventHandler: eventHandler),
+            by: .push
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let account = getAccount(at: indexPath)?.value else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyAddress(account)
+            }
+            return UIMenu(children: [ copyActionItem ])
         }
     }
 }
@@ -839,6 +851,22 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
+    }
+}
+
+extension HomeViewController {
+    private func getAccount(
+        at indexPath: IndexPath
+    ) -> AccountHandle? {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
+        guard case HomeItem.account(HomeAccountItem.cell(let item)) = itemIdentifier else {
+            return nil
+        }
+
+        return dataController[item.address]
     }
 }
 

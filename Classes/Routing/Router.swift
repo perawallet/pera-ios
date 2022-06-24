@@ -35,7 +35,6 @@ class Router:
     /// <todo>
     /// How to dealloc finished transitions?
     private var ongoingTransitions: [BottomSheetTransition] = []
-    private var qrSendDraft: QRSendTransactionDraft?
 
     private unowned let appConfiguration: AppConfiguration
 
@@ -115,14 +114,75 @@ class Router:
         }
         
         switch screen {
-        case .addContact(let address, let name):
-            launch(tab: .settings)
+        case .actionSelection(let address, let label):
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
-            route(
-                to: .addContact(address: address, name: name),
-                from: findVisibleScreen(over: rootViewController),
+            let eventHandler: QRScanOptionsViewController.EventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .transaction:
+                    launch(tab: .home)
+
+                    var transactionDraft = SendTransactionDraft(
+                        from: Account(),
+                        transactionMode: .algo
+                    )
+
+                    let amount: UInt64 = 0
+                    transactionDraft.amount = amount.toAlgos
+
+                    let accountSelectDraft = SelectAccountDraft(
+                        transactionAction: .send,
+                        requiresAssetSelection: true,
+                        transactionDraft: transactionDraft,
+                        receiver: address
+                    )
+
+                    self.route(
+                        to: .accountSelection(
+                            draft: accountSelectDraft,
+                            delegate: self
+                        ),
+                        from: self.findVisibleScreen(over: self.rootViewController),
+                        by: .present
+                    )
+
+                case .watchAccount:
+                    launch(tab: .home)
+
+                    self.route(
+                        to: .watchAccountAddition(
+                            flow: .addNewAccount(
+                                mode: .add(type: .watch)
+                            ),
+                            address: address
+                        ),
+                        from: self.findVisibleScreen(over: self.rootViewController),
+                        by: .present
+                    )
+                case .contact:
+                    launch(tab: .home)
+
+                    self.route(
+                        to: .addContact(address: address, name: label),
+                        from: self.findVisibleScreen(over: self.rootViewController),
+                        by: .present
+                    )
+                }
+            }
+
+            transition.perform(
+                .qrScanOptions(
+                    address: address,
+                    eventHandler: eventHandler
+                ),
                 by: .present
             )
+
+            ongoingTransitions.append(transition)
         case .algosDetail(let draft):
             launch(tab: .home)
 
@@ -153,9 +213,26 @@ class Router:
         case .sendTransaction(let draft):
             launch(tab: .home)
 
-            qrSendDraft = draft
+            let transactionDraft = SendTransactionDraft(
+                from: Account(),
+                toAccount: Account(address: draft.toAccount, type: .standard),
+                amount: draft.amount,
+                transactionMode: draft.transactionMode,
+                note: draft.note,
+                lockedNote: draft.lockedNote
+            )
+
+            let accountSelectDraft = SelectAccountDraft(
+                transactionAction: .send,
+                requiresAssetSelection: false,
+                transactionDraft: transactionDraft
+            )
+
             route(
-                to: .accountSelection(transactionAction: .send, delegate: self),
+                to: .accountSelection(
+                        draft: accountSelectDraft,
+                        delegate: self
+                ),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -181,8 +258,13 @@ class Router:
         case .accountSelect(let asset):
             launch(tab: .home)
 
+            let accountSelectDraft = SelectAccountDraft(
+                transactionAction: .optIn(asset: asset),
+                requiresAssetSelection: false
+            )
+
             route(
-                to: .accountSelection(transactionAction: .optIn(asset: asset), delegate: self),
+                to: .accountSelection(draft: accountSelectDraft, delegate: self),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -375,8 +457,12 @@ class Router:
             viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
         case let .accountNameSetup(flow, mode, accountAddress):
             viewController = AccountNameSetupViewController(flow: flow, mode: mode, accountAddress: accountAddress, configuration: configuration)
-        case let .accountRecover(flow):
-            viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .accountRecover(flow, initialMnemonic):
+            viewController = AccountRecoverViewController(
+                accountSetupFlow: flow,
+                initialMnemonic: initialMnemonic,
+                configuration: configuration
+            )
         case let .qrScanner(canReadWCSession):
             viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
         case let .qrGenerator(title, draft, isTrackable):
@@ -411,6 +497,9 @@ class Router:
                 transaction: transaction,
                 transactionType: transactionType,
                 assetDetail: assetDetail,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .assetDetail(draft):
@@ -418,7 +507,11 @@ class Router:
         case let .algosDetail(draft):
             viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
         case let .accountDetail(accountHandle, eventHandler):
-            let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
+            let aViewController = AccountDetailViewController(
+                accountHandle: accountHandle,
+                copyToClipboardController: ALGCopyToClipboardController(toastPresentationController: appConfiguration.toastPresentationController),
+                configuration: configuration
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .assetSearch(accountHandle, dataController):
@@ -433,8 +526,10 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
-        case .assetManagement:
-            viewController = AssetManagementViewController(configuration: configuration)
+        case let .managementOptions(managementType, delegate):
+            let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
+            managementOptionsViewController.delegate = delegate
+            viewController = managementOptionsViewController
         case let .assetActionConfirmation(assetAlertDraft, delegate):
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
@@ -496,8 +591,12 @@ class Router:
             viewController = CurrencySelectionViewController(configuration: configuration)
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)
-        case let .watchAccountAddition(flow):
-            viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .watchAccountAddition(flow, address):
+            viewController = WatchAccountAdditionViewController(
+                accountSetupFlow: flow,
+                address: address,
+                configuration: configuration
+            )
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
@@ -609,18 +708,22 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .accountSelection(transactionAction, delegate):
+        case let .accountSelection(draft, delegate):
             let selectAccountViewController = SelectAccountViewController(
-                dataController: SelectAccountAPIDataController(configuration.sharedDataController, transactionAction: transactionAction),
-                transactionAction: transactionAction,
+                dataController: SelectAccountAPIDataController(
+                    configuration.sharedDataController,
+                    transactionAction: draft.transactionAction
+                ),
+                draft: draft,
                 configuration: configuration
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account):
+        case .assetSelection(let filter, let account, let receiver):
             viewController = SelectAssetViewController(
                 filter: filter,
                 account: account,
+                receiver: receiver,
                 configuration: configuration
             )
         case .sendTransaction(let draft):
@@ -671,6 +774,13 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .sortCollectibleList(dataController, eventHandler):
+            let aViewController = SortCollectibleListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .collectiblesFilterSelection(filter):
             viewController = CollectiblesFilterSelectionViewController(
                 filter: filter,
@@ -755,6 +865,24 @@ class Router:
             let screen = CopyAddressStoryScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
+        case .transactionOptions(let delegate):
+            let aViewController = TransactionOptionsScreen(configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
+        case .qrScanOptions(let address, let eventHandler):
+            let screen = QRScanOptionsViewController(
+                address: address,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .sortAccountAsset(let dataController, let eventHandler):
+            let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T
@@ -973,13 +1101,23 @@ extension Router {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        switch transactionAction {
+        switch draft.transactionAction {
         case .send:
+            if draft.requiresAssetSelection {
+                openAssetSelection(
+                    with: account,
+                    on: selectAccountViewController,
+                    receiver: draft.receiver
+                )
+                return
+            }
+            
             sendTransction(
                 from: selectAccountViewController,
-                for: account
+                for: account,
+                with: draft.transactionDraft
             )
         case .optIn(let asset):
             requestOptingInToAsset(
@@ -993,19 +1131,24 @@ extension Router {
 
     private func sendTransction(
         from selectAccountViewController: SelectAccountViewController,
-        for account: Account
+        for account: Account,
+        with transactionDraft: TransactionSendDraft?
     ) {
-        guard let qrDraft = self.qrSendDraft else {
+        guard let transactionDraft = transactionDraft as? SendTransactionDraft else {
             return
         }
 
+        let transactionMode = updateTransactionModeIfNeeded(
+            transactionDraft,
+            for: account
+        )
         let draft = SendTransactionDraft(
             from: account,
-            toAccount: Account(address: qrDraft.toAccount, type: .standard),
-            amount: qrDraft.amount,
-            transactionMode: qrDraft.transactionMode,
-            note: qrDraft.note,
-            lockedNote: qrDraft.lockedNote
+            toAccount: transactionDraft.toAccount,
+            amount: transactionDraft.amount,
+            transactionMode: transactionMode,
+            note: transactionDraft.note,
+            lockedNote: transactionDraft.lockedNote
         )
 
         selectAccountViewController.open(
@@ -1014,8 +1157,20 @@ extension Router {
             ),
             by: .push
         )
+    }
 
-        self.qrSendDraft = nil
+    private func updateTransactionModeIfNeeded(
+        _ draft: SendTransactionDraft,
+        for account: Account
+    ) -> TransactionMode {
+        var transactionMode = draft.transactionMode
+
+        if case let .asset(asset) = draft.transactionMode {
+            let foundAsset = account[asset.id] ?? asset
+            transactionMode = .asset(foundAsset)
+        }
+
+        return transactionMode
     }
 
     private func requestOptingInToAsset(
@@ -1046,6 +1201,23 @@ extension Router {
         transition.perform(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
             by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openAssetSelection(
+        with account: Account,
+        on screen: UIViewController,
+        receiver: String?
+    ) {
+        let assetSelectionScreen: Screen = .assetSelection(
+            filter: nil,
+            account: account,
+            receiver: receiver
+        )
+
+        screen.open(
+            assetSelectionScreen,
+            by: .push
         )
     }
 }

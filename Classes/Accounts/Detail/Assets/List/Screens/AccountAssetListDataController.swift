@@ -24,22 +24,29 @@ protocol AccountAssetListDataController: AnyObject {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }
 
     func load()
+    func reload()
 }
 
 enum AccountAssetsSection:
     Int,
     Hashable {
     case portfolio
+    case quickActions
     case assets
+    case empty
 }
 
 enum AccountAssetsItem: Hashable {
     case portfolio(AccountPortfolioViewModel)
+    case watchPortfolio(AccountPortfolioViewModel)
     case search
+    case algo(AssetPreviewViewModel)
     case asset(AssetPreviewViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
     case assetManagement(ManagementItemViewModel)
     case assetTitle(AssetSearchListHeaderViewModel)
+    case quickActions
+    case empty(AssetListSearchNoContentViewModel)
 }
 
 enum AccountAssetListDataControllerEvent {

@@ -54,13 +54,10 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 }
             case .header(let item):
                 let cell = collectionView.dequeue(
-                    CollectibleListInfoWithFilterCell.self,
+                    ManagementItemCell.self,
                     at: indexPath
                 )
-                cell.isFilterSelected = item.isSelected
-                cell.bindData(
-                    item.value
-                )
+                cell.bindData(item)
                 return cell
             case .search:
                 let cell = collectionView.dequeue(
@@ -103,12 +100,6 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                         )
                         return cell
                     }
-                case .footer:
-                    let cell = collectionView.dequeue(
-                        CollectibleListItemReceiveCell.self,
-                        at: indexPath
-                    )
-                    return cell
                 }
             }
         }
@@ -116,10 +107,9 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
         [
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
-            CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleListSearchInputCell.self,
-            CollectibleListInfoWithFilterCell.self,
+            ManagementItemCell.self,
             CollectibleListLoadingViewCell.self,
             NoContentCell.self,
         ].forEach {

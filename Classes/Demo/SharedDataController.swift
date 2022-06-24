@@ -25,6 +25,10 @@ protocol SharedDataController: AnyObject {
     /// If it is nil, it means the app has just been updated from a very old version.
     var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? { get set }
     var accountSortingAlgorithms: [AccountSortingAlgorithm] { get }
+    var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? { get set }
+    var collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] { get }
+    var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? { get set }
+    var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] { get }
     var accountCollection: AccountCollection { get }
     var currency: CurrencyHandle { get }
     var lastRound: BlockRound? { get }
@@ -66,6 +70,18 @@ extension SharedDataController {
         return accountCollection.sorted {
             $0.value.address > $1.value.address
         }
+    }
+}
+
+extension Account {
+    func sortedCollectibleAssets(
+        _ algorithm: CollectibleSortingAlgorithm?
+    ) -> [CollectibleAsset] {
+        if let algorithm = algorithm {
+            return collectibleAssets.sorted(algorithm)
+        }
+
+        return collectibleAssets
     }
 }
 

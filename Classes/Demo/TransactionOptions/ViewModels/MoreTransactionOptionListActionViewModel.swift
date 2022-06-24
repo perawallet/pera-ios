@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionTextInformationViewCommonTheme.swift
+//   MoreTransactionOptionListActionViewModel.swift
 
 import MacaroonUIKit
 
-struct TransactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme {
-    let detail: TextStyle
+struct MoreTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    init(_ family: LayoutFamily) {
-        self.detail = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
+    init() {
+        icon = "icon-transaction-option-list-more"
+        title = Self.getTitle("title-more".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-more-subtitle".localized)
     }
 }

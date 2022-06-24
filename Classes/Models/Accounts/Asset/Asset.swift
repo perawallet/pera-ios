@@ -22,7 +22,9 @@ protocol Asset {
     var amount: UInt64 { get }
     var isFrozen: Bool? { get }
     var isDeleted: Bool? { get }
+    var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
+    var decimals: Int { get }
 
     /// Asset management actions
     var state: AssetState { get set }

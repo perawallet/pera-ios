@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QuickActionsViewTheme.swift
+//   HomeQuickActionsViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct QuickActionsViewTheme:
+struct HomeQuickActionsViewTheme:
     StyleSheet,
     LayoutSheet {
     var maxContentHorizontalInsets: LayoutHorizontalPaddings
     var spacingBetweenActions: LayoutMetric
-    var buyAlgoAction: QuickActionViewTheme
-    var sendAction: QuickActionViewTheme
-    var receiveAction: QuickActionViewTheme
-    var scanAction: QuickActionViewTheme
+    var buyAlgoAction: HomeQuickActionViewTheme
+    var sendAction: HomeQuickActionViewTheme
+    var receiveAction: HomeQuickActionViewTheme
+    var scanAction: HomeQuickActionViewTheme
 
     init(
         _ family: LayoutFamily
@@ -34,29 +34,29 @@ struct QuickActionsViewTheme:
         self.maxContentHorizontalInsets = (12, 12)
         self.spacingBetweenActions = 5
 
-        var buyAlgoAction = QuickActionViewTheme(family)
+        var buyAlgoAction = HomeQuickActionViewTheme(family)
         buyAlgoAction.icon = "buy-algo-icon"
         buyAlgoAction.title = "quick-actions-buy-algo-title".localized
         self.buyAlgoAction = buyAlgoAction
 
-        var sendAction = QuickActionViewTheme(family)
+        var sendAction = HomeQuickActionViewTheme(family)
         sendAction.icon = "send-icon"
         sendAction.title = "quick-actions-send-title".localized
         self.sendAction = sendAction
 
-        var receiveAction = QuickActionViewTheme(family)
+        var receiveAction = HomeQuickActionViewTheme(family)
         receiveAction.icon = "receive-icon"
         receiveAction.title = "quick-actions-receive-title".localized
         self.receiveAction = receiveAction
 
-        var scanAction = QuickActionViewTheme(family)
+        var scanAction = HomeQuickActionViewTheme(family)
         scanAction.icon = "scan-qr-icon"
         scanAction.title = "quick-actions-scan-qr-title".localized
         self.scanAction = scanAction
     }
 }
 
-struct QuickActionViewTheme:
+struct HomeQuickActionViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: Image? {

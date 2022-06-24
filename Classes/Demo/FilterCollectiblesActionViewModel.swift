@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionTextInformationViewTransactionIDTheme.swift
+//   FilterCollectiblesActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct TransactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme {
-    let detail: TextStyle
+struct FilterCollectiblesActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    init(_ family: LayoutFamily) {
-        self.detail = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(15))
-        ]
+    init() {
+        self.icon = "icon-collectibles-filter"
+        self.title = Self.getTitle("opitons-collectibles-filter".localized)
+        self.subtitle = nil
     }
 }
