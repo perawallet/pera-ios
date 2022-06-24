@@ -104,11 +104,7 @@ extension AccountAssetListAPIDataController {
             let currencyHandle = self.sharedDataController.currency
             let isWatchAccount = self.accountHandle.value.isWatchAccount()
 
-            let portfolio = Portfolio(
-                accounts: [self.accountHandle],
-                currency: currencyHandle,
-                calculator: ALGPortfolioCalculator()
-            )
+            let portfolio = AccountPortfolio(account: self.accountHandle)
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])

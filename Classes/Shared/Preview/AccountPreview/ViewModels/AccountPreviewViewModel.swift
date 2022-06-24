@@ -116,13 +116,13 @@ extension AccountPreviewViewModel {
             return
         }
         
-        bindPrimaryAccessory(totalPortfolio.abbreviatedUiDescription)
+        bindPrimaryAccessory(totalPortfolio.primaryAbbreviatedUiDescription)
     }
     
     mutating func bindSecondaryAccessory(
         _ accountPortfolio: AccountPortfolio
     ) {
-        secondaryAccessory = nil
+        bindSecondaryAccessory(accountPortfolio.account.value.totalPortfolio.secondaryUIDescription)
     }
     
     mutating func bindAccessoryIcon(
