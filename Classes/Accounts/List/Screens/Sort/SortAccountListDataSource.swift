@@ -18,8 +18,12 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Switch to new reordering API (iOS 14)
 final class SortAccountListDataSource:
     UICollectionViewDiffableDataSource<SortAccountListSection, SortAccountListItem> {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SortAccountListSection, SortAccountListItem>
+
     weak var dataController: SortAccountListDataController?
 
     init(
@@ -105,21 +109,57 @@ final class SortAccountListDataSource:
             to: destinationIndexPath
         )
 
-        guard
-            let sourceItem = itemIdentifier(for: sourceIndexPath),
-            let destinationItem = itemIdentifier(for: destinationIndexPath)
-        else {
+        moveItem(
+            from: sourceIndexPath,
+            to: destinationIndexPath
+        )
+    }
+}
+
+extension SortAccountListDataSource {
+    private func moveItem(
+        from source: IndexPath,
+        to destination: IndexPath
+    ) {
+        if source == destination {
             return
         }
 
+        let snapshot = makeSnapshot(
+            movingItemFrom: source,
+            to: destination
+        )
+        apply(
+            snapshot,
+            animatingDifferences: false
+        )
+    }
+
+    private func makeSnapshot(
+        movingItemFrom source: IndexPath,
+        to destination: IndexPath
+    ) -> Snapshot {
         var snapshot = snapshot()
 
-        if sourceIndexPath > destinationIndexPath {
-            snapshot.moveItem(sourceItem, beforeItem: destinationItem)
-        } else {
-            snapshot.moveItem(sourceItem, afterItem: destinationItem)
+        guard
+            let sourceItem = itemIdentifier(for: source),
+            let destinationItem = itemIdentifier(for: destination)
+        else {
+            return snapshot
         }
 
-        apply(snapshot, animatingDifferences: false)
+        if source > destination {
+            snapshot.moveItem(
+                sourceItem,
+                beforeItem: destinationItem
+            )
+        } else {
+            snapshot.moveItem(
+                sourceItem,
+                afterItem: destinationItem
+            )
+        }
+
+        return snapshot
     }
 }

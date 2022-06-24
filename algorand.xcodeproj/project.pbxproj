@@ -15198,7 +15198,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = hippo;
 				TargetAttributes = {
 					17BD4DEE2292F1260003E49A = {
@@ -16428,7 +16428,6 @@
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
 				95B388B127F17C6800A500B3 /* HomeQuickActionsCell.swift in Sources */,
 				2B2626F6284CEF8300ADE371 /* TranactionListGrouping.swift in Sources */,
-				95B388B127F17C6800A500B3 /* HomeQuickActionsCell.swift in Sources */,
 				2BB68F54261261250070FFE9 /* HomeNoContentViewModel.swift in Sources */,
 				2B262728284EB5EE00ADE371 /* PendingTransactionItemViewModel.swift in Sources */,
 				048B3C1827228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
