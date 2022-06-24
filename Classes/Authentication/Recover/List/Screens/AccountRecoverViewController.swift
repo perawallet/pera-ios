@@ -379,7 +379,8 @@ extension AccountRecoverViewController {
 
 extension AccountRecoverViewController {
     private func updateMnemonics(_ text: String) {
-        let mnemonics = text.split(separator: " ").map { String($0) }
+        let filteredText = text.replacingOccurrences(of: ",", with: "")
+        let mnemonics = filteredText.split(separator: " ").map { String($0) }
 
         if containsOneMnemonic(mnemonics) {
             if let firstText = mnemonics[safe: 0],
