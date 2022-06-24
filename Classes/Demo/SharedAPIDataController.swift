@@ -158,18 +158,9 @@ extension SharedAPIDataController {
 
 extension SharedAPIDataController {
     func getPreferredOrderForNewAccount() -> Int {
-        if let lastLocalAccount = session.authenticatedUser?.accounts.last {
-            return lastLocalAccount.preferredOrder + 1
-        }
-
-        let reorderingAlgorithm = AccountCustomReorderingAlgorithm()
-        let sortedAccounts = accountCollection.sorted(reorderingAlgorithm)
-
-        if let lastAccount = sortedAccounts.last {
-            return lastAccount.value.preferredOrder + 1
-        }
-
-        return 0
+        let localAccounts = session.authenticatedUser?.accounts ?? []
+        let lastLocalAccount = localAccounts.max { $0.preferredOrder < $1.preferredOrder }
+        return lastLocalAccount.unwrap { $0.preferredOrder + 1 } ?? 0
     }
 }
 
