@@ -207,6 +207,56 @@ class AppDelegate:
         
         return false
     }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        guard
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL
+        else {
+            return false
+        }
+
+        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
+
+        guard universalLinkConfig.canAccept(incomingURL) else {
+            return false
+        }
+
+        if let deeplinkConvertedURL = convertUniversalLinkURLToDeepLink(incomingURL) {
+            return self.application(application, open: deeplinkConvertedURL, options: [:])
+        }
+
+        return true
+        
+    }
+
+    private func convertUniversalLinkURLToDeepLink(_ url: URL) -> URL? {
+        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
+
+        var components = URLComponents()
+
+        if universalLinkConfig.canAcceptQR(url) {
+            components.scheme = ALGAppTarget.current.deeplinkConfig.qr.preferredScheme
+        } else if universalLinkConfig.canAcceptWalletConnect(url) {
+            components.scheme = ALGAppTarget.current.deeplinkConfig.walletConnect.preferredScheme
+        } else {
+            return nil
+        }
+
+        components.host = url.pathComponents.last
+
+        if let params = url.queryParameters {
+            components.queryItems = params.map { key, value in
+                URLQueryItem(name: key, value: value)
+            }
+        }
+
+        return components.url
+    }
 }
 
 extension AppDelegate {
