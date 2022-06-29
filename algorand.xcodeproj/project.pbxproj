@@ -128,6 +128,9 @@
 		17AC727A286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC7279286A0A82006919C3 /* ALGUniversalLinkConfig.swift */; };
 		17AC727B286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC7279286A0A82006919C3 /* ALGUniversalLinkConfig.swift */; };
 		17AC727C286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC7279286A0A82006919C3 /* ALGUniversalLinkConfig.swift */; };
+		17AC727E286CE399006919C3 /* DeeplinkQR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC727D286CE399006919C3 /* DeeplinkQR.swift */; };
+		17AC727F286CE399006919C3 /* DeeplinkQR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC727D286CE399006919C3 /* DeeplinkQR.swift */; };
+		17AC7280286CE399006919C3 /* DeeplinkQR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AC727D286CE399006919C3 /* DeeplinkQR.swift */; };
 		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
 		17B7D8A82240DFFC00A6FF9E /* ALGAPI+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */; };
 		17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */; };
@@ -4861,6 +4864,7 @@
 		17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Additions.swift"; sourceTree = "<group>"; };
 		17AC7275286A0A79006919C3 /* UniversalLinkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkConfig.swift; sourceTree = "<group>"; };
 		17AC7279286A0A82006919C3 /* ALGUniversalLinkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGUniversalLinkConfig.swift; sourceTree = "<group>"; };
+		17AC727D286CE399006919C3 /* DeeplinkQR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkQR.swift; sourceTree = "<group>"; };
 		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Account.swift"; sourceTree = "<group>"; };
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
@@ -7696,6 +7700,7 @@
 			children = (
 				F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */,
 				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
+				17AC727D286CE399006919C3 /* DeeplinkQR.swift */,
 			);
 			path = DeepLink;
 			sourceTree = "<group>";
@@ -15857,6 +15862,7 @@
 				D431506127EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
 				D4C601D62843705D00CDF6CB /* SortAccountListDataSource.swift in Sources */,
 				D4AC1FB8272D3AB10027353F /* AccountListViewTheme.swift in Sources */,
+				17AC7280286CE399006919C3 /* DeeplinkQR.swift in Sources */,
 				2B6B423F27BECCA00036BF9E /* RenameAccountListActionViewModel.swift in Sources */,
 				955B617327848188005A5C7E /* WCScrollOverlayFragment.swift in Sources */,
 				F096086E2795E36B00CFBB90 /* SingleLineIconTitleViewModel.swift in Sources */,
@@ -17381,6 +17387,7 @@
 				2B0F61AD24EC129D00DA22A6 /* NotificationMessage.swift in Sources */,
 				2BED6574266FA23700EC089B /* WalletConnectRequestHandler.swift in Sources */,
 				2B0F61AE24EC129D00DA22A6 /* AccountRecoverViewController.swift in Sources */,
+				17AC727F286CE399006919C3 /* DeeplinkQR.swift in Sources */,
 				D4CC46F126DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B0F61B024EC129D00DA22A6 /* AccountNameSetupViewController.swift in Sources */,
 				2B57D8FE25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
@@ -18905,6 +18912,7 @@
 				2B7E3071267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift in Sources */,
 				D48FDFF327CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift in Sources */,
 				D4C601D42843705D00CDF6CB /* SortAccountListDataSource.swift in Sources */,
+				17AC727E286CE399006919C3 /* DeeplinkQR.swift in Sources */,
 				2BB37B1924069F7500F58662 /* LedgerBLEController.swift in Sources */,
 				1751261A223BE5930095AF4F /* APIParamKey.swift in Sources */,
 				2B69823E278C8553008EC669 /* TransactionsViewController+CSV.swift in Sources */,

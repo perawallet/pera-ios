@@ -189,22 +189,29 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig
-        
-        guard let scheme = url.scheme else {
-            return false
-        }
-        
-        if deeplinkConfig.qr.canAcceptScheme(scheme) {
-            receive(deeplinkWithSource: .url(url))
+
+        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+            NotificationCenter.default.post(
+                name: .didRedirectFromMoonPay,
+                object: self,
+                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+            )
+
             return true
         }
-        
-        if deeplinkConfig.walletConnect.canAcceptScheme(scheme) {
-            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+
+        let deeplinkQR = DeeplinkQR(url: url)
+
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
             return true
         }
-        
+
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
+            return true
+        }
+
         return false
     }
 
@@ -220,42 +227,20 @@ class AppDelegate:
             return false
         }
 
-        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
+        let deeplinkQR = DeeplinkQR(url: incomingURL)
 
-        guard universalLinkConfig.canAccept(incomingURL) else {
-            return false
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            return true
         }
 
-        if let deeplinkConvertedURL = convertUniversalLinkURLToDeepLink(incomingURL) {
-            return self.application(application, open: deeplinkConvertedURL, options: [:])
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
+            return true
         }
 
-        return true
+        return false
         
-    }
-
-    private func convertUniversalLinkURLToDeepLink(_ url: URL) -> URL? {
-        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
-
-        var components = URLComponents()
-
-        if universalLinkConfig.canAcceptQR(url) {
-            components.scheme = ALGAppTarget.current.deeplinkConfig.qr.preferredScheme
-        } else if universalLinkConfig.canAcceptWalletConnect(url) {
-            components.scheme = ALGAppTarget.current.deeplinkConfig.walletConnect.preferredScheme
-        } else {
-            return nil
-        }
-
-        components.host = url.pathComponents.last
-
-        if let params = url.queryParameters {
-            components.queryItems = params.map { key, value in
-                URLQueryItem(name: key, value: value)
-            }
-        }
-
-        return components.url
     }
 }
 
@@ -272,7 +257,13 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            src = .url(url)
+            let deeplinkQR = DeeplinkQR(url: url)
+
+            if let qrText = deeplinkQR.qrText() {
+                src = .qrText(qrText)
+            } else {
+                src = nil
+            }
         } else {
             src = nil
         }
