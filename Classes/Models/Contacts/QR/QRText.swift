@@ -145,7 +145,6 @@ final class QRText: Codable {
             return nil
         }
 
-
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
            let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
 
