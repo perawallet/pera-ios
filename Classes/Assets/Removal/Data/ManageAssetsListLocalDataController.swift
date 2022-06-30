@@ -27,7 +27,7 @@ final class ManageAssetsListLocalDataController:
     
     private var searchResults: [Asset] = []
     private var accountAssets: [Asset] = []
-    var removedAssetDetails: [Asset] = []
+    private var removedAssetDetails: [Asset] = []
     
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
@@ -114,10 +114,14 @@ extension ManageAssetsListLocalDataController {
         deliverContentSnapshot()
     }
 
-    private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
+    private func clearRemovedAssetDetailsIfNeeded() {
         removedAssetDetails = removedAssetDetails.filter {
             account.containsAsset($0.id)
         }
+    }
+
+    func removeAsset(_ asset: Asset) {
+        removedAssetDetails.append(asset)
     }
 }
 
@@ -167,7 +171,7 @@ extension ManageAssetsListLocalDataController {
             var assetItems: [ManageAssetSearchItem] = []
             let currency = self.sharedDataController.currency.value
 
-            self.clearRemovedAssetDetailsIfNeeded(for: self.account)
+            self.clearRemovedAssetDetailsIfNeeded()
 
             self.searchResults.forEach { asset in
                 if self.removedAssetDetails.contains(where: { removedAsset in

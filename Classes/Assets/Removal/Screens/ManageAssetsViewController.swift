@@ -267,7 +267,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         
         contextView.resetSearchInputView()
 
-        dataController.removedAssetDetails.append(removedAssetDetail)
+        dataController.removeAsset(removedAssetDetail)
 
         if let standardAsset = removedAssetDetail as? StandardAsset {
             delegate?.manageAssetsViewController(self, didRemove: standardAsset)
