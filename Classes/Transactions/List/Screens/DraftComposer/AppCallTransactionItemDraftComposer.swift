@@ -32,7 +32,8 @@ struct AppCallTransactionItemDraftComposer: TransactionListItemDraftComposer {
             account: draft.accountHandle.value,
             asset: nil,
             transaction: transaction,
-            localAccounts: []
+            localAccounts: [],
+            localAssets: nil
         )
 
         return draft
