@@ -949,7 +949,7 @@
 
 // MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";
-"portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";
+"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
 
 // MARK: PeraAnnouncement
 "pera-announcement-title" = "It's Official!";
