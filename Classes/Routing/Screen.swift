@@ -52,7 +52,7 @@ indirect enum Screen {
         delegate: ManagementOptionsViewControllerDelegate
     )
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
-    case rewardDetail(account: Account, calculatedRewards: Decimal)
+    case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)

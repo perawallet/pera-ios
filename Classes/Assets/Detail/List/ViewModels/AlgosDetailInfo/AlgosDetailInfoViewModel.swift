@@ -29,13 +29,12 @@ struct AlgosDetailInfoViewModel:
 
     init(
         _ account: Account,
-        _ currency: Currency?,
-        _ calculatedRewards: Decimal?
+        _ currency: Currency?
     ) {
         bindYourBalanceTitle()
-        bindTotalAmount(from: account, calculatedRewards: calculatedRewards ?? 0)
-        bindSecondaryValue(from: account, with: currency, calculatedRewards: calculatedRewards ?? 0)
-        bindRewardsInfoViewModel(from: account, rewards: calculatedRewards ?? 0)
+        bindTotalAmount(from: account)
+        bindSecondaryValue(from: account, with: currency)
+        bindRewardsInfoViewModel(from: account)
         hasBuyAlgoButton = !account.isWatchAccount()
     }
 }
@@ -59,13 +58,12 @@ extension AlgosDetailInfoViewModel {
         )
     }
     
-    private mutating func bindTotalAmount(from account: Account, calculatedRewards: Decimal) {
-        guard let totalAmount =
-                getTotalAmount(from: account, and: calculatedRewards)
-                .toAlgosStringForLabel else {
-                    return
-                }
-        
+    private mutating func bindTotalAmount(
+        from account: Account
+    ) {
+        guard let totalAmount = account.amount.toAlgos.toAlgosStringForLabel else {
+            return
+        }
 
         let font = Fonts.DMMono.regular.make(36)
         let lineHeightMultiplier = 1.02
@@ -83,14 +81,17 @@ extension AlgosDetailInfoViewModel {
         )
     }
 
-    private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
+    private mutating func bindSecondaryValue(
+        from account: Account,
+        with currency: Currency?
+    ) {
         guard let currency = currency,
               let currencyPriceValue = currency.priceValue,
               !(currency is AlgoCurrency) else {
             return
         }
 
-        let totalAmount = getTotalAmount(from: account, and: calculatedRewards) * currencyPriceValue
+        let totalAmount = account.amount.toAlgos * currencyPriceValue
         let secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
 
         guard let secondaryValue = secondaryValue else {
@@ -113,15 +114,9 @@ extension AlgosDetailInfoViewModel {
         )
     }
 
-    private mutating func bindRewardsInfoViewModel(from account: Account, rewards: Decimal) {
-        rewardsInfoViewModel = RewardInfoViewModel(account: account, calculatedRewards: rewards)
-    }
-
-    private func getTotalAmount(from account: Account, and calculatedRewards: Decimal) -> Decimal {
-        return account.amountWithoutRewards.toAlgos + getPendingRewards(from: account, and: calculatedRewards)
-    }
-
-    private func getPendingRewards(from account: Account, and calculatedRewards: Decimal) -> Decimal {
-        return account.pendingRewards.toAlgos + calculatedRewards
+    private mutating func bindRewardsInfoViewModel(
+        from account: Account
+    ) {
+        rewardsInfoViewModel = RewardInfoViewModel(account: account)
     }
 }

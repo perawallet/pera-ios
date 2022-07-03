@@ -23,10 +23,10 @@ struct RewardInfoViewModel: ViewModel, Hashable {
     private(set) var title: EditText?
     private(set) var rewardAmount: EditText?
 
-    init(account: Account, calculatedRewards: Decimal) {
+    init(account: Account) {
         self.account = account
         bindTitle()
-        bindRewardAmount(from: account, and: calculatedRewards)
+        bindRewardAmount(from: account)
     }
 }
 
@@ -48,11 +48,13 @@ extension RewardInfoViewModel {
                 ])
         )
     }
-    private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
-        guard let rewardAmount =
-                (account.pendingRewards.toAlgos + calculatedRewards).toAlgosStringForLabel else {
-                    return
-                }
+    private mutating func bindRewardAmount(
+        from account: Account
+    ) {
+        guard let rewardAmount = account.pendingRewards.toAlgos.toAlgosStringForLabel else {
+            return
+        }
+
         let font = Fonts.DMMono.regular.make(13)
         let lineHeightMultiplier = 1.13
 

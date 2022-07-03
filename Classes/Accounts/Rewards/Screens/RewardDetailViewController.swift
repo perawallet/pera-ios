@@ -24,15 +24,12 @@ final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()
 
     private let account: Account
-    private let calculatedRewards: Decimal
     
     init(
         account: Account,
-        calculatedRewards: Decimal,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
-        self.calculatedRewards = calculatedRewards
         super.init(configuration: configuration)
     }
 
@@ -48,8 +45,7 @@ final class RewardDetailViewController: BaseViewController {
     override func bindData() {
         bindData(
             RewardDetailViewModel(
-                account: account,
-                calculatedRewards: calculatedRewards
+                account: account
             )
         )
     }

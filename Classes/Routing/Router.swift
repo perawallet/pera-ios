@@ -534,10 +534,9 @@ class Router:
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case let .rewardDetail(account, calculatedRewards):
+        case let .rewardDetail(account):
             viewController = RewardDetailViewController(
                 account: account,
-                calculatedRewards: calculatedRewards,
                 configuration: configuration
             )
         case .verifiedAssetInformation:

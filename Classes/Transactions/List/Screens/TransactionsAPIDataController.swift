@@ -43,14 +43,6 @@ final class TransactionsAPIDataController:
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.transactionsController")
 
-    private lazy var rewardCalculator = RewardCalculator(
-        api: api,
-        account: draft.accountHandle.value,
-        sharedDataController: sharedDataController
-    )
-
-    private(set) var reward: Decimal = 0
-
     init(
         _ api: ALGAPI,
         _ draft: TransactionListing,
@@ -79,10 +71,6 @@ extension TransactionsAPIDataController {
     func load() {
         sharedDataController.add(self)
         deliverLoadingSnapshot()
-
-        if draft.type == .algos {
-            rewardCalculator.delegate = self
-        }
     }
 
     func clear() {
@@ -398,8 +386,7 @@ extension TransactionsAPIDataController {
                     [.algosInfo(
                         AlgosDetailInfoViewModel(
                             self.draft.accountHandle.value,
-                            self.sharedDataController.currency.value,
-                            self.reward
+                            self.sharedDataController.currency.value
                         )
                     )],
                     toSection: .info
@@ -590,21 +577,5 @@ extension TransactionsAPIDataController {
 
             self.eventHandler?(event)
         }
-    }
-}
-
-extension TransactionsAPIDataController: RewardCalculatorDelegate {
-    func rewardCalculator(
-        _ rewardCalculator: RewardCalculator,
-        didCalculate rewards: Decimal
-    ) {
-        guard rewards != self.reward else {
-            return
-        }
-
-        self.reward = rewards
-        self.eventHandler?(.didUpdateReward(reward))
-
-        self.deliverContentSnapshot()
     }
 }
