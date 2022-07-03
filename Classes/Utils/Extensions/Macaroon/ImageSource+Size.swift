@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  RekeyTransactionSendDraft.swift
+//   ImageSource+Size.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-struct RekeyTransactionSendDraft: TransactionSendDraft {
-    var from: Account
-    var toAccount: Account?
-    var amount: Decimal?
-    var fee: UInt64?
-    var isMaxTransaction = false
-    var identifier: String?
-    var note: String?
-    var lockedNote: String?
-
-    var toContact: Contact?
-    var nameService: NameService?
-    
-    init(account: Account, rekeyedTo: String) {
-        self.from = account
-        toAccount = Account(address: rekeyedTo, type: .rekeyed)
-        amount = nil
-        fee = nil
-        isMaxTransaction = false
-        identifier = nil
+extension ImageSource {
+    var iconSize: CGSize? {
+        return (self as? UIImage)?.size
     }
 }

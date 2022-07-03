@@ -747,7 +747,15 @@ class Router:
             resultScreen.isModalInPresentation = false
             viewController = resultScreen
         case .transactionAccountSelect(let draft):
-            viewController = AccountSelectScreen(draft: draft, configuration: configuration)
+            let dataController = AccountSelectScreenListAPIDataController(
+                configuration.sharedDataController,
+                api: configuration.api!
+            )
+            viewController = AccountSelectScreen(
+                draft: draft,
+                dataController: dataController,
+                configuration: configuration
+            )
         case .sendTransactionPreview(let draft, let transactionController):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,

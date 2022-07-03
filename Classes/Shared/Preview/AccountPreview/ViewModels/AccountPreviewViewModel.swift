@@ -18,12 +18,14 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import MacaroonURLImage
 
 struct AccountPreviewViewModel:
     BindableViewModel,
     Hashable {
+
     private(set) var address: String?
-    private(set) var icon: UIImage?
+    private(set) var icon: ImageSource?
     private(set) var namePreviewViewModel: AccountNamePreviewViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
@@ -33,6 +35,18 @@ struct AccountPreviewViewModel:
         _ model: T
     ) {
         bind(model)
+    }
+
+    static func == (lhs: AccountPreviewViewModel, rhs: AccountPreviewViewModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+        hasher.combine(namePreviewViewModel)
+        hasher.combine(primaryAccessory)
+        hasher.combine(secondaryAccessory)
+        hasher.combine(accessoryIcon)
     }
 }
 
@@ -87,6 +101,11 @@ extension AccountPreviewViewModel {
             bindNamePreviewViewModel(iconWithShortAddressDraft)
 
             return
+        }
+
+        if let nameServiceAccountPreview = model as? NameServiceAccountPreview {
+            bindIcon(nameServiceAccountPreview)
+            bindNamePreviewViewModel(nameServiceAccountPreview)
         }
     }
 }
@@ -282,8 +301,26 @@ extension AccountPreviewViewModel {
     }
 }
 
+extension AccountPreviewViewModel {
+    mutating func bindIcon(
+        _ nameServiceAccountPreview: NameServiceAccountPreview
+    ) {
+        icon = nameServiceAccountPreview.icon
+    }
+
+    mutating func bindNamePreviewViewModel(
+        _ nameServiceAccountPreview: NameServiceAccountPreview
+    ) {
+        namePreviewViewModel = AccountNamePreviewViewModel(
+            title: nameServiceAccountPreview.title,
+            subtitle: nameServiceAccountPreview.subtitle,
+            with: .left
+        )
+    }
+}
+
 struct CustomAccountPreview {
-    var icon: UIImage?
+    var icon: ImageSource?
     var title: String?
     var subtitle: String?
     var accessory: String?
@@ -340,4 +377,20 @@ struct IconWithShortAddressDraft {
 
 struct AccountOrderingDraft {
     let account: Account
+}
+
+struct NameServiceAccountPreview {
+    var icon: PNGImageSource?
+    var title: String?
+    var subtitle: String?
+
+    init(
+        icon: PNGImageSource?,
+        title: String?,
+        subtitle: String?
+    ) {
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+    }
 }
