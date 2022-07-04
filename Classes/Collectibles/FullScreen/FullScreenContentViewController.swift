@@ -37,9 +37,15 @@ class FullScreenContentViewController:
 
     private let theme: FullScreenContentViewControllerTheme
 
-    var isZoomingEnabled = false {
+    private var zoomGestureRecognizers: [UIGestureRecognizer] = []
+
+    var isZoomingEnabled = true {
         didSet {
-            scrollView.isUserInteractionEnabled = isZoomingEnabled
+            scrollView.pinchGestureRecognizer?.isEnabled = isZoomingEnabled
+
+            zoomGestureRecognizers.forEach {
+                $0.isEnabled = isZoomingEnabled
+            }
         }
     }
 
@@ -49,6 +55,13 @@ class FullScreenContentViewController:
     ) {
         self.theme = theme
         super.init(configuration: configuration)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        /// <note>: This must be called in viewDidAppear later as otherwise the system resets it to enabled.
+        scrollView.pinchGestureRecognizer?.isEnabled = isZoomingEnabled
     }
 
     override func prepareLayout() {
@@ -112,6 +125,8 @@ extension FullScreenContentViewController {
         pinchGesture.numberOfTapsRequired = 1
         pinchGesture.numberOfTouchesRequired = 2
         scrollView.addGestureRecognizer(pinchGesture)
+
+        zoomGestureRecognizers.append(pinchGesture)
     }
 
     private func addSingleTapGesture() -> UITapGestureRecognizer {
@@ -120,6 +135,8 @@ extension FullScreenContentViewController {
             action: #selector(didSingleTap)
         )
         scrollView.addGestureRecognizer(singleTapGesture)
+
+        zoomGestureRecognizers.append(singleTapGesture)
 
         return singleTapGesture
     }
@@ -132,6 +149,8 @@ extension FullScreenContentViewController {
         doubleTapGesture.numberOfTapsRequired = 2
         doubleTapGesture.numberOfTouchesRequired = 1
         scrollView.addGestureRecognizer(doubleTapGesture)
+
+        zoomGestureRecognizers.append(doubleTapGesture)
 
         return doubleTapGesture
     }
