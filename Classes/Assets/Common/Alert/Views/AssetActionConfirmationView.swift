@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetActionConfirmationView: View {
+final class AssetActionConfirmationView:
+    View,
+    UIContextMenuInteractionDelegate {
     weak var delegate: AssetActionConfirmationViewDelegate?
 
     private lazy var titleLabel = Label()
@@ -34,6 +36,8 @@ final class AssetActionConfirmationView: View {
     private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
+
+    private lazy var assetIDMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     func customize(_ theme: AssetActionConfirmationViewTheme) {
         addTitleLabel(theme)
@@ -51,6 +55,7 @@ final class AssetActionConfirmationView: View {
     func customizeAppearance(_ styleSheet: AssetActionConfirmationViewTheme) {}
 
     func setListeners() {
+        assetIDView.addInteraction(assetIDMenuInteraction)
         copyIDButton.addTouch(target: self, action: #selector(notifyDelegateToCopyAssetId))
         actionButton.addTouch(target: self, action: #selector(notifyDelegateToHandleAction))
         cancelButton.addTouch(target: self, action: #selector(notifyDelegateToCancelScreen))
@@ -70,7 +75,7 @@ extension AssetActionConfirmationView {
 
     @objc
     private func notifyDelegateToCopyAssetId() {
-        delegate?.assetActionConfirmationViewDidTapCopyIDButton(self, assetID: assetIDLabel.text)
+        delegate?.assetActionConfirmationViewDidTapCopyIDButton(self)
     }
 }
 
@@ -240,6 +245,15 @@ extension AssetActionConfirmationView {
     }
 }
 
+extension AssetActionConfirmationView {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         delegate?.contextMenuInteractionForAssetID(in: self)
+     }
+ }
+
 extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
         titleLabel.text = viewModel?.title
@@ -266,5 +280,8 @@ extension AssetActionConfirmationView: ViewModelBindable {
 protocol AssetActionConfirmationViewDelegate: AnyObject {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
-    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?)
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView)
+    func contextMenuInteractionForAssetID(
+        in assetActionConfirmationView: AssetActionConfirmationView
+    ) -> UIContextMenuConfiguration?
 }

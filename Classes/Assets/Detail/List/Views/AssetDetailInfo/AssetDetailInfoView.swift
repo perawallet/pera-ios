@@ -21,7 +21,8 @@ import UIKit
 final class AssetDetailInfoView:
     View,
     ViewModelBindable,
-    ListReusable {
+    ListReusable,
+    UIContextMenuInteractionDelegate {
     weak var delegate: AssetDetailInfoViewDelegate?
 
     private lazy var yourBalanceTitleLabel = UILabel()
@@ -33,6 +34,8 @@ final class AssetDetailInfoView:
     private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
     private lazy var verifiedImage = UIImageView()
     private lazy var bottomSeparator = UIView()
+
+    private lazy var assetIDMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     func setListeners() {
         assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetID), for: .touchUpInside)
@@ -133,7 +136,7 @@ final class AssetDetailInfoView:
 extension AssetDetailInfoView {
     @objc
     private func notifyDelegateToCopyAssetID() {
-        delegate?.assetDetailInfoViewDidTapAssetID(self)
+        assetIDButton.addInteraction(assetIDMenuInteraction)
     }
 }
 
@@ -242,6 +245,17 @@ extension AssetDetailInfoView {
     }
 }
 
+extension AssetDetailInfoView {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         delegate?.contextMenuInteractionForAssetID(in: self)
+     }
+ }
+
 protocol AssetDetailInfoViewDelegate: AnyObject {
-    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView)
+    func contextMenuInteractionForAssetID(
+        in assetDetailInfoView: AssetDetailInfoView
+    ) -> UIContextMenuConfiguration?
 }
