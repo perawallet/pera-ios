@@ -54,16 +54,28 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
             collectionView.safeAreaBottom
             
             return CGSize((width, height))
-        case .noContent(let item):
-            let width = calculateContentWidth(for: collectionView)
-            
-            let newSize = NoContentCell.calculatePreferredSize(
-                item,
-                for: NoContentCell.theme,
-                fittingIn: CGSize((width, .greatestFiniteMagnitude))
-            )
-            
-            return newSize
+        case .empty(let item):
+            switch item {
+            case let .noContent(noContentItem):
+                let width = calculateContentWidth(for: collectionView)
+
+                let newSize = NoContentCell.calculatePreferredSize(
+                    noContentItem,
+                    for: NoContentCell.theme,
+                    fittingIn: CGSize((width, .greatestFiniteMagnitude))
+                )
+
+                return newSize
+            case .loading:
+                let width = calculateContentWidth(for: collectionView)
+
+                let height =
+                collectionView.bounds.height -
+                collectionView.safeAreaTop -
+                collectionView.safeAreaBottom
+
+                return CGSize((width, height))
+            }
         }
     }
     
@@ -79,8 +91,28 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
         switch itemIdentifier {
         case .error:
             handlers.didTapReload?(cell)
+        case let .empty(item):
+            switch item {
+            case .loading:
+                if let loadingCell = cell as? CurrencySelectionLoadingViewCell {
+                    loadingCell.startAnimating()
+                    return
+                }
+            default:
+                return
+            }
         default:
             return
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? CurrencySelectionLoadingViewCell {
+            loadingCell.stopAnimating()
         }
     }
     

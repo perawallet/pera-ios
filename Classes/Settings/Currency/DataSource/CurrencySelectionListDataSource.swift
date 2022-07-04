@@ -15,13 +15,21 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
                 )
                 cell.bindData(item)
                 return cell
-            case let .noContent(item):
-                let cell = collectionView.dequeue(
-                    NoContentCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+            case let .empty(item):
+                switch item {
+                case .loading:
+                    return collectionView.dequeue(
+                        CurrencySelectionLoadingViewCell.self,
+                        at: indexPath
+                    )
+                case let .noContent(noContentItem):
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(noContentItem)
+                    return cell
+                }
             case .error:
                 let cell = collectionView.dequeue(
                     NoContentWithActionCell.self,
@@ -33,6 +41,7 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
         }
         
         collectionView.register(SingleSelectionCell.self)
+        collectionView.register(CurrencySelectionLoadingViewCell.self)
         collectionView.register(NoContentCell.self)
         collectionView.register(NoContentWithActionCell.self)
     }
