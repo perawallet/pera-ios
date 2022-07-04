@@ -1088,3 +1088,6 @@
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+
+// MARK: Inner Transactions
+"transaction-inner-list-count" = "%@ inner txns";

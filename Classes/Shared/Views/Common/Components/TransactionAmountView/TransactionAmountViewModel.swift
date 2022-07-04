@@ -31,6 +31,10 @@ struct TransactionAmountViewModel:
     ) {
         bindMode(mode, showAbbreviation: showAbbreviation)
     }
+
+    init(innerTransactionCount: Int) {
+        bindInnerTransaction(count: innerTransactionCount)
+    }
 }
 
 extension TransactionAmountViewModel {
@@ -79,5 +83,15 @@ extension TransactionAmountViewModel {
         } else {
             amountLabelText = .string(amountText)
         }
+    }
+}
+
+/// <mark> Inner Transaction Binding
+extension TransactionAmountViewModel {
+    private mutating func bindInnerTransaction(count: Int) {
+        amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
+        amountLabelText = .attributedString(
+            "transaction-inner-list-count".localized("\(count)").bodyMedium()
+        )
     }
 }

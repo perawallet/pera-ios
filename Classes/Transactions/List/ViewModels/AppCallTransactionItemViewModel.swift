@@ -31,6 +31,7 @@ struct AppCallTransactionItemViewModel:
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
+        bindInnerTransactions(draft)
     }
 
     private mutating func bindID(
@@ -58,5 +59,19 @@ struct AppCallTransactionItemViewModel:
         if let appID = applicationCall.appID {
             bindSubtitle("transaction-item-app-id-title".localized(appID))
         }
+    }
+
+    private mutating func bindInnerTransactions(
+        _ draft: TransactionViewModelDraft
+    ) {
+        guard
+            let transaction = draft.transaction as? Transaction,
+            let innerTransactions = transaction.innerTransactions,
+            !innerTransactions.isEmpty
+        else {
+            return
+        }
+
+        transactionAmountViewModel = TransactionAmountViewModel(innerTransactionCount: innerTransactions.count)
     }
 }
