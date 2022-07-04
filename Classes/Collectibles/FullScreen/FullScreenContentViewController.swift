@@ -21,6 +21,10 @@ import SnapKit
 
 class FullScreenContentViewController:
     BaseViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return configuration.api!.isTestNet ? .darkContent : .lightContent
+    }
+
     private lazy var backgroundView = MacaroonUIKit.BaseView()
     private lazy var scrollView = UIScrollView()
     private(set) lazy var contentView = MacaroonUIKit.BaseView()
@@ -60,7 +64,7 @@ class FullScreenContentViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        /// <note>: This must be called in viewDidAppear later as otherwise the system resets it to enabled.
+        /// <note>: This must be called in viewDidAppear or later as otherwise the system resets it to enabled.
         scrollView.pinchGestureRecognizer?.isEnabled = isZoomingEnabled
     }
 
