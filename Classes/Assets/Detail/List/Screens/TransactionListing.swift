@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 protocol TransactionListing {
-    var isQuickActionButtonVisible: Bool { get set}
+    var isQuickActionButtonVisible: Bool { get set }
     var type: TransactionTypeFilter { get }
     var accountHandle: AccountHandle { get set }
     var asset: StandardAsset? { get }
