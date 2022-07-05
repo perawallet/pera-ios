@@ -37,11 +37,15 @@ final class AssetDetailInfoViewCell:
 }
 
 extension AssetDetailInfoViewCell: AssetDetailInfoViewDelegate {
-    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView) {
-        delegate?.assetDetailInfoViewCellDidTapAssetID(self)
+    func contextMenuInteractionForAssetID(
+        in assetDetailInfoView: AssetDetailInfoView
+    ) -> UIContextMenuConfiguration? {
+        delegate?.contextMenuInteractionForAssetID(in: self)
     }
 }
 
 protocol AssetDetailInfoViewCellDelegate: AnyObject {
-    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell)
+    func contextMenuInteractionForAssetID(
+        in assetDetailInfoViewCell: AssetDetailInfoViewCell
+    ) -> UIContextMenuConfiguration?
 }

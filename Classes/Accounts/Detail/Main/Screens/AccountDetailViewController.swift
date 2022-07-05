@@ -41,6 +41,7 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
@@ -238,8 +239,7 @@ extension AccountDetailViewController {
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         log(ReceiveCopyEvent(address: accountHandle.value.address))
-        UIPasteboard.general.string = accountHandle.value.address
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        copyToClipboardController.copyAddress(accountHandle.value)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
