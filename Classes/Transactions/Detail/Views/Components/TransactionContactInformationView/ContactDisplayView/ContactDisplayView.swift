@@ -23,7 +23,7 @@ final class ContactDisplayView: View {
 
     private lazy var horizontalStackView = UIStackView()
     private lazy var imageView = UIImageView()
-    private(set) lazy var nameLabel = UILabel()
+    private lazy var nameLabel = UILabel()
     private lazy var addContactButton = UIButton()
 
     func setListeners() {

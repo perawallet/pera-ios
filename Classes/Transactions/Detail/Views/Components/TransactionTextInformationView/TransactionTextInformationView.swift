@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 final class TransactionTextInformationView: View {
     private lazy var titleLabel = UILabel()
-    private lazy var detailLabel = UILabel()
+    private(set) lazy var detailLabel = UILabel()
     
     func customize(_ theme: TransactionTextInformationViewTheme) {
         addTitleLabel(theme)

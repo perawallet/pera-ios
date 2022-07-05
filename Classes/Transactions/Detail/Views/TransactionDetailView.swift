@@ -28,8 +28,8 @@ final class TransactionDetailView:
     private lazy var amountView = TransactionAmountInformationView()
     private lazy var closeAmountView = TransactionAmountInformationView()
     private lazy var rewardView = TransactionAmountInformationView()
-    private lazy var userView = TransactionTextInformationView()
-    private(set) lazy var opponentView = TransactionContactInformationView()
+    private(set) lazy var userView = TransactionTextInformationView()
+    private lazy var opponentView = TransactionContactInformationView()
     private lazy var closeToView = TransactionTextInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var dateView = TransactionTextInformationView()
@@ -301,8 +301,6 @@ extension TransactionDetailView: ViewModelBindable {
             )
         }
 
-        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
-
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
             amountView.bindData(
                 TransactionAmountInformationViewModel(
@@ -313,7 +311,14 @@ extension TransactionDetailView: ViewModelBindable {
             amountView.isHidden = true
         }
 
-        bindOpponentViewDetail(viewModel)
+        if let opponentViewTitle = viewModel?.opponentViewTitle {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(title: opponentViewTitle)
+            )
+            bindOpponentViewDetail(viewModel)
+        } else {
+            opponentView.isHidden = true
+        }
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
