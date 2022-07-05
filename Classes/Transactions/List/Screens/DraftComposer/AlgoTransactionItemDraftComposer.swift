@@ -51,7 +51,8 @@ struct AlgoTransactionItemDraftComposer: TransactionListItemDraftComposer {
                 asset: nil,
                 transaction: transaction,
                 contact: contact,
-                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
+                localAccounts: sharedDataController.sortedAccounts().map { $0.value },
+                localAssets: nil
             )
 
             return draft
@@ -61,7 +62,8 @@ struct AlgoTransactionItemDraftComposer: TransactionListItemDraftComposer {
             account: draft.accountHandle.value,
             asset: nil,
             transaction: transaction,
-            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
+            localAccounts: sharedDataController.sortedAccounts().map { $0.value },
+            localAssets: nil
         )
 
         return draft

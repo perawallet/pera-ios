@@ -26,61 +26,6 @@ extension URL {
             result[item.name] = item.value
         }
     }
-    
-    func buildQRText() -> QRText? {
-        guard let queryParameters = queryParameters else {
-            if let address = host,
-               address.isValidatedAddress {
-                return QRText(mode: .address, address: address)
-            }
-            return nil
-        }
-        
-        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
-           let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
-            if let address = host {
-                return QRText(
-                    mode: .assetRequest,
-                    address: address,
-                    amount: UInt64(amount),
-                    asset: Int64(asset),
-                    note: queryParameters[QRText.CodingKeys.note.rawValue],
-                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-                )
-            }
-
-            if amount == "0" {
-                return QRText(
-                    mode: .optInRequest,
-                    address: nil,
-                    amount: UInt64(amount),
-                    asset: Int64(asset),
-                    note: queryParameters[QRText.CodingKeys.note.rawValue],
-                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-                )
-            }
-
-            return nil
-        }
-        
-        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
-           let address = host {
-            return QRText(
-                mode: .algosRequest,
-                address: address,
-                amount: UInt64(amount),
-                note: queryParameters[QRText.CodingKeys.note.rawValue],
-                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-            )
-        }
-        
-        if let label = queryParameters[QRText.CodingKeys.label.rawValue],
-           let address = host {
-            return QRText(mode: .address, address: address, label: label)
-        }
-        
-        return nil
-    }
 
     func extractBuyAlgoParamsFromMoonPay() -> BuyAlgoParams? {
         guard let address = host else {

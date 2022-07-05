@@ -44,8 +44,6 @@ class TransactionsViewController: BaseViewController {
         sharedDataController
     )
 
-    private var rewardDetailViewController: RewardDetailViewController?
-
     private lazy var transactionsDataSource = TransactionsDataSource(listView)
 
     private(set) lazy var listView: UICollectionView = {
@@ -60,10 +58,17 @@ class TransactionsViewController: BaseViewController {
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     private(set) var draft: TransactionListing
 
-    init(draft: TransactionListing, configuration: ViewControllerConfiguration) {
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        draft: TransactionListing,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.draft = draft
         self.accountHandle = draft.accountHandle
         self.asset = draft.asset
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
     
@@ -87,13 +92,6 @@ class TransactionsViewController: BaseViewController {
                 self.transactionsDataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
-                )
-            case .didUpdateReward(let reward):
-                self.rewardDetailViewController?.bindData(
-                    RewardDetailViewModel(
-                        account: self.accountHandle.value,
-                        calculatedRewards: reward
-                    )
                 )
             }
         }
@@ -313,19 +311,12 @@ extension TransactionsViewController {
 
 extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        let rewardDetailViewController = bottomSheetTransition.perform(
+        bottomSheetTransition.perform(
             .rewardDetail(
-                account: accountHandle.value,
-                calculatedRewards: dataController.reward
+                account: accountHandle.value
             ),
-            by: .presentWithoutNavigationController,
-            completion: {
-                [weak self] in
-                self?.rewardDetailViewController = nil
-            }
-        ) as? RewardDetailViewController
-
-        self.rewardDetailViewController = rewardDetailViewController
+            by: .presentWithoutNavigationController
+        )
     }
 
     func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
@@ -341,13 +332,20 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 }
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
-    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell) {
-        guard let assetID = draft.asset?.id else {
-            return
+    func contextMenuInteractionForAssetID(
+        in assetDetailInfoViewCell: AssetDetailInfoViewCell
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = draft.asset else {
+            return nil
         }
 
-        bannerController?.presentInfoBanner("asset-id-copied-title".localized)
-        UIPasteboard.general.string = "\(assetID)"
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
     }
 }
 
