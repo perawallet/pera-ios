@@ -80,6 +80,7 @@ final class CollectibleDetailViewController:
     private let account: Account
     private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
+    private let copyToClipboardController: CopyToClipboardController
 
     private var displayedMedia: Media?
 
@@ -87,6 +88,7 @@ final class CollectibleDetailViewController:
         asset: CollectibleAsset,
         account: Account,
         thumbnailImage: UIImage?,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
@@ -97,6 +99,7 @@ final class CollectibleDetailViewController:
             asset: asset,
             account: account
         )
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
 
@@ -474,7 +477,7 @@ extension CollectibleDetailViewController {
                 return
             }
 
-            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+            self.copyToClipboardController.copyAddress(self.account)
             UIPasteboard.general.string = self.account.address
         }
 

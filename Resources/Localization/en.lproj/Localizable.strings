@@ -212,6 +212,8 @@
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
+"transaction-item-app-id-title" = "Application ID: #%d";
+"transaction-item-opt-out" = "Opt-Out";
 
 // MARK: Asset
 "asset-title" = "Asset";

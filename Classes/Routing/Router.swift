@@ -466,7 +466,14 @@ class Router:
         case let .qrScanner(canReadWCSession):
             viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
         case let .qrGenerator(title, draft, isTrackable):
-            let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration, isTrackable: isTrackable)
+            let qrCreationController = QRCreationViewController(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration,
+                isTrackable: isTrackable
+            )
             qrCreationController.title = title
             viewController = qrCreationController
         case let .accountList(mode, delegate):
@@ -503,9 +510,21 @@ class Router:
                 configuration: configuration
             )
         case let .assetDetail(draft):
-            viewController = AssetDetailViewController(draft: draft, configuration: configuration)
+            viewController = AssetDetailViewController(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                     toastPresentationController: appConfiguration.toastPresentationController
+                 ),
+                configuration: configuration
+            )
         case let .algosDetail(draft):
-            viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
+            viewController = AlgosDetailViewController(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                     toastPresentationController: appConfiguration.toastPresentationController
+                 ),
+                configuration: configuration
+            )
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
@@ -531,7 +550,13 @@ class Router:
             managementOptionsViewController.delegate = delegate
             viewController = managementOptionsViewController
         case let .assetActionConfirmation(assetAlertDraft, delegate):
-            let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
+            let aViewController = AssetActionConfirmationViewController(
+                draft: assetAlertDraft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
         case let .rewardDetail(account):
@@ -794,6 +819,9 @@ class Router:
             viewController = ReceiveCollectibleAssetListViewController(
                 account: account,
                 dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .collectibleDetail(asset, account, thumbnailImage):
@@ -801,6 +829,9 @@ class Router:
                 asset: asset,
                 account: account,
                 thumbnailImage: thumbnailImage,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .sendCollectible(draft):
@@ -871,6 +902,9 @@ class Router:
         case .qrScanOptions(let address, let eventHandler):
             let screen = QRScanOptionsViewController(
                 address: address,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
             screen.eventHandler = eventHandler

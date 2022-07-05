@@ -29,7 +29,7 @@ final class TransactionDetailView:
     private lazy var closeAmountView = TransactionAmountInformationView()
     private lazy var rewardView = TransactionAmountInformationView()
     private lazy var userView = TransactionTextInformationView()
-    private lazy var opponentView = TransactionContactInformationView()
+    private(set) lazy var opponentView = TransactionContactInformationView()
     private lazy var closeToView = TransactionTextInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var dateView = TransactionTextInformationView()

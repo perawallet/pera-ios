@@ -76,6 +76,8 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
                 layout: collectionViewLayout,
                 sizeForAssetCellItem: item
             )
+        case .pendingAsset:
+            return CGSize(width: UIScreen.main.bounds.width - 48, height: 72)
         case .empty(let item):
             return sizeForNoContent(
                 collectionView,

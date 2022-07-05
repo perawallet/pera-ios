@@ -26,9 +26,16 @@ final class AssetActionConfirmationViewController: BaseViewController {
 
     private lazy var theme = Theme()
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
+
+    private let copyToClipboardController: CopyToClipboardController
     
-    init(draft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
+    init(
+        draft: AssetAlertDraft,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.draft = draft
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
     
@@ -131,9 +138,20 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
         closeScreen()
     }
 
-    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?) {
-        UIPasteboard.general.string = assetID
-        bannerController?.presentInfoBanner("asset-id-copied-title".localized)
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
+        copyToClipboardController.copyID(draft.assetId)
+    }
+
+    func contextMenuInteractionForAssetID(
+        in assetActionConfirmationView: AssetActionConfirmationView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.draft.assetId)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
     }
 }
 
