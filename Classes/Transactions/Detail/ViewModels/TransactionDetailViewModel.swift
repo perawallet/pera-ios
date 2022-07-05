@@ -41,6 +41,7 @@ final class TransactionDetailViewModel: ViewModel {
     private(set) var rewardViewIsHidden: Bool = false
     private(set) var transactionID: String?
     private(set) var rewardViewMode: TransactionAmountView.Mode?
+    private(set) var innerTransactionsViewDetail: TransactionAmountInformationViewModel?
 
     init(
         transactionType: TransactionType,
@@ -116,6 +117,7 @@ extension TransactionDetailViewModel {
         }
 
         transactionID = transaction.id
+        bindInnerTransactionsDetail(for: transaction)
         bindNote(for: transaction)
     }
 }
@@ -185,6 +187,7 @@ extension TransactionDetailViewModel {
 
         transactionID = transaction.id
         bindNote(for: transaction)
+        bindInnerTransactionsDetail(for: transaction)
     }
 }
 
@@ -250,6 +253,18 @@ extension TransactionDetailViewModel {
             rewardViewMode = .normal(amount: rewards.toAlgos)
         } else {
             rewardViewIsHidden = true
+        }
+    }
+
+    private func bindInnerTransactionsDetail(for transaction: Transaction) {
+        if let innerTransactions = transaction.innerTransactions, !innerTransactions.isEmpty {
+            let amountViewModel = TransactionAmountViewModel(
+                innerTransactionCount: innerTransactions.count,
+                showInList: false
+            )
+            innerTransactionsViewDetail = TransactionAmountInformationViewModel(
+                transactionViewModel: amountViewModel
+            )
         }
     }
 }
