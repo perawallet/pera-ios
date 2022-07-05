@@ -872,6 +872,9 @@ class Router:
         case .qrScanOptions(let address, let eventHandler):
             let screen = QRScanOptionsViewController(
                 address: address,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
