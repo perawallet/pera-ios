@@ -77,7 +77,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
             tooltipDisplayStore.isDisplayedCopyAddressTooltip = true
 
             tooltipController.present(
-                on: transactionDetailView.opponentView.contactDisplayView.nameLabel,
+                on: transactionDetailView.userView.detailLabel,
                 title: "title-press-hold-copy-address".localized,
                 duration: .default
             )
