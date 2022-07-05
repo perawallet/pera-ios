@@ -73,6 +73,7 @@ extension TransactionDetailViewModel {
         bindDate(for: transaction)
         bindRound(for: transaction)
         if let sender = transaction.sender {
+            opponentViewTitle = "transaction-detail-from".localized
             bindOpponent(for: transaction, with: sender)
         }
 
@@ -101,10 +102,15 @@ extension TransactionDetailViewModel {
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
             bindReward(for: transaction)
+        } else if transaction.assetConfig != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            bindReward(for: transaction)
         } else if transaction.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             transactionAmountViewMode = nil
+            bindReward(for: transaction)
         }
 
         transactionID = transaction.id
@@ -135,6 +141,7 @@ extension TransactionDetailViewModel {
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
+            opponentViewTitle = "transaction-detail-to".localized
             bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
@@ -149,6 +156,7 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
         }  else if let payment = transaction.payment {
+            opponentViewTitle = "transaction-detail-to".localized
             bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
@@ -161,9 +169,14 @@ extension TransactionDetailViewModel {
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
+        } else if transaction.assetConfig != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            bindReward(for: transaction)
         } else if transaction.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
+            bindReward(for: transaction)
         }
 
         transactionID = transaction.id
@@ -173,8 +186,6 @@ extension TransactionDetailViewModel {
 
 extension TransactionDetailViewModel {
     func bindOpponent(for transaction: Transaction, with address: String) {
-        opponentViewTitle = "transaction-detail-to".localized
-
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             opponentViewContact = contact

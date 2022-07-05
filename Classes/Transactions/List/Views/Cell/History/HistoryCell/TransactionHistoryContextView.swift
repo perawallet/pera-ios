@@ -53,7 +53,6 @@ extension TransactionHistoryContextView {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
             $0.centerY.equalToSuperview().priority(.low)
-            $0.width.lessThanOrEqualToSuperview().multipliedBy(theme.titleMaximumWidthRatio)
         }
     }
     
@@ -67,7 +66,6 @@ extension TransactionHistoryContextView {
             $0.leading.equalTo(titleLabel.snp.leading)
             $0.top.equalTo(titleLabel.snp.bottom)
             $0.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.width.lessThanOrEqualToSuperview().multipliedBy(theme.titleMaximumWidthRatio)
         }
 
         subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -77,6 +75,9 @@ extension TransactionHistoryContextView {
         _ theme: TransactionHistoryContextViewTheme
     ) {
         transactionAmountView.customize(TransactionAmountViewSmallerTheme())
+
+        transactionAmountView.setContentHuggingPriority(.required, for: .horizontal)
+        transactionAmountView.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         addSubview(transactionAmountView)
         transactionAmountView.snp.makeConstraints {

@@ -57,7 +57,8 @@ struct AssetTransactionItemDraftComposer: TransactionListItemDraftComposer {
                 asset: asset,
                 transaction: transaction,
                 contact: contact,
-                localAccounts: sharedDataController.sortedAccounts().map { $0.value }
+                localAccounts: sharedDataController.sortedAccounts().map { $0.value },
+                localAssets: sharedDataController.assetDetailCollection
             )
 
             return draft
@@ -67,7 +68,8 @@ struct AssetTransactionItemDraftComposer: TransactionListItemDraftComposer {
             account: draft.accountHandle.value,
             asset: asset,
             transaction: transaction,
-            localAccounts: sharedDataController.sortedAccounts().map { $0.value }
+            localAccounts: sharedDataController.sortedAccounts().map { $0.value },
+            localAssets: sharedDataController.assetDetailCollection
         )
 
         return draft

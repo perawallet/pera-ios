@@ -23,4 +23,5 @@ struct TransactionViewModelDraft {
     let transaction: TransactionItem
     var contact: Contact?
     let localAccounts: [Account]
+    let localAssets: AssetDetailCollection?
 }
