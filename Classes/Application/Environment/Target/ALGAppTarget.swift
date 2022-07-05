@@ -22,6 +22,7 @@ final class ALGAppTarget: MacaroonApplication.AppTarget {
     let app: App
     let deeplinkConfig: ALGDeeplinkConfig
     let walletConnectConfig: ALGWalletConnectConfig
+    let universalLinkConfig: ALGUniversalLinkConfig
     /// <todo>
     /// Let's name it as `isStore` in 'Macaroon' later.
     let isProduction: Bool
@@ -36,6 +37,7 @@ final class ALGAppTarget: MacaroonApplication.AppTarget {
         case app
         case deeplinkConfig
         case walletConnectConfig
+        case universalLinkConfig
         case isProduction
     }
     

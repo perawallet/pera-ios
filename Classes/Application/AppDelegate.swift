@@ -189,23 +189,58 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig
-        
-        guard let scheme = url.scheme else {
+
+        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+            NotificationCenter.default.post(
+                name: .didRedirectFromMoonPay,
+                object: self,
+                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+            )
+
+            return true
+        }
+
+        let deeplinkQR = DeeplinkQR(url: url)
+
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            return true
+        }
+
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
+            return true
+        }
+
+        return false
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        guard
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL
+        else {
             return false
         }
-        
-        if deeplinkConfig.qr.canAcceptScheme(scheme) {
-            receive(deeplinkWithSource: .url(url))
+
+        let deeplinkQR = DeeplinkQR(url: incomingURL)
+
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
             return true
         }
-        
-        if deeplinkConfig.walletConnect.canAcceptScheme(scheme) {
-            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
             return true
         }
-        
+
         return false
+        
     }
 }
 
@@ -222,7 +257,13 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            src = .url(url)
+            let deeplinkQR = DeeplinkQR(url: url)
+
+            if let qrText = deeplinkQR.qrText() {
+                src = .qrText(qrText)
+            } else {
+                src = nil
+            }
         } else {
             src = nil
         }
