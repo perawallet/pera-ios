@@ -928,6 +928,7 @@
 "transaction-result-completed-subtitle" = "Your transaction was successfully received by the Algorand network.";
 
 // MARK: AccountSelect
+"account-select-header-matched-accounts-title" = "Matched Accounts";
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";

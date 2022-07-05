@@ -12,27 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AlgosTransactionDisplayDraft.swift
+//   NameServiceQuery.swift
 
-import Foundation
+import MagpieCore
 
-struct AlgosTransactionSendDraft: TransactionSendDraft {
-    var from: Account
-    var toAccount: Account?
-    var amount: Decimal?
-    var fee: UInt64?
-    var isMaxTransaction = false
-    var identifier: String?
-    var note: String?
-    var lockedNote: String?
+struct NameServiceQuery: ObjectQuery {
+    let name: String?
 
-    var toContact: Contact?
-    var nameService: NameService?
-}
-
-extension AlgosTransactionSendDraft {
-    var isMaxTransactionFromRekeyedAccount: Bool {
-        return from.isRekeyed() && isMaxTransaction
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
+        if let name = name {
+            params.append(.init(.name, name))
+        }
+        return params
     }
 }

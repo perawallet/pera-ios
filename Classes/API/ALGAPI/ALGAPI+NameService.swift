@@ -12,30 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  RekeyTransactionSendDraft.swift
+//   ALGAPI+NameService.swift
 
 import Foundation
+import MagpieCore
 
-struct RekeyTransactionSendDraft: TransactionSendDraft {
-    var from: Account
-    var toAccount: Account?
-    var amount: Decimal?
-    var fee: UInt64?
-    var isMaxTransaction = false
-    var identifier: String?
-    var note: String?
-    var lockedNote: String?
-
-    var toContact: Contact?
-    var nameService: NameService?
-    
-    init(account: Account, rekeyedTo: String) {
-        self.from = account
-        toAccount = Account(address: rekeyedTo, type: .rekeyed)
-        amount = nil
-        fee = nil
-        isMaxTransaction = false
-        identifier = nil
+extension ALGAPI {
+    @discardableResult
+    func fetchNameServices(
+        _ query: NameServiceQuery,
+        onCompleted handler: @escaping (Response.ModelResult<NameServiceList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.nameServicesSearch)
+            .query(query)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
     }
 }
