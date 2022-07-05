@@ -64,5 +64,4 @@ enum EmptyState: Hashable {
 
 enum TransactionsDataControllerEvent {
     case didUpdateSnapshot(TransactionsDataController.Snapshot)
-    case didUpdateReward(Decimal)
 }

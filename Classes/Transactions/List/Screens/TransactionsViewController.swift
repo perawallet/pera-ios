@@ -44,8 +44,6 @@ class TransactionsViewController: BaseViewController {
         sharedDataController
     )
 
-    private var rewardDetailViewController: RewardDetailViewController?
-
     private lazy var transactionsDataSource = TransactionsDataSource(listView)
 
     private(set) lazy var listView: UICollectionView = {
@@ -94,13 +92,6 @@ class TransactionsViewController: BaseViewController {
                 self.transactionsDataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
-                )
-            case .didUpdateReward(let reward):
-                self.rewardDetailViewController?.bindData(
-                    RewardDetailViewModel(
-                        account: self.accountHandle.value,
-                        calculatedRewards: reward
-                    )
                 )
             }
         }
@@ -320,19 +311,12 @@ extension TransactionsViewController {
 
 extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        let rewardDetailViewController = bottomSheetTransition.perform(
+        bottomSheetTransition.perform(
             .rewardDetail(
-                account: accountHandle.value,
-                calculatedRewards: dataController.reward
+                account: accountHandle.value
             ),
-            by: .presentWithoutNavigationController,
-            completion: {
-                [weak self] in
-                self?.rewardDetailViewController = nil
-            }
-        ) as? RewardDetailViewController
-
-        self.rewardDetailViewController = rewardDetailViewController
+            by: .presentWithoutNavigationController
+        )
     }
 
     func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
