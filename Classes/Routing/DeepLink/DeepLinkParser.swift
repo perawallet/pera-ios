@@ -63,7 +63,10 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        let draft = AlgoTransactionListing(accountHandle: account)
+        let draft = AlgoTransactionListing(
+            accountHandle: account,
+            isQuickActionButtonVisible: false
+        )
         return .success(.algosDetail(draft: draft))
     }
     
@@ -89,7 +92,11 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
         
-        let draft = AssetTransactionListing(accountHandle: account, asset: asset)
+        let draft = AssetTransactionListing(
+            accountHandle: account,
+            asset: asset,
+            isQuickActionButtonVisible: false
+        )
         return .success(.assetDetail(draft: draft))
     }
     

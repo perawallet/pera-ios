@@ -172,7 +172,8 @@ class TransactionsViewController: BaseViewController {
     override func prepareLayout() {
         addListView()
 
-        if !accountHandle.value.isWatchAccount() {
+        if !accountHandle.value.isWatchAccount() &&
+            draft.isQuickActionButtonVisible {
             addTransactionActionButton(theme)
         }
     }
