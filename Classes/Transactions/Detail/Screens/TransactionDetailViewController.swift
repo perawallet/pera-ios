@@ -36,6 +36,10 @@ final class TransactionDetailViewController: BaseScrollViewController {
         assetDetail: assetDetail
     )
 
+    private lazy var tooltipController = TooltipUIController(
+        presentingView: view
+    )
+
     private let copyToClipboardController: CopyToClipboardController
     
     init(
@@ -62,6 +66,23 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         transactionDetailView.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let tooltipDisplayStore = TooltipDisplayStore()
+
+        if !tooltipDisplayStore.isDisplayedCopyAddressTooltip {
+            tooltipDisplayStore.isDisplayedCopyAddressTooltip = true
+
+            tooltipController.present(
+                on: transactionDetailView.opponentView.contactDisplayView.nameLabel,
+                title: "title-press-hold-copy-address".localized,
+                duration: .default
+            )
+            return
+        }
     }
     
     override func setListeners() {
@@ -111,8 +132,8 @@ extension TransactionDetailViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
-            let contact = userInfo["contact"] else {
-                return
+              let contact = userInfo["contact"] else {
+            return
         }
         
         transaction.contact = contact
@@ -240,5 +261,22 @@ enum AlgoExplorerType {
         case .goalseeker:
             return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
         }
+    }
+}
+
+extension TransactionDetailViewController {
+    private final class TooltipDisplayStore: Storable {
+        typealias Object = Any
+
+        var isDisplayedCopyAddressTooltip: Bool {
+            get { userDefaults.bool(forKey: isDisplayedCopyAddressTooltipKey) }
+            set {
+                userDefaults.set(newValue, forKey: isDisplayedCopyAddressTooltipKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let isDisplayedCopyAddressTooltipKey =
+        "cache.key.transactionDetailIsDisplayedCopyAddressTooltip"
     }
 }

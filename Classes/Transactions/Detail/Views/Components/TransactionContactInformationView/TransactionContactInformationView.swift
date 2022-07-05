@@ -22,7 +22,7 @@ final class TransactionContactInformationView: View {
     weak var delegate: TransactionContactInformationViewDelegate?
 
     private lazy var titleLabel = UILabel()
-    private lazy var contactDisplayView = ContactDisplayView()
+    private(set) lazy var contactDisplayView = ContactDisplayView()
     
     func linkInteractors() {
         contactDisplayView.delegate = self
