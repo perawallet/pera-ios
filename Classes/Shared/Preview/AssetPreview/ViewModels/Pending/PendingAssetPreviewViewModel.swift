@@ -58,3 +58,19 @@ extension PendingAssetPreviewViewModel {
         self.assetStatus = value
     }
 }
+
+extension PendingAssetPreviewViewModel {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(secondaryImage)
+        hasher.combine(assetPrimaryTitle)
+        hasher.combine(assetSecondaryTitle)
+        hasher.combine(assetStatus)
+    }
+
+    static func == (lhs: PendingAssetPreviewViewModel, rhs: PendingAssetPreviewViewModel) -> Bool {
+        return lhs.secondaryImage == rhs.secondaryImage &&
+        lhs.assetPrimaryTitle == rhs.assetPrimaryTitle &&
+        lhs.assetSecondaryTitle == rhs.assetSecondaryTitle &&
+        lhs.assetStatus == rhs.assetStatus
+    }
+}
