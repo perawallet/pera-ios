@@ -301,8 +301,6 @@ extension TransactionDetailView: ViewModelBindable {
             )
         }
 
-        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
-
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
             amountView.bindData(
                 TransactionAmountInformationViewModel(
@@ -313,7 +311,14 @@ extension TransactionDetailView: ViewModelBindable {
             amountView.isHidden = true
         }
 
-        bindOpponentViewDetail(viewModel)
+        if let opponentViewTitle = viewModel?.opponentViewTitle {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(title: opponentViewTitle)
+            )
+            bindOpponentViewDetail(viewModel)
+        } else {
+            opponentView.isHidden = true
+        }
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
