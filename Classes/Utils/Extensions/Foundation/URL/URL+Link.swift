@@ -104,4 +104,13 @@ extension URL {
             transactionId: transactionId
         )
     }
+
+    func appendQueryParameters(_ newItems: [URLQueryItem]) -> URL? {
+        var components = URLComponents(string: self.absoluteString)
+        var params = components?.queryItems ?? [URLQueryItem]()
+        params += newItems
+        components?.queryItems = params
+
+        return components?.url
+    }
 }
