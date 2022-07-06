@@ -27,5 +27,5 @@ protocol TransactionSendDraft {
     var note: String? { get set }
     var lockedNote: String? { get set }
     var toContact: Contact? { get set }
-    var nameService: NameService? { get set }
+    var nameService: NameService? { get set }
 }

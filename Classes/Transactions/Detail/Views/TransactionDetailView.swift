@@ -71,7 +71,7 @@ final class TransactionDetailView:
 
         innerTransactionView.observe(event: .touch) {
             [weak self] in
-            guard let self = self else {
+            guard let self = self else {
                 return
             }
 
@@ -201,7 +201,6 @@ extension TransactionDetailView {
         verticalStackView.addArrangedSubview(innerTransactionView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: innerTransactionView)
         innerTransactionView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
-        innerTransactionView
     }
     
     private func addIdView(_ theme: TransactionDetailViewTheme) {
