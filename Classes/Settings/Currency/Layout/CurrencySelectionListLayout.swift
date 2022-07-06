@@ -69,12 +69,12 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
             case .loading:
                 let width = calculateContentWidth(for: collectionView)
 
-                let height =
-                collectionView.bounds.height -
-                collectionView.safeAreaTop -
-                collectionView.safeAreaBottom
+                let newSize = CurrencySelectionLoadingView.calculatePreferredSize(
+                    for: CurrencySelectionLoadingViewTheme(),
+                    fittingIn: CGSize((width, .greatestFiniteMagnitude))
+                )
 
-                return CGSize((width, height))
+                return newSize
             }
         }
     }

@@ -24,6 +24,7 @@ struct CurrencySelectionItemLoadingViewTheme:
     let titleViewWidth: LayoutMetric
     let titleTopPadding: LayoutMetric
     let titleBottomPadding: LayoutMetric
+    let height: LayoutMetric
 
     let corner: Corner
 
@@ -41,6 +42,7 @@ struct CurrencySelectionItemLoadingViewTheme:
         self.titleViewWidth = contentWidth
         self.titleTopPadding = 20
         self.titleBottomPadding = 24
+        self.height = titleViewHeight + titleTopPadding + titleBottomPadding
 
         self.corner = Corner(radius: 4)
     }

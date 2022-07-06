@@ -38,6 +38,7 @@ final class CurrencySelectionLoadingView:
     ) {
         addTitle(theme)
         addSubtitle(theme)
+        addSearchInput(theme)
         addCurrencySelectionItemsStack(theme)
     }
 
@@ -48,6 +49,35 @@ final class CurrencySelectionLoadingView:
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    class func calculatePreferredSize(
+        for theme: CurrencySelectionLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+
+        let titleHeight = theme.titleSize.h + theme.titleTopPadding
+
+        let subtitleHeight = theme.subtitleSize.h + theme.subtitleTopPadding
+
+        let searchInputHeight = theme.searchInputHeight + theme.searchInputTopPadding
+
+        let items = (
+            theme.largeItem.titleViewHeight +
+            theme.largeItem.titleTopPadding +
+            theme.largeItem.titleBottomPadding
+            ) * 4
+        let spacing = theme.currencySelectionItemsStackSpacing * 3
+        let stackHeight = items + spacing
+
+        let preferredHeight =
+            titleHeight +
+            subtitleHeight +
+            searchInputHeight +
+            stackHeight
+
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension CurrencySelectionLoadingView {
@@ -101,14 +131,14 @@ extension CurrencySelectionLoadingView {
 
         addSubview(currencySelectionItemsStack)
         currencySelectionItemsStack.snp.makeConstraints {
-            $0.top == subtitle.snp.bottom + theme.currencySelectionItemsStackTopPadding
-            $0.leading.trailing.bottom == 0
+            $0.top == searchInput.snp.bottom + theme.currencySelectionItemsStackTopPadding
+            $0.leading.trailing == 0
         }
 
-        addSelectionItem(theme.xlargeItemWidth)
-        addSelectionItem(theme.mediumItemWidth)
-        addSelectionItem(theme.largeItemWidth)
-        addSelectionItem(theme.smallItemWidth)
+        addSelectionItem(theme.xlargeItem)
+        addSelectionItem(theme.mediumItem)
+        addSelectionItem(theme.largeItem)
+        addSelectionItem(theme.smallItem)
     }
 
     private func addSelectionItem(
@@ -118,5 +148,8 @@ extension CurrencySelectionLoadingView {
         item.customize(theme)
 
         currencySelectionItemsStack.addArrangedSubview(item)
+        item.snp.makeConstraints {
+            $0.fitToHeight(theme.height)
+        }
     }
 }

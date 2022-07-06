@@ -34,10 +34,10 @@ struct CurrencySelectionLoadingViewTheme:
     let currencySelectionItemsStackSpacing: LayoutMetric
     let currencySelectionItemsStackTopPadding: LayoutMetric
 
-    let xlargeItemWidth: CurrencySelectionItemLoadingViewTheme
-    let mediumItemWidth: CurrencySelectionItemLoadingViewTheme
-    let largeItemWidth: CurrencySelectionItemLoadingViewTheme
-    let smallItemWidth: CurrencySelectionItemLoadingViewTheme
+    let xlargeItem: CurrencySelectionItemLoadingViewTheme
+    let mediumItem: CurrencySelectionItemLoadingViewTheme
+    let largeItem: CurrencySelectionItemLoadingViewTheme
+    let smallItem: CurrencySelectionItemLoadingViewTheme
 
     init(
         _ family: LayoutFamily
@@ -60,9 +60,9 @@ struct CurrencySelectionLoadingViewTheme:
         self.currencySelectionItemsStackSpacing = 5
         self.currencySelectionItemsStackTopPadding = 12
 
-        self.xlargeItemWidth = CurrencySelectionItemLoadingViewTheme(contentWidth: 123)
-        self.mediumItemWidth = CurrencySelectionItemLoadingViewTheme(contentWidth: 73)
-        self.largeItemWidth = CurrencySelectionItemLoadingViewTheme(contentWidth: 107)
-        self.smallItemWidth = CurrencySelectionItemLoadingViewTheme(contentWidth: 59)
+        self.xlargeItem = CurrencySelectionItemLoadingViewTheme(contentWidth: 123)
+        self.mediumItem = CurrencySelectionItemLoadingViewTheme(contentWidth: 73)
+        self.largeItem = CurrencySelectionItemLoadingViewTheme(contentWidth: 107)
+        self.smallItem = CurrencySelectionItemLoadingViewTheme(contentWidth: 59)
     }
 }
