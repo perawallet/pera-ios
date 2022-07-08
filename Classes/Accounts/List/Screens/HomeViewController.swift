@@ -365,9 +365,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
@@ -387,9 +386,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
