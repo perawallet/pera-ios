@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
+/// <todo> Use formatter instead of `signLabel`.
 final class TransactionAmountView: View {
     private lazy var signLabel = Label()
     private lazy var amountLabel = Label()
@@ -30,6 +31,25 @@ final class TransactionAmountView: View {
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    class func calculatePreferredSize(
+        _ viewModel: TransactionAmountViewModel?,
+        for theme: TransactionAmountViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let titleSize = viewModel.amountLabelText.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        let preferredHeight = titleSize.height
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension TransactionAmountView {

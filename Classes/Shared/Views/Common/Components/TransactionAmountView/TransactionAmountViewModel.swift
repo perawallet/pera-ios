@@ -95,14 +95,26 @@ extension TransactionAmountViewModel {
         amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
 
         if showInList {
+            let aText = count == 1
+            ? "inner-txns-singular-count".localized
+            : "inner-txns-plural-count".localized("\(count)")
+
             amountLabelText = .attributedString(
-                "transaction-inner-list-count".localized("\(count)").bodyMedium()
+                aText.bodyMedium(
+                    alignment: .right
+                )
             )
-        } else {
-            amountLabelText = .attributedString(
-                "transaction-detail-inner-transaction-detail".localized("\(count)").bodyMedium()
-            )
+            return
         }
 
+        let aText = count == 1
+        ?  "transaction-detail-singular-inner-transaction-detail".localized
+        : "transaction-detail-plural-inner-transaction-detail".localized("\(count)")
+
+        amountLabelText = .attributedString(
+            aText.bodyMedium(
+                alignment: .right
+            )
+        )
     }
 }

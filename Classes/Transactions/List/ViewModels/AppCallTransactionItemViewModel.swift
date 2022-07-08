@@ -45,7 +45,7 @@ struct AppCallTransactionItemViewModel:
     private mutating func bindTitle(
         _ draft: TransactionViewModelDraft
     ) {
-        bindTitle("wallet-connect-transaction-title-app-call".localized)
+        bindTitle("title-app-call".localized)
     }
 
     private mutating func bindSubtitle(
@@ -53,11 +53,11 @@ struct AppCallTransactionItemViewModel:
     ) {
         guard let transaction = draft.transaction as? Transaction,
               let applicationCall = transaction.applicationCall else {
-                  return
+            return
         }
 
         if let appID = applicationCall.appID {
-            bindSubtitle("transaction-item-app-id-title".localized(appID))
+            bindSubtitle("#\(appID)")
         }
     }
 
@@ -72,6 +72,8 @@ struct AppCallTransactionItemViewModel:
             return
         }
 
-        transactionAmountViewModel = TransactionAmountViewModel(innerTransactionCount: innerTransactions.count)
+        transactionAmountViewModel = TransactionAmountViewModel(
+            innerTransactionCount: transaction.allInnerTransactionsCount
+        )
     }
 }

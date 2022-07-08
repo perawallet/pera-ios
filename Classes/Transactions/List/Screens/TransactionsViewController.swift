@@ -437,25 +437,38 @@ extension TransactionsViewController {
 
 extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: Transaction) {
-        if transaction.sender == accountHandle.value.address {
+        if transaction.applicationCall != nil {
+            let eventHandler: AppCallTransactionDetailViewController.EventHandler = {
+                [weak self] event in
+                guard let self = self else {
+                    return
+
+                }
+
+                switch event {
+                case .performClose:
+                    self.dismiss(animated: true)
+                }
+            }
+
             open(
-                .transactionDetail(
+                .appCallTransactionDetail(
                     account: accountHandle.value,
                     transaction: transaction,
-                    transactionType: .sent,
-                    assetDetail: getAssetDetailForTransactionType(transaction)
+                    transactionTypeFilter: draft.type,
+                    assetDetail: getAssetDetailForTransactionType(transaction),
+                    eventHandler: eventHandler
                 ),
                 by: .present
             )
 
             return
         }
-
+        
         open(
             .transactionDetail(
                 account: accountHandle.value,
                 transaction: transaction,
-                transactionType: .received,
                 assetDetail: getAssetDetailForTransactionType(transaction)
             ),
             by: .present
@@ -465,7 +478,12 @@ extension TransactionsViewController {
     private func getAssetDetailForTransactionType(_ transaction: Transaction) -> StandardAsset? {
         switch draft.type {
         case .all:
-            if let assetID = transaction.assetTransfer?.assetId,
+            let assetID =
+            transaction.assetTransfer?.assetId ??
+            transaction.assetFreeze?.assetId ??
+            transaction.applicationCall?.foreignAssets?.first
+
+            if let assetID = assetID,
                 let decoration = sharedDataController.assetDetailCollection[assetID] {
                 let standardAsset = StandardAsset(
                     asset: ALGAsset(id: assetID),

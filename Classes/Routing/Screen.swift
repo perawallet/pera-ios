@@ -44,7 +44,18 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
+    case transactionDetail(
+        account: Account,
+        transaction: Transaction,
+        assetDetail: StandardAsset?
+    )
+    case appCallTransactionDetail(
+        account: Account,
+        transaction: Transaction,
+        transactionTypeFilter: TransactionTypeFilter,
+        assetDetail: StandardAsset?,
+        eventHandler: AppCallTransactionDetailViewController.EventHandler
+    )
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case managementOptions(
@@ -173,6 +184,10 @@ indirect enum Screen {
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler
+    )
+    case innerTransactionList(
+        dataController: InnerTransactionListDataController,
+        eventHandler: InnerTransactionListViewController.EventHandler
     )
 }
 

@@ -35,7 +35,6 @@ final class TransactionDetailView:
     private lazy var dateView = TransactionTextInformationView()
     private lazy var roundView = TransactionTextInformationView()
     private lazy var idView = TransactionTextInformationView()
-    private lazy var innerTransactionView = TransactionAmountInformationView()
     private lazy var noteView = TransactionTextInformationView()
     private lazy var openInAlgoExplorerButton = UIButton()
     private lazy var openInGoalSeekerButton = UIButton()
@@ -68,15 +67,6 @@ final class TransactionDetailView:
 
         openInAlgoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
         openInGoalSeekerButton.addTarget(self, action: #selector(notifyDelegateToOpenGoalSeaker), for: .touchUpInside)
-
-        innerTransactionView.observe(event: .touch) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            print("touch")
-        }
     }
     
     func customize(_ theme: TransactionDetailViewTheme) {
@@ -100,7 +90,6 @@ final class TransactionDetailView:
         addDateView(theme)
         addRoundView(theme)
         addIdView(theme)
-        addInnerTransactionView(theme)
         addNoteView(theme)
         addOpenInAlgoExplorerButton(theme)
         addOpenInGoalSeekerButton(theme)
@@ -192,15 +181,6 @@ extension TransactionDetailView {
         roundView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-round".localized))
 
         verticalStackView.addArrangedSubview(roundView)
-    }
-
-    private func addInnerTransactionView(_ theme: TransactionDetailViewTheme) {
-        innerTransactionView.customize(theme.transactionAmountInformationViewTheme)
-        innerTransactionView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-inner-transaction-title".localized))
-
-        verticalStackView.addArrangedSubview(innerTransactionView)
-        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: innerTransactionView)
-        innerTransactionView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
     }
     
     private func addIdView(_ theme: TransactionDetailViewTheme) {
@@ -344,8 +324,6 @@ extension TransactionDetailView: ViewModelBindable {
         } else {
             opponentView.isHidden = true
         }
-        
-        bindInnerTransactions(viewModel)
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
@@ -371,17 +349,6 @@ extension TransactionDetailView: ViewModelBindable {
             opponentView.hideViewInStack()
             opponentView.removeAccessoryViews()
         }
-    }
-
-    private func bindInnerTransactions(_ viewModel: TransactionDetailViewModel?) {
-        guard let viewModel = viewModel,
-              let innerTransactionViewModel = viewModel.innerTransactionsViewDetail else {
-            innerTransactionView.hideViewInStack()
-            return
-        }
-
-        innerTransactionView.showViewInStack()
-        innerTransactionView.bindData(innerTransactionViewModel)
     }
 }
 

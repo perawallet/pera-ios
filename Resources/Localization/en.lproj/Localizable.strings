@@ -70,6 +70,7 @@
 "title-ledger-account" = "Ledger Account";
 "title-rekeyed-account" = "Rekeyed Account";
 "title-more" = "More";
+"title-app-call" = "App Call";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -441,7 +442,8 @@
 "transaction-menu-copy-id" = "Copy ID";
 "transaction-menu-copy-note" = "Copy Note";
 "transaction-detail-inner-transaction-title" = "Inner\nTransactions";
-"transaction-detail-inner-transaction-detail" = "Show %@ TXNS";
+"transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
+"transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -1092,4 +1094,8 @@
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
 
 // MARK: Inner Transactions
-"transaction-inner-list-count" = "%@ inner txns";
+"inner-transactions-title" = "Inner Transactions";
+"inner-txns-singular-count" = "1 inner txn";
+"inner-txns-plural-count" = "%@ inner txns";
+"inner-transaction-singular-count" = "1 Inner Transaction";
+"inner-transaction-plural-count" = "%@ Inner Transactions";
