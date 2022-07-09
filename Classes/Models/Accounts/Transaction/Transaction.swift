@@ -55,7 +55,6 @@ final class Transaction:
     let groupKey: String?
     let innerTransactions: [Transaction]?
 
-    var rootID: String?
     var status: Status?
     var contact: Contact?
 
