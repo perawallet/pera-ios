@@ -187,13 +187,11 @@ extension Transaction {
             return .zero
         }
 
-        var count = innerTransactions.count
-
-        innerTransactions.forEach {
-            count += $0.allInnerTransactionsCount
+        return innerTransactions.reduce(
+            innerTransactions.count
+        ) { partialResult, transaction in
+            partialResult + transaction.allInnerTransactionsCount
         }
-
-        return count
     }
 
     func setAllCompleted() {
@@ -205,9 +203,7 @@ extension Transaction {
 
         status = .completed
 
-        innerTransactions.forEach {
-            $0.setAllCompleted()
-        }
+        innerTransactions.forEach { $0.setAllCompleted() }
     }
 }
 

@@ -47,7 +47,6 @@ extension AlgoInnerTransactionPreviewViewModel {
         transaction: Transaction,
         account: Account
     ) {
-
         guard let payment = transaction.payment else {
             return
         }

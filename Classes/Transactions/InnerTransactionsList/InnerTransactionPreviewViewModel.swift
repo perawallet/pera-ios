@@ -26,8 +26,7 @@ protocol InnerTransactionPreviewViewModel:
 
 extension InnerTransactionPreviewViewModel {
     static func getTitle(
-        _ aTitle: String?,
-        _ aTitleColor: Color? = nil
+        _ aTitle: String?
     ) -> EditText? {
         guard let aTitle = aTitle else {
             return nil

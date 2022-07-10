@@ -79,18 +79,9 @@ extension InnerTransactionListLocalDataController {
     private func addTransactionItems(
         _ snapshot: inout Snapshot
     ) {
-        var innerTransactionItems: [InnerTransactionListItem] = []
+        let innerTransactionItems =
+        innerTransactions.compactMap(makeInnerTransactionListItem)
 
-        for innerTransaction in innerTransactions {
-            guard
-                let item = makeInnerTransactionListItem(innerTransaction) else {
-                continue
-            }
-
-            innerTransactionItems.append(
-                item
-            )
-        }
         snapshot.appendItems(
             innerTransactionItems,
             toSection: .transactions
@@ -177,7 +168,7 @@ extension InnerTransactionListLocalDataController {
     private func publish(
         _ event: InnerTransactionListDataControllerEvent
     ) {
-        DispatchQueue.main.async {
+        asyncMain {
             [weak self] in
             guard let self = self else { return }
 
