@@ -62,7 +62,7 @@ extension AlgosUSDChartViewModel {
     ) {
         guard
             let basePriceValue = dataSet.values.last,
-            let currencyValue = dataSet.currency.value
+            let currencyValue = try? dataSet.currency?.unwrap()
         else {
             data = nil
             return
@@ -105,12 +105,12 @@ extension AlgosUSDChartViewModel {
 struct AlgoPriceChartDataSet {
     let values: [AlgoUSDPrice]
     let changeRate: AlgoPriceChangeRate
-    let currency: CurrencyHandle
+    let currency: CurrencyValue?
     
     init(
         values: [AlgoUSDPrice],
         changeRate: AlgoPriceChangeRate,
-        currency: CurrencyHandle
+        currency: CurrencyValue?
     ) {
         self.values = values
             .sorted(by: \.timestamp)

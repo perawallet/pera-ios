@@ -25,6 +25,9 @@ final class TransactionsAPIDataController:
     TransactionsDataController,
     SharedDataControllerObserver {
     var eventHandler: ((TransactionsDataControllerEvent) -> Void)?
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var pendingTransactionPolling: PollingOperation?
     private var fetchRequest: EndpointOperatable?
     private var nextToken: String?
@@ -385,23 +388,34 @@ extension TransactionsAPIDataController {
 
             var snapshot = Snapshot()
 
+            let account = self.draft.accountHandle.value
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
+
             switch self.draft.type {
             case .asset:
+                let viewModel = AssetDetailInfoViewModel(
+                    asset: self.draft.asset,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.asset!, self.sharedDataController.currency.value))],
+                    [ .assetInfo(viewModel) ],
                     toSection: .info
                 )
             case .algos:
+                let viewModel = AlgosDetailInfoViewModel(
+                    account: account,
+                    rewards: self.reward,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.algosInfo(
-                        AlgosDetailInfoViewModel(
-                            self.draft.accountHandle.value,
-                            self.sharedDataController.currency.value,
-                            self.reward
-                        )
-                    )],
+                    [ .algosInfo(viewModel) ],
                     toSection: .info
                 )
             case .all:

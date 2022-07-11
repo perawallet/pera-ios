@@ -136,7 +136,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForUser(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -148,7 +148,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForOpponent(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -161,7 +161,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForCloseTo(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -174,7 +174,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForTransactionID(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyTransactionID) {
@@ -186,7 +186,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForTransactionNote(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyTransactionNote) {

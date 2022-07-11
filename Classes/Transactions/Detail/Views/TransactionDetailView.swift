@@ -348,15 +348,15 @@ extension TransactionDetailView {
     ) -> UIContextMenuConfiguration? {
         switch interaction {
         case userContextMenuInteraction:
-            return delegate?.contextMenuInteractionForUser(in: self)
+            return delegate?.contextMenuInteractionForUser(self)
         case opponentContextMenuInteraction:
-            return delegate?.contextMenuInteractionForOpponent(in: self)
+            return delegate?.contextMenuInteractionForOpponent(self)
         case closeToContextMenuInteraction:
-            return delegate?.contextMenuInteractionForCloseTo(in: self)
+            return delegate?.contextMenuInteractionForCloseTo(self)
         case idContextMenuInteraction:
-            return delegate?.contextMenuInteractionForTransactionID(in: self)
+            return delegate?.contextMenuInteractionForTransactionID(self)
         case noteContextMenuInteraction:
-            return delegate?.contextMenuInteractionForTransactionNote(in: self)
+            return delegate?.contextMenuInteractionForTransactionNote(self)
         default:
             return nil
         }
@@ -368,19 +368,19 @@ protocol TransactionDetailViewDelegate: AnyObject {
         _ transactionDetailView: TransactionDetailView
     )
     func contextMenuInteractionForUser(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForOpponent(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForCloseTo(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionID(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionNote(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType)
 }

@@ -77,7 +77,7 @@ extension Account {
     func hasDifferentAssets(than account: Account) -> Bool {
         return
             assets != account.assets ||
-            !standardAssets.containsSameElements(as: account.standardAssets)
+            !standardAssets.someArray.containsSameElements(as: account.standardAssets.someArray)
     }
 
     func hasDifferentApps(than account: Account) -> Bool {

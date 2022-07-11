@@ -19,12 +19,10 @@ import Foundation
 import UIKit
 
 protocol HomeDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>
+    typealias Updates = (totalPortfolioItem: TotalPortfolioItem?, snapshot: Snapshot)
     
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
-
-    var portfolioViewModel: HomePortfolioViewModel? { get }
-    var lastSnapshot: Snapshot? { get }
     
     subscript (address: String?) -> AccountHandle? { get }
     
@@ -34,7 +32,7 @@ protocol HomeDataController: AnyObject {
     func hideAnnouncement()
 }
 
-enum HomeSection:
+enum HomeSectionIdentifier:
     Int,
     Hashable {
     case empty
@@ -43,34 +41,34 @@ enum HomeSection:
     case accounts
 }
 
-enum HomeItem: Hashable {
-    case empty(HomeEmptyItem)
-    case portfolio(HomePortfolioItem)
+enum HomeItemIdentifier: Hashable {
+    case empty(HomeEmptyItemIdentifier)
+    case portfolio(HomePortfolioItemIdentifier)
     case announcement(AnnouncementViewModel)
-    case account(HomeAccountItem)
+    case account(HomeAccountItemIdentifier)
 }
 
-enum HomeEmptyItem: Hashable {
+enum HomeEmptyItemIdentifier: Hashable {
     case loading
     case noContent
 }
 
-enum HomePortfolioItem: Hashable {
+enum HomePortfolioItemIdentifier: Hashable {
     case portfolio(HomePortfolioViewModel)
     case quickActions
 }
 
-enum HomeAccountItem: Hashable {
+enum HomeAccountItemIdentifier: Hashable {
     case header(ManagementItemViewModel)
     case cell(AccountPreviewViewModel)
 }
 
 enum HomeDataControllerEvent {
-    case didUpdate(HomeDataController.Snapshot)
+    case didUpdate(HomeDataController.Updates)
     
     var snapshot: HomeDataController.Snapshot {
         switch self {
-        case .didUpdate(let snapshot): return snapshot
+        case .didUpdate(let updates): return updates.snapshot
         }
     }
 }

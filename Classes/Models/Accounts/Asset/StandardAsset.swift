@@ -19,13 +19,15 @@ import Foundation
 final class StandardAsset: Asset {
     let id: AssetID
     let amount: UInt64
+    let decimals: Int
+    let decimalAmount: Decimal
     let isFrozen: Bool?
     let isDeleted: Bool?
     let optedInAtRound: UInt64?
     let name: String?
     let unitName: String?
-    let decimals: Int
     let usdValue: Decimal?
+    let totalUSDValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
     let url: String?
@@ -60,17 +62,27 @@ final class StandardAsset: Asset {
         decoration: AssetDecoration
     ) {
         self.id = asset.id
-        self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.isDeleted = asset.isDeleted
         self.optedInAtRound = asset.optedInAtRound
         self.name = decoration.name
         self.unitName = decoration.unitName
-        self.decimals = decoration.decimals
-        self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
         self.creator = decoration.creator
         self.url = decoration.url
+
+        let amount = asset.amount
+        let decimals = decoration.decimals
+        /// <note>
+        /// decimalAmount = amount * 10^-(decimals)
+        let decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
+        let usdValue = decoration.usdValue
+
+        self.amount = amount
+        self.decimals = decimals
+        self.decimalAmount = decimalAmount
+        self.usdValue = usdValue
+        self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
     }
 }
 

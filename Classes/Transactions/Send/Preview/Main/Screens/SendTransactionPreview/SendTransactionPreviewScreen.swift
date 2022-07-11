@@ -69,8 +69,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    override func bindData() {
       super.bindData()
 
+      let currency = try? sharedDataController.currency.primaryValue?.unwrap()
+
       transactionDetailView.bindData(
-         SendTransactionPreviewViewModel(draft, currency: sharedDataController.currency.value)
+         SendTransactionPreviewViewModel(draft, currency: currency)
       )
    }
 

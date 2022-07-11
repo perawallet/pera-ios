@@ -613,7 +613,7 @@ extension CollectibleListLocalDataController {
                 return true
             }
 
-            let matchingCollectibleAsset = account.collectibleAssets.first(
+            let matchingCollectibleAsset = account.collectibleAssets?.first(
                 matching: (\.id, pendingSentAccountAssetPair.asset.id)
             )
             return (matchingCollectibleAsset?.isOwned ?? false)

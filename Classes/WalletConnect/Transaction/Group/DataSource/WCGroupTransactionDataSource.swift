@@ -123,12 +123,14 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
+        let rawCurrency = try? sharedDataController.currency.primaryValue?.unwrap()
+
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: nil,
                 asset: asset(from: transaction),
-                currency: sharedDataController.currency.value
+                currency: rawCurrency
             )
         )
 
@@ -148,12 +150,14 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
+        let currency = try? sharedDataController.currency.primaryValue?.unwrap()
+
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
                 asset: asset(from: transaction),
-                currency: sharedDataController.currency.value
+                currency: currency
             )
         )
 

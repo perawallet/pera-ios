@@ -42,14 +42,14 @@ final class SendTransactionPreviewViewModel: ViewModel {
         }
         
         if let algoCurrency = currency as? AlgoCurrency {
-            bindAlgoTransactionPreview(draft, with: algoCurrency.currency)
+            bindAlgoTransactionPreview(draft, with: algoCurrency.baseCurrency)
             return
         }
 
         let currencyString: String?
 
         if let currency = currency,
-              let currencyPriceValue = currency.priceValue {
+              let currencyPriceValue = currency.algoValue {
             let currencyValue = amount * currencyPriceValue
             currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         } else {
@@ -66,7 +66,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         let balanceCurrencyString: String?
 
         if let currency = currency,
-              let currencyPriceValue = currency.priceValue {
+              let currencyPriceValue = currency.algoValue {
             let balanceCurrencyValue = balance * currencyPriceValue
             balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
         } else {

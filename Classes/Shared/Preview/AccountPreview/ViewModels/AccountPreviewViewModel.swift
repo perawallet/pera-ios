@@ -20,6 +20,7 @@ import MacaroonUIKit
 import UIKit
 
 struct AccountPreviewViewModel:
+    PortfolioViewModel,
     BindableViewModel,
     Hashable {
     private(set) var address: String?
@@ -28,6 +29,8 @@ struct AccountPreviewViewModel:
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
     private(set) var accessoryIcon: UIImage?
+
+    private(set) var currencyFormatter: CurrencyFormatter?
 
     init<T>(
         _ model: T
@@ -40,14 +43,15 @@ extension AccountPreviewViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
-        if let accountPortfolio = model as? AccountPortfolio {
-            address = accountPortfolio.account.value.address
+        if let accountPortfolioItem = model as? AccountPortfolioItem {
+            address = accountPortfolioItem.accountValue.value.address
+            currencyFormatter = accountPortfolioItem.currencyFormatter
 
-            bindIcon(accountPortfolio)
-            bindNamePreviewViewModel(accountPortfolio)
-            bindPrimaryAccessory(accountPortfolio)
-            bindSecondaryAccessory(accountPortfolio)
-            bindAccessoryIcon(accountPortfolio)
+            bindIcon(accountPortfolioItem)
+            bindNamePreviewViewModel(accountPortfolioItem)
+            bindPrimaryAccessory(accountPortfolioItem)
+            bindSecondaryAccessory(accountPortfolioItem)
+            bindAccessoryIcon(accountPortfolioItem)
 
             return
         }
@@ -93,43 +97,55 @@ extension AccountPreviewViewModel {
 
 extension AccountPreviewViewModel {
     mutating func bindIcon(
-        _ accountPortfolio: AccountPortfolio
+        _ accountPortfolioItem: AccountPortfolioItem
     ) {
-        bindIcon(accountPortfolio.account.value)
+        bindIcon(accountPortfolioItem.accountValue.value)
     }
     
     mutating func bindNamePreviewViewModel(
-        _ accountPortfolio: AccountPortfolio
+        _ accountPortfolioItem: AccountPortfolioItem
     ) {
         bindNamePreviewViewModel(
-            accountPortfolio.account.value
+            accountPortfolioItem.accountValue.value
         )
     }
     
     mutating func bindPrimaryAccessory(
-        _ accountPortfolio: AccountPortfolio
+        _ accountPortfolioItem: AccountPortfolioItem
     ) {
-        let totalPortfolio = accountPortfolio.account.value.totalPortfolio
-
-        if totalPortfolio.isFailure {
+        if !accountPortfolioItem.accountValue.isAvailable {
             primaryAccessory = nil
             return
         }
-        
-        bindPrimaryAccessory(totalPortfolio.primaryAbbreviatedUiDescription)
+
+        let text = format(
+            portfolioValue: accountPortfolioItem.portfolioValue,
+            currencyValue: accountPortfolioItem.currency.primaryValue,
+            in: .listItem
+        )
+        bindPrimaryAccessory(text)
     }
     
     mutating func bindSecondaryAccessory(
-        _ accountPortfolio: AccountPortfolio
+        _ accountPortfolioItem: AccountPortfolioItem
     ) {
-        bindSecondaryAccessory(accountPortfolio.account.value.totalPortfolio.secondaryUIDescription)
+        if !accountPortfolioItem.accountValue.isAvailable {
+            secondaryAccessory = nil
+            return
+        }
+
+        let text = format(
+            portfolioValue: accountPortfolioItem.portfolioValue,
+            currencyValue: accountPortfolioItem.currency.secondaryValue,
+            in: .listItem
+        )
+        bindSecondaryAccessory(text)
     }
     
     mutating func bindAccessoryIcon(
-        _ accountPortfolio: AccountPortfolio
+        _ accountPortfolioItem: AccountPortfolioItem
     ) {
-        let totalPortfolio = accountPortfolio.account.value.totalPortfolio
-        bindAccessoryIcon(isValid: totalPortfolio.isSuccess)
+        bindAccessoryIcon(isValid: accountPortfolioItem.accountValue.isAvailable)
     }
 }
 
@@ -279,6 +295,30 @@ extension AccountPreviewViewModel {
         isValid: Bool
     ) {
         accessoryIcon = isValid ? nil : "icon-red-warning".uiImage
+    }
+}
+
+extension AccountPreviewViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(address)
+        hasher.combine(icon)
+        hasher.combine(namePreviewViewModel)
+        hasher.combine(primaryAccessory)
+        hasher.combine(secondaryAccessory)
+    }
+
+    static func == (
+        lhs: AccountPreviewViewModel,
+        rhs: AccountPreviewViewModel
+    ) -> Bool {
+        return
+            lhs.address == rhs.address &&
+            lhs.icon == rhs.icon &&
+            lhs.namePreviewViewModel == rhs.namePreviewViewModel &&
+            lhs.primaryAccessory == rhs.primaryAccessory &&
+            lhs.secondaryAccessory == rhs.secondaryAccessory
     }
 }
 

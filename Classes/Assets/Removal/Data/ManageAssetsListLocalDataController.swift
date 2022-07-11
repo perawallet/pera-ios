@@ -21,6 +21,8 @@ final class ManageAssetsListLocalDataController:
     ManageAssetsListDataController,
     SharedDataControllerObserver {
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)?
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private var account: Account
     private var lastSnapshot: Snapshot?
@@ -66,7 +68,7 @@ extension ManageAssetsListLocalDataController {
     func fetchAssets() {
         searchResults.removeAll()
         accountAssets.removeAll()
-        account.allAssets.forEach {
+        account.allAssets?.forEach {
             if !$0.state.isPending {
                 accountAssets.append($0)
             }
@@ -158,20 +160,28 @@ extension ManageAssetsListLocalDataController {
             var snapshot = Snapshot()
             
             var assetItems: [ManageAssetSearchItem] = []
-            let currency = self.sharedDataController.currency.value
+
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
 
             self.searchResults.forEach { asset in
                 let viewModel: AssetPreviewViewModel
 
                 if let collectibleAsset = asset as? CollectibleAsset {
                     let draft = CollectibleAssetPreviewSelectionDraft(
+                        asset: collectibleAsset,
                         currency: currency,
-                        asset: collectibleAsset
+                        currencyFormatter: currencyFormatter
                     )
                     viewModel = AssetPreviewViewModel(draft)
                 } else {
-                    let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
-                    viewModel = AssetPreviewViewModel(assetPreviewModel)
+                    let assetItem = AssetItem(
+                        asset: asset,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+                    viewModel = AssetPreviewViewModel(assetPreview)
                 }
 
                 let assetItem: ManageAssetSearchItem = .asset(

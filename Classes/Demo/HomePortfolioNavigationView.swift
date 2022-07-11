@@ -50,9 +50,22 @@ final class HomePortfolioNavigationView: View {
         setTitleVisible(false)
     }
 
-    func bind(title: String, subtitle: String?) {
-        titleView.attributedText = title.bodyMedium()
-        subtitleView.attributedText = subtitle?.captionMedium()
+    func bind(
+        _ viewModel: HomePortfolioNavigationViewModel?
+    ) {
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: subtitleView)
+        } else {
+            subtitleView.text = nil
+            subtitleView.attributedText = nil
+        }
     }
 
     func animateTitleVisible(
