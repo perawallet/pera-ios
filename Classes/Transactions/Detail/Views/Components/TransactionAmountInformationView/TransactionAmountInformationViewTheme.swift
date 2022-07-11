@@ -23,6 +23,7 @@ struct TransactionAmountInformationViewTheme:
     StyleSheet {
     var contentPaddings: NSDirectionalEdgeInsets
     var title: TextStyle
+    var minimumSpacingBetweenTitleAndAmount: LayoutMetric
     var amountLeadingPadding: LayoutMetric
     var transactionAmountViewTheme: TransactionAmountViewTheme
 
@@ -37,6 +38,7 @@ struct TransactionAmountInformationViewTheme:
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndAmount = 16
         self.amountLeadingPadding = 137
         self.transactionAmountViewTheme = transactionAmountViewTheme
     }

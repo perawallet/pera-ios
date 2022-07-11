@@ -39,6 +39,7 @@ final class TransactionDetailViewModel: ViewModel {
     private(set) var closeToViewIsHidden: Bool = false
     private(set) var transactionAmountViewMode: TransactionAmountView.Mode?
     private(set) var rewardViewIsHidden: Bool = false
+    private(set) var transactionIDTitle: String?
     private(set) var transactionID: String?
     private(set) var rewardViewMode: TransactionAmountView.Mode?
 
@@ -126,7 +127,9 @@ extension TransactionDetailViewModel {
             bindReward(for: transaction)
         }
 
-        transactionID = transaction.id
+
+        bindTransactionIDTitle(transaction)
+        transactionID = transaction.id ?? transaction.parentID
         bindNote(for: transaction)
     }
 }
@@ -205,7 +208,8 @@ extension TransactionDetailViewModel {
             bindReward(for: transaction)
         }
 
-        transactionID = transaction.id
+        bindTransactionIDTitle(transaction)
+        transactionID = transaction.id ?? transaction.parentID
         bindNote(for: transaction)
     }
 }
@@ -240,6 +244,17 @@ extension TransactionDetailViewModel {
                 roundViewDetail = "\(round)"
             }
         }
+    }
+
+    private func bindTransactionIDTitle(
+        _ transaction: Transaction
+    ) {
+        if transaction.isInner {
+            transactionIDTitle = "transaction-detail-parent-id".localized
+            return
+        }
+
+        transactionIDTitle = "transaction-detail-id".localized
     }
 
     private func bindNote(for transaction: Transaction) {

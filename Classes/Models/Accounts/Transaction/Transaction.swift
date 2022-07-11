@@ -55,6 +55,10 @@ final class Transaction:
     let groupKey: String?
     let innerTransactions: [Transaction]?
 
+    /// <note>:
+    /// If transaction is inner transaction, its parentID is set to parent transaction ID.
+    var parentID: String?
+
     var status: Status?
     var contact: Contact?
 
@@ -82,15 +86,7 @@ final class Transaction:
         self.date = apiModel.roundTime.unwrap { Date(timeIntervalSince1970: $0) }
         self.transactionSignature = apiModel.signature
         self.groupKey = apiModel.group
-        /// <note>
-        /// Inner transactions don't have transaction ID, therefore we are using its parent transaction ID as its ID.
-        self.innerTransactions = apiModel.innerTransactions.map { innerTransactionAPIModels in
-            innerTransactionAPIModels.map { innerTransactionAPIModel in
-                var innerTransactionAPIModel = innerTransactionAPIModel
-                innerTransactionAPIModel.id = apiModel.id
-                return Transaction(innerTransactionAPIModel)
-            }
-        }
+        self.innerTransactions = apiModel.innerTransactions.unwrapMap(Transaction.init)
     }
 
     func encode() -> APIModel {
@@ -194,7 +190,26 @@ extension Transaction {
         }
     }
 
-    func setAllCompleted() {
+    var isInner: Bool {
+        return parentID != nil
+    }
+
+    func setAllParentID(
+        _ parentID: String?
+    ) {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return
+        }
+
+        innerTransactions.forEach {
+            $0.parentID = parentID
+
+            $0.setAllParentID(parentID)
+        }
+    }
+
+    func completeAll() {
         guard let innerTransactions = innerTransactions,
               !innerTransactions.isEmpty else {
             status = .completed
@@ -203,7 +218,7 @@ extension Transaction {
 
         status = .completed
 
-        innerTransactions.forEach { $0.setAllCompleted() }
+        innerTransactions.forEach { $0.completeAll() }
     }
 }
 

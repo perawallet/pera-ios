@@ -68,7 +68,7 @@ extension CopyToClipboardController {
     func copyID(
         _ transaction: Transaction
     ) {
-        let idCopy = transaction.id.someString
+        let idCopy = (transaction.id ?? transaction.parentID).someString
         let interaction = CopyToClipboardInteraction(
             title: "transaction-detail-id-copied-title".localized,
             body: "#\(idCopy)"

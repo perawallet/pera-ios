@@ -177,8 +177,10 @@ extension TransactionsAPIDataController {
                 break
             case let .success(transactionResults):
                 self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
-                transactionResults.transactions.forEach { $0.setAllCompleted() }
-
+                transactionResults.transactions.forEach {
+                    $0.setAllParentID($0.id)
+                    $0.completeAll()
+                }
 
                 self.fetchAssets(from: transactionResults.transactions) {
                     self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
@@ -262,7 +264,10 @@ extension TransactionsAPIDataController {
                 break
             case let .success(transactionResults):
                 self.nextToken = transactionResults.nextToken
-                transactionResults.transactions.forEach { $0.setAllCompleted() }
+                transactionResults.transactions.forEach {
+                    $0.setAllParentID($0.id)
+                    $0.completeAll()
+                }
 
 
                 self.fetchAssets(from: transactionResults.transactions) {
