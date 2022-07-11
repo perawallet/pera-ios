@@ -66,8 +66,15 @@ extension TransactionDetailViewModel {
         userViewTitle = "transaction-detail-to".localized
         opponentViewTitle = "transaction-detail-from".localized
 
-        userViewDetail = account.name
-        
+        let receiverAddress = transaction.getReceiver()
+        let accountAddress = account.address
+
+        if receiverAddress == accountAddress {
+            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+        } else {
+            userViewDetail = receiverAddress.shortAddressDisplay
+        }
+
         if let fee = transaction.fee {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
@@ -88,8 +95,10 @@ extension TransactionDetailViewModel {
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
-            } else {
+            } else if receiverAddress == accountAddress {
                 transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             }
             rewardViewIsHidden = true
         } else if let payment = transaction.payment {
@@ -97,8 +106,10 @@ extension TransactionDetailViewModel {
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
-            } else {
+            } else if receiverAddress == accountAddress {
                 transactionAmountViewMode = .positive(amount: amount)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount)
             }
 
             bindCloseAmount(for: transaction)
@@ -133,7 +144,14 @@ extension TransactionDetailViewModel {
         userViewTitle = "transaction-detail-from".localized
         opponentViewTitle = "transaction-detail-to".localized
 
-        userViewDetail = account.name
+        let senderAddress = transaction.sender
+        let accountAddress = account.address
+
+        if senderAddress == accountAddress {
+            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+        } else {
+            userViewDetail = senderAddress.shortAddressDisplay
+        }
 
         if let fee = transaction.fee {
             feeViewMode = .normal(amount: fee.toAlgos)
@@ -153,8 +171,10 @@ extension TransactionDetailViewModel {
 
                 if transaction.isSelfTransaction {
                     transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
-                } else {
+                } else if senderAddress == accountAddress {
                     transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
+                } else {
+                    transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
                 }
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)
@@ -167,8 +187,10 @@ extension TransactionDetailViewModel {
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
-            } else {
+            } else if senderAddress == accountAddress {
                 transactionAmountViewMode = .negative(amount: amount)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount)
             }
 
             bindCloseAmount(for: transaction)

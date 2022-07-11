@@ -32,7 +32,10 @@ final class AppCallTransactionDetailViewModel: ViewModel {
         account: Account,
         assetDetail: StandardAsset?
     ) {
-        bindSender(account)
+        bindSender(
+            transaction: transaction,
+            account: account
+        )
         bindApplicationID(transaction)
         bindAsset(assetDetail)
         bindOnCompletion(transaction)
@@ -44,9 +47,18 @@ final class AppCallTransactionDetailViewModel: ViewModel {
 
 extension AppCallTransactionDetailViewModel {
     private func bindSender(
-        _ account: Account
+        transaction: Transaction,
+        account: Account
     ) {
-        sender = account.address.shortAddressDisplay
+        let senderAddress = transaction.sender
+        let accountAddress = account.address
+
+        if senderAddress == accountAddress {
+            sender = account.name ?? accountAddress.shortAddressDisplay
+            return
+        }
+
+        sender = senderAddress.shortAddressDisplay
     }
 
     private func bindApplicationID(
