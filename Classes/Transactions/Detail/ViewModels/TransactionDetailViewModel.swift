@@ -72,7 +72,7 @@ extension TransactionDetailViewModel {
         if receiverAddress == accountAddress {
             userViewDetail = account.name ?? accountAddress.shortAddressDisplay
         } else {
-            userViewDetail = receiverAddress.shortAddressDisplay
+            userViewDetail = receiverAddress
         }
 
         if let fee = transaction.fee {
@@ -150,7 +150,7 @@ extension TransactionDetailViewModel {
         if senderAddress == accountAddress {
             userViewDetail = account.name ?? accountAddress.shortAddressDisplay
         } else {
-            userViewDetail = senderAddress.shortAddressDisplay
+            userViewDetail = senderAddress
         }
 
         if let fee = transaction.fee {

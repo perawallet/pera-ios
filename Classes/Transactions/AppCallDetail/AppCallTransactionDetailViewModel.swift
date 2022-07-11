@@ -58,7 +58,7 @@ extension AppCallTransactionDetailViewModel {
             return
         }
 
-        sender = senderAddress.shortAddressDisplay
+        sender = senderAddress
     }
 
     private func bindApplicationID(
