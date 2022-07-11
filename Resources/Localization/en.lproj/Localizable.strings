@@ -214,6 +214,8 @@
 "accounts-transaction-value" = "Value";
 "transaction-item-app-id-title" = "Application ID: #%d";
 "transaction-item-opt-out" = "Opt-Out";
+"transaction-item-opt-in" = "Opt-In / Self Transfer";
+"transaction-item-self-transfer" = "Self Transfer";
 
 // MARK: Asset
 "asset-title" = "Asset";

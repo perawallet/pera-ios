@@ -49,6 +49,11 @@ struct AlgoTransactionItemViewModel:
               let payment = transaction.payment else {
             return
         }
+        
+        if transaction.sender == draft.account.address && transaction.isSelfTransaction {
+            bindTitle("transaction-item-self-transfer".localized)
+            return
+        }
 
         if isReceivingTransaction(draft, for: payment) {
             bindTitle("transaction-detail-receive".localized)
