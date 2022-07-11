@@ -23,6 +23,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     private(set) var onCompletion: String?
     private(set) var assetInformationViewModel: WCAssetInformationViewModel?
     private(set) var fee: TransactionAmountView.Mode?
+    private(set) var transactionID: String?
     private(set) var note: String?
     private(set) var noteViewIsHidden: Bool = false
     private(set) var innerTransactionsViewModel: TransactionAmountInformationViewModel?
@@ -41,6 +42,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
         bindOnCompletion(transaction)
         bindFee(transaction)
         bindInnerTransactionsViewModel(transaction)
+        bindTransactionID(transaction)
         bindNote(transaction)
     }
 }
@@ -92,6 +94,12 @@ extension AppCallTransactionDetailViewModel {
         if let fee = transaction.fee {
             self.fee = .normal(amount: fee.toAlgos)
         }
+    }
+
+    private func bindTransactionID(
+        _ transaction: Transaction
+    ) {
+        transactionID = transaction.id
     }
 
     private func bindNote(
