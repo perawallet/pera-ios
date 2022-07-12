@@ -24,12 +24,16 @@ struct AlgoInnerTransactionPreviewViewModel:
     
     init(
         transaction: Transaction,
-        account: Account
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(transaction)
         bindAmount(
             transaction: transaction,
-            account: account
+            account: account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
     }
 }
@@ -45,7 +49,9 @@ extension AlgoInnerTransactionPreviewViewModel {
 
     private mutating func bindAmount(
         transaction: Transaction,
-        account: Account
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let payment = transaction.payment else {
             return
@@ -58,6 +64,8 @@ extension AlgoInnerTransactionPreviewViewModel {
                         includesCloseAmount: true
                     ).toAlgos
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -70,6 +78,8 @@ extension AlgoInnerTransactionPreviewViewModel {
                         includesCloseAmount: true
                     ).toAlgos
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -82,6 +92,8 @@ extension AlgoInnerTransactionPreviewViewModel {
                         includesCloseAmount: true
                     ).toAlgos
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -93,6 +105,8 @@ extension AlgoInnerTransactionPreviewViewModel {
                     includesCloseAmount: true
                 ).toAlgos
             ),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }

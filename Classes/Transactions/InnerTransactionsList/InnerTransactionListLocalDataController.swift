@@ -26,13 +26,18 @@ final class InnerTransactionListLocalDataController:
     )
 
     private(set) var draft: InnerTransactionListDraft
+    private(set) lazy var currencyFormatter = CurrencyFormatter()
     
     private lazy var innerTransactions: [Transaction] = draft.innerTransactions
 
+    private let currency: CurrencyProvider
+
     init(
-        draft: InnerTransactionListDraft
+        draft: InnerTransactionListDraft,
+        currency: CurrencyProvider
     ) {
         self.draft = draft
+        self.currency = currency
     }
 }
 
@@ -99,7 +104,9 @@ extension InnerTransactionListLocalDataController {
         case .payment:
             let viewModel = AlgoInnerTransactionPreviewViewModel(
                 transaction: transaction,
-                account: draft.account
+                account: draft.account,
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
 
             let item: InnerTransactionListItem = .algoTransaction(
@@ -114,7 +121,9 @@ extension InnerTransactionListLocalDataController {
             let viewModel = AssetInnerTransactionPreviewViewModel(
                 transaction: transaction,
                 account: draft.account,
-                asset: draft.asset
+                asset: draft.asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
 
             let item: InnerTransactionListItem = .assetTransaction(

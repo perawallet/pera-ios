@@ -25,13 +25,17 @@ struct AssetInnerTransactionPreviewViewModel:
     init(
         transaction: Transaction,
         account: Account,
-        asset: StandardAsset?
+        asset: StandardAsset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(transaction)
         bindAmount(
             transaction: transaction,
             account: account,
-            asset: asset
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
     }
 }
@@ -48,7 +52,9 @@ extension AssetInnerTransactionPreviewViewModel {
     private mutating func bindAmount(
         transaction: Transaction,
         account: Account,
-        asset: StandardAsset?
+        asset: StandardAsset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let assetTransfer = transaction.assetTransfer,
               let asset = asset else {
@@ -67,6 +73,8 @@ extension AssetInnerTransactionPreviewViewModel {
                         from: asset
                     )
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -84,6 +92,8 @@ extension AssetInnerTransactionPreviewViewModel {
                         from: asset
                     )
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -100,7 +110,9 @@ extension AssetInnerTransactionPreviewViewModel {
                     assetSymbol: getAssetSymbol(
                         from: asset
                     )
-                )
+                ),
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
             return
         }
@@ -116,6 +128,8 @@ extension AssetInnerTransactionPreviewViewModel {
                     from: asset
                 )
             ),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }

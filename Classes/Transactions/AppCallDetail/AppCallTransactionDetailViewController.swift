@@ -27,6 +27,8 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
 
     private lazy var appCallTransactionDetailView = AppCallTransactionDetailView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let account: Account
     private let transaction: Transaction
     private let transactionTypeFilter: TransactionTypeFilter
@@ -79,7 +81,11 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     override func bindData() {
         super.bindData()
 
-        appCallTransactionDetailView.bindData(appCallTransactionDetailViewModel)
+        appCallTransactionDetailView.bindData(
+            appCallTransactionDetailViewModel,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -199,7 +205,8 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
                         asset: assetDetail,
                         account: account,
                         innerTransactions: transaction.innerTransactions!
-                    )
+                    ),
+                    currency: sharedDataController.currency
                 ),
                 eventHandler: eventHandler
             ),
