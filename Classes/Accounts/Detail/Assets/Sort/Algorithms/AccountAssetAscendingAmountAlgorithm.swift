@@ -34,6 +34,20 @@ extension AccountAssetAscendingAmountAlgorithm {
         let assetPreviewCurrencyValue = assetPreview.currencyAmount
         let otherAssetPreviewCurrencyValue = otherAssetPreview.currencyAmount
 
-        return assetPreviewCurrencyValue < otherAssetPreviewCurrencyValue
+        if assetPreviewCurrencyValue != otherAssetPreviewCurrencyValue {
+            return assetPreviewCurrencyValue < otherAssetPreviewCurrencyValue
+        }
+
+        if let assetPreviewTitle = assetPreview.title,
+           let otherAssetPreviewTitle = otherAssetPreview.title {
+            return assetPreviewTitle < otherAssetPreviewTitle
+        }
+
+        if let assetPreviewID = assetPreview.asset?.id,
+           let otherAssetPreviewID = otherAssetPreview.asset?.id {
+            return assetPreviewID < otherAssetPreviewID
+        }
+
+        return false
     }
 }
