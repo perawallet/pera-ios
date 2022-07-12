@@ -281,9 +281,6 @@ extension TransactionsViewController {
                 filterCell.delegate = self
             case .empty(let emptyState):
                 switch emptyState {
-                case .loading:
-                    let loadingCell = cell as! LoadingCell
-                    loadingCell.startAnimating()
                 case .algoTransactionHistoryLoading:
                     let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
                     var theme = AlgoTransactionHistoryLoadingViewCommonTheme()

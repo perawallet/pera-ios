@@ -74,8 +74,6 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                     return collectionView.dequeue(AlgoTransactionHistoryLoadingCell.self, at: indexPath)
                 case .assetTransactionHistoryLoading:
                     return collectionView.dequeue(AssetTransactionHistoryLoadingCell.self, at: indexPath)
-                default:
-                    return collectionView.dequeue(LoadingCell.self, at: indexPath)
                 }
             case .nextList:
                 return collectionView.dequeue(LoadingCell.self, at: indexPath)
