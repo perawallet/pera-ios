@@ -23,6 +23,7 @@ struct TransactionContactInformationViewTheme:
     StyleSheet {
     var contentPaddings: NSDirectionalEdgeInsets
     var title: TextStyle
+    var minimumSpacingBetweenTitleAndContact: LayoutMetric
     var contactDisplayViewTheme: ContactDisplayViewTheme
     var contactDisplayLeadingPadding: LayoutMetric
 
@@ -36,6 +37,7 @@ struct TransactionContactInformationViewTheme:
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndContact = 16
         self.contactDisplayViewTheme = ContactDisplayViewTheme()
         self.contactDisplayLeadingPadding = 137
     }

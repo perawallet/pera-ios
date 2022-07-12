@@ -23,6 +23,7 @@ struct TransactionTextInformationViewTheme:
     StyleSheet {
     var contentPaddings: NSDirectionalEdgeInsets
     var title: TextStyle
+    var minimumSpacingBetweenTitleAndDetail: LayoutMetric
     var detail: TextStyle
     var detailLabelLeadingPadding: LayoutMetric
 
@@ -36,6 +37,7 @@ struct TransactionTextInformationViewTheme:
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndDetail = 16
         self.detail = [
             .textAlignment(.left),
             .textOverflow(FittingText()),

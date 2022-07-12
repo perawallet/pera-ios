@@ -72,6 +72,10 @@ extension TransactionAmountInformationView {
             $0.bottom == theme.contentPaddings.bottom
             $0.trailing <= theme.contentPaddings.trailing
         }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == transactionAmountView.snp.leading - theme.minimumSpacingBetweenTitleAndAmount
+        }
     }
 }
 

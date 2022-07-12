@@ -47,6 +47,7 @@ extension TransactionContactInformationView {
         titleLabel.snp.makeConstraints {
             $0.top == theme.contentPaddings.top
             $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
 
@@ -59,6 +60,10 @@ extension TransactionContactInformationView {
             $0.leading == theme.contentPaddings.leading + theme.contactDisplayLeadingPadding
             $0.bottom == theme.contentPaddings.bottom
             $0.trailing == theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == contactDisplayView.snp.leading - theme.minimumSpacingBetweenTitleAndContact
         }
     }
 }

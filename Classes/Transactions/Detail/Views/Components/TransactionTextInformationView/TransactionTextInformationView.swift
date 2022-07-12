@@ -40,9 +40,10 @@ extension TransactionTextInformationView {
         titleLabel.snp.makeConstraints {
             $0.top == theme.contentPaddings.top
             $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
-    
+
     private func addDetailLabel(_ theme: TransactionTextInformationViewTheme) {
         detailLabel.customizeAppearance(theme.detail)
 
@@ -52,6 +53,10 @@ extension TransactionTextInformationView {
             $0.leading == theme.contentPaddings.leading + theme.detailLabelLeadingPadding
             $0.bottom == theme.contentPaddings.bottom
             $0.trailing <= theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == detailLabel.snp.leading - theme.minimumSpacingBetweenTitleAndDetail
         }
     }
 }

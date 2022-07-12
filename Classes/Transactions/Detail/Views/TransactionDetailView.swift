@@ -185,7 +185,6 @@ extension TransactionDetailView {
     
     private func addIdView(_ theme: TransactionDetailViewTheme) {
         idView.customize(theme.transactionTextInformationViewTransactionIDTheme)
-        idView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-id".localized))
 
         verticalStackView.addArrangedSubview(idView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: idView)
@@ -289,7 +288,12 @@ extension TransactionDetailView {
         roundView.bindData(TransactionTextInformationViewModel(detail: viewModel?.roundViewDetail))
         roundView.isHidden = (viewModel?.roundViewIsHidden).falseIfNil
         dateView.bindData(TransactionTextInformationViewModel(detail: viewModel?.date))
-        idView.bindData(TransactionTextInformationViewModel(detail: viewModel?.transactionID))
+        idView.bindData(
+            TransactionTextInformationViewModel(
+                title: viewModel?.transactionIDTitle,
+                detail: viewModel?.transactionID
+            )
+        )
 
         if let status = viewModel?.transactionStatus {
             statusView.bindData(

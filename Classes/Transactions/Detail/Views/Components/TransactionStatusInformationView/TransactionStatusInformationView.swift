@@ -40,6 +40,7 @@ extension TransactionStatusInformationView {
         titleLabel.snp.makeConstraints {
             $0.top == theme.contentPaddings.top
             $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
     
@@ -52,6 +53,10 @@ extension TransactionStatusInformationView {
             $0.leading == theme.contentPaddings.leading + theme.statusLeadingPadding
             $0.bottom == theme.contentPaddings.bottom
             $0.trailing <= theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == transactionStatusView.snp.leading - theme.minimumSpacingBetweenTitleAndStatus
         }
     }
 }

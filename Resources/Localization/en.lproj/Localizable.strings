@@ -428,6 +428,7 @@
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";
 "transaction-detail-round" = "Round";
+"transaction-detail-parent-id" = "Parent Transaction ID";
 "transaction-detail-id" = "Transaction ID";
 "transaction-detail-note" = "Note";
 "transaction-detail-close-to" = "Close To";
@@ -443,7 +444,7 @@
 "transaction-detail-id-copied-title" = "ID copied to clipboard";
 "transaction-menu-copy-id" = "Copy ID";
 "transaction-menu-copy-note" = "Copy Note";
-"transaction-detail-inner-transaction-title" = "Inner\nTransactions";
+"transaction-detail-inner-transaction-title" = "Inner Transactions";
 "transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
 "transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
 

@@ -118,21 +118,12 @@ extension AppCallTransactionDetailView {
 
     private func addApplicationIDView(_ theme: AppCallTransactionDetailViewTheme) {
         applicationIDView.customize(theme.textInformationViewCommonTheme)
-        applicationIDView.bindData(
-            TransactionTextInformationViewModel(
-                title: "wallet-connect-transaction-title-app-id".localized)
-        )
 
         verticalStackView.addArrangedSubview(applicationIDView)
     }
 
     private func addOnCompletionView(_ theme: AppCallTransactionDetailViewTheme) {
         onCompletionView.customize(theme.onCompletionViewTheme)
-        onCompletionView.bindData(
-            TransactionTextInformationViewModel(
-                title: "single-transaction-request-opt-in-subtitle".localized
-            )
-        )
 
         verticalStackView.addArrangedSubview(onCompletionView)
     }
@@ -195,11 +186,6 @@ extension AppCallTransactionDetailView {
 
     private func addTransactionIDView(_ theme: AppCallTransactionDetailViewTheme) {
         transactionIDView.customize(theme.textInformationViewCommonTheme)
-        transactionIDView.bindData(
-            TransactionTextInformationViewModel(
-                title: "transaction-detail-id".localized
-            )
-        )
 
         verticalStackView.addArrangedSubview(transactionIDView)
         verticalStackView.setCustomSpacing(
@@ -214,11 +200,6 @@ extension AppCallTransactionDetailView {
 
     private func addNoteView(_ theme: AppCallTransactionDetailViewTheme) {
         noteView.customize(theme.textInformationViewCommonTheme)
-        noteView.bindData(
-            TransactionTextInformationViewModel(
-                title: "transaction-detail-note".localized
-            )
-        )
         noteView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(noteView)
@@ -270,11 +251,17 @@ extension AppCallTransactionDetailView {
         )
 
         applicationIDView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.applicationID)
+            TransactionTextInformationViewModel(
+                title: "wallet-connect-transaction-title-app-id".localized,
+                detail: viewModel?.applicationID
+            )
         )
 
         onCompletionView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.onCompletion)
+            TransactionTextInformationViewModel(
+                title: "single-transaction-request-opt-in-subtitle".localized,
+                detail: viewModel?.onCompletion
+            )
         )
 
         if let assetInformationViewModel = viewModel?.assetInformationViewModel {
@@ -285,11 +272,17 @@ extension AppCallTransactionDetailView {
 
         transactionIDView.bindData(
             TransactionTextInformationViewModel(
+                title: viewModel?.transactionIDTitle,
                 detail: viewModel?.transactionID
             )
         )
 
-        noteView.bindData(TransactionTextInformationViewModel(detail: viewModel?.note))
+        noteView.bindData(
+            TransactionTextInformationViewModel(
+                title: "transaction-detail-note".localized,
+                detail: viewModel?.note
+            )
+        )
         noteView.isHidden = (viewModel?.noteViewIsHidden).falseIfNil
 
         if let feeViewMode = viewModel?.fee {

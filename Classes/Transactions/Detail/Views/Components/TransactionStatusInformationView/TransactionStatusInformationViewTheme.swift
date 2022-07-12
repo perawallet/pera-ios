@@ -21,6 +21,7 @@ import UIKit
 struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
     var contentPaddings: NSDirectionalEdgeInsets
     var title: TextStyle
+    var minimumSpacingBetweenTitleAndStatus: LayoutMetric
     var statusLeadingPadding: LayoutMetric
     var transactionStatusViewTheme: TransactionStatusViewTheme
 
@@ -35,6 +36,7 @@ struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndStatus = 16
         self.statusLeadingPadding = 137
         self.transactionStatusViewTheme = TransactionStatusViewTheme()
     }
