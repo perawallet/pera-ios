@@ -55,6 +55,11 @@ struct AssetTransactionItemViewModel:
             return
         }
 
+        if transaction.sender == draft.account.address && transaction.isSelfTransaction {
+            bindTitle("transaction-item-opt-in".localized)
+            return
+        }
+
         if draft.account.address == assetTransfer.receiverAddress {
             bindTitle("transaction-detail-receive".localized)
             return
