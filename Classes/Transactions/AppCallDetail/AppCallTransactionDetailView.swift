@@ -345,11 +345,11 @@ extension AppCallTransactionDetailView {
 
     func appCallTransactionAssetInformationViewDidLongPressToCopy(
         _ view: AppCallTransactionAssetInformationView,
-        idAtIndex index: UInt
+        forAssetIDAtIndex index: Int
     ) -> UIContextMenuConfiguration? {
         return delegate?.contextMenuInteractionForAsset(
             in: self,
-            idAtIndex: index
+            forAssetIDAtIndex: index
         )
     }
 }
@@ -383,7 +383,7 @@ protocol AppCallTransactionDetailViewDelegate: AnyObject {
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForAsset(
         in appCallTransactionDetailView: AppCallTransactionDetailView,
-        idAtIndex index: UInt
+        forAssetIDAtIndex index: Int
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionID(
         in appCallTransactionDetailView: AppCallTransactionDetailView

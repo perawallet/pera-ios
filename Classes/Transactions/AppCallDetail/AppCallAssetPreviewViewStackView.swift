@@ -132,17 +132,18 @@ extension AppCallAssetPreviewViewStackView {
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
-        let view = interaction.view as? AppCallAssetPreviewView
-        let indexOfViewInStack =
-        contextView.arrangedSubviews.firstIndex { $0 == view }
+        let assetPreviewViews = contextView.arrangedSubviews
 
-        guard let indexOfViewInStack = indexOfViewInStack else {
+        guard
+            let view = interaction.view,
+            let index = assetPreviewViews.firstIndex(of: view)
+        else {
             return nil
         }
 
         return delegate?.appCallAssetPreviewViewStackViewDidLongPressToCopy(
             self,
-            idAtIndex: UInt(indexOfViewInStack)
+            forAssetIDAtIndex: index
         )
     }
 }
@@ -153,6 +154,6 @@ protocol AppCallAssetPreviewViewStackViewDelegate: AnyObject {
     )
     func appCallAssetPreviewViewStackViewDidLongPressToCopy(
         _ view: AppCallAssetPreviewViewStackView,
-        idAtIndex index: UInt
+        forAssetIDAtIndex index: Int
     ) -> UIContextMenuConfiguration?
 }

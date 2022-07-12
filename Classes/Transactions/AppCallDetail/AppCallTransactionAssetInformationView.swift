@@ -66,11 +66,11 @@ final class AppCallTransactionAssetInformationView:
 
     func appCallAssetPreviewViewStackViewDidLongPressToCopy(
         _ view: AppCallAssetPreviewViewStackView,
-        idAtIndex index: UInt
+        forAssetIDAtIndex index: Int
     ) -> UIContextMenuConfiguration? {
         return delegate?.appCallTransactionAssetInformationViewDidLongPressToCopy(
             self,
-            idAtIndex: index
+            forAssetIDAtIndex: index
         )
     }
 }
@@ -114,6 +114,6 @@ protocol AppCallTransactionAssetInformationViewDelegate: AnyObject {
     )
     func appCallTransactionAssetInformationViewDidLongPressToCopy(
         _ view: AppCallTransactionAssetInformationView,
-        idAtIndex index: UInt
+        forAssetIDAtIndex index: Int
     ) -> UIContextMenuConfiguration?
 }
