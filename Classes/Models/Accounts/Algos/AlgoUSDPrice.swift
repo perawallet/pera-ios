@@ -59,12 +59,11 @@ extension AlgoUSDPrice {
     // Convert current value of algo to preferred currency value
     private func getChartDisplayValue(with currency: Currency? = nil) -> Double? {
         guard let currency = currency,
-              let currencyPrice = currency.price,
-              let currencyPriceDoubleValue = Double(currencyPrice),
+              let algoValue = currency.algoValue,
               let highValue = high else {
             return high?.round(to: 2)
         }
 
-        return (currencyPriceDoubleValue * highValue).round(to: 2)
+        return (algoValue.doubleValue * highValue).round(to: 2)
     }
 }

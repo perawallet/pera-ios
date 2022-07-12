@@ -23,6 +23,8 @@ final class SelectAccountAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((SelectAccountDataControllerEvent) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
@@ -106,6 +108,9 @@ extension SelectAccountAPIDataController {
             var accounts: [AccountHandle] = []
             var accountItems: [SelectAccountListViewItem] = []
 
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
+
             self.sharedDataController.sortedAccounts().forEach { accountHandle in
                 let isWatchAccount = accountHandle.value.type == .watch
                 
@@ -120,9 +125,14 @@ extension SelectAccountAPIDataController {
                     
                     cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
                 } else {
-                    let accountPortfolio = AccountPortfolio(account: accountHandle)
-                    
-                    cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
+                    let accountPortfolioItem = AccountPortfolioItem(
+                        accountValue: accountHandle,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+
+                    cellItem = .account(accountPreviewViewModel, accountHandle)
                 }
                 
                 accounts.append(accountHandle)

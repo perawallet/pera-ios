@@ -12,13 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccounPortfolio.swift
+//   TotalPortfolioItem.swift
 
 import Foundation
 
-/// <todo>
-/// Rethink this approach later.
-struct AccountPortfolio {
-    let account: AccountHandle
+final class TotalPortfolioItem {
+    let portfolioValue: PortfolioValue
+    let currency: CurrencyProvider
+    let currencyFormatter: CurrencyFormatter
+
+    init(
+        accountValues: [AccountHandle],
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        self.portfolioValue = PortfolioValue(accountValues: accountValues)
+        self.currency = currency
+        self.currencyFormatter = currencyFormatter
+    }
 }

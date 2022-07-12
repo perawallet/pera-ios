@@ -76,7 +76,7 @@ class AppDelegate:
 
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
-    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
+    private lazy var sharedDataController = createSharedDataController()
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
@@ -474,6 +474,11 @@ extension AppDelegate {
             authChecker: ALGAppAuthChecker(session: session),
             uiHandler: self
         )
+    }
+
+    private func createSharedDataController() -> SharedDataController {
+        let currency = CurrencyAPIProvider(session: session, api: api)
+        return SharedAPIDataController(currency: currency, session: session, api: api)
     }
 }
 

@@ -36,7 +36,9 @@ final class InnerTransactionListViewController:
     }()
 
     private lazy var listLayout = InnerTransactionListLayout(
-        listDataSource: listDataSource
+        listDataSource: listDataSource,
+        currency: sharedDataController.currency,
+        currencyFormatter: dataController.currencyFormatter
     )
 
     private lazy var listDataSource = InnerTransactionListDataSource(listView)

@@ -102,7 +102,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: HomeEmptyItem,
+        sizeForEmptyItem item: HomeEmptyItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         let width = calculateContentWidth(
@@ -125,7 +125,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPortfolioItem item: HomePortfolioItem,
+        sizeForPortfolioItem item: HomePortfolioItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         switch item {
@@ -176,7 +176,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForQuickActions item: HomePortfolioItem,
+        sizeForQuickActions item: HomePortfolioItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = HomeQuickActionsCell.reuseIdentifier
@@ -202,7 +202,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountItem item: HomeAccountItem,
+        sizeForAccountItem item: HomeAccountItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         switch item {

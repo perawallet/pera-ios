@@ -58,17 +58,18 @@ class TransactionsViewController: BaseViewController {
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     private(set) var draft: TransactionListing
 
-    private let copyToClipboardController: CopyToClipboardController
+    private let copyToClipboardController: CopyToClipboardController?
 
     init(
         draft: TransactionListing,
-        copyToClipboardController: CopyToClipboardController,
+        copyToClipboardController: CopyToClipboardController?,
         configuration: ViewControllerConfiguration
     ) {
         self.draft = draft
         self.accountHandle = draft.accountHandle
         self.asset = draft.asset
         self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
     
@@ -334,16 +335,16 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
     func contextMenuInteractionForAssetID(
-        in assetDetailInfoViewCell: AssetDetailInfoViewCell
+        _ assetDetailInfoViewCell: AssetDetailInfoViewCell
     ) -> UIContextMenuConfiguration? {
         guard let asset = draft.asset else {
             return nil
         }
 
         return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyAddress) {
+            let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
-                self.copyToClipboardController.copyID(asset)
+                self.copyToClipboardController?.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
         }

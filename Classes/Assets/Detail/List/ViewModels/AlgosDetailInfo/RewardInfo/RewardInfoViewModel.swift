@@ -18,56 +18,80 @@
 import UIKit
 import MacaroonUIKit
 
-struct RewardInfoViewModel: ViewModel, Hashable {
+struct RewardInfoViewModel:
+    ViewModel,
+    Hashable {
     private let account: Account
-    private(set) var title: EditText?
-    private(set) var rewardAmount: EditText?
 
-    init(account: Account) {
+    private(set) var title: TextProvider?
+    private(set) var value: TextProvider?
+
+    init(
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         self.account = account
+
         bindTitle()
-        bindRewardAmount(from: account)
+        bindValue(
+            account: account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension RewardInfoViewModel {
-    private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
-        title = .attributedString(
-            "rewards-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-        )
+    mutating func bindTitle() {
+        title = "rewards-title"
+            .localized
+            .footnoteRegular(hasMultilines: false)
     }
-    private mutating func bindRewardAmount(
-        from account: Account
+
+    mutating func bindValue(
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let rewardAmount = account.pendingRewards.toAlgos.toAlgosStringForLabel else {
-            return
+        do {
+            guard let algoRawCurrency = try currency.algoRawCurrency else {
+                value = nil
+                return
+            }
+
+            let totalRewards = calculateTotalRewards(account: account)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = algoRawCurrency
+
+            let text = currencyFormatter.format(totalRewards)
+            value = text?.footnoteMonoRegular(hasMultilines: false)
+        } catch {
+            value = nil
         }
+    }
+}
 
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.13
+extension RewardInfoViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(value?.string)
+    }
 
-        self.rewardAmount = .attributedString(
-            rewardAmount
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-        )
+    static func == (
+        lhs: RewardInfoViewModel,
+        rhs: RewardInfoViewModel
+    ) -> Bool {
+        return lhs.value?.string == rhs.value?.string
+    }
+}
+
+extension RewardInfoViewModel {
+    private func calculateTotalRewards(
+        account: Account
+    ) -> Decimal {
+        return account.pendingRewards.toAlgos
     }
 }

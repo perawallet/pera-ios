@@ -163,14 +163,6 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     newCollectibles,
                     newCollectibleAssetsIndexer
                 )
-
-                let calculator = ALGPortfolioCalculator()
-                let calculationAccount = AccountHandle(account: account, status: .ready)
-
-                account.totalPortfolio = calculator.calculateTotalValue(
-                    [calculationAccount],
-                    as: self.input.cachedCurrency
-                )
                 
                 let output = Output(account: account, newAssetDetails: newAssetDetails)
                 self.result = .success(output)
@@ -235,7 +227,6 @@ extension AssetDetailGroupFetchOperation {
         var account: Account?
         var cachedAccounts: AccountCollection = []
         var cachedAssetDetails: AssetDetailCollection = []
-        var cachedCurrency: CurrencyHandle = .idle
         var error: AssetDetailGroupFetchOperation.Error?
     }
     

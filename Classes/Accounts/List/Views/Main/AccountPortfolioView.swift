@@ -46,9 +46,26 @@ final class AccountPortfolioView:
     func bindData(
         _ viewModel: AccountPortfolioViewModel?
     ) {
-        titleView.editText = viewModel?.title
-        valueView.editText = viewModel?.value
-        secondaryValueView.editText = viewModel?.secondaryValue
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: valueView)
+        } else {
+            valueView.text = nil
+            valueView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueView)
+        } else {
+            secondaryValueView.text = nil
+            secondaryValueView.attributedText = nil
+        }
     }
     
     class func calculatePreferredSize(
@@ -61,18 +78,18 @@ final class AccountPortfolioView:
         }
 
         let width = size.width
-        let titleSize = viewModel.title.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let valueSize = viewModel.value.boundingSize(
+        ) ?? .zero
+        let valueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
-        )
-        let secondaryValueSize = viewModel.secondaryValue.boundingSize(
+        ) ?? .zero
+        let secondaryValueSize = viewModel.secondaryValue?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
-        )
+        ) ?? .zero
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +

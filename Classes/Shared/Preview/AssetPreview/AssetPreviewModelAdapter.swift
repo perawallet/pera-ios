@@ -19,47 +19,59 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
-        let title = adaptee.asset.presentation.name.isNilOrEmpty ? "title-unknown".localized : adaptee.asset.presentation.name
+    static func adapt(
+        _ item: AssetItem
+    ) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(item)
+        let asset = item.asset
+        let title = asset.presentation.name.isNilOrEmpty
+            ? "title-unknown".localized
+            : asset.presentation.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
             title: title,
-            subtitle: adaptee.asset.presentation.unitName,
+            subtitle: asset.presentation.unitName,
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount,
-            currencyAmount: assetViewModel.currencyDecimal ?? 0,
-            asset: adaptee.asset
+            secondaryAccessory: assetViewModel.valueInCurrency,
+            currencyAmount: assetViewModel.valueInUSD,
+            asset: asset
         )
     }
 
-    static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
-        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
+    static func adapt(
+        _ item: AlgoAssetItem
+    ) -> AssetPreviewModel {
+        let algoAssetViewModel = AlgoAssetViewModel(item)
         return AssetPreviewModel(
             icon: .algo,
             verifiedIcon: img("icon-verified-shield"),
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
-            secondaryAccessory: algoAssetViewModel.currencyAmount,
-            currencyAmount: algoAssetViewModel.currencyDecimal ?? 0,
+            secondaryAccessory: algoAssetViewModel.valueInCurrency,
+            currencyAmount: algoAssetViewModel.valueInUSD,
             asset: nil
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
-        let title = adaptee.asset.presentation.name.isNilOrEmpty ? "title-unknown".localized : adaptee.asset.presentation.name
+    static func adaptAssetSelection(
+        _ item: AssetItem
+    ) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(item)
+        let asset = item.asset
+        let title = asset.presentation.name.isNilOrEmpty
+            ? "title-unknown".localized
+            : asset.presentation.name
         return AssetPreviewModel(
-            icon: .url(nil, title: adaptee.asset.presentation.name),
-            verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            icon: .url(nil, title: asset.presentation.name),
+            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
             title: title,
-            subtitle: "ID \(adaptee.asset.id)",
+            subtitle: "ID \(asset.id)",
             primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.currencyAmount,
-            currencyAmount: assetViewModel.currencyDecimal ?? 0,
-            asset: adaptee.asset
+            secondaryAccessory: assetViewModel.valueInCurrency,
+            currencyAmount: assetViewModel.valueInUSD,
+            asset: asset
         )
     }
 

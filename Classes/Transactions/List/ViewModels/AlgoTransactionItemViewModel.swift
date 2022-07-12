@@ -26,12 +26,18 @@ struct AlgoTransactionItemViewModel:
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
-        bindAmount(draft)
+        bindAmount(
+            draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private mutating func bindID(
@@ -93,7 +99,9 @@ struct AlgoTransactionItemViewModel:
     }
 
     private mutating func bindAmount(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transaction = draft.transaction as? Transaction,
               let payment = transaction.payment else {
@@ -103,6 +111,8 @@ struct AlgoTransactionItemViewModel:
         if payment.receiver == transaction.sender {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -111,6 +121,8 @@ struct AlgoTransactionItemViewModel:
         if payment.receiver == draft.account.address {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -118,6 +130,8 @@ struct AlgoTransactionItemViewModel:
 
         transactionAmountViewModel = TransactionAmountViewModel(
             .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }

@@ -23,6 +23,8 @@ final class TransactionDetailViewController: BaseScrollViewController {
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private var transaction: Transaction
     private let account: Account
@@ -144,7 +146,11 @@ extension TransactionDetailViewController {
 
 extension TransactionDetailViewController {
     private func configureTransactionDetail() {
-        transactionDetailView.bindData(transactionDetailViewModel)
+        transactionDetailView.bindData(
+            transactionDetailViewModel,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -157,7 +163,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForUser(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -190,7 +196,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForOpponent(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -203,7 +209,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForCloseTo(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
@@ -216,7 +222,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForTransactionID(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyTransactionID) {
@@ -228,7 +234,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 
     func contextMenuInteractionForTransactionNote(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyTransactionNote) {

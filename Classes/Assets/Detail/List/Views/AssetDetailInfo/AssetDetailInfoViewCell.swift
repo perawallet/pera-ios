@@ -38,14 +38,14 @@ final class AssetDetailInfoViewCell:
 
 extension AssetDetailInfoViewCell: AssetDetailInfoViewDelegate {
     func contextMenuInteractionForAssetID(
-        in assetDetailInfoView: AssetDetailInfoView
+        _ assetDetailInfoView: AssetDetailInfoView
     ) -> UIContextMenuConfiguration? {
-        delegate?.contextMenuInteractionForAssetID(in: self)
+        return delegate?.contextMenuInteractionForAssetID(self)
     }
 }
 
 protocol AssetDetailInfoViewCellDelegate: AnyObject {
     func contextMenuInteractionForAssetID(
-        in assetDetailInfoViewCell: AssetDetailInfoViewCell
+        _ assetDetailInfoViewCell: AssetDetailInfoViewCell
     ) -> UIContextMenuConfiguration?
 }

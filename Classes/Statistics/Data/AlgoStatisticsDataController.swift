@@ -31,7 +31,7 @@ final class AlgoStatisticsDataController: SharedDataControllerObserver {
     private(set) var selectedAlgoPriceTimeFrame: AlgoPriceTimeFrameSelection = .idle
 
     @Atomic(identifier: "algoStatisticsDataController.currency")
-    private var currency: CurrencyHandle = .idle
+    private var currencyValue: CurrencyValue? = nil
     @Atomic(identifier: "algoStatisticsDataController.algoPriceValues")
     private var algoPriceValues: [AlgoPriceTimeFrameSelection: Result<[AlgoUSDPrice], Error>]
         = [:]
@@ -117,7 +117,7 @@ extension AlgoStatisticsDataController {
         case .none:
             break
         case .success(let algoPriceValues):
-            let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currency: currency)
+            let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currencyValue: currencyValue)
             let selectedPriceValue = algoPriceValues[index]
             let calculationResult = calculator.calculatePrice(selectedPriceValue)
             
@@ -148,8 +148,8 @@ extension AlgoStatisticsDataController {
     ) {
         switch event {
         case .didFinishRunning:
-            let newCurrency = sharedDataController.currency
-            currencyDidLoad(newCurrency)
+            let newCurrencyValue = sharedDataController.currency.primaryValue
+            currencyDidLoad(newCurrencyValue)
         default:
             break
         }
@@ -162,18 +162,13 @@ extension AlgoStatisticsDataController {
     }
     
     private func currencyDidLoad(
-        _ newCurrency: CurrencyHandle
+        _ newCurrencyValue: CurrencyValue?
     ) {
-        if newCurrency == currency {
+        if newCurrencyValue == currencyValue {
             return
         }
         
-        if newCurrency.isFailure &&
-           currency.isAvailable {
-           return
-        }
-        
-        $currency.mutate { $0 = newCurrency }
+        $currencyValue.mutateValue(newCurrencyValue)
         
         /// <note>
         /// Currency updates aren't needed to be proceeded immediately.
@@ -453,7 +448,7 @@ extension AlgoStatisticsDataController {
     private func calculateAlgoPrice(
         _ algoPriceValues: [AlgoUSDPrice]
     ) -> Result<AlgoPriceViewModel, Error> {
-        let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currency: currency)
+        let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currencyValue: currencyValue)
         
         var viewModel = AlgoPriceViewModel()
         
@@ -469,7 +464,7 @@ extension AlgoStatisticsDataController {
             let chartDataSet = AlgoPriceChartDataSet(
                 values: algoPriceValues,
                 changeRate: priceChangeRate,
-                currency: currency
+                currency: currencyValue
             )
             viewModel.bind(chartDataSet)
         case .failure:

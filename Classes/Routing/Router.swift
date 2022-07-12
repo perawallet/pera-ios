@@ -537,22 +537,22 @@ class Router:
             viewController = AssetDetailViewController(
                 draft: draft,
                 copyToClipboardController: ALGCopyToClipboardController(
-                     toastPresentationController: appConfiguration.toastPresentationController
-                 ),
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .algosDetail(draft):
             viewController = AlgosDetailViewController(
                 draft: draft,
-                copyToClipboardController: ALGCopyToClipboardController(
-                     toastPresentationController: appConfiguration.toastPresentationController
-                 ),
+                copyToClipboardController: nil,
                 configuration: configuration
             )
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
-                copyToClipboardController: ALGCopyToClipboardController(toastPresentationController: appConfiguration.toastPresentationController),
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
             aViewController.eventHandler = eventHandler
@@ -636,7 +636,13 @@ class Router:
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case .currencySelection:
-            viewController = CurrencySelectionViewController(configuration: configuration)
+            viewController = CurrencySelectionViewController(
+                dataController: CurrencySelectionListAPIDataController(
+                    sharedDataController: appConfiguration.sharedDataController,
+                    api: appConfiguration.api
+                ),
+                configuration: configuration
+            )
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow, address):

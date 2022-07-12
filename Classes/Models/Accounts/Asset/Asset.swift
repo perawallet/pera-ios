@@ -26,6 +26,12 @@ protocol Asset {
     var creator: AssetCreator? { get }
     var decimals: Int { get }
 
+    /// <todo>
+    /// Switch decimalAmount -> amount
+    /// Switch totalUSDValue -> usdValue
+    var decimalAmount: Decimal { get }
+    var totalUSDValue: Decimal? { get }
+
     /// Asset management actions
     var state: AssetState { get set }
 

@@ -33,12 +33,12 @@ final class PortfolioCalculationInfoViewController:
     private lazy var closeActionView =
         ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
-    private let result: PortfolioHandle
+    private let result: PortfolioValue?
 
     private let theme: PortfolioCalculationInfoViewControllerTheme
     
     init(
-        result: PortfolioHandle,
+        result: PortfolioValue?,
         configuration: ViewControllerConfiguration,
         theme: PortfolioCalculationInfoViewControllerTheme = .init()
     ) {
@@ -70,9 +70,10 @@ final class PortfolioCalculationInfoViewController:
         addContext()
         
         switch result {
-        case .success:
+        case .available:
             addInfo(topPadding: 0)
-        case .failure:
+        case .none,
+             .failure:
             addError()
             addInfo(topPadding: theme.spacingBetweenErrorAndInfo)
         }

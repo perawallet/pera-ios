@@ -254,8 +254,12 @@ extension AppCallTransactionDetailView {
     }
 }
 
-extension AppCallTransactionDetailView: ViewModelBindable {
-    func bindData(_ viewModel: AppCallTransactionDetailViewModel?) {
+extension AppCallTransactionDetailView {
+    func bindData(
+        _ viewModel: AppCallTransactionDetailViewModel?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         senderView.bindData(
             TransactionTextInformationViewModel(
                 TitledInformation(
@@ -291,7 +295,11 @@ extension AppCallTransactionDetailView: ViewModelBindable {
         if let feeViewMode = viewModel?.fee {
             feeView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        feeViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }

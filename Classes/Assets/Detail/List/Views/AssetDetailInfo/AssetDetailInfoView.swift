@@ -31,14 +31,14 @@ final class AssetDetailInfoView:
     private lazy var topSeparator = UIView()
     private lazy var assetNameView = UIView()
     private lazy var assetNameLabel = UILabel()
-    private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
+    private lazy var assetIDView = Label()
     private lazy var verifiedImage = UIImageView()
     private lazy var bottomSeparator = UIView()
 
-    private lazy var assetIDMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var assetIDContextMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     func setListeners() {
-        assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetID), for: .touchUpInside)
+        assetIDView.addInteraction(assetIDContextMenuInteraction)
     }
 
     func customize(
@@ -51,7 +51,7 @@ final class AssetDetailInfoView:
         addSecondaryValueLabel(theme)
         addTopSeparator(theme)
         addAssetNameLabel(theme)
-        addAssetIDButton(theme)
+        addAssetID(theme)
         addBottomSeparator(theme)
     }
 
@@ -66,12 +66,43 @@ final class AssetDetailInfoView:
     func bindData(
         _ viewModel: AssetDetailInfoViewModel?
     ) {
-        yourBalanceTitleLabel.editText = viewModel?.yourBalanceTitle
-        verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
-        balanceLabel.editText = viewModel?.amount
-        secondaryValueLabel.editText = viewModel?.secondaryValue
-        assetNameLabel.editText = viewModel?.name
-        assetIDButton.setEditTitle(viewModel?.ID, for: .normal)
+        if let title = viewModel?.title {
+            title.load(in: yourBalanceTitleLabel)
+        } else {
+            yourBalanceTitleLabel.text = nil
+            yourBalanceTitleLabel.attributedText = nil
+        }
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: balanceLabel)
+        } else {
+            balanceLabel.text = nil
+            balanceLabel.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueLabel)
+        } else {
+            secondaryValueLabel.text = nil
+            secondaryValueLabel.attributedText = nil
+        }
+
+        if let name = viewModel?.name {
+            name.load(in: assetNameLabel)
+        } else {
+            assetNameLabel.text = nil
+            assetNameLabel.attributedText = nil
+        }
+
+        let isVerified = viewModel?.isVerified ?? false
+        verifiedImage.isHidden = !isVerified
+
+        if let id = viewModel?.id {
+            id.load(in: assetIDView)
+        } else {
+            assetIDView.text = nil
+            assetIDView.attributedText = nil
+        }
     }
 
     class func calculatePreferredSize(
@@ -86,57 +117,65 @@ final class AssetDetailInfoView:
         let width =
             size.width -
             2 * theme.horizontalPadding
-        let yourBalanceTitleSize = viewModel.yourBalanceTitle.boundingSize(
+        let yourBalanceTitleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let amountSize = viewModel.amount.boundingSize(
+        ) ?? .zero
+        let amountSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let nameSize = viewModel.name.boundingSize(
+        ) ?? .zero
+        let secondaryValueLabelSize = viewModel.secondaryValue?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let assetIDButtonSize = viewModel.ID.boundingSize(
+        ) ?? .zero
+        let nameSize = viewModel.name?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+        ) ?? .zero
+        let assetIDSize = viewModel.id?.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        ) ?? .zero
         var preferredHeight =
-        theme.topPadding +
-        yourBalanceTitleSize.height +
-        theme.balanceLabelTopPadding +
-        amountSize.height +
-        theme.separatorPadding +
-        theme.separator.size +
-        theme.assetNameLabelTopPadding +
-        nameSize.height +
-        theme.assetIDLabelTopPadding +
-        assetIDButtonSize.height +
-        theme.separatorPadding +
-        theme.separator.size +
-        theme.bottomPadding
+            theme.topPadding +
+            yourBalanceTitleSize.height +
+            theme.balanceLabelTopPadding +
+            amountSize.height +
+            theme.separatorPadding +
+            theme.separator.size +
+            theme.spacingBetweenSeparatorAndAssetName +
+            nameSize.height +
+            theme.spacingBetweenAssetNameAndAssetID +
+            theme.assetIDPadding.top +
+            assetIDSize.height +
+            theme.assetIDPadding.bottom +
+            theme.spacingBetweenAssetIDAndSeparator +
+            theme.separator.size +
+            theme.bottomPadding
 
-        if !viewModel.secondaryValue.isNilOrEmpty {
-            let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
-                multiline: false,
-                fittingSize: CGSize((width, .greatestFiniteMagnitude))
-            )
-
-            preferredHeight =
-            preferredHeight +
-            theme.secondaryValueLabelTopPadding +
-            secondaryValueLabelSize.height
+        if !secondaryValueLabelSize.isEmpty {
+            preferredHeight += theme.secondaryValueLabelTopPadding
+            preferredHeight += secondaryValueLabelSize.height
         }
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
+/// <mark>
+/// UIContextMenuInteractionDelegate
 extension AssetDetailInfoView {
-    @objc
-    private func notifyDelegateToCopyAssetID() {
-        assetIDButton.addInteraction(assetIDMenuInteraction)
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        switch interaction {
+        case assetIDContextMenuInteraction:
+            return self.delegate?.contextMenuInteractionForAssetID(self)
+        default:
+            return nil
+        }
     }
 }
 
@@ -147,6 +186,7 @@ extension AssetDetailInfoView {
         yourBalanceTitleLabel.customizeAppearance(theme.yourBalanceTitleLabel)
 
         addSubview(yourBalanceTitleLabel)
+        yourBalanceTitleLabel.fitToVerticalIntrinsicSize()
         yourBalanceTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
@@ -159,6 +199,7 @@ extension AssetDetailInfoView {
         balanceLabel.customizeAppearance(theme.balanceLabel)
 
         addSubview(balanceLabel)
+        balanceLabel.fitToVerticalIntrinsicSize()
         balanceLabel.snp.makeConstraints {
             $0.top.equalTo(yourBalanceTitleLabel.snp.bottom).offset(theme.balanceLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
@@ -172,6 +213,7 @@ extension AssetDetailInfoView {
         secondaryValueLabel.customizeAppearance(theme.secondaryValueLabel)
 
         addSubview(secondaryValueLabel)
+        secondaryValueLabel.fitToVerticalIntrinsicSize()
         secondaryValueLabel.snp.makeConstraints {
             $0.top.equalTo(balanceLabel.snp.bottom)
             $0.leading.equalTo(yourBalanceTitleLabel)
@@ -199,13 +241,15 @@ extension AssetDetailInfoView {
     {
         addSubview(assetNameView)
         assetNameView.snp.makeConstraints {
-            $0.top.equalTo(topSeparator.snp.bottom).offset(theme.assetNameLabelTopPadding)
+            $0.top.equalTo(topSeparator.snp.bottom).offset(theme.spacingBetweenSeparatorAndAssetName)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
         assetNameLabel.customizeAppearance(theme.assetNameLabel)
+
         assetNameView.addSubview(assetNameLabel)
+        assetNameLabel.fitToVerticalIntrinsicSize()
         assetNameLabel.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
         }
@@ -217,16 +261,18 @@ extension AssetDetailInfoView {
        }
     }
 
-    private func addAssetIDButton(
+    private func addAssetID(
         _ theme: AssetDetailInfoViewTheme
     ) {
-        assetIDButton.customizeAppearance(theme.assetIDButton)
+        assetIDView.customizeAppearance(theme.assetID)
 
-        addSubview(assetIDButton)
-        assetIDButton.snp.makeConstraints {
-            $0.top.equalTo(assetNameView.snp.bottom).offset(theme.assetIDLabelTopPadding)
-            $0.leading.equalTo(yourBalanceTitleLabel)
-            $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
+        addSubview(assetIDView)
+        assetIDView.fitToVerticalIntrinsicSize()
+        assetIDView.contentEdgeInsets = theme.assetIDPadding
+        assetIDView.snp.makeConstraints {
+            $0.top.equalTo(assetNameView.snp.bottom).offset(theme.spacingBetweenAssetNameAndAssetID)
+            $0.leading.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
         }
     }
 
@@ -237,7 +283,7 @@ extension AssetDetailInfoView {
 
         addSubview(bottomSeparator)
         bottomSeparator.snp.makeConstraints {
-            $0.top.equalTo(assetIDButton.snp.bottom).offset(theme.separatorPadding)
+            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.spacingBetweenAssetIDAndSeparator)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
             $0.fitToHeight(theme.separator.size)
@@ -245,17 +291,8 @@ extension AssetDetailInfoView {
     }
 }
 
-extension AssetDetailInfoView {
-     func contextMenuInteraction(
-         _ interaction: UIContextMenuInteraction,
-         configurationForMenuAtLocation location: CGPoint
-     ) -> UIContextMenuConfiguration? {
-         delegate?.contextMenuInteractionForAssetID(in: self)
-     }
- }
-
 protocol AssetDetailInfoViewDelegate: AnyObject {
     func contextMenuInteractionForAssetID(
-        in assetDetailInfoView: AssetDetailInfoView
+        _ assetDetailInfoView: AssetDetailInfoView
     ) -> UIContextMenuConfiguration?
 }

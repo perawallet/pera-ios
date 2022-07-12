@@ -21,6 +21,8 @@ protocol InnerTransactionListDataController: AnyObject {
 
     var eventHandler: ((InnerTransactionListDataControllerEvent) -> Void)? { get set }
 
+    var currencyFormatter: CurrencyFormatter { get }
+
     func load()
 
     var draft: InnerTransactionListDraft { get }

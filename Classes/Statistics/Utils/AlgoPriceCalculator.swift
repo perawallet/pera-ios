@@ -19,17 +19,17 @@ import MacaroonUtils
 
 struct AlgoPriceCalculator {
     let algoPriceValues: [AlgoUSDPrice]
-    let currency: CurrencyHandle
+    let currencyValue: CurrencyValue?
 }
 
 extension AlgoPriceCalculator {
     typealias Price = (amount: Double, currency: Currency)
     
     func calculateRecentPrice() -> Result<Price, AlgoPriceCalculationError> {
-        switch currency {
-        case .idle:
+        switch currencyValue {
+        case .none:
             return .failure(.currencyUnavailable)
-        case .ready(let currencyValue, _):
+        case .available(let currency):
             /// <todo>
             /// Why does the price pass itself as parameter to its function?
             guard let priceValue = algoPriceValues.last else {
@@ -38,9 +38,9 @@ extension AlgoPriceCalculator {
             
             return calculatePrice(
                 priceValue,
-                currencyValue
+                currency
             )
-        case .failed:
+        case .failure:
             return .failure(.currencyFailed)
         }
     }
@@ -48,32 +48,32 @@ extension AlgoPriceCalculator {
     func calculatePrice(
         _ priceValue: AlgoUSDPrice
     ) -> Result<Price, AlgoPriceCalculationError> {
-        switch currency {
-        case .idle:
+        switch currencyValue {
+        case .none:
             return .failure(.currencyUnavailable)
-        case .ready(let currencyValue, _):
+        case .available(let currency):
             return calculatePrice(
                 priceValue,
-                currencyValue
+                currency
             )
-        case .failed:
+        case .failure:
             return .failure(.currencyFailed)
         }
     }
     
     func calculatePriceChangeRate() -> Result<AlgoPriceChangeRate, AlgoPriceCalculationError> {
-        switch currency {
-        case .idle:
+        switch currencyValue {
+        case .none:
             return .failure(.currencyUnavailable)
-        case .ready(let currencyValue, _):
+        case .available(let currency):
             guard
                 let basePriceValue = algoPriceValues.last,
                 let firstPriceValue = algoPriceValues.first.unwrap({
-                    $0.getCurrencyScaledChartOpenValue(with: basePriceValue, for: currencyValue)
+                    $0.getCurrencyScaledChartOpenValue(with: basePriceValue, for: currency)
                 }),
                 firstPriceValue > 0,
                 let lastPriceValue = algoPriceValues.last.unwrap({
-                    $0.getCurrencyScaledChartHighValue(with: basePriceValue, for: currencyValue)
+                    $0.getCurrencyScaledChartHighValue(with: basePriceValue, for: currency)
                 })
             else {
                 return .success(.same)
@@ -91,7 +91,7 @@ extension AlgoPriceCalculator {
             }
             
             return .success(priceChangeRate)
-        case .failed:
+        case .failure:
             return .failure(.currencyFailed)
         }
     }
@@ -100,7 +100,7 @@ extension AlgoPriceCalculator {
 extension AlgoPriceCalculator {
     private func calculatePrice(
         _ priceValue: AlgoUSDPrice,
-        _ currencyValue: Currency
+        _ currency: Currency
     ) -> Result<Price, AlgoPriceCalculationError> {
         guard let basePriceValue = algoPriceValues.last else {
             return .failure(.priceFailed)
@@ -109,9 +109,9 @@ extension AlgoPriceCalculator {
         return priceValue
             .getCurrencyScaledChartHighValue(
                 with: basePriceValue,
-                for: currencyValue
+                for: currency
             )
-            .unwrap { .success(($0, currencyValue)) } ?? .failure(.priceFailed)
+            .unwrap { .success(($0, currency)) } ?? .failure(.priceFailed)
     }
 }
 

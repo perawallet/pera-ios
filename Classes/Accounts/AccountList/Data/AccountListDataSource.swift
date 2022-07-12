@@ -42,7 +42,7 @@ final class AccountListDataSource: NSObject {
             }
 
             let filteredAccounts = availableAccounts.filter { account in
-                account.value.allAssets.contains { detail in
+                account.value.allAssets.someArray.contains { detail in
                     assetDetail.id == detail.id
                 }
             }
@@ -56,7 +56,7 @@ final class AccountListDataSource: NSObject {
             }
             
             let filteredAccounts = userAccounts.filter { account in
-                account.value.allAssets.contains { detail in
+                account.value.allAssets.someArray.contains { detail in
                     assetDetail.id == detail.id
                 }
             }

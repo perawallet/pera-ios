@@ -25,10 +25,18 @@ final class InnerTransactionListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
+    private let currency: CurrencyProvider
+    private let currencyFormatter: CurrencyFormatter
+
     init(
-        listDataSource: InnerTransactionListDataSource
+        listDataSource: InnerTransactionListDataSource,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.listDataSource = listDataSource
+        self.currency = currency
+        self.currencyFormatter = currencyFormatter
+
         super.init()
     }
 
@@ -85,7 +93,10 @@ extension InnerTransactionListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForInnerTransactionItem: CustomInnerTransactionPreviewViewModel()
+                sizeForInnerTransactionItem: CustomInnerTransactionPreviewViewModel(
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
             )
         }
     }
@@ -152,16 +163,26 @@ extension InnerTransactionListLayout {
 
 extension InnerTransactionListLayout {
     private struct CustomInnerTransactionPreviewViewModel: InnerTransactionPreviewViewModel {
-        var title: EditText? = Self.getTitle("Title")
-        var amountViewModel: TransactionAmountViewModel? = TransactionAmountViewModel(
-            .positive(
-                amount: 100,
-                isAlgos: false,
-                fraction: 2,
-                assetSymbol: nil,
-                currencyValue: nil
-            ),
-            showAbbreviation: false
-        )
+        var title: EditText?
+        var amountViewModel: TransactionAmountViewModel?
+
+        init(
+            currency: CurrencyProvider,
+            currencyFormatter: CurrencyFormatter
+        ) {
+            self.title = Self.getTitle("Title")
+            self.amountViewModel = TransactionAmountViewModel(
+                .positive(
+                    amount: 100,
+                    isAlgos: false,
+                    fraction: 2,
+                    assetSymbol: nil,
+                    currencyValue: nil
+                ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                showAbbreviation: false
+            )
+        }
     }
 }

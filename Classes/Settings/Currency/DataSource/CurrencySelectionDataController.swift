@@ -19,12 +19,22 @@ import UIKit
 
 protocol CurrencySelectionDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<CurrencySelectionSection, CurrencySelectionItem>
-    
+
+    var selectedCurrencyID: CurrencyID? { get }
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)? { get set }
+
+    subscript (indexPath: IndexPath) -> Currency? { get }
     
-    func load()
-    func search(for query: String)
+    func loadData()
+
+    func search(
+        for query: String
+    )
     func resetSearch()
+
+    func selectCurrency(
+        at indexPath: IndexPath
+    ) -> Currency?
 }
 
 enum CurrencySelectionDataControllerEvent {

@@ -20,42 +20,72 @@ import MacaroonUIKit
 
 struct AlgoAssetViewModel: ViewModel {
     private(set) var amount: String?
-    private(set) var currencyAmount: String?
-    private(set) var currencyDecimal: Decimal?
+    private(set) var valueInCurrency: String?
+    private(set) var valueInUSD: Decimal = 0
 
-    init(account: Account, currency: Currency?) {
-        bindAmount(from: account)
-
-        if let algoCurrency = currency as? AlgoCurrency {
-            bindCurrencyAmount(from: account, with: algoCurrency.currency, isAlgoCurrency: true)
-        } else {
-            bindCurrencyAmount(from: account, with: currency, isAlgoCurrency: false)
-        }
+    init(
+        _ model: AlgoAssetItem
+    ) {
+        bind(model)
     }
 }
 
 extension AlgoAssetViewModel {
-    private mutating func bindAmount(from account: Account) {
-        amount = account.amount.toAlgos.toFullAlgosStringForLabel
+    mutating func bind(
+        _ item: AlgoAssetItem
+    ) {
+        bindAmount(item)
+        bindValue(item)
     }
 
-    private mutating func bindCurrencyAmount(
-        from account: Account,
-        with currency: Currency?,
-        isAlgoCurrency: Bool = false
+    mutating func bindAmount(
+        _ item: AlgoAssetItem
     ) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
-            return
+        do {
+            guard
+                let algoAmount = item.amount,
+                let algoRawCurrency = try item.currency.algoRawCurrency
+            else {
+                amount = nil
+                return
+            }
+
+            let formatter = item.currencyFormatter
+            formatter.formattingContext = .listItem
+            formatter.currency = algoRawCurrency
+
+            amount = formatter.format(algoAmount)
+        } catch {
+            amount = nil
         }
+    }
 
-        let totalAmount = account.amount.toAlgos * currencyPriceValue
-        currencyAmount = totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
+    private mutating func bindValue(
+        _ item: AlgoAssetItem
+    ) {
+        do {
+            guard
+                let algoAmount = item.amount,
+                let fiatRawCurrency = try item.currency.fiatRawCurrency
+            else {
+                valueInCurrency = nil
+                valueInUSD = 0
+                return
+            }
 
-        if isAlgoCurrency {
-            currencyDecimal = account.amount.toAlgos
-        } else {
-            currencyDecimal = totalAmount
+            valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchange(algo: algoAmount)
+
+            let formatter = item.currencyFormatter
+            formatter.formattingContext = .listItem
+            formatter.currency = fiatRawCurrency
+
+            valueInCurrency = formatter.format(amount)
+        } catch {
+            valueInCurrency = nil
+            valueInUSD = 0
         }
     }
 }

@@ -397,9 +397,11 @@ extension AssetPreviewViewModel {
     ) {
         let asset = draft.asset
 
-        let amount = asset.amount
-            .assetAmount(fromFraction: asset.decimals)
-            .abbreviatedFractionStringForLabel(fraction: asset.decimals)
+        let formatter = draft.currencyFormatter
+        formatter.formattingContext = .listItem
+        formatter.currency = nil
+
+        let amount = formatter.format(asset.amountWithFraction)
 
         bindPrimaryAccessory(amount)
     }
@@ -407,23 +409,31 @@ extension AssetPreviewViewModel {
     private mutating func bindSecondaryAccessory(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        let asset = draft.asset
-
-        guard let currency = draft.currency,
-              let assetUSDValue = asset.usdValue,
-              let currencyUSDValue = currency.usdValue else {
+        guard let currencyValue = draft.currency.primaryValue else {
+            bindSecondaryAccessory(nil)
             return
         }
 
-        let currencyValue =
-        assetUSDValue *
-        asset.amount.assetAmount(fromFraction: asset.decimals) *
-        currencyUSDValue
+        let asset = draft.asset
 
-        if currencyValue > 0 {
-            bindSecondaryAccessory(
-                currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
-            )
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(asset)
+
+            let formatter = draft.currencyFormatter
+            formatter.formattingContext = .listItem
+            formatter.currency = rawCurrency
+
+            if amount > 0 {
+                let value = formatter.format(amount)
+                bindSecondaryAccessory(value)
+            } else {
+                bindSecondaryAccessory(nil)
+            }
+        } catch {
+            bindSecondaryAccessory(nil)
         }
     }
 }
@@ -456,8 +466,9 @@ extension AssetPreviewViewModel {
 }
 
 struct CollectibleAssetPreviewSelectionDraft {
-    let currency: Currency?
     let asset: CollectibleAsset
+    let currency: CurrencyProvider
+    let currencyFormatter: CurrencyFormatter
 }
 
 struct StandardAssetPreviewAdditionDraft {

@@ -62,10 +62,12 @@ final class WCSingleTransactionRequestScreen:
             asset = nil
         }
 
+        let currency = try? sharedDataController.currency.primaryValue?.unwrap()
+
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
-            currency: sharedDataController.currency.value,
+            currency: currency,
             asset: asset
         )
     }()

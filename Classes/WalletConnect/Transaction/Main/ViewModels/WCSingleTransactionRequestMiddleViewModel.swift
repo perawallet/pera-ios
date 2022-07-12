@@ -135,7 +135,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
         currency: Currency?
     ) {
         guard let currency = currency,
-              let currencyPriceValue = currency.priceValue,
+              let currencyPriceValue = currency.algoValue,
               let currencyUsdValue = currency.usdValue,
               let amount = transaction.transactionDetail?.amount else {
                   return
