@@ -17,6 +17,14 @@
 import Foundation
 
 struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHandling {
+    private let constraints: CurrencyFormattingContextRules?
+
+    init(
+        constraints: CurrencyFormattingContextRules?
+    ) {
+        self.constraints = constraints
+    }
+
     func makeRules(
         _ rawNumber: NSDecimalNumber,
         for currency: Currency?
@@ -37,6 +45,8 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
             rules.maximumFractionDigits = Int(Int8.max)
         }
 
+        applyConstraintsIfNeeded(&rules)
+
         return rules
     }
 
@@ -45,5 +55,27 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
         for currency: Currency?
     ) -> CurrencyFormattingContextInput {
         return rawNumber
+    }
+}
+
+extension CurrencyFormattingStandaloneContextHandler {
+    private func applyConstraintsIfNeeded(
+        _ rules: inout CurrencyFormattingContextRules
+    ) {
+        guard let constraints = constraints else {
+            return
+        }
+
+        if let roundingMode = constraints.roundingMode {
+            rules.roundingMode = roundingMode
+        }
+
+        if let minimumFractionDigits = constraints.minimumFractionDigits {
+            rules.minimumFractionDigits = minimumFractionDigits
+        }
+
+        if let maximumFractionDigits = constraints.maximumFractionDigits {
+            rules.maximumFractionDigits = maximumFractionDigits
+        }
     }
 }

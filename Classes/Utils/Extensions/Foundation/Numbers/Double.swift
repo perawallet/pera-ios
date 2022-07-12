@@ -18,8 +18,6 @@
 import Foundation
 
 extension Decimal {
-    typealias Abbreviation = (threshold:Double, divisor:Double, suffix:String)
-    
     var uint64Value: UInt64 {
         return NSDecimalNumber(decimal: self).uint64Value
     }
@@ -38,15 +36,6 @@ extension Decimal {
 
     var toAlgosStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
-    }
-    
-    var toFullAlgosStringForLabel: String? {
-        let number = NSDecimalNumber(decimal: self)
-        let abbreviation = getAbbreviation(for: number)
-        
-        let finalNumber = NSDecimalNumber(value: number.doubleValue / abbreviation.divisor)
-        
-        return Formatter.fullAlgosLabel(with: abbreviation.suffix).string(from: finalNumber)
     }
 
     var toNumberStringWithSeparatorForLabel: String? {
@@ -67,15 +56,6 @@ extension Decimal {
 
     func toCurrencyStringForLabel(with symbol: String?) -> String? {
         return Formatter.currencyFormatter(with: symbol).string(from: NSDecimalNumber(decimal: self))
-    }
-    
-    func abbreviatedFractionStringForLabel(fraction: Int) -> String? {
-        let number = NSDecimalNumber(decimal: self)
-        let abbreviation = getAbbreviation(for: number)
-        
-        let finalNumber = NSDecimalNumber(value: number.doubleValue / abbreviation.divisor)
-        
-        return Formatter.separatorWith(fraction: fraction, suffix: abbreviation.suffix).string(from: finalNumber)
     }
 }
 

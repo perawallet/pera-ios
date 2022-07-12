@@ -26,12 +26,18 @@ struct PendingTransactionItemViewModel:
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
-        bindAmount(draft)
+        bindAmount(
+            draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private mutating func bindID(
@@ -86,7 +92,9 @@ struct PendingTransactionItemViewModel:
     }
 
     private mutating func bindAmount(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transaction = draft.transaction as? PendingTransaction else {
             return
@@ -96,21 +104,27 @@ struct PendingTransactionItemViewModel:
             bindAssetAmount(
                 of: transaction,
                 for: draft.account,
-                asset: asset
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
             return
         }
 
         bindAlgoAmount(
             of: transaction,
-            for: draft.account
+            for: draft.account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
     }
 
     private mutating func bindAssetAmount(
         of transaction: PendingTransaction,
         for account: Account,
-        asset: AssetDecoration
+        asset: AssetDecoration,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         if transaction.receiver == transaction.sender {
             transactionAmountViewModel = TransactionAmountViewModel(
@@ -120,6 +134,8 @@ struct PendingTransactionItemViewModel:
                     fraction: asset.decimals,
                     assetSymbol: getAssetSymbol(from: asset)
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -133,6 +149,8 @@ struct PendingTransactionItemViewModel:
                     fraction: asset.decimals,
                     assetSymbol: getAssetSymbol(from: asset)
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -145,17 +163,23 @@ struct PendingTransactionItemViewModel:
                 fraction: asset.decimals,
                 assetSymbol: getAssetSymbol(from: asset)
             ),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }
 
     private mutating func bindAlgoAmount(
         of transaction: PendingTransaction,
-        for account: Account
+        for account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         if transaction.receiver == transaction.sender {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(amount: transaction.amount.toAlgos),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -164,6 +188,8 @@ struct PendingTransactionItemViewModel:
         if transaction.receiver == account.address {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(amount: transaction.amount.toAlgos),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -171,6 +197,8 @@ struct PendingTransactionItemViewModel:
 
         transactionAmountViewModel = TransactionAmountViewModel(
             .normal(amount: transaction.amount.toAlgos),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }

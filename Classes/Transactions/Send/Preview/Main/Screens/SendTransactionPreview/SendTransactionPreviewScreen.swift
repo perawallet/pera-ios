@@ -29,6 +29,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
+   private lazy var currencyFormatter = CurrencyFormatter()
+
    private let draft: TransactionSendDraft
    private let transactionController: TransactionController
 
@@ -69,10 +71,13 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    override func bindData() {
       super.bindData()
 
-      let currency = try? sharedDataController.currency.primaryValue?.unwrap()
+      let currency = sharedDataController.currency
+      let rawCurrency = try? sharedDataController.currency.primaryValue?.unwrap()
 
       transactionDetailView.bindData(
-         SendTransactionPreviewViewModel(draft, currency: currency)
+         SendTransactionPreviewViewModel(draft, currency: rawCurrency),
+         currency: currency,
+         currencyFormatter: currencyFormatter
       )
    }
 

@@ -46,7 +46,7 @@ extension HomePortfolioNavigationViewModel {
         let text = format(
             portfolioValue: portfolioItem?.portfolioValue,
             currencyValue: portfolioItem?.currency.primaryValue,
-            in: .standalone
+            in: .standalone()
         )
         primaryValue = text?.bodyMedium(
             alignment: .center,
@@ -61,7 +61,7 @@ extension HomePortfolioNavigationViewModel {
         let text = format(
             portfolioValue: portfolioItem?.portfolioValue,
             currencyValue: portfolioItem?.currency.secondaryValue,
-            in: .standalone
+            in: .standalone()
         )
         secondaryValue = text?.captionMedium(
             alignment: .center,

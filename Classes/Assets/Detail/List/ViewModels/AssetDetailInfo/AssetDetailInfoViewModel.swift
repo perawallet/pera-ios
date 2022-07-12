@@ -67,7 +67,7 @@ extension AssetDetailInfoViewModel {
             return
         }
 
-        currencyFormatter.formattingContext = .standalone
+        currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = nil
 
         let text = currencyFormatter.format(asset.decimalAmount)
@@ -93,7 +93,7 @@ extension AssetDetailInfoViewModel {
             let exchanger = CurrencyExchanger(currency: rawCurrency)
             let amount = try exchanger.exchange(asset)
 
-            currencyFormatter.formattingContext = .standalone
+            currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = rawCurrency
 
             let text = currencyFormatter.format(amount)

@@ -461,7 +461,11 @@ extension TransactionsAPIDataController {
                     return nil
                 }
 
-                let viewModel = PendingTransactionItemViewModel(draft)
+                let viewModel = PendingTransactionItemViewModel(
+                    draft,
+                    currency: sharedDataController.currency,
+                    currencyFormatter: currencyFormatter
+                )
                 return .pendingTransaction(viewModel)
             }
 
@@ -533,7 +537,11 @@ extension TransactionsAPIDataController {
                             continue
                         }
 
-                        let viewModel = AlgoTransactionItemViewModel(viewModelDraft)
+                        let viewModel = AlgoTransactionItemViewModel(
+                            viewModelDraft,
+                            currency: sharedDataController.currency,
+                            currencyFormatter: currencyFormatter
+                        )
 
                         if addedItemIDs[transactionID] == nil {
                             transactionItems.append(.algoTransaction(viewModel))
@@ -550,7 +558,11 @@ extension TransactionsAPIDataController {
                             continue
                         }
 
-                        let viewModel = AssetTransactionItemViewModel(viewModelDraft)
+                        let viewModel = AssetTransactionItemViewModel(
+                            viewModelDraft,
+                            currency: sharedDataController.currency,
+                            currencyFormatter: currencyFormatter
+                        )
 
                         if addedItemIDs[transactionID] == nil {
                             transactionItems.append(.assetTransaction(viewModel))

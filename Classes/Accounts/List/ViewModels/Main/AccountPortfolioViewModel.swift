@@ -64,7 +64,7 @@ extension AccountPortfolioViewModel {
         let text = format(
             portfolioValue: portfolioItem.portfolioValue,
             currencyValue: portfolioItem.currency.primaryValue,
-            in: .standalone
+            in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         primaryValue = text.largeTitleMedium(
             alignment: .center,
@@ -79,7 +79,7 @@ extension AccountPortfolioViewModel {
         let text = format(
             portfolioValue: portfolioItem.portfolioValue,
             currencyValue: portfolioItem.currency.secondaryValue,
-            in: .standalone
+            in: .standalone()
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = "≈ \(text)".bodyMedium(
             alignment: .center,

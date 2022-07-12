@@ -80,7 +80,7 @@ extension AlgosDetailInfoViewModel {
                 rewards: rewards
             )
 
-            currencyFormatter.formattingContext = .standalone
+            currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = algoRawCurrency
 
             let text = currencyFormatter.format(amount)
@@ -109,7 +109,7 @@ extension AlgosDetailInfoViewModel {
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
             let amount = try exchanger.exchange(algo: algoAmount)
 
-            currencyFormatter.formattingContext = .standalone
+            currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = fiatRawCurrency
 
             let text = currencyFormatter.format(amount)

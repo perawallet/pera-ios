@@ -23,6 +23,8 @@ final class TransactionDetailViewController: BaseScrollViewController {
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private var transaction: Transaction
     private let account: Account
@@ -123,7 +125,11 @@ extension TransactionDetailViewController {
 
 extension TransactionDetailViewController {
     private func configureTransactionDetail() {
-        transactionDetailView.bindData(transactionDetailViewModel)
+        transactionDetailView.bindData(
+            transactionDetailViewModel,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 

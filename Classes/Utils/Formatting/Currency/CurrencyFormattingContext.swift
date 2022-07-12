@@ -18,14 +18,16 @@ import Foundation
 
 enum CurrencyFormattingContext {
     case listItem
-    case standalone
+    case standalone(constraints: CurrencyFormattingContextRules? = nil)
 }
 
 extension CurrencyFormattingContext {
     func makeHandler() -> CurrencyFormattingContextHandling {
         switch self {
-        case .listItem: return CurrencyFormattingListItemContextHandler()
-        case .standalone: return CurrencyFormattingStandaloneContextHandler()
+        case .listItem:
+            return CurrencyFormattingListItemContextHandler()
+        case .standalone(let constraints):
+            return CurrencyFormattingStandaloneContextHandler(constraints: constraints)
         }
     }
 }

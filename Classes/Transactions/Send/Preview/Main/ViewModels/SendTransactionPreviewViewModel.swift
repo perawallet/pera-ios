@@ -28,7 +28,9 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var balanceViewMode: TransactionAmountView.Mode?
     private(set) var noteViewDetail: String?
 
-    init(_ model: TransactionSendDraft, currency: Currency?) {
+    init(
+        _ model: TransactionSendDraft,
+        currency: Currency?) {
         if let algoTransactionSendDraft = model as? AlgosTransactionSendDraft {
             bindAlgoTransactionPreview(algoTransactionSendDraft, with: currency)
         } else if let assetTransactionSendDraft = model as? AssetTransactionSendDraft {

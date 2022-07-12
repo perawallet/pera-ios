@@ -68,7 +68,7 @@ extension RewardInfoViewModel {
                 rewards: rewards
             )
 
-            currencyFormatter.formattingContext = .standalone
+            currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = algoRawCurrency
 
             let text = currencyFormatter.format(totalRewards)

@@ -26,12 +26,18 @@ struct AssetTransactionItemViewModel:
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
-        bindAmount(draft)
+        bindAmount(
+            draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private mutating func bindID(
@@ -88,7 +94,9 @@ struct AssetTransactionItemViewModel:
     }
 
     private mutating func bindAmount(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transaction = draft.transaction as? Transaction,
               let assetTransfer = transaction.assetTransfer,
@@ -105,6 +113,8 @@ struct AssetTransactionItemViewModel:
                     fraction: asset.presentation.decimals,
                     assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -118,6 +128,8 @@ struct AssetTransactionItemViewModel:
                     fraction: asset.presentation.decimals,
                     assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -130,6 +142,8 @@ struct AssetTransactionItemViewModel:
                 fraction: asset.presentation.decimals,
                 assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
             ),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }
