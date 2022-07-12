@@ -46,14 +46,6 @@ final class TransactionsAPIDataController:
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.transactionsController")
 
-    private lazy var rewardCalculator = RewardCalculator(
-        api: api,
-        account: draft.accountHandle.value,
-        sharedDataController: sharedDataController
-    )
-
-    private(set) var reward: Decimal = 0
-
     init(
         _ api: ALGAPI,
         _ draft: TransactionListing,
@@ -82,10 +74,6 @@ extension TransactionsAPIDataController {
     func load() {
         sharedDataController.add(self)
         deliverLoadingSnapshot()
-
-        if draft.type == .algos {
-            rewardCalculator.delegate = self
-        }
     }
 
     func clear() {
@@ -192,7 +180,8 @@ extension TransactionsAPIDataController {
                 break
             case let .success(transactionResults):
                 self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
-                transactionResults.transactions.forEach { $0.status = .completed }
+                transactionResults.transactions.forEach { $0.setAllCompleted() }
+
 
                 self.fetchAssets(from: transactionResults.transactions) {
                     self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
@@ -276,7 +265,8 @@ extension TransactionsAPIDataController {
                 break
             case let .success(transactionResults):
                 self.nextToken = transactionResults.nextToken
-                transactionResults.transactions.forEach { $0.status = .completed }
+                transactionResults.transactions.forEach { $0.setAllCompleted() }
+
 
                 self.fetchAssets(from: transactionResults.transactions) {
                     self.groupTransactionsByType(transactionResults.transactions, isPaginated: true)
@@ -408,7 +398,6 @@ extension TransactionsAPIDataController {
             case .algos:
                 let viewModel = AlgosDetailInfoViewModel(
                     account: account,
-                    rewards: self.reward,
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
@@ -616,21 +605,5 @@ extension TransactionsAPIDataController {
 
             self.eventHandler?(event)
         }
-    }
-}
-
-extension TransactionsAPIDataController: RewardCalculatorDelegate {
-    func rewardCalculator(
-        _ rewardCalculator: RewardCalculator,
-        didCalculate rewards: Decimal
-    ) {
-        guard rewards != self.reward else {
-            return
-        }
-
-        self.reward = rewards
-        self.eventHandler?(.didUpdateReward(reward))
-
-        self.deliverContentSnapshot()
     }
 }

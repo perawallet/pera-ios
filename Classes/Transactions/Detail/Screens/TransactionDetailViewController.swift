@@ -38,6 +38,10 @@ final class TransactionDetailViewController: BaseScrollViewController {
         assetDetail: assetDetail
     )
 
+    private lazy var tooltipController = TooltipUIController(
+        presentingView: view
+    )
+
     private let copyToClipboardController: CopyToClipboardController
     
     init(
@@ -64,6 +68,23 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         transactionDetailView.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let tooltipDisplayStore = TooltipDisplayStore()
+
+        if !tooltipDisplayStore.isDisplayedCopyAddressTooltip {
+            tooltipDisplayStore.isDisplayedCopyAddressTooltip = true
+
+            tooltipController.present(
+                on: transactionDetailView.userView.detailLabel,
+                title: "title-press-hold-copy-address".localized,
+                duration: .default
+            )
+            return
+        }
     }
     
     override func setListeners() {
@@ -113,8 +134,8 @@ extension TransactionDetailViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
-            let contact = userInfo["contact"] else {
-                return
+              let contact = userInfo["contact"] else {
+            return
         }
         
         transaction.contact = contact
@@ -147,9 +168,30 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
-                self.copyToClipboardController.copyAddress(self.account)
+                guard let address = self.getUserAddress(
+                    transaction: transaction,
+                    type: transactionType
+                ) else {
+                    return
+                }
+
+                self.copyToClipboardController.copyAddress(
+                    address
+                )
             }
             return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    private func getUserAddress(
+        transaction: Transaction,
+        type: TransactionType
+    ) -> String? {
+        switch type {
+        case .received:
+            return transaction.getReceiver()
+        case .sent:
+            return transaction.sender
         }
     }
 
@@ -246,5 +288,22 @@ enum AlgoExplorerType {
         case .goalseeker:
             return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
         }
+    }
+}
+
+extension TransactionDetailViewController {
+    private final class TooltipDisplayStore: Storable {
+        typealias Object = Any
+
+        var isDisplayedCopyAddressTooltip: Bool {
+            get { userDefaults.bool(forKey: isDisplayedCopyAddressTooltipKey) }
+            set {
+                userDefaults.set(newValue, forKey: isDisplayedCopyAddressTooltipKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let isDisplayedCopyAddressTooltipKey =
+        "cache.key.transactionDetailIsDisplayedCopyAddressTooltip"
     }
 }

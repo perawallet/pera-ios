@@ -37,6 +37,13 @@ struct TransactionAmountViewModel: Hashable {
             showAbbreviation: showAbbreviation
         )
     }
+
+    init(
+        innerTransactionCount: Int,
+        showInList: Bool = true
+    ) {
+        bindInnerTransaction(count: innerTransactionCount, showInList: showInList)
+    }
 }
 
 extension TransactionAmountViewModel {
@@ -131,5 +138,35 @@ extension TransactionAmountViewModel {
         let text = [ amountText, assetSymbol ].compound(" ")
 
         amountLabelText = .string(text)
+    }
+}
+
+/// <mark> Inner Transaction Binding
+extension TransactionAmountViewModel {
+    private mutating func bindInnerTransaction(count: Int, showInList: Bool) {
+        amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
+
+        if showInList {
+            let aText = count == 1
+            ? "inner-txns-singular-count".localized
+            : "inner-txns-plural-count".localized("\(count)")
+
+            amountLabelText = .attributedString(
+                aText.bodyMedium(
+                    alignment: .right
+                )
+            )
+            return
+        }
+
+        let aText = count == 1
+        ?  "transaction-detail-singular-inner-transaction-detail".localized
+        : "transaction-detail-plural-inner-transaction-detail".localized("\(count)")
+
+        amountLabelText = .attributedString(
+            aText.bodyMedium(
+                alignment: .right
+            )
+        )
     }
 }

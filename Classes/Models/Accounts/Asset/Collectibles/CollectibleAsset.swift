@@ -107,7 +107,7 @@ final class CollectibleAsset: Asset {
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
-        self.explorerURL = decoration.collectible?.explorerURL
+        self.explorerURL = decoration.explorerURL
 
         let amount = asset.amount
         let decimals = decoration.decimals

@@ -890,6 +890,7 @@ extension SendTransactionScreen {
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -917,6 +918,7 @@ extension SendTransactionScreen {
         )
         transactionDraft.toContact = draft.toContact
         transactionDraft.asset = asset
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)

@@ -466,7 +466,14 @@ class Router:
         case let .qrScanner(canReadWCSession):
             viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
         case let .qrGenerator(title, draft, isTrackable):
-            let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration, isTrackable: isTrackable)
+            let qrCreationController = QRCreationViewController(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration,
+                isTrackable: isTrackable
+            )
             qrCreationController.title = title
             viewController = qrCreationController
         case let .accountList(mode, delegate):
@@ -491,7 +498,12 @@ class Router:
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
-        case let .transactionDetail(account, transaction, transactionType, assetDetail):
+        case let .transactionDetail(account, transaction, assetDetail):
+            let transactionType =
+            transaction.sender == account.address
+            ? TransactionType.sent
+            : .received
+
             viewController = TransactionDetailViewController(
                 account: account,
                 transaction: transaction,
@@ -502,6 +514,25 @@ class Router:
                 ),
                 configuration: configuration
             )
+        case let .appCallTransactionDetail(
+            account,
+            transaction,
+            transactionTypeFilter,
+            assetDetail,
+            eventHandler
+        ):
+            let aViewController = AppCallTransactionDetailViewController(
+                account: account,
+                transaction: transaction,
+                transactionTypeFilter: transactionTypeFilter,
+                assetDetail: assetDetail,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .assetDetail(draft):
             viewController = AssetDetailViewController(
                 draft: draft,
@@ -543,13 +574,18 @@ class Router:
             managementOptionsViewController.delegate = delegate
             viewController = managementOptionsViewController
         case let .assetActionConfirmation(assetAlertDraft, delegate):
-            let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
+            let aViewController = AssetActionConfirmationViewController(
+                draft: assetAlertDraft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
-        case let .rewardDetail(account, calculatedRewards):
+        case let .rewardDetail(account):
             viewController = RewardDetailViewController(
                 account: account,
-                calculatedRewards: calculatedRewards,
                 configuration: configuration
             )
         case .verifiedAssetInformation:
@@ -765,7 +801,15 @@ class Router:
             resultScreen.isModalInPresentation = false
             viewController = resultScreen
         case .transactionAccountSelect(let draft):
-            viewController = AccountSelectScreen(draft: draft, configuration: configuration)
+            let dataController = AccountSelectScreenListAPIDataController(
+                configuration.sharedDataController,
+                api: configuration.api!
+            )
+            viewController = AccountSelectScreen(
+                draft: draft,
+                dataController: dataController,
+                configuration: configuration
+            )
         case .sendTransactionPreview(let draft, let transactionController):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -813,6 +857,9 @@ class Router:
             viewController = ReceiveCollectibleAssetListViewController(
                 account: account,
                 dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .collectibleDetail(asset, account, thumbnailImage):
@@ -820,6 +867,9 @@ class Router:
                 asset: asset,
                 account: account,
                 thumbnailImage: thumbnailImage,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case let .sendCollectible(draft):
@@ -890,12 +940,22 @@ class Router:
         case .qrScanOptions(let address, let eventHandler):
             let screen = QRScanOptionsViewController(
                 address: address,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
             viewController = screen
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case .innerTransactionList(let dataController, let eventHandler):
+            let aViewController = InnerTransactionListViewController(
                 dataController: dataController,
                 configuration: configuration
             )

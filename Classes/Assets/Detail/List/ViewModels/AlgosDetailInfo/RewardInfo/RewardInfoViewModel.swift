@@ -28,7 +28,6 @@ struct RewardInfoViewModel:
 
     init(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -37,7 +36,6 @@ struct RewardInfoViewModel:
         bindTitle()
         bindValue(
             account: account,
-            rewards: rewards,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
@@ -53,7 +51,6 @@ extension RewardInfoViewModel {
 
     mutating func bindValue(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -63,10 +60,7 @@ extension RewardInfoViewModel {
                 return
             }
 
-            let totalRewards = calculateTotalRewards(
-                account: account,
-                rewards: rewards
-            )
+            let totalRewards = calculateTotalRewards(account: account)
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = algoRawCurrency
@@ -96,10 +90,8 @@ extension RewardInfoViewModel {
 
 extension RewardInfoViewModel {
     private func calculateTotalRewards(
-        account: Account,
-        rewards: Decimal?
+        account: Account
     ) -> Decimal {
-        let someRewards = rewards ?? 0
-        return account.pendingRewards.toAlgos + someRewards
+        return account.pendingRewards.toAlgos
     }
 }

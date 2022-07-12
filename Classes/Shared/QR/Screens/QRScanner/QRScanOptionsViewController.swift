@@ -21,10 +21,13 @@ import UIKit
 
 final class QRScanOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetPresentable,
+    UIContextMenuInteractionDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
+
+    private let copyToClipboardController: CopyToClipboardController
 
     private lazy var addressContextView = UIView()
     private lazy var addressTitleLabel = UILabel()
@@ -34,11 +37,15 @@ final class QRScanOptionsViewController:
     private let theme = QRScanOptionsViewControllerTheme()
     private let address: PublicKey
 
+    private lazy var addressMenuInteraction = UIContextMenuInteraction(delegate: self)
+
     init(
         address: PublicKey,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.address = address
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
 
@@ -90,6 +97,7 @@ extension QRScanOptionsViewController {
         addressContextView.layer.draw(corner: theme.addressContainerCorner)
         addressContextView.layer.draw(border: theme.addressContainerBorder)
         addressContextView.layer.draw(shadow: theme.addressContainerShadow)
+        addressContextView.addInteraction(addressMenuInteraction)
 
         contentView.addSubview(addressContextView)
         addressContextView.snp.makeConstraints {
@@ -206,6 +214,21 @@ extension QRScanOptionsViewController {
             guard let self = self else { return }
 
             self.eventHandler?(.contact)
+        }
+    }
+}
+
+extension QRScanOptionsViewController {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyAddress(self.address)
+            }
+            return UIMenu(children: [ copyActionItem ])
         }
     }
 }

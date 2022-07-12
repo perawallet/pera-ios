@@ -292,7 +292,9 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             } else if let url = URL(string: qrString),
                 let scheme = url.scheme,
                 target.deeplinkConfig.qr.canAcceptScheme(scheme) {
-                guard let qrText = url.buildQRText() else {
+
+                let deeplinkQR = DeeplinkQR(url: url)
+                guard let qrText = deeplinkQR.qrText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                     return
                 }

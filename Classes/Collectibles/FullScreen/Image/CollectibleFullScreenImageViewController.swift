@@ -39,6 +39,12 @@ final class CollectibleFullScreenImageViewController:
         addImage()
     }
 
+    override func setListeners() {
+        super.setListeners()
+
+        isZoomingEnabled = false
+    }
+
     override func bindData() {
         super.bindData()
 
@@ -48,8 +54,6 @@ final class CollectibleFullScreenImageViewController:
             draft: draft,
             expectedImageSize: CGSize((width, width))
         )
-
-        isZoomingEnabled = false
 
         imageView.imageContainer.image = viewModel.image
 

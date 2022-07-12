@@ -18,18 +18,35 @@
 import UIKit
 import MacaroonUIKit
 
-final class TransactionAmountInformationView: View {
+
+final class TransactionAmountInformationView:
+    View,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+
     private lazy var titleLabel = UILabel()
     private lazy var transactionAmountView = TransactionAmountView()
+
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .touch: UIViewTapInteraction()
+    ]
 
     func customize(_ theme: TransactionAmountInformationViewTheme) {
         addTitleLabel(theme)
         addTransactionAmountView(theme)
+        linkInteractors()
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: ViewStyle) {}
+
+    func linkInteractors() {
+        startPublishing(
+            event: .touch,
+            for: self
+        )
+    }
 }
 
 extension TransactionAmountInformationView {
@@ -40,6 +57,8 @@ extension TransactionAmountInformationView {
         titleLabel.snp.makeConstraints {
             $0.top == theme.contentPaddings.top
             $0.leading == theme.contentPaddings.leading
+            $0.bottom >= theme.contentPaddings.bottom
+            $0.centerY.equalToSuperview()
         }
     }
     
@@ -65,5 +84,11 @@ extension TransactionAmountInformationView: ViewModelBindable {
         if let transactionViewModel = viewModel?.transactionViewModel {
             transactionAmountView.bindData(transactionViewModel)
         }
+    }
+}
+
+extension TransactionAmountInformationView {
+    enum Event {
+        case touch
     }
 }

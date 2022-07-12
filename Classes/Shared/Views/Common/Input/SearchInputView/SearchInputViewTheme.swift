@@ -113,7 +113,8 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
             .placeholderColor(AppColors.Components.Text.gray),
             .autocorrectionType(.no),
             .textContentType(.username),
-            .returnKeyType(.done)
+            .returnKeyType(.done),
+            .autocapitalizationType(.none)
         ]
         self.textInputBackground = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)

@@ -18,13 +18,15 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import MacaroonURLImage
 
 struct AccountPreviewViewModel:
     PortfolioViewModel,
     BindableViewModel,
     Hashable {
+
     private(set) var address: String?
-    private(set) var icon: UIImage?
+    private(set) var icon: ImageSource?
     private(set) var namePreviewViewModel: AccountNamePreviewViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
@@ -91,6 +93,11 @@ extension AccountPreviewViewModel {
             bindNamePreviewViewModel(iconWithShortAddressDraft)
 
             return
+        }
+
+        if let nameServiceAccountPreview = model as? NameServiceAccountPreview {
+            bindIcon(nameServiceAccountPreview)
+            bindNamePreviewViewModel(nameServiceAccountPreview)
         }
     }
 }
@@ -299,11 +306,28 @@ extension AccountPreviewViewModel {
 }
 
 extension AccountPreviewViewModel {
+    mutating func bindIcon(
+        _ nameServiceAccountPreview: NameServiceAccountPreview
+    ) {
+        icon = nameServiceAccountPreview.icon
+    }
+
+    mutating func bindNamePreviewViewModel(
+        _ nameServiceAccountPreview: NameServiceAccountPreview
+    ) {
+        namePreviewViewModel = AccountNamePreviewViewModel(
+            title: nameServiceAccountPreview.title,
+            subtitle: nameServiceAccountPreview.subtitle,
+            with: .left
+        )
+    }
+}
+
+extension AccountPreviewViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
         hasher.combine(address)
-        hasher.combine(icon)
         hasher.combine(namePreviewViewModel)
         hasher.combine(primaryAccessory)
         hasher.combine(secondaryAccessory)
@@ -315,7 +339,6 @@ extension AccountPreviewViewModel {
     ) -> Bool {
         return
             lhs.address == rhs.address &&
-            lhs.icon == rhs.icon &&
             lhs.namePreviewViewModel == rhs.namePreviewViewModel &&
             lhs.primaryAccessory == rhs.primaryAccessory &&
             lhs.secondaryAccessory == rhs.secondaryAccessory
@@ -323,7 +346,7 @@ extension AccountPreviewViewModel {
 }
 
 struct CustomAccountPreview {
-    var icon: UIImage?
+    var icon: ImageSource?
     var title: String?
     var subtitle: String?
     var accessory: String?
@@ -380,4 +403,20 @@ struct IconWithShortAddressDraft {
 
 struct AccountOrderingDraft {
     let account: Account
+}
+
+struct NameServiceAccountPreview {
+    var icon: PNGImageSource?
+    var title: String?
+    var subtitle: String?
+
+    init(
+        icon: PNGImageSource?,
+        title: String?,
+        subtitle: String?
+    ) {
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+    }
 }

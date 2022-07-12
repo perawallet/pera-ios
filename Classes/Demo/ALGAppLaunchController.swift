@@ -267,14 +267,14 @@ extension ALGAppLaunchController {
                 forRemoteNotificationWithUserInfo: userInfo,
                 waitForUserConfirmation: waitForUserConfirmation
             )
-        case .url(let url):
-            result = determineUIStateIfPossible(forURL: url)
         case .walletConnectSessionRequest(let url):
             result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         case .buyAlgo(let draft):
             result = determineUIStateIfPossible(forBuyAlgo: draft)
+        case .qrText(let qrText):
+            result = determineUIStateIfPossible(forQRText: qrText)
         }
         
         switch result {
@@ -315,12 +315,12 @@ extension ALGAppLaunchController {
             return .failure(error)
         }
     }
-    
+
     private func determineUIStateIfPossible(
-        forURL url: URL
+        forQRText qrText: QRText
     ) -> DeeplinkResult {
-        let parserResult = deeplinkParser.discover(url: url)
-        
+        let parserResult = deeplinkParser.discover(qrText: qrText)
+
         switch parserResult {
         case .none: return nil
         case .success(let screen): return .success(.deeplink(screen))

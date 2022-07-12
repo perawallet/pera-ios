@@ -96,4 +96,15 @@ enum AssetPreviewModelAdapter {
             assetStatus: status
         )
     }
+
+    static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
+        return PendingAssetPreviewModel(
+            secondaryImage: asset.presentation.isVerified
+                ? img("icon-verified-shield")
+                : nil,
+            assetPrimaryTitle: asset.presentation.name,
+            assetSecondaryTitle: "ID \(asset.id)",
+            assetStatus: "asset-removing-status".localized
+        )
+    }
 }

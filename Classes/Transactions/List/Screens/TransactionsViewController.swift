@@ -44,8 +44,6 @@ class TransactionsViewController: BaseViewController {
         sharedDataController
     )
 
-    private var rewardDetailViewController: RewardDetailViewController?
-
     private lazy var transactionsDataSource = TransactionsDataSource(listView)
 
     private(set) lazy var listView: UICollectionView = {
@@ -95,13 +93,6 @@ class TransactionsViewController: BaseViewController {
                 self.transactionsDataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
-                )
-            case .didUpdateReward(let reward):
-                self.rewardDetailViewController?.bindData(
-                    RewardDetailViewModel(
-                        account: self.accountHandle.value,
-                        calculatedRewards: reward
-                    )
                 )
             }
         }
@@ -182,7 +173,8 @@ class TransactionsViewController: BaseViewController {
     override func prepareLayout() {
         addListView()
 
-        if !accountHandle.value.isWatchAccount() {
+        if !accountHandle.value.isWatchAccount() &&
+            draft.isQuickActionButtonVisible {
             addTransactionActionButton(theme)
         }
     }
@@ -321,19 +313,12 @@ extension TransactionsViewController {
 
 extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        let rewardDetailViewController = bottomSheetTransition.perform(
+        bottomSheetTransition.perform(
             .rewardDetail(
-                account: accountHandle.value,
-                calculatedRewards: dataController.reward
+                account: accountHandle.value
             ),
-            by: .presentWithoutNavigationController,
-            completion: {
-                [weak self] in
-                self?.rewardDetailViewController = nil
-            }
-        ) as? RewardDetailViewController
-
-        self.rewardDetailViewController = rewardDetailViewController
+            by: .presentWithoutNavigationController
+        )
     }
 
     func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
@@ -454,25 +439,38 @@ extension TransactionsViewController {
 
 extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: Transaction) {
-        if transaction.sender == accountHandle.value.address {
+        if transaction.applicationCall != nil {
+            let eventHandler: AppCallTransactionDetailViewController.EventHandler = {
+                [weak self] event in
+                guard let self = self else {
+                    return
+
+                }
+
+                switch event {
+                case .performClose:
+                    self.dismiss(animated: true)
+                }
+            }
+
             open(
-                .transactionDetail(
+                .appCallTransactionDetail(
                     account: accountHandle.value,
                     transaction: transaction,
-                    transactionType: .sent,
-                    assetDetail: getAssetDetailForTransactionType(transaction)
+                    transactionTypeFilter: draft.type,
+                    assetDetail: getAssetDetailForTransactionType(transaction),
+                    eventHandler: eventHandler
                 ),
                 by: .present
             )
 
             return
         }
-
+        
         open(
             .transactionDetail(
                 account: accountHandle.value,
                 transaction: transaction,
-                transactionType: .received,
                 assetDetail: getAssetDetailForTransactionType(transaction)
             ),
             by: .present
@@ -482,7 +480,12 @@ extension TransactionsViewController {
     private func getAssetDetailForTransactionType(_ transaction: Transaction) -> StandardAsset? {
         switch draft.type {
         case .all:
-            if let assetID = transaction.assetTransfer?.assetId,
+            let assetID =
+            transaction.assetTransfer?.assetId ??
+            transaction.assetFreeze?.assetId ??
+            transaction.applicationCall?.foreignAssets?.first
+
+            if let assetID = assetID,
                 let decoration = sharedDataController.assetDetailCollection[assetID] {
                 let standardAsset = StandardAsset(
                     asset: ALGAsset(id: assetID),

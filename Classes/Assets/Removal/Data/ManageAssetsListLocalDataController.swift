@@ -29,6 +29,7 @@ final class ManageAssetsListLocalDataController:
     
     private var searchResults: [Asset] = []
     private var accountAssets: [Asset] = []
+    private var removedAssetDetails: [Asset] = []
     
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
@@ -114,6 +115,16 @@ extension ManageAssetsListLocalDataController {
         fetchAssets()
         deliverContentSnapshot()
     }
+
+    private func clearRemovedAssetDetailsIfNeeded() {
+        removedAssetDetails = removedAssetDetails.filter {
+            account.containsAsset($0.id)
+        }
+    }
+
+    func removeAsset(_ asset: Asset) {
+        removedAssetDetails.append(asset)
+    }
 }
 
 extension ManageAssetsListLocalDataController {
@@ -164,7 +175,15 @@ extension ManageAssetsListLocalDataController {
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
 
+            self.clearRemovedAssetDetailsIfNeeded()
+
             self.searchResults.forEach { asset in
+                if self.removedAssetDetails.contains(where: { removedAsset in
+                    asset.id == removedAsset.id
+                }) {
+                    return
+                }
+
                 let viewModel: AssetPreviewViewModel
 
                 if let collectibleAsset = asset as? CollectibleAsset {
@@ -192,12 +211,20 @@ extension ManageAssetsListLocalDataController {
                 assetItems.append(assetItem)
             }
 
+            self.removedAssetDetails.forEach {
+                let assetItem: ManageAssetSearchItem =
+                    .pendingAsset(PendingAssetPreviewViewModel(
+                        AssetPreviewModelAdapter.adaptRemovingAsset($0)
+                    ))
+                assetItems.append(assetItem)
+            }
+
             snapshot.appendSections([.assets])
             snapshot.appendItems(
                 assetItems,
                 toSection: .assets
             )
-            
+
             snapshot.reloadItems(assetItems)
             return snapshot
         }

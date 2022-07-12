@@ -64,8 +64,17 @@ extension TransactionDetailViewModel {
     ) {
         transactionStatus = transaction.status
         userViewTitle = "transaction-detail-to".localized
-        userViewDetail = account.name
-        
+        opponentViewTitle = "transaction-detail-from".localized
+
+        let receiverAddress = transaction.getReceiver()
+        let accountAddress = account.address
+
+        if receiverAddress == accountAddress {
+            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+        } else {
+            userViewDetail = receiverAddress
+        }
+
         if let fee = transaction.fee {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
@@ -73,6 +82,7 @@ extension TransactionDetailViewModel {
         bindDate(for: transaction)
         bindRound(for: transaction)
         if let sender = transaction.sender {
+            opponentViewTitle = "transaction-detail-from".localized
             bindOpponent(for: transaction, with: sender)
         }
 
@@ -85,8 +95,10 @@ extension TransactionDetailViewModel {
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
-            } else {
+            } else if receiverAddress == accountAddress {
                 transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             }
             rewardViewIsHidden = true
         } else if let payment = transaction.payment {
@@ -94,17 +106,24 @@ extension TransactionDetailViewModel {
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
-            } else {
+            } else if receiverAddress == accountAddress {
                 transactionAmountViewMode = .positive(amount: amount)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount)
             }
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
             bindReward(for: transaction)
+        } else if transaction.assetConfig != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            bindReward(for: transaction)
         } else if transaction.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             transactionAmountViewMode = nil
+            bindReward(for: transaction)
         }
 
         transactionID = transaction.id
@@ -123,7 +142,16 @@ extension TransactionDetailViewModel {
         bindReward(for: transaction)
 
         userViewTitle = "transaction-detail-from".localized
-        userViewDetail = account.name
+        opponentViewTitle = "transaction-detail-to".localized
+
+        let senderAddress = transaction.sender
+        let accountAddress = account.address
+
+        if senderAddress == accountAddress {
+            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+        } else {
+            userViewDetail = senderAddress
+        }
 
         if let fee = transaction.fee {
             feeViewMode = .normal(amount: fee.toAlgos)
@@ -135,6 +163,7 @@ extension TransactionDetailViewModel {
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
+            opponentViewTitle = "transaction-detail-to".localized
             bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
@@ -142,28 +171,38 @@ extension TransactionDetailViewModel {
 
                 if transaction.isSelfTransaction {
                     transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
-                } else {
+                } else if senderAddress == accountAddress {
                     transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
+                } else {
+                    transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
                 }
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
         }  else if let payment = transaction.payment {
+            opponentViewTitle = "transaction-detail-to".localized
             bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
             if transaction.isSelfTransaction {
                 transactionAmountViewMode = .normal(amount: amount)
-            } else {
+            } else if senderAddress == accountAddress {
                 transactionAmountViewMode = .negative(amount: amount)
+            } else {
+                transactionAmountViewMode = .normal(amount: amount)
             }
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
+        } else if transaction.assetConfig != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            bindReward(for: transaction)
         } else if transaction.applicationCall != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
+            bindReward(for: transaction)
         }
 
         transactionID = transaction.id
@@ -173,8 +212,6 @@ extension TransactionDetailViewModel {
 
 extension TransactionDetailViewModel {
     func bindOpponent(for transaction: Transaction, with address: String) {
-        opponentViewTitle = "transaction-detail-to".localized
-
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             opponentViewContact = contact

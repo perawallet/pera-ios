@@ -12,29 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AlgorandTotalSupply.swift
+//   InnerTransactionListTitleSupplemanteryCell.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
+import MacaroonUIKit
+import UIKit
 
-final class AlgorandTotalSupply: ALGAPIModel {
-    let currentRound: UInt64
-    let onlineMoney: UInt64
-    let totalMoney: UInt64
+final class InnerTransactionListTitleSupplementaryCell:
+    CollectionCell<TitleView>,
+    ViewModelBindable {
+    static let theme: TitleViewTheme = {
+        var theme = TitleViewTheme()
+        theme.configureForInnerTransactionListHeader()
+        return theme
+    }()
 
-    init() {
-        self.currentRound = 0
-        self.onlineMoney = 0
-        self.totalMoney = 0
-    }
-}
-
-extension AlgorandTotalSupply {
-    private enum CodingKeys: String, CodingKey {
-        case currentRound = "current_round"
-        case onlineMoney = "online-money"
-        case totalMoney = "total-money"
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

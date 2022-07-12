@@ -152,52 +152,35 @@ extension TooltipUIController {
         adjustedFor sourceView: UIView,
         with viewModel: TooltipViewModel
     ) -> UIView {
-        let contentView = makeContentView()
+        let arrowLocationX = sourceView.window!.convert(
+            sourceView.frame,
+            from: sourceView.superview
+        ).midX
+
+        let contentView = TooltipView(
+            arrowLocationX: arrowLocationX
+        )
+        contentView.bindData(viewModel)
+
         presentingView.addSubview(contentView)
 
-        let titleView = makeTitleView()
-        let triangleView = makeTriangleView()
-
-        contentView.addSubview(titleView)
-        contentView.addSubview(triangleView)
+        presentingView.layoutIfNeeded()
 
         contentView.snp.makeConstraints {
-            $0.leading >= theme.contentHorizontalMargins.leading
-            $0.trailing <= theme.contentHorizontalMargins.trailing
-            $0.top == titleView
-            $0.bottom == triangleView
-        }
-
-        triangleView.snp.makeConstraints {
-            $0.centerX
-                .equalTo(sourceView.snp.centerX)
-                .priority(.high)
-            $0.leading
-                .greaterThanOrEqualTo(titleView.snp.leading)
-                .inset(theme.triangleMinHorizontalMargin)
-                .priority(.medium)
-            $0.trailing
-                .lessThanOrEqualTo(titleView.snp.trailing)
-                .inset(theme.triangleMinHorizontalMargin)
-                .priority(.medium)
-        }
-
-        triangleView.snp.prepareConstraints {
-            contentStartLayout =  [
-                $0.bottom == sourceView.snp.top - theme.triangleOffset
-            ]
-            contentEndLayout = [
-                $0.bottom == sourceView.snp.top + theme.triangleOffset
-            ]
-        }
-
-        titleView.snp.makeConstraints {
             $0.centerX
                 .equalTo(sourceView)
                 .priority(.low)
-            $0.leading == 0
-            $0.trailing == 0
-            $0.bottom == triangleView.snp.top
+            $0.leading >= theme.contentHorizontalMargins.leading
+            $0.trailing <= theme.contentHorizontalMargins.trailing
+        }
+
+        contentView.snp.prepareConstraints {
+            contentStartLayout =  [
+                $0.bottom == sourceView.snp.top - theme.contentBottomMargin
+            ]
+            contentEndLayout = [
+                $0.bottom == sourceView.snp.top + theme.contentBottomMargin
+            ]
         }
 
         updateContentLayoutWhenPresentingStatusDidChange(
@@ -206,8 +189,6 @@ extension TooltipUIController {
         updateContentAlongsideAnimations(
             isPresenting: false
         )
-
-        titleView.editText = viewModel.title
 
         return contentView
     }
@@ -286,27 +267,6 @@ extension TooltipUIController {
 
         contentStartLayout = []
         contentEndLayout = []
-    }
-}
-
-extension TooltipUIController {
-    private func makeContentView() -> UIView {
-        let view = MacaroonUIKit.BaseView()
-        return view
-    }
-
-    private func makeTitleView() -> UILabel {
-        let view = Label()
-        view.draw(corner: theme.corner)
-        view.contentEdgeInsets = theme.titleContentEdgeInsets
-        view.customizeAppearance(theme.title)
-        return view
-    }
-
-    private func makeTriangleView() -> UIImageView {
-        let view = ImageView()
-        view.customizeAppearance(theme.triangle)
-        return view
     }
 }
 

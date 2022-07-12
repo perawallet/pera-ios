@@ -52,6 +52,8 @@ final class HomeViewController:
             bannerController: bannerController!
         )
 
+    private let copyToClipboardController: CopyToClipboardController
+
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
@@ -76,7 +78,6 @@ final class HomeViewController:
     private var totalPortfolioValue: PortfolioValue?
 
     private let dataController: HomeDataController
-    private let copyToClipboardController: CopyToClipboardController
 
     init(
         dataController: HomeDataController,
@@ -370,9 +371,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
@@ -392,9 +392,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
@@ -830,8 +829,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             }
 
             self.log(ReceiveCopyEvent(address: accountHandle.value.address))
-            UIPasteboard.general.string = accountHandle.value.address
-            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+            self.copyToClipboardController.copyAddress(accountHandle.value)
         }
 
         return uiInteractions

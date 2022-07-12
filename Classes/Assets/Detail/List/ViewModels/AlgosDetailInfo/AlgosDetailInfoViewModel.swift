@@ -29,26 +29,22 @@ struct AlgosDetailInfoViewModel:
 
     init(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindPrimaryValue(
             account: account,
-            rewards: rewards,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindSecondaryValue(
             account: account,
-            rewards: rewards,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindRewardsInfo(
             account: account,
-            rewards: rewards,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
@@ -62,10 +58,9 @@ extension AlgosDetailInfoViewModel {
             .localized
             .bodyRegular(hasMultilines: false)
     }
-    
+
     mutating func bindPrimaryValue(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -75,10 +70,7 @@ extension AlgosDetailInfoViewModel {
                 return
             }
 
-            let amount = calculateTotalAmount(
-                account: account,
-                rewards: rewards
-            )
+            let amount = account.amount.toAlgos
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = algoRawCurrency
@@ -92,7 +84,6 @@ extension AlgosDetailInfoViewModel {
 
     mutating func bindSecondaryValue(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -102,10 +93,7 @@ extension AlgosDetailInfoViewModel {
                 return
             }
 
-            let algoAmount = calculateTotalAmount(
-                account: account,
-                rewards: rewards
-            )
+            let algoAmount = account.amount.toAlgos
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
             let amount = try exchanger.exchange(algo: algoAmount)
 
@@ -121,13 +109,11 @@ extension AlgosDetailInfoViewModel {
 
     mutating func bindRewardsInfo(
         account: Account,
-        rewards: Decimal?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         rewardsInfo = RewardInfoViewModel(
             account: account,
-            rewards: rewards,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
@@ -159,29 +145,5 @@ extension AlgosDetailInfoViewModel {
             lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
             lhs.rewardsInfo == rhs.rewardsInfo &&
             lhs.isBuyAlgoAvailable == rhs.isBuyAlgoAvailable
-    }
-}
-
-extension AlgosDetailInfoViewModel {
-    private func calculateTotalAmount(
-        account: Account,
-        rewards: Decimal?
-    ) -> Decimal {
-        let totalRewards = calculateTotalRewards(
-            account: account,
-            rewards: rewards
-        )
-        return account.amountWithoutRewards.toAlgos + totalRewards
-    }
-
-    private func calculateTotalRewards(
-        account: Account,
-        rewards: Decimal?
-    ) -> Decimal {
-        /// <todo>
-        /// We should create a type to hold the algo values otherwise it may cause some issues while
-        /// figuring out what refers to `Decimal` type.
-        let someRewards = rewards ?? 0
-        return account.pendingRewards.toAlgos + someRewards
     }
 }

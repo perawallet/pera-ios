@@ -28,7 +28,7 @@ final class TransactionDetailView:
     private lazy var amountView = TransactionAmountInformationView()
     private lazy var closeAmountView = TransactionAmountInformationView()
     private lazy var rewardView = TransactionAmountInformationView()
-    private lazy var userView = TransactionTextInformationView()
+    private(set) lazy var userView = TransactionTextInformationView()
     private lazy var opponentView = TransactionContactInformationView()
     private lazy var closeToView = TransactionTextInformationView()
     private lazy var feeView = TransactionAmountInformationView()
@@ -299,11 +299,16 @@ extension TransactionDetailView {
             )
         }
 
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                TitledInformation(title: viewModel?.userViewTitle, detail: viewModel?.userViewDetail)
+        if let userViewDetail = viewModel?.userViewDetail {
+            userView.bindData(
+                TransactionTextInformationViewModel(
+                    TitledInformation(title: viewModel?.userViewTitle, detail: userViewDetail)
+                )
             )
-        )
+        } else {
+            userView.hideViewInStack()
+        }
+
 
         if let feeViewMode = viewModel?.feeViewMode {
             feeView.bindData(
@@ -316,8 +321,6 @@ extension TransactionDetailView {
                 )
             )
         }
-
-        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
 
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
             amountView.bindData(
@@ -333,7 +336,14 @@ extension TransactionDetailView {
             amountView.isHidden = true
         }
 
-        bindOpponentViewDetail(viewModel)
+        if let opponentViewTitle = viewModel?.opponentViewTitle {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(title: opponentViewTitle)
+            )
+            bindOpponentViewDetail(viewModel)
+        } else {
+            opponentView.isHidden = true
+        }
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
@@ -356,6 +366,7 @@ extension TransactionDetailView {
                 )
             )
         } else {
+            opponentView.hideViewInStack()
             opponentView.removeAccessoryViews()
         }
     }
