@@ -212,7 +212,7 @@ extension ScanQRFlowCoordinator {
         var transactionMode = draft.transactionMode
         switch transactionMode {
         case .asset(let asset):
-            if let updatedAsset = account.allAssets.first(matching: (\.id, asset.id)) {
+            if let updatedAsset = account.allAssets.someArray.first(matching: (\.id, asset.id)) {
                 transactionMode = .asset(updatedAsset)
             }
         default:

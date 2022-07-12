@@ -21,7 +21,8 @@ import MacaroonUtils
 final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    NotificationObserver {
+    NotificationObserver,
+    UIContextMenuInteractionDelegate {
     var notificationObservations: [NSObjectProtocol] = []
 
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
@@ -57,6 +58,10 @@ final class ReceiveCollectibleAssetListViewController:
         )
     }()
 
+    private lazy var accountMenuInteraction = UIContextMenuInteraction(delegate: self)
+
+    private let copyToClipboardController: CopyToClipboardController
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var currentAsset: AssetDecoration?
 
@@ -68,11 +73,13 @@ final class ReceiveCollectibleAssetListViewController:
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController,
         theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
         self.dataController = dataController
         self.theme = theme
+        self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
     }
@@ -160,6 +167,8 @@ final class ReceiveCollectibleAssetListViewController:
     override func linkInteractors() {
         transactionController.delegate = self
 
+        selectedAccountPreviewView.addInteraction(accountMenuInteraction)
+
         selectedAccountPreviewView.observe(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
@@ -239,8 +248,7 @@ extension ReceiveCollectibleAssetListViewController {
 
 extension ReceiveCollectibleAssetListViewController {
     private func copyAddress() {
-        UIPasteboard.general.string = account.value.address
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        copyToClipboardController.copyAddress(self.account.value)
     }
 
     private func openQRGenerator() {
@@ -262,6 +270,21 @@ extension ReceiveCollectibleAssetListViewController {
         )
     }
 }
+
+extension ReceiveCollectibleAssetListViewController {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         return UIContextMenuConfiguration { _ in
+             let copyActionItem = UIAction(item: .copyAddress) {
+                 [unowned self] _ in
+                 self.copyToClipboardController.copyAddress(self.account.value)
+             }
+             return UIMenu(children: [ copyActionItem ])
+         }
+     }
+ }
 
 extension ReceiveCollectibleAssetListViewController {
     func collectionView(

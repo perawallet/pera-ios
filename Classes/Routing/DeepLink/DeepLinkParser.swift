@@ -63,7 +63,10 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        let draft = AlgoTransactionListing(accountHandle: account)
+        let draft = AlgoTransactionListing(
+            accountHandle: account,
+            isQuickActionButtonVisible: false
+        )
         return .success(.algosDetail(draft: draft))
     }
     
@@ -89,7 +92,11 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
         
-        let draft = AssetTransactionListing(accountHandle: account, asset: asset)
+        let draft = AssetTransactionListing(
+            accountHandle: account,
+            asset: asset,
+            isQuickActionButtonVisible: false
+        )
         return .success(.assetDetail(draft: draft))
     }
     
@@ -127,40 +134,48 @@ extension DeepLinkParser {
 
 extension DeepLinkParser {
     func discover(
-        url: URL
+        qrText: QRText
     ) -> Result? {
-        if canDiscover(moonpayTransaction: url) {
-            /// note: When moonpay transaction can discoverable, we should return nil  Otherwise It may cause a conflcit on QR discover function
+        switch qrText.mode {
+        case .address:
+            return makeActionSelectionScreen(
+                qrText
+            )
+        case .algosRequest:
+            return makeTransactionRequestScreen(
+                qrText
+            )
+        case .assetRequest:
+            return makeAssetTransactionRequestScreen(
+                qrText
+            )
+        case .optInRequest:
+            return makeAssetOptInRequestScreen(
+                qrText
+            )
+        case .mnemonic:
             return nil
         }
-
-        if let result = discover(qr: url) {
-            return result
-        }
-
-        return nil
     }
     
     private func makeActionSelectionScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
-        let address = extractAccountAddress(from: url)
+        let address = qr.address
         return address.unwrap {
             .success(.actionSelection(address: $0, label: qr.label))
         }
     }
     
     private func makeTransactionRequestScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
         guard let amount = qr.amount else {
             return nil
         }
 
         guard
-            let accountAddress = extractAccountAddress(from: url),
+            let accountAddress = qr.address,
             sharedDataController.isAvailable
         else {
             return .failure(.waitingForAssetsToBeAvailable)
@@ -178,15 +193,14 @@ extension DeepLinkParser {
     }
     
     private func makeAssetTransactionRequestScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
         guard let assetId = qr.asset, let amount = qr.amount else {
             return nil
         }
 
         guard
-            let accountAddress = extractAccountAddress(from: url),
+            let accountAddress = qr.address,
             sharedDataController.isAvailable
         else {
             return .failure(.waitingForAssetsToBeAvailable)
@@ -220,22 +234,13 @@ extension DeepLinkParser {
     }
 
     private func makeAssetOptInRequestScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
         guard let assetID = qr.asset else {
             return nil
         }
 
         return .success(.accountSelect(asset: assetID))
-    }
-    
-    private func extractAccountAddress(
-        from url: URL
-    ) -> String? {
-        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        let accountAddress = urlComponents?.host
-        return accountAddress.unwrap { $0.isValidatedAddress }
     }
 }
 
@@ -274,53 +279,6 @@ extension DeepLinkParser {
         }
         
         return .success(.buyAlgo(draft: draft))
-    }
-}
-
-extension DeepLinkParser {
-    private func canDiscover(moonpayTransaction url: URL) -> Bool {
-        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
-            NotificationCenter.default.post(
-                name: .didRedirectFromMoonPay,
-                object: self,
-                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
-            )
-
-            return true
-        }
-
-        return false
-    }
-
-    private func discover(qr url: URL) -> Result? {
-        guard let qr = url.buildQRText() else {
-            return nil
-        }
-
-        switch qr.mode {
-        case .address:
-            return makeActionSelectionScreen(
-                qr,
-                for: url
-            )
-        case .algosRequest:
-            return makeTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .assetRequest:
-            return makeAssetTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .optInRequest:
-            return makeAssetOptInRequestScreen(
-                qr,
-                for: url
-            )
-        case .mnemonic:
-            return nil
-        }
     }
 }
 

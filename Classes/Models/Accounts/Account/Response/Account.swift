@@ -53,16 +53,21 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
 
-    /// <note>
-    /// This value should be calculated first, then assign to the account since it requires
-    /// additional items for the calculation.
-    var totalPortfolio: PortfolioHandle = .failure(.idle)
+    private(set) var standardAssets: [StandardAsset]?
+    private(set) var collectibleAssets: [CollectibleAsset]?
 
-    private(set) var standardAssets: [StandardAsset] = []
+    var totalUSDValueOfAssets: Decimal? {
+        return calculateTotalUSDValueOfAssets()
+    }
+
     private var standardAssetsIndexer: StandardAssetIndexer = [:]
-
-    private(set) var collectibleAssets: [CollectibleAsset] = []
     private var collectibleAssetsIndexer: CollectibleAssetIndexer = [:]
+
+    /// <note>
+    /// They are deeply coupled to the standard/collectible assets so it should be updated whenever
+    /// those properties change.
+    private var standardAssetsTotalUSDValue: Decimal?
+    private var collectibleAssetsTotalUSDValue: Decimal?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -156,17 +161,24 @@ final class Account: ALGEntityModel {
 
     subscript (assetId: AssetID) -> Asset? {
         if let index = standardAssetsIndexer[assetId] {
-            return standardAssets[safe: index]
+            return standardAssets?[safe: index]
         }
 
         let index = collectibleAssetsIndexer[assetId]
-        return index.unwrap { collectibleAssets[safe: $0] }
+        return index.unwrap { collectibleAssets?[safe: $0] }
     }
 }
 
 extension Account {
-    var allAssets: [Asset] {
-        return standardAssets + collectibleAssets
+    var allAssets: [Asset]? {
+        if standardAssets == nil &&
+           collectibleAssets == nil {
+            return nil
+        }
+
+        let arr1 = standardAssets.someArray
+        let arr2 = collectibleAssets.someArray
+        return arr1 + arr2
     }
 
     func setStandardAssets(
@@ -175,6 +187,8 @@ extension Account {
     ) {
         standardAssets = assets
         standardAssetsIndexer = indexer
+
+        updateTotalUSDValueOfStandardAssets()
     }
 
     func setCollectibleAssets(
@@ -183,47 +197,124 @@ extension Account {
     ) {
         collectibleAssets = assets
         collectibleAssetsIndexer = indexer
+
+        updateTotalUSDValueOfCollectibleAssets()
     }
 
     func append(
         _ asset: StandardAsset
     ) {
-        standardAssets.append(asset)
-        standardAssetsIndexer[asset.id] = standardAssets.lastIndex!
+        var newStandardAssets = standardAssets.someArray
+        newStandardAssets.append(asset)
+
+        standardAssets = newStandardAssets
+        standardAssetsIndexer[asset.id] = newStandardAssets.lastIndex!
+
+        updateTotalUSDValueOfStandardAssets(appending: asset)
     }
 
     func append(
         _ collectible: CollectibleAsset
     ) {
-        collectibleAssets.append(collectible)
-        collectibleAssetsIndexer[collectible.id] = collectibleAssets.lastIndex!
+        var newCollectibleAssets = collectibleAssets.someArray
+        newCollectibleAssets.append(collectible)
+
+        collectibleAssets = newCollectibleAssets
+        collectibleAssetsIndexer[collectible.id] = newCollectibleAssets.lastIndex!
+
+        updateTotalUSDValueOfCollectibleAssets(appending: collectible)
     }
     
     func removeAllAssets() {
-        standardAssets = []
+        standardAssets = nil
         collectibleAssets = []
+
         standardAssetsIndexer = [:]
         collectibleAssetsIndexer = [:]
+
+        standardAssetsTotalUSDValue = nil
+        collectibleAssetsTotalUSDValue = nil
     }
     
     func containsStandardAsset(
         _ id: AssetID
     ) -> Bool {
         let index = standardAssetsIndexer[id]
-        return index.unwrap { standardAssets[safe: $0] } != nil
+        return index.unwrap { standardAssets?[safe: $0] } != nil
     }
 
     func containsCollectibleAsset(
         _ id: AssetID
     ) -> Bool {
         let index = collectibleAssetsIndexer[id]
-        return index.unwrap { collectibleAssets[safe: $0] } != nil
+        return index.unwrap { collectibleAssets?[safe: $0] } != nil
     }
 
     func containsAsset(
         _ id: AssetID
     ) -> Bool {
         return containsStandardAsset(id) || containsCollectibleAsset(id)
+    }
+}
+
+extension Account {
+    private func updateTotalUSDValueOfStandardAssets() {
+        standardAssetsTotalUSDValue = calculateTotalUSDValue(of: standardAssets)
+    }
+
+    private func updateTotalUSDValueOfStandardAssets(
+        appending asset: StandardAsset
+    ) {
+        standardAssetsTotalUSDValue = calculateTotalUSDValue(
+            of: standardAssetsTotalUSDValue,
+            appending: asset
+        )
+    }
+
+    private func updateTotalUSDValueOfCollectibleAssets() {
+        collectibleAssetsTotalUSDValue = calculateTotalUSDValue(of: collectibleAssets)
+    }
+
+    private func updateTotalUSDValueOfCollectibleAssets(
+        appending asset: CollectibleAsset
+    ) {
+        collectibleAssetsTotalUSDValue = calculateTotalUSDValue(
+            of: collectibleAssetsTotalUSDValue,
+            appending: asset
+        )
+    }
+
+    private func calculateTotalUSDValueOfAssets() -> Decimal? {
+        if standardAssetsTotalUSDValue == nil &&
+           collectibleAssetsTotalUSDValue == nil {
+            return nil
+        }
+
+        let value1 = standardAssetsTotalUSDValue ?? 0
+        let value2 = collectibleAssetsTotalUSDValue ?? 0
+        return value1 + value2
+    }
+
+    private func calculateTotalUSDValue(
+        of assets: [Asset]?
+    ) -> Decimal? {
+        return assets?.reduce(0) {
+            $0 + calculateTotalUSDValue(of: $1)
+        }
+    }
+
+    private func calculateTotalUSDValue(
+        of assetsTotalUSDValue: Decimal?,
+        appending asset: Asset
+    ) -> Decimal {
+        let assetTotalUSDValue = calculateTotalUSDValue(of: asset)
+        return (assetsTotalUSDValue ?? 0) + assetTotalUSDValue
+    }
+
+    private func calculateTotalUSDValue(
+        of asset: Asset
+    ) -> Decimal {
+        return asset.totalUSDValue ?? 0
     }
 }
 

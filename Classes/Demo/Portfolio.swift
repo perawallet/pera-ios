@@ -12,41 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
 //   Portfolio.swift
 
 import Foundation
-import MacaroonUIKit
 
 struct Portfolio {
-    var coinsValueResult: PortfolioHandle = .failure(.idle)
-    var assetsValueResult: PortfolioHandle = .failure(.idle)
-    var totalValueResult: PortfolioHandle = .failure(.idle)
-    
-    let accounts: [AccountHandle]
-    let currency: CurrencyHandle
-    let calculator: PortfolioCalculator
-}
+    let totalAlgoValue: Decimal
+    let totalUSDValueOfAssets: Decimal
 
-extension Portfolio {
-    mutating func calculate() {
-        coinsValueResult = calculator.calculateCoinsValue(
-            accounts,
-            as: currency
-        )
-        assetsValueResult = calculator.calculateAssetsValue(
-            accounts,
-            as: currency
-        )
-        totalValueResult = calculator.calculateTotalValue(
-            coinsValueResult: coinsValueResult,
-            assetsValueResult: assetsValueResult
-        )
+    init(
+        account: Account
+    ) {
+        self.init(accounts: [account])
     }
-}
 
-struct PortfolioItem {
-    let title: String
-    let icon: Image?
-    let valueResult: PortfolioHandle
+    init(
+        accounts: [Account]
+    ) {
+        var totalAlgoValue: Decimal = 0
+        var totalUSDValueOfAssets: Decimal = 0
+
+        accounts.forEach {
+            totalAlgoValue += $0.amount.toAlgos
+            totalUSDValueOfAssets += $0.totalUSDValueOfAssets ?? 0
+        }
+
+        self.totalAlgoValue = totalAlgoValue
+        self.totalUSDValueOfAssets = totalUSDValueOfAssets
+    }
 }

@@ -27,7 +27,6 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let subtitleTopInset: LayoutMetric
-    let titleMaximumWidthRatio: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -46,6 +45,5 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.verticalInset = 14
         self.subtitleTopInset = 7
-        self.titleMaximumWidthRatio = 0.3
     }
 }

@@ -28,7 +28,9 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var balanceViewMode: TransactionAmountView.Mode?
     private(set) var noteViewDetail: String?
 
-    init(_ model: TransactionSendDraft, currency: Currency?) {
+    init(
+        _ model: TransactionSendDraft,
+        currency: Currency?) {
         if let algoTransactionSendDraft = model as? AlgosTransactionSendDraft {
             bindAlgoTransactionPreview(algoTransactionSendDraft, with: currency)
         } else if let assetTransactionSendDraft = model as? AssetTransactionSendDraft {
@@ -42,14 +44,14 @@ final class SendTransactionPreviewViewModel: ViewModel {
         }
         
         if let algoCurrency = currency as? AlgoCurrency {
-            bindAlgoTransactionPreview(draft, with: algoCurrency.currency)
+            bindAlgoTransactionPreview(draft, with: algoCurrency.baseCurrency)
             return
         }
 
         let currencyString: String?
 
         if let currency = currency,
-              let currencyPriceValue = currency.priceValue {
+              let currencyPriceValue = currency.algoValue {
             let currencyValue = amount * currencyPriceValue
             currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         } else {
@@ -66,7 +68,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         let balanceCurrencyString: String?
 
         if let currency = currency,
-              let currencyPriceValue = currency.priceValue {
+              let currencyPriceValue = currency.algoValue {
             let balanceCurrencyValue = balance * currencyPriceValue
             balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
         } else {
@@ -154,16 +156,19 @@ final class SendTransactionPreviewViewModel: ViewModel {
                 contact: contact,
                 hasImage: true
             )
-        } else {
-            guard let toAccount = draft.toAccount else {
-                return
+        } else if let toAccount = draft.toAccount {
+            if let nameService = draft.nameService {
+                opponentView = TitledTransactionAccountNameViewModel(
+                    title: title,
+                    nameService: nameService
+                )
+            } else {
+                opponentView = TitledTransactionAccountNameViewModel(
+                    title: title,
+                    account: toAccount,
+                    hasImage: toAccount.isCreated
+                )
             }
-
-            opponentView = TitledTransactionAccountNameViewModel(
-                title: title,
-                account: toAccount,
-                hasImage: toAccount.isCreated
-            )
         }
     }
 

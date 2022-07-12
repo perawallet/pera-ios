@@ -39,9 +39,32 @@ final class SharedAPIDataController:
     }
 
     private(set) var accountCollection: AccountCollection = []
-    private(set) var currency: CurrencyHandle = .idle
+
+    private(set) var currency: CurrencyProvider
 
     private(set) var lastRound: BlockRound?
+
+    private(set) lazy var accountSortingAlgorithms: [AccountSortingAlgorithm] = [
+        AccountAscendingTitleAlgorithm(),
+        AccountDescendingTitleAlgorithm(),
+        AccountAscendingTotalPortfolioValueAlgorithm(currency: currency),
+        AccountDescendingTotalPortfolioValueAlgorithm(currency: currency),
+        AccountCustomReorderingAlgorithm()
+    ]
+
+    private(set) lazy var collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] = [
+        CollectibleDescendingOptedInRoundAlgorithm(),
+        CollectibleAscendingOptedInRoundAlgorithm(),
+        CollectibleAscendingTitleAlgorithm(),
+        CollectibleDescendingTitleAlgorithm()
+    ]
+
+    private(set) lazy var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
+        AccountAssetAscendingTitleAlgorithm(),
+        AccountAssetDescendingTitleAlgorithm(),
+        AccountAssetDescendingAmountAlgorithm(),
+        AccountAssetAscendingAmountAlgorithm()
+    ]
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -49,28 +72,6 @@ final class SharedAPIDataController:
     var isPollingAvailable: Bool {
         return session.authenticatedUser.unwrap { !$0.accounts.isEmpty } ?? false
     }
-
-    let accountSortingAlgorithms: [AccountSortingAlgorithm] = [
-        AccountAscendingTitleAlgorithm(),
-        AccountDescendingTitleAlgorithm(),
-        AccountAscendingTotalPortfolioValueAlgorithm(),
-        AccountDescendingTotalPortfolioValueAlgorithm(),
-        AccountCustomReorderingAlgorithm()
-    ]
-
-    let collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] = [
-        CollectibleDescendingOptedInRoundAlgorithm(),
-        CollectibleAscendingOptedInRoundAlgorithm(),
-        CollectibleAscendingTitleAlgorithm(),
-        CollectibleDescendingTitleAlgorithm()
-    ]
-
-    let accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
-        AccountAssetAscendingTitleAlgorithm(),
-        AccountAssetDescendingTitleAlgorithm(),
-        AccountAssetDescendingAmountAlgorithm(),
-        AccountAssetAscendingAmountAlgorithm()
-    ]
 
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
@@ -88,11 +89,13 @@ final class SharedAPIDataController:
     private let cache: Cache
 
     init(
+        currency: CurrencyProvider,
         session: Session,
         api: ALGAPI
     ) {
         let cache = Cache()
 
+        self.currency = currency
         self.session = session
         self.api = api
         self.cache = Cache()
@@ -151,7 +154,6 @@ extension SharedAPIDataController {
     }
 
     func resetPollingAfterPreferredCurrencyWasChanged() {
-        currency = .idle
         resetPolling()
     }
 }
@@ -186,14 +188,12 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
-            var request = ALGBlockRequest()
-            request.localAccounts = self.session.authenticatedUser?.accounts ?? []
-            /// <warning>
-            request.cachedAccounts = self.accountCollection
-            request.cachedAssetDetails = self.assetDetailCollection
-            request.localCurrencyId = self.session.preferredCurrency
-            request.cachedCurrency = self.currency
-            return request
+            return ALGBlockRequest(
+                localAccounts: self.session.authenticatedUser?.accounts ?? [],
+                cachedAccounts: self.accountCollection,
+                cachedAssetDetails: self.assetDetailCollection,
+                cachedCurrency: self.currency
+            )
         }
         let cycle = ALGBlockCycle(api: api)
         let processor = ALGBlockProcessor(blockRequest: request, blockCycle: cycle, api: api)
@@ -205,12 +205,6 @@ extension SharedAPIDataController {
             switch event {
             case .willStart(let round):
                 self.blockProcessorWillStart(for: round)
-            case .willFetchCurrency:
-                self.blockProcessorWillFetchCurrency()
-            case .didFetchCurrency(let currency):
-                self.blockProcessorDidFetchCurrency(currency)
-            case .didFailToFetchCurrency(let error):
-                self.blockProcessorDidFailToFetchCurrency(error)
             case .willFetchAccount(let localAccount):
                 self.blockProcessorWillFetchAccount(localAccount)
             case .didFetchAccount(let account):
@@ -249,24 +243,6 @@ extension SharedAPIDataController {
         nextAccountCollection = []
         
         publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
-    }
-    
-    private func blockProcessorWillFetchCurrency() {}
-    
-    private func blockProcessorDidFetchCurrency(
-        _ currencyValue: Currency
-    ) {
-        currency = .ready(currency: currencyValue, lastUpdateDate: Date())
-    }
-    
-    private func blockProcessorDidFailToFetchCurrency(
-        _ error: HIPNetworkError<NoAPIModel>
-    ) {
-        if currency.isAvailable {
-            return
-        }
-        
-        currency = .failed(error)
     }
     
     private func blockProcessorWillFetchAccount(

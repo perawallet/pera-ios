@@ -39,7 +39,7 @@ final class AlgoStatisticsViewController:
     private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastDay
 
     private var currency: Currency? {
-        return sharedDataController.currency.value
+        return try? sharedDataController.currency.primaryValue?.unwrap()
     }
     
     private var isViewFirstAppeared = true

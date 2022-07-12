@@ -20,11 +20,15 @@ struct AccountDescendingTotalPortfolioValueAlgorithm: AccountSortingAlgorithm {
     let id: String
     let name: String
     let isCustom: Bool
+    let currency: CurrencyProvider
 
-    init() {
+    init(
+        currency: CurrencyProvider
+    ) {
         self.id = "cache.value.accountDescendingTotalPortfolioValueAlgorithm"
         self.name = "title-highest-value-to-lowest".localized
         self.isCustom = false
+        self.currency = currency
     }
 }
 
@@ -33,8 +37,20 @@ extension AccountDescendingTotalPortfolioValueAlgorithm {
         account: AccountHandle,
         otherAccount: AccountHandle
     ) -> Bool {
-        let accountTotalPortfolioValue = account.value.totalPortfolio.primaryAmount
-        let otherAccountTotalPortfolioValue = otherAccount.value.totalPortfolio.primaryAmount
-        return accountTotalPortfolioValue > otherAccountTotalPortfolioValue
+        guard let currencyValue = currency.primaryValue else {
+            return false
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let accountPortfolio = Portfolio(account: account.value)
+            let accountAmount = try exchanger.exchange(accountPortfolio)
+            let otherAccountPortfolio = Portfolio(account: otherAccount.value)
+            let otherAccountAmount = try exchanger.exchange(otherAccountPortfolio)
+            return accountAmount > otherAccountAmount
+        } catch {
+            return account.value.address > otherAccount.value.address
+        }
     }
 }

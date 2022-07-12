@@ -19,7 +19,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, HomeItem> {
+final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionIdentifier, HomeItemIdentifier> {
     init(
         _ collectionView: UICollectionView
     ) {

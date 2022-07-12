@@ -21,33 +21,34 @@ import UIKit
 struct TooltipViewTheme:
     StyleSheet,
     LayoutSheet {
-    /// <note>
-    /// The space around an tooltip's border
+    let backgroundColor: Color
+
     let contentHorizontalMargins: LayoutHorizontalMargins
+    let contentBottomMargin: LayoutMetric
 
     let corner: Corner
+
     let title: TextStyle
     let titleContentEdgeInsets: LayoutPaddings
 
-    let triangle: ImageStyle
-    let triangleOffset: LayoutMetric
-    let triangleMinHorizontalMargin: LayoutMetric
+    let arrowSize: LayoutSize
 
     init(
         _ family: LayoutFamily
     ) {
+        backgroundColor = AppColors.Components.Toast.background
+
         contentHorizontalMargins = (24, 24)
+        contentBottomMargin = 8
+
         corner = Corner(radius: 12)
+
         title = [
-            .textColor(AppColors.Shared.Global.white),
+            .textColor(AppColors.Components.Toast.title),
             .textOverflow(FittingText()),
-            .backgroundColor(AppColors.Components.Banner.infoBackground)
         ]
         titleContentEdgeInsets = (8, 16, 8, 16)
-        triangle = [
-            .image("tooltip-triangle"),
-        ]
-        triangleOffset = 8
-        triangleMinHorizontalMargin = 12
+
+        arrowSize = (12, 8)
     }
 }

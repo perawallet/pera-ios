@@ -47,11 +47,12 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
+        let currency = try? sharedDataController.currency.primaryValue?.unwrap()
         let viewModel = WCGroupTransactionItemViewModel(
             transaction: transaction,
             account: transaction.signerAccount,
             asset: asset(from: transaction),
-            currency: sharedDataController.currency.value
+            currency: currency
         )
         
         return WCGroupTransactionItemViewModel.calculatePreferredSize(

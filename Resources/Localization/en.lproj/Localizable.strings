@@ -70,6 +70,7 @@
 "title-ledger-account" = "Ledger Account";
 "title-rekeyed-account" = "Rekeyed Account";
 "title-more" = "More";
+"title-app-call" = "App Call";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -212,6 +213,10 @@
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
+"transaction-item-app-id-title" = "Application ID: #%d";
+"transaction-item-opt-out" = "Opt-Out";
+"transaction-item-opt-in" = "Opt-In / Self Transfer";
+"transaction-item-self-transfer" = "Self Transfer";
 
 // MARK: Asset
 "asset-title" = "Asset";
@@ -438,6 +443,9 @@
 "transaction-detail-id-copied-title" = "ID copied to clipboard";
 "transaction-menu-copy-id" = "Copy ID";
 "transaction-menu-copy-note" = "Copy Note";
+"transaction-detail-inner-transaction-title" = "Inner\nTransactions";
+"transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
+"transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -926,6 +934,7 @@
 "transaction-result-completed-subtitle" = "Your transaction was successfully received by the Algorand network.";
 
 // MARK: AccountSelect
+"account-select-header-matched-accounts-title" = "Matched Accounts";
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";
@@ -947,7 +956,7 @@
 
 // MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";
-"portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";
+"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
 
 // MARK: PeraAnnouncement
 "pera-announcement-title" = "It's Official!";
@@ -1042,10 +1051,11 @@
 "collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
 // MARK: Number Abbreviation
-"number-abbreviation-thousand" = "K";
 "number-abbreviation-million" = "M";
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
+"number-abbreviation-quadrillion" = "Qa";
+"number-abbreviation-quintillion" = "Qi";
 
 // MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
@@ -1085,3 +1095,10 @@
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+
+// MARK: Inner Transactions
+"inner-transactions-title" = "Inner Transactions";
+"inner-txns-singular-count" = "1 inner txn";
+"inner-txns-plural-count" = "%@ inner txns";
+"inner-transaction-singular-count" = "1 Inner Transaction";
+"inner-transaction-plural-count" = "%@ Inner Transactions";

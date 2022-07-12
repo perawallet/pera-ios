@@ -28,7 +28,7 @@ final class TransactionDetailView:
     private lazy var amountView = TransactionAmountInformationView()
     private lazy var closeAmountView = TransactionAmountInformationView()
     private lazy var rewardView = TransactionAmountInformationView()
-    private lazy var userView = TransactionTextInformationView()
+    private(set) lazy var userView = TransactionTextInformationView()
     private lazy var opponentView = TransactionContactInformationView()
     private lazy var closeToView = TransactionTextInformationView()
     private lazy var feeView = TransactionAmountInformationView()
@@ -248,15 +248,23 @@ extension TransactionDetailView {
     }
 }
 
-extension TransactionDetailView: ViewModelBindable {
-    func bindData(_ viewModel: TransactionDetailViewModel?) {
+extension TransactionDetailView {
+    func bindData(
+        _ viewModel: TransactionDetailViewModel?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         closeToView.bindData(TransactionTextInformationViewModel(detail: viewModel?.closeToViewDetail))
         closeToView.isHidden = (viewModel?.closeToViewIsHidden).falseIfNil
 
         if let rewardViewMode = viewModel?.rewardViewMode {
             rewardView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(rewardViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        rewardViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -266,7 +274,11 @@ extension TransactionDetailView: ViewModelBindable {
         if let closeAmountViewMode = viewModel?.closeAmountViewMode {
             closeAmountView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(closeAmountViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        closeAmountViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -287,33 +299,51 @@ extension TransactionDetailView: ViewModelBindable {
             )
         }
 
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                TitledInformation(title: viewModel?.userViewTitle, detail: viewModel?.userViewDetail)
+        if let userViewDetail = viewModel?.userViewDetail {
+            userView.bindData(
+                TransactionTextInformationViewModel(
+                    TitledInformation(title: viewModel?.userViewTitle, detail: userViewDetail)
+                )
             )
-        )
+        } else {
+            userView.hideViewInStack()
+        }
+
 
         if let feeViewMode = viewModel?.feeViewMode {
             feeView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        feeViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
 
-        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
-
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
             amountView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(transactionAmountViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        transactionAmountViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         } else {
             amountView.isHidden = true
         }
 
-        bindOpponentViewDetail(viewModel)
+        if let opponentViewTitle = viewModel?.opponentViewTitle {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(title: opponentViewTitle)
+            )
+            bindOpponentViewDetail(viewModel)
+        } else {
+            opponentView.isHidden = true
+        }
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
@@ -336,6 +366,7 @@ extension TransactionDetailView: ViewModelBindable {
                 )
             )
         } else {
+            opponentView.hideViewInStack()
             opponentView.removeAccessoryViews()
         }
     }
@@ -348,15 +379,15 @@ extension TransactionDetailView {
     ) -> UIContextMenuConfiguration? {
         switch interaction {
         case userContextMenuInteraction:
-            return delegate?.contextMenuInteractionForUser(in: self)
+            return delegate?.contextMenuInteractionForUser(self)
         case opponentContextMenuInteraction:
-            return delegate?.contextMenuInteractionForOpponent(in: self)
+            return delegate?.contextMenuInteractionForOpponent(self)
         case closeToContextMenuInteraction:
-            return delegate?.contextMenuInteractionForCloseTo(in: self)
+            return delegate?.contextMenuInteractionForCloseTo(self)
         case idContextMenuInteraction:
-            return delegate?.contextMenuInteractionForTransactionID(in: self)
+            return delegate?.contextMenuInteractionForTransactionID(self)
         case noteContextMenuInteraction:
-            return delegate?.contextMenuInteractionForTransactionNote(in: self)
+            return delegate?.contextMenuInteractionForTransactionNote(self)
         default:
             return nil
         }
@@ -368,19 +399,19 @@ protocol TransactionDetailViewDelegate: AnyObject {
         _ transactionDetailView: TransactionDetailView
     )
     func contextMenuInteractionForUser(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForOpponent(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForCloseTo(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionID(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionNote(
-        in transactionDetailView: TransactionDetailView
+        _ transactionDetailView: TransactionDetailView
     ) -> UIContextMenuConfiguration?
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType)
 }

@@ -22,6 +22,7 @@ import SnapKit
 import MagpieHipo
 import Alamofire
 import MacaroonUIKit
+import MacaroonUtils
 
 final class SendTransactionScreen: BaseViewController {
     typealias EventHandler = (Event) -> Void
@@ -38,6 +39,8 @@ final class SendTransactionScreen: BaseViewController {
     private lazy var maxButton = Button()
     private lazy var currencyValueLabel = UILabel()
     private lazy var valueLabel = UILabel()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
 
     private let theme = Theme()
     private var draft: SendTransactionDraft
@@ -185,27 +188,35 @@ extension SendTransactionScreen {
 
 extension SendTransactionScreen {
     private func bindAssetPreview() {
-        let currency = sharedDataController.currency.value
+        let currency = sharedDataController.currency
 
         let viewModel: AssetPreviewViewModel
 
         switch draft.transactionMode {
         case .algo:
-            viewModel = AssetPreviewViewModel(
-                AssetPreviewModelAdapter.adapt((draft.from, currency))
+            let algoAssetItem = AlgoAssetItem(
+                account: draft.from,
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
+            let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+            viewModel = AssetPreviewViewModel(algoAssetPreview)
         case .asset(let asset):
-
             if let collectibleAsset = asset as? CollectibleAsset {
                 let draft = CollectibleAssetPreviewSelectionDraft(
+                    asset: collectibleAsset,
                     currency: currency,
-                    asset: collectibleAsset
+                    currencyFormatter: currencyFormatter
                 )
                 viewModel = AssetPreviewViewModel(draft)
             } else {
-                viewModel = AssetPreviewViewModel(
-                    AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
+                let assetItem = AssetItem(
+                    asset: asset,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
                 )
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+                viewModel = AssetPreviewViewModel(assetPreview)
             }
         }
 
@@ -240,13 +251,15 @@ extension SendTransactionScreen {
             }
         }
 
-        bindCurrencyAmount(amountValue, currency: sharedDataController.currency.value)
+        let currency = try? sharedDataController.currency.primaryValue?.unwrap()
+
+        bindCurrencyAmount(amountValue, currency: currency)
         valueLabel.text = showingValue
     }
     
     private func bindCurrencyAmount(_ amountValue: String, currency: Currency?) {
         guard let currency = currency,
-              let currencyPriceValue = currency.priceValue,
+              let currencyPriceValue = currency.algoValue,
               let amount = amountValue.decimalAmount  else {
             currencyValueLabel.text = nil
             return
@@ -264,7 +277,7 @@ extension SendTransactionScreen {
             }
         case .algo:
             if let algoCurrency = currency as? AlgoCurrency {
-                bindCurrencyAmount(amountValue, currency: algoCurrency.currency)
+                bindCurrencyAmount(amountValue, currency: algoCurrency.baseCurrency)
                 return
             }
             
@@ -598,7 +611,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
                 return
             }
 
-            let decimalSeparator = Locale.preferred().decimalSeparator?.first ?? "."
+            let decimalSeparator = Locale.preferred.decimalSeparator?.first ?? "."
 
             if amount.contains(decimalSeparator) {
                 return
@@ -877,6 +890,7 @@ extension SendTransactionScreen {
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -904,6 +918,7 @@ extension SendTransactionScreen {
         )
         transactionDraft.toContact = draft.toContact
         transactionDraft.asset = asset
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)

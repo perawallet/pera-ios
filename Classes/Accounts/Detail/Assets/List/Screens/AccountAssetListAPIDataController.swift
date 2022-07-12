@@ -23,14 +23,16 @@ final class AccountAssetListAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
+    var addedAssetDetails: [StandardAsset] = []
+    var removedAssetDetails: [StandardAsset] = []
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var accountHandle: AccountHandle
     private var assets: [StandardAsset] = []
 
     private var searchKeyword: String? = nil
     private var searchResults: [StandardAsset] = []
-
-    var addedAssetDetails: [StandardAsset] = []
-    var removedAssetDetails: [StandardAsset] = []
 
     private var listItems: [AssetPreviewModel] = []
 
@@ -101,10 +103,15 @@ extension AccountAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            let currencyHandle = self.sharedDataController.currency
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
             let isWatchAccount = self.accountHandle.value.isWatchAccount()
 
-            let portfolio = AccountPortfolio(account: self.accountHandle)
+            let portfolio = AccountPortfolioItem(
+                accountValue: self.accountHandle,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
             let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
@@ -153,9 +160,13 @@ extension AccountAssetListAPIDataController {
             var assetPreviewModels: [AssetPreviewModel] = []
 
             if self.isKeywordContainsAlgo() {
-                assetPreviewModels.append(
-                    AssetPreviewModelAdapter.adapt((self.accountHandle.value, currencyHandle.value))
+                let algoAssetItem = AlgoAssetItem(
+                    account: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
                 )
+                let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+                assetPreviewModels.append(algoAssetPreview)
             }
 
             self.searchResults.forEach { asset in
@@ -163,9 +174,13 @@ extension AccountAssetListAPIDataController {
                     return
                 }
 
-                assetPreviewModels.append(
-                    AssetPreviewModelAdapter.adaptAssetSelection((asset, currencyHandle.value))
+                let assetItem = AssetItem(
+                    asset: asset,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
                 )
+                let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+                assetPreviewModels.append(preview)
             }
 
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
@@ -291,11 +306,11 @@ extension AccountAssetListAPIDataController {
         }
 
         guard let searchKeyword = searchKeyword else {
-            searchResults = accountHandle.value.standardAssets
+            searchResults = accountHandle.value.standardAssets.someArray
             return
         }
 
-        searchResults = accountHandle.value.standardAssets.filter { asset in
+        searchResults = accountHandle.value.standardAssets.someArray.filter { asset in
             isAssetContainsID(asset, query: searchKeyword) ||
             isAssetContainsName(asset, query: searchKeyword) ||
             isAssetContainsUnitName(asset, query: searchKeyword)
@@ -303,7 +318,7 @@ extension AccountAssetListAPIDataController {
     }
 
     private func resetSearch() {
-        searchResults = accountHandle.value.standardAssets
+        searchResults = accountHandle.value.standardAssets.someArray
         deliverContentSnapshot()
     }
 

@@ -52,6 +52,8 @@ final class HomeViewController:
             bannerController: bannerController!
         )
 
+    private let copyToClipboardController: CopyToClipboardController
+
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
@@ -73,8 +75,9 @@ final class HomeViewController:
     
     private var isViewFirstAppeared = true
 
+    private var totalPortfolioValue: PortfolioValue?
+
     private let dataController: HomeDataController
-    private let copyToClipboardController: CopyToClipboardController
 
     init(
         dataController: HomeDataController,
@@ -109,12 +112,19 @@ final class HomeViewController:
             guard let self = self else { return }
             
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdate(let updates):
+                let totalPortfolioItem = updates.totalPortfolioItem
+
+                self.totalPortfolioValue = totalPortfolioItem?.portfolioValue
+
+                self.bindNavigation(totalPortfolioItem)
+
                 self.configureWalletConnectIfNeeded()
 
-                self.bindNavigation()
-
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(
+                    updates.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
                 self.updateUIWhenListDidReload()
 
                 self.presentCopyAddressStoryIfNeeded()
@@ -261,14 +271,11 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    private func bindNavigation() {
-        guard let title = dataController.portfolioViewModel?.value?.string else {
-            return
-        }
-
-        let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
-
-        navigationView.bind(title: title, subtitle: subtitle)
+    private func bindNavigation(
+        _ totalPortfolioItem: TotalPortfolioItem?
+    ) {
+        let viewModel = HomePortfolioNavigationViewModel(totalPortfolioItem)
+        navigationView.bind(viewModel)
     }
 }
 
@@ -313,7 +320,7 @@ extension HomeViewController {
 
             self.modalTransition.perform(
                 .portfolioCalculationInfo(
-                    result: item.totalValueResult,
+                    result: self.totalPortfolioValue,
                     eventHandler: eventHandler
                 ),
                 by: .presentWithoutNavigationController
@@ -364,9 +371,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
@@ -386,9 +392,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-
             if let url = item.ctaUrl {
-                self.open(url)
+                self.openInBrowser(url)
             }
         }
     }
@@ -824,8 +829,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             }
 
             self.log(ReceiveCopyEvent(address: accountHandle.value.address))
-            UIPasteboard.general.string = accountHandle.value.address
-            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+            self.copyToClipboardController.copyAddress(accountHandle.value)
         }
 
         return uiInteractions
@@ -862,7 +866,7 @@ extension HomeViewController {
             return nil
         }
 
-        guard case HomeItem.account(HomeAccountItem.cell(let item)) = itemIdentifier else {
+        guard case HomeItemIdentifier.account(HomeAccountItemIdentifier.cell(let item)) = itemIdentifier else {
             return nil
         }
 

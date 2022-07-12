@@ -82,7 +82,15 @@ final class Transaction:
         self.date = apiModel.roundTime.unwrap { Date(timeIntervalSince1970: $0) }
         self.transactionSignature = apiModel.signature
         self.groupKey = apiModel.group
-        self.innerTransactions = apiModel.innerTransactions.unwrapMap(Transaction.init)
+        /// <note>
+        /// Inner transactions don't have transaction ID, therefore we are using its parent transaction ID as its ID.
+        self.innerTransactions = apiModel.innerTransactions.map { innerTransactionAPIModels in
+            innerTransactionAPIModels.map { innerTransactionAPIModel in
+                var innerTransactionAPIModel = innerTransactionAPIModel
+                innerTransactionAPIModel.id = apiModel.id
+                return Transaction(innerTransactionAPIModel)
+            }
+        }
     }
 
     func encode() -> APIModel {
@@ -171,6 +179,31 @@ extension Transaction {
         return assetTransfer.receiverAddress == account &&
         assetTransfer.amount == 0 &&
         sender == account
+    }
+
+    var allInnerTransactionsCount: Int {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return .zero
+        }
+
+        return innerTransactions.reduce(
+            innerTransactions.count
+        ) { partialResult, transaction in
+            partialResult + transaction.allInnerTransactionsCount
+        }
+    }
+
+    func setAllCompleted() {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            status = .completed
+            return
+        }
+
+        status = .completed
+
+        innerTransactions.forEach { $0.setAllCompleted() }
     }
 }
 

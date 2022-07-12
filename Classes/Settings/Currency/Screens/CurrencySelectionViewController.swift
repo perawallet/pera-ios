@@ -27,33 +27,38 @@ final class CurrencySelectionViewController: BaseViewController {
     
     private lazy var listLayout = CurrencySelectionListLayout(dataSource)
     private lazy var dataSource = CurrencySelectionListDataSource(contextView.collectionView)
-    private lazy var dataController: CurrencySelectionListAPIDataController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return CurrencySelectionListAPIDataController(api)
-    }()
+
+    private let dataController: CurrencySelectionDataController
+
+    init(
+        dataController: CurrencySelectionDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dataController.eventHandler = {
             [weak self] event in
-            
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
-                self.contextView.bindData(
-                    CurrencySelectionViewModel(currency: self.api?.session.preferredCurrency)
+                self.dataSource.apply(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
                 )
+
+                let selectedCurrencyID = self.dataController.selectedCurrencyID
+                let viewModel = CurrencySelectionViewModel(currencyID: selectedCurrencyID)
+                self.contextView.bindData(viewModel)
             }
         }
         
-        dataController.load()
+        dataController.loadData()
     }
     
     override func configureAppearance() {
@@ -77,28 +82,24 @@ final class CurrencySelectionViewController: BaseViewController {
             let noContentCell = cell as! NoContentWithActionCell
             noContentCell.observe(event: .performPrimaryAction) {
                 [weak self] in
-                guard let self = self else {
-                    return
-                }
-                
-                self.dataController.load()
+                guard let self = self else { return }
+                self.dataController.loadData()
             }
         }
         listLayout.handlers.didSelectCurrency = {
             [weak self] indexPath in
-            guard let self = self,
-                  let selectedCurrency = self.dataController[indexPath.item] else {
-                      return
-                  }
-            
-            self.log(CurrencyChangeEvent(currencyId: selectedCurrency.id))
-            
+            guard let self = self else { return }
+            guard let selectedCurrencyID = self.dataController.selectCurrency(
+                at: indexPath
+            )?.id else {
+                return
+            }
+
             self.sharedDataController.stopPolling()
-            
-            self.api?.session.preferredCurrency = selectedCurrency.id
-            self.dataController.setSelectedCurrency()
-            
+            self.sharedDataController.currency.setAsPrimaryCurrency(selectedCurrencyID)
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
+
+            self.log(CurrencyChangeEvent(currencyId: selectedCurrencyID.localValue))
             
             NotificationCenter.default.post(
                 name: Self.didChangePreferredCurrency,

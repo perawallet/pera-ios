@@ -48,9 +48,22 @@ final class CurrencySelectionView:
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func bindData(_ viewModel: CurrencySelectionViewModel?) {
-        titleLabel.editText = viewModel?.title
-        descriptionLabel.attributedText = viewModel?.description
+    func bindData(
+        _ viewModel: CurrencySelectionViewModel?
+    ) {
+        if let title = viewModel?.title {
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.text = nil
+            titleLabel.attributedText = nil
+        }
+
+        if let description = viewModel?.description {
+            description.load(in: descriptionLabel)
+        } else {
+            descriptionLabel.text = nil
+            descriptionLabel.attributedText = nil
+        }
     }
 }
 
