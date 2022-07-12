@@ -21,7 +21,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     private(set) var sender: String?
     private(set) var applicationID: String?
     private(set) var onCompletion: String?
-    private(set) var assetInformationViewModel: WCAssetInformationViewModel?
+    private(set) var transactionAssetInformationViewModel: AppCallTransactionAssetInformationViewModel?
     private(set) var fee: TransactionAmountView.Mode?
     private(set) var transactionIDTitle: String?
     private(set) var transactionID: String?
@@ -32,14 +32,14 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     init(
         transaction: Transaction,
         account: Account,
-        assetDetail: StandardAsset?
+        assets: [StandardAsset]?
     ) {
         bindSender(
             transaction: transaction,
             account: account
         )
         bindApplicationID(transaction)
-        bindAsset(assetDetail)
+        bindAssets(assets)
         bindOnCompletion(transaction)
         bindFee(transaction)
         bindInnerTransactionsViewModel(transaction)
@@ -73,13 +73,13 @@ extension AppCallTransactionDetailViewModel {
         }
     }
 
-    private func bindAsset(
-        _ assetDetail: StandardAsset?
+    private func bindAssets(
+        _ assets: [StandardAsset]?
     ) {
-        if let assetDetail = assetDetail {
-            assetInformationViewModel = WCAssetInformationViewModel(
-                title: "asset-title".localized,
-                asset: assetDetail
+        if let assets = assets,
+           !assets.isEmpty {
+            transactionAssetInformationViewModel = AppCallTransactionAssetInformationViewModel(
+                assets: assets
             )
         }
     }

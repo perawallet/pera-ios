@@ -190,7 +190,7 @@ extension InnerTransactionListViewController {
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: draft.type,
-                assetDetail: getAssetDetailForTransactionType(transaction),
+                assets: getAssetDetailForTransactionType(transaction),
                 eventHandler: eventHandler
             ),
             by: .present
@@ -204,21 +204,20 @@ extension InnerTransactionListViewController {
             .transactionDetail(
                 account: dataController.draft.account,
                 transaction: transaction,
-                assetDetail: getAssetDetailForTransactionType(transaction)
+                assetDetail: getAssetDetailForTransactionType(transaction)?.first
             ),
             by: .present
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> StandardAsset? {
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> [StandardAsset]? {
         let draft = dataController.draft
 
         switch draft.type {
         case .all:
             let assetID =
             transaction.assetTransfer?.assetId ??
-            transaction.assetFreeze?.assetId ??
-            transaction.applicationCall?.foreignAssets?.first
+            transaction.assetFreeze?.assetId
 
             if let assetID = assetID,
                 let decoration = sharedDataController.assetDetailCollection[assetID] {
@@ -226,12 +225,33 @@ extension InnerTransactionListViewController {
                     asset: ALGAsset(id: assetID),
                     decoration: decoration
                 )
-                return standardAsset
+                return [standardAsset]
+            }
+
+            if let applicationCall = transaction.applicationCall,
+               let foreignAssets = applicationCall.foreignAssets {
+                let assets: [StandardAsset] = foreignAssets.compactMap { ID in
+                    if let decoration = sharedDataController.assetDetailCollection[ID] {
+                        let standardAsset = StandardAsset(
+                            asset: ALGAsset(id: ID),
+                            decoration: decoration
+                        )
+                        return standardAsset
+                    }
+
+                    return nil
+                }
+
+                return assets
             }
 
             return nil
         case .asset:
-            return draft.asset
+            guard let asset = draft.asset else {
+                return nil
+            }
+
+            return [asset]
         case .algos:
             return nil
         }

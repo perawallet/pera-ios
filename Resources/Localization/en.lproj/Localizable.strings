@@ -71,6 +71,7 @@
 "title-rekeyed-account" = "Rekeyed Account";
 "title-more" = "More";
 "title-app-call" = "App Call";
+"title-show-more-assets" = "Show +%@ more assets";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -220,6 +221,7 @@
 
 // MARK: Asset
 "asset-title" = "Asset";
+"assets-title" = "Assets";
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
