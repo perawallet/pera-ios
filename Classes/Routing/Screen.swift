@@ -53,8 +53,12 @@ indirect enum Screen {
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assetDetail: StandardAsset?,
+        assets: [StandardAsset]?,
         eventHandler: AppCallTransactionDetailViewController.EventHandler
+    )
+    case appCallAssetList(
+        dataController: AppCallAssetListDataController,
+        eventHandler: AppCallAssetListViewController.EventHandler
     )
     case addAsset(account: Account)
     case removeAsset(account: Account)

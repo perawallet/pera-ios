@@ -518,17 +518,24 @@ class Router:
             account,
             transaction,
             transactionTypeFilter,
-            assetDetail,
+            assets,
             eventHandler
         ):
             let aViewController = AppCallTransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: transactionTypeFilter,
-                assetDetail: assetDetail,
+                assets: assets,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case .appCallAssetList(let dataController, let eventHandler):
+            let aViewController = AppCallAssetListViewController(
+                dataController: dataController,
                 configuration: configuration
             )
             aViewController.eventHandler = eventHandler

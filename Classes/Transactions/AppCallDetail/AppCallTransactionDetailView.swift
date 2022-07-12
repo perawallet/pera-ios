@@ -27,7 +27,7 @@ final class AppCallTransactionDetailView:
     private lazy var applicationIDView = TransactionTextInformationView()
     private lazy var onCompletionView = TransactionTextInformationView()
     private lazy var assetViewCanvas = MacaroonUIKit.BaseView()
-    private lazy var assetView = WCAssetInformationView() /// <todo>: Change asset view with new design when it is ready.
+    private lazy var assetView = AppCallTransactionAssetInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
     private lazy var transactionIDView = TransactionTextInformationView()
@@ -53,7 +53,7 @@ final class AppCallTransactionDetailView:
     func linkInteractors() {
         senderView.addInteraction(senderContextMenuInteraction)
         applicationIDView.addInteraction(applicationIDContextMenuInteraction)
-        assetViewCanvas.addInteraction(assetContextMenuInteraction)
+//        assetViewCanvas.addInteraction(assetContextMenuInteraction)
         transactionIDView.addInteraction(transactionIDContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
@@ -73,6 +73,17 @@ final class AppCallTransactionDetailView:
             }
 
             self.notifyDelegateToOpenInnerTransactionList()
+        }
+
+        assetView.assetInfoView.observe(
+            event: .performShowMore
+        ) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.notifyDelegateToOpenAssetList()
         }
     }
 
@@ -260,8 +271,8 @@ extension AppCallTransactionDetailView: ViewModelBindable {
             )
         )
 
-        if let assetInformationViewModel = viewModel?.assetInformationViewModel {
-            assetView.bindData(assetInformationViewModel)
+        if let transactionAssetInformationViewModel = viewModel?.transactionAssetInformationViewModel {
+            assetView.bindData(transactionAssetInformationViewModel)
         } else {
             assetViewCanvas.isHidden = true
         }
@@ -319,6 +330,11 @@ extension AppCallTransactionDetailView {
     func notifyDelegateToOpenInnerTransactionList() {
         delegate?.appCallTransactionDetailViewDidTapShowInnerTransactions(self)
     }
+
+    @objc
+    func notifyDelegateToOpenAssetList() {
+        delegate?.appCallTransactionDetailViewDidTapShowMoreAssets(self)
+    }
 }
 
 extension AppCallTransactionDetailView {
@@ -364,6 +380,9 @@ protocol AppCallTransactionDetailViewDelegate: AnyObject {
         didOpen explorer: AlgoExplorerType
     )
     func appCallTransactionDetailViewDidTapShowInnerTransactions(
+        _ transactionDetailView: AppCallTransactionDetailView
+    )
+    func appCallTransactionDetailViewDidTapShowMoreAssets(
         _ transactionDetailView: AppCallTransactionDetailView
     )
 }

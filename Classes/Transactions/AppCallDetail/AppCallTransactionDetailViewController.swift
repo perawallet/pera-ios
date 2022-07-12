@@ -30,27 +30,31 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     private let account: Account
     private let transaction: Transaction
     private let transactionTypeFilter: TransactionTypeFilter
-    private let assetDetail: StandardAsset?
+    private let assets: [StandardAsset]?
     private let copyToClipboardController: CopyToClipboardController
+
+    private lazy var bottomSheetTransition = BottomSheetTransition(
+        presentingViewController: self
+    )
 
     private lazy var appCallTransactionDetailViewModel = AppCallTransactionDetailViewModel(
         transaction: transaction,
         account: account,
-        assetDetail: assetDetail
+        assets: assets
     )
 
     init(
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assetDetail: StandardAsset?,
+        assets: [StandardAsset]?,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
         self.transaction = transaction
         self.transactionTypeFilter = transactionTypeFilter
-        self.assetDetail = assetDetail
+        self.assets = assets
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -134,7 +138,7 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyTransactionID) {
                 [unowned self] _ in
-                self.copyToClipboardController.copyID(self.assetDetail!.id)
+//                self.copyToClipboardController.copyID(self.assetDetail!.id)
             }
             return UIMenu(children: [ copyActionItem ])
         }
@@ -196,7 +200,7 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
                 dataController: InnerTransactionListLocalDataController(
                     draft: InnerTransactionListDraft(
                         type: transactionTypeFilter,
-                        asset: assetDetail,
+                        asset: assets?.first,
                         account: account,
                         innerTransactions: transaction.innerTransactions!
                     )
@@ -204,6 +208,37 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
                 eventHandler: eventHandler
             ),
             by: .push
+        )
+    }
+
+    func appCallTransactionDetailViewDidTapShowMoreAssets(
+        _ transactionDetailView: AppCallTransactionDetailView
+    ) {
+        guard let assets = assets else {
+            return
+        }
+
+        let eventHandler: AppCallAssetListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+
+            }
+
+            switch event {
+            case .performClose:
+                self.dismiss(animated: true)
+            }
+        }
+
+        bottomSheetTransition.perform(
+            .appCallAssetList(
+                dataController: AppCallAssetListLocalDataController(
+                    assets: assets
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
         )
     }
 }

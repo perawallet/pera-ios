@@ -24,7 +24,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let openInGoalSeekerButton: ButtonStyle
     let buttonsCorner: Corner
     let senderViewTheme: TransactionTextInformationViewTheme
-    let assetViewTheme: WCAssetInformationViewTheme
+    let assetViewTheme: AppCallTransactionAssetInformationViewTheme
     let innerTransactionViewTheme: TransactionAmountInformationViewTheme
     let onCompletionViewTheme: TransactionTextInformationViewTheme
     let textInformationViewCommonTheme: TransactionTextInformationViewTheme
@@ -58,7 +58,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
         textInformationViewCommonTheme = TransactionTextInformationViewTheme().configuredForInteraction()
         onCompletionViewTheme = TransactionTextInformationViewTheme().configuredForInteraction()
         feeViewTheme = TransactionAmountInformationViewTheme().configuredForInteraction()
-        assetViewTheme = WCAssetInformationViewTheme()
+        assetViewTheme = AppCallTransactionAssetInformationViewTheme()
         innerTransactionViewTheme = TransactionAmountInformationViewTheme(
             transactionAmountViewTheme: TransactionAmountViewBiggerTheme()
         ).configuredForInteraction()
