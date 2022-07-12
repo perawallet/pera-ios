@@ -18,10 +18,12 @@ import Foundation
 import UIKit
 
 protocol CurrencySelectionDataController: AnyObject {
+    typealias Updates = (snapshot: Snapshot, isLoading: Bool)
     typealias Snapshot = NSDiffableDataSourceSnapshot<CurrencySelectionSection, CurrencySelectionItem>
 
-    var selectedCurrencyID: CurrencyID? { get }
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)? { get set }
+
+    var selectedCurrencyID: CurrencyID? { get }
 
     subscript (indexPath: IndexPath) -> Currency? { get }
     
@@ -38,7 +40,7 @@ protocol CurrencySelectionDataController: AnyObject {
 }
 
 enum CurrencySelectionDataControllerEvent {
-    case didUpdate(CurrencySelectionDataController.Snapshot)
+    case didUpdate(CurrencySelectionDataController.Updates)
 }
 
 enum CurrencySelectionSection:

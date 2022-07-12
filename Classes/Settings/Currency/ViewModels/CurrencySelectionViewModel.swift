@@ -54,14 +54,20 @@ extension CurrencySelectionViewModel {
             attributedString: descriptionText.footnoteRegular()
         )
 
-        let primaryCurrencyRange = (descriptionText as NSString).range(of: primaryCurrencyValue)
+        let primaryCurrencyRange = (descriptionText as NSString).range(
+            of: primaryCurrencyValue,
+            options: []
+        )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
             value: AppColors.Components.Text.main.uiColor,
             range: primaryCurrencyRange
         )
 
-        let secondaryCurrencyRange = (descriptionText as NSString).range(of: secondaryCurrencyValue)
+        let secondaryCurrencyRange = (descriptionText as NSString).range(
+            of: secondaryCurrencyValue,
+            options: .backwards
+        )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
             value: AppColors.Components.Text.main.uiColor,

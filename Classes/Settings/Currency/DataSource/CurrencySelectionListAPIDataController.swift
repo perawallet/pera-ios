@@ -23,12 +23,18 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
 
     private(set) var selectedCurrencyID: CurrencyID?
 
+    var isEmpty: Bool {
+        return currencies.isEmpty
+    }
+
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
     
     private var currencies = [Currency]()
     private var searchResults = [Currency]()
 
     private var lastSnapshot: Snapshot?
+
+    private var currencyObserverKey: UUID?
 
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
@@ -39,10 +45,14 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
         sharedDataController: SharedDataController,
         api: ALGAPI
     ) {
-        let selectedCurrency = try? sharedDataController.currency.primaryValue?.unwrap()
-        self.selectedCurrencyID = selectedCurrency?.id
         self.sharedDataController = sharedDataController
         self.api = api
+
+        setInitialSelectedCurrency()
+    }
+
+    deinit {
+        stopObservingSelectedCurrencyEvents()
     }
     
     subscript (indexPath: IndexPath) -> Currency? {
@@ -52,11 +62,11 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
 
 extension CurrencySelectionListAPIDataController {
     func loadData() {
-        deliverLoadingSnapshot()
+        deliverLoadingUpdates()
 
         currencies.removeAll()
         searchResults.removeAll()
-        
+
         api.getCurrencies { response in
             switch response {
             case let .success(currencyList):
@@ -74,15 +84,19 @@ extension CurrencySelectionListAPIDataController {
                 self.currencies = currencies
                 self.searchResults = currencies
 
-                self.deliverContentSnapshot()
+                self.deliverContentUpdates()
+
+                if self.selectedCurrencyID == nil {
+                    self.startObservingSelectedCurrencyEvents()
+                }
             case .failure:
-                self.deliverErrorContentSnapshot()
+                self.deliverErrorContentUpdates()
             }
         }
     }
 
     func reloadData() {
-        deliverContentSnapshot()
+        deliverContentUpdates()
     }
 }
 
@@ -100,7 +114,7 @@ extension CurrencySelectionListAPIDataController {
                 self.isCurrencyContainsName(currency, query: query)
             }
 
-            self.deliverContentSnapshot()
+            self.deliverContentUpdates()
         }
     }
 
@@ -117,7 +131,7 @@ extension CurrencySelectionListAPIDataController {
         searchResults.removeAll()
         searchResults = currencies
 
-        deliverContentSnapshot()
+        deliverContentUpdates()
     }
 }
 
@@ -129,26 +143,69 @@ extension CurrencySelectionListAPIDataController {
             return nil
         }
 
-        selectedCurrencyID = currency.id
+        setSelectedCurrency(currency)
         reloadData()
 
         return currency
     }
+
+    @discardableResult
+    private func setInitialSelectedCurrency() -> Bool {
+        let currencyValue = sharedDataController.currency.primaryValue
+
+        guard let rawCurrency = try? currencyValue?.unwrap() else {
+            return false
+        }
+
+        setSelectedCurrency(rawCurrency)
+        return true
+    }
+
+    private func setSelectedCurrency(
+        _ rawCurrency: Currency
+    ) {
+        selectedCurrencyID = rawCurrency.id
+    }
 }
 
 extension CurrencySelectionListAPIDataController {
-    private func deliverContentSnapshot() {
+    private func startObservingSelectedCurrencyEvents() {
+        currencyObserverKey = sharedDataController.currency.addObserver {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate:
+                let isSuccess = self.setInitialSelectedCurrency()
+
+                if isSuccess {
+                    self.stopObservingSelectedCurrencyEvents()
+                    self.reloadData()
+                }
+            }
+        }
+    }
+
+    private func stopObservingSelectedCurrencyEvents() {
+        if let currencyObserverKey = currencyObserverKey {
+            sharedDataController.currency.removeObserver(currencyObserverKey)
+        }
+    }
+}
+
+extension CurrencySelectionListAPIDataController {
+    private func deliverContentUpdates() {
         guard !self.currencies.isEmpty else {
-            deliverErrorContentSnapshot()
+            deliverErrorContentUpdates()
             return
         }
         
         guard !self.searchResults.isEmpty else {
-            deliverNoContentSnapshot()
+            deliverNoContentUpdates()
             return
         }
         
-        deliverSnapshot {
+        deliverUpdates {
             [weak self] in
             guard let self = self else { return nil }
             
@@ -174,24 +231,24 @@ extension CurrencySelectionListAPIDataController {
             )
             
             snapshot.reloadItems(currencyItems)
-            return snapshot
+            return (snapshot, false)
         }
     }
 
-    private func deliverLoadingSnapshot() {
-        deliverSnapshot {
+    private func deliverLoadingUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
                 [.empty(.loading)],
                 toSection: .empty
             )
-            return snapshot
+            return (snapshot, true)
         }
     }
     
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot {
+    private func deliverNoContentUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
@@ -200,37 +257,35 @@ extension CurrencySelectionListAPIDataController {
                 )],
                 toSection: .empty
             )
-            return snapshot
+            return (snapshot, false)
         }
     }
     
-    private func deliverErrorContentSnapshot() {
-        deliverSnapshot {
+    private func deliverErrorContentUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
             snapshot.appendSections([.error])
             snapshot.appendItems(
                 [.error],
                 toSection: .error
             )
-            return snapshot
+            return (snapshot, false)
         }
     }
     
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot?
+    private func deliverUpdates(
+        _ updates: @escaping () -> Updates?
     ) {
         snapshotQueue.async {
             [weak self] in
-            
-            guard
-                let self = self,
-                let newSnapshot = snapshot()
-            else {
+            guard let self = self else { return }
+
+            guard let updates = updates() else {
                 return
             }
             
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+            self.lastSnapshot = updates.snapshot
+            self.publish(.didUpdate(updates))
         }
     }
 }

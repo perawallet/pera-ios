@@ -215,7 +215,7 @@ extension HomeAPIDataController {
     }
     
     private func deliverUpdates(
-        _ updates: @escaping () -> (Updates?)
+        _ updates: @escaping () -> Updates?
     ) {
         snapshotQueue.async {
             [weak self] in

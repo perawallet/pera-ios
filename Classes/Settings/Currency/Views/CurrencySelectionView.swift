@@ -32,10 +32,14 @@ final class CurrencySelectionView:
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         return collectionView
     }()
+
+    private var isLoading = true {
+        didSet { updateWhenLoadingDidChange() }
+    }
     
     func customize(_ theme: CurrencySelectionViewTheme) {
         addTitle(theme)
@@ -65,9 +69,39 @@ final class CurrencySelectionView:
             descriptionLabel.attributedText = nil
         }
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if !bounds.isEmpty {
+            updateWhenViewDidLayoutSubviews()
+        }
+    }
 }
 
 extension CurrencySelectionView {
+    func showLoading() {
+        isLoading = true
+    }
+
+    func hideLoading() {
+        isLoading = false
+    }
+}
+
+extension CurrencySelectionView {
+    private func updateWhenViewDidLayoutSubviews() {
+        updateCollectionWhenViewDidLayoutSubviews()
+    }
+
+    private func updateWhenLoadingDidChange() {
+        titleLabel.isHidden = isLoading
+        descriptionLabel.isHidden = isLoading
+        searchInputView.isHidden = isLoading
+
+        updateCollectionWhenLoadingDidChange()
+    }
+
     private func addTitle(_ theme: CurrencySelectionViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
@@ -102,9 +136,26 @@ extension CurrencySelectionView {
     private func addCollectionView(_ theme: CurrencySelectionViewTheme) {
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(searchInputView.snp.bottom).offset(theme.collectionViewTopPadding)
+            $0.top.equalToSuperview()
             $0.leading.trailing.bottom.equalToSuperview()
         }
+    }
+
+    private func updateCollectionWhenLoadingDidChange() {
+        updateCollectionWhenViewDidLayoutSubviews()
+    }
+
+    private func updateCollectionWhenViewDidLayoutSubviews() {
+        let top: CGFloat
+        if isLoading {
+            top = 0
+        } else {
+            top = searchInputView.frame.maxY + theme.collectionViewTopPadding
+        }
+
+        collectionView.setContentInset(
+            top: top
+        )
     }
 }
 

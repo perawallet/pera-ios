@@ -16,7 +16,10 @@
 //  CurrencySelectionViewController.swift
 
 import UIKit
+import MacaroonUtils
 
+/// <todo>
+/// It should be reimplemented later with the base list screen integration.
 final class CurrencySelectionViewController: BaseViewController {
     static var didChangePreferredCurrency: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.preferredCurrency.didChange")
@@ -40,24 +43,27 @@ final class CurrencySelectionViewController: BaseViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
             
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdate(let updates):
+                if updates.isLoading {
+                    self.contextView.showLoading()
+                } else {
+                    self.contextView.hideLoading()
+                }
+
                 self.dataSource.apply(
-                    snapshot,
+                    updates.snapshot,
                     animatingDifferences: self.isViewAppeared
                 )
 
-                let selectedCurrencyID = self.dataController.selectedCurrencyID
-                let viewModel = CurrencySelectionViewModel(currencyID: selectedCurrencyID)
-                self.contextView.bindData(viewModel)
+                self.bindSelection()
             }
         }
-        
         dataController.loadData()
     }
     
@@ -89,9 +95,10 @@ final class CurrencySelectionViewController: BaseViewController {
         listLayout.handlers.didSelectCurrency = {
             [weak self] indexPath in
             guard let self = self else { return }
-            guard let selectedCurrencyID = self.dataController.selectCurrency(
-                at: indexPath
-            )?.id else {
+
+            let selectedCurrency = self.dataController.selectCurrency(at: indexPath)
+
+            guard let selectedCurrencyID = selectedCurrency?.id else {
                 return
             }
 
@@ -115,6 +122,14 @@ final class CurrencySelectionViewController: BaseViewController {
         contextView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension CurrencySelectionViewController {
+    private func bindSelection() {
+        let selectedCurrencyID = dataController.selectedCurrencyID
+        let viewModel = CurrencySelectionViewModel(currencyID: selectedCurrencyID)
+        contextView.bindData(viewModel)
     }
 }
 
