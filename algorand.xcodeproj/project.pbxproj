@@ -102,9 +102,6 @@
 		179085DE2833BE0C0098D53F /* StorySheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085DD2833BE0C0098D53F /* StorySheetTransitionController.swift */; };
 		179085DF2833BE0C0098D53F /* StorySheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085DD2833BE0C0098D53F /* StorySheetTransitionController.swift */; };
 		179085E02833BE0C0098D53F /* StorySheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085DD2833BE0C0098D53F /* StorySheetTransitionController.swift */; };
-		179085EB2836473C0098D53F /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = 179085EA2836473C0098D53F /* MacaroonStorySheet */; };
-		179085ED283647410098D53F /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = 179085EC283647410098D53F /* MacaroonStorySheet */; };
-		179085EF283647520098D53F /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = 179085EE283647520098D53F /* MacaroonStorySheet */; };
 		179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179278942244F8EE00097D32 /* UIFont+Additions.swift */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		17A011C527EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
@@ -4542,6 +4539,9 @@
 		F045421D287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
 		F045421E287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
 		F045421F287C13760081C01C /* AlgoAssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045421C287C13760081C01C /* AlgoAssetItem.swift */; };
+		F0454221287D8C820081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454220287D8C820081C01C /* MacaroonStorySheet */; };
+		F0454223287D8C8D0081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454222287D8C8D0081C01C /* MacaroonStorySheet */; };
+		F0454225287D8C940081C01C /* MacaroonStorySheet in Frameworks */ = {isa = PBXBuildFile; productRef = F0454224287D8C940081C01C /* MacaroonStorySheet */; };
 		F045BE222869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
 		F045BE232869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
 		F045BE242869CAA50069056B /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045BE212869CAA50069056B /* CurrencyFormatter.swift */; };
@@ -6375,7 +6375,6 @@
 		F0431F18287577540004CB7E /* AlgoCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoCurrency.swift; sourceTree = "<group>"; };
 		F0431F1C287577660004CB7E /* FiatCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCurrency.swift; sourceTree = "<group>"; };
 		F0431F20287643230004CB7E /* CurrencyID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyID.swift; sourceTree = "<group>"; };
-		F0431F242877732B0004CB7E /* macaroon */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = macaroon; path = "../../../../Open Source/iOS/macaroon"; sourceTree = "<group>"; };
 		F0431F25287781B20004CB7E /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
 		F0431F2928778D900004CB7E /* HomePortfolioNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioNavigationViewModel.swift; sourceTree = "<group>"; };
 		F0431F2D287798620004CB7E /* AccountPortfolioItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPortfolioItem.swift; sourceTree = "<group>"; };
@@ -6501,7 +6500,6 @@
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD52743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD47342745434A00C91946 /* KeychainAccess in Frameworks */,
-				179085EF283647520098D53F /* MacaroonStorySheet in Frameworks */,
 				CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */,
 				CBAD47372745434A00C91946 /* MacaroonApplication in Frameworks */,
 				CBAD47322745434A00C91946 /* Charts in Frameworks */,
@@ -6513,6 +6511,7 @@
 				CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */,
 				CBAD472B2745434A00C91946 /* MagpieCore in Frameworks */,
 				CBAD472A2745434A00C91946 /* MagpieAlamofire in Frameworks */,
+				F0454225287D8C940081C01C /* MacaroonStorySheet in Frameworks */,
 				CBAD473B2745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD47362745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD472D2745434A00C91946 /* MagpieHipo in Frameworks */,
@@ -6536,7 +6535,6 @@
 				CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD47242745434A00C91946 /* MacaroonResources in Frameworks */,
-				179085ED283647410098D53F /* MacaroonStorySheet in Frameworks */,
 				CBAD471E2745434A00C91946 /* MacaroonApplication in Frameworks */,
 				D4A241DE27D2BF1300641FF0 /* Prism in Frameworks */,
 				CBAD47192745434A00C91946 /* Charts in Frameworks */,
@@ -6548,6 +6546,7 @@
 				CBAD47162745434A00C91946 /* SwiftDate in Frameworks */,
 				CBAD47122745434A00C91946 /* MagpieCore in Frameworks */,
 				CBAD47112745434A00C91946 /* MagpieAlamofire in Frameworks */,
+				F0454223287D8C8D0081C01C /* MacaroonStorySheet in Frameworks */,
 				CBAD47222745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD471D2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47142745434A00C91946 /* MagpieHipo in Frameworks */,
@@ -6571,7 +6570,6 @@
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
 				CBAD47062745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD46FA2745434A00C91946 /* MagpieExceptions in Frameworks */,
-				179085EB2836473C0098D53F /* MacaroonStorySheet in Frameworks */,
 				CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
 				CBAD46F82745434A00C91946 /* MagpieAlamofire in Frameworks */,
 				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
@@ -6583,6 +6581,7 @@
 				CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				CBAD47052745434A00C91946 /* MacaroonApplication in Frameworks */,
+				F0454221287D8C820081C01C /* MacaroonStorySheet in Frameworks */,
 				CB3AEBD32743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD470B2745434A00C91946 /* MacaroonResources in Frameworks */,
 				CBAD46FF2745434A00C91946 /* SwiftDate in Frameworks */,
@@ -9111,7 +9110,6 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
-				F0431F242877732B0004CB7E /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
@@ -15191,7 +15189,7 @@
 				D4B33AB027F1E65900523CEA /* ActiveLabel */,
 				2B77FAB1280D7FD30020376D /* KingfisherWebP */,
 				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
-				179085EE283647520098D53F /* MacaroonStorySheet */,
+				F0454224287D8C940081C01C /* MacaroonStorySheet */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -15238,7 +15236,7 @@
 				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
 				2B77FAAF280D7FC90020376D /* KingfisherWebP */,
 				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
-				179085EC283647410098D53F /* MacaroonStorySheet */,
+				F0454222287D8C8D0081C01C /* MacaroonStorySheet */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -15285,7 +15283,7 @@
 				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
 				2B77FAAD280D7F900020376D /* KingfisherWebP */,
 				F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */,
-				179085EA2836473C0098D53F /* MacaroonStorySheet */,
+				F0454220287D8C820081C01C /* MacaroonStorySheet */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -20965,18 +20963,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		179085EA2836473C0098D53F /* MacaroonStorySheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MacaroonStorySheet;
-		};
-		179085EC283647410098D53F /* MacaroonStorySheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MacaroonStorySheet;
-		};
-		179085EE283647520098D53F /* MacaroonStorySheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MacaroonStorySheet;
-		};
 		2B187D9826E546CE005BEDFD /* MagpieAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
@@ -21351,6 +21337,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
+		};
+		F0454220287D8C820081C01C /* MacaroonStorySheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonStorySheet;
+		};
+		F0454222287D8C8D0081C01C /* MacaroonStorySheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonStorySheet;
+		};
+		F0454224287D8C940081C01C /* MacaroonStorySheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonStorySheet;
 		};
 		F05E6C542863009C004E33D6 /* MacaroonToastUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
