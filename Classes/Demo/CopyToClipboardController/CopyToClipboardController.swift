@@ -88,6 +88,18 @@ extension CopyToClipboardController {
         let item = ClipboardItem(copy: noteCopy, interaction: interaction)
         return copy(item)
     }
+
+    func copyApplicationCallAppID(
+        _ transaction: Transaction
+    ) {
+        let idCopy = String(transaction.applicationCall!.appID ?? .zero)
+        let interaction = CopyToClipboardInteraction(
+            title: "asset-id-copied-title".localized,
+            body: "#\(idCopy)"
+        )
+        let item = ClipboardItem(copy: idCopy, interaction: interaction)
+        return copy(item)
+    }
 }
 
 struct ClipboardItem {

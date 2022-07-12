@@ -1,0 +1,203 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   ApplicationCallTransactionDetailViewController.swift
+
+import UIKit
+
+final class AppCallTransactionDetailViewController: BaseScrollViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+    
+    override var name: AnalyticsScreenName? {
+        return .transactionDetail
+    }
+
+    private lazy var appCallTransactionDetailView = AppCallTransactionDetailView()
+
+    private let account: Account
+    private let transaction: Transaction
+    private let transactionTypeFilter: TransactionTypeFilter
+    private let assetDetail: StandardAsset?
+    private let copyToClipboardController: CopyToClipboardController
+
+    private lazy var appCallTransactionDetailViewModel = AppCallTransactionDetailViewModel(
+        transaction: transaction,
+        account: account,
+        assetDetail: assetDetail
+    )
+
+    init(
+        account: Account,
+        transaction: Transaction,
+        transactionTypeFilter: TransactionTypeFilter,
+        assetDetail: StandardAsset?,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.account = account
+        self.transaction = transaction
+        self.transactionTypeFilter = transactionTypeFilter
+        self.assetDetail = assetDetail
+        self.copyToClipboardController = copyToClipboardController
+
+        super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        title = "title-app-call".localized
+
+        addBarButtons()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+
+        addAppCallTransactionDetailView()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        appCallTransactionDetailView.delegate = self
+    }
+
+    override func bindData() {
+        super.bindData()
+
+        appCallTransactionDetailView.bindData(appCallTransactionDetailViewModel)
+    }
+}
+
+extension AppCallTransactionDetailViewController {
+    private func addAppCallTransactionDetailView() {
+        appCallTransactionDetailView.customize(AppCallTransactionDetailViewTheme())
+
+        contentView.addSubview(appCallTransactionDetailView)
+        appCallTransactionDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.eventHandler?(.performClose)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+}
+
+extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDelegate {
+    func contextMenuInteractionForSender(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyAddress(self.transaction.sender.someString)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForApplicationID(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyApplicationCallAppID(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForAsset(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.assetDetail!.id)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForTransactionNote(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionNote) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyNote(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func appCallTransactionDetailView(
+        _ transactionDetailView: AppCallTransactionDetailView,
+        didOpen explorer: AlgoExplorerType
+    ) {
+        if let api = api,
+           let transactionId = transaction.id,
+           let url = explorer.transactionURL(with: transactionId, in: api.network) {
+            open(url)
+        }
+    }
+
+    func appCallTransactionDetailViewDidTapShowInnerTransactions(
+        _ transactionDetailView: AppCallTransactionDetailView
+    ) {
+        let eventHandler: InnerTransactionListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+
+            }
+
+            switch event {
+            case .performClose:
+                self.dismiss(animated: true)
+            }
+        }
+
+        open(
+            .innerTransactionList(
+                dataController: InnerTransactionListLocalDataController(
+                    draft: InnerTransactionListDraft(
+                        type: transactionTypeFilter,
+                        asset: assetDetail,
+                        account: account,
+                        innerTransactions: transaction.innerTransactions!
+                    )
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .push
+        )
+    }
+}
+
+extension AppCallTransactionDetailViewController {
+    enum Event {
+        case performClose
+    }
+}

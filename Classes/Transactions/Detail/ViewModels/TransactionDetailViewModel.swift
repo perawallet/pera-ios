@@ -64,6 +64,8 @@ extension TransactionDetailViewModel {
     ) {
         transactionStatus = transaction.status
         userViewTitle = "transaction-detail-to".localized
+        opponentViewTitle = "transaction-detail-from".localized
+
         userViewDetail = account.name
         
         if let fee = transaction.fee {
@@ -129,6 +131,8 @@ extension TransactionDetailViewModel {
         bindReward(for: transaction)
 
         userViewTitle = "transaction-detail-from".localized
+        opponentViewTitle = "transaction-detail-to".localized
+
         userViewDetail = account.name
 
         if let fee = transaction.fee {

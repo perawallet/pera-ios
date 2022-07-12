@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionSendDraft.swift
+//   InnerTransactionListViewControllerTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-protocol TransactionSendDraft {
-    var from: Account { get set }
-    var toAccount: Account? { get set }
-    var amount: Decimal? { get set }
-    var fee: UInt64? { get set }
-    var isMaxTransaction: Bool { get set }
-    var identifier: String? { get set }
-    var note: String? { get set }
-    var lockedNote: String? { get set }
-    var toContact: Contact? { get set }
-    var nameService: NameService? { get set }
+struct InnerTransactionListViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    let background: ViewStyle
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+    }
 }

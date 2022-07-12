@@ -287,11 +287,16 @@ extension TransactionDetailView: ViewModelBindable {
             )
         }
 
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                TitledInformation(title: viewModel?.userViewTitle, detail: viewModel?.userViewDetail)
+        if let userViewDetail = viewModel?.userViewDetail {
+            userView.bindData(
+                TransactionTextInformationViewModel(
+                    TitledInformation(title: viewModel?.userViewTitle, detail: userViewDetail)
+                )
             )
-        )
+        } else {
+            userView.hideViewInStack()
+        }
+
 
         if let feeViewMode = viewModel?.feeViewMode {
             feeView.bindData(
@@ -341,6 +346,7 @@ extension TransactionDetailView: ViewModelBindable {
                 )
             )
         } else {
+            opponentView.hideViewInStack()
             opponentView.removeAccessoryViews()
         }
     }

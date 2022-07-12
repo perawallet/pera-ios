@@ -12,20 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionSendDraft.swift
+//   AssetConfigInnerTransactionPreviewViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-protocol TransactionSendDraft {
-    var from: Account { get set }
-    var toAccount: Account? { get set }
-    var amount: Decimal? { get set }
-    var fee: UInt64? { get set }
-    var isMaxTransaction: Bool { get set }
-    var identifier: String? { get set }
-    var note: String? { get set }
-    var lockedNote: String? { get set }
-    var toContact: Contact? { get set }
-    var nameService: NameService? { get set }
+struct AssetConfigInnerTransactionPreviewViewModel:
+    InnerTransactionPreviewViewModel {
+    var title: EditText?
+    var amountViewModel: TransactionAmountViewModel?
+
+    init(
+        _ transaction: Transaction
+    ) {
+        bindTitle(transaction)
+    }
+}
+
+extension AssetConfigInnerTransactionPreviewViewModel {
+    private mutating func bindTitle(
+        _ transaction: Transaction
+    ) {
+        title = Self.getTitle(
+            transaction.sender.shortAddressDisplay
+        )
+    }
 }

@@ -498,7 +498,12 @@ class Router:
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
-        case let .transactionDetail(account, transaction, transactionType, assetDetail):
+        case let .transactionDetail(account, transaction, assetDetail):
+            let transactionType =
+            transaction.sender == account.address
+            ? TransactionType.sent
+            : .received
+
             viewController = TransactionDetailViewController(
                 account: account,
                 transaction: transaction,
@@ -509,6 +514,25 @@ class Router:
                 ),
                 configuration: configuration
             )
+        case let .appCallTransactionDetail(
+            account,
+            transaction,
+            transactionTypeFilter,
+            assetDetail,
+            eventHandler
+        ):
+            let aViewController = AppCallTransactionDetailViewController(
+                account: account,
+                transaction: transaction,
+                transactionTypeFilter: transactionTypeFilter,
+                assetDetail: assetDetail,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .assetDetail(draft):
             viewController = AssetDetailViewController(
                 draft: draft,
@@ -919,6 +943,13 @@ class Router:
             viewController = screen
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case .innerTransactionList(let dataController, let eventHandler):
+            let aViewController = InnerTransactionListViewController(
                 dataController: dataController,
                 configuration: configuration
             )
