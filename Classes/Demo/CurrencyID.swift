@@ -32,30 +32,32 @@ struct CurrencyID: Equatable {
     let remoteValue: String
     let pairValue: String
 
-    init() {
-        self.localValue = ""
-        self.remoteValue = ""
-        self.pairValue = ""
-    }
-
     init(
         cacheValue: String?
     ) {
         let components = CurrencyIDComponents(value: cacheValue)
 
-        let localValue = components.localValue.someString
+        let localValue = components.localValue
         let pairValue = components.pairValue
 
         switch localValue {
-        case Self.kValueALGO:
+        case .none:
             let algoPairValue = pairValue ?? Self.kValueUSD
-            self.localValue = localValue
+            self.localValue = Self.kValueALGO
             self.remoteValue = algoPairValue
             self.pairValue = algoPairValue
-        default:
-            self.localValue = localValue
-            self.remoteValue = localValue
-            self.pairValue = pairValue ?? Self.kValueALGO
+        case .some(let someLocalValue):
+            switch someLocalValue {
+            case Self.kValueALGO:
+                let algoPairValue = pairValue ?? Self.kValueUSD
+                self.localValue = someLocalValue
+                self.remoteValue = algoPairValue
+                self.pairValue = algoPairValue
+            default:
+                self.localValue = someLocalValue
+                self.remoteValue = someLocalValue
+                self.pairValue = pairValue ?? Self.kValueALGO
+            }
         }
     }
 
