@@ -33,7 +33,7 @@ final class AppCallAssetListViewController:
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInset = UIEdgeInsets((20, 0, 8, 0))
+        collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
         collectionView.backgroundColor = .clear
         return collectionView
     }()

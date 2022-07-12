@@ -22,6 +22,7 @@ struct AppCallAssetListViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     let background: ViewStyle
+    let listContentInset: LayoutPaddings
 
     init(
         _ family: LayoutFamily
@@ -29,6 +30,7 @@ struct AppCallAssetListViewControllerTheme:
         background = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
+        listContentInset = (20, 0, 20, 0)
     }
 }
 
@@ -48,10 +50,15 @@ extension AppCallAssetListViewControllerTheme {
         let listContentInset = viewController.listView.contentInset
         let cellSize = 75.cgFloat /// <todo> How to calculate this dynamically from collectionView?
 
-        let listHeight =
-        listContentInset.top +
+        var height =
         (numberOfItems.cgFloat * cellSize) +
-        listContentInset.bottom
-        return listHeight.ceil()
+        listContentInset.vertical +
+        viewController.view.safeAreaBottom
+
+        if let navigationController = viewController.navigationController {
+            height += navigationController.navigationBar.bounds.height
+        }
+
+        return height.ceil()
     }
 }
