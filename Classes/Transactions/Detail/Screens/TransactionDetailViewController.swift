@@ -162,9 +162,30 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
-                self.copyToClipboardController.copyAddress(self.account)
+                guard let address = self.getUserAddress(
+                    transaction: transaction,
+                    type: transactionType
+                ) else {
+                    return
+                }
+
+                self.copyToClipboardController.copyAddress(
+                    address
+                )
             }
             return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    private func getUserAddress(
+        transaction: Transaction,
+        type: TransactionType
+    ) -> String? {
+        switch type {
+        case .received:
+            return transaction.getReceiver()
+        case .sent:
+            return transaction.sender
         }
     }
 

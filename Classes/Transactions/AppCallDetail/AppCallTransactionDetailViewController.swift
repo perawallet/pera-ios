@@ -140,6 +140,18 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
         }
     }
 
+    func contextMenuInteractionForTransactionID(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
     func contextMenuInteractionForTransactionNote(
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration? {

@@ -89,8 +89,24 @@ extension AssetInnerTransactionPreviewViewModel {
             return
         }
 
+        if transaction.sender == account.address {
+            amountViewModel = TransactionAmountViewModel(
+                .negative(
+                    amount: assetTransfer.amount.assetAmount(
+                        fromFraction: asset.decimals
+                    ),
+                    isAlgos: false,
+                    fraction: asset.decimals,
+                    assetSymbol: getAssetSymbol(
+                        from: asset
+                    )
+                )
+            )
+            return
+        }
+
         amountViewModel = TransactionAmountViewModel(
-            .negative(
+            .normal(
                 amount: assetTransfer.amount.assetAmount(
                     fromFraction: asset.decimals
                 ),

@@ -30,6 +30,7 @@ final class AppCallTransactionDetailView:
     private lazy var assetView = WCAssetInformationView() /// <todo>: Change asset view with new design when it is ready.
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
+    private lazy var transactionIDView = TransactionTextInformationView()
     private lazy var noteView = TransactionTextInformationView()
 
     private lazy var openInAlgoExplorerButton = UIButton()
@@ -38,6 +39,7 @@ final class AppCallTransactionDetailView:
     private lazy var senderContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var applicationIDContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var assetContextMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var transactionIDContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var noteContextMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     override init(
@@ -52,6 +54,7 @@ final class AppCallTransactionDetailView:
         senderView.addInteraction(senderContextMenuInteraction)
         applicationIDView.addInteraction(applicationIDContextMenuInteraction)
         assetViewCanvas.addInteraction(assetContextMenuInteraction)
+        transactionIDView.addInteraction(transactionIDContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
         openInAlgoExplorerButton.addTouch(
@@ -81,6 +84,7 @@ final class AppCallTransactionDetailView:
         addAssetView(theme)
         addFeeView(theme)
         addInnerTransactionView(theme)
+        addTransactionIDView(theme)
         addNoteView(theme)
         addOpenInAlgoExplorerButton(theme)
         addOpenInGoalSeekerButton(theme)
@@ -189,6 +193,25 @@ extension AppCallTransactionDetailView {
         innerTransactionView.addSeparator(theme.bottomSeparator, padding: theme.separatorPadding)
     }
 
+    private func addTransactionIDView(_ theme: AppCallTransactionDetailViewTheme) {
+        transactionIDView.customize(theme.textInformationViewCommonTheme)
+        transactionIDView.bindData(
+            TransactionTextInformationViewModel(
+                title: "transaction-detail-id".localized
+            )
+        )
+
+        verticalStackView.addArrangedSubview(transactionIDView)
+        verticalStackView.setCustomSpacing(
+            theme.bottomPaddingForSeparator,
+            after: transactionIDView
+        )
+        transactionIDView.addSeparator(
+            theme.bottomSeparator,
+            padding: theme.separatorPadding
+        )
+    }
+
     private func addNoteView(_ theme: AppCallTransactionDetailViewTheme) {
         noteView.customize(theme.textInformationViewCommonTheme)
         noteView.bindData(
@@ -256,6 +279,12 @@ extension AppCallTransactionDetailView: ViewModelBindable {
             assetViewCanvas.isHidden = true
         }
 
+        transactionIDView.bindData(
+            TransactionTextInformationViewModel(
+                detail: viewModel?.transactionID
+            )
+        )
+
         noteView.bindData(TransactionTextInformationViewModel(detail: viewModel?.note))
         noteView.isHidden = (viewModel?.noteViewIsHidden).falseIfNil
 
@@ -311,6 +340,8 @@ extension AppCallTransactionDetailView {
             return delegate?.contextMenuInteractionForApplicationID(in: self)
         case assetContextMenuInteraction:
             return delegate?.contextMenuInteractionForAsset(in: self)
+        case transactionIDContextMenuInteraction:
+            return delegate?.contextMenuInteractionForTransactionID(in: self)
         case noteContextMenuInteraction:
             return delegate?.contextMenuInteractionForTransactionNote(in: self)
         default:
@@ -327,6 +358,9 @@ protocol AppCallTransactionDetailViewDelegate: AnyObject {
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForAsset(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration?
+    func contextMenuInteractionForTransactionID(
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionNote(

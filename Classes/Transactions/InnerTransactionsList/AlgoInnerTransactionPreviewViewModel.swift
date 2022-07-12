@@ -75,8 +75,20 @@ extension AlgoInnerTransactionPreviewViewModel {
             return
         }
 
+        if transaction.sender == account.address {
+            amountViewModel = TransactionAmountViewModel(
+                .negative(
+                    amount: payment.amountForTransaction(
+                        includesCloseAmount: true
+                    ).toAlgos
+                ),
+                showAbbreviation: true
+            )
+            return
+        }
+
         amountViewModel = TransactionAmountViewModel(
-            .negative(
+            .normal(
                 amount: payment.amountForTransaction(
                     includesCloseAmount: true
                 ).toAlgos
