@@ -19,7 +19,8 @@ import MacaroonUIKit
 
 final class AppCallTransactionDetailView:
     View,
-    UIContextMenuInteractionDelegate {
+    UIContextMenuInteractionDelegate,
+    AppCallTransactionAssetInformationViewDelegate {
     weak var delegate: AppCallTransactionDetailViewDelegate?
 
     private lazy var verticalStackView = UIStackView()
@@ -53,7 +54,6 @@ final class AppCallTransactionDetailView:
     func linkInteractors() {
         senderView.addInteraction(senderContextMenuInteraction)
         applicationIDView.addInteraction(applicationIDContextMenuInteraction)
-//        assetViewCanvas.addInteraction(assetContextMenuInteraction)
         transactionIDView.addInteraction(transactionIDContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
@@ -75,16 +75,7 @@ final class AppCallTransactionDetailView:
             self.notifyDelegateToOpenInnerTransactionList()
         }
 
-        assetView.assetInfoView.observe(
-            event: .performShowMore
-        ) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.notifyDelegateToOpenAssetList()
-        }
+        assetView.delegate = self
     }
 
     func customize(_ theme: AppCallTransactionDetailViewTheme) {
@@ -346,6 +337,24 @@ extension AppCallTransactionDetailView {
 }
 
 extension AppCallTransactionDetailView {
+    func appCallTransactionAssetInformationViewDidTapShowMore(
+        _ view: AppCallTransactionAssetInformationView
+    ) {
+        notifyDelegateToOpenAssetList()
+    }
+
+    func appCallTransactionAssetInformationViewDidLongPressToCopy(
+        _ view: AppCallTransactionAssetInformationView,
+        idAtIndex index: UInt
+    ) -> UIContextMenuConfiguration? {
+        return delegate?.contextMenuInteractionForAsset(
+            in: self,
+            idAtIndex: index
+        )
+    }
+}
+
+extension AppCallTransactionDetailView {
     func contextMenuInteraction(
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
@@ -355,8 +364,6 @@ extension AppCallTransactionDetailView {
             return delegate?.contextMenuInteractionForSender(in: self)
         case applicationIDContextMenuInteraction:
             return delegate?.contextMenuInteractionForApplicationID(in: self)
-        case assetContextMenuInteraction:
-            return delegate?.contextMenuInteractionForAsset(in: self)
         case transactionIDContextMenuInteraction:
             return delegate?.contextMenuInteractionForTransactionID(in: self)
         case noteContextMenuInteraction:
@@ -375,7 +382,8 @@ protocol AppCallTransactionDetailViewDelegate: AnyObject {
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForAsset(
-        in appCallTransactionDetailView: AppCallTransactionDetailView
+        in appCallTransactionDetailView: AppCallTransactionDetailView,
+        idAtIndex index: UInt
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionID(
         in appCallTransactionDetailView: AppCallTransactionDetailView

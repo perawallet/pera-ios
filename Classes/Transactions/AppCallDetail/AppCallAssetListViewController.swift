@@ -44,15 +44,18 @@ final class AppCallAssetListViewController:
 
     private lazy var listDataSource = AppCallAssetListDataSource(listView)
 
+    private let copyToClipboardController: CopyToClipboardController
     let dataController: AppCallAssetListDataController
     private let theme: AppCallAssetListViewControllerTheme
 
     init(
         dataController: AppCallAssetListDataController,
+        copyToClipboardController: CopyToClipboardController,
         theme: AppCallAssetListViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
         self.theme = theme
 
         super.init(configuration: configuration)
@@ -99,6 +102,24 @@ final class AppCallAssetListViewController:
 
     var modalHeight: ModalHeight {
         return theme.calculateModalHeightAsBottomSheet(self)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = dataController.assets[safe: indexPath.item] else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
     }
 }
 

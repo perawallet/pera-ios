@@ -536,6 +536,9 @@ class Router:
         case .appCallAssetList(let dataController, let eventHandler):
             let aViewController = AppCallAssetListViewController(
                 dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
             aViewController.eventHandler = eventHandler

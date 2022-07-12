@@ -114,6 +114,24 @@ extension AppCallTransactionDetailViewController {
 }
 
 extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDelegate {
+    func contextMenuInteractionForAsset(
+        in appCallTransactionDetailView: AppCallTransactionDetailView,
+        idAtIndex index: UInt
+    ) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+
+                guard let asset = self.assets?[safe: Int(index)] else {
+                    return
+                }
+
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
     func contextMenuInteractionForSender(
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration? {
@@ -133,18 +151,6 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             let copyActionItem = UIAction(item: .copyTransactionID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyApplicationCallAppID(self.transaction)
-            }
-            return UIMenu(children: [ copyActionItem ])
-        }
-    }
-
-    func contextMenuInteractionForAsset(
-        in appCallTransactionDetailView: AppCallTransactionDetailView
-    ) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyTransactionID) {
-                [unowned self] _ in
-//                self.copyToClipboardController.copyID(self.assetDetail!.id)
             }
             return UIMenu(children: [ copyActionItem ])
         }

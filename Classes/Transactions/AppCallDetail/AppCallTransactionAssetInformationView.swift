@@ -19,9 +19,18 @@ import MacaroonUIKit
 
 final class AppCallTransactionAssetInformationView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    AppCallAssetPreviewViewStackViewDelegate {
+    weak var delegate: AppCallTransactionAssetInformationViewDelegate?
+
     private lazy var titleView = Label()
     private(set) lazy var assetInfoView = AppCallAssetPreviewViewStackView()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        linkInteractors()
+    }
 
     func customize(
         _ theme: AppCallTransactionAssetInformationViewTheme
@@ -43,6 +52,26 @@ final class AppCallTransactionAssetInformationView:
     ) {
         titleView.editText = viewModel?.title
         assetInfoView.bindData(viewModel?.assetInfo)
+    }
+
+    func linkInteractors() {
+        assetInfoView.delegate = self
+    }
+
+    func appCallAssetPreviewViewStackViewDidTapShowMore(
+        _ view: AppCallAssetPreviewViewStackView
+    ) {
+        delegate?.appCallTransactionAssetInformationViewDidTapShowMore(self)
+    }
+
+    func appCallAssetPreviewViewStackViewDidLongPressToCopy(
+        _ view: AppCallAssetPreviewViewStackView,
+        idAtIndex index: UInt
+    ) -> UIContextMenuConfiguration? {
+        return delegate?.appCallTransactionAssetInformationViewDidLongPressToCopy(
+            self,
+            idAtIndex: index
+        )
     }
 }
 
@@ -77,4 +106,14 @@ extension AppCallTransactionAssetInformationView {
             $0.trailing == assetInfoView.snp.leading - theme.minimumSpacingBetweenTitleAndAssetInfo
         }
     }
+}
+
+protocol AppCallTransactionAssetInformationViewDelegate: AnyObject {
+    func appCallTransactionAssetInformationViewDidTapShowMore(
+        _ view: AppCallTransactionAssetInformationView
+    )
+    func appCallTransactionAssetInformationViewDidLongPressToCopy(
+        _ view: AppCallTransactionAssetInformationView,
+        idAtIndex index: UInt
+    ) -> UIContextMenuConfiguration?
 }

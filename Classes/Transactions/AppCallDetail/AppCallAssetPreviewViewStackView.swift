@@ -21,11 +21,8 @@ import UIKit
 final class AppCallAssetPreviewViewStackView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performShowMore: UIControlInteraction()
-    ]
+    UIContextMenuInteractionDelegate {
+    weak var delegate: AppCallAssetPreviewViewStackViewDelegate?
     
     private lazy var contextView = VStackView()
     private lazy var showMoreActionView = MacaroonUIKit.Button()
@@ -55,7 +52,6 @@ final class AppCallAssetPreviewViewStackView:
               let theme = theme else {
             return
         }
-
 
         viewModel.assets?.forEach(addPreview)
 
@@ -88,6 +84,11 @@ extension AppCallAssetPreviewViewStackView {
         let previewView = AppCallAssetPreviewView()
 
         previewView.customize(AppCallAssetPreviewViewTheme())
+        previewView.addInteraction(
+            UIContextMenuInteraction(
+                delegate: self
+            )
+        )
         previewView.bindData(viewModel)
 
         contextView.addArrangedSubview(previewView)
@@ -110,9 +111,9 @@ extension AppCallAssetPreviewViewStackView {
             $0.bottom == 0
         }
 
-        startPublishing(
-            event: .performShowMore,
-            for: showMoreActionView
+        showMoreActionView.addTouch(
+            target: self,
+            action: #selector(didTapShowMore)
         )
 
         contextView.addArrangedSubview(aCanvasView)
@@ -120,7 +121,38 @@ extension AppCallAssetPreviewViewStackView {
 }
 
 extension AppCallAssetPreviewViewStackView {
-    enum Event {
-        case performShowMore
+    @objc
+    private func didTapShowMore() {
+        delegate?.appCallAssetPreviewViewStackViewDidTapShowMore(self)
     }
+}
+
+extension AppCallAssetPreviewViewStackView {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        let view = interaction.view as? AppCallAssetPreviewView
+        let indexOfViewInStack =
+        contextView.arrangedSubviews.firstIndex { $0 == view }
+
+        guard let indexOfViewInStack = indexOfViewInStack else {
+            return nil
+        }
+
+        return delegate?.appCallAssetPreviewViewStackViewDidLongPressToCopy(
+            self,
+            idAtIndex: UInt(indexOfViewInStack)
+        )
+    }
+}
+
+protocol AppCallAssetPreviewViewStackViewDelegate: AnyObject {
+    func appCallAssetPreviewViewStackViewDidTapShowMore(
+        _ view: AppCallAssetPreviewViewStackView
+    )
+    func appCallAssetPreviewViewStackViewDidLongPressToCopy(
+        _ view: AppCallAssetPreviewViewStackView,
+        idAtIndex index: UInt
+    ) -> UIContextMenuConfiguration?
 }
