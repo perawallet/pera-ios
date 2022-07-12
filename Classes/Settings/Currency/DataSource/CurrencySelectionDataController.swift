@@ -45,12 +45,17 @@ enum CurrencySelectionSection:
     Int,
     Hashable {
     case currencies
-    case noContent
+    case empty
     case error
 }
 
 enum CurrencySelectionItem: Hashable {
     case currency(SingleSelectionViewModel)
-    case noContent(CurrencySelectionNoContentViewModel)
+    case empty(CurrencySelectionEmptyItem)
     case error
+}
+
+enum CurrencySelectionEmptyItem: Hashable {
+    case noContent(CurrencySelectionNoContentViewModel)
+    case loading
 }

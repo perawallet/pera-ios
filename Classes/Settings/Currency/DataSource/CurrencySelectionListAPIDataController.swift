@@ -52,6 +52,8 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
 
 extension CurrencySelectionListAPIDataController {
     func loadData() {
+        deliverLoadingSnapshot()
+
         currencies.removeAll()
         searchResults.removeAll()
         
@@ -175,14 +177,28 @@ extension CurrencySelectionListAPIDataController {
             return snapshot
         }
     }
+
+    private func deliverLoadingSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.empty(.loading)],
+                toSection: .empty
+            )
+            return snapshot
+        }
+    }
     
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.noContent])
+            snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.noContent(CurrencySelectionNoContentViewModel())],
-                toSection: .noContent
+                [.empty(
+                    .noContent(CurrencySelectionNoContentViewModel())
+                )],
+                toSection: .empty
             )
             return snapshot
         }
