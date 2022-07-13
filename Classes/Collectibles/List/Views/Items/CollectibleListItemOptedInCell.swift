@@ -20,10 +20,6 @@ import MacaroonUIKit
 final class CollectibleListItemOptedInCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
-    var imageContainer: UIImageView {
-        return contextView.image.imageContainer
-    }
-
     var isPending: Bool = false {
         didSet {
             if oldValue == isPending {
@@ -51,5 +47,9 @@ final class CollectibleListItemOptedInCell:
         contextView.prepareForReuse()
 
         isPending = false
+    }
+
+    func getTargetedPreview() -> UITargetedPreview {
+        return contextView.getTargetedPreview()
     }
 }

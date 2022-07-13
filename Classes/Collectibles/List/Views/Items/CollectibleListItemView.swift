@@ -22,7 +22,7 @@ final class CollectibleListItemView:
     View,
     ViewModelBindable,
     ListReusable {
-    private(set) lazy var image = URLImageView()
+    private lazy var image = URLImageView()
     private lazy var overlay = MacaroonUIKit.BaseView()
     private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()
@@ -274,6 +274,14 @@ extension CollectibleListItemView {
             $0.leading == theme.topLeftBadgePaddings.leading
             $0.top == theme.topLeftBadgePaddings.top
         }
+    }
+}
+
+extension CollectibleListItemView {
+    func getTargetedPreview() -> UITargetedPreview {
+        return UITargetedPreview(
+            view: image.imageContainer
+        )
     }
 }
 

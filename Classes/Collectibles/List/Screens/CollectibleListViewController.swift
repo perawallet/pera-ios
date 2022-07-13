@@ -340,16 +340,12 @@ extension CollectibleListViewController {
             case .cell(let cell):
                 switch cell {
                 case .pending,
-                        .owner:
+                     .owner:
                     let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
-                    return UITargetedPreview(
-                        view: cell.imageContainer
-                    )
+                    return cell.getTargetedPreview()
                 case .optedIn:
                     let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemOptedInCell
-                    return UITargetedPreview(
-                        view: cell.imageContainer
-                    )
+                    return cell.getTargetedPreview()
                 }
             }
         default:
@@ -544,8 +540,8 @@ extension CollectibleListViewController {
             case .cell(let collectibleCellItem):
                 switch collectibleCellItem {
                 case .owner(let item),
-                        .optedIn(let item),
-                        .pending(let item):
+                     .optedIn(let item),
+                     .pending(let item):
                     return item
                 }
             }
