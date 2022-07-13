@@ -54,6 +54,13 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 }
             case .header(let item):
                 let cell = collectionView.dequeue(
+                    ManagementItemWithSecondaryActionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
+            case .watchAccountHeader(let item):
+                let cell = collectionView.dequeue(
                     ManagementItemCell.self,
                     at: indexPath
                 )
@@ -109,6 +116,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             CollectibleListItemOptedInCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleListSearchInputCell.self,
+            ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
             CollectibleListLoadingViewCell.self,
             NoContentCell.self,

@@ -25,7 +25,12 @@ final class CollectibleListLoadingView:
     private lazy var searchInput = SearchInputView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
 
-    private static let managementItemViewModel = ManagementItemViewModel(.collectible(count: .zero))
+    private static let managementItemViewModel = ManagementItemViewModel(
+        .collectible(
+            count: .zero,
+            isWatchAccountDisplay: false
+        )
+    )
 
     private static let rowCount = 2
     private static let columnCount = 2

@@ -80,10 +80,9 @@ extension AccountAssetListLayout {
                 sizeForWatchPortfolioItem: item,
                 section: indexPath.section
             )
-        case .assetManagement:
+        case .assetManagement,
+             .watchAccountAssetManagement:
             return CGSize(theme.assetManagementItemSize)
-        case .assetTitle:
-            return CGSize(theme.assetTitleItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
         case let .asset(item), let .algo(item):

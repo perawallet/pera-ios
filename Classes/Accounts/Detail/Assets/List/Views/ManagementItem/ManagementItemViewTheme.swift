@@ -21,9 +21,9 @@ struct ManagementItemViewTheme:
     StyleSheet,
     LayoutSheet {
     let primaryButton: ButtonStyle
-    let secondaryButton: ButtonStyle
+    var secondaryButton: ButtonStyle
     let buttonHeight: LayoutMetric
-    let spacing: LayoutMetric
+    var spacing: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.primaryButton = [
@@ -34,5 +34,12 @@ struct ManagementItemViewTheme:
         ]
         self.buttonHeight = 40
         self.spacing = 16
+    }
+}
+
+extension ManagementItemViewTheme {
+    mutating func configureForSingleAction() {
+        secondaryButton = []
+        spacing = .zero
     }
 }

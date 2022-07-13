@@ -40,9 +40,10 @@ final class ManagementOptionsViewController:
 
     override func configureAppearance() {
         switch managementType {
-        case .asset:
+        case .assets,
+             .watchAccountAssets:
             title = "options-manage-assets".localized
-        case .collectible:
+        case .collectibles:
             title = "options-manage-collectibles".localized
         }
     }
@@ -96,12 +97,14 @@ extension ManagementOptionsViewController {
     
     private func addActions() {
         switch managementType {
-        case .asset:
+        case .assets:
             addSortAction()
             addRemoveAction()
-        case .collectible:
+        case .collectibles:
             addSortAction()
             addfilterAction()
+        case .watchAccountAssets:
+            addSortAction()
         }
     }
     
@@ -177,8 +180,9 @@ extension ManagementOptionsViewController {
 
 extension ManagementOptionsViewController {
     enum ManagementType {
-        case asset
-        case collectible
+        case watchAccountAssets
+        case assets
+        case collectibles
     }
 }
 

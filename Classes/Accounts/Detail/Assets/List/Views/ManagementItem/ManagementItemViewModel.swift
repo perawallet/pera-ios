@@ -58,7 +58,7 @@ extension ManagementItemViewModel {
                         hasMultilines: false
                     )
             )
-        case .collectible(let count):
+        case .collectible(let count, _):
             if count < 2 {
                 self.title = .attributedString(
                     "title-plus-collectible-singular-count"
@@ -93,7 +93,8 @@ extension ManagementItemViewModel {
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
-        case .asset, .collectible(_):
+        case .asset,
+             .collectible:
             self.primaryButtonTitle = .attributedString(
                 "asset-manage-button"
                     .localized
@@ -106,15 +107,25 @@ extension ManagementItemViewModel {
     private mutating func bindSecondaryButton(
         _ type: ManagementItemType
     ) {
-        self.secondaryButtonTitle = nil
-        self.secondaryButtonIcon = img("icon-management-add")
+        switch type {
+        case .collectible(_, let isWatchAccountDisplay),
+             .asset(let isWatchAccountDisplay):
+            if isWatchAccountDisplay {
+                return
+            }
+
+            fallthrough
+        default:
+            secondaryButtonTitle = nil
+            secondaryButtonIcon = img("icon-management-add")
+        }
     }
 }
 
 enum ManagementItemType {
-    case asset
+    case asset(isWatchAccountDisplay: Bool)
     case account
-    case collectible(count: Int)
+    case collectible(count: Int, isWatchAccountDisplay: Bool)
 }
 
 extension ManagementItemViewModel {

@@ -50,6 +50,7 @@ enum CollectibleSection:
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
     case header(ManagementItemViewModel)
+    case watchAccountHeader(ManagementItemViewModel)
     case search
     case collectible(CollectibleItem)
 }

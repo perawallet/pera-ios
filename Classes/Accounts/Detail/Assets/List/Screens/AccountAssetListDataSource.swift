@@ -37,13 +37,23 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(WatchAccountPortfolioCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case .assetManagement(let titleItem):
-                let cell = collectionView.dequeue(ManagementItemCell.self, at: indexPath)
-                cell.bindData(titleItem)
+            case .assetManagement(let item):
+                let cell = collectionView.dequeue(
+                    ManagementItemWithSecondaryActionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
                 return cell
-            case let .assetTitle(item):
-                let cell = collectionView.dequeue(AssetTitleItemCell.self, at: indexPath)
-                cell.bindData(item)
+            case .watchAccountAssetManagement(let item):
+                let cell = collectionView.dequeue(
+                    ManagementItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
                 return cell
             case .search:
                 return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
@@ -70,8 +80,8 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
         [
             AccountPortfolioCell.self,
             WatchAccountPortfolioCell.self,
+            ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
-            AssetTitleItemCell.self,
             SearchBarItemCell.self,
             AccountAssetCell.self,
             PendingAssetPreviewCell.self,

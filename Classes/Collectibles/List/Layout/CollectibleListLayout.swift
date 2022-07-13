@@ -108,6 +108,12 @@ extension CollectibleListLayout {
                 layout: collectionViewLayout,
                 sizeForHeaderItem: item
             )
+        case .watchAccountHeader(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForHeaderItem: item
+            )
         case .search:
             return sizeForSearch(
                 collectionView,
@@ -228,9 +234,9 @@ extension CollectibleListLayout {
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = ManagementItemCell.calculatePreferredSize(
+        let newSize = ManagementItemWithSecondaryActionCell.calculatePreferredSize(
             item,
-            for: ManagementItemCell.theme,
+            for: ManagementItemWithSecondaryActionCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

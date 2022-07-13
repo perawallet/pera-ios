@@ -342,10 +342,17 @@ extension CollectibleListLocalDataController {
 
             var snapshot = Snapshot()
 
-            self.addHeaderContent(
-                withCollectibleCount: collectibleItems.count,
-                to: &snapshot
-            )
+            if self.isWatchAccount {
+                self.addWatchAccountHeaderContent(
+                    withCollectibleCount: collectibleItems.count,
+                    to: &snapshot
+                )
+            } else {
+                self.addHeaderContent(
+                    withCollectibleCount: collectibleItems.count,
+                    to: &snapshot
+                )
+            }
 
             snapshot.appendSections([.search, .collectibles])
 
@@ -426,7 +433,30 @@ extension CollectibleListLocalDataController {
     ) {
         let headerItem: CollectibleListItem = .header(
             ManagementItemViewModel(
-                .collectible(count: count)
+                .collectible(
+                    count: count,
+                    isWatchAccountDisplay: false
+                )
+            )
+        )
+
+        snapshot.appendSections([.header])
+        snapshot.appendItems(
+            [headerItem],
+            toSection: .header
+        )
+    }
+
+    private func addWatchAccountHeaderContent(
+        withCollectibleCount count: Int,
+        to snapshot: inout Snapshot
+    ) {
+        let headerItem: CollectibleListItem = .watchAccountHeader(
+            ManagementItemViewModel(
+                .collectible(
+                    count: count,
+                    isWatchAccountDisplay: true
+                )
             )
         )
 

@@ -199,6 +199,8 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
+            linkInteractors(cell as! ManagementItemWithSecondaryActionCell)
+        case .watchAccountHeader:
             linkInteractors(cell as! ManagementItemCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
@@ -338,14 +340,37 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: ManagementItemCell
+        _ cell: ManagementItemWithSecondaryActionCell
     ) {
         cell.observe(event: .primaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+            
             self.openCollectiblesManagementScreen()
         }
 
         cell.observe(event: .secondaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
             self.openReceiveCollectibleAccountList()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: ManagementItemCell
+    ) {
+        cell.observe(event: .primaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openCollectiblesManagementScreen()
         }
     }
 
@@ -387,9 +412,9 @@ extension CollectibleListViewController {
     }
 
     private func openCollectiblesManagementScreen() {
-        self.modalTransition.perform(
+        modalTransition.perform(
             .managementOptions(
-                managementType: .collectible,
+                managementType: .collectibles,
                 delegate: self
             ),
             by: .present
