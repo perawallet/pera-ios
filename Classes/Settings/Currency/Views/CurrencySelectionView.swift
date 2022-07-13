@@ -22,6 +22,7 @@ final class CurrencySelectionView:
     ViewModelBindable {
     private lazy var theme = CurrencySelectionViewTheme()
 
+    private lazy var headerView = UIView()
     private lazy var titleLabel = Label()
     private lazy var descriptionLabel = Label()
     private lazy var searchInputView = SearchInputView()
@@ -33,6 +34,7 @@ final class CurrencySelectionView:
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
+        collectionView.keyboardDismissMode = .interactive
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         return collectionView
     }()
@@ -42,10 +44,8 @@ final class CurrencySelectionView:
     }
     
     func customize(_ theme: CurrencySelectionViewTheme) {
-        addTitle(theme)
-        addDescription(theme)
-        addSearchInputView(theme)
         addCollectionView(theme)
+        addHeader(theme)
     }
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -102,10 +102,28 @@ extension CurrencySelectionView {
         updateCollectionWhenLoadingDidChange()
     }
 
+    private func addHeader(
+        _ theme: CurrencySelectionViewTheme
+    ) {
+        headerView.customizeAppearance(theme.header)
+
+        addSubview(headerView)
+        headerView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+
+        addTitle(theme)
+        addDescription(theme)
+        addSearchInputView(theme)
+    }
+
     private func addTitle(_ theme: CurrencySelectionViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
-        addSubview(titleLabel)
+        headerView.addSubview(titleLabel)
+        titleLabel.fitToVerticalIntrinsicSize()
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.titleTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
@@ -115,7 +133,8 @@ extension CurrencySelectionView {
     private func addDescription(_ theme: CurrencySelectionViewTheme) {
         descriptionLabel.customizeAppearance(theme.description)
 
-        addSubview(descriptionLabel)
+        headerView.addSubview(descriptionLabel)
+        descriptionLabel.fitToVerticalIntrinsicSize()
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopPadding)
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
@@ -126,10 +145,11 @@ extension CurrencySelectionView {
     private func addSearchInputView(_ theme: CurrencySelectionViewTheme) {
         searchInputView.customize(theme.searchInputViewTheme)
         
-        addSubview(searchInputView)
+        headerView.addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.searchViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -150,7 +170,7 @@ extension CurrencySelectionView {
         if isLoading {
             top = 0
         } else {
-            top = searchInputView.frame.maxY + theme.collectionViewTopPadding
+            top = headerView.frame.maxY + theme.collectionViewTopPadding
         }
 
         collectionView.setContentInset(

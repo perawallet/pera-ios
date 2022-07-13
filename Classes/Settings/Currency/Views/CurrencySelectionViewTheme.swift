@@ -20,8 +20,9 @@ import MacaroonUIKit
 struct CurrencySelectionViewTheme:
     StyleSheet,
     LayoutSheet {
-    let backgroundColor: Color
     let horizontalPadding: LayoutMetric
+
+    let header: ViewStyle
 
     let title: TextStyle
     let titleTopPadding: LayoutMetric
@@ -37,8 +38,11 @@ struct CurrencySelectionViewTheme:
     let collectionViewTopPadding: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
         self.horizontalPadding = 24
+
+        self.header = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
 
         self.title = [
             .textColor(AppColors.Components.Text.main)
