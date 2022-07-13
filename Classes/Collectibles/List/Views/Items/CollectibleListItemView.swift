@@ -22,7 +22,7 @@ final class CollectibleListItemView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var image = URLImageView()
+    private(set) lazy var image = URLImageView()
     private lazy var overlay = MacaroonUIKit.BaseView()
     private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()

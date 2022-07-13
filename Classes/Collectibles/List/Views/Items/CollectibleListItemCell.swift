@@ -20,6 +20,10 @@ import MacaroonUIKit
 final class CollectibleListItemCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
+    var imageContainer: UIImageView {
+        return contextView.image.imageContainer
+    }
+
     var isPending: Bool = false {
         didSet {
             if oldValue == isPending {

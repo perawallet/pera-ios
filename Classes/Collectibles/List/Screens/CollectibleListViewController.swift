@@ -291,12 +291,69 @@ extension CollectibleListViewController {
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath,
+            previewProvider: nil
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return makeTargetedPreview(
+            collectionView,
+            configuration: configuration
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return makeTargetedPreview(
+            collectionView,
+            configuration: configuration
+        )
+    }
+
+    private func makeTargetedPreview(
+        _ collectionView: UICollectionView,
+        configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let itemIdentifier = listDataSource.itemIdentifier(for: indexPath)
+        else {
+            return nil
+        }
+
+        switch itemIdentifier {
+        case .collectible(let item):
+            switch item {
+            case .cell(let cell):
+                switch cell {
+                case .pending,
+                        .owner:
+                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
+                    return UITargetedPreview(
+                        view: cell.imageContainer
+                    )
+                case .optedIn:
+                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemOptedInCell
+                    return UITargetedPreview(
+                        view: cell.imageContainer
+                    )
+                }
+            }
+        default:
+            return nil
         }
     }
 }
@@ -487,8 +544,8 @@ extension CollectibleListViewController {
             case .cell(let collectibleCellItem):
                 switch collectibleCellItem {
                 case .owner(let item),
-                     .optedIn(let item),
-                     .pending(let item):
+                        .optedIn(let item),
+                        .pending(let item):
                     return item
                 }
             }
