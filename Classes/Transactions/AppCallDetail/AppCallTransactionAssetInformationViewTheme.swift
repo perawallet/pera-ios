@@ -20,7 +20,7 @@ import UIKit
 struct AppCallTransactionAssetInformationViewTheme:
     LayoutSheet,
     StyleSheet {
-    var contentPaddings: NSDirectionalEdgeInsets
+    var contentPaddings: LayoutPaddings
     var title: TextStyle
     var minimumSpacingBetweenTitleAndAssetInfo: LayoutMetric
     var assetInfo: AppCallAssetPreviewStackViewTheme
@@ -29,7 +29,7 @@ struct AppCallTransactionAssetInformationViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        contentPaddings = .zero
+        contentPaddings = (12, 24, 12, 24)
         title = [
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),

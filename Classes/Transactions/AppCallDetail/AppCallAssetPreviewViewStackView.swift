@@ -20,12 +20,8 @@ import UIKit
 
 final class AppCallAssetPreviewViewStackView:
     View,
-    ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performShowMore: UIControlInteraction()
-    ]
+    ViewModelBindable {
+    weak var delegate: AppCallAssetPreviewViewStackViewDelegate?
     
     private lazy var contextView = VStackView()
     private lazy var showMoreActionView = MacaroonUIKit.Button()
@@ -56,7 +52,6 @@ final class AppCallAssetPreviewViewStackView:
             return
         }
 
-
         viewModel.assets?.forEach(addPreview)
 
         if viewModel.requiresShowMoreAction {
@@ -86,7 +81,6 @@ extension AppCallAssetPreviewViewStackView {
         _ viewModel: AppCallAssetPreviewViewModel
     ) {
         let previewView = AppCallAssetPreviewView()
-
         previewView.customize(AppCallAssetPreviewViewTheme())
         previewView.bindData(viewModel)
 
@@ -110,9 +104,9 @@ extension AppCallAssetPreviewViewStackView {
             $0.bottom == 0
         }
 
-        startPublishing(
-            event: .performShowMore,
-            for: showMoreActionView
+        showMoreActionView.addTouch(
+            target: self,
+            action: #selector(didTapShowMore)
         )
 
         contextView.addArrangedSubview(aCanvasView)
@@ -120,7 +114,14 @@ extension AppCallAssetPreviewViewStackView {
 }
 
 extension AppCallAssetPreviewViewStackView {
-    enum Event {
-        case performShowMore
+    @objc
+    private func didTapShowMore() {
+        delegate?.appCallAssetPreviewViewStackViewDidTapShowMore(self)
     }
+}
+
+protocol AppCallAssetPreviewViewStackViewDelegate: AnyObject {
+    func appCallAssetPreviewViewStackViewDidTapShowMore(
+        _ view: AppCallAssetPreviewViewStackView
+    )
 }

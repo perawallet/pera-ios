@@ -114,13 +114,38 @@ extension AppCallTransactionDetailViewController {
 }
 
 extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDelegate {
+    func contextMenuInteractionForAsset(
+        in appCallTransactionDetailView: AppCallTransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        guard
+            let assets = assets,
+            assets.count == 1,
+            let asset = assets.first
+        else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
     func contextMenuInteractionForSender(
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration? {
+        guard let senderAddress = transaction.sender else {
+            return nil
+        }
+
         return UIContextMenuConfiguration { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
-                self.copyToClipboardController.copyAddress(self.transaction.sender.someString)
+                self.copyToClipboardController.copyAddress(senderAddress)
             }
             return UIMenu(children: [ copyActionItem ])
         }
@@ -133,18 +158,6 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             let copyActionItem = UIAction(item: .copyTransactionID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyApplicationCallAppID(self.transaction)
-            }
-            return UIMenu(children: [ copyActionItem ])
-        }
-    }
-
-    func contextMenuInteractionForAsset(
-        in appCallTransactionDetailView: AppCallTransactionDetailView
-    ) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyTransactionID) {
-                [unowned self] _ in
-//                self.copyToClipboardController.copyID(self.assetDetail!.id)
             }
             return UIMenu(children: [ copyActionItem ])
         }
