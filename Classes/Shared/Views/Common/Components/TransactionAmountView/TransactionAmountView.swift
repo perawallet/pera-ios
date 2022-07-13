@@ -20,10 +20,14 @@ import MacaroonUIKit
 
 /// <todo> Use formatter instead of `signLabel`.
 final class TransactionAmountView: View {
+    private var theme: TransactionAmountViewTheme?
+
     private lazy var signLabel = Label()
     private lazy var amountLabel = Label()
 
     func customize(_ theme: TransactionAmountViewTheme) {
+        self.theme = theme
+
         addSignLabel(theme)
         addAmountLabel(theme)
     }
@@ -87,7 +91,10 @@ extension TransactionAmountView: ViewModelBindable {
 
     func prepareForReuse() {
         signLabel.text = nil
+        signLabel.font = theme?.signLabel.font?.uiFont
+
         amountLabel.text = nil
+        amountLabel.font = theme?.amountLabel.font?.uiFont
     }
 }
 
