@@ -20,8 +20,7 @@ import UIKit
 
 final class AppCallAssetPreviewViewStackView:
     View,
-    ViewModelBindable,
-    UIContextMenuInteractionDelegate {
+    ViewModelBindable {
     weak var delegate: AppCallAssetPreviewViewStackViewDelegate?
     
     private lazy var contextView = VStackView()
@@ -82,13 +81,7 @@ extension AppCallAssetPreviewViewStackView {
         _ viewModel: AppCallAssetPreviewViewModel
     ) {
         let previewView = AppCallAssetPreviewView()
-
         previewView.customize(AppCallAssetPreviewViewTheme())
-        previewView.addInteraction(
-            UIContextMenuInteraction(
-                delegate: self
-            )
-        )
         previewView.bindData(viewModel)
 
         contextView.addArrangedSubview(previewView)
@@ -127,33 +120,8 @@ extension AppCallAssetPreviewViewStackView {
     }
 }
 
-extension AppCallAssetPreviewViewStackView {
-    func contextMenuInteraction(
-        _ interaction: UIContextMenuInteraction,
-        configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        let assetPreviewViews = contextView.arrangedSubviews
-
-        guard
-            let view = interaction.view,
-            let index = assetPreviewViews.firstIndex(of: view)
-        else {
-            return nil
-        }
-
-        return delegate?.appCallAssetPreviewViewStackViewDidLongPressToCopy(
-            self,
-            forAssetIDAtIndex: index
-        )
-    }
-}
-
 protocol AppCallAssetPreviewViewStackViewDelegate: AnyObject {
     func appCallAssetPreviewViewStackViewDidTapShowMore(
         _ view: AppCallAssetPreviewViewStackView
     )
-    func appCallAssetPreviewViewStackViewDidLongPressToCopy(
-        _ view: AppCallAssetPreviewViewStackView,
-        forAssetIDAtIndex index: Int
-    ) -> UIContextMenuConfiguration?
 }

@@ -115,10 +115,13 @@ extension AppCallTransactionDetailViewController {
 
 extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDelegate {
     func contextMenuInteractionForAsset(
-        in appCallTransactionDetailView: AppCallTransactionDetailView,
-        forAssetIDAtIndex index: Int
+        in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration? {
-        guard let asset = assets![safe: index] else {
+        guard
+            let assets = assets,
+            assets.count == 1,
+            let asset = assets.first
+        else {
             return nil
         }
 

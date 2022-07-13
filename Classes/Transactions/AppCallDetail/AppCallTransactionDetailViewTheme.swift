@@ -29,7 +29,6 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let onCompletionViewTheme: TransactionTextInformationViewTheme
     let textInformationViewCommonTheme: TransactionTextInformationViewTheme
     let feeViewTheme: TransactionAmountInformationViewTheme
-    let assetViewVerticalPadding: LayoutMetric
     let buttonEdgeInsets: LayoutPaddings
     let openInGoalSeekerButtonLeadingPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
@@ -62,7 +61,6 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
         innerTransactionViewTheme = TransactionAmountInformationViewTheme(
             transactionAmountViewTheme: TransactionAmountViewBiggerTheme()
         ).configuredForInteraction()
-        assetViewVerticalPadding = 12
         separatorPadding = -20
         buttonsCorner = Corner(radius: 18)
         buttonEdgeInsets = (8, 12, 8, 12)

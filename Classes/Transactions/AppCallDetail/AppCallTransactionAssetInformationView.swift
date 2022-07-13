@@ -24,7 +24,7 @@ final class AppCallTransactionAssetInformationView:
     weak var delegate: AppCallTransactionAssetInformationViewDelegate?
 
     private lazy var titleView = Label()
-    private(set) lazy var assetInfoView = AppCallAssetPreviewViewStackView()
+    private lazy var assetInfoView = AppCallAssetPreviewViewStackView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,16 +62,6 @@ final class AppCallTransactionAssetInformationView:
         _ view: AppCallAssetPreviewViewStackView
     ) {
         delegate?.appCallTransactionAssetInformationViewDidTapShowMore(self)
-    }
-
-    func appCallAssetPreviewViewStackViewDidLongPressToCopy(
-        _ view: AppCallAssetPreviewViewStackView,
-        forAssetIDAtIndex index: Int
-    ) -> UIContextMenuConfiguration? {
-        return delegate?.appCallTransactionAssetInformationViewDidLongPressToCopy(
-            self,
-            forAssetIDAtIndex: index
-        )
     }
 }
 
@@ -112,8 +102,4 @@ protocol AppCallTransactionAssetInformationViewDelegate: AnyObject {
     func appCallTransactionAssetInformationViewDidTapShowMore(
         _ view: AppCallTransactionAssetInformationView
     )
-    func appCallTransactionAssetInformationViewDidLongPressToCopy(
-        _ view: AppCallTransactionAssetInformationView,
-        forAssetIDAtIndex index: Int
-    ) -> UIContextMenuConfiguration?
 }

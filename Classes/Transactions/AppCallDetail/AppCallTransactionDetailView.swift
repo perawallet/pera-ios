@@ -27,7 +27,6 @@ final class AppCallTransactionDetailView:
     private lazy var senderView = TransactionTextInformationView()
     private lazy var applicationIDView = TransactionTextInformationView()
     private lazy var onCompletionView = TransactionTextInformationView()
-    private lazy var assetViewCanvas = MacaroonUIKit.BaseView()
     private lazy var assetView = AppCallTransactionAssetInformationView()
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var innerTransactionView = TransactionAmountInformationView()
@@ -54,6 +53,10 @@ final class AppCallTransactionDetailView:
     func linkInteractors() {
         senderView.addInteraction(senderContextMenuInteraction)
         applicationIDView.addInteraction(applicationIDContextMenuInteraction)
+
+        assetView.addInteraction(assetContextMenuInteraction)
+        assetView.delegate = self
+
         transactionIDView.addInteraction(transactionIDContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
@@ -74,8 +77,6 @@ final class AppCallTransactionDetailView:
 
             self.notifyDelegateToOpenInnerTransactionList()
         }
-
-        assetView.delegate = self
     }
 
     func customize(_ theme: AppCallTransactionDetailViewTheme) {
@@ -131,17 +132,9 @@ extension AppCallTransactionDetailView {
     }
 
     private func addAssetView(_ theme: AppCallTransactionDetailViewTheme) {
-        assetViewCanvas.addSubview(assetView)
-
         assetView.customize(theme.assetViewTheme)
-        assetView.snp.makeConstraints {
-            $0.top == theme.assetViewVerticalPadding
-            $0.leading == theme.horizontalPadding
-            $0.bottom == theme.assetViewVerticalPadding
-            $0.trailing == theme.horizontalPadding
-        }
 
-        verticalStackView.addArrangedSubview(assetViewCanvas)
+        verticalStackView.addArrangedSubview(assetView)
     }
 
     private func addFeeView(_ theme: AppCallTransactionDetailViewTheme) {
@@ -269,7 +262,7 @@ extension AppCallTransactionDetailView {
         if let transactionAssetInformationViewModel = viewModel?.transactionAssetInformationViewModel {
             assetView.bindData(transactionAssetInformationViewModel)
         } else {
-            assetViewCanvas.isHidden = true
+            assetView.isHidden = true
         }
 
         transactionIDView.bindData(
@@ -342,16 +335,6 @@ extension AppCallTransactionDetailView {
     ) {
         notifyDelegateToOpenAssetList()
     }
-
-    func appCallTransactionAssetInformationViewDidLongPressToCopy(
-        _ view: AppCallTransactionAssetInformationView,
-        forAssetIDAtIndex index: Int
-    ) -> UIContextMenuConfiguration? {
-        return delegate?.contextMenuInteractionForAsset(
-            in: self,
-            forAssetIDAtIndex: index
-        )
-    }
 }
 
 extension AppCallTransactionDetailView {
@@ -362,6 +345,8 @@ extension AppCallTransactionDetailView {
         switch interaction {
         case senderContextMenuInteraction:
             return delegate?.contextMenuInteractionForSender(in: self)
+        case assetContextMenuInteraction:
+            return delegate?.contextMenuInteractionForAsset(in: self)
         case applicationIDContextMenuInteraction:
             return delegate?.contextMenuInteractionForApplicationID(in: self)
         case transactionIDContextMenuInteraction:
@@ -382,8 +367,7 @@ protocol AppCallTransactionDetailViewDelegate: AnyObject {
         in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForAsset(
-        in appCallTransactionDetailView: AppCallTransactionDetailView,
-        forAssetIDAtIndex index: Int
+        in appCallTransactionDetailView: AppCallTransactionDetailView
     ) -> UIContextMenuConfiguration?
     func contextMenuInteractionForTransactionID(
         in appCallTransactionDetailView: AppCallTransactionDetailView
