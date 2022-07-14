@@ -352,7 +352,8 @@ extension AccountPreviewViewModel {
 }
 
 struct CustomAccountPreview {
-    /// <note> For uniqueness purpose,.
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
     var address: String?
 
     var icon: ImageSource?
@@ -427,6 +428,8 @@ struct AccountOrderingDraft {
 }
 
 struct NameServiceAccountPreview {
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
     let address: String?
 
     let icon: PNGImageSource?

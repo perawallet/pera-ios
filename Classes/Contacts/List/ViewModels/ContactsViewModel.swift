@@ -19,6 +19,8 @@ import UIKit
 import MacaroonUIKit
 
 final class ContactsViewModel: Hashable {
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
     private let underlyingAddress: String?
 
     private(set) var fullAddress: String?
