@@ -137,19 +137,28 @@ extension AccountAssetListAPIDataController {
             }
 
             var assetItems: [AccountAssetsItem] = []
-            
-            if !isWatchAccount {
-                let titleItem: AccountAssetsItem = .assetManagement(
-                    ManagementItemViewModel(.asset)
+
+            let titleItem: AccountAssetsItem
+
+            if isWatchAccount {
+                titleItem = .watchAccountAssetManagement(
+                    ManagementItemViewModel(
+                        .asset(
+                            isWatchAccountDisplay: true
+                        )
+                    )
                 )
-                assetItems.append(titleItem)
             } else {
-                let titleItem: AccountAssetsItem = .assetTitle(
-                    AssetSearchListHeaderViewModel("accounts-title-assets".localized)
+                titleItem = .assetManagement(
+                    ManagementItemViewModel(
+                        .asset(
+                            isWatchAccountDisplay: false
+                        )
+                    )
                 )
-                assetItems.append(titleItem)
             }
 
+            assetItems.append(titleItem)
             assetItems.append(.search)
 
             self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)

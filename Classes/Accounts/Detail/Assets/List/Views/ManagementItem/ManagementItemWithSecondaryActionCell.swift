@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManagementItemCell.swift
+//   AssetManagementItemCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ManagementItemCell:
+final class ManagementItemWithSecondaryActionCell:
     CollectionCell<ManagementItemView>,
     ViewModelBindable,
     UIInteractionObservable {
-    static let theme: ManagementItemViewTheme = {
-        var theme = ManagementItemViewTheme()
-        theme.configureForSingleAction()
-        return theme
-    }()
-
+    static let theme = ManagementItemViewTheme()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(Self.theme)

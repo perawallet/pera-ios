@@ -137,10 +137,10 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
-            case .manageAssets:
+            case .manageAssets(let isWatchAccount):
                 self.modalTransition.perform(
                     .managementOptions(
-                        managementType: .asset,
+                        managementType: isWatchAccount ? .watchAccountAssets : .assets,
                         delegate: self
                     ),
                     by: .present

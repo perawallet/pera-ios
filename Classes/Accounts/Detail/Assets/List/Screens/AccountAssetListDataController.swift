@@ -44,7 +44,7 @@ enum AccountAssetsItem: Hashable {
     case asset(AssetPreviewViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
     case assetManagement(ManagementItemViewModel)
-    case assetTitle(AssetSearchListHeaderViewModel)
+    case watchAccountAssetManagement(ManagementItemViewModel)
     case quickActions
     case empty(AssetListSearchNoContentViewModel)
 }

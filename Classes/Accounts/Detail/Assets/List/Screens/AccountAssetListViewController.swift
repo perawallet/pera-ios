@@ -234,7 +234,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             
             switch itemIdentifier {
             case .assetManagement:
-                guard let item = cell as? ManagementItemCell else {
+                guard let item = cell as? ManagementItemWithSecondaryActionCell else {
                     return
                 }
                 
@@ -244,7 +244,11 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                         return
                     }
                     
-                    self.eventHandler?(.manageAssets)
+                    self.eventHandler?(
+                        .manageAssets(
+                            isWatchAccount: false
+                        )
+                    )
                 }
                 item.observe(event: .secondaryAction) {
                     [weak self] in
@@ -253,6 +257,21 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     }
                     
                     self.eventHandler?(.addAsset)
+                }
+            case .watchAccountAssetManagement:
+                let item = cell as! ManagementItemCell
+
+                item.observe(event: .primaryAction) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.eventHandler?(
+                        .manageAssets(
+                            isWatchAccount: true
+                        )
+                    )
                 }
             case .search:
                 guard let item = cell as? SearchBarItemCell else {
@@ -493,7 +512,7 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
-        case manageAssets
+        case manageAssets(isWatchAccount: Bool)
         case addAsset
         case buyAlgo
         case send
