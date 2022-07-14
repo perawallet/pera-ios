@@ -55,11 +55,12 @@ extension RewardInfoViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         do {
-            guard let algoRawCurrency = try currency.algoRawCurrency else {
+            guard let algoCurrencyValue = currency.algoValue else {
                 value = nil
                 return
             }
 
+            let algoRawCurrency = try algoCurrencyValue.unwrap()
             let totalRewards = calculateTotalRewards(account: account)
 
             currencyFormatter.formattingContext = .standalone()

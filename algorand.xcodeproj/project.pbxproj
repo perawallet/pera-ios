@@ -4996,6 +4996,9 @@
 		F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
 		F0E7445F27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
 		F0E7446027B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
+		F0E8CCA22880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
+		F0E8CCA32880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
+		F0E8CCA42880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -6700,6 +6703,7 @@
 		F0E7444827B465D00063DD83 /* AlgoPriceAttributeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceAttributeViewTheme.swift; sourceTree = "<group>"; };
 		F0E7444C27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceChartTimeFrameSelectionViewModel.swift; sourceTree = "<group>"; };
 		F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceCalculator.swift; sourceTree = "<group>"; };
+		F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -8395,6 +8399,7 @@
 			children = (
 				2B57BC49280EE25B00F958C4 /* CurrencySelectionView.swift */,
 				2B57BC4D280EE26B00F958C4 /* CurrencySelectionViewTheme.swift */,
+				F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -17252,6 +17257,7 @@
 				F0E72187284F6A6500865419 /* SendTransactionFlowCoordinator.swift in Sources */,
 				D4F068AB26EF2D1C00C26F43 /* TutorialStepsViewTheme.swift in Sources */,
 				95631BBB27608E74002FB831 /* TripleShadowView.swift in Sources */,
+				F0E8CCA42880496E00398803 /* CurrencySelectionCell.swift in Sources */,
 				17BD4EDC2292F1260003E49A /* PassphraseCellView.swift in Sources */,
 				2B80C55D277332A500BB071E /* PortfolioValueViewTheme.swift in Sources */,
 				D4B33ABA27F2229A00523CEA /* AssetType.swift in Sources */,
@@ -18844,6 +18850,7 @@
 				D4F068AA26EF2D1C00C26F43 /* TutorialStepsViewTheme.swift in Sources */,
 				F0E72186284F6A6500865419 /* SendTransactionFlowCoordinator.swift in Sources */,
 				2B0F62D924EC129D00DA22A6 /* AssetConfigTransactionType.swift in Sources */,
+				F0E8CCA32880496E00398803 /* CurrencySelectionCell.swift in Sources */,
 				2B7A1F1C27DBD1A70010F52E /* CollectibleDetailLoadingView.swift in Sources */,
 				95C9590B278A1132003D0D78 /* WCSingleTransactionRequestBottomView.swift in Sources */,
 				2B69823F278C8553008EC669 /* TransactionsViewController+CSV.swift in Sources */,
@@ -20436,6 +20443,7 @@
 				D4F068A926EF2D1C00C26F43 /* TutorialStepsViewTheme.swift in Sources */,
 				2B4EEEBE24BDFFF700059A16 /* NotificationView.swift in Sources */,
 				2BD78E8E226A0B4900A3D35C /* PassphraseCellView.swift in Sources */,
+				F0E8CCA22880496E00398803 /* CurrencySelectionCell.swift in Sources */,
 				2B7A1F1B27DBD1A70010F52E /* CollectibleDetailLoadingView.swift in Sources */,
 				D4B33AB827F2229A00523CEA /* AssetType.swift in Sources */,
 				D4CC28B528759F6F0082E038 /* InnerTransactionListViewController.swift in Sources */,

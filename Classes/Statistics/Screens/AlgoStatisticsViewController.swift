@@ -37,10 +37,6 @@ final class AlgoStatisticsViewController:
 
     private var chartEntries: [AlgoUSDPrice]?
     private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastDay
-
-    private var currency: Currency? {
-        return try? sharedDataController.currency.primaryValue?.unwrap()
-    }
     
     private var isViewFirstAppeared = true
     
@@ -52,10 +48,6 @@ final class AlgoStatisticsViewController:
     ) {
         self.dataController = dataController
         super.init(configuration: configuration)
-    }
-    
-    deinit {
-        unobserveNotifications()
     }
     
     override func configureNavigationBarAppearance() {
@@ -130,17 +122,6 @@ final class AlgoStatisticsViewController:
                     self.algoPriceView.bindPriceData(algoPriceViewModel)
                 }
             }
-        }
-        
-        observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.resetData()
-        }
-        observeWhenApplicationDidBecomeActive {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.reloadData()
         }
     }
     
@@ -238,9 +219,5 @@ extension AlgoStatisticsViewController {
     
     private func reloadData() {
         dataController.reload()
-    }
-    
-    private func resetData() {
-        dataController.reset()
     }
 }

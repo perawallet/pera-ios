@@ -65,11 +65,12 @@ extension AlgosDetailInfoViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         do {
-            guard let algoRawCurrency = try currency.algoRawCurrency else {
+            guard let algoCurrencyValue = currency.algoValue else {
                 primaryValue = nil
                 return
             }
 
+            let algoRawCurrency = try algoCurrencyValue.unwrap()
             let amount = account.amount.toAlgos
 
             currencyFormatter.formattingContext = .standalone()
@@ -88,10 +89,12 @@ extension AlgosDetailInfoViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         do {
-            guard let fiatRawCurrency = try currency.fiatRawCurrency else {
+            guard let fiatCurrencyValue = currency.fiatValue else {
                 secondaryValue = nil
                 return
             }
+
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
 
             let algoAmount = account.amount.toAlgos
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)

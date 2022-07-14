@@ -44,11 +44,13 @@ extension AlgoAssetViewModel {
         do {
             guard
                 let algoAmount = item.amount,
-                let algoRawCurrency = try item.currency.algoRawCurrency
+                let algoCurrencyValue = item.currency.algoValue
             else {
                 amount = nil
                 return
             }
+
+            let algoRawCurrency = try algoCurrencyValue.unwrap()
 
             let formatter = item.currencyFormatter
             formatter.formattingContext = .listItem
@@ -66,14 +68,14 @@ extension AlgoAssetViewModel {
         do {
             guard
                 let algoAmount = item.amount,
-                let fiatRawCurrency = try item.currency.fiatRawCurrency
+                let fiatCurrencyValue = item.currency.fiatValue
             else {
                 valueInCurrency = nil
                 valueInUSD = 0
                 return
             }
 
-            valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
 
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
             let amount = try exchanger.exchange(algo: algoAmount)
@@ -83,6 +85,7 @@ extension AlgoAssetViewModel {
             formatter.currency = fiatRawCurrency
 
             valueInCurrency = formatter.format(amount)
+            valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
         } catch {
             valueInCurrency = nil
             valueInUSD = 0

@@ -10,7 +10,7 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
             switch itemIdentifier {
             case let .currency(item):
                 let cell =  collectionView.dequeue(
-                    SingleSelectionCell.self,
+                    CurrencySelectionCell.self,
                     at: indexPath
                 )
                 cell.bindData(item)
@@ -40,7 +40,7 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
             }
         }
         
-        collectionView.register(SingleSelectionCell.self)
+        collectionView.register(CurrencySelectionCell.self)
         collectionView.register(CurrencySelectionLoadingViewCell.self)
         collectionView.register(NoContentCell.self)
         collectionView.register(NoContentWithActionCell.self)

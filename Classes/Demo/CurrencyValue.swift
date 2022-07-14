@@ -40,6 +40,20 @@ extension CurrencyValue {
 }
 
 extension CurrencyValue {
+    static func ~= (
+        lhs: CurrencyValue,
+        rhs: CurrencyValue
+    ) -> Bool {
+        switch (lhs, rhs) {
+        case (.available(let lhsCurrency), .available(let rhsCurrency)):
+            return lhsCurrency.id == rhsCurrency.id
+        case (.failure, .failure):
+            return true
+        default:
+            return false
+        }
+    }
+
     static func == (
         lhs: CurrencyValue,
         rhs: CurrencyValue

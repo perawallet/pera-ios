@@ -106,10 +106,12 @@ extension TransactionAmountViewModel {
     ) {
         if isAlgos {
             do {
-                guard let algoRawCurrency = try currency.algoRawCurrency else {
+                guard let algoCurrencyValue = currency.algoValue else {
                     amountLabelText = nil
                     return
                 }
+
+                let algoRawCurrency = try algoCurrencyValue.unwrap()
 
                 currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
                 currencyFormatter.currency = algoRawCurrency

@@ -66,10 +66,10 @@ extension CurrencyAPIProvider {
 
             switch result {
             case .success(let currency):
-                self.proceedSuccess(with: currency)
+                self.performUpdates(with: currency)
             case .failure(let apiError, let apiErrorDetail):
                 let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                self.proceedFailure(with: .networkFailed(error))
+                self.performUpdates(with: .networkFailed(error))
             }
         }
     }
@@ -79,11 +79,11 @@ extension CurrencyAPIProvider {
         ongoingEndpointToRefreshCurrency = nil
     }
 
-    private func proceedSuccess(
+    private func performUpdates(
         with currency: FiatCurrency
     ) {
         if currency.isFault {
-            proceedFailure(with: .corrupted)
+            performUpdates(with: .corrupted)
             return
         }
 
@@ -100,7 +100,7 @@ extension CurrencyAPIProvider {
         notifyObservers(for: .didUpdate)
     }
 
-    private func proceedFailure(
+    private func performUpdates(
         with error: CurrencyError
     ) {
         if hasCachedValue() {

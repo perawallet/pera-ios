@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  SingleSelectionCell.swift
+//   CurrencySelectionCell.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
-class SingleSelectionCell: CollectionCell<SingleSelectionView> {
-    override init(frame: CGRect) {
+final class CurrencySelectionCell: SingleSelectionCell {
+    override init(
+        frame: CGRect
+    ) {
         super.init(frame: frame)
-        customize(SingleSelectionViewTheme())
-    }
-    
-    private func customize(_ theme: SingleSelectionViewTheme) {
-        contextView.customize(theme)
-    }
-    
-    func bindData(_ viewModel: SingleSelectionViewModel) {
-        contextView.bindData(viewModel)
+
+        let separator = Separator(
+            color: AppColors.Shared.Layer.grayLighter,
+            size: 1,
+            position: .bottom((0, 0))
+        )
+        separatorStyle = .single(separator)
     }
 }

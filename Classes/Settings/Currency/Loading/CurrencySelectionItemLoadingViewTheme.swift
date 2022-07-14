@@ -20,13 +20,12 @@ import MacaroonUIKit
 struct CurrencySelectionItemLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
-    let titleViewHeight: LayoutMetric
-    let titleViewWidth: LayoutMetric
+    let titleSize: LayoutSize
     let titleTopPadding: LayoutMetric
     let titleBottomPadding: LayoutMetric
-    let height: LayoutMetric
+    let titleCorner: Corner
 
-    let corner: Corner
+    let separator: Separator
 
     init(
         _ family: LayoutFamily
@@ -38,12 +37,15 @@ struct CurrencySelectionItemLoadingViewTheme:
         contentWidth: LayoutMetric,
         family: LayoutFamily = .current
     ) {
-        self.titleViewHeight = 20
-        self.titleViewWidth = contentWidth
+        self.titleSize = (contentWidth, 20)
         self.titleTopPadding = 20
         self.titleBottomPadding = 24
-        self.height = titleViewHeight + titleTopPadding + titleBottomPadding
+        self.titleCorner = 4
 
-        self.corner = Corner(radius: 4)
+        self.separator = Separator(
+            color: AppColors.Shared.Layer.grayLighter,
+            size: 1,
+            position: .bottom((0, 0))
+        )
     }
 }

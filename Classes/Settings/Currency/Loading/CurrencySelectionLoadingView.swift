@@ -63,7 +63,7 @@ final class CurrencySelectionLoadingView:
         let searchInputHeight = theme.searchInputHeight + theme.searchInputTopPadding
 
         let items = (
-            theme.largeItem.titleViewHeight +
+            theme.largeItem.titleSize.h +
             theme.largeItem.titleTopPadding +
             theme.largeItem.titleBottomPadding
             ) * 4
@@ -127,7 +127,7 @@ extension CurrencySelectionLoadingView {
         currencySelectionItemsStack.axis = .vertical
         currencySelectionItemsStack.spacing = theme.currencySelectionItemsStackSpacing
         currencySelectionItemsStack.distribution = .equalSpacing
-        currencySelectionItemsStack.alignment = .top
+        currencySelectionItemsStack.alignment = .fill
 
         addSubview(currencySelectionItemsStack)
         currencySelectionItemsStack.snp.makeConstraints {
@@ -144,12 +144,8 @@ extension CurrencySelectionLoadingView {
     private func addSelectionItem(
         _ theme: CurrencySelectionItemLoadingViewTheme
     ) {
-        let item = CurrencySelectionItemLoadingView()
-        item.customize(theme)
-
-        currencySelectionItemsStack.addArrangedSubview(item)
-        item.snp.makeConstraints {
-            $0.fitToHeight(theme.height)
-        }
+        let itemView = CurrencySelectionItemLoadingView()
+        itemView.customize(theme)
+        currencySelectionItemsStack.addArrangedSubview(itemView)
     }
 }

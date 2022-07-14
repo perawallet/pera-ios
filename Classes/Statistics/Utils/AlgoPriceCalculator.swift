@@ -26,73 +26,92 @@ extension AlgoPriceCalculator {
     typealias Price = (amount: Double, currency: Currency)
     
     func calculateRecentPrice() -> Result<Price, AlgoPriceCalculationError> {
-        switch currencyValue {
-        case .none:
+        guard let currencyValue = currencyValue else {
             return .failure(.currencyUnavailable)
-        case .available(let currency):
-            /// <todo>
-            /// Why does the price pass itself as parameter to its function?
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
             guard let priceValue = algoPriceValues.last else {
                 return .failure(.priceFailed)
             }
-            
+
             return calculatePrice(
                 priceValue,
-                currency
+                rawCurrency
             )
-        case .failure:
-            return .failure(.currencyFailed)
+        } catch let error as CurrencyError {
+            return .failure(.currencyFailed(error))
+        } catch {
+            return .failure(.currencyFailed())
         }
     }
     
     func calculatePrice(
         _ priceValue: AlgoUSDPrice
     ) -> Result<Price, AlgoPriceCalculationError> {
-        switch currencyValue {
-        case .none:
+        guard let currencyValue = currencyValue else {
             return .failure(.currencyUnavailable)
-        case .available(let currency):
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
             return calculatePrice(
                 priceValue,
-                currency
+                rawCurrency
             )
-        case .failure:
-            return .failure(.currencyFailed)
+        } catch let error as CurrencyError {
+            return .failure(.currencyFailed(error))
+        } catch {
+            return .failure(.currencyFailed())
         }
     }
     
     func calculatePriceChangeRate() -> Result<AlgoPriceChangeRate, AlgoPriceCalculationError> {
-        switch currencyValue {
-        case .none:
+        guard let currencyValue = currencyValue else {
             return .failure(.currencyUnavailable)
-        case .available(let currency):
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
             guard
                 let basePriceValue = algoPriceValues.last,
                 let firstPriceValue = algoPriceValues.first.unwrap({
-                    $0.getCurrencyScaledChartOpenValue(with: basePriceValue, for: currency)
+                    $0.getCurrencyScaledChartOpenValue(
+                        with: basePriceValue,
+                        for: rawCurrency
+                    )
                 }),
                 firstPriceValue > 0,
                 let lastPriceValue = algoPriceValues.last.unwrap({
-                    $0.getCurrencyScaledChartHighValue(with: basePriceValue, for: currency)
+                    $0.getCurrencyScaledChartHighValue(
+                        with: basePriceValue,
+                        for: rawCurrency
+                    )
                 })
             else {
                 return .success(.same)
             }
-            
+
             /// <todo>
             /// Move it to `Macaroon` library.
             let rate = (lastPriceValue - firstPriceValue) / firstPriceValue
-            
+
             let priceChangeRate: AlgoPriceChangeRate
             switch rate {
             case ..<0: priceChangeRate = .decreased(rate * -1)
             case 0: priceChangeRate = .same
             default: priceChangeRate = .increased(rate)
             }
-            
+
             return .success(priceChangeRate)
-        case .failure:
-            return .failure(.currencyFailed)
+        } catch let error as CurrencyError {
+            return .failure(.currencyFailed(error))
+        } catch {
+            return .failure(.currencyFailed())
         }
     }
 }
@@ -123,7 +142,7 @@ enum AlgoPriceChangeRate {
 
 enum AlgoPriceCalculationError: Error {
     case currencyUnavailable
-    case currencyFailed
+    case currencyFailed(CurrencyError? = nil)
     case priceFailed
     
     var isAvailable: Bool {

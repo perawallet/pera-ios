@@ -42,51 +42,55 @@ protocol CurrencyProvider: AnyObject {
 }
 
 extension CurrencyProvider {
-    var algoRawCurrency: Currency? {
-        get throws {
-            guard
-                let primaryValue = primaryValue,
-                let secondaryValue = secondaryValue
-            else {
-                return nil
+    var primaryFiatValue: CurrencyValue? {
+        guard let primaryRawCurrency = try? primaryValue?.unwrap() else {
+            return primaryValue
+        }
+
+        if !primaryRawCurrency.isAlgo {
+            return primaryValue
+        }
+
+        return secondaryValue
+    }
+}
+
+extension CurrencyProvider {
+    var algoValue: CurrencyValue? {
+        get {
+            if let primaryRawCurrency = try? primaryValue?.unwrap(),
+               primaryRawCurrency.isAlgo {
+                return primaryValue
             }
 
-            let primaryRawCurrency = try primaryValue.unwrap()
-            let secondaryRawCurrency = try secondaryValue.unwrap()
-
-            if primaryRawCurrency.isAlgo {
-                return primaryRawCurrency
+            if let secondaryRawCurrency = try? secondaryValue?.unwrap(),
+               secondaryRawCurrency.isAlgo {
+                return secondaryValue
             }
 
-            if secondaryRawCurrency.isAlgo {
-                return secondaryRawCurrency
-            }
-
-            return nil
+            /// <note>
+            /// If both conditions aren't met, it means the currency failed to be fetched from API;
+            /// therefore, in order to handle the error case, the primary value is being returned.
+            return primaryValue
         }
     }
 
-    var fiatRawCurrency: Currency? {
-        get throws {
-            guard
-                let primaryValue = primaryValue,
-                let secondaryValue = secondaryValue
-            else {
-                return nil
+    var fiatValue: CurrencyValue? {
+        get {
+            if let primaryRawCurrency = try? primaryValue?.unwrap(),
+               !primaryRawCurrency.isAlgo {
+                return primaryValue
             }
 
-            let primaryRawCurrency = try primaryValue.unwrap()
-            let secondaryRawCurrency = try secondaryValue.unwrap()
-
-            if !primaryRawCurrency.isAlgo {
-                return primaryRawCurrency
+            if let secondaryRawCurrency = try? secondaryValue?.unwrap(),
+               !secondaryRawCurrency.isAlgo {
+                return secondaryValue
             }
 
-            if !secondaryRawCurrency.isAlgo {
-                return secondaryRawCurrency
-            }
-
-            return nil
+            /// <note>
+            /// If both conditions aren't met, it means the currency failed to be fetched from API;
+            /// therefore, in order to handle the error case, the primary value is being returned.
+            return primaryValue
         }
     }
 }
@@ -100,5 +104,6 @@ extension CurrencyProvider {
 }
 
 enum CurrencyEvent {
+    /// It may be called in a background queue
     case didUpdate
 }

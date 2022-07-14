@@ -31,9 +31,10 @@ final class CurrencySelectionView:
         flowLayout.minimumLineSpacing = .zero
         flowLayout.minimumInteritemSpacing = .zero
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .clear
+        collectionView.alwaysBounceVertical = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
         collectionView.keyboardDismissMode = .interactive
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         return collectionView
@@ -95,10 +96,7 @@ extension CurrencySelectionView {
     }
 
     private func updateWhenLoadingDidChange() {
-        titleLabel.isHidden = isLoading
-        descriptionLabel.isHidden = isLoading
-        searchInputView.isHidden = isLoading
-
+        updateHeaderWhenLoadingDidChange()
         updateCollectionWhenLoadingDidChange()
     }
 
@@ -117,6 +115,10 @@ extension CurrencySelectionView {
         addTitle(theme)
         addDescription(theme)
         addSearchInputView(theme)
+    }
+
+    func updateHeaderWhenLoadingDidChange() {
+        headerView.isHidden = isLoading
     }
 
     private func addTitle(_ theme: CurrencySelectionViewTheme) {

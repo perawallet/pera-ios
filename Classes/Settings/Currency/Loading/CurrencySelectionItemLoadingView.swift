@@ -14,8 +14,8 @@
 
 //   CurrencySelectionItemLoadingView.swift
 
-import UIKit
 import MacaroonUIKit
+import UIKit
 
 final class CurrencySelectionItemLoadingView:
     View,
@@ -34,6 +34,7 @@ final class CurrencySelectionItemLoadingView:
         _ theme: CurrencySelectionItemLoadingViewTheme
     ) {
         addTitle(theme)
+        addSeparator(theme)
     }
 
     func linkInteractors() {
@@ -50,7 +51,7 @@ final class CurrencySelectionItemLoadingView:
     ) -> CGSize {
         let preferredHeight =
             theme.titleTopPadding +
-            theme.titleViewHeight +
+            theme.titleSize.h +
             theme.titleBottomPadding
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
@@ -61,15 +62,21 @@ extension CurrencySelectionItemLoadingView {
     private func addTitle(
         _ theme: CurrencySelectionItemLoadingViewTheme
     ) {
-        title.draw(corner: theme.corner)
+        title.draw(corner: theme.titleCorner)
 
         addSubview(title)
         title.snp.makeConstraints {
-            $0.fitToHeight(theme.titleViewHeight)
-            $0.fitToWidth(theme.titleViewWidth)
+            $0.fitToSize(theme.titleSize)
             $0.top == theme.titleTopPadding
             $0.leading == 0
             $0.bottom == theme.titleBottomPadding
+            $0.trailing <= 0
         }
+    }
+
+    private func addSeparator(
+        _ theme: CurrencySelectionItemLoadingViewTheme
+    ) {
+        addSeparator(theme.separator)
     }
 }
