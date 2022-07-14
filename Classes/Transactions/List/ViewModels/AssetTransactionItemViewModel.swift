@@ -56,12 +56,23 @@ struct AssetTransactionItemViewModel:
             return
         }
 
-        if transaction.getCloseAddress() != nil {
+        if let closeToAddress = transaction.getCloseAddress() {
+            if closeToAddress == draft.account.address {
+                bindTitle("transaction-item-receive-opt-out".localized)
+                return
+            }
+
             bindTitle("transaction-item-opt-out".localized)
             return
         }
 
-        if transaction.sender == draft.account.address && transaction.isSelfTransaction {
+        if transaction.sender == draft.account.address &&
+            transaction.isSelfTransaction {
+            if transaction.getAmount() != 0 {
+                bindTitle("transaction-item-self-transfer".localized)
+                return
+            }
+
             bindTitle("transaction-item-opt-in".localized)
             return
         }
