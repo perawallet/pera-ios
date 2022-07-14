@@ -267,6 +267,7 @@ extension HomeListLayout {
             forSectionAt: section
         )
         let sampleAccountPreview = CustomAccountPreview(
+            address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")

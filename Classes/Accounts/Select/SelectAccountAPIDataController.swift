@@ -121,7 +121,11 @@ extension SelectAccountAPIDataController {
                 let cellItem: SelectAccountListViewItem
                 
                 if self.transactionAction == .buyAlgo {
-                    let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
+                    let account = accountHandle.value
+                    let algoAccount = CustomAccountPreview(
+                        AlgoAccountViewModel(account),
+                        address: account.address
+                    )
                     
                     cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
                 } else {
