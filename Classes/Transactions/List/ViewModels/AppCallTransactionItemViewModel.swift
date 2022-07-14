@@ -57,7 +57,8 @@ struct AppCallTransactionItemViewModel:
         }
 
         if let appID = applicationCall.appID {
-            bindSubtitle("#\(appID)")
+            let appId = "transaction-item-app-id-title".localized(params: appID)
+            bindSubtitle(appId)
         }
     }
 
