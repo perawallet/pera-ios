@@ -49,7 +49,14 @@ extension TransactionHistoryContextView {
         titleLabel.customizeAppearance(theme.titleLabel)
 
         addSubview(titleLabel)
+
+        titleLabel.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
+        titleLabel.contentEdgeInsets.trailing = theme.minSpacingBetweenTitleAndAmount
         titleLabel.snp.makeConstraints {
+            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.titleMinWidthRatio)
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
             $0.centerY.equalToSuperview().priority(.low)
@@ -85,7 +92,7 @@ extension TransactionHistoryContextView {
             $0.top.equalToSuperview().inset(theme.verticalInset)
             $0.centerY.equalToSuperview()
             $0.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.greaterThanOrEqualTo(subtitleLabel.snp.trailing).offset(theme.horizontalInset)
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
         }
     }
 }
