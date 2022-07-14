@@ -254,8 +254,8 @@
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
-"asset-support-your-add-title" = "Your accounts do not contain this asset";
-"asset-support-your-add-message" = "Please add this asset and try again.";
+"asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";

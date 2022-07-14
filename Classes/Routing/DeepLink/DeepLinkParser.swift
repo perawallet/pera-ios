@@ -206,19 +206,30 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
+        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.isWatchAccount() }
+
+        let hasAsset = nonWatchAccounts.contains { account in
+            return account.value.containsAsset(assetId)
+        }
+
         guard
+            hasAsset,
             let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             let draft = AssetAlertDraft(
                 account: nil,
                 assetId: assetId,
                 asset: nil,
-                title: "asset-support-title".localized,
-                detail: "asset-support-error".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
+                title: "asset-support-your-add-title".localized,
+                detail: "asset-support-your-add-message".localized,
+                cancelTitle: "title-close".localized
             )
-            return .success(.assetActionConfirmation(draft: draft))
+            return .success(
+                .assetActionConfirmation(
+                    draft: draft,
+                    theme: .secondaryActionOnly
+                )
+            )
         }
 
         /// <todo> Support the collectibles later when its detail screen is done.
@@ -230,7 +241,17 @@ extension DeepLinkParser {
             lockedNote: qr.lockedNote,
             transactionMode: .asset(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )
-        return .success(.sendTransaction(draft: qrDraft))
+
+        let shouldFilterAccount: (Account) -> Bool = {
+            !$0.containsAsset(assetId)
+        }
+
+        return .success(
+            .sendTransaction(
+                draft: qrDraft,
+                shouldFilterAccount: shouldFilterAccount
+            )
+        )
     }
 
     private func makeAssetOptInRequestScreen(
@@ -288,9 +309,15 @@ extension DeepLinkParser {
     enum Screen {
         case actionSelection(address: String, label: String?)
         case algosDetail(draft: TransactionListing)
-        case assetActionConfirmation(draft: AssetAlertDraft)
+        case assetActionConfirmation(
+            draft: AssetAlertDraft,
+            theme: AssetActionConfirmationViewControllerTheme = .init()
+        )
         case assetDetail(draft: TransactionListing)
-        case sendTransaction(draft: QRSendTransactionDraft)
+        case sendTransaction(
+            draft: QRSendTransactionDraft,
+            shouldFilterAccount: ((Account) -> Bool)? = nil
+        )
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
         case buyAlgo(draft: BuyAlgoDraft)
         case accountSelect(asset: AssetID)

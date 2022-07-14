@@ -491,12 +491,12 @@ extension ScanQRFlowCoordinator {
                 asset: nil,
                 title: "asset-support-your-add-title".localized,
                 detail: "asset-support-your-add-message".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
+                cancelTitle: "title-close".localized
             )
             let screen: Screen = .assetActionConfirmation(
                 assetAlertDraft: draft,
-                delegate: nil
+                delegate: nil,
+                theme: .secondaryActionOnly
             )
 
             assetConfirmationTransition =
@@ -515,9 +515,14 @@ extension ScanQRFlowCoordinator {
             transactionDraft: composeAssetTransactionDraft(asset, from: qr)
         )
 
+        let shouldFilterAccount: (Account) -> Bool = {
+            !$0.containsAsset(assetID)
+        }
+
         let screen: Screen = .accountSelection(
             draft: draft,
-            delegate: self
+            delegate: self,
+            shouldFilterAccount: shouldFilterAccount
         )
 
         presentingScreen.open(
@@ -616,7 +621,7 @@ extension ScanQRFlowCoordinator {
     private func findCachedAsset(
         for id: AssetID
     ) -> Asset? {
-        for account in sharedDataController.accountCollection {
+        for account in sharedDataController.accountCollection where !account.value.isWatchAccount() {
             if let asset = account.value[id] {
                 return asset
             }

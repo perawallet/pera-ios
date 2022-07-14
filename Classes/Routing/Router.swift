@@ -191,12 +191,16 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-        case .assetActionConfirmation(let draft):
+        case .assetActionConfirmation(let draft, let theme):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
             transition.perform(
-                .assetActionConfirmation(assetAlertDraft: draft, delegate: self),
+                .assetActionConfirmation(
+                    assetAlertDraft: draft,
+                    delegate: self,
+                    theme: theme
+                ),
                 by: .presentWithoutNavigationController
             )
             
@@ -210,7 +214,7 @@ class Router:
                 by: .present
             )
 
-        case .sendTransaction(let draft):
+        case .sendTransaction(let draft, let shouldFilterAccount):
             launch(tab: .home)
 
             let transactionDraft = SendTransactionDraft(
@@ -231,7 +235,8 @@ class Router:
             route(
                 to: .accountSelection(
                         draft: accountSelectDraft,
-                        delegate: self
+                        delegate: self,
+                        shouldFilterAccount: shouldFilterAccount
                 ),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
@@ -583,13 +588,14 @@ class Router:
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
             managementOptionsViewController.delegate = delegate
             viewController = managementOptionsViewController
-        case let .assetActionConfirmation(assetAlertDraft, delegate):
+        case let .assetActionConfirmation(assetAlertDraft, delegate, theme):
             let aViewController = AssetActionConfirmationViewController(
                 draft: assetAlertDraft,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
+                configuration: configuration,
+                theme: theme
             )
             aViewController.delegate = delegate
             viewController = aViewController
@@ -772,12 +778,14 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .accountSelection(draft, delegate):
+        case let .accountSelection(draft, delegate, shouldFilterAccount):
+            let dataController = SelectAccountAPIDataController(
+                configuration.sharedDataController,
+                transactionAction: draft.transactionAction
+            )
+            dataController.shouldFilterAccount = shouldFilterAccount
             let selectAccountViewController = SelectAccountViewController(
-                dataController: SelectAccountAPIDataController(
-                    configuration.sharedDataController,
-                    transactionAction: draft.transactionAction
-                ),
+                dataController: dataController,
                 draft: draft,
                 configuration: configuration
             )

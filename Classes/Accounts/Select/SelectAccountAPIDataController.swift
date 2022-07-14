@@ -31,6 +31,8 @@ final class SelectAccountAPIDataController:
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
     private let transactionAction: TransactionAction
 
+    var shouldFilterAccount: ((Account) -> Bool)?
+
     init(
         _ sharedDataController: SharedDataController,
         transactionAction: TransactionAction
@@ -117,7 +119,12 @@ extension SelectAccountAPIDataController {
                 if isWatchAccount {
                     return
                 }
-                
+
+                if let shouldFilterAccount = self.shouldFilterAccount,
+                   shouldFilterAccount(accountHandle.value) {
+                    return
+                }
+
                 let cellItem: SelectAccountListViewItem
                 
                 if self.transactionAction == .buyAlgo {

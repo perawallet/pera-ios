@@ -4473,9 +4473,9 @@
 		D4DDF3B6273960FF00BC8F42 /* AssetListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */; };
 		D4DDF3B7273960FF00BC8F42 /* AssetListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */; };
 		D4DDF3B8273960FF00BC8F42 /* AssetListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */; };
-		D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */; };
-		D4DDF3BB27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */; };
-		D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */; };
+		D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */; };
+		D4DDF3BB27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */; };
+		D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */; };
 		D4DF3F6726F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */; };
 		D4DF3F6826F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */; };
 		D4DF3F6926F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */; };
@@ -6524,7 +6524,7 @@
 		D4DDF3AC27394EFF00BC8F42 /* AssetAdditionPageBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAdditionPageBarItems.swift; sourceTree = "<group>"; };
 		D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetListViewController+Theme.swift"; sourceTree = "<group>"; };
-		D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetActionConfirmationViewController+Theme.swift"; sourceTree = "<group>"; };
+		D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetActionConfirmationViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerApprovalViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4DF3F6A26F1EED4006625E6 /* LedgerApprovalViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerApprovalViewTheme.swift; sourceTree = "<group>"; };
 		D4DF3F6E26F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionViewTheme.swift; sourceTree = "<group>"; };
@@ -10485,7 +10485,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4487272379653700C19FDE /* AssetActionConfirmationViewController.swift */,
-				D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */,
+				D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -17116,7 +17116,7 @@
 				2B7E58852586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				D4006DE12710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */,
 				D412C19327F1BCFC00E79308 /* SendCollectibleContactCell.swift in Sources */,
-				D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */,
+				D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				D4FC47552714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				2B4FD20027C63F740097AB65 /* BuyAlgoTransactionViewTheme.swift in Sources */,
 				D4FC5F6327F52DA30017E81F /* SelectedAccountPreviewViewModel.swift in Sources */,
@@ -18686,7 +18686,7 @@
 				D4487AAA27BD373100B4B0AB /* RecoverAccountViewTheme.swift in Sources */,
 				958416F527B3B19A005B1627 /* AssetAdditionNoContentViewModel.swift in Sources */,
 				2B0AD8382757DEDD00F83660 /* SingleLineTitleActionViewModel.swift in Sources */,
-				D4DDF3BB27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */,
+				D4DDF3BB27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				2B80C5542773327C00BB071E /* PortfolioValueView.swift in Sources */,
 				D4FC47542714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				17CADCA12859DDE0001D19A8 /* SortAccountAssetListLayout.swift in Sources */,
@@ -20299,7 +20299,7 @@
 				F087091A27918E1A00BEE5C2 /* HomePortfolioViewModel.swift in Sources */,
 				2B0E00BA27881A3D00D6B2E2 /* SecuritySettingsViewController.swift in Sources */,
 				D4487A9D27BD354100B4B0AB /* RecoverAccountViewController+Theme.swift in Sources */,
-				D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */,
+				D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				D4FC47532714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				2B7A1F9D27DE69480010F52E /* CollectibleDetailActionViewTheme.swift in Sources */,
 				2B7E58832586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
