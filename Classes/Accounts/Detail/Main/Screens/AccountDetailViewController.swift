@@ -232,7 +232,26 @@ extension AccountDetailViewController {
                 with: .center
             )
         )
+
+        accountNamePreviewTitleView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(didLongPressToAccountNamePreviewTitleView)
+            )
+        )
+
         navigationItem.titleView = accountNamePreviewTitleView
+    }
+
+    @objc
+    private func didLongPressToAccountNamePreviewTitleView(
+        _ gesture: UILongPressGestureRecognizer
+    ) {
+        guard gesture.state == .began else {
+            return
+        }
+
+        copyToClipboardController.copyAddress(accountHandle.value)
     }
 }
 
