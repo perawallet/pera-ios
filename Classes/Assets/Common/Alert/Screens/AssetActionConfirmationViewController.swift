@@ -24,7 +24,7 @@ final class AssetActionConfirmationViewController: BaseViewController {
     
     private(set) var draft: AssetAlertDraft
 
-    private lazy var theme = Theme()
+    private let theme: AssetActionConfirmationViewControllerTheme
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
 
     private let copyToClipboardController: CopyToClipboardController
@@ -32,10 +32,12 @@ final class AssetActionConfirmationViewController: BaseViewController {
     init(
         draft: AssetAlertDraft,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        theme: AssetActionConfirmationViewControllerTheme
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
+        self.theme = theme
         super.init(configuration: configuration)
     }
     

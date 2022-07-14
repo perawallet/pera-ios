@@ -66,7 +66,11 @@ indirect enum Screen {
         managementType: ManagementOptionsViewController.ManagementType,
         delegate: ManagementOptionsViewControllerDelegate
     )
-    case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
+    case assetActionConfirmation(
+        assetAlertDraft: AssetAlertDraft,
+        delegate: AssetActionConfirmationViewControllerDelegate?,
+        theme: AssetActionConfirmationViewControllerTheme = .init()
+    )
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
@@ -119,7 +123,8 @@ indirect enum Screen {
     )
     case accountSelection(
         draft: SelectAccountDraft,
-        delegate: SelectAccountViewControllerDelegate?
+        delegate: SelectAccountViewControllerDelegate?,
+        shouldFilterAccount: ((Account) -> Bool)? = nil
     )
     case assetSelection(
         filter: AssetType?,

@@ -33,6 +33,7 @@ final class AssetActionConfirmationView:
     private lazy var transactionView = HStackView()
     private lazy var transactionFeeTitleLabel = Label()
     private lazy var transactionFeeAmountLabel = Label()
+    private lazy var warningIconView = ImageView()
     private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
@@ -45,6 +46,7 @@ final class AssetActionConfirmationView:
         addAssetNameLabel(theme)
         addAssetIDView(theme)
         addTransactionView(theme)
+        addWarningIcon(theme)
         addDetailLabel(theme)
         addActionButton(theme)
         addCancelButton(theme)
@@ -209,15 +211,27 @@ extension AssetActionConfirmationView {
         transactionView.addArrangedSubview(transactionFeeAmountLabel)
     }
 
+    private func addWarningIcon(_ theme: AssetActionConfirmationViewTheme) {
+        warningIconView.customizeAppearance(theme.warningIcon)
+
+        addSubview(warningIconView)
+        warningIconView.contentEdgeInsets = theme.warningIconContentEdgeInsets
+        warningIconView.fitToIntrinsicSize()
+        warningIconView.snp.makeConstraints {
+            $0.top.equalTo(transactionFeeTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
+            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
-        detailLabel.customizeAppearance(theme.description)
+        detailLabel.customizeAppearance(theme.detail)
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(transactionFeeTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
-            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(warningIconView)
+            $0.leading.equalTo(warningIconView.snp.trailing)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -227,7 +241,7 @@ extension AssetActionConfirmationView {
         addSubview(actionButton)
         actionButton.fitToVerticalIntrinsicSize()
         actionButton.snp.makeConstraints {
-            $0.top.greaterThanOrEqualTo(detailLabel.snp.bottom).offset(theme.verticalInset)
+            $0.top.greaterThanOrEqualTo(detailLabel.snp.bottom).offset(theme.spacingBetweenButtonAndDetail)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
