@@ -160,6 +160,8 @@ extension SortAccountListViewController {
                 return
             }
 
+            movingAccountOrderingPreviewCellIndexPath = targetIndexPath
+
             listView.beginInteractiveMovementForItem(
                 at: targetIndexPath
             )
