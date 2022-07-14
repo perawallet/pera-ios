@@ -406,10 +406,17 @@ extension CollectibleListLocalDataController {
 
             var snapshot = Snapshot()
 
-            self.addHeaderContent(
-                withCollectibleCount: .zero,
-                to: &snapshot
-            )
+            if self.isWatchAccount {
+                self.addWatchAccountHeaderContent(
+                    withCollectibleCount: .zero,
+                    to: &snapshot
+                )
+            } else {
+                self.addHeaderContent(
+                    withCollectibleCount: .zero,
+                    to: &snapshot
+                )
+            }
 
             snapshot.appendSections([.search, .empty])
 
