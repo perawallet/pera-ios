@@ -156,6 +156,7 @@ extension SendCollectibleAccountListLayout {
 
         let width = calculateContentWidth(for: listView)
         let sampleAccountPreview = CustomAccountPreview(
+            address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: nil
@@ -208,6 +209,7 @@ extension SendCollectibleAccountListLayout {
 
         let width = listView.bounds.width
         let sampleAccountPreview = CustomAccountPreview(
+            address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: nil

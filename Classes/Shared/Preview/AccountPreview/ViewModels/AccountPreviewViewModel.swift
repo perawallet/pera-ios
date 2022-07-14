@@ -71,6 +71,8 @@ extension AccountPreviewViewModel {
         }
         
         if let customAccountPreview = model as? CustomAccountPreview {
+            address = customAccountPreview.address
+
             bindIcon(customAccountPreview)
             bindNamePreviewViewModel(customAccountPreview)
             bindPrimaryAccessory(customAccountPreview)
@@ -81,6 +83,8 @@ extension AccountPreviewViewModel {
         }
 
         if let accountOrderingDraft = model as? AccountOrderingDraft {
+            address = accountOrderingDraft.account.address
+
             bindIcon(accountOrderingDraft)
             bindNamePreviewViewModel(accountOrderingDraft)
             bindAccessoryIcon(accountOrderingDraft)
@@ -96,6 +100,8 @@ extension AccountPreviewViewModel {
         }
 
         if let nameServiceAccountPreview = model as? NameServiceAccountPreview {
+            address = nameServiceAccountPreview.address
+
             bindIcon(nameServiceAccountPreview)
             bindNamePreviewViewModel(nameServiceAccountPreview)
         }
@@ -346,26 +352,36 @@ extension AccountPreviewViewModel {
 }
 
 struct CustomAccountPreview {
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
+    var address: String?
+
     var icon: ImageSource?
     var title: String?
     var subtitle: String?
     var accessory: String?
     
     init(
+        address: String,
         icon: UIImage?,
         title: String?,
         subtitle: String?
     ) {
+        self.address = address
+
         self.icon = icon
         self.title = title
         self.subtitle = subtitle
     }
-    
+
     /// <todo>
     /// We should check & remove `AccountNameViewModel` & `AuthAccountNameViewModel`.
     init(
-        _ viewModel: AccountNameViewModel
+        _ viewModel: AccountNameViewModel,
+        address: String?
     ) {
+        self.address = address
+
         icon = viewModel.image
         title = viewModel.name
         subtitle = nil
@@ -373,8 +389,11 @@ struct CustomAccountPreview {
     }
     
     init(
-        _ viewModel: AuthAccountNameViewModel
+        _ viewModel: AuthAccountNameViewModel,
+        address: String?
     ) {
+        self.address = address
+
         icon = viewModel.image
         title = viewModel.address
         subtitle = nil
@@ -382,8 +401,11 @@ struct CustomAccountPreview {
     }
 
     init(
-        _ viewModel: AlgoAccountViewModel
+        _ viewModel: AlgoAccountViewModel,
+        address: String?
     ) {
+        self.address = address
+
         icon = viewModel.image
         title = viewModel.address
         subtitle = nil
@@ -406,15 +428,22 @@ struct AccountOrderingDraft {
 }
 
 struct NameServiceAccountPreview {
-    var icon: PNGImageSource?
-    var title: String?
-    var subtitle: String?
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
+    let address: String?
+
+    let icon: PNGImageSource?
+    let title: String?
+    let subtitle: String?
 
     init(
+        address: String?,
         icon: PNGImageSource?,
         title: String?,
         subtitle: String?
     ) {
+        self.address = address
+
         self.icon = icon
         self.title = title
         self.subtitle = subtitle

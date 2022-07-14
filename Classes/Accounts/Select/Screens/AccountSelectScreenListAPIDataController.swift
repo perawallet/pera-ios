@@ -206,6 +206,7 @@ extension AccountSelectScreenListAPIDataController {
                 let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
                 let nameServiceAccount = nameService.account.value
                 let preview = NameServiceAccountPreview(
+                    address: nameServiceAccount.address,
                     icon: imageSource,
                     title: nameServiceAccount.address.shortAddressDisplay,
                     subtitle: nameService.name
@@ -235,8 +236,12 @@ extension AccountSelectScreenListAPIDataController {
     private func appendAccountsTo(snapshot: inout Snapshot) {
         if !self.accounts.isEmpty {
             var accountItems = self.accounts.map { accountHandle -> AccountSelectItem in
-                let accountNameViewModel = AuthAccountNameViewModel(accountHandle.value)
-                let preview = CustomAccountPreview(accountNameViewModel)
+                let account = accountHandle.value
+                let accountNameViewModel = AuthAccountNameViewModel(account)
+                let preview = CustomAccountPreview(
+                    accountNameViewModel,
+                    address: account.address
+                )
                 return .account(.accountCell(AccountPreviewViewModel(preview)))
             }
 
@@ -291,8 +296,12 @@ extension AccountSelectScreenListAPIDataController {
     private func appendSearchAccountsTo(snapshot: inout Snapshot) {
         if !self.searchedAccounts.isEmpty {
             var accountItems = self.searchedAccounts.map { accountHandle -> AccountSelectItem in
+                let account = accountHandle.value
                 let accountNameViewModel = AuthAccountNameViewModel(accountHandle.value)
-                let preview = CustomAccountPreview(accountNameViewModel)
+                let preview = CustomAccountPreview(
+                    accountNameViewModel,
+                    address: account.address
+                )
                 return .account(.searchAccountCell(AccountPreviewViewModel(preview)))
             }
 

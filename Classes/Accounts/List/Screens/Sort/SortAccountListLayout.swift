@@ -164,6 +164,7 @@ extension SortAccountListLayout {
 
         let width = listView.bounds.width
         let sampleAccountPreview = CustomAccountPreview(
+            address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
