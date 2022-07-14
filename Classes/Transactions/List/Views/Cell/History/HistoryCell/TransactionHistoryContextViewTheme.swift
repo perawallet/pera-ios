@@ -41,7 +41,7 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
         ]
-        self.titleMinWidthRatio = 0.25
+        self.titleMinWidthRatio = 0.2
         self.minSpacingBetweenTitleAndAmount = 16
 
         self.subtitleLabel = [
