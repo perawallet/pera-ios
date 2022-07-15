@@ -294,8 +294,7 @@ extension CollectibleListViewController {
         }
 
         return UIContextMenuConfiguration(
-            identifier: indexPath as NSIndexPath,
-            previewProvider: nil
+            identifier: indexPath as NSIndexPath
         ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
