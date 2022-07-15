@@ -30,6 +30,16 @@ final class NotificationsViewController: BaseViewController {
         api: api!
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
+
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api, bannerController: bannerController)
+    }()
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +81,7 @@ final class NotificationsViewController: BaseViewController {
             }
 
             self.openAssetDetail(from: notificationDetail)
+            self.dataController.currentNotification = notificationDetail
         }
 
         dataController.load()
@@ -82,6 +93,13 @@ final class NotificationsViewController: BaseViewController {
         if isInitialFetchCompleted {
             reloadNotifications()
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        transactionController.stopBLEScan()
+        transactionController.stopTimer()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -109,6 +127,8 @@ final class NotificationsViewController: BaseViewController {
     }
     
     override func setListeners() {
+        transactionController.delegate = self
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didReceiveNotification(notification:)),
@@ -161,37 +181,93 @@ extension NotificationsViewController {
     }
 
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
+        if notificationDetail.type == .assetSupportRequest {
+            guard let receiverAccount = dataController.getReceiverAccount(from: notificationDetail),
+                  let asset = notificationDetail.asset,
+                  let assetId = asset.id
+            else {
+                return
+            }
+
+            if !receiverAccount.isWatchAccount() &&
+                !receiverAccount.containsAsset(assetId) {
+                openAssetAddition(
+                    account: receiverAccount,
+                    asset: asset
+                )
+
+                return
+            }
+
+            return
+        }
+
         let accountDetails = dataController.getUserAccount(from: notificationDetail)
+
         if let account = accountDetails.account {
             guard let accountHandle = sharedDataController.accountCollection[account.address] else {
                 return
             }
 
             let screen: Screen
-            
+
             guard let assetMode = accountDetails.asset else {
                 presentAssetNotFoundError()
                 return
             }
-            
+
             switch assetMode {
             case .algo:
                 screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             case .asset(let asset):
                 if let asset = asset as? StandardAsset {
-                    screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
+                    screen = .assetDetail(draft: AssetTransactionListing(
+                        accountHandle: accountHandle,
+                        asset: asset
+                    ))
                 } else if let collectibleAsset = asset as? CollectibleAsset {
-                    openCollectible(asset: collectibleAsset, with: accountHandle.value)
+                    openCollectible(
+                        asset: collectibleAsset,
+                        with: accountHandle.value
+                    )
                     return
                 } else {
                     presentAssetNotFoundError()
                     return
-
                 }
             }
-            
+
             open(screen, by: .push)
         }
+    }
+
+    private func openAssetAddition(
+        account: Account,
+        asset: NotificationAsset
+    ) {
+        guard let assetId = asset.id else {
+            return
+        }
+
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetId: assetId,
+            asset: nil,
+            transactionFee: Transaction.Constant.minimumFee,
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
+        )
+
+        assetActionConfirmationTransition.perform(
+            .assetActionConfirmation(
+                assetAlertDraft: assetAlertDraft,
+                delegate: self
+            ),
+            by: .presentWithoutNavigationController
+        )
+
     }
     
     private func openCollectible(asset: CollectibleAsset, with account: Account) {
@@ -214,6 +290,135 @@ extension NotificationsViewController {
             title: "notifications-asset-not-found-title".localized,
             message: "notifications-asset-not-found-description".localized
         )
+    }
+}
+
+extension NotificationsViewController:
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionSignChecking
+{
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmAction asset: AssetDecoration
+    ) {
+        if let receiverAccount = dataController.getReceiverAccount(from: dataController.currentNotification) {
+            var theAccount = receiverAccount
+
+            if !canSignTransaction(for: &theAccount) {
+                return
+            }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: theAccount,
+                assetIndex: asset.id
+            )
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if theAccount.requiresLedgerConnection() {
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
+        }
+    }
+}
+
+extension NotificationsViewController: TransactionControllerDelegate {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(
+                mode: .approve,
+                deviceName: ledger
+            ),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
     }
 }
 

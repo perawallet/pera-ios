@@ -28,6 +28,7 @@ final class NotificationsAPIDataController:
     private let sharedDataController: SharedDataController
     private var contacts = [Contact]()
     private(set) var notifications = [NotificationMessage]()
+    var currentNotification: NotificationDetail?
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -295,5 +296,18 @@ extension NotificationsAPIDataController {
         }
 
         return sharedDataController.accountCollection[address]?.value
+    }
+
+    func getReceiverAccount(
+        from notificationDetail: NotificationDetail?
+    ) -> Account? {
+        guard let detail = notificationDetail,
+              let address = detail.receiverAddress else {
+            return nil
+        }
+
+        let receiverAccount = getAccount(from: address)
+
+        return receiverAccount
     }
 }
