@@ -189,12 +189,14 @@ extension NotificationsViewController {
                 return
             }
 
-            if !receiverAccount.isWatchAccount() {
-                if receiverAccount.containsAsset(assetId) {
-                    displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
-                    return
-                }
+            if receiverAccount.isWatchAccount() {
+                return
+            }
 
+            if dataController.canOptIn(
+                account: receiverAccount,
+                for: assetId
+            ) {
                 openAssetAddition(
                     account: receiverAccount,
                     asset: asset
@@ -202,6 +204,7 @@ extension NotificationsViewController {
                 return
             }
 
+            displaySimpleAlertWith(title: "asset-you-already-own-message".localized)
             return
         }
 
@@ -403,6 +406,7 @@ extension NotificationsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        dataController.addOptedInAsset()
         loadingController?.stopLoading()
     }
 
