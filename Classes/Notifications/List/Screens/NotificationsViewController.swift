@@ -189,13 +189,16 @@ extension NotificationsViewController {
                 return
             }
 
-            if !receiverAccount.isWatchAccount() &&
-                !receiverAccount.containsAsset(assetId) {
+            if !receiverAccount.isWatchAccount() {
+                if receiverAccount.containsAsset(assetId) {
+                    displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
+                    return
+                }
+
                 openAssetAddition(
                     account: receiverAccount,
                     asset: asset
                 )
-
                 return
             }
 
