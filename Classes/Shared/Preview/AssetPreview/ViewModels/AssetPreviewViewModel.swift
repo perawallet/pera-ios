@@ -398,7 +398,7 @@ extension AssetPreviewViewModel {
         let asset = draft.asset
 
         let formatter = draft.currencyFormatter
-        formatter.formattingContext = .listItem
+        formatter.formattingContext = draft.currencyFormattingContext ?? .listItem
         formatter.currency = nil
 
         let amount = formatter.format(asset.amountWithFraction)
@@ -423,7 +423,7 @@ extension AssetPreviewViewModel {
             let amount = try exchanger.exchange(asset)
 
             let formatter = draft.currencyFormatter
-            formatter.formattingContext = .listItem
+            formatter.formattingContext = draft.currencyFormattingContext ?? .listItem
             formatter.currency = rawCurrency
 
             if amount > 0 {
@@ -469,6 +469,19 @@ struct CollectibleAssetPreviewSelectionDraft {
     let asset: CollectibleAsset
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
+    let currencyFormattingContext: CurrencyFormattingContext?
+
+    init(
+        asset: CollectibleAsset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter,
+        currencyFormattingContext: CurrencyFormattingContext? = nil
+    ) {
+        self.asset = asset
+        self.currency = currency
+        self.currencyFormatter = currencyFormatter
+        self.currencyFormattingContext = currencyFormattingContext
+    }
 }
 
 struct StandardAssetPreviewAdditionDraft {

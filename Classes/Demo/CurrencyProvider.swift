@@ -20,8 +20,8 @@ import SwiftDate
 protocol CurrencyProvider: AnyObject {
     typealias EventHandler = (CurrencyEvent) -> Void
 
-    var primaryValue: CurrencyValue? { get }
-    var secondaryValue: CurrencyValue? { get }
+    var primaryValue: RemoteCurrencyValue? { get }
+    var secondaryValue: RemoteCurrencyValue? { get }
 
     var isExpired: Bool { get }
 
@@ -42,21 +42,7 @@ protocol CurrencyProvider: AnyObject {
 }
 
 extension CurrencyProvider {
-    var primaryFiatValue: CurrencyValue? {
-        guard let primaryRawCurrency = try? primaryValue?.unwrap() else {
-            return primaryValue
-        }
-
-        if !primaryRawCurrency.isAlgo {
-            return primaryValue
-        }
-
-        return secondaryValue
-    }
-}
-
-extension CurrencyProvider {
-    var algoValue: CurrencyValue? {
+    var algoValue: RemoteCurrencyValue? {
         get {
             if let primaryRawCurrency = try? primaryValue?.unwrap(),
                primaryRawCurrency.isAlgo {
@@ -75,7 +61,7 @@ extension CurrencyProvider {
         }
     }
 
-    var fiatValue: CurrencyValue? {
+    var fiatValue: RemoteCurrencyValue? {
         get {
             if let primaryRawCurrency = try? primaryValue?.unwrap(),
                !primaryRawCurrency.isAlgo {

@@ -47,7 +47,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     private lazy var singleTransactionFragment: WCSingleTransactionRequestScreen = {
         return WCSingleTransactionRequestScreen(
             dataSource: self.dataSource,
-            configuration: configuration
+            configuration: configuration,
+            currencyFormatter: currencyFormatter
         )
     }()
 
@@ -81,10 +82,14 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
     let dataSource: WCMainTransactionDataSource
 
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         draft: WalletConnectRequestDraft,
         configuration: ViewControllerConfiguration
     ) {
+        let currencyFormatter = CurrencyFormatter()
+
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
@@ -94,9 +99,13 @@ final class WCMainTransactionScreen: BaseViewController, Container {
             transactions: transactions,
             transactionRequest: transactionRequest,
             transactionOption: transactionOption,
-            walletConnector: configuration.walletConnector
+            walletConnector: configuration.walletConnector,
+            currencyFormatter: currencyFormatter
         )
+        self.currencyFormatter = currencyFormatter
+
         super.init(configuration: configuration)
+
         setTransactionSigners()
         setupObserver()
     }

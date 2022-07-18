@@ -34,10 +34,6 @@ extension Decimal {
         return (self * pow(10, fraction)).uint64Value
     }
 
-    var toAlgosStringForLabel: String? {
-        return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
-    }
-
     var toNumberStringWithSeparatorForLabel: String? {
         return Formatter.numberWithAutoSeparator.string(from: NSDecimalNumber(decimal: self))
     }
@@ -49,25 +45,9 @@ extension Decimal {
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
     }
-
-    func toExactFractionLabel(fraction: Int) -> String? {
-        return Formatter.separatorForInputWith(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
-    }
-
-    func toCurrencyStringForLabel(with symbol: String?) -> String? {
-        return Formatter.currencyFormatter(with: symbol).string(from: NSDecimalNumber(decimal: self))
-    }
 }
 
 extension Double {
-    var toCurrencyStringForLabel: String? {
-        return Formatter.currencyFormatter.string(from: NSNumber(value: self))
-    }
-
-    func toCurrencyStringForLabel(with symbol: String?) -> String? {
-        return Formatter.currencyFormatter(with: symbol).string(from: NSNumber(value: self))
-    }
-
     var toPercentage: String? {
         return Formatter.percentageFormatter.string(from: NSNumber(value: self))
     }

@@ -49,14 +49,6 @@ final class StandardAsset: Asset {
         return amount.assetAmount(fromFraction: decimals)
     }
 
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
-    }
-
     init(
         asset: ALGAsset,
         decoration: AssetDecoration

@@ -197,7 +197,8 @@ extension SendTransactionScreen {
             let algoAssetItem = AlgoAssetItem(
                 account: draft.from,
                 currency: currency,
-                currencyFormatter: currencyFormatter
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
             )
             let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
             viewModel = AssetPreviewViewModel(algoAssetPreview)
@@ -206,14 +207,16 @@ extension SendTransactionScreen {
                 let draft = CollectibleAssetPreviewSelectionDraft(
                     asset: collectibleAsset,
                     currency: currency,
-                    currencyFormatter: currencyFormatter
+                    currencyFormatter: currencyFormatter,
+                    currencyFormattingContext: .standalone()
                 )
                 viewModel = AssetPreviewViewModel(draft)
             } else {
                 let assetItem = AssetItem(
                     asset: asset,
                     currency: currency,
-                    currencyFormatter: currencyFormatter
+                    currencyFormatter: currencyFormatter,
+                    currencyFormattingContext: .standalone()
                 )
                 let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
                 viewModel = AssetPreviewViewModel(assetPreview)
@@ -251,38 +254,61 @@ extension SendTransactionScreen {
             }
         }
 
-        let currency = try? sharedDataController.currency.primaryValue?.unwrap()
-
-        bindCurrencyAmount(amountValue, currency: currency)
         valueLabel.text = showingValue
+
+        bindCurrencyAmount(amountValue)
     }
     
-    private func bindCurrencyAmount(_ amountValue: String, currency: Currency?) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.algoValue,
-              let amount = amountValue.decimalAmount  else {
+    private func bindCurrencyAmount(_ amountValue: String) {
+        guard let amount = amountValue.decimalAmount else {
             currencyValueLabel.text = nil
             return
         }
 
+        let currency = sharedDataController.currency
+
         switch draft.transactionMode {
-        case let .asset(asset):
-            if let standardAsset = asset as? StandardAsset,
-               let assetUSDValue = standardAsset.usdValue,
-               let currencyUsdValue = currency.usdValue {
-                let currencyValue = assetUSDValue * amount * currencyUsdValue
-                currencyValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-            } else {
-                currencyValueLabel.text = nil
-            }
         case .algo:
-            if let algoCurrency = currency as? AlgoCurrency {
-                bindCurrencyAmount(amountValue, currency: algoCurrency.baseCurrency)
+            guard let currencyValue = currency.fiatValue else {
+                currencyValueLabel.text = nil
                 return
             }
-            
-            let currencyValue = currencyPriceValue * amount
-            currencyValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+
+            do {
+                let rawCurrency = try currencyValue.unwrap()
+
+                let exchanger = CurrencyExchanger(currency: rawCurrency)
+                let amountInCurrency = try exchanger.exchangeAlgo(amount: amount)
+
+                currencyFormatter.formattingContext = .standalone()
+                currencyFormatter.currency = rawCurrency
+
+                currencyValueLabel.text = currencyFormatter.format(amountInCurrency)
+            } catch {
+                currencyValueLabel.text = nil
+            }
+        case let .asset(asset):
+            guard let currencyValue = currency.primaryValue else {
+                currencyValueLabel.text = nil
+                return
+            }
+
+            do {
+                let rawCurrency = try currencyValue.unwrap()
+
+                let exchanger = CurrencyExchanger(currency: rawCurrency)
+                let amountInCurrency = try exchanger.exchange(
+                    asset,
+                    amount: amount
+                )
+
+                currencyFormatter.formattingContext = .standalone()
+                currencyFormatter.currency = rawCurrency
+
+                currencyValueLabel.text = currencyFormatter.format(amountInCurrency)
+            } catch {
+                currencyValueLabel.text = nil
+            }
         }
     }
 }
@@ -424,7 +450,7 @@ extension SendTransactionScreen: TransactionSignChecking {
         case .algo:
             self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
-            self.amount = asset.amountNumberWithAutoFraction ?? "0"
+            self.amount = asset.amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
         isAmountResetted = false
         bindAmount()
@@ -735,9 +761,15 @@ extension SendTransactionScreen: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                message: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:

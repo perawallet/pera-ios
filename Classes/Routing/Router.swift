@@ -841,16 +841,19 @@ class Router:
         case .transactionFloatingActionButton:
             viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
+            let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
                 sharedDataController: configuration.sharedDataController,
                 transactions: transactions,
                 transactionRequest: transactionRequest,
                 transactionOption: transactionOption,
-                walletConnector: configuration.walletConnector
+                walletConnector: configuration.walletConnector,
+                currencyFormatter: currencyFormatter
             )
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
-                configuration: configuration
+                configuration: configuration,
+                currencyFormatter: currencyFormatter
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
@@ -1386,9 +1389,17 @@ extension Router {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            let currencyFormatter = CurrencyFormatter()
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             appConfiguration.bannerController.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             appConfiguration.bannerController.presentErrorBanner(

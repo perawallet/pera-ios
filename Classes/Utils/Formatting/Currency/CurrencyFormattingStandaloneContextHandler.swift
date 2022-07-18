@@ -27,10 +27,10 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
 
     func makeRules(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules {
         var rules = CurrencyFormattingContextRules()
-        rules.roundingMode = nil
+        rules.roundingMode = .down
 
         if let currency = currency {
             if currency.isAlgo {
@@ -52,7 +52,7 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
 
     func makeInput(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput {
         return rawNumber
     }

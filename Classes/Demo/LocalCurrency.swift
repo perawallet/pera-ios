@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetPortfolioItemViewTheme.swift
+//   LocalCurrency.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AssetPortfolioItemViewTheme: StyleSheet, LayoutSheet {
-    let verticalInset: LayoutMetric
-    let horizontalInset: LayoutMetric
+/// <todo>
+/// The asset symbols can be used as `LocalCurrency`.
+protocol LocalCurrency {
+    var id: CurrencyID { get }
+    var name: String? { get }
+    var symbol: String? { get }
+}
 
-    init(_ family: LayoutFamily) {
-        self.verticalInset = 60
-        self.horizontalInset = 24
+extension LocalCurrency {
+    var isAlgo: Bool {
+        return id.isAlgo
     }
 }
