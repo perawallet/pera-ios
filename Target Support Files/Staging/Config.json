@@ -8,13 +8,15 @@
     "deeplink_config": {
         "qr": {
             "acceptedSchemes": [
-                "algorand"
+                "algorand",
+                "perawallet"
             ],
             "preferredScheme": "algorand"
         },
         "wallet_connect": {
             "acceptedSchemes": [
-                "algorand-wc"
+                "algorand-wc",
+                "perawallet-wc"
             ],
             "preferredScheme": "algorand-wc"
         },
@@ -33,5 +35,18 @@
             ],
             "url": "https://perawallet.app/"
         }
+    },
+    "universal_link_config": {
+        "qr": {
+            "acceptedPaths": [
+                "qr/perawallet/"
+            ]
+        },
+        "wallet_connect": {
+            "acceptedPaths": [
+                "qr/perawallet-wc/"
+            ]
+        },
+        "url": "https://perawallet.app/"
     }
 }

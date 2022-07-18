@@ -19,6 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 protocol TransactionListing {
+    var isQuickActionButtonVisible: Bool { get set }
     var type: TransactionTypeFilter { get }
     var accountHandle: AccountHandle { get set }
     var asset: StandardAsset? { get }
@@ -26,7 +27,7 @@ protocol TransactionListing {
 
 extension TransactionListing {
     var asset: StandardAsset? {
-        nil
+        return nil
     }
 }
 
@@ -36,6 +37,7 @@ struct AlgoTransactionListing: TransactionListing {
     }
 
     var accountHandle: AccountHandle
+    var isQuickActionButtonVisible: Bool = true
 }
 
 struct AssetTransactionListing: TransactionListing {
@@ -45,6 +47,7 @@ struct AssetTransactionListing: TransactionListing {
 
     var accountHandle: AccountHandle
     var asset: StandardAsset?
+    var isQuickActionButtonVisible: Bool = true
 }
 
 struct AccountTransactionListing: TransactionListing {
@@ -53,10 +56,22 @@ struct AccountTransactionListing: TransactionListing {
     }
 
     var accountHandle: AccountHandle
+    var isQuickActionButtonVisible: Bool = true
 }
 
 enum TransactionTypeFilter {
     case algos
     case asset
     case all
+
+    var currentTransactionType: Transaction.TransferType? {
+        switch self {
+        case .algos:
+            return .payment
+        case .asset:
+            return .assetTransfer
+        case .all:
+            return nil
+        }
+    }
 }

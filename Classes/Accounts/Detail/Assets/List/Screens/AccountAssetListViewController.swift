@@ -46,18 +46,27 @@ final class AccountAssetListViewController: BaseViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
+        collectionView.keyboardDismissMode = .interactive
         return collectionView
     }()
+    private lazy var listBackgroundView = UIView()
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
-    
+
+    private var keyboardController = KeyboardController()
+
     private var accountHandle: AccountHandle
+
+    private let copyToClipboardController: CopyToClipboardController
 
     init(
         accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
@@ -75,15 +84,24 @@ final class AccountAssetListViewController: BaseViewController {
                     self.eventHandler?(.didUpdate(accountHandle))
                 }
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.updateUIWhenListDidReload()
             }
         }
         dataController.load()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if !listView.frame.isEmpty {
+            updateUIWhenViewDidLayoutSubviews()
+        }
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         
-        addListView()
+        addUI()
 
         if !accountHandle.value.isWatchAccount() {
             addTransactionActionButton(theme)
@@ -95,25 +113,91 @@ final class AccountAssetListViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
+        keyboardController.dataSource = self
     }
 
     override func setListeners() {
         super.setListeners()
         setTransactionActionButtonAction()
+        keyboardController.beginTracking()
+    }
+
+    func reload() {
+        dataController.reload()
     }
 }
 
 extension AccountAssetListViewController {
-    private func addListView() {
-        let isWatchAccount = accountHandle.value.isWatchAccount()
-        listView.contentInset = isWatchAccount ? .zero : UIEdgeInsets(theme.contentInset)
-        
-        view.addSubview(listView)
-        listView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+    private func addUI() {
+        addListBackground()
+        addList()
+    }
+
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateUIWhenListDidReload() {
+        updateListBackgroundWhenListDidReload()
+    }
+
+    private func updateUIWhenListDidScroll() {
+        updateListBackgroundWhenListDidScroll()
+    }
+
+    private func addListBackground() {
+        listBackgroundView.customizeAppearance(
+            [
+                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            ]
+        )
+
+        view.addSubview(listBackgroundView)
+        listBackgroundView.snp.makeConstraints {
+            $0.fitToHeight(0)
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
     }
 
+    private func updateListBackgroundWhenListDidReload() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateListBackgroundWhenListDidScroll() {
+        updateListBackgroundWhenViewDidLayoutSubviews()
+    }
+
+    private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        listBackgroundView.snp.updateConstraints {
+            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+        }
+    }
+
+    private func addList() {
+        listView.customizeAppearance(
+            [
+                .backgroundColor(UIColor.clear)
+            ]
+        )
+
+        view.addSubview(listView)
+        listView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.delegate = self
+    }
+}
+
+extension AccountAssetListViewController {
     private func addTransactionActionButton(_ theme: Theme) {
         transactionActionButton.image = "fab-swap".uiImage
 
@@ -121,6 +205,12 @@ extension AccountAssetListViewController {
         transactionActionButton.snp.makeConstraints {
             $0.setPaddings(theme.transactionActionButtonPaddings)
         }
+    }
+}
+
+extension AccountAssetListViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateUIWhenListDidScroll()
     }
 }
 
@@ -144,19 +234,23 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             
             switch itemIdentifier {
             case .assetManagement:
-                guard let item = cell as? AssetManagementItemCell else {
+                guard let item = cell as? ManagementItemWithSecondaryActionCell else {
                     return
                 }
                 
-                item.observe(event: .manage) {
+                item.observe(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
                     }
                     
-                    self.eventHandler?(.manageAssets)
+                    self.eventHandler?(
+                        .manageAssets(
+                            isWatchAccount: false
+                        )
+                    )
                 }
-                item.observe(event: .add) {
+                item.observe(event: .secondaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -164,8 +258,69 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     
                     self.eventHandler?(.addAsset)
                 }
+            case .watchAccountAssetManagement:
+                let item = cell as! ManagementItemCell
+
+                item.observe(event: .primaryAction) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.eventHandler?(
+                        .manageAssets(
+                            isWatchAccount: true
+                        )
+                    )
+                }
+            case .search:
+                guard let item = cell as? SearchBarItemCell else {
+                    return
+                }
+
+                item.contextView.searchInputView.delegate = self
             default:
                 return
+            }
+        case .quickActions:
+            guard let item = cell as? AccountQuickActionsCell else {
+                return
+            }
+
+            item.observe(event: .buyAlgo) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.buyAlgo)
+            }
+
+            item.observe(event: .send) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.send)
+            }
+
+            item.observe(event: .address) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.address)
+            }
+
+            item.observe(event: .more) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.more)
             }
         default:
             return
@@ -184,6 +339,18 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         )
     }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
@@ -198,39 +365,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
-            case .search:
-                let searchScreen = open(
-                    .assetSearch(
-                        accountHandle: accountHandle,
-                        dataController: AssetSearchLocalDataController(
-                            accountHandle: accountHandle,
-                            sharedDataController: sharedDataController
-                        )
-                    ),
-                    by: .present
-                ) as? AssetSearchViewController
-
-                searchScreen?.handlers.didSelectAsset = {
-                    [weak self] asset in
-                    guard let self = self,
-                          let searchScreen = searchScreen else {
-                              return
-                          }
-                    
-                    self.openAssetDetail(asset, on: searchScreen)
-                }
+            case .algo:
+                openAlgoDetail()
             case .asset:
-                let algoIndex = 2
+                let assetIndex = indexPath.item
                 
-                if indexPath.item == algoIndex {
-                    openAlgoDetail()
-                    return
-                }
-
-                /// Reduce management and algos cells from index
-                let assetIndex = indexPath.item - (algoIndex + 1)
-                
-                if let assetDetail = accountHandle.value.standardAssets[safe: assetIndex] {
+                if let assetDetail = dataController[assetIndex] {
                     self.openAssetDetail(assetDetail, on: self)
                 }
             default:
@@ -238,6 +378,24 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
         default:
             break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = getAsset(at: indexPath) else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
         }
     }
 }
@@ -281,53 +439,47 @@ extension AccountAssetListViewController {
 
     @objc
     private func didTapTransactionActionButton() {
-        let viewController = open(
-            .transactionFloatingActionButton,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        ) as? TransactionFloatingActionButtonViewController
-
-        viewController?.delegate = self
+        self.eventHandler?(.transactionOption)
     }
 }
 
-extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
-    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(SendAssetDetailEvent(address: accountHandle.value.address))
-        let controller = open(
-            .assetSelection(
-                filter: nil,
-                account: accountHandle.value
-            ),
-            by: .present
-        ) as? SelectAssetViewController
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.closeScreen(by: .dismiss, animated: true)
+extension AccountAssetListViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        dataController.search(for: view.text)
+    }
+
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+
+    func searchInputViewDidBeginEditing(_ view: SearchInputView) {
+        guard let indexPath = listDataSource.indexPath(for: .search) else {
+            return
         }
-        controller?.leftBarButtonItems = [closeBarButtonItem]
+
+        listView.scrollToItem(at: indexPath, at: .top, animated: true)
+    }
+}
+
+extension AccountAssetListViewController: KeyboardControllerDataSource {
+    var scrollView: UIScrollView {
+        return listView
     }
 
-    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
-        let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay, draft: draft, isTrackable: true), by: .present)
+    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
+        return 20
     }
 
-    func transactionFloatingActionButtonViewControllerDidBuy(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        openBuyAlgo()
+    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
+        return nil
     }
 
-    private func openBuyAlgo() {
-        let draft = BuyAlgoDraft()
-        draft.address = accountHandle.value.address
+    func containerView(for keyboardController: KeyboardController) -> UIView {
+        return listView
+    }
 
-        launchBuyAlgo(draft: draft)
+    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
+        return 20
     }
 }
 
@@ -342,9 +494,30 @@ extension AccountAssetListViewController {
 }
 
 extension AccountAssetListViewController {
+    private func getAsset(
+        at indexPath: IndexPath
+    ) -> StandardAsset? {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
+        guard case AccountAssetsItem.asset = itemIdentifier else {
+            return nil
+        }
+
+        return dataController[indexPath.item]
+    }
+}
+
+extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
-        case manageAssets
+        case manageAssets(isWatchAccount: Bool)
         case addAsset
+        case buyAlgo
+        case send
+        case address
+        case more
+        case transactionOption
     }
 }

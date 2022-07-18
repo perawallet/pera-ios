@@ -278,6 +278,14 @@ extension CollectibleListItemView {
 }
 
 extension CollectibleListItemView {
+    func getTargetedPreview() -> UITargetedPreview {
+        return UITargetedPreview(
+            view: image.imageContainer
+        )
+    }
+}
+
+extension CollectibleListItemView {
     func setPendingHiddenWhenPendingStatusChange(_ isPending: Bool) {
         pendingOverlayView.isHidden = !isPending
         overlay.isHidden = isPending

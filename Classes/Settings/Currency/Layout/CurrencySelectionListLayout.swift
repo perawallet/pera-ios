@@ -36,28 +36,6 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
-        
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-        
-        var insets = UIEdgeInsets((0, theme.horizontalPaddings.leading, 0, theme.horizontalPaddings.trailing))
-        
-        switch listSection {
-        case .currencies:
-            insets.top = theme.topContentInset
-            return insets
-        default:
-            return insets
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
@@ -76,35 +54,28 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
             collectionView.safeAreaBottom
             
             return CGSize((width, height))
-        case .noContent(let item):
-            let width = calculateContentWidth(for: collectionView)
-            
-            let newSize = NoContentCell.calculatePreferredSize(
-                item,
-                for: NoContentCell.theme,
-                fittingIn: CGSize((width, .greatestFiniteMagnitude))
-            )
-            
-            return newSize
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
-        
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-        
-        switch listSection {
-        case .currencies:
-            return CGSize(theme.headerSize)
-        default:
-            return .zero
+        case .empty(let item):
+            switch item {
+            case let .noContent(noContentItem):
+                let width = calculateContentWidth(for: collectionView)
+
+                let newSize = NoContentCell.calculatePreferredSize(
+                    noContentItem,
+                    for: NoContentCell.theme,
+                    fittingIn: CGSize((width, .greatestFiniteMagnitude))
+                )
+
+                return newSize
+            case .loading:
+                let width = calculateContentWidth(for: collectionView)
+
+                let newSize = CurrencySelectionLoadingView.calculatePreferredSize(
+                    for: CurrencySelectionLoadingViewTheme(),
+                    fittingIn: CGSize((width, .greatestFiniteMagnitude))
+                )
+
+                return newSize
+            }
         }
     }
     
@@ -120,8 +91,28 @@ extension CurrencySelectionListLayout: UICollectionViewDelegateFlowLayout {
         switch itemIdentifier {
         case .error:
             handlers.didTapReload?(cell)
+        case let .empty(item):
+            switch item {
+            case .loading:
+                if let loadingCell = cell as? CurrencySelectionLoadingViewCell {
+                    loadingCell.startAnimating()
+                    return
+                }
+            default:
+                return
+            }
         default:
             return
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? CurrencySelectionLoadingViewCell {
+            loadingCell.stopAnimating()
         }
     }
     

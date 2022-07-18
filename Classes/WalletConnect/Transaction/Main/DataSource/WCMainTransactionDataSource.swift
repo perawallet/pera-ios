@@ -26,19 +26,24 @@ class WCMainTransactionDataSource: NSObject {
     let transactionOption: WCTransactionOption?
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
     private let sharedDataController: SharedDataController
+    private let currencyFormatter: CurrencyFormatter
 
     init(
         sharedDataController: SharedDataController,
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?,
-        walletConnector: WalletConnector
+        walletConnector: WalletConnector,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
         self.walletConnector = walletConnector
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
+        self.currencyFormatter = currencyFormatter
+
         super.init()
+
         groupTransactions(transactions)
     }
 
@@ -136,7 +141,8 @@ extension WCMainTransactionDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                asset: asset(from: transaction)
+                asset: asset(from: transaction),
+                currencyFormatter: currencyFormatter
             )
         )
 
@@ -160,7 +166,8 @@ extension WCMainTransactionDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                asset: asset(from: transaction)
+                asset: asset(from: transaction),
+                currencyFormatter: currencyFormatter
             )
         )
 
@@ -185,7 +192,8 @@ extension WCMainTransactionDataSource {
                 transaction: transaction,
                 account: account,
                 asset: asset(from: transaction),
-                currency: sharedDataController.currency.value
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
             )
         )
 
@@ -210,7 +218,8 @@ extension WCMainTransactionDataSource {
                 transaction: transaction,
                 account: account,
                 asset: asset(from: transaction),
-                currency: sharedDataController.currency.value
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
             )
         )
 

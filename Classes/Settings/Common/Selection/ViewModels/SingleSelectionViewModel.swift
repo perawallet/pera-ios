@@ -38,11 +38,11 @@ final class SingleSelectionViewModel: Hashable {
     
     private func setSelectionImage() {
         if isSelected {
-            selectionImage = img("icon-checkbox-single-selected")
+            selectionImage = img("icon-radio-selected")
             return
         }
         
-        selectionImage = img("icon-checkbox-single-unselected")
+        selectionImage = img("icon-radio-unselected")
     }
     
     func hash(into hasher: inout Hasher) {
@@ -50,6 +50,7 @@ final class SingleSelectionViewModel: Hashable {
     }
     
     static func == (lhs: SingleSelectionViewModel, rhs: SingleSelectionViewModel) -> Bool {
-        return lhs.title == rhs.title
+        return lhs.title == rhs.title &&
+        lhs.isSelected == rhs.isSelected
     }
 }

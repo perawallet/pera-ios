@@ -18,29 +18,46 @@ import Foundation
 import UIKit
 
 protocol CurrencySelectionDataController: AnyObject {
+    typealias Updates = (snapshot: Snapshot, isLoading: Bool)
     typealias Snapshot = NSDiffableDataSourceSnapshot<CurrencySelectionSection, CurrencySelectionItem>
-    
+
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)? { get set }
+
+    var selectedCurrencyID: CurrencyID? { get }
+
+    subscript (indexPath: IndexPath) -> RemoteCurrency? { get }
     
-    func load()
-    func search(for query: String)
+    func loadData()
+
+    func search(
+        for query: String
+    )
     func resetSearch()
+
+    func selectCurrency(
+        at indexPath: IndexPath
+    ) -> RemoteCurrency?
 }
 
 enum CurrencySelectionDataControllerEvent {
-    case didUpdate(CurrencySelectionDataController.Snapshot)
+    case didUpdate(CurrencySelectionDataController.Updates)
 }
 
 enum CurrencySelectionSection:
     Int,
     Hashable {
     case currencies
-    case noContent
+    case empty
     case error
 }
 
 enum CurrencySelectionItem: Hashable {
     case currency(SingleSelectionViewModel)
-    case noContent(CurrencySelectionNoContentViewModel)
+    case empty(CurrencySelectionEmptyItem)
     case error
+}
+
+enum CurrencySelectionEmptyItem: Hashable {
+    case noContent(CurrencySelectionNoContentViewModel)
+    case loading
 }

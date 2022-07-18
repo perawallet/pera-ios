@@ -60,9 +60,15 @@ final class AccountRecoverViewController: BaseScrollViewController {
     }
 
     private let accountSetupFlow: AccountSetupFlow
+    private let initialMnemonic: String?
     
-    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+    init(
+        accountSetupFlow: AccountSetupFlow,
+        initialMnemonic: String?,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountSetupFlow = accountSetupFlow
+        self.initialMnemonic = initialMnemonic
         super.init(configuration: configuration)
     }
 
@@ -73,6 +79,10 @@ final class AccountRecoverViewController: BaseScrollViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         accountRecoverView.currentInputView?.beginEditing()
+
+        if let mnemonic = initialMnemonic {
+            updateMnemonics(mnemonic)
+        }
     }
 
     override func configureAppearance() {
@@ -379,7 +389,8 @@ extension AccountRecoverViewController {
 
 extension AccountRecoverViewController {
     private func updateMnemonics(_ text: String) {
-        let mnemonics = text.split(separator: " ").map { String($0) }
+        let filteredText = text.replacingOccurrences(of: ",", with: "")
+        let mnemonics = filteredText.split(separator: " ").map { String($0) }
 
         if containsOneMnemonic(mnemonics) {
             if let firstText = mnemonics[safe: 0],

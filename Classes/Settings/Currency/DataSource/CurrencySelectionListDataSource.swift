@@ -10,18 +10,26 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
             switch itemIdentifier {
             case let .currency(item):
                 let cell =  collectionView.dequeue(
-                    SingleSelectionCell.self,
+                    CurrencySelectionCell.self,
                     at: indexPath
                 )
                 cell.bindData(item)
                 return cell
-            case let .noContent(item):
-                let cell = collectionView.dequeue(
-                    NoContentCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+            case let .empty(item):
+                switch item {
+                case .loading:
+                    return collectionView.dequeue(
+                        CurrencySelectionLoadingViewCell.self,
+                        at: indexPath
+                    )
+                case let .noContent(noContentItem):
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(noContentItem)
+                    return cell
+                }
             case .error:
                 let cell = collectionView.dequeue(
                     NoContentWithActionCell.self,
@@ -32,33 +40,9 @@ final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<
             }
         }
         
-        supplementaryViewProvider = {
-            collectionView, kind, indexPath in
-            
-            guard let section = CurrencySelectionSection(rawValue: indexPath.section),
-                  kind == UICollectionView.elementKindSectionHeader else {
-                return nil
-            }
-            
-            let header = collectionView.dequeueHeader(
-                SingleGrayTitleHeaderSuplementaryView.self,
-                at: indexPath
-            )
-            
-            switch section {
-            case .currencies:
-                header.bindData(
-                    SingleGrayTitleHeaderViewModel("settings-currency-header-title".localized)
-                )
-                return header
-            default:
-                return nil
-            }
-        }
-        
-        collectionView.register(SingleSelectionCell.self)
+        collectionView.register(CurrencySelectionCell.self)
+        collectionView.register(CurrencySelectionLoadingViewCell.self)
         collectionView.register(NoContentCell.self)
         collectionView.register(NoContentWithActionCell.self)
-        collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
     }
 }

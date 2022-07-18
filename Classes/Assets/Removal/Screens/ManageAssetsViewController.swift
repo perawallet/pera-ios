@@ -42,6 +42,8 @@ final class ManageAssetsViewController: BaseViewController {
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     init(
         account: Account,
         configuration: ViewControllerConfiguration
@@ -74,8 +76,8 @@ final class ManageAssetsViewController: BaseViewController {
             
             switch itemIdentifier {
             case .asset:
-                let assetCell = cell as! AssetPreviewDeleteCell
-                assetCell.observe(event: .delete) {
+                let assetCell = cell as! AssetPreviewWithActionCell
+                assetCell.observe(event: .performAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -211,7 +213,7 @@ extension ManageAssetsViewController:
             return
         }
 
-        guard let asset = account[asset.id] else {
+        guard let asset = self.dataController[asset.id] else {
             return
         }
         
@@ -267,6 +269,8 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         
         contextView.resetSearchInputView()
 
+        dataController.removeAsset(removedAssetDetail)
+
         if let standardAsset = removedAssetDetail as? StandardAsset {
             delegate?.manageAssetsViewController(self, didRemove: standardAsset)
         } else if let collectibleAsset = removedAssetDetail as? CollectibleAsset {
@@ -288,10 +292,15 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(
-                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:

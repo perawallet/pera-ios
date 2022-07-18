@@ -21,9 +21,20 @@ import MacaroonUtils
 
 protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
+    /// <note>
+    /// If it is nil, it means the app has just been updated from a very old version.
+    var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? { get set }
+    var accountSortingAlgorithms: [AccountSortingAlgorithm] { get }
+
+    var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? { get set }
+    var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] { get }
+    var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? { get set }
+    var collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] { get }
+
     var accountCollection: AccountCollection { get }
-    var currency: CurrencyHandle { get }
-    
+
+    var currency: CurrencyProvider { get }
+
     var lastRound: BlockRound? { get }
     
     /// <note>
@@ -41,6 +52,8 @@ protocol SharedDataController: AnyObject {
         _ account: Account
     )
     func resetPollingAfterPreferredCurrencyWasChanged()
+
+    func getPreferredOrderForNewAccount() -> Int
     
     func add(
         _ observer: SharedDataControllerObserver
@@ -48,6 +61,32 @@ protocol SharedDataController: AnyObject {
     func remove(
         _ observer: SharedDataControllerObserver
     )
+}
+
+extension SharedDataController {
+    func sortedAccounts() -> [AccountHandle] {
+        if let selectedAccountSortingAlgorithm = selectedAccountSortingAlgorithm {
+            return accountCollection.sorted(selectedAccountSortingAlgorithm)
+        }
+
+        /// <todo>
+        /// We should convert it to keep the order from the local accounts.
+        return accountCollection.sorted {
+            $0.value.address > $1.value.address
+        }
+    }
+}
+
+extension Account {
+    func sortedCollectibleAssets(
+        _ algorithm: CollectibleSortingAlgorithm?
+    ) -> [CollectibleAsset] {
+        if let algorithm = algorithm {
+            return collectibleAssets.someArray.sorted(algorithm)
+        }
+
+        return collectibleAssets.someArray
+    }
 }
 
 /// <todo>

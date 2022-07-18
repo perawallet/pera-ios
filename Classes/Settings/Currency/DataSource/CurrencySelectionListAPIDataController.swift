@@ -20,115 +20,204 @@ import MagpieCore
 
 final class CurrencySelectionListAPIDataController: CurrencySelectionDataController {
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)?
-    
-    private var currencies = [Currency]()
-    private var searchResults = [Currency]()
-    
-    private var lastSnapshot: Snapshot?
-    
+
+    private(set) var selectedCurrencyID: CurrencyID?
+
+    var isEmpty: Bool {
+        return currencies.isEmpty
+    }
+
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
     
+    private var currencies = [RemoteCurrency]()
+    private var searchResults = [RemoteCurrency]()
+
+    private var lastSnapshot: Snapshot?
+
+    private var currencyObserverKey: UUID?
+
+    private let sharedDataController: SharedDataController
     private let api: ALGAPI
+
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.CurrencySelectionDataController")
     
     init(
-        _ api: ALGAPI
+        sharedDataController: SharedDataController,
+        api: ALGAPI
     ) {
+        self.sharedDataController = sharedDataController
         self.api = api
+
+        setInitialSelectedCurrency()
+    }
+
+    deinit {
+        stopObservingSelectedCurrencyEvents()
     }
     
-    subscript (index: Int) -> Currency? {
-        return searchResults[safe: index]
+    subscript (indexPath: IndexPath) -> RemoteCurrency? {
+        return searchResults[safe: indexPath.item]
     }
 }
 
 extension CurrencySelectionListAPIDataController {
-    func load() {
+    func loadData() {
+        deliverLoadingUpdates()
+
         currencies.removeAll()
         searchResults.removeAll()
-        
+
         api.getCurrencies { response in
             switch response {
             case let .success(currencyList):
-                self.currencies.append(contentsOf: currencyList.items)
-                self.addAlgoCurrency()
-                self.searchResults = self.currencies
-                self.deliverContentSnapshot()
+                var currencies: [RemoteCurrency] = []
+
+                let fiatCurrencies = currencyList.items
+
+                if let usdCurrency = fiatCurrencies.first(where: \.isUSD) {
+                    let algoCurrency = AlgoRemoteCurrency(baseCurrency: usdCurrency)
+                    currencies.append(algoCurrency)
+                }
+
+                currencies.append(contentsOf: fiatCurrencies)
+
+                self.currencies = currencies
+                self.searchResults = currencies
+
+                self.deliverContentUpdates()
+
+                if self.selectedCurrencyID == nil {
+                    self.startObservingSelectedCurrencyEvents()
+                }
             case .failure:
-                self.deliverErrorContentSnapshot()
+                self.deliverErrorContentUpdates()
             }
         }
     }
-    
-    private func addAlgoCurrency() {
-        if let usdCurrency = currencies.first(where: {
-            $0.id == "USD"
-        }) {
-            let algoCurrency = AlgoCurrency(currency: usdCurrency)
-            self.currencies.insert(algoCurrency, at: 0)
-        }
+
+    func reloadData() {
+        deliverContentUpdates()
     }
-        
+}
+
+extension CurrencySelectionListAPIDataController {
     func search(for query: String) {
         searchThrottler.performNext {
             [weak self] in
-            
+
             guard let self = self else {
                 return
             }
-            
+
             self.searchResults = self.currencies.filter { currency in
                 self.isCurrencyContainsID(currency, query: query) ||
                 self.isCurrencyContainsName(currency, query: query)
             }
-            
-            self.deliverContentSnapshot()
+
+            self.deliverContentUpdates()
         }
     }
-    
-    private func isCurrencyContainsID(_ currency: Currency, query: String) -> Bool {
-        return currency.id.localizedCaseInsensitiveContains(query)
+
+    private func isCurrencyContainsID(_ currency: RemoteCurrency, query: String) -> Bool {
+        let currencyLocalValue = currency.id.localValue
+        return currencyLocalValue.localizedCaseInsensitiveContains(query)
     }
-    
-    private func isCurrencyContainsName(_ currency: Currency, query: String) -> Bool {
+
+    private func isCurrencyContainsName(_ currency: RemoteCurrency, query: String) -> Bool {
         return currency.name.someString.localizedCaseInsensitiveContains(query)
     }
-    
+
     func resetSearch() {
         searchResults.removeAll()
         searchResults = currencies
-        deliverContentSnapshot()
+
+        deliverContentUpdates()
     }
 }
 
 extension CurrencySelectionListAPIDataController {
-    private func deliverContentSnapshot() {
+    func selectCurrency(
+        at indexPath: IndexPath
+    ) -> RemoteCurrency? {
+        guard let currency = self[indexPath] else {
+            return nil
+        }
+
+        setSelectedCurrency(currency)
+        reloadData()
+
+        return currency
+    }
+
+    @discardableResult
+    private func setInitialSelectedCurrency() -> Bool {
+        let currencyValue = sharedDataController.currency.primaryValue
+
+        guard let rawCurrency = try? currencyValue?.unwrap() else {
+            return false
+        }
+
+        setSelectedCurrency(rawCurrency)
+        return true
+    }
+
+    private func setSelectedCurrency(
+        _ rawCurrency: RemoteCurrency
+    ) {
+        selectedCurrencyID = rawCurrency.id
+    }
+}
+
+extension CurrencySelectionListAPIDataController {
+    private func startObservingSelectedCurrencyEvents() {
+        currencyObserverKey = sharedDataController.currency.addObserver {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate:
+                let isSuccess = self.setInitialSelectedCurrency()
+
+                if isSuccess {
+                    self.stopObservingSelectedCurrencyEvents()
+                    self.reloadData()
+                }
+            }
+        }
+    }
+
+    private func stopObservingSelectedCurrencyEvents() {
+        if let currencyObserverKey = currencyObserverKey {
+            sharedDataController.currency.removeObserver(currencyObserverKey)
+        }
+    }
+}
+
+extension CurrencySelectionListAPIDataController {
+    private func deliverContentUpdates() {
         guard !self.currencies.isEmpty else {
-            deliverErrorContentSnapshot()
+            deliverErrorContentUpdates()
             return
         }
         
         guard !self.searchResults.isEmpty else {
-            deliverNoContentSnapshot()
+            deliverNoContentUpdates()
             return
         }
         
-        deliverSnapshot {
+        deliverUpdates {
             [weak self] in
-            
-            guard let self = self else {
-                return Snapshot()
-            }
+            guard let self = self else { return nil }
             
             var snapshot = Snapshot()
             
             var currencyItems: [CurrencySelectionItem] = []
-                        
+
             self.searchResults.forEach { currency in
-                let viewModel: SingleSelectionViewModel
-                let isSelected = self.api.session.preferredCurrency == currency.id
-                viewModel = SingleSelectionViewModel(
-                    title: currency.id,
+                let title = currency.id.localValue
+                let isSelected = currency.id == self.selectedCurrencyID
+                let viewModel = SingleSelectionViewModel(
+                    title: title,
                     isSelected: isSelected
                 )
                 
@@ -142,48 +231,61 @@ extension CurrencySelectionListAPIDataController {
             )
             
             snapshot.reloadItems(currencyItems)
-            return snapshot
+            return (snapshot, false)
         }
     }
-    
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot {
+
+    private func deliverLoadingUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
-            snapshot.appendSections([.noContent])
+            snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.noContent(CurrencySelectionNoContentViewModel())],
-                toSection: .noContent
+                [.empty(.loading)],
+                toSection: .empty
             )
-            return snapshot
+            return (snapshot, true)
         }
     }
     
-    private func deliverErrorContentSnapshot() {
-        deliverSnapshot {
+    private func deliverNoContentUpdates() {
+        deliverUpdates {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.empty(
+                    .noContent(CurrencySelectionNoContentViewModel())
+                )],
+                toSection: .empty
+            )
+            return (snapshot, false)
+        }
+    }
+    
+    private func deliverErrorContentUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
             snapshot.appendSections([.error])
             snapshot.appendItems(
                 [.error],
                 toSection: .error
             )
-            return snapshot
+            return (snapshot, false)
         }
     }
     
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot
+    private func deliverUpdates(
+        _ updates: @escaping () -> Updates?
     ) {
         snapshotQueue.async {
             [weak self] in
-            
-            guard let self = self else {
+            guard let self = self else { return }
+
+            guard let updates = updates() else {
                 return
             }
             
-            let newSnapshot = snapshot()
-            
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+            self.lastSnapshot = updates.snapshot
+            self.publish(.didUpdate(updates))
         }
     }
 }

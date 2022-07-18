@@ -27,9 +27,12 @@ final class NotificationsViewController: BaseViewController {
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
     private lazy var dataController = NotificationsAPIDataController(
         sharedDataController: sharedDataController,
-        api: api!
+        api: api!,
+        currencyFormatter: currencyFormatter
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
