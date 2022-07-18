@@ -350,12 +350,6 @@ extension CollectibleDetailViewController {
                         self.popScreen()
                     }
                 }
-
-                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                    [weak controller] in
-                    controller?.dismissScreen()
-                }
-                controller?.leftBarButtonItems = [closeBarButtonItem]
                 return
             }
 

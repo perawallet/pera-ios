@@ -523,10 +523,9 @@ class Router:
             account,
             transaction,
             transactionTypeFilter,
-            assets,
-            eventHandler
+            assets
         ):
-            let aViewController = AppCallTransactionDetailViewController(
+            viewController = AppCallTransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: transactionTypeFilter,
@@ -536,18 +535,14 @@ class Router:
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
-        case .appCallAssetList(let dataController, let eventHandler):
-            let aViewController = AppCallAssetListViewController(
+        case .appCallAssetList(let dataController):
+            viewController = AppCallAssetListViewController(
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .assetDetail(draft):
             viewController = AssetDetailViewController(
                 draft: draft,
@@ -674,8 +669,8 @@ class Router:
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
             )
-        case let .notificationFilter(flow):
-            viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
+        case .notificationFilter:
+            viewController = NotificationFilterViewController(configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .tutorial(flow, tutorial):

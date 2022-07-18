@@ -115,6 +115,8 @@ final class WCSingleTransactionRequestScreen:
         super.configureNavigationBarAppearance()
 
         title = viewModel?.title
+
+        hidesCloseBarButtonItem = true
     }
 
     override func prepareLayout() {

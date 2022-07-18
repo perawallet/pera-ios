@@ -61,11 +61,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-    
     override func linkInteractors() {
         transactionDetailView.delegate = self
     }
@@ -108,16 +103,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addTransactionDetailView()
-    }
-}
-
-extension TransactionDetailViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

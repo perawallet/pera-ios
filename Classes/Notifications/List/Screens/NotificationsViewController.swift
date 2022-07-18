@@ -148,7 +148,7 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        open(.notificationFilter, by: .present)
     }
 }
 

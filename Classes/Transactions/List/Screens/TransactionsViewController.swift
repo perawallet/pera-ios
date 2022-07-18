@@ -384,33 +384,21 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
 
         switch draft.type {
         case .all:
-            let controller = open(
+            open(
                 .assetSelection(
                     filter: nil,
                     account: accountHandle.value
                 ),
                 by: .present
-            ) as? SelectAssetViewController
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-                controller?.closeScreen(by: .dismiss, animated: true)
-            }
-            controller?.leftBarButtonItems = [closeBarButtonItem]
+            )
         case .asset:
             if let asset = asset {
                 let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .asset(asset))
-                let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
-                let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-                    controller?.closeScreen(by: .dismiss, animated: true)
-                }
-                controller?.leftBarButtonItems = [closeBarButtonItem]
+                open(.sendTransaction(draft: draft), by: .present)
             }
         case .algos:
             let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
-            let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-                controller?.closeScreen(by: .dismiss, animated: true)
-            }
-            controller?.leftBarButtonItems = [closeBarButtonItem]
+            open(.sendTransaction(draft: draft), by: .present)
         }
     }
 
@@ -437,26 +425,12 @@ extension TransactionsViewController {
 extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: Transaction) {
         if transaction.applicationCall != nil {
-            let eventHandler: AppCallTransactionDetailViewController.EventHandler = {
-                [weak self] event in
-                guard let self = self else {
-                    return
-
-                }
-
-                switch event {
-                case .performClose:
-                    self.dismiss(animated: true)
-                }
-            }
-
             open(
                 .appCallTransactionDetail(
                     account: accountHandle.value,
                     transaction: transaction,
                     transactionTypeFilter: draft.type,
-                    assets: getAssetDetailForTransactionType(transaction),
-                    eventHandler: eventHandler
+                    assets: getAssetDetailForTransactionType(transaction)
                 ),
                 by: .present
             )
