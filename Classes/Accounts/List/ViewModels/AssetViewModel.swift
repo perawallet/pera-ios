@@ -44,7 +44,7 @@ extension AssetViewModel {
         let asset = item.asset
 
         let formatter = item.currencyFormatter
-        formatter.formattingContext = .listItem
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
         formatter.currency = nil
 
         amount = formatter.format(asset.decimalAmount)
@@ -69,7 +69,7 @@ extension AssetViewModel {
             let amount = try exchanger.exchange(asset)
 
             let formatter = item.currencyFormatter
-            formatter.formattingContext = .listItem
+            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
             formatter.currency = rawCurrency
 
             valueInCurrency = formatter.format(amount)

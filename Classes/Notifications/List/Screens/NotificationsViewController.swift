@@ -27,7 +27,8 @@ final class NotificationsViewController: BaseViewController {
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
     private lazy var dataController = NotificationsAPIDataController(
         sharedDataController: sharedDataController,
-        api: api!
+        api: api!,
+        currencyFormatter: currencyFormatter
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
@@ -37,9 +38,12 @@ final class NotificationsViewController: BaseViewController {
         }
         return TransactionController(api: api, bannerController: bannerController)
     }()
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+    
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()

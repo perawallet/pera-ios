@@ -76,6 +76,8 @@ final class CollectibleDetailViewController:
         configuration: configuration
     )
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var asset: CollectibleAsset
     private let account: Account
     private let thumbnailImage: UIImage?
@@ -613,10 +615,15 @@ extension CollectibleDetailViewController {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(
-                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                    params: amountText.someString
                 )
             )
         case let .sdkError(error):

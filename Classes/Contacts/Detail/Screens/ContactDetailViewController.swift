@@ -258,7 +258,11 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
         }
 
         let mode: AccountListViewController.Mode = .contact(asset: itemIndex.item == 0 ? nil : contactAccount.standardAssets?[itemIndex.item - 1])
-        let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+        let accountListDataSource = AccountListDataSource(
+            sharedDataController: sharedDataController,
+            mode: mode,
+            currencyFormatter: currencyFormatter
+        )
 
         guard !accountListDataSource.accounts.isEmpty else {
             bannerController?.presentErrorBanner(

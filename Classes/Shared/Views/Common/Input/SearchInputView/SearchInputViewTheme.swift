@@ -59,8 +59,8 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
             .textColor(AppColors.Components.Text.main),
             .placeholder(placeholder),
             .placeholderColor(AppColors.Components.Text.gray),
-            .autocorrectionType(.no),
             .returnKeyType(.search),
+            .autocorrectionType(.no),
             .autocapitalizationType(.none)
         ]
         self.textInputBackground = [

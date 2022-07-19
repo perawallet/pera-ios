@@ -24,6 +24,8 @@ final class ScanQRFlowCoordinator:
     SelectAccountViewControllerDelegate,
     AssetActionConfirmationViewControllerDelegate,
     TransactionControllerDelegate {
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var assetConfirmationTransition: BottomSheetTransition?
     private var accountQRTransition: BottomSheetTransition?
     private var optInRequestTransition: BottomSheetTransition?
@@ -313,9 +315,16 @@ extension ScanQRFlowCoordinator {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController.presentErrorBanner(

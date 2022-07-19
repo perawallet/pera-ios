@@ -34,6 +34,8 @@ final class RekeyConfirmationViewController: BaseViewController {
         }
         return TransactionController(api: api, bannerController: bannerController)
     }()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     init(account: Account, ledger: LedgerDetail?, ledgerAddress: String, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -162,9 +164,15 @@ extension RekeyConfirmationViewController {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                message: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:

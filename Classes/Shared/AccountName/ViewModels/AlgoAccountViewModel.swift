@@ -18,15 +18,21 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AlgoAccountViewModel: PairedViewModel {
+final class AlgoAccountViewModel: ViewModel {
     private(set) var image: UIImage?
     private(set) var address: String?
     private(set) var amount: String?
 
-    init(_ model: Account) {
+    init(
+        _ model: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
         bindAddress(model)
         bindImage(model)
-        bindAmount(model)
+        bindAmount(
+            model,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -45,7 +51,13 @@ extension AlgoAccountViewModel {
         image = account.typeImage
     }
 
-    private func bindAmount(_ account: Account) {
-        amount = "\(account.amount.toAlgos.toAlgosStringForLabel ?? "0") ALGO"
+    private func bindAmount(
+        _ account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        amount = currencyFormatter.format(account.amount.toAlgos)
     }
 }

@@ -28,8 +28,9 @@ protocol Asset {
 
     /// <todo>
     /// Switch decimalAmount -> amount
-    /// Switch totalUSDValue -> usdValue
     var decimalAmount: Decimal { get }
+
+    var usdValue: Decimal? { get }
     var totalUSDValue: Decimal? { get }
 
     /// Asset management actions
@@ -38,8 +39,6 @@ protocol Asset {
     /// Asset presentation
     var presentation: AssetPresentation { get }
     var amountWithFraction: Decimal { get }
-    var amountDisplayWithFraction: String? { get }
-    var amountNumberWithAutoFraction: String? { get }
 }
 
 enum AssetState: Codable {

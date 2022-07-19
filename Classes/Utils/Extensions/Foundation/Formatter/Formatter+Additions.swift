@@ -21,16 +21,6 @@ import MacaroonUtils
 extension Formatter {
     static let algoCurrencySymbol = "\u{00A6}"
     
-    static let separatorForAlgosLabel: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
-        formatter.currencySymbol = algoCurrencySymbol
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 6
-        return formatter
-    }()
-
     static let percentageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred
@@ -39,16 +29,6 @@ extension Formatter {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
-    
-    static func separatorForInputWith(fraction value: Int) -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
-        formatter.currencySymbol = ""
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = value
-        formatter.maximumFractionDigits = value
-        return formatter
-    }
     
     static func separatorWith(fraction value: Int, suffix: String? = nil) -> NumberFormatter {
         let formatter = NumberFormatter()
@@ -67,34 +47,6 @@ extension Formatter {
         return formatter
     }
     
-    static let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
-        formatter.currencySymbol = ""
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }()
-
-    static func currencyFormatter(with symbol: String?, suffix: String? = nil) -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
-        formatter.currencySymbol = symbol ?? ""
-        formatter.numberStyle = .currency
-        formatter.minimumFractionDigits = 2
-        if let suffix = suffix, !suffix.isEmptyOrBlank {
-            formatter.roundingMode = .down
-            formatter.maximumFractionDigits = 2
-        } else {
-            formatter.maximumFractionDigits = symbol == algoCurrencySymbol ? 6 : 2
-        }
-        
-        formatter.negativeSuffix = suffix
-        formatter.positiveSuffix = suffix
-        return formatter
-    }
-
     static let numberWithAutoSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred
@@ -112,23 +64,6 @@ extension Formatter {
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = value
-        return formatter
-    }
-    
-    static func fullAlgosLabel(with suffix: String) -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
-        formatter.currencySymbol = algoCurrencySymbol
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 2
-        if suffix.isEmptyOrBlank {
-            formatter.maximumFractionDigits = 6
-        } else {
-            formatter.roundingMode = .down
-            formatter.maximumFractionDigits = 2
-        }
-        formatter.positiveSuffix = suffix
-        formatter.negativeSuffix = suffix
         return formatter
     }
 }

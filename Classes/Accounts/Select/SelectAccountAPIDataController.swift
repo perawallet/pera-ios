@@ -130,7 +130,10 @@ extension SelectAccountAPIDataController {
                 if self.transactionAction == .buyAlgo {
                     let account = accountHandle.value
                     let algoAccount = CustomAccountPreview(
-                        AlgoAccountViewModel(account),
+                        AlgoAccountViewModel(
+                            account,
+                            currencyFormatter: currencyFormatter
+                        ),
                         address: account.address
                     )
                     

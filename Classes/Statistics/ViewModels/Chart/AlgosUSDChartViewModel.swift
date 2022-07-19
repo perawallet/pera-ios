@@ -105,12 +105,12 @@ extension AlgosUSDChartViewModel {
 struct AlgoPriceChartDataSet {
     let values: [AlgoUSDPrice]
     let changeRate: AlgoPriceChangeRate
-    let currency: CurrencyValue?
+    let currency: RemoteCurrencyValue?
     
     init(
         values: [AlgoUSDPrice],
         changeRate: AlgoPriceChangeRate,
-        currency: CurrencyValue?
+        currency: RemoteCurrencyValue?
     ) {
         self.values = values
             .sorted(by: \.timestamp)

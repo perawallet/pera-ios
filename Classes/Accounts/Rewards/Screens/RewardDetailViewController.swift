@@ -23,6 +23,8 @@ import MacaroonUIKit
 final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let account: Account
     
     init(
@@ -45,7 +47,8 @@ final class RewardDetailViewController: BaseViewController {
     override func bindData() {
         bindData(
             RewardDetailViewModel(
-                account: account
+                account: account,
+                currencyFormatter: currencyFormatter
             )
         )
     }

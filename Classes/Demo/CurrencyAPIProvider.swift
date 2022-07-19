@@ -21,8 +21,8 @@ import MagpieHipo
 import SwiftDate
 
 final class CurrencyAPIProvider: CurrencyProvider {
-    private(set) var primaryValue: CurrencyValue?
-    private(set) var secondaryValue: CurrencyValue?
+    private(set) var primaryValue: RemoteCurrencyValue?
+    private(set) var secondaryValue: RemoteCurrencyValue?
 
     var isExpired: Bool {
         return hasExpiredValue()
@@ -132,7 +132,7 @@ extension CurrencyAPIProvider {
         )
     }
 
-    private func getCachedCurrency() -> Currency? {
+    private func getCachedCurrency() -> RemoteCurrency? {
         return try? primaryValue?.unwrap()
     }
 }
@@ -164,7 +164,7 @@ extension CurrencyAPIProvider {
     private func setAlgoAsPrimaryCurrency(
         _ currency: FiatCurrency
     ) {
-        let algoCurrency = AlgoCurrency(baseCurrency: currency)
+        let algoCurrency = AlgoRemoteCurrency(baseCurrency: currency)
 
         primaryValue = .available(algoCurrency)
         secondaryValue = .available(currency)
@@ -173,7 +173,7 @@ extension CurrencyAPIProvider {
     private func setFiatAsPrimaryCurrency(
         _ currency: FiatCurrency
     ) {
-        let algoCurrency = AlgoCurrency(baseCurrency: currency)
+        let algoCurrency = AlgoRemoteCurrency(baseCurrency: currency)
 
         primaryValue = .available(currency)
         secondaryValue = .available(algoCurrency)

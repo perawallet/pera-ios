@@ -40,12 +40,16 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         sharedDataController: SharedDataController,
-        api: ALGAPI
+        api: ALGAPI,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
+        self.currencyFormatter = currencyFormatter
 
         startObserving()
     }
@@ -118,6 +122,7 @@ extension NotificationsAPIDataController {
     ) -> NotificationsViewModel {
         return NotificationsViewModel(
             notification: notification,
+            currencyFormatter: currencyFormatter,
             senderAccount: getSenderAccountIfExists(for: notification),
             receiverAccount: getReceiverAccountIfExists(for: notification),
             contact: getContactIfExists(for: notification),

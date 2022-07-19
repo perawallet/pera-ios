@@ -59,14 +59,6 @@ final class CollectibleAsset: Asset {
         return amount.assetAmount(fromFraction: decimals)
     }
 
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
-    }
-
     var isOwned: Bool {
         return amount != 0
     }

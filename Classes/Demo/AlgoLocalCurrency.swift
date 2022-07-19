@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetItem.swift
+//   AlgoLocalCurrency.swift
 
 import Foundation
 
-final class AssetItem {
-    let asset: Asset
-    let currency: CurrencyProvider
-    let currencyFormatter: CurrencyFormatter
-    let currencyFormattingContext: CurrencyFormattingContext?
+struct AlgoLocalCurrency: LocalCurrency {
+    let id: CurrencyID
+    let name: String?
+    let symbol: String?
 
     init(
-        asset: Asset,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter,
-        currencyFormattingContext: CurrencyFormattingContext? = nil
+        pairID: CurrencyID? = nil
     ) {
-        self.asset = asset
-        self.currency = currency
-        self.currencyFormatter = currencyFormatter
-        self.currencyFormattingContext = currencyFormattingContext
+        self.id = CurrencyID.algo(pairID: pairID)
+        self.name = "title-algorand".localized
+        self.symbol = "\u{00A6}"
     }
 }
