@@ -183,11 +183,11 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft):
+        case .algosDetail(let draft, let preferences):
             launch(tab: .home)
 
             route(
-                to: .algosDetail(draft: draft),
+                to: .algosDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -205,11 +205,11 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft):
+        case .assetDetail(let draft, let preferences):
             launch(tab: .home)
             
             route(
-                to: .assetDetail(draft: draft),
+                to: .assetDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -548,17 +548,19 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetDetail(draft):
+        case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-        case let .algosDetail(draft):
+        case let .algosDetail(draft, preferences):
             viewController = AlgosDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: nil,
                 configuration: configuration
             )
