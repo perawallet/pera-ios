@@ -72,7 +72,6 @@ indirect enum Screen {
         theme: AssetActionConfirmationViewControllerTheme = .init()
     )
     case rewardDetail(account: Account)
-    case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)

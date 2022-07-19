@@ -604,8 +604,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
