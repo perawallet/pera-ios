@@ -204,6 +204,10 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
+    case sheetAction(
+        sheet: UISheet,
+        theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
+    )
 }
 
 extension Screen {

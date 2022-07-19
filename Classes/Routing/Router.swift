@@ -984,6 +984,11 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
+            )
         }
 
         return viewController as? T
