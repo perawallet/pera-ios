@@ -129,7 +129,7 @@ final class AccountDetailViewController: PageContainer {
     override func itemDidSelect(
         _ index: Int
     ) {
-        view.endEditing(true)
+        endEditing()
     }
 }
 
@@ -145,6 +145,8 @@ extension AccountDetailViewController {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
             case .manageAssets(let isWatchAccount):
+                self.assetListScreen.endEditing()
+
                 self.modalTransition.perform(
                     .managementOptions(
                         managementType: isWatchAccount ? .watchAccountAssets : .assets,
@@ -153,15 +155,25 @@ extension AccountDetailViewController {
                     by: .present
                 )
             case .addAsset:
+                self.assetListScreen.endEditing()
+
                 let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
                 controller?.delegate = self
             case .buyAlgo:
+                self.assetListScreen.endEditing()
+
                 self.buyAlgoFlowCoordinator.launch()
             case .send:
+                self.assetListScreen.endEditing()
+
                 self.sendTransactionFlowCoordinator.launch()
             case .address:
+                self.assetListScreen.endEditing()
+
                 self.receiveTransactionFlowCoordinator.launch()
             case .more:
+                self.assetListScreen.endEditing()
+
                 self.presentOptionsScreen()
             }
         }
@@ -204,6 +216,8 @@ extension AccountDetailViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.presentOptionsScreen()
         }
