@@ -29,8 +29,7 @@ final class NotificationsAPIDataController:
     private let sharedDataController: SharedDataController
     private var contacts = [Contact]()
     private(set) var notifications = [NotificationMessage]()
-    private var addedAssetsWithAccounts = [String: [Int64]]()
-    var currentNotification: NotificationDetail?
+    private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -349,21 +348,21 @@ extension NotificationsAPIDataController {
     }
 
     func canOptIn(
-        account: Account,
-        for assetId: Int64
+        to asset: AssetID,
+        for account: Account
     ) -> Bool {
         guard let receiverAccount = sharedDataController.accountCollection[account.address]?.value else {
             return false
         }
 
         if receiverAccount.isWatchAccount() ||
-            receiverAccount.containsAsset(assetId) {
+            receiverAccount.containsAsset(asset) {
             return false
         }
 
         if let addedAssets = addedAssetsWithAccounts[receiverAccount.address] {
             for addedAsset in addedAssets {
-                if addedAsset == assetId {
+                if addedAsset == asset {
                     return false
                 }
             }
@@ -372,12 +371,10 @@ extension NotificationsAPIDataController {
         return true
     }
 
-    func addOptedInAsset() {
-        guard let address = currentNotification?.receiverAddress,
-              let assetId = currentNotification?.asset?.id else {
-            return
-        }
-
+    func addOptedInAsset(
+        _ address: PublicKey,
+        _ assetId: AssetID
+    ) {
         var addedAssets = addedAssetsWithAccounts[address] ?? []
         addedAssets.append(assetId)
         addedAssetsWithAccounts[address] = addedAssets

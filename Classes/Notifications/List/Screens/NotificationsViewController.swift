@@ -18,7 +18,11 @@
 import UIKit
 import MagpieCore
 
-final class NotificationsViewController: BaseViewController {
+final class NotificationsViewController:
+    BaseViewController,
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionSignChecking,
+    TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
     private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
 
@@ -44,6 +48,8 @@ final class NotificationsViewController: BaseViewController {
     private lazy var currencyFormatter = CurrencyFormatter()
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private var currentNotification: NotificationDetail?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +91,7 @@ final class NotificationsViewController: BaseViewController {
             }
 
             self.openAssetDetail(from: notificationDetail)
-            self.dataController.currentNotification = notificationDetail
+            self.currentNotification = notificationDetail
         }
 
         dataController.load()
@@ -198,8 +204,8 @@ extension NotificationsViewController {
             }
 
             if dataController.canOptIn(
-                account: receiverAccount,
-                for: assetId
+                to: assetId,
+                for: receiverAccount
             ) {
                 openAssetAddition(
                     account: receiverAccount,
@@ -277,7 +283,6 @@ extension NotificationsViewController {
             ),
             by: .presentWithoutNavigationController
         )
-
     }
     
     private func openCollectible(asset: CollectibleAsset, with account: Account) {
@@ -301,25 +306,20 @@ extension NotificationsViewController {
             message: "notifications-asset-not-found-description".localized
         )
     }
-}
 
-extension NotificationsViewController:
-    AssetActionConfirmationViewControllerDelegate,
-    TransactionSignChecking
-{
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
-        if let receiverAccount = dataController.getReceiverAccount(from: dataController.currentNotification) {
-            var theAccount = receiverAccount
+        if let receiverAccount = dataController.getReceiverAccount(from: currentNotification) {
+            var account = receiverAccount
 
-            if !canSignTransaction(for: &theAccount) {
+            if !canSignTransaction(for: &account) {
                 return
             }
 
             let assetTransactionDraft = AssetTransactionSendDraft(
-                from: theAccount,
+                from: account,
                 assetIndex: asset.id
             )
             transactionController.setTransactionDraft(assetTransactionDraft)
@@ -327,15 +327,13 @@ extension NotificationsViewController:
 
             loadingController?.startLoadingWithMessage("title-loading".localized)
 
-            if theAccount.requiresLedgerConnection() {
+            if account.requiresLedgerConnection() {
                 transactionController.initializeLedgerTransactionAccount()
                 transactionController.startTimer()
             }
         }
     }
-}
 
-extension NotificationsViewController: TransactionControllerDelegate {
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
@@ -373,9 +371,11 @@ extension NotificationsViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(params: amountText.someString)
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -410,8 +410,14 @@ extension NotificationsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        dataController.addOptedInAsset()
         loadingController?.stopLoading()
+
+        guard let address = currentNotification?.receiverAddress,
+              let assetId = currentNotification?.asset?.id else {
+            return
+        }
+
+        dataController.addOptedInAsset(address, assetId)
     }
 
     func transactionController(
