@@ -526,7 +526,7 @@ extension HomeViewController {
         }
 
         copyAddressDisplayStore.increaseAppOpenCount()
-        
+
         let eventHandler: CopyAddressStoryScreen.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -731,13 +731,49 @@ extension HomeViewController {
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyAddress(account)
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
     }
 }
 
