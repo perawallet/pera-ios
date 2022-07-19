@@ -18,7 +18,9 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class VerificationInfoHeaderView: View {
+final class VerificationInfoHeaderView:
+    View,
+    ViewModelBindable {
     private lazy var closeButton = MacaroonUIKit.Button()
     private lazy var backgroundView = ImageView()
     private lazy var logoView = ImageView()
@@ -34,6 +36,13 @@ final class VerificationInfoHeaderView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
+}
+
+extension VerificationInfoHeaderView {
+    func bindData(_ viewModel: VerificationInfoHeaderViewModel?) {
+        backgroundView.image = viewModel?.backgroundImage?.uiImage
+        logoView.image = viewModel?.logoImage?.uiImage
+    }
 }
 
 extension VerificationInfoHeaderView {

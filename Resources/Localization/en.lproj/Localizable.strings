@@ -1106,3 +1106,12 @@
 "inner-txns-plural-count" = "%@ inner txns";
 "inner-transaction-singular-count" = "1 Inner Transaction";
 "inner-transaction-plural-count" = "%@ Inner Transactions";
+
+// MARK: Verification Information
+"verification-info-title" = "ASA Verification";
+"verification-info-first-description" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.";
+"verification-info-first-description-highlight" = "automatically";
+"verification-info-second-description" = "The main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-second-description-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-third-description" = "ASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+"verification-info-third-description-highlight" = "ASA Verification is not an endorsement of the project.";

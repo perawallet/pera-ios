@@ -1940,6 +1940,12 @@
 		2B968A782886884400184ED5 /* VerificationInfoHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A772886884400184ED5 /* VerificationInfoHeaderViewTheme.swift */; };
 		2B968A792886884400184ED5 /* VerificationInfoHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A772886884400184ED5 /* VerificationInfoHeaderViewTheme.swift */; };
 		2B968A7A2886884400184ED5 /* VerificationInfoHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A772886884400184ED5 /* VerificationInfoHeaderViewTheme.swift */; };
+		2B968A7C28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7B28868F9000184ED5 /* VerificationInfoViewModel.swift */; };
+		2B968A7D28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7B28868F9000184ED5 /* VerificationInfoViewModel.swift */; };
+		2B968A7E28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7B28868F9000184ED5 /* VerificationInfoViewModel.swift */; };
+		2B968A8028868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7F28868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift */; };
+		2B968A8128868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7F28868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift */; };
+		2B968A8228868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B968A7F28868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift */; };
 		2B982333231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B982334231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98233A231EC207009560CD /* TransactionsQuery.swift */; };
@@ -5640,6 +5646,8 @@
 		2B968A6A28858F1B00184ED5 /* VerificationInfoViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoViewTheme.swift; sourceTree = "<group>"; };
 		2B968A732886882800184ED5 /* VerificationInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoHeaderView.swift; sourceTree = "<group>"; };
 		2B968A772886884400184ED5 /* VerificationInfoHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoHeaderViewTheme.swift; sourceTree = "<group>"; };
+		2B968A7B28868F9000184ED5 /* VerificationInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoViewModel.swift; sourceTree = "<group>"; };
+		2B968A7F28868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoHeaderViewModel.swift; sourceTree = "<group>"; };
 		2B982332231D396D009560CD /* Codable+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+JSON.swift"; sourceTree = "<group>"; };
 		2B98233A231EC207009560CD /* TransactionsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsQuery.swift; sourceTree = "<group>"; };
 		2B98844325B8804D004532CE /* Asset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
@@ -9945,6 +9953,7 @@
 				2B968A722886881200184ED5 /* HeaderView */,
 				2B968A6628858E4C00184ED5 /* VerificationInfoView.swift */,
 				2B968A6A28858F1B00184ED5 /* VerificationInfoViewTheme.swift */,
+				2B968A7B28868F9000184ED5 /* VerificationInfoViewModel.swift */,
 			);
 			path = VerificationInfo;
 			sourceTree = "<group>";
@@ -9954,6 +9963,7 @@
 			children = (
 				2B968A732886882800184ED5 /* VerificationInfoHeaderView.swift */,
 				2B968A772886884400184ED5 /* VerificationInfoHeaderViewTheme.swift */,
+				2B968A7F28868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift */,
 			);
 			path = HeaderView;
 			sourceTree = "<group>";
@@ -16276,6 +16286,7 @@
 				D4B6EA54276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */,
 				D432865926DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */,
 				D419433B27356FEB0055EC70 /* AssetListViewLayout.swift in Sources */,
+				2B968A8228868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */,
 				D4CEEC13280848A10010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				2B2362D624CF8BF6007ECEBE /* IndexerError.swift in Sources */,
 				2B5F6FA32768EC8600C9B780 /* SingleGrayTitleHeaderView.swift in Sources */,
@@ -17066,6 +17077,7 @@
 				2BB350BF2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				2B0AD8212757D99600F83660 /* AccountPortfolioView.swift in Sources */,
 				2BCCB5B827D755B200C5E497 /* AssetPreviewWithActionView.swift in Sources */,
+				2B968A7E28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */,
 				D4DF539F2785F97200820DD0 /* AlgosDetailViewController.swift in Sources */,
 				2B5A277F27F6DBEB006C469B /* ManageAssetsListLayout.swift in Sources */,
 				D40D5EB3287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
@@ -17870,6 +17882,7 @@
 				D4241FBB26E763090064CDD0 /* FloatingTextInputFieldView.swift in Sources */,
 				D473CA4D26E15F0C00558598 /* PassphraseCellViewTheme.swift in Sources */,
 				2B0F61C124EC129D00DA22A6 /* LedgerDeviceListView.swift in Sources */,
+				2B968A8128868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */,
 				95BB6C2927A51B3C00F2A2F1 /* TransactionCurrencyAmountInformationViewModel.swift in Sources */,
 				2B0F61C224EC129D00DA22A6 /* Shadow.swift in Sources */,
 				2B0F61C324EC129D00DA22A6 /* TransactionsViewController.swift in Sources */,
@@ -18660,6 +18673,7 @@
 				2B0F62AC24EC129D00DA22A6 /* Notification.Name+Additions.swift in Sources */,
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
 				2BCCB5B727D755B200C5E497 /* AssetPreviewWithActionView.swift in Sources */,
+				2B968A7D28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */,
 				2B5F6F852768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D40D5EB2287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				D40A9024283CEFCF0091A746 /* TooltipViewModel.swift in Sources */,
@@ -19464,6 +19478,7 @@
 				D479B21D276C7A55006402B6 /* WCSessionShortListItemViewModel.swift in Sources */,
 				2B71EBB9246C4F0F002ACB63 /* TransactionHistoryFilterView.swift in Sources */,
 				F022D1D92760AAFC00D786CD /* BlockCycle.swift in Sources */,
+				2B968A8028868FCF00184ED5 /* VerificationInfoHeaderViewModel.swift in Sources */,
 				F0DB417B2794456400EA437D /* PortfolioCalculationInfoViewControllerTheme.swift in Sources */,
 				2B77474A25FFE97E0083EFFA /* InputSuggestionViewModel.swift in Sources */,
 				95609E2A27B69A50008CE7FA /* NotificationsAPIDataController.swift in Sources */,
@@ -20254,6 +20269,7 @@
 				2BB350BD2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				D4F856BF27E1260D00F109ED /* AssetSearchListTitleSupplementaryCell.swift in Sources */,
 				95AF1C9C27B16927001AB131 /* AlgoTransactionHistoryLoadingViewCommonTheme.swift in Sources */,
+				2B968A7C28868F9000184ED5 /* VerificationInfoViewModel.swift in Sources */,
 				F011FCF42859399A00E42EA2 /* HomeAccountCell.swift in Sources */,
 				D40D5EB1287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				2BD36DFC2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,

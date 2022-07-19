@@ -17,7 +17,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class VerificationInfoView: View {
+final class VerificationInfoView:
+    View,
+    ViewModelBindable {
     private lazy var titleLabel = Label()
     private lazy var firstDescriptionLabel = Label()
     private lazy var secondDescriptionLabel = Label()
@@ -33,6 +35,17 @@ final class VerificationInfoView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
+}
+
+extension VerificationInfoView {
+    func bindData(
+        _ viewModel: VerificationInfoViewModel?
+    ) {
+        titleLabel.editText = viewModel?.title
+        firstDescriptionLabel.attributedText = viewModel?.firstDescription
+        secondDescriptionLabel.attributedText = viewModel?.secondDescription
+        thirdDescriptionLabel.attributedText = viewModel?.thirdDescription
+    }
 }
 
 extension VerificationInfoView {
