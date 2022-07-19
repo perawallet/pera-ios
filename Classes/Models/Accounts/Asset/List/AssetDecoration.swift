@@ -31,6 +31,8 @@ final class AssetDecoration: ALGEntityModel {
     let collectible: Collectible?
     let explorerURL: URL?
     let url: String?
+    let verificationTier: AssetVerificationTier
+    let logo: URL?
 
     var state: AssetState = .ready
 
@@ -52,6 +54,8 @@ final class AssetDecoration: ALGEntityModel {
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
+        self.verificationTier = apiModel.verificationTier
+        self.logo = apiModel.logo
     }
     
     init(assetDetail: AssetDetail) {
@@ -66,6 +70,8 @@ final class AssetDecoration: ALGEntityModel {
         self.explorerURL = nil
         self.collectible = nil
         self.url = assetDetail.url
+        self.verificationTier = .unverified
+        self.logo = nil
     }
 
     func encode() -> APIModel {
@@ -81,6 +87,8 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.explorerURL = explorerURL
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
+        apiModel.verificationTier = verificationTier
+        apiModel.logo = logo
         return apiModel
     }
 
@@ -96,6 +104,8 @@ final class AssetDecoration: ALGEntityModel {
         self.explorerURL = nil
         self.collectible = nil
         self.url = asset.presentation.url
+        self.verificationTier = .unverified
+        self.logo = nil
     }
 }
 
@@ -112,6 +122,8 @@ extension AssetDecoration {
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
+        var verificationTier: AssetVerificationTier
+        var logo: URL?
 
         init() {
             self.assetId = 0
@@ -125,6 +137,8 @@ extension AssetDecoration {
             self.collectible = nil
             self.url = nil
             self.total = nil
+            self.verificationTier = .init()
+            self.logo = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -139,6 +153,8 @@ extension AssetDecoration {
             case collectible
             case url
             case total
+            case verificationTier = "verification_tier"
+            case logo
         }
     }
 }
