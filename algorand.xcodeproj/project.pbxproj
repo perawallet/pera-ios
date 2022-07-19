@@ -4990,6 +4990,9 @@
 		F0E8CCA22880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA32880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA42880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
+		F0E8CCA628814D3900398803 /* BaseAssetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */; };
+		F0E8CCA728814D3900398803 /* BaseAssetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */; };
+		F0E8CCA828814D3900398803 /* BaseAssetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -6692,6 +6695,7 @@
 		F0E7444C27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceChartTimeFrameSelectionViewModel.swift; sourceTree = "<group>"; };
 		F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceCalculator.swift; sourceTree = "<group>"; };
 		F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionCell.swift; sourceTree = "<group>"; };
+		F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAssetDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -10471,6 +10475,7 @@
 			children = (
 				D41B233127842BE0008838C7 /* AssetDetailViewController.swift */,
 				D4DF539C2785F97200820DD0 /* AlgosDetailViewController.swift */,
+				F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */,
 				D4A647992784762A009DE241 /* TransactionListing.swift */,
 			);
 			path = Screens;
@@ -17255,6 +17260,7 @@
 				D4822748272C5735004CB9BF /* EditContactViewController.swift in Sources */,
 				2B0F5EFB24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DF25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
+				F0E8CCA828814D3900398803 /* BaseAssetDetailViewController.swift in Sources */,
 				D4155E9C276CDCB200BCBFA4 /* AccountSelectionViewTheme.swift in Sources */,
 				2BB0B12527830DDF00A16494 /* AccountAssetListLayout.swift in Sources */,
 				F0DB41992794961C00EA437D /* ViewPassphraseListActionViewModel.swift in Sources */,
@@ -18846,6 +18852,7 @@
 				2BD5A6BB26334BB80048FA5E /* AlgoPriceTimeFrameSelection.swift in Sources */,
 				2B0F62E124EC129D00DA22A6 /* String+Attributes.swift in Sources */,
 				95AF1C5D27AD4E41001AB131 /* PreviewLoadingCell.swift in Sources */,
+				F0E8CCA728814D3900398803 /* BaseAssetDetailViewController.swift in Sources */,
 				2B0F62E224EC129D00DA22A6 /* ContactDetailViewController.swift in Sources */,
 				2B7E3032267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				D43A0C422790D768007430B9 /* NoContentWithActionViewTheme.swift in Sources */,
@@ -20435,6 +20442,7 @@
 				2B7E3031267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				2BCBAAAC27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */,
 				D46C647126E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */,
+				F0E8CCA628814D3900398803 /* BaseAssetDetailViewController.swift in Sources */,
 				D407B457278D64A200E5F26C /* InputSuggestionViewTheme.swift in Sources */,
 				D46E5E2826EA973000EFEF66 /* TutorialNumberView.swift in Sources */,
 				F0DB41972794961C00EA437D /* ViewPassphraseListActionViewModel.swift in Sources */,

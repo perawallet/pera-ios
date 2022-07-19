@@ -19,8 +19,6 @@ import Foundation
 import UIKit
 
 protocol AccountAssetListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
-
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }
 
     func load()
@@ -50,5 +48,21 @@ enum AccountAssetsItem: Hashable {
 }
 
 enum AccountAssetListDataControllerEvent {
-    case didUpdate(AccountAssetListDataController.Snapshot)
+    case didUpdate(AccountAssetListUpdates)
+}
+
+struct AccountAssetListUpdates {
+    var isNewSearch = false
+    var completion: Completion?
+
+    let snapshot: Snapshot
+
+    init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+    }
+}
+
+extension AccountAssetListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
+    typealias Completion = () -> Void
 }
