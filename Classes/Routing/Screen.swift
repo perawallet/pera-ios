@@ -149,6 +149,7 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case verificationInfo
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler

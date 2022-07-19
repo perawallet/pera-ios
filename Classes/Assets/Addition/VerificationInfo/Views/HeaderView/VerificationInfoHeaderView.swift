@@ -20,17 +20,35 @@ import MacaroonUIKit
 
 final class VerificationInfoHeaderView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .closeScreen: UIControlInteraction()
+    ]
+    
     private lazy var closeButton = MacaroonUIKit.Button()
     private lazy var backgroundView = ImageView()
     private lazy var logoView = ImageView()
 
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+
+        linkInteractors()
+    }
+    
     func customize(_ theme: VerificationInfoHeaderViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addCloseButton(theme)
         addBackgroundView(theme)
         addLogoView(theme)
+        addCloseButton(theme)
+    }
+
+    func linkInteractors() {
+        startPublishing(event: .closeScreen, for: closeButton)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -74,5 +92,11 @@ extension VerificationInfoHeaderView {
             $0.bottom.top.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
+    }
+}
+
+extension VerificationInfoHeaderView {
+    enum Event {
+        case closeScreen
     }
 }

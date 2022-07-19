@@ -91,7 +91,8 @@ extension VerificationInfoView {
         addSubview(thirdDescriptionLabel)
         thirdDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(secondDescriptionLabel.snp.bottom).offset(theme.descriptionTopPadding)
-            $0.leading.trailing.bottom.equalToSuperview().inset(theme.horizontalPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview()
         }
     }
 }
