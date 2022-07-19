@@ -24,7 +24,7 @@ protocol PortfolioViewModel: ViewModel {
 extension PortfolioViewModel {
     func format(
         portfolioValue: PortfolioValue?,
-        currencyValue: CurrencyValue?,
+        currencyValue: RemoteCurrencyValue?,
         in context: CurrencyFormattingContext
     ) -> String? {
         guard

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgoCurrency.swift
+//   AlgoRemoteCurrency.swift
 
 import Foundation
 
-final class AlgoCurrency: Currency {
+final class AlgoRemoteCurrency: RemoteCurrency {
     var isFault: Bool {
         return usdValue == nil
     }
@@ -28,20 +28,16 @@ final class AlgoCurrency: Currency {
     let usdValue: Decimal?
     let lastUpdateDate: Date
 
-    /// <todo>
-    /// We should get rid of this property later. We shouldn't depend on it anywhere.
-    let baseCurrency: FiatCurrency
-
     init(
         baseCurrency: FiatCurrency
     ) {
-        self.id = CurrencyID.algo(pairID: baseCurrency.id)
-        self.name = "title-algorand".localized
-        self.symbol = "\u{00A6}"
+        let local = AlgoLocalCurrency(pairID: baseCurrency.id)
+
+        self.id = local.id
+        self.name = local.name
+        self.symbol = local.symbol
         self.algoValue = 1
         self.usdValue = baseCurrency.usdToAlgoValue
         self.lastUpdateDate = baseCurrency.lastUpdateDate
-        self.baseCurrency = baseCurrency
-
     }
 }

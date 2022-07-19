@@ -20,12 +20,16 @@ import UIKit
 final class AccountListDataSource: NSObject {
     private(set) var accounts = [AccountHandle]()
     private let mode: AccountListViewController.Mode
+    private let currencyFormatter: CurrencyFormatter
     
     init(
         sharedDataController: SharedDataController,
-        mode: AccountListViewController.Mode
+        mode: AccountListViewController.Mode,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.mode = mode
+        self.currencyFormatter = currencyFormatter
+
         super.init()
         
         let userAccounts = sharedDataController.sortedAccounts()
@@ -82,7 +86,12 @@ extension AccountListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(AccountCheckmarkSelectionViewCell.self, at: indexPath)
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bindData(AccountCellViewModel(account: account.value, mode: mode))
+            let viewModel = AccountCellViewModel(
+                account: account.value,
+                mode: mode,
+                currencyFormatter: currencyFormatter
+            )
+            cell.bindData(viewModel)
         }
         return cell
     }
@@ -91,7 +100,12 @@ extension AccountListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(AccountSelectionViewCell.self, at: indexPath)
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bindData(AccountCellViewModel(account: account.value, mode: mode))
+            let viewModel = AccountCellViewModel(
+                account: account.value,
+                mode: mode,
+                currencyFormatter: currencyFormatter
+            )
+            cell.bindData(viewModel)
         }
         return cell
     }

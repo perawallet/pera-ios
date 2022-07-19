@@ -30,107 +30,130 @@ final class SendTransactionPreviewViewModel: ViewModel {
 
     init(
         _ model: TransactionSendDraft,
-        currency: Currency?) {
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         if let algoTransactionSendDraft = model as? AlgosTransactionSendDraft {
-            bindAlgoTransactionPreview(algoTransactionSendDraft, with: currency)
+            bindAlgoTransactionPreview(
+                algoTransactionSendDraft,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
         } else if let assetTransactionSendDraft = model as? AssetTransactionSendDraft {
-            bindAssetTransactionPreview(assetTransactionSendDraft, with: currency)
+            bindAssetTransactionPreview(
+                assetTransactionSendDraft,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
         }
     }
 
-    private func bindAlgoTransactionPreview(_ draft: AlgosTransactionSendDraft, with currency: Currency?) {
-        guard let amount = draft.amount else {
+    private func bindAlgoTransactionPreview(
+        _ draft: AlgosTransactionSendDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard
+            let amount = draft.amount,
+            let currencyValue = currency.fiatValue
+        else {
+            amountViewMode = nil
+            balanceViewMode = nil
             return
         }
-        
-        if let algoCurrency = currency as? AlgoCurrency {
-            bindAlgoTransactionPreview(draft, with: algoCurrency.baseCurrency)
-            return
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amountInCurrency = try exchanger.exchangeAlgo(amount: amount)
+            let totalAmount = draft.from.amount.toAlgos
+            let totalAmountInCurrency = try exchanger.exchangeAlgo(amount: totalAmount)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let amountTextInCurrency = currencyFormatter.format(amountInCurrency)
+            amountViewMode = .normal(
+                amount: amount,
+                isAlgos: true,
+                fraction: algosFraction,
+                currency: amountTextInCurrency
+            )
+
+            let totalAmountTextInCurrency = currencyFormatter.format(totalAmountInCurrency)
+            balanceViewMode = .normal(
+                amount: totalAmount,
+                isAlgos: true,
+                fraction: algosFraction,
+                currency: totalAmountTextInCurrency
+            )
+        } catch {
+            amountViewMode = nil
+            balanceViewMode = nil
         }
-
-        let currencyString: String?
-
-        if let currency = currency,
-              let currencyPriceValue = currency.algoValue {
-            let currencyValue = amount * currencyPriceValue
-            currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-        } else {
-            currencyString = nil
-        }
-
-        amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction, currency: currencyString)
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
-
-        let balance = draft.from.amount.toAlgos
-        let balanceCurrencyString: String?
-
-        if let currency = currency,
-              let currencyPriceValue = currency.algoValue {
-            let balanceCurrencyValue = balance * currencyPriceValue
-            balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
-        } else {
-            balanceCurrencyString = nil
-        }
-
-        balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction, currency: balanceCurrencyString)
-
         setNote(for: draft)
     }
 
-    private func bindAssetTransactionPreview(_ draft: AssetTransactionSendDraft, with currency: Currency?) {
-        guard let amount = draft.amount,
-              let asset = draft.asset else {
+    private func bindAssetTransactionPreview(
+        _ draft: AssetTransactionSendDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard
+            let amount = draft.amount,
+            let asset = draft.asset,
+            let currencyValue = currency.primaryValue
+        else {
+            amountViewMode = nil
+            balanceViewMode = nil
             return
         }
 
-        let currencyString: String?
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+            let assetFraction = asset.decimals
+            let assetSymbol = asset.presentation.name
 
-        if let asset = asset as? StandardAsset,
-           let assetUSDValue = asset.usdValue,
-           let currency = currency,
-           let currencyUSDValue = currency.usdValue {
-            let currencyValue = assetUSDValue * amount * currencyUSDValue
-            currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-        } else {
-            currencyString = nil
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amountInCurrency = try exchanger.exchange(
+                asset,
+                amount: amount
+            )
+            let totalAmountInCurrency = try exchanger.exchange(asset)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let amountTextInCurrency = currencyFormatter.format(amountInCurrency)
+            amountViewMode = .normal(
+                amount: amount,
+                isAlgos: false,
+                fraction: assetFraction,
+                assetSymbol: assetSymbol,
+                currency: amountTextInCurrency
+            )
+
+            let totalAmountTextInCurrency = currencyFormatter.format(totalAmountInCurrency)
+            balanceViewMode = .normal(
+                amount: asset.decimalAmount,
+                isAlgos: false,
+                fraction: assetFraction,
+                assetSymbol: assetSymbol,
+                currency: totalAmountTextInCurrency
+            )
+        } catch {
+            amountViewMode = nil
+            balanceViewMode = nil
         }
-        
-        amountViewMode = .normal(
-            amount: amount,
-            isAlgos: false,
-            fraction: algosFraction,
-            assetSymbol: asset.presentation.name,
-            currency: currencyString
-        )
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
-
-        let balance = asset.amountWithFraction
-        let balanceCurrencyString: String?
-
-        if let asset = asset as? StandardAsset,
-           let assetUSDValue = asset.usdValue,
-           let currency = currency,
-           let currencyUSDValue = currency.usdValue {
-            let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
-            balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
-        } else {
-            balanceCurrencyString = nil
-        }
-
-        balanceViewMode = .normal(
-            amount: balance,
-            isAlgos: false,
-            fraction: algosFraction,
-            assetSymbol: asset.presentation.name,
-            currency: balanceCurrencyString
-        )
-
         setNote(for: draft)
     }
 

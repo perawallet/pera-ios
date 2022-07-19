@@ -30,7 +30,9 @@ final class AlgoStatisticsDataController {
 
     private(set) var selectedAlgoPriceTimeFrame: AlgoPriceTimeFrameSelection = .idle
 
-    private var currencyValue: CurrencyValue?
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private var currencyValue: RemoteCurrencyValue?
 
     @Atomic(identifier: "algoStatisticsDataController.algoPriceValues")
     private var algoPriceValues: [AlgoPriceTimeFrameSelection: Result<[AlgoUSDPrice], Error>]
@@ -126,8 +128,15 @@ extension AlgoStatisticsDataController {
             switch calculationResult {
             case .success(let price):
                 var viewModel = AlgoPriceViewModel()
-                viewModel.bind(price)
-                viewModel.bind(selectedPriceValue.timestamp)
+                viewModel.bind(
+                    algoPrice: price,
+                    currencyFormatter: currencyFormatter
+                )
+
+                if let timestamp = selectedPriceValue.timestamp {
+                    viewModel.bind(algoPriceTimestamp: timestamp)
+                }
+
                 publish(.didSelectAlgoPrice(.success(viewModel)))
             case .failure(let error):
                 publish(.didSelectAlgoPrice(.failure(.calculation(error))))
@@ -150,7 +159,7 @@ extension AlgoStatisticsDataController {
     }
 
     private func performUpdatesWithLatestCurrency() {
-        let latestCurrencyValue = sharedDataController.currency.primaryFiatValue
+        let latestCurrencyValue = sharedDataController.currency.fiatValue
 
         /// <note>
         /// Checks if a completely new currency is selected, i.e. USD -> EUR
@@ -453,22 +462,29 @@ extension AlgoStatisticsDataController {
         var viewModel = AlgoPriceViewModel()
         
         switch calculator.calculateRecentPrice() {
-        case .success(let price): viewModel.bind(price)
-        case .failure(let error): return .failure(.calculation(error))
+        case .success(let price):
+            viewModel.bind(
+                algoPrice: price,
+                currencyFormatter: currencyFormatter
+            )
+        case .failure(let error):
+            return .failure(
+                .calculation(error)
+            )
         }
         
         switch calculator.calculatePriceChangeRate() {
         case .success(let priceChangeRate):
-            viewModel.bind(priceChangeRate)
+            viewModel.bind(algoPriceChangeRate: priceChangeRate)
             
             let chartDataSet = AlgoPriceChartDataSet(
                 values: algoPriceValues,
                 changeRate: priceChangeRate,
                 currency: currencyValue
             )
-            viewModel.bind(chartDataSet)
+            viewModel.bind(algoPriceChartDataSet: chartDataSet)
         case .failure:
-            viewModel.bind(0)
+            viewModel.bind(algoPriceTimestamp: 0)
         }
 
         return .success(viewModel)

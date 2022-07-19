@@ -94,24 +94,12 @@ extension TransactionCurrencyAmountViewModel {
         currencySymbol: String? = nil
     ) {
         if isAlgos {
-            do {
-                guard let algoCurrencyValue = currency.algoValue else {
-                    amountLabelText = nil
-                    currencyLabelText = nil
-                    return
-                }
+            currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
 
-                let algoRawCurrency = try algoCurrencyValue.unwrap()
+            let text = currencyFormatter.format(amount)
 
-                currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
-                currencyFormatter.currency = algoRawCurrency
-
-                let text = currencyFormatter.format(amount)
-                amountLabelText = .string(text)
-            } catch {
-                amountLabelText = nil
-            }
-
+            amountLabelText = .string(text)
             currencyLabelText = .string(currencySymbol)
 
             return

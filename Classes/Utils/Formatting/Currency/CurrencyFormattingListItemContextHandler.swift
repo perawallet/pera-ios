@@ -19,7 +19,7 @@ import Foundation
 struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandling {
     func makeRules(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules {
         if shouldRound(rawNumber) {
             return makeRoundingRules(for: rawNumber)
@@ -30,7 +30,7 @@ struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandli
 
     func makeInput(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput {
         if shouldRound(rawNumber) {
             return round(rawNumber)

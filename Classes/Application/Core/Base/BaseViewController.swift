@@ -132,6 +132,7 @@ class BaseViewController:
         /// Causes to navigation bar title flashing when cancelling back swipe
         setNeedsTabBarAppearanceUpdateOnAppearing(animated: true)
 
+        isViewDisappearing = false
         isViewDisappeared = false
         isViewAppearing = true
     }

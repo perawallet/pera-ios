@@ -29,8 +29,8 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
     
-    private var currencies = [Currency]()
-    private var searchResults = [Currency]()
+    private var currencies = [RemoteCurrency]()
+    private var searchResults = [RemoteCurrency]()
 
     private var lastSnapshot: Snapshot?
 
@@ -55,7 +55,7 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
         stopObservingSelectedCurrencyEvents()
     }
     
-    subscript (indexPath: IndexPath) -> Currency? {
+    subscript (indexPath: IndexPath) -> RemoteCurrency? {
         return searchResults[safe: indexPath.item]
     }
 }
@@ -70,12 +70,12 @@ extension CurrencySelectionListAPIDataController {
         api.getCurrencies { response in
             switch response {
             case let .success(currencyList):
-                var currencies: [Currency] = []
+                var currencies: [RemoteCurrency] = []
 
                 let fiatCurrencies = currencyList.items
 
                 if let usdCurrency = fiatCurrencies.first(where: \.isUSD) {
-                    let algoCurrency = AlgoCurrency(baseCurrency: usdCurrency)
+                    let algoCurrency = AlgoRemoteCurrency(baseCurrency: usdCurrency)
                     currencies.append(algoCurrency)
                 }
 
@@ -118,12 +118,12 @@ extension CurrencySelectionListAPIDataController {
         }
     }
 
-    private func isCurrencyContainsID(_ currency: Currency, query: String) -> Bool {
+    private func isCurrencyContainsID(_ currency: RemoteCurrency, query: String) -> Bool {
         let currencyLocalValue = currency.id.localValue
         return currencyLocalValue.localizedCaseInsensitiveContains(query)
     }
 
-    private func isCurrencyContainsName(_ currency: Currency, query: String) -> Bool {
+    private func isCurrencyContainsName(_ currency: RemoteCurrency, query: String) -> Bool {
         return currency.name.someString.localizedCaseInsensitiveContains(query)
     }
 
@@ -138,7 +138,7 @@ extension CurrencySelectionListAPIDataController {
 extension CurrencySelectionListAPIDataController {
     func selectCurrency(
         at indexPath: IndexPath
-    ) -> Currency? {
+    ) -> RemoteCurrency? {
         guard let currency = self[indexPath] else {
             return nil
         }
@@ -162,7 +162,7 @@ extension CurrencySelectionListAPIDataController {
     }
 
     private func setSelectedCurrency(
-        _ rawCurrency: Currency
+        _ rawCurrency: RemoteCurrency
     ) {
         selectedCurrencyID = rawCurrency.id
     }

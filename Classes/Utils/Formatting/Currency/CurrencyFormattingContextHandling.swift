@@ -19,12 +19,12 @@ import Foundation
 protocol CurrencyFormattingContextHandling {
     func makeRules(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules
 
     func makeInput(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput
 }
 

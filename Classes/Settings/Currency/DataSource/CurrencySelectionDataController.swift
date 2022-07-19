@@ -25,7 +25,7 @@ protocol CurrencySelectionDataController: AnyObject {
 
     var selectedCurrencyID: CurrencyID? { get }
 
-    subscript (indexPath: IndexPath) -> Currency? { get }
+    subscript (indexPath: IndexPath) -> RemoteCurrency? { get }
     
     func loadData()
 
@@ -36,7 +36,7 @@ protocol CurrencySelectionDataController: AnyObject {
 
     func selectCurrency(
         at indexPath: IndexPath
-    ) -> Currency?
+    ) -> RemoteCurrency?
 }
 
 enum CurrencySelectionDataControllerEvent {

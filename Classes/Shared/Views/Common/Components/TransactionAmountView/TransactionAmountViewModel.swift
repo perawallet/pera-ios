@@ -105,22 +105,11 @@ extension TransactionAmountViewModel {
         assetSymbol: String? = nil
     ) {
         if isAlgos {
-            do {
-                guard let algoCurrencyValue = currency.algoValue else {
-                    amountLabelText = nil
-                    return
-                }
+            currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
 
-                let algoRawCurrency = try algoCurrencyValue.unwrap()
-
-                currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
-                currencyFormatter.currency = algoRawCurrency
-
-                let text = currencyFormatter.format(amount)
-                amountLabelText = .string(text)
-            } catch {
-                amountLabelText = nil
-            }
+            let text = currencyFormatter.format(amount)
+            amountLabelText = .string(text)
 
             return
         }
@@ -128,6 +117,9 @@ extension TransactionAmountViewModel {
         if showAbbreviation {
             currencyFormatter.formattingContext = .listItem
         } else {
+            /// <todo>
+            /// Not sure we need this constraint, because the final number should be sent to the
+            /// formatter unless the number itself is modified.
             var constraintRules = CurrencyFormattingContextRules()
             constraintRules.maximumFractionDigits = assetFraction
 

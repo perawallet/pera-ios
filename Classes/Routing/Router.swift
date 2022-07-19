@@ -183,11 +183,11 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft):
+        case .algosDetail(let draft, let preferences):
             launch(tab: .home)
 
             route(
-                to: .algosDetail(draft: draft),
+                to: .algosDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -205,11 +205,11 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft):
+        case .assetDetail(let draft, let preferences):
             launch(tab: .home)
             
             route(
-                to: .assetDetail(draft: draft),
+                to: .assetDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -548,17 +548,19 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetDetail(draft):
+        case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-        case let .algosDetail(draft):
+        case let .algosDetail(draft, preferences):
             viewController = AlgosDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: nil,
                 configuration: configuration
             )
@@ -841,16 +843,19 @@ class Router:
         case .transactionFloatingActionButton:
             viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
+            let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
                 sharedDataController: configuration.sharedDataController,
                 transactions: transactions,
                 transactionRequest: transactionRequest,
                 transactionOption: transactionOption,
-                walletConnector: configuration.walletConnector
+                walletConnector: configuration.walletConnector,
+                currencyFormatter: currencyFormatter
             )
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
-                configuration: configuration
+                configuration: configuration,
+                currencyFormatter: currencyFormatter
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
@@ -1386,9 +1391,17 @@ extension Router {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            let currencyFormatter = CurrencyFormatter()
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             appConfiguration.bannerController.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             appConfiguration.bannerController.presentErrorBanner(

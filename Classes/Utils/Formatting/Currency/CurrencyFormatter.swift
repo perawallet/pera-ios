@@ -21,7 +21,7 @@ final class CurrencyFormatter {
     static let shared: CurrencyFormatter = .init()
 
     var formattingContext: CurrencyFormattingContext = .listItem
-    var currency: Currency?
+    var currency: LocalCurrency?
 
     private let numberFormatter: NumberFormatter
 
@@ -33,6 +33,12 @@ final class CurrencyFormatter {
 }
 
 extension CurrencyFormatter {
+    func format(
+        _ double: Double
+    ) -> String? {
+        return format(Decimal(double))
+    }
+
     func format(
         _ decimal: Decimal
     ) -> String? {
@@ -77,9 +83,13 @@ extension CurrencyFormatter {
     private func applyContextRules(
         _ rules: CurrencyFormattingContextRules
     ) {
+        let minimumFractionDigits = rules.minimumFractionDigits ?? 0
+        let preferredMaximumFractionDigits = rules.maximumFractionDigits ?? 0
+        let maximumFractionDigits = max(minimumFractionDigits, preferredMaximumFractionDigits)
+
         numberFormatter.roundingMode = rules.roundingMode ?? .halfEven
-        numberFormatter.minimumFractionDigits = rules.minimumFractionDigits ?? 0
-        numberFormatter.maximumFractionDigits = rules.maximumFractionDigits ?? 0
+        numberFormatter.minimumFractionDigits = minimumFractionDigits
+        numberFormatter.maximumFractionDigits = maximumFractionDigits
     }
 
     private func applyContextInputRules(

@@ -60,6 +60,8 @@ final class ReceiveCollectibleAssetListViewController:
 
     private lazy var accountMenuInteraction = UIContextMenuInteraction(delegate: self)
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let copyToClipboardController: CopyToClipboardController
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -522,9 +524,16 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
     ) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(

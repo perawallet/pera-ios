@@ -28,7 +28,6 @@ struct RewardInfoViewModel:
 
     init(
         account: Account,
-        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         self.account = account
@@ -36,7 +35,6 @@ struct RewardInfoViewModel:
         bindTitle()
         bindValue(
             account: account,
-            currency: currency,
             currencyFormatter: currencyFormatter
         )
     }
@@ -51,26 +49,15 @@ extension RewardInfoViewModel {
 
     mutating func bindValue(
         account: Account,
-        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        do {
-            guard let algoCurrencyValue = currency.algoValue else {
-                value = nil
-                return
-            }
+        let totalRewards = calculateTotalRewards(account: account)
 
-            let algoRawCurrency = try algoCurrencyValue.unwrap()
-            let totalRewards = calculateTotalRewards(account: account)
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
 
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = algoRawCurrency
-
-            let text = currencyFormatter.format(totalRewards)
-            value = text?.footnoteMonoRegular(hasMultilines: false)
-        } catch {
-            value = nil
-        }
+        let text = currencyFormatter.format(totalRewards)
+        value = text?.footnoteMonoRegular(hasMultilines: false)
     }
 }
 

@@ -17,10 +17,10 @@
 import Foundation
 
 struct CurrencyExchanger {
-    let currency: Currency
+    let currency: RemoteCurrency
 
     init(
-        currency: Currency
+        currency: RemoteCurrency
     ) {
         self.currency = currency
     }
@@ -42,19 +42,29 @@ extension CurrencyExchanger {
         return totalValueOfAlgos + totalValueOfAssets
     }
 
+    /// <note>
+    /// Returns total value if amount is nil.
     func exchange(
-        _ asset: Asset
+        _ asset: Asset,
+        amount: Decimal? = nil
     ) throws -> Decimal {
         guard let usdValue = currency.usdValue else {
             throw CurrencyExchangeError.currencyFailed()
         }
 
-        let usdValueOfAsset = asset.totalUSDValue ?? 0
-        return usdValueOfAsset * usdValue
+        let totalUSDValue: Decimal
+        if let amount = amount {
+            let usdValueOfAsset = asset.usdValue ?? 0
+            totalUSDValue = usdValueOfAsset * amount
+        } else {
+            totalUSDValue = asset.totalUSDValue ?? 0
+        }
+
+        return totalUSDValue * usdValue
     }
 
-    func exchange(
-        algo amount: Decimal
+    func exchangeAlgo(
+        amount: Decimal
     ) throws -> Decimal {
         guard let algoValue = currency.algoValue else {
             throw CurrencyExchangeError.currencyFailed()

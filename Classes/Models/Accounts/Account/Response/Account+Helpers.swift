@@ -27,39 +27,6 @@ extension Account {
 }
 
 extension Account {
-    func amount(for assetDetail: AssetDetail) -> Decimal? {
-        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
-            return nil
-        }
-        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-    }
-
-    func amount(for assetDecoration: AssetDecoration) -> Decimal? {
-        guard let asset = assets?.first(where: { $0.id == assetDecoration.id }) else {
-            return nil
-        }
-        return asset.amount.assetAmount(fromFraction: assetDecoration.decimals)
-    }
-
-    func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
-        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
-            return nil
-        }
-        return UInt64(asset.amount)
-    }
-    
-    func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
-        return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
-    }
-
-    func amountDisplayWithFraction(for assetDecoration: AssetDecoration) -> String? {
-        return amount(for: assetDecoration)?.toExactFractionLabel(fraction: assetDecoration.decimals)
-    }
-
-    func amountNumberWithAutoFraction(for assetDetail: AssetDecoration) -> String? {
-        return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
-    }
-
     func isSameAccount(with address: String) -> Bool {
         return self.address == address
     }
