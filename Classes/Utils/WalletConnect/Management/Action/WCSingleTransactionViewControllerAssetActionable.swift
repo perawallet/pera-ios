@@ -74,7 +74,7 @@ private struct AssetDetailPresenter: Encodable {
         unitName = decoration.unitName
         assetName = decoration.name
         fractionDecimals = decoration.decimals
-        isVerified = decoration.isVerified
+        isVerified = decoration.verificationTier.isVerified
     }
 }
 

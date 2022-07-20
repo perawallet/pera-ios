@@ -30,7 +30,7 @@ final class CollectibleAsset: Asset {
     let usdValue: Decimal?
     let totalUSDValue: Decimal?
     let total: Int64?
-    let isVerified: Bool
+    let verificationTier: AssetVerificationTier
     let thumbnailImage: URL?
     let media: [Media]
     let standard: CollectibleStandard?
@@ -50,8 +50,8 @@ final class CollectibleAsset: Asset {
             decimals: decimals,
             name: name,
             unitName: unitName,
-            isVerified: isVerified,
-            url: url
+            url: url,
+            verificationTier: verificationTier
         )
     }
 
@@ -89,7 +89,7 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
-        self.isVerified = decoration.isVerified
+        self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
         self.standard = decoration.collectible?.standard ?? .unknown("")
@@ -133,7 +133,7 @@ extension CollectibleAsset: Comparable {
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
             lhs.total == rhs.total &&
-            lhs.isVerified == rhs.isVerified &&
+            lhs.verificationTier == rhs.verificationTier &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
             lhs.collectionName == rhs.collectionName &&

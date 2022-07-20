@@ -29,7 +29,7 @@ enum AssetPreviewModelAdapter {
             : asset.presentation.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            verifiedIcon: asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil,
             title: title,
             subtitle: asset.presentation.unitName,
             primaryAccessory: assetViewModel.amount,
@@ -65,7 +65,7 @@ enum AssetPreviewModelAdapter {
             : asset.presentation.name
         return AssetPreviewModel(
             icon: .url(nil, title: asset.presentation.name),
-            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            verifiedIcon: asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil,
             title: title,
             subtitle: "ID \(asset.id)",
             primaryAccessory: assetViewModel.amount,
@@ -90,7 +90,7 @@ enum AssetPreviewModelAdapter {
         }
 
         return PendingAssetPreviewModel(
-            secondaryImage: asset.isVerified ? img("icon-verified-shield") : nil,
+            secondaryImage: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
             assetPrimaryTitle: asset.name,
             assetSecondaryTitle: "ID \(asset.id)",
             assetStatus: status
@@ -99,7 +99,7 @@ enum AssetPreviewModelAdapter {
 
     static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
         return PendingAssetPreviewModel(
-            secondaryImage: asset.presentation.isVerified
+            secondaryImage: asset.presentation.verificationTier.isVerified
                 ? img("icon-verified-shield")
                 : nil,
             assetPrimaryTitle: asset.presentation.name,

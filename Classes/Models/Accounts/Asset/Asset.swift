@@ -65,8 +65,8 @@ struct AssetPresentation {
     let decimals: Int
     let name: String?
     let unitName: String?
-    let isVerified: Bool
     let url: String?
+    let verificationTier: AssetVerificationTier
 
     var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name,

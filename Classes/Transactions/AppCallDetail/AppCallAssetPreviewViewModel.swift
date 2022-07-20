@@ -49,7 +49,7 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindAccessoryIcon(
         _ asset: StandardAsset
     ) {
-        if asset.presentation.isVerified {
+        if asset.presentation.verificationTier.isVerified {
             accessoryIcon = "icon-verified-shield"
             return
         }

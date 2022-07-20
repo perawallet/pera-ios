@@ -28,4 +28,8 @@ enum AssetVerificationTier:
     init() {
         self = .unverified // default case
     }
+
+    var isVerified: Bool {
+        return self == .verified
+    }
 }

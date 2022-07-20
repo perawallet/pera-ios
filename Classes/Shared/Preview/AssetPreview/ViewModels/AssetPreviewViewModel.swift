@@ -207,7 +207,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -269,7 +269,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -367,7 +367,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        let icon = draft.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = draft.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }

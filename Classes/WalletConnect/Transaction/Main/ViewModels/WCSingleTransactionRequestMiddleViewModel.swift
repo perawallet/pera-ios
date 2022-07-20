@@ -104,7 +104,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 self.title = "\(text) \(assetCode)"
             }
 
-            self.isAssetIconHidden = !asset.presentation.isVerified
+            self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
 
             self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
@@ -114,7 +114,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             }
             self.title = asset.presentation.displayNames.primaryName
             self.subtitle = "\(asset.id)"
-            self.isAssetIconHidden = !asset.presentation.isVerified
+            self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
             return
         case .appCall:
             let appCallOncomplete = transaction.transactionDetail?.appCallOnComplete ?? .noOp
@@ -153,13 +153,13 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 if let asset = asset {
                     self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.isVerified
+                    self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
                 }
             case .delete:
                 if let asset = asset {
                     self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.isVerified
+                    self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
                 }
             }
         }

@@ -28,7 +28,7 @@ final class StandardAsset: Asset {
     let unitName: String?
     let usdValue: Decimal?
     let totalUSDValue: Decimal?
-    let isVerified: Bool
+    let verificationTier: AssetVerificationTier
     let creator: AssetCreator?
     let url: String?
 
@@ -40,8 +40,8 @@ final class StandardAsset: Asset {
             decimals: decimals,
             name: name,
             unitName: unitName,
-            isVerified: isVerified,
-            url: url
+            url: url,
+            verificationTier: verificationTier
         )
     }
 
@@ -59,7 +59,7 @@ final class StandardAsset: Asset {
         self.optedInAtRound = asset.optedInAtRound
         self.name = decoration.name
         self.unitName = decoration.unitName
-        self.isVerified = decoration.isVerified
+        self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
 
@@ -112,7 +112,7 @@ extension StandardAsset: Comparable {
             lhs.unitName == rhs.unitName &&
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
-            lhs.isVerified == rhs.isVerified &&
+            lhs.verificationTier == rhs.verificationTier &&
             lhs.optedInAtRound == rhs.optedInAtRound
     }
 

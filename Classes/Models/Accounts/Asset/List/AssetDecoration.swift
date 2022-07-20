@@ -26,7 +26,6 @@ final class AssetDecoration: ALGEntityModel {
     let decimals: Int
     let usdValue: Decimal?
     let total: Int64?
-    let isVerified: Bool
     let creator: AssetCreator?
     let collectible: Collectible?
     let explorerURL: URL?
@@ -49,7 +48,6 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.total = apiModel.total.unwrap { Int64($0) }
-        self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
@@ -65,7 +63,6 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = assetDetail.fractionDecimals
         self.usdValue = nil
         self.total = nil
-        self.isVerified = assetDetail.isVerified
         self.creator = AssetCreator(address: assetDetail.creator)
         self.explorerURL = nil
         self.collectible = nil
@@ -82,7 +79,6 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.total = total.unwrap { String(describing: $0) }
-        apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
         apiModel.explorerURL = explorerURL
         apiModel.collectible = collectible?.encode()
@@ -99,7 +95,6 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = asset.presentation.decimals
         self.usdValue = nil
         self.total = nil
-        self.isVerified = asset.presentation.isVerified
         self.creator = asset.creator
         self.explorerURL = nil
         self.collectible = nil
@@ -116,7 +111,6 @@ extension AssetDecoration {
         var unitName: String?
         var fractionDecimals: Int?
         var usdValue: String?
-        var isVerified: Bool?
         var creator: AssetCreator.APIModel?
         var explorerURL: URL?
         var collectible: Collectible.APIModel?
@@ -131,7 +125,6 @@ extension AssetDecoration {
             self.unitName = nil
             self.fractionDecimals = nil
             self.usdValue = nil
-            self.isVerified = nil
             self.creator = nil
             self.explorerURL = nil
             self.collectible = nil
@@ -147,7 +140,6 @@ extension AssetDecoration {
             case unitName = "unit_name"
             case fractionDecimals = "fraction_decimals"
             case usdValue = "usd_value"
-            case isVerified = "is_verified"
             case creator
             case explorerURL = "explorer_url"
             case collectible
@@ -184,9 +176,9 @@ extension AssetDecoration: Comparable {
     static func == (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id == rhs.id &&
             lhs.decimals == rhs.decimals &&
-            lhs.isVerified == rhs.isVerified &&
             lhs.name == rhs.name &&
-            lhs.unitName == rhs.unitName
+            lhs.unitName == rhs.unitName &&
+            lhs.verificationTier == rhs.verificationTier
     }
 
     static func < (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {

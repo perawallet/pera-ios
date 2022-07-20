@@ -113,7 +113,7 @@ extension AssetDetailInfoViewModel {
     mutating func bindIsVerified(
         _ asset: StandardAsset?
     ) {
-        isVerified = asset?.isVerified ?? false
+        isVerified = asset?.verificationTier.isVerified ?? false
     }
 
     mutating func bindID(

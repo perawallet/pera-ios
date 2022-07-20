@@ -945,7 +945,7 @@ extension SendTransactionScreen {
             amount: draft.amount,
             assetIndex: asset.id,
             assetDecimalFraction: asset.presentation.decimals,
-            isVerifiedAsset: asset.presentation.isVerified,
+            isVerifiedAsset: asset.presentation.verificationTier.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
