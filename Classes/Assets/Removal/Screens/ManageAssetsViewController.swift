@@ -142,7 +142,6 @@ extension ManageAssetsViewController {
 extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text else {
-            dataController.resetSearch()
             return
         }
         
@@ -156,10 +155,6 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
-    }
-    
-    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
-        dataController.resetSearch()
     }
 }
 
@@ -272,8 +267,6 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         }
 
         removedAssetDetail.state = .pending(.remove)
-        
-        contextView.resetSearchInputView()
 
         dataController.removeAsset(removedAssetDetail)
 

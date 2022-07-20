@@ -47,8 +47,6 @@ final class ManageAssetsListLocalDataController:
     ) {
         self.account = account
         self.sharedDataController = sharedDataController
-        
-        fetchAssets()
     }
     
     deinit {
@@ -62,10 +60,6 @@ final class ManageAssetsListLocalDataController:
     subscript(assetID: AssetID) -> Asset? {
         return searchResults.first(matching: (\.id, assetID))
     }
-    
-    func hasSection() -> Bool {
-        return !searchResults.isEmpty
-    }
 }
 
 extension ManageAssetsListLocalDataController {
@@ -78,12 +72,12 @@ extension ManageAssetsListLocalDataController {
             }
         }
         searchResults = accountAssets
-        
-        guard let lastQuery = lastQuery else {
-            return
+
+        if let lastQuery = lastQuery {
+            search(for: lastQuery)
+        } else {
+            deliverContentSnapshot()
         }
-        
-        search(for: lastQuery)
     }
     
     func load() {
@@ -116,7 +110,6 @@ extension ManageAssetsListLocalDataController {
     func resetSearch() {
         lastQuery = nil
         fetchAssets()
-        deliverContentSnapshot()
     }
 
     private func clearRemovedAssetDetailsIfNeeded() {
@@ -185,7 +178,6 @@ extension ManageAssetsListLocalDataController {
                 account = updatedAccount.value
             }
             fetchAssets()
-            deliverContentSnapshot()
         default:
             break
         }
