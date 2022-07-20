@@ -52,7 +52,7 @@ final class CollectibleListViewController:
     init(
         dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
-        theme: CollectibleListViewControllerTheme,
+        theme: CollectibleListViewControllerTheme = .common,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController

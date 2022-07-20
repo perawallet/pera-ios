@@ -60,6 +60,8 @@ final class AccountAssetListViewController:
         screen: self
     )
 
+    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
+
     private var accountHandle: AccountHandle
 
     private let copyToClipboardController: CopyToClipboardController
@@ -146,6 +148,11 @@ extension AccountAssetListViewController {
     private func addUI() {
         addListBackground()
         addList()
+
+        if !accountHandle.value.isWatchAccount() {
+            addAccountActionsMenuAction()
+            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
+        }
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -219,6 +226,41 @@ extension AccountAssetListViewController {
 
         let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
         listView.setContentInset(bottom: bottom)
+    }
+}
+
+extension AccountAssetListViewController {
+    private func addAccountActionsMenuAction() {
+        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
+
+        view.addSubview(accountActionsMenuActionView)
+
+        accountActionsMenuActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
+
+            $0.fitToSize(theme.accountActionsMenuActionSize)
+            $0.trailing == theme.accountActionsMenuActionTrailingPadding
+            $0.bottom == bottom
+        }
+
+        accountActionsMenuActionView.addTouch(
+            target: self,
+            action: #selector(openAccountActionsMenu)
+        )
+    }
+
+    @objc
+    private func openAccountActionsMenu() {
+        eventHandler?(.transactionOption)
+    }
+
+    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
+        let listSafeAreaBottom =
+        theme.spacingBetweenListAndAccountActionsMenuAction +
+        theme.accountActionsMenuActionSize.h +
+        theme.accountActionsMenuActionBottomPadding
+        additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
@@ -658,5 +700,6 @@ extension AccountAssetListViewController {
         case send
         case address
         case more
+        case transactionOption
     }
 }
