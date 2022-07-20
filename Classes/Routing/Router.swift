@@ -49,11 +49,11 @@ class Router:
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
         
-        observeNotifications()
+        startObservingNotifications()
     }
     
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     func launchAuthorization() {
@@ -1178,7 +1178,7 @@ extension Router {
 }
 
 extension Router {
-    private func observeNotifications() {
+    private func startObservingNotifications() {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }

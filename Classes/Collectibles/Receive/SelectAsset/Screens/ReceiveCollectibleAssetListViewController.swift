@@ -87,7 +87,7 @@ final class ReceiveCollectibleAssetListViewController:
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
