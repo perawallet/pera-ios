@@ -24,7 +24,8 @@ final class ManageAssetsListLocalDataController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
-    private var account: Account
+    private(set) var account: Account
+
     private var lastSnapshot: Snapshot?
     
     private var searchResults: [Asset] = []
@@ -33,12 +34,16 @@ final class ManageAssetsListLocalDataController:
     
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
-    
+
     private var lastQuery: String? = nil
-    
+
+    private var assetItems: [AssetID: ManageAssetSearchItem] = [:]
+
+    weak var dataSource: ManageAssetsListDataSource?
+
     init(
-        _ account: Account,
-        _ sharedDataController: SharedDataController
+        account: Account,
+        sharedDataController: SharedDataController
     ) {
         self.account = account
         self.sharedDataController = sharedDataController
@@ -50,14 +55,12 @@ final class ManageAssetsListLocalDataController:
         sharedDataController.remove(self)
     }
     
-    subscript (index: Int) -> Asset? {
+    subscript(index: Int) -> Asset? {
         return searchResults[safe: index]
     }
     
-    subscript (assetId: AssetID) -> Asset? {
-        return searchResults.first { asset in
-            asset.id == assetId
-        }
+    subscript(assetID: AssetID) -> Asset? {
+        return searchResults.first(matching: (\.id, assetID))
     }
     
     func hasSection() -> Bool {
@@ -122,8 +125,47 @@ extension ManageAssetsListLocalDataController {
         }
     }
 
-    func removeAsset(_ asset: Asset) {
+    func removeAsset(
+        _ asset: Asset
+    ) {
+        let isAlreadyPending = removedAssetDetails.contains {
+            $0.id == asset.id
+        }
+
+        guard !isAlreadyPending else {
+            return
+        }
+
         removedAssetDetails.append(asset)
+
+        guard let dataSource = dataSource,
+              let assetItemToDelete = assetItems[asset.id] else {
+            return
+        }
+
+        let viewModel = PendingAssetPreviewViewModel(
+            AssetPreviewModelAdapter.adaptRemovingAsset(asset)
+        )
+
+        let pendingItem: ManageAssetSearchItem =
+            .pendingAsset(
+                viewModel
+            )
+
+        var snapshot = dataSource.snapshot()
+
+        snapshot.deleteItems([ assetItemToDelete ])
+
+        snapshot.appendItems(
+            [ pendingItem ],
+            toSection: .assets
+        )
+
+        assetItems.removeValue(forKey: asset.id)
+
+        deliverSnapshot {
+            return snapshot
+        }
     }
 }
 
@@ -161,7 +203,7 @@ extension ManageAssetsListLocalDataController {
             deliverEmptyContentSnapshot()
             return
         }
-        
+
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -209,14 +251,20 @@ extension ManageAssetsListLocalDataController {
                     )
                 )
                 assetItems.append(assetItem)
+
+                self.assetItems[asset.id] = assetItem
             }
 
-            self.removedAssetDetails.forEach {
-                let assetItem: ManageAssetSearchItem =
-                    .pendingAsset(PendingAssetPreviewViewModel(
-                        AssetPreviewModelAdapter.adaptRemovingAsset($0)
-                    ))
-                assetItems.append(assetItem)
+            self.removedAssetDetails.forEach { asset in
+                let viewModel = PendingAssetPreviewViewModel(
+                    AssetPreviewModelAdapter.adaptRemovingAsset(asset)
+                )
+
+                let pendingItem: ManageAssetSearchItem =
+                    .pendingAsset(
+                        viewModel
+                    )
+                assetItems.append(pendingItem)
             }
 
             snapshot.appendSections([.assets])
@@ -225,7 +273,6 @@ extension ManageAssetsListLocalDataController {
                 toSection: .assets
             )
 
-            snapshot.reloadItems(assetItems)
             return snapshot
         }
     }
