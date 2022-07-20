@@ -40,7 +40,8 @@ final class AccountCollectibleListViewController: BaseViewController {
     )
 
     private lazy var optInActionView = FloatingActionItemButton(hasTitleLabel: false)
-    
+    private var runningOptInActionViewVisibilityAnimator: UIViewPropertyAnimator?
+
     private var account: AccountHandle
 
     private let copyToClipboardController: CopyToClipboardController
@@ -149,7 +150,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
             mode: .address,
             title: account.name
         )
-        
+
         open(
             .qrGenerator(
                 title: account.name ?? account.address.shortAddressDisplay,
@@ -189,6 +190,8 @@ extension AccountCollectibleListViewController {
             $0.bottom == bottom
         }
 
+        optInActionView.alpha = 0
+
         optInActionView.addTouch(
             target: self,
             action: #selector(openReceiveCollectible)
@@ -201,6 +204,25 @@ extension AccountCollectibleListViewController {
         theme.optInActionSize.h +
         theme.optInActionBottomPadding
         additionalSafeAreaInsets.bottom = listSafeAreaBottom
+    }
+
+    private func setAccountActionsMenuActionViewVisible(
+        _ visible: Bool
+    ) {
+        if let animator =  runningOptInActionViewVisibilityAnimator,
+           animator.isRunning {
+            animator.isReversed.toggle()
+            return
+        }
+
+        runningOptInActionViewVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.2,
+            delay: 0.0
+        ) {
+            let alpha: CGFloat = visible ? 1 : 0
+
+            self.optInActionView.alpha = alpha
+        }
     }
 }
 

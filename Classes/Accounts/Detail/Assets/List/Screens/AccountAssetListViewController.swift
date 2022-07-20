@@ -39,7 +39,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -61,6 +61,7 @@ final class AccountAssetListViewController:
     )
 
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
+    private var runningAccountActionsMenuActionViewVisibilityAnimator: UIViewPropertyAnimator?
 
     private var accountHandle: AccountHandle
 
@@ -244,6 +245,8 @@ extension AccountAssetListViewController {
             $0.bottom == bottom
         }
 
+        accountActionsMenuActionView.alpha = 0
+
         accountActionsMenuActionView.addTouch(
             target: self,
             action: #selector(openAccountActionsMenu)
@@ -340,6 +343,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
+            setAccountActionsMenuActionViewVisible(false)
+
             item.observe(event: .buyAlgo) {
                 [weak self] in
                 guard let self = self else {
@@ -377,6 +382,41 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
         default:
             return
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .quickActions:
+            setAccountActionsMenuActionViewVisible(true)
+        default: break
+        }
+    }
+
+    private func setAccountActionsMenuActionViewVisible(
+        _ visible: Bool
+    ) {
+        if let animator =  runningAccountActionsMenuActionViewVisibilityAnimator,
+           animator.isRunning {
+            animator.isReversed.toggle()
+            return
+        }
+
+        runningAccountActionsMenuActionViewVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.2,
+            delay: 0.0
+        ) {
+            let alpha: CGFloat = visible ? 1 : 0
+
+            self.accountActionsMenuActionView.alpha = alpha
         }
     }
     
