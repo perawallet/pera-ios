@@ -1201,6 +1201,9 @@
 		2B516176243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */; };
 		2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */; };
+		2B54DC882887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
+		2B54DC892887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
+		2B54DC8A2887E5200023F6DD /* MailComposing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B54DC872887E5200023F6DD /* MailComposing.swift */; };
 		2B56714123F7E87A0037FCFA /* TransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714023F7E87A0037FCFA /* TransactionSendDraft.swift */; };
 		2B56714223F7E87A0037FCFA /* TransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714023F7E87A0037FCFA /* TransactionSendDraft.swift */; };
 		2B56714823FABB550037FCFA /* AssetSearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714723FABB550037FCFA /* AssetSearchFilter.swift */; };
@@ -5324,6 +5327,7 @@
 		2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Regular.ttf"; sourceTree = "<group>"; };
 		2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		2B516161243F739C006DEA54 /* PublicSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Bold.ttf"; sourceTree = "<group>"; };
+		2B54DC872887E5200023F6DD /* MailComposing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposing.swift; sourceTree = "<group>"; };
 		2B56714023F7E87A0037FCFA /* TransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B56714723FABB550037FCFA /* AssetSearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchFilter.swift; sourceTree = "<group>"; };
 		2B56714E23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetInformationView.swift; sourceTree = "<group>"; };
@@ -8311,6 +8315,14 @@
 				2B4FD20927C654A60097AB65 /* BuyAlgoTransactionDataController.swift */,
 			);
 			path = BuyAlgoTransaction;
+			sourceTree = "<group>";
+		};
+		2B54DC862887E5020023F6DD /* MailCompose */ = {
+			isa = PBXGroup;
+			children = (
+				2B54DC872887E5200023F6DD /* MailComposing.swift */,
+			);
+			path = MailCompose;
 			sourceTree = "<group>";
 		};
 		2B567151240019C20037FCFA /* Verified */ = {
@@ -12853,6 +12865,7 @@
 		2BF727DD2747181600CCAC30 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				2B54DC862887E5020023F6DD /* MailCompose */,
 				F09608652795E36B00CFBB90 /* List */,
 				2BA713A92748719F00B8A907 /* AccountName */,
 				2BD063E225CEC89C008BD15E /* BottomWarning */,
@@ -16786,6 +16799,7 @@
 				F0E7444327B465C50063DD83 /* AlgoPriceAttributeView.swift in Sources */,
 				2B14B03F286F6611005C1396 /* CurrencySelectionItemLoadingView.swift in Sources */,
 				D4F068A726EF212B00C26F43 /* TutorialStepViewModel.swift in Sources */,
+				2B54DC8A2887E5200023F6DD /* MailComposing.swift in Sources */,
 				2B80C54D2773241D00BB071E /* SearchBarItemView.swift in Sources */,
 				D4411D1C2837E03F00080911 /* SendTransactionOptionListActionViewModel.swift in Sources */,
 				2B9EEAD8264D33B1007A112D /* ALGAPI+Block.swift in Sources */,
@@ -18377,6 +18391,7 @@
 				F0E7444227B465C50063DD83 /* AlgoPriceAttributeView.swift in Sources */,
 				2B14B03E286F6611005C1396 /* CurrencySelectionItemLoadingView.swift in Sources */,
 				2B0F626A24EC129D00DA22A6 /* MainButton.swift in Sources */,
+				2B54DC892887E5200023F6DD /* MailComposing.swift in Sources */,
 				2B0F626B24EC129D00DA22A6 /* LedgerApprovalView.swift in Sources */,
 				2B03D6B025C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
 				2B02A2ED266CE07E002DD8AB /* WalletConnector.swift in Sources */,
@@ -19968,6 +19983,7 @@
 				173DA1E92255F7B500378A82 /* ALGAPI+Transaction.swift in Sources */,
 				2B9EEAD6264D33B1007A112D /* ALGAPI+Block.swift in Sources */,
 				D412C19627F1BD1C00E79308 /* SendCollectibleAccountPreviewCell.swift in Sources */,
+				2B54DC882887E5200023F6DD /* MailComposing.swift in Sources */,
 				2B5F6FA12768EC8600C9B780 /* SingleGrayTitleHeaderView.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2B6607E324113507002AC00F /* LedgerApprovalView.swift in Sources */,
