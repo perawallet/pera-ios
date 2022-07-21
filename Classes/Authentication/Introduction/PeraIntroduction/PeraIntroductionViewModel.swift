@@ -41,72 +41,43 @@ extension PeraIntroductionViewModel {
     }
 
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
         title = .attributedString(
             "pera-announcement-title"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .bodyRegular()
         )
     }
 
     private mutating func bindSubtitle() {
-        let font = Fonts.DMSans.medium.make(32).uiFont
-        let lineHeightMultiplier = 0.96
-
         subtitle = .attributedString(
             "pera-announcement-subtitle"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .title1Medium()
         )
     }
 
     private mutating func bindDescription() {
-        let font = Fonts.DMMono.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
+        let text = "pera-announcement-description".localized
+        let highlightedText = "pera-announcement-description-blog".localized
+
+        let textAttributes = NSMutableAttributedString(
+            attributedString: text.bodyMonoRegular()
+        )
+
+        let highlightedTextAttributes: TextAttributeGroup = [
+            .textColor(AppColors.Components.Link.primary.uiColor),
+            .font(Fonts.DMMono.medium.make(15).uiFont)
+        ]
+
+        let highlightedTextRange = (textAttributes.string as NSString).range(of: highlightedText)
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: highlightedTextRange
+        )
 
         description = .attributedString(
-            "pera-announcement-description"
-                .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
-                .appendAttributesToRange(
-                    [
-                        .foregroundColor: AppColors.Components.Link.primary.uiColor,
-                        .font: font
-                    ],
-                    of: "pera-announcement-description-blog".localized
-                )
+            textAttributes
         )
     }
 }

@@ -36,20 +36,10 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
     }
 
     mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         title = .attributedString(
             "collectibles-receive-account-list-header-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 

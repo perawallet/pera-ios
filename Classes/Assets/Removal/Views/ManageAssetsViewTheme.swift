@@ -48,42 +48,33 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textOverflow(SingleLineFittingText()),
         ]
-        let titleFont = Fonts.DMSans.medium.make(32)
-        let titleLineHeightMultiplier = 0.96
+        var titleAttributes: TextAttributeGroup = .title1Medium()
+        titleAttributes.insert(.textColor(AppColors.Components.Text.main))
         self.titleText = .attributedString(
             "asset-remove-title"
                 .localized
-                .attributed([
-                    .font(titleFont),
-                    .letterSpacing(-0.32),
-                    .lineHeightMultiplier(titleLineHeightMultiplier, titleFont),
-                    .paragraph([
-                        .lineHeightMultiple(titleLineHeightMultiplier),
-                        .textAlignment(.left)
-                    ]),
-                    .textColor(AppColors.Components.Text.main)
-                ])
+                .attributed(
+                    titleAttributes
+                )
         )
+
         self.titleTopPadding = 32
         
         self.subtitle = [
             .textOverflow(FittingText()),
         ]
-        let subtitleFont = Fonts.DMSans.regular.make(15)
-        let subtitleLineHeightMultiplier = 1.23
+
+        var subtitleAttributes: TextAttributeGroup = .bodyRegular()
+        subtitleAttributes.insert(.textColor(AppColors.Components.Text.gray.uiColor))
+
         self.subtitleText = .attributedString(
             "asset-remove-subtitle"
                 .localized
-                .attributed([
-                    .font(subtitleFont),
-                    .lineHeightMultiplier(subtitleLineHeightMultiplier, subtitleFont),
-                    .paragraph([
-                        .lineHeightMultiple(subtitleLineHeightMultiplier),
-                        .textAlignment(.left)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
+                .attributed(
+                    subtitleAttributes
+                )
         )
+
         self.subtitleTopPadding = 16
         
         self.searchInputViewTheme = SearchInputViewCommonTheme(
