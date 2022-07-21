@@ -26,12 +26,18 @@ struct AssetTransactionItemViewModel:
     var transactionAmountViewModel: TransactionAmountViewModel?
 
     init(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindID(draft)
         bindTitle(draft)
         bindSubtitle(draft)
-        bindAmount(draft)
+        bindAmount(
+            draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private mutating func bindID(
@@ -47,6 +53,27 @@ struct AssetTransactionItemViewModel:
     ) {
         guard let transaction = draft.transaction as? Transaction,
               let assetTransfer = transaction.assetTransfer else {
+            return
+        }
+
+        if let closeToAddress = transaction.getCloseAddress() {
+            if closeToAddress == draft.account.address {
+                bindTitle("transaction-item-receive-opt-out".localized)
+                return
+            }
+
+            bindTitle("transaction-item-opt-out".localized)
+            return
+        }
+
+        if transaction.sender == draft.account.address &&
+            transaction.isSelfTransaction {
+            if transaction.getAmount() != 0 {
+                bindTitle("transaction-item-self-transfer".localized)
+                return
+            }
+
+            bindTitle("transaction-item-opt-in".localized)
             return
         }
 
@@ -71,6 +98,15 @@ struct AssetTransactionItemViewModel:
             return
         }
 
+        if let closeAddress = transaction.getCloseAddress() {
+            let subtitle = getSubtitle(
+                from: draft,
+                for: closeAddress
+            )
+            bindSubtitle(subtitle)
+            return
+        }
+
         if isReceivingTransaction(draft, for: assetTransfer) {
             let subtitle = getSubtitle(
                 from: draft,
@@ -88,23 +124,27 @@ struct AssetTransactionItemViewModel:
     }
 
     private mutating func bindAmount(
-        _ draft: TransactionViewModelDraft
+        _ draft: TransactionViewModelDraft,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transaction = draft.transaction as? Transaction,
               let assetTransfer = transaction.assetTransfer,
-              let assetId = transaction.assetTransfer?.assetId,
-              let asset = draft.account[assetId] else {
+              let assetID = transaction.assetTransfer?.assetId,
+              let asset = draft.localAssets?[assetID] else {
                   return
         }
 
-        if assetTransfer.receiverAddress == assetTransfer.senderAddress {
+        if assetTransfer.receiverAddress == transaction.sender {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .normal(
-                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.presentation.decimals),
+                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
                     isAlgos: false,
-                    fraction: asset.presentation.decimals,
-                    assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
+                    fraction: asset.decimals,
+                    assetSymbol: getAssetSymbol(from: asset)
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -113,11 +153,13 @@ struct AssetTransactionItemViewModel:
         if assetTransfer.receiverAddress == draft.account.address {
             transactionAmountViewModel = TransactionAmountViewModel(
                 .positive(
-                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.presentation.decimals),
+                    amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
                     isAlgos: false,
-                    fraction: asset.presentation.decimals,
-                    assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
+                    fraction: asset.decimals,
+                    assetSymbol: getAssetSymbol(from: asset)
                 ),
+                currency: currency,
+                currencyFormatter: currencyFormatter,
                 showAbbreviation: true
             )
             return
@@ -125,11 +167,13 @@ struct AssetTransactionItemViewModel:
 
         transactionAmountViewModel = TransactionAmountViewModel(
             .negative(
-                amount: assetTransfer.amount.assetAmount(fromFraction: asset.presentation.decimals),
+                amount: assetTransfer.amount.assetAmount(fromFraction: asset.decimals),
                 isAlgos: false,
-                fraction: asset.presentation.decimals,
-                assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
+                fraction: asset.decimals,
+                assetSymbol: getAssetSymbol(from: asset)
             ),
+            currency: currency,
+            currencyFormatter: currencyFormatter,
             showAbbreviation: true
         )
     }

@@ -1,5 +1,5 @@
 /* (No Comment) */
-"account-detail-assets-search" = "내 자산 검색";
+"account-detail-assets-search" = "Search assets";
 
 /* (No Comment) */
 "account-detail-portfolio-title" = "계정 가치";
@@ -161,6 +161,12 @@
 "asset-all-title" = "전체";
 
 /* (No Comment) */
+"asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
+
+/* (No Comment) */
+"asset-confirmation-not-found" = "Asset could not be found.";
+
+/* (No Comment) */
 "asset-copy-id" = "ID 복사";
 
 /* (No Comment) */
@@ -173,7 +179,7 @@
 "asset-id-copied-title" = "ID를 클립보드로 복사 완료";
 
 /* (No Comment) */
-"asset-manage-button" = "Manage";
+"asset-manage-button" = "관리";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "%@ 이상의 알고를 보유해야 자산 추가가 가능합니다";
@@ -191,13 +197,13 @@
 "asset-not-found-title" = "자산을 찾을 수 없습니다";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "자산 관리";
+"asset-remove-confirmation-title" = "Remove Asset";
 
 /* (No Comment) */
-"asset-remove-subtitle" = "자산을 삭제하려면 먼저 자산 잔액을 다른 계정으로 전송하셔야 합니다";
+"asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 
 /* (No Comment) */
-"asset-remove-title" = "자산 관리";
+"asset-remove-title" = "Remove Assets";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "%@을(를) %@에서 삭제하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.";
@@ -353,7 +359,7 @@
 "collectible-approve-transaction-fee" = "트랜잭션 수수료";
 
 /* (No Comment) */
-"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+"collectible-approve-transaction-opt-out" = "NFT 옵트아웃";
 
 /* (No Comment) */
 "collectible-approve-transaction-sender" = "보내는 사람 계정";
@@ -386,7 +392,7 @@
 "collectible-detail-error-not-owner" = "아직 해당 NFT의 소유자가 아니지만, NFT를 옵트인 설정했습니다. 이제 지갑에 NFT를 전송 가능합니다.";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
+"collectible-detail-error-not-owner-watch-account" = "본 읽기 전용 계정에서 이 NFT를 옵트인했지만 소유하지는 않습니다.";
 
 /* (No Comment) */
 "collectible-detail-nft-explorer" = "NFTExplorer에서 보기";
@@ -419,43 +425,43 @@
 "collectible-detail-share" = "공유";
 
 /* (No Comment) */
-"collectible-detail-show-on" = "Show on";
+"collectible-detail-show-on" = "보기:";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
+"collectible-detail-tap-3D" = "3D card mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "트랜잭션 보기";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-title" = "필터";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+"collectible-filter-selection-toggle-description" = "옵트인되었지만 소유하지 않은 NFT를 표시하거나 숨길 수 있습니다.";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+"collectible-filter-selection-toggle-title" = "옵트인 NFT 표시";
 
 /* MARK: Collectible List */
 "collectible-list-item-pending-title" = "대기 중";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+"collectible-opt-in-info-description" = "스팸 트랜잭션을 방지하기 위해, 알고랜드 블록체인은 이전에 옵트인한 자산에 대해서만 트랜잭션을 보내고 받도록 허용합니다.";
 
 /* MARK: Collectible Opt In Info */
 "collectible-opt-in-info-title" = "옵트인 정보";
 
 /* (No Comment) */
-"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+"collectible-opt-out-info-description" = "알고랜드 블록체인에서 ASA를 받으려면 이전에 계정에서 해당 ASA에 옵트인해야 합니다. 이제 NFT를 다른 계정으로 전송했으므로 옵트아웃하실 수 있습니다. 옵트아웃하려면 추가 트랜잭션이 필요합니다.";
 
 /* MARK: Collectible Opt Out Info */
-"collectible-opt-out-info-title" = "Opt out from the NFT ";
+"collectible-opt-out-info-title" = "NFT 옵트아웃";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다.";
+"collectible-receive-account-list-info" = "Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다. 검색 창에 ASA ID를 붙여넣으세요.";
+"collectible-receive-asset-list-info" = "You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "선택한 계정";
@@ -506,13 +512,13 @@
 "collectibles-empty-body" = "NFT 갤러리에 오신 것을 환영합니다! 아직 보유하신 NFT가 없습니다. 지갑에서 사용 가능한 모든 NFT가 여기에 표시됩니다.";
 
 /* (No Comment) */
-"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
+"collectibles-empty-secondary-action-title" = "숨겨진 NFT 표시(%@)";
 
-/* (No Comment) */
+/* MARK: Collectible Common */
 "collectibles-empty-title" = "수집품";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "NFT 검색";
+"collectibles-list-input-placeholder" = "Search NFTs";
 
 /* (No Comment) */
 "collectibles-receive-account-list-header-description" = "수신할 지갑 계정을 선택하세요.";
@@ -698,7 +704,7 @@
 "introduction-recover-account-text" = "이미 계정이 있습니다";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "계정을 만드시면 Pera Wallet의<br><a href=\"%@\">이용약관</a>과 <a href=\"%@\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "자산";
@@ -1088,10 +1094,10 @@
 "notification-support-success" = "%@에서 %@ 자산을 계정에 추가했습니다. 이제 해당 자산을 전송하실 수 있습니다.";
 
 /* (No Comment) */
-"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+"notifications-asset-not-found-description" = "지정하신 특정 자산의 내역을 사용할 수 없습니다.";
 
 /* (No Comment) */
-"notifications-asset-not-found-title" = "Asset history not available";
+"notifications-asset-not-found-title" = "자산 내역을 사용할 수 없습니다";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "최근 트랜잭션, 자산 요청 및 기타 알림이 표시됩니다.";
@@ -1115,6 +1121,9 @@
 "number-abbreviation-trillion" = "조";
 
 /* (No Comment) */
+"opitons-collectibles-filter" = "Filter NFTs";
+
+/* (No Comment) */
 "options-auth-account" = "계정 주소 인증";
 
 /* (No Comment) */
@@ -1125,6 +1134,9 @@
 
 /* (No Comment) */
 "options-manage-assets" = "자산 관리";
+
+/* (No Comment) */
+"options-manage-collectibles" = "Manage Collectibles";
 
 /* (No Comment) */
 "options-mute-notification" = "알림 음소거";
@@ -1139,16 +1151,16 @@
 "options-remove-account" = "계정 삭제";
 
 /* (No Comment) */
-"options-remove-assets" = "자산 삭제";
-
-/* (No Comment) */
 "options-remove-main-account-explanation" = "메인 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
 
 /* (No Comment) */
 "options-remove-watch-account-explanation" = "읽기 전용 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
 
 /* (No Comment) */
-"options-show-qr" = "QR 코드 표시";
+"options-show-qr" = "Show Address";
+
+/* (No Comment) */
+"options-sort-title" = "Sort";
 
 /* MARK: Options */
 "options-title" = "자산 설정";
@@ -1283,7 +1295,7 @@
 "portfolio-asset-holdings-title" = "자산 보유액";
 
 /* (No Comment) */
-"portfolio-calculation-description" = "총 포트폴리오 가치는 계정에서 사용 가능한 모든 자산과 알고(Algo)를 합산하여 계산됩니다. 지갑을 여러 개 보유하신 경우 총 포트폴리오 가치는 모든 계정의 합계로 표시합니다.\n\n자산 가격은 Tinyman에서 가져온 해당일의 가격을 기반으로 추정됩니다. 일부 자산 가격은 사용이 불가능한 경우가 있습니다. 따라서 총 포트폴리오 가치는 추정치로만 간주하시기 바랍니다.\n\n읽기 전용 계정은 포트폴리오의 일부로 간주되지 않으며, 총 포트폴리오 가치 계산에 포함되지 않습니다.";
+"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
 
 /* MARK: PortfolioDescription */
 "portfolio-calculation-title" = "포트폴리오 가치 계산 방법";
@@ -1339,8 +1351,23 @@
 /* (No Comment) */
 "qr-scan-message-text" = "이 페이지에서만 QR 코드를 스캔할 수 있습니다. 계정 아래의 아이콘을 선택해 QR 코드를 확인하실 수 있습니다.";
 
+/* (No Comment) */
+"qr-scan-option-add-contact" = "Add new contact";
+
+/* (No Comment) */
+"qr-scan-option-add-watch" = "Add Watch account";
+
+/* (No Comment) */
+"qr-scan-option-scanned-title" = "Scanned account address";
+
+/* (No Comment) */
+"qr-scan-option-send-transaction" = "Send transaction";
+
+/* (No Comment) */
+"qr-scan-option-title" = "Address scanned!";
+
 /* MARK: QR Scanning */
-"qr-scan-overlay-title" = "스캔할 코드 찾기";
+"qr-scan-overlay-title" = "Scan a QR code";
 
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "유효한 계정 주소를 스캔하셔야 합니다.";
@@ -1353,6 +1380,24 @@
 
 /* (No Comment) */
 "qr-scan-title" = "QR 코드 스캔";
+
+/* (No Comment) */
+"quick-actions-address-title" = "Address";
+
+/* MARK: QuickActions */
+"quick-actions-buy-algo-title" = "Buy ALGO";
+
+/* (No Comment) */
+"quick-actions-more-title" = "More";
+
+/* (No Comment) */
+"quick-actions-receive-title" = "Receive";
+
+/* (No Comment) */
+"quick-actions-scan-qr-title" = "Scan QR";
+
+/* (No Comment) */
+"quick-actions-send-title" = "Send";
 
 /* (No Comment) */
 "recover-copy-error" = "마지막으로 복사된 텍스트가 25단어의 유효한 비밀문구가 아닙니다. 정확한 비밀문구를 복사하고 다시 시도해 주세요.";
@@ -1376,16 +1421,19 @@
 "recover-from-seed-verify-exist-error" = "이미 존재하는 계정입니다";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account" = "읽기 전용 계정이 추가되었습니다.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "Pera Wallet에 오신 것을 환영합니다!\n계정을 사용하실 수 있습니다.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation-already-added" = "축하합니다, 이제 계정을 사용하실 수 있습니다.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "계정 인증 완료!";
+"recover-from-seed-verify-pop-up-title" = "Account is Verified!";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title-watch-account" = "읽기 전용 계정 추가 성공";
@@ -1428,6 +1476,12 @@
 
 /* (No Comment) */
 "request-title" = "요청";
+
+/* (No Comment) */
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+
+/* (No Comment) */
+"required-min-balance-title" = "Low Balance";
 
 /* (No Comment) */
 "reward-list-title" = "보상";
@@ -1595,7 +1649,22 @@
 "settings-currency" = "통화";
 
 /* (No Comment) */
+"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
+
+/* (No Comment) */
 "settings-currency-header-title" = "통화 기본 설정";
+
+/* (No Comment) */
+"settings-currency-not-found-detail" = "Try different currency";
+
+/* (No Comment) */
+"settings-currency-not-found-title" = "No currency found";
+
+/* (No Comment) */
+"settings-currency-search" = "Search";
+
+/* (No Comment) */
+"settings-currency-title" = "Main Currency";
 
 /* (No Comment) */
 "settings-delete-data-title" = "전체 데이터 삭제";
@@ -1696,6 +1765,15 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "트랜잭션 정보 보기";
 
+/* MARK: Sort Account List */
+"sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+
+/* (No Comment) */
+"story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
+
+/* MARK: Story */
+"story-copy-address-title" = "Press and hold to “Copy Address”";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "이용 약관";
 
@@ -1721,10 +1799,19 @@
 "title-algorand-value" = "가치";
 
 /* (No Comment) */
+"title-alphabetically-a-to-z" = "Alphabetically A to Z";
+
+/* (No Comment) */
+"title-alphabetically-z-to-a" = "Alphabetically Z to A";
+
+/* (No Comment) */
 "title-approve" = "승인";
 
 /* (No Comment) */
 "title-asset-id" = "자산 ID";
+
+/* (No Comment) */
+"title-buy-algo" = "Buy ALGO";
 
 /* (No Comment) */
 "title-cancel" = "취소";
@@ -1732,7 +1819,7 @@
 /* (No Comment) */
 "title-close" = "닫기";
 
-/* MARK: Collectible Common */
+/* (No Comment) */
 "title-collectibles" = "수집품";
 
 /* (No Comment) */
@@ -1769,12 +1856,6 @@
 "title-dont-show-again" = "다시 표시하지 않음";
 
 /* (No Comment) */
-"required-min-balance-title" = "Low Balance";
-
-/* (No Comment) */
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
-
-/* (No Comment) */
 "title-edit" = "수정";
 
 /* (No Comment) */
@@ -1793,10 +1874,10 @@
 "title-generic-api-error" = "이런, 예상치 못한 상황이네요";
 
 /* (No Comment) */
-"title-generic-error" = "Something went wrong";
+"title-generic-error" = "문제가 발생했습니다";
 
 /* (No Comment) */
-"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-generic-response-description" = "자산 일부를 불러올 수 없습니다. 다시 시도해 주세요.";
 
 /* (No Comment) */
 "title-go-to-accounts" = "계정으로 이동";
@@ -1806,6 +1887,12 @@
 
 /* (No Comment) */
 "title-got-it" = "알겠습니다!";
+
+/* (No Comment) */
+"title-highest-value-to-lowest" = "Highest Value to Lowest";
+
+/* (No Comment) */
+"title-home" = "Home";
 
 /* (No Comment) */
 "title-i-understand" = "알겠습니다";
@@ -1823,10 +1910,25 @@
 "title-learn-more" = "더 알아보기";
 
 /* (No Comment) */
+"title-ledger-account" = "Ledger Account";
+
+/* (No Comment) */
 "title-loading" = "불러오는 중";
 
 /* (No Comment) */
+"title-lowest-value-to-highest" = "Lowest Value to Highest";
+
+/* (No Comment) */
+"title-manually" = "Manually";
+
+/* (No Comment) */
+"title-more" = "More";
+
+/* (No Comment) */
 "title-new-uppercased" = "NEW";
+
+/* (No Comment) */
+"title-newest-to-oldest" = "Newest to Oldest";
 
 /* (No Comment) */
 "title-next" = "다음";
@@ -1842,6 +1944,9 @@
 
 /* (No Comment) */
 "title-ok" = "확인";
+
+/* (No Comment) */
+"title-oldest-to-newest" = "Oldest to Newest";
 
 /* (No Comment) */
 "title-on" = "켜기";
@@ -1862,10 +1967,16 @@
 "title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
+"title-press-hold-copy-address" = "Press and hold to copy address";
+
+/* (No Comment) */
 "title-preview" = "미리보기";
 
 /* (No Comment) */
 "title-preview-and-sign-with-ledger-title" = "미리보기 & Ledger로 서명하기";
+
+/* (No Comment) */
+"title-price" = "Price";
 
 /* (No Comment) */
 "title-proceed" = "진행";
@@ -1874,10 +1985,10 @@
 "title-receive" = "받기";
 
 /* (No Comment) */
-"title-remove" = "삭제";
+"title-rekeyed-account" = "Rekeyed Account";
 
 /* (No Comment) */
-"title-remove-assets" = "자산 삭제";
+"title-remove" = "삭제";
 
 /* (No Comment) */
 "title-retry" = "재시도";
@@ -1904,6 +2015,9 @@
 "title-skip" = "건너뛰기";
 
 /* (No Comment) */
+"title-sort" = "Sort";
+
+/* (No Comment) */
 "title-start-using-pera-wallet" = "Pera Wallet 사용 시작";
 
 /* MARK: Ledger Troubleshooting */
@@ -1927,7 +2041,7 @@
 /* (No Comment) */
 "title-verify" = "확인";
 
-/* MARK: Watch Account */
+/* (No Comment) */
 "title-watch-account" = "읽기 전용 계정";
 
 /* MARK: Common */
@@ -1964,9 +2078,6 @@
 "transaction-detail-completed" = "완료";
 
 /* (No Comment) */
-"transaction-detail-copy-tooltip" = "오래 누르면 클립보드로 복사됩니다";
-
-/* (No Comment) */
 "transaction-detail-date" = "날짜";
 
 /* (No Comment) */
@@ -1982,16 +2093,13 @@
 "transaction-detail-id" = "트랜잭션 ID";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "트랜잭션 ID 클립보드로 복사 완료";
-
-/* (No Comment) */
 "transaction-detail-id-copied-title" = "ID를 클립보드로 복사 완료";
 
 /* (No Comment) */
 "transaction-detail-note" = "참조";
 
 /* (No Comment) */
-"transaction-detail-note-copied" = "트랜잭션 참조 내용 클립보드로 복사 완료";
+"transaction-detail-note-copied" = "Note copied to clipboard";
 
 /* (No Comment) */
 "transaction-detail-pending" = "대기 중";
@@ -2057,7 +2165,7 @@
 "transaction-filter-option-yesterday" = "어제";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "Filter by Date";
+"transaction-filter-title-sort" = "날짜별 필터링";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "트랜잭션 내역을 필터링하실 수 있습니다.";
@@ -2070,6 +2178,33 @@
 
 /* (No Comment) */
 "transaction-id-open-goalseeker" = "GoalSeeker에서 열기";
+
+/* (No Comment) */
+"transaction-item-app-id-title" = "Application ID: #%d";
+
+/* (No Comment) */
+"transaction-item-opt-out" = "Opt-Out";
+
+/* (No Comment) */
+"transaction-menu-copy-id" = "Copy ID";
+
+/* (No Comment) */
+"transaction-menu-copy-note" = "Copy Note";
+
+/* MARK: Transaction Options */
+"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+
+/* (No Comment) */
+"transaction-option-list-more-subtitle" = "Show more actions";
+
+/* (No Comment) */
+"transaction-option-list-receive-subtitle" = "View or copy your account address";
+
+/* (No Comment) */
+"transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
+
+/* (No Comment) */
+"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "계속 진행하시겠습니까?";
@@ -2432,6 +2567,9 @@
 "wallet-connect-transaction-title-asset" = "자산 이전 요청";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-asset-config" = "Asset Configuration";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-asset-url" = "자산 URL";
 
 /* (No Comment) */
@@ -2486,7 +2624,7 @@
 "wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "Pera Wallet과 별개로 외부 애플리케이션(\"디앱\"이라고도 합니다)에서 트랜잭션 요청을 시작할 수 있습니다. 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.\n\n모든 트랜잭션은 실행 취소가 불가능합니다. Pera Wallet에서는 디앱의 요청을 통제할 수 없으므로, 모르는 디앱에서 요청한 트랜잭션은 승인하지 마세요.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "트랜잭션 요청 FAQ";
@@ -2500,7 +2638,7 @@
 /* (No Comment) */
 "watch-account-button" = "읽기 전용 계정 만들기";
 
-/* (No Comment) */
+/* MARK: Watch Account */
 "watch-account-create" = "읽기 전용 계정\n만들기";
 
 /* (No Comment) */

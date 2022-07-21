@@ -15,9 +15,10 @@
 //
 //  SingleSelectionCell.swift
 
+import MacaroonUIKit
 import UIKit
 
-final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
+class SingleSelectionCell: CollectionCell<SingleSelectionView> {
     override init(frame: CGRect) {
         super.init(frame: frame)
         customize(SingleSelectionViewTheme())

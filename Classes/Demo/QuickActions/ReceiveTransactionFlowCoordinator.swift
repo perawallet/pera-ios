@@ -21,19 +21,63 @@ import UIKit
 /// This should be removed after the routing refactor.
 final class ReceiveTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
     private unowned let presentingScreen: UIViewController
+    private let account: Account?
 
     init(
-        presentingScreen: UIViewController
+        presentingScreen: UIViewController,
+        account: Account? = nil
     ) {
         self.presentingScreen = presentingScreen
+        self.account = account
     }
 }
 
 extension ReceiveTransactionFlowCoordinator {
     func launch() {
+        guard let account = account else {
+            openAccountSelection()
+            return
+        }
+
+        openQRGenerator(with: account)
+    }
+
+    private func openAccountSelection() {
+        let draft = SelectAccountDraft(
+            transactionAction: .receive,
+            requiresAssetSelection: false
+        )
+
         presentingScreen.open(
-            .accountSelection(transactionAction: .receive, delegate: self),
+            .accountSelection(draft: draft, delegate: self),
             by: .present
+        )
+    }
+
+    private func openQRGenerator(with account: Account, on screen: UIViewController? = nil) {
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: accountName
+        )
+        let qrGeneratorScreen: Screen = .qrGenerator(
+            title: accountName,
+            draft: draft,
+            isTrackable: true
+        )
+
+        guard let screen = screen else {
+            presentingScreen.open(
+                qrGeneratorScreen,
+                by: .present
+            )
+            return
+        }
+
+        screen.open(
+            qrGeneratorScreen,
+            by: .push
         )
     }
 }
@@ -44,27 +88,12 @@ extension ReceiveTransactionFlowCoordinator {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        if transactionAction != .receive {
+        if draft.transactionAction != .receive {
             return
         }
 
-        let accountName = account.name ?? account.address.shortAddressDisplay
-        let draft = QRCreationDraft(
-            address: account.address,
-            mode: .address,
-            title: accountName
-        )
-        let screen: Screen = .qrGenerator(
-            title: accountName,
-            draft: draft,
-            isTrackable: true
-        )
-
-        selectAccountViewController.open(
-            screen,
-            by: .root
-        )
+        openQRGenerator(with: account, on: selectAccountViewController)
     }
 }

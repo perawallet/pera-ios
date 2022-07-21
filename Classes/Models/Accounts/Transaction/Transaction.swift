@@ -55,6 +55,10 @@ final class Transaction:
     let groupKey: String?
     let innerTransactions: [Transaction]?
 
+    /// <note>:
+    /// If transaction is inner transaction, its parentID is set to parent transaction ID.
+    var parentID: String?
+
     var status: Status?
     var contact: Contact?
 
@@ -171,6 +175,50 @@ extension Transaction {
         return assetTransfer.receiverAddress == account &&
         assetTransfer.amount == 0 &&
         sender == account
+    }
+
+    var allInnerTransactionsCount: Int {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return .zero
+        }
+
+        return innerTransactions.reduce(
+            innerTransactions.count
+        ) { partialResult, transaction in
+            partialResult + transaction.allInnerTransactionsCount
+        }
+    }
+
+    var isInner: Bool {
+        return parentID != nil
+    }
+
+    func setAllParentID(
+        _ parentID: String?
+    ) {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return
+        }
+
+        innerTransactions.forEach {
+            $0.parentID = parentID
+
+            $0.setAllParentID(parentID)
+        }
+    }
+
+    func completeAll() {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            status = .completed
+            return
+        }
+
+        status = .completed
+
+        innerTransactions.forEach { $0.completeAll() }
     }
 }
 

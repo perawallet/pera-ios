@@ -53,7 +53,7 @@ final class AccountPreviewView:
     func bindData(
         _ viewModel: AccountPreviewViewModel?
     ) {
-        iconView.image = viewModel?.icon
+        iconView.load(from: viewModel?.icon)
         namePreviewView.bindData(viewModel?.namePreviewViewModel)
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
@@ -73,7 +73,7 @@ final class AccountPreviewView:
         /// The constrained widths of the subviews will be discarded from the calculations because
         /// none of them has the multi-line texts.
         let width = size.width
-        let iconSize = viewModel.icon?.size ?? .zero
+        let iconSize = viewModel.icon?.iconSize ?? .zero
         let namePreviewView = AccountNamePreviewView.calculatePreferredSize(
             viewModel.namePreviewViewModel,
             for: theme.namePreviewView,

@@ -19,7 +19,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, HomeItem> {
+final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionIdentifier, HomeItemIdentifier> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -79,14 +79,14 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                 switch item {
                 case .header(let headerItem):
                     let cell = collectionView.dequeue(
-                        ManagementItemCell.self,
+                        HomeAccountsHeader.self,
                         at: indexPath
                     )
                     cell.bindData(headerItem)
                     return cell
                 case .cell(let cellItem):
                     let cell = collectionView.dequeue(
-                        AccountPreviewCell.self,
+                        HomeAccountCell.self,
                         at: indexPath
                     )
                     cell.bindData(cellItem)
@@ -102,9 +102,9 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
             HomeQuickActionsCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,
-            ManagementItemCell.self,
+            HomeAccountsHeader.self,
             TitleWithAccessorySupplementaryCell.self,
-            AccountPreviewCell.self
+            HomeAccountCell.self
         ].forEach {
             collectionView.register($0)
         }

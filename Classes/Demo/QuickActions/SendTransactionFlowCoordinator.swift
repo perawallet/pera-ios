@@ -21,19 +21,70 @@ import UIKit
 /// This should be removed after the routing refactor.
 final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
     private unowned let presentingScreen: UIViewController
+    private let sharedDataController: SharedDataController
+    private var account: Account?
 
     init(
-        presentingScreen: UIViewController
+        presentingScreen: UIViewController,
+        sharedDataController: SharedDataController,
+        account: Account? = nil
     ) {
         self.presentingScreen = presentingScreen
+        self.sharedDataController = sharedDataController
+        self.account = account
+
+        guard account != nil else {
+            return
+        }
+
+        sharedDataController.add(self)
+    }
+
+
+    deinit {
+        sharedDataController.remove(self)
     }
 }
 
 extension SendTransactionFlowCoordinator {
     func launch() {
+        guard let account = account else {
+            openAccountSelection()
+            return
+        }
+
+        openAssetSelection(with: account)
+    }
+
+    private func openAccountSelection() {
+        let draft = SelectAccountDraft(
+            transactionAction: .send,
+            requiresAssetSelection: true
+        )
+
         presentingScreen.open(
-            .accountSelection(transactionAction: .send, delegate: self),
+            .accountSelection(draft: draft, delegate: self),
             by: .present
+        )
+    }
+
+    private func openAssetSelection(with account: Account, on screen: UIViewController? = nil) {
+        let assetSelectionScreen: Screen = .assetSelection(
+            filter: nil,
+            account: account
+        )
+
+        guard let screen = screen else {
+            presentingScreen.open(
+                assetSelectionScreen,
+                by: .present
+            )
+            return
+        }
+
+        screen.open(
+            assetSelectionScreen,
+            by: .push
         )
     }
 }
@@ -44,20 +95,34 @@ extension SendTransactionFlowCoordinator {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        if transactionAction != .send {
+        if draft.transactionAction != .send {
             return
         }
 
-        let screen: Screen = .assetSelection(
-            filter: nil,
-            account: account
-        )
+        openAssetSelection(with: account, on: selectAccountViewController)
+    }
+}
 
-        selectAccountViewController.open(
-            screen,
-            by: .push
-        )
+/// <mark>
+/// SharedDataController
+extension SendTransactionFlowCoordinator: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            guard let address = account?.address else {
+                return
+            }
+
+            if let updatedAccountHandle = sharedDataController.accountCollection[address] {
+                self.account = updatedAccountHandle.value
+            }
+        default:
+            break
+        }
     }
 }

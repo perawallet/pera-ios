@@ -25,13 +25,22 @@ indirect enum Screen {
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
     case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
-    case accountRecover(flow: AccountSetupFlow)
+    case accountRecover(
+        flow: AccountSetupFlow,
+        initialMnemonic: String? = nil
+    )
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
     case assetSearch(accountHandle: AccountHandle, dataController: AssetSearchDataController)
-    case assetDetail(draft: TransactionListing)
-    case algosDetail(draft: TransactionListing)
+    case assetDetail(
+        draft: TransactionListing,
+        preferences: BaseAssetDetailViewController.Preferences = .init()
+    )
+    case algosDetail(
+        draft: TransactionListing,
+        preferences: BaseAssetDetailViewController.Preferences = .init()
+    )
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
@@ -41,12 +50,34 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
+    case transactionDetail(
+        account: Account,
+        transaction: Transaction,
+        assetDetail: StandardAsset?
+    )
+    case appCallTransactionDetail(
+        account: Account,
+        transaction: Transaction,
+        transactionTypeFilter: TransactionTypeFilter,
+        assets: [StandardAsset]?,
+        eventHandler: AppCallTransactionDetailViewController.EventHandler
+    )
+    case appCallAssetList(
+        dataController: AppCallAssetListDataController,
+        eventHandler: AppCallAssetListViewController.EventHandler
+    )
     case addAsset(account: Account)
     case removeAsset(account: Account)
-    case assetManagement
-    case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
-    case rewardDetail(account: Account, calculatedRewards: Decimal)
+    case managementOptions(
+        managementType: ManagementOptionsViewController.ManagementType,
+        delegate: ManagementOptionsViewControllerDelegate
+    )
+    case assetActionConfirmation(
+        assetAlertDraft: AssetAlertDraft,
+        delegate: AssetActionConfirmationViewControllerDelegate?,
+        theme: AssetActionConfirmationViewControllerTheme = .init()
+    )
+    case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
@@ -65,7 +96,10 @@ indirect enum Screen {
     case developerSettings
     case currencySelection
     case appearanceSelection
-    case watchAccountAddition(flow: AccountSetupFlow)
+    case watchAccountAddition(
+        flow: AccountSetupFlow,
+        address: String? = nil
+    )
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
@@ -94,13 +128,18 @@ indirect enum Screen {
         eventHandler: SortAccountListViewController.EventHandler
     )
     case accountSelection(
-        transactionAction: TransactionAction,
-        delegate: SelectAccountViewControllerDelegate?
+        draft: SelectAccountDraft,
+        delegate: SelectAccountViewControllerDelegate?,
+        shouldFilterAccount: ((Account) -> Bool)? = nil
     )
-    case assetSelection(filter: AssetType?, account: Account)
+    case assetSelection(
+        filter: AssetType?,
+        account: Account,
+        receiver: String? = nil
+    )
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)
-    case portfolioCalculationInfo(result: PortfolioHandle, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
+    case portfolioCalculationInfo(result: PortfolioValue?, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
     case invalidAccount(
         account: AccountHandle,
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
@@ -116,6 +155,10 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case sortCollectibleList(
+        dataController: SortCollectibleListDataController,
+        eventHandler: SortCollectibleListViewController.EventHandler
+    )
     case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
@@ -148,6 +191,19 @@ indirect enum Screen {
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
     case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
+    case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
+    case qrScanOptions(
+        address: PublicKey,
+        eventHandler: QRScanOptionsViewController.EventHandler
+    )
+    case sortAccountAsset(
+        dataController: SortAccountAssetListDataController,
+        eventHandler: SortAccountAssetListViewController.EventHandler
+    )
+    case innerTransactionList(
+        dataController: InnerTransactionListDataController,
+        eventHandler: InnerTransactionListViewController.EventHandler
+    )
 }
 
 extension Screen {

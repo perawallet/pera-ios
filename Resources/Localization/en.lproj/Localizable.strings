@@ -57,6 +57,8 @@
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
 "title-lowest-value-to-highest" = "Lowest Value to Highest";
 "title-highest-value-to-lowest" = "Highest Value to Lowest";
+"title-newest-to-oldest" = "Newest to Oldest";
+"title-oldest-to-newest" = "Oldest to Newest";
 "title-manually" = "Manually";
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -67,6 +69,9 @@
 "title-watch-account" = "Watch Account";
 "title-ledger-account" = "Ledger Account";
 "title-rekeyed-account" = "Rekeyed Account";
+"title-more" = "More";
+"title-app-call" = "App Call";
+"title-show-more-assets" = "Show +%@ more assets";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -180,6 +185,11 @@
 "qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
 "qr-scan-connected-app-count" = "%@ apps connected";
 "qr-scan-connected-app-singular-count" = "%@ app connected";
+"qr-scan-option-title" = "Address scanned!";
+"qr-scan-option-scanned-title" = "Scanned account address";
+"qr-scan-option-send-transaction" = "Send transaction";
+"qr-scan-option-add-watch" = "Add Watch account";
+"qr-scan-option-add-contact" = "Add new contact";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -204,16 +214,22 @@
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
+"transaction-item-app-id-title" = "Application ID: %d";
+"transaction-item-opt-out" = "Opt-Out";
+"transaction-item-receive-opt-out" = "Receive (Opt-out)";
+"transaction-item-opt-in" = "Opt-In / Self Transfer";
+"transaction-item-self-transfer" = "Self Transfer";
 
 // MARK: Asset
 "asset-title" = "Asset";
+"assets-title" = "Assets";
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
-"asset-remove-confirmation-title" = "Manage asset";
+"asset-remove-confirmation-title" = "Remove Asset";
 "asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
 "title-add-asset" = "Add New Asset";
@@ -222,6 +238,8 @@
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-removing-status" = "Removing Asset";
+"asset-confirmation-not-found" = "Asset could not be found.";
+"asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
@@ -237,8 +255,8 @@
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
-"asset-support-your-add-title" = "Your accounts do not contain this asset";
-"asset-support-your-add-message" = "Please add this asset and try again.";
+"asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
@@ -297,7 +315,9 @@
 "options-unmute-notification" = "Unmute Notifications";
 "options-copy-address" = "Copy Address";
 "options-manage-assets" = "Manage Assets";
+"options-manage-collectibles" = "Manage Collectibles";
 "options-sort-title" = "Sort";
+"opitons-collectibles-filter" = "Filter NFTs";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -411,12 +431,12 @@
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";
 "transaction-detail-round" = "Round";
+"transaction-detail-parent-id" = "Parent Transaction ID";
 "transaction-detail-id" = "Transaction ID";
 "transaction-detail-note" = "Note";
 "transaction-detail-close-to" = "Close To";
 "transaction-detail-close-amount" = "Close Amount";
-"transaction-detail-note-copied" = "Transaction note copied to clipboard";
-"transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-note-copied" = "Note copied to clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
@@ -425,6 +445,11 @@
 "transaction-detail-pending" = "Pending";
 "transaction-detail-failed" = "Failed";
 "transaction-detail-id-copied-title" = "ID copied to clipboard";
+"transaction-menu-copy-id" = "Copy ID";
+"transaction-menu-copy-note" = "Copy Note";
+"transaction-detail-inner-transaction-title" = "Inner Transactions";
+"transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
+"transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -893,7 +918,7 @@
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
-"account-detail-assets-search" = "Search your assets";
+"account-detail-assets-search" = "Search assets";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
@@ -913,6 +938,7 @@
 "transaction-result-completed-subtitle" = "Your transaction was successfully received by the Algorand network.";
 
 // MARK: AccountSelect
+"account-select-header-matched-accounts-title" = "Matched Accounts";
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";
@@ -934,7 +960,7 @@
 
 // MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";
-"portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";
+"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
 
 // MARK: PeraAnnouncement
 "pera-announcement-title" = "It's Official!";
@@ -949,7 +975,7 @@
 
 // MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
-"collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-list-input-placeholder" = "Search NFTs";
 "collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
 // MARK: Collectible Filter Selection
@@ -1029,10 +1055,11 @@
 "collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
 // MARK: Number Abbreviation
-"number-abbreviation-thousand" = "K";
 "number-abbreviation-million" = "M";
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
+"number-abbreviation-quadrillion" = "Qa";
+"number-abbreviation-quintillion" = "Qi";
 
 // MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
@@ -1060,12 +1087,22 @@
 "quick-actions-send-title" = "Send";
 "quick-actions-receive-title" = "Receive";
 "quick-actions-scan-qr-title" = "Scan QR";
+"quick-actions-address-title" = "Address";
+"quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
 "transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
+"transaction-option-list-more-subtitle" = "Show more actions";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+
+// MARK: Inner Transactions
+"inner-transactions-title" = "Inner Transactions";
+"inner-txns-singular-count" = "1 inner txn";
+"inner-txns-plural-count" = "%@ inner txns";
+"inner-transaction-singular-count" = "1 Inner Transaction";
+"inner-transaction-plural-count" = "%@ Inner Transactions";

@@ -26,7 +26,7 @@ protocol TransactionListing {
 
 extension TransactionListing {
     var asset: StandardAsset? {
-        nil
+        return nil
     }
 }
 

@@ -38,17 +38,13 @@ protocol SortAccountListDataController: AnyObject {
 
 enum SortAccountListSection:
     Hashable {
-    case sort
-    case order
+    case sortOptions
+    case reordering
 }
 
 enum SortAccountListItem: Hashable {
-    case sort(SelectionValue<SingleSelectionViewModel>)
-    case order(SortAccountListOrderItem)
-}
-
-enum SortAccountListOrderItem: Hashable {
-    case cell(AccountPreviewViewModel)
+    case sortOption(SelectionValue<SingleSelectionViewModel>)
+    case reordering(AccountPreviewViewModel)
 }
 
 enum SortAccountListDataControllerEvent {

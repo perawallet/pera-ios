@@ -124,16 +124,22 @@ class Session: Storable {
         }
     }
     
-    var preferredCurrency: String {
+    var preferredCurrencyID: CurrencyID {
         get {
-            return string(with: currencyPreferenceKey, to: .defaults) ?? "ALGO"
+            let cacheValue = string(
+                with: currencyPreferenceKey,
+                to: .defaults
+            )
+            return CurrencyID(cacheValue: cacheValue)
         }
         set {
-            save(newValue, for: currencyPreferenceKey, to: .defaults)
+            save(
+                newValue.cacheValue,
+                for: currencyPreferenceKey,
+                to: .defaults
+            )
         }
     }
-
-    var preferredCurrencyDetails: Currency?
     
     var notificationLatestFetchTimestamp: TimeInterval? {
         get {

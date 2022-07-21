@@ -18,8 +18,12 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Switch to new reordering API (iOS 14)
 final class SortAccountListDataSource:
     UICollectionViewDiffableDataSource<SortAccountListSection, SortAccountListItem> {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SortAccountListSection, SortAccountListItem>
+
     weak var dataController: SortAccountListDataController?
 
     init(
@@ -31,7 +35,7 @@ final class SortAccountListDataSource:
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case .sort(let item):
+            case .sortOption(let item):
                 let cell = collectionView.dequeue(
                     SingleSelectionCell.self,
                     at: indexPath
@@ -40,25 +44,20 @@ final class SortAccountListDataSource:
                     item.value
                 )
                 return cell
-            case .order(let item):
-                switch item {
-                case .cell(let item):
-                    let cell = collectionView.dequeue(
-                        AccountOrderingPreviewCell.self,
-                        at: indexPath
-                    )
-                    cell.bindData(
-                        item
-                    )
-                    return cell
-                }
+            case .reordering(let item):
+                let cell = collectionView.dequeue(
+                    AccountOrderingPreviewCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
             }
         }
 
         supplementaryViewProvider = {
             [weak self] collectionView, kind, indexPath in
             guard let section = self?.snapshot().sectionIdentifiers[safe: indexPath.section],
-                  section == .order,
+                  section == .reordering,
                   kind == UICollectionView.elementKindSectionHeader else {
                 return nil
             }
@@ -97,7 +96,7 @@ final class SortAccountListDataSource:
             return false
         }
 
-        return listSection == .order
+        return listSection == .reordering
     }
 
     override func collectionView(
@@ -109,5 +108,58 @@ final class SortAccountListDataSource:
             from: sourceIndexPath,
             to: destinationIndexPath
         )
+
+        moveItem(
+            from: sourceIndexPath,
+            to: destinationIndexPath
+        )
+    }
+}
+
+extension SortAccountListDataSource {
+    private func moveItem(
+        from source: IndexPath,
+        to destination: IndexPath
+    ) {
+        if source == destination {
+            return
+        }
+
+        let snapshot = makeSnapshot(
+            movingItemFrom: source,
+            to: destination
+        )
+        apply(
+            snapshot,
+            animatingDifferences: false
+        )
+    }
+
+    private func makeSnapshot(
+        movingItemFrom source: IndexPath,
+        to destination: IndexPath
+    ) -> Snapshot {
+        var snapshot = snapshot()
+
+        guard
+            let sourceItem = itemIdentifier(for: source),
+            let destinationItem = itemIdentifier(for: destination)
+        else {
+            return snapshot
+        }
+
+        if source > destination {
+            snapshot.moveItem(
+                sourceItem,
+                beforeItem: destinationItem
+            )
+        } else {
+            snapshot.moveItem(
+                sourceItem,
+                afterItem: destinationItem
+            )
+        }
+
+        return snapshot
     }
 }

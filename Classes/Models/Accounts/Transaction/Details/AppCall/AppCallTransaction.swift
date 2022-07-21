@@ -20,13 +20,15 @@ import MacaroonUtils
 
 final class AppCallTransaction: ALGAPIModel {
     let appID: Int64?
-    let onCompletion: String?
+    let onCompletion: OnCompletion?
     let accounts: [PublicKey]?
+    let foreignAssets: [Int64]?
 
     init() {
         self.appID = nil
         self.onCompletion = nil
         self.accounts = nil
+        self.foreignAssets = nil
     }
 }
 
@@ -37,5 +39,59 @@ extension AppCallTransaction {
         case appID = "application-id"
         case onCompletion = "on-completion"
         case accounts
+        case foreignAssets = "foreign-assets"
+    }
+}
+
+enum OnCompletion:
+    RawRepresentable,
+    CaseIterable,
+    Codable,
+    Equatable {
+    case noOp
+    case optIn
+    case closeOut
+    case clear
+    case update
+    case delete
+    case other(String)
+
+    var rawValue: String {
+        switch self {
+        case .noOp: return "noop"
+        case .optIn: return "optin"
+        case .closeOut: return "closeout"
+        case .clear: return "clear"
+        case .update: return "update"
+        case .delete: return "delete"
+        case .other(let aRawValue): return aRawValue
+        }
+    }
+
+    var uiRepresentation: String {
+        switch self {
+        case .noOp: return "NoOp"
+        case .optIn: return "OptIn"
+        case .closeOut: return "CloseOut"
+        case .clear: return "ClearState"
+        case .update: return "Update"
+        case .delete: return "Delete"
+        case .other(let aValue): return aValue
+        }
+    }
+
+    static var allCases: [Self] = [
+        .noOp, .optIn, .closeOut, .clear, .update, .delete
+    ]
+
+    init() {
+        self = .other("")
+    }
+
+    init?(
+        rawValue: String
+    ) {
+        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
+        self = foundCase ?? .other(rawValue)
     }
 }

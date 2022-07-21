@@ -15,17 +15,18 @@
 //   CurrencySelectionViewModel.swift
 
 import Foundation
+import MacaroonUtils
 import MacaroonUIKit
 
 struct CurrencySelectionViewModel: ViewModel {
-    private(set) var title: EditText?
-    private(set) var description: NSAttributedString?
+    private(set) var title: TextProvider?
+    private(set) var description: TextProvider?
 
     init(
-        currency: String?
+        currencyID: CurrencyID?
     ) {
         bindTitle()
-        bindDescription(currency)
+        bindDescription(currencyID)
     }
 }
 
@@ -39,39 +40,40 @@ extension CurrencySelectionViewModel {
     }
 
     private mutating func bindDescription(
-        _ currency: String?
+        _ currencyID: CurrencyID?
     ) {
-        guard let currency = currency else {
-            return
-        }
-
-        let secondaryCurrency = (currency == "ALGO")
-        ? "USD"
-        : "ALGO"
+        let primaryCurrencyValue = currencyID?.localValue ?? CurrencyConstanst.unavailable
+        let secondaryCurrencyValue = currencyID?.pairValue ?? CurrencyConstanst.unavailable
 
         let descriptionText = String(
             format: "settings-currency-description".localized,
-            currency,
-            secondaryCurrency
+            primaryCurrencyValue,
+            secondaryCurrencyValue
         )
-        let attributedDescriptionText = NSMutableAttributedString(
+        let descriptionAttributedText = NSMutableAttributedString(
             attributedString: descriptionText.footnoteRegular()
         )
 
-        let mainCurrencyRange = (descriptionText as NSString).range(of: currency)
-        attributedDescriptionText.addAttribute(
+        let primaryCurrencyRange = (descriptionText as NSString).range(
+            of: primaryCurrencyValue,
+            options: []
+        )
+        descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
             value: AppColors.Components.Text.main.uiColor,
-            range: mainCurrencyRange
+            range: primaryCurrencyRange
         )
 
-        let secondaryCurrencyRange = (descriptionText as NSString).range(of: secondaryCurrency)
-        attributedDescriptionText.addAttribute(
+        let secondaryCurrencyRange = (descriptionText as NSString).range(
+            of: secondaryCurrencyValue,
+            options: .backwards
+        )
+        descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
             value: AppColors.Components.Text.main.uiColor,
             range: secondaryCurrencyRange
         )
 
-        self.description = attributedDescriptionText
+        self.description = descriptionAttributedText
     }
 }

@@ -21,12 +21,15 @@ final class ManageAssetsListLocalDataController:
     ManageAssetsListDataController,
     SharedDataControllerObserver {
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)?
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private var account: Account
     private var lastSnapshot: Snapshot?
     
     private var searchResults: [Asset] = []
     private var accountAssets: [Asset] = []
+    private var removedAssetDetails: [Asset] = []
     
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
@@ -66,7 +69,7 @@ extension ManageAssetsListLocalDataController {
     func fetchAssets() {
         searchResults.removeAll()
         accountAssets.removeAll()
-        account.allAssets.forEach {
+        account.allAssets?.forEach {
             if !$0.state.isPending {
                 accountAssets.append($0)
             }
@@ -111,6 +114,16 @@ extension ManageAssetsListLocalDataController {
         lastQuery = nil
         fetchAssets()
         deliverContentSnapshot()
+    }
+
+    private func clearRemovedAssetDetailsIfNeeded() {
+        removedAssetDetails = removedAssetDetails.filter {
+            account.containsAsset($0.id)
+        }
+    }
+
+    func removeAsset(_ asset: Asset) {
+        removedAssetDetails.append(asset)
     }
 }
 
@@ -158,20 +171,36 @@ extension ManageAssetsListLocalDataController {
             var snapshot = Snapshot()
             
             var assetItems: [ManageAssetSearchItem] = []
-            let currency = self.sharedDataController.currency.value
+
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
+
+            self.clearRemovedAssetDetailsIfNeeded()
 
             self.searchResults.forEach { asset in
+                if self.removedAssetDetails.contains(where: { removedAsset in
+                    asset.id == removedAsset.id
+                }) {
+                    return
+                }
+
                 let viewModel: AssetPreviewViewModel
 
                 if let collectibleAsset = asset as? CollectibleAsset {
                     let draft = CollectibleAssetPreviewSelectionDraft(
+                        asset: collectibleAsset,
                         currency: currency,
-                        asset: collectibleAsset
+                        currencyFormatter: currencyFormatter
                     )
                     viewModel = AssetPreviewViewModel(draft)
                 } else {
-                    let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
-                    viewModel = AssetPreviewViewModel(assetPreviewModel)
+                    let assetItem = AssetItem(
+                        asset: asset,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+                    viewModel = AssetPreviewViewModel(assetPreview)
                 }
 
                 let assetItem: ManageAssetSearchItem = .asset(
@@ -182,12 +211,20 @@ extension ManageAssetsListLocalDataController {
                 assetItems.append(assetItem)
             }
 
+            self.removedAssetDetails.forEach {
+                let assetItem: ManageAssetSearchItem =
+                    .pendingAsset(PendingAssetPreviewViewModel(
+                        AssetPreviewModelAdapter.adaptRemovingAsset($0)
+                    ))
+                assetItems.append(assetItem)
+            }
+
             snapshot.appendSections([.assets])
             snapshot.appendItems(
                 assetItems,
                 toSection: .assets
             )
-            
+
             snapshot.reloadItems(assetItems)
             return snapshot
         }

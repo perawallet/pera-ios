@@ -135,6 +135,64 @@ final class QRText: Codable {
             }
         }
     }
+
+    class func build(for address: String?, with queryParameters: [String: String]?) -> Self? {
+        guard let queryParameters = queryParameters else {
+            if let address = address {
+                return Self(mode: .address, address: address)
+            }
+
+            return nil
+        }
+
+        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
+           let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
+
+            if let address = address {
+                return Self(
+                    mode: .assetRequest,
+                    address: address,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            if amount == "0" {
+                return Self(
+                    mode: .optInRequest,
+                    address: nil,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            return nil
+        }
+
+        guard let address = address else {
+            return nil
+        }
+
+        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
+            return Self(
+                mode: .algosRequest,
+                address: address,
+                amount: UInt64(amount),
+                note: queryParameters[QRText.CodingKeys.note.rawValue],
+                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+            )
+        }
+
+        if let label = queryParameters[QRText.CodingKeys.label.rawValue] {
+            return Self(mode: .address, address: address, label: label)
+        }
+
+        return nil
+    }
 }
 
 extension QRText {

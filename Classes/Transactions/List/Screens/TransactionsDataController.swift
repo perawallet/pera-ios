@@ -56,7 +56,6 @@ enum TransactionsItem: Hashable {
 
 enum EmptyState: Hashable {
     case noContent
-    case loading
     case transactionHistoryLoading
     case algoTransactionHistoryLoading
     case assetTransactionHistoryLoading
@@ -64,5 +63,4 @@ enum EmptyState: Hashable {
 
 enum TransactionsDataControllerEvent {
     case didUpdateSnapshot(TransactionsDataController.Snapshot)
-    case didUpdateReward(Decimal)
 }

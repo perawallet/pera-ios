@@ -20,16 +20,17 @@ import MacaroonUIKit
 import UIKit
 
 struct HomePortfolioViewModel:
-    PairedViewModel,
+    PortfolioViewModel,
     Hashable {
-    private(set) var totalValueResult: PortfolioHandle = .failure(.idle)
-    private(set) var title: EditText?
+    private(set) var title: TextProvider?
     private(set) var titleColor: UIColor?
-    private(set) var value: EditText?
-    private(set) var secondaryValue: EditText?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
+
+    private(set) var currencyFormatter: CurrencyFormatter?
     
     init(
-        _ model: Portfolio
+        _ model: TotalPortfolioItem
     ) {
         bind(model)
     }
@@ -37,81 +38,54 @@ struct HomePortfolioViewModel:
 
 extension HomePortfolioViewModel {
     mutating func bind(
-        _ portfolio: Portfolio
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        var mPortfolio = portfolio
-        mPortfolio.calculate()
-        
-        bindTitle(mPortfolio)
-        bindValue(mPortfolio)
-        
-        if let algoCurrency = portfolio.currency.value as? AlgoCurrency {
-            
-            var secondaryPortfolio = Portfolio(
-                accounts: portfolio.accounts,
-                currency: .ready(currency: algoCurrency.currency, lastUpdateDate: Date()),
-                calculator: ALGPortfolioCalculator()
-            )
-            
-            secondaryPortfolio.calculate()
-            
-            bindSecondaryValue(secondaryPortfolio)
-        } else {
-            
-            var secondaryPortfolio = Portfolio(
-                accounts: portfolio.accounts,
-                currency: .ready(currency: AlgoCurrency(currency: portfolio.currency.value!), lastUpdateDate: Date()),
-                calculator: ALGPortfolioCalculator()
-            )
-            
-            secondaryPortfolio.calculate()
-            
-            bindSecondaryValue(secondaryPortfolio)
-        }
-    }
-    
-    mutating func bindTitle(
-        _ portfolio: Portfolio
-    ) {
-        title = .attributedString(
-            "portfolio-title"
-                .localized
-                .bodyRegular()
-        )
-        
-        switch portfolio.totalValueResult {
-        case .success:
-            titleColor = AppColors.Components.Text.gray.uiColor
-        case .failure:
-            titleColor = AppColors.Shared.Helpers.negative.uiColor
-        }
-    }
-    
-    mutating func bindValue(
-        _ portfolio: Portfolio
-    ) {
-        totalValueResult = portfolio.totalValueResult
+        self.currencyFormatter = portfolioItem.currencyFormatter
 
-        value = .attributedString(
-            totalValueResult.uiDescription
-                .largeTitleMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
+        bindTitle(portfolioItem)
+        bindPrimaryValue(portfolioItem)
+        bindSecondaryValue(portfolioItem)
+    }
+
+    mutating func bindTitle(
+        _ portfolioItem: TotalPortfolioItem
+    ) {
+        title = "portfolio-title"
+            .localized
+            .bodyRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail
+            )
+        titleColor = portfolioItem.portfolioValue.isAvailable
+            ? AppColors.Components.Text.gray.uiColor
+            : AppColors.Shared.Helpers.negative.uiColor
+    }
+    
+    mutating func bindPrimaryValue(
+        _ portfolioItem: TotalPortfolioItem
+    ) {
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.primaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
         )
     }
     
     mutating func bindSecondaryValue(
-        _ portfolio: Portfolio
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        totalValueResult = portfolio.totalValueResult
-        
-        secondaryValue = .attributedString(
-            ("≈ " + totalValueResult.uiDescription)
-                .bodyMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.secondaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = "≈ \(text)".bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
         )
     }
 }
@@ -120,7 +94,8 @@ extension HomePortfolioViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(value)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
     }
     
     static func == (
@@ -128,6 +103,7 @@ extension HomePortfolioViewModel {
         rhs: HomePortfolioViewModel
     ) -> Bool {
         return
-            lhs.value == rhs.value
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string
     }
 }

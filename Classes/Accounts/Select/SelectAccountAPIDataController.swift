@@ -23,11 +23,15 @@ final class SelectAccountAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((SelectAccountDataControllerEvent) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
     private let transactionAction: TransactionAction
+
+    var shouldFilterAccount: ((Account) -> Bool)?
 
     init(
         _ sharedDataController: SharedDataController,
@@ -106,23 +110,43 @@ extension SelectAccountAPIDataController {
             var accounts: [AccountHandle] = []
             var accountItems: [SelectAccountListViewItem] = []
 
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
+
             self.sharedDataController.sortedAccounts().forEach { accountHandle in
                 let isWatchAccount = accountHandle.value.type == .watch
                 
                 if isWatchAccount {
                     return
                 }
-                
+
+                if let shouldFilterAccount = self.shouldFilterAccount,
+                   shouldFilterAccount(accountHandle.value) {
+                    return
+                }
+
                 let cellItem: SelectAccountListViewItem
                 
                 if self.transactionAction == .buyAlgo {
-                    let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
+                    let account = accountHandle.value
+                    let algoAccount = CustomAccountPreview(
+                        AlgoAccountViewModel(
+                            account,
+                            currencyFormatter: currencyFormatter
+                        ),
+                        address: account.address
+                    )
                     
                     cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
                 } else {
-                    let accountPortfolio = AccountPortfolio(account: accountHandle)
-                    
-                    cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
+                    let accountPortfolioItem = AccountPortfolioItem(
+                        accountValue: accountHandle,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+
+                    cellItem = .account(accountPreviewViewModel, accountHandle)
                 }
                 
                 accounts.append(accountHandle)

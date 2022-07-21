@@ -24,8 +24,11 @@ final class ScanQRFlowCoordinator:
     SelectAccountViewControllerDelegate,
     AssetActionConfirmationViewControllerDelegate,
     TransactionControllerDelegate {
-    private var lastTransactionDraft: SendTransactionDraft?
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var assetConfirmationTransition: BottomSheetTransition?
+    private var accountQRTransition: BottomSheetTransition?
+    private var optInRequestTransition: BottomSheetTransition?
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
@@ -118,21 +121,30 @@ extension ScanQRFlowCoordinator {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        switch transactionAction {
+        switch draft.transactionAction {
         case .optIn(let asset):
             requestOptingInToAsset(
                 asset,
                 to: account
             )
         default:
+            if draft.requiresAssetSelection {
+                openAssetSelection(
+                    with: account,
+                    on: selectAccountViewController,
+                    receiver: draft.receiver
+                )
+                return
+            }
+
             sendTransaction(
                 from: selectAccountViewController,
-                for: account
+                for: account,
+                with: draft.transactionDraft
             )
         }
-
     }
 
     private func requestOptingInToAsset(
@@ -156,9 +168,9 @@ extension ScanQRFlowCoordinator {
         )
 
         let visibleScreen = presentingScreen.findVisibleScreen()
-        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        optInRequestTransition = BottomSheetTransition(presentingViewController: visibleScreen)
 
-        transition.perform(
+        optInRequestTransition?.perform(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
             by: .presentWithoutNavigationController
         )
@@ -166,20 +178,26 @@ extension ScanQRFlowCoordinator {
 
     private func sendTransaction(
         from selectAccountViewController: SelectAccountViewController,
-        for account: Account
+        for account: Account,
+        with transactionDraft: TransactionSendDraft?
     ) {
-        guard let lastTransactionDraft = lastTransactionDraft else {
+        guard let transactionDraft = transactionDraft as? SendTransactionDraft else {
             return
         }
 
+        let transactionMode = updateTransactionModeIfNeeded(
+            transactionDraft,
+            for: account
+        )
+
         var draft = SendTransactionDraft(
             from: account,
-            toAccount: lastTransactionDraft.from,
-            amount: lastTransactionDraft.amount,
-            transactionMode: lastTransactionDraft.transactionMode
+            toAccount: transactionDraft.from,
+            amount: transactionDraft.amount,
+            transactionMode: transactionMode
         )
-        draft.note = lastTransactionDraft.note
-        draft.lockedNote = lastTransactionDraft.lockedNote
+        draft.note = transactionDraft.note
+        draft.lockedNote = transactionDraft.lockedNote
 
         let screen: Screen = .sendTransaction(draft: draft)
 
@@ -187,8 +205,40 @@ extension ScanQRFlowCoordinator {
             screen,
             by: .push
         )
+    }
 
-        clearLastDetectedTransaction()
+    private func updateTransactionModeIfNeeded(
+        _ draft: SendTransactionDraft,
+        for account: Account
+    ) -> TransactionMode {
+        var transactionMode = draft.transactionMode
+        switch transactionMode {
+        case .asset(let asset):
+            if let updatedAsset = account.allAssets.someArray.first(matching: (\.id, asset.id)) {
+                transactionMode = .asset(updatedAsset)
+            }
+        default:
+            break
+        }
+
+        return transactionMode
+    }
+
+    private func openAssetSelection(
+        with account: Account,
+        on screen: UIViewController,
+        receiver: String?
+    ) {
+        let assetSelectionScreen: Screen = .assetSelection(
+            filter: nil,
+            account: account,
+            receiver: receiver
+        )
+
+        screen.open(
+            assetSelectionScreen,
+            by: .push
+        )
     }
 }
 
@@ -265,9 +315,16 @@ extension ScanQRFlowCoordinator {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController.presentErrorBanner(
@@ -332,6 +389,63 @@ extension ScanQRFlowCoordinator {
         _ qrScannerScreen: QRScannerViewController,
         accountAddressWasDetected qr: QRText
     ) {
+        guard let address = qr.address else {
+            return
+        }
+
+        let eventHandler: QRScanOptionsViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .transaction:
+                let draft = SelectAccountDraft(
+                    transactionAction: .send,
+                    requiresAssetSelection: true,
+                    transactionDraft: self.composeAlgosTransactionDraft(from: qr),
+                    receiver: address
+                )
+
+                self.startSendTransactionFlow(qr, draft: draft)
+            case .watchAccount:
+                self.openAddWatchAccount(qr)
+            case .contact:
+                self.openAddContact(qr)
+            }
+        }
+
+        accountQRTransition = BottomSheetTransition(presentingViewController: presentingScreen)
+
+        accountQRTransition?.perform(
+            .qrScanOptions(
+                address: address,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
+
+    private func openAddWatchAccount(_ qr: QRText) {
+        guard let address = qr.address else {
+            return
+        }
+
+        let screen: Screen = .watchAccountAddition(
+            flow: .addNewAccount(
+                mode: .add(
+                    type: .watch
+                )
+            ),
+            address: address
+        )
+
+        presentingScreen.open(
+            screen,
+            by: .present
+        )
+    }
+
+    private func openAddContact(_ qr: QRText) {
         let screen: Screen = .addContact(
             address: qr.address,
             name: qr.label
@@ -339,7 +453,7 @@ extension ScanQRFlowCoordinator {
 
         presentingScreen.open(
             screen,
-            by: .push
+            by: .present
         )
     }
 
@@ -347,10 +461,21 @@ extension ScanQRFlowCoordinator {
         _ qrScannerScreen: QRScannerViewController,
         algosTransactionWasDetected qr: QRText
     ) {
-        saveLastDetectedAlgosTransactionForLater(from: qr)
-
-        let screen: Screen = .accountSelection(
+        let draft = SelectAccountDraft(
             transactionAction: .send,
+            requiresAssetSelection: false,
+            transactionDraft: composeAlgosTransactionDraft(from: qr)
+        )
+
+        startSendTransactionFlow(qr, draft: draft)
+    }
+
+    private func startSendTransactionFlow(
+        _ qr: QRText,
+        draft: SelectAccountDraft
+    ) {
+        let screen: Screen = .accountSelection(
+            draft: draft,
             delegate: self
         )
 
@@ -375,12 +500,12 @@ extension ScanQRFlowCoordinator {
                 asset: nil,
                 title: "asset-support-your-add-title".localized,
                 detail: "asset-support-your-add-message".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
+                cancelTitle: "title-close".localized
             )
             let screen: Screen = .assetActionConfirmation(
                 assetAlertDraft: draft,
-                delegate: nil
+                delegate: nil,
+                theme: .secondaryActionOnly
             )
 
             assetConfirmationTransition =
@@ -393,11 +518,20 @@ extension ScanQRFlowCoordinator {
             return
         }
 
-        saveLastDetectedAssetTransactionForLater(asset, from: qr)
+        let draft = SelectAccountDraft(
+            transactionAction: .send,
+            requiresAssetSelection: false,
+            transactionDraft: composeAssetTransactionDraft(asset, from: qr)
+        )
+
+        let shouldFilterAccount: (Account) -> Bool = {
+            !$0.containsAsset(assetID)
+        }
 
         let screen: Screen = .accountSelection(
-            transactionAction: .send,
-            delegate: self
+            draft: draft,
+            delegate: self,
+            shouldFilterAccount: shouldFilterAccount
         )
 
         presentingScreen.open(
@@ -409,7 +543,25 @@ extension ScanQRFlowCoordinator {
     private func qrScanner(
         _ qrScannerScreen: QRScannerViewController,
         accountMnemonicWasDetected qr: QRText
-    ) {}
+    ) {
+        guard let mnemonic = qr.mnemonic else {
+            return
+        }
+
+        let screen: Screen = .accountRecover(
+            flow: .addNewAccount(
+                mode: .recover(
+                    type: .passphrase
+                )
+            ),
+            initialMnemonic: mnemonic
+        )
+
+        presentingScreen.open(
+            screen,
+            by: .present
+        )
+    }
 
     private func qrScanner(
         _ qrScannerScreen: QRScannerViewController,
@@ -419,8 +571,13 @@ extension ScanQRFlowCoordinator {
             return
         }
 
-        let screen: Screen = .accountSelection(
+        let draft = SelectAccountDraft(
             transactionAction: .optIn(asset: assetID),
+            requiresAssetSelection: false
+        )
+
+        let screen: Screen = .accountSelection(
+            draft: draft,
             delegate: self
         )
 
@@ -430,15 +587,14 @@ extension ScanQRFlowCoordinator {
         )
     }
 
-    private func saveLastDetectedAlgosTransactionForLater(
+    private func composeAlgosTransactionDraft(
         from qr: QRText
-    ) {
-        guard
-            let address = qr.address,
-            let amount = qr.amount
-        else {
-            return
+    ) -> SendTransactionDraft? {
+        guard let address = qr.address else {
+            return nil
         }
+
+        let amount = qr.amount ?? 0
 
         var draft = SendTransactionDraft(
             from: Account(address: address, type: .standard),
@@ -447,40 +603,34 @@ extension ScanQRFlowCoordinator {
         draft.note = qr.note
         draft.lockedNote = qr.lockedNote
         draft.amount = amount.toAlgos
-
-        lastTransactionDraft = draft
+        return draft
     }
 
-    private func saveLastDetectedAssetTransactionForLater(
+    private func composeAssetTransactionDraft(
         _ asset: Asset,
         from qr: QRText
-    ) {
+    ) -> SendTransactionDraft? {
         guard
             let address = qr.address,
             let amount = qr.amount
         else {
-            return
+            return nil
         }
 
         var draft = SendTransactionDraft(
             from: Account(address: address, type: .standard),
             transactionMode: .asset(asset)
         )
-        draft.amount = Decimal(amount)
+        draft.amount = amount.assetAmount(fromFraction: asset.decimals)
         draft.note = qr.note
         draft.lockedNote = qr.lockedNote
-
-        lastTransactionDraft = draft
-    }
-
-    private func clearLastDetectedTransaction() {
-        lastTransactionDraft = nil
+        return draft
     }
 
     private func findCachedAsset(
         for id: AssetID
     ) -> Asset? {
-        for account in sharedDataController.accountCollection {
+        for account in sharedDataController.accountCollection where !account.value.isWatchAccount() {
             if let asset = account.value[id] {
                 return asset
             }

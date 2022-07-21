@@ -56,10 +56,22 @@ extension ManagementItemViewModel {
                         lineBreakMode: .byTruncatingTail
                     )
             )
-        case .watchAccount:
+        case .collectible(let count, _):
+            if count < 2 {
+                self.title = .attributedString(
+                    "title-plus-collectible-singular-count"
+                        .localized(params: "\(count)")
+                        .bodyMedium(
+                            lineBreakMode: .byTruncatingTail,
+                            hasMultilines: false
+                        )
+                )
+                return
+            }
+
             self.title = .attributedString(
-                "portfolio-title-watchlist"
-                    .localized
+                "title-plus-collectible-count"
+                    .localized(params: "\(count)")
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail
                     )
@@ -71,14 +83,15 @@ extension ManagementItemViewModel {
         _ type: ManagementItemType
     ) {
         switch type {
-        case .account, .watchAccount:
+        case .account:
             self.primaryButtonTitle = .attributedString(
                 "options-sort-title"
                     .localized
                     .bodyMedium()
             )
             self.primaryButtonIcon = img("icon-management-sort")
-        case .asset:
+        case .asset,
+             .collectible:
             self.primaryButtonTitle = .attributedString(
                 "asset-manage-button"
                     .localized
@@ -91,15 +104,25 @@ extension ManagementItemViewModel {
     private mutating func bindSecondaryButton(
         _ type: ManagementItemType
     ) {
-        self.secondaryButtonTitle = nil
-        self.secondaryButtonIcon = img("icon-management-add")
+        switch type {
+        case .collectible(_, let isWatchAccountDisplay),
+             .asset(let isWatchAccountDisplay):
+            if isWatchAccountDisplay {
+                return
+            }
+
+            fallthrough
+        default:
+            secondaryButtonTitle = nil
+            secondaryButtonIcon = img("icon-management-add")
+        }
     }
 }
 
 enum ManagementItemType {
-    case asset
+    case asset(isWatchAccountDisplay: Bool)
     case account
-    case watchAccount
+    case collectible(count: Int, isWatchAccountDisplay: Bool)
 }
 
 extension ManagementItemViewModel {

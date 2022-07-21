@@ -26,9 +26,15 @@ struct RewardDetailViewModel:
     private(set) var description: EditText?
     private(set) var FAQLabel: EditText?
     
-    init(account: Account, calculatedRewards: Decimal) {
+    init(
+        account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
         bindTitle()
-        bindRewardAmount(from: account, and: calculatedRewards)
+        bindRewardAmount(
+            from: account,
+            currencyFormatter: currencyFormatter
+        )
         bindDescription()
         bindFAQLabel()
     }
@@ -43,16 +49,31 @@ extension RewardDetailViewModel {
         )
     }
 
-    private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
-        guard let rewardAmount =
-                (account.pendingRewards.toAlgos + calculatedRewards).toAlgosStringForLabel else {
-                    return
-                }
+    private mutating func bindRewardAmount(
+        from account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
 
-        amount = .attributedString(
-            rewardAmount
-                .bodyLargeMonoRegular()
-        )
+        let text = currencyFormatter.format(account.pendingRewards.toAlgos)
+        let font = Fonts.DMMono.regular.make(19)
+        let lineHeightMultiplier = 1.13
+
+        self.amount = text.unwrap {
+            .attributedString(
+                $0.attributed(
+                    [
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .lineHeightMultiple(lineHeightMultiplier),
+                            .textAlignment(.left)
+                        ])
+                    ]
+                )
+            )
+        }
     }
 
     private mutating func bindDescription() {

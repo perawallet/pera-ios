@@ -33,7 +33,6 @@ final class HomePortfolioView:
     private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
     private lazy var secondaryValueView = Label()
-    private lazy var buyAlgoButton = Button()
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -55,11 +54,29 @@ final class HomePortfolioView:
     func bindData(
         _ viewModel: HomePortfolioViewModel?
     ) {
-        titleView.editText = viewModel?.title
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
         titleView.textColor = viewModel?.titleColor
         infoActionView.tintColor = viewModel?.titleColor
-        valueView.editText = viewModel?.value
-        secondaryValueView.editText = viewModel?.secondaryValue
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: valueView)
+        } else {
+            valueView.text = nil
+            valueView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueView)
+        } else {
+            secondaryValueView.text = nil
+            secondaryValueView.attributedText = nil
+        }
     }
     
     class func calculatePreferredSize(
@@ -72,18 +89,18 @@ final class HomePortfolioView:
         }
         
         let width = size.width
-        let titleSize = viewModel.title.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let valueSize = viewModel.value.boundingSize(
+        ) ?? .zero
+        let valueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
-        )
-        let secondaryValueSize = viewModel.secondaryValue.boundingSize(
+        ) ?? .zero
+        let secondaryValueSize = viewModel.secondaryValue?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
-        )
+        ) ?? .zero
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +

@@ -22,16 +22,16 @@ final class HomePortfolioNavigationView: View {
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
 
-    private var runningTitleVisibilityAnimator: UIViewPropertyAnimator?
+    private var isVisible = false
+    private var runningVisibilityAnimator: UIViewPropertyAnimator?
 
-    private var isTitleVisible: Bool {
-        return titleView.alpha == 1
-    }
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {
-    }
-
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {
         addSubview(titleView)
         titleView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -50,58 +50,98 @@ final class HomePortfolioNavigationView: View {
         setTitleVisible(false)
     }
 
-    func bind(title: String, subtitle: String?) {
-        titleView.attributedText = title.bodyMedium()
-        subtitleView.attributedText = subtitle?.captionMedium()
+    func bind(
+        _ viewModel: HomePortfolioNavigationViewModel?
+    ) {
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: subtitleView)
+        } else {
+            subtitleView.text = nil
+            subtitleView.attributedText = nil
+        }
     }
 
-    func startAnimationToToggleTitleVisibility(
-        visible: Bool
+    func animateTitleVisible(
+        _ visible: Bool
     ) {
-        guard visible != isTitleVisible else {
+        if visible == isVisible {
             return
         }
 
-        discardRunningAnimationToToggleTitleVisibility()
+        isVisible = visible
 
-        runningTitleVisibilityAnimator =
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: visible ? 0.2 : 0.1,
-                delay: 0.0,
-                options: visible ? [] : .curveEaseOut,
-                animations: {
-                    [unowned self] in
+        if let runningVisibilityAnimator = runningVisibilityAnimator,
+           runningVisibilityAnimator.isRunning {
+            runningVisibilityAnimator.isReversed.toggle()
+            return
+        }
 
-                    self.setTitleVisible(
-                        visible
-                    )
-                },
-                completion: {
-                    [weak self] _ in
+        if isVisible {
+            showTitleAnimated()
+        } else {
+            hideTitleAnimated()
+        }
+    }
 
-                    guard let self = self else {
-                        return
-                    }
+    private func showTitleAnimated() {
+        runningVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.2,
+            delay: 0,
+            options: [],
+            animations: {
+                [unowned self] in
+                self.setTitleVisible(true)
+            },
+            completion: { [weak self] position in
+                guard let self = self else { return }
 
-                    self.runningTitleVisibilityAnimator = nil
+                switch position {
+                case .start:
+                    self.setTitleVisible(false)
+                case .end:
+                    self.isVisible = true
+                default:
+                    break
                 }
-            )
+            }
+        )
+    }
+
+    private func hideTitleAnimated() {
+        runningVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.1,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                [unowned self] in
+                self.setTitleVisible(false)
+            },
+            completion: { [weak self] position in
+                guard let self = self else { return }
+
+                switch position {
+                case .start:
+                    self.setTitleVisible(true)
+                case .end:
+                    self.isVisible = false
+                default:
+                    break
+                }
+            }
+        )
     }
 
     private func setTitleVisible(
         _ visible: Bool
     ) {
-        titleView.alpha = visible ? 1 : 0
-        subtitleView.alpha = visible ? 1 : 0
-    }
-
-    private func discardRunningAnimationToToggleTitleVisibility() {
-        runningTitleVisibilityAnimator?.stopAnimation(
-            false
-        )
-        runningTitleVisibilityAnimator?.finishAnimation(
-            at: .current
-        )
-        runningTitleVisibilityAnimator = nil
+        titleView.alpha = isVisible ? 1 : 0
+        subtitleView.alpha = isVisible ? 1 : 0
     }
 }

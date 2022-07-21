@@ -96,6 +96,10 @@ extension CollectibleListLocalDataController {
         sharedDataController.add(self)
     }
 
+    func reload() {
+        deliverContentSnapshot(with: lastQuery)
+    }
+
     func search(for query: String) {
         lastQuery = query
 
@@ -219,7 +223,9 @@ extension CollectibleListLocalDataController {
             )
 
             account
-                .collectibleAssets
+                .sortedCollectibleAssets(
+                    sharedDataController.selectedCollectibleSortingAlgorithm
+                )
                 .forEach { collectibleAsset in
                     if currentFilter == .owned,
                        !collectibleAsset.isOwned {
@@ -336,21 +342,19 @@ extension CollectibleListLocalDataController {
 
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.search, .header, .collectibles])
+            if self.isWatchAccount {
+                self.addWatchAccountHeaderContent(
+                    withCollectibleCount: collectibleItems.count,
+                    to: &snapshot
+                )
+            } else {
+                self.addHeaderContent(
+                    withCollectibleCount: collectibleItems.count,
+                    to: &snapshot
+                )
+            }
 
-            snapshot.appendItems(
-                [
-                    .header(
-                        SelectionValue(
-                            value: CollectibleListInfoWithFilterViewModel(
-                                collectibleCount: collectibleItems.count
-                            ),
-                            isSelected: self.currentFilter == .all
-                        )
-                    )
-                ],
-                toSection: .header
-            )
+            snapshot.appendSections([.search, .collectibles])
 
             snapshot.appendItems(
                 [.search],
@@ -366,13 +370,6 @@ extension CollectibleListLocalDataController {
                 collectibleItems,
                 toSection: .collectibles
             )
-
-            if !self.isWatchAccount {
-                snapshot.appendItems(
-                    [.collectible(.footer)],
-                    toSection: .collectibles
-                )
-            }
 
             return snapshot
         }
@@ -404,7 +401,23 @@ extension CollectibleListLocalDataController {
 
     private func deliverSearchNoContentSnapshot() {
         deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
             var snapshot = Snapshot()
+
+            if self.isWatchAccount {
+                self.addWatchAccountHeaderContent(
+                    withCollectibleCount: .zero,
+                    to: &snapshot
+                )
+            } else {
+                self.addHeaderContent(
+                    withCollectibleCount: .zero,
+                    to: &snapshot
+                )
+            }
+
             snapshot.appendSections([.search, .empty])
 
             snapshot.appendItems(
@@ -419,6 +432,46 @@ extension CollectibleListLocalDataController {
 
             return snapshot
         }
+    }
+
+    private func addHeaderContent(
+        withCollectibleCount count: Int,
+        to snapshot: inout Snapshot
+    ) {
+        let headerItem: CollectibleListItem = .header(
+            ManagementItemViewModel(
+                .collectible(
+                    count: count,
+                    isWatchAccountDisplay: false
+                )
+            )
+        )
+
+        snapshot.appendSections([.header])
+        snapshot.appendItems(
+            [headerItem],
+            toSection: .header
+        )
+    }
+
+    private func addWatchAccountHeaderContent(
+        withCollectibleCount count: Int,
+        to snapshot: inout Snapshot
+    ) {
+        let headerItem: CollectibleListItem = .watchAccountHeader(
+            ManagementItemViewModel(
+                .collectible(
+                    count: count,
+                    isWatchAccountDisplay: true
+                )
+            )
+        )
+
+        snapshot.appendSections([.header])
+        snapshot.appendItems(
+            [headerItem],
+            toSection: .header
+        )
     }
 
     private func deliverSnapshot(
@@ -597,7 +650,7 @@ extension CollectibleListLocalDataController {
                 return true
             }
 
-            let matchingCollectibleAsset = account.collectibleAssets.first(
+            let matchingCollectibleAsset = account.collectibleAssets?.first(
                 matching: (\.id, pendingSentAccountAssetPair.asset.id)
             )
             return (matchingCollectibleAsset?.isOwned ?? false)

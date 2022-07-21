@@ -16,10 +16,12 @@
 //  AccountNameViewModel.swift
 
 import UIKit
+import MacaroonUIKit
+import MacaroonURLImage
 
 final class AccountNameViewModel {
     private(set) var accountType: AccountType
-    private(set) var image: UIImage?
+    private(set) var image: ImageSource?
     private(set) var name: String?
     
     init(account: Account, hasImage: Bool = true) {
@@ -32,6 +34,12 @@ final class AccountNameViewModel {
         accountType = .standard
         bindImage(from: contact, with: hasImage)
         bindName(from: contact, with: hasImage)
+    }
+
+    init(nameService: NameService) {
+        accountType = .standard
+        bindName(from: nameService)
+        bindImage(from: nameService)
     }
 }
 
@@ -74,5 +82,16 @@ extension AccountNameViewModel {
         }
 
         name = contact.name.unwrap(or: contactAddress.shortAddressDisplay)
+    }
+}
+
+/// <mark> NameService
+extension AccountNameViewModel {
+    private func bindName(from nameService: NameService) {
+        name = nameService.name
+    }
+
+    private func bindImage(from nameService: NameService) {
+        image = PNGImageSource(url: URL(string: nameService.service.logo))
     }
 }
