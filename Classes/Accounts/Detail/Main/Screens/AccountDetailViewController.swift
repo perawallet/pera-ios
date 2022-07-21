@@ -507,7 +507,15 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+        let dataController = ManageAssetsListLocalDataController(
+            account: accountHandle.value,
+            sharedDataController: sharedDataController
+        )
+
+        let controller = open(
+            .removeAsset(dataController: dataController),
+            by: .present
+        ) as? ManageAssetsViewController
         controller?.delegate = self
     }
 }
