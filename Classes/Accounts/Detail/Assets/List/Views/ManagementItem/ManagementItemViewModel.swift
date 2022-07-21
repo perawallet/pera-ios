@@ -62,8 +62,7 @@ extension ManagementItemViewModel {
                     "title-plus-collectible-singular-count"
                         .localized(params: "\(count)")
                         .bodyMedium(
-                            lineBreakMode: .byTruncatingTail,
-                            hasMultilines: false
+                            lineBreakMode: .byTruncatingTail
                         )
                 )
                 return

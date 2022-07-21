@@ -87,7 +87,7 @@ final class CollectibleListLocalDataController:
 
     deinit {
         sharedDataController.remove(self)
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 }
 

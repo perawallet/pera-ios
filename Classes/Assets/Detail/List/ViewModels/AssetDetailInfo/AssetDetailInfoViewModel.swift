@@ -54,7 +54,7 @@ extension AssetDetailInfoViewModel {
     mutating func bindTitle() {
         title = "accounts-transaction-your-balance"
             .localized
-            .bodyRegular(hasMultilines: false)
+            .bodyRegular()
     }
 
     mutating func bindPrimaryValue(
