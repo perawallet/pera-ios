@@ -12,25 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetItem.swift
+//   ALGAssetItem.swift
 
 import Foundation
 
-final class AssetItem: ALGAssetItem {
-    let asset: Asset
-    let currency: CurrencyProvider
-    let currencyFormatter: CurrencyFormatter
-    let currencyFormattingContext: CurrencyFormattingContext?
-
-    init(
-        asset: Asset,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter,
-        currencyFormattingContext: CurrencyFormattingContext? = nil
-    ) {
-        self.asset = asset
-        self.currency = currency
-        self.currencyFormatter = currencyFormatter
-        self.currencyFormattingContext = currencyFormattingContext
-    }
+protocol ALGAssetItem: AnyObject {
+    var currency: CurrencyProvider { get }
+    var currencyFormatter: CurrencyFormatter { get }
+    var currencyFormattingContext: CurrencyFormattingContext? { get }
 }

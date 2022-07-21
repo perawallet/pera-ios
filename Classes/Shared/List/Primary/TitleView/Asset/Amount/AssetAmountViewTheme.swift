@@ -12,25 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetItem.swift
+//   AssetAmountViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-final class AssetItem: ALGAssetItem {
-    let asset: Asset
-    let currency: CurrencyProvider
-    let currencyFormatter: CurrencyFormatter
-    let currencyFormattingContext: CurrencyFormattingContext?
+struct AssetAmountViewTheme: PrimaryTitleViewTheme {
+    var title: TextStyle
+    var icon: ImageStyle?
+    var subtitle: TextStyle
 
-    init(
-        asset: Asset,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter,
-        currencyFormattingContext: CurrencyFormattingContext? = nil
-    ) {
-        self.asset = asset
-        self.currency = currency
-        self.currencyFormatter = currencyFormatter
-        self.currencyFormattingContext = currencyFormattingContext
+    var iconContentEdgeInsets: LayoutOffset?
+    var spacingBetweenTitleAndSubtitle: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        title = [
+            .textColor(AppColors.Components.Text.main),
+        ]
+        icon = nil
+        subtitle = [
+            .textColor(AppColors.Components.Text.gray)
+        ]
+
+        iconContentEdgeInsets = nil
+        spacingBetweenTitleAndSubtitle = 0
     }
 }
