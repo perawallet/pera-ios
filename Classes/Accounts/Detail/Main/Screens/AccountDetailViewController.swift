@@ -176,17 +176,6 @@ extension AccountDetailViewController {
 }
 
 extension AccountDetailViewController: TransactionOptionsScreenDelegate {
-    func transactionOptionsScreenDidAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
-        transactionOptionsScreen.dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.openAddAssetScreen()
-        }
-    }
-
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
