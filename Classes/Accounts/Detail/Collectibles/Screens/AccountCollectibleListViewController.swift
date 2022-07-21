@@ -206,7 +206,7 @@ extension AccountCollectibleListViewController {
         additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 
-    private func setAccountActionsMenuActionViewVisible(
+    private func setOptInActionViewVisible(
         _ visible: Bool
     ) {
         if let animator =  runningOptInActionViewVisibilityAnimator,
