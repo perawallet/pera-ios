@@ -90,8 +90,7 @@ extension HomeAPIDataController {
         case .didBecomeIdle:
             deliverInitialUpdates()
         case .didStartRunning(let isFirst):
-            if isFirst ||
-               lastSnapshot == nil {
+            if isFirst || lastSnapshot == nil {
                 deliverInitialUpdates()
             }
         case .didFinishRunning:

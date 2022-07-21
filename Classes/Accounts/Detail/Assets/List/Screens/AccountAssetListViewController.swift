@@ -106,10 +106,7 @@ final class AccountAssetListViewController:
                 self.listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
-                ) { [weak self] in
-                    guard let self = self else { return }
-
-                    self.updateUIWhenListDidReload()
+                ) {
                     updates.completion?()
                 }
             }
@@ -153,10 +150,6 @@ extension AccountAssetListViewController {
         updateListWhenViewDidLayoutSubviews()
     }
 
-    private func updateUIWhenListDidReload() {
-        updateListBackgroundWhenListDidReload()
-    }
-
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
     }
@@ -177,17 +170,22 @@ extension AccountAssetListViewController {
         }
     }
 
-    private func updateListBackgroundWhenListDidReload() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
     private func updateListBackgroundWhenListDidScroll() {
         updateListBackgroundWhenViewDidLayoutSubviews()
     }
 
     private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        /// <note>
+        /// 150/250 is a number smaller than the total height of the total portfolio and the quick
+        /// actions menu cells, and big enough to cover the background area when the system
+        /// triggers auto-scrolling to the top because of the applying snapshot (The system just
+        /// does it if the user pulls down the list extending the bounds of the content even if
+        /// there isn't anything to update.)
+        let thresholdHeight: CGFloat = accountHandle.value.isWatchAccount() ? 150 : 250
+        let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
+
         listBackgroundView.snp.updateConstraints {
-            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+            $0.fitToHeight(max(preferredHeight, 0))
         }
     }
 
