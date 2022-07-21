@@ -2235,6 +2235,12 @@
 		2BB8484627E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8484527E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift */; };
 		2BB8484727E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8484527E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift */; };
 		2BB8484827E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8484527E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift */; };
+		2BB860FC2889500D0026AF60 /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FB2889500D0026AF60 /* MailComposer.swift */; };
+		2BB860FD2889500D0026AF60 /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FB2889500D0026AF60 /* MailComposer.swift */; };
+		2BB860FE2889500D0026AF60 /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FB2889500D0026AF60 /* MailComposer.swift */; };
+		2BB86100288988810026AF60 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FF288988810026AF60 /* Mail.swift */; };
+		2BB86101288988810026AF60 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FF288988810026AF60 /* Mail.swift */; };
+		2BB86102288988810026AF60 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB860FF288988810026AF60 /* Mail.swift */; };
 		2BB93BA925BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
 		2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
 		2BB93BAB25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
@@ -5747,6 +5753,8 @@
 		2BB8483B27E90B9A004F2E39 /* CollectibleMediaErrorViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaErrorViewTheme.swift; sourceTree = "<group>"; };
 		2BB8484027E90BC5004F2E39 /* CollectibleMediaErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaErrorCell.swift; sourceTree = "<group>"; };
 		2BB8484527E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaErrorViewModel.swift; sourceTree = "<group>"; };
+		2BB860FB2889500D0026AF60 /* MailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposer.swift; sourceTree = "<group>"; };
+		2BB860FF288988810026AF60 /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
 		2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataBuilder.swift; sourceTree = "<group>"; };
 		2BB93BB025BEE6A5001F1D6C /* TransactionDataBuildable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataBuildable.swift; sourceTree = "<group>"; };
 		2BB93BBC25BEF338001F1D6C /* AddAssetTransactionDataBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssetTransactionDataBuilder.swift; sourceTree = "<group>"; };
@@ -8321,6 +8329,8 @@
 			isa = PBXGroup;
 			children = (
 				2B54DC872887E5200023F6DD /* MailComposing.swift */,
+				2BB860FB2889500D0026AF60 /* MailComposer.swift */,
+				2BB860FF288988810026AF60 /* Mail.swift */,
 			);
 			path = MailCompose;
 			sourceTree = "<group>";
@@ -17015,6 +17025,7 @@
 				2BB93BD725BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */,
 				2B83D05526C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
+				2BB860FE2889500D0026AF60 /* MailComposer.swift in Sources */,
 				D4D09B7127EE43B900DEEECA /* SendCollectibleView.swift in Sources */,
 				2B88F50C27E2ADBE00E6E296 /* CollectibleMediaImagePreviewView.swift in Sources */,
 				D47C4AB32791BEA90012D7A6 /* NoInternetConnectionViewModel.swift in Sources */,
@@ -17455,6 +17466,7 @@
 				F0431F2C28778D900004CB7E /* HomePortfolioNavigationViewModel.swift in Sources */,
 				2BB0B13A278343F800A16494 /* AssetSearchListLayout.swift in Sources */,
 				2B4334AE27C44CA000A3D9D6 /* CollectibleAsset.swift in Sources */,
+				2BB86102288988810026AF60 /* Mail.swift in Sources */,
 				D479568B2769D536003766D2 /* WCSessionItemViewTheme.swift in Sources */,
 				2B43349F27BDB23400A3D9D6 /* AssetTransactionHistoryLoadingViewTheme.swift in Sources */,
 				2BA4B3E42673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
@@ -18607,6 +18619,7 @@
 				2B2DF29128103499008BC52D /* CurrencySelectionListLayout.swift in Sources */,
 				2B0F62A524EC129D00DA22A6 /* Sequence+AttributedString.swift in Sources */,
 				95E77550276DEFBE004E13F2 /* TransactionResultScreen+Theme.swift in Sources */,
+				2BB860FD2889500D0026AF60 /* MailComposer.swift in Sources */,
 				2BB350BE2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				D4B1F5A22783BB30002D80FA /* AlgosDetailInfoViewCell.swift in Sources */,
 				2BD36DFD2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
@@ -19047,6 +19060,7 @@
 				F0431F2B28778D900004CB7E /* HomePortfolioNavigationViewModel.swift in Sources */,
 				2B0F631F24EC129D00DA22A6 /* LocalAuthenticator.swift in Sources */,
 				2B4334A027BDB23500A3D9D6 /* AssetTransactionHistoryLoadingViewTheme.swift in Sources */,
+				2BB86101288988810026AF60 /* Mail.swift in Sources */,
 				2BA4B3E32673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				D4490B1D27FE168100B271EB /* SelectionValue.swift in Sources */,
 				2BCCB5BB27D755CA00C5E497 /* AssetPreviewWithActionViewTheme.swift in Sources */,
@@ -20199,6 +20213,7 @@
 				D401293426D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */,
 				17CADCB1285A16D6001D19A8 /* AccountAssetAscendingAmountAlgorithm.swift in Sources */,
 				2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */,
+				2BB860FC2889500D0026AF60 /* MailComposer.swift in Sources */,
 				2B83D05326C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				2BB93BD525BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
@@ -20639,6 +20654,7 @@
 				F0431F2A28778D900004CB7E /* HomePortfolioNavigationViewModel.swift in Sources */,
 				2BB0B138278343F800A16494 /* AssetSearchListLayout.swift in Sources */,
 				D42009BA27BBC29B00390C4C /* AssetTransactionHistoryLoadingViewTheme.swift in Sources */,
+				2BB86100288988810026AF60 /* Mail.swift in Sources */,
 				D4490B1C27FE168100B271EB /* SelectionValue.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
 				2BCCB5BA27D755CA00C5E497 /* AssetPreviewWithActionViewTheme.swift in Sources */,

@@ -1106,3 +1106,7 @@
 "inner-txns-plural-count" = "%@ inner txns";
 "inner-transaction-singular-count" = "1 Inner Transaction";
 "inner-transaction-plural-count" = "%@ Inner Transactions";
+
+// MARK: Mail
+"mail-report-address" = "verification@perawallet.app";
+"mail-report-subject" = "ASA Report: %d";

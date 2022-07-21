@@ -12,16 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MailComposing.swift
+//   Mail.swift
 
 import Foundation
-import MessageUI
 
-protocol MailComposing {
-    func configureMail(for type: MailType)
-    func present(from viewController: UIViewController)
-}
+struct Mail {
+    let subject: String?
+    let message: String?
+    let recipients: [String]?
 
-enum MailType {
-    case report(assetId: AssetID)
+    init(_ type: MailType) {
+        switch type {
+        case .report(let assetId):
+            self.subject = "mail-report-subject".localized(params: assetId)
+            self.recipients = ["mail-report-address".localized]
+            self.message = nil
+        }
+    }
 }
