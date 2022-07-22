@@ -50,21 +50,12 @@ struct CollectibleListInfoWithFilterViewTheme:
 
 extension CollectibleListInfoWithFilterViewTheme {
     private static func getFilterActionTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-filter-selection-title"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+                .bodyMedium(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

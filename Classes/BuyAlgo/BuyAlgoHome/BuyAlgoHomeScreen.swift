@@ -39,7 +39,7 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     override func prepareLayout() {
