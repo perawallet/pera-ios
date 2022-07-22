@@ -130,7 +130,7 @@ extension AccountAssetListLayout {
         case .quickActions:
             return UIEdgeInsets(top: 0, left: 0, bottom: 36, right: 0)
         case .assets:
-            return UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         case .portfolio:
             return UIEdgeInsets(top: 0, left: 0, bottom: isWatchAccount ? 36 : 0, right: 0)
         default:
