@@ -32,11 +32,10 @@ struct CurrencySelectionViewModel: ViewModel {
 
 extension CurrencySelectionViewModel {
     private mutating func bindTitle() {
-        self.title = "settings-currency-title"
+        self.title =
+        "settings-currency-title"
             .localized
-            .bodyMedium(
-                hasMultilines: false
-            )
+            .bodyMedium()
     }
 
     private mutating func bindDescription(

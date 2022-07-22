@@ -123,9 +123,8 @@ final class HomeViewController:
 
                 self.listDataSource.apply(
                     updates.snapshot,
-                    animatingDifferences: self.isViewAppeared
+                    animatingDifferences: true
                 )
-                self.updateUIWhenListDidReload()
 
                 self.presentCopyAddressStoryIfNeeded()
             }
@@ -210,10 +209,6 @@ extension HomeViewController {
         updateListBackgroundWhenViewDidLayoutSubviews()
     }
 
-    private func updateUIWhenListDidReload() {
-        updateListBackgroundWhenListDidReload()
-    }
-
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
     }
@@ -234,17 +229,37 @@ extension HomeViewController {
         }
     }
 
-    private func updateListBackgroundWhenListDidReload() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
     private func updateListBackgroundWhenListDidScroll() {
         updateListBackgroundWhenViewDidLayoutSubviews()
     }
 
     private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        /// <note>
+        /// 250 is a number smaller than the total height of the total portfolio and the quick
+        /// actions menu cells, and big enough to cover the background area when the system
+        /// triggers auto-scrolling to the top because of the applying snapshot (The system just
+        /// does it if the user pulls down the list extending the bounds of the content even if
+        /// there isn't anything to update.)
+        let preferredHeight = 250 - listView.contentOffset.y
+
         listBackgroundView.snp.updateConstraints {
-            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+            $0.fitToHeight(max(preferredHeight, 0))
+        }
+    }
+
+    private func setListBackgroundVisible(
+        _ isVisible: Bool
+    ) {
+        let isHidden = !isVisible
+
+        if listBackgroundView.isHidden == isHidden {
+            return
+        }
+
+        listBackgroundView.isHidden = isHidden
+
+        if !isHidden {
+            updateListBackgroundWhenViewDidLayoutSubviews()
         }
     }
 
@@ -412,7 +427,8 @@ extension HomeViewController {
                     guard let self = self else { return }
 
                     switch event {
-                    case .didComplete: self.dataController.reload()
+                    case .didComplete:
+                        self.dataController.reload()
                     }
                 }
             }
@@ -526,7 +542,7 @@ extension HomeViewController {
         }
 
         copyAddressDisplayStore.increaseAppOpenCount()
-        
+
         let eventHandler: CopyAddressStoryScreen.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -630,12 +646,17 @@ extension HomeViewController {
         case .empty(let item):
             switch item {
             case .loading:
+                setListBackgroundVisible(true)
+
                 let loadingCell = cell as? HomeLoadingCell
                 loadingCell?.startAnimating()
             case .noContent:
+                setListBackgroundVisible(false)
                 linkInteractors(cell as! NoContentWithActionCell)
             }
         case .portfolio(let item):
+            setListBackgroundVisible(true)
+
             switch item {
             case .portfolio(let portfolioItem):
                 linkInteractors(
@@ -731,13 +752,49 @@ extension HomeViewController {
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAddress) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyAddress(account)
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
     }
 }
 
