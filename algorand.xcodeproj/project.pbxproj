@@ -4285,21 +4285,21 @@
 		D4BF4A1C26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */; };
 		D4BF4A1D26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */; };
 		D4BF4A1E26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */; };
-		D4BF4A2426F4F6C5009B53D8 /* AssetImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */; };
-		D4BF4A2526F4F6C5009B53D8 /* AssetImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */; };
-		D4BF4A2626F4F6C5009B53D8 /* AssetImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */; };
-		D4BF4A2826F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */; };
-		D4BF4A2926F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */; };
-		D4BF4A2A26F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */; };
+		D4BF4A2426F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* PrimaryImageView.swift */; };
+		D4BF4A2526F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* PrimaryImageView.swift */; };
+		D4BF4A2626F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2326F4F6C5009B53D8 /* PrimaryImageView.swift */; };
+		D4BF4A2826F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */; };
+		D4BF4A2926F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */; };
+		D4BF4A2A26F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */; };
 		D4C19D4E273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
 		D4C19D4F273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
 		D4C19D50273E9A0200AFDBCC /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */; };
 		D4C3BD43278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */; };
 		D4C3BD44278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */; };
 		D4C3BD45278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */; };
-		D4C3BD47278CE75300E898FD /* AssetImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */; };
-		D4C3BD48278CE75300E898FD /* AssetImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */; };
-		D4C3BD49278CE75300E898FD /* AssetImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */; };
+		D4C3BD47278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
+		D4C3BD48278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
+		D4C3BD49278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
 		D4C3BD4B278CEB4100E898FD /* AssetDetailTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */; };
 		D4C3BD4C278CEB4100E898FD /* AssetDetailTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */; };
 		D4C3BD4D278CEB4100E898FD /* AssetDetailTitleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */; };
@@ -6493,11 +6493,11 @@
 		D4BC640A26DE3D2C000CFD28 /* ButtonPrimaryTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPrimaryTheme.swift; sourceTree = "<group>"; };
 		D4BC640E26DE4844000CFD28 /* ButtonSecondaryTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSecondaryTheme.swift; sourceTree = "<group>"; };
 		D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchAccountAdditionViewModel.swift; sourceTree = "<group>"; };
-		D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetImageView.swift; sourceTree = "<group>"; };
-		D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetImageViewTheme.swift; sourceTree = "<group>"; };
+		D4BF4A2326F4F6C5009B53D8 /* PrimaryImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageView.swift; sourceTree = "<group>"; };
+		D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewTheme.swift; sourceTree = "<group>"; };
 		D4C19D4D273E9A0200AFDBCC /* PassphraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseView.swift; sourceTree = "<group>"; };
 		D4C3BD42278CE39E00E898FD /* AssetDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleView.swift; sourceTree = "<group>"; };
-		D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetImageViewModel.swift; sourceTree = "<group>"; };
+		D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryImageViewModel.swift; sourceTree = "<group>"; };
 		D4C3BD4A278CEB4100E898FD /* AssetDetailTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewTheme.swift; sourceTree = "<group>"; };
 		D4C45BEE2726B59D00F4AE31 /* ContactDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationView.swift; sourceTree = "<group>"; };
@@ -11834,11 +11834,27 @@
 		2BC636172889BAA700507AEA /* ListItemView */ = {
 			isa = PBXGroup;
 			children = (
+				2BC636202889D5A500507AEA /* Asset */,
+				2BC636212889D5A900507AEA /* Main */,
+			);
+			path = ListItemView;
+			sourceTree = "<group>";
+		};
+		2BC636202889D5A500507AEA /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
+		2BC636212889D5A900507AEA /* Main */ = {
+			isa = PBXGroup;
+			children = (
 				2BC636132889BA9E00507AEA /* PrimaryListItemView.swift */,
 				2BC636182889BACC00507AEA /* PrimaryListItemViewModel.swift */,
 				2BC6361C2889BAD900507AEA /* PrimaryListItemViewTheme.swift */,
 			);
-			path = ListItemView;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		2BCBAAAA27426E8C00B3A746 /* Address */ = {
@@ -14899,9 +14915,9 @@
 		D4C51B4D27D0DD0D00F21981 /* AssetImage */ = {
 			isa = PBXGroup;
 			children = (
-				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
-				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
-				D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */,
+				D4BF4A2326F4F6C5009B53D8 /* PrimaryImageView.swift */,
+				D4BF4A2726F4FC0D009B53D8 /* PrimaryImageViewTheme.swift */,
+				D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */,
 			);
 			path = AssetImage;
 			sourceTree = "<group>";
@@ -16226,7 +16242,7 @@
 				95BFE7942840BC9300A972A5 /* HomeQuickActionsViewTheme.swift in Sources */,
 				D4E34CCC27F87EED00B0C3F4 /* CollectiblesFilterSelectionViewControllerTheme.swift in Sources */,
 				2B0AD8342757DEB200F83660 /* SingleLineTitleActionView.swift in Sources */,
-				D4BF4A2626F4F6C5009B53D8 /* AssetImageView.swift in Sources */,
+				D4BF4A2626F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */,
 				D459E28327DDF47B00F7FC33 /* ApproveCollectibleTransactionViewController.swift in Sources */,
 				2B0F5EF824DD507000DA22A6 /* RekeyConfirmationViewController.swift in Sources */,
 				D48FDFE927CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */,
@@ -16699,7 +16715,7 @@
 				D44265CA277481D00094E2CA /* TransactionHistoryContextViewTheme.swift in Sources */,
 				2B9F063F24B5E4A7006880F0 /* TransactionEvent.swift in Sources */,
 				D44EEEEC26D54740009998FA /* BannerInfoViewModel.swift in Sources */,
-				D4C3BD49278CE75300E898FD /* AssetImageViewModel.swift in Sources */,
+				D4C3BD49278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */,
 				F011FCFA28593B6200E42EA2 /* HomeAccountsHeader.swift in Sources */,
 				2BD36DCF267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				D48FDFF527CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift in Sources */,
@@ -16776,7 +16792,7 @@
 				95AF1C7427B1307A001AB131 /* TransactionHistoryLoadingCell.swift in Sources */,
 				D499D28C27C7DA8700641FF5 /* CollectibleListItemViewTheme.swift in Sources */,
 				2B09171627B6AC9D00187246 /* PeraInroductionViewTheme.swift in Sources */,
-				D4BF4A2A26F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */,
+				D4BF4A2A26F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */,
 				F0DB414B27936DF000EA437D /* AccountPreviewCell.swift in Sources */,
 				95BB6C2A27A51B3C00F2A2F1 /* TransactionCurrencyAmountInformationViewModel.swift in Sources */,
 				F0DB418927948DC300EA437D /* ListActionView.swift in Sources */,
@@ -17789,7 +17805,7 @@
 				F0B5B0D427A1CBE100BC3E2D /* ALGAppLaunchController.swift in Sources */,
 				D479D0F526D4F64500110E04 /* BannerController.swift in Sources */,
 				2B1ADD782511823D008B205E /* DeviceDeletionDraft.swift in Sources */,
-				D4BF4A2526F4F6C5009B53D8 /* AssetImageView.swift in Sources */,
+				D4BF4A2526F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */,
 				2B0F618A24EC129D00DA22A6 /* SwiftDate+Region.swift in Sources */,
 				2B0F7E0025D6DBE800B16B85 /* WelcomeView.swift in Sources */,
 				D48FDFCE27CEBA1400C39FC7 /* TitleView.swift in Sources */,
@@ -17829,7 +17845,7 @@
 				95BFE7932840BC9300A972A5 /* HomeQuickActionsViewTheme.swift in Sources */,
 				F0DB418027945C1900EA437D /* PortfolioCalculationInfoView.swift in Sources */,
 				D45C47FC277E1737001853A3 /* RangeSelectionViewModel.swift in Sources */,
-				D4C3BD48278CE75300E898FD /* AssetImageViewModel.swift in Sources */,
+				D4C3BD48278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */,
 				2B0F619624EC129D00DA22A6 /* TransactionAmountInformationView.swift in Sources */,
 				D4CCA1D627241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */,
 				95D11CFD2770BDC8001B2C37 /* SelectAccountViewTheme.swift in Sources */,
@@ -18348,7 +18364,7 @@
 				D4A70AF3287835C000FB52B0 /* AlgoInnerTransactionPreviewViewModel.swift in Sources */,
 				D4E34CCB27F87EED00B0C3F4 /* CollectiblesFilterSelectionViewControllerTheme.swift in Sources */,
 				951E884227565D3A00FFEB69 /* SelectAccountViewController+Theme.swift in Sources */,
-				D4BF4A2926F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */,
+				D4BF4A2926F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */,
 				2BF8120525E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
 				2B0F623524EC129D00DA22A6 /* TransactionCustomRangeSelectionViewController.swift in Sources */,
 				954DFF24279438DA0066FFF6 /* WCUnsignedRequestScreen+Theme.swift in Sources */,
@@ -19415,7 +19431,7 @@
 				2BCBBAFF24AB9B49002CD56F /* TransactionCustomRangeSelectionView.swift in Sources */,
 				2B7A1F6127DE5EBB0010F52E /* CollectiblePropertyView.swift in Sources */,
 				2BAD559723A29C9C0037079F /* String+Empty.swift in Sources */,
-				D4BF4A2426F4F6C5009B53D8 /* AssetImageView.swift in Sources */,
+				D4BF4A2426F4F6C5009B53D8 /* PrimaryImageView.swift in Sources */,
 				2B7A1F2B27DBD3B80010F52E /* CollectibleDetailLayout.swift in Sources */,
 				D4FFDCB727E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */,
 				95BB6C2427A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
@@ -20000,7 +20016,7 @@
 				D421178826D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
 				2BB021E9224E828E0039D78A /* UICollectionView+Additions.swift in Sources */,
 				D4858BEF27D16ECC00FE1A97 /* PreviewLoadingViewTheme.swift in Sources */,
-				D4BF4A2826F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */,
+				D4BF4A2826F4FC0D009B53D8 /* PrimaryImageViewTheme.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
 				2BB64BF02404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
 				2BF8120425E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
@@ -20419,7 +20435,7 @@
 				2B4FD1FE27C63F740097AB65 /* BuyAlgoTransactionViewTheme.swift in Sources */,
 				D4155E8D276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				2B233B4527C452A000D16B82 /* BuyAlgoHomeView.swift in Sources */,
-				D4C3BD47278CE75300E898FD /* AssetImageViewModel.swift in Sources */,
+				D4C3BD47278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */,
 				95189D852779CC7300094107 /* SendTransactionPreviewScreen.swift in Sources */,
 				2B79A140231580AC00766021 /* TransactionController.swift in Sources */,
 				2BF0FB37253D156300D704D5 /* AssetDetailTitleViewModel.swift in Sources */,

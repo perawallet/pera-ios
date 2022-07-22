@@ -22,7 +22,7 @@ final class PrimaryListItemView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = ImageView()
+    private lazy var iconView = PrimaryImageView()
     private lazy var contentView = UIView()
     private lazy var primaryTitleView = PrimaryTitleView()
     private lazy var secondaryTitleView = PrimaryTitleView()
@@ -48,11 +48,10 @@ extension PrimaryListItemView {
         _ theme: PrimaryListItemViewTheme
     ) {
         if let iconStyle = theme.icon {
-            iconView.customizeAppearance(iconStyle)
+            iconView.customize(iconStyle)
         }
 
         addSubview(iconView)
-        iconView.contentEdgeInsets = theme.iconContentEdgeInsets ?? (0, 0)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.leading == 0
@@ -110,7 +109,7 @@ extension PrimaryListItemView {
     func bindData(
         _ viewModel: PrimaryListItemViewModel?
     ) {
-        iconView.image = viewModel?.icon?.uiImage
+        iconView.bindData(viewModel?.imageViewModel)
         primaryTitleView.bindData(viewModel?.primaryTitleViewModel)
         secondaryTitleView.bindData(viewModel?.secondaryTitleViewModel)
     }
@@ -136,16 +135,14 @@ extension PrimaryListItemView {
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
-        let iconSize = viewModel.icon?.uiImage.size ?? .zero
         let titleHeight = max(primaryTitleViewSize.height, secondaryTitleViewSize.height)
-        let preferredHeight = max(iconSize.height, titleHeight)
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+        return CGSize((size.width, min(titleHeight.ceil(), size.height)))
     }
 }
 
 extension PrimaryListItemView {
     func prepareForReuse() {
-        iconView.image = nil
+        iconView.prepareForReuse()
         primaryTitleView.prepareForReuse()
         secondaryTitleView.prepareForReuse()
     }

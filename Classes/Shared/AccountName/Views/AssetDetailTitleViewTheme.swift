@@ -21,7 +21,7 @@ struct AssetDetailTitleViewTheme: LayoutSheet, StyleSheet {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
     var titleLabel: TextStyle
-    var assetImageViewTheme: AssetImageViewTheme
+    var assetImageViewTheme: PrimaryImageViewTheme
 
     init(_ family: LayoutFamily) {
         self.imageSize = (24, 24)

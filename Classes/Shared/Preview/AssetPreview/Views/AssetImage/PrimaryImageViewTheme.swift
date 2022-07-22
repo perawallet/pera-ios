@@ -13,16 +13,20 @@
 // limitations under the License.
 
 //
-//   AssetImageViewTheme.swift
+//   PrimaryImageViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 import MacaroonURLImage
 
-struct AssetImageViewTheme:
+protocol PrimaryImageViewTheme:
     LayoutSheet,
     StyleSheet {
+    var image: URLImageViewStyleLayoutSheet { get }
+}
+
+struct AssetImageViewTheme: PrimaryImageViewTheme {
     let image: URLImageViewStyleLayoutSheet
 
     init(_ family: LayoutFamily) {

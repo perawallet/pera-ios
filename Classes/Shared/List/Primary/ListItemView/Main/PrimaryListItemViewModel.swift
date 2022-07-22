@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PrimaryListItemViewTheme.swift
+//   PrimaryListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol PrimaryListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: ImageStyle? { get }
-    var primaryTitle: PrimaryTitleViewTheme { get }
-    var secondaryTitle: PrimaryTitleViewTheme { get }
-
-    var iconContentEdgeInsets: LayoutOffset? { get }
-    var contentHorizontalPadding: LayoutMetric { get }
-    var contentMinWidthRatio: LayoutMetric { get }
-    var minSpacingBetweenTitles: LayoutMetric { get }
+protocol PrimaryListItemViewModel: ViewModel {
+    var imageViewModel: PrimaryImageViewModel?  { get }
+    var primaryTitleViewModel: PrimaryTitleViewModel? { get }
+    var secondaryTitleViewModel: PrimaryTitleViewModel? { get }
 }

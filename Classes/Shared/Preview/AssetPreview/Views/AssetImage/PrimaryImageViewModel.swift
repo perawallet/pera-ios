@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   AssetImageViewModel.swift
+//   PrimaryImageViewModel.swift
 
 import Foundation
 import UIKit
@@ -21,12 +21,12 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-protocol AssetImageViewModel {
+protocol PrimaryImageViewModel {
     var imageSource: PNGImageSource? { get }
     var image: UIImage? { get }
 }
 
-extension AssetImageViewModel where Self: Hashable {
+extension PrimaryImageViewModel where Self: Hashable {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -43,7 +43,7 @@ extension AssetImageViewModel where Self: Hashable {
     }
 }
 
-extension AssetImageViewModel {
+extension PrimaryImageViewModel {
     typealias TextAttributes = (font: CustomFont, lineHeightMultiplier: LayoutMetric)
     
     func getPlaceholder(
@@ -85,7 +85,7 @@ enum AssetImage {
 }
 
 struct AssetImageLargeViewModel:
-    AssetImageViewModel,
+    PrimaryImageViewModel,
     Hashable {
     private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
@@ -134,7 +134,7 @@ struct AssetImageLargeViewModel:
 }
 
 struct AssetImageSmallViewModel:
-    AssetImageViewModel,
+    PrimaryImageViewModel,
     Hashable {
     private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
