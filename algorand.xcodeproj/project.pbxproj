@@ -4981,6 +4981,9 @@
 		F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
 		F0E7445F27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
 		F0E7446027B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */; };
+		F0E80F71288A858000F00710 /* MnemonicsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E80F70288A858000F00710 /* MnemonicsParser.swift */; };
+		F0E80F72288A858000F00710 /* MnemonicsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E80F70288A858000F00710 /* MnemonicsParser.swift */; };
+		F0E80F73288A858000F00710 /* MnemonicsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E80F70288A858000F00710 /* MnemonicsParser.swift */; };
 		F0E8CCA22880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA32880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA42880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
@@ -6686,6 +6689,7 @@
 		F0E7444827B465D00063DD83 /* AlgoPriceAttributeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceAttributeViewTheme.swift; sourceTree = "<group>"; };
 		F0E7444C27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceChartTimeFrameSelectionViewModel.swift; sourceTree = "<group>"; };
 		F0E7445D27B672D70063DD83 /* AlgoPriceCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceCalculator.swift; sourceTree = "<group>"; };
+		F0E80F70288A858000F00710 /* MnemonicsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicsParser.swift; sourceTree = "<group>"; };
 		F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionCell.swift; sourceTree = "<group>"; };
 		F0E8CCA528814D3900398803 /* BaseAssetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAssetDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -13355,6 +13359,7 @@
 			children = (
 				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
 				D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */,
+				F0E80F70288A858000F00710 /* MnemonicsParser.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -17317,6 +17322,7 @@
 				2B3088E827FF6A690010AE49 /* AssetTitleItemCell.swift in Sources */,
 				2BB64BE42402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */,
 				F0DB416C27943C6D00EA437D /* PortfolioCalculationInfoViewController.swift in Sources */,
+				F0E80F73288A858000F00710 /* MnemonicsParser.swift in Sources */,
 				17CADC64283CBC6C001D19A8 /* CopyAddressStoryScreenTheme.swift in Sources */,
 				2BB64BED2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */,
 				2BF41C9826EBF81100300A2A /* ALGAPIBase.swift in Sources */,
@@ -18906,6 +18912,7 @@
 				2BF811AD25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */,
 				2B0F62FD24EC129D00DA22A6 /* LedgerDeviceListViewController.swift in Sources */,
 				17CADC63283CBC6C001D19A8 /* CopyAddressStoryScreenTheme.swift in Sources */,
+				F0E80F72288A858000F00710 /* MnemonicsParser.swift in Sources */,
 				2B0F62FE24EC129D00DA22A6 /* LedgerDeviceListViewModel.swift in Sources */,
 				F09E62A42767968300FEC701 /* ALGBlockOperationQueue.swift in Sources */,
 				2B0322F3269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
@@ -20495,6 +20502,7 @@
 				2BA4B3F9267819B20041586B /* WCSessionItemCell.swift in Sources */,
 				D4155E9A276CDCB200BCBFA4 /* AccountSelectionViewTheme.swift in Sources */,
 				2B58CE1927FBB9D500A95BB4 /* ManageAssetsListDataController.swift in Sources */,
+				F0E80F71288A858000F00710 /* MnemonicsParser.swift in Sources */,
 				2BB64BE32402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */,
 				2BF41C9626EBF81100300A2A /* ALGAPIBase.swift in Sources */,
 				D4CC28C92875A8A90082E038 /* InnerTransactionListTitleSupplementaryCell.swift in Sources */,
@@ -20712,7 +20720,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -20742,7 +20750,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -20771,7 +20779,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -20801,7 +20809,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -20832,7 +20840,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -20862,7 +20870,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21014,7 +21022,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -21045,7 +21053,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21202,7 +21210,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

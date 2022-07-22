@@ -49,7 +49,7 @@ class Router:
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
         
-        observeNotifications()
+        startObservingNotifications()
     }
     
     deinit {
@@ -584,8 +584,11 @@ class Router:
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
-        case let .removeAsset(account):
-            viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case let .removeAsset(dataController):
+            viewController = ManageAssetsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
             managementOptionsViewController.delegate = delegate
@@ -1178,7 +1181,7 @@ extension Router {
 }
 
 extension Router {
-    private func observeNotifications() {
+    private func startObservingNotifications() {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
