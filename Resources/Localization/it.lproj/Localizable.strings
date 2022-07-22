@@ -31,11 +31,14 @@
 /* (No Comment) */
 "account-select-clipboard-title" = "Incolla dagli Appunti";
 
-/* MARK: AccountSelect */
+/* (No Comment) */
 "account-select-header-accounts-title" = "I miei conti";
 
 /* (No Comment) */
 "account-select-header-contacts-title" = "Contatti";
+
+/* MARK: AccountSelect */
+"account-select-header-matched-accounts-title" = "Matched Accounts";
 
 /* (No Comment) */
 "account-select-header-search-title" = "Cerca o inserisci l'indirizzo del wallet";
@@ -236,10 +239,10 @@
 "asset-support-title" = "Il conto non accetta questo attivo";
 
 /* (No Comment) */
-"asset-support-your-add-message" = "Aggiungi questo attivo e riprova.";
+"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
 
 /* (No Comment) */
-"asset-support-your-add-title" = "I tuoi conti non contengono questo attivo";
+"asset-support-your-add-title" = "Your accounts don't contain this asset";
 
 /* MARK: Asset */
 "asset-title" = "Attivo";
@@ -252,6 +255,9 @@
 
 /* (No Comment) */
 "asset-you-already-own-message" = "Possiedi già questo attivo";
+
+/* (No Comment) */
+"assets-title" = "Assets";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "Mostra QR";
@@ -692,6 +698,21 @@
 "governance-banner-title" = "Il programma di governance di Algorand sta iniziando!";
 
 /* (No Comment) */
+"inner-transaction-plural-count" = "%@ Inner Transactions";
+
+/* (No Comment) */
+"inner-transaction-singular-count" = "1 Inner Transaction";
+
+/* MARK: Inner Transactions */
+"inner-transactions-title" = "Inner Transactions";
+
+/* (No Comment) */
+"inner-txns-plural-count" = "%@ inner txns";
+
+/* (No Comment) */
+"inner-txns-singular-count" = "1 inner txn";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Impossibile raggiungere il server, assicurati di essere connesso a Internet";
 
 /* (No Comment) */
@@ -1111,11 +1132,14 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
 
-/* (No Comment) */
+/* MARK: Number Abbreviation */
 "number-abbreviation-million" = "M";
 
-/* MARK: Number Abbreviation */
-"number-abbreviation-thousand" = "K";
+/* (No Comment) */
+"number-abbreviation-quadrillion" = "Qa";
+
+/* (No Comment) */
+"number-abbreviation-quintillion" = "Qi";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
@@ -1421,10 +1445,10 @@
 "recover-from-seed-verify-exist-error" = "Questo conto esiste già";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "The Watch Account has been added successfully.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nThe Watch Account has been added successfully.";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "Benvenuto in Pera Wallet!\n Il tuo conto è pronto per l'uso.";
@@ -1805,6 +1829,9 @@
 "title-alphabetically-z-to-a" = "Alphabetically Z to A";
 
 /* (No Comment) */
+"title-app-call" = "App Call";
+
+/* (No Comment) */
 "title-approve" = "Approva";
 
 /* (No Comment) */
@@ -2009,6 +2036,9 @@
 "title-show-all-detail" = "Mostra tutti i dettagli";
 
 /* (No Comment) */
+"title-show-more-assets" = "Show +%@ more assets";
+
+/* (No Comment) */
 "title-show-transaction-detail" = "Mostra dettagli transazione";
 
 /* (No Comment) */
@@ -2096,16 +2126,25 @@
 "transaction-detail-id-copied-title" = "ID copiato negli Appunti";
 
 /* (No Comment) */
+"transaction-detail-inner-transaction-title" = "Inner Transactions";
+
+/* (No Comment) */
 "transaction-detail-note" = "Nota";
 
 /* (No Comment) */
 "transaction-detail-note-copied" = "Note copied to clipboard";
 
 /* (No Comment) */
+"transaction-detail-parent-id" = "Parent Transaction ID";
+
+/* (No Comment) */
 "transaction-detail-pending" = "In sospeso";
 
 /* (No Comment) */
 "transaction-detail-pending-transactions" = "Transazioni in sospeso";
+
+/* (No Comment) */
+"transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
 
 /* (No Comment) */
 "transaction-detail-receive" = "Ricevi";
@@ -2121,6 +2160,9 @@
 
 /* (No Comment) */
 "transaction-detail-sender" = "Mittente";
+
+/* (No Comment) */
+"transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
 
 /* (No Comment) */
 "transaction-detail-status" = "Stato";
@@ -2180,10 +2222,19 @@
 "transaction-id-open-goalseeker" = "Apri in GoalSeeker";
 
 /* (No Comment) */
-"transaction-item-app-id-title" = "Application ID: #%d";
+"transaction-item-app-id-title" = "Application ID: %d";
+
+/* (No Comment) */
+"transaction-item-opt-in" = "Opt-In / Self Transfer";
 
 /* (No Comment) */
 "transaction-item-opt-out" = "Opt-Out";
+
+/* (No Comment) */
+"transaction-item-receive-opt-out" = "Receive (Opt-out)";
+
+/* (No Comment) */
+"transaction-item-self-transfer" = "Self Transfer";
 
 /* (No Comment) */
 "transaction-menu-copy-id" = "Copy ID";
