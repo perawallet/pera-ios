@@ -12,20 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PrimaryListItemViewTheme.swift
+//   AssetListItemCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-protocol PrimaryListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: PrimaryImageViewTheme? { get }
-    var primaryTitle: PrimaryTitleViewTheme { get }
-    var secondaryTitle: PrimaryTitleViewTheme { get }
+final class AssetListItemCell:
+    CollectionCell<PrimaryListItemView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
 
-    var contentHorizontalPadding: LayoutMetric { get }
-    var contentMinWidthRatio: LayoutMetric { get }
-    var minSpacingBetweenTitles: LayoutMetric { get }
+    static let theme = AssetListItemTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+
+        separatorStyle = .single(Self.theme.separator)
+    }
 }

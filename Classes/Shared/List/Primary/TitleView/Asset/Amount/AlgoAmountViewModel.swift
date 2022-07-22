@@ -17,7 +17,9 @@
 import Foundation
 import MacaroonUIKit
 
-struct AlgoAmountViewModel: PrimaryTitleViewModel {
+struct AlgoAmountViewModel:
+    PrimaryTitleViewModel,
+    Hashable {
     var title: EditText?
     var icon: Image?
     var subtitle: EditText?

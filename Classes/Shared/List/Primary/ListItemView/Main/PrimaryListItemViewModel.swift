@@ -22,3 +22,26 @@ protocol PrimaryListItemViewModel: ViewModel {
     var primaryTitleViewModel: PrimaryTitleViewModel? { get }
     var secondaryTitleViewModel: PrimaryTitleViewModel? { get }
 }
+
+extension PrimaryListItemViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(imageViewModel?.imageSource?.url)
+        hasher.combine(primaryTitleViewModel?.title)
+        hasher.combine(primaryTitleViewModel?.subtitle)
+        hasher.combine(secondaryTitleViewModel?.title)
+        hasher.combine(secondaryTitleViewModel?.subtitle)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.imageViewModel?.imageSource?.url == rhs.imageViewModel?.imageSource?.url &&
+        lhs.primaryTitleViewModel?.title == rhs.primaryTitleViewModel?.title &&
+        lhs.primaryTitleViewModel?.subtitle == rhs.primaryTitleViewModel?.subtitle &&
+        lhs.secondaryTitleViewModel?.title == rhs.secondaryTitleViewModel?.title &&
+        lhs.secondaryTitleViewModel?.subtitle == rhs.secondaryTitleViewModel?.subtitle
+    }
+}
