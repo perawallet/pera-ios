@@ -30,6 +30,34 @@ extension UIContextMenuConfiguration {
     }
 }
 
+extension UIContextMenuConfiguration {
+    convenience init(
+        identifier: NSCopying,
+        actionProvider: @escaping UIContextMenuActionProvider
+    ) {
+        self.init(
+            identifier: identifier,
+            previewProvider: nil,
+            actionProvider: actionProvider
+        )
+    }
+}
+
+extension UITargetedPreview {
+    convenience init(
+        view: UIView,
+        backgroundColor: UIColor
+    ) {
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = backgroundColor
+
+        self.init(
+            view: view,
+            parameters: parameters
+        )
+    }
+}
+
 extension UIMenu {
     convenience init(
         children: [UIMenuElement]

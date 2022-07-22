@@ -54,7 +54,7 @@ extension AlgosDetailInfoViewModel {
     mutating func bindTitle() {
         title = "accounts-transaction-your-balance"
             .localized
-            .bodyRegular(hasMultilines: false)
+            .bodyRegular()
     }
 
     mutating func bindPrimaryValue(
@@ -67,7 +67,7 @@ extension AlgosDetailInfoViewModel {
         currencyFormatter.currency = AlgoLocalCurrency()
 
         let text = currencyFormatter.format(amount)
-        primaryValue = text?.largeTitleMonoRegular(hasMultilines: false)
+        primaryValue = text?.largeTitleMonoRegular()
     }
 
     mutating func bindSecondaryValue(
@@ -91,7 +91,7 @@ extension AlgosDetailInfoViewModel {
             currencyFormatter.currency = fiatRawCurrency
 
             let text = currencyFormatter.format(amount)
-            secondaryValue = text?.bodyMonoRegular(hasMultilines: false)
+            secondaryValue = text?.bodyMonoRegular()
         } catch {
             secondaryValue = nil
         }
