@@ -15,6 +15,8 @@
 //
 //  AccountRecoverViewController.swift
 
+import Foundation
+import MacaroonUtils
 import UIKit
 
 final class AccountRecoverViewController: BaseScrollViewController {
@@ -54,6 +56,8 @@ final class AccountRecoverViewController: BaseScrollViewController {
         )
         return dataController
     }()
+
+    private lazy var mnemonicsParser = MnemonicsParser()
 
     private var recoverInputViews: [RecoverInputView] {
         return accountRecoverView.recoverInputViews
@@ -308,7 +312,34 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         charactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        return isValidMnemonicInput(string)
+        do {
+            let input = recoverInputView.input.someString
+            let newInput = input.replacingCharacters(
+                in: range,
+                with: string
+            )
+            let mnemonics = try mnemonicsParser.parse(newInput)
+
+            switch mnemonics {
+            case .zero:
+                return true
+            case .one:
+                return true
+            case .full(let words):
+                fillMnemonics(words)
+                recoverButton.isEnabled = true
+                return false
+            }
+        } catch {
+            /// <note>
+            /// Invalid copy/paste action for mnemonics.
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "recover-copy-error".localized
+            )
+
+            return false
+        }
     }
 }
 
@@ -321,42 +352,12 @@ extension AccountRecoverViewController {
 
         return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
     }
-
-    private func isValidMnemonicInput(_ string: String) -> Bool {
-        let mnemonics = string.split(separator: " ").map { String($0) }
-
-        if containsOneMnemonic(mnemonics) {
-            return string != " "
-        }
-
-        // If copied text is a valid mnemonc, fill automatically.
-        if isValidMnemonicCount(mnemonics) {
-            fillMnemonics(mnemonics)
-            recoverButton.isEnabled = true
-            return false
-        }
-
-        // Invalid copy/paste action for mnemonics.
-        bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "recover-copy-error".localized
-        )
-        return false
-    }
-
-    private func containsOneMnemonic(_ mnemonics: [String]) -> Bool {
-        return mnemonics.count <= 1
-    }
-
-    private func isValidMnemonicCount(_ mnemonics: [String]) -> Bool {
-        return mnemonics.count == accountRecoverView.constants.totalMnemonicCount
-    }
 }
 
 extension AccountRecoverViewController {
     private func getMnemonics() -> String? {
         let inputs = recoverInputViews.compactMap { $0.input }.filter { !$0.isEmpty }
-        if inputs.count == accountRecoverView.constants.totalMnemonicCount {
+        if inputs.count == Mnemonics.fullCount {
             return inputs.joined(separator: " ")
         }
         return nil
@@ -389,26 +390,26 @@ extension AccountRecoverViewController {
 
 extension AccountRecoverViewController {
     private func updateMnemonics(_ text: String) {
-        let filteredText = text.replacingOccurrences(of: ",", with: "")
-        let mnemonics = filteredText.split(separator: " ").map { String($0) }
+        do {
+            let mnemonics = try mnemonicsParser.parse(text)
 
-        if containsOneMnemonic(mnemonics) {
-            if let firstText = mnemonics[safe: 0],
-               !firstText.trimmed.isEmpty {
-                updateCurrentInputView(with: text)
+            switch mnemonics {
+            case .zero:
+                break
+            case .one(let word):
+                updateCurrentInputView(with: word)
+            case .full(let words):
+                fillMnemonics(words)
+                recoverButton.isEnabled = true
             }
-            return
+        } catch {
+            /// <note>
+            /// Invalid copy/paste action for mnemonics.
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "recover-copy-error".localized
+            )
         }
-
-        // If copied text is a valid mnemonic, fill automatically.
-        if isValidMnemonicCount(mnemonics) {
-            fillMnemonics(mnemonics)
-            recoverButton.isEnabled = true
-            return
-        }
-
-        // Invalid copy/paste action for mnemonics.
-        bannerController?.presentErrorBanner(title: "title-error".localized, message: "recover-copy-error".localized)
     }
 }
 

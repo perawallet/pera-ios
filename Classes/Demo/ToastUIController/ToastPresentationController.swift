@@ -17,10 +17,15 @@
 import Foundation
 import MacaroonToastUIKit
 import MacaroonUIKit
+import MacaroonUtils
 import SnapKit
 import UIKit
 
-final class ToastPresentationController: ToastUIPresentationController {
+final class ToastPresentationController:
+    ToastUIPresentationController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     convenience init(
         presentingView: UIView
     ) {
@@ -41,26 +46,37 @@ final class ToastPresentationController: ToastUIPresentationController {
         config.dismissingLayoutAttributes.alpha = 0
         config.dismissingLayoutAttributes.corner = 12
         config.presentingAnimationDuration = 0.353
-        config.presentingAnimationTimingParameters =
-            UISpringTimingParameters(mass: 1, stiffness: 528, damping: 34, initialVelocity: .zero)
+        config.presentingAnimationTimingParameters = UISpringTimingParameters(
+            mass: 1,
+            stiffness: 528,
+            damping: 34,
+            initialVelocity: .zero
+        )
         config.replacingAnimationDuration = config.presentingAnimationDuration
         config.dismissingAnimationDuration = config.presentingAnimationDuration
         config.dismissingAnimationTimingParameters = config.presentingAnimationTimingParameters
 
-        let layoutCalculator =
-            ToastUILayoutCalculator(config: config, presentingView: presentingView)
-        let animationController =
-            ToastUIAnimationController(
-                config: config,
-                presentingView: presentingView,
-                layoutCalculator: layoutCalculator
-            )
+        let layoutCalculator = ToastUILayoutCalculator(
+            config: config,
+            presentingView: presentingView
+        )
+        let animationController = ToastUIAnimationController(
+            config: config,
+            presentingView: presentingView,
+            layoutCalculator: layoutCalculator
+        )
 
         self.init(
             config: config,
             presentingView: presentingView,
             animationController: animationController
         )
+
+        startObservingNotifications()
+    }
+
+    deinit {
+        stopObservingNotifications()
     }
 }
 
@@ -91,5 +107,19 @@ extension ToastPresentationController {
         let view = ToastView()
         view.customize(theme)
         return view
+    }
+}
+
+extension ToastPresentationController {
+    private func startObservingNotifications() {
+        startObservingAppLifeCycleNotifications()
+    }
+
+    private func startObservingAppLifeCycleNotifications() {
+        observeWhenApplicationWillResignActive {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.dismiss()
+        }
     }
 }

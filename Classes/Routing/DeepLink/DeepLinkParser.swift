@@ -64,10 +64,13 @@ extension DeepLinkParser {
         }
         
         let draft = AlgoTransactionListing(
-            accountHandle: account,
-            isQuickActionButtonVisible: false
+            accountHandle: account
         )
-        return .success(.algosDetail(draft: draft))
+
+        var preferences = BaseAssetDetailViewController.Preferences()
+        preferences.showsAccountActionsMenu = false
+
+        return .success(.algosDetail(draft: draft, preferences: preferences))
     }
     
     private func makeAssetTransactionDetailScreen(
@@ -94,10 +97,13 @@ extension DeepLinkParser {
         
         let draft = AssetTransactionListing(
             accountHandle: account,
-            asset: asset,
-            isQuickActionButtonVisible: false
+            asset: asset
         )
-        return .success(.assetDetail(draft: draft))
+
+        var preferences = BaseAssetDetailViewController.Preferences()
+        preferences.showsAccountActionsMenu = false
+
+        return .success(.assetDetail(draft: draft, preferences: preferences))
     }
     
     private func makeAssetTransactionRequestScreen(
@@ -308,12 +314,18 @@ extension DeepLinkParser {
     
     enum Screen {
         case actionSelection(address: String, label: String?)
-        case algosDetail(draft: TransactionListing)
         case assetActionConfirmation(
             draft: AssetAlertDraft,
             theme: AssetActionConfirmationViewControllerTheme = .init()
         )
-        case assetDetail(draft: TransactionListing)
+        case algosDetail(
+            draft: TransactionListing,
+            preferences: BaseAssetDetailViewController.Preferences
+        )
+        case assetDetail(
+            draft: TransactionListing,
+            preferences: BaseAssetDetailViewController.Preferences
+        )
         case sendTransaction(
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil

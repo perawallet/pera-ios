@@ -63,38 +63,18 @@ struct CollectiblesFilterSelectionViewControllerTheme:
 
 extension CollectiblesFilterSelectionViewControllerTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-filter-selection-toggle-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private static func getDescription() -> EditText {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             "collectible-filter-selection-toggle-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 }
