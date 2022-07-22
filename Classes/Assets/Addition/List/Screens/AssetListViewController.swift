@@ -24,15 +24,8 @@ final class AssetListViewController: BaseViewController {
     private lazy var assetListView = AssetListView()
 
     private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
-    private lazy var dataController = AssetListViewAPIDataController(self.api!, filter: filter)
+    private lazy var dataController = AssetListViewAPIDataController(self.api!)
     private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
-
-    private let filter: AssetSearchFilter
-
-    init(filter: AssetSearchFilter, configuration: ViewControllerConfiguration) {
-        self.filter = filter
-        super.init(configuration: configuration)
-    }
 
     override func prepareLayout() {
         super.prepareLayout()

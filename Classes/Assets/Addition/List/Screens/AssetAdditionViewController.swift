@@ -28,7 +28,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     private var account: Account
 
     private let paginationRequestOffset = 3
-    private var assetSearchFilter: AssetSearchFilter = .verified
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -41,15 +40,9 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
     private lazy var assetSearchInput = SearchInputView()
     
-    private lazy var verifiedAssetsScreen = AssetListViewController(
-        filter: .verified,
-        configuration: configuration
-    )
+    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
     
-    private lazy var allAssetsScreen = AssetListViewController(
-        filter: .all,
-        configuration: configuration
-    )
+    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
 
     private lazy var currencyFormatter = CurrencyFormatter()
 

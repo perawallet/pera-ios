@@ -18,7 +18,6 @@
 import MagpieCore
 
 struct AssetSearchQuery: ObjectQuery {
-    let status: AssetSearchFilter
     let query: String?
     let paginator: Paginator = .cursor
     let cursor: String?
@@ -41,15 +40,7 @@ struct AssetSearchQuery: ObjectQuery {
             params.append(.init(.hasCollectible, hasCollectible))
         }
 
-        switch status {
-        case .all:
-            return params
-        default:
-            if let statusValue = status.stringValue {
-                params.append(.init(.status, statusValue))
-            }
-            return params
-        }
+        return params
     }
 }
 
