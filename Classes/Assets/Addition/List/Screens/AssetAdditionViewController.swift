@@ -19,15 +19,13 @@ import UIKit
 import MagpieHipo
 import MagpieExceptions
 
-final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable {
+final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     weak var delegate: AssetAdditionViewControllerDelegate?
 
     private lazy var theme = Theme()
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     private var account: Account
-
-    private let paginationRequestOffset = 3
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -38,11 +36,12 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
+    private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
+    private lazy var dataController = AssetListViewAPIDataController(self.api!)
+    private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
+
     private lazy var assetSearchInput = SearchInputView()
-    
-    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
-    
-    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
+    private lazy var assetListView = AssetListView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -65,32 +64,16 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     
     override func configureAppearance() {
         super.configureAppearance()
+
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         title = "title-add-asset".localized
     }
 
     override func prepareLayout() {
-        addAssetSearchInput()
         super.prepareLayout()
-    }
 
-    override func addPageBar() {
-        view.addSubview(pageBar)
-        pageBar.prepareLayout(PageBarCommonLayoutSheet())
-        pageBar.snp.makeConstraints {
-            $0.top.equalTo(assetSearchInput.snp.bottom).offset(theme.topPadding)
-            $0.leading.trailing.equalToSuperview()
-        }
-    }
-
-    override func itemDidSelect(_ index: Int) {
-        let query = assetSearchInput.text
-
-        if index == 0 {
-            verifiedAssetsScreen.fetchAssets(for: query)
-        } else {
-            allAssetsScreen.fetchAssets(for: query)
-        }
+        addAssetSearchInput()
+        addAssetList()
     }
 
     override func linkInteractors() {
@@ -98,17 +81,70 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
         assetSearchInput.delegate = self
         transactionController.delegate = self
-        verifiedAssetsScreen.delegate = self
-        allAssetsScreen.delegate = self
+        assetListView.collectionView.delegate = listLayout
+        assetListView.collectionView.dataSource = dataSource
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        items = [
-            VerifiedAssetsPageBarItem(screen: verifiedAssetsScreen),
-            AllAssetsPageBarItem(screen: allAssetsScreen)
-        ]
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+            }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
+            }
+        }
+
+        dataController.load()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        assetListView.collectionView.visibleCells.forEach {
+            let loadingCell = $0 as? PreviewLoadingCell
+            loadingCell?.startAnimating()
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        assetListView.collectionView.visibleCells.forEach {
+            let loadingCell = $0 as? PreviewLoadingCell
+            loadingCell?.stopAnimating()
+        }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        listLayout.handlers.willDisplay = {
+            [weak self] cell, indexPath in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.loadNextPageIfNeeded(for: indexPath)
+        }
+
+        listLayout.handlers.didSelectAssetAt = {
+            [weak self] indexPath in
+            guard let self = self,
+                  let asset = self.dataController.assets[safe: indexPath.item] else {
+                return
+            }
+
+            self.openAssetConfirmation(for: asset)
+        }
     }
 }
 
@@ -127,22 +163,25 @@ extension AssetAdditionViewController {
         assetSearchInput.customize(theme.searchInputViewTheme)
         view.addSubview(assetSearchInput)
         assetSearchInput.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.topPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalToSuperview().inset(theme.searchInputTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.searchInputHorizontalPadding)
+        }
+    }
+
+    private func addAssetList() {
+        assetListView.customize(AssetListViewTheme())
+        view.addSubview(assetListView)
+        assetListView.snp.makeConstraints {
+            $0.top.equalTo(assetSearchInput.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
 
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        let index = self.selectedIndex ?? 0
         let query = view.text
-
-        if index == 0 {
-            verifiedAssetsScreen.fetchAssets(for: query)
-        } else {
-            allAssetsScreen.fetchAssets(for: query)
-        }
+        dataController.search(for: query)
     }
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
@@ -176,11 +215,8 @@ extension AssetAdditionViewController:
     }
 }
 
-extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(
-        _ assetListViewController: AssetListViewController,
-        didSelect asset: AssetDecoration
-    ) {
+extension AssetAdditionViewController {
+    private func openAssetConfirmation(for asset: AssetDecoration) {
         if account.containsAsset(asset.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
