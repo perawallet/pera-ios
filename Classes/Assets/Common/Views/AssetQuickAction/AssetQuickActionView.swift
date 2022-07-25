@@ -19,7 +19,13 @@ import MacaroonUIKit
 
 final class AssetQuickActionView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performAction: UIControlInteraction()
+    ]
+
     private lazy var button = Button(.imageAtLeft(spacing: 8))
     private lazy var titleLabel = Label()
     private lazy var accountTypeImageView = ImageView()
@@ -92,6 +98,11 @@ extension AssetQuickActionView {
             $0.trailing == theme.horizontalPadding
             $0.bottom == theme.bottomPadding + safeAreaBottom
         }
+
+        startPublishing(
+            event: .performAction,
+            for: button
+        )
     }
 
     private func addTitle(_ theme: AssetQuickActionViewTheme) {
@@ -124,5 +135,11 @@ extension AssetQuickActionView {
             $0.leading == accountTypeImageView.snp.trailing + theme.spacingBetweenAccountTypeAndName
             $0.trailing >= button.snp.trailing + theme.spacingBetweenTitleAndButton
         }
+    }
+}
+
+extension AssetQuickActionView {
+    enum Event {
+        case performAction
     }
 }
