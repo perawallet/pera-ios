@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUIKit
 
 struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
+    let containerShadow: MacaroonUIKit.Shadow
     let topPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let bottomPadding: LayoutMetric
@@ -35,6 +36,15 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
     let spacingBetweenAccountTypeAndName: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.containerShadow = MacaroonUIKit.Shadow(
+            color: AppColors.Components.Shadow.dark.uiColor,
+            opacity: 1,
+            offset: (0, 14),
+            radius: 60,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (0, 0),
+            corners: [.topLeft, .topRight]
+        )
         self.topPadding = 24
         self.horizontalPadding = 24
         self.bottomPadding = 20
@@ -43,7 +53,8 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
         self.buttonCorner = Corner(radius: 4)
 
         self.title = [
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(AppColors.Components.Text.gray),
+            .textOverflow(FittingText())
         ]
         self.spacingBetweenTitleAndButton = 16
 

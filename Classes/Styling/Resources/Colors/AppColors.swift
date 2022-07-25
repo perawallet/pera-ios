@@ -149,6 +149,12 @@ extension AppColors.Components {
     }
 }
 
+extension AppColors.Components {
+    enum Shadow: String, Color {
+        case dark = "Components/Shadow/dark"
+    }
+}
+
 extension AppColors.SendTransaction {
     enum Shadow: String, Color {
         case first = "SendTransaction/Shadow/account-first"

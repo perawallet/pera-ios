@@ -260,6 +260,11 @@
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
+"asset-quick-action-button-add" = "Add Asset";
+"asset-quick-action-title-opt-in" = "You can add this NFT to";
+"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-title-add-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-remove" = "Opted in to";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
