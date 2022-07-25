@@ -76,12 +76,76 @@ extension PrimaryImageViewModel {
             text: placeholderText
         )
     }
+
+    func setPrismImage(
+        _ url: URL?,
+        size: CGSize,
+        shape: ImageShape,
+        placeholder: String?,
+        placeholderAttributes: TextAttributes
+    ) -> PNGImageSource {
+        let prismURL = PrismURL(baseURL: url)?
+            .setExpectedImageSize(size)
+            .setImageQuality(.normal)
+            .build()
+
+        return PNGImageSource(
+            url: prismURL,
+            shape: shape,
+            placeholder: getPlaceholder(
+                placeholder,
+                with: placeholderAttributes
+            )
+        )
+    }
 }
 
 enum AssetImage {
     case url(URL?, title: String?)
     case algo
     case custom(UIImage)
+}
+
+struct StandardAssetImageViewModel:
+    PrimaryImageViewModel,
+    Hashable {
+    private(set) var imageSource: PNGImageSource?
+    private(set) var image: UIImage?
+
+    init(
+        image: AssetImage
+    ) {
+        bindImage(
+            image: image
+        )
+    }
+
+    private mutating func bindImage(
+        image: AssetImage
+    ) {
+        switch image {
+        case .url(let url, let title):
+            let imageSize = CGSize(width: 40, height: 40)
+            let placeholder = TextFormatter.assetShortName.format(
+                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+            )
+
+            self.imageSource = setPrismImage(
+                url,
+                size: imageSize,
+                shape: .circle,
+                placeholder: placeholder,
+                placeholderAttributes: TextAttributes(
+                    font: Fonts.DMSans.regular.make(13),
+                    lineHeightMultiplier: 1.18
+                )
+            )
+        case .algo:
+            self.image = "icon-algo-circle-green".uiImage
+        case .custom(let image):
+            self.image = image
+        }
+    }
 }
 
 struct AssetImageLargeViewModel:
@@ -104,25 +168,18 @@ struct AssetImageLargeViewModel:
         switch image {
         case .url(let url, let title):
             let imageSize = CGSize(width: 40, height: 40)
-            let prismURL =
-            PrismURL(baseURL: url)?
-                .setExpectedImageSize(imageSize)
-                .setImageQuality(.normal)
-                .build()
-
             let placeholder = TextFormatter.assetShortName.format(
                 (title.isNilOrEmpty ? "title-unknown".localized : title!)
             )
 
-            self.imageSource = PNGImageSource(
-                url: prismURL,
+            self.imageSource = setPrismImage(
+                url,
+                size: imageSize,
                 shape: .rounded(4),
-                placeholder: getPlaceholder(
-                    placeholder,
-                    with: TextAttributes(
-                        font: Fonts.DMSans.regular.make(13),
-                        lineHeightMultiplier: 1.18
-                    )
+                placeholder: placeholder,
+                placeholderAttributes: TextAttributes(
+                    font: Fonts.DMSans.regular.make(13),
+                    lineHeightMultiplier: 1.18
                 )
             )
         case .algo:
@@ -153,26 +210,18 @@ struct AssetImageSmallViewModel:
         switch image {
         case .url(let url, let title):
             let imageSize = CGSize(width: 24, height: 24)
-
-            let prismURL =
-            PrismURL(baseURL: url)?
-                .setExpectedImageSize(imageSize)
-                .setImageQuality(.normal)
-                .build()
-
             let placeholder = TextFormatter.assetShortName.format(
                 (title.isNilOrEmpty ? "title-unknown".localized : title!)
             )
 
-            self.imageSource = PNGImageSource(
-                url: prismURL,
+            self.imageSource = setPrismImage(
+                url,
+                size: imageSize,
                 shape: .rounded(4),
-                placeholder: getPlaceholder(
-                    placeholder,
-                    with: TextAttributes(
-                        font: Fonts.DMSans.medium.make(10),
-                        lineHeightMultiplier: 0.92
-                    )
+                placeholder: placeholder,
+                placeholderAttributes: TextAttributes(
+                    font: Fonts.DMSans.medium.make(10),
+                    lineHeightMultiplier: 0.92
                 )
             )
         case .algo:

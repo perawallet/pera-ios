@@ -12,16 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountAssetSortingAlgorithm.swift
+//   ALGAssetListItemViewModel.swift
 
 import Foundation
 
-protocol AccountAssetSortingAlgorithm {
-    var id: String { get }
-    var name: String { get }
-
-    func getFormula(
-        viewModel: ALGAssetListItemViewModel,
-        otherViewModel: ALGAssetListItemViewModel
-    ) -> Bool
+protocol ALGAssetListItemViewModel: PrimaryListItemViewModel {
+    var asset: Asset? { get }
 }

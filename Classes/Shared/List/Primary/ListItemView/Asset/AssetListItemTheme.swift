@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetListItemTheme: PrimaryListItemViewTheme {
-    let icon: PrimaryImageViewTheme?
+    let icon: PrimaryImageViewTheme
     let primaryTitle: PrimaryTitleViewTheme
     let secondaryTitle: PrimaryTitleViewTheme
 
@@ -28,6 +28,7 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
     let minSpacingBetweenTitles: LayoutMetric
+    let iconSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         icon = AssetImageViewTheme()
@@ -43,5 +44,6 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
         contentHorizontalPadding = 16
         contentMinWidthRatio = 0.25
         minSpacingBetweenTitles = 16
+        iconSize = (40, 40)
     }
 }
