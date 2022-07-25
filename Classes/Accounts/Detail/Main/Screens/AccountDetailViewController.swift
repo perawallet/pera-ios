@@ -162,7 +162,10 @@ extension AccountDetailViewController {
             case .buyAlgo:
                 self.assetListScreen.endEditing()
 
-                self.buyAlgoFlowCoordinator.launch()
+                let buyAlgoDraft = BuyAlgoDraft()
+                buyAlgoDraft.address = self.accountHandle.value.address
+
+                self.buyAlgoFlowCoordinator.launch(buyAlgoDraft)
             case .send:
                 self.assetListScreen.endEditing()
 
@@ -184,7 +187,11 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-            self?.buyAlgoFlowCoordinator.launch()
+
+            let buyAlgoDraft = BuyAlgoDraft()
+            buyAlgoDraft.address = self?.accountHandle.value.address
+            
+            self?.buyAlgoFlowCoordinator.launch(buyAlgoDraft)
         }
     }
 
