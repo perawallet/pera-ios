@@ -53,7 +53,7 @@ class Router:
     }
     
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     func launchAuthorization() {
@@ -853,8 +853,8 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
-        case .verificationInfo:
-            viewController = VerificationInfoViewController(configuration: configuration)
+        case .asaVerificationInfo:
+            viewController = AsaVerificationInfoScreen(configuration: configuration)
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
         case let .sortCollectibleList(dataController, eventHandler):

@@ -112,7 +112,7 @@ enum AlgorandWeb: String {
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
-    case asaVerification = "https://explorer.perawallet.app/asa-verification/"
+    case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
 
     var presentation: String {
         switch self {

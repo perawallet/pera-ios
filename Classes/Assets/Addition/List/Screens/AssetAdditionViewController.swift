@@ -121,9 +121,9 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
 extension AssetAdditionViewController {
     private func addBarButtons() {
-        let infoBarButton = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.open(.verificationInfo, by: .present)
-            //self?.open(.peraIntroduction, by: .present)
+        let infoBarButton = ALGBarButtonItem(kind: .info) {
+            [unowned self] in
+            self.open(.asaVerificationInfo, by: .present)
         }
 
         rightBarButtonItems = [infoBarButton]
