@@ -23,7 +23,7 @@ import MacaroonUtils
 final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    private lazy var storyTransition = StoryTransition(presentingViewController: self)
+    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
 
@@ -209,7 +209,14 @@ extension HomeViewController {
     }
 
     private func updateUIWhenListDidScroll() {
+        updateNavigationBarWhenListDidScroll()
         updateListBackgroundWhenListDidScroll()
+    }
+
+    private func updateNavigationBarWhenListDidScroll() {
+        let visibleIndexPaths = listView.indexPathsForVisibleItems
+        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
+        navigationView.animateTitleVisible(!headerVisible)
     }
 
     private func addListBackground() {
@@ -782,10 +789,21 @@ extension HomeViewController {
     func scrollViewDidScroll(
         _ scrollView: UIScrollView
     ) {
-        let visibleIndexPaths = listView.indexPathsForVisibleItems
-        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
+        updateUIWhenListDidScroll()
+    }
 
-        navigationView.animateTitleVisible(!headerVisible)
+    func scrollViewDidEndDragging(
+        _ scrollView: UIScrollView,
+        willDecelerate decelerate: Bool
+    ) {
+        if !decelerate {
+            updateUIWhenListDidScroll()
+        }
+    }
+
+    func scrollViewDidEndDecelerating(
+        _ scrollView: UIScrollView
+    ) {
         updateUIWhenListDidScroll()
     }
 }
