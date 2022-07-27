@@ -67,7 +67,8 @@ class AppDelegate:
         walletConnector: walletConnector,
         loadingController: loadingController,
         bannerController: bannerController,
-        toastPresentationController: toastPresentationController
+        toastPresentationController: toastPresentationController,
+        lastSeenNotificationController: lastSeenNotificationController
     )
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -96,6 +97,9 @@ class AppDelegate:
         session: session,
         api: api,
         bannerController: bannerController
+    )
+    private lazy var lastSeenNotificationController = LastSeenNotificationController(
+        api: api
     )
     
     private lazy var networkBannerView = UIView()
@@ -128,6 +132,8 @@ class AppDelegate:
             object: self,
             userInfo: nil
         )
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationDidBecomeActive(
@@ -137,6 +143,8 @@ class AppDelegate:
         setNeedsNetworkBannerUpdateIfNeeded()
         
         appLaunchController.becomeActive()
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationWillResignActive(

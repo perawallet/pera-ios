@@ -22,7 +22,9 @@ import MacaroonUtils
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
+
     private lazy var storyTransition = StoryTransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -79,6 +81,8 @@ final class HomeViewController:
 
     private let dataController: HomeDataController
 
+    var notificationObservations: [NSObjectProtocol] = []
+
     init(
         dataController: HomeDataController,
         copyToClipboardController: CopyToClipboardController,
@@ -91,7 +95,7 @@ final class HomeViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
+        configureNotificationBarButton()
 
         navigationView.prepareLayout(NoLayoutSheet())
 
@@ -165,6 +169,8 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
+
+        lastSeenNotificationController?.checkStatus()
     }
 
     override func viewWillDisappear(
@@ -183,10 +189,23 @@ final class HomeViewController:
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.stopAnimating()
     }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        observe(notification: .newNotificationReceieved) {
+            [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.configureNewNotificationBarButton()
+        }
+    }
 }
 
 extension HomeViewController {
-    private func addBarButtons() {
+    private func configureNotificationBarButton() {
         let notificationBarButtonItem = ALGBarButtonItem(kind: .notification) { [weak self] in
             guard let self = self else {
                 return
@@ -196,6 +215,20 @@ extension HomeViewController {
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
+    }
+
+    private func configureNewNotificationBarButton() {
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .newNotification) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.configureNotificationBarButton()
+            self.open(.notifications, by: .push)
+        }
+
+        rightBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 

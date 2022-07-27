@@ -27,6 +27,7 @@ final class NotificationsAPIDataController:
 
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let lastSeenNotificationController: LastSeenNotificationController?
     private var contacts = [Contact]()
     private(set) var notifications = [NotificationMessage]()
     private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
@@ -44,11 +45,13 @@ final class NotificationsAPIDataController:
     init(
         sharedDataController: SharedDataController,
         api: ALGAPI,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        lastSeenNotificationController: LastSeenNotificationController?
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
         self.currencyFormatter = currencyFormatter
+        self.lastSeenNotificationController = lastSeenNotificationController
 
         startObserving()
     }
@@ -107,6 +110,7 @@ extension NotificationsAPIDataController {
                     self.notifications = notifications.results.uniqued()
                 }
 
+                self.setLastSeenNotification(self.notifications.first)
                 self.deliverContentSnapshot()
             case .failure:
                 ///TODO: Should Deliver error snapshot
@@ -127,6 +131,14 @@ extension NotificationsAPIDataController {
             contact: getContactIfExists(for: notification),
             latestReadTimestamp: latesTimestamp
         )
+    }
+
+    private func setLastSeenNotification(_ notification: NotificationMessage?) {
+        guard let notification = notification else {
+            return
+        }
+
+        lastSeenNotificationController?.setLastSeenNotification(notification)
     }
 }
 

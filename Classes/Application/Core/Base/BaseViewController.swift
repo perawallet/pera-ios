@@ -236,6 +236,10 @@ extension BaseViewController {
     var sharedDataController: SharedDataController {
         return configuration.sharedDataController
     }
+
+    var lastSeenNotificationController: LastSeenNotificationController? {
+        return configuration.lastSeenNotificationController
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

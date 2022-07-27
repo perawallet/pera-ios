@@ -76,4 +76,5 @@ enum APIParamKey: String, CodingKey {
     case exclude = "exclude"
     case includeDeleted = "include_deleted"
     case name = "name"
+    case lastSeenNotificationId = "last_seen_notification_id"
 }

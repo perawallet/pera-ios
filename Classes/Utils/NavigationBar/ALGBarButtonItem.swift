@@ -152,6 +152,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .newNotification:
+            if let icon = img("icon-bar-new-notification") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         case .account(let image):
             return ImageContent(normal: image)
         }
@@ -241,7 +246,7 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .troubleshoot:
             return .explicit(CGSize(width: 40, height: 40))
-        case .notification:
+        case .notification, .newNotification:
             return .explicit(CGSize(width: 40, height: 40))
         case .account:
             return .explicit(CGSize(width: 28, height: 28))
@@ -269,6 +274,7 @@ extension ALGBarButtonItem {
         case circleAdd
         case add
         case notification
+        case newNotification
         case close
         case closeTitle
         case save
