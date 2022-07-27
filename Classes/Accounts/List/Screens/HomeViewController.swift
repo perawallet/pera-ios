@@ -159,7 +159,6 @@ final class HomeViewController:
         loadingCell?.restartAnimating()
 
         if isViewFirstAppeared {
-            presentPeraIntroductionIfNeeded()
             presentPasscodeFlowIfNeeded()
             isViewFirstAppeared = false
         }
@@ -491,25 +490,6 @@ extension HomeViewController {
                 passcodeSettingDisplayStore.disableAskingPasscode()
             }
         }
-    }
-
-    private func presentPeraIntroductionIfNeeded() {
-        var peraAppLaunchStore = PeraAppLaunchStore()
-        
-        let appLaunchStore = ALGAppLaunchStore()
-
-        if appLaunchStore.isOnboarding {
-            peraAppLaunchStore.isOnboarded = true
-            return
-        }
-
-        if peraAppLaunchStore.isOnboarded {
-            return
-        }
-        
-        peraAppLaunchStore.isOnboarded = true
-
-        open(.peraIntroduction, by: .present)
     }
 }
 

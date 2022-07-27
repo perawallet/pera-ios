@@ -860,8 +860,6 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
-        case .peraIntroduction:
-            viewController = PeraIntroductionViewController(configuration: configuration)
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
