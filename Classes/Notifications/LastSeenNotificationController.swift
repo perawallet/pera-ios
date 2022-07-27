@@ -48,9 +48,24 @@ final class LastSeenNotificationController {
             return
         }
 
+        if api.session.lastSeenNotificationID == notification.id {
+            return
+        }
+
         let draft = NotificationStatusUpdateDraft(notificationId: notification.id, deviceId: deviceId)
 
-        api.updateNotificationStatus(draft) { _ in }
+        api.updateNotificationStatus(draft) {
+            [weak self] response in
+            guard let self = self else {
+                return
+            }
+            switch response {
+            case .success(let status):
+                self.api.session.lastSeenNotificationID = status.id
+            case .failure:
+                break
+            }
+        }
     }
 
     private func fetchNotificationStatus(draft: NotificationStatusFetchDraft) {
