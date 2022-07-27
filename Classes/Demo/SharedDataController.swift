@@ -77,18 +77,6 @@ extension SharedDataController {
     }
 }
 
-extension Account {
-    func sortedCollectibleAssets(
-        _ algorithm: CollectibleSortingAlgorithm?
-    ) -> [CollectibleAsset] {
-        if let algorithm = algorithm {
-            return collectibleAssets.someArray.sorted(algorithm)
-        }
-
-        return collectibleAssets.someArray
-    }
-}
-
 /// <todo>
 /// Can this approach move to 'Macaroon' library???
 ///
