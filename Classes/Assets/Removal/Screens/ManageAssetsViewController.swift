@@ -54,11 +54,6 @@ final class ManageAssetsViewController: BaseViewController {
         self.dataController = dataController
         super.init(configuration: configuration)
     }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
     
     override func setListeners() {
         dataController.dataSource = dataSource
@@ -125,17 +120,6 @@ final class ManageAssetsViewController: BaseViewController {
         
         transactionController.stopBLEScan()
         transactionController.stopTimer()
-    }
-}
-
-extension ManageAssetsViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

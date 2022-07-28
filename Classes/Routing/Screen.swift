@@ -59,12 +59,10 @@ indirect enum Screen {
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assets: [StandardAsset]?,
-        eventHandler: AppCallTransactionDetailViewController.EventHandler
+        assets: [StandardAsset]?
     )
     case appCallAssetList(
-        dataController: AppCallAssetListDataController,
-        eventHandler: AppCallAssetListViewController.EventHandler
+        dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetsListDataController)
@@ -101,7 +99,7 @@ indirect enum Screen {
         address: String? = nil
     )
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
-    case notificationFilter(flow: NotificationFilterViewController.Flow)
+    case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)

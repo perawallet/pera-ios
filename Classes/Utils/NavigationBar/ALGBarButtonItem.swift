@@ -259,6 +259,10 @@ struct ALGBarButtonItem: BarButtonItem {
     static func back() -> ALGBarButtonItem? {
         return ALGBarButtonItem(kind: .back)
     }
+
+    static func dismiss() -> ALGBarButtonItem? {
+        return ALGBarButtonItem(kind: .close)
+    }
 }
 
 extension ALGBarButtonItem {
