@@ -22,9 +22,16 @@ struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandli
         for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules {
         if shouldRound(rawNumber) {
-            return makeRoundingRules(for: rawNumber)
+            return makeRoundingRules(rawNumber)
         } else {
-            return makeNonRoundingRules(for: rawNumber)
+            if let currency = currency {
+                return makeNonRoundingRules(
+                    rawNumber,
+                    for: currency
+                )
+            } else {
+                return makeNonRoundingRules(rawNumber)
+            }
         }
     }
 
@@ -42,7 +49,7 @@ struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandli
 
 extension CurrencyFormattingListItemContextHandler {
     private func makeRoundingRules(
-        for rawNumber: NSDecimalNumber
+        _ rawNumber: NSDecimalNumber
     ) -> CurrencyFormattingContextRules {
         var rules = CurrencyFormattingContextRules()
         rules.roundingMode = .down
@@ -52,13 +59,22 @@ extension CurrencyFormattingListItemContextHandler {
     }
 
     private func makeNonRoundingRules(
-        for rawNumber: NSDecimalNumber
+        _ rawNumber: NSDecimalNumber,
+        for currency: LocalCurrency
+    ) -> CurrencyFormattingContextRules {
+        if currency.isAlgo {
+            return makeNonRoundingRules(rawNumber)
+        } else {
+            return makeNonRoundingRulesForFiatCurrency(rawNumber)
+        }
+    }
+
+    private func makeNonRoundingRules(
+        _ rawNumber: NSDecimalNumber
     ) -> CurrencyFormattingContextRules {
         var rules = CurrencyFormattingContextRules()
         rules.roundingMode = .down
 
-        /// <note>
-        /// The same rules will be applied to the negative values as well.
         switch abs(rawNumber.decimalValue) {
         case 0:
             rules.minimumFractionDigits = 2
@@ -75,6 +91,27 @@ extension CurrencyFormattingListItemContextHandler {
         default:
             rules.minimumFractionDigits = 0
             rules.maximumFractionDigits = 0
+        }
+
+        return rules
+    }
+
+    private func makeNonRoundingRulesForFiatCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextRules {
+        var rules = CurrencyFormattingContextRules()
+        rules.roundingMode = .down
+
+        switch abs(rawNumber.decimalValue) {
+        case 0:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 2
+        case 0..<1:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 6
+        default:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 2
         }
 
         return rules

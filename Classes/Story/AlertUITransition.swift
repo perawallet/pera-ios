@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StoryTransition.swift
+//   AlertUITransition.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonStorySheet
 import UIKit
 
-final class StoryTransition {
-    private(set) var transitionController: StorySheetTransitionController?
+final class AlertUITransition {
+    private(set) var transitionController: AlertUITransitionController?
 
     unowned let presentingViewController: UIViewController
 
@@ -31,29 +31,15 @@ final class StoryTransition {
     }
 }
 
-extension StoryTransition {
+extension AlertUITransition {
     @discardableResult
     func perform<T: UIViewController>(
         _ screen: Screen,
-        by style: Transition,
-        completion: (() -> Void)? = nil
+        by style: Transition
     ) -> T? {
-        let transitionController =
-            StorySheetTransitionController(
-                presentingViewController: presentingViewController
-            ) { [weak self] in
-
-                guard let self = self else {
-                    return
-                }
-
-                completion?()
-
-                self.transitionController = nil
-            }
+        let transitionController = AlertUITransitionController()
 
         let transition: Screen.Transition.Open
-
         switch style {
         case .present:
             transition = .customPresent(
@@ -68,18 +54,17 @@ extension StoryTransition {
                 transitioningDelegate: transitionController
             )
         }
-        
-        let presentedViewController = presentingViewController.open(
+
+        self.transitionController = transitionController
+        return presentingViewController.open(
             screen,
             by: transition,
             animated: true
         ) as? T
-
-        self.transitionController = transitionController
-
-        return presentedViewController
     }
+}
 
+extension AlertUITransition {
     enum Transition {
         case present
         case presentWithoutNavigationController
