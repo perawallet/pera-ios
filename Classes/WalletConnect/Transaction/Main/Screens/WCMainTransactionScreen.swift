@@ -567,7 +567,7 @@ extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
             description: .plain("wallet-connect-transaction-error-invalid-group".localized),
             secondaryActionButtonTitle: "title-ok".localized,
             secondaryAction: { [weak self] in
-                self?.rejectSigning(reason: .rejected(.user))
+                self?.rejectSigning(reason: .rejected(.failedValidation))
             }
         )
 
