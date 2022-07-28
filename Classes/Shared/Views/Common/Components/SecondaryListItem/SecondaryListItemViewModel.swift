@@ -56,7 +56,7 @@ extension SecondaryListItemViewModel {
     ) -> ButtonStyle {
         return [
             .title(getNonInteractableAccessoryTitle(title)),
-            .icon([ .normal(icon), .highlighted(icon) ]),
+            .icon([ .normal(icon) ]),
             .titleColor([ .normal(titleColor) ] ),
             .isInteractable(false)
         ]

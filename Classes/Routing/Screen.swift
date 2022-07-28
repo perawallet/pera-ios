@@ -203,6 +203,11 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
+    case optInAsset(
+        draft: OptInAssetDraft,
+        theme: OptInAssetScreenTheme = .init(),
+        eventHandler: OptInAssetScreen.EventHandler
+    )
 }
 
 extension Screen {

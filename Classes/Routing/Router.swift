@@ -986,6 +986,15 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .optInAsset(let draft, let theme, let eventHandler):
+            viewController = OptInAssetScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
         }
 
         return viewController as? T
