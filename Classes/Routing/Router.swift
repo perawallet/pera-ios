@@ -855,6 +855,7 @@ class Router:
                 walletConnector: configuration.walletConnector,
                 currencyFormatter: currencyFormatter
             )
+            dataSource.load()
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
                 configuration: configuration,

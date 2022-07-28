@@ -106,6 +106,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         super.init(configuration: configuration)
 
+        dataSource.delegate = self
         setTransactionSigners()
         setupObserver()
     }
@@ -154,6 +155,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }
 
     override func viewDidLoad() {
+        dataSource.load()
+
         super.viewDidLoad()
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
@@ -551,6 +554,30 @@ extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
         )
 
         modalTransition.perform(.wcTransactionFullDappDetail(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+}
+
+extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
+    func wcMainTransactionDataSourceDidFailedGroupingValidation(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+        displaySimpleAlertWith(
+            title: "title-error".localized,
+            message: "wallet-connect-transaction-error-invalid-group".localized
+        ) {
+            [weak self] action in
+            guard let self = self else {
+                return
+            }
+
+            self.rejectSigning(reason: .rejected(.user))
+        }
+    }
+
+    func wcMainTransactionDataSourceDidOpenLongDappMessageView(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+
     }
 }
 
