@@ -94,12 +94,11 @@ final class SecondaryListItemView:
         max(accessoryIconSize.height, accessoryTitleSize.height) +
         theme.accessoryContentEdgeInsets.bottom
 
-        let contentHeight =
+        let preferredHeight =
         theme.contentEdgeInsets.top +
         max(titleSize.height, accessoryHeight) +
         theme.contentEdgeInsets.bottom
 
-        let preferredHeight = contentHeight
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }

@@ -1004,6 +1004,15 @@ class Router:
                     toastPresentationController: appConfiguration.toastPresentationController
                 )
             )
+        case .transferAssetBalance(let draft, let theme, let eventHandler):
+            viewController = TransferAssetBalanceScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
         }
 
         return viewController as? T

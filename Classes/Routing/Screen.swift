@@ -213,6 +213,11 @@ indirect enum Screen {
         theme: OptOutAssetScreenTheme = .init(),
         eventHandler: OptOutAssetScreen.EventHandler
     )
+    case transferAssetBalance(
+        draft: TransferAssetBalanceDraft,
+        theme: TransferAssetBalanceScreenTheme = .init(),
+        eventHandler: TransferAssetBalanceScreen.EventHandler
+    )
 }
 
 extension Screen {
