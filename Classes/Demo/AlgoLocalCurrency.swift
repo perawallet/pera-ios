@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetPortfolioItemViewTheme.swift
+//   AlgoLocalCurrency.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AssetPortfolioItemViewTheme: StyleSheet, LayoutSheet {
-    let verticalInset: LayoutMetric
-    let horizontalInset: LayoutMetric
+struct AlgoLocalCurrency: LocalCurrency {
+    let id: CurrencyID
+    let name: String?
+    let symbol: String?
 
-    init(_ family: LayoutFamily) {
-        self.verticalInset = 60
-        self.horizontalInset = 24
+    init(
+        pairID: CurrencyID? = nil
+    ) {
+        self.id = CurrencyID.algo(pairID: pairID)
+        self.name = "title-algorand".localized
+        self.symbol = "\u{00A6}"
     }
 }

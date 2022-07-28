@@ -12,24 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  Sequence+AttributedString.swift
+//   LocalCurrency.swift
 
 import Foundation
 
-extension Sequence where Element: NSAttributedString {
-    
-    func join(with separator: NSAttributedString) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString()
-        
-        for (index, string) in enumerated() {
-            if index > 0 {
-                attributedString.append(separator)
-            }
-            
-            attributedString.append(string)
-        }
-        
-        return attributedString
+/// <todo>
+/// The asset symbols can be used as `LocalCurrency`.
+protocol LocalCurrency {
+    var id: CurrencyID { get }
+    var name: String? { get }
+    var symbol: String? { get }
+}
+
+extension LocalCurrency {
+    var isAlgo: Bool {
+        return id.isAlgo
     }
 }

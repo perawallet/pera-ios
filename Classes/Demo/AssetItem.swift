@@ -20,14 +20,17 @@ final class AssetItem {
     let asset: Asset
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
+    let currencyFormattingContext: CurrencyFormattingContext?
 
     init(
         asset: Asset,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        currencyFormattingContext: CurrencyFormattingContext? = nil
     ) {
         self.asset = asset
         self.currency = currency
         self.currencyFormatter = currencyFormatter
+        self.currencyFormattingContext = currencyFormattingContext
     }
 }

@@ -17,6 +17,8 @@
 import Foundation
 
 final class CollectibleAsset: Asset {
+    var optedInAddress: String?
+
     let id: AssetID
     let amount: UInt64
     let decimals: Int
@@ -57,14 +59,6 @@ final class CollectibleAsset: Asset {
 
     var amountWithFraction: Decimal {
         return amount.assetAmount(fromFraction: decimals)
-    }
-
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
     }
 
     var isOwned: Bool {

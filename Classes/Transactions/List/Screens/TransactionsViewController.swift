@@ -55,7 +55,6 @@ class TransactionsViewController: BaseViewController {
         return collectionView
     }()
 
-    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     private(set) var draft: TransactionListing
 
     private let copyToClipboardController: CopyToClipboardController?
@@ -167,16 +166,10 @@ class TransactionsViewController: BaseViewController {
     override func setListeners() {
         setNotificationObservers()
         setListLayoutListeners()
-        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
     }
 
     override func prepareLayout() {
         addListView()
-
-        if !accountHandle.value.isWatchAccount() &&
-            draft.isQuickActionButtonVisible {
-            addTransactionActionButton(theme)
-        }
     }
 
     override func linkInteractors() {
@@ -186,23 +179,11 @@ class TransactionsViewController: BaseViewController {
 
 extension TransactionsViewController {
     private func addListView() {
-        let isWatchAccount = accountHandle.value.isWatchAccount()
-        listView.contentInset = isWatchAccount
-            ? UIEdgeInsets(theme.contentInsetForWatchAccount)
-            : UIEdgeInsets(theme.contentInset)
+        listView.contentInset = UIEdgeInsets(theme.contentInset)
         
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }
-    }
-
-    private func addTransactionActionButton(_ theme: Theme) {
-        transactionActionButton.image = "fab-swap".uiImage
-        
-        view.addSubview(transactionActionButton)
-        transactionActionButton.snp.makeConstraints {
-            $0.setPaddings(theme.transactionActionButtonPaddings)
         }
     }
 }
@@ -358,60 +339,6 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
 
     func transactionHistoryFilterCellDidShareHistory(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
         fetchAllTransactionsForCSV()
-    }
-}
-
-extension TransactionsViewController {
-    @objc
-    private func didTapTransactionActionButton() {
-        let viewController = open(
-            .transactionFloatingActionButton,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        ) as? TransactionFloatingActionButtonViewController
-
-        viewController?.delegate = self
-    }
-}
-
-extension TransactionsViewController: TransactionFloatingActionButtonViewControllerDelegate {
-    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(SendAssetDetailEvent(address: accountHandle.value.address))
-
-        switch draft.type {
-        case .all:
-            open(
-                .assetSelection(
-                    filter: nil,
-                    account: accountHandle.value
-                ),
-                by: .present
-            )
-        case .asset:
-            if let asset = asset {
-                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .asset(asset))
-                open(.sendTransaction(draft: draft), by: .present)
-            }
-        case .algos:
-            let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
-            open(.sendTransaction(draft: draft), by: .present)
-        }
-    }
-
-    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
-        let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay, draft: draft, isTrackable: true), by: .present)
-    }
-
-    func transactionFloatingActionButtonViewControllerDidBuy(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        openBuyAlgo()
     }
 }
 

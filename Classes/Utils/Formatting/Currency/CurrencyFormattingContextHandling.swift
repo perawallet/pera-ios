@@ -19,12 +19,12 @@ import Foundation
 protocol CurrencyFormattingContextHandling {
     func makeRules(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules
 
     func makeInput(
         _ rawNumber: NSDecimalNumber,
-        for currency: Currency?
+        for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput
 }
 
@@ -40,7 +40,6 @@ extension CurrencyFormattingContextRules {
 
 protocol CurrencyFormattingContextInput {
     var number: NSDecimalNumber { get }
-    var prefix: String? { get }
     var suffix: String? { get }
 }
 
@@ -48,19 +47,12 @@ extension NSDecimalNumber: CurrencyFormattingContextInput {
     var number: NSDecimalNumber {
         return self
     }
-    var prefix: String? {
-        return nil
-    }
     var suffix: String? {
         return nil
     }
 }
 
 extension NumberRoundingResult: CurrencyFormattingContextInput {
-    var prefix: String? {
-        return nil
-    }
-
     var suffix: String? {
         return abbreviation?.short
     }

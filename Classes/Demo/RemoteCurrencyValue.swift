@@ -18,20 +18,20 @@ import Foundation
 import MagpieCore
 import MagpieHipo
 
-enum CurrencyValue: Equatable {
-    case available(Currency)
+enum RemoteCurrencyValue: Equatable {
+    case available(RemoteCurrency)
     case failure(CurrencyError)
 }
 
-extension CurrencyValue {
+extension RemoteCurrencyValue {
     var isAvailable: Bool {
         let currency = try? unwrap()
         return currency != nil
     }
 }
 
-extension CurrencyValue {
-    func unwrap() throws -> Currency {
+extension RemoteCurrencyValue {
+    func unwrap() throws -> RemoteCurrency {
         switch self {
         case .available(let currency): return currency
         case .failure(let error): throw error
@@ -39,10 +39,10 @@ extension CurrencyValue {
     }
 }
 
-extension CurrencyValue {
+extension RemoteCurrencyValue {
     static func ~= (
-        lhs: CurrencyValue,
-        rhs: CurrencyValue
+        lhs: RemoteCurrencyValue,
+        rhs: RemoteCurrencyValue
     ) -> Bool {
         switch (lhs, rhs) {
         case (.available(let lhsCurrency), .available(let rhsCurrency)):
@@ -55,8 +55,8 @@ extension CurrencyValue {
     }
 
     static func == (
-        lhs: CurrencyValue,
-        rhs: CurrencyValue
+        lhs: RemoteCurrencyValue,
+        rhs: RemoteCurrencyValue
     ) -> Bool {
         switch (lhs, rhs) {
         case (.available(let lhsCurrency), .available(let rhsCurrency)):

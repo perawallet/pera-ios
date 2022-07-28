@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StorySheetTransitionController.swift
+//   AlertUITransitionController.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonStorySheet
 import UIKit
 
-final class StorySheetTransitionController: MacaroonStorySheet.StorySheetTransitionController {
-    init(presentingViewController: UIViewController, completion: @escaping () -> Void) {
-        super.init(
-            presentingViewController: presentingViewController,
-            presentationConfiguration: StorySheetPresentationConfiguration(),
-            completion: completion
-        )
-
-        presentationConfiguration.chromeStyle = [
+final class AlertUITransitionController: MacaroonStorySheet.AlertUITransitionController {
+    init() {
+        var configuration = AlertUIConfiguration()
+        configuration.chromeStyle = [
             .backgroundColor(UIColor.black.withAlphaComponent(0.2))
         ]
-
-        presentationConfiguration.overlayStyleSheet.backgroundSecondShadow = MacaroonUIKit.Shadow(
-            color: UIColor.black,
+        configuration.contentAreaCorner = 16
+        configuration.contentAreaPrimaryShadow = MacaroonUIKit.Shadow(
+            color: .black,
             opacity: 0.24,
             offset: (0, 16),
             radius: 68,
@@ -40,8 +35,8 @@ final class StorySheetTransitionController: MacaroonStorySheet.StorySheetTransit
             cornerRadii: (16, 16),
             corners: .allCorners
         )
-        presentationConfiguration.overlayStyleSheet.backgroundShadow = MacaroonUIKit.Shadow(
-            color: UIColor.black,
+        configuration.contentAreaSecondaryShadow = MacaroonUIKit.Shadow(
+            color: .black,
             opacity: 0.06,
             offset: (0, 0),
             radius: 1,
@@ -49,5 +44,8 @@ final class StorySheetTransitionController: MacaroonStorySheet.StorySheetTransit
             cornerRadii: (16, 16),
             corners: .allCorners
         )
+        configuration.contentAreaInsets = UIEdgeInsets(top: 10, left: 24, bottom: 10, right: 24)
+
+        super.init(configuration: configuration)
     }
 }

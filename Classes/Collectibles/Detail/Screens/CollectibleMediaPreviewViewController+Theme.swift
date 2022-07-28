@@ -44,21 +44,10 @@ extension CollectibleMediaPreviewViewController {
 
 extension CollectibleMediaPreviewViewController.Theme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             "collectible-detail-tap-3D"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.left),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteMedium()
         )
     }
 }

@@ -34,6 +34,9 @@ final class AccountSelectScreen: BaseViewController {
         theme: Theme()
     )
     private lazy var listDataSource = AccountSelectScreenDataSource(accountView.listView)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let dataController: AccountSelectScreenListDataController
 
     private var draft: SendTransactionDraft
@@ -264,9 +267,15 @@ extension AccountSelectScreen: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                message: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:

@@ -49,11 +49,11 @@ class Router:
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
         
-        observeNotifications()
+        startObservingNotifications()
     }
     
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     func launchAuthorization() {
@@ -183,11 +183,11 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft):
+        case .algosDetail(let draft, let preferences):
             launch(tab: .home)
 
             route(
-                to: .algosDetail(draft: draft),
+                to: .algosDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -205,11 +205,11 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft):
+        case .assetDetail(let draft, let preferences):
             launch(tab: .home)
             
             route(
-                to: .assetDetail(draft: draft),
+                to: .assetDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -543,17 +543,19 @@ class Router:
                 ),
                 configuration: configuration
             )
-        case let .assetDetail(draft):
+        case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-        case let .algosDetail(draft):
+        case let .algosDetail(draft, preferences):
             viewController = AlgosDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: nil,
                 configuration: configuration
             )
@@ -577,8 +579,11 @@ class Router:
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
-        case let .removeAsset(account):
-            viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case let .removeAsset(dataController):
+            viewController = ManageAssetsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
             managementOptionsViewController.delegate = delegate
@@ -836,19 +841,21 @@ class Router:
         case .transactionFloatingActionButton:
             viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
+            let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
                 sharedDataController: configuration.sharedDataController,
                 transactions: transactions,
                 transactionRequest: transactionRequest,
                 transactionOption: transactionOption,
-                walletConnector: configuration.walletConnector
+                walletConnector: configuration.walletConnector,
+                currencyFormatter: currencyFormatter
             )
+            dataSource.load()
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
-                configuration: configuration
+                configuration: configuration,
+                currencyFormatter: currencyFormatter
             )
-        case .peraIntroduction:
-            viewController = PeraIntroductionViewController(configuration: configuration)
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -1168,7 +1175,7 @@ extension Router {
 }
 
 extension Router {
-    private func observeNotifications() {
+    private func startObservingNotifications() {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
@@ -1381,9 +1388,17 @@ extension Router {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            let currencyFormatter = CurrencyFormatter()
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             appConfiguration.bannerController.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             appConfiguration.bannerController.presentErrorBanner(

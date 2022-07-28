@@ -72,10 +72,13 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       super.bindData()
 
       let currency = sharedDataController.currency
-      let rawCurrency = try? sharedDataController.currency.primaryValue?.unwrap()
 
       transactionDetailView.bindData(
-         SendTransactionPreviewViewModel(draft, currency: rawCurrency),
+         SendTransactionPreviewViewModel(
+            draft,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+         ),
          currency: currency,
          currencyFormatter: currencyFormatter
       )

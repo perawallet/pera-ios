@@ -27,6 +27,8 @@ final class AssetActionConfirmationViewController: BaseViewController {
     private let theme: AssetActionConfirmationViewControllerTheme
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let copyToClipboardController: CopyToClipboardController
     
     init(
@@ -64,7 +66,14 @@ final class AssetActionConfirmationViewController: BaseViewController {
     }
 
     override func bindData() {
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let viewModel = AssetActionConfirmationViewModel(
+            draft,
+            currencyFormatter: currencyFormatter
+        )
+        assetActionConfirmationView.bindData(viewModel)
     }
 }
 
@@ -114,7 +123,8 @@ extension AssetActionConfirmationViewController {
     private func handleAssetDetailSetup(with asset: AssetDecoration) {
         self.loadingController?.stopLoading()
         draft.asset = asset
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
+
+        bindData()
     }
 
     private func closeScreen() {
@@ -148,7 +158,7 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
         in assetActionConfirmationView: AssetActionConfirmationView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyAddress) {
+            let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(self.draft.assetId)
             }

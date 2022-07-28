@@ -21,7 +21,7 @@ import SwiftDate
 
 final class FiatCurrency:
     ALGEntityModel,
-    Currency {
+    RemoteCurrency {
     var isUSD: Bool {
         return id.isUSD
     }

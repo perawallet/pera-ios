@@ -12,15 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   Currency.swift
+//   RemoteCurrency.swift
 
 import Foundation
 
-protocol Currency {
+protocol RemoteCurrency: LocalCurrency {
     var isFault: Bool { get }
-    var id: CurrencyID { get }
-    var name: String? { get }
-    var symbol: String? { get }
     /// The value in fiat currency corresponding 1 algo
     var algoValue: Decimal? { get }
     /// The value in fiat currency corresponding 1 dollar
@@ -28,13 +25,7 @@ protocol Currency {
     var lastUpdateDate: Date { get }
 }
 
-extension Currency {
-    var isAlgo: Bool {
-        return id.isAlgo
-    }
-}
-
-extension Currency {
+extension RemoteCurrency {
     /// The value in algo corresponding 1 dollar
     var usdToAlgoValue: Decimal? {
         guard let usdValue = usdValue else {

@@ -19,11 +19,11 @@ import MacaroonUtils
 
 struct AlgoPriceCalculator {
     let algoPriceValues: [AlgoUSDPrice]
-    let currencyValue: CurrencyValue?
+    let currencyValue: RemoteCurrencyValue?
 }
 
 extension AlgoPriceCalculator {
-    typealias Price = (amount: Double, currency: Currency)
+    typealias Price = (amount: Double, currency: RemoteCurrency)
     
     func calculateRecentPrice() -> Result<Price, AlgoPriceCalculationError> {
         guard let currencyValue = currencyValue else {
@@ -119,7 +119,7 @@ extension AlgoPriceCalculator {
 extension AlgoPriceCalculator {
     private func calculatePrice(
         _ priceValue: AlgoUSDPrice,
-        _ currency: Currency
+        _ currency: RemoteCurrency
     ) -> Result<Price, AlgoPriceCalculationError> {
         guard let basePriceValue = algoPriceValues.last else {
             return .failure(.priceFailed)

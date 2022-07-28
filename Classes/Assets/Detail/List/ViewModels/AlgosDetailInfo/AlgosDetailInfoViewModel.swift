@@ -35,7 +35,6 @@ struct AlgosDetailInfoViewModel:
         bindTitle()
         bindPrimaryValue(
             account: account,
-            currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindSecondaryValue(
@@ -45,7 +44,6 @@ struct AlgosDetailInfoViewModel:
         )
         bindRewardsInfo(
             account: account,
-            currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindIsBuyAlgoAvailable(account)
@@ -56,31 +54,20 @@ extension AlgosDetailInfoViewModel {
     mutating func bindTitle() {
         title = "accounts-transaction-your-balance"
             .localized
-            .bodyRegular(hasMultilines: false)
+            .bodyRegular()
     }
 
     mutating func bindPrimaryValue(
         account: Account,
-        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        do {
-            guard let algoCurrencyValue = currency.algoValue else {
-                primaryValue = nil
-                return
-            }
+        let amount = account.amount.toAlgos
 
-            let algoRawCurrency = try algoCurrencyValue.unwrap()
-            let amount = account.amount.toAlgos
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
 
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = algoRawCurrency
-
-            let text = currencyFormatter.format(amount)
-            primaryValue = text?.largeTitleMonoRegular(hasMultilines: false)
-        } catch {
-            primaryValue = nil
-        }
+        let text = currencyFormatter.format(amount)
+        primaryValue = text?.largeTitleMonoRegular()
     }
 
     mutating func bindSecondaryValue(
@@ -98,13 +85,13 @@ extension AlgosDetailInfoViewModel {
 
             let algoAmount = account.amount.toAlgos
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-            let amount = try exchanger.exchange(algo: algoAmount)
+            let amount = try exchanger.exchangeAlgo(amount: algoAmount)
 
             currencyFormatter.formattingContext = .standalone()
             currencyFormatter.currency = fiatRawCurrency
 
             let text = currencyFormatter.format(amount)
-            secondaryValue = text?.bodyMonoRegular(hasMultilines: false)
+            secondaryValue = text?.bodyMonoRegular()
         } catch {
             secondaryValue = nil
         }
@@ -112,12 +99,10 @@ extension AlgosDetailInfoViewModel {
 
     mutating func bindRewardsInfo(
         account: Account,
-        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         rewardsInfo = RewardInfoViewModel(
             account: account,
-            currency: currency,
             currencyFormatter: currencyFormatter
         )
     }

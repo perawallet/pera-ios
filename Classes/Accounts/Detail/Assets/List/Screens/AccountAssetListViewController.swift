@@ -16,10 +16,14 @@
 //   AccountAssetListViewController.swift
 
 import Foundation
-import UIKit
+import MacaroonForm
 import MacaroonUIKit
+import UIKit
 
-final class AccountAssetListViewController: BaseViewController {
+final class AccountAssetListViewController:
+    BaseViewController,
+    SearchBarItemCellDelegate,
+    MacaroonForm.KeyboardControllerDataSource {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -51,9 +55,10 @@ final class AccountAssetListViewController: BaseViewController {
     }()
     private lazy var listBackgroundView = UIView()
 
-    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
-
-    private var keyboardController = KeyboardController()
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: listView,
+        screen: self
+    )
 
     private var accountHandle: AccountHandle
 
@@ -68,6 +73,12 @@ final class AccountAssetListViewController: BaseViewController {
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+
+        keyboardController.activate()
+    }
+
+    deinit {
+        keyboardController.deactivate()
     }
 
     override func viewDidLoad() {
@@ -78,13 +89,26 @@ final class AccountAssetListViewController: BaseViewController {
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
-                if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
+            case .didUpdate(let updates):
+                let address = self.accountHandle.value.address
+
+                if let accountHandle = self.sharedDataController.accountCollection[address] {
                     self.accountHandle = accountHandle
                     self.eventHandler?(.didUpdate(accountHandle))
                 }
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
-                self.updateUIWhenListDidReload()
+
+                if updates.isNewSearch {
+                    let bottom = self.listView.contentSize.height
+                    let minBottom = self.calculateMinEmptySpacingToScrollSearchInputFieldToTop()
+                    self.listView.contentInset.bottom = max(bottom, minBottom)
+                }
+
+                self.listDataSource.apply(
+                    updates.snapshot,
+                    animatingDifferences: true
+                ) {
+                    updates.completion?()
+                }
             }
         }
         dataController.load()
@@ -102,24 +126,12 @@ final class AccountAssetListViewController: BaseViewController {
         super.prepareLayout()
         
         addUI()
-
-        if !accountHandle.value.isWatchAccount() {
-            addTransactionActionButton(theme)
-        }
-
         view.layoutIfNeeded()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
-        keyboardController.dataSource = self
-    }
-
-    override func setListeners() {
-        super.setListeners()
-        setTransactionActionButtonAction()
-        keyboardController.beginTracking()
     }
 
     func reload() {
@@ -135,10 +147,7 @@ extension AccountAssetListViewController {
 
     private func updateUIWhenViewDidLayoutSubviews() {
         updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
-    private func updateUIWhenListDidReload() {
-        updateListBackgroundWhenListDidReload()
+        updateListWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
@@ -161,17 +170,22 @@ extension AccountAssetListViewController {
         }
     }
 
-    private func updateListBackgroundWhenListDidReload() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
     private func updateListBackgroundWhenListDidScroll() {
         updateListBackgroundWhenViewDidLayoutSubviews()
     }
 
     private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        /// <note>
+        /// 150/250 is a number smaller than the total height of the total portfolio and the quick
+        /// actions menu cells, and big enough to cover the background area when the system
+        /// triggers auto-scrolling to the top because of the applying snapshot (The system just
+        /// does it if the user pulls down the list extending the bounds of the content even if
+        /// there isn't anything to update.)
+        let thresholdHeight: CGFloat = accountHandle.value.isWatchAccount() ? 150 : 250
+        let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
+
         listBackgroundView.snp.updateConstraints {
-            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+            $0.fitToHeight(max(preferredHeight, 0))
         }
     }
 
@@ -195,16 +209,14 @@ extension AccountAssetListViewController {
         listView.alwaysBounceVertical = true
         listView.delegate = self
     }
-}
 
-extension AccountAssetListViewController {
-    private func addTransactionActionButton(_ theme: Theme) {
-        transactionActionButton.image = "fab-swap".uiImage
-
-        view.addSubview(transactionActionButton)
-        transactionActionButton.snp.makeConstraints {
-            $0.setPaddings(theme.transactionActionButtonPaddings)
+    private func updateListWhenViewDidLayoutSubviews() {
+        if keyboardController.isKeyboardVisible {
+            return
         }
+
+        let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
+        listView.setContentInset(bottom: bottom)
     }
 }
 
@@ -274,11 +286,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     )
                 }
             case .search:
-                guard let item = cell as? SearchBarItemCell else {
-                    return
-                }
-
-                item.contextView.searchInputView.delegate = self
+                let itemCell = cell as? SearchBarItemCell
+                itemCell?.delegate = self
             default:
                 return
             }
@@ -390,13 +399,49 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
     }
 }
 
@@ -428,59 +473,47 @@ extension AccountAssetListViewController {
     }
 }
 
+/// <mark>
+/// SearchBarItemCellDelegate
 extension AccountAssetListViewController {
-    private func setTransactionActionButtonAction() {
-        transactionActionButton.addTarget(
-            self,
-            action: #selector(didTapTransactionActionButton),
-            for: .touchUpInside
+    func searchBarItemCellDidBeginEditing(
+        _ cell: SearchBarItemCell
+    ) {}
+
+    func searchBarItemCellDidEdit(
+        _ cell: SearchBarItemCell
+    ) {
+        /// <note>
+        /// First, the search input field will be scrolled to the top, then we will make adjustments
+        /// to the scroll state after the searched data is loaded.
+        keyboardController.scrollToEditingRect(
+            afterContentDidChange: false,
+            animated: true
         )
-    }
+        dataController.search(for: cell.input) {
+            [weak self] in
+            guard let self = self else { return }
 
-    @objc
-    private func didTapTransactionActionButton() {
-        self.eventHandler?(.transactionOption)
-    }
-}
-
-extension AccountAssetListViewController: SearchInputViewDelegate {
-    func searchInputViewDidEdit(_ view: SearchInputView) {
-        dataController.search(for: view.text)
-    }
-
-    func searchInputViewDidReturn(_ view: SearchInputView) {
-        view.endEditing()
-    }
-
-    func searchInputViewDidBeginEditing(_ view: SearchInputView) {
-        guard let indexPath = listDataSource.indexPath(for: .search) else {
-            return
+            self.keyboardController.scrollToEditingRect(
+                afterContentDidChange: true,
+                animated: false
+            )
         }
-
-        listView.scrollToItem(at: indexPath, at: .top, animated: true)
-    }
-}
-
-extension AccountAssetListViewController: KeyboardControllerDataSource {
-    var scrollView: UIScrollView {
-        return listView
     }
 
-    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
-        return 20
+    func searchBarItemCellDidTapRightAccessory(
+        _ cell: SearchBarItemCell
+    ) {}
+
+    func searchBarItemCellDidReturn(
+        _ cell: SearchBarItemCell
+    ) {
+        cell.endEditing()
     }
 
-    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return nil
-    }
-
-    func containerView(for keyboardController: KeyboardController) -> UIView {
-        return listView
-    }
-
-    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 20
-    }
+    func searchBarItemCellDidEndEditing(
+        _ cell: SearchBarItemCell
+    ) {}
 }
 
 extension AccountAssetListViewController {
@@ -509,6 +542,111 @@ extension AccountAssetListViewController {
     }
 }
 
+/// <mark>
+/// MacaroonForm.KeyboardControllerDataSource
+extension AccountAssetListViewController {
+    func keyboardController(
+        _ keyboardController: MacaroonForm.KeyboardController,
+        editingRectIn view: UIView
+    ) -> CGRect? {
+        return getEditingRectOfSearchInputField()
+    }
+
+    func bottomInsetOverKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return 0
+    }
+
+    func additionalBottomInsetOverKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return calculateEmptySpacingToScrollSearchInputFieldToTop()
+    }
+
+    func bottomInsetUnderKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return 0
+    }
+
+    func bottomInsetWhenKeyboardDidHide(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        /// <note>
+        /// It doesn't scroll to the bottom during the transition to another screen. When the
+        /// screen is back, it will show the keyboard again anyway.
+        if isViewDisappearing {
+            return listView.contentInset.bottom
+        }
+
+        return 0
+    }
+
+    func spacingBetweenEditingRectAndKeyboard(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return calculateSpacingToScrollSearchInputFieldToTop()
+    }
+}
+
+extension AccountAssetListViewController {
+    private func calculateEmptySpacingToScrollSearchInputFieldToTop() -> CGFloat {
+        guard let editingRectOfSearchInputField = getEditingRectOfSearchInputField() else {
+            return 0
+        }
+
+        let editingOriginYOfSearchInputField = editingRectOfSearchInputField.minY
+        let visibleHeight = view.bounds.height
+        let minContentHeight =
+            editingOriginYOfSearchInputField +
+            visibleHeight
+        let keyboardHeight = keyboardController.keyboard?.height ?? 0
+        let contentHeight = listView.contentSize.height
+        let maybeEmptySpacing =
+            minContentHeight -
+            contentHeight -
+            keyboardHeight
+        return max(maybeEmptySpacing, 0)
+    }
+
+    private func calculateMinEmptySpacingToScrollSearchInputFieldToTop() -> CGFloat {
+        let visibleHeight = view.bounds.height
+        let editingRectOfSearchInputField = getEditingRectOfSearchInputField()
+        let editingHeightOfSearchInputField = editingRectOfSearchInputField?.height ?? 0
+        return visibleHeight - editingHeightOfSearchInputField
+    }
+
+    private func calculateSpacingToScrollSearchInputFieldToTop() -> CGFloat {
+        guard let editingRectOfSearchInputField = getEditingRectOfSearchInputField() else {
+            return theme.minSpacingBetweenSearchInputFieldAndKeyboard
+        }
+
+        let visibleHeight = view.bounds.height
+        let editingHeightOfSearchInputField = editingRectOfSearchInputField.height
+        let keyboardHeight = keyboardController.keyboard?.height ?? 0
+        return
+            visibleHeight -
+            editingHeightOfSearchInputField -
+            keyboardHeight
+    }
+}
+
+extension AccountAssetListViewController {
+    private func getEditingRectOfSearchInputField() -> CGRect? {
+        let indexPathOfSearchInputField = listDataSource.indexPath(for: AccountAssetsItem.search)
+
+        guard
+            let indexPath = indexPathOfSearchInputField,
+            let attributes = listView.layoutAttributesForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return attributes.frame
+    }
+}
+
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
@@ -518,6 +656,5 @@ extension AccountAssetListViewController {
         case send
         case address
         case more
-        case transactionOption
     }
 }

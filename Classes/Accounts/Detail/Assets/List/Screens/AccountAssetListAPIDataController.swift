@@ -39,7 +39,7 @@ final class AccountAssetListAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
+    private let updatesQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
@@ -67,7 +67,7 @@ extension AccountAssetListAPIDataController {
     }
 
     func reload() {
-        deliverContentSnapshot()
+        deliverContentUpdates()
     }
 }
 
@@ -80,13 +80,13 @@ extension AccountAssetListAPIDataController {
         case let .didStartRunning(first):
             if first ||
                lastSnapshot == nil {
-                deliverContentSnapshot()
+                deliverContentUpdates()
             }
         case .didFinishRunning:
             if let updatedAccountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
                 accountHandle = updatedAccountHandle
             }
-            deliverContentSnapshot()
+            deliverContentUpdates()
         default:
             break
         }
@@ -94,12 +94,13 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
-    private func deliverContentSnapshot() {
-        deliverSnapshot {
+    private func deliverContentUpdates(
+        isNewSearch: Bool = false,
+        completion: (() -> Void)? = nil
+    ) {
+        deliverUpdates {
             [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+            guard let self = self else { return nil }
 
             var snapshot = Snapshot()
 
@@ -249,34 +250,36 @@ extension AccountAssetListAPIDataController {
                 )
             }
 
-            return snapshot
+            var updates = Updates(snapshot: snapshot)
+            updates.isNewSearch = isNewSearch
+            updates.completion = completion
+            return updates
         }
     }
 
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot
+    private func deliverUpdates(
+        updates: @escaping () -> Updates?
     ) {
-        snapshotQueue.async {
+        updatesQueue.async {
             [weak self] in
             guard let self = self else { return }
 
-            let newSnapshot = snapshot()
+            guard let updates = updates() else {
+                return
+            }
 
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+            self.lastSnapshot = updates.snapshot
+            self.publish(event: .didUpdate(updates))
         }
     }
 }
 
 extension AccountAssetListAPIDataController {
     private func publish(
-        _ event: AccountAssetListDataControllerEvent
+        event: AccountAssetListDataControllerEvent
     ) {
         asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
+            guard let self = self else { return }
             self.eventHandler?(event)
         }
     }
@@ -292,18 +295,19 @@ extension AccountAssetListAPIDataController {
 
 /// <mark>: Search
 extension AccountAssetListAPIDataController {
-    func search(for query: String?) {
+    func search(
+        for query: String?,
+        completion: @escaping () -> Void
+    ) {
         searchThrottler.performNext {
             [weak self] in
-
-            guard let self = self else {
-                return
-            }
-
-            self.resetSearch()
+            guard let self = self else { return }
 
             self.load(with: query)
-            self.deliverContentSnapshot()
+            self.deliverContentUpdates(
+                isNewSearch: true,
+                completion: completion
+            )
         }
     }
 
@@ -326,11 +330,6 @@ extension AccountAssetListAPIDataController {
         }
     }
 
-    private func resetSearch() {
-        searchResults = accountHandle.value.standardAssets.someArray
-        deliverContentSnapshot()
-    }
-
     private func isAssetContainsID(_ asset: StandardAsset, query: String) -> Bool {
         return String(asset.id).localizedCaseInsensitiveContains(query)
     }
@@ -351,4 +350,9 @@ extension AccountAssetListAPIDataController {
 
         return "algo".containsCaseInsensitive(keyword)
     }
+}
+
+extension AccountAssetListAPIDataController {
+    typealias Updates = AccountAssetListUpdates
+    typealias Snapshot = AccountAssetListUpdates.Snapshot
 }

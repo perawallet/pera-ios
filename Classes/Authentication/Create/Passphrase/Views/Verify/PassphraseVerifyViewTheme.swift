@@ -43,21 +43,17 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
         ]
-        let titleFont = Fonts.DMSans.medium.make(32)
-        let titleLineHeightMultiplier = 0.96
+
+        var titleAttributes: TextAttributeGroup = .title1Medium()
+        titleAttributes.insert(.textColor(AppColors.Components.Text.main))
         self.titleText = .attributedString(
             "passphrase-verify-title"
                 .localized
-                .attributed([
-                    .font(titleFont),
-                    .lineHeightMultiplier(titleLineHeightMultiplier, titleFont),
-                    .paragraph([
-                        .lineHeightMultiple(titleLineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.main),
-                    .letterSpacing(-0.32)
-                ])
+                .attributed(
+                    titleAttributes
+                )
         )
+
         self.titleTopInset = 2
         
         self.listTopOffset = 40

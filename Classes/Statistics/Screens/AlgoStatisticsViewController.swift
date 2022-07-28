@@ -102,7 +102,8 @@ final class AlgoStatisticsViewController:
                     
                     self.algoPriceTimeFrameOptions = options
                 case .failure(let error):
-                    let algoPriceViewModel = AlgoPriceViewModel(error)
+                    var algoPriceViewModel = AlgoPriceViewModel()
+                    algoPriceViewModel.bind(error: error)
                     self.algoPriceView.bindData(algoPriceViewModel)
                     
                     let algoPriceTimeFrameSelectionViewModel =
@@ -118,7 +119,8 @@ final class AlgoStatisticsViewController:
                 case .success(let viewModel):
                     self.algoPriceView.bindPriceData(viewModel)
                 case .failure(let error):
-                    let algoPriceViewModel = AlgoPriceViewModel(error)
+                    var algoPriceViewModel = AlgoPriceViewModel()
+                    algoPriceViewModel.bind(error: error)
                     self.algoPriceView.bindPriceData(algoPriceViewModel)
                 }
             }

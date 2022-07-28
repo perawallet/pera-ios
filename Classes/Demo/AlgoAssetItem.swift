@@ -20,26 +20,31 @@ final class AlgoAssetItem {
     let amount: Decimal?
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
+    let currencyFormattingContext: CurrencyFormattingContext?
 
     init(
         account: AccountHandle,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        currencyFormattingContext: CurrencyFormattingContext? = nil
     ) {
         self.amount = account.isAvailable
             ? account.value.amount.toAlgos
             : nil
         self.currency = currency
         self.currencyFormatter = currencyFormatter
+        self.currencyFormattingContext = currencyFormattingContext
     }
 
     init(
         account: Account,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        currencyFormattingContext: CurrencyFormattingContext? = nil
     ) {
         self.amount = account.amount.toAlgos
         self.currency = currency
         self.currencyFormatter = currencyFormatter
+        self.currencyFormattingContext = currencyFormattingContext
     }
 }

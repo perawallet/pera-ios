@@ -60,6 +60,8 @@ final class ReceiveCollectibleAssetListViewController:
 
     private lazy var accountMenuInteraction = UIContextMenuInteraction(delegate: self)
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let copyToClipboardController: CopyToClipboardController
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -85,7 +87,7 @@ final class ReceiveCollectibleAssetListViewController:
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -284,6 +286,34 @@ extension ReceiveCollectibleAssetListViewController {
              return UIMenu(children: [ copyActionItem ])
          }
      }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
  }
 
 extension ReceiveCollectibleAssetListViewController {
@@ -522,9 +552,16 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
     ) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(

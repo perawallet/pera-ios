@@ -41,25 +41,16 @@ extension AlgoAssetViewModel {
     mutating func bindAmount(
         _ item: AlgoAssetItem
     ) {
-        do {
-            guard
-                let algoAmount = item.amount,
-                let algoCurrencyValue = item.currency.algoValue
-            else {
-                amount = nil
-                return
-            }
-
-            let algoRawCurrency = try algoCurrencyValue.unwrap()
-
-            let formatter = item.currencyFormatter
-            formatter.formattingContext = .listItem
-            formatter.currency = algoRawCurrency
-
-            amount = formatter.format(algoAmount)
-        } catch {
+        guard let algoAmount = item.amount else {
             amount = nil
+            return
         }
+
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        formatter.currency = AlgoLocalCurrency()
+
+        amount = formatter.format(algoAmount)
     }
 
     private mutating func bindValue(
@@ -78,14 +69,16 @@ extension AlgoAssetViewModel {
             let fiatRawCurrency = try fiatCurrencyValue.unwrap()
 
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-            let amount = try exchanger.exchange(algo: algoAmount)
+            let amount = try exchanger.exchangeAlgo(amount: algoAmount)
 
             let formatter = item.currencyFormatter
-            formatter.formattingContext = .listItem
+            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
             formatter.currency = fiatRawCurrency
 
             valueInCurrency = formatter.format(amount)
-            valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+
+            let amountInUSD = try? exchanger.exchangeAlgoToUSD(amount: amount)
+            valueInUSD = amountInUSD ?? 0
         } catch {
             valueInCurrency = nil
             valueInUSD = 0
