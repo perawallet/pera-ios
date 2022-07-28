@@ -27,6 +27,7 @@ class WCMainTransactionDataSource: NSObject {
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
     private let sharedDataController: SharedDataController
     private let currencyFormatter: CurrencyFormatter
+    private let transactions: [WCTransaction]
 
     init(
         sharedDataController: SharedDataController,
@@ -41,54 +42,38 @@ class WCMainTransactionDataSource: NSObject {
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
         self.currencyFormatter = currencyFormatter
+        self.transactions = transactions
 
         super.init()
+    }
 
+    func load() {
         groupTransactions(transactions)
     }
 
     private func groupTransactions(_ transactions: [WCTransaction]) {
-        let groupIndexes = generateGroupIndexes(transactions)
+        let transactionData = transactions.compactMap { $0.unparsedTransactionDetail }
+        var error: NSError?
+        let verifiedGroups = AlgorandSDK().findAndVerifyTransactionGroups(for: transactionData, error: &error)
 
-        guard groupIndexes.count == transactions.count else {
+        if error != nil {
             delegate?.wcMainTransactionDataSourceDidFailedGroupingValidation(self)
             return
         }
 
-        for (index, group) in groupIndexes.enumerated() {
+        guard let groups = verifiedGroups,
+              groups.count == transactions.count else {
+            delegate?.wcMainTransactionDataSourceDidFailedGroupingValidation(self)
+            return
+        }
+
+        for (index, group) in groups.enumerated() {
             if groupedTransactions[group] == nil {
                 groupedTransactions[group] = [transactions[index]]
             } else {
                 groupedTransactions[group]?.append(transactions[index])
             }
         }
-    }
-
-    private func generateGroupIndexes(_ transactions: [WCTransaction]) -> [Int64] {
-        var indexes: [String: Int64] = [:]
-        var currentIndex: Int64 = 0
-        var groupIndexes: [Int64] = []
-
-        for transaction in transactions {
-            guard let groupId = transaction.transactionDetail?.transactionGroupId else {
-                groupIndexes.append(currentIndex)
-
-                currentIndex = currentIndex.advanced(by: 1)
-                continue
-            }
-
-            if let index = indexes[groupId] {
-                groupIndexes.append(index)
-                continue
-            }
-
-            indexes[groupId] = currentIndex
-            groupIndexes.append(currentIndex)
-
-            currentIndex = currentIndex.advanced(by: 1)
-        }
-
-        return groupIndexes
     }
 }
 
