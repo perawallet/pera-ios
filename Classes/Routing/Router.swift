@@ -995,6 +995,15 @@ class Router:
                     toastPresentationController: appConfiguration.toastPresentationController
                 )
             )
+        case .optOutAsset(let draft, let theme, let eventHandler):
+            viewController = OptOutAssetScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
         }
 
         return viewController as? T

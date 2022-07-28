@@ -208,6 +208,11 @@ indirect enum Screen {
         theme: OptInAssetScreenTheme = .init(),
         eventHandler: OptInAssetScreen.EventHandler
     )
+    case optOutAsset(
+        draft: OptOutAssetDraft,
+        theme: OptOutAssetScreenTheme = .init(),
+        eventHandler: OptOutAssetScreen.EventHandler
+    )
 }
 
 extension Screen {

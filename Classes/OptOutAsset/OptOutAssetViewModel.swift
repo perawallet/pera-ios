@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OptInAssetViewModel.swift
+//   OptOutAssetViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct OptInAssetViewModel: ViewModel {
+struct OptOutAssetViewModel: ViewModel {
     var title: String?
     var assetID: SecondaryListItemViewModel?
     var account: SecondaryListItemViewModel?
@@ -27,31 +27,35 @@ struct OptInAssetViewModel: ViewModel {
     var closeAction: TextProvider?
 
     init(
-        draft: OptInAssetDraft
+        draft: OptOutAssetDraft
     ) {
         bindTitle(draft)
         bindAssetID(draft)
         bindAccount(draft)
         bindTransactionFee(draft)
         bindDescription(draft)
-        bindApproveAction()
-        bindCloseAction()
+        bindApproveAction(draft)
+        bindCloseAction(draft)
     }
 }
 
-extension OptInAssetViewModel {
+extension OptOutAssetViewModel {
     private mutating func bindTitle(
-        _ draft: OptInAssetDraft
+        _ draft: OptOutAssetDraft
     ) {
-        if draft.asset.isCollectible {
-            title = "opt-in-title-adding-nft".localized
+        let asset = draft.asset
+
+        if asset.isCollectible {
+            title =
+            "collectible-detail-opt-out-alert-title"
+                .localized(params: asset.unitName ?? "title-unknown".localized)
         } else {
-            title = "asset-add-confirmation-title".localized
+            title = "asset-remove-confirmation-title".localized
         }
     }
 
     private mutating func bindAssetID(
-        _ draft: OptInAssetDraft
+        _ draft: OptOutAssetDraft
     ) {
         assetID = AssetIDSecondaryListItemViewModel(
             asset: draft.asset
@@ -59,7 +63,7 @@ extension OptInAssetViewModel {
     }
 
     private mutating func bindAccount(
-        _ draft: OptInAssetDraft
+        _ draft: OptOutAssetDraft
     ) {
         account = AccountSecondaryListItemViewModel(
             account: draft.account
@@ -67,7 +71,7 @@ extension OptInAssetViewModel {
     }
 
     private mutating func bindTransactionFee(
-        _ draft: OptInAssetDraft
+        _ draft: OptOutAssetDraft
     ) {
         transactionFee = TransactionFeeSecondaryListItemViewModel(
             fee: draft.transactionFee
@@ -75,29 +79,60 @@ extension OptInAssetViewModel {
     }
 
     private mutating func bindDescription(
-        _ draft: OptInAssetDraft
+        _ draft: OptOutAssetDraft
     ) {
+        let asset = draft.asset
+
+        let assetName = asset.unitName ?? "title-unknown".localized
+        let accountName = draft.account.name ?? draft.account.address.shortAddressDisplay
+
         let aDescription: String
 
-        if draft.asset.isCollectible {
-            aDescription = "opt-in-description-adding-nft".localized
+        if asset.isCollectible {
+            aDescription =
+            "collectible-detail-opt-out-alert-message"
+                .localized(params: accountName)
         } else {
-            aDescription = "asset-add-warning".localized
+            aDescription =
+            "asset-remove-transaction-warning"
+                .localized(params: assetName, accountName)
         }
 
-        description = aDescription.bodyRegular()
+        description =
+        aDescription
+            .bodyRegular()
     }
 
-    private mutating func bindApproveAction() {
+    private mutating func bindApproveAction(
+        _ draft: OptOutAssetDraft
+    ) {
+        let aTitle: String
+
+        if draft.asset.isCollectible {
+            aTitle = "transaction-item-opt-out".localized
+        } else {
+            aTitle = "title-remove".localized
+        }
+
         approveAction =
-        "title-approve"
+        aTitle
             .localized
             .bodyMedium()
     }
 
-    private mutating func bindCloseAction() {
+    private mutating func bindCloseAction(
+        _ draft: OptOutAssetDraft
+    ) {
+        let aTitle: String
+
+        if draft.asset.isCollectible {
+            aTitle = "title-cancel".localized
+        } else {
+            aTitle = "title-keep".localized
+        }
+
         closeAction =
-        "title-close"
+        aTitle
             .localized
             .bodyMedium()
     }
