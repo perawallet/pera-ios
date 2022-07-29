@@ -103,6 +103,12 @@
 		179085DF2833BE0C0098D53F /* AlertUITransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */; };
 		179085E02833BE0C0098D53F /* AlertUITransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */; };
 		179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179278942244F8EE00097D32 /* UIFont+Additions.swift */; };
+		1793FBC9289403A5009E6F90 /* BadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBC8289403A5009E6F90 /* BadgeButton.swift */; };
+		1793FBCA289403A5009E6F90 /* BadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBC8289403A5009E6F90 /* BadgeButton.swift */; };
+		1793FBCB289403A5009E6F90 /* BadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBC8289403A5009E6F90 /* BadgeButton.swift */; };
+		1793FBCD289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
+		1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
+		1793FBCF289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		17A011C527EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
 		17A011C627EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
@@ -5037,6 +5043,8 @@
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
+		1793FBC8289403A5009E6F90 /* BadgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButton.swift; sourceTree = "<group>"; };
+		1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButtonTheme.swift; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPIDataController.swift; sourceTree = "<group>"; };
 		17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Device.swift"; sourceTree = "<group>"; };
@@ -11379,6 +11387,8 @@
 				D4BC640E26DE4844000CFD28 /* ButtonSecondaryTheme.swift */,
 				D4BC640226DE2DC9000CFD28 /* ButtonTheme.swift */,
 				D4BC63FE26DE22A3000CFD28 /* ButtonViewModel.swift */,
+				1793FBC8289403A5009E6F90 /* BadgeButton.swift */,
+				1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -16620,6 +16630,7 @@
 				D4092BBF276B5E690009722D /* WCSessionShortListLayout.swift in Sources */,
 				17BD4E792292F1260003E49A /* UICollectionView+Additions.swift in Sources */,
 				D459E29227DE547200F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
+				1793FBCB289403A5009E6F90 /* BadgeButton.swift in Sources */,
 				2BF8120625E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
 				2BD4E50C2855EB77003D57A4 /* SortCollectibleListDataController.swift in Sources */,
 				958416F227B3A7CD005B1627 /* Sequence+Additions.swift in Sources */,
@@ -16908,7 +16919,6 @@
 				F0E7218F284F6AA100865419 /* BuyAlgoFlowCoordinator.swift in Sources */,
 				D4F068A326EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
 				2BF90F2225FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
-				2B25D52D2615F52200D4592E /* NSMutableAttributedString+Attribute.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				95BB6C0927A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
 				F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */,
@@ -17353,6 +17363,7 @@
 				17BD4EFC2292F1260003E49A /* UILabel+Factory.swift in Sources */,
 				2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				95D11CFE2770BDC8001B2C37 /* SelectAccountViewTheme.swift in Sources */,
+				1793FBCF289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */,
 				95AF1C6227AD4EE7001AB131 /* PreviewLoadingView.swift in Sources */,
 				2B5F6F8E2768D83600C9B780 /* SettingsDetailViewTheme.swift in Sources */,
 				D497944C287CCC18004FBF8E /* AppCallAssetPreviewViewStackView.swift in Sources */,
@@ -18207,6 +18218,7 @@
 				D459E29027DE547100F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
 				2B0F624124EC129D00DA22A6 /* Session.swift in Sources */,
 				2B0F624324EC129D00DA22A6 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
+				1793FBCA289403A5009E6F90 /* BadgeButton.swift in Sources */,
 				D4C601DD2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */,
 				D4FC5F5027F507890017E81F /* ReceiveCollectibleAssetListInfoViewModel.swift in Sources */,
 				D4D7465B2779AD87000545BD /* AlgosDetailInfoViewModel.swift in Sources */,
@@ -18939,6 +18951,7 @@
 				D4092BB6276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
 				D47C4AA2279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				95C95913278A12A9003D0D78 /* WCSingleTransactionRequestBottomViewModel.swift in Sources */,
+				1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */,
 				D47C4AAA2791B7010012D7A6 /* ListErrorViewModel.swift in Sources */,
 				D499D27F27C7DA6200641FF5 /* CollectibleListLoadingView.swift in Sources */,
 				D497944B287CCC18004FBF8E /* AppCallAssetPreviewViewStackView.swift in Sources */,
@@ -19793,6 +19806,7 @@
 				95AF1C7227B1307A001AB131 /* TransactionHistoryLoadingCell.swift in Sources */,
 				2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				2B7E586025866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
+				1793FBC9289403A5009E6F90 /* BadgeButton.swift in Sources */,
 				D4C601DC2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */,
 				D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */,
 				958416F027B3A7CD005B1627 /* Sequence+Additions.swift in Sources */,
@@ -20525,6 +20539,7 @@
 				D419431F273541790055EC70 /* PageBarLayoutSheet.swift in Sources */,
 				D49D77E12789FE75001FD5F6 /* FloatingActionItemButtonTheme.swift in Sources */,
 				D4241FD026E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
+				1793FBCD289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */,
 				D45C47FF277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* TransactionAmountView.swift in Sources */,
 				D497944A287CCC18004FBF8E /* AppCallAssetPreviewViewStackView.swift in Sources */,
