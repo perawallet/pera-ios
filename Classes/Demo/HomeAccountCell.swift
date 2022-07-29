@@ -37,7 +37,7 @@ final class HomeAccountCell:
         let separator = Separator(
             color: AppColors.Shared.Layer.grayLighter,
             size: 1,
-            position: .bottom((80, 0))
+            position: .bottom((80, 24))
         )
         separatorStyle = .single(separator)
     }

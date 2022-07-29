@@ -22,11 +22,18 @@ protocol ManageAssetsListDataController: AnyObject {
 
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)? { get set }
 
+    var account: Account { get }
+    var dataSource: ManageAssetsListDataSource? { get set }
+
+    subscript(index: Int) -> Asset? { get }
+    subscript(assetID: AssetID) -> Asset? { get }
+
     func load()
     func search(for query: String)
     func resetSearch()
-
-    subscript(index: Int) -> Asset? { get }
+    func removeAsset(
+        _ asset: Asset
+    )
 }
 
 enum ManageAssetsListDataControllerEvent {

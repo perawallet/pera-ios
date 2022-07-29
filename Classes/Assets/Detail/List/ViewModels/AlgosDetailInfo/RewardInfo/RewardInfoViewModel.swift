@@ -44,7 +44,7 @@ extension RewardInfoViewModel {
     mutating func bindTitle() {
         title = "rewards-title"
             .localized
-            .footnoteRegular(hasMultilines: false)
+            .footnoteRegular()
     }
 
     mutating func bindValue(
@@ -57,7 +57,7 @@ extension RewardInfoViewModel {
         currencyFormatter.currency = AlgoLocalCurrency()
 
         let text = currencyFormatter.format(totalRewards)
-        value = text?.footnoteMonoRegular(hasMultilines: false)
+        value = text?.footnoteMonoRegular()
     }
 }
 

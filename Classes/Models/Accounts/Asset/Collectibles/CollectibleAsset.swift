@@ -17,6 +17,8 @@
 import Foundation
 
 final class CollectibleAsset: Asset {
+    var optedInAddress: String?
+
     let id: AssetID
     let amount: UInt64
     let decimals: Int

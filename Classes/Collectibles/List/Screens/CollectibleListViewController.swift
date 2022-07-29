@@ -255,7 +255,7 @@ extension CollectibleListViewController {
             return
         }
 
-        view.endEditing(true)
+        endEditing()
 
         switch itemIdentifier {
         case .collectible(let item):
@@ -294,8 +294,7 @@ extension CollectibleListViewController {
         }
 
         return UIContextMenuConfiguration(
-            identifier: indexPath as NSIndexPath,
-            previewProvider: nil
+            identifier: indexPath as NSIndexPath
         ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
@@ -400,6 +399,8 @@ extension CollectibleListViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
             
             self.openCollectiblesManagementScreen()
         }
@@ -409,6 +410,8 @@ extension CollectibleListViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.openReceiveCollectibleAccountList()
         }
@@ -422,6 +425,8 @@ extension CollectibleListViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.openCollectiblesManagementScreen()
         }
@@ -527,9 +532,9 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     func managementOptionsViewControllerDidTapFilter(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = self.open(
+        let controller = open(
             .collectiblesFilterSelection(
-                filter: self.dataController.currentFilter
+                filter: dataController.currentFilter
             ),
             by: .present
         ) as? CollectiblesFilterSelectionViewController

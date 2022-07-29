@@ -49,7 +49,7 @@ class Router:
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
         
-        observeNotifications()
+        startObservingNotifications()
     }
     
     deinit {
@@ -183,11 +183,11 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft):
+        case .algosDetail(let draft, let preferences):
             launch(tab: .home)
 
             route(
-                to: .algosDetail(draft: draft),
+                to: .algosDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -205,11 +205,11 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft):
+        case .assetDetail(let draft, let preferences):
             launch(tab: .home)
             
             route(
-                to: .assetDetail(draft: draft),
+                to: .assetDetail(draft: draft, preferences: preferences),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -548,17 +548,19 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetDetail(draft):
+        case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-        case let .algosDetail(draft):
+        case let .algosDetail(draft, preferences):
             viewController = AlgosDetailViewController(
                 draft: draft,
+                preferences: preferences,
                 copyToClipboardController: nil,
                 configuration: configuration
             )
@@ -582,8 +584,11 @@ class Router:
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
-        case let .removeAsset(account):
-            viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case let .removeAsset(dataController):
+            viewController = ManageAssetsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
             managementOptionsViewController.delegate = delegate
@@ -848,6 +853,7 @@ class Router:
                 walletConnector: configuration.walletConnector,
                 currencyFormatter: currencyFormatter
             )
+            dataSource.load()
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
                 configuration: configuration,
@@ -855,8 +861,6 @@ class Router:
             )
         case .asaVerificationInfo:
             viewController = AsaVerificationInfoScreen(configuration: configuration)
-        case .peraIntroduction:
-            viewController = PeraIntroductionViewController(configuration: configuration)
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -1176,7 +1180,7 @@ extension Router {
 }
 
 extension Router {
-    private func observeNotifications() {
+    private func startObservingNotifications() {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }

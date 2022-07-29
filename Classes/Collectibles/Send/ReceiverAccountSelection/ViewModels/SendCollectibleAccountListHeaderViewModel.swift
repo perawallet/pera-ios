@@ -42,19 +42,9 @@ extension SendCollectibleAccountListHeaderViewModel {
     mutating func bindTitle(
         _ title: String
     ) {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.02
-
         self.title = .attributedString(
             title
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 

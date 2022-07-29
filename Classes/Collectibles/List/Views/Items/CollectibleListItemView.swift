@@ -280,7 +280,8 @@ extension CollectibleListItemView {
 extension CollectibleListItemView {
     func getTargetedPreview() -> UITargetedPreview {
         return UITargetedPreview(
-            view: image.imageContainer
+            view: image.imageContainer,
+            backgroundColor: AppColors.Shared.System.background.uiColor
         )
     }
 }

@@ -158,7 +158,7 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
         in assetActionConfirmationView: AssetActionConfirmationView
     ) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyAddress) {
+            let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(self.draft.assetId)
             }

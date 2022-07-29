@@ -72,6 +72,16 @@ extension CurrencyExchanger {
 
         return amount * algoValue
     }
+
+    func exchangeAlgoToUSD(
+        amount: Decimal
+    ) throws -> Decimal {
+        guard let algoToUSDValue = currency.algoToUSDValue else {
+            throw CurrencyExchangeError.currencyFailed()
+        }
+
+        return amount * algoToUSDValue
+    }
 }
 
 enum CurrencyExchangeError: Error {

@@ -48,7 +48,12 @@ extension AccountDescendingTotalPortfolioValueAlgorithm {
             let accountAmount = try exchanger.exchange(accountPortfolio)
             let otherAccountPortfolio = Portfolio(account: otherAccount.value)
             let otherAccountAmount = try exchanger.exchange(otherAccountPortfolio)
-            return accountAmount > otherAccountAmount
+
+            if accountAmount != otherAccountAmount {
+                return accountAmount > otherAccountAmount
+            }
+
+            return account.value.address > otherAccount.value.address
         } catch {
             return account.value.address > otherAccount.value.address
         }
