@@ -609,6 +609,12 @@ extension CollectibleDetailViewController {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
     }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
 }
 
 extension CollectibleDetailViewController {
