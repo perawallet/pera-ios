@@ -61,7 +61,7 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         self.collectionViewMinimumLineSpacing = 20
         self.verticalStackViewTopPadding = 66
         self.verticalStackViewSpacing = 12
-        self.listContentInset = (10, 0, 0, 0)
+        self.listContentInset = (10, 0, 64, 0)
         self.titleLabelTopPadding = 30
         self.devicesListTopPadding = 50
         self.bottomInset = 16
