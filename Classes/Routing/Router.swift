@@ -1466,4 +1466,8 @@ extension Router {
     func transactionControllerDidFailToSignWithLedger(
         _ transactionController: TransactionController
     ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) { }
 }

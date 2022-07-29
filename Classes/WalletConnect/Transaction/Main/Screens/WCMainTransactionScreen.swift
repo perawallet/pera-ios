@@ -342,6 +342,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         ledgerApprovalViewController?.dismissScreen()
     }
 
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
+        loadingController?.stopLoading()
+    }
+
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:

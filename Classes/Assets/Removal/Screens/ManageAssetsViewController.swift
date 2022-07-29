@@ -352,6 +352,12 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
     }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
         return draft?.assetIndex.unwrap { account[$0] }

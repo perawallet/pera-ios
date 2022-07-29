@@ -608,6 +608,12 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
     ) {
         ledgerApprovalViewController?.dismissScreen()
     }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
 }
 
 extension ReceiveCollectibleAssetListViewController {
