@@ -246,24 +246,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             return
         }
 
-        if assetDetail.isCollectible {
-            let collectibleAsset = CollectibleAsset(
-                asset: ALGAsset(id: assetDetail.id),
-                decoration: assetDetail
-            )
-
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
-                ]
-            )
-        } else {
-            delegate?.assetAdditionViewController(self, didAdd: assetDetail)
-        }
-
-        popScreen()
+        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
