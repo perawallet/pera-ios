@@ -22,3 +22,22 @@ protocol PrimaryTitleViewModel: ViewModel {
     var icon: Image?  { get }
     var subtitle: EditText? { get }
 }
+
+extension PrimaryTitleViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+        hasher.combine(icon?.uiImage)
+        hasher.combine(subtitle)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.icon?.uiImage == rhs.icon?.uiImage &&
+        lhs.subtitle == rhs.subtitle
+    }
+}

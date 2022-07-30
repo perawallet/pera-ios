@@ -47,17 +47,14 @@ extension PrimaryListItemView {
     private func addIcon(
         _ theme: PrimaryListItemViewTheme
     ) {
-        if let iconStyle = theme.icon {
-            iconView.customize(iconStyle)
-        }
+        iconView.customize(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
             $0.leading == 0
             $0.centerY == 0
-            $0.top <= 0
-            $0.bottom <= 0
         }
     }
 
@@ -98,7 +95,7 @@ extension PrimaryListItemView {
         contentView.addSubview(secondaryTitleView)
         secondaryTitleView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenTitles
+            $0.leading >= primaryTitleView.snp.trailing + theme.minSpacingBetweenTitles
             $0.bottom == 0
             $0.trailing == 0
         }

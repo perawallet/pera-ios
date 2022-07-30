@@ -574,12 +574,6 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle, dataController):
-            viewController = AssetSearchViewController(
-                accountHandle: accountHandle,
-                dataController: dataController,
-                configuration: configuration
-            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:

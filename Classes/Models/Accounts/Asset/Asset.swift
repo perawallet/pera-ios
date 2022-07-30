@@ -67,6 +67,7 @@ struct AssetPresentation {
     let unitName: String?
     let url: String?
     let verificationTier: AssetVerificationTier
+    let logo: URL?
 
     var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name,
