@@ -34,7 +34,7 @@ final class AccountAssetListAPIDataController:
     private var searchKeyword: String? = nil
     private var searchResults: [StandardAsset] = []
 
-    private var listItems: [AssetPreviewModel] = []
+    private var assetListItems: [ALGAssetListItemViewModel] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -57,7 +57,7 @@ final class AccountAssetListAPIDataController:
 
     subscript(index: Int) -> StandardAsset? {
         let searchResultIndex = index - 2
-        return listItems[safe: searchResultIndex]?.asset as? StandardAsset
+        return assetListItems[safe: searchResultIndex]?.asset as? StandardAsset
     }
 }
 
@@ -167,7 +167,7 @@ extension AccountAssetListAPIDataController {
 
             self.load(with: self.searchKeyword)
 
-            var assetPreviewModels: [AssetPreviewModel] = []
+            var assetViewModels: [ALGAssetListItemViewModel] = []
 
             if self.isKeywordContainsAlgo() {
                 let algoAssetItem = AlgoAssetItem(
@@ -175,8 +175,8 @@ extension AccountAssetListAPIDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-                assetPreviewModels.append(algoAssetPreview)
+                let viewModel = AlgoListItemViewModel(algoAssetItem)
+                assetViewModels.append(viewModel)
             }
 
             self.searchResults.forEach { asset in
@@ -189,42 +189,40 @@ extension AccountAssetListAPIDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
-                assetPreviewModels.append(preview)
+
+                let viewModel = AssetListItemViewModel(assetItem)
+                assetViewModels.append(viewModel)
             }
 
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                self.listItems = assetPreviewModels.sorted(
+                self.assetListItems = assetViewModels.sorted(
                     by: selectedAccountSortingAlgorithm.getFormula
                 )
                 assetItems.append(
-                    contentsOf: self.listItems.map({
-                        let viewModel = AssetPreviewViewModel($0)
-
-                        switch $0.icon {
-                        case .algo:
-                            return .algo(viewModel)
-                        default:
-                            return .asset(viewModel)
+                    contentsOf: self.assetListItems.map({ viewModel in
+                        if let algoItemViewModel = viewModel as? AlgoListItemViewModel,
+                            viewModel.asset == nil {
+                            return .algo(algoItemViewModel)
                         }
+
+                        return .asset(viewModel as! AssetListItemViewModel)
                     })
                 )
             } else {
-                self.listItems = assetPreviewModels
+                self.assetListItems = assetViewModels
                 assetItems.append(
-                    contentsOf: self.listItems.map({
-                        let viewModel = AssetPreviewViewModel($0)
-
-                        switch $0.icon {
-                        case .algo:
-                            return .algo(viewModel)
-                        default:
-                            return .asset(viewModel)
+                    contentsOf: self.assetListItems.map({ viewModel in
+                        if let algoItemViewModel = viewModel as? AlgoListItemViewModel,
+                            viewModel.asset == nil {
+                            return .algo(algoItemViewModel)
                         }
+
+                        return .asset(viewModel as! AssetListItemViewModel)
                     })
                 )
             }
 
+            /// <todo> Use new list item structure
             self.addedAssetDetails.forEach {
                 let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
                 assetItems.append(assetItem)

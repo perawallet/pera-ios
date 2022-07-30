@@ -18,11 +18,13 @@ import Foundation
 import MacaroonUIKit
 
 struct AlgoListItemViewModel:
-    PrimaryListItemViewModel,
+    ALGAssetListItemViewModel,
     Hashable {
     var imageViewModel: PrimaryImageViewModel?
     var primaryTitleViewModel: PrimaryTitleViewModel?
     var secondaryTitleViewModel: PrimaryTitleViewModel?
+
+    let asset: Asset? = nil
 
     init(
         _ item: AlgoAssetItem
@@ -35,7 +37,7 @@ struct AlgoListItemViewModel:
 
 extension AlgoListItemViewModel {
     private mutating func bindImageViewModel() {
-        imageViewModel = AssetImageLargeViewModel(image: .algo)
+        imageViewModel = StandardAssetImageViewModel(image: .algo)
     }
 
     private mutating func bindPrimaryTitleViewModel() {

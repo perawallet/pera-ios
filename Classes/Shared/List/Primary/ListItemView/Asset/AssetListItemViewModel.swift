@@ -18,11 +18,12 @@ import Foundation
 import MacaroonUIKit
 
 struct AssetListItemViewModel:
-    PrimaryListItemViewModel,
+    ALGAssetListItemViewModel,
     Hashable {
     var imageViewModel: PrimaryImageViewModel?
     var primaryTitleViewModel: PrimaryTitleViewModel?
     var secondaryTitleViewModel: PrimaryTitleViewModel?
+    var asset: Asset?
 
     init(
         _ item: AssetItem
@@ -30,6 +31,7 @@ struct AssetListItemViewModel:
         bindImageViewModel(item)
         bindPrimaryTitleViewModel(item)
         bindSecondaryTitleViewModel(item)
+        bindAsset(item)
     }
 }
 
@@ -41,7 +43,7 @@ extension AssetListItemViewModel {
             ? "title-unknown".localized
             : item.asset.presentation.name
 
-        imageViewModel = AssetImageLargeViewModel(
+        imageViewModel = StandardAssetImageViewModel(
             image: .url(
                 item.asset.presentation.logo,
                 title: title
@@ -59,5 +61,11 @@ extension AssetListItemViewModel {
         _ item: AssetItem
     ) {
         secondaryTitleViewModel = AssetAmountViewModel(item)
+    }
+
+    private mutating func bindAsset(
+        _ item: AssetItem
+    ) {
+        asset = item.asset
     }
 }

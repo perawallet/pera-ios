@@ -233,6 +233,7 @@ extension ManageAssetsListLocalDataController {
                         currency: currency,
                         currencyFormatter: currencyFormatter
                     )
+                    /// <todo> Use new list item structure
                     let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
                     viewModel = AssetPreviewViewModel(assetPreview)
                 }

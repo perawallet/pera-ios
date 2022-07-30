@@ -12,25 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSearchListTitleSupplementaryCell.swift
+//   ALGAssetAmountViewModel.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-final class AssetSearchListTitleSupplementaryCell:
-    CollectionCell<TitleView>,
-    ViewModelBindable {
-    static let theme: TitleViewTheme = {
-        var theme = TitleViewTheme()
-        theme.configureForAsserSearchListHeader()
-        return theme
-    }()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+protocol ALGAssetAmountViewModel: PrimaryTitleViewModel {
+    var valueInUSD: Decimal { get }
 }

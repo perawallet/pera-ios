@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleViewTheme+AssetSearchList.swift
+//   ALGAssetListItemViewModel.swift
 
 import Foundation
 
-extension TitleViewTheme {
-    mutating func configureForAsserSearchListHeader() {
-        paddings = (0, 0, 8, 0)
-    }
+protocol ALGAssetListItemViewModel: PrimaryListItemViewModel {
+    var asset: Asset? { get }
 }

@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUIKit
 
 struct AssetAmountViewModel:
-    PrimaryTitleViewModel,
+    ALGAssetAmountViewModel,
     Hashable {
     var title: EditText?
     var icon: Image?

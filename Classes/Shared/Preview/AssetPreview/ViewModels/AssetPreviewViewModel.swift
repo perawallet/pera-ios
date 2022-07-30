@@ -29,6 +29,7 @@ struct AssetPreviewModel {
     let asset: Asset?
 }
 
+/// <todo> Use new list item structure
 struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
