@@ -25,6 +25,7 @@ struct PendingAssetPreviewModel: Hashable {
     let assetStatus: String?
 }
 
+/// <todo> Use new list item structure
 struct PendingAssetPreviewViewModel:
     PairedViewModel,
     Hashable {

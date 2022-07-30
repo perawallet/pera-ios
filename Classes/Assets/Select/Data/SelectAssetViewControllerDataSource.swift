@@ -88,6 +88,7 @@ extension SelectAssetViewControllerDataSource {
                 currency: currency,
                 currencyFormatter: currencyFormatter
             )
+            /// <todo> Use new list item structure
             let preview = AssetPreviewModelAdapter.adapt(algoAssetItem)
             let previewViewModel = AssetPreviewViewModel(preview)
 
@@ -118,6 +119,7 @@ extension SelectAssetViewControllerDataSource {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
+        /// <todo> Use new list item structure
         let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
         let previewViewModel = AssetPreviewViewModel(preview)
 

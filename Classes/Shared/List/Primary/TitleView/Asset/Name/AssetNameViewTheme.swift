@@ -12,46 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSearchListHeaderViewModel.swift
+//   AssetNameViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AssetSearchListHeaderViewModel:
-    TitleViewModel,
-    Hashable {
-    private(set) var title: EditText?
-    private(set) var titleStyle: TextStyle?
+struct AssetNameViewTheme: PrimaryTitleViewTheme {
+    var title: TextStyle
+    var icon: ImageStyle?
+    var subtitle: TextStyle
 
-    init(
-        _ title: String
-    ) {
-        bind(title)
-    }
-}
+    var iconContentEdgeInsets: LayoutOffset?
+    var spacingBetweenTitleAndSubtitle: LayoutMetric
 
-extension AssetSearchListHeaderViewModel {
-    mutating func bind(
-        _ title: String
-    ) {
-        bindTitle(title)
-        bindTitleStyle()
-    }
-
-    mutating func bindTitle(
-        _ title: String
-    ) {
-        self.title = .attributedString(
-            title
-                .bodyMedium()
-        )
-    }
-
-    mutating func bindTitleStyle() {
-        titleStyle = [
+    init(_ family: LayoutFamily) {
+        title = [
             .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText())
         ]
+        icon = [
+            .contentMode(.right),
+        ]
+        subtitle = [
+            .textColor(AppColors.Components.Text.grayLighter)
+        ]
+
+        iconContentEdgeInsets = (6, 0)
+        spacingBetweenTitleAndSubtitle = 0
     }
 }

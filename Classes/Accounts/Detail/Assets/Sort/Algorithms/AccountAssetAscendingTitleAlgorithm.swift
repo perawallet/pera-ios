@@ -28,17 +28,16 @@ struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetAscendingTitleAlgorithm {
     func getFormula(
-        assetPreview: AssetPreviewModel,
-        otherAssetPreview: AssetPreviewModel
+        viewModel: ALGAssetListItemViewModel,
+        otherViewModel: ALGAssetListItemViewModel
     ) -> Bool {
-
         let firstAssetTitle =
-        assetPreview.title ??
-        assetPreview.subtitle
+        viewModel.primaryTitleViewModel?.title?.string ??
+        viewModel.primaryTitleViewModel?.subtitle?.string
 
         let secondAssetTitle =
-        otherAssetPreview.title ??
-        otherAssetPreview.subtitle
+        otherViewModel.primaryTitleViewModel?.title?.string ??
+        otherViewModel.primaryTitleViewModel?.subtitle?.string
 
         guard let assetTitle = firstAssetTitle, !assetTitle.isEmptyOrBlank else {
             return false

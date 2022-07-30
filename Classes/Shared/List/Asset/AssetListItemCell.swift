@@ -12,16 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountAssetSortingAlgorithm.swift
+//   AssetListItemCell.swift
 
-import Foundation
+import UIKit
+import MacaroonUIKit
 
-protocol AccountAssetSortingAlgorithm {
-    var id: String { get }
-    var name: String { get }
+final class AssetListItemCell:
+    CollectionCell<PrimaryListItemView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
 
-    func getFormula(
-        viewModel: ALGAssetListItemViewModel,
-        otherViewModel: ALGAssetListItemViewModel
-    ) -> Bool
+    static let theme = AssetListItemTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+
+        separatorStyle = .single(Self.theme.separator)
+    }
 }

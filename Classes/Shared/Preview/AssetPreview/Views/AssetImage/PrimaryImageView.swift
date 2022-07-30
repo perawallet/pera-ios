@@ -13,20 +13,20 @@
 // limitations under the License.
 
 //
-//   AssetImageView.swift
+//   PrimaryImageView.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class AssetImageView:
+final class PrimaryImageView:
     View,
     ViewModelBindable,
     ListReusable {
     private lazy var imageView = URLImageView()
 
     func customize(
-        _ theme: AssetImageViewTheme
+        _ theme: PrimaryImageViewTheme
     ) {
         addImage(theme)
     }
@@ -40,7 +40,7 @@ final class AssetImageView:
     ) {}
 
     func bindData(
-        _ viewModel: AssetImageViewModel?
+        _ viewModel: PrimaryImageViewModel?
     ) {
         if let image = viewModel?.image {
             imageView.imageContainer.image = image
@@ -55,9 +55,9 @@ final class AssetImageView:
     }
 }
 
-extension AssetImageView {
+extension PrimaryImageView {
     func addImage(
-        _ theme: AssetImageViewTheme
+        _ theme: PrimaryImageViewTheme
     ) {
         imageView.build(theme.image)
 

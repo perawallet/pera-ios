@@ -12,16 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountAssetSortingAlgorithm.swift
+//   PrimaryListItemViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-protocol AccountAssetSortingAlgorithm {
-    var id: String { get }
-    var name: String { get }
+protocol PrimaryListItemViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: PrimaryImageViewTheme { get }
+    var primaryTitle: PrimaryTitleViewTheme { get }
+    var secondaryTitle: PrimaryTitleViewTheme { get }
 
-    func getFormula(
-        viewModel: ALGAssetListItemViewModel,
-        otherViewModel: ALGAssetListItemViewModel
-    ) -> Bool
+    var contentHorizontalPadding: LayoutMetric { get }
+    var contentMinWidthRatio: LayoutMetric { get }
+    var minSpacingBetweenTitles: LayoutMetric { get }
+    var iconSize: LayoutSize { get }
 }
