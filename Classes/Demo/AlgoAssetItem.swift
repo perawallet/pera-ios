@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class AlgoAssetItem {
+final class AlgoAssetItem: ALGAssetItem {
     let amount: Decimal?
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter

@@ -12,12 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleViewTheme+AssetSearchList.swift
+//   AssetAmountViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-extension TitleViewTheme {
-    mutating func configureForAsserSearchListHeader() {
-        paddings = (0, 0, 8, 0)
+struct AssetAmountViewTheme: PrimaryTitleViewTheme {
+    var title: TextStyle
+    var icon: ImageStyle?
+    var subtitle: TextStyle
+
+    var iconContentEdgeInsets: LayoutOffset?
+    var spacingBetweenTitleAndSubtitle: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        title = [
+            .textColor(AppColors.Components.Text.main),
+        ]
+        icon = nil
+        subtitle = [
+            .textColor(AppColors.Components.Text.gray)
+        ]
+
+        iconContentEdgeInsets = nil
+        spacingBetweenTitleAndSubtitle = 0
     }
 }

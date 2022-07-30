@@ -12,30 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AppCallAssetPreviewViewWithImageTheme.swift
+//   PrimaryTitleViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AppCallAssetPreviewViewWithImageTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: PrimaryImageViewTheme
-    var iconSize: LayoutSize
-    
-    var spacingBetweenIconAndContent: LayoutMetric
+protocol PrimaryTitleViewModel: ViewModel {
+    var title: EditText? { get }
+    var icon: Image?  { get }
+    var subtitle: EditText? { get }
+}
 
-    var content: AppCallAssetPreviewViewTheme
-
-    init(
-        _ family: LayoutFamily
+extension PrimaryTitleViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
     ) {
-        icon = AssetImageViewTheme()
-        iconSize = (40, 40)
+        hasher.combine(title)
+        hasher.combine(icon?.uiImage)
+        hasher.combine(subtitle)
+    }
 
-        spacingBetweenIconAndContent = 16
-
-        content = AppCallAssetPreviewViewTheme()
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.icon?.uiImage == rhs.icon?.uiImage &&
+        lhs.subtitle == rhs.subtitle
     }
 }

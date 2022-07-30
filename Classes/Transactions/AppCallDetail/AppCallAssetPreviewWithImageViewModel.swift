@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct AppCallAssetPreviewWithImageViewModel:
     ViewModel {
-    private(set) var icon: AssetImageViewModel?
+    private(set) var icon: PrimaryImageViewModel?
     private(set) var content: AppCallAssetPreviewViewModel?
 
     init(

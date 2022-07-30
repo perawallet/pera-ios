@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct AssetPreviewViewTheme:
     LayoutSheet,
     StyleSheet {
-    let icon: AssetImageViewTheme
+    let icon: PrimaryImageViewTheme
     let verifiedIcon: ImageStyle
     let title: TextStyle
     let subtitle: TextStyle
