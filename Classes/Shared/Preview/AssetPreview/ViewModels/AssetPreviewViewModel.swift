@@ -29,11 +29,12 @@ struct AssetPreviewModel {
     let asset: Asset?
 }
 
+/// <todo> Use new list item structure
 struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
     private(set) var assetID: AssetID?
-    private(set) var assetImageViewModel: AssetImageViewModel?
+    private(set) var assetImageViewModel: PrimaryImageViewModel?
     private(set) var verifiedIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?

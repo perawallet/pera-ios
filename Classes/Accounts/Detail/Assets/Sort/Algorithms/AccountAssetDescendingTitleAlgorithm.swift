@@ -15,6 +15,7 @@
 //   AccountAssetDescendingTitleAlgorithm.swift
 
 import Foundation
+import MacaroonUtils
 
 struct AccountAssetDescendingTitleAlgorithm: AccountAssetSortingAlgorithm {
     let id: String
@@ -28,23 +29,22 @@ struct AccountAssetDescendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetDescendingTitleAlgorithm {
     func getFormula(
-        assetPreview: AssetPreviewModel,
-        otherAssetPreview: AssetPreviewModel
+        viewModel: ALGAssetListItemViewModel,
+        otherViewModel: ALGAssetListItemViewModel
     ) -> Bool {
-
         let firstAssetTitle =
-        assetPreview.title ??
-        assetPreview.subtitle
+            viewModel.primaryTitleViewModel?.title?.string ??
+            viewModel.primaryTitleViewModel?.subtitle?.string
 
         let secondAssetTitle =
-        otherAssetPreview.title ??
-        otherAssetPreview.subtitle
+            otherViewModel.primaryTitleViewModel?.title?.string ??
+            otherViewModel.primaryTitleViewModel?.subtitle?.string
 
-        guard let assetTitle = firstAssetTitle, !assetTitle.isEmptyOrBlank else {
+        guard let assetTitle = firstAssetTitle.unwrapNonEmptyString() else {
             return true
         }
 
-        guard let otherAssetTitle = secondAssetTitle, !otherAssetTitle.isEmptyOrBlank else {
+        guard let otherAssetTitle = secondAssetTitle.unwrapNonEmptyString() else {
             return false
         }
 

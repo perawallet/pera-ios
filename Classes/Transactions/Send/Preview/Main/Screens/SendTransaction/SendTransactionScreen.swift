@@ -200,6 +200,7 @@ extension SendTransactionScreen {
                 currencyFormatter: currencyFormatter,
                 currencyFormattingContext: .standalone()
             )
+            /// <todo> Use new list item structure
             let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
             viewModel = AssetPreviewViewModel(algoAssetPreview)
         case .asset(let asset):
