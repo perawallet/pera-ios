@@ -12,21 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   InfoCell.swift
+//   InfoBoxViewStyle.swift
 
-import UIKit
+import Foundation
 import MacaroonUIKit
 
-final class InfoCell:
-    CollectionCell<InfoView>,
-    ViewModelBindable {
-    static let theme = InfoViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme)
-    }
+struct InfoBoxViewStyle {
+    let background: ViewStyle
+    let corner: Corner
 }

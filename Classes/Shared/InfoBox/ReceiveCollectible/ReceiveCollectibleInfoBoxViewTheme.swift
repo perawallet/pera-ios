@@ -12,41 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   InfoViewTheme.swift
+//   ReceiveCollectibleInfoBoxViewTheme.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct InfoViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    let background: ViewStyle
-    let corner: Corner
-
-    let contentPaddings: LayoutPaddings
-
+struct ReceiveCollectibleInfoBoxViewTheme: InfoBoxViewTheme {
     let icon: ImageStyle
-    let iconContentEdgeInsets: LayoutOffset
-
+    let title: TextStyle
     let message: TextStyle
 
+    let contentPaddings: LayoutPaddings
+    let iconContentEdgeInsets: LayoutOffset
+    let spacingBetweenTitleAndMessage: LayoutMetric
+
     init(_ family: LayoutFamily) {
-        background = [
-            .backgroundColor(AppColors.Shared.Helpers.positiveLighter)
-        ]
-
-        corner = Corner(radius: 4)
-
-        contentPaddings = (12, 12, 12, 12)
-
         icon = [
             .contentMode(.left)
         ]
-        iconContentEdgeInsets = (8, 0)
-        
+        title = []
         message = [
             .textColor(AppColors.Shared.Helpers.positive.uiColor),
             .textOverflow(FittingText())
         ]
+
+        contentPaddings = (12, 12, 12, 12)
+        iconContentEdgeInsets = (8, 0)
+        spacingBetweenTitleAndMessage = 0
     }
 }

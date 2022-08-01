@@ -12,31 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   InfoViewModel.swift
+//   ReceiveCollectibleInfoBoxCell.swift
 
-import Foundation
+import UIKit
 import MacaroonUIKit
 
-protocol InfoViewModel: ViewModel {
-    var icon: Image? { get }
-    var message: EditText? { get }
-}
+final class ReceiveCollectibleInfoBoxCell:
+    CollectionCell<InfoBoxView>,
+    ViewModelBindable {
+    static let theme = ReceiveCollectibleInfoBoxViewTheme()
 
-extension InfoViewModel {
-    func getIcon() -> Image {
-        return "icon-info-positive"
-    }
-
-    func getMessage(
-        _  aMessage: String?
-    ) -> EditText? {
-        guard let aMessage = aMessage else {
-            return nil
-        }
-
-        return .attributedString(
-            aMessage
-                .footnoteMedium()
-        )
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }
