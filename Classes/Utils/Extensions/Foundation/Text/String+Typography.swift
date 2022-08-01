@@ -417,6 +417,20 @@ extension String {
 // MARK: - Footnote
 
 extension String {
+    func footnoteHeadingMedium(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> NSAttributedString {
+        return attributed(
+            .footnoteHeadingMedium(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
+        )
+    }
+
     func footnoteBold(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
@@ -712,6 +726,29 @@ extension Set where Element == AnyTextAttribute {
         return [
             .font(font),
             .letterSpacing(-0.3),
+            .lineHeightMultiplier(lineHeightMultiplier, font),
+            .paragraph([
+                .textAlignment(alignment),
+                .lineBreakMode(lineBreakMode),
+                .lineHeightMultiple(lineHeightMultiplier)
+            ])
+        ]
+    }
+
+    static func footnoteHeadingMedium(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> Self {
+        let font =
+        supportsDynamicType
+        ? Fonts.DMSans.medium.make(13, .footnote).uiFont
+        : Fonts.DMSans.medium.make(13).uiFont
+        let lineHeightMultiplier = 1.18
+
+        return [
+            .font(font),
+            .letterSpacing(1.04),
             .lineHeightMultiplier(lineHeightMultiplier, font),
             .paragraph([
                 .textAlignment(alignment),

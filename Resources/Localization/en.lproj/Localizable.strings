@@ -72,6 +72,7 @@
 "title-more" = "More";
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
+"title-about-with-param" = "ABOUT %@";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
