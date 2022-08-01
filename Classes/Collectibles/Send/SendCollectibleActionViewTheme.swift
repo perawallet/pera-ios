@@ -136,19 +136,9 @@ extension SendCollectibleActionViewTheme {
     private static func getTitle(
         _ title: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             title
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

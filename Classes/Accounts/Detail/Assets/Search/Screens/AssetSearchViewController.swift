@@ -61,11 +61,6 @@ final class AssetSearchViewController:
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -99,16 +94,6 @@ final class AssetSearchViewController:
 
     override func prepareLayout() {
         build()
-    }
-}
-
-extension AssetSearchViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

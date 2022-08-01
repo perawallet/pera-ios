@@ -382,6 +382,10 @@ extension ScanQRFlowCoordinator {
     func transactionControllerDidFailToSignWithLedger(
         _ transactionController: TransactionController
     ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) { }
 }
 
 extension ScanQRFlowCoordinator {

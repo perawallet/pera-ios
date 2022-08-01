@@ -129,7 +129,7 @@ final class AccountDetailViewController: PageContainer {
     override func itemDidSelect(
         _ index: Int
     ) {
-        view.endEditing(true)
+        endEditing()
     }
 }
 
@@ -145,6 +145,8 @@ extension AccountDetailViewController {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
             case .manageAssets(let isWatchAccount):
+                self.assetListScreen.endEditing()
+
                 self.modalTransition.perform(
                     .managementOptions(
                         managementType: isWatchAccount ? .watchAccountAssets : .assets,
@@ -153,15 +155,30 @@ extension AccountDetailViewController {
                     by: .present
                 )
             case .addAsset:
-                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
+                self.assetListScreen.endEditing()
+
+                let controller = self.open(
+                    .addAsset(
+                        account: self.accountHandle.value
+                    ),
+                    by: .present
+                ) as? AssetAdditionViewController
                 controller?.delegate = self
             case .buyAlgo:
+                self.assetListScreen.endEditing()
+
                 self.buyAlgoFlowCoordinator.launch()
             case .send:
+                self.assetListScreen.endEditing()
+
                 self.sendTransactionFlowCoordinator.launch()
             case .address:
+                self.assetListScreen.endEditing()
+
                 self.receiveTransactionFlowCoordinator.launch()
             case .more:
+                self.assetListScreen.endEditing()
+
                 self.presentOptionsScreen()
             }
         }
@@ -204,6 +221,8 @@ extension AccountDetailViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.presentOptionsScreen()
         }
@@ -427,10 +446,30 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
 }
 
 extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-        standardAsset.state = .pending(.add)
-        assetListScreen.addAsset(standardAsset)
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd asset: AssetDecoration
+    ) {
+        if asset.isCollectible {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: asset.id),
+                decoration: asset
+            )
+
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, collectibleAsset)
+                ]
+            )
+        } else {
+            let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+            standardAsset.state = .pending(.add)
+            assetListScreen.addAsset(standardAsset)
+        }
+        
+        assetAdditionViewController.dismissScreen()
     }
 }
 
@@ -493,7 +532,15 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+        let dataController = ManageAssetsListLocalDataController(
+            account: accountHandle.value,
+            sharedDataController: sharedDataController
+        )
+
+        let controller = open(
+            .removeAsset(dataController: dataController),
+            by: .present
+        ) as? ManageAssetsViewController
         controller?.delegate = self
     }
 }

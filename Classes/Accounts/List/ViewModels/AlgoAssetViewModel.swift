@@ -76,7 +76,9 @@ extension AlgoAssetViewModel {
             formatter.currency = fiatRawCurrency
 
             valueInCurrency = formatter.format(amount)
-            valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+
+            let amountInUSD = try? exchanger.exchangeAlgoToUSD(amount: algoAmount)
+            valueInUSD = amountInUSD ?? 0
         } catch {
             valueInCurrency = nil
             valueInUSD = 0

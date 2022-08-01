@@ -150,8 +150,21 @@ final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplay
 
 extension AssetAdditionViewController {
     private func addBarButtons() {
-        let infoBarButton = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.open(.verifiedAssetInformation, by: .present)
+        let infoBarButton = ALGBarButtonItem(kind: .info) {
+            [unowned self] in
+            let screen = Screen.asaVerificationInfo {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .cancel:
+                    self.dismiss(animated: true)
+                }
+            }
+            self.open(
+                screen,
+                by: .present
+            )
         }
 
         rightBarButtonItems = [infoBarButton]
@@ -275,24 +288,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             return
         }
 
-        if assetDetail.isCollectible {
-            let collectibleAsset = CollectibleAsset(
-                asset: ALGAsset(id: assetDetail.id),
-                decoration: assetDetail
-            )
-
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
-                ]
-            )
-        } else {
-            delegate?.assetAdditionViewController(self, didAdd: assetDetail)
-        }
-
-        popScreen()
+        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -348,6 +344,12 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

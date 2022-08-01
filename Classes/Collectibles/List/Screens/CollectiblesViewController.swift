@@ -81,6 +81,8 @@ extension CollectiblesViewController {
                 return
             }
 
+            self.endEditing()
+
             self.openReceiveCollectible()
         }
 
