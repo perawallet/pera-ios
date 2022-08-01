@@ -855,13 +855,12 @@ class Router:
                 walletConnector: configuration.walletConnector,
                 currencyFormatter: currencyFormatter
             )
+            dataSource.load()
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
-        case .peraIntroduction:
-            viewController = PeraIntroductionViewController(configuration: configuration)
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,

@@ -181,6 +181,8 @@ extension Account {
         return arr1 + arr2
     }
 
+    /// <todo>
+    /// We should remove this method, use the one adding one asset at a time. Then, we will decide the indexer data.
     func setStandardAssets(
         _ assets: [StandardAsset],
         _ indexer: StandardAssetIndexer
@@ -191,6 +193,8 @@ extension Account {
         updateTotalUSDValueOfStandardAssets()
     }
 
+    /// <todo>
+    /// We should remove this method, use the one adding one asset at a time. Then, we will decide the indexer data.
     func setCollectibleAssets(
         _ assets: [CollectibleAsset],
         _ indexer: CollectibleAssetIndexer
@@ -216,6 +220,8 @@ extension Account {
     func append(
         _ collectible: CollectibleAsset
     ) {
+        collectible.optedInAddress = address
+
         var newCollectibleAssets = collectibleAssets.someArray
         newCollectibleAssets.append(collectible)
 

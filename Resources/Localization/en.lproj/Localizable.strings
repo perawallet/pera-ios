@@ -844,6 +844,7 @@
 "wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
 "wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
+"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
 "wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
 "wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
 "wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";

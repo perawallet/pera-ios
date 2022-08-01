@@ -92,9 +92,9 @@ final class HomePortfolioNavigationView: View {
 
     private func showTitleAnimated() {
         runningVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.2,
+            withDuration: 0.1,
             delay: 0,
-            options: [],
+            options: .curveEaseOut,
             animations: {
                 [unowned self] in
                 self.setTitleVisible(true)
@@ -118,7 +118,7 @@ final class HomePortfolioNavigationView: View {
         runningVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.1,
             delay: 0,
-            options: .curveEaseOut,
+            options: .curveEaseIn,
             animations: {
                 [unowned self] in
                 self.setTitleVisible(false)

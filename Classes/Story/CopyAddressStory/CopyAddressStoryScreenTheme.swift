@@ -24,7 +24,7 @@ struct CopyAddressStoryScreenTheme:
     var background: ViewStyle
     var image: ImageStyle
     var imageTopInset: LayoutMetric
-    var imageCenterXInset: LayoutMetric
+    var imageMinHorizontalInsets: LayoutHorizontalPaddings
     var title: TextStyle
     var titleTopInset: LayoutMetric
     var description: TextStyle
@@ -32,7 +32,7 @@ struct CopyAddressStoryScreenTheme:
     var defaultInset: LayoutMetric
     var closeButtonTitle: String
     var closeButtonHeight: LayoutMetric
-    var closeButtonBottomInset: LayoutMetric
+    var closeButtonPaddings: UIEdgeInsets
     
     init(
         _ family: LayoutFamily
@@ -43,8 +43,8 @@ struct CopyAddressStoryScreenTheme:
         self.image = [
             .image("copy-address-story")
         ]
-        self.imageTopInset = 8
-        self.imageCenterXInset = 0
+        self.imageTopInset = 32
+        self.imageMinHorizontalInsets = (32, 32)
         self.title = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
@@ -63,8 +63,7 @@ struct CopyAddressStoryScreenTheme:
         self.descriptionVerticalMargins = (12, 54)
         self.defaultInset = 32
         self.closeButtonHeight = 44
-        self.closeButtonBottomInset = 8
+        self.closeButtonPaddings = UIEdgeInsets(top: 20, left: 32, bottom: 32, right: 32)
         self.closeButtonTitle = "title-got-it".localized
-        
     }
 }
