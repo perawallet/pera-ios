@@ -859,8 +859,10 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
-        case .asaVerificationInfo:
-            viewController = AsaVerificationInfoScreen(configuration: configuration)
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,

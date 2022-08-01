@@ -19,90 +19,171 @@ import MacaroonUIKit
 import UIKit
 
 final class AsaVerificationInfoScreen: ScrollScreen {
-    private lazy var theme = AsaVerificationInfoScreenTheme()
+    var eventHandler: Screen.EventHandler<AsaVerificationInfoEvent>?
 
+    private lazy var cancelActionView = MacaroonUIKit.Button()
     private lazy var illustrationView = ImageView()
-    private lazy var closeActionView = MacaroonUIKit.Button()
     private lazy var titleView = Label()
     private lazy var bodyView = Label()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    let configuration: ViewControllerConfiguration
+    private lazy var theme = AsaVerificationInfoScreenTheme()
 
-    init(
-        configuration: ViewControllerConfiguration
-    ) {
-        self.configuration = configuration
+    override func configureNavigationBar() {
+        navigationBarController.isNavigationBarHidden = true
+    }
 
+    override init() {
         super.init()
+        blursFooterBackgroundOnUnderScrolling = true
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
-
-        addIllustration()
-        addCloseAction()
-        addTitle()
-        addBody()
-        addPrimaryAction()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addUI()
     }
 
-    override func setListeners() {
-        super.setListeners()
-
-        closeActionView.addTouch(
-            target: self,
-            action: #selector(didTapCloseAction)
-        )
-
-        primaryActionView.addTouch(
-            target: self,
-            action: #selector(didTapPrimaryAction)
-        )
-    }
-
-    override func viewWillAppear(
-        _ animated: Bool
-    ) {
-        super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(
-            true,
-            animated: true
-        )
-    }
-
-    override func customizeScrollAppearance() {
-        super.customizeScrollAppearance()
-
-        scrollView.contentInset.top = theme.illustrationMaxHeight
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateUIWhenViewDidLayoutSubviews()
     }
 
     override func scrollViewDidScroll(
         _ scrollView: UIScrollView
     ) {
-        updateIllustrationHeightOnScroll()
-
         super.scrollViewDidScroll(scrollView)
-    }
-
-    override func bindData() {
-        super.bindData()
-
-        bindTitle()
-        bindBody()
+        updateUIWhenViewDidScroll()
     }
 }
 
 extension AsaVerificationInfoScreen {
-    @objc
-    private func didTapPrimaryAction() {
-        open(AlgorandWeb.asaVerificationSupport.link)
+    private func addUI() {
+        addIllustration()
+        addCancelAction()
+        addTitle()
+        addBody()
+        addPrimaryAction()
     }
 
-    @objc
-    private func didTapCloseAction() {
-        self.dismiss(animated: true)
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateContentWhenViewDidLayoutSubviews()
+    }
+
+    private func updateUIWhenViewDidScroll() {
+        updateIllustrationWhenViewDidScroll()
+    }
+
+    private func updateContentWhenViewDidLayoutSubviews() {
+        let inset = illustrationView.bounds.height
+        scrollView.setContentInset(top: inset)
+    }
+
+    private func addIllustration() {
+        illustrationView.customizeAppearance(theme.illustration)
+        illustrationView.clipsToBounds = true
+
+        view.addSubview(illustrationView)
+        illustrationView.snp.makeConstraints {
+            $0.fitToHeight(theme.illustrationMaxHeight)
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+
+        addIllustrationBackground()
+    }
+
+    private func addIllustrationBackground() {
+        let backgroundView = GradientView()
+        backgroundView.colors = [
+            AppColors.Shared.System.background.uiColor,
+            AppColors.Shared.System.background.uiColor.withAlphaComponent(0)
+        ]
+
+        view.insertSubview(
+            backgroundView,
+            belowSubview: illustrationView
+        )
+        backgroundView.snp.makeConstraints {
+            let height = theme.titleTopInset
+            $0.fitToHeight(height)
+
+            $0.top == illustrationView.snp.bottom
+            $0.leading == illustrationView
+            $0.trailing == illustrationView
+        }
+    }
+
+    private func updateIllustrationWhenViewDidScroll() {
+        illustrationView.snp.updateConstraints {
+            let preferredInset = -(scrollView.contentInset.top + scrollView.contentOffset.y)
+            let maxInset = theme.illustrationMaxHeight - theme.illustrationMinHeight
+            let inset = max(preferredInset, -maxInset)
+            $0.top == inset
+        }
+    }
+
+    private func addCancelAction() {
+        cancelActionView.customizeAppearance(theme.closeAction)
+
+        view.addSubview(cancelActionView)
+        cancelActionView.snp.makeConstraints {
+            $0.fitToSize(theme.closeActionSize)
+            $0.top == theme.closeActionTopInset
+            $0.leading == theme.closeActionLeadingInset
+        }
+
+        cancelActionView.addTouch(
+            target: self,
+            action: #selector(cancel)
+        )
+    }
+
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+
+        contentView.addSubview(titleView)
+        titleView.fitToVerticalIntrinsicSize()
+        titleView.snp.makeConstraints {
+            $0.top == theme.titleTopInset
+            $0.leading == theme.titleHorizontalEdgeInsets.leading
+            $0.trailing == theme.titleHorizontalEdgeInsets.trailing
+        }
+
+        bindTitle()
+    }
+
+    private func addBody() {
+        bodyView.customizeAppearance(theme.body)
+
+        contentView.addSubview(bodyView)
+        bodyView.fitToVerticalIntrinsicSize()
+        bodyView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndBody
+            $0.leading == theme.bodyHorizontalEdgeInsets.leading
+            $0.bottom == 0
+            $0.trailing == theme.bodyHorizontalEdgeInsets.trailing
+        }
+
+        bindBody()
+    }
+
+    private func addPrimaryAction() {
+        primaryActionView.customizeAppearance(theme.primaryAction)
+
+        footerView.addSubview(primaryActionView)
+        primaryActionView.contentEdgeInsets = theme.primaryActionContentEdgeInsets
+        primaryActionView.snp.makeConstraints {
+            $0.top == theme.primaryActionEdgeInsets.top
+            $0.leading == theme.primaryActionEdgeInsets.leading
+            $0.bottom == theme.primaryActionEdgeInsets.bottom
+            $0.trailing == theme.primaryActionEdgeInsets.trailing
+        }
+
+        primaryActionView.addTouch(
+            target: self,
+            action: #selector(performPrimaryAction)
+        )
     }
 }
 
@@ -110,122 +191,83 @@ extension AsaVerificationInfoScreen {
     private func bindTitle() {
         titleView.attributedText = "verification-info-title"
             .localized
-            .title1Medium(hasMultilines: false)
+            .title1Medium()
     }
 
+    /// <todo>
+    /// Support it in 'Macaroon' properly
     private func bindBody() {
-        let bodyText = "verification-info-body".localized
-        let attributedBodyText = highlight(
-            [
-                "verification-info-body-first-highlight".localized,
-                "verification-info-body-second-highlight".localized,
-                "verification-info-body-third-highlight".localized
-            ],
-            in: bodyText
+        let hightlightedTexts = [
+            "verification-info-body-first-highlight".localized,
+            "verification-info-body-second-highlight".localized,
+            "verification-info-body-third-highlight".localized
+        ]
+        let body = "verification-info-body".localized
+        let attributedBody = NSMutableAttributedString(string: body)
+        
+        addBodyNormalAttributes(in: attributedBody)
+        addBodyHighlightedAttributes(
+            for: hightlightedTexts,
+            in: attributedBody
         )
 
-        let bodyRange = (bodyText as NSString).range(of: bodyText)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 16
-        paragraphStyle.lineHeightMultiple = 1.23
-        attributedBodyText.addAttribute(
-            NSAttributedString.Key.paragraphStyle,
-            value: paragraphStyle,
-            range: bodyRange
-        )
-
-        bodyView.attributedText = attributedBodyText
+        bodyView.attributedText = attributedBody
     }
 
-    private func highlight(
-        _ highlightedTexts: [String],
-        in fullText: String
-    ) -> NSMutableAttributedString {
-        let attributedText = NSMutableAttributedString(
-            attributedString: fullText.bodyRegular()
+    private func addBodyNormalAttributes(
+        in attributedBody: NSMutableAttributedString
+    ) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.lineHeightMultiple = 1.23
+        paragraphStyle.paragraphSpacing = 16
+
+        var attributes: [NSAttributedString.Key: Any] = [:]
+        attributes[.font] = Fonts.DMSans.regular.make(15).uiFont
+        attributes[.paragraphStyle] = paragraphStyle
+
+        let body = attributedBody.string
+        let range = NSRange(location: 0, length: body.count)
+
+        attributedBody.addAttributes(
+            attributes,
+            range: range
         )
+    }
 
-        for highlightedText in highlightedTexts {
-            let range = (fullText as NSString).range(of: highlightedText)
-            attributedText.addAttribute(
-                NSAttributedString.Key.font,
-                value: Fonts.DMSans.medium.make(15).uiFont,
-                range: range)
+    private func addBodyHighlightedAttributes(
+        for texts: [String],
+        in attributedBody: NSMutableAttributedString
+    ) {
+        let body = attributedBody.string as NSString
+
+        var attributes: [NSAttributedString.Key: Any] = [:]
+        attributes[.font] = Fonts.DMSans.medium.make(15).uiFont
+
+        texts.forEach { text in
+            let range = body.range(of: text)
+
+            attributedBody.addAttributes(
+                attributes,
+                range: range
+            )
         }
-
-        return attributedText
     }
 }
 
 extension AsaVerificationInfoScreen {
-    private func addIllustration() {
-        illustrationView.customizeAppearance(theme.illustration)
-
-        view.addSubview(illustrationView)
-        illustrationView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.fitToHeight(theme.illustrationMaxHeight)
-        }
+    @objc
+    private func cancel() {
+        eventHandler?(.cancel)
     }
 
-    private func addCloseAction() {
-        closeActionView.customizeAppearance(theme.closeAction)
-
-        view.addSubview(closeActionView)
-        closeActionView.snp.makeConstraints {
-            $0.top == theme.closeActionEdgeInsets.top
-            $0.leading == theme.closeActionEdgeInsets.leading
-            $0.fitToSize(theme.closeActionSize)
-        }
+    @objc
+    private func performPrimaryAction() {
+        open(AlgorandWeb.asaVerificationSupport.link)
     }
+}
 
-    private func addTitle() {
-        titleView.customizeAppearance(theme.title)
-
-        contentView.addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.top == theme.titleEdgeInsets.top
-            $0.leading == theme.titleEdgeInsets.leading
-            $0.trailing == theme.titleEdgeInsets.trailing
-        }
-    }
-
-    private func addBody() {
-        bodyView.customizeAppearance(theme.body)
-
-        contentView.addSubview(bodyView)
-        bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom + theme.bodyEdgeInsets.top
-            $0.leading == theme.bodyEdgeInsets.leading
-            $0.bottom == theme.bodyEdgeInsets.bottom
-            $0.trailing == theme.bodyEdgeInsets.trailing
-        }
-    }
-
-    private func addPrimaryAction() {
-        primaryActionView.contentEdgeInsets = theme.primaryActionContentEdgeInsets
-        primaryActionView.customizeAppearance(theme.primaryAction)
-
-        footerView.addSubview(primaryActionView)
-        primaryActionView.snp.makeConstraints {
-            $0.top == theme.primaryActionEdgeInsets.top
-            $0.leading == theme.primaryActionEdgeInsets.leading
-            $0.bottom == theme.primaryActionEdgeInsets.bottom
-            $0.trailing == theme.primaryActionEdgeInsets.trailing
-        }
-    }
-
-    private func updateIllustrationHeightOnScroll() {
-        let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        let height = theme.illustrationMaxHeight - contentY
-
-        if height < theme.illustrationMinHeight {
-            return
-        }
-
-        illustrationView.snp.updateConstraints {
-            $0.fitToHeight(height)
-        }
-    }
+enum AsaVerificationInfoEvent {
+    case cancel
 }

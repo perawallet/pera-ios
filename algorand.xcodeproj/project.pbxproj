@@ -4740,6 +4740,9 @@
 		F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FC276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
+		F07E61892897F564001D2C97 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07E61882897F564001D2C97 /* GradientView.swift */; };
+		F07E618A2897F564001D2C97 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07E61882897F564001D2C97 /* GradientView.swift */; };
+		F07E618B2897F564001D2C97 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07E61882897F564001D2C97 /* GradientView.swift */; };
 		F08708C4278A179E00BEE5C2 /* AccountHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08708C3278A179E00BEE5C2 /* AccountHandle.swift */; };
 		F08708C5278A179E00BEE5C2 /* AccountHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08708C3278A179E00BEE5C2 /* AccountHandle.swift */; };
 		F08708C6278A179E00BEE5C2 /* AccountHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08708C3278A179E00BEE5C2 /* AccountHandle.swift */; };
@@ -6591,6 +6594,7 @@
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
+		F07E61882897F564001D2C97 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		F08708C3278A179E00BEE5C2 /* AccountHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHandle.swift; sourceTree = "<group>"; };
 		F08708C7278C21D900BEE5C2 /* SharedDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataController.swift; sourceTree = "<group>"; };
 		F08708CB278C21EC00BEE5C2 /* SharedAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAPIDataController.swift; sourceTree = "<group>"; };
@@ -11955,6 +11959,7 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F07E61872897F545001D2C97 /* Effects */,
 				D431505827EA24610084CA41 /* Label */,
 				D4A8759427C935C000550935 /* Shimmable */,
 				F0DB416D27943EE300EA437D /* Error */,
@@ -15215,6 +15220,14 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		F07E61872897F545001D2C97 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				F07E61882897F564001D2C97 /* GradientView.swift */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
 		F08708E8278E0F7500BEE5C2 /* Magpie */ = {
 			isa = PBXGroup;
 			children = (
@@ -16872,7 +16885,6 @@
 				F0E7218F284F6AA100865419 /* BuyAlgoFlowCoordinator.swift in Sources */,
 				D4F068A326EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
 				2BF90F2225FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
-				2B25D52D2615F52200D4592E /* NSMutableAttributedString+Attribute.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				95BB6C0927A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
 				F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */,
@@ -17140,6 +17152,7 @@
 				2B9F064324B60EBE006880F0 /* CSVConfig.swift in Sources */,
 				2B288ACC268E377300BC6FB6 /* WCWalletMeta.swift in Sources */,
 				2BA015D42637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
+				F07E618B2897F564001D2C97 /* GradientView.swift in Sources */,
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				D443A07127E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,
 				2B0E7CBB27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
@@ -18724,6 +18737,7 @@
 				D4CC28B628759F720082E038 /* InnerTransactionListViewController.swift in Sources */,
 				2BA015D32637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
 				2B5F6FA62768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift in Sources */,
+				F07E618A2897F564001D2C97 /* GradientView.swift in Sources */,
 				95631BBA27608E74002FB831 /* TripleShadowView.swift in Sources */,
 				2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
@@ -20308,6 +20322,7 @@
 				2B8FC7002670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				2B571588263479BF002C876D /* AlgorandChartView.swift in Sources */,
+				F07E61892897F564001D2C97 /* GradientView.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BAB8AA6275F733E006CBB15 /* AccountListOptionsViewController.swift in Sources */,
 				D443A06F27E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,

@@ -123,7 +123,19 @@ extension AssetAdditionViewController {
     private func addBarButtons() {
         let infoBarButton = ALGBarButtonItem(kind: .info) {
             [unowned self] in
-            self.open(.asaVerificationInfo, by: .present)
+            let screen = Screen.asaVerificationInfo {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .cancel:
+                    self.dismiss(animated: true)
+                }
+            }
+            self.open(
+                screen,
+                by: .present
+            )
         }
 
         rightBarButtonItems = [infoBarButton]

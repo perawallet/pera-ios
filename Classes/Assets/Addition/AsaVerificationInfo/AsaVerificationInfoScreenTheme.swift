@@ -27,13 +27,16 @@ struct AsaVerificationInfoScreenTheme:
 
     let closeAction: ButtonStyle
     let closeActionSize: LayoutSize
-    let closeActionEdgeInsets: NSDirectionalEdgeInsets
+    let closeActionTopInset: LayoutMetric
+    let closeActionLeadingInset: LayoutMetric
 
     let title: TextStyle
-    let titleEdgeInsets: NSDirectionalEdgeInsets
+    let titleTopInset: LayoutMetric
+    let titleHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
 
     let body: TextStyle
-    let bodyEdgeInsets: NSDirectionalEdgeInsets
+    let bodyHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
+    let spacingBetweenTitleAndBody: LayoutMetric
 
     let primaryAction: ButtonStyle
     let primaryActionContentEdgeInsets: UIEdgeInsets
@@ -45,46 +48,36 @@ struct AsaVerificationInfoScreenTheme:
         self.illustration = [
             .backgroundColor(AppColors.Shared.System.background),
             .image("verification-info-illustration"),
-            .contentMode(.bottomLeft)
+            .contentMode(.scaleAspectFill)
         ]
         self.illustrationMaxHeight = 204
-        self.illustrationMinHeight = 68
+        self.illustrationMinHeight = 119
 
         let closeActionIcon = "icon-close"
             .uiImage
             .withRenderingMode(.alwaysTemplate)
         self.closeAction = [
-            .icon([.normal(closeActionIcon)]),
+            .icon([
+                .normal(closeActionIcon)
+            ]),
             .tintColor(AppColors.Components.Text.main)
         ]
         self.closeActionSize = (40, 40)
-        self.closeActionEdgeInsets = NSDirectionalEdgeInsets(
-            top: 10,
-            leading: 12,
-            bottom: 0,
-            trailing: 0
-        )
+        self.closeActionTopInset = 10
+        self.closeActionLeadingInset = 12
 
         self.title = [
             .textColor(AppColors.Components.Text.main),
         ]
-        self.titleEdgeInsets = NSDirectionalEdgeInsets(
-            top: 40,
-            leading: 24,
-            bottom: 0,
-            trailing: 24
-        )
+        self.titleTopInset = 40
+        self.titleHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
 
         self.body = [
             .textColor(AppColors.Components.Text.gray),
             .textOverflow(FittingText())
         ]
-        self.bodyEdgeInsets = NSDirectionalEdgeInsets(
-            top: 16,
-            leading: 24,
-            bottom: 0,
-            trailing: 24
-        )
+        self.bodyHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
+        self.spacingBetweenTitleAndBody = 16
 
         self.primaryAction = [
             .title("title-learn-more".localized),
@@ -93,20 +86,12 @@ struct AsaVerificationInfoScreenTheme:
             ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundImage([
-                .normal("verification-info-action-background")
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-selected")
             ])
         ]
-        self.primaryActionContentEdgeInsets = UIEdgeInsets(
-            top: 14,
-            left: 0,
-            bottom: 14,
-            right: 0
-        )
-        self.primaryActionEdgeInsets = NSDirectionalEdgeInsets(
-            top: 36,
-            leading: 24,
-            bottom: 16,
-            trailing: 24
-        )
+        self.primaryActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)
+        self.primaryActionEdgeInsets = .init(top: 36, leading: 24, bottom: 16, trailing: 24)
     }
 }

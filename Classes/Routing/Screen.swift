@@ -153,7 +153,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
     )
-    case asaVerificationInfo
+    case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
@@ -253,4 +253,8 @@ extension Screen.Transition {
         case pop
         case dismiss
     }
+}
+
+extension Screen {
+    typealias EventHandler<Event> = (Event) -> Void
 }
