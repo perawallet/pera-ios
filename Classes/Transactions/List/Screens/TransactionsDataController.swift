@@ -57,8 +57,6 @@ enum TransactionsItem: Hashable {
 enum EmptyState: Hashable {
     case noContent
     case transactionHistoryLoading
-    case algoTransactionHistoryLoading
-    case assetTransactionHistoryLoading
 }
 
 enum TransactionsDataControllerEvent {

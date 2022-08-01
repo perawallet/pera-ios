@@ -346,29 +346,10 @@ extension TransactionsAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
 
-            switch self.draft.type {
-            case .all:
-                snapshot.appendItems(
-                    [.empty(.transactionHistoryLoading)],
-                    toSection: .empty
-                )
-            case .algos:
-                snapshot.appendItems(
-                    [
-                        .empty(.algoTransactionHistoryLoading),
-                        .empty(.transactionHistoryLoading)
-                    ],
-                    toSection: .empty
-                )
-            case .asset:
-                snapshot.appendItems(
-                    [
-                        .empty(.assetTransactionHistoryLoading),
-                        .empty(.transactionHistoryLoading)
-                    ],
-                    toSection: .empty
-                )
-            }
+            snapshot.appendItems(
+                [.empty(.transactionHistoryLoading)],
+                toSection: .empty
+            )
 
             return snapshot
         }

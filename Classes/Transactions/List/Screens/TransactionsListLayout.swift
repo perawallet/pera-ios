@@ -66,19 +66,6 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
                 return CGSize(theme.transactionHistoryTitleCellSize)
             case .empty(let emptyState):
                 switch emptyState {
-                case .algoTransactionHistoryLoading:
-                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
-                    theme.buyAlgoVisible = !draft.accountHandle.value.isWatchAccount()
-
-                    let cellHeight = AlgoTransactionHistoryLoadingCell.height(
-                        for: theme
-                    )
-                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
-                case .assetTransactionHistoryLoading:
-                    let cellHeight = AssetTransactionHistoryLoadingCell.height(
-                        for: AssetTransactionHistoryLoadingViewCommonTheme()
-                    )
-                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
                 case .transactionHistoryLoading:
                     return CGSize(width: collectionView.bounds.width - 48, height: 500)
                 case .noContent:
@@ -121,12 +108,6 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             loadingCell.stopAnimating()
         case .empty(let emptyState):
             switch emptyState {
-            case .algoTransactionHistoryLoading:
-                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
-            case .assetTransactionHistoryLoading:
-                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
             case .transactionHistoryLoading:
                 let loadingCell = cell as? TransactionHistoryLoadingCell
                 loadingCell?.stopAnimating()
