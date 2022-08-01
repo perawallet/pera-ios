@@ -30,7 +30,12 @@ final class BuyAlgoFlowCoordinator {
 }
 
 extension BuyAlgoFlowCoordinator {
-    func launch() {
+    func launch(_ buyAlgoDraft: BuyAlgoDraft? = nil) {
+        if let buyAlgoDraft = buyAlgoDraft {
+            presentingScreen.launchBuyAlgo(draft: buyAlgoDraft)
+            return
+        }
+
         presentingScreen.launchBuyAlgo()
     }
 }
