@@ -628,6 +628,12 @@ extension SendCollectibleViewController {
     ) {
         ledgerApprovalViewController?.dismissScreen()
     }
+    
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
 
     func transactionController(
         _ transactionController: TransactionController,
