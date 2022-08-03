@@ -144,7 +144,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         transactionController.delegate = self
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -153,7 +153,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -171,7 +171,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         selectedAccountPreviewView.addInteraction(accountMenuInteraction)
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -180,7 +180,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return

@@ -22,7 +22,7 @@ import UIKit
 final class HomePortfolioCell:
     CollectionCell<HomePortfolioView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (16, 24, 8, 24)
     }

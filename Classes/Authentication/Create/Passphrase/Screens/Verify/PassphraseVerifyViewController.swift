@@ -51,7 +51,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
-        contextView.observe(event: .next) {
+        contextView.startObserving(event: .next) {
             [weak self] in
             guard let self = self else { return }
             

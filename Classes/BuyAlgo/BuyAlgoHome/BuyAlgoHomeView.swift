@@ -21,11 +21,10 @@ import UIKit
 final class BuyAlgoHomeView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .close: UIControlInteraction(),
-        .buyAlgo: UIControlInteraction()
+        .close: TargetActionInteraction(),
+        .buyAlgo: TargetActionInteraction()
     ]
     
     private var theme: BuyAlgoHomeViewTheme?
