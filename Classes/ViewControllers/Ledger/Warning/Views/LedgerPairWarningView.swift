@@ -20,10 +20,9 @@ import MacaroonUIKit
 
 final class LedgerPairWarningView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .close: UIControlInteraction(),
+        .close: TargetActionInteraction(),
     ]
 
     private lazy var titleLabel = UILabel()
