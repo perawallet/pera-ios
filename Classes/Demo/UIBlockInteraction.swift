@@ -22,12 +22,6 @@ import MacaroonUIKit
 /// <todo>
 /// Refactor
 final class UIBlockInteraction: MacaroonUIKit.UIInteraction {
-    func attach(
-        to view: UIView
-    ) {}
-
-    func detachFromView() {}
-
     private var handler: Handler?
     
     func setHandler(
@@ -39,4 +33,10 @@ final class UIBlockInteraction: MacaroonUIKit.UIInteraction {
     func notify() {
         handler?()
     }
+
+    func attach(
+        to view: UIView
+    ) {}
+
+    func detachFromView() {}
 }
