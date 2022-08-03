@@ -326,7 +326,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performSend) {
+        cell.startObserving(event: .performSend) {
             [weak self] in
             guard let self = self,
                   let asset = self.account[self.asset.id] as? CollectibleAsset else {
@@ -391,7 +391,7 @@ extension CollectibleDetailViewController {
             }
         }
 
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -428,7 +428,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailWatchAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -442,7 +442,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailCreatorAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -456,7 +456,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailOptedInActionCell,
         for item: CollectibleDetailOptedInActionViewModel
     ) {
-        cell.observe(event: .performOptOut) {
+        cell.startObserving(event: .performOptOut) {
             [weak self] in
             guard let self = self else {
                 return
@@ -473,7 +473,7 @@ extension CollectibleDetailViewController {
             )
         }
 
-        cell.observe(event: .performCopy) {
+        cell.startObserving(event: .performCopy) {
             [weak self] in
             guard let self = self else {
                 return
@@ -483,7 +483,7 @@ extension CollectibleDetailViewController {
             UIPasteboard.general.string = self.account.address
         }
 
-        cell.observe(event: .performShareQR) {
+        cell.startObserving(event: .performShareQR) {
             [weak self] in
             guard let self = self else {
                 return
@@ -512,7 +512,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailInformationCell,
         for item: CollectibleTransactionInformation
     ) {
-        cell.observe(event: .performAction) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self,
                   let actionURL = item.actionURL else {
@@ -527,7 +527,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleExternalSourceCell,
         for item: CollectibleExternalSourceViewModel
     ) {
-        cell.observe(event: .performAction) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self else { return }
 

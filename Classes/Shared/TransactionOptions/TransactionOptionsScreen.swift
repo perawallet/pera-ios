@@ -50,7 +50,7 @@ final class TransactionOptionsScreen:
     override func linkInteractors() {
         super.linkInteractors()
 
-        contextView.observe(event: .buyAlgo) {
+        contextView.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else {
                 return
@@ -59,7 +59,7 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
         }
 
-        contextView.observe(event: .send) {
+        contextView.startObserving(event: .send) {
             [weak self] in
             guard let self = self else {
                 return
@@ -68,7 +68,7 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidSend(self)
         }
 
-        contextView.observe(event: .receive) {
+        contextView.startObserving(event: .receive) {
             [weak self] in
             guard let self = self else {
                 return
@@ -77,7 +77,7 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidReceive(self)
         }
 
-        contextView.observe(event: .more) {
+        contextView.startObserving(event: .more) {
             [weak self] in
             guard let self = self else {
                 return

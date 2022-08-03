@@ -22,14 +22,13 @@ import UIKit
 
 final class TransactionOptionsView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: UIControlInteraction(),
-        .send: UIControlInteraction(),
-        .receive: UIControlInteraction(),
-        .scanQRCode: UIControlInteraction(),
-        .close: UIViewTapInteraction()
+        .buyAlgo: TargetActionInteraction(),
+        .send: TargetActionInteraction(),
+        .receive: TargetActionInteraction(),
+        .scanQRCode: TargetActionInteraction(),
+        .close: GestureInteraction()
     ]
 
     private lazy var backgroundView = MacaroonUIKit.BaseView()

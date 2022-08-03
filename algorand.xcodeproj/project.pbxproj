@@ -3474,9 +3474,6 @@
 		D4411D0E2836532000080911 /* CollectibleFullScreenImageDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D0D2836532000080911 /* CollectibleFullScreenImageDraft.swift */; };
 		D4411D0F2836532000080911 /* CollectibleFullScreenImageDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D0D2836532000080911 /* CollectibleFullScreenImageDraft.swift */; };
 		D4411D102836532000080911 /* CollectibleFullScreenImageDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D0D2836532000080911 /* CollectibleFullScreenImageDraft.swift */; };
-		D4411D122837AE5900080911 /* UIViewTapInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D112837AE5900080911 /* UIViewTapInteraction.swift */; };
-		D4411D132837AE5900080911 /* UIViewTapInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D112837AE5900080911 /* UIViewTapInteraction.swift */; };
-		D4411D142837AE5900080911 /* UIViewTapInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D112837AE5900080911 /* UIViewTapInteraction.swift */; };
 		D4411D162837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D152837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift */; };
 		D4411D172837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D152837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift */; };
 		D4411D182837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4411D152837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift */; };
@@ -6185,7 +6182,6 @@
 		D4411D0528352DCE00080911 /* CollectibleFullScreenImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageViewModel.swift; sourceTree = "<group>"; };
 		D4411D092836531500080911 /* CollectibleFullScreenVideoDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenVideoDraft.swift; sourceTree = "<group>"; };
 		D4411D0D2836532000080911 /* CollectibleFullScreenImageDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleFullScreenImageDraft.swift; sourceTree = "<group>"; };
-		D4411D112837AE5900080911 /* UIViewTapInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewTapInteraction.swift; sourceTree = "<group>"; };
 		D4411D152837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyAlgoTransactionOptionListActionViewModel.swift; sourceTree = "<group>"; };
 		D4411D192837E03F00080911 /* SendTransactionOptionListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionOptionListActionViewModel.swift; sourceTree = "<group>"; };
 		D4411D1D2837E04D00080911 /* ReceiveTransactionOptionListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTransactionOptionListActionViewModel.swift; sourceTree = "<group>"; };
@@ -15218,7 +15214,6 @@
 				F0DB415C2793839B00EA437D /* TitleWithAccessoryView.swift */,
 				F0DB4158279382EC00EA437D /* TitleWithAccessoryViewModel.swift */,
 				F0DB41542793826D00EA437D /* TitleWithAccessoryViewTheme.swift */,
-				D4411D112837AE5900080911 /* UIViewTapInteraction.swift */,
 				F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */,
 				F0DB41962794961C00EA437D /* ViewPassphraseListActionViewModel.swift */,
 				2B6B422827BEA3A50036BF9E /* PasteFullPassphraseListActionViewModel.swift */,
@@ -16789,7 +16784,6 @@
 				D4919D2F27A15C13001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
 				2BBC2D59278B6FBB0091B6FC /* PortfolioCalculationDescriptionViewModel.swift in Sources */,
 				D4BADD8C277C8F3E0078FACB /* TransactionAmountViewModel.swift in Sources */,
-				D4411D142837AE5900080911 /* UIViewTapInteraction.swift in Sources */,
 				2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				2BB350DC2589892300A03BAC /* LedgerAccountDetailViewModel.swift in Sources */,
 				D499D28E27C7DA8A00641FF5 /* CollectibleListItemViewModel.swift in Sources */,
@@ -18374,7 +18368,6 @@
 				F0261A9D27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */,
 				2B9352CC27F3B9F2000DA8DB /* AccountShareViewTheme.swift in Sources */,
 				95D11CF227708D8C001B2C37 /* AccountSelectScreen.swift in Sources */,
-				D4411D132837AE5900080911 /* UIViewTapInteraction.swift in Sources */,
 				D4919D2E27A15C12001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
 				2B0F626D24EC129D00DA22A6 /* TransactionFilterOptionView.swift in Sources */,
 				2B835B7A27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
@@ -19961,7 +19954,6 @@
 				2BB8483C27E90B9A004F2E39 /* CollectibleMediaErrorViewTheme.swift in Sources */,
 				2B69A9D028617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
 				2B9352CB27F3B9F2000DA8DB /* AccountShareViewTheme.swift in Sources */,
-				D4411D122837AE5900080911 /* UIViewTapInteraction.swift in Sources */,
 				2B5F6F882768D80F00C9B780 /* SettingsDetailView.swift in Sources */,
 				2B343D03259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
 				D419430027353FE80055EC70 /* PageContainer.swift in Sources */,
