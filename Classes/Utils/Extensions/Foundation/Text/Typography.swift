@@ -27,9 +27,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.largeTitleMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.largeTitleMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.02
 
         return [
@@ -48,10 +46,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 36
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .largeTitle).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .largeTitle).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -61,9 +58,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.largeTitleRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.largeTitleRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.02
 
         return [
@@ -82,10 +77,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 36
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .largeTitle).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .largeTitle).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -95,9 +89,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.largeTitleMonoMediumAttributes(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.largeTitleMonoMediumAttributes(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.02
 
         return [
@@ -116,10 +108,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 36
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.medium.make(size, .largeTitle).uiFont
-        : Fonts.DMMono.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.medium.make(size, .largeTitle).uiFont
+            : Fonts.DMMono.medium.make(size).uiFont
 
         return font
     }
@@ -129,9 +120,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.largeTitleMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.largeTitleMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.02
 
         return [
@@ -150,10 +139,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 36
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .largeTitle).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .largeTitle).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
@@ -163,9 +151,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.titleBold(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.titleBold(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 0.96
 
         return [
@@ -184,10 +170,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 32
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.bold.make(size, .largeTitle).uiFont
-        : Fonts.DMSans.bold.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.bold.make(size, .largeTitle).uiFont
+            : Fonts.DMSans.bold.make(size).uiFont
 
         return font
     }
@@ -197,9 +182,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.titleMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.titleMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 0.96
 
         return [
@@ -218,10 +201,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 32
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .title1).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .title1).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -231,9 +213,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.titleMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.titleMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 0.85
 
         return [
@@ -252,10 +232,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 36
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .title1).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .title1).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
@@ -265,9 +244,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.titleSmallBold(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.titleSmallBold(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 0.99
 
         return [
@@ -286,10 +263,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 28
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .title2).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .title2).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -299,9 +275,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.titleSmallMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.titleSmallMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 0.99
 
         return [
@@ -320,10 +294,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 28
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .title2).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .title2).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -337,9 +310,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyLargeMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyLargeMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.13
 
         return [
@@ -357,10 +328,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 19
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .body).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .body).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -370,9 +340,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyLargeRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyLargeRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.13
 
         return [
@@ -390,10 +358,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 19
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .body).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .body).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -403,9 +370,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyLargeMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyLargeMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.13
 
         return [
@@ -424,10 +389,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 19
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .body).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .body).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
@@ -437,9 +401,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyBold(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyBold(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.23
 
         return [
@@ -457,10 +419,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 15
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.bold.make(size, .body).uiFont
-        : Fonts.DMSans.bold.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.bold.make(size, .body).uiFont
+            : Fonts.DMSans.bold.make(size).uiFont
 
         return font
     }
@@ -470,9 +431,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.23
 
         return [
@@ -490,10 +449,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 15
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .body).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .body).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -503,9 +461,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.23
         
         return [
@@ -523,10 +479,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 15
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .body).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .body).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -536,9 +491,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyMonoMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyMonoMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.23
 
         return [
@@ -557,10 +510,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 15
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.medium.make(size, .body).uiFont
-        : Fonts.DMMono.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.medium.make(size, .body).uiFont
+            : Fonts.DMMono.medium.make(size).uiFont
 
         return font
     }
@@ -570,9 +522,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.bodyMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.bodyMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.23
 
         return [
@@ -591,10 +541,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 15
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .body).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .body).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
@@ -608,9 +557,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteBold(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.footnoteBold(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -629,10 +576,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.bold.make(size, .footnote).uiFont
-        : Fonts.DMSans.bold.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.bold.make(size, .footnote).uiFont
+            : Fonts.DMSans.bold.make(size).uiFont
 
         return font
     }
@@ -642,9 +588,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.footnoteMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -662,10 +606,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .footnote).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .footnote).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -675,9 +618,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.footnoteRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -695,10 +636,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .footnote).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .footnote).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -708,9 +648,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteMonoMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.footnoteMonoMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -729,10 +667,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.medium.make(size, .footnote).uiFont
-        : Fonts.DMMono.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.medium.make(size, .footnote).uiFont
+            : Fonts.DMMono.medium.make(size).uiFont
 
         return font
     }
@@ -742,9 +679,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.footnoteMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -762,10 +697,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .footnote).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .footnote).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
@@ -779,9 +713,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.captionBold(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.captionBold(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.12
 
         return [
@@ -799,10 +731,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 11
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.bold.make(size, .caption1).uiFont
-        : Fonts.DMSans.bold.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.bold.make(size, .caption1).uiFont
+            : Fonts.DMSans.bold.make(size).uiFont
 
         return font
     }
@@ -812,9 +743,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.captionMedium(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.captionMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.12
 
         return [
@@ -832,10 +761,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 11
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(size, .caption1).uiFont
-        : Fonts.DMSans.medium.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .caption1).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -845,9 +773,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.captionRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.captionRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.12
 
         return [
@@ -865,10 +791,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 11
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.regular.make(size, .caption1).uiFont
-        : Fonts.DMSans.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMSans.regular.make(size, .caption1).uiFont
+            : Fonts.DMSans.regular.make(size).uiFont
 
         return font
     }
@@ -878,9 +803,7 @@ extension Typography {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.captionMonoRegular(
-            supportsDynamicType: supportsDynamicType
-        )
+        let font = Self.captionMonoRegular(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.12
 
         return [
@@ -898,10 +821,9 @@ extension Typography {
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 11
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(size, .caption1).uiFont
-        : Fonts.DMMono.regular.make(size).uiFont
+        let font = supportsDynamicType
+            ? Fonts.DMMono.regular.make(size, .caption1).uiFont
+            : Fonts.DMMono.regular.make(size).uiFont
 
         return font
     }
