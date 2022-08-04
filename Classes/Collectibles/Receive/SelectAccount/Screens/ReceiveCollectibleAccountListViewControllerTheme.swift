@@ -45,7 +45,7 @@ extension ReceiveCollectibleAccountListViewControllerTheme {
         return .attributedString(
             "collectibles-receive-action"
                 .localized
-                .title1Medium()
+                .titleMedium()
         )
     }
 }

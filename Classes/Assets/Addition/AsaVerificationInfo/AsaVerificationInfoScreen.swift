@@ -191,7 +191,7 @@ extension AsaVerificationInfoScreen {
     private func bindTitle() {
         titleView.attributedText = "verification-info-title"
             .localized
-            .title1Medium()
+            .titleMedium()
     }
 
     /// <todo>
