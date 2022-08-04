@@ -69,7 +69,7 @@ final class AppCallTransactionDetailView:
             action: #selector(notifyDelegateToOpenGoalSeaker)
         )
 
-        innerTransactionView.observe(event: .touch) {
+        innerTransactionView.startObserving(event: .touch) {
             [weak self] in
             guard let self = self else {
                 return

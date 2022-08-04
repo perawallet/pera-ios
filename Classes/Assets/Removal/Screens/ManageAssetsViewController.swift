@@ -54,11 +54,6 @@ final class ManageAssetsViewController: BaseViewController {
         self.dataController = dataController
         super.init(configuration: configuration)
     }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
     
     override func setListeners() {
         dataController.dataSource = dataSource
@@ -81,7 +76,7 @@ final class ManageAssetsViewController: BaseViewController {
             switch itemIdentifier {
             case .asset:
                 let assetCell = cell as! AssetPreviewWithActionCell
-                assetCell.observe(event: .performAction) {
+                assetCell.startObserving(event: .performAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -125,17 +120,6 @@ final class ManageAssetsViewController: BaseViewController {
         
         transactionController.stopBLEScan()
         transactionController.stopTimer()
-    }
-}
-
-extension ManageAssetsViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -351,6 +335,12 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {

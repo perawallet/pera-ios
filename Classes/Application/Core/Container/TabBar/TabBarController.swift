@@ -153,27 +153,27 @@ extension TabBarController {
         
         let aView = TransactionOptionsView()
         aView.customize(theme)
-        aView.observe(event: .buyAlgo) {
+        aView.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
             self.navigateToBuyAlgo()
         }
-        aView.observe(event: .send) {
+        aView.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
             self.navigateToSendTransaction()
         }
-        aView.observe(event: .receive) {
+        aView.startObserving(event: .receive) {
             [weak self] in
             guard let self = self else { return }
             self.navigateToReceiveTransaction()
         }
-        aView.observe(event: .scanQRCode) {
+        aView.startObserving(event: .scanQRCode) {
             [weak self] in
             guard let self = self else { return }
             self.navigateToQRScanner()
         }
-        aView.observe(event: .close) {
+        aView.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.toggleTransactionOptions()

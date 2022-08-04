@@ -250,7 +250,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     return
                 }
                 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -262,7 +262,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                         )
                     )
                 }
-                item.observe(event: .secondaryAction) {
+                item.startObserving(event: .secondaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -273,7 +273,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .watchAccountAssetManagement:
                 let item = cell as! ManagementItemCell
 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -296,7 +296,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
-            item.observe(event: .buyAlgo) {
+            item.startObserving(event: .buyAlgo) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -305,7 +305,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.buyAlgo)
             }
 
-            item.observe(event: .send) {
+            item.startObserving(event: .send) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -314,7 +314,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.send)
             }
 
-            item.observe(event: .address) {
+            item.startObserving(event: .address) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -323,7 +323,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.address)
             }
 
-            item.observe(event: .more) {
+            item.startObserving(event: .more) {
                 [weak self] in
                 guard let self = self else {
                     return

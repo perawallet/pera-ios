@@ -135,7 +135,7 @@ extension BottomWarningViewConfigurator {
             return nil
         }
 
-        var attributes: TextAttributeGroup = .bodyRegular(
+        var attributes = Typography.bodyRegularAttributes(
             alignment: .center
         )
 
@@ -189,7 +189,7 @@ extension BottomWarningViewConfigurator {
 
 extension BottomWarningViewConfigurator {
     func getLinkAttributes() -> Dictionary<NSAttributedString.Key, Any> {
-        var attributes: TextAttributeGroup = .bodyMedium(
+        var attributes = Typography.bodyMediumAttributes(
             alignment: .center
         )
 

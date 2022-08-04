@@ -523,10 +523,9 @@ class Router:
             account,
             transaction,
             transactionTypeFilter,
-            assets,
-            eventHandler
+            assets
         ):
-            let aViewController = AppCallTransactionDetailViewController(
+            viewController = AppCallTransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: transactionTypeFilter,
@@ -536,18 +535,14 @@ class Router:
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
-        case .appCallAssetList(let dataController, let eventHandler):
-            let aViewController = AppCallAssetListViewController(
+        case .appCallAssetList(let dataController):
+            viewController = AppCallAssetListViewController(
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
@@ -609,8 +604,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
@@ -679,8 +672,8 @@ class Router:
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
             )
-        case let .notificationFilter(flow):
-            viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
+        case .notificationFilter:
+            viewController = NotificationFilterViewController(configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .tutorial(flow, tutorial):
@@ -861,6 +854,10 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -1491,6 +1488,10 @@ extension Router {
     ) { }
 
     func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
 }
