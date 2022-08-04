@@ -12312,15 +12312,15 @@
 		2BF34CC3223A995C0052CAD3 /* Text */ = {
 			isa = PBXGroup;
 			children = (
-				2BF34CC4223A99670052CAD3 /* String+Localization.swift */,
-				D45038E22842C81C009EDE44 /* String+Typography.swift */,
-				D46F6F14289AACEF00841D72 /* Typography.swift */,
-				2B8C1277224196DF00E34D37 /* String+Attributes.swift */,
 				2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */,
 				173DA1E62255EBE000378A82 /* String+Address.swift */,
-				17AA1B0722662BAB000B0BB0 /* String+Number.swift */,
+				2B8C1277224196DF00E34D37 /* String+Attributes.swift */,
 				2BAD559623A29C9C0037079F /* String+Empty.swift */,
+				2BF34CC4223A99670052CAD3 /* String+Localization.swift */,
+				17AA1B0722662BAB000B0BB0 /* String+Number.swift */,
 				2BA4B3C62673629A0041586B /* String+QR.swift */,
+				D45038E22842C81C009EDE44 /* String+Typography.swift */,
+				D46F6F14289AACEF00841D72 /* Typography.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
