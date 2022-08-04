@@ -33,7 +33,7 @@ extension ListActionViewModel {
             return nil
         }
 
-        var attributes: TextAttributeGroup = .bodyMedium()
+        var attributes = Typography.bodyMediumAttributes()
 
         if let textColor = aTitleColor {
             attributes.insert(.textColor(textColor))
