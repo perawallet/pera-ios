@@ -20,7 +20,7 @@ import CoreGraphics
 
 struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: ButtonStyle?
+    var accessory: Accessory?
 
     init(
         account: Account
@@ -32,7 +32,10 @@ struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
 
 extension AccountSecondaryListItemViewModel {
     private mutating func bindTitle() {
-        title = getTitle(title: "title-account".localized)
+        title = getTitle(
+            title: "title-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsd"
+                .localized
+        )
     }
 
     private mutating func bindAccessory(
@@ -46,7 +49,8 @@ extension AccountSecondaryListItemViewModel {
 
         accessory = getNonInteractableAccessory(
             icon: resizedImage,
-            title: account.name.unwrap(or: account.address.shortAddressDisplay)
+            title: "p234892348sdjfjlkfjsdlkfjdsk jslkf jlksdfjsdfj",
+            titleLineBreakMode: .byWordWrapping
         )
     }
 }

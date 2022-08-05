@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct TransactionFeeSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: ButtonStyle?
+    var accessory: Accessory?
 
     init(
         fee: UInt64

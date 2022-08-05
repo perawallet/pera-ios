@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct AssetIDSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: ButtonStyle?
+    var accessory: Accessory?
 
     init(
         asset: AssetDecoration
@@ -33,21 +33,28 @@ extension AssetIDSecondaryListItemViewModel {
     private mutating func bindTitle(
         _ asset: AssetDecoration
     ) {
-        title = getTitle(title: "\(asset.id)")
+        title = getTitle(
+            title: "\(asset.id)",
+            titleLineBreakMode: .byTruncatingTail
+        )
     }
 
     private mutating func bindAccessory() {
-        let accessoryTitle: EditText =  .attributedString(
-            "asset-copy-id"
-                .localized
-                .footnoteMedium(
-                    lineBreakMode: .byTruncatingTail
-                )
+        var attributes = Typography.footnoteMediumAttributes(
+            lineBreakMode: .byTruncatingTail
         )
-        accessory = [
-            .title(accessoryTitle),
-            .titleColor([ .normal(AppColors.Components.Text.main) ] ),
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
-        ]
+        attributes.insert(.textColor(AppColors.Components.Text.main))
+
+        let title =
+        "asset-copy-id"
+            .localized
+            .attributed(
+                attributes
+            )
+
+        accessory = Accessory(
+            icon: nil,
+            title: title
+        )
     }
 }

@@ -16,22 +16,58 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 protocol SecondaryListItemViewModel: ViewModel {
     var title: TextProvider? { get }
-    var accessory: ButtonStyle? { get }
+
+    typealias Accessory = (icon: Image?, title: TextProvider)
+    var accessory: Accessory? { get }
 }
 
 extension SecondaryListItemViewModel {
     func getTitle(
         title: String,
-        textColor: Color = AppColors.Components.Text.gray
+        titleColor: Color = AppColors.Components.Text.gray,
+        titleLineBreakMode: NSLineBreakMode = .byWordWrapping
     ) -> TextProvider {
-        var attributes: TextAttributeGroup = .bodyRegular(
-            lineBreakMode: .byTruncatingTail
+        var attributes = Typography.bodyRegularAttributes(
+            lineBreakMode: titleLineBreakMode
         )
 
-        attributes.insert(.textColor(textColor))
+        attributes.insert(.textColor(titleColor))
+
+        return title.attributed(
+            attributes
+        )
+    }
+
+    func getInteractableAccessory(
+        icon: Image? = nil,
+        title: String,
+        titleColor: Color = AppColors.Shared.Helpers.positive,
+        titleLineBreakMode: NSLineBreakMode = .byTruncatingTail
+    ) -> Accessory {
+        return Accessory(
+            icon: icon,
+            title: getInteractableAccessoryTitle(
+                title: title,
+                titleColor: titleColor,
+                titleLineBreakMode: titleLineBreakMode
+            )
+        )
+    }
+
+    func getInteractableAccessoryTitle(
+        title: String,
+        titleColor: Color = AppColors.Shared.Helpers.positive,
+        titleLineBreakMode: NSLineBreakMode = .byTruncatingTail
+    ) -> TextProvider {
+        var attributes = Typography.bodyMediumAttributes(
+            lineBreakMode: titleLineBreakMode
+        )
+
+        attributes.insert(.textColor(titleColor))
 
         return title.attributed(
             attributes
@@ -39,70 +75,34 @@ extension SecondaryListItemViewModel {
     }
 
     func getNonInteractableAccessory(
+        icon: Image? = nil,
         title: String,
-        titleColor: Color = AppColors.Components.Text.main
-    ) -> ButtonStyle {
-        return [
-            .title(getNonInteractableAccessoryTitle(title)),
-            .titleColor([ .normal(titleColor) ] ),
-            .isInteractable(false)
-        ]
-    }
-
-    func getNonInteractableAccessory(
-        icon: Image,
-        title: String,
-        titleColor: Color = AppColors.Components.Text.main
-    ) -> ButtonStyle {
-        return [
-            .title(getNonInteractableAccessoryTitle(title)),
-            .icon([ .normal(icon) ]),
-            .titleColor([ .normal(titleColor) ] ),
-            .isInteractable(false)
-        ]
-    }
-
-    private func getNonInteractableAccessoryTitle(
-        _ title: String
-    ) -> EditText {
-        return .attributedString(
-            title
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
+        titleColor: Color = AppColors.Components.Text.main,
+        titleLineBreakMode: NSLineBreakMode = .byTruncatingTail
+    ) -> Accessory {
+        return Accessory(
+            icon: icon,
+            title: getNonInteractableAccessoryTitle(
+                title: title,
+                titleColor: titleColor,
+                titleLineBreakMode: titleLineBreakMode
+            )
         )
     }
 
-    func getInteractableAccessory(
+    func getNonInteractableAccessoryTitle(
         title: String,
-        titleColor: Color = AppColors.Shared.Helpers.positive
-    ) -> ButtonStyle {
-        return [
-            .title(getInteractableAccessoryTitle(title)),
-            .titleColor([ .normal(titleColor), .highlighted(titleColor) ] ),
-        ]
-    }
+        titleColor: Color = AppColors.Components.Text.main,
+        titleLineBreakMode: NSLineBreakMode
+    ) -> TextProvider {
+        var attributes = Typography.bodyRegularAttributes(
+            lineBreakMode: titleLineBreakMode
+        )
 
-    func getInteractableAccessory(
-        icon: Image,
-        title: String,
-        titleColor: Color = AppColors.Shared.Helpers.positive
-    ) -> ButtonStyle {
-        return [
-            .title(getInteractableAccessoryTitle(title)),
-            .icon([ .normal(icon), .highlighted(icon) ]),
-            .titleColor([ .normal(titleColor), .highlighted(titleColor) ] ),
-        ]
-    }
+        attributes.insert(.textColor(titleColor))
 
-    private func getInteractableAccessoryTitle(
-        _ title: String
-    ) -> EditText {
-        return .attributedString(
-            title
-                .bodyMedium(
-                    lineBreakMode: .byTruncatingTail
-                )
+        return title.attributed(
+            attributes
         )
     }
 }

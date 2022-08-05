@@ -22,34 +22,35 @@ protocol SecondaryListItemViewTheme:
     StyleSheet,
     LayoutSheet {
     var contentEdgeInsets: LayoutPaddings { get }
+    var title: TextStyle { get }
     var titleMinimumWidthRatio: LayoutMetric { get }
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric { get }
+    var accessory: SecondaryListItemValueViewTheme { get }
+}
 
-    /// <note>: It should be set to `none`, if accessory doesn't have image .
-    var accessoryLayout: Button.Layout { get }
-
-    var accessoryContentEdgeInsets: LayoutPaddings { get }
-    var accessoryCorner: Corner { get }
+extension SecondaryListItemViewTheme {
+    var titleSupportsMultiline: Bool {
+        let numberOfLines = title.textOverflow?.numberOfLines ?? 1
+        return numberOfLines > 1 || numberOfLines == 0
+    }
 }
 
 struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
     var contentEdgeInsets: LayoutPaddings
+    var title: TextStyle
     var titleMinimumWidthRatio: LayoutMetric
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric
-    var accessoryLayout: Button.Layout
-    var accessoryContentEdgeInsets: LayoutPaddings
-    var accessoryCorner: Corner
+    var accessory: SecondaryListItemValueViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
         contentEdgeInsets = (10, 24, 10, 24)
+        title = [ .textOverflow(FittingText()) ] /// <todo>: Change `textOverflow` to `MultilineText` with max 2 lines.
         titleMinimumWidthRatio = 0.25
-        minimumSpacingBetweenTitleAndAccessory = 8
-        accessoryLayout = .imageAtLeft(spacing: 10)
-        accessoryContentEdgeInsets = (0, 0, 0, 0)
-        accessoryCorner = Corner(
-            radius: .zero
+        minimumSpacingBetweenTitleAndAccessory = 12
+        accessory = SecondaryListItemValueCommonViewTheme(
+            isMultiline: true
         )
     }
 }
