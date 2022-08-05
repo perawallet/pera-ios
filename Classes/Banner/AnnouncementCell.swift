@@ -21,7 +21,7 @@ import UIKit
 class AnnouncementCell:
     CollectionCell<AnnouncementView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     private lazy var topBackgroundView = UIView()
 
     override class var contextPaddings: LayoutPaddings {

@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class AssetPreviewWithActionCell:
     CollectionCell<AssetPreviewWithActionView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (14, 0, 14, 0)
     }

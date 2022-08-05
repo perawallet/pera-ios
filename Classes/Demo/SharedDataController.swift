@@ -21,8 +21,8 @@ import MacaroonUtils
 
 protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
-    /// <note>
-    /// If it is nil, it means the app has just been updated from a very old version.
+    /// <todo>
+    /// There is no need to define selected sorting algorithms as optional because they are not.
     var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? { get set }
     var accountSortingAlgorithms: [AccountSortingAlgorithm] { get }
 

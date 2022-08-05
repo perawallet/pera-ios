@@ -29,20 +29,15 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
         _ rawNumber: NSDecimalNumber,
         for currency: LocalCurrency?
     ) -> CurrencyFormattingContextRules {
-        var rules = CurrencyFormattingContextRules()
-        rules.roundingMode = .down
-
+        var rules: CurrencyFormattingContextRules
         if let currency = currency {
             if currency.isAlgo {
-                rules.minimumFractionDigits = 2
-                rules.maximumFractionDigits = 6
+                rules = makeRulesForAlgoCurrency(rawNumber)
             } else {
-                rules.minimumFractionDigits = 2
-                rules.maximumFractionDigits = 4
+                rules = makeRulesForFiatCurrency(rawNumber)
             }
         } else {
-            rules.minimumFractionDigits = 2
-            rules.maximumFractionDigits = Int(Int8.max)
+            rules = makeRulesForNoCurrency(rawNumber)
         }
 
         applyConstraintsIfNeeded(&rules)
@@ -55,6 +50,49 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
         for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput {
         return rawNumber
+    }
+}
+
+extension CurrencyFormattingStandaloneContextHandler {
+    private func makeRulesForAlgoCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextRules {
+        var rules = CurrencyFormattingContextRules()
+        rules.roundingMode = .down
+        rules.minimumFractionDigits = 2
+        rules.maximumFractionDigits = 6
+        return rules
+    }
+
+    private func makeRulesForFiatCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextRules {
+        var rules = CurrencyFormattingContextRules()
+        rules.roundingMode = .down
+
+        switch abs(rawNumber.decimalValue) {
+        case 0:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 2
+        case 0..<1:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 6
+        default:
+            rules.minimumFractionDigits = 2
+            rules.maximumFractionDigits = 2
+        }
+
+        return rules
+    }
+
+    private func makeRulesForNoCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextRules {
+        var rules = CurrencyFormattingContextRules()
+        rules.roundingMode = .down
+        rules.minimumFractionDigits = 2
+        rules.maximumFractionDigits = Int(Int8.max)
+        return rules
     }
 }
 

@@ -320,6 +320,12 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
     }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
 }
 
 protocol AssetAdditionViewControllerDelegate: AnyObject {
