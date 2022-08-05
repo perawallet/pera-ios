@@ -21,7 +21,7 @@ protocol SecondaryListItemValueViewTheme:
     StyleSheet {
     /// <note> If view has action, pass `true` to `isInteractable(Bool)` attribute.
     var view: ViewStyle { get }
-    var corner: Corner { get }
+    var backgroundImage: ImageStyle { get }
     var contentEdgeInsets: LayoutPaddings { get }
     var icon: ImageStyle { get }
     var iconLayoutOffset: LayoutOffset { get }
@@ -37,7 +37,7 @@ extension SecondaryListItemValueViewTheme {
 
 struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
     var view: ViewStyle
-    var corner: Corner
+    var backgroundImage: ImageStyle
     var contentEdgeInsets: LayoutPaddings
     var icon: ImageStyle
     var iconLayoutOffset: LayoutOffset
@@ -48,9 +48,7 @@ struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
         isMultiline: Bool
     ) {
         view = [ .isInteractable(false) ]
-        corner = Corner(
-            radius: .zero
-        )
+        backgroundImage = [ .isInteractable(false) ]
         contentEdgeInsets = (0, 0, 0, 0)
         icon = [
             .contentMode(.left),

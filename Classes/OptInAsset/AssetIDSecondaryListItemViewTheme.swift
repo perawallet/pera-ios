@@ -36,8 +36,8 @@ struct AssetIDSecondaryListItemViewTheme: SecondaryListItemViewTheme {
 }
 
 struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
+    var backgroundImage: ImageStyle
     var view: ViewStyle
-    var corner: Corner
     var contentEdgeInsets: LayoutPaddings
     var icon: ImageStyle
     var iconLayoutOffset: LayoutOffset
@@ -46,13 +46,14 @@ struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
     init(
         _ family: LayoutFamily
     ) {
+        backgroundImage = [
+            .image("components/buttons/copy/bg".templateImage),
+            .tintColor(AppColors.Shared.Layer.grayLighter),
+            .isInteractable(false)
+        ]
         view = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter),
             .isInteractable(true)
         ]
-        corner = Corner(
-            radius: 16
-        )
         contentEdgeInsets = (6, 12, 6, 12)
         icon = []
         iconLayoutOffset = (0, 0)

@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class SecondaryListItemValueView: Control {
+    private lazy var backgroundImageView = UIImageView()
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
@@ -45,8 +46,8 @@ final class SecondaryListItemValueView: Control {
         _ theme: SecondaryListItemValueViewTheme
     ) {
         customizeAppearance(theme.view)
-        draw(corner: theme.corner)
-
+        
+        addBackgroundImage(theme)
         addContent(theme)
     }
 
@@ -60,12 +61,22 @@ final class SecondaryListItemValueView: Control {
 }
 
 extension SecondaryListItemValueView {
+    private func addBackgroundImage(
+        _ theme: SecondaryListItemValueViewTheme
+    ) {
+        backgroundImageView.customizeAppearance(theme.backgroundImage)
+
+        addSubview(backgroundImageView)
+        backgroundImageView.fitToVerticalIntrinsicSize()
+        backgroundImageView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+
     private func addContent(
         _ theme: SecondaryListItemValueViewTheme
     ) {
-        contentView.isUserInteractionEnabled = false
-
-        addSubview(contentView)
+        backgroundImageView.addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.top == theme.contentEdgeInsets.top
             $0.leading == theme.contentEdgeInsets.leading
