@@ -12,26 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionApprovedEvent.swift
+//   Analytics.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionApprovedEvent: AnalyticsTrackableEvent {
-    let topic: String
-    let dappName: String
-    let dappURL: String
-    let address: String
-    
-    let type: ALGAnalyticsEventType = .wcSessionApproved
+final class Analytics: MacaroonVendors.Analytics {
+    let platforms: [AnalyticsPlatform]
 
-    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
-        return [
-            .topic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL,
-            .address: address
-        ]
+    init(platforms: [AnalyticsPlatform]) {
+        self.platforms = platforms
+    }
+}
+
+/// <mark>: API
+extension Analytics {
+    func initialize() {
+        for case let platform as ALGAnalyticsPlatform in platforms {
+            platform.initialize()
+        }
+    }
+
+    func log<T>(_ event: T) where T : AnalyticsTrackableEvent {
+        for case let platform as ALGAnalyticsPlatform in platforms {
+            if !platform.canTrack(event) {
+                return
+            }
+
+            platform.log(event)
+        }
     }
 }

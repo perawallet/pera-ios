@@ -19,9 +19,9 @@ import UIKit
 
 final class ContactDetailViewController: BaseScrollViewController {
     weak var delegate: ContactDetailViewControllerDelegate?
-    
-    override var name: AnalyticsScreenName? {
-        return .contactDetail
+
+    override var name: String {
+        return AnalyticsScreenName.contactDetail.rawValue
     }
 
     private lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)

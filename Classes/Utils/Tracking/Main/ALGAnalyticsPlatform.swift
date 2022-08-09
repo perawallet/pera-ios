@@ -12,26 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionApprovedEvent.swift
+//   ALGAnalyticsPlatform.swift
 
 import Foundation
 import MacaroonVendors
+import UIKit
 
-struct WCSessionApprovedEvent: AnalyticsTrackableEvent {
-    let topic: String
-    let dappName: String
-    let dappURL: String
-    let address: String
-    
-    let type: ALGAnalyticsEventType = .wcSessionApproved
+protocol ALGAnalyticsPlatform: AnalyticsPlatform {
+    var isTrackable: Bool { get }
+    func initialize()
+    func log<T>(_ event: T) where T : AnalyticsTrackableEvent
+}
 
-    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
-        return [
-            .topic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL,
-            .address: address
-        ]
+extension ALGAnalyticsPlatform {
+    var isTrackable: Bool {
+        return !(UIApplication.shared.appConfiguration?.api.isTestNet ?? false)
     }
 }

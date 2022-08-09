@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  UIViewController+Analytics.swift
+//   AnalyticsTrackableMetadata+Extension.swift
 
-import UIKit
+import Foundation
+import MacaroonVendors
 
-extension UIViewController {
-    func track(_ screen: AnalyticsScreen) {
-        UIApplication.shared.firebaseAnalytics?.track(screen)
-    }
-    
-    func log(_ event: AnalyticsEvent) {
-        UIApplication.shared.firebaseAnalytics?.log(event)
-    }
-    
-    func record(_ log: AnalyticsLog) {
-        UIApplication.shared.firebaseAnalytics?.record(log)
+extension AnalyticsTrackableMetadata {
+    func transformToAnalyticsFormat() -> [String: Any] {
+        var transformed = [String: Any]()
+
+        analyticsMetadata.forEach {
+            transformed[$0.key.description] = $0.value
+        }
+
+        return transformed
     }
 }
+

@@ -103,7 +103,7 @@ extension WCSessionShortListViewController {
                 return
             }
 
-            self.log(
+            self.track(
                 WCSessionDisconnectedEvent(
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,

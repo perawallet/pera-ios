@@ -16,13 +16,14 @@
 //  DisplayAssetDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct DisplayAssetDetailEvent: AnalyticsEvent {
+struct DisplayAssetDetailEvent: AnalyticsTrackableEvent {
     let assetId: Int64?
     
-    let key: AnalyticsEventKey = .assetDetail
+    let type: ALGAnalyticsEventType = .assetDetail
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         if let assetId = assetId {
             return [.assetId: String(assetId)]
         }

@@ -15,7 +15,12 @@
 //   BuyAlgoTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct BuyAlgoTabEvent: AnalyticsEvent {
-    let key: AnalyticsEventKey = .tabBuyAlgo
+struct BuyAlgoTabEvent: AnalyticsTrackableEvent {
+    let type: ALGAnalyticsEventType = .tabBuyAlgo
+    
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        [:]
+    }
 }

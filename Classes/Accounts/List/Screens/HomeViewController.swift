@@ -57,8 +57,8 @@ final class HomeViewController:
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
-    override var name: AnalyticsScreenName? {
-        return .accounts
+    override var name: String {
+        return AnalyticsScreenName.accounts.rawValue
     }
 
     private lazy var listView =
@@ -883,7 +883,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            self.log(ReceiveCopyEvent(address: accountHandle.value.address))
+            self.track(ReceiveCopyEvent(address: accountHandle.value.address))
             self.copyToClipboardController.copyAddress(accountHandle.value)
         }
 

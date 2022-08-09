@@ -16,13 +16,14 @@
 //  ReceiveShareEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveShareEvent: AnalyticsEvent {
+struct ReceiveShareEvent: AnalyticsTrackableEvent {
     let address: String
     
-    let key: AnalyticsEventKey = .showQRShare
+    let type: ALGAnalyticsEventType = .showQRShare
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.address: address]
     }
 }

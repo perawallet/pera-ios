@@ -16,15 +16,16 @@
 //   WCSessionRejectedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct WCSessionRejectedEvent: AnalyticsEvent {
+struct WCSessionRejectedEvent: AnalyticsTrackableEvent {
     let topic: String
     let dappName: String
     let dappURL: String
     
-    let key: AnalyticsEventKey = .wcSessionRejected
+    let type: ALGAnalyticsEventType = .wcSessionRejected
 
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [
             .topic: topic,
             .dappName: dappName,

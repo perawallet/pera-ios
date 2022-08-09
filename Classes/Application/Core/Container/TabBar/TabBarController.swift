@@ -59,15 +59,18 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private let bannerController: BannerController
+    private let analytics: Analytics
 
     init(
         sharedDataController: SharedDataController,
         api: ALGAPI,
-        bannerController: BannerController
+        bannerController: BannerController,
+        analytics: Analytics
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
         self.bannerController = bannerController
+        self.analytics = analytics
     }
     
     override func addTabBar() {
@@ -279,14 +282,14 @@ extension TabBarController {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
 
-        log(SendTabEvent())
+        analytics.track(SendTabEvent())
     }
 
     private func navigateToReceiveTransaction() {
         toggleTransactionOptions()
         receiveTransactionFlowCoordinator.launch()
-
-        log(ReceiveTabEvent())
+        
+        analytics.track(ReceiveTabEvent())
     }
 
     private func navigateToBuyAlgo() {

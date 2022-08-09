@@ -67,7 +67,8 @@ class AppDelegate:
         walletConnector: walletConnector,
         loadingController: loadingController,
         bannerController: bannerController,
-        toastPresentationController: toastPresentationController
+        toastPresentationController: toastPresentationController,
+        analytics: analytics
     )
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -81,6 +82,11 @@ class AppDelegate:
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
+    private var analytics = Analytics(
+        platforms: [
+            FirebaseAnalytics()
+        ]
+    )
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
@@ -363,8 +369,8 @@ extension AppDelegate {
     
     private func setupAppLibs() {
         /// <mark>
-        /// Firebase
-        firebaseAnalytics.initialize()
+        /// Analytics
+        analytics.initialize()
         
         /// <mark>
         /// SwiftDate

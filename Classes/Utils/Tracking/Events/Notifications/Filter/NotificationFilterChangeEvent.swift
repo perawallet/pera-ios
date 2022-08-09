@@ -16,14 +16,15 @@
 //  NotificationFilterChangeEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct NotificationFilterChangeEvent: AnalyticsEvent {
+struct NotificationFilterChangeEvent: AnalyticsTrackableEvent {
     let isReceivingNotifications: Bool
     let address: String
 
-    let key: AnalyticsEventKey = .notificationFilter
+    let type: ALGAnalyticsEventType = .notificationFilter
 
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.isReceivingNotifications: isReceivingNotifications, .address: address]
     }
 }

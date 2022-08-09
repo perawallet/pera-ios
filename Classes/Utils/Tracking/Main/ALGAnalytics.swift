@@ -12,26 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AnalyticsEvent.swift
+//   ALGAnalytics.swift
 
 import Foundation
+import MacaroonVendors
 
-// TODO: Will remove when Analytics changes approved
-typealias AnalyticsParameters = [AnalyticsParameter: Any]
-
-protocol AnalyticsEvent {
-    var key: AnalyticsEventKey { get }
-    var params: AnalyticsParameters? { get }
-}
-
-extension AnalyticsEvent {
-    var params: AnalyticsParameters? {
-        return nil
+enum ALGAnalyticsKey: String, AnalyticsTrackableMetadataKey {
+    var description: String {
+        self.rawValue
     }
+
+    case id = "id"
+    case address = "address"
+    case type = "type"
+    case amount = "amount"
+    case isMax = "is_max"
+    case accountType = "account_type"
+    case assetId = "asset_id"
+    case sender = "sender"
+    case unsignedTransaction = "unsigned_transaction"
+    case signedTransaction = "signed_transaction"
+    case isReceivingNotifications = "is_receiving_notifications"
+    case transactionId = "tx_id"
+    case dappName = "dapp_name"
+    case dappURL = "dapp_url"
+    case transactionCount = "transaction_count"
+    case topic = "topic"
+    case requestedAddress = "requested_address"
+    case receivedAddress = "received_address"
 }
 
-enum AnalyticsEventKey: String {
+enum ALGAnalyticsEventType: String, AnalyticsTrackableEventType {
     case currencyChange = "currency_change"
     case rekey = "rekey"
     case transaction = "transaction"
@@ -52,25 +63,4 @@ enum AnalyticsEventKey: String {
     case wcTransactionConfirmed = "wc_transaction_confirmed"
     case wcTransactionDeclined = "wc_transaction_declined"
     case tabBuyAlgo = "tap_tab_buy_algo"
-}
-
-enum AnalyticsParameter: String {
-    case id = "id"
-    case address = "address"
-    case type = "type"
-    case amount = "amount"
-    case isMax = "is_max"
-    case accountType = "account_type"
-    case assetId = "asset_id"
-    case sender = "sender"
-    case unsignedTransaction = "unsigned_transaction"
-    case signedTransaction = "signed_transaction"
-    case isReceivingNotifications = "is_receiving_notifications"
-    case transactionId = "tx_id"
-    case dappName = "dapp_name"
-    case dappURL = "dapp_url"
-    case transactionCount = "transaction_count"
-    case topic = "topic"
-    case requestedAddress = "requested_address"
-    case receivedAddress = "received_address"
 }

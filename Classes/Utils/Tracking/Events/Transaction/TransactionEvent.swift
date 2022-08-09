@@ -16,8 +16,9 @@
 //  TransactionEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct TransactionEvent: AnalyticsEvent {
+struct TransactionEvent: AnalyticsTrackableEvent {
     let accountType: AccountType
     let assetId: String?
     let isMaxTransaction: Bool
@@ -26,9 +27,9 @@ struct TransactionEvent: AnalyticsEvent {
     
     private let algosEventId = "algos"
     
-    let key: AnalyticsEventKey = .transaction
+    let type: ALGAnalyticsEventType = .transaction
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [
             .accountType: accountType.rawValue,
             .assetId: assetId ?? algosEventId,

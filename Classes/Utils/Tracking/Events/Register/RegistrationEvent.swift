@@ -16,14 +16,15 @@
 //  RegistrationEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct RegistrationEvent: AnalyticsEvent {
-    let type: RegistrationType
+struct RegistrationEvent: AnalyticsTrackableEvent {
+    let registrationType: RegistrationType
     
-    let key: AnalyticsEventKey = .register
+    let type: ALGAnalyticsEventType = .register
     
-    var params: AnalyticsParameters? {
-        return [.type: type.rawValue]
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        return [.type: registrationType.rawValue]
     }
 }
 

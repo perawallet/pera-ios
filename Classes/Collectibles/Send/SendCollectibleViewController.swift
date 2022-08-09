@@ -639,7 +639,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
     ) {
-        log(
+        track(
             TransactionEvent(
                 accountType: draft.fromAccount.type,
                 assetId: String(draft.collectibleAsset.id),

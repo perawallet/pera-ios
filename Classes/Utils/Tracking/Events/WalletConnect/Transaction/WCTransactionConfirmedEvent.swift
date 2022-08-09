@@ -16,15 +16,16 @@
 //   WCTransactionConfirmedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct WCTransactionConfirmedEvent: AnalyticsEvent {
+struct WCTransactionConfirmedEvent: AnalyticsTrackableEvent {
     let transactionID: String
     let dappName: String
     let dappURL: String
 
-    let key: AnalyticsEventKey = .wcTransactionConfirmed
+    let type: ALGAnalyticsEventType = .wcTransactionConfirmed
 
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [
             .transactionId: transactionID,
             .dappName: dappName,

@@ -16,13 +16,14 @@
 //  SendAssetDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct SendAssetDetailEvent: AnalyticsEvent {
+struct SendAssetDetailEvent: AnalyticsTrackableEvent {
     let address: String
     
-    let key: AnalyticsEventKey = .detailSend
+    let type: ALGAnalyticsEventType = .detailSend
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.address: address]
     }
 }

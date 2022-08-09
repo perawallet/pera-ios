@@ -16,7 +16,12 @@
 //  RekeyEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct RekeyEvent: AnalyticsEvent {
-    let key: AnalyticsEventKey = .rekey
+struct RekeyEvent: AnalyticsTrackableEvent {
+    let type: ALGAnalyticsEventType = .rekey
+
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        return [:]
+    }
 }

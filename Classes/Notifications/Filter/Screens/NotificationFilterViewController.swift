@@ -100,7 +100,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
     ) {
         loadingController?.stopLoading()
         updateAccount(account)
-        log(
+        track(
             NotificationFilterChangeEvent(
                 isReceivingNotifications: account.value.receivesNotification,
                 address: account.value.address

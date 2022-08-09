@@ -20,9 +20,9 @@ final class CollectiblesViewController: BaseViewController {
     override var prefersLargeTitle: Bool {
         return true
     }
-    
-    override var name: AnalyticsScreenName? {
-        return .collectibles
+
+    override var name: String {
+        return AnalyticsScreenName.collectibles.rawValue
     }
 
     private lazy var bottomBannerController = BottomActionableBannerController(

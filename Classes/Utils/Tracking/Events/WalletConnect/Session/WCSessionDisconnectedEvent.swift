@@ -16,21 +16,27 @@
 //   WCSessionDisconnectedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct WCSessionDisconnectedEvent: AnalyticsEvent {
+struct WCSessionDisconnectedEvent: AnalyticsTrackableEvent {
     let dappName: String
     let dappURL: String
     let address: String?
     
-    let key: AnalyticsEventKey = .wcSessionDisconnected
+    let type: ALGAnalyticsEventType = .wcSessionDisconnected
 
-    var params: AnalyticsParameters? {
-        var params: AnalyticsParameters = [.dappName: dappName, .dappURL: dappURL]
-        
-        if let address = address {
-            params[.address] = address
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        guard let address = address else {
+            return [
+                .dappName: dappName,
+                .dappURL: dappURL
+            ]
         }
 
-        return params
+        return [
+            .dappName: dappName,
+            .dappURL: dappURL,
+            .address: address
+        ]
     }
 }

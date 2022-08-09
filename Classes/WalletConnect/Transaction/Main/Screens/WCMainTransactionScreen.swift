@@ -303,7 +303,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             if let transactionData = transaction.unparsedTransactionDetail,
                let session = wcSession {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
-                log(
+                track(
                     WCTransactionConfirmedEvent(
                         transactionID: transactionID,
                         dappName: session.peerMeta.name,

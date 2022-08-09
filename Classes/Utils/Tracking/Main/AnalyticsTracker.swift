@@ -18,6 +18,7 @@
 import Foundation
 import UIKit
 
+// TODO: Will remove when Analytics changes approved
 protocol AnalyticsTracker {
     func track(_ screen: AnalyticsScreen)
     func log(_ event: AnalyticsEvent)

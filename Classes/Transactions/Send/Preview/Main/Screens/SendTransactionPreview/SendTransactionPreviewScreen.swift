@@ -166,7 +166,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       }
 
       if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
-         log(
+         track(
             TransactionEvent(
                accountType: draft.from.type,
                assetId: nil,
@@ -178,7 +178,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       } else if let assetDraft = draft as? AssetTransactionSendDraft,
                   let assetId = assetDraft.assetIndex,
                   let amount = assetDraft.amount {
-         log(
+         track(
             TransactionEvent(
                accountType: draft.from.type,
                assetId: String(assetId),

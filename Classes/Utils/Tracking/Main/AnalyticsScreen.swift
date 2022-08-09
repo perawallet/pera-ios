@@ -17,6 +17,8 @@
 
 import Foundation
 
+// TODO: Will remove when Analytics changes approved
+
 protocol AnalyticsScreen {
     var name: AnalyticsScreenName? { get }
     var params: AnalyticsParameters? { get }

@@ -17,31 +17,53 @@
 
 import Firebase
 import FirebaseAnalytics
+import MacaroonVendors
 
-class FirebaseAnalytics: NSObject {
-    
+final class FirebaseAnalytics: ALGAnalyticsPlatform {
     func initialize() {
         FirebaseApp.configure()
-        Analytics.setAnalyticsCollectionEnabled(true)
+        Firebase.Analytics.setAnalyticsCollectionEnabled(true)
+    }
+
+    func identify<T>(user: T, first: Bool) where T : AnalyticsTrackableUser {
+        fatalError("ID cannot applied right now")
+    }
+
+    func canTrack<T>(_ screen: T) -> Bool where T : AnalyticsTrackableScreen {
+        return isTrackable
+    }
+
+    func track<T>(_ screen: T) where T : AnalyticsTrackableScreen {
+        if isTrackable {
+            Firebase.Analytics.logEvent(screen.name, parameters: nil)
+        }
+    }
+
+    func canTrack<T>(_ event: T) -> Bool where T : AnalyticsTrackableEvent {
+        return isTrackable
+    }
+
+    func track<T>(_ event: T) where T : AnalyticsTrackableEvent {
+        if !canTrack(event) {
+            return
+        }
+
+        Firebase.Analytics.logEvent(
+            event.type.description,
+            parameters: event.transformToAnalyticsFormat()
+        )
+    }
+
+    func reset() {
+        Firebase.Analytics.resetAnalyticsData()
+    }
+
+    func log<T>(_ event: T) where T : AnalyticsTrackableEvent {
+
     }
 }
 
-extension FirebaseAnalytics: AnalyticsTracker {
-    func track(_ screen: AnalyticsScreen) {
-        if let name = screen.name,
-           isTrackable {
-            Analytics.logEvent(name.rawValue, parameters: screen.params?.transformToAnalyticsFormat())
-        }
-    }
-    
-    func log(_ event: AnalyticsEvent) {
-        if !isTrackable {
-            return
-        }
-        
-        Analytics.logEvent(event.key.rawValue, parameters: event.params?.transformToAnalyticsFormat())
-    }
-    
+extension FirebaseAnalytics {
     func record(_ log: AnalyticsLog) {
         let error = NSError(domain: log.name.rawValue, code: log.id, userInfo: log.params.transformToAnalyticsFormat())
         Crashlytics.crashlytics().record(error: error)

@@ -16,13 +16,14 @@
 //  ReceiveCopyEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveCopyEvent: AnalyticsEvent {
+struct ReceiveCopyEvent: AnalyticsTrackableEvent {
     let address: String
 
-    let key: AnalyticsEventKey = .showQRCopy
+    let type: ALGAnalyticsEventType = .showQRCopy
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.address: address]
     }
 }

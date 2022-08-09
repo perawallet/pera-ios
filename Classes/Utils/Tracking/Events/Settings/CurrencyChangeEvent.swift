@@ -16,13 +16,14 @@
 //  CurrencyChangeEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct CurrencyChangeEvent: AnalyticsEvent {
+struct CurrencyChangeEvent: AnalyticsTrackableEvent {
     let currencyId: String
     
-    let key: AnalyticsEventKey = .currencyChange
+    let type: ALGAnalyticsEventType = .currencyChange
     
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.id: currencyId]
     }
 }

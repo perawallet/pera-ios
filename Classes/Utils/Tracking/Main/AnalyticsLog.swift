@@ -17,6 +17,8 @@
 
 import Foundation
 
+// TODO: Will remove when Analytics changes approved
+
 protocol AnalyticsLog {
     var id: Int { get }
     var name: AnalyticsLogName { get }

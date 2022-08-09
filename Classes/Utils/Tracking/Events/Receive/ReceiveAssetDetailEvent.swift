@@ -16,13 +16,13 @@
 //  ReceiveAssetDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveAssetDetailEvent: AnalyticsEvent {
+struct ReceiveAssetDetailEvent: AnalyticsTrackableEvent {
     let address: String
+    let type: ALGAnalyticsEventType = .detailReceive
     
-    let key: AnalyticsEventKey = .detailReceive
-    
-    var params: AnalyticsParameters? {
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
         return [.address: address]
     }
 }

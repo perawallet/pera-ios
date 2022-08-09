@@ -16,26 +16,31 @@
 //   WCTransactionDeclinedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct WCTransactionDeclinedEvent: AnalyticsEvent {
+struct WCTransactionDeclinedEvent: AnalyticsTrackableEvent {
     let transactionCount: Int
     let dappName: String
     let dappURL: String
     let address: String?
 
-    let key: AnalyticsEventKey = .wcTransactionDeclined
+    let type: ALGAnalyticsEventType = .wcTransactionDeclined
 
-    var params: AnalyticsParameters? {
-        var params: AnalyticsParameters = [
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+
+        guard let address = address else {
+            return [
+                .transactionCount: transactionCount,
+                .dappName: dappName,
+                .dappURL: dappURL
+            ]
+        }
+
+        return [
             .transactionCount: transactionCount,
             .dappName: dappName,
-            .dappURL: dappURL
+            .dappURL: dappURL,
+            .address: address
         ]
-
-        if let address = address {
-            params[.address] = address
-        }
-        
-        return params
     }
 }

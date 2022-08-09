@@ -16,7 +16,11 @@
 //  ReceiveTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveTabEvent: AnalyticsEvent {
-    let key: AnalyticsEventKey = .tabReceive
+struct ReceiveTabEvent: AnalyticsTrackableEvent {
+    let type: ALGAnalyticsEventType = .tabReceive
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        return [:]
+    }
 }

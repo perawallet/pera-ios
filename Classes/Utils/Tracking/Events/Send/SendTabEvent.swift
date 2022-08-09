@@ -16,7 +16,11 @@
 //  SendTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct SendTabEvent: AnalyticsEvent {
-    let key: AnalyticsEventKey = .tabSend
+struct SendTabEvent: AnalyticsTrackableEvent {
+    let type: ALGAnalyticsEventType = .tabSend
+    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> {
+        return [:]
+    }
 }

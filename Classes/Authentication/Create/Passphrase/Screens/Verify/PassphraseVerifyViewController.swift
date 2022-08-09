@@ -165,7 +165,7 @@ extension PassphraseVerifyViewController {
                 return nil
         }
 
-        log(RegistrationEvent(type: .create))
+        track(RegistrationEvent(registrationType: .create))
 
         let account = AccountInformation(
             address: address,
