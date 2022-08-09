@@ -110,6 +110,17 @@ class TransactionsViewController: BaseViewController {
             case is LoadingCell:
                 let loadingCell = cell as! LoadingCell
                 loadingCell.startAnimating()
+            case is AlgoTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                theme.buyAlgoVisible = !accountHandle.value.isWatchAccount()
+                loadingCell.contextView.customize(
+                    theme
+                )
+                loadingCell.startAnimating()
+            case is AssetTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                loadingCell.startAnimating()
             case is TransactionHistoryLoadingCell:
                 let loadingCell = cell as! TransactionHistoryLoadingCell
                 loadingCell.startAnimating()
@@ -126,6 +137,12 @@ class TransactionsViewController: BaseViewController {
             switch cell {
             case is LoadingCell:
                 let loadingCell = cell as! LoadingCell
+                loadingCell.stopAnimating()
+            case is AlgoTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            case is AssetTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
                 loadingCell.stopAnimating()
             case is TransactionHistoryLoadingCell:
                 let loadingCell = cell as! TransactionHistoryLoadingCell
@@ -245,6 +262,17 @@ extension TransactionsViewController {
                 filterCell.delegate = self
             case .empty(let emptyState):
                 switch emptyState {
+                case .algoTransactionHistoryLoading:
+                    let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                    theme.buyAlgoVisible = !self.accountHandle.value.isWatchAccount()
+                    loadingCell.contextView.customize(
+                        theme
+                    )
+                    loadingCell.startAnimating()
+                case .assetTransactionHistoryLoading:
+                    let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                    loadingCell.startAnimating()
                 case .transactionHistoryLoading:
                     let loadingCell = cell as! TransactionHistoryLoadingCell
                     loadingCell.startAnimating()

@@ -23,13 +23,13 @@ final class TransactionHistoryLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
-    private lazy var filterView = TransactionHistoryFilterView()
-    private lazy var sectionLeadingLineView = UIView()
+    private lazy var titleView = ShimmerView()
     private lazy var sectionView = ShimmerView()
-    private lazy var sectionTrailingLineView = UIView()
     private lazy var firstRow = TransactionHistoryLoadingItemView()
     private lazy var secondRow = TransactionHistoryLoadingItemView()
+    private lazy var secondSectionView = ShimmerView()
     private lazy var thirdRow = TransactionHistoryLoadingItemView()
+    private lazy var fourthRow = TransactionHistoryLoadingItemView()
 
     override init(
         frame: CGRect
@@ -41,12 +41,9 @@ final class TransactionHistoryLoadingView:
     func customize(
         _ theme: TransactionHistoryLoadingViewTheme
     ) {
-        addFilterView(theme)
+        addTitleView(theme)
         addFirstSection(theme)
-        addSectionLines(theme)
-        addFirstRow(theme)
-        addSecondRow(theme)
-        addThirdRow(theme)
+        addSecondSection(theme)
     }
 
     func customizeAppearance(
@@ -63,17 +60,17 @@ final class TransactionHistoryLoadingView:
 }
 
 extension TransactionHistoryLoadingView {
+    private func addTitleView(_ theme: TransactionHistoryLoadingViewTheme) {
+        titleView.draw(corner: Corner(radius: theme.titleViewCorner))
 
-    private func addFilterView(_ theme: TransactionHistoryLoadingViewTheme) {
-        filterView.customize(TransactionHistoryHeaderViewTheme())
-        filterView.bindData(TransactionHistoryFilterViewModel(.allTime))
-
-        addSubview(filterView)
-        filterView.snp.makeConstraints {
+        addSubview(titleView)
+        titleView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(theme.filterViewMargin.leading)
-            $0.trailing.equalToSuperview().inset(theme.filterViewMargin.trailing)
-            $0.height.equalTo(theme.filterViewHeight)
+            $0.leading.equalToSuperview()
+            $0.size.equalTo(
+                CGSize(width: theme.titleViewSize.w,
+                       height: theme.titleViewSize.h)
+            )
         }
     }
 
@@ -82,38 +79,14 @@ extension TransactionHistoryLoadingView {
 
         addSubview(sectionView)
         sectionView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(filterView.snp.bottom).offset(theme.sectionMargin.top)
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(titleView.snp.bottom).offset(theme.sectionMargin.top)
             $0.size.equalTo(
                 CGSize(width: theme.sectionSize.w,
                        height: theme.sectionSize.h)
             )
         }
-    }
 
-    private func addSectionLines(_ theme: TransactionHistoryLoadingViewTheme) {
-        sectionLeadingLineView.customizeAppearance(theme.sectionLineStyle)
-
-        addSubview(sectionLeadingLineView)
-        sectionLeadingLineView.snp.makeConstraints {
-            $0.centerY.equalTo(sectionView)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalTo(sectionView.snp.leading).offset(-theme.sectionLinePaddings.leading)
-            $0.height.equalTo(theme.sectionLineHeight)
-        }
-
-        sectionTrailingLineView.customizeAppearance(theme.sectionLineStyle)
-
-        addSubview(sectionTrailingLineView)
-        sectionTrailingLineView.snp.makeConstraints {
-            $0.centerY.equalTo(sectionView)
-            $0.trailing.equalToSuperview()
-            $0.leading.equalTo(sectionView.snp.trailing).offset(theme.sectionLinePaddings.trailing)
-            $0.height.equalTo(theme.sectionLineHeight)
-        }
-    }
-
-    private func addFirstRow(_ theme: TransactionHistoryLoadingViewTheme) {
         firstRow.customize(TransactionHistoryLoadingItemViewCommonTheme())
 
         addSubview(firstRow)
@@ -123,10 +96,6 @@ extension TransactionHistoryLoadingView {
             $0.height.equalTo(theme.itemSize.h)
         }
 
-        firstRow.addSeparator(theme.itemSeparator)
-    }
-
-    private func addSecondRow(_ theme: TransactionHistoryLoadingViewTheme) {
         secondRow.customize(TransactionHistoryLoadingItemViewCommonTheme())
 
         addSubview(secondRow)
@@ -135,17 +104,36 @@ extension TransactionHistoryLoadingView {
             $0.top.equalTo(firstRow.snp.bottom)
             $0.height.equalTo(theme.itemSize.h)
         }
-
-        secondRow.addSeparator(theme.itemSeparator)
     }
 
-    private func addThirdRow(_ theme: TransactionHistoryLoadingViewTheme) {
+    private func addSecondSection(_ theme: TransactionHistoryLoadingViewTheme) {
+        secondSectionView.draw(corner: Corner(radius: theme.sectionCorner))
+
+        addSubview(secondSectionView)
+        secondSectionView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(secondRow.snp.bottom).offset(theme.sectionMargin.top)
+            $0.size.equalTo(
+                CGSize(width: theme.sectionSize.w,
+                       height: theme.sectionSize.h)
+            )
+        }
+
         thirdRow.customize(TransactionHistoryLoadingItemViewCommonTheme())
 
         addSubview(thirdRow)
         thirdRow.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(secondRow.snp.bottom)
+            $0.top.equalTo(secondSectionView.snp.bottom).offset(theme.itemMargin.top)
+            $0.height.equalTo(theme.itemSize.h)
+        }
+
+        fourthRow.customize(TransactionHistoryLoadingItemViewCommonTheme())
+
+        addSubview(fourthRow)
+        fourthRow.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(thirdRow.snp.bottom)
             $0.height.equalTo(theme.itemSize.h)
         }
     }

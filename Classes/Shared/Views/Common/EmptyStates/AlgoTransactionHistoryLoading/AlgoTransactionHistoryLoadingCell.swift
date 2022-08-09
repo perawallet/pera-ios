@@ -13,24 +13,32 @@
 // limitations under the License.
 
 //
-//   TransactionHistoryLoadingViewTheme.swift
+//   AlgoTransactionHistoryLoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-protocol TransactionHistoryLoadingViewTheme:
-    StyleSheet,
-    LayoutSheet {
+final class AlgoTransactionHistoryLoadingCell: BaseCollectionViewCell<AlgoTransactionHistoryLoadingView> {
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+    }
 
-    var titleViewCorner: LayoutMetric { get }
-    var titleViewSize: LayoutSize { get }
-    var titleMargin: LayoutMargins { get }
+    static func height(for theme: AlgoTransactionHistoryLoadingViewTheme) -> LayoutMetric {
+        ContextView.height(for: theme)
+    }
+}
 
-    var sectionCorner: LayoutMetric { get }
-    var sectionSize: LayoutSize { get }
-    var sectionMargin: LayoutMargins { get }
+extension AlgoTransactionHistoryLoadingCell {
+    func startAnimating() {
+        contextView.startAnimating()
+    }
 
-    var itemCorner: LayoutMetric { get }
-    var itemSize: LayoutSize { get }
-    var itemMargin: LayoutMargins { get }
+    func stopAnimating() {
+        contextView.stopAnimating()
+    }
 }

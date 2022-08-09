@@ -34,14 +34,14 @@ struct TransactionHistoryLoadingItemViewCommonTheme: TransactionHistoryLoadingIt
         _ family: LayoutFamily
     ) {
         self.titleViewCorner = 4
-        self.titleMargin = (16, .noMetric, .noMetric, .noMetric)
-        self.titleViewSize = (54, 20)
+        self.titleMargin = (14, .noMetric, .noMetric, .noMetric)
+        self.titleViewSize = (114, 20)
 
         self.subtitleViewCorner = 4
-        self.subtitleMargin = (4, .noMetric, .noMetric, .noMetric)
-        self.subtitleViewSize = (87, 16)
+        self.subtitleMargin = (8, .noMetric, .noMetric, .noMetric)
+        self.subtitleViewSize = (44, 16)
 
         self.supplementaryViewCorner = 4
-        self.supplementaryViewSize = (105, 20)
+        self.supplementaryViewSize = (49, 20)
     }
 }

@@ -12,25 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   TransactionHistoryLoadingViewTheme.swift
+//   AssetTransactionHistoryLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-protocol TransactionHistoryLoadingViewTheme:
+protocol AssetTransactionHistoryLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-
     var titleViewCorner: LayoutMetric { get }
     var titleViewSize: LayoutSize { get }
     var titleMargin: LayoutMargins { get }
-
-    var sectionCorner: LayoutMetric { get }
-    var sectionSize: LayoutSize { get }
-    var sectionMargin: LayoutMargins { get }
-
-    var itemCorner: LayoutMetric { get }
-    var itemSize: LayoutSize { get }
-    var itemMargin: LayoutMargins { get }
+    var balanceViewCorner: LayoutMetric { get }
+    var balanceViewSize: LayoutSize { get }
+    var balanceViewMargin: LayoutMargins { get }
+    var currencyViewCorner: LayoutMetric { get }
+    var currencyViewSize: LayoutSize { get }
+    var currencyViewMargin: LayoutMargins { get }
+    var separatorPadding: LayoutMetric { get }
+    var separator: Separator { get }
+    var assetNameLabelSize: LayoutSize { get }
+    var assetNameLabelTopPadding: LayoutMetric { get }
+    var assetIDButtonSize: LayoutSize { get } 
+    var assetIDButtonTopPadding: LayoutMetric { get }
+    var bottomPadding: LayoutMetric { get }
 }
