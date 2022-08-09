@@ -86,7 +86,7 @@ final class CurrencySelectionViewController: BaseViewController {
             [weak self] cell in
             
             let noContentCell = cell as! NoContentWithActionCell
-            noContentCell.observe(event: .performPrimaryAction) {
+            noContentCell.startObserving(event: .performPrimaryAction) {
                 [weak self] in
                 guard let self = self else { return }
                 self.dataController.loadData()

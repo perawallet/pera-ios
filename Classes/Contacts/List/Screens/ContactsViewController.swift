@@ -35,7 +35,7 @@ class ContactsViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
         
-        noContentWithActionView.observe(event: .performPrimaryAction) {
+        noContentWithActionView.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return

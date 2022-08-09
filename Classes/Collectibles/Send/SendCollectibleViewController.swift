@@ -162,22 +162,22 @@ extension SendCollectibleViewController {
             self?.handleActionViewHeightChange(bottomSheetNewHeight)
         }
 
-        sendCollectibleActionView.observe(event: .performTransfer) {
+        sendCollectibleActionView.startObserving(event: .performTransfer) {
             [weak self] in
             self?.makeTransfer()
         }
 
-        sendCollectibleActionView.observe(event: .performSelectReceiverAccount) {
+        sendCollectibleActionView.startObserving(event: .performSelectReceiverAccount) {
             [weak self] in
             self?.openSelectReceiver()
         }
 
-        sendCollectibleActionView.observe(event: .performScanQR) {
+        sendCollectibleActionView.startObserving(event: .performScanQR) {
             [weak self] in
             self?.openScanQR()
         }
 
-        sendCollectibleActionView.observe(event: .performClose) {
+        sendCollectibleActionView.startObserving(event: .performClose) {
             [weak self] in
             self?.dismissWithAnimation()
         }
