@@ -21,20 +21,26 @@ import UIKit
 extension AssetAdditionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+
         let searchInputViewTheme: SearchInputViewTheme
-        let horizontalPadding: LayoutMetric
-        let topPadding: LayoutMetric
-        let assetActionConfirmationModalSize: LayoutSize
+        let searchInputHorizontalPadding: LayoutMetric
+        let searchInputTopPadding: LayoutMetric
+
+        let assetListViewTheme: AssetListViewTheme
+        let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            searchInputViewTheme = SearchInputViewCommonTheme(
+            self.backgroundColor = AppColors.Shared.System.background
+
+            self.searchInputViewTheme = SearchInputViewCommonTheme(
                 placeholder: "asset-search-placeholder".localized,
                 family: family
             )
-            horizontalPadding = 24
-            topPadding = 16
-            assetActionConfirmationModalSize = (UIScreen.main.bounds.width, 562)
+            self.searchInputHorizontalPadding = 24
+            self.searchInputTopPadding = 16
+
+            self.assetListViewTheme = AssetListViewTheme()
+            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
         }
     }
 }

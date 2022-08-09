@@ -138,7 +138,7 @@ extension AssetPreviewViewModel {
             return
         }
 
-        var attributes: TextAttributeGroup = .bodyMonoRegular(
+        var attributes = Typography.bodyMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
@@ -158,7 +158,7 @@ extension AssetPreviewViewModel {
         }
         
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
@@ -217,7 +217,7 @@ extension AssetPreviewViewModel {
         let accessory =  String(assetAddition.asset.id)
 
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
@@ -277,7 +277,7 @@ extension AssetPreviewViewModel {
     ) {
         let accessory =  String(assetAddition.asset.id)
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )

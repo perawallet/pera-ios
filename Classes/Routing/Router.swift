@@ -598,8 +598,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
@@ -850,6 +848,10 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,

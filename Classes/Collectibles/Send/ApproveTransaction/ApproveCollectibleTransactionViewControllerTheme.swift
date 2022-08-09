@@ -128,7 +128,7 @@ extension ApproveCollectibleTransactionViewControllerTheme {
         return .attributedString(
             "collectible-approve-transaction-title"
                 .localized
-                .title2Medium()
+                .titleSmallMedium()
         )
     }
 

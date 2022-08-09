@@ -20,11 +20,10 @@ import MacaroonUIKit
 final class AssetPreviewWithActionView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIControlInteraction()
+        .performAction: TargetActionInteraction()
     ]
     
     private lazy var contentView = AssetPreviewView()

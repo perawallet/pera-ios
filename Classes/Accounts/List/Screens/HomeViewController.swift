@@ -304,7 +304,7 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: NoContentWithActionCell
     ) {
-        cell.observe(event: .performPrimaryAction) {
+        cell.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else { return }
             
@@ -323,7 +323,7 @@ extension HomeViewController {
         _ cell: HomePortfolioCell,
         for item: HomePortfolioViewModel
     ) {
-        cell.observe(event: .showInfo) {
+        cell.startObserving(event: .showInfo) {
             [weak self] in
             guard let self = self else { return }
             
@@ -352,25 +352,25 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeQuickActionsCell
     ) {
-        cell.observe(event: .buyAlgo) {
+        cell.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
             self.buyAlgoFlowCoordinator.launch()
         }
 
-        cell.observe(event: .send) {
+        cell.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
             self.sendTransactionFlowCoordinator.launch()
         }
 
-        cell.observe(event: .receive) {
+        cell.startObserving(event: .receive) {
             [weak self] in
             guard let self = self else { return }
             self.receiveTransactionFlowCoordinator.launch()
         }
 
-        cell.observe(event: .scanQR) {
+        cell.startObserving(event: .scanQR) {
             [weak self] in
             guard let self = self else { return }
             self.scanQRFlowCoordinator.launch()
@@ -381,14 +381,14 @@ extension HomeViewController {
         _ cell: GenericAnnouncementCell,
         for item: AnnouncementViewModel
     ) {
-        cell.observe(event: .close) {
+        cell.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
 
             self.dataController.hideAnnouncement()
         }
 
-        cell.observe(event: .action) {
+        cell.startObserving(event: .action) {
             [weak self] in
             guard let self = self else { return }
 
@@ -402,14 +402,14 @@ extension HomeViewController {
         _ cell: GovernanceAnnouncementCell,
         for item: AnnouncementViewModel
     ) {
-        cell.observe(event: .close) {
+        cell.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
 
             self.dataController.hideAnnouncement()
         }
 
-        cell.observe(event: .action) {
+        cell.startObserving(event: .action) {
             [weak self] in
             guard let self = self else { return }
 
@@ -423,7 +423,7 @@ extension HomeViewController {
         _ cell: HomeAccountsHeader,
         for item: ManagementItemViewModel
     ) {
-        cell.observe(event: .primaryAction) {
+        cell.startObserving(event: .primaryAction) {
             let eventHandler: SortAccountListViewController.EventHandler = {
                 [weak self] event in
                 guard let self = self else { return }
@@ -450,7 +450,7 @@ extension HomeViewController {
                 by: .present
             )
         }
-        cell.observe(event: .secondaryAction) {
+        cell.startObserving(event: .secondaryAction) {
             self.open(
                 .welcome(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(

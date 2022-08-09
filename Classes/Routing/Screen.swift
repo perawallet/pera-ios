@@ -75,7 +75,6 @@ indirect enum Screen {
         theme: AssetActionConfirmationViewControllerTheme = .init()
     )
     case rewardDetail(account: Account)
-    case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
@@ -151,6 +150,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
     )
+    case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
@@ -250,4 +250,8 @@ extension Screen.Transition {
         case pop
         case dismiss
     }
+}
+
+extension Screen {
+    typealias EventHandler<Event> = (Event) -> Void
 }
