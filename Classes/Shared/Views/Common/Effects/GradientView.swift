@@ -14,37 +14,37 @@
 
 //   GradientView.swift
 
-import Foundation
-import MacaroonUIKit
-import UIKit
+ import Foundation
+ import MacaroonUIKit
+ import UIKit
 
-/// <todo>
-/// It should be moved into Macaroon, and adapt to the protocol to drawing the gradient.
-final class GradientView: MacaroonUIKit.BaseView {
-    var colors: [Color]? {
-        didSet { setNeedsDraw() }
-    }
-    var locations: [NSNumber]? {
-        didSet { setNeedsDraw() }
-    }
+ /// <todo>
+ /// It should be moved into Macaroon, and adapt to the protocol to drawing the gradient.
+ final class GradientView: MacaroonUIKit.BaseView {
+     var colors: [Color]? {
+         didSet { setNeedsDraw() }
+     }
+     var locations: [NSNumber]? {
+         didSet { setNeedsDraw() }
+     }
 
-    override class var layerClass: AnyClass {
-        return CAGradientLayer.self
-    }
+     override class var layerClass: AnyClass {
+         return CAGradientLayer.self
+     }
 
-    private var gradientLayer: CAGradientLayer {
-        return layer as! CAGradientLayer
-    }
+     private var gradientLayer: CAGradientLayer {
+         return layer as! CAGradientLayer
+     }
 
-    override func preferredUserInterfaceStyleDidChange() {
-        super.preferredUserInterfaceStyleDidChange()
-        setNeedsDraw()
-    }
-}
+     override func preferredUserInterfaceStyleDidChange() {
+         super.preferredUserInterfaceStyleDidChange()
+         setNeedsDraw()
+     }
+ }
 
-extension GradientView {
-    private func setNeedsDraw() {
-        gradientLayer.colors = colors?.map(\.uiColor.cgColor)
-        gradientLayer.locations = locations
-    }
-}
+ extension GradientView {
+     private func setNeedsDraw() {
+         gradientLayer.colors = colors?.map(\.uiColor.cgColor)
+         gradientLayer.locations = locations
+     }
+ }

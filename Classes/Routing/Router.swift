@@ -731,7 +731,11 @@ class Router:
             wcConnectionApprovalViewController.delegate = delegate
             viewController = wcConnectionApprovalViewController
         case .walletConnectSessionList:
-            viewController = WCSessionListViewController(configuration: configuration)
+            let dataController = WCSessionListLocalDataController(walletConnector: configuration.walletConnector)
+            viewController = WCSessionListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case .walletConnectSessionShortList:
             viewController = WCSessionShortListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(viewModel):
