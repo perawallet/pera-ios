@@ -29,16 +29,16 @@ struct AccountAssetDescendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetDescendingTitleAlgorithm {
     func getFormula(
-        viewModel: ALGAssetListItemViewModel,
-        otherViewModel: ALGAssetListItemViewModel
+        viewModel: AssetListItemViewModel,
+        otherViewModel: AssetListItemViewModel
     ) -> Bool {
         let firstAssetTitle =
-            viewModel.primaryTitleViewModel?.title?.string ??
-            viewModel.primaryTitleViewModel?.subtitle?.string
+            viewModel.title?.primaryTitle?.string ??
+            viewModel.title?.secondaryTitle?.string
 
         let secondAssetTitle =
-            otherViewModel.primaryTitleViewModel?.title?.string ??
-            otherViewModel.primaryTitleViewModel?.subtitle?.string
+            otherViewModel.title?.primaryTitle?.string ??
+            otherViewModel.title?.secondaryTitle?.string
 
         guard let assetTitle = firstAssetTitle.unwrapNonEmptyString() else {
             return true

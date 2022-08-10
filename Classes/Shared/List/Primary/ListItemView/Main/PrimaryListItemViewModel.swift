@@ -16,32 +16,31 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
 
 protocol PrimaryListItemViewModel: ViewModel {
-    var imageViewModel: PrimaryImageViewModel?  { get }
-    var primaryTitleViewModel: PrimaryTitleViewModel? { get }
-    var secondaryTitleViewModel: PrimaryTitleViewModel? { get }
+    var imageSource: ImageSource? { get }
+    var title: PrimaryTitleViewModel? { get }
+    var value: PrimaryTitleViewModel? { get }
 }
 
 extension PrimaryListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(imageViewModel?.imageSource?.url)
-        hasher.combine(primaryTitleViewModel?.title)
-        hasher.combine(primaryTitleViewModel?.subtitle)
-        hasher.combine(secondaryTitleViewModel?.title)
-        hasher.combine(secondaryTitleViewModel?.subtitle)
+        hasher.combine(title?.primaryTitle?.string)
+        hasher.combine(title?.secondaryTitle?.string)
+        hasher.combine(value?.primaryTitle?.string)
+        hasher.combine(value?.secondaryTitle?.string)
     }
 
     static func == (
         lhs: Self,
         rhs: Self
     ) -> Bool {
-        return lhs.imageViewModel?.imageSource?.url == rhs.imageViewModel?.imageSource?.url &&
-        lhs.primaryTitleViewModel?.title == rhs.primaryTitleViewModel?.title &&
-        lhs.primaryTitleViewModel?.subtitle == rhs.primaryTitleViewModel?.subtitle &&
-        lhs.secondaryTitleViewModel?.title == rhs.secondaryTitleViewModel?.title &&
-        lhs.secondaryTitleViewModel?.subtitle == rhs.secondaryTitleViewModel?.subtitle
+        return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
+            lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
+            lhs.value?.primaryTitle?.string == rhs.value?.primaryTitle?.string &&
+            lhs.value?.secondaryTitle?.string == rhs.value?.secondaryTitle?.string
     }
 }

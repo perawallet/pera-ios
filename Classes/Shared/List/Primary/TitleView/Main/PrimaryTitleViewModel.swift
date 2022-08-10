@@ -18,26 +18,24 @@ import Foundation
 import MacaroonUIKit
 
 protocol PrimaryTitleViewModel: ViewModel {
-    var title: EditText? { get }
-    var icon: Image?  { get }
-    var subtitle: EditText? { get }
+    var primaryTitle: TextProvider? { get }
+    var primaryTitleAccessory: Image?  { get }
+    var secondaryTitle: TextProvider? { get }
 }
 
 extension PrimaryTitleViewModel where Self: Hashable {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(title)
-        hasher.combine(icon?.uiImage)
-        hasher.combine(subtitle)
+        hasher.combine(primaryTitle?.string)
+        hasher.combine(secondaryTitle?.string)
     }
 
     static func == (
         lhs: Self,
         rhs: Self
     ) -> Bool {
-        return lhs.title == rhs.title &&
-        lhs.icon?.uiImage == rhs.icon?.uiImage &&
-        lhs.subtitle == rhs.subtitle
+        return lhs.primaryTitle?.string == rhs.primaryTitle?.string &&
+            lhs.secondaryTitle?.string == rhs.secondaryTitle?.string
     }
 }

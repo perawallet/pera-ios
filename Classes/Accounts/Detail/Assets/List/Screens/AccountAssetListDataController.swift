@@ -38,7 +38,6 @@ enum AccountAssetsItem: Hashable {
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(AccountPortfolioViewModel)
     case search
-    case algo(AlgoListItemViewModel)
     case asset(AssetListItemViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
     case assetManagement(ManagementItemViewModel)
