@@ -20,71 +20,90 @@ import MacaroonUIKit
 struct AssetAmountViewModel:
     ALGAssetAmountViewModel,
     Hashable {
-    var title: EditText?
-    var icon: Image?
-    var subtitle: EditText?
+    var primaryTitle: TextProvider?
+    var primaryTitleAccessory: Image?
+    var secondaryTitle: TextProvider?
 
     private(set) var valueInUSD: Decimal = 0
 
     init(
         _ item: AssetItem
     ) {
-        bindTitle(item)
-        bindIcon()
-        bindSubtitle(item)
+        bindPrimaryTitle(item)
+        bindPrimaryTitleAccessory()
+        bindSecondaryTitle(item)
     }
 }
 
 extension AssetAmountViewModel {
-    private mutating func bindTitle(
+    mutating func bindPrimaryTitle(
         _ item: AssetItem
     ) {
         let asset = item.asset
 
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
-        formatter.currency = nil
-
-        if let aTitle = formatter.format(asset.decimalAmount) {
-            title = .attributedString(aTitle.bodyRegular(alignment: .right))
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
         } else {
-            title = nil
+            formatter.currency = nil
         }
+
+
+        let text = formatter.format(asset.decimalAmount)
+        primaryTitle = text?.bodyRegular(alignment: .right)
     }
 
-    private mutating func bindIcon() {
-        icon = nil
+    mutating func bindPrimaryTitleAccessory() {
+        primaryTitleAccessory = nil
     }
 
-    private mutating func bindSubtitle(
+    mutating func bindSecondaryTitle(
         _ item: AssetItem
     ) {
         let asset = item.asset
-
         valueInUSD = asset.totalUSDValue ?? 0
-
-        guard let currencyValue = item.currency.primaryValue else {
-            subtitle = nil
-            return
-        }
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
         do {
-            let rawCurrency = try currencyValue.unwrap()
+            let exchanger: CurrencyExchanger
+            if asset.isAlgo {
+                guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
+                    secondaryTitle = nil
+                    valueInUSD = 0
+                    return
+                }
 
-            let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(asset)
-
-            let formatter = item.currencyFormatter
-            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
-            formatter.currency = rawCurrency
-
-            if let aSubtitle = formatter.format(amount) {
-                subtitle = .attributedString(aSubtitle.footnoteRegular(alignment: .right))
+                exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
             } else {
-                subtitle = nil
+                guard let currencyValue = item.currency.primaryValue else {
+                    secondaryTitle = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                let rawCurrency = try currencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawCurrency)
+
+                formatter.currency = rawCurrency
             }
+
+
+            let amount: Decimal
+            if asset.isAlgo {
+                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
+            } else {
+                amount = try exchanger.exchange(asset)
+            }
+
+
+            let text = formatter.format(amount)
+            secondaryTitle = text?.footnoteRegular(alignment: .right)
         } catch {
-            subtitle = nil
+            secondaryTitle = nil
+            valueInUSD = 0
         }
     }
 }
