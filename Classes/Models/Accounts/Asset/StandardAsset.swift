@@ -31,19 +31,16 @@ final class StandardAsset: Asset {
     let verificationTier: AssetVerificationTier
     let creator: AssetCreator?
     let url: String?
-    let logo: URL?
+    let logoURL: URL?
+    let isAlgo = false
 
     var state: AssetState = .ready
 
-    var presentation: AssetPresentation {
-        return AssetPresentation(
+    var naming: AssetNaming {
+        return AssetNaming(
             id: id,
-            decimals: decimals,
             name: name,
-            unitName: unitName,
-            url: url,
-            verificationTier: verificationTier,
-            logo: logo
+            unitName: unitName
         )
     }
 
@@ -64,7 +61,7 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
-        self.logo = decoration.logo
+        self.logoURL = decoration.logoURL
 
         let amount = asset.amount
         let decimals = decoration.decimals

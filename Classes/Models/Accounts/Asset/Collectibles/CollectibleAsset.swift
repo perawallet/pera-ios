@@ -43,19 +43,16 @@ final class CollectibleAsset: Asset {
     let description: String?
     let properties: [CollectibleTrait]?
     let explorerURL: URL?
-    let logo: URL?
+    let logoURL: URL?
+    let isAlgo = false
 
     var state: AssetState = .ready
 
-    var presentation: AssetPresentation {
-        return AssetPresentation(
+    var naming: AssetNaming {
+        return AssetNaming(
             id: id,
-            decimals: decimals,
             name: name,
-            unitName: unitName,
-            url: url,
-            verificationTier: verificationTier,
-            logo: logo
+            unitName: unitName
         )
     }
 
@@ -104,7 +101,7 @@ final class CollectibleAsset: Asset {
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
         self.explorerURL = decoration.explorerURL
-        self.logo = decoration.logo
+        self.logoURL = decoration.logoURL
 
         let amount = asset.amount
         let decimals = decoration.decimals

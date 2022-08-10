@@ -71,7 +71,7 @@ final class SendTransactionScreen: BaseViewController {
         guard let decimalAmount = amount.decimalAmount else {
             return false
         }
-        return draft.from.amount == decimalAmount.toMicroAlgos
+        return draft.from.algo.amount == decimalAmount.toMicroAlgos
     }
 
     private var isViewFirstAppeared = true
@@ -449,7 +449,7 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         switch draft.transactionMode {
         case .algo:
-            self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+            self.amount = draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
             self.amount = asset.amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
@@ -589,7 +589,7 @@ extension SendTransactionScreen {
                     return
                 }
 
-                self.amount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.amount = self.draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
                 self.handleSuccessAmountValidation()
             }
         )

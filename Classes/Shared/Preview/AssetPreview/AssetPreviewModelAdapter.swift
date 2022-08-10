@@ -24,14 +24,14 @@ enum AssetPreviewModelAdapter {
     ) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(item)
         let asset = item.asset
-        let title = asset.presentation.name.isNilOrEmpty
+        let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
-            : asset.presentation.name
+            : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
             title: title,
-            subtitle: asset.presentation.unitName,
+            subtitle: asset.naming.unitName,
             primaryAccessory: assetViewModel.amount,
             secondaryAccessory: assetViewModel.valueInCurrency,
             currencyAmount: assetViewModel.valueInUSD,
@@ -60,12 +60,12 @@ enum AssetPreviewModelAdapter {
     ) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(item)
         let asset = item.asset
-        let title = asset.presentation.name.isNilOrEmpty
+        let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
-            : asset.presentation.name
+            : asset.naming.name
         return AssetPreviewModel(
-            icon: .url(nil, title: asset.presentation.name),
-            verifiedIcon: asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            icon: .url(nil, title: asset.naming.name),
+            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
             title: title,
             subtitle: "ID \(asset.id)",
             primaryAccessory: assetViewModel.amount,
@@ -99,10 +99,10 @@ enum AssetPreviewModelAdapter {
 
     static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
         return PendingAssetPreviewModel(
-            secondaryImage: asset.presentation.verificationTier.isVerified
+            secondaryImage: asset.verificationTier.isVerified
                 ? img("icon-verified-shield")
                 : nil,
-            assetPrimaryTitle: asset.presentation.name,
+            assetPrimaryTitle: asset.naming.name,
             assetSecondaryTitle: "ID \(asset.id)",
             assetStatus: "asset-removing-status".localized
         )
