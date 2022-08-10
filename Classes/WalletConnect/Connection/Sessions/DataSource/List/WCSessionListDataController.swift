@@ -32,7 +32,7 @@ protocol WCSessionListDataController: AnyObject {
         _ session: WCSession
     )
 
-    var sessionListItemsIsEmpty: Bool { get }
+    var disconnectedSessions: Set<WCSession> { get set }
 }
 
 enum WCSessionListSection:

@@ -33,16 +33,14 @@ final class WCSessionListLocalDataController:
 
     private var cachedSessionListItems: [WCSession: WCSessionListItem] = [:]
 
+    var disconnectedSessions: Set<WCSession> = []
+
     private let walletConnector: WalletConnector
     
     init(
         walletConnector: WalletConnector
     ) {
         self.walletConnector = walletConnector
-    }
-
-    var sessionListItemsIsEmpty: Bool {
-        return cachedSessionListItems.isEmpty
     }
 }
 
@@ -118,6 +116,8 @@ extension WCSessionListLocalDataController {
     func removeSession(
         _ session: WCSession
     ) {
+        disconnectedSessions.remove(session)
+
         let itemToDelete = cachedSessionListItems[session]
 
         guard let itemToDelete = itemToDelete else {

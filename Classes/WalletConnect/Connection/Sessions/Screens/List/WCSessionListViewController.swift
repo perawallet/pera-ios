@@ -40,7 +40,6 @@ final class WCSessionListViewController:
     private lazy var listDataSource = WCSessionListDataSource(listView)
 
     private var isLayoutFinalized = false
-    private var isPerformingDisconnectAllSessions = false
 
     private let dataController: WCSessionListDataController
     private let theme: WCSessionListViewControllerTheme
@@ -229,6 +228,7 @@ extension WCSessionListViewController {
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
+            self.dataController.disconnectedSessions.insert(session)
             self.walletConnector.disconnectFromSession(session)
         }
 
@@ -396,9 +396,12 @@ extension WCSessionListViewController {
                     address: session.walletMeta?.accounts?.first
                 )
             )
-            self.isPerformingDisconnectAllSessions = true
+            
+            let allSessions = self.walletConnector.allWalletConnectSessions
 
-            self.walletConnector.allWalletConnectSessions.forEach(self.walletConnector.disconnectFromSession)
+            self.dataController.disconnectedSessions = Set(allSessions)
+
+            allSessions.forEach(self.walletConnector.disconnectFromSession)
         }
 
         let cancelAction = UIAlertAction(
@@ -426,7 +429,9 @@ extension WCSessionListViewController {
             dataController.removeSession(session)
 
             stopLoadingIfNeeded()
-        case .failedToDisconnect:
+        case .failedToDisconnect(let session):
+            dataController.disconnectedSessions.remove(session)
+
             stopLoadingIfNeeded()
 
             bannerController?.presentErrorBanner(
@@ -455,21 +460,8 @@ extension WCSessionListViewController {
     }
 
     private func stopLoadingIfNeeded() {
-        /// <note>:
-        /// Disconnected from only 1 session with options action in session item cell.
-        if !isPerformingDisconnectAllSessions {
+        if dataController.disconnectedSessions.isEmpty {
             loadingController?.stopLoading()
-            return
-        }
-
-        /// <note>:
-        /// If disconnect all sessions action is trigerred, we are disconnecting from all sessions 1 by 1, and we are getting notified with delegate method when each session is disconnected.
-        /// When all sessions are disconnected, we stop the loading.
-        if isPerformingDisconnectAllSessions,
-           dataController.sessionListItemsIsEmpty {
-            loadingController?.stopLoading()
-
-            isPerformingDisconnectAllSessions = false
         }
     }
 }
