@@ -22,6 +22,13 @@ protocol ListItemButtonViewModel: ViewModel {
     var icon: Image? { get }
     var title: EditText? { get }
     var subtitle: EditText? { get }
+    var accessory: Image? { get }
+}
+
+extension ListItemButtonViewModel {
+    var accessory: Image? {
+        return nil
+    }
 }
 
 extension ListItemButtonViewModel {

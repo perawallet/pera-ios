@@ -30,6 +30,8 @@ struct ListItemButtonTheme:
     var title: TextStyle
     var subtitle: TextStyle
     var spacingBetweenTitleAndSubtitle: LayoutMetric
+    var accessory: ImageStyle
+    var accessoryContentEdgeInsets: LayoutOffset
     
     init(
         _ family: LayoutFamily
@@ -52,6 +54,11 @@ struct ListItemButtonTheme:
             .textColor(AppColors.Components.Text.gray)
         ]
         self.spacingBetweenTitleAndSubtitle = 2
+        self.accessory = [
+            .contentMode(.right),
+            .isInteractable(false)
+        ]
+        self.accessoryContentEdgeInsets = (0, 0)
     }
 }
 

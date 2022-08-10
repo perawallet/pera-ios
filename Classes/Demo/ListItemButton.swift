@@ -26,12 +26,14 @@ final class ListItemButton:
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
+    private lazy var accessoryView = ImageView()
     
     func customize(
         _ theme: ListItemButtonTheme
     ) {
         addIcon(theme)
         addContent(theme)
+        addAccessory(theme)
     }
     
     func customizeAppearance(
@@ -48,6 +50,7 @@ final class ListItemButton:
         iconView.image = viewModel?.icon?.uiImage
         titleView.editText = viewModel?.title
         subtitleView.editText = viewModel?.subtitle
+        accessoryView.image = viewModel?.accessory?.uiImage
     }
 }
 
@@ -97,7 +100,6 @@ extension ListItemButton {
             $0.top == 0 + theme.contentVerticalPaddings.top
             $0.leading == iconView.snp.trailing
             $0.bottom == 0 + theme.contentVerticalPaddings.bottom
-            $0.trailing == 0
             
             $0.greaterThanHeight(theme.contentMinHeight)
         }
@@ -135,6 +137,21 @@ extension ListItemButton {
             $0.top == titleView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+
+    private func addAccessory(
+        _ theme: ListItemButtonTheme
+    ) {
+        accessoryView.customizeAppearance(theme.accessory)
+
+        addSubview(accessoryView)
+        accessoryView.contentEdgeInsets = theme.accessoryContentEdgeInsets
+        accessoryView.fitToIntrinsicSize()
+        accessoryView.snp.makeConstraints {
+            $0.centerY == 0
+            $0.leading == contentView.snp.trailing
             $0.trailing == 0
         }
     }
