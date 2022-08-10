@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoreTransactionOptionListActionViewModel.swift
+//
+//   ArrangeListListItemButtonViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct MoreTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct ArrangeListListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-
+    
     init() {
-        icon = "icon-transaction-option-list-more"
-        title = Self.getTitle("title-more".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-more-subtitle".localized)
+        self.icon = "icon-arrange-24"
+        self.title = Self.getTitle("account-options-arrange-list-title".localized)
+        self.subtitle = nil
     }
 }

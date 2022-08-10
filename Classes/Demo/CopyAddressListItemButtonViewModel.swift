@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   CopyAddressListActionViewModel.swift
+//   CopyAddressListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct CopyAddressListActionViewModel:
-    ListActionViewModel,
+struct CopyAddressListItemButtonViewModel:
+    ListItemButtonViewModel,
     BindableViewModel {
     let icon: Image?
     let title: EditText?
@@ -36,7 +36,7 @@ struct CopyAddressListActionViewModel:
     }
 }
 
-extension CopyAddressListActionViewModel {
+extension CopyAddressListItemButtonViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
@@ -47,7 +47,7 @@ extension CopyAddressListActionViewModel {
     }
 }
 
-extension CopyAddressListActionViewModel {
+extension CopyAddressListItemButtonViewModel {
     mutating func bindSubtitle(
         _ account: Account
     ) {

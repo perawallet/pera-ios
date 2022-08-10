@@ -12,26 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountRecoverOptionsViewController+Theme.swift
+//   ScanQRCodeTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
-import UIKit
 
-struct AccountRecoverOptionsViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    var background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let button: ListItemButtonTheme
+struct ScanQRCodeTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
-        ]
-        self.contentPaddings = (12, 24, 12, 24)
-        self.button = ListItemButtonTheme(family)
+    init() {
+        icon = "icon-transaction-option-list-scan-qr-code"
+        title = Self.getTitle("qr-scan-title".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-scan-qr-code-subtitle".localized)
     }
 }

@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RemoveAssetsListActionViewModel.swift
+//   RemoveAccountListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct RemoveAssetsListActionViewModel: ListActionViewModel {
+struct RemoveAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-
+    
     init() {
-        self.icon = "icon-asset-delete"
+        self.icon = "icon-remove-account"
         self.title = Self.getTitle(
-            "asset-remove-title".localized,
+            "options-remove-account".localized,
             AppColors.Shared.Helpers.negative
         )
         self.subtitle = nil

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MuteNotificationsListActionViewModel.swift
+//   MuteNotificationsListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct MuteNotificationsListActionViewModel:
-    ListActionViewModel,
+struct MuteNotificationsListItemButtonViewModel:
+    ListItemButtonViewModel,
     PairedViewModel {
     private(set) var title: EditText?
     private(set) var icon: Image?
@@ -31,7 +31,7 @@ struct MuteNotificationsListActionViewModel:
     }
 }
 
-extension MuteNotificationsListActionViewModel {
+extension MuteNotificationsListItemButtonViewModel {
     mutating func bind(
         _ account: Account
     ) {

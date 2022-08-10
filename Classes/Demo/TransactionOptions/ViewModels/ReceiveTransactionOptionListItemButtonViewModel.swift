@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ScanQRCodeTransactionOptionListActionViewModel.swift
+//   ReceiveTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
 
-struct ScanQRCodeTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct ReceiveTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
 
-    init() {
-        icon = "icon-transaction-option-list-scan-qr-code"
-        title = Self.getTitle("qr-scan-title".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-scan-qr-code-subtitle".localized)
+    init(isQR: Bool = false) {
+        icon = isQR ? "icon-transaction-option-list-receive-qr" : "icon-transaction-option-list-receive"
+        title = Self.getTitle("title-receive".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
     }
 }

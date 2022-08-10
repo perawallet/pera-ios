@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AddAccountListActionViewModel.swift
+//   AddAccountListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AddAccountListActionViewModel: ListActionViewModel {
+struct AddAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?

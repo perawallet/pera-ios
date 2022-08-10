@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   ListActionView.swift
+//   ListItemButton.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ListActionView:
+final class ListItemButton:
     Control,
     ViewModelBindable {
     private lazy var iconView = ImageView()
@@ -28,7 +28,7 @@ final class ListActionView:
     private lazy var subtitleView = Label()
     
     func customize(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         addIcon(theme)
         addContent(theme)
@@ -43,7 +43,7 @@ final class ListActionView:
     ) {}
     
     func bindData(
-        _ viewModel: ListActionViewModel?
+        _ viewModel: ListItemButtonViewModel?
     ) {
         iconView.image = viewModel?.icon?.uiImage
         titleView.editText = viewModel?.title
@@ -51,9 +51,9 @@ final class ListActionView:
     }
 }
 
-extension ListActionView {
+extension ListItemButton {
     private func addIcon(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         iconView.customizeAppearance(theme.icon)
         
@@ -72,7 +72,7 @@ extension ListActionView {
 
     private func alignIcon(
         _ view: UIView,
-        with theme: ListActionViewTheme
+        with theme: ListItemButtonTheme
     ) {
         switch theme.iconAlignment {
         case .centered:
@@ -87,7 +87,7 @@ extension ListActionView {
     }
     
     private func addContent(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         contentView.isUserInteractionEnabled = false
         
@@ -107,7 +107,7 @@ extension ListActionView {
     }
     
     private func addTitle(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         titleView.customizeAppearance(theme.title)
         
@@ -124,7 +124,7 @@ extension ListActionView {
     }
     
     private func addSubtitle(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         subtitleView.customizeAppearance(theme.subtitle)
         
@@ -140,7 +140,7 @@ extension ListActionView {
     }
 }
 
-extension ListActionView {
+extension ListItemButton {
     enum IconViewAlignment {
         case centered
         case aligned(top: LayoutMetric)

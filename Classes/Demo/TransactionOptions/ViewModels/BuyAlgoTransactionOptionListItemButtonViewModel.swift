@@ -12,19 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasteFullPassphraseListActionItem.swift
+//   BuyAlgoTransactionOptionListItemButtonViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 
-struct PasteFullPassphraseListActionViewModel: ListActionViewModel {
+struct BuyAlgoTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-    
+
     init() {
-        self.icon = "icon-paste"
-        self.title = Self.getTitle("title-paste-passphrase".localized)
-        self.subtitle = nil
+        icon = "icon-transaction-option-list-buy-algo"
+        title = Self.getTitle("title-buy-algo".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-buy-algo-subtitle".localized)
     }
 }

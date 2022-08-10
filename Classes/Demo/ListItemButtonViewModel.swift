@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionOptionListActionViewModel.swift
+//
+//   ListItemButtonViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-protocol TransactionOptionListActionViewModel: ListActionViewModel { }
+protocol ListItemButtonViewModel: ViewModel {
+    var icon: Image? { get }
+    var title: EditText? { get }
+    var subtitle: EditText? { get }
+}
 
-extension TransactionOptionListActionViewModel {
+extension ListItemButtonViewModel {
     static func getTitle(
         _ aTitle: String?,
         _ aTitleColor: Color? = nil
@@ -39,16 +45,16 @@ extension TransactionOptionListActionViewModel {
             )
         )
     }
-
+    
     static func getSubtitle(
         _ aSubtitle: String?
     ) -> EditText? {
         guard let aSubtitle = aSubtitle else {
             return nil
         }
-
+        
         return .attributedString(
-            aSubtitle.footnoteRegular(
+            aSubtitle.captionMonoRegular(
                 lineBreakMode: .byTruncatingMiddle
             )
         )

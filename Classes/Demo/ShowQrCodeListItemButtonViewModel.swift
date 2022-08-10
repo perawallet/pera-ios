@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   LearnMoreListActionViewModel.swift
+//
+//   ShowQrCodeListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct LearnMoreListActionViewModel: ListActionViewModel {
+struct ShowQrCodeListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-info-black-24"
-        self.title = Self.getTitle("title-learn-more".localized)
+        self.icon = "icon-qr"
+        self.title = Self.getTitle("options-show-qr".localized)
         self.subtitle = nil
     }
 }

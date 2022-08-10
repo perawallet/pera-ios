@@ -12,22 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RemoveAccountListActionViewModel.swift
+//   RekeyAccountListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct RemoveAccountListActionViewModel: ListActionViewModel {
+struct RekeyAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-remove-account"
-        self.title = Self.getTitle(
-            "options-remove-account".localized,
-            AppColors.Shared.Helpers.negative
-        )
+        self.icon = "icon-options-rekey"
+        self.title = Self.getTitle("options-rekey".localized)
         self.subtitle = nil
     }
 }

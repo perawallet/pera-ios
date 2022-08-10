@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ScanQRCodeListActionViewModel.swift
+//   SortListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct ScanQRCodeListActionViewModel: ListActionViewModel {
+struct SortListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-    
+
     init() {
-        self.icon = "icon-qr-scan"
-        self.title = Self.getTitle("qr-scan-title".localized)
+        self.icon = "icon-options-sort"
+        self.title = Self.getTitle("options-sort-title".localized)
         self.subtitle = nil
     }
 }

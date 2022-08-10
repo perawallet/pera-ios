@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ViewPassphraseListActionViewModel.swift
+//   PasteFullPassphraseListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct ViewPassphraseListActionViewModel: ListActionViewModel {
+struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-options-view-passphrase"
-        self.title = Self.getTitle("options-view-passphrase".localized)
+        self.icon = "icon-paste"
+        self.title = Self.getTitle("title-paste-passphrase".localized)
         self.subtitle = nil
     }
 }

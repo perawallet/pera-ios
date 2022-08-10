@@ -29,7 +29,7 @@ struct TransactionOptionsViewTheme:
     var contentSafeAreaInsets: UIEdgeInsets
     var contentPaddings: LayoutPaddings
     var spacingBetweenActions: LayoutMetric
-    var action: ListActionViewTheme
+    var button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
@@ -53,8 +53,8 @@ struct TransactionOptionsViewTheme:
         self.contentPaddings = (48, 20, 44, 20)
         self.contentSafeAreaInsets = .zero
         self.spacingBetweenActions = 20
-        var action = ListActionViewTheme()
-        action.configureForTransactionOptionsView()
-        self.action = action
+        var button = ListItemButtonTheme()
+        button.configureForTransactionOptionsView()
+        self.button = button
     }
 }

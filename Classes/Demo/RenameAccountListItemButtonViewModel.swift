@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveTransactionOptionListActionViewModel.swift
+//   RenameAccountListItemButtonViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct ReceiveTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct RenameAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-
-    init(isQR: Bool = false) {
-        icon = isQR ? "icon-transaction-option-list-receive-qr" : "icon-transaction-option-list-receive"
-        title = Self.getTitle("title-receive".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
+    
+    init() {
+        self.icon = "icon-edit-account"
+        self.title = Self.getTitle("options-edit-account-name".localized)
+        self.subtitle = nil
     }
 }

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FilterCollectiblesActionViewModel.swift
+//   LearnMoreListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct FilterCollectiblesActionViewModel: ListActionViewModel {
+struct LearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-
+    
     init() {
-        self.icon = "icon-collectibles-filter"
-        self.title = Self.getTitle("opitons-collectibles-filter".localized)
+        self.icon = "icon-info-black-24"
+        self.title = Self.getTitle("title-learn-more".localized)
         self.subtitle = nil
     }
 }

@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//   ListActionViewTheme.swift
+//   ListItemButtonTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ListActionViewTheme:
+struct ListItemButtonTheme:
     StyleSheet,
     LayoutSheet {
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
-    var iconAlignment: ListActionView.IconViewAlignment
+    var iconAlignment: ListItemButton.IconViewAlignment
     var contentMinHeight: LayoutMetric
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
@@ -55,7 +55,7 @@ struct ListActionViewTheme:
     }
 }
 
-extension ListActionViewTheme {
+extension ListItemButtonTheme {
     mutating func configureForTransactionOptionsView() {
         self.iconContentEdgeInsets = (12, 0)
         self.iconAlignment = .aligned(top: 0)

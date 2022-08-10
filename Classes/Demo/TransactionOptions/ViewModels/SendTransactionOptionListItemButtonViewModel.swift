@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionOptionListActionViewModel.swift
+//   SendTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
 
-struct BuyAlgoTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct SendTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
 
     init() {
-        icon = "icon-transaction-option-list-buy-algo"
-        title = Self.getTitle("title-buy-algo".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-buy-algo-subtitle".localized)
+        icon = "icon-transaction-option-list-send"
+        title = Self.getTitle("title-send".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-send-subtitle".localized)
     }
 }

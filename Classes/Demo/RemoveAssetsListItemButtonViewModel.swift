@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ShowQrCodeListActionViewModel.swift
+//   RemoveAssetsListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct ShowQrCodeListActionViewModel: ListActionViewModel {
+struct RemoveAssetsListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-    
+
     init() {
-        self.icon = "icon-qr"
-        self.title = Self.getTitle("options-show-qr".localized)
+        self.icon = "icon-asset-delete"
+        self.title = Self.getTitle(
+            "asset-remove-title".localized,
+            AppColors.Shared.Helpers.negative
+        )
         self.subtitle = nil
     }
 }

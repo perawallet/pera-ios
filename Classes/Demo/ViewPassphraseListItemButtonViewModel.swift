@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendTransactionOptionListActionViewModel.swift
+//
+//   ViewPassphraseListItemButtonViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct SendTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct ViewPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
-
+    
     init() {
-        icon = "icon-transaction-option-list-send"
-        title = Self.getTitle("title-send".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-send-subtitle".localized)
+        self.icon = "icon-options-view-passphrase"
+        self.title = Self.getTitle("options-view-passphrase".localized)
+        self.subtitle = nil
     }
 }

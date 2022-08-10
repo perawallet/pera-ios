@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QRScanOptionListActionViewModel.swift
+//   QRScanOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
 
-protocol QRScanOptionListActionViewModel: ListActionViewModel { }
+protocol QRScanOptionListItemButtonViewModel: ListItemButtonViewModel { }
 
-extension QRScanOptionListActionViewModel {
+extension QRScanOptionListItemButtonViewModel {
     static func getTitle(
         _ aTitle: String?
     ) -> EditText? {
