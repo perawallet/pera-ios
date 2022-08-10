@@ -98,13 +98,13 @@ final class WCSingleTransactionRequestMiddleViewModel {
             let finalAmountText = currencyFormatter.format(finalAmount)
             let text = finalAmountText.someString
 
-            if let assetCode = asset.presentation.hasOnlyAssetName ?
-                    asset.presentation.displayNames.primaryName :
-                    asset.presentation.displayNames.secondaryName {
+            if let assetCode = asset.naming.hasOnlyAssetName ?
+                    asset.naming.displayNames.primaryName :
+                    asset.naming.displayNames.secondaryName {
                 self.title = "\(text) \(assetCode)"
             }
 
-            self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
+            self.isAssetIconHidden = !asset.verificationTier.isVerified
 
             self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
@@ -112,9 +112,9 @@ final class WCSingleTransactionRequestMiddleViewModel {
             guard let asset = asset else {
                 return
             }
-            self.title = asset.presentation.displayNames.primaryName
+            self.title = asset.naming.displayNames.primaryName
             self.subtitle = "\(asset.id)"
-            self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
+            self.isAssetIconHidden = !asset.verificationTier.isVerified
             return
         case .appCall:
             let appCallOncomplete = transaction.transactionDetail?.appCallOnComplete ?? .noOp
@@ -151,15 +151,15 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 }
             case .reconfig:
                 if let asset = asset {
-                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
+                    self.isAssetIconHidden = !asset.verificationTier.isVerified
                 }
             case .delete:
                 if let asset = asset {
-                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.verificationTier.isVerified
+                    self.isAssetIconHidden = !asset.verificationTier.isVerified
                 }
             }
         }

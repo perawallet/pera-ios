@@ -117,7 +117,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         do {
             let rawCurrency = try currencyValue.unwrap()
             let assetFraction = asset.decimals
-            let assetSymbol = asset.presentation.name
+            let assetSymbol = asset.naming.name
 
             let exchanger = CurrencyExchanger(currency: rawCurrency)
             let amountInCurrency = try exchanger.exchange(

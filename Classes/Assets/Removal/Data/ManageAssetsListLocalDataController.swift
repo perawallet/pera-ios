@@ -96,15 +96,15 @@ extension ManageAssetsListLocalDataController {
     }
 
     private func isAssetContainsID(_ asset: Asset, query: String) -> Bool {
-        return String(asset.presentation.id).localizedCaseInsensitiveContains(query)
+        return String(asset.id).localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsName(_ asset: Asset, query: String) -> Bool {
-        return asset.presentation.name.someString.localizedCaseInsensitiveContains(query)
+        return asset.naming.name.someString.localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsUnitName(_ asset: Asset, query: String) -> Bool {
-        return asset.presentation.unitName.someString.localizedCaseInsensitiveContains(query)
+        return asset.naming.unitName.someString.localizedCaseInsensitiveContains(query)
     }
     
     func resetSearch() {

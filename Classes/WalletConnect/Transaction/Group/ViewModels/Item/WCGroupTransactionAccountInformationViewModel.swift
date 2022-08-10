@@ -114,7 +114,7 @@ class WCGroupTransactionAccountInformationViewModel {
         }
 
         if let asset = asset {
-            assetName = asset.presentation.displayNames.secondaryName
+            assetName = asset.naming.displayNames.secondaryName
         } else {
             assetName = "ALGO"
         }
