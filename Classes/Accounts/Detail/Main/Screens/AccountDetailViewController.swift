@@ -339,6 +339,23 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
     }
 
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        let account = accountHandle.value
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: accountName
+        )
+        let qrGeneratorScreen: Screen = .qrGenerator(
+            title: accountName,
+            draft: draft,
+            isTrackable: true
+        )
+
+        open(qrGeneratorScreen, by: .present)
+    }
+
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
         guard let session = session else {
             return
