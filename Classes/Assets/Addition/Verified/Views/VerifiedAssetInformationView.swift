@@ -29,46 +29,13 @@ final class VerifiedAssetInformationView: View {
     private lazy var titleLabel = UILabel()
     private lazy var informationLabel = UILabel()
     private lazy var verifiedImageView = UIImageView()
-
-    private lazy var verifiedInfoBoxView = InfoBoxView()
-    private lazy var suspiciousInfoBoxView = InfoBoxView()
-    private lazy var trustedInfoBoxView = InfoBoxView()
     
     func customize(_ theme: VerifiedAssetInformationViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        let aTheme = AssetVerificationTierInfoBoxViewTheme()
-        let verifiedViewModel = AssetVerificationTierInfoBoxViewModel(.verified)
-        let suspiciousViewModel = AssetVerificationTierInfoBoxViewModel(.suspicious)
-        let trustedViewModel = AssetVerificationTierInfoBoxViewModel(.trusted)
-
-        addSubview(trustedInfoBoxView)
-        trustedInfoBoxView.customize(aTheme)
-        trustedInfoBoxView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-        }
-
-        addSubview(verifiedInfoBoxView)
-        verifiedInfoBoxView.customize(aTheme)
-        verifiedInfoBoxView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalTo(trustedInfoBoxView.snp.bottom).offset(theme.horizontalInset)
-        }
-
-        addSubview(suspiciousInfoBoxView)
-        suspiciousInfoBoxView.customize(aTheme)
-        suspiciousInfoBoxView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalTo(verifiedInfoBoxView.snp.bottom).offset(theme.horizontalInset)
-        }
-
-        verifiedInfoBoxView.bindData(verifiedViewModel)
-        trustedInfoBoxView.bindData(trustedViewModel)
-        suspiciousInfoBoxView.bindData(suspiciousViewModel)
-        
-//        addTitle(theme)
-//        addImage(theme)
-//        addInformation(theme)
+        addTitle(theme)
+        addImage(theme)
+        addInformation(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
