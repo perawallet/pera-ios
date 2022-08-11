@@ -22,28 +22,26 @@ struct ShowMoreViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let detail: TextStyle
-    let showMore: ButtonStyle
-
     let spacingBetweenTitleAndDetail: LayoutMetric
-    let spacingBetweenDetailAndShowMore: LayoutMetric
     let detailLineHeight: LayoutMetric
+    let detail: TextStyle
+    let spacingBetweenDetailAndShowMore: LayoutMetric
+    let showMore: ButtonStyle
 
     init(
         _ family: LayoutFamily
     ) {
-        title = [
+        self.title = [
             .textColor(AppColors.Components.Text.grayLighter),
         ]
-        detail = [
+        self.spacingBetweenTitleAndDetail = 24
+        self.detail = [
             .textColor(AppColors.Components.Text.main)
         ]
-        showMore = [
+        self.detailLineHeight = 24
+        self.spacingBetweenDetailAndShowMore = 4
+        self.showMore = [
             .titleColor([.normal(AppColors.Shared.Helpers.positive)])
         ]
-
-        spacingBetweenTitleAndDetail = 24
-        spacingBetweenDetailAndShowMore = 4
-        detailLineHeight = 24
     }
 }
