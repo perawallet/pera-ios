@@ -41,7 +41,21 @@ extension CollectibleDescendingTitleAlgorithm {
         otherCollectible.name ??
         otherCollectible.id.stringWithHashtag
 
-        let comparison = collectibleTitle.localizedCaseInsensitiveCompare(otherCollectibleTitle)
+        if collectibleTitle.lowercased() != otherCollectibleTitle.lowercased() {
+            let comparison = collectibleTitle.localizedCaseInsensitiveCompare(otherCollectibleTitle)
+            return comparison == .orderedDescending
+        }
+
+        guard let collectibleOptedInAddress = collectible.optedInAddress else {
+            return otherCollectible.optedInAddress == nil
+        }
+
+        guard let otherCollectibleOptedInAddress = otherCollectible.optedInAddress else {
+            return true
+        }
+
+        let comparison = collectibleOptedInAddress
+            .localizedCaseInsensitiveCompare(otherCollectibleOptedInAddress)
         return comparison == .orderedDescending
     }
 }
