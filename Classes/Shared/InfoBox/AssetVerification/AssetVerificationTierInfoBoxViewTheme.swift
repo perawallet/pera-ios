@@ -18,27 +18,27 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetVerificationTierInfoBoxViewTheme: InfoBoxViewTheme {
+    let contentPaddings: LayoutPaddings
     let icon: ImageStyle
+    let iconContentEdgeInsets: LayoutOffset
     let title: TextStyle
     let message: TextStyle
-
-    let contentPaddings: LayoutPaddings
-    let iconContentEdgeInsets: LayoutOffset
     let spacingBetweenTitleAndMessage: LayoutMetric
 
-    init(_ family: LayoutFamily) {
-        icon = [
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentPaddings = (20, 20, 20, 24)
+        self.icon = [
             .contentMode(.left)
         ]
-        title = [
+        self.iconContentEdgeInsets = (16, 0)
+        self.title = [
             .textOverflow(FittingText())
         ]
-        message = [
+        self.message = [
             .textOverflow(FittingText())
         ]
-
-        contentPaddings = (20, 20, 20, 24)
-        iconContentEdgeInsets = (16, 0)
-        spacingBetweenTitleAndMessage = 8
+        self.spacingBetweenTitleAndMessage = 8
     }
 }

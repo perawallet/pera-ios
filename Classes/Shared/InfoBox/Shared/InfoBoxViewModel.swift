@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 protocol InfoBoxViewModel: ViewModel {
     var icon: Image? { get }
-    var title: EditText? { get }
-    var message: EditText? { get }
+    var title: TextProvider? { get }
+    var message: TextProvider? { get }
     var style: InfoBoxViewStyle? { get }
 }

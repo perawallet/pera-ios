@@ -20,11 +20,10 @@ import UIKit
 protocol InfoBoxViewTheme:
     StyleSheet,
     LayoutSheet {
+    var contentPaddings: LayoutPaddings { get }
+    var iconContentEdgeInsets: LayoutOffset { get }
     var icon: ImageStyle { get }
     var title: TextStyle { get }
     var message: TextStyle { get }
-
-    var contentPaddings: LayoutPaddings { get }
-    var iconContentEdgeInsets: LayoutOffset { get }
     var spacingBetweenTitleAndMessage: LayoutMetric { get }
 }
