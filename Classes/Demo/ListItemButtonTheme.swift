@@ -81,4 +81,16 @@ extension ListItemButtonTheme {
         self.contentMinHeight = 68
         self.spacingBetweenTitleAndSubtitle = 0
     }
+
+    mutating func configureForAssetLearnMoreView() {
+        self.icon = [
+            .contentMode(.left),
+            .isInteractable(false),
+            .tintColor(AppColors.Shared.Helpers.positive)
+        ]
+        self.iconContentEdgeInsets = (12, 0)
+        self.contentMinHeight = 40
+        self.spacingBetweenTitleAndSubtitle = 0
+        self.subtitle = []
+    }
 }
