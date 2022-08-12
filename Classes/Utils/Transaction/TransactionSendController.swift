@@ -22,6 +22,7 @@ final class TransactionSendController {
 
     private let draft: SendTransactionDraft
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
     var isClosingToSameAccount: Bool {
         if let receiverAddress = draft.toAccount?.address {
@@ -37,10 +38,12 @@ final class TransactionSendController {
 
     init(
         draft: SendTransactionDraft,
-        api: ALGAPI
+        api: ALGAPI,
+        analytics: ALGAnalytics
     ) {
         self.draft = draft
         self.api = api
+        self.analytics = analytics
     }
     
 
@@ -105,7 +108,7 @@ extension TransactionSendController {
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        UIApplication.shared.firebaseAnalytics?.record(
+                        self.analytics.record(
                             MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
                         )
                         self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
@@ -156,7 +159,7 @@ extension TransactionSendController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    UIApplication.shared.firebaseAnalytics?.record(
+                    self.analytics.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
                     )
                     self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)

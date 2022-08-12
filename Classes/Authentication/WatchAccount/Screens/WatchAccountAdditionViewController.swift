@@ -151,7 +151,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         
         view.endEditing(true)
         let account = createAccount(from: address, with: address.shortAddressDisplay)
-        log(RegistrationEvent(type: .watch))
+        analytics.track(RegistrationEvent(registrationType: .watch))
         open(.accountNameSetup(flow: accountSetupFlow, mode: .add(type: .watch), accountAddress: account.address), by: .push)
     }
     

@@ -36,7 +36,11 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var assetSearchInput = SearchInputView()

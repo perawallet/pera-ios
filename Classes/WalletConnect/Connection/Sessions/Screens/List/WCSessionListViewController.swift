@@ -148,7 +148,7 @@ extension WCSessionListViewController {
                 return
             }
 
-            self.log(
+            self.analytics.track(
                 WCSessionDisconnectedEvent(
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,

@@ -45,7 +45,11 @@ final class AccountSelectScreen: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
@@ -116,7 +120,8 @@ final class AccountSelectScreen: BaseViewController {
 
         transactionSendController = TransactionSendController(
             draft: draft,
-            api: api!
+            api: api!,
+            analytics: analytics
         )
 
         transactionSendController?.delegate = self

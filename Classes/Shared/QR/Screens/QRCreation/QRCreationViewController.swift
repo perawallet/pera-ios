@@ -20,9 +20,9 @@ import UIKit
 final class QRCreationViewController: BaseScrollViewController {
     private lazy var qrCreationView = QRCreationView(draft: draft)
     private lazy var theme = Theme()
-    
-    override var name: AnalyticsScreenName? {
-        return isTrackable ? .showQR : nil
+
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .showQR)
     }
     
     private let draft: QRCreationDraft
@@ -111,16 +111,16 @@ extension QRCreationViewController: QRCreationViewDelegate {
                 guard let self = self else {
                     return
                 }
-                self.log(ReceiveShareCompleteEvent(address: self.draft.address))
+                self.analytics.track(ReceiveShareCompleteEvent(address: self.draft.address))
             }
         }
         
-        log(ReceiveShareEvent(address: draft.address))
+        analytics.track(ReceiveShareEvent(address: draft.address))
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
-        log(ReceiveCopyEvent(address: draft.address))
+        analytics.track(ReceiveCopyEvent(address: draft.address))
         copyToClipboardController.copyAddress(draft.address)
     }
 

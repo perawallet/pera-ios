@@ -43,7 +43,8 @@ class RootViewController: UIViewController {
     private lazy var mainContainer = TabBarController(
         sharedDataController: appConfiguration.sharedDataController,
         api: appConfiguration.api,
-        bannerController: appConfiguration.bannerController
+        bannerController: appConfiguration.bannerController,
+        analytics: appConfiguration.analytics
     )
     
     private lazy var pushNotificationController = PushNotificationController(

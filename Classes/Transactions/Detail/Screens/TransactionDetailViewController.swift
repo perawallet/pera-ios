@@ -18,8 +18,8 @@
 import UIKit
 
 final class TransactionDetailViewController: BaseScrollViewController {
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .transactionDetail)
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)

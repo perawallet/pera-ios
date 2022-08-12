@@ -40,7 +40,11 @@ final class NotificationsViewController:
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
