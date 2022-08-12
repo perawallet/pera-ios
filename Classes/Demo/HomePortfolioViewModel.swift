@@ -58,8 +58,8 @@ extension HomePortfolioViewModel {
                 hasMultilines: false
             )
         titleColor = portfolioItem.portfolioValue.isAvailable
-            ? AppColors.Components.Text.gray.uiColor
-            : AppColors.Shared.Helpers.negative.uiColor
+            ? Colors.Text.gray.uiColor
+            : Colors.Helpers.negative.uiColor
     }
     
     mutating func bindPrimaryValue(

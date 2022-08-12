@@ -41,7 +41,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         
         self.noContentViewTheme = NoContentViewCommonTheme()
         
@@ -61,7 +61,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
                         .lineHeightMultiple(titleLineHeightMultiplier),
                         .textAlignment(.left)
                     ]),
-                    .textColor(AppColors.Components.Text.main)
+                    .textColor(Colors.Text.main)
                 ])
         )
         self.titleTopPadding = 32
@@ -81,7 +81,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
                         .lineHeightMultiple(subtitleLineHeightMultiplier),
                         .textAlignment(.left)
                     ]),
-                    .textColor(AppColors.Components.Text.gray)
+                    .textColor(Colors.Text.gray)
                 ])
         )
         self.subtitleTopPadding = 16

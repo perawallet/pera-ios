@@ -18,6 +18,29 @@ import MacaroonUIKit
 import UIKit
 
 enum Colors {
+    /// <todo>
+    /// The "Other" group is temporary. When Figma file gets an update
+    /// this group should be updated too.
+
+    enum Other: String, Color {
+        case chrome = "Other/chrome"
+        case dropShadow = "Other/dropShadow"
+        case titleDropShadow = "Other/titleDropShadow"
+        case qrBackground = "Other/qrBackground"
+        case loadingGradient1 = "Other/loadingGradient1"
+        case loadingGradient2 = "Other/loadingGradient2"
+        case inputSuggestion = "Other/inputSuggestion"
+        case inputSuggestionSeparator = "Other/inputSuggestionSeparator"
+        case alertShadow1 = "Other/alertShadow1"
+        case alertShadow2 = "Other/alertShadow2"
+
+        enum Global: String, Color {
+            case gray400 = "Other/Global/gray400"
+            case gray800 = "Other/Global/gray800"
+            case white = "Other/Global/white"
+            case turquoise600 = "Other/turquoise600"
+        }
+    }
     enum Alert: String, Color {
         case content = "Alert/content"
         case negative = "Alert/negative"
@@ -146,7 +169,7 @@ enum Colors {
 
     enum NFTIcon: String, Color {
         case icon = "NFTIcon/icon"
-        case iconBackground = "NFTIcon/iconBg"
+        case iconBackground = "NFTIcon/bg"
     }
 
     enum Switches: String, Color {
@@ -163,8 +186,8 @@ enum Colors {
     }
 
     enum Testnet: String, Color {
-        case background = "TestnetBadge/bg"
-        case text = "TestnetBadge/text"
+        case background = "Testnet/bg"
+        case text = "Testnet/text"
     }
 
     enum Text: String, Color {
@@ -209,8 +232,8 @@ extension Colors {
 
         enum TextField: String, Color {
             case defaultBackground = "Shadows/TextField/defaultBg"
-            case errorBg = "Shadows/TextField/errorBg"
-            case typingBg = "Shadows/TextField/typingBg"
+            case errorBackground = "Shadows/TextField/errorBg"
+            case typingBackground = "Shadows/TextField/typingBg"
         }
     }
 }

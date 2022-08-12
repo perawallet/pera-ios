@@ -40,7 +40,7 @@ final class TransactionOptionsScreen:
     override func configureAppearance() {
         super.configureAppearance()
 
-        view.customizeAppearance([.backgroundColor(AppColors.Shared.System.background)])
+        view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
     }
 
     private func build() {

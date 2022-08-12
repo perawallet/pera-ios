@@ -242,7 +242,7 @@ extension QRScanOptionsViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -256,7 +256,7 @@ extension QRScanOptionsViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }

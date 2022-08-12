@@ -60,7 +60,7 @@ extension CurrencySelectionViewModel {
         )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main.uiColor,
+            value: Colors.Text.main.uiColor,
             range: primaryCurrencyRange
         )
 
@@ -70,7 +70,7 @@ extension CurrencySelectionViewModel {
         )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main.uiColor,
+            value: Colors.Text.main.uiColor,
             range: secondaryCurrencyRange
         )
 

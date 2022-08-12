@@ -396,10 +396,17 @@ extension SendTransactionScreen {
         maxButton.setTitle("send-transaction-max-button-title".localized, for: .normal)
 
         maxButton.customize(TransactionShadowButtonTheme())
-        noteButton.customize(TransactionShadowButtonTheme())
-
         maxButton.drawAppearance(border: theme.accountContainerBorder)
+        maxButton.draw(shadow: theme.accountContainerFirstShadow)
+        maxButton.draw(secondShadow: theme.accountContainerSecondShadow)
+        maxButton.draw(thirdShadow: theme.accountContainerThirdShadow)
+
+        noteButton.customize(TransactionShadowButtonTheme())
         noteButton.drawAppearance(border: theme.accountContainerBorder)
+        noteButton.draw(shadow: theme.accountContainerFirstShadow)
+        noteButton.draw(secondShadow: theme.accountContainerSecondShadow)
+        noteButton.draw(thirdShadow: theme.accountContainerThirdShadow)
+
         stackView.addArrangedSubview(noteButton)
         stackView.addArrangedSubview(maxButton)
     }

@@ -44,9 +44,9 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
-        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
-        contentView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
+        scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
+        contentView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
     }
     
     override func prepareLayout() {

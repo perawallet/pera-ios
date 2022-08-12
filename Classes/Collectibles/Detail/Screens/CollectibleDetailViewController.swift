@@ -133,7 +133,7 @@ final class CollectibleDetailViewController:
             }
         }
 
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
 
         dataController.load()
 

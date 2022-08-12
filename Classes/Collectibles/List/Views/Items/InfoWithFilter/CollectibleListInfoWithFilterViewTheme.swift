@@ -31,18 +31,18 @@ struct CollectibleListInfoWithFilterViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        backgroundColor = AppColors.Shared.System.background
+        backgroundColor = Colors.Defaults.background
         minimumHorizontalSpacing = 8
 
         info = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         infoMinWidthRatio = 0.5
 
         filterAction = [
             .title(Self.getFilterActionTitle()),
-            .titleColor([ .normal(AppColors.Components.Link.primary) ]),
+            .titleColor([ .normal(Colors.Link.primary) ]),
             .icon([.normal("icon-filter-unselected"), .selected("icon-filter-selected") ])
         ]
     }

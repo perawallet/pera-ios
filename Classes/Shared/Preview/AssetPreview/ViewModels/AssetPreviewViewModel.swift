@@ -161,7 +161,7 @@ extension AssetPreviewViewModel {
         primaryAccessory = .attributedString(
             accessory
                 .attributed([
-                    .textColor(AppColors.Components.Text.main.uiColor),
+                    .textColor(Colors.Text.main.uiColor),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
@@ -184,7 +184,7 @@ extension AssetPreviewViewModel {
         secondaryAccessory = .attributedString(
             accessory
                 .attributed([
-                    .textColor(AppColors.Components.Text.grayLighter.uiColor),
+                    .textColor(Colors.Text.grayLighter.uiColor),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
@@ -246,7 +246,7 @@ extension AssetPreviewViewModel {
         primaryAccessory = .attributedString(
             accessory
                 .attributed([
-                    .textColor(AppColors.Components.Text.gray),
+                    .textColor(Colors.Text.gray),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
@@ -310,7 +310,7 @@ extension AssetPreviewViewModel {
         primaryAccessory = .attributedString(
             accessory
                 .attributed([
-                    .textColor(AppColors.Components.Text.gray),
+                    .textColor(Colors.Text.gray.uiColor),
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([

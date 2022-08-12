@@ -63,7 +63,7 @@ extension TitleViewModel {
 
     func getTitleStyle() -> TextStyle {
         return [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
     }

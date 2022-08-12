@@ -27,7 +27,7 @@ extension AccountAssetListViewController {
         init(
             _ family: LayoutFamily
         ) {
-            self.listBackgroundColor = AppColors.Shared.System.background.uiColor
+            self.listBackgroundColor = Colors.Defaults.background
             self.minSpacingBetweenSearchInputFieldAndKeyboard = 8
         }
     }

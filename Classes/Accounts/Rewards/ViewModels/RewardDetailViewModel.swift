@@ -126,7 +126,7 @@ extension RewardDetailViewModel {
             ])
             .appendAttributesToRange(
                 [
-                    .foregroundColor: AppColors.Components.Link.primary.uiColor,
+                    .foregroundColor: Colors.Link.primary.uiColor,
                     .font: Fonts.DMSans.regular.make(15).uiFont,
                 ],
                 of: FAQString.localized

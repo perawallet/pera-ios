@@ -115,7 +115,7 @@ extension TransactionTutorialViewModel {
             ])
             .appendAttributesToRange(
                 [
-                    .foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
+                    .foregroundColor: Colors.Helpers.negative.uiColor,
                     .font: Fonts.DMSans.regular.make(13).uiFont,
                 ],
                 of: "transaction-tutorial-tip-second-highlighted".localized
@@ -144,7 +144,7 @@ extension TransactionTutorialViewModel {
                 ])
                 .appendAttributesToRange(
                     [
-                        .foregroundColor: AppColors.Components.Link.primary.uiColor,
+                        .foregroundColor: Colors.Link.primary.uiColor,
                         .font: Fonts.DMSans.regular.make(13).uiFont
                     ],
                     of: "transaction-tutorial-tap-to-more-highlighted".localized

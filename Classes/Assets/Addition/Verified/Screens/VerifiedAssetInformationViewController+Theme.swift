@@ -24,7 +24,7 @@ extension VerifiedAssetInformationViewController {
         
         init(_ family: LayoutFamily) {
             verifiedAssetInformationViewTheme = VerifiedAssetInformationViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }
