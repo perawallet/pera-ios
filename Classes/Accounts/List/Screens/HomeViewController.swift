@@ -49,7 +49,8 @@ final class HomeViewController:
             sharedDataController: sharedDataController,
             presentingScreen: self,
             api: api!,
-            bannerController: bannerController!
+            bannerController: bannerController!,
+            analytics: analytics
         )
 
     private let copyToClipboardController: CopyToClipboardController
@@ -57,8 +58,8 @@ final class HomeViewController:
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
-    override var name: String {
-        return AnalyticsScreenName.accounts.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .accountList)
     }
 
     private lazy var listView =
@@ -883,7 +884,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            self.track(ReceiveCopyEvent(address: accountHandle.value.address))
+            self.analytics.track(ReceiveCopyEvent(address: accountHandle.value.address))
             self.copyToClipboardController.copyAddress(accountHandle.value)
         }
 

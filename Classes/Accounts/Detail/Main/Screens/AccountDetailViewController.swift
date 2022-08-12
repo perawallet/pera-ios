@@ -315,7 +315,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        track(ReceiveCopyEvent(address: accountHandle.value.address))
+        analytics.track(ReceiveCopyEvent(address: accountHandle.value.address))
         copyToClipboardController.copyAddress(accountHandle.value)
     }
 

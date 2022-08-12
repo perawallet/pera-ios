@@ -20,8 +20,8 @@ import UIKit
 class ContactsViewController: BaseViewController {
     weak var delegate: ContactsViewControllerDelegate?
 
-    override var name: String {
-        return AnalyticsScreenName.contacts.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .contactList)
     }
     
     private lazy var contactsView = ContactsView()

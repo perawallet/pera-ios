@@ -70,23 +70,17 @@ class AppDelegate:
         toastPresentationController: toastPresentationController,
         analytics: analytics
     )
-    
-    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
-    
+
     private lazy var appLaunchController = createAppLaunchController()
 
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnector()
+    private lazy var walletConnector = WalletConnector(analytics: analytics)
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
-    private var analytics = Analytics(
-        platforms: [
-            FirebaseAnalytics()
-        ]
-    )
+    private lazy var analytics = createAnalytics()
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
@@ -370,7 +364,7 @@ extension AppDelegate {
     private func setupAppLibs() {
         /// <mark>
         /// Analytics
-        analytics.initialize()
+        analytics.setup()
         
         /// <mark>
         /// SwiftDate
@@ -485,6 +479,12 @@ extension AppDelegate {
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         return SharedAPIDataController(currency: currency, session: session, api: api)
+    }
+
+    private func createAnalytics() -> ALGAnalytics {
+        return ALGAnalyticsCoordinator(providers: [
+            FirebaseAnalyticsProvider()
+        ])
     }
 }
 

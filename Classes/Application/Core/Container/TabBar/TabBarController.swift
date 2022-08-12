@@ -48,7 +48,8 @@ final class TabBarController: TabBarContainer {
             sharedDataController: sharedDataController,
             presentingScreen: self,
             api: api,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -59,13 +60,13 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private let bannerController: BannerController
-    private let analytics: Analytics
+    private let analytics: ALGAnalytics
 
     init(
         sharedDataController: SharedDataController,
         api: ALGAPI,
         bannerController: BannerController,
-        analytics: Analytics
+        analytics: ALGAnalytics
     ) {
         self.sharedDataController = sharedDataController
         self.api = api

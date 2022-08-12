@@ -20,8 +20,8 @@ import UIKit
 final class ContactDetailViewController: BaseScrollViewController {
     weak var delegate: ContactDetailViewControllerDelegate?
 
-    override var name: String {
-        return AnalyticsScreenName.contactDetail.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .contactDetail)
     }
 
     private lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)
@@ -117,7 +117,7 @@ extension ContactDetailViewController {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
                     self.loadingController?.stopLoading()
-                    UIApplication.shared.firebaseAnalytics?.record(
+                    self.analytics.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
                     )
                     return

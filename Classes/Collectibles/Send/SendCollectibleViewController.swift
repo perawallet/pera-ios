@@ -54,7 +54,8 @@ final class SendCollectibleViewController:
     private var draft: SendCollectibleDraft
     private lazy var transactionController = TransactionController(
         api: api!,
-        bannerController: bannerController
+        bannerController: bannerController,
+        analytics: analytics
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -248,7 +249,7 @@ extension SendCollectibleViewController {
                 let fetchedAccount = accountResponse.account
 
                 if !fetchedAccount.isSameAccount(with: recipientAddress) {
-                    UIApplication.shared.firebaseAnalytics?.record(
+                    self.analytics.record(
                         MismatchAccountErrorLog(
                             requestedAddress: recipientAddress,
                             receivedAddress: fetchedAccount.address
@@ -639,7 +640,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
     ) {
-        track(
+        analytics.track(
             TransactionEvent(
                 accountType: draft.fromAccount.type,
                 assetId: String(draft.collectibleAsset.id),

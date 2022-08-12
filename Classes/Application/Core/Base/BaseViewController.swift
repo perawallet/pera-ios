@@ -18,18 +18,15 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
-import MacaroonVendors
 
 class BaseViewController:
     UIViewController,
     StatusBarConfigurable,
-    TabBarConfigurable,
-    AnalyticsTrackableScreen {
-
-    var name: String {
-        String(describing: self)
+    TabBarConfigurable{
+    var analyticsScreen: ALGAnalyticsScreen {
+        let name = String(describing: self)
+        return ALGAnalyticsScreen(name: name)
     }
-    var analyticsMetadata: KeyValuePairs<ALGAnalyticsKey, Any> = KeyValuePairs()
 
     var isStatusBarHidden = false
     var hidesStatusBarWhenAppeared = false
@@ -142,7 +139,7 @@ class BaseViewController:
 
         setNeedsTabBarAppearanceUpdateOnAppeared()
 
-        analytics.track(self)
+        analytics.track(analyticsScreen)
         
         isViewAppearing = false
         isViewAppeared = true
@@ -205,12 +202,6 @@ extension BaseViewController {
 }
 
 extension BaseViewController {
-    func track<T: AnalyticsTrackableEvent>(_ event: T)  {
-        analytics.track(event)
-    }
-}
-
-extension BaseViewController {
     var target: ALGAppTarget {
         return ALGAppTarget.current
     }
@@ -243,7 +234,7 @@ extension BaseViewController {
         return configuration.sharedDataController
     }
 
-    var analytics: Analytics {
+    var analytics: ALGAnalytics {
         return configuration.analytics
     }
 }

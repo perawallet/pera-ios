@@ -21,8 +21,8 @@ final class CollectiblesViewController: BaseViewController {
         return true
     }
 
-    override var name: String {
-        return AnalyticsScreenName.collectibles.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .collectibleList)
     }
 
     private lazy var bottomBannerController = BottomActionableBannerController(

@@ -54,7 +54,8 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var transactionController: TransactionController = {
         return TransactionController(
             api: api!,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
     }()
 

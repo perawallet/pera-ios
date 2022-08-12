@@ -21,8 +21,8 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
 
     var eventHandler: EventHandler?
 
-    override var name: String {
-        return AnalyticsScreenName.transactionDetail.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .transactionDetail)
     }
 
     private lazy var appCallTransactionDetailView = AppCallTransactionDetailView()

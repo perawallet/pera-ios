@@ -19,15 +19,15 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetDetailViewController: BaseAssetDetailViewController {
-    override var name: String {
-        return AnalyticsScreenName.assetDetail.rawValue
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .assetDetail)
     }
 
     var route: Screen?
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        track(DisplayAssetDetailEvent(assetId: asset?.id))
+        analytics.track(.displayAssetDetail(assetID: asset?.id))
     }
 
     override func configureAppearance() {
