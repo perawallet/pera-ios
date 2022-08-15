@@ -66,7 +66,7 @@ extension AccountCellViewModel {
             currencyFormatter.formattingContext = .listItem
             currencyFormatter.currency = AlgoLocalCurrency()
 
-            detail = currencyFormatter.format(account.amount.toAlgos)
+            detail = currencyFormatter.format(account.algo.amount.toAlgos)
         case let .transactionSender(assetDetail),
             let .transactionReceiver(assetDetail),
             let .contact(assetDetail):
@@ -93,7 +93,7 @@ extension AccountCellViewModel {
                 currencyFormatter.formattingContext = .listItem
                 currencyFormatter.currency = AlgoLocalCurrency()
 
-                detail = currencyFormatter.format(account.amount.toAlgos)
+                detail = currencyFormatter.format(account.algo.amount.toAlgos)
             }
         }
     }

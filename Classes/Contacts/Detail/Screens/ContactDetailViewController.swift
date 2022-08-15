@@ -133,6 +133,7 @@ extension ContactDetailViewController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
+                /// <todo> Use new list item structure
                 let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
                 self.assetPreviews.append(algoAssetPreview)
                 

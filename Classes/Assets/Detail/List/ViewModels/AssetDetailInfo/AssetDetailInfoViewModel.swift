@@ -106,14 +106,14 @@ extension AssetDetailInfoViewModel {
     mutating func bindName(
         _ asset: StandardAsset?
     ) {
-        let text = asset?.presentation.displayNames.primaryName
+        let text = asset?.naming.displayNames.primaryName
         name = text?.bodyMedium()
     }
 
     mutating func bindIsVerified(
         _ asset: StandardAsset?
     ) {
-        isVerified = asset?.isVerified ?? false
+        isVerified = asset?.verificationTier.isVerified ?? false
     }
 
     mutating func bindID(

@@ -41,7 +41,7 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
     }
 
     func openAssetURL(_ asset: Asset?) {
-        if let urlString = asset?.presentation.url,
+        if let urlString = asset?.url,
            let url = URL(string: urlString) {
             open(url)
         }
@@ -74,7 +74,7 @@ private struct AssetDetailPresenter: Encodable {
         unitName = decoration.unitName
         assetName = decoration.name
         fractionDecimals = decoration.decimals
-        isVerified = decoration.isVerified
+        isVerified = decoration.verificationTier.isVerified
     }
 }
 

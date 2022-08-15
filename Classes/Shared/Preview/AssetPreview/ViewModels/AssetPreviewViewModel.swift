@@ -29,11 +29,12 @@ struct AssetPreviewModel {
     let asset: Asset?
 }
 
+/// <todo> Use new list item structure
 struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
     private(set) var assetID: AssetID?
-    private(set) var assetImageViewModel: AssetImageViewModel?
+    private(set) var assetImageViewModel: PrimaryImageViewModel?
     private(set) var verifiedIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
@@ -182,7 +183,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -193,7 +194,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 nil,
-                title: assetAddition.asset.presentation.name
+                title: assetAddition.asset.naming.name
             )
         )
     }
@@ -201,13 +202,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -241,7 +242,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -254,7 +255,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 asset.thumbnailImage,
-                title: asset.presentation.name
+                title: asset.naming.name
             )
         )
     }
@@ -262,13 +263,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -335,7 +336,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        let icon = draft.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = draft.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }

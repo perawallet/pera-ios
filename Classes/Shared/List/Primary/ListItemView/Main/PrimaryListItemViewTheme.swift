@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSearchListTitleSupplementaryCell.swift
+//   PrimaryListItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetSearchListTitleSupplementaryCell:
-    CollectionCell<TitleView>,
-    ViewModelBindable {
-    static let theme: TitleViewTheme = {
-        var theme = TitleViewTheme()
-        theme.configureForAsserSearchListHeader()
-        return theme
-    }()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+protocol PrimaryListItemViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: URLImageViewStyleLayoutSheet { get }
+    var iconSize: LayoutSize { get }
+    var contentHorizontalPadding: LayoutMetric { get }
+    var contentMinWidthRatio: LayoutMetric { get }
+    var title: PrimaryTitleViewTheme { get }
+    var value: PrimaryTitleViewTheme { get }
+    var minSpacingBetweenTitleAndValue: LayoutMetric { get }
 }
