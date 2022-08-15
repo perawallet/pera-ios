@@ -111,17 +111,21 @@ extension QRCreationViewController: QRCreationViewDelegate {
                 guard let self = self else {
                     return
                 }
-                self.analytics.track(ReceiveShareCompleteEvent(address: self.draft.address))
+                let address = self.draft.address
+
+                self.analytics.track(.showQRShareComplete(address: address))
             }
         }
-        
-        analytics.track(ReceiveShareEvent(address: draft.address))
+
+        let address = draft.address
+        analytics.track(.showQRShare(address: address))
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
-        analytics.track(ReceiveCopyEvent(address: draft.address))
-        copyToClipboardController.copyAddress(draft.address)
+        let address = draft.address
+        analytics.track(.showQRCopy(address: address))
+        copyToClipboardController.copyAddress(address)
     }
 
     func contextMenuInteractionForAddress(

@@ -15,12 +15,17 @@
 //  LedgerTransactionErrorLog.swift
 
 import Foundation
+import MacaroonVendors
 
-struct LedgerTransactionErrorLog: ALGAnalyticsLog {
+/// <note>: NonAcceptanceLedgerTransactionErrorLog description below
+/// When transaction uploaded to blockchain, blockchain returns transaction id.
+/// If it's not available, transaction must be rejected by blockchain
+/// To figure this out, we are logging the unsigned and signed transaction and compare them.
+struct NonAcceptanceLedgerTransactionErrorLog: ALGAnalyticsLog {
     let name: ALGAnalyticsLogName
     let metadata: ALGAnalyticsMetadata
     
-    init(
+    fileprivate init(
         account: Account,
         transactionData: TransactionData
     ) {
@@ -33,5 +38,17 @@ struct LedgerTransactionErrorLog: ALGAnalyticsLog {
             .signedTransaction: transactionValue,
             .unsignedTransaction: uTransactionValue
         ]
+    }
+}
+
+extension ALGAnalyticsLog where Self == NonAcceptanceLedgerTransactionErrorLog {
+    static func nonAcceptanceLedgerTransaction(
+        account: Account,
+        transactionData: TransactionData
+    ) -> Self {
+        return NonAcceptanceLedgerTransactionErrorLog(
+            account: account,
+            transactionData: transactionData
+        )
     }
 }

@@ -108,9 +108,6 @@ extension TransactionSendController {
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        self.analytics.record(
-                            MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
-                        )
                         self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
                         return
                     }
@@ -159,9 +156,6 @@ extension TransactionSendController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    self.analytics.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
-                    )
                     self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
                     return
                 }

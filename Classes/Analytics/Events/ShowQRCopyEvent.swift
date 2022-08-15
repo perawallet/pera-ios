@@ -12,24 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MismatchAccountErrorLog.swift
+//
+//  ShowQRCopyEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-/// <todo>
-/// The operation type should be added into the metadata.
-struct MismatchAccountErrorLog: ALGAnalyticsLog {
-    let name: ALGAnalyticsLogName
+struct ShowQRCopyEvent: ALGAnalyticsEvent {
+    let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        requestedAddress: String,
-        receivedAddress: String
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .mismatchAccountError
+        self.name = .showQRCopy
         self.metadata = [
-            .mismatchExpectedAccountAddress: requestedAddress,
-            .mismatchFoundAccountAddress: receivedAddress
+            .accountAddress: account.address
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == ShowQRCopyEvent {
+    static func showQRCopy(
+        account: Account
+    ) -> Self {
+        return ShowQRCopyEvent(account: account)
+    }
+
+    static func showQRCopy(
+        address: String
+    ) -> Self {
+        let account = Account(address: address, type: .standard)
+        return ShowQRCopyEvent(account: account)
     }
 }

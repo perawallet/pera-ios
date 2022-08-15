@@ -117,9 +117,6 @@ extension ContactDetailViewController {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
                     self.loadingController?.stopLoading()
-                    self.analytics.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
-                    )
                     return
                 }
 

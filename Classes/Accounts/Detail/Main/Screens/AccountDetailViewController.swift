@@ -315,8 +315,9 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        analytics.track(ReceiveCopyEvent(address: accountHandle.value.address))
-        copyToClipboardController.copyAddress(accountHandle.value)
+        let account = accountHandle.value
+        analytics.track(.showQRCopy(account: account))
+        copyToClipboardController.copyAddress(account)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {

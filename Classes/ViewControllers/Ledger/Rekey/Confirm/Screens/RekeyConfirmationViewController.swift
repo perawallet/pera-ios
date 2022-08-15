@@ -104,7 +104,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         loadingController?.stopLoading()
 
-        analytics.track(RekeyEvent())
+        analytics.track(.rekeyAccount())
         saveRekeyedAccountDetails()
         openRekeyConfirmationAlert()
     }

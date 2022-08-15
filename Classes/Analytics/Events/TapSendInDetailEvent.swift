@@ -13,20 +13,29 @@
 // limitations under the License.
 
 //
-//  ReceiveShareCompleteEvent.swift
+//  TapSendInDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveShareCompleteEvent: ALGAnalyticsEvent {
+struct TapSendInDetailEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        address: String
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .showQRShareComplete
+        self.name = .tapSendInDetail
         self.metadata = [
-            .accountAddress: address
+            .accountAddress: account.address
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == TapSendInDetailEvent {
+    static func tapSendInDetail(
+        account: Account
+    ) -> Self {
+        return TapSendInDetailEvent(account: account)
     }
 }

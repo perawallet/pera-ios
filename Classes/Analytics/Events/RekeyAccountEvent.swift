@@ -13,20 +13,23 @@
 // limitations under the License.
 
 //
-//  SendAssetDetailEvent.swift
+//  RekeyAccountEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct SendAssetDetailEvent: ALGAnalyticsEvent {
+struct RekeyAccountEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        address: String
-    ) {
-        self.name = .detailSend
-        self.metadata = [
-            .accountAddress: address
-        ]
+    fileprivate init() {
+        self.name = .rekeyAccount
+        self.metadata = [:]
+    }
+}
+
+extension AnalyticsEvent where Self == RekeyAccountEvent {
+    static func rekeyAccount() -> Self {
+        return RekeyAccountEvent()
     }
 }

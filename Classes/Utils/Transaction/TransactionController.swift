@@ -160,7 +160,7 @@ extension TransactionController {
         transactionAPIConnector.uploadTransaction(transactionData) { transactionId, error in
             guard let id = transactionId else {
                 self.resetLedgerOperationIfNeeded()
-                self.logLedgerTransactionError()
+                self.logLedgerTransactionNonAcceptanceError()
                 if let error = error {
                     self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
                 }
@@ -440,14 +440,14 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    private func logLedgerTransactionError() {
+    private func logLedgerTransactionNonAcceptanceError() {
         guard let account = fromAccount,
               account.requiresLedgerConnection() else {
             return
         }
         
         analytics.record(
-            LedgerTransactionErrorLog(account: account, transactionData: transactionData)
+            .nonAcceptanceLedgerTransaction(account: account, transactionData: transactionData)
         )
     }
 }

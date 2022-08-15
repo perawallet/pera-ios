@@ -203,10 +203,10 @@ extension LedgerAccountVerificationViewController {
     private func setupLedgerDetails(of localAccount: inout AccountInformation, from account: Account) {
         if let authAddress = account.authAddress,
            let rekeyDetail = account.rekeyDetail {
-            analytics.track(RegistrationEvent(registrationType: .rekeyed))
+            analytics.track(.registerAccount(registrationType: .rekeyed))
             localAccount.addRekeyDetail(rekeyDetail, for: authAddress)
         } else {
-            analytics.track(RegistrationEvent(registrationType: .ledger))
+            analytics.track(.registerAccount(registrationType: .ledger))
             localAccount.ledgerDetail = account.ledgerDetail
         }
     }

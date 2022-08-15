@@ -884,8 +884,10 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            self.analytics.track(ReceiveCopyEvent(address: accountHandle.value.address))
-            self.copyToClipboardController.copyAddress(accountHandle.value)
+            let account = accountHandle.value
+
+            self.analytics.track(.showQRCopy(account: account))
+            self.copyToClipboardController.copyAddress(account)
         }
 
         return uiInteractions

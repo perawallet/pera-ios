@@ -249,13 +249,6 @@ extension SendCollectibleViewController {
                 let fetchedAccount = accountResponse.account
 
                 if !fetchedAccount.isSameAccount(with: recipientAddress) {
-                    self.analytics.record(
-                        MismatchAccountErrorLog(
-                            requestedAddress: recipientAddress,
-                            receivedAddress: fetchedAccount.address
-                        )
-                    )
-
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
                         message: "send-algos-receiver-address-validation".localized
@@ -640,15 +633,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
     ) {
-        analytics.track(
-            TransactionEvent(
-                accountType: draft.fromAccount.type,
-                assetId: String(draft.collectibleAsset.id),
-                isMaxTransaction: false,
-                amount: draft.collectibleAsset.amount,
-                transactionId: id.identifier
-            )
-        )
+        analytics.track(.completeCollectibleTransaction(draft: draft, transactionId: id))
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didSendCollectible,

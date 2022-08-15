@@ -13,28 +13,30 @@
 // limitations under the License.
 
 //
-//  TransactionEvent.swift
+//  ChangeNotificationFilterEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct TransactionEvent: ALGAnalyticsEvent {
+struct ChangeNotificationFilterEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        accountType: AccountType,
-        assetId: String?,
-        isMaxTransaction: Bool,
-        amount: UInt64?,
-        transactionId: String
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .transaction
+        self.name = .changeNotificationFilter
         self.metadata = [
-            .accountType: accountType.rawValue,
-            .assetID: assetId ?? "algos",
-            .isMax: isMaxTransaction,
-            .amount: amount ?? 0,
-            .transactionID: transactionId
+            .accountAddress: account.address,
+            .allowNotifications: account.receivesNotification
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == ChangeNotificationFilterEvent {
+    static func changeNotificationFilter(
+        account: Account
+    ) -> Self {
+        return ChangeNotificationFilterEvent(account: account)
     }
 }

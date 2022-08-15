@@ -13,16 +13,29 @@
 // limitations under the License.
 
 //
-//  SendTabEvent.swift
+//  ChangeCurrencyEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct SendTabEvent: ALGAnalyticsEvent {
+struct ChangeCurrencyEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init() {
-        self.name = .tabSend
-        self.metadata = [:]
+    fileprivate init(
+        currencyId: CurrencyID
+    ) {
+        self.name = .changeCurrency
+        self.metadata = [
+            .id: currencyId.localValue
+        ]
+    }
+}
+
+extension AnalyticsEvent where Self == ChangeCurrencyEvent {
+    static func changeCurrency(
+        currencyId: CurrencyID
+    ) -> Self {
+        return ChangeCurrencyEvent(currencyId: currencyId)
     }
 }
