@@ -308,7 +308,7 @@ extension RootViewController {
     }
     
     private func addBackground() {
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
     }
     
     private func addMain() {

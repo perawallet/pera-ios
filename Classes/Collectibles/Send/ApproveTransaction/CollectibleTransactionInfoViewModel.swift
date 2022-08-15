@@ -73,7 +73,7 @@ extension CollectibleTransactionInfoViewModel {
             valueStyle = [
                 .textOverflow(FittingText()),
                 .textAlignment(.right),
-                .textColor(AppColors.Components.Link.primary)
+                .textColor(Colors.Link.primary)
             ]
             return
         }
@@ -81,7 +81,7 @@ extension CollectibleTransactionInfoViewModel {
         valueStyle = [
             .textOverflow(FittingText()),
             .textAlignment(.right),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
     }
 }

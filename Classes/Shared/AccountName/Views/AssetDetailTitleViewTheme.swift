@@ -29,7 +29,7 @@ struct AssetDetailTitleViewTheme: LayoutSheet, StyleSheet {
         self.titleLabel = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         self.assetImageViewTheme = AssetImageViewTheme()
     }

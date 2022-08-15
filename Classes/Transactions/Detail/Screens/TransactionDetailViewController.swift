@@ -100,7 +100,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         title = "transaction-detail-title".localized
         configureTransactionDetail()
     }

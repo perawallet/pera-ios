@@ -54,7 +54,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
     }
 
     override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
         if let account = selectedAccount?.value {

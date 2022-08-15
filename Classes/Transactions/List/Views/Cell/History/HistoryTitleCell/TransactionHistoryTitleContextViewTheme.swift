@@ -25,7 +25,7 @@ struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
         self.titleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.paddings = (28, 24, 4, 24)

@@ -412,7 +412,7 @@ extension AppDelegate {
         
         switch api.network {
         case .mainnet: networkBannerView.backgroundColor = .clear
-        case .testnet: networkBannerView.backgroundColor = AppColors.Shared.Helpers.testnet.uiColor
+        case .testnet: networkBannerView.backgroundColor = Colors.Testnet.background.uiColor
         }
 
         rootViewController.setNeedsStatusBarAppearanceUpdate()

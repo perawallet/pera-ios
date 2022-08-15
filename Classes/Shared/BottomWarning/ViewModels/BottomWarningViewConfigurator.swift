@@ -150,7 +150,7 @@ extension BottomWarningViewConfigurator {
         aDescription
             .underlyingDescription
             .attributed([
-                .textColor(AppColors.Components.Text.gray.uiColor),
+                .textColor(Colors.Text.gray.uiColor),
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
@@ -165,7 +165,7 @@ extension BottomWarningViewConfigurator {
         )
 
         aDescription.params?.forEach {
-            mutableAttributedString.addColor(AppColors.Components.Text.main.uiColor, to: $0)
+            mutableAttributedString.addColor(Colors.Text.main.uiColor, to: $0)
         }
 
         return .attributedString(
@@ -204,7 +204,7 @@ extension BottomWarningViewConfigurator {
         let lineHeightMultiplier = 1.23
 
         let attributes: TextAttributeGroup = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Link.primary.uiColor),
             .font(font),
             .lineHeightMultiplier(lineHeightMultiplier, font),
             .paragraph([

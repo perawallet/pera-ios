@@ -27,7 +27,7 @@ extension AssetAdditionViewController {
         let assetActionConfirmationModalSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             searchInputViewTheme = SearchInputViewCommonTheme(
                 placeholder: "asset-search-placeholder".localized,
                 family: family

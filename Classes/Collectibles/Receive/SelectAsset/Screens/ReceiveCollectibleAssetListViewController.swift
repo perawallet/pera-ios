@@ -298,7 +298,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -312,7 +312,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
  }

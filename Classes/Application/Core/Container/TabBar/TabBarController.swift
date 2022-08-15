@@ -79,7 +79,7 @@ final class TabBarController: TabBarContainer {
         
         tabBar.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
     }
@@ -119,7 +119,7 @@ extension TabBarController {
     private func addBackground() {
         customizeViewAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
     }

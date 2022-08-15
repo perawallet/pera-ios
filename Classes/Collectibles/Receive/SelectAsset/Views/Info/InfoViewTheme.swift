@@ -32,7 +32,7 @@ struct InfoViewTheme:
 
     init(_ family: LayoutFamily) {
         background = [
-            .backgroundColor(AppColors.Shared.Helpers.positiveLighter)
+            .backgroundColor(Colors.Helpers.positiveLighter)
         ]
 
         corner = Corner(radius: 4)
@@ -45,7 +45,7 @@ struct InfoViewTheme:
         iconContentEdgeInsets = (8, 0)
         
         message = [
-            .textColor(AppColors.Shared.Helpers.positive.uiColor),
+            .textColor(Colors.Helpers.positive),
             .textOverflow(FittingText())
         ]
     }

@@ -137,7 +137,7 @@ final class AppCallAssetListViewController:
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -154,7 +154,7 @@ final class AppCallAssetListViewController:
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
