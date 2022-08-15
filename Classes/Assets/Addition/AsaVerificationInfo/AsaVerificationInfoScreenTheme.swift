@@ -46,7 +46,7 @@ struct AsaVerificationInfoScreenTheme:
         _ family: LayoutFamily
     ) {
         self.illustration = [
-            .backgroundColor(AppColors.Shared.System.background),
+            .backgroundColor(Colors.Defaults.background),
             .image("verification-info-illustration"),
             .contentMode(.scaleAspectFill)
         ]
@@ -60,20 +60,20 @@ struct AsaVerificationInfoScreenTheme:
             .icon([
                 .normal(closeActionIcon)
             ]),
-            .tintColor(AppColors.Components.Text.main)
+            .tintColor(Colors.Text.main)
         ]
         self.closeActionSize = (40, 40)
         self.closeActionTopInset = 10
         self.closeActionLeadingInset = 12
 
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         self.titleTopInset = 40
         self.titleHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
 
         self.body = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.bodyHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
@@ -82,7 +82,7 @@ struct AsaVerificationInfoScreenTheme:
         self.primaryAction = [
             .title("title-learn-more".localized),
             .titleColor([
-                .normal(AppColors.Components.Text.main)
+                .normal(Colors.Text.main)
             ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundImage([

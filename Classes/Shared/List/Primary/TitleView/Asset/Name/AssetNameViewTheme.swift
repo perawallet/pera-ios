@@ -31,7 +31,7 @@ struct AssetNameViewTheme: PrimaryTitleViewTheme {
         ]
         self.primaryTitleAccessoryContentEdgeInsets = (6, 0)
         self.secondaryTitle = [
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
     }
 }
