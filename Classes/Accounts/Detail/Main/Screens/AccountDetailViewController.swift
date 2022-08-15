@@ -112,7 +112,7 @@ final class AccountDetailViewController: PageContainer {
         super.customizePageBarAppearance()
 
         pageBar.customizeAppearance([
-            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            .backgroundColor(Colors.Helpers.heroBackground)
         ])
     }
 
@@ -320,8 +320,9 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        log(ReceiveCopyEvent(address: accountHandle.value.address))
-        copyToClipboardController.copyAddress(accountHandle.value)
+        let account = accountHandle.value
+        analytics.track(.showQRCopy(account: account))
+        copyToClipboardController.copyAddress(account)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {

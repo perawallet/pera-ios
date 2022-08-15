@@ -31,12 +31,12 @@ struct PortfolioCalculationInfoViewTheme:
     ) {
         self.title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         self.body = [
             .text(Self.getBody()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenTitleAndBody = 20

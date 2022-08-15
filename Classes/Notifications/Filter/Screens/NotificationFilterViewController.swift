@@ -75,11 +75,8 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
     ) {
         loadingController?.stopLoading()
         updateAccount(account)
-        log(
-            NotificationFilterChangeEvent(
-                isReceivingNotifications: account.value.receivesNotification,
-                address: account.value.address
-            )
+        analytics.track(
+            .changeNotificationFilter(account: account.value)
         )
     }
 

@@ -29,11 +29,11 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.titleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
         ]
         self.shareButton = [

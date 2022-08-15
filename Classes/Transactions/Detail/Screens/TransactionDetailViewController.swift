@@ -18,8 +18,8 @@
 import UIKit
 
 final class TransactionDetailViewController: BaseScrollViewController {
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .transactionDetail)
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
@@ -95,7 +95,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         title = "transaction-detail-title".localized
         configureTransactionDetail()
     }

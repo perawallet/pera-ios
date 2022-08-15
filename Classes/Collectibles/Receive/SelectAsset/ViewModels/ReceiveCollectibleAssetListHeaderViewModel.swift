@@ -45,7 +45,7 @@ extension ReceiveCollectibleAssetListHeaderViewModel {
 
     mutating func bindTitleStyle() {
         titleStyle = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
     }

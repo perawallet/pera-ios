@@ -48,7 +48,8 @@ final class TabBarController: TabBarContainer {
             sharedDataController: sharedDataController,
             presentingScreen: self,
             api: api,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -59,15 +60,18 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private let bannerController: BannerController
+    private let analytics: ALGAnalytics
 
     init(
         sharedDataController: SharedDataController,
         api: ALGAPI,
-        bannerController: BannerController
+        bannerController: BannerController,
+        analytics: ALGAnalytics
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
         self.bannerController = bannerController
+        self.analytics = analytics
     }
     
     override func addTabBar() {
@@ -75,7 +79,7 @@ final class TabBarController: TabBarContainer {
         
         tabBar.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
     }
@@ -115,7 +119,7 @@ extension TabBarController {
     private func addBackground() {
         customizeViewAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
     }
@@ -279,14 +283,14 @@ extension TabBarController {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
 
-        log(SendTabEvent())
+        analytics.track(.tapSendTab())
     }
 
     private func navigateToReceiveTransaction() {
         toggleTransactionOptions()
         receiveTransactionFlowCoordinator.launch()
-
-        log(ReceiveTabEvent())
+        
+        analytics.track(.tapReceiveTab())
     }
 
     private func navigateToBuyAlgo() {

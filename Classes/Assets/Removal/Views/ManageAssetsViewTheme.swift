@@ -41,7 +41,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         
         self.noContentViewTheme = NoContentViewCommonTheme()
         
@@ -49,7 +49,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText()),
         ]
         var titleAttributes = Typography.titleMediumAttributes()
-        titleAttributes.insert(.textColor(AppColors.Components.Text.main))
+        titleAttributes.insert(.textColor(Colors.Text.main))
         self.titleText = .attributedString(
             "asset-remove-title"
                 .localized
@@ -65,7 +65,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
         ]
 
         var subtitleAttributes = Typography.bodyRegularAttributes()
-        subtitleAttributes.insert(.textColor(AppColors.Components.Text.gray.uiColor))
+        subtitleAttributes.insert(.textColor(Colors.Text.gray))
 
         self.subtitleText = .attributedString(
             "asset-remove-subtitle"

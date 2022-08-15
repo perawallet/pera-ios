@@ -157,7 +157,7 @@ extension AccountAssetListViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -426,7 +426,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -443,7 +443,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
