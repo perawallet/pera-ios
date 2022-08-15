@@ -71,7 +71,7 @@ final class SendTransactionScreen: BaseViewController {
         guard let decimalAmount = amount.decimalAmount else {
             return false
         }
-        return draft.from.amount == decimalAmount.toMicroAlgos
+        return draft.from.algo.amount == decimalAmount.toMicroAlgos
     }
 
     private var isViewFirstAppeared = true
@@ -99,7 +99,7 @@ final class SendTransactionScreen: BaseViewController {
         case .algo:
             self.amount = amount.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
-            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? "0"
+            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
     }
 
@@ -124,7 +124,7 @@ final class SendTransactionScreen: BaseViewController {
 
         switch draft.transactionMode {
         case .asset(let asset):
-            title = "send-transaction-title".localized(asset.presentation.displayNames.primaryName)
+            title = "send-transaction-title".localized(asset.naming.displayNames.primaryName)
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
@@ -241,7 +241,7 @@ extension SendTransactionScreen {
                     .appending(decimalStrings)
             case .asset(let asset):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -449,7 +449,7 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         switch draft.transactionMode {
         case .algo:
-            self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+            self.amount = draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
             self.amount = asset.amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
@@ -589,7 +589,7 @@ extension SendTransactionScreen {
                     return
                 }
 
-                self.amount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.amount = self.draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
                 self.handleSuccessAmountValidation()
             }
         )
@@ -951,8 +951,8 @@ extension SendTransactionScreen {
             toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: asset.id,
-            assetDecimalFraction: asset.presentation.decimals,
-            isVerifiedAsset: asset.presentation.verificationTier.isVerified,
+            assetDecimalFraction: asset.decimals,
+            isVerifiedAsset: asset.verificationTier.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact

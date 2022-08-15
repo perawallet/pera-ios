@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class AlgoAssetItem: ALGAssetItem {
+final class AlgoAssetItem {
     let amount: Decimal?
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
@@ -29,7 +29,7 @@ final class AlgoAssetItem: ALGAssetItem {
         currencyFormattingContext: CurrencyFormattingContext? = nil
     ) {
         self.amount = account.isAvailable
-            ? account.value.amount.toAlgos
+            ? account.value.algo.amount.toAlgos
             : nil
         self.currency = currency
         self.currencyFormatter = currencyFormatter
@@ -42,7 +42,7 @@ final class AlgoAssetItem: ALGAssetItem {
         currencyFormatter: CurrencyFormatter,
         currencyFormattingContext: CurrencyFormattingContext? = nil
     ) {
-        self.amount = account.amount.toAlgos
+        self.amount = account.algo.amount.toAlgos
         self.currency = currency
         self.currencyFormatter = currencyFormatter
         self.currencyFormattingContext = currencyFormattingContext

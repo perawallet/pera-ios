@@ -106,7 +106,7 @@ extension AssetDetailInfoViewModel {
     mutating func bindName(
         _ asset: StandardAsset?
     ) {
-        let text = asset?.presentation.displayNames.primaryName
+        let text = asset?.naming.displayNames.primaryName
         name = text?.bodyMedium()
     }
 

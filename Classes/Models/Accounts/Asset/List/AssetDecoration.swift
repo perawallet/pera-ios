@@ -31,7 +31,7 @@ final class AssetDecoration: ALGEntityModel {
     let explorerURL: URL?
     let url: String?
     let verificationTier: AssetVerificationTier
-    let logo: URL?
+    let logoURL: URL?
 
     var state: AssetState = .ready
 
@@ -52,8 +52,8 @@ final class AssetDecoration: ALGEntityModel {
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
-        self.verificationTier = apiModel.verificationTier
-        self.logo = apiModel.logo
+        self.verificationTier = apiModel.verificationTier ?? .unverified
+        self.logoURL = apiModel.logo
     }
     
     init(assetDetail: AssetDetail) {
@@ -68,7 +68,7 @@ final class AssetDecoration: ALGEntityModel {
         self.collectible = nil
         self.url = assetDetail.url
         self.verificationTier = .unverified
-        self.logo = nil
+        self.logoURL = nil
     }
 
     func encode() -> APIModel {
@@ -84,23 +84,23 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
         apiModel.verificationTier = verificationTier
-        apiModel.logo = logo
+        apiModel.logo = logoURL
         return apiModel
     }
 
     init(asset: Asset) {
         self.id = asset.id
-        self.name = asset.presentation.name
-        self.unitName = asset.presentation.unitName
-        self.decimals = asset.presentation.decimals
+        self.name = asset.naming.name
+        self.unitName = asset.naming.unitName
+        self.decimals = asset.decimals
         self.usdValue = nil
         self.total = nil
         self.creator = asset.creator
         self.explorerURL = nil
         self.collectible = nil
-        self.url = asset.presentation.url
+        self.url = asset.url
         self.verificationTier = .unverified
-        self.logo = nil
+        self.logoURL = nil
     }
 }
 
@@ -116,22 +116,12 @@ extension AssetDecoration {
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
-        var verificationTier: AssetVerificationTier
+        var verificationTier: AssetVerificationTier?
         var logo: URL?
 
         init() {
             self.assetId = 0
-            self.name = nil
-            self.unitName = nil
-            self.fractionDecimals = nil
-            self.usdValue = nil
-            self.creator = nil
-            self.explorerURL = nil
-            self.collectible = nil
-            self.url = nil
-            self.total = nil
             self.verificationTier = .init()
-            self.logo = nil
         }
 
         private enum CodingKeys: String, CodingKey {

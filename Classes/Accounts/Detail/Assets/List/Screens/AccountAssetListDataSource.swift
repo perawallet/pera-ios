@@ -61,10 +61,6 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(AssetListItemCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case let .algo(item):
-                let cell = collectionView.dequeue(AssetListItemCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
             case let .pendingAsset(item):
                 let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)

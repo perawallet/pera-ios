@@ -17,15 +17,16 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import MacaroonURLImage
 
 final class PrimaryListItemView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = PrimaryImageView()
+    private lazy var iconView = URLImageView()
     private lazy var contentView = UIView()
-    private lazy var primaryTitleView = PrimaryTitleView()
-    private lazy var secondaryTitleView = PrimaryTitleView()
+    private lazy var titleView = PrimaryTitleView()
+    private lazy var valueView = PrimaryTitleView()
 
     func customize(
         _ theme: PrimaryListItemViewTheme
@@ -41,13 +42,52 @@ final class PrimaryListItemView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+
+    func bindData(
+        _ viewModel: PrimaryListItemViewModel?
+    ) {
+        iconView.load(from: viewModel?.imageSource)
+        titleView.bindData(viewModel?.title)
+        valueView.bindData(viewModel?.value)
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: PrimaryListItemViewModel?,
+        for theme: PrimaryListItemViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let primaryTitleViewSize = PrimaryTitleView.calculatePreferredSize(
+            viewModel.title,
+            for: theme.title,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let secondaryTitleViewSize = PrimaryTitleView.calculatePreferredSize(
+            viewModel.value,
+            for: theme.value,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let titleHeight = max(primaryTitleViewSize.height, secondaryTitleViewSize.height)
+        return CGSize((size.width, min(titleHeight.ceil(), size.height)))
+    }
+
+    func prepareForReuse() {
+        iconView.prepareForReuse()
+        titleView.prepareForReuse()
+        valueView.prepareForReuse()
+    }
 }
 
 extension PrimaryListItemView {
     private func addIcon(
         _ theme: PrimaryListItemViewTheme
     ) {
-        iconView.customize(theme.icon)
+        iconView.build(theme.icon)
+        iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
@@ -69,17 +109,22 @@ extension PrimaryListItemView {
             $0.trailing == 0
         }
 
-        addPrimaryTitle(theme)
-        addSecondaryTitle(theme)
+        addTitle(theme)
+        addValue(theme)
     }
 
-    private func addPrimaryTitle(
+    private func addTitle(
         _ theme: PrimaryListItemViewTheme
     ) {
-        primaryTitleView.customize(theme.primaryTitle)
+        titleView.customize(theme.title)
 
-        contentView.addSubview(primaryTitleView)
-        primaryTitleView.snp.makeConstraints {
+        contentView.addSubview(titleView)
+        titleView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        titleView.fitToVerticalIntrinsicSize()
+        titleView.snp.makeConstraints {
             $0.width >= contentView * theme.contentMinWidthRatio
             $0.top == 0
             $0.leading == 0
@@ -87,60 +132,22 @@ extension PrimaryListItemView {
         }
     }
 
-    private func addSecondaryTitle(
+    private func addValue(
         _ theme: PrimaryListItemViewTheme
     ) {
-        secondaryTitleView.customize(theme.secondaryTitle)
+        valueView.customize(theme.value)
 
-        contentView.addSubview(secondaryTitleView)
-        secondaryTitleView.snp.makeConstraints {
+        contentView.addSubview(valueView)
+        valueView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        valueView.fitToVerticalIntrinsicSize()
+        valueView.snp.makeConstraints {
             $0.top == 0
-            $0.leading >= primaryTitleView.snp.trailing + theme.minSpacingBetweenTitles
+            $0.leading >= titleView.snp.trailing + theme.minSpacingBetweenTitleAndValue
             $0.bottom == 0
             $0.trailing == 0
         }
-    }
-}
-
-extension PrimaryListItemView {
-    func bindData(
-        _ viewModel: PrimaryListItemViewModel?
-    ) {
-        iconView.bindData(viewModel?.imageViewModel)
-        primaryTitleView.bindData(viewModel?.primaryTitleViewModel)
-        secondaryTitleView.bindData(viewModel?.secondaryTitleViewModel)
-    }
-
-    class func calculatePreferredSize(
-        _ viewModel: PrimaryListItemViewModel?,
-        for theme: PrimaryListItemViewTheme,
-        fittingIn size: CGSize
-    ) -> CGSize {
-        guard let viewModel = viewModel else {
-            return CGSize((size.width, 0))
-        }
-
-        let width = size.width
-        let primaryTitleViewSize = PrimaryTitleView.calculatePreferredSize(
-            viewModel.primaryTitleViewModel,
-            for: theme.primaryTitle,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let secondaryTitleViewSize = PrimaryTitleView.calculatePreferredSize(
-            viewModel.secondaryTitleViewModel,
-            for: theme.secondaryTitle,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        let titleHeight = max(primaryTitleViewSize.height, secondaryTitleViewSize.height)
-        return CGSize((size.width, min(titleHeight.ceil(), size.height)))
-    }
-}
-
-extension PrimaryListItemView {
-    func prepareForReuse() {
-        iconView.prepareForReuse()
-        primaryTitleView.prepareForReuse()
-        secondaryTitleView.prepareForReuse()
     }
 }

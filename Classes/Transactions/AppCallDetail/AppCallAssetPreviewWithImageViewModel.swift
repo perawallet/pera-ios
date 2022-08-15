@@ -34,9 +34,9 @@ extension AppCallAssetPreviewWithImageViewModel {
     mutating func bindIcon(
         _ asset: StandardAsset
     ) {
-        let title = asset.presentation.name.isNilOrEmpty ?
+        let title = asset.naming.name.isNilOrEmpty ?
         "title-unknown".localized
-        : asset.presentation.name
+        : asset.naming.name
 
         icon = AssetImageLargeViewModel(
             image: .url(

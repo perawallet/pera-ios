@@ -186,8 +186,8 @@ final class AccountSelectScreen: BaseViewController {
             toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: asset.id,
-            assetDecimalFraction: asset.presentation.decimals,
-            isVerifiedAsset: asset.presentation.verificationTier.isVerified,
+            assetDecimalFraction: asset.decimals,
+            isVerifiedAsset: asset.verificationTier.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact

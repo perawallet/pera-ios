@@ -41,7 +41,7 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
     }
 
     func openAssetURL(_ asset: Asset?) {
-        if let urlString = asset?.presentation.url,
+        if let urlString = asset?.url,
            let url = URL(string: urlString) {
             open(url)
         }
