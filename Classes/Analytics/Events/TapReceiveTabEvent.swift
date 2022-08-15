@@ -13,22 +13,23 @@
 // limitations under the License.
 
 //
-//  NotificationFilterChangeEvent.swift
+//  TapReceiveTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct NotificationFilterChangeEvent: ALGAnalyticsEvent {
+struct TapReceiveTabEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        address: String,
-        isReceivingNotifications: Bool
-    ) {
-        self.name = .notificationFilter
-        self.metadata = [
-            .accountAddress: address,
-            .allowNotifications: isReceivingNotifications
-        ]
+    fileprivate init() {
+        self.name = .tapReceiveTab
+        self.metadata = [:]
+    }
+}
+
+extension AnalyticsEvent where Self == TapReceiveTabEvent {
+    static func tapReceiveTab() -> Self {
+        return TapReceiveTabEvent()
     }
 }

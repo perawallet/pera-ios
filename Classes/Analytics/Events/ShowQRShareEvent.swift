@@ -13,29 +13,36 @@
 // limitations under the License.
 
 //
-//  DisplayAssetDetailEvent.swift
+//  ShowQRShareEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct DisplayAssetDetailEvent: ALGAnalyticsEvent {
+struct ShowQRShareEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        assetID: AssetID?
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .assetDetail
+        self.name = .showQRShare
         self.metadata = [
-            .assetID: assetID.unwrap(String.init) ?? "algos"
+            .accountAddress: account.address
         ]
     }
 }
 
-extension AnalyticsEvent where Self == DisplayAssetDetailEvent {
-    static func displayAssetDetail(
-        assetID: AssetID?
+extension AnalyticsEvent where Self == ShowQRShareEvent {
+    static func showQRShare(
+        account: Account
     ) -> Self {
-        return DisplayAssetDetailEvent(assetID: assetID)
+        return ShowQRShareEvent(account: account)
+    }
+
+    static func showQRShare(
+        address: String
+    ) -> Self {
+        let account = Account(address: address, type: .standard)
+        return ShowQRShareEvent(account: account)
     }
 }

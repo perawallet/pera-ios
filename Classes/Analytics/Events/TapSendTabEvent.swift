@@ -13,20 +13,23 @@
 // limitations under the License.
 
 //
-//  ReceiveCopyEvent.swift
+//  TapSendTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveCopyEvent: ALGAnalyticsEvent {
+struct TapSendTabEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        address: String
-    ) {
-        self.name = .showQRCopy
-        self.metadata = [
-            .accountAddress: address
-        ]
+    fileprivate init() {
+        self.name = .tapSendTab
+        self.metadata = [:]
+    }
+}
+
+extension AnalyticsEvent where Self == TapSendTabEvent {
+    static func tapSendTab() -> Self {
+        return TapSendTabEvent()
     }
 }

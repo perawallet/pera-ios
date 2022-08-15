@@ -13,30 +13,36 @@
 // limitations under the License.
 
 //
-//  RegistrationEvent.swift
+//  ShowQRShareCompleteEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct RegistrationEvent: ALGAnalyticsEvent {
+struct ShowQRShareCompleteEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        registrationType: RegistrationType
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .register
+        self.name = .showQRShareComplete
         self.metadata = [
-            .accountCreationType: registrationType.rawValue
+            .accountAddress: account.address
         ]
     }
 }
 
-extension RegistrationEvent {
-    enum RegistrationType: String {
-        case create = "create"
-        case ledger = "ledger"
-        case recover = "recover"
-        case rekeyed = "rekeyed"
-        case watch = "watch"
+extension AnalyticsEvent where Self == ShowQRShareCompleteEvent {
+    static func showQRShareComplete(
+        account: Account
+    ) -> Self {
+        return ShowQRShareCompleteEvent(account: account)
+    }
+
+    static func showQRShareComplete(
+        address: String
+    ) -> Self {
+        let account = Account(address: address, type: .standard)
+        return ShowQRShareCompleteEvent(account: account)
     }
 }

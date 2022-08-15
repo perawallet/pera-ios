@@ -12,16 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTabEvent.swift
+//   TapBuyAlgoTabEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct BuyAlgoTabEvent: ALGAnalyticsEvent {
+struct TapBuyAlgoTabEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init() {
-        self.name = .tabBuyAlgo
+    fileprivate init() {
+        self.name = .tapBuyAlgoTab
         self.metadata = [:]
+    }
+}
+
+extension AnalyticsEvent where Self == TapBuyAlgoTabEvent {
+    static func tapBuyAlgoTab() -> Self {
+        return TapBuyAlgoTabEvent()
     }
 }

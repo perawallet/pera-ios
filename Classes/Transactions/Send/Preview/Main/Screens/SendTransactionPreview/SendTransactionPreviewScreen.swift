@@ -165,27 +165,9 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
          }
       }
 
-      if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
+      if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
          analytics.track(
-            TransactionEvent(
-               accountType: draft.from.type,
-               assetId: nil,
-               isMaxTransaction: draft.isMaxTransaction,
-               amount: amount.toMicroAlgos,
-               transactionId: id.identifier
-            )
-         )
-      } else if let assetDraft = draft as? AssetTransactionSendDraft,
-                  let assetId = assetDraft.assetIndex,
-                  let amount = assetDraft.amount {
-         analytics.track(
-            TransactionEvent(
-               accountType: draft.from.type,
-               assetId: String(assetId),
-               isMaxTransaction: draft.isMaxTransaction,
-               amount: amount.toFraction(of: assetDraft.assetDecimalFraction),
-               transactionId: id.identifier
-            )
+            .completeStandardTransaction(draft: draft, transactionId: id)
          )
       }
    }

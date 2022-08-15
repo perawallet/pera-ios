@@ -31,21 +31,21 @@ where
 enum ALGAnalyticsEventName:
     String,
     AnalyticsEventName {
-    case assetDetail
-    case assetDetailChange
-    case currencyChange
-    case detailReceive
-    case detailSend
-    case notificationFilter
-    case register
-    case rekey
+    case changeAssetDetail
+    case changeCurrency
+    case changeNotificationFilter
+    case completeTransaction
+    case registerAccount
+    case rekeyAccount
+    case showAssetDetail
     case showQRCopy
     case showQRShare
     case showQRShareComplete
-    case tabBuyAlgo
-    case tabReceive
-    case tabSend
-    case transaction
+    case tapBuyAlgoTab
+    case tapReceiveInDetail
+    case tapReceiveTab
+    case tapSendInDetail
+    case tapSendTab
     case wcSessionApproved
     case wcSessionDisconnected
     case wcSessionRejected
@@ -59,21 +59,21 @@ extension ALGAnalyticsEventName {
         /// Alphabetical order by `rawName`.
         let rawName: String
         switch self {
-        case .assetDetail: rawName = "asset_detail_asset"
-        case .assetDetailChange: rawName = "asset_detail_asset_change"
-        case .currencyChange: rawName = "currency_change"
-        case .detailReceive: rawName = "tap_asset_detail_receive"
-        case .detailSend: rawName = "tap_asset_detail_send"
-        case .notificationFilter: rawName = "notification_filter_change"
-        case .register: rawName = "register"
-        case .rekey: rawName = "rekey"
+        case .showAssetDetail: rawName = "asset_detail_asset"
+        case .changeAssetDetail: rawName = "asset_detail_asset_change"
+        case .changeCurrency: rawName = "currency_change"
+        case .changeNotificationFilter: rawName = "notification_filter_change"
+        case .registerAccount: rawName = "register"
+        case .rekeyAccount: rawName = "rekey"
+        case .tapReceiveInDetail: rawName = "tap_asset_detail_receive"
+        case .tapSendInDetail: rawName = "tap_asset_detail_send"
         case .showQRCopy: rawName = "tap_show_qr_copy"
         case .showQRShare: rawName = "tap_show_qr_share"
         case .showQRShareComplete: rawName = "tap_show_qr_share_complete"
-        case .tabBuyAlgo: rawName = "tap_tab_buy_algo"
-        case .tabReceive: rawName = "tap_tab_receive"
-        case .tabSend: rawName = "tap_tab_send"
-        case .transaction: rawName = "transaction"
+        case .tapBuyAlgoTab: rawName = "tap_tab_buy_algo"
+        case .tapReceiveTab: rawName = "tap_tab_receive"
+        case .tapSendTab: rawName = "tap_tab_send"
+        case .completeTransaction: rawName = "transaction"
         case .wcSessionApproved: rawName = "wc_session_approved"
         case .wcSessionDisconnected: rawName = "wc_session_disconnected"
         case .wcSessionRejected: rawName = "wc_session_rejected"

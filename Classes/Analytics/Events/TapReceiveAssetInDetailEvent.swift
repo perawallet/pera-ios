@@ -13,20 +13,29 @@
 // limitations under the License.
 
 //
-//  ReceiveShareEvent.swift
+//  TapReceiveAssetInDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct ReceiveShareEvent: ALGAnalyticsEvent {
+struct TapReceiveAssetInDetailEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
-        address: String
+    fileprivate init(
+        account: Account
     ) {
-        self.name = .showQRShare
+        self.name = .tapReceiveInDetail
         self.metadata = [
-            .accountAddress: address
+            .accountAddress: account.address
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == TapReceiveAssetInDetailEvent {
+    static func tapReceiveAssetInDetail(
+        account: Account
+    ) -> Self {
+        return TapReceiveAssetInDetailEvent(account: account)
     }
 }

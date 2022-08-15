@@ -111,9 +111,6 @@ extension LedgerAccountFetchOperation {
             case .success(let accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
                     self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)
-                    self.analytics.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
-                    )
                     self.returnAccounts()
                     return
                 }

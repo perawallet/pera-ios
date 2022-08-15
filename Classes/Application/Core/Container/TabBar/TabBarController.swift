@@ -283,14 +283,14 @@ extension TabBarController {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
 
-        analytics.track(SendTabEvent())
+        analytics.track(.tapSendTab())
     }
 
     private func navigateToReceiveTransaction() {
         toggleTransactionOptions()
         receiveTransactionFlowCoordinator.launch()
         
-        analytics.track(ReceiveTabEvent())
+        analytics.track(.tapReceiveTab())
     }
 
     private func navigateToBuyAlgo() {

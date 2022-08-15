@@ -13,16 +13,29 @@
 // limitations under the License.
 
 //
-//  RekeyEvent.swift
+//  ShowAssetDetailEvent.swift
 
 import Foundation
+import MacaroonVendors
 
-struct RekeyEvent: ALGAnalyticsEvent {
+struct ShowAssetDetailEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init() {
-        self.name = .rekey
-        self.metadata = [:]
+    fileprivate init(
+        assetID: AssetID?
+    ) {
+        self.name = .showAssetDetail
+        self.metadata = [
+            .assetID: assetID.unwrap(String.init) ?? "algos"
+        ]
+    }
+}
+
+extension AnalyticsEvent where Self == ShowAssetDetailEvent {
+    static func showAssetDetail(
+        assetID: AssetID?
+    ) -> Self {
+        return ShowAssetDetailEvent(assetID: assetID)
     }
 }

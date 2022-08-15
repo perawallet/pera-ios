@@ -27,7 +27,7 @@ final class AssetDetailViewController: BaseAssetDetailViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analytics.track(.displayAssetDetail(assetID: asset?.id))
+        analytics.track(.showAssetDetail(assetID: asset?.id))
     }
 
     override func configureAppearance() {
