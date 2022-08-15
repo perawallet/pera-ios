@@ -31,21 +31,21 @@ where
 enum ALGAnalyticsEventName:
     String,
     AnalyticsEventName {
-    case showAssetDetail
     case changeAssetDetail
     case changeCurrency
-    case tapReceiveInDetail
-    case tapSendInDetail
     case changeNotificationFilter
+    case completeTransaction
     case registerAccount
     case rekeyAccount
+    case showAssetDetail
     case showQRCopy
     case showQRShare
     case showQRShareComplete
     case tapBuyAlgoTab
+    case tapReceiveInDetail
     case tapReceiveTab
+    case tapSendInDetail
     case tapSendTab
-    case completeTransaction
     case wcSessionApproved
     case wcSessionDisconnected
     case wcSessionRejected
@@ -62,11 +62,11 @@ extension ALGAnalyticsEventName {
         case .showAssetDetail: rawName = "asset_detail_asset"
         case .changeAssetDetail: rawName = "asset_detail_asset_change"
         case .changeCurrency: rawName = "currency_change"
-        case .tapReceiveInDetail: rawName = "tap_asset_detail_receive"
-        case .tapSendInDetail: rawName = "tap_asset_detail_send"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .registerAccount: rawName = "register"
         case .rekeyAccount: rawName = "rekey"
+        case .tapReceiveInDetail: rawName = "tap_asset_detail_receive"
+        case .tapSendInDetail: rawName = "tap_asset_detail_send"
         case .showQRCopy: rawName = "tap_show_qr_copy"
         case .showQRShare: rawName = "tap_show_qr_share"
         case .showQRShareComplete: rawName = "tap_show_qr_share_complete"

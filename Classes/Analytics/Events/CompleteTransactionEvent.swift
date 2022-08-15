@@ -41,7 +41,7 @@ struct CompleteTransactionEvent: ALGAnalyticsEvent {
 }
 
 extension AnalyticsEvent where Self == CompleteTransactionEvent {
-    static func completeTransaction(
+    static func completeStandardTransaction(
         draft: TransactionSendDraft,
         transactionId: TransactionID
     ) -> Self {
@@ -64,7 +64,15 @@ extension AnalyticsEvent where Self == CompleteTransactionEvent {
                 transactionId: transactionId.identifier
             )
         }
-        fatalError("Other types of TransactionSendDrafts not supported")
+
+        /// <note>: We are sending default event if we can't decide the type of transaction above
+        return CompleteTransactionEvent(
+            accountType: .standard,
+            assetId: nil,
+            isMaxTransaction: false,
+            amount: 0,
+            transactionId: transactionId.identifier
+        )
     }
 
     static func completeCollectibleTransaction(

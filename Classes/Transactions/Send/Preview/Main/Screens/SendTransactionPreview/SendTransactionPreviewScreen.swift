@@ -167,7 +167,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
 
       if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
          analytics.track(
-            .completeTransaction(draft: draft, transactionId: id)
+            .completeStandardTransaction(draft: draft, transactionId: id)
          )
       }
    }
