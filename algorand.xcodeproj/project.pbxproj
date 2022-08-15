@@ -4353,12 +4353,6 @@
 		D4CC28E52875C2790082E038 /* InnerTransactionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28E42875C2790082E038 /* InnerTransactionListViewControllerTheme.swift */; };
 		D4CC28E62875C2790082E038 /* InnerTransactionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28E42875C2790082E038 /* InnerTransactionListViewControllerTheme.swift */; };
 		D4CC28E72875C2790082E038 /* InnerTransactionListViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28E42875C2790082E038 /* InnerTransactionListViewControllerTheme.swift */; };
-		D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
-		D4CC46E726DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
-		D4CC46E826DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
-		D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
-		D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
-		D4CC46EC26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
 		D4CC46F026DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
 		D4CC46F126DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
 		D4CC46F226DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
@@ -6475,8 +6469,6 @@
 		D4CC28DC2875AD850082E038 /* InnerTransactionPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionPreviewViewModel.swift; sourceTree = "<group>"; };
 		D4CC28E02875B2F20082E038 /* InnerTransactionPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionPreviewViewTheme.swift; sourceTree = "<group>"; };
 		D4CC28E42875C2790082E038 /* InnerTransactionListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListViewControllerTheme.swift; sourceTree = "<group>"; };
-		D4CC46E526DCF80E00AA1BFE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		D4CC46E926DD099000AA1BFE /* AppColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppColors.xcassets; sourceTree = "<group>"; };
 		D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Light.ttf"; sourceTree = "<group>"; };
 		D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Italic.ttf"; sourceTree = "<group>"; };
@@ -9314,7 +9306,6 @@
 		2B8AD0482244F81500939ECE /* Colors */ = {
 			isa = PBXGroup;
 			children = (
-				D4CC46E526DCF80E00AA1BFE /* AppColors.swift */,
 				2B3C73022898627900A0181F /* Colors.swift */,
 			);
 			path = Colors;
@@ -9401,7 +9392,6 @@
 		2B8BE4E6223924EB005D8565 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				D4CC46E926DD099000AA1BFE /* AppColors.xcassets */,
 				CBAD47492745595300C91946 /* Assets.xcassets */,
 				2B3C72FE2898606600A0181F /* Colors.xcassets */,
 			);
@@ -15668,7 +15658,6 @@
 				2B98844F25B880D5004532CE /* AssetSearchResult.json in Resources */,
 				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */,
-				D4CC46EC26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
@@ -15697,7 +15686,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				17B7E1CC27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059126F0F0A1001D0D11 /* light-ledger.json in Resources */,
 				2B3C73002898606600A0181F /* Colors.xcassets in Resources */,
@@ -15733,7 +15721,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				17B7E1CB27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059026F0F0A1001D0D11 /* light-ledger.json in Resources */,
 				2B3C72FF2898606600A0181F /* Colors.xcassets in Resources */,
@@ -16629,7 +16616,6 @@
 				2B26270B284D640D00ADE371 /* AlgoTransactionItemDraftComposer.swift in Sources */,
 				2B7E586225866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
 				D4A70AF82878361700FB52B0 /* AssetInnerTransactionPreviewViewModel.swift in Sources */,
-				D4CC46E826DD06E200AA1BFE /* AppColors.swift in Sources */,
 				D47C4AB72791C3820012D7A6 /* WCSessionListNoContentViewModel.swift in Sources */,
 				D45E191526E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift in Sources */,
 				D459E28927DE052500F7FC33 /* ApproveCollectibleTransactionViewModel.swift in Sources */,
@@ -18180,7 +18166,6 @@
 				D478CDD5282C33DC0090032D /* CollectibleMediaPreviewViewController+ImageTransition.swift in Sources */,
 				2B0F623124EC129D00DA22A6 /* AccountFetchDraft.swift in Sources */,
 				D4C601D128436F8800CDF6CB /* SortAccountListDataController.swift in Sources */,
-				D4CC46E726DD06E200AA1BFE /* AppColors.swift in Sources */,
 				D421178926D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
 				D45E191426E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift in Sources */,
 				D4FC5F5E27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
@@ -19824,7 +19809,6 @@
 				2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				2B7E586025866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
 				D4C601DC2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */,
-				D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */,
 				958416F027B3A7CD005B1627 /* Sequence+Additions.swift in Sources */,
 				D45E191326E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift in Sources */,
 				D459E28F27DE541B00F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
