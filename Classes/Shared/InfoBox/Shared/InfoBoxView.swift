@@ -121,8 +121,20 @@ extension InfoBoxView {
         }
 
         iconView.image = viewModel.icon?.uiImage
-        titleView.editText = viewModel.title
-        messageView.editText = viewModel.message
+
+        if let title = viewModel.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let message = viewModel.message {
+            message.load(in: messageView)
+        } else {
+            messageView.text = nil
+            messageView.attributedText = nil
+        }
     }
 
     class func calculatePreferredSize(
@@ -137,14 +149,14 @@ extension InfoBoxView {
         let width = size.width -
             theme.contentPaddings.trailing -
             theme.contentPaddings.leading
-        let titleSize = viewModel.title.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let messageSize = viewModel.message.boundingSize(
+        ) ?? .zero
+        let messageSize = viewModel.message?.boundingSize(
             multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+        ) ?? .zero
         let preferredHeight = theme.contentPaddings.top +
             theme.contentPaddings.bottom +
             theme.spacingBetweenTitleAndMessage +

@@ -18,8 +18,8 @@ import MacaroonUIKit
 
 struct ReceiveCollectibleAssetListInfoViewModel: InfoBoxViewModel {
     var icon: Image?
-    var title: EditText?
-    var message: EditText?
+    var title: TextProvider?
+    var message: TextProvider?
     var style: InfoBoxViewStyle?
 
     init() {
@@ -40,10 +40,7 @@ extension ReceiveCollectibleAssetListInfoViewModel {
     }
 
     private mutating func bindMessage() {
-        message = .attributedString(
-            "collectible-receive-asset-list-info".localized
-                .footnoteMedium()
-        )
+        message = "collectible-receive-asset-list-info".localized.footnoteMedium()
     }
 
     private mutating func bindStyle() {

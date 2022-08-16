@@ -18,26 +18,26 @@ import MacaroonUIKit
 import UIKit
 
 struct ReceiveCollectibleInfoBoxViewTheme: InfoBoxViewTheme {
+    let contentPaddings: LayoutPaddings
+    let iconContentEdgeInsets: LayoutOffset
     let icon: ImageStyle
     let title: TextStyle
     let message: TextStyle
-
-    let contentPaddings: LayoutPaddings
-    let iconContentEdgeInsets: LayoutOffset
     let spacingBetweenTitleAndMessage: LayoutMetric
 
-    init(_ family: LayoutFamily) {
-        icon = [
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentPaddings = (12, 12, 12, 12)
+        self.iconContentEdgeInsets = (8, 0)
+        self.icon = [
             .contentMode(.left)
         ]
-        title = []
-        message = [
+        self.title = []
+        self.message = [
             .textColor(AppColors.Shared.Helpers.positive.uiColor),
             .textOverflow(FittingText())
         ]
-
-        contentPaddings = (12, 12, 12, 12)
-        iconContentEdgeInsets = (8, 0)
-        spacingBetweenTitleAndMessage = 0
+        self.spacingBetweenTitleAndMessage = 0
     }
 }
