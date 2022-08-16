@@ -36,12 +36,12 @@ struct TransactionFilterOptionViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.date = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.checkmarkImage = [
@@ -50,7 +50,7 @@ struct TransactionFilterOptionViewTheme: StyleSheet, LayoutSheet {
         self.dateImageViewLabel = [
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.bold.make(9))
         ]
         self.verticalInset = 8

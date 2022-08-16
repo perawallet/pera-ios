@@ -569,12 +569,6 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle, dataController):
-            viewController = AssetSearchViewController(
-                accountHandle: accountHandle,
-                dataController: dataController,
-                configuration: configuration
-            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
@@ -1009,6 +1003,10 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 )
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
             )
         }
 
@@ -1099,7 +1097,8 @@ extension Router {
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+            bannerController: appConfiguration.bannerController,
+            analytics: appConfiguration.analytics
         )
 
         transactionController.delegate = self

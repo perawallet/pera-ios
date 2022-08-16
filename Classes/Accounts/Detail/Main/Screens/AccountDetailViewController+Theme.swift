@@ -29,7 +29,7 @@ extension AccountDetailViewController {
         let spacingBetweenListAndAccountActionsMenuAction: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
 
             self.accountActionsMenuActionIcon = "fab-swap".uiImage
             self.accountActionsMenuActionSize = (64, 64)

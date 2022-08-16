@@ -36,7 +36,11 @@ final class CollectibleDetailViewController:
             fatalError("API should be set.")
         }
 
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
@@ -133,7 +137,7 @@ final class CollectibleDetailViewController:
             }
         }
 
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
 
         dataController.load()
 

@@ -49,7 +49,8 @@ final class HomeViewController:
             sharedDataController: sharedDataController,
             presentingScreen: self,
             api: api!,
-            bannerController: bannerController!
+            bannerController: bannerController!,
+            analytics: analytics
         )
 
     private let copyToClipboardController: CopyToClipboardController
@@ -57,8 +58,8 @@ final class HomeViewController:
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
-    override var name: AnalyticsScreenName? {
-        return .accounts
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .accountList)
     }
 
     private lazy var listView =
@@ -222,7 +223,7 @@ extension HomeViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -502,6 +503,7 @@ extension HomeViewController {
                 .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
+            controller?.hidesCloseBarButtonItem = true
             controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
                 tutorialViewController.dismissScreen()
             }
@@ -776,7 +778,7 @@ extension HomeViewController {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -793,7 +795,7 @@ extension HomeViewController {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
@@ -896,8 +898,10 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            self.log(ReceiveCopyEvent(address: accountHandle.value.address))
-            self.copyToClipboardController.copyAddress(accountHandle.value)
+            let account = accountHandle.value
+
+            self.analytics.track(.showQRCopy(account: account))
+            self.copyToClipboardController.copyAddress(account)
         }
 
         return uiInteractions

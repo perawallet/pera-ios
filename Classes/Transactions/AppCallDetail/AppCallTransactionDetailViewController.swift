@@ -17,8 +17,8 @@
 import UIKit
 
 final class AppCallTransactionDetailViewController: BaseScrollViewController {
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .transactionDetail)
     }
 
     private lazy var appCallTransactionDetailView = AppCallTransactionDetailView()

@@ -32,7 +32,6 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetSearch(accountHandle: AccountHandle, dataController: AssetSearchDataController)
     case assetDetail(
         draft: TransactionListing,
         preferences: BaseAssetDetailViewController.Preferences = .init()
@@ -215,6 +214,9 @@ indirect enum Screen {
         draft: TransferAssetBalanceDraft,
         theme: TransferAssetBalanceScreenTheme = .init(),
         eventHandler: TransferAssetBalanceScreen.EventHandler
+    case sheetAction(
+        sheet: UISheet,
+        theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
 }
 

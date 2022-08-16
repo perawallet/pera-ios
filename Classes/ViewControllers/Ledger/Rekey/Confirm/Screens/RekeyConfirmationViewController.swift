@@ -32,7 +32,11 @@ final class RekeyConfirmationViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -100,7 +104,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         loadingController?.stopLoading()
 
-        log(RekeyEvent())
+        analytics.track(.rekeyAccount())
         saveRekeyedAccountDetails()
         openRekeyConfirmationAlert()
     }
