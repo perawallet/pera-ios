@@ -81,4 +81,11 @@ extension ListItemButtonTheme {
         self.contentMinHeight = 68
         self.spacingBetweenTitleAndSubtitle = 0
     }
+
+    mutating func configureForAssetSocialMediaView() {
+        self.iconContentEdgeInsets = (16, 0)
+        self.contentVerticalPaddings = (8, 8)
+        self.contentMinHeight = 40
+        self.spacingBetweenTitleAndSubtitle = 0
+    }
 }
