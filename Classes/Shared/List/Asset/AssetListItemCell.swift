@@ -33,7 +33,7 @@ final class AssetListItemCell:
         contextView.customize(Self.theme)
 
         let separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((80, 0))
         )

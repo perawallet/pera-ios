@@ -58,7 +58,7 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
                 .image("asset-image-placeholder-border")
             ]
             text = [
-                .textColor(AppColors.Components.Text.gray),
+                .textColor(Colors.Text.gray),
                 .textOverflow(SingleLineFittingText())
             ]
         }

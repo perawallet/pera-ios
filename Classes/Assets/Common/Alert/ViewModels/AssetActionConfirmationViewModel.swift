@@ -92,8 +92,8 @@ extension AssetActionConfirmationViewModel {
               }
 
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         detail = attributedDetailText
     }
 

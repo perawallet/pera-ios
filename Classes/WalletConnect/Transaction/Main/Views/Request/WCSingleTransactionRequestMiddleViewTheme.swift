@@ -34,11 +34,11 @@ struct WCSingleTransactionRequestMiddleViewTheme: LayoutSheet, StyleSheet {
         ]
         titleLabel = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(36))
         ]
         subtitleLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
 

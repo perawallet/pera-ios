@@ -31,7 +31,7 @@ protocol PrimaryTitleViewTheme:
 extension PrimaryTitleViewTheme {
     var primaryTitle: TextStyle {
         return [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
     }
 

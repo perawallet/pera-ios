@@ -29,11 +29,11 @@ struct ReceiveCollectibleAccountListViewControllerTheme:
         _ family: LayoutFamily
     ) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         titlePaddings = (12, 24, .noMetric, 24)
