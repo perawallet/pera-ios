@@ -200,6 +200,20 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
+    case optInAsset(
+        draft: OptInAssetDraft,
+        theme: OptInAssetScreenTheme = .init(),
+        eventHandler: OptInAssetScreen.EventHandler
+    )
+    case optOutAsset(
+        draft: OptOutAssetDraft,
+        theme: OptOutAssetScreenTheme = .init(),
+        eventHandler: OptOutAssetScreen.EventHandler
+    )
+    case transferAssetBalance(
+        draft: TransferAssetBalanceDraft,
+        theme: TransferAssetBalanceScreenTheme = .init(),
+        eventHandler: TransferAssetBalanceScreen.EventHandler
     case sheetAction(
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
