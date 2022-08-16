@@ -142,6 +142,25 @@ extension AppColors.Components {
 }
 
 extension AppColors.Components {
+    enum ASABanner {
+        enum Trusted: String, Color {
+            case backround = "Components/ASABanner/Trusted/bg"
+            case content = "Components/ASABanner/Trusted/content"
+        }
+
+        enum Verified: String, Color {
+            case backround = "Components/ASABanner/Verified/bg"
+            case content = "Components/ASABanner/Verified/content"
+        }
+
+        enum Suspicious: String, Color {
+            case backround = "Components/ASABanner/Suspicious/bg"
+            case content = "Components/ASABanner/Suspicious/content"
+        }
+    }
+}
+
+extension AppColors.Components {
     enum Toast: String, Color {
         case background = "Components/Toast/bg"
         case description = "Components/Toast/description"

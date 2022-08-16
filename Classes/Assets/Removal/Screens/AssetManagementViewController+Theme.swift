@@ -23,12 +23,12 @@ extension ManagementOptionsViewController {
         LayoutSheet {
         let backgroundColor: Color
         let contentPaddings: LayoutPaddings
-        let listActionViewTheme: ListActionViewTheme
+        let listItemButtonTheme: ListItemButtonTheme
         
         init(_ family: LayoutFamily) {
             self.backgroundColor = Colors.Defaults.background
             self.contentPaddings = (16, 24, 20, 24)
-            self.listActionViewTheme = ListActionViewTheme(family)
+            self.listItemButtonTheme = ListItemButtonTheme(family)
         }
     }
 }

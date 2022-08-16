@@ -17,6 +17,7 @@
 
 import CoreGraphics
 import Foundation
+import MacaroonUIKit
 import UIKit
 
 extension NSAttributedString {
@@ -39,6 +40,43 @@ extension NSAttributedString {
         )
 
         return ceil(rect.size.height)
+    }
+
+    func addAttributes(
+        to attributedText: String,
+        newAttributes: TextAttributeGroup
+    ) -> NSMutableAttributedString {
+        let selfMutableString = NSMutableAttributedString(
+            attributedString: self
+        )
+
+        let attributedRange = (selfMutableString.string as NSString).range(of: attributedText)
+
+        selfMutableString.addAttributes(
+            newAttributes.asSystemAttributes(),
+            range: attributedRange
+        )
+
+        return selfMutableString
+    }
+
+    func add(
+        _ newAttributes: TextAttributeGroup
+    ) -> NSMutableAttributedString {
+        let selfMutableString = NSMutableAttributedString(
+            attributedString: self
+        )
+        let fullRange = NSRange(
+            location: 0,
+            length: length
+        )
+
+        selfMutableString.addAttributes(
+            newAttributes.asSystemAttributes(),
+            range: fullRange
+        )
+
+        return selfMutableString
     }
 
     func calculateNumberOfLines(
