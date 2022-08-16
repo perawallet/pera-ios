@@ -19,22 +19,20 @@ import MacaroonUIKit
 
 struct TransactionFeeSecondaryListItemViewTheme: SecondaryListItemViewTheme {
     var contentEdgeInsets: LayoutPaddings
+    var title: TextStyle
     var titleMinimumWidthRatio: LayoutMetric
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric
-    var accessoryLayout: Button.Layout
-    var accessoryContentEdgeInsets: LayoutPaddings
-    var accessoryCorner: Corner
+    var accessory: SecondaryListItemValueViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
         contentEdgeInsets = (10, 24, 10, 24)
+        title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
         titleMinimumWidthRatio = 0.25
         minimumSpacingBetweenTitleAndAccessory = 8
-        accessoryLayout = .none
-        accessoryContentEdgeInsets = (0, 0, 0, 0)
-        accessoryCorner = Corner(
-            radius: .zero
+        accessory = SecondaryListItemValueCommonViewTheme(
+            isMultiline: false
         )
     }
 }

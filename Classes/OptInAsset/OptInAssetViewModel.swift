@@ -43,9 +43,7 @@ extension OptInAssetViewModel {
     private mutating func bindTitle(
         _ draft: OptInAssetDraft
     ) {
-        let isCollectible = draft.asset.isCollectible
-
-        if isCollectible {
+        if draft.asset.isCollectible {
             title = "opt-in-title-adding-nft".localized
         } else {
             title = "asset-add-confirmation-title".localized
@@ -63,7 +61,7 @@ extension OptInAssetViewModel {
     private mutating func bindAccount(
         _ draft: OptInAssetDraft
     ) {
-        self.account = AccountSecondaryListItemViewModel(
+        account = AccountSecondaryListItemViewModel(
             account: draft.account
         )
     }
@@ -81,9 +79,7 @@ extension OptInAssetViewModel {
     ) {
         let aDescription: String
 
-        let isCollectible = draft.asset.isCollectible
-
-        if isCollectible {
+        if draft.asset.isCollectible {
             aDescription = "opt-in-description-adding-nft".localized
         } else {
             aDescription = "asset-add-warning".localized
@@ -93,23 +89,15 @@ extension OptInAssetViewModel {
     }
 
     private mutating func bindApproveAction() {
-        approveAction = getApproveAction()
-    }
-
-    private mutating func bindCloseAction() {
-        closeAction = getCloseAction()
-    }
-}
-
-extension OptInAssetViewModel {
-    func getApproveAction() -> TextProvider {
-        return "title-approve"
+        approveAction =
+        "title-approve"
             .localized
             .bodyMedium()
     }
 
-    func getCloseAction() -> TextProvider {
-        return "title-close"
+    private mutating func bindCloseAction() {
+        closeAction =
+        "title-close"
             .localized
             .bodyMedium()
     }

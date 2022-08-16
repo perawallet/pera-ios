@@ -157,7 +157,12 @@ extension AccountDetailViewController {
             case .addAsset:
                 self.assetListScreen.endEditing()
 
-                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
+                let controller = self.open(
+                    .addAsset(
+                        account: self.accountHandle.value
+                    ),
+                    by: .present
+                ) as? AssetAdditionViewController
                 controller?.delegate = self
             case .buyAlgo:
                 self.assetListScreen.endEditing()
@@ -441,10 +446,30 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
 }
 
 extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-        standardAsset.state = .pending(.add)
-        assetListScreen.addAsset(standardAsset)
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd asset: AssetDecoration
+    ) {
+        if asset.isCollectible {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: asset.id),
+                decoration: asset
+            )
+
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, collectibleAsset)
+                ]
+            )
+        } else {
+            let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+            standardAsset.state = .pending(.add)
+            assetListScreen.addAsset(standardAsset)
+        }
+        
+        assetAdditionViewController.dismissScreen()
     }
 }
 

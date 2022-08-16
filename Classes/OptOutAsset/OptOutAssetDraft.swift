@@ -12,20 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetListViewController+Theme.swift
+//   OptOutAssetDraft.swift
 
-import MacaroonUIKit
-import UIKit
+import Foundation
 
-extension AssetListViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let assetListViewTheme: AssetListViewTheme
-        let cellSize: LayoutSize
-
-        init(_ family: LayoutFamily) {
-            self.assetListViewTheme = AssetListViewTheme()
-            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
-        }
-    }
+struct OptOutAssetDraft {
+    let account: Account
+    let asset: AssetDecoration
+    let transactionFee = Transaction.Constant.minimumFee
 }

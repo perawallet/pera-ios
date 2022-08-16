@@ -1109,5 +1109,12 @@
 "inner-transaction-plural-count" = "%@ Inner Transactions";
 
 // MARK: Opt In Asset
-"opt-in-title-adding-nft" = "Adding NFT";
+"opt-in-title-adding-nft" = "Opt-in to NFT";
 "opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+
+// MARK: Verification Information
+"verification-info-title" = "ASA Verification";
+"verification-info-body" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+"verification-info-body-first-highlight" = "automatically";
+"verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";

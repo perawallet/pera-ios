@@ -19,35 +19,45 @@ import MacaroonUIKit
 
 struct AssetIDSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: ButtonStyle?
+    var accessory: SecondaryListItemValueViewModel?
 
-    init(
-        asset: AssetDecoration
-    ) {
+    init(asset: AssetDecoration) {
         bindTitle(asset)
-        bindAccessory()
+
+        accessory = AssetIDSecondaryListItemValueViewModel()
     }
 }
 
 extension AssetIDSecondaryListItemViewModel {
-    private mutating func bindTitle(
-        _ asset: AssetDecoration
-    ) {
-        title = getTitle(title: "\(asset.id)")
-    }
+    private mutating func bindTitle(_ asset: AssetDecoration) {
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(AppColors.Components.Text.gray))
 
-    private mutating func bindAccessory() {
-        let accessoryTitle: EditText =  .attributedString(
+        title = "\(asset.id)".attributed(attributes)
+    }
+}
+
+struct AssetIDSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
+    var icon: ImageStyle?
+    var title: TextProvider?
+
+    init() {
+        bindTitle()
+    }
+}
+
+extension AssetIDSecondaryListItemValueViewModel {
+    private mutating func bindTitle() {
+        var attributes = Typography.footnoteMediumAttributes(
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(AppColors.Components.Text.main))
+
+        title =
             "asset-copy-id"
                 .localized
-                .footnoteMedium(
-                    lineBreakMode: .byTruncatingTail
+                .attributed(
+                    attributes
                 )
-        )
-        accessory = [
-            .title(accessoryTitle),
-            .titleColor([ .normal(AppColors.Components.Text.main) ] ),
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
-        ]
     }
 }

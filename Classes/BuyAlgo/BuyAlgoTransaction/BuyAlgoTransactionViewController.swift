@@ -40,7 +40,7 @@ final class BuyAlgoTransactionViewController: BaseViewController {
         super.linkInteractors()
         dataController.delegate = self
 
-        transactionView.observe(event: .close) { [weak self] in
+        transactionView.startObserving(event: .close) { [weak self] in
             self?.dismissScreen()
         }
     }
