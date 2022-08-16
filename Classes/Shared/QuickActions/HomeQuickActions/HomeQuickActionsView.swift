@@ -25,8 +25,8 @@ final class HomeQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
-        .receive: TargetActionInteraction(),
         .scanQR: TargetActionInteraction()
     ]
 
@@ -60,8 +60,8 @@ final class HomeQuickActionsView:
             for: theme.sendAction,
             fittingIn: maxActionSize
         )
-        let receiveActionSize = calculateActionPreferredSize(
-            for: theme.receiveAction,
+        let swapActionSize = calculateActionPreferredSize(
+            for: theme.swapAction,
             fittingIn: maxActionSize
         )
         let scanActionSize = calculateActionPreferredSize(
@@ -70,8 +70,8 @@ final class HomeQuickActionsView:
         )
         let preferredHeight = [
             buyActionSize.height,
+            swapActionSize.height,
             sendActionSize.height,
-            receiveActionSize.height,
             scanActionSize.height
         ].max()!
         return CGSize(width: size.width, height: min(preferredHeight.ceil(), size.height))
@@ -97,7 +97,6 @@ final class HomeQuickActionsView:
     }
 }
 
-
 extension HomeQuickActionsView {
     private func addActions(
         _ theme: HomeQuickActionsViewTheme
@@ -114,8 +113,8 @@ extension HomeQuickActionsView {
         }
 
         addBuyAction(theme)
+        addSwapAction(theme)
         addSendAction(theme)
-        addReceiveAction(theme)
         addQRAction(theme)
     }
 
@@ -131,6 +130,36 @@ extension HomeQuickActionsView {
         )
     }
 
+    private func addSwapAction(
+        _ theme: HomeQuickActionsViewTheme
+    ) {
+        let swapActionTheme = theme.swapAction
+
+        let swapActionView = BadgeButton(
+            badgePosition: .topTrailing(
+                theme.swapNewBadgeEdgeInsets
+            ),
+            .imageAtTopmost(
+                padding: 0,
+                titleAdjustmentY: HomeQuickActionViewTheme.spacingBetweenIconAndTitle
+            )
+        )
+
+        swapActionView.customize(theme: theme.swapNewBadge)
+        swapActionView.customizeAppearance(swapActionTheme.style)
+
+        swapActionView.snp.makeConstraints {
+            $0.fitToWidth(swapActionTheme.width)
+        }
+
+        actionsView.addArrangedSubview(swapActionView)
+
+        startPublishing(
+            event: .swap,
+            for: swapActionView
+        )
+    }
+
     private func addSendAction(
         _ theme: HomeQuickActionsViewTheme
     ) {
@@ -140,18 +169,6 @@ extension HomeQuickActionsView {
         startPublishing(
             event: .send,
             for: sendActionView
-        )
-    }
-
-    private func addReceiveAction(
-        _ theme: HomeQuickActionsViewTheme
-    ) {
-        let receiveActionView = createAction(theme.receiveAction)
-        actionsView.addArrangedSubview(receiveActionView)
-
-        startPublishing(
-            event: .receive,
-            for: receiveActionView
         )
     }
 
@@ -187,8 +204,8 @@ extension HomeQuickActionsView {
 extension HomeQuickActionsView {
     enum Event {
         case buyAlgo
+        case swap
         case send
-        case receive
         case scanQR
     }
 }
