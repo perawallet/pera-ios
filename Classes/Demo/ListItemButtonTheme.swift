@@ -93,4 +93,11 @@ extension ListItemButtonTheme {
         self.spacingBetweenTitleAndSubtitle = 0
         self.subtitle = []
     }
+
+    mutating func configureForAssetSocialMediaView() {
+        self.iconContentEdgeInsets = (16, 0)
+        self.contentVerticalPaddings = (8, 8)
+        self.contentMinHeight = 40
+        self.spacingBetweenTitleAndSubtitle = 0
+    }
 }
