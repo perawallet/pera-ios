@@ -30,7 +30,7 @@ final class TransactionOptionsScreen:
         return false
     }
 
-    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .more])
+    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .addAsset, .more])
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +77,15 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidReceive(self)
         }
 
+        contextView.observe(event: .addAsset) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.transactionOptionsScreenDidAddAsset(self)
+        }
+
         contextView.observe(event: .more) {
             [weak self] in
             guard let self = self else {
@@ -109,7 +118,6 @@ protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidBuyAlgo(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-
     func transactionOptionsScreenDidSend(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
@@ -117,7 +125,9 @@ protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidReceive(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-
+    func transactionOptionsScreenDidAddAsset(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
     func transactionOptionsScreenDidMore(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )

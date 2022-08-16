@@ -27,6 +27,7 @@ final class TransactionOptionsContextView:
         .buyAlgo: UIControlInteraction(),
         .send: UIControlInteraction(),
         .receive: UIControlInteraction(),
+        .addAsset: UIControlInteraction(),
         .more: UIControlInteraction()
     ]
 
@@ -94,6 +95,12 @@ extension TransactionOptionsContextView {
                     viewModel: ReceiveTransactionOptionListActionViewModel(isQR: true),
                     event: .receive
                 )
+            case .addAsset:
+                addAction(
+                    theme: theme.action,
+                    viewModel: AddAssetTransactionOptionListActionViewModel(),
+                    event: .addAsset
+                )
             case .more:
                 addAction(
                     theme: theme.action,
@@ -128,6 +135,7 @@ extension TransactionOptionsContextView {
         case buyAlgo
         case send
         case receive
+        case addAsset
         case more
     }
 
@@ -135,6 +143,7 @@ extension TransactionOptionsContextView {
         case buyAlgo
         case send
         case receive
+        case addAsset
         case more
     }
 }
