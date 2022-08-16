@@ -34,12 +34,12 @@ struct SwapAssetSelectionViewTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.Layer.grayLightest)
+            .backgroundColor(Colors.Layer.grayLightest)
         ]
         self.corner = Corner(radius: 16)
         self.contentPaddings = (12, 12, 12, 12)
         self.title = [
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.verificationTier = [
             .contentMode(.left),
