@@ -42,7 +42,7 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
     let infoButtonSize: LayoutSize
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.rewardImage = [
             .image("icon-reward-info"),
             .contentMode(.center)
@@ -50,13 +50,13 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
         self.rewardsLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.rewardsValueLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(13)),
         ]
         self.infoButton = [
@@ -65,31 +65,31 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
 
         // <todo>: Remove duplication of shadow
         self.containerCorner = Corner(radius: 4)
-        self.containerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        self.containerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
         self.containerFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.containerSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.containerThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

@@ -87,7 +87,6 @@ extension ReceiveCollectibleAssetListAPIDataController {
         cancelOngoingEndpoint()
 
         let searchDraft = AssetSearchQuery(
-            status: .all,
             query: query,
             cursor: nextCursor,
             type: .collectible

@@ -35,9 +35,9 @@ final class HomeAccountCell:
         contextView.customize(Self.theme)
 
         let separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
-            position: .bottom((80, 0))
+            position: .bottom((80, 24))
         )
         separatorStyle = .single(separator)
     }
