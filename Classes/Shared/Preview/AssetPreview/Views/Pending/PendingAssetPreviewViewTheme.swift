@@ -31,19 +31,19 @@ struct PendingAssetPreviewViewTheme: StyleSheet, LayoutSheet {
         self.primaryAssetTitle = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.secondaryAssetTitle = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.assetStatus = [
             .textAlignment(.right),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
 

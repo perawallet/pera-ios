@@ -40,20 +40,20 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
     let statusLabelTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.nameLabel = [
             .isInteractable(false),
             .text("wallet-connect-session-select-account".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.descriptionLabel = [
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(MultilineText(numberOfLines: 0)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.disconnectOptionsButton = [
@@ -65,17 +65,17 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Shared.Helpers.positive),
-            .backgroundColor(AppColors.Shared.Global.turquoise600.uiColor.withAlphaComponent(0.1))
+            .textColor(Colors.Helpers.positive),
+            .backgroundColor(Colors.Other.Global.turquoise600)
         ]
         self.dateLabel = [
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
-        self.imageBorder = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
+        self.imageBorder = Border(color: Colors.Layer.grayLighter.uiColor, width: 1)
 
         self.horizontalInset = 24
         self.statusLabelSize = (226, 24)

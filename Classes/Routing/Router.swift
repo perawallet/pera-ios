@@ -1072,7 +1072,8 @@ extension Router {
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+            bannerController: appConfiguration.bannerController,
+            analytics: appConfiguration.analytics
         )
 
         transactionController.delegate = self

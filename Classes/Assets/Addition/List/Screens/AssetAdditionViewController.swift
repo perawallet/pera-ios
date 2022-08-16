@@ -33,7 +33,11 @@ final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplay
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)

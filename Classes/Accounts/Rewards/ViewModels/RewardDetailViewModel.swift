@@ -93,7 +93,7 @@ extension RewardDetailViewModel {
         )
 
         let FAQAttributes: TextAttributeGroup = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Link.primary.uiColor),
             .font(Fonts.DMSans.medium.make(15).uiFont)
         ]
 

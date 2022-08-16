@@ -114,7 +114,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     ) {
         let account = account.value
 
-        log(SendAssetDetailEvent(address: account.address))
+        analytics.track(.tapSendInDetail(account: account))
 
         open(
             .assetSelection(
@@ -130,7 +130,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     ) {
         let account = account.value
 
-        log(ReceiveAssetDetailEvent(address: account.address))
+        analytics.track(.tapReceiveAssetInDetail(account: account))
 
         let draft = QRCreationDraft(
             address: account.address,

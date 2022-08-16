@@ -54,7 +54,8 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var transactionController: TransactionController = {
         return TransactionController(
             api: api!,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
     }()
 
@@ -297,7 +298,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -311,7 +312,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
  }

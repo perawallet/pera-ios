@@ -142,7 +142,7 @@ extension AssetPreviewViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.main.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.main) ])
 
         primaryAccessory = .attributedString(
             accessory
@@ -162,7 +162,7 @@ extension AssetPreviewViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.grayLighter.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.grayLighter) ])
         
         secondaryAccessory = .attributedString(
             accessory
@@ -221,7 +221,7 @@ extension AssetPreviewViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.gray.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
@@ -281,7 +281,7 @@ extension AssetPreviewViewModel {
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.gray.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
