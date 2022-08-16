@@ -20,37 +20,64 @@ import CoreGraphics
 
 struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: Accessory?
+    var accessory: SecondaryListItemValueViewModel?
 
     init(
         account: Account
     ) {
         bindTitle()
-        bindAccessory(account)
+        accessory = AccountSecondaryListItemValueViewModel(account: account)
     }
 }
 
 extension AccountSecondaryListItemViewModel {
     private mutating func bindTitle() {
-        title = getTitle(
-            title: "title-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsd"
+        var attributes = Typography.bodyRegularAttributes()
+        attributes.insert(.textColor(AppColors.Components.Text.gray))
+
+        title = "title-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsd"
                 .localized
+                .attributed(attributes)
+    }
+}
+
+struct AccountSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
+    var icon: ImageStyle?
+    var title: TextProvider?
+
+    init(account: Account) {
+        bindIcon(account)
+        bindTitle()
+    }
+}
+
+extension AccountSecondaryListItemValueViewModel {
+    private mutating func bindTitle() {
+        var attributes = Typography.bodyRegularAttributes(
+            lineBreakMode: .byWordWrapping
         )
+
+        attributes.insert(.textColor(AppColors.Components.Text.main))
+
+        title =
+        "p234892348sdjfjlkfjsdlkfjdsk jslkf jlksdfjsdfj"
+            .attributed(
+                attributes
+            )
     }
 
-    private mutating func bindAccessory(
+    private mutating func bindIcon(
         _ account: Account
     ) {
-        let imageSize = CGSize((24, 24))
+        let image = account.typeImage
         let resizedImage =
-        account.typeImage
-            .convert(to: imageSize)
-            .unwrap(or: account.typeImage)
+            image
+                .convert(to: CGSize((24, 24)))
+                .unwrap(or: image)
 
-        accessory = getNonInteractableAccessory(
-            icon: resizedImage,
-            title: "p234892348sdjfjlkfjsdlkfjdsk jslkf jlksdfjsdfj",
-            titleLineBreakMode: .byWordWrapping
-        )
+        icon = [
+            .image(resizedImage),
+            .contentMode(.left)
+        ]
     }
 }

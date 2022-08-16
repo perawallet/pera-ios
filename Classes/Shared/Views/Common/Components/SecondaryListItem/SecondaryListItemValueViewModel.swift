@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecondaryListItemViewModel.swift
+//   SecondaryListItemValueViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol SecondaryListItemViewModel: ViewModel {
+protocol SecondaryListItemValueViewModel: ViewModel {
+    var icon: ImageStyle? { get }
     var title: TextProvider? { get }
-    var accessory: SecondaryListItemValueViewModel? { get }
 }

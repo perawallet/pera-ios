@@ -18,29 +18,13 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SecondaryListItemValueView: Control {
+final class SecondaryListItemValueView:
+    Control,
+    ViewModelBindable {
     private lazy var backgroundImageView = UIImageView()
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
-
-    var icon: Image? {
-        get {
-            iconView.image
-        }
-        set {
-            iconView.image = newValue?.uiImage
-        }
-    }
-
-    var title: TextProvider? {
-        get {
-            titleView.text ?? titleView.attributedText
-        }
-        set {
-            newValue?.load(in: titleView)
-        }
-    }
 
     func customize(
         _ theme: SecondaryListItemValueViewTheme
@@ -58,6 +42,23 @@ final class SecondaryListItemValueView: Control {
     func customizeAppearance(
         _ styleSheet: NoStyleSheet
     ) {}
+
+    func bindData(
+        _ viewModel: SecondaryListItemValueViewModel?
+    ) {
+        if let icon = viewModel?.icon {
+            iconView.customizeAppearance(icon)
+        } else {
+            iconView.resetAppearance()
+        }
+
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+    }
 }
 
 extension SecondaryListItemValueView {
@@ -91,8 +92,6 @@ extension SecondaryListItemValueView {
     private func addIcon(
         _ theme: SecondaryListItemValueViewTheme
     ) {
-        iconView.customizeAppearance(theme.icon)
-
         contentView.addSubview(iconView)
 
         iconView.contentEdgeInsets = theme.iconLayoutOffset
