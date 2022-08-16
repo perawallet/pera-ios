@@ -57,13 +57,13 @@ extension AssetVerificationTierInfoBoxViewModel {
             title = "asa-verification-title-trusted".localized
                 .bodyMedium()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Trusted.content.uiColor)
+                    .textColor(Colors.ASABanners.trustedBannerContent.uiColor)
                 ])
         case .verified:
             title = "asa-verification-title-verified".localized
                 .bodyMedium()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Verified.content.uiColor)
+                    .textColor(Colors.ASABanners.verifiedBannerContent.uiColor)
                 ])
         case .unverified:
             break
@@ -71,7 +71,7 @@ extension AssetVerificationTierInfoBoxViewModel {
             title = "asa-verification-title-suspicious".localized
                 .bodyMedium()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Suspicious.content.uiColor)
+                    .textColor(Colors.ASABanners.suspiciousBannerContent.uiColor)
                 ])
         }
     }
@@ -84,7 +84,7 @@ extension AssetVerificationTierInfoBoxViewModel {
             message = "asa-verification-detail-trusted".localized
                 .bodyRegular()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Trusted.content.uiColor)
+                    .textColor(Colors.ASABanners.trustedBannerContent.uiColor)
                 ])
                 .addAttributes(
                     to: "asa-verification-detail-trusted-bold".localized,
@@ -96,7 +96,7 @@ extension AssetVerificationTierInfoBoxViewModel {
             message = "asa-verification-detail-verified".localized
                 .bodyRegular()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Verified.content.uiColor)
+                    .textColor(Colors.ASABanners.verifiedBannerContent.uiColor)
                 ])
                 .addAttributes(
                     to: "asa-verification-detail-verified-bold".localized,
@@ -110,7 +110,7 @@ extension AssetVerificationTierInfoBoxViewModel {
             message = "asa-verification-detail-suspicious".localized
                 .bodyRegular()
                 .add([
-                    .textColor(AppColors.Components.ASABanner.Suspicious.content.uiColor)
+                    .textColor(Colors.ASABanners.suspiciousBannerContent.uiColor)
                 ])
                 .addAttributes(
                     to: "asa-verification-detail-suspicious-bold".localized,
@@ -128,7 +128,7 @@ extension AssetVerificationTierInfoBoxViewModel {
         case .trusted:
             style = InfoBoxViewStyle(
                 background: [
-                    .backgroundColor(AppColors.Components.ASABanner.Trusted.backround)
+                    .backgroundColor(Colors.ASABanners.trustedBannerBackground)
                 ],
                 corner: Corner(radius: 12)
             )
@@ -136,7 +136,7 @@ extension AssetVerificationTierInfoBoxViewModel {
 
             style = InfoBoxViewStyle(
                 background: [
-                    .backgroundColor(AppColors.Components.ASABanner.Verified.backround)
+                    .backgroundColor(Colors.ASABanners.verifiedBannerBackground)
                 ],
                 corner: Corner(radius: 12)
             )
@@ -145,7 +145,7 @@ extension AssetVerificationTierInfoBoxViewModel {
         case .suspicious:
             style = InfoBoxViewStyle(
                 background: [
-                    .backgroundColor(AppColors.Components.ASABanner.Suspicious.backround)
+                    .backgroundColor(Colors.ASABanners.suspiciousBannerBackground)
                 ],
                 corner: Corner(radius: 12)
             )

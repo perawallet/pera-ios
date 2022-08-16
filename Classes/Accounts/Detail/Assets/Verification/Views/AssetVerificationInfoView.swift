@@ -21,10 +21,9 @@ import UIKit
 final class AssetVerificationInfoView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .learnMore: UIControlInteraction()
+        .learnMore: TargetActionInteraction()
     ]
 
     private lazy var assetVerificationBoxView = InfoBoxView()

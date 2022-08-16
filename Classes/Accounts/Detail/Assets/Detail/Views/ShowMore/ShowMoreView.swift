@@ -21,10 +21,9 @@ import UIKit
 final class ShowMoreView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .show: UIControlInteraction()
+        .show: TargetActionInteraction()
     ]
     
     private lazy var titleView = Label()

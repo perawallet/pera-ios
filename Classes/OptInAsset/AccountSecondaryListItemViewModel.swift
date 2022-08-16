@@ -33,7 +33,7 @@ struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
 extension AccountSecondaryListItemViewModel {
     private mutating func bindTitle() {
         var attributes = Typography.bodyRegularAttributes()
-        attributes.insert(.textColor(AppColors.Components.Text.gray))
+        attributes.insert(.textColor(Colors.Text.gray))
 
         title = "title-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsd"
                 .localized
@@ -57,7 +57,7 @@ extension AccountSecondaryListItemValueViewModel {
             lineBreakMode: .byWordWrapping
         )
 
-        attributes.insert(.textColor(AppColors.Components.Text.main))
+        attributes.insert(.textColor(Colors.Text.main))
 
         title =
         "p234892348sdjfjlkfjsdlkfjdsk jslkf jlksdfjsdfj"

@@ -46,7 +46,7 @@ extension ReceiveCollectibleAccountListInfoViewModel {
     private mutating func bindStyle() {
         style = InfoBoxViewStyle(
             background: [
-                .backgroundColor(AppColors.Shared.Helpers.positiveLighter)
+                .backgroundColor(Colors.Helpers.positiveLighter)
             ],
             corner: Corner(radius: 4)
         )

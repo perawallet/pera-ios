@@ -36,7 +36,7 @@ final class UISheetActionScreen:
     private let sheet: UISheet
     private let theme: UISheetActionScreenTheme
 
-    private var uiInteractions: [UIControlInteraction] = []
+    private var uiInteractions: [TargetActionInteraction] = []
 
     init(
         sheet: UISheet,
@@ -136,11 +136,9 @@ extension UISheetActionScreen {
             action
         )
 
-        let interaction = UIControlInteraction(
-            actionView,
-            handler: action.handler
-        )
-
+        let interaction = TargetActionInteraction()
+        interaction.setHandler(action.handler)
+        interaction.attach(to: actionView)
         uiInteractions.append(interaction)
 
         actionsContextView.addArrangedSubview(actionView)
@@ -184,17 +182,5 @@ extension UISheetActionScreen {
         }
 
         return bottom
-    }
-}
-
-fileprivate extension UIControlInteraction {
-    convenience init(
-        _ control: UIControl,
-        handler: @escaping Handler
-    ) {
-        self.init()
-
-        link(control)
-        activate(handler)
     }
 }

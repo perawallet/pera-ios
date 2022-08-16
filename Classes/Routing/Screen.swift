@@ -215,6 +215,7 @@ indirect enum Screen {
         draft: TransferAssetBalanceDraft,
         theme: TransferAssetBalanceScreenTheme = .init(),
         eventHandler: TransferAssetBalanceScreen.EventHandler
+    )
     case sheetAction(
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()

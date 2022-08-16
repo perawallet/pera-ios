@@ -40,7 +40,7 @@ struct OptInAssetScreenTheme:
     ) {
         contentEdgeInsets = (36, 24, 32, 24)
         separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((contentEdgeInsets.leading, contentEdgeInsets.trailing))
         )
@@ -53,12 +53,12 @@ struct OptInAssetScreenTheme:
             .textOverflow(FittingText())
         ]
         approveActionView = [
-            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
-            .backgroundColor(AppColors.Components.Button.Primary.background),
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .backgroundColor(Colors.Button.Primary.background),
         ]
         closeActionView = [
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         spacingBetweenActions = 16
         actionContentEdgeInsets = (14, 0, 14, 0)

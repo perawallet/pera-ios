@@ -104,8 +104,8 @@ extension AssetQuickActionViewModel {
                     .localized
                     .footnoteMedium()
             )
-            self.buttonTitleColor = AppColors.Components.Button.Primary.text
-            self.buttonBackgroundColor = AppColors.Components.Button.Primary.background
+            self.buttonTitleColor = Colors.Button.Primary.text
+            self.buttonBackgroundColor = Colors.Button.Primary.background
         case .addAsset:
             self.buttonIcon = img("icon-quick-action-plus")
             self.buttonTitle = .attributedString(
@@ -113,8 +113,8 @@ extension AssetQuickActionViewModel {
                     .localized
                     .footnoteMedium()
             )
-            self.buttonTitleColor = AppColors.Components.Button.Primary.text
-            self.buttonBackgroundColor = AppColors.Components.Button.Primary.background
+            self.buttonTitleColor = Colors.Button.Primary.text
+            self.buttonBackgroundColor = Colors.Button.Primary.background
         case .addAssetWithoutAccount:
             self.buttonIcon = img("icon-quick-action-plus")
             self.buttonTitle = .attributedString(
@@ -122,8 +122,8 @@ extension AssetQuickActionViewModel {
                     .localized
                     .footnoteMedium()
             )
-            self.buttonTitleColor = AppColors.Components.Button.Primary.text
-            self.buttonBackgroundColor = AppColors.Components.Button.Primary.background
+            self.buttonTitleColor = Colors.Button.Primary.text
+            self.buttonBackgroundColor = Colors.Button.Primary.background
         case .removeCollectible:
             self.buttonIcon = img("icon-quick-action-remove")
             self.buttonTitle = .attributedString(
@@ -131,8 +131,8 @@ extension AssetQuickActionViewModel {
                     .localized
                     .footnoteMedium()
             )
-            self.buttonTitleColor = AppColors.Shared.Helpers.negative
-            self.buttonBackgroundColor = AppColors.Shared.System.background
+            self.buttonTitleColor = Colors.Helpers.negative
+            self.buttonBackgroundColor = Colors.Defaults.background
 
             bindButtonShadows()
         }
@@ -140,31 +140,31 @@ extension AssetQuickActionViewModel {
 
     private func bindButtonShadows() {
         self.buttonFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         self.buttonSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         self.buttonThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

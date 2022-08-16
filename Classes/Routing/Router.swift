@@ -1005,6 +1005,7 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 )
+            )
         case .sheetAction(let sheet, let theme):
             viewController = UISheetActionScreen(
                 sheet: sheet,

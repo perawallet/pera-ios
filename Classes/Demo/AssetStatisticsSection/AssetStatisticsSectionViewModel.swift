@@ -23,7 +23,6 @@ struct AssetStatisticsSectionViewModel: ViewModel {
     private(set) var totalSupply: PrimaryTitleViewModel?
 
     init() {
-        #warning("Use attributed string for `title`")
         title = "algo-statistics-title".localized
         price = AssetStatisticsSectionPriceViewModel()
         totalSupply = AssetStatisticsSectionTotalSupplyViewModel()

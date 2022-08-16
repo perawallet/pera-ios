@@ -289,16 +289,7 @@ extension ASADetailScreen {
 
         startAnimationToMoveScrollOverlay(
             withInitialVelocity: velocity
-        ) { [weak self] isCompleted in
-
-            guard let self = self else {
-                return
-            }
-
-            if !isCompleted {
-                return
-            }
-        }
+        ) { _ in }
     }
 
     private func startAnimationToMoveScrollOverlay(

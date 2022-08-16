@@ -17,9 +17,9 @@
 import MacaroonUIKit
 
 struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
-    var title: EditText?
-    var icon: Image?
-    var subtitle: EditText?
+    var primaryTitle: TextProvider?
+    var primaryTitleAccessory: Image?
+    var secondaryTitle: TextProvider?
 
     init() {
         bindTitle()
@@ -30,25 +30,21 @@ struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
 
 extension AssetStatisticsSectionTotalSupplyViewModel {
     private mutating func bindTitle() {
-        title = .attributedString(
-            "title-total-supply"
-                .localized
-                .footnoteRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
-        )
+        primaryTitle = "title-total-supply"
+            .localized
+            .footnoteRegular(
+                lineBreakMode: .byTruncatingTail
+            )
     }
 
     private mutating func bindIcon() {
-        icon = "icon-info-20"
+        primaryTitleAccessory = "icon-info-20"
     }
 
     private mutating func bindSubtitle() {
-        subtitle = .attributedString(
-            "7.27T"
-                .bodyLargeMedium(
-                    lineBreakMode: .byTruncatingTail
-                )
-        )
+        secondaryTitle = "7.27T"
+            .bodyLargeMedium(
+                lineBreakMode: .byTruncatingTail
+            )
     }
 }

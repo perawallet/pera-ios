@@ -86,7 +86,7 @@ extension ListItemButtonTheme {
         self.icon = [
             .contentMode(.left),
             .isInteractable(false),
-            .tintColor(AppColors.Shared.Helpers.positive)
+            .tintColor(Colors.Helpers.positive)
         ]
         self.iconContentEdgeInsets = (12, 0)
         self.contentMinHeight = 40

@@ -32,16 +32,16 @@ struct ShowMoreViewTheme:
         _ family: LayoutFamily
     ) {
         self.title = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
         ]
         self.spacingBetweenTitleAndDetail = 24
         self.detail = [
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.detailLineHeight = 24
         self.spacingBetweenDetailAndShowMore = 4
         self.showMore = [
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)])
         ]
     }
 }

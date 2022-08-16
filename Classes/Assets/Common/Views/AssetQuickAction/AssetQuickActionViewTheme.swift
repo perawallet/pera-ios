@@ -37,11 +37,11 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.containerShadow = MacaroonUIKit.Shadow(
-            color: AppColors.Components.Shadow.dark.uiColor,
+            color: Colors.Shadows.Cards.shadow4.uiColor,
             opacity: 1,
             offset: (0, 14),
             radius: 60,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (0, 0),
             corners: [.topLeft, .topRight]
         )
@@ -53,7 +53,7 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
         self.buttonCorner = Corner(radius: 4)
 
         self.title = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenTitleAndButton = 16
@@ -62,7 +62,7 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
         self.accountTypeImageSize = (20, 20)
 
         self.accountName = [
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.spacingBetweenAccountTypeAndName = 8
     }

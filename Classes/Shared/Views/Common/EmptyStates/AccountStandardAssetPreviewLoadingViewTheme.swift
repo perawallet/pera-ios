@@ -45,7 +45,7 @@ struct AccountStandardAssetPreviewLoadingViewTheme:
         corner = Corner(radius: 4)
         contentEdgeInsets = (44, 0, 36, 0)
         background = [
-            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            .backgroundColor(Colors.Helpers.heroBackground)
         ]
         iconSize = (40, 40)
         iconCorner = Corner(radius: iconSize.h / 2)
@@ -63,13 +63,13 @@ struct AccountStandardAssetPreviewLoadingViewTheme:
             .title(Self.getActionTitle("quick-actions-send-title".localized)),
             .icon( [ .normal("send-icon") ]),
             .font(Fonts.DMSans.regular.make(13)),
-            .titleColor([ .normal(AppColors.Components.Text.main) ])
+            .titleColor([ .normal(Colors.Text.main) ])
         ]
         receiveAction = [
             .title(Self.getActionTitle("quick-actions-receive-title".localized)),
             .icon( [ .normal("receive-icon") ]),
             .font(Fonts.DMSans.regular.make(13)),
-            .titleColor([ .normal(AppColors.Components.Text.main) ])
+            .titleColor([ .normal(Colors.Text.main) ])
         ]
         sendAction.title = "quick-actions-send-title".localized
     }

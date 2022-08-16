@@ -38,7 +38,7 @@ struct StandardAssetPreviewLoadingViewTheme:
         corner = Corner(radius: 4)
         contentEdgeInsets = (40, 0, 40, 0)
         background = [
-            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            .backgroundColor(Colors.Helpers.heroBackground)
         ]
         iconSize = (40, 40)
         iconCorner = Corner(radius: iconSize.h / 2)

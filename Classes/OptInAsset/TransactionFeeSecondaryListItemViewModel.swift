@@ -32,7 +32,7 @@ struct TransactionFeeSecondaryListItemViewModel: SecondaryListItemViewModel {
 extension TransactionFeeSecondaryListItemViewModel {
     private mutating func bindTitle() {
         var attributes = Typography.bodyRegularAttributes()
-        attributes.insert(.textColor(AppColors.Components.Text.gray))
+        attributes.insert(.textColor(Colors.Text.gray))
 
         title =
         "collectible-approve-transaction-fee"
@@ -72,7 +72,7 @@ extension TransactionFeeSecondaryListItemValueViewModel {
             lineBreakMode: .byTruncatingTail
         )
 
-        attributes.insert(.textColor(AppColors.Components.Text.main))
+        attributes.insert(.textColor(Colors.Text.main))
 
         title =
             (formattedFee ?? "\(unformattedFee)")

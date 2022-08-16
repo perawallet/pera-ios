@@ -53,12 +53,12 @@ struct UISheetActionScreenCommonTheme:
         contextEdgeInsets = (36, 24, 32, 24)
         title = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19))
         ]
         body = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         spacingBetweenTitleAndBody = 16
@@ -91,8 +91,8 @@ fileprivate extension ButtonStyle {
     ) -> ButtonStyle {
         return [
             .title(getTitle(title)),
-            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
-            .backgroundColor(AppColors.Components.Button.Primary.background),
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .backgroundColor(Colors.Button.Primary.background),
         ]
     }
 
@@ -101,8 +101,8 @@ fileprivate extension ButtonStyle {
     ) -> ButtonStyle {
         return  [
             .title(getTitle(title)),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
     }
 

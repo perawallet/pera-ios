@@ -29,7 +29,7 @@ struct AssetSocialMediaGroupedListItemButtonTheme: GroupedListItemButtonTheme {
         _ family: LayoutFamily
     ) {
         self.title = [
-             .textColor(AppColors.Components.Text.grayLighter),
+             .textColor(Colors.Text.grayLighter),
          ]
         self.spacingBetweenTitleAndContent = 24
         self.contentPaddings = (0, 24, 24, 24)

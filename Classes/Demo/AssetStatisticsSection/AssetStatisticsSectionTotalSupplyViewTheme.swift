@@ -19,24 +19,23 @@ import UIKit
 import MacaroonUIKit
 
 struct AssetStatisticsSectionTotalSupplyViewTheme: PrimaryTitleViewTheme {
-    var title: TextStyle
-    var icon: ImageStyle?
-    var subtitle: TextStyle
-    var iconContentEdgeInsets: LayoutOffset?
-    var spacingBetweenTitleAndSubtitle: LayoutMetric
+    var primaryTitle: TextStyle
+    var primaryTitleAccessory: ImageStyle
+    var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    var secondaryTitle: TextStyle
+    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        title = [
-            .textColor(AppColors.Components.Text.gray),
+        primaryTitle = [
+            .textColor(Colors.Text.gray),
         ]
-        icon = [
+        primaryTitleAccessory = [
             .contentMode(.right)
         ]
-        subtitle = [
-            .textColor(AppColors.Components.Text.main)
+        primaryTitleAccessoryContentEdgeInsets = (6, 0)
+        secondaryTitle = [
+            .textColor(Colors.Text.main)
         ]
-
-        iconContentEdgeInsets = (6, 0)
-        spacingBetweenTitleAndSubtitle = 4
+        spacingBetweenPrimaryAndSecondaryTitles = 4
     }
 }

@@ -227,6 +227,7 @@ extension Colors {
             case shadow1 = "Shadows/Cards/shadow1"
             case shadow2 = "Shadows/Cards/shadow2"
             case shadow3 = "Shadows/Cards/shadow3"
+            case shadow4 = "Shadows/Cards/shadow4"
         }
 
         enum Tab:

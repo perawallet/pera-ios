@@ -25,9 +25,9 @@ protocol AssetAboutSectionViewModel: ViewModel {
 extension AssetAboutSectionViewModel {
     func getAboutTitle(
         param: String,
-        textColor: Color = AppColors.Components.Text.grayLighter
+        textColor: Color = Colors.Text.grayLighter
     ) -> TextProvider {
-        var attributes: TextAttributeGroup = .footnoteHeadingMedium(
+        var attributes: TextAttributeGroup = Typography.footnoteHeadingAttributes(
             lineBreakMode: .byTruncatingTail
         )
         

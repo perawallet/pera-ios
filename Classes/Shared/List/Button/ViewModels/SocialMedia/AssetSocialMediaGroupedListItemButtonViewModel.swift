@@ -41,9 +41,10 @@ extension AssetSocialMediaGroupedListItemButtonViewModel {
         var buttons: [ListItemButton] = []
 
         for platform in socialMedia {
-            let button = ListItemButton()
-            let theme = ListItemButtonTheme()
+            var theme = ListItemButtonTheme()
             theme.configureForAssetSocialMediaView()
+
+            let button = ListItemButton()
             button.customize(theme)
 
             switch platform {

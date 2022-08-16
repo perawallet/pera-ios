@@ -273,7 +273,7 @@ extension String {
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
         return attributed(
-            .footnoteHeadingMedium(
+            Typography.footnoteHeadingAttributes(
                 alignment: alignment,
                 lineBreakMode: lineBreakMode,
                 supportsDynamicType: supportsDynamicType

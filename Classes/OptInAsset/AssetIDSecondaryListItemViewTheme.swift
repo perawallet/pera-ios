@@ -47,7 +47,7 @@ struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
     ) {
         backgroundImage = [
             .image("components/buttons/copy/bg".templateImage),
-            .tintColor(AppColors.Shared.Layer.grayLighter),
+            .tintColor(Colors.Layer.grayLighter),
             .isInteractable(false)
         ]
         view = [

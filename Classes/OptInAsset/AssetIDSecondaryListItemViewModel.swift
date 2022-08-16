@@ -31,7 +31,7 @@ struct AssetIDSecondaryListItemViewModel: SecondaryListItemViewModel {
 extension AssetIDSecondaryListItemViewModel {
     private mutating func bindTitle(_ asset: AssetDecoration) {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
-        attributes.insert(.textColor(AppColors.Components.Text.gray))
+        attributes.insert(.textColor(Colors.Text.gray))
 
         title = "\(asset.id)".attributed(attributes)
     }
@@ -51,7 +51,7 @@ extension AssetIDSecondaryListItemValueViewModel {
         var attributes = Typography.footnoteMediumAttributes(
             lineBreakMode: .byTruncatingTail
         )
-        attributes.insert(.textColor(AppColors.Components.Text.main))
+        attributes.insert(.textColor(Colors.Text.main))
 
         title =
             "asset-copy-id"

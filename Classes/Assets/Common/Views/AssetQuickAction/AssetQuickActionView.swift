@@ -20,10 +20,9 @@ import MacaroonUIKit
 final class AssetQuickActionView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performAction: UIControlInteraction()
+        .performAction: TargetActionInteraction()
     ]
 
     private lazy var button = Button(.imageAtLeft(spacing: 8))

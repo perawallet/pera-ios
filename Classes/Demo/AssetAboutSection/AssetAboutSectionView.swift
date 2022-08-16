@@ -85,9 +85,9 @@ extension AssetAboutSectionView {
         )
 
         if let handler = item.handler {
-            itemView.observe(
+            itemView.startObserving(
                 event: .performAccessory,
-                handler: handler
+                using: handler
             )
         }
 

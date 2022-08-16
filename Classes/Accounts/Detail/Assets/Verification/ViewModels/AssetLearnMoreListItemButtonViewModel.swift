@@ -28,7 +28,7 @@ struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
         self.icon = "icon-pera-solid"
         self.title = Self.getTitle(
             "asa-verification-learn-more".localized,
-            AppColors.Shared.Helpers.positive
+            Colors.Helpers.positive
         )
         self.subtitle = nil
         self.accessory = nil
