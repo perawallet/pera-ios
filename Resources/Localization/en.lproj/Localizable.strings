@@ -73,6 +73,8 @@
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
 "title-total-supply" = "Total Supply";
+"title-about-with-param" = "ABOUT %@";
+"title-csv" = "CSV";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -261,6 +263,11 @@
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
+"asset-quick-action-button-add" = "Add Asset";
+"asset-quick-action-title-opt-in" = "You can add this NFT to";
+"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-title-add-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-remove" = "Opted in to";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -1108,6 +1115,10 @@
 "inner-txns-plural-count" = "%@ inner txns";
 "inner-transaction-singular-count" = "1 Inner Transaction";
 "inner-transaction-plural-count" = "%@ Inner Transactions";
+
+// MARK: Mail
+"mail-report-address" = "verification@perawallet.app";
+"mail-report-subject" = "ASA Report: %d";
 
 // MARK: Verification Information
 "verification-info-title" = "ASA Verification";

@@ -96,8 +96,8 @@ extension AsaVerificationInfoScreen {
     private func addIllustrationBackground() {
         let backgroundView = GradientView()
         backgroundView.colors = [
-            AppColors.Shared.System.background.uiColor,
-            AppColors.Shared.System.background.uiColor.withAlphaComponent(0)
+            Colors.Defaults.background.uiColor,
+            Colors.Defaults.background.uiColor.withAlphaComponent(0)
         ]
 
         view.insertSubview(

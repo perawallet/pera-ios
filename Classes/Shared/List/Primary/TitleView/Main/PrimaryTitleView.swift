@@ -20,18 +20,17 @@ import UIKit
 
 final class PrimaryTitleView:
     View,
-    ViewModelBindable,
-    ListReusable {
-    private lazy var titleView = Label()
-    private lazy var iconView = ImageView()
-    private lazy var subtitleView = Label()
+    ViewModelBindable {
+    private lazy var primaryTitleView = Label()
+    private lazy var primaryTitleAccessoryView = ImageView()
+    private lazy var secondaryTitleView = Label()
 
     func customize(
         _ theme: PrimaryTitleViewTheme
     ) {
-        addTitle(theme)
-        addIcon(theme)
-        addSubtitle(theme)
+        addPrimaryTitle(theme)
+        addPrimaryTitleAccessory(theme)
+        addSecondaryTitle(theme)
     }
 
     func customizeAppearance(
@@ -41,66 +40,23 @@ final class PrimaryTitleView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-}
 
-extension PrimaryTitleView {
-    private func addTitle(
-        _ theme: PrimaryTitleViewTheme
-    ) {
-        titleView.customizeAppearance(theme.title)
-
-        addSubview(titleView)
-        titleView.fitToVerticalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        titleView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-        }
-    }
-
-    private func addIcon(
-        _ theme: PrimaryTitleViewTheme
-    ) {
-        if let iconStyle = theme.icon {
-            iconView.customizeAppearance(iconStyle)
-        }
-
-        addSubview(iconView)
-        iconView.contentEdgeInsets = theme.iconContentEdgeInsets ?? (0, 0)
-        iconView.fitToIntrinsicSize()
-        iconView.snp.makeConstraints {
-            $0.leading == titleView.snp.trailing
-            $0.trailing <= 0
-            $0.centerY == titleView
-        }
-    }
-
-    private func addSubtitle(
-        _ theme: PrimaryTitleViewTheme
-    ) {
-        subtitleView.customizeAppearance(theme.subtitle)
-
-        addSubview(subtitleView)
-        subtitleView.contentEdgeInsets.top = theme.spacingBetweenTitleAndSubtitle
-        subtitleView.fitToVerticalIntrinsicSize()
-        subtitleView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-    }
-}
-
-extension PrimaryTitleView {
     func bindData(
         _ viewModel: PrimaryTitleViewModel?
     ) {
-        titleView.editText = viewModel?.title
-        iconView.image = viewModel?.icon?.uiImage
-        subtitleView.editText = viewModel?.subtitle
+        if let primaryTitle = viewModel?.primaryTitle {
+            primaryTitle.load(in: primaryTitleView)
+        } else {
+            primaryTitleView.clearText()
+        }
+
+        primaryTitleAccessoryView.image = viewModel?.primaryTitleAccessory?.uiImage
+
+        if let secondaryTitle = viewModel?.secondaryTitle {
+            secondaryTitle.load(in: secondaryTitleView)
+        } else {
+            secondaryTitleView.clearText()
+        }
     }
 
     class func calculatePreferredSize(
@@ -113,25 +69,87 @@ extension PrimaryTitleView {
         }
 
         let width = size.width
-        let titleSize = viewModel.title.boundingSize(
+        let primaryTitleSize = viewModel.primaryTitle?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let subtitleSize = viewModel.subtitle.boundingSize(
+        ) ?? .zero
+        var secondaryTitleSize = viewModel.secondaryTitle?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let accessoryIconSize = viewModel.icon?.uiImage.size ?? .zero
-        let contentHeight = max(titleSize.height, accessoryIconSize.height) + subtitleSize.height
-        let preferredHeight = contentHeight
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+        ) ?? .zero
+
+        if secondaryTitleSize.height > 0 {
+            secondaryTitleSize.height += theme.spacingBetweenPrimaryAndSecondaryTitles
+        }
+
+        let primaryTitleAccessorySize = viewModel.primaryTitleAccessory?.uiImage.size ?? .zero
+        let maxPrimaryTitleSize = max(primaryTitleSize.height, primaryTitleAccessorySize.height)
+        let contentHeight = maxPrimaryTitleSize + secondaryTitleSize.height
+        let minCalculatedHeight = min(contentHeight.ceil(), size.height)
+        return CGSize((size.width, minCalculatedHeight))
+    }
+
+    func prepareForReuse() {
+        primaryTitleView.clearText()
+        primaryTitleAccessoryView.image = nil
+        secondaryTitleView.clearText()
     }
 }
 
 extension PrimaryTitleView {
-    func prepareForReuse() {
-        titleView.editText = nil
-        iconView.image = nil
-        subtitleView.editText = nil
+    private func addPrimaryTitle(
+        _ theme: PrimaryTitleViewTheme
+    ) {
+        primaryTitleView.customizeAppearance(theme.primaryTitle)
+
+        addSubview(primaryTitleView)
+        primaryTitleView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        primaryTitleView.fitToVerticalIntrinsicSize()
+        primaryTitleView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+        }
+    }
+
+    private func addPrimaryTitleAccessory(
+        _ theme: PrimaryTitleViewTheme
+    ) {
+        primaryTitleAccessoryView.customizeAppearance(theme.primaryTitleAccessory)
+
+        addSubview(primaryTitleAccessoryView)
+        primaryTitleAccessoryView.contentEdgeInsets = theme.primaryTitleAccessoryContentEdgeInsets
+        primaryTitleAccessoryView.fitToIntrinsicSize()
+        primaryTitleAccessoryView.snp.makeConstraints {
+            $0.centerY == primaryTitleView
+            $0.leading == primaryTitleView.snp.trailing
+            $0.trailing <= 0
+        }
+    }
+
+    private func addSecondaryTitle(
+        _ theme: PrimaryTitleViewTheme
+    ) {
+        secondaryTitleView.customizeAppearance(theme.secondaryTitle)
+
+        addSubview(secondaryTitleView)
+        secondaryTitleView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        secondaryTitleView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .defaultLow
+        )
+        secondaryTitleView.contentEdgeInsets.top = theme.spacingBetweenPrimaryAndSecondaryTitles
+        secondaryTitleView.fitToIntrinsicSize()
+        secondaryTitleView.snp.makeConstraints {
+            $0.top == primaryTitleView.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
     }
 }

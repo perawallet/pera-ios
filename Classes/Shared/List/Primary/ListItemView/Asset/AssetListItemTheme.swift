@@ -19,31 +19,23 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetListItemTheme: PrimaryListItemViewTheme {
-    let icon: PrimaryImageViewTheme
-    let primaryTitle: PrimaryTitleViewTheme
-    let secondaryTitle: PrimaryTitleViewTheme
-
-    let separator: Separator
-
+    let icon: URLImageViewStyleLayoutSheet
+    let iconSize: LayoutSize
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
-    let minSpacingBetweenTitles: LayoutMetric
-    let iconSize: LayoutSize
+    let title: PrimaryTitleViewTheme
+    let value: PrimaryTitleViewTheme
+    let minSpacingBetweenTitleAndValue: LayoutMetric
 
-    init(_ family: LayoutFamily) {
-        icon = AssetImageViewTheme()
-        primaryTitle = AssetNameViewTheme()
-        secondaryTitle = AssetAmountViewTheme()
-
-        separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 0))
-        )
-
-        contentHorizontalPadding = 16
-        contentMinWidthRatio = 0.25
-        minSpacingBetweenTitles = 16
-        iconSize = (40, 40)
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.icon = URLImageViewAssetTheme()
+        self.iconSize = (40, 40)
+        self.contentHorizontalPadding = 16
+        self.contentMinWidthRatio = 0.25
+        self.title = AssetNameViewTheme()
+        self.value = AssetAmountViewTheme()
+        self.minSpacingBetweenTitleAndValue = 16
     }
 }

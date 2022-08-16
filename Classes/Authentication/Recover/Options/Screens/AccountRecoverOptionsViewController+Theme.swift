@@ -29,7 +29,7 @@ struct AccountRecoverOptionsViewControllerTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentPaddings = (12, 24, 12, 24)
         self.action = ListActionViewTheme(family)

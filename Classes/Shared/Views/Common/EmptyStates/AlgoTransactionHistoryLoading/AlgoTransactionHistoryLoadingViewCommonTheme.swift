@@ -77,40 +77,40 @@ struct AlgoTransactionHistoryLoadingViewCommonTheme: AlgoTransactionHistoryLoadi
         self.currencyViewSize = (59, 20)
 
         self.rewardsContainerCorner = Corner(radius: 4)
-        self.rewardsContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        self.rewardsContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
 
         self.rewardsContainerFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         self.rewardsContainerSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         self.rewardsContainerThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.rewardsContainerSize = (.noMetric, 72)
         self.rewardsContainerMargin = (32, .noMetric, 65, .noMetric)
-        self.rewardsImageViewBackgroundColor =  AppColors.Shared.Helpers.positive.uiColor.withAlphaComponent(0.05)
+        self.rewardsImageViewBackgroundColor =  Colors.Helpers.positive.uiColor.withAlphaComponent(0.05)
         self.rewardsImageViewCorner = 20
         self.rewardsImageViewSize = (40, 40)
         self.rewardsImageViewMargin = (.noMetric, 20, .noMetric, .noMetric)

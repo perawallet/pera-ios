@@ -16,56 +16,114 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
+import Prism
+import UIKit
 
 struct AssetListItemViewModel:
-    ALGAssetListItemViewModel,
+    PrimaryListItemViewModel,
     Hashable {
-    var imageViewModel: PrimaryImageViewModel?
-    var primaryTitleViewModel: PrimaryTitleViewModel?
-    var secondaryTitleViewModel: PrimaryTitleViewModel?
+    var imageSource: ImageSource?
+    var title: PrimaryTitleViewModel?
+    var value: PrimaryTitleViewModel?
     var asset: Asset?
 
     init(
         _ item: AssetItem
     ) {
-        bindImageViewModel(item)
-        bindPrimaryTitleViewModel(item)
-        bindSecondaryTitleViewModel(item)
-        bindAsset(item)
+        bindImageSource(item)
+        bindTitle(item)
+        bindValue(item)
+
+        asset = item.asset
     }
 }
 
 extension AssetListItemViewModel {
-    private mutating func bindImageViewModel(
+    mutating func bindImageSource(
         _ item: AssetItem
     ) {
-        let title = item.asset.presentation.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : item.asset.presentation.name
+        if item.asset.isAlgo {
+            self.imageSource = AssetImageSource(
+                asset: "icon-algo-circle-green".uiImage
+            )
+            return
+        }
 
-        imageViewModel = StandardAssetImageViewModel(
-            image: .url(
-                item.asset.presentation.logo,
-                title: title
+        let title = item.asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+            : item.asset.naming.name
+
+        let imageSize = CGSize(width: 40, height: 40)
+        let prismURL = PrismURL(baseURL: item.asset.logoURL)?
+            .setExpectedImageSize(imageSize)
+            .setImageQuality(.normal)
+            .build()
+
+        let placeholderText = TextFormatter.assetShortName.format(
+            (title.isNilOrEmpty ? "title-unknown".localized : title!)
+        )
+
+        self.imageSource = PNGImageSource(
+            url: prismURL,
+            shape: .circle,
+            placeholder: getPlaceholder(
+                placeholderText,
+                with: TextAttributes(
+                    font: Fonts.DMSans.regular.make(13),
+                    lineHeightMultiplier: 1.18
+                )
             )
         )
     }
 
-    private mutating func bindPrimaryTitleViewModel(
+    mutating func bindTitle(
         _ item: AssetItem
     ) {
-        primaryTitleViewModel = AssetNameViewModel(item.asset)
+        title = AssetNameViewModel(item.asset)
     }
 
-    private mutating func bindSecondaryTitleViewModel(
+    mutating func bindValue(
         _ item: AssetItem
     ) {
-        secondaryTitleViewModel = AssetAmountViewModel(item)
+        value = AssetAmountViewModel(item)
     }
+}
 
-    private mutating func bindAsset(
-        _ item: AssetItem
-    ) {
-        asset = item.asset
+extension AssetListItemViewModel {
+    typealias TextAttributes = (
+        font: CustomFont,
+        lineHeightMultiplier: LayoutMetric
+    )
+
+    private func getPlaceholder(
+        _ aPlaceholder: String?,
+        with attributes: TextAttributes
+    ) -> ImagePlaceholder? {
+        guard let aPlaceholder = aPlaceholder else {
+            return nil
+        }
+
+        let font = attributes.font
+        let lineHeightMultiplier = attributes.lineHeightMultiplier
+
+        let placeholderText: EditText = .attributedString(
+            aPlaceholder.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+
+        return ImagePlaceholder(
+            image: AssetImageSource(
+                asset: "asset-image-placeholder-border".uiImage
+            ),
+            text: placeholderText
+        )
     }
 }

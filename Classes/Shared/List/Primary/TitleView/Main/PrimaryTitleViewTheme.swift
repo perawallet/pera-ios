@@ -21,10 +21,25 @@ import UIKit
 protocol PrimaryTitleViewTheme:
     StyleSheet,
     LayoutSheet {
-    var title: TextStyle { get }
-    var icon: ImageStyle? { get }
-    var subtitle: TextStyle { get }
+    var primaryTitle: TextStyle { get }
+    var primaryTitleAccessory: ImageStyle { get }
+    var primaryTitleAccessoryContentEdgeInsets: LayoutOffset { get }
+    var secondaryTitle: TextStyle { get }
+    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric { get }
+}
 
-    var iconContentEdgeInsets: LayoutOffset? { get }
-    var spacingBetweenTitleAndSubtitle: LayoutMetric { get }
+extension PrimaryTitleViewTheme {
+    var primaryTitle: TextStyle {
+        return [
+            .textColor(Colors.Text.main),
+        ]
+    }
+
+    var primaryTitleAccessory: ImageStyle {
+        return []
+    }
+
+    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric {
+        return 0
+    }
 }

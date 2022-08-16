@@ -232,7 +232,7 @@ struct AssetImageSmallViewModel:
     }
 }
 
-fileprivate extension PrismURL {
+extension PrismURL {
     convenience init?(baseURL: URL?) {
         guard let baseURL = baseURL else {
             return nil

@@ -42,23 +42,23 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .text(placeholder)
         ]
         self.floatingPlaceholder = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .text(
                 (floatingPlaceholder ?? placeholder).footnoteRegular()
             )
         ]
         self.focusIndicator = [
-            .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
+            .backgroundColor(Colors.Shadows.TextField.defaultBackground)
         ]
         self.focusIndicatorActive = [
-            .backgroundColor(AppColors.Components.TextField.indicatorActive)
+            .backgroundColor(Colors.Shadows.TextField.typingBackground)
         ]
         self.errorFocusIndicator = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
+            .backgroundColor(Colors.Shadows.TextField.errorBackground)
         ]
         self.assistive = FormInputFieldAssistiveViewCommonTheme()
     }

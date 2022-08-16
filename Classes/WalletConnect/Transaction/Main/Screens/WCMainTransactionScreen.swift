@@ -68,7 +68,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return WCTransactionSigner(api: api)
+        return WCTransactionSigner(api: api, analytics: analytics)
     }()
 
     private var transactionParams: TransactionParams?
@@ -303,7 +303,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             if let transactionData = transaction.unparsedTransactionDetail,
                let session = wcSession {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
-                log(
+                analytics.track(
                     WCTransactionConfirmedEvent(
                         transactionID: transactionID,
                         dappName: session.peerMeta.name,

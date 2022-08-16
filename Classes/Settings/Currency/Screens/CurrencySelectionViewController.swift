@@ -106,7 +106,7 @@ final class CurrencySelectionViewController: BaseViewController {
             self.sharedDataController.currency.setAsPrimaryCurrency(selectedCurrencyID)
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
 
-            self.log(CurrencyChangeEvent(currencyId: selectedCurrencyID.localValue))
+            self.analytics.track(.changeCurrency(currencyId: selectedCurrencyID))
             
             NotificationCenter.default.post(
                 name: Self.didChangePreferredCurrency,

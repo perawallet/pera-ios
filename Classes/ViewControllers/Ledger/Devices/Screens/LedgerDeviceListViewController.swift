@@ -26,7 +26,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api)
+        return LedgerAccountFetchOperation(api: api, analytics: analytics)
     }()
 
     private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
@@ -82,7 +82,7 @@ final class LedgerDeviceListViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
     }
     
     override func prepareLayout() {

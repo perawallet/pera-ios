@@ -58,7 +58,8 @@ extension BaseAssetDetailViewController {
     func transactionFloatingActionButtonViewControllerDidSend(
         _ viewController: TransactionFloatingActionButtonViewController
     ) {
-        log(SendAssetDetailEvent(address: accountHandle.value.address))
+        let account = accountHandle.value
+        analytics.track(.tapSendInDetail(account: account))
 
         switch draft.type {
         case .all:
@@ -95,9 +96,27 @@ extension BaseAssetDetailViewController {
     func transactionFloatingActionButtonViewControllerDidReceive(
         _ viewController: TransactionFloatingActionButtonViewController
     ) {
-        log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
-        let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay, draft: draft, isTrackable: true), by: .present)
+        let account = accountHandle.value
+        let accountAddress = account.address
+        let shortAccountAddress = accountAddress.shortAddressDisplay
+        let accountName = account.name
+
+        analytics.track(.tapReceiveAssetInDetail(account: account))
+
+        let draft = QRCreationDraft(
+            address: accountAddress,
+            mode: .address,
+            title: accountName
+        )
+        
+        open(
+            .qrGenerator(
+                title: accountName ?? shortAccountAddress,
+                draft: draft,
+                isTrackable: true
+            ),
+            by: .present
+        )
     }
 
     func transactionFloatingActionButtonViewControllerDidBuy(

@@ -157,7 +157,7 @@ extension AccountAssetListViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -374,9 +374,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
-            case .algo:
-                openAlgoDetail()
-            case .asset:
+            case .asset(let item):
+                if item.asset is Algo {
+                    openAlgoDetail()
+                    return
+                }
+                
                 let assetIndex = indexPath.item
                 
                 if let assetDetail = dataController[assetIndex] {
@@ -423,7 +426,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -440,7 +443,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }

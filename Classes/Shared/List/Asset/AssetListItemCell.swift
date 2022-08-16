@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class AssetListItemCell:
     CollectionCell<PrimaryListItemView>,
     ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
+    override static var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
@@ -32,6 +32,11 @@ final class AssetListItemCell:
         super.init(frame: frame)
         contextView.customize(Self.theme)
 
-        separatorStyle = .single(Self.theme.separator)
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 0))
+        )
+        separatorStyle = .single(separator)
     }
 }

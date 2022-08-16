@@ -977,6 +977,11 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
+            )
         }
 
         return viewController as? T
@@ -1066,7 +1071,8 @@ extension Router {
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+            bannerController: appConfiguration.bannerController,
+            analytics: appConfiguration.analytics
         )
 
         transactionController.delegate = self

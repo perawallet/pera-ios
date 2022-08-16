@@ -36,29 +36,29 @@ struct AssetPreviewWithActionViewTheme:
         actionIconSize = (32, 32)
         actionCorner = Corner(radius: 4)
         actionFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         actionSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         actionThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

@@ -34,7 +34,7 @@ final class AccountAssetListAPIDataController:
     private var searchKeyword: String? = nil
     private var searchResults: [StandardAsset] = []
 
-    private var assetListItems: [ALGAssetListItemViewModel] = []
+    private var assetListItems: [AssetListItemViewModel] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -167,15 +167,16 @@ extension AccountAssetListAPIDataController {
 
             self.load(with: self.searchKeyword)
 
-            var assetViewModels: [ALGAssetListItemViewModel] = []
+            var assetViewModels: [AssetListItemViewModel] = []
 
             if self.isKeywordContainsAlgo() {
-                let algoAssetItem = AlgoAssetItem(
-                    account: self.accountHandle,
+                let assetItem = AssetItem(
+                    asset: self.accountHandle.value.algo,
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let viewModel = AlgoListItemViewModel(algoAssetItem)
+
+                let viewModel = AssetListItemViewModel(assetItem)
                 assetViewModels.append(viewModel)
             }
 
@@ -200,24 +201,14 @@ extension AccountAssetListAPIDataController {
                 )
                 assetItems.append(
                     contentsOf: self.assetListItems.map({ viewModel in
-                        if let algoItemViewModel = viewModel as? AlgoListItemViewModel,
-                            viewModel.asset == nil {
-                            return .algo(algoItemViewModel)
-                        }
-
-                        return .asset(viewModel as! AssetListItemViewModel)
+                        return .asset(viewModel)
                     })
                 )
             } else {
                 self.assetListItems = assetViewModels
                 assetItems.append(
                     contentsOf: self.assetListItems.map({ viewModel in
-                        if let algoItemViewModel = viewModel as? AlgoListItemViewModel,
-                            viewModel.asset == nil {
-                            return .algo(algoItemViewModel)
-                        }
-
-                        return .asset(viewModel as! AssetListItemViewModel)
+                        return .asset(viewModel)
                     })
                 )
             }

@@ -139,7 +139,7 @@ extension BottomWarningViewConfigurator {
             alignment: .center
         )
 
-        attributes.insert(.textColor(AppColors.Components.Text.gray.uiColor))
+        attributes.insert(.textColor(Colors.Text.gray))
 
         let attributedString =
         aDescription
@@ -156,7 +156,7 @@ extension BottomWarningViewConfigurator {
             let paramRange = (mutableAttributedString.string as NSString).range(of: $0)
 
             let paramAttributes: TextAttributeGroup = [
-                .textColor(AppColors.Components.Text.main.uiColor)
+                .textColor(Colors.Text.main)
             ]
 
             mutableAttributedString.addAttributes(
@@ -193,7 +193,7 @@ extension BottomWarningViewConfigurator {
             alignment: .center
         )
 
-        attributes.insert(.textColor(AppColors.Components.Link.primary.uiColor))
+        attributes.insert(.textColor(Colors.Link.primary))
 
         return attributes.asSystemAttributes()
     }
