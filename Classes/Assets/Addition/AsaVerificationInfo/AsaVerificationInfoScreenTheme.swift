@@ -86,9 +86,9 @@ struct AsaVerificationInfoScreenTheme:
             ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundImage([
-                .normal("components/buttons/primary/bg"),
-                .highlighted("components/buttons/primary/bg-highlighted"),
-                .selected("components/buttons/primary/bg-selected")
+                .normal("components/buttons/secondary/bg"),
+                .highlighted("components/buttons/secondary/bg-highlighted"),
+                .selected("components/buttons/secondary/bg-selected")
             ])
         ]
         self.primaryActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)

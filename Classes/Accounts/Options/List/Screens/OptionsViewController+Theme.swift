@@ -26,7 +26,7 @@ struct OptionsViewControllerTheme:
     var primaryContextPaddings: LayoutPaddings
     var secondaryContextPaddings: LayoutPaddings
     var separator: Separator
-    var action: ListActionViewTheme
+    var button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
@@ -43,6 +43,6 @@ struct OptionsViewControllerTheme:
             size: 1,
             position: .bottom((horizontalPadding, horizontalPadding))
         )
-        action = ListActionViewTheme(family)
+        button = ListItemButtonTheme(family)
     }
 }

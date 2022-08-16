@@ -23,7 +23,7 @@ struct AccountRecoverOptionsViewControllerTheme:
     LayoutSheet {
     var background: ViewStyle
     let contentPaddings: LayoutPaddings
-    let action: ListActionViewTheme
+    let button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
@@ -32,6 +32,6 @@ struct AccountRecoverOptionsViewControllerTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+        self.button = ListItemButtonTheme(family)
     }
 }

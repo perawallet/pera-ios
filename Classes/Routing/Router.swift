@@ -979,6 +979,37 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .optInAsset(let draft, let theme, let eventHandler):
+            viewController = OptInAssetScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
+        case .optOutAsset(let draft, let theme, let eventHandler):
+            viewController = OptOutAssetScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
+        case .transferAssetBalance(let draft, let theme, let eventHandler):
+            viewController = TransferAssetBalanceScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
+            )
         }
 
         return viewController as? T
