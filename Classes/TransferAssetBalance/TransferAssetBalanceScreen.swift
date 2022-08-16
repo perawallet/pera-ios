@@ -98,7 +98,7 @@ extension TransferAssetBalanceScreen {
             $0.trailing == 0
         }
 
-        assetIDView.observe(event: .performAccessory) {
+        assetIDView.startObserving(event: .performAccessory) {
             [weak self] in
             guard let self = self else {
                 return
