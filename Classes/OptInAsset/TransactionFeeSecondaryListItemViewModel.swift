@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct TransactionFeeSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
-    var accessory: ButtonStyle?
+    var accessory: SecondaryListItemValueViewModel?
 
     init(
         fee: UInt64
@@ -31,10 +31,35 @@ struct TransactionFeeSecondaryListItemViewModel: SecondaryListItemViewModel {
 
 extension TransactionFeeSecondaryListItemViewModel {
     private mutating func bindTitle() {
-        title = getTitle(title: "collectible-approve-transaction-fee".localized)
+        var attributes = Typography.bodyRegularAttributes()
+        attributes.insert(.textColor(AppColors.Components.Text.gray))
+
+        title =
+        "collectible-approve-transaction-fee"
+            .localized
+            .attributed(attributes)
     }
 
     private mutating func bindAccessory(
+        _ fee: UInt64
+    ) {
+        accessory = TransactionFeeSecondaryListItemValueViewModel(fee: fee)
+    }
+}
+
+struct TransactionFeeSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
+    var icon: ImageStyle?
+    var title: TextProvider?
+
+    init(
+        fee: UInt64
+    ) {
+        bindTitle(fee)
+    }
+}
+
+extension TransactionFeeSecondaryListItemValueViewModel {
+    private mutating func bindTitle(
         _ fee: UInt64
     ) {
         let formatter = CurrencyFormatter()
@@ -43,8 +68,16 @@ extension TransactionFeeSecondaryListItemViewModel {
         let unformattedFee = fee.toAlgos
         let formattedFee = formatter.format(unformattedFee)
 
-        accessory = getNonInteractableAccessory(
-            title: formattedFee ?? "\(unformattedFee)"
+        var attributes = Typography.bodyRegularAttributes(
+            lineBreakMode: .byTruncatingTail
         )
+
+        attributes.insert(.textColor(AppColors.Components.Text.main))
+
+        title =
+            (formattedFee ?? "\(unformattedFee)")
+                .attributed(
+                    attributes
+                )
     }
 }

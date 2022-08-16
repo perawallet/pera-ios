@@ -19,22 +19,42 @@ import MacaroonUIKit
 
 struct AssetIDSecondaryListItemViewTheme: SecondaryListItemViewTheme {
     var contentEdgeInsets: LayoutPaddings
+    var title: TextStyle
     var titleMinimumWidthRatio: LayoutMetric
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric
-    var accessoryLayout: Button.Layout
-    var accessoryContentEdgeInsets: LayoutPaddings
-    var accessoryCorner: Corner
+    var accessory: SecondaryListItemValueViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
         contentEdgeInsets = (10, 24, 10, 24)
+        title = []
         titleMinimumWidthRatio = 0.25
-        minimumSpacingBetweenTitleAndAccessory = 8
-        accessoryLayout = .none
-        accessoryContentEdgeInsets = (6, 12, 6, 12)
-        accessoryCorner = Corner(
-            radius: 16
-        )
+        minimumSpacingBetweenTitleAndAccessory = 12
+        accessory = AssetIDSecondaryListItemValueViewTheme()
+    }
+}
+
+struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
+    var backgroundImage: ImageStyle
+    var view: ViewStyle
+    var contentEdgeInsets: LayoutPaddings
+    var iconLayoutOffset: LayoutOffset
+    var title: TextStyle
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        backgroundImage = [
+            .image("components/buttons/copy/bg".templateImage),
+            .tintColor(AppColors.Shared.Layer.grayLighter),
+            .isInteractable(false)
+        ]
+        view = [
+            .isInteractable(true)
+        ]
+        contentEdgeInsets = (6, 12, 6, 12)
+        iconLayoutOffset = (0, 0)
+        title = []
     }
 }

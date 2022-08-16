@@ -21,21 +21,15 @@ import UIKit
 final class SecondaryListItemView:
     MacaroonUIKit.View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAccessory: UIControlInteraction()
+        .performAccessory: TargetActionInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var titleView = UILabel()
-
-    private var accessoryLayout: Button.Layout {
-        return theme?.accessoryLayout ?? .none
-    }
-
-    private lazy var accessoryView = MacaroonUIKit.Button(accessoryLayout)
+    private lazy var accessoryView = SecondaryListItemValueView()
 
     private var theme: SecondaryListItemViewTheme?
 
@@ -58,13 +52,21 @@ final class SecondaryListItemView:
     func bindData(
         _ viewModel: SecondaryListItemViewModel?
     ) {
-        viewModel?.title?.load(in: titleView)
-
-        if let accessory = viewModel?.accessory {
-            accessoryView.customizeAppearance(accessory)
+        if let title = viewModel?.title {
+            title.load(in: titleView)
         } else {
-            accessoryView.resetAppearance()
+            titleView.text = nil
+            titleView.attributedText = nil
         }
+
+        accessoryView.bindData(viewModel?.accessory)
+
+        /// <todo>: Remove this, it is only for debugging purposes.
+        _ = Self.calculatePreferredSize(
+            viewModel,
+            for: theme!,
+            fittingIn:  CGSize((UIScreen.main.bounds.width, .greatestFiniteMagnitude))
+        )
     }
 
     class func calculatePreferredSize(
@@ -78,29 +80,72 @@ final class SecondaryListItemView:
 
         let width = size.width
 
-        let titleSize = viewModel.title?.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        let contentWidth =
+            width
+            - theme.contentEdgeInsets.leading
+            - theme.contentEdgeInsets.trailing
+
+        let accessoryMaxWidth =
+            (contentWidth - theme.minimumSpacingBetweenTitleAndAccessory) * (1 - theme.titleMinimumWidthRatio)
+
+        let accessoryIconSize = viewModel.accessory?.icon?.image?.uiImage.size ?? .zero
+        let accessoryIconOffset =
+            accessoryIconSize != .zero
+            ? theme.accessory.iconLayoutOffset.x
+            : .zero
+
+        let accessoryTitleMaxWidth =
+            accessoryMaxWidth
+            - accessoryIconSize.width
+            - accessoryIconOffset
+            - theme.accessory.contentEdgeInsets.leading
+            - theme.accessory.contentEdgeInsets.trailing
+
+        let accessoryTitleSize = viewModel.accessory?.title?.boundingSize(
+            multiline: theme.accessory.supportsMultiline,
+            fittingSize: CGSize((accessoryTitleMaxWidth, .greatestFiniteMagnitude))
         ) ?? .zero
 
-        let accessoryIconSize = viewModel.accessory?.icon?.first?.uiImage.size ?? .zero
-        let accessoryTitleSize = viewModel.accessory?.title?.text.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        ) ?? .zero
+        let accessoryTitleEstimatedLineHeight: CGFloat = 30
+
+        let titleSize: CGSize
+
+        let isAccessoryTitleMultiline = accessoryTitleSize.height > accessoryTitleEstimatedLineHeight
+        if isAccessoryTitleMultiline {
+            let titleMaxWidth = (contentWidth - theme.minimumSpacingBetweenTitleAndAccessory) *  theme.titleMinimumWidthRatio
+
+            titleSize = viewModel.title?.boundingSize(
+                multiline: theme.titleSupportsMultiline,
+                fittingSize: CGSize((titleMaxWidth, .greatestFiniteMagnitude))
+            ) ?? .zero
+        } else {
+            let accessorySize =
+                accessoryTitleSize.width +
+                accessoryIconSize.width +
+                accessoryIconOffset +
+                theme.accessory.contentEdgeInsets.leading +
+                theme.accessory.contentEdgeInsets.trailing
+            let titleMaxWidth =
+                contentWidth -
+                accessorySize -
+                theme.minimumSpacingBetweenTitleAndAccessory
+
+            titleSize = viewModel.title?.boundingSize(
+                multiline: theme.titleSupportsMultiline,
+                fittingSize: CGSize((titleMaxWidth, .greatestFiniteMagnitude))
+            ) ?? .zero
+        }
 
         let accessoryHeight =
-        theme.accessoryContentEdgeInsets.top +
-        max(accessoryIconSize.height, accessoryTitleSize.height) +
-        theme.accessoryContentEdgeInsets.bottom
+            theme.accessory.contentEdgeInsets.top +
+            max(accessoryIconSize.height, accessoryTitleSize.height) +
+            theme.accessory.contentEdgeInsets.bottom
 
-        let contentHeight =
-        theme.contentEdgeInsets.top +
-        max(titleSize.height, accessoryHeight) +
-        theme.contentEdgeInsets.bottom
-
-        let preferredHeight = contentHeight
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+        let preferredHeight =
+            theme.contentEdgeInsets.top +
+            max(titleSize.height, accessoryHeight) +
+            theme.contentEdgeInsets.bottom
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
@@ -120,15 +165,18 @@ extension SecondaryListItemView {
     private func addTitle(
         _ theme: SecondaryListItemViewTheme
     ) {
+        titleView.customizeAppearance(theme.title)
+
         contentView.addSubview(titleView)
 
         titleView.fitToHorizontalIntrinsicSize(
             hugging: .defaultLow,
-            compression: .defaultHigh
+            compression: .defaultLow
         )
 
         titleView.snp.makeConstraints {
-            $0.width >= self * theme.titleMinimumWidthRatio
+            $0.width >=
+            (contentView.snp.width - theme.minimumSpacingBetweenTitleAndAccessory) * theme.titleMinimumWidthRatio
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0
@@ -138,16 +186,15 @@ extension SecondaryListItemView {
     private func addAccessory(
         _ theme: SecondaryListItemViewTheme
     ) {
-        accessoryView.contentEdgeInsets = UIEdgeInsets(theme.accessoryContentEdgeInsets)
-        accessoryView.draw(corner: theme.accessoryCorner)
+        accessoryView.customize(theme.accessory)
 
         contentView.addSubview(accessoryView)
-        accessoryView.fitToIntrinsicSize()
         accessoryView.snp.makeConstraints {
-            $0.top == 0
+            $0.centerY == 0
+            $0.top >= 0
             $0.leading >= titleView.snp.trailing + theme.minimumSpacingBetweenTitleAndAccessory
+            $0.bottom <= 0
             $0.trailing == 0
-            $0.bottom == 0
         }
 
         startPublishing(

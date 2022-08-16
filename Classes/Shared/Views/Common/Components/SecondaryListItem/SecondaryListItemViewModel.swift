@@ -16,93 +16,9 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 protocol SecondaryListItemViewModel: ViewModel {
     var title: TextProvider? { get }
-    var accessory: ButtonStyle? { get }
-}
-
-extension SecondaryListItemViewModel {
-    func getTitle(
-        title: String,
-        textColor: Color = AppColors.Components.Text.gray
-    ) -> TextProvider {
-        var attributes: TextAttributeGroup = .bodyRegular(
-            lineBreakMode: .byTruncatingTail
-        )
-
-        attributes.insert(.textColor(textColor))
-
-        return title.attributed(
-            attributes
-        )
-    }
-
-    func getNonInteractableAccessory(
-        title: String,
-        titleColor: Color = AppColors.Components.Text.main
-    ) -> ButtonStyle {
-        return [
-            .title(getNonInteractableAccessoryTitle(title)),
-            .titleColor([ .normal(titleColor) ] ),
-            .isInteractable(false)
-        ]
-    }
-
-    func getNonInteractableAccessory(
-        icon: Image,
-        title: String,
-        titleColor: Color = AppColors.Components.Text.main
-    ) -> ButtonStyle {
-        return [
-            .title(getNonInteractableAccessoryTitle(title)),
-            .icon([ .normal(icon) ]),
-            .titleColor([ .normal(titleColor) ] ),
-            .isInteractable(false)
-        ]
-    }
-
-    private func getNonInteractableAccessoryTitle(
-        _ title: String
-    ) -> EditText {
-        return .attributedString(
-            title
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
-        )
-    }
-
-    func getInteractableAccessory(
-        title: String,
-        titleColor: Color = AppColors.Shared.Helpers.positive
-    ) -> ButtonStyle {
-        return [
-            .title(getInteractableAccessoryTitle(title)),
-            .titleColor([ .normal(titleColor), .highlighted(titleColor) ] ),
-        ]
-    }
-
-    func getInteractableAccessory(
-        icon: Image,
-        title: String,
-        titleColor: Color = AppColors.Shared.Helpers.positive
-    ) -> ButtonStyle {
-        return [
-            .title(getInteractableAccessoryTitle(title)),
-            .icon([ .normal(icon), .highlighted(icon) ]),
-            .titleColor([ .normal(titleColor), .highlighted(titleColor) ] ),
-        ]
-    }
-
-    private func getInteractableAccessoryTitle(
-        _ title: String
-    ) -> EditText {
-        return .attributedString(
-            title
-                .bodyMedium(
-                    lineBreakMode: .byTruncatingTail
-                )
-        )
-    }
+    var accessory: SecondaryListItemValueViewModel? { get }
 }

@@ -12,19 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   VerifiedAssetInformationViewController+Theme.swift
+//   SecondaryListItemValueViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-extension VerifiedAssetInformationViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let verifiedAssetInformationViewTheme: VerifiedAssetInformationViewTheme
-        let backgroundColor: Color
-        
-        init(_ family: LayoutFamily) {
-            verifiedAssetInformationViewTheme = VerifiedAssetInformationViewTheme()
-            backgroundColor = AppColors.Shared.System.background
-        }
-    }
+protocol SecondaryListItemValueViewModel: ViewModel {
+    var icon: ImageStyle? { get }
+    var title: TextProvider? { get }
 }

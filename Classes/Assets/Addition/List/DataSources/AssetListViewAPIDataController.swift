@@ -33,8 +33,6 @@ final class AssetListViewAPIDataController:
     private let api: ALGAPI
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
 
-    private let filter: AssetSearchFilter
-
     private var nextCursor: String?
 
     private var hasNext: Bool {
@@ -42,11 +40,9 @@ final class AssetListViewAPIDataController:
     }
 
     init(
-        _ api: ALGAPI,
-        filter: AssetSearchFilter
+        _ api: ALGAPI
     ) {
         self.api = api
-        self.filter = filter
     }
 
 }
@@ -88,7 +84,7 @@ extension AssetListViewAPIDataController {
 
     private func load(with query: String?, isPaginated: Bool = false) {
         cancelOngoingEndpoint()
-        let searchDraft = AssetSearchQuery(status: filter, query: query, cursor: nextCursor)
+        let searchDraft = AssetSearchQuery(query: query, cursor: nextCursor)
 
         ongoingEndpoint =
         api.searchAssets(

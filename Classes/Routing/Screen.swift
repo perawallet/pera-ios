@@ -59,12 +59,10 @@ indirect enum Screen {
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assets: [StandardAsset]?,
-        eventHandler: AppCallTransactionDetailViewController.EventHandler
+        assets: [StandardAsset]?
     )
     case appCallAssetList(
-        dataController: AppCallAssetListDataController,
-        eventHandler: AppCallAssetListViewController.EventHandler
+        dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetsListDataController)
@@ -78,7 +76,6 @@ indirect enum Screen {
         theme: AssetActionConfirmationViewControllerTheme = .init()
     )
     case rewardDetail(account: Account)
-    case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
@@ -101,7 +98,7 @@ indirect enum Screen {
         address: String? = nil
     )
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
-    case notificationFilter(flow: NotificationFilterViewController.Flow)
+    case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
@@ -154,6 +151,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
     )
+    case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
@@ -213,6 +211,11 @@ indirect enum Screen {
         theme: OptOutAssetScreenTheme = .init(),
         eventHandler: OptOutAssetScreen.EventHandler
     )
+    case transferAssetBalance(
+        draft: TransferAssetBalanceDraft,
+        theme: TransferAssetBalanceScreenTheme = .init(),
+        eventHandler: TransferAssetBalanceScreen.EventHandler
+    )
 }
 
 extension Screen {
@@ -263,4 +266,8 @@ extension Screen.Transition {
         case pop
         case dismiss
     }
+}
+
+extension Screen {
+    typealias EventHandler<Event> = (Event) -> Void
 }

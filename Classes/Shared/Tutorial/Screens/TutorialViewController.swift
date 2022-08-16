@@ -36,10 +36,13 @@ final class TutorialViewController: BaseScrollViewController {
         switch tutorial {
         case .passphraseVerified,
              .localAuthentication,
-             .accountVerified:
+             .accountVerified,
+             .biometricAuthenticationEnabled,
+             .collectibleTransferConfirmed,
+             .accountSuccessfullyRekeyed,
+             .ledgerSuccessfullyConnected:
             hidesCloseBarButtonItem = true
-        default:
-            hidesCloseBarButtonItem = false
+        default: break
         }
     }
 
