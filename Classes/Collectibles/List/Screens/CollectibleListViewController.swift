@@ -255,7 +255,7 @@ extension CollectibleListViewController {
             return
         }
 
-        view.endEditing(true)
+        endEditing()
 
         switch itemIdentifier {
         case .collectible(let item):
@@ -294,8 +294,7 @@ extension CollectibleListViewController {
         }
 
         return UIContextMenuConfiguration(
-            identifier: indexPath as NSIndexPath,
-            previewProvider: nil
+            identifier: indexPath as NSIndexPath
         ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
@@ -360,7 +359,7 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: NoContentWithActionIllustratedCell
     ) {
-        cell.observe(event: .performPrimaryAction) {
+        cell.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -380,7 +379,7 @@ extension CollectibleListViewController {
             self.openReceiveCollectibleAccountList()
         }
 
-        cell.observe(event: .performSecondaryAction) {
+        cell.startObserving(event: .performSecondaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -395,20 +394,24 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: ManagementItemWithSecondaryActionCell
     ) {
-        cell.observe(event: .primaryAction) {
+        cell.startObserving(event: .primaryAction) {
             [weak self] in
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
             
             self.openCollectiblesManagementScreen()
         }
 
-        cell.observe(event: .secondaryAction) {
+        cell.startObserving(event: .secondaryAction) {
             [weak self] in
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.openReceiveCollectibleAccountList()
         }
@@ -417,11 +420,13 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: ManagementItemCell
     ) {
-        cell.observe(event: .primaryAction) {
+        cell.startObserving(event: .primaryAction) {
             [weak self] in
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.openCollectiblesManagementScreen()
         }
@@ -527,9 +532,9 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     func managementOptionsViewControllerDidTapFilter(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = self.open(
+        let controller = open(
             .collectiblesFilterSelection(
-                filter: self.dataController.currentFilter
+                filter: dataController.currentFilter
             ),
             by: .present
         ) as? CollectiblesFilterSelectionViewController

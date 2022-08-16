@@ -21,7 +21,7 @@ import UIKit
 final class AssetPreviewActionView: View {
     weak var delegate: AssetPreviewActionViewDelegate?
 
-    private lazy var imageView = AssetImageView()
+    private lazy var imageView = PrimaryImageView()
     private lazy var assetNameVerticalStackView = UIStackView()
     private lazy var assetNameHorizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()

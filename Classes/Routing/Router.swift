@@ -49,11 +49,11 @@ class Router:
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
         
-        observeNotifications()
+        startObservingNotifications()
     }
     
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     func launchAuthorization() {
@@ -523,10 +523,9 @@ class Router:
             account,
             transaction,
             transactionTypeFilter,
-            assets,
-            eventHandler
+            assets
         ):
-            let aViewController = AppCallTransactionDetailViewController(
+            viewController = AppCallTransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: transactionTypeFilter,
@@ -536,18 +535,14 @@ class Router:
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
-        case .appCallAssetList(let dataController, let eventHandler):
-            let aViewController = AppCallAssetListViewController(
+        case .appCallAssetList(let dataController):
+            viewController = AppCallAssetListViewController(
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .assetDetail(draft, preferences):
             viewController = AssetDetailViewController(
                 draft: draft,
@@ -574,18 +569,15 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle, dataController):
-            viewController = AssetSearchViewController(
-                accountHandle: accountHandle,
-                dataController: dataController,
-                configuration: configuration
-            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
-        case let .removeAsset(account):
-            viewController = ManageAssetsViewController(account: account, configuration: configuration)
+        case let .removeAsset(dataController):
+            viewController = ManageAssetsViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .managementOptions(managementType, delegate):
             let managementOptionsViewController = ManagementOptionsViewController(managementType: managementType, configuration: configuration)
             managementOptionsViewController.delegate = delegate
@@ -606,8 +598,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
@@ -676,8 +666,8 @@ class Router:
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
             )
-        case let .notificationFilter(flow):
-            viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
+        case .notificationFilter:
+            viewController = NotificationFilterViewController(configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .tutorial(flow, tutorial):
@@ -852,13 +842,16 @@ class Router:
                 walletConnector: configuration.walletConnector,
                 currencyFormatter: currencyFormatter
             )
+            dataSource.load()
             viewController = WCSingleTransactionRequestScreen(
                 dataSource: dataSource,
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
-        case .peraIntroduction:
-            viewController = PeraIntroductionViewController(configuration: configuration)
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -1078,7 +1071,8 @@ extension Router {
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+            bannerController: appConfiguration.bannerController,
+            analytics: appConfiguration.analytics
         )
 
         transactionController.delegate = self
@@ -1183,7 +1177,7 @@ extension Router {
 }
 
 extension Router {
-    private func observeNotifications() {
+    private func startObservingNotifications() {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
@@ -1467,6 +1461,10 @@ extension Router {
     ) { }
 
     func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
 }

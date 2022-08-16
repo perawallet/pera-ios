@@ -53,7 +53,7 @@ struct AssetTransactionHistoryLoadingViewCommonTheme: AssetTransactionHistoryLoa
         self.currencyViewSize = (59, 20)
 
         self.separatorPadding = 32
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
 
         self.assetNameLabelSize = (138, 24)
         self.assetNameLabelTopPadding = 32

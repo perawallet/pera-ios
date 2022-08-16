@@ -42,29 +42,29 @@ struct QRScanOptionsViewControllerTheme:
         _ family: LayoutFamily
     ) {
         addressContainerCorner = Corner(radius: 4)
-        addressContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        addressContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
         addressContainerShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         addressTitle = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         addressValue = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
 
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         verticalPadding = 20
         let horizontalPadding: LayoutMetric = 20
@@ -75,7 +75,7 @@ struct QRScanOptionsViewControllerTheme:
         optionContextPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
         addressValueOffset = 4
         separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((60, horizontalPadding))
         )

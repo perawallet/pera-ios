@@ -1,5 +1,5 @@
 /* (No Comment) */
-"account-detail-assets-search" = "Search assets";
+"account-detail-assets-search" = "Buscar activos";
 
 /* (No Comment) */
 "account-detail-portfolio-title" = "Valor de la cuenta";
@@ -31,11 +31,14 @@
 /* (No Comment) */
 "account-select-clipboard-title" = "Pegar desde el portapapeles";
 
-/* MARK: AccountSelect */
+/* (No Comment) */
 "account-select-header-accounts-title" = "Mis cuentas";
 
 /* (No Comment) */
 "account-select-header-contacts-title" = "Contactos";
+
+/* MARK: AccountSelect */
+"account-select-header-matched-accounts-title" = "Coincidencias de cuentas";
 
 /* (No Comment) */
 "account-select-header-search-title" = "Busca o ingresa una dirección de monedero";
@@ -161,10 +164,10 @@
 "asset-all-title" = "Todos";
 
 /* (No Comment) */
-"asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
+"asset-confirmation-not-fetched" = "No se pudo obtener el activo. Intenta de nuevo más tarde.";
 
 /* (No Comment) */
-"asset-confirmation-not-found" = "Asset could not be found.";
+"asset-confirmation-not-found" = "No se pudo encontrar el activo.";
 
 /* (No Comment) */
 "asset-copy-id" = "Copiar ID";
@@ -197,13 +200,13 @@
 "asset-not-found-title" = "No se encontraron activos";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "Remove Asset";
+"asset-remove-confirmation-title" = "Eliminar activo";
 
 /* (No Comment) */
-"asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
+"asset-remove-subtitle" = "Para eliminar un activo, primero debes transferir el saldo restante a otra cuenta.";
 
 /* (No Comment) */
-"asset-remove-title" = "Remove Assets";
+"asset-remove-title" = "Eliminar activos";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "Estas a punto de eliminar %@ de %@. No podrás operar con este activo desde esta cuenta a menos que vuelvas a agregarlo.";
@@ -236,7 +239,7 @@
 "asset-support-title" = "La cuenta no acepta este activo";
 
 /* (No Comment) */
-"asset-support-your-add-message" = "Agrega este activo e inténtalo nuevamente.";
+"asset-support-your-add-message" = "Tus cuentas no poseen este activo, agrega este activo y vuelve a intentar.";
 
 /* (No Comment) */
 "asset-support-your-add-title" = "Tus cuentas no poseen este activo";
@@ -252,6 +255,9 @@
 
 /* (No Comment) */
 "asset-you-already-own-message" = "Ya posees este activo";
+
+/* (No Comment) */
+"assets-title" = "Activos";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "Mostrar QR";
@@ -428,7 +434,7 @@
 "collectible-detail-show-on" = "Mostrar en";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D card mode";
+"collectible-detail-tap-3D" = "Modo tarjeta 3D";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "Ver transacción";
@@ -458,10 +464,10 @@
 "collectible-opt-out-info-title" = "Dar de baja el NFT.";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
+"collectible-receive-account-list-info" = "Tu cuenta necesita estar suscrita al NFT antes de que puedas recibirlo. Asegúrate de revisar el ID antes de confirmar.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.";
+"collectible-receive-asset-list-info" = "Puedes buscar el NFT al que te quieres suscribir pegando el nombre o ID de activo en la barra de búsqueda a continuación.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "Cuenta seleccionada";
@@ -518,7 +524,7 @@
 "collectibles-empty-title" = "Coleccionables";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "Search NFTs";
+"collectibles-list-input-placeholder" = "Buscar NFT";
 
 /* (No Comment) */
 "collectibles-receive-account-list-header-description" = "Selecciona la cuenta del monedero en la que deseas recibirlo:";
@@ -690,6 +696,21 @@
 
 /* (No Comment) */
 "governance-banner-title" = "¡Comienza el Programa de Gobernanza de Algorand!";
+
+/* (No Comment) */
+"inner-transaction-plural-count" = "%@ Transacciones Internas";
+
+/* (No Comment) */
+"inner-transaction-singular-count" = "1 Transacción Interna";
+
+/* MARK: Inner Transactions */
+"inner-transactions-title" = "Transacciones Internas";
+
+/* (No Comment) */
+"inner-txns-plural-count" = "%@ transacciones internas";
+
+/* (No Comment) */
+"inner-txns-singular-count" = "1 transacción interna";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "No fue posible conectarse al servidor, asegúrate de estar conectado a Internet";
@@ -1111,17 +1132,20 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "MM";
 
-/* (No Comment) */
+/* MARK: Number Abbreviation */
 "number-abbreviation-million" = "M";
 
-/* MARK: Number Abbreviation */
-"number-abbreviation-thousand" = "K";
+/* (No Comment) */
+"number-abbreviation-quadrillion" = "C";
+
+/* (No Comment) */
+"number-abbreviation-quintillion" = "T";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "B";
 
 /* (No Comment) */
-"opitons-collectibles-filter" = "Filter NFTs";
+"opitons-collectibles-filter" = "Filtrar NFT";
 
 /* (No Comment) */
 "options-auth-account" = "Autorizar dirección de la cuenta";
@@ -1136,7 +1160,7 @@
 "options-manage-assets" = "Gestionar activos";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage Collectibles";
+"options-manage-collectibles" = "Administrar coleccionables";
 
 /* (No Comment) */
 "options-mute-notification" = "Silenciar alertas";
@@ -1157,10 +1181,10 @@
 "options-remove-watch-account-explanation" = "Estás a punto de eliminar una cuenta en observación. ¿Estás seguro de que quieres continuar?";
 
 /* (No Comment) */
-"options-show-qr" = "Show Address";
+"options-show-qr" = "Mostrar dirección";
 
 /* (No Comment) */
-"options-sort-title" = "Sort";
+"options-sort-title" = "Ordenar";
 
 /* MARK: Options */
 "options-title" = "CONFIGURACIÓN DE LA CUENTA";
@@ -1295,7 +1319,7 @@
 "portfolio-asset-holdings-title" = "Tenencias de activos";
 
 /* (No Comment) */
-"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
+"portfolio-calculation-description" = "El valor total de la cartera se calcula sumando todos los valores de los activos y Algos disponibles en tus cuentas, a excepción de las cuentas en observación. \n\nLos valores de los activos se calculan en función de los valores diarios obtenidos de varios socios del ecosistema. Dado que algunos valores de activos no están disponibles, el valor total de la cartera debe considerarse una estimación.";
 
 /* MARK: PortfolioDescription */
 "portfolio-calculation-title" = "Cómo calculamos el valor de la cartera";
@@ -1352,22 +1376,22 @@
 "qr-scan-message-text" = "Solo puedes escanear el QR desde esta página. Para ver tu QR, selecciona el icono en tu cuenta";
 
 /* (No Comment) */
-"qr-scan-option-add-contact" = "Add new contact";
+"qr-scan-option-add-contact" = "Agregar nuevo contacto";
 
 /* (No Comment) */
-"qr-scan-option-add-watch" = "Add Watch account";
+"qr-scan-option-add-watch" = "Agregar cuenta en observación";
 
 /* (No Comment) */
-"qr-scan-option-scanned-title" = "Scanned account address";
+"qr-scan-option-scanned-title" = "Se escaneó la dirección de la cuenta";
 
 /* (No Comment) */
-"qr-scan-option-send-transaction" = "Send transaction";
+"qr-scan-option-send-transaction" = "Enviar transacción";
 
 /* (No Comment) */
-"qr-scan-option-title" = "Address scanned!";
+"qr-scan-option-title" = "¡Dirección escaneada!";
 
 /* MARK: QR Scanning */
-"qr-scan-overlay-title" = "Scan a QR code";
+"qr-scan-overlay-title" = "Escanear código QR";
 
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "Debes escanear direcciones de cuentas válidas";
@@ -1382,22 +1406,22 @@
 "qr-scan-title" = "Escanear código QR";
 
 /* (No Comment) */
-"quick-actions-address-title" = "Address";
+"quick-actions-address-title" = "Dirección";
 
 /* MARK: QuickActions */
-"quick-actions-buy-algo-title" = "Buy ALGO";
+"quick-actions-buy-algo-title" = "Comprar ALGO";
 
 /* (No Comment) */
-"quick-actions-more-title" = "More";
+"quick-actions-more-title" = "Más";
 
 /* (No Comment) */
-"quick-actions-receive-title" = "Receive";
+"quick-actions-receive-title" = "Recibir";
 
 /* (No Comment) */
-"quick-actions-scan-qr-title" = "Scan QR";
+"quick-actions-scan-qr-title" = "Escanear QR";
 
 /* (No Comment) */
-"quick-actions-send-title" = "Send";
+"quick-actions-send-title" = "Enviar";
 
 /* (No Comment) */
 "recover-copy-error" = "El último texto copiado no es una frase secreta válida de 25 palabras. Copia una frase secreta válida y vuelve a intentarlo.";
@@ -1421,19 +1445,19 @@
 "recover-from-seed-verify-exist-error" = "Esta cuenta ya existe";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "La cuenta en observación se ha agregado con éxito.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "¡Bienvenido a Pera Wallet!\nLa cuenta en observación se ha agregado con éxito.";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "¡Bienvenido a Algorand!\nTu cuenta está lista para usarse.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Felicitaciones, ya puedes usar tu cuenta.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "Account is Verified!";
+"recover-from-seed-verify-pop-up-title" = "¡Cuenta verificada!";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title-watch-account" = "Se agregó con éxito la cuenta en observación";
@@ -1478,10 +1502,10 @@
 "request-title" = "Solicitar";
 
 /* (No Comment) */
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+"required-min-balance-description" = "No tienes saldo suficiente para pagar las tarifas de transacción. La blockchain de Algorand requiere 0,001 Algos como respaldo de una transacción. Puedes conseguir más Algos para pagar esta tarifa de transacción.\n\nSi te suscribiste a dApps y contratos inteligentes asociados con tu cuenta (de diferentes aplicaciones del ecosistema), cada activo aumenta el saldo mínimo requerido en 0,1 Algo. Para reducir el saldo mínimo requerido para esta cuenta, debes darte de baja de los activos o dApps que causan ese aumento del saldo mínimo.";
 
 /* (No Comment) */
-"required-min-balance-title" = "Low Balance";
+"required-min-balance-title" = "Saldo bajo";
 
 /* (No Comment) */
 "reward-list-title" = "Recompensa";
@@ -1649,22 +1673,22 @@
 "settings-currency" = "Moneda";
 
 /* (No Comment) */
-"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
+"settings-currency-description" = "Tu moneda principal es %@ y tu moneda secundaria es %@";
 
 /* (No Comment) */
 "settings-currency-header-title" = "Preferencias de moneda";
 
 /* (No Comment) */
-"settings-currency-not-found-detail" = "Try different currency";
+"settings-currency-not-found-detail" = "Probar con una moneda diferente";
 
 /* (No Comment) */
-"settings-currency-not-found-title" = "No currency found";
+"settings-currency-not-found-title" = "No se encontró ninguna moneda";
 
 /* (No Comment) */
-"settings-currency-search" = "Search";
+"settings-currency-search" = "Buscar";
 
 /* (No Comment) */
-"settings-currency-title" = "Main Currency";
+"settings-currency-title" = "Moneda principal";
 
 /* (No Comment) */
 "settings-delete-data-title" = "Eliminar toda la información";
@@ -1766,13 +1790,13 @@
 "single-transaction-request-show-detail-title" = "Mostrar información de la transacción";
 
 /* MARK: Sort Account List */
-"sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+"sort-account-list-manually-header-title" = "Reordenar cuentas manualmente";
 
 /* (No Comment) */
-"story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
+"story-copy-address-description" = "Puedes copiar rápidamente la dirección de la cuenta presionando y manteniendo presionada la casilla de la Cuenta";
 
 /* MARK: Story */
-"story-copy-address-title" = "Press and hold to “Copy Address”";
+"story-copy-address-title" = "Mantén presionado para \"Copiar dirección\"";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Términos y condiciones de servicio";
@@ -1799,10 +1823,13 @@
 "title-algorand-value" = "Valor";
 
 /* (No Comment) */
-"title-alphabetically-a-to-z" = "Alphabetically A to Z";
+"title-alphabetically-a-to-z" = "Alfabéticamente de la A a la Z";
 
 /* (No Comment) */
-"title-alphabetically-z-to-a" = "Alphabetically Z to A";
+"title-alphabetically-z-to-a" = "Alfabéticamente de la Z a la A";
+
+/* (No Comment) */
+"title-app-call" = "Llamada de la aplicación";
 
 /* (No Comment) */
 "title-approve" = "Aprobar";
@@ -1811,7 +1838,7 @@
 "title-asset-id" = "ID de activo";
 
 /* (No Comment) */
-"title-buy-algo" = "Buy ALGO";
+"title-buy-algo" = "Comprar ALGO";
 
 /* (No Comment) */
 "title-cancel" = "Cancelar";
@@ -1889,10 +1916,10 @@
 "title-got-it" = "¡Entendido!";
 
 /* (No Comment) */
-"title-highest-value-to-lowest" = "Highest Value to Lowest";
+"title-highest-value-to-lowest" = "Valor más alto a más bajo";
 
 /* (No Comment) */
-"title-home" = "Home";
+"title-home" = "Inicio";
 
 /* (No Comment) */
 "title-i-understand" = "Entiendo";
@@ -1910,25 +1937,25 @@
 "title-learn-more" = "Más información";
 
 /* (No Comment) */
-"title-ledger-account" = "Ledger Account";
+"title-ledger-account" = "Cuenta de Ledger";
 
 /* (No Comment) */
 "title-loading" = "Cargando";
 
 /* (No Comment) */
-"title-lowest-value-to-highest" = "Lowest Value to Highest";
+"title-lowest-value-to-highest" = "Valor más bajo a más alto";
 
 /* (No Comment) */
-"title-manually" = "Manually";
+"title-manually" = "Manualmente";
 
 /* (No Comment) */
-"title-more" = "More";
+"title-more" = "Más";
 
 /* (No Comment) */
 "title-new-uppercased" = "NUEVO";
 
 /* (No Comment) */
-"title-newest-to-oldest" = "Newest to Oldest";
+"title-newest-to-oldest" = "Más nuevo a más antiguo";
 
 /* (No Comment) */
 "title-next" = "Siguiente";
@@ -1946,7 +1973,7 @@
 "title-ok" = "OK";
 
 /* (No Comment) */
-"title-oldest-to-newest" = "Oldest to Newest";
+"title-oldest-to-newest" = "De más antiguo a más nuevo";
 
 /* (No Comment) */
 "title-on" = "Activado";
@@ -1967,7 +1994,7 @@
 "title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
-"title-press-hold-copy-address" = "Press and hold to copy address";
+"title-press-hold-copy-address" = "Mantén presionado para copiar la dirección";
 
 /* (No Comment) */
 "title-preview" = "Vista previa";
@@ -1976,7 +2003,7 @@
 "title-preview-and-sign-with-ledger-title" = "Realizar vista previa y firmar con Ledger";
 
 /* (No Comment) */
-"title-price" = "Price";
+"title-price" = "Precio";
 
 /* (No Comment) */
 "title-proceed" = "Continuar";
@@ -1985,7 +2012,7 @@
 "title-receive" = "Recibir";
 
 /* (No Comment) */
-"title-rekeyed-account" = "Rekeyed Account";
+"title-rekeyed-account" = "Cuenta con cambio de clave";
 
 /* (No Comment) */
 "title-remove" = "Eliminar";
@@ -2009,13 +2036,16 @@
 "title-show-all-detail" = "Mostrar toda la información";
 
 /* (No Comment) */
+"title-show-more-assets" = "Mostrar +%@ activos más";
+
+/* (No Comment) */
 "title-show-transaction-detail" = "Mostrar información de la transacción";
 
 /* (No Comment) */
 "title-skip" = "Omitir";
 
 /* (No Comment) */
-"title-sort" = "Sort";
+"title-sort" = "Ordenar";
 
 /* (No Comment) */
 "title-start-using-pera-wallet" = "Comienza a usar Pera Wallet";
@@ -2096,16 +2126,25 @@
 "transaction-detail-id-copied-title" = "ID copiado al portapapeles";
 
 /* (No Comment) */
+"transaction-detail-inner-transaction-title" = "Transacciones Internas";
+
+/* (No Comment) */
 "transaction-detail-note" = "Nota";
 
 /* (No Comment) */
-"transaction-detail-note-copied" = "Note copied to clipboard";
+"transaction-detail-note-copied" = "Nota copiada al portapapeles";
+
+/* (No Comment) */
+"transaction-detail-parent-id" = "ID de la transacción principal";
 
 /* (No Comment) */
 "transaction-detail-pending" = "Pendiente";
 
 /* (No Comment) */
 "transaction-detail-pending-transactions" = "Transacciones pendientes";
+
+/* (No Comment) */
+"transaction-detail-plural-inner-transaction-detail" = "Mostrar %@ transacciones";
 
 /* (No Comment) */
 "transaction-detail-receive" = "Recibir";
@@ -2121,6 +2160,9 @@
 
 /* (No Comment) */
 "transaction-detail-sender" = "Remitente";
+
+/* (No Comment) */
+"transaction-detail-singular-inner-transaction-detail" = "Mostrar 1 transacción";
 
 /* (No Comment) */
 "transaction-detail-status" = "Estado";
@@ -2180,31 +2222,40 @@
 "transaction-id-open-goalseeker" = "Abrir en GoalSeeker";
 
 /* (No Comment) */
-"transaction-item-app-id-title" = "Application ID: #%d";
+"transaction-item-app-id-title" = "ID de aplicación: %d";
 
 /* (No Comment) */
-"transaction-item-opt-out" = "Opt-Out";
+"transaction-item-opt-in" = "Suscribirse/Autotransferencia";
 
 /* (No Comment) */
-"transaction-menu-copy-id" = "Copy ID";
+"transaction-item-opt-out" = "Darse de baja";
 
 /* (No Comment) */
-"transaction-menu-copy-note" = "Copy Note";
+"transaction-item-receive-opt-out" = "Recibir (darse de baja)";
+
+/* (No Comment) */
+"transaction-item-self-transfer" = "Autotransferencia";
+
+/* (No Comment) */
+"transaction-menu-copy-id" = "Copiar ID";
+
+/* (No Comment) */
+"transaction-menu-copy-note" = "Copiar nota";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-buy-algo-subtitle" = "Compra criptomonedas con tarjeta de crédito o transferencias bancarias";
 
 /* (No Comment) */
-"transaction-option-list-more-subtitle" = "Show more actions";
+"transaction-option-list-more-subtitle" = "Mostrar más acciones";
 
 /* (No Comment) */
-"transaction-option-list-receive-subtitle" = "View or copy your account address";
+"transaction-option-list-receive-subtitle" = "Ve o copia tu dirección de cuenta";
 
 /* (No Comment) */
-"transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
+"transaction-option-list-scan-qr-code-subtitle" = "Usa WalletConnect o escanea una dirección de cuenta";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
+"transaction-option-list-send-subtitle" = "Algo o un ASA a otra cuenta";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "¿Estás seguro?";
@@ -2567,7 +2618,7 @@
 "wallet-connect-transaction-title-asset" = "Solicitud de transferencia de activos";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-asset-config" = "Asset Configuration";
+"wallet-connect-transaction-title-asset-config" = "Configuración de activos";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-asset-url" = "URL del activo";
@@ -2662,3 +2713,4 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "Tu transacción se está procesando.";
 
+"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

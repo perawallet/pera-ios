@@ -49,10 +49,6 @@ final class QRScanOptionsViewController:
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         configureBackground()
@@ -71,15 +67,6 @@ final class QRScanOptionsViewController:
 }
 
 extension QRScanOptionsViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
     private func configureBackground() {
         view.customizeAppearance(theme.background)
         title = "qr-scan-option-title".localized
@@ -230,6 +217,34 @@ extension QRScanOptionsViewController {
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
     }
 }
 

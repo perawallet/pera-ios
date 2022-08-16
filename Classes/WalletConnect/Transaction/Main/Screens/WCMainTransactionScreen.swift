@@ -68,7 +68,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return WCTransactionSigner(api: api)
+        return WCTransactionSigner(api: api, analytics: analytics)
     }()
 
     private var transactionParams: TransactionParams?
@@ -106,6 +106,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         super.init(configuration: configuration)
 
+        dataSource.delegate = self
         setTransactionSigners()
         setupObserver()
     }
@@ -154,6 +155,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }
 
     override func viewDidLoad() {
+        dataSource.load()
+
         super.viewDidLoad()
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
@@ -300,7 +303,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             if let transactionData = transaction.unparsedTransactionDetail,
                let session = wcSession {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
-                log(
+                analytics.track(
                     WCTransactionConfirmedEvent(
                         transactionID: transactionID,
                         dappName: session.peerMeta.name,
@@ -337,6 +340,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
+        loadingController?.stopLoading()
     }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
@@ -551,6 +558,33 @@ extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
         )
 
         modalTransition.perform(.wcTransactionFullDappDetail(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+}
+
+extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
+    func wcMainTransactionDataSourceDidFailedGroupingValidation(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "title-error".localized,
+            description: .plain("wallet-connect-transaction-error-invalid-group".localized),
+            secondaryActionButtonTitle: "title-ok".localized,
+            secondaryAction: { [weak self] in
+                self?.rejectSigning(reason: .rejected(.failedValidation))
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    func wcMainTransactionDataSourceDidOpenLongDappMessageView(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+
     }
 }
 

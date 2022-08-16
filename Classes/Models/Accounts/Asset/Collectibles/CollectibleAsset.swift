@@ -17,6 +17,8 @@
 import Foundation
 
 final class CollectibleAsset: Asset {
+    var optedInAddress: String?
+
     let id: AssetID
     let amount: UInt64
     let decimals: Int
@@ -30,7 +32,7 @@ final class CollectibleAsset: Asset {
     let usdValue: Decimal?
     let totalUSDValue: Decimal?
     let total: Int64?
-    let isVerified: Bool
+    let verificationTier: AssetVerificationTier
     let thumbnailImage: URL?
     let media: [Media]
     let standard: CollectibleStandard?
@@ -41,17 +43,16 @@ final class CollectibleAsset: Asset {
     let description: String?
     let properties: [CollectibleTrait]?
     let explorerURL: URL?
+    let logoURL: URL?
+    let isAlgo = false
 
     var state: AssetState = .ready
 
-    var presentation: AssetPresentation {
-        return AssetPresentation(
+    var naming: AssetNaming {
+        return AssetNaming(
             id: id,
-            decimals: decimals,
             name: name,
-            unitName: unitName,
-            isVerified: isVerified,
-            url: url
+            unitName: unitName
         )
     }
 
@@ -89,7 +90,7 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
-        self.isVerified = decoration.isVerified
+        self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
         self.standard = decoration.collectible?.standard ?? .unknown("")
@@ -100,6 +101,7 @@ final class CollectibleAsset: Asset {
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
         self.explorerURL = decoration.explorerURL
+        self.logoURL = decoration.logoURL
 
         let amount = asset.amount
         let decimals = decoration.decimals
@@ -133,7 +135,7 @@ extension CollectibleAsset: Comparable {
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
             lhs.total == rhs.total &&
-            lhs.isVerified == rhs.isVerified &&
+            lhs.verificationTier == rhs.verificationTier &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
             lhs.collectionName == rhs.collectionName &&

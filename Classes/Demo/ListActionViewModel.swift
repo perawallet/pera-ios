@@ -32,24 +32,18 @@ extension ListActionViewModel {
         guard let aTitle = aTitle else {
             return nil
         }
-        
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-        
-        var attributes: TextAttributeGroup = [
-            .font(font),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .lineBreakMode(.byWordWrapping),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
-        
+
+        var attributes = Typography.bodyMediumAttributes()
+
         if let textColor = aTitleColor {
             attributes.insert(.textColor(textColor))
         }
-        
-        return .attributedString(aTitle.attributed(attributes))
+
+        return .attributedString(
+            aTitle.attributed(
+                attributes
+            )
+        )
     }
     
     static func getSubtitle(
@@ -59,18 +53,10 @@ extension ListActionViewModel {
             return nil
         }
         
-        let font = Fonts.DMMono.regular.make(11)
-        let lineHeightMultiplier = 1.12
-        
         return .attributedString(
-            aSubtitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingMiddle),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aSubtitle.captionMonoRegular(
+                lineBreakMode: .byTruncatingMiddle
+            )
         )
     }
 }

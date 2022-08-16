@@ -22,7 +22,7 @@ import UIKit
 final class BannerView:
     View,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .performAction: UIBlockInteraction()
     ]

@@ -22,18 +22,24 @@ class WCTransactionSigner {
 
     weak var delegate: WCTransactionSignerDelegate?
 
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
+    private lazy var ledgerTransactionOperation =
+        LedgerTransactionOperation(api: api, analytics: analytics)
 
     private var timer: Timer?
 
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
     private var account: Account?
     private var transaction: WCTransaction?
     private var transactionRequest: WalletConnectRequest?
 
-    init(api: ALGAPI) {
+    init(
+        api: ALGAPI,
+        analytics: ALGAnalytics
+    ) {
         self.api = api
+        self.analytics = analytics
     }
 
     func signTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
@@ -138,6 +144,10 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         delegate?.wcTransactionSignerDidResetLedgerOperation(self)
     }
+
+    func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.wcTransactionSignerDidRejectedLedgerOperation(self)
+    }
 }
 
 extension WCTransactionSigner: TransactionSignerDelegate {
@@ -159,4 +169,5 @@ protocol WCTransactionSignerDelegate: AnyObject {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didRequestUserApprovalFrom ledger: String)
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner)
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
 }

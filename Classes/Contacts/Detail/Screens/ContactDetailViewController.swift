@@ -19,9 +19,9 @@ import UIKit
 
 final class ContactDetailViewController: BaseScrollViewController {
     weak var delegate: ContactDetailViewControllerDelegate?
-    
-    override var name: AnalyticsScreenName? {
-        return .contactDetail
+
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .contactDetail)
     }
 
     private lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)
@@ -117,9 +117,6 @@ extension ContactDetailViewController {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
                     self.loadingController?.stopLoading()
-                    UIApplication.shared.firebaseAnalytics?.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
-                    )
                     return
                 }
 
@@ -133,6 +130,7 @@ extension ContactDetailViewController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
+                /// <todo> Use new list item structure
                 let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
                 self.assetPreviews.append(algoAssetPreview)
                 
@@ -345,11 +343,7 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
 
         transactionDraft.toContact = contact
 
-        let controller = open(.sendTransaction(draft: transactionDraft), by: .present) as? SendTransactionScreen
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.closeScreen(by: .dismiss, animated: true)
-        }
-        controller?.leftBarButtonItems = [closeBarButtonItem]
+        open(.sendTransaction(draft: transactionDraft), by: .present)
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {

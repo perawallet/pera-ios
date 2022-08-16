@@ -150,3 +150,11 @@ extension UIViewController {
         }
     }
 }
+
+extension UIViewController {
+    func endEditing(
+        _ force: Bool = true
+    ) {
+        view.endEditing(force)
+    }
+}
