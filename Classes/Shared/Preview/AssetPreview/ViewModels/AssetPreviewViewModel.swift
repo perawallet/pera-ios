@@ -138,11 +138,11 @@ extension AssetPreviewViewModel {
             return
         }
 
-        var attributes: TextAttributeGroup = .bodyMonoRegular(
+        var attributes = Typography.bodyMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.main.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.main) ])
 
         primaryAccessory = .attributedString(
             accessory
@@ -158,11 +158,11 @@ extension AssetPreviewViewModel {
         }
         
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.grayLighter.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.grayLighter) ])
         
         secondaryAccessory = .attributedString(
             accessory
@@ -183,7 +183,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -194,7 +194,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 nil,
-                title: assetAddition.asset.presentation.name
+                title: assetAddition.asset.naming.name
             )
         )
     }
@@ -202,13 +202,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -217,11 +217,11 @@ extension AssetPreviewViewModel {
         let accessory =  String(assetAddition.asset.id)
 
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.gray.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
@@ -242,7 +242,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -255,7 +255,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 asset.thumbnailImage,
-                title: asset.presentation.name
+                title: asset.naming.name
             )
         )
     }
@@ -263,13 +263,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -277,11 +277,11 @@ extension AssetPreviewViewModel {
     ) {
         let accessory =  String(assetAddition.asset.id)
 
-        var attributes: TextAttributeGroup = .footnoteMonoRegular(
+        var attributes = Typography.footnoteMonoRegularAttributes(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
-        attributes.formUnion([ .textColor(AppColors.Components.Text.gray.uiColor) ])
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
@@ -336,7 +336,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        let icon = draft.asset.presentation.verificationTier.isVerified ? img("icon-verified-shield") : nil
+        let icon = draft.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }

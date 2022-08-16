@@ -36,7 +36,7 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindTitle(
         _ asset: StandardAsset
     ) {
-        let name = asset.presentation.name
+        let name = asset.naming.name
 
         title =  .attributedString(
             (name.isNilOrEmpty ? "title-unknown".localized : name!)
@@ -49,7 +49,7 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindAccessoryIcon(
         _ asset: StandardAsset
     ) {
-        if asset.presentation.verificationTier.isVerified {
+        if asset.verificationTier.isVerified {
             accessoryIcon = "icon-verified-shield"
             return
         }

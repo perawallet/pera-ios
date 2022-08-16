@@ -28,7 +28,8 @@ final class WCAssetInformationViewModel: ViewModel {
     }
 
     var isVerified: Bool {
-        isAlgo || (asset?.presentation.verificationTier.isVerified ?? false)
+        let isVerifiedAsset = asset?.verificationTier.isVerified ?? false
+        return isAlgo || isVerifiedAsset
     }
 
     private let asset: Asset?
@@ -45,7 +46,7 @@ final class WCAssetInformationViewModel: ViewModel {
             return
         }
 
-        name = asset.presentation.name
+        name = asset.naming.name
         assetId = "\(asset.id)"
     }
 }

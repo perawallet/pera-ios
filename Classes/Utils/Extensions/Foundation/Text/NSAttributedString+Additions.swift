@@ -15,9 +15,10 @@
 //
 //  NSAttributedString+Additions.swift
 
-import Foundation
 import CoreGraphics
+import Foundation
 import MacaroonUIKit
+import UIKit
 
 extension NSAttributedString {
     static func + (lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
@@ -76,5 +77,28 @@ extension NSAttributedString {
         )
 
         return selfMutableString
+    }
+
+    func calculateNumberOfLines(
+        toFitIn width: CGFloat,
+        font: UIFont
+    ) -> Int {
+        let size = CGSize(
+            width: width,
+            height: .greatestFiniteMagnitude
+        )
+        let characterHeight = font.lineHeight
+        let text = string as NSString
+
+        let fullTextSize = text.boundingRect(
+            with: size,
+            options: .usesLineFragmentOrigin,
+            attributes: [
+                .font: font
+            ],
+            context: nil
+        )
+        let numberOfLines = Int(ceil(fullTextSize.height / characterHeight))
+        return numberOfLines
     }
 }

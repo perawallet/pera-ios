@@ -92,13 +92,6 @@ extension AccountAssetListLayout {
                 sizeForAssetCellItem: item,
                 atSection: indexPath.section
             )
-        case let .algo(item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForAssetCellItem: item,
-                atSection: indexPath.section
-            )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
         case .quickActions:
@@ -199,7 +192,7 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: ALGAssetListItemViewModel,
+        sizeForAssetCellItem item: AssetListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = AssetListItemCell.reuseIdentifier

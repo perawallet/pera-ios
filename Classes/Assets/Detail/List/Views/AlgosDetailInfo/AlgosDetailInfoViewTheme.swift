@@ -42,24 +42,24 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let buyAlgoButtonMargin: LayoutMargins
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.backgroundColor = Colors.Defaults.background
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.yourBalanceTitleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
         ]
         self.algosValueLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
         ]
         self.secondaryValueLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(15)),
         ]
         self.rewardsInfoViewTheme = RewardsInfoViewTheme()

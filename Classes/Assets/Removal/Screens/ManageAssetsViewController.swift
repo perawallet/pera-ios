@@ -40,7 +40,11 @@ final class ManageAssetsViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -76,7 +80,7 @@ final class ManageAssetsViewController: BaseViewController {
             switch itemIdentifier {
             case .asset:
                 let assetCell = cell as! AssetPreviewWithActionCell
-                assetCell.observe(event: .performAction) {
+                assetCell.startObserving(event: .performAction) {
                     [weak self] in
                     guard let self = self else {
                         return

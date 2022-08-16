@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class AssetItem: ALGAssetItem {
+final class AssetItem {
     let asset: Asset
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter

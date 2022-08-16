@@ -21,12 +21,11 @@ import UIKit
 protocol PrimaryListItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    var icon: PrimaryImageViewTheme { get }
-    var primaryTitle: PrimaryTitleViewTheme { get }
-    var secondaryTitle: PrimaryTitleViewTheme { get }
-
+    var icon: URLImageViewStyleLayoutSheet { get }
+    var iconSize: LayoutSize { get }
     var contentHorizontalPadding: LayoutMetric { get }
     var contentMinWidthRatio: LayoutMetric { get }
-    var minSpacingBetweenTitles: LayoutMetric { get }
-    var iconSize: LayoutSize { get }
+    var title: PrimaryTitleViewTheme { get }
+    var value: PrimaryTitleViewTheme { get }
+    var minSpacingBetweenTitleAndValue: LayoutMetric { get }
 }

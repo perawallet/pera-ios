@@ -38,10 +38,10 @@ struct TransactionOptionsViewTheme:
             .backgroundColor(UIColor.clear)
         ]
         self.backgroundEnd = [
-            .backgroundColor(AppColors.Shared.System.chrome.uiColor)
+            .backgroundColor(Colors.Other.chrome.uiColor)
         ]
         self.content = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentCorner = Corner(
             radius: 16,

@@ -54,7 +54,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
     }
 
     override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
         if let account = selectedAccount?.value {
@@ -94,7 +94,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
-        log(
+        analytics.track(
             WCSessionApprovedEvent(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
@@ -114,7 +114,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        log(
+        analytics.track(
             WCSessionRejectedEvent(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,

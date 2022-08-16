@@ -37,15 +37,15 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
         ]
 
-        var titleAttributes: TextAttributeGroup = .title1Medium()
-        titleAttributes.insert(.textColor(AppColors.Components.Text.main))
+        var titleAttributes = Typography.titleMediumAttributes()
+        titleAttributes.insert(.textColor(Colors.Text.main))
         self.titleText = .attributedString(
             "passphrase-verify-title"
                 .localized

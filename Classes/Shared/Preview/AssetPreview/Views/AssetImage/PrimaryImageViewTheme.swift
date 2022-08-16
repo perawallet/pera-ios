@@ -29,7 +29,9 @@ protocol PrimaryImageViewTheme:
 struct AssetImageViewTheme: PrimaryImageViewTheme {
     let image: URLImageViewStyleLayoutSheet
 
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily
+    ) {
         image = URLImageViewAssetTheme()
     }
 }
@@ -56,7 +58,7 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
                 .image("asset-image-placeholder-border")
             ]
             text = [
-                .textColor(AppColors.Components.Text.gray),
+                .textColor(Colors.Text.gray),
                 .textOverflow(SingleLineFittingText())
             ]
         }
@@ -67,7 +69,9 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
     let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
     let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
 
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily
+    ) {
         background = []
         content = .aspectFit()
         placeholderStyleSheet = PlaceholderStyleSheet()

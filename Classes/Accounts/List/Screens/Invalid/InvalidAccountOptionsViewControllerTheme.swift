@@ -31,7 +31,7 @@ struct InvalidAccountOptionsViewControllerTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentPaddings = (24, 24, 16, 24)
         self.error = ErrorViewTheme(family)

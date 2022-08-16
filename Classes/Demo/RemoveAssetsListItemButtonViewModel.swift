@@ -26,7 +26,7 @@ struct RemoveAssetsListItemButtonViewModel: ListItemButtonViewModel {
         self.icon = "icon-asset-delete"
         self.title = Self.getTitle(
             "asset-remove-title".localized,
-            AppColors.Shared.Helpers.negative
+            Colors.Helpers.negative
         )
         self.subtitle = nil
     }

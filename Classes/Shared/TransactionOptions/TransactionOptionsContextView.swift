@@ -21,13 +21,12 @@ import UIKit
 
 final class TransactionOptionsContextView:
     VStackView,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: UIControlInteraction(),
-        .send: UIControlInteraction(),
-        .receive: UIControlInteraction(),
-        .more: UIControlInteraction()
+        .buyAlgo: TargetActionInteraction(),
+        .send: TargetActionInteraction(),
+        .receive: TargetActionInteraction(),
+        .more: TargetActionInteraction()
     ]
 
     private let actions: [Action]

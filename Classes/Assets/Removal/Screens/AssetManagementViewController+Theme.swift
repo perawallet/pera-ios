@@ -26,7 +26,7 @@ extension ManagementOptionsViewController {
         let listItemButtonTheme: ListItemButtonTheme
         
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
             self.contentPaddings = (16, 24, 20, 24)
             self.listItemButtonTheme = ListItemButtonTheme(family)
         }

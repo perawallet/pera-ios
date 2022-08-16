@@ -39,19 +39,19 @@ struct ListItemButtonTheme:
         self.icon = [
             .contentMode(.left),
             .isInteractable(false),
-            .tintColor(AppColors.Components.Text.main)
+            .tintColor(Colors.Text.main)
         ]
         self.iconContentEdgeInsets = (20, 0)
         self.iconAlignment = .centered
         self.contentMinHeight = 36
         self.contentVerticalPaddings = (12, 12)
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
             .isInteractable(false)
         ]
         self.subtitle = [
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         self.spacingBetweenTitleAndSubtitle = 2
         self.accessory = [
@@ -71,7 +71,7 @@ extension ListItemButtonTheme {
         self.spacingBetweenTitleAndSubtitle = 0
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
     }
 

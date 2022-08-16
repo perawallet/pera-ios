@@ -19,16 +19,35 @@ import MacaroonUIKit
 enum AssetVerificationTier:
     String,
     Codable,
+    CaseIterable,
     Equatable {
     case trusted
     case verified
     case unverified
     case suspicious
 
+    var rawValue: String {
+        switch self {
+        case .trusted: return "trusted"
+        case .verified: return "verified"
+        case .unverified: return "unverified"
+        case .suspicious: return "suspicious"
+        }
+    }
+
     init() {
         self = .unverified // default case
     }
 
+    init?(
+        rawValue: String
+    ) {
+        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
+        self = foundCase ?? .unverified
+    }
+}
+
+extension AssetVerificationTier {
     var isVerified: Bool {
         return self == .verified
     }

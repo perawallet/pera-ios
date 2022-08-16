@@ -32,14 +32,14 @@ struct OptionsViewControllerTheme:
         _ family: LayoutFamily
     ) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         verticalPadding = 20
         let horizontalPadding: LayoutMetric = 24
         primaryContextPaddings = (verticalPadding, horizontalPadding, 0, horizontalPadding)
         secondaryContextPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
         separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((horizontalPadding, horizontalPadding))
         )

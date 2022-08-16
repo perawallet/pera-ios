@@ -35,7 +35,7 @@ struct ReceiveCollectibleInfoBoxViewTheme: InfoBoxViewTheme {
         ]
         self.title = []
         self.message = [
-            .textColor(AppColors.Shared.Helpers.positive.uiColor),
+            .textColor(Colors.Helpers.positive),
             .textOverflow(FittingText())
         ]
         self.spacingBetweenTitleAndMessage = 0
