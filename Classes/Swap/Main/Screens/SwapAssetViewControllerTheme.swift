@@ -32,8 +32,8 @@ struct SwapAssetViewControllerTheme:
             .title("title-swap".localized),
             .titleColor(
                 [
-                    .normal(AppColors.Components.Button.Primary.text),
-                    .disabled(AppColors.Components.Button.Primary.disabledText)
+                    .normal(Colors.Button.Primary.text),
+                    .disabled(Colors.Button.Primary.disabledText)
                 ]
             ),
             .font(Fonts.DMSans.medium.make(15)),
