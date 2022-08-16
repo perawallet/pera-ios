@@ -45,11 +45,11 @@ struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
     init(
         _ family: LayoutFamily
     ) {
-        contentEdgeInsets = (10, 24, 10, 24)
-        title = [ .textOverflow(FittingText()) ] /// <todo>: Change `textOverflow` to `MultilineText` with max 2 lines.
-        titleMinimumWidthRatio = 0.25
-        minimumSpacingBetweenTitleAndAccessory = 12
-        accessory = SecondaryListItemValueCommonViewTheme(
+        self.contentEdgeInsets = (10, 24, 10, 24)
+        self.title = [ .textOverflow(FittingText()) ] /// <todo>: Change `textOverflow` to `MultilineText` with max 2 lines.
+        self.titleMinimumWidthRatio = 0.25
+        self.minimumSpacingBetweenTitleAndAccessory = 12
+        self.accessory = SecondaryListItemValueCommonViewTheme(
             isMultiline: true
         )
     }
