@@ -22,7 +22,7 @@ final class AssetPreviewView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = AssetImageView()
+    private lazy var iconView = PrimaryImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()

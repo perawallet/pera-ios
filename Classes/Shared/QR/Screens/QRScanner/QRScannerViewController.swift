@@ -75,7 +75,7 @@ final class QRScannerViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
     }
     
     override func viewWillAppear(_ animated: Bool) {

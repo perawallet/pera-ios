@@ -32,7 +32,6 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetSearch(accountHandle: AccountHandle, dataController: AssetSearchDataController)
     case assetDetail(
         draft: TransactionListing,
         preferences: BaseAssetDetailViewController.Preferences = .init()
@@ -76,7 +75,6 @@ indirect enum Screen {
         theme: AssetActionConfirmationViewControllerTheme = .init()
     )
     case rewardDetail(account: Account)
-    case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
@@ -152,6 +150,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
     )
+    case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
@@ -200,6 +199,10 @@ indirect enum Screen {
     case innerTransactionList(
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
+    )
+    case sheetAction(
+        sheet: UISheet,
+        theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
 }
 
@@ -251,4 +254,8 @@ extension Screen.Transition {
         case pop
         case dismiss
     }
+}
+
+extension Screen {
+    typealias EventHandler<Event> = (Event) -> Void
 }

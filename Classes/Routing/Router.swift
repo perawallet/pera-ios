@@ -569,12 +569,6 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle, dataController):
-            viewController = AssetSearchViewController(
-                accountHandle: accountHandle,
-                dataController: dataController,
-                configuration: configuration
-            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
@@ -604,8 +598,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
@@ -856,6 +848,10 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -981,6 +977,11 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
+            )
         }
 
         return viewController as? T
@@ -1070,7 +1071,8 @@ extension Router {
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+            bannerController: appConfiguration.bannerController,
+            analytics: appConfiguration.analytics
         )
 
         transactionController.delegate = self
@@ -1459,6 +1461,10 @@ extension Router {
     ) { }
 
     func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
 }
