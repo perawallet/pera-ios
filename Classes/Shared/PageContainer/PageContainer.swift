@@ -49,6 +49,7 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
     private(set) lazy var pageBar = PageBar()
     private(set) lazy var pagesView = ListView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
+    private var pageSize: CGSize?
     private var isLayoutFinalized = false
 
     func customizePageBarAppearance() {
@@ -114,6 +115,19 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
         if !isLayoutFinalized {
             isLayoutFinalized = true
             selectedItemDidChange()
+        }
+
+        let newPageSize = pagesView.bounds.size
+
+        guard let oldPageSize = pageSize else {
+            pageSize = newPageSize
+            return
+        }
+
+        if oldPageSize != newPageSize {
+            pageSize = newPageSize
+            pagesView.collectionViewLayout.invalidateLayout()
+            pagesView.layoutIfNeededInParent()
         }
     }
 
@@ -220,7 +234,7 @@ extension PageContainer {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return collectionView.bounds.size
+        return pageSize ?? collectionView.bounds.size
     }
 }
 

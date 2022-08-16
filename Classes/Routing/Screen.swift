@@ -18,6 +18,7 @@
 import UIKit
 
 indirect enum Screen {
+    case asaDetail
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
