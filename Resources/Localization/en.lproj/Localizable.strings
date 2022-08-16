@@ -1112,9 +1112,16 @@
 "asa-verification-title-trusted" = "Trusted ASA";
 "asa-verification-title-verified" = "Verified ASA";
 "asa-verification-title-suspicious" = "Suspicious";
-"asa-verification-detail-trusted" = "This ASA was automatically verified through the Pera ASA Verification program.";
-"asa-verification-detail-trusted-bold" = "automatically verified";
-"asa-verification-detail-verified" = "This is a well-known and established project in the Algorand ecosystem.";
-"asa-verification-detail-verified-bold" = "well-known";
+"asa-verification-detail-trusted" = "This is a well-known and established project in the Algorand ecosystem.";
+"asa-verification-detail-trusted-bold" = "well-known";
+"asa-verification-detail-verified" = "This ASA was automatically verified through the Pera ASA Verification program.";
+"asa-verification-detail-verified-bold" = "automatically verified";
 "asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
 "asa-verification-detail-suspicious-bold" = "scam attempt";
+"asa-verification-learn-more" = "Learn more about ASA verification";
+
+// MARK: Social Media Platforms
+"social-media-platform-title" = "SOCIAL MEDIA";
+"social-media-platform-discord" = "Discord";
+"social-media-platform-twitter" = "Twitter";
+"social-media-platform-telegram" = "Telegram";
