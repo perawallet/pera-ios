@@ -16,12 +16,13 @@
 //   WCTransactionConfirmedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
 struct WCTransactionConfirmedEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
+    fileprivate init(
         transactionID: String,
         dappName: String,
         dappURL: String
@@ -32,5 +33,19 @@ struct WCTransactionConfirmedEvent: ALGAnalyticsEvent {
             .dappName: dappName,
             .dappURL: dappURL
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == WCTransactionConfirmedEvent {
+    static func wcTransactionConfirmed(
+        transactionID: String,
+        dappName: String,
+        dappURL: String
+    ) -> Self {
+        return WCTransactionConfirmedEvent(
+            transactionID: transactionID,
+            dappName: dappName,
+            dappURL: dappURL
+        )
     }
 }

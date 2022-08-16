@@ -95,7 +95,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
         }
 
         analytics.track(
-            WCSessionApprovedEvent(
+            .wcSessionApproved(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
@@ -115,7 +115,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         analytics.track(
-            WCSessionRejectedEvent(
+            .wcSessionRejected(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString

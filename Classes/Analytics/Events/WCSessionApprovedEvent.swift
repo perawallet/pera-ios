@@ -16,12 +16,13 @@
 //   WCSessionApprovedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
 struct WCSessionApprovedEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
+    fileprivate init(
         topic: String,
         dappName: String,
         dappURL: String,
@@ -34,5 +35,21 @@ struct WCSessionApprovedEvent: ALGAnalyticsEvent {
             .dappURL: dappURL,
             .accountAddress: address
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == WCSessionApprovedEvent {
+    static func wcSessionApproved(
+        topic: String,
+        dappName: String,
+        dappURL: String,
+        address: String
+    ) -> Self {
+        return WCSessionApprovedEvent(
+            topic: topic,
+            dappName: dappName,
+            dappURL: dappURL,
+            address: address
+        )
     }
 }

@@ -304,7 +304,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
                let session = wcSession {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
                 analytics.track(
-                    WCTransactionConfirmedEvent(
+                    .wcTransactionConfirmed(
                         transactionID: transactionID,
                         dappName: session.peerMeta.name,
                         dappURL: session.peerMeta.url.absoluteString
