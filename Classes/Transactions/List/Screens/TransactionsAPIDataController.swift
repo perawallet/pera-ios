@@ -295,7 +295,7 @@ extension TransactionsAPIDataController {
             }
         case .didFinishRunning:
             if let updatedAccountHandle = sharedDataController.accountCollection[draft.accountHandle.value.address] {
-                if updatedAccountHandle.value.amount != draft.accountHandle.value.amount ||
+                if updatedAccountHandle.value.algo.amount != draft.accountHandle.value.algo.amount ||
                     updatedAccountHandle.value.hasDifferentAssets(than: draft.accountHandle.value) ||
                     updatedAccountHandle.value.hasDifferentApps(than: draft.accountHandle.value) {
                     draft.accountHandle = updatedAccountHandle

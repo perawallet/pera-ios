@@ -47,19 +47,6 @@ final class ManagementOptionsViewController:
             title = "options-manage-collectibles".localized
         }
     }
-    
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-    
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.dismissScreen()
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

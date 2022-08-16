@@ -59,7 +59,7 @@ class WCAssetTransactionView: WCSingleTransactionView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 }
 

@@ -69,7 +69,7 @@ extension CollectiblesNoContentWithActionViewModel {
         title = .attributedString(
             "collectibles-empty-title"
                 .localized
-                .title1Medium(alignment: .center)
+                .titleMedium(alignment: .center)
         )
     }
 

@@ -61,7 +61,7 @@ extension AlgosDetailInfoViewModel {
         account: Account,
         currencyFormatter: CurrencyFormatter
     ) {
-        let amount = account.amount.toAlgos
+        let amount = account.algo.amount.toAlgos
 
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
@@ -83,7 +83,7 @@ extension AlgosDetailInfoViewModel {
 
             let fiatRawCurrency = try fiatCurrencyValue.unwrap()
 
-            let algoAmount = account.amount.toAlgos
+            let algoAmount = account.algo.amount.toAlgos
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
             let amount = try exchanger.exchangeAlgo(amount: algoAmount)
 

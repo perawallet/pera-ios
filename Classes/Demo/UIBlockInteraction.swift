@@ -16,6 +16,7 @@
 //   UIBlockInteraction.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
 
 /// <todo>
@@ -23,17 +24,19 @@ import MacaroonUIKit
 final class UIBlockInteraction: MacaroonUIKit.UIInteraction {
     private var handler: Handler?
     
-    func activate(
-        _ handler: @escaping Handler
+    func setHandler(
+        _ handler: Handler?
     ) {
         self.handler = handler
-    }
-
-    func deactivate() {
-        self.handler = nil
     }
     
     func notify() {
         handler?()
     }
+
+    func attach(
+        to view: UIView
+    ) {}
+
+    func detachFromView() {}
 }

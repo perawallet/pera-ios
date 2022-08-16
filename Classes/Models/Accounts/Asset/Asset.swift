@@ -26,6 +26,10 @@ protocol Asset {
     var creator: AssetCreator? { get }
     var decimals: Int { get }
 
+    var url: String? { get }
+    var verificationTier: AssetVerificationTier { get }
+    var logoURL: URL? { get }
+
     /// <todo>
     /// Switch decimalAmount -> amount
     var decimalAmount: Decimal { get }
@@ -37,8 +41,11 @@ protocol Asset {
     var state: AssetState { get set }
 
     /// Asset presentation
-    var presentation: AssetPresentation { get }
+    /// /// <todo> AssetNaming implementation structure should be changed.
+    var naming: AssetNaming { get }
     var amountWithFraction: Decimal { get }
+
+    var isAlgo: Bool { get }
 }
 
 enum AssetState: Codable {
@@ -60,13 +67,10 @@ enum AssetOperation: Codable {
     case add
 }
 
-struct AssetPresentation {
+struct AssetNaming {
     let id: AssetID
-    let decimals: Int
     let name: String?
     let unitName: String?
-    let isVerified: Bool
-    let url: String?
 
     var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name,

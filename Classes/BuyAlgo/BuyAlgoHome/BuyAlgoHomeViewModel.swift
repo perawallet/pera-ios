@@ -65,7 +65,7 @@ extension BuyAlgoHomeViewModel {
         subtitle = .attributedString(
             "moonpay-buy-button-title"
                 .localized
-                .title1Medium()
+                .titleMedium()
         )
     }
     

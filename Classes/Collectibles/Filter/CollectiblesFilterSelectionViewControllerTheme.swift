@@ -38,13 +38,13 @@ struct CollectiblesFilterSelectionViewControllerTheme:
     ) {
         minimumHorizontalSpacing = 8
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         contentEdgeInsets = (24, 24, 16, 24)
 
         title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         titleTopPadding = 20
@@ -53,7 +53,7 @@ struct CollectiblesFilterSelectionViewControllerTheme:
 
         description = [
             .text(Self.getDescription()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
 
         ]
