@@ -24,7 +24,7 @@ struct BadgeButtonTheme: LayoutSheet, StyleSheet  {
 
     init(_ family: LayoutFamily) {
         self.style = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
+            .backgroundColor(Colors.Helpers.negative)
         ]
         self.size = (4, 4)
         self.corner = Corner(radius: 2)

@@ -32,7 +32,7 @@ struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.lineStyle = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.paddings = (28, 24, 4, 24)
         self.linePaddings = (20, 20)

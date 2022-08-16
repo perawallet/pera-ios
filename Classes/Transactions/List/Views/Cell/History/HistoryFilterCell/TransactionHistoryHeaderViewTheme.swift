@@ -42,12 +42,12 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
             .icon([.normal("icon-csv")]),
             .backgroundImage([.normal("light-button-rect-background")]),
             .title("title-csv".localized),
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)]),
+            .titleColor([.normal(Colors.Helpers.positive)]),
             .font(Fonts.DMSans.medium.make(13))
         ]
         self.filterButton = [
             .icon([.normal("icon-transaction-filter-primary")]),
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)]),
+            .titleColor([.normal(Colors.Helpers.positive)]),
             .title("collectible-filter-selection-title".localized),
             .font(Fonts.DMSans.medium.make(15))
         ]
