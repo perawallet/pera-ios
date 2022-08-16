@@ -22,8 +22,12 @@ import UIKit
 class BaseViewController:
     UIViewController,
     StatusBarConfigurable,
-    TabBarConfigurable,
-    AnalyticsScreen {
+    TabBarConfigurable{
+    var analyticsScreen: ALGAnalyticsScreen {
+        let name = String(describing: self)
+        return ALGAnalyticsScreen(name: name)
+    }
+
     var isStatusBarHidden = false
     var hidesStatusBarWhenAppeared = false
     var hidesStatusBarWhenPresented = false
@@ -46,13 +50,6 @@ class BaseViewController:
     }
     var prefersLargeTitle: Bool {
         return false
-    }
-    
-    var name: AnalyticsScreenName? {
-        return nil
-    }
-    var params: AnalyticsParameters? {
-        return nil
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -142,7 +139,7 @@ class BaseViewController:
 
         setNeedsTabBarAppearanceUpdateOnAppeared()
 
-        track(self)
+        analytics.track(analyticsScreen)
         
         isViewAppearing = false
         isViewAppeared = true
@@ -235,6 +232,10 @@ extension BaseViewController {
 
     var sharedDataController: SharedDataController {
         return configuration.sharedDataController
+    }
+
+    var analytics: ALGAnalytics {
+        return configuration.analytics
     }
 }
 

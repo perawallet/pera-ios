@@ -86,6 +86,34 @@ extension QRCreationView {
      ) -> UIContextMenuConfiguration? {
          delegate?.contextMenuInteractionForAddress(in: self)
      }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
  }
 
 extension QRCreationView {

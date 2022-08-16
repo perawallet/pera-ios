@@ -69,7 +69,7 @@ final class AppCallTransactionDetailView:
             action: #selector(notifyDelegateToOpenGoalSeaker)
         )
 
-        innerTransactionView.observe(event: .touch) {
+        innerTransactionView.startObserving(event: .touch) {
             [weak self] in
             guard let self = self else {
                 return
@@ -356,6 +356,34 @@ extension AppCallTransactionDetailView {
         default:
             return nil
         }
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
     }
 }
 

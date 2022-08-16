@@ -36,17 +36,20 @@ final class ScanQRFlowCoordinator:
     private let sharedDataController: SharedDataController
     private var api: ALGAPI
     private let bannerController: BannerController
+    private let analytics: ALGAnalytics
 
     init(
         sharedDataController: SharedDataController,
         presentingScreen: UIViewController,
         api: ALGAPI,
-        bannerController: BannerController
+        bannerController: BannerController,
+        analytics: ALGAnalytics
     ) {
         self.sharedDataController = sharedDataController
         self.presentingScreen = presentingScreen
         self.api = api
         self.bannerController = bannerController
+        self.analytics = analytics
     }
 }
 
@@ -262,7 +265,8 @@ extension ScanQRFlowCoordinator {
         )
         let transactionController = TransactionController(
             api: api,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
 
         transactionController.delegate = self
@@ -380,6 +384,10 @@ extension ScanQRFlowCoordinator {
     ) { }
 
     func transactionControllerDidFailToSignWithLedger(
+        _ transactionController: TransactionController
+    ) { }
+
+    func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
 }

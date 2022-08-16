@@ -54,7 +54,8 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var transactionController: TransactionController = {
         return TransactionController(
             api: api!,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
     }()
 
@@ -87,7 +88,7 @@ final class ReceiveCollectibleAssetListViewController:
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -144,7 +145,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         transactionController.delegate = self
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -153,7 +154,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -171,7 +172,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         selectedAccountPreviewView.addInteraction(accountMenuInteraction)
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -180,7 +181,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -286,6 +287,34 @@ extension ReceiveCollectibleAssetListViewController {
              return UIMenu(children: [ copyActionItem ])
          }
      }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
  }
 
 extension ReceiveCollectibleAssetListViewController {
@@ -579,6 +608,12 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

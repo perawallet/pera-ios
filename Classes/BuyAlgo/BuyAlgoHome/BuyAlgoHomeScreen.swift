@@ -39,7 +39,7 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     override func prepareLayout() {
@@ -60,13 +60,13 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
     override func linkInteractors() {
         super.linkInteractors()
 
-        contentView.observe(event: .close) {
+        contentView.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
         }
 
-        contentView.observe(event: .buyAlgo) { [weak self] in
+        contentView.startObserving(event: .buyAlgo) { [weak self] in
             guard let self = self else {
                 return
             }

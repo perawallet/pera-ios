@@ -94,7 +94,7 @@ final class AssetDetail: ALGEntityModel {
         self.id = assetDecoration.id
         self.assetName = assetDecoration.name
         self.unitName = assetDecoration.unitName
-        self.isVerified = assetDecoration.isVerified
+        self.isVerified = assetDecoration.verificationTier.isVerified
         self.fractionDecimals = assetDecoration.decimals
         self.total = 0
         self.creator = assetDecoration.creator?.address ?? ""

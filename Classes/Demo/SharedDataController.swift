@@ -21,8 +21,8 @@ import MacaroonUtils
 
 protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
-    /// <note>
-    /// If it is nil, it means the app has just been updated from a very old version.
+    /// <todo>
+    /// There is no need to define selected sorting algorithms as optional because they are not.
     var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? { get set }
     var accountSortingAlgorithms: [AccountSortingAlgorithm] { get }
 
@@ -74,18 +74,6 @@ extension SharedDataController {
         return accountCollection.sorted {
             $0.value.address > $1.value.address
         }
-    }
-}
-
-extension Account {
-    func sortedCollectibleAssets(
-        _ algorithm: CollectibleSortingAlgorithm?
-    ) -> [CollectibleAsset] {
-        if let algorithm = algorithm {
-            return collectibleAssets.someArray.sorted(algorithm)
-        }
-
-        return collectibleAssets.someArray
     }
 }
 

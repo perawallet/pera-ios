@@ -34,19 +34,9 @@ extension InfoViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.medium.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
-            aMessage.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+            aMessage
+                .footnoteMedium()
         )
     }
 }

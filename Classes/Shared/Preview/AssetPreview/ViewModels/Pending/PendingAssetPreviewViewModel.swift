@@ -25,6 +25,7 @@ struct PendingAssetPreviewModel: Hashable {
     let assetStatus: String?
 }
 
+/// <todo> Use new list item structure
 struct PendingAssetPreviewViewModel:
     PairedViewModel,
     Hashable {
@@ -56,21 +57,5 @@ extension PendingAssetPreviewViewModel {
 
     private mutating func bindAssetStatus(_ value: String?) {
         self.assetStatus = value
-    }
-}
-
-extension PendingAssetPreviewViewModel {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(secondaryImage)
-        hasher.combine(assetPrimaryTitle)
-        hasher.combine(assetSecondaryTitle)
-        hasher.combine(assetStatus)
-    }
-
-    static func == (lhs: PendingAssetPreviewViewModel, rhs: PendingAssetPreviewViewModel) -> Bool {
-        return lhs.secondaryImage == rhs.secondaryImage &&
-        lhs.assetPrimaryTitle == rhs.assetPrimaryTitle &&
-        lhs.assetSecondaryTitle == rhs.assetSecondaryTitle &&
-        lhs.assetStatus == rhs.assetStatus
     }
 }

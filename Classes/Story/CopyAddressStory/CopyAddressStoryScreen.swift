@@ -19,12 +19,18 @@ import MacaroonStorySheet
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Convert it to a generic component and name it PopupScreen, and support all variants.
 final class CopyAddressStoryScreen:
-    BaseScrollViewController,
-    StorySheetPresentable {
+    ScrollScreen,
+    AlertUIScrollContentConfigurable {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?
+
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
 
     private lazy var imageView = ImageView()
     private lazy var titleLabel = Label()
@@ -40,8 +46,7 @@ final class CopyAddressStoryScreen:
         theme: CopyAddressStoryScreenTheme = .init()
     ) {
         self.theme = theme
-
-        super.init(configuration: configuration)
+        super.init()
     }
     
     override func viewDidLoad() {
@@ -65,41 +70,49 @@ extension CopyAddressStoryScreen {
     
     private func addImage() {
         imageView.customizeAppearance(theme.image)
+
         contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.top == theme.imageTopInset
-            make.centerX == theme.imageCenterXInset
+        imageView.snp.makeConstraints {
+            $0.centerX == 0
+            $0.top == theme.imageTopInset
+            $0.leading >= theme.imageMinHorizontalInsets.leading
+            $0.trailing <= theme.imageMinHorizontalInsets.trailing
         }
     }
     
     private func addTitle() {
         titleLabel.customizeAppearance(theme.title)
+
         contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top == imageView.snp.bottom + theme.titleTopInset
-            make.leading == theme.defaultInset
-            make.trailing == theme.defaultInset
+        titleLabel.fitToVerticalIntrinsicSize()
+        titleLabel.snp.makeConstraints {
+            $0.top == imageView.snp.bottom + theme.titleTopInset
+            $0.leading == theme.defaultInset
+            $0.trailing == theme.defaultInset
         }
     }
     
     private func addDescription() {
         descriptionLabel.customizeAppearance(theme.description)
+
         contentView.addSubview(descriptionLabel)
-        descriptionLabel.snp.makeConstraints { make in
-            make.top == titleLabel.snp.bottom + theme.descriptionVerticalMargins.top
-            make.leading == theme.defaultInset
-            make.trailing == theme.defaultInset
-            make.bottom == theme.descriptionVerticalMargins.bottom
+        descriptionLabel.fitToVerticalIntrinsicSize()
+        descriptionLabel.snp.makeConstraints {
+            $0.top == titleLabel.snp.bottom + theme.descriptionVerticalMargins.top
+            $0.leading == theme.defaultInset
+            $0.bottom == 0
+            $0.trailing == theme.defaultInset
         }
     }
     
     private func addCloseAction() {
-        view.addSubview(closeActionView)
+        footerView.addSubview(closeActionView)
         closeActionView.snp.makeConstraints {
-            $0.leading == theme.defaultInset
-            $0.bottom == theme.closeButtonBottomInset
-            $0.trailing == theme.defaultInset
-            $0.height.equalTo(theme.closeButtonHeight)
+            $0.fitToHeight(theme.closeButtonHeight)
+            $0.top == theme.closeButtonPaddings.top
+            $0.leading == theme.closeButtonPaddings.left
+            $0.bottom == theme.closeButtonPaddings.bottom
+            $0.trailing == theme.closeButtonPaddings.right
         }
         
         closeActionView.addTouch(

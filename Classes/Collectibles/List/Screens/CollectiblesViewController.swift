@@ -20,9 +20,9 @@ final class CollectiblesViewController: BaseViewController {
     override var prefersLargeTitle: Bool {
         return true
     }
-    
-    override var name: AnalyticsScreenName? {
-        return .collectibles
+
+    override var analyticsScreen: ALGAnalyticsScreen {
+        return .init(name: .collectibleList)
     }
 
     private lazy var bottomBannerController = BottomActionableBannerController(
@@ -80,6 +80,8 @@ extension CollectiblesViewController {
             guard let self = self else {
                 return
             }
+
+            self.endEditing()
 
             self.openReceiveCollectible()
         }

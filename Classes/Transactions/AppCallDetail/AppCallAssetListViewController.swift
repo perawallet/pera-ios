@@ -22,10 +22,6 @@ final class AppCallAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     BottomSheetPresentable {
-    typealias EventHandler = (Event) -> Void
-
-    var eventHandler: EventHandler?
-
     private(set) lazy var listView: UICollectionView = {
         let collectionViewLayout = AppCallAssetListLayout.build()
         let collectionView =
@@ -63,8 +59,6 @@ final class AppCallAssetListViewController:
 
     override func configureNavigationBarAppearance() {
         title = "assets-title".localized
-
-        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -113,13 +107,49 @@ final class AppCallAssetListViewController:
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
     }
 }
 
@@ -134,15 +164,6 @@ extension AppCallAssetListViewController {
             $0.setPaddings()
         }
     }
-
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.eventHandler?(.performClose)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
 }
 
 extension AppCallAssetListViewController {
@@ -156,11 +177,5 @@ extension AppCallAssetListViewController {
             layout: collectionViewLayout,
             sizeForItemAt: indexPath
         )
-    }
-}
-
-extension AppCallAssetListViewController {
-    enum Event {
-        case performClose
     }
 }

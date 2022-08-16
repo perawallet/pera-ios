@@ -54,7 +54,7 @@ extension AssetDetailInfoViewModel {
     mutating func bindTitle() {
         title = "accounts-transaction-your-balance"
             .localized
-            .bodyRegular(hasMultilines: false)
+            .bodyRegular()
     }
 
     mutating func bindPrimaryValue(
@@ -71,7 +71,7 @@ extension AssetDetailInfoViewModel {
         currencyFormatter.currency = nil
 
         let text = currencyFormatter.format(asset.decimalAmount)
-        primaryValue = text?.largeTitleMonoRegular(hasMultilines: false)
+        primaryValue = text?.largeTitleMonoRegular()
     }
 
     mutating func bindSecondaryValue(
@@ -97,7 +97,7 @@ extension AssetDetailInfoViewModel {
             currencyFormatter.currency = rawCurrency
 
             let text = currencyFormatter.format(amount)
-            secondaryValue = text?.bodyMonoRegular(hasMultilines: false)
+            secondaryValue = text?.bodyMonoRegular()
         } catch {
             secondaryValue = nil
         }
@@ -106,14 +106,14 @@ extension AssetDetailInfoViewModel {
     mutating func bindName(
         _ asset: StandardAsset?
     ) {
-        let text = asset?.presentation.displayNames.primaryName
-        name = text?.bodyMedium(hasMultilines: false)
+        let text = asset?.naming.displayNames.primaryName
+        name = text?.bodyMedium()
     }
 
     mutating func bindIsVerified(
         _ asset: StandardAsset?
     ) {
-        isVerified = asset?.isVerified ?? false
+        isVerified = asset?.verificationTier.isVerified ?? false
     }
 
     mutating func bindID(
@@ -126,7 +126,7 @@ extension AssetDetailInfoViewModel {
 
         id = "asset-detail-id-title"
             .localized(params: "\(asset.id)")
-            .bodyRegular(hasMultilines: false)
+            .bodyRegular()
     }
 }
 

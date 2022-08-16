@@ -106,10 +106,7 @@ final class AccountAssetListViewController:
                 self.listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
-                ) { [weak self] in
-                    guard let self = self else { return }
-
-                    self.updateUIWhenListDidReload()
+                ) {
                     updates.completion?()
                 }
             }
@@ -153,10 +150,6 @@ extension AccountAssetListViewController {
         updateListWhenViewDidLayoutSubviews()
     }
 
-    private func updateUIWhenListDidReload() {
-        updateListBackgroundWhenListDidReload()
-    }
-
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
     }
@@ -164,7 +157,7 @@ extension AccountAssetListViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -177,17 +170,22 @@ extension AccountAssetListViewController {
         }
     }
 
-    private func updateListBackgroundWhenListDidReload() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
-    }
-
     private func updateListBackgroundWhenListDidScroll() {
         updateListBackgroundWhenViewDidLayoutSubviews()
     }
 
     private func updateListBackgroundWhenViewDidLayoutSubviews() {
+        /// <note>
+        /// 150/250 is a number smaller than the total height of the total portfolio and the quick
+        /// actions menu cells, and big enough to cover the background area when the system
+        /// triggers auto-scrolling to the top because of the applying snapshot (The system just
+        /// does it if the user pulls down the list extending the bounds of the content even if
+        /// there isn't anything to update.)
+        let thresholdHeight: CGFloat = accountHandle.value.isWatchAccount() ? 150 : 250
+        let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
+
         listBackgroundView.snp.updateConstraints {
-            $0.fitToHeight(max(-listView.contentOffset.y, 0))
+            $0.fitToHeight(max(preferredHeight, 0))
         }
     }
 
@@ -252,7 +250,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     return
                 }
                 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -264,7 +262,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                         )
                     )
                 }
-                item.observe(event: .secondaryAction) {
+                item.startObserving(event: .secondaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -275,7 +273,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .watchAccountAssetManagement:
                 let item = cell as! ManagementItemCell
 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -298,7 +296,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
-            item.observe(event: .buyAlgo) {
+            item.startObserving(event: .buyAlgo) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -307,7 +305,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.buyAlgo)
             }
 
-            item.observe(event: .send) {
+            item.startObserving(event: .send) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -316,7 +314,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.send)
             }
 
-            item.observe(event: .address) {
+            item.startObserving(event: .address) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -325,7 +323,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.address)
             }
 
-            item.observe(event: .more) {
+            item.startObserving(event: .more) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -376,9 +374,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
-            case .algo:
-                openAlgoDetail()
-            case .asset:
+            case .asset(let item):
+                if item.asset is Algo {
+                    openAlgoDetail()
+                    return
+                }
+                
                 let assetIndex = indexPath.item
                 
                 if let assetDetail = dataController[assetIndex] {
@@ -401,13 +402,49 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             return nil
         }
 
-        return UIContextMenuConfiguration { _ in
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
             let copyActionItem = UIAction(item: .copyAssetID) {
                 [unowned self] _ in
                 self.copyToClipboardController.copyID(asset)
             }
             return UIMenu(children: [ copyActionItem ])
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath)
+        else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: cell,
+            backgroundColor: Colors.Defaults.background.uiColor
+        )
     }
 }
 
