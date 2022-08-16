@@ -1094,6 +1094,7 @@
 
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";

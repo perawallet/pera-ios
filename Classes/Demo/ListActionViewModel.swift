@@ -20,8 +20,15 @@ import MacaroonUIKit
 
 protocol ListActionViewModel: ViewModel {
     var icon: Image? { get }
+    var isBadgeVisible: Bool { get }
     var title: EditText? { get }
     var subtitle: EditText? { get }
+}
+
+extension ListActionViewModel {
+    var isBadgeVisible: Bool {
+        return false
+    }
 }
 
 extension ListActionViewModel {
