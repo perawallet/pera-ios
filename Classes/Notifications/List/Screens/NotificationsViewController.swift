@@ -40,7 +40,11 @@ final class NotificationsViewController:
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
@@ -178,7 +182,7 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        open(.notificationFilter, by: .present)
     }
 }
 

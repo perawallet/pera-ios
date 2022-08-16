@@ -135,11 +135,11 @@ extension BottomWarningViewConfigurator {
             return nil
         }
 
-        var attributes: TextAttributeGroup = .bodyRegular(
+        var attributes = Typography.bodyRegularAttributes(
             alignment: .center
         )
 
-        attributes.insert(.textColor(AppColors.Components.Text.gray.uiColor))
+        attributes.insert(.textColor(Colors.Text.gray))
 
         let attributedString =
         aDescription
@@ -156,7 +156,7 @@ extension BottomWarningViewConfigurator {
             let paramRange = (mutableAttributedString.string as NSString).range(of: $0)
 
             let paramAttributes: TextAttributeGroup = [
-                .textColor(AppColors.Components.Text.main.uiColor)
+                .textColor(Colors.Text.main)
             ]
 
             mutableAttributedString.addAttributes(
@@ -189,11 +189,11 @@ extension BottomWarningViewConfigurator {
 
 extension BottomWarningViewConfigurator {
     func getLinkAttributes() -> Dictionary<NSAttributedString.Key, Any> {
-        var attributes: TextAttributeGroup = .bodyMedium(
+        var attributes = Typography.bodyMediumAttributes(
             alignment: .center
         )
 
-        attributes.insert(.textColor(AppColors.Components.Link.primary.uiColor))
+        attributes.insert(.textColor(Colors.Link.primary))
 
         return attributes.asSystemAttributes()
     }

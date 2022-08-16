@@ -22,7 +22,7 @@ import UIKit
 /// <todo>
 /// Refactor, move `UICollectionViewDelegateFlowLayout` to the screen.
 final class AssetListViewLayout: NSObject {
-    private lazy var theme = AssetListViewController.Theme()
+    private lazy var theme = AssetAdditionViewController.Theme()
     lazy var handlers = Handlers()
 
     private var sizeCache: [String: CGSize] = [:]

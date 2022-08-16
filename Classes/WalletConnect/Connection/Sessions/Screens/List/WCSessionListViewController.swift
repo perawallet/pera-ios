@@ -47,7 +47,7 @@ final class WCSessionListViewController: BaseViewController {
         dataSource.delegate = self
 
         noContentWithActionView.setListeners()
-        noContentWithActionView.observe(event: .performPrimaryAction) {
+        noContentWithActionView.startObserving(event: .performPrimaryAction) {
             [weak self] in
             self?.openQRScanner()
         }
@@ -148,7 +148,7 @@ extension WCSessionListViewController {
                 return
             }
 
-            self.log(
+            self.analytics.track(
                 WCSessionDisconnectedEvent(
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,
