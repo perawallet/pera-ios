@@ -490,6 +490,7 @@ extension HomeViewController {
                 .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
+            controller?.hidesCloseBarButtonItem = true
             controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
                 tutorialViewController.dismissScreen()
             }
