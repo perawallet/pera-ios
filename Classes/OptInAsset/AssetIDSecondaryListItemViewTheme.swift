@@ -39,7 +39,6 @@ struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
     var backgroundImage: ImageStyle
     var view: ViewStyle
     var contentEdgeInsets: LayoutPaddings
-    var icon: ImageStyle
     var iconLayoutOffset: LayoutOffset
     var title: TextStyle
 
@@ -55,7 +54,6 @@ struct AssetIDSecondaryListItemValueViewTheme: SecondaryListItemValueViewTheme {
             .isInteractable(true)
         ]
         contentEdgeInsets = (6, 12, 6, 12)
-        icon = []
         iconLayoutOffset = (0, 0)
         title = []
     }

@@ -23,7 +23,6 @@ protocol SecondaryListItemValueViewTheme:
     var view: ViewStyle { get }
     var backgroundImage: ImageStyle { get }
     var contentEdgeInsets: LayoutPaddings { get }
-    var icon: ImageStyle { get }
     var iconLayoutOffset: LayoutOffset { get }
     var title: TextStyle { get }
 }
@@ -39,7 +38,6 @@ struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
     var view: ViewStyle
     var backgroundImage: ImageStyle
     var contentEdgeInsets: LayoutPaddings
-    var icon: ImageStyle
     var iconLayoutOffset: LayoutOffset
     var title: TextStyle
 
@@ -47,18 +45,15 @@ struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
         _ family: LayoutFamily = .current,
         isMultiline: Bool
     ) {
-        view = [ .isInteractable(false) ]
-        backgroundImage = [ .isInteractable(false) ]
-        contentEdgeInsets = (0, 0, 0, 0)
-        icon = [
-            .contentMode(.left),
-        ]
-        iconLayoutOffset = (10, 0)
+        self.view = [ .isInteractable(false) ]
+        self.backgroundImage = [ .isInteractable(false) ]
+        self.contentEdgeInsets = (0, 0, 0, 0)
+        self.iconLayoutOffset = (10, 0)
 
         if isMultiline {
-            title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
+            self.title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
         } else {
-            title = []
+            self.title = []
         }
     }
 

@@ -52,10 +52,15 @@ final class SecondaryListItemView:
     func bindData(
         _ viewModel: SecondaryListItemViewModel?
     ) {
-        viewModel?.title?.load(in: titleView)
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
 
-        accessoryView.icon = viewModel?.accessory?.icon
-        accessoryView.title = viewModel?.accessory?.title
+        accessoryView.bindData(viewModel?.accessory)
+
         /// <todo>: Remove this, it is only for debugging purposes.
         _ = Self.calculatePreferredSize(
             viewModel,
@@ -83,7 +88,7 @@ final class SecondaryListItemView:
         let accessoryMaxWidth =
             (contentWidth - theme.minimumSpacingBetweenTitleAndAccessory) * (1 - theme.titleMinimumWidthRatio)
 
-        let accessoryIconSize = viewModel.accessory?.icon?.uiImage.size ?? .zero
+        let accessoryIconSize = viewModel.accessory?.icon?.image?.uiImage.size ?? .zero
         let accessoryIconOffset =
             accessoryIconSize != .zero
             ? theme.accessory.iconLayoutOffset.x
@@ -96,7 +101,7 @@ final class SecondaryListItemView:
             - theme.accessory.contentEdgeInsets.leading
             - theme.accessory.contentEdgeInsets.trailing
 
-        let accessoryTitleSize = viewModel.accessory?.title.boundingSize(
+        let accessoryTitleSize = viewModel.accessory?.title?.boundingSize(
             multiline: theme.accessory.supportsMultiline,
             fittingSize: CGSize((accessoryTitleMaxWidth, .greatestFiniteMagnitude))
         ) ?? .zero
