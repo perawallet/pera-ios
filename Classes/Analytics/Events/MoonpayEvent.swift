@@ -33,6 +33,7 @@ extension MoonpayEvent {
     enum `Type` {
         case tapBuy
         case completed
+        case tapBottomsheetBuy
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -40,6 +41,8 @@ extension MoonpayEvent {
                 return .tapBuyAlgoInMoonpay
             case .completed:
                 return .buyAlgoFromMoonpayCompleted
+            case .tapBottomsheetBuy:
+                return .tapBuyAlgoInBottomsheet
             }
         }
     }

@@ -58,6 +58,12 @@ final class AccountCollectibleListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analytics.track(.recordAccountDetailScreen(type: .tapCollectibles))
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         add(collectibleListScreen)
@@ -85,6 +91,7 @@ extension AccountCollectibleListViewController {
                     return
                 }
 
+                self.analytics.track(.tapNFTReceive())
                 self.openReceiveCollectible()
             case .didUpdate(let accounts):
                 self.account = accounts.first!
