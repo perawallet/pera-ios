@@ -532,19 +532,37 @@ extension HomeViewController {
 
         copyAddressDisplayStore.increaseAppOpenCount()
 
-        let eventHandler: CopyAddressStoryScreen.EventHandler = {
-            [weak self] event in
+        let title = "story-copy-address-title"
+            .localized
+            .bodyLargeMedium(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail
+            )
+        let body = "story-copy-address-description"
+            .localized
+            .footnoteRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail
+            )
+        let alert = Alert(
+            image: "copy-address-story",
+            title: title,
+            body: body
+        )
+
+        let gotItAction = AlertAction(
+            title: "title-got-it".localized,
+            style: .secondary
+        ) {
+            [weak self] in
             guard let self = self else { return }
-
-            switch event {
-            case .close:
-                self.dismiss(animated: true)
-            }
+            self.dismiss(animated: true)
         }
+        alert.addAction(gotItAction)
 
-        self.storyTransition.perform(
-            .copyAddressStory(
-                eventHandler: eventHandler
+        storyTransition.perform(
+            .alert(
+                alert: alert
             ),
             by: .presentWithoutNavigationController
         )
