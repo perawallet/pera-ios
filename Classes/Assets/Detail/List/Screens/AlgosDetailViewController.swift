@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class AlgosDetailViewController: BaseAssetDetailViewController {
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .assetDetail)
     }
 

@@ -21,7 +21,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
 
     var eventHandler: EventHandler?
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .transactionDetail)
     }
 

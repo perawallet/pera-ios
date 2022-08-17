@@ -58,7 +58,7 @@ final class HomeViewController:
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .accountList)
     }
 

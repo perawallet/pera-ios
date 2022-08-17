@@ -20,7 +20,7 @@ import UIKit
 class ContactsViewController: BaseViewController {
     weak var delegate: ContactsViewControllerDelegate?
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .contactList)
     }
     

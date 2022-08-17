@@ -21,7 +21,7 @@ final class QRCreationViewController: BaseScrollViewController {
     private lazy var qrCreationView = QRCreationView(draft: draft)
     private lazy var theme = Theme()
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .showQR)
     }
     

@@ -20,7 +20,7 @@ import UIKit
 final class ContactDetailViewController: BaseScrollViewController {
     weak var delegate: ContactDetailViewControllerDelegate?
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .contactDetail)
     }
 
