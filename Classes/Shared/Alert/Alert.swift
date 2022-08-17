@@ -22,6 +22,8 @@ final class Alert {
     let title: TextProvider?
     let body: TextProvider?
 
+    var isBadgeVisible = false
+
     private(set) var actions: [AlertAction] = []
 
     init(

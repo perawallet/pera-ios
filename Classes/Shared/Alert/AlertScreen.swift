@@ -30,6 +30,7 @@ import MacaroonStorySheet
 
      private lazy var contextView = MacaroonUIKit.BaseView()
      private lazy var imageView = ImageView()
+     private lazy var newBadgeView = Label()
      private lazy var titleView = Label()
      private lazy var bodyView = Label()
      private lazy var actionsContextView = MacaroonUIKit.VStackView()
@@ -73,6 +74,11 @@ import MacaroonStorySheet
          }
 
          addImage()
+
+         if alert.isBadgeVisible {
+             addNewBadge()
+         }
+
          addTitle()
          addBody()
      }
@@ -81,26 +87,48 @@ import MacaroonStorySheet
          imageView.customizeAppearance(theme.image)
 
          contextView.addSubview(imageView)
-         imageView.contentEdgeInsets.y = theme.imageBottomPadding
+         imageView.fitToIntrinsicSize()
          imageView.snp.makeConstraints {
-             $0.centerX == 0
-             $0.top == 0
-             $0.leading >= 0
-             $0.trailing <= 0
+             $0.top == theme.imageEdgeInsets.top
+             $0.leading == theme.imageEdgeInsets.leading
+             $0.trailing == theme.imageEdgeInsets.trailing
          }
 
          imageView.image = alert.image?.uiImage
      }
 
+     private func addNewBadge() {
+         contextView.addSubview(newBadgeView)
+         newBadgeView.customizeAppearance(theme.newBadge)
+         newBadgeView.draw(corner: theme.newBadgeCorner)
+         newBadgeView.contentEdgeInsets = theme.newBadgeContentEdgeInsets
+
+         newBadgeView.fitToIntrinsicSize()
+         newBadgeView.snp.makeConstraints {
+             $0.centerX == 0
+             $0.top == imageView.snp.bottom + theme.newBadgeEdgeInsets.top
+             $0.leading >= theme.newBadgeEdgeInsets.leading
+             $0.trailing <= theme.newBadgeEdgeInsets.trailing
+         }
+     }
+
      private func addTitle() {
+         func resolveTitleTopConstraint() -> LayoutConstraint {
+             if alert.isBadgeVisible {
+                 return newBadgeView.snp.bottom + theme.newBadgeEdgeInsets.bottom
+             } else {
+                 return imageView.snp.bottom + theme.titleEdgeInsets.top
+             }
+         }
+
          contextView.addSubview(titleView)
          titleView.customizeAppearance(theme.title)
 
          titleView.fitToIntrinsicSize()
          titleView.snp.makeConstraints {
-             $0.top == imageView.snp.bottom
-             $0.leading == 0
-             $0.trailing == 0
+             $0.top == resolveTitleTopConstraint()
+             $0.leading == theme.titleEdgeInsets.leading
+             $0.trailing == theme.titleEdgeInsets.trailing
          }
 
          alert.title?.load(in: titleView)
@@ -110,13 +138,13 @@ import MacaroonStorySheet
          contextView.addSubview(bodyView)
          bodyView.customizeAppearance(theme.body)
 
-         bodyView.contentEdgeInsets.top = theme.spacingBetweenTitleAndBody
+         bodyView.contentEdgeInsets.top = theme.bodyEdgeInsets.top
          bodyView.fitToIntrinsicSize()
          bodyView.snp.makeConstraints {
              $0.top == titleView.snp.bottom
-             $0.leading == 0
-             $0.trailing == 0
-             $0.bottom == 0
+             $0.leading == theme.bodyEdgeInsets.leading
+             $0.trailing == theme.bodyEdgeInsets.trailing
+             $0.bottom == theme.bodyEdgeInsets.bottom
          }
 
          alert.body?.load(in: bodyView)

@@ -23,10 +23,15 @@ protocol AlertScreenTheme:
     LayoutSheet {
     var contextEdgeInsets: LayoutPaddings { get }
     var image: ImageStyle { get }
-    var imageBottomPadding: LayoutMetric { get }
+    var imageEdgeInsets: LayoutPaddings { get }
+    var newBadge: TextStyle { get }
+    var newBadgeCorner: Corner { get }
+    var newBadgeContentEdgeInsets: LayoutPaddings { get }
+    var newBadgeEdgeInsets: LayoutPaddings { get }
     var title: TextStyle { get }
-    var spacingBetweenTitleAndBody: LayoutMetric { get }
+    var titleEdgeInsets: LayoutPaddings { get }
     var body: TextStyle { get }
+    var bodyEdgeInsets: LayoutPaddings { get }
     var actionSpacing: LayoutMetric { get }
     var actionsEdgeInsets: LayoutPaddings { get }
     var actionContentEdgeInsets: LayoutPaddings { get }
@@ -37,14 +42,49 @@ protocol AlertScreenTheme:
     ) -> ButtonStyle
 }
 
-struct AlertScreenThemeCommonTheme:
+extension AlertScreenTheme {
+    func getActionStyle(
+        _ style: AlertAction.Style,
+        title: String
+    ) -> ButtonStyle {
+        switch style {
+        case .primary:
+            return [
+                .title(title),
+                .font(Typography.bodyMedium()),
+                .titleColor([ .normal(Colors.Button.Primary.text) ]),
+                .backgroundImage([
+                    .normal("components/buttons/primary/bg"),
+                    .highlighted("components/buttons/primary/bg-highlighted"),
+                ])
+            ]
+        case .secondary:
+            return [
+                .title(title),
+                .font(Typography.bodyMedium()),
+                .titleColor([ .normal(Colors.Button.Secondary.text) ]),
+                .backgroundImage([
+                    .normal("components/buttons/secondary/bg"),
+                    .highlighted("components/buttons/secondary/bg-highlighted"),
+                ])
+            ]
+        }
+    }
+}
+
+struct AlertScreenCommonTheme:
     AlertScreenTheme {
     var contextEdgeInsets: LayoutPaddings
     var image: ImageStyle
-    var imageBottomPadding: LayoutMetric
+    var imageEdgeInsets: LayoutPaddings
+    var newBadge: TextStyle
+    var newBadgeCorner: Corner
+    var newBadgeContentEdgeInsets: LayoutPaddings
+    var newBadgeEdgeInsets: LayoutPaddings
     var title: TextStyle
-    var spacingBetweenTitleAndBody: LayoutMetric
+    var titleEdgeInsets: LayoutPaddings
     var body: TextStyle
+    var bodyEdgeInsets: LayoutPaddings
     var actionSpacing: LayoutMetric
     var actionsEdgeInsets: LayoutPaddings
     var actionContentEdgeInsets: LayoutPaddings
@@ -54,68 +94,88 @@ struct AlertScreenThemeCommonTheme:
     ) {
         self.contextEdgeInsets = (32, 24, 12, 24)
         self.image = [
-            .contentMode(.top)
+            .contentMode(.scaleAspectFit)
         ]
-        self.imageBottomPadding = 32
+        self.imageEdgeInsets = (0, 0, 0, 0)
+        self.newBadge = [
+            .text("title-new-uppercased".localized),
+            .textColor(Colors.Helpers.positive),
+            .font(Typography.captionBold()),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.positiveLighter)
+        ]
+        self.newBadgeCorner = Corner(radius: 8)
+        self.newBadgeContentEdgeInsets =  (1, 5, 1, 5)
+        self.newBadgeEdgeInsets = (9, 24, 9, 24)
         self.title = [
             .textOverflow(MultilineText(numberOfLines: 4)),
             .textColor(Colors.Text.main),
             .font(Typography.bodyLargeMedium())
         ]
+        self.titleEdgeInsets = (32, 0, .noMetric, 0)
         self.body = [
             .textOverflow(MultilineText(numberOfLines: 5)),
             .textColor(Colors.Text.gray),
             .font(Typography.footnoteRegular())
         ]
-        self.spacingBetweenTitleAndBody = 12
+        self.bodyEdgeInsets = (12, 0, 0, 0)
         self.actionSpacing = 20
         self.actionContentEdgeInsets = (16, 24, 16, 24)
         self.actionsEdgeInsets = (8, 24, 32, 24)
     }
-
-    func getActionStyle(
-        _ style: AlertAction.Style,
-        title: String
-    ) -> ButtonStyle {
-        switch style {
-        case .primary:
-            return .getPrimaryStyle(
-                title: title
-            )
-        case .secondary:
-            return .getSecondaryStyle(
-                title: title
-            )
-        }
-    }
 }
 
-fileprivate extension ButtonStyle {
-    static func getPrimaryStyle(
-        title: String
-    ) -> ButtonStyle {
-        return [
-            .title(title),
-            .font(Typography.bodyMedium()),
-            .titleColor([ .normal(Colors.Button.Primary.text) ]),
-            .backgroundImage([
-                .normal("components/buttons/secondary/bg"),
-                .highlighted("components/buttons/primary/bg-highlighted"),
-            ])
-        ]
-    }
+struct AlertScreenWithFillingImageTheme:
+    AlertScreenTheme {
+    var contextEdgeInsets: LayoutPaddings
+    var image: ImageStyle
+    var imageEdgeInsets: LayoutPaddings
+    var newBadge: TextStyle
+    var newBadgeCorner: Corner
+    var newBadgeContentEdgeInsets: LayoutPaddings
+    var newBadgeEdgeInsets: LayoutPaddings
+    var title: TextStyle
+    var titleEdgeInsets: LayoutPaddings
+    var body: TextStyle
+    var bodyEdgeInsets: LayoutPaddings
+    var actionSpacing: LayoutMetric
+    var actionsEdgeInsets: LayoutPaddings
+    var actionContentEdgeInsets: LayoutPaddings
 
-    static func getSecondaryStyle(
-        title: String
-    ) -> ButtonStyle {
-        return  [
-            .title(title),
-            .font(Typography.bodyMedium()),
-            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
-            .backgroundImage([
-                .normal("components/buttons/secondary/bg"),
-                .highlighted("components/buttons/secondary/bg-highlighted"),
-            ])
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contextEdgeInsets = (0, 0, 12, 0)
+        self.image = [
+            .contentMode(.scaleAspectFill)
         ]
+        self.imageEdgeInsets = (0, 0, 0, 0)
+        self.newBadge = [
+            .text("title-new-uppercased".localized),
+            .textColor(Colors.Helpers.positive),
+            .font(Typography.captionBold()),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.positiveLighter)
+        ]
+        self.newBadgeCorner = Corner(radius: 8)
+        self.newBadgeContentEdgeInsets =  (1, 5, 1, 5)
+        self.newBadgeEdgeInsets = (9, 24, 9, 24)
+        self.title = [
+            .textOverflow(MultilineText(numberOfLines: 4)),
+            .textColor(Colors.Text.main),
+            .font(Typography.bodyLargeMedium())
+        ]
+        self.titleEdgeInsets = (32, 24, .noMetric, 24)
+        self.body = [
+            .textOverflow(MultilineText(numberOfLines: 5)),
+            .textColor(Colors.Text.gray),
+            .font(Typography.footnoteRegular())
+        ]
+        self.bodyEdgeInsets = (12, 24, 0, 24)
+        self.actionSpacing = 20
+        self.actionContentEdgeInsets = (16, 24, 16, 24)
+        self.actionsEdgeInsets = (8, 24, 32, 24)
     }
 }
