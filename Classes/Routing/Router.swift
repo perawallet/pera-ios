@@ -977,6 +977,10 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .swapIntroduction(let draft, let eventHandler):
+            let aViewController = SwapIntroductionScreen(draft: draft)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T
