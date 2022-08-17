@@ -23,6 +23,7 @@ final class ListActionView:
     Control,
     ViewModelBindable {
     private lazy var iconView = ImageView()
+    private lazy var badgeView = MacaroonUIKit.BaseView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
@@ -46,6 +47,7 @@ final class ListActionView:
         _ viewModel: ListActionViewModel?
     ) {
         iconView.image = viewModel?.icon?.uiImage
+        badgeView.isHidden = !(viewModel?.isBadgeVisible ?? false)
         titleView.editText = viewModel?.title
         subtitleView.editText = viewModel?.subtitle
     }
@@ -68,6 +70,22 @@ extension ListActionView {
             iconView,
             with: theme
         )
+
+        addBadge(theme)
+    }
+
+    private func addBadge(
+        _ theme: ListActionViewTheme
+    ) {
+        badgeView.customizeAppearance(theme.badge)
+        badgeView.draw(corner: theme.badgeCorner)
+
+        iconView.addSubview(badgeView)
+        badgeView.snp.makeConstraints {
+            $0.trailing == theme.badgeContentEdgeInsets.trailing
+            $0.top == theme.badgeContentEdgeInsets.top
+            $0.fitToSize(theme.badgeSize)
+        }
     }
 
     private func alignIcon(

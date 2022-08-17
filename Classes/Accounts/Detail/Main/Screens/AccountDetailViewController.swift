@@ -168,14 +168,14 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
 
                 self.buyAlgoFlowCoordinator.launch()
+            case .swap:
+                self.assetListScreen.endEditing()
+
+                self.receiveTransactionFlowCoordinator.launch()
             case .send:
                 self.assetListScreen.endEditing()
 
                 self.sendTransactionFlowCoordinator.launch()
-            case .address:
-                self.assetListScreen.endEditing()
-
-                self.receiveTransactionFlowCoordinator.launch()
             case .more:
                 self.assetListScreen.endEditing()
 
@@ -191,6 +191,12 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             [weak self] in
             self?.buyAlgoFlowCoordinator.launch()
         }
+    }
+
+    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        /// <todo>
+        /// Navigate to Swap
+        preconditionFailure("Not Implemented Yet")
     }
 
     func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {

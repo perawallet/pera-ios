@@ -162,6 +162,13 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToBuyAlgo()
         }
+        aView.startObserving(event: .swap) {
+            [weak self] in
+            guard let self = self else { return }
+            /// <todo>
+            /// Navigate to Swap
+            preconditionFailure("Not Implemented Yet")
+        }
         aView.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }

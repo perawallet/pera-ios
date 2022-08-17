@@ -24,6 +24,7 @@ final class TransactionOptionsContextView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .receive: TargetActionInteraction(),
         .more: TargetActionInteraction()
@@ -56,7 +57,6 @@ extension TransactionOptionsContextView {
     private func addContext(
         _ theme: TransactionOptionsViewTheme
     ) {
-
         spacing = theme.spacingBetweenActions
         directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: theme.contentPaddings.top + theme.contentSafeAreaInsets.top,
@@ -80,6 +80,12 @@ extension TransactionOptionsContextView {
                     theme: theme.action,
                     viewModel: BuyAlgoTransactionOptionListActionViewModel(),
                     event: .buyAlgo
+                )
+            case .swap:
+                addAction(
+                    theme: theme.action,
+                    viewModel: SwapTransactionOptionListActionViewModel(),
+                    event: .swap
                 )
             case .send:
                 addAction(
@@ -125,6 +131,7 @@ extension TransactionOptionsContextView {
 extension TransactionOptionsContextView {
     enum Action: CaseIterable {
         case buyAlgo
+        case swap
         case send
         case receive
         case more
@@ -132,6 +139,7 @@ extension TransactionOptionsContextView {
 
     enum Event {
         case buyAlgo
+        case swap
         case send
         case receive
         case more
