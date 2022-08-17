@@ -23,7 +23,7 @@ import MacaroonUtils
 final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
+    private lazy var alertTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
 
@@ -56,7 +56,7 @@ final class HomeViewController:
     private let copyToClipboardController: CopyToClipboardController
 
     private let onceWhenViewDidAppear = Once()
-    private let storyOnceWhenViewDidAppear = Once()
+    private let alertOnceWhenViewDidAppear = Once()
 
     override var analyticsScreen: ALGAnalyticsScreen {
         return .init(name: .accountList)
@@ -127,7 +127,7 @@ final class HomeViewController:
                     animatingDifferences: true
                 )
 
-                self.presentCopyAddressStoryIfNeeded()
+                self.presentCopyAddressAlertIfNeeded()
             }
         }
         dataController.load()
@@ -503,22 +503,22 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    private func presentCopyAddressStoryIfNeeded() {
-        /// note: If any screen presented on top of home screen, it will prevent opening story screen here
+    private func presentCopyAddressAlertIfNeeded() {
+        /// note: If any screen presented on top of home screen, it will prevent opening alert screen here
         guard sharedDataController.isAvailable, presentedViewController == nil else {
             return
         }
         
-        storyOnceWhenViewDidAppear.execute { [weak self] in
+        alertOnceWhenViewDidAppear.execute { [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.presentCopyAddressStory()
+            self.presentCopyAddressAlert()
         }
     }
     
-    private func presentCopyAddressStory() {
+    private func presentCopyAddressAlert() {
         guard let session = session,
               session.hasAuthentication() else {
             return
@@ -560,7 +560,7 @@ extension HomeViewController {
         }
         alert.addAction(gotItAction)
 
-        storyTransition.perform(
+        alertTransition.perform(
             .alert(
                 alert: alert
             ),
