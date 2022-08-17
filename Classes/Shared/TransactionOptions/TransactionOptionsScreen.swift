@@ -23,14 +23,15 @@ import UIKit
 final class TransactionOptionsScreen:
     BaseScrollViewController,
     BottomSheetPresentable {
-
     weak var delegate: TransactionOptionsScreenDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .more])
+    private lazy var contextView = TransactionOptionsContextView(
+        actions: [.buyAlgo, .swap, .send, .receive, .more]
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,15 @@ final class TransactionOptionsScreen:
             }
 
             self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
+        }
+
+        contextView.startObserving(event: .swap) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.transactionOptionsScreenDidSwap(self)
         }
 
         contextView.startObserving(event: .send) {
@@ -107,6 +117,10 @@ extension TransactionOptionsScreen {
 
 protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidBuyAlgo(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
+
+    func transactionOptionsScreenDidSwap(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
 

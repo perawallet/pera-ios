@@ -359,17 +359,18 @@ extension HomeViewController {
             self.buyAlgoFlowCoordinator.launch()
         }
 
+        cell.startObserving(event: .swap) {
+            [weak self] in
+            guard let self = self else { return }
+            self.receiveTransactionFlowCoordinator.launch()
+        }
+
         cell.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
             self.sendTransactionFlowCoordinator.launch()
         }
 
-        cell.startObserving(event: .receive) {
-            [weak self] in
-            guard let self = self else { return }
-            self.receiveTransactionFlowCoordinator.launch()
-        }
 
         cell.startObserving(event: .scanQR) {
             [weak self] in

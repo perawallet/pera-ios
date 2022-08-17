@@ -25,8 +25,8 @@ final class AccountQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
-        .address: TargetActionInteraction(),
         .more: TargetActionInteraction()
     ]
 
@@ -60,8 +60,8 @@ final class AccountQuickActionsView:
             for: theme.sendAction,
             fittingIn: maxActionSize
         )
-        let addressActionSize = calculateActionPreferredSize(
-            for: theme.addressAction,
+        let swapActionSize = calculateActionPreferredSize(
+            for: theme.swapAction,
             fittingIn: maxActionSize
         )
         let moreActionSize = calculateActionPreferredSize(
@@ -70,8 +70,8 @@ final class AccountQuickActionsView:
         )
         let preferredHeight = [
             buyActionSize.height,
+            swapActionSize.height,
             sendActionSize.height,
-            addressActionSize.height,
             moreActionSize.height
         ].max()!
         return CGSize(width: size.width, height: min(preferredHeight.ceil(), size.height))
@@ -114,8 +114,8 @@ extension AccountQuickActionsView {
         }
 
         addBuyAction(theme)
+        addSwapAction(theme)
         addSendAction(theme)
-        addAddressAction(theme)
         addMoreAction(theme)
     }
 
@@ -131,6 +131,36 @@ extension AccountQuickActionsView {
         )
     }
 
+    private func addSwapAction(
+        _ theme: AccountQuickActionsViewTheme
+    ) {
+        let swapActionTheme = theme.swapAction
+
+        let swapActionView = BadgeButton(
+            badgePosition: .topTrailing(
+                theme.swapNewBadgeEdgeInsets
+            ),
+            .imageAtTopmost(
+                padding: 0,
+                titleAdjustmentY: HomeQuickActionViewTheme.spacingBetweenIconAndTitle
+            )
+        )
+
+        swapActionView.customize(theme: theme.swapNewBadge)
+        swapActionView.customizeAppearance(swapActionTheme.style)
+
+        swapActionView.snp.makeConstraints {
+            $0.fitToWidth(swapActionTheme.width)
+        }
+
+        actionsView.addArrangedSubview(swapActionView)
+
+        startPublishing(
+            event: .swap,
+            for: swapActionView
+        )
+    }
+
     private func addSendAction(
         _ theme: AccountQuickActionsViewTheme
     ) {
@@ -140,18 +170,6 @@ extension AccountQuickActionsView {
         startPublishing(
             event: .send,
             for: sendActionView
-        )
-    }
-
-    private func addAddressAction(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        let addressActionView = createAction(theme.addressAction)
-        actionsView.addArrangedSubview(addressActionView)
-
-        startPublishing(
-            event: .address,
-            for: addressActionView
         )
     }
 
@@ -187,8 +205,8 @@ extension AccountQuickActionsView {
 extension AccountQuickActionsView {
     enum Event {
         case buyAlgo
+        case swap
         case send
-        case address
         case more
     }
 }

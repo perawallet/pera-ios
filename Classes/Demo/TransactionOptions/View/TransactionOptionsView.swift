@@ -25,6 +25,7 @@ final class TransactionOptionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .receive: TargetActionInteraction(),
         .scanQRCode: TargetActionInteraction(),
@@ -199,6 +200,12 @@ extension TransactionOptionsView {
                     viewModel: BuyAlgoTransactionOptionListActionViewModel(),
                     event: .buyAlgo
                 )
+            case .swap:
+                addAction(
+                    theme: theme.action,
+                    viewModel: SwapTransactionOptionListActionViewModel(),
+                    event: .swap
+                )
             case .send:
                 addAction(
                     theme: theme.action,
@@ -243,6 +250,7 @@ extension TransactionOptionsView {
 extension TransactionOptionsView {
     enum Action: CaseIterable {
         case buyAlgo
+        case swap
         case send
         case receive
         case scanQRCode
@@ -255,6 +263,7 @@ extension TransactionOptionsView {
     
     enum Event {
         case buyAlgo
+        case swap
         case send
         case receive
         case scanQRCode

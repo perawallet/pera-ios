@@ -73,6 +73,7 @@
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
 "title-csv" = "CSV";
+"title-swap" = "Swap";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1087,13 +1088,13 @@
 //MARK: QuickActions
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
-"quick-actions-receive-title" = "Receive";
 "quick-actions-scan-qr-title" = "Scan QR";
 "quick-actions-address-title" = "Address";
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
