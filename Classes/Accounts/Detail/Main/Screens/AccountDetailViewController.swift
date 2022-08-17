@@ -193,6 +193,12 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
         }
     }
 
+    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        /// <todo>
+        /// Navigate to Swap
+        preconditionFailure("Not Implemented Yet")
+    }
+
     func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
