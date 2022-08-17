@@ -200,6 +200,10 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
+    case alert(
+        alert: Alert,
+        theme: AlertScreenTheme = AlertScreenThemeCommonTheme()
+    )
 }
 
 extension Screen {

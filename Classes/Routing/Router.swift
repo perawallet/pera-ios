@@ -977,6 +977,11 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .alert(let alert, let theme):
+            viewController = AlertScreen(
+                alert: alert,
+                theme: theme
+            )
         }
 
         return viewController as? T
