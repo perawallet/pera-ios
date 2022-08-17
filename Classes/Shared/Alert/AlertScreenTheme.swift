@@ -120,7 +120,7 @@ struct AlertScreenCommonTheme:
             .font(Typography.footnoteRegular())
         ]
         self.bodyEdgeInsets = (12, 0, 0, 0)
-        self.actionSpacing = 20
+        self.actionSpacing = 12
         self.actionContentEdgeInsets = (16, 24, 16, 24)
         self.actionsEdgeInsets = (8, 24, 32, 24)
     }
@@ -174,7 +174,7 @@ struct AlertScreenWithFillingImageTheme:
             .font(Typography.footnoteRegular())
         ]
         self.bodyEdgeInsets = (12, 24, 0, 24)
-        self.actionSpacing = 20
+        self.actionSpacing = 12
         self.actionContentEdgeInsets = (16, 24, 16, 24)
         self.actionsEdgeInsets = (8, 24, 32, 24)
     }
