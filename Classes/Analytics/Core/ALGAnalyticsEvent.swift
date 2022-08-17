@@ -38,7 +38,7 @@ enum ALGAnalyticsEventName:
     case changeLanguage
     case changeNotificationFilter
     case completeTransaction
-    case createAccountOnHomeScreen
+    case createAccountInHomeScreen
     case manageAsset
     case onboardCreateAccountNew
     case onboardCreateAccountSkip
@@ -106,7 +106,7 @@ extension ALGAnalyticsEventName {
         case .tapGovernanceBanner: rawName = "homescreen_visitgovernance"
         case .tapDownloadTransactionInHistory: rawName = "historyscreen_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscreen_transactions_filter"
-        case .createAccountOnHomeScreen: rawName = "homescreen_account_add"
+        case .createAccountInHomeScreen: rawName = "homescreen_account_add"
         case .tapBuyAlgoInHome: rawName = "homescreen_algo_buy_tap"
         case .tapQRInHome: rawName = "homescreen_qr_scan"
         case .qrConnectedInHome: rawName = "homescreen_qr_scan_connected"

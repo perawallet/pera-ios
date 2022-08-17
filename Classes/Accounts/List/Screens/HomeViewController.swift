@@ -356,6 +356,7 @@ extension HomeViewController {
         cell.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
             self.buyAlgoFlowCoordinator.launch()
         }
 
@@ -374,6 +375,8 @@ extension HomeViewController {
         cell.startObserving(event: .scanQR) {
             [weak self] in
             guard let self = self else { return }
+
+            self.analytics.track(.recordHomeScreen(type: .qrScan))
             self.scanQRFlowCoordinator.launch()
         }
     }
@@ -417,6 +420,8 @@ extension HomeViewController {
             if let url = item.ctaUrl {
                 self.openInBrowser(url)
             }
+
+            self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
     }
     
@@ -452,6 +457,7 @@ extension HomeViewController {
             )
         }
         cell.startObserving(event: .secondaryAction) {
+            self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
                 .welcome(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
