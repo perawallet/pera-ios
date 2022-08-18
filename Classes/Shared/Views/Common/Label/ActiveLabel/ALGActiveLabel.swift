@@ -66,17 +66,17 @@ extension ALGActiveLabel {
             label.configureLinkAttribute = {
                 type, someAttributes, _ in
 
-                var mAttributes = someAttributes
+                var mutableAttributes = someAttributes
 
                 switch type {
                 case activeType:
                     attributes.asSystemAttributes().forEach {
-                        mAttributes[$0.key] = $0.value
+                        mutableAttributes[$0.key] = $0.value
                     }
                 default: break
                 }
 
-                return mAttributes
+                return mutableAttributes
             }
 
             label.handleCustomTap(for: activeType) { _ in

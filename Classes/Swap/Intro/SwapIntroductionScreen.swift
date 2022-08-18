@@ -21,8 +21,8 @@ import UIKit
 final class SwapIntroductionScreen: ScrollScreen {
     var eventHandler: Screen.EventHandler<SwapIntroductionEvent>?
 
-    private lazy var closeActionView = MacaroonUIKit.Button()
     private lazy var illustrationImageView = UIImageView()
+    private lazy var closeActionView = MacaroonUIKit.Button()
     private lazy var titleView = Label()
     private lazy var newBadgeView = Label()
     private lazy var bodyView = Label()
@@ -82,14 +82,6 @@ final class SwapIntroductionScreen: ScrollScreen {
 }
 
 extension SwapIntroductionScreen {
-    private func addUI() {
-        addIllustrationImage()
-        addCloseAction()
-        addTitle()
-        addBody()
-        addFooterContent()
-    }
-
     private func updateUIWhenViewDidScroll() {
         updateIllustrationImageWhenViewDidScroll()
     }
@@ -102,6 +94,16 @@ extension SwapIntroductionScreen {
         illustrationImageView.snp.updateConstraints {
             $0.fitToHeight(max(preferredHeight, theme.illustrationImageMinHeight))
         }
+    }
+}
+
+extension SwapIntroductionScreen {
+    private func addUI() {
+        addIllustrationImage()
+        addCloseAction()
+        addTitle()
+        addBody()
+        addFooterContent()
     }
 
     private func addIllustrationImage() {
@@ -379,18 +381,4 @@ extension SwapIntroductionScreen {
 enum SwapIntroductionEvent {
     case performCloseAction
     case performPrimaryAction
-}
-
-struct SwapIntroductionDraft {
-    let provider: Provider
-
-    struct Provider {
-        let icon: Image
-        let termsOfServiceLink: URL?
-
-        static let tinyman = Provider(
-            icon: "swap-provider-tinyman",
-            termsOfServiceLink: AlgorandWeb.tinymanTermsOfService.link
-        )
-    }
 }

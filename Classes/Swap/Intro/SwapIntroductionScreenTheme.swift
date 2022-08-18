@@ -84,7 +84,10 @@ struct SwapIntroductionScreenTheme:
             .textOverflow(SingleLineText())
         ]
         self.titleTopInset = 40
-        self.titleHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
+        self.titleHorizontalEdgeInsets = .init(
+            leading: 24,
+            trailing: 24
+        )
 
         self.newBadge = [
             .textColor(Colors.Helpers.positive),
@@ -95,14 +98,20 @@ struct SwapIntroductionScreenTheme:
         ]
         self.newBadgeCorner = Corner(radius: 8)
         self.newBadgeContentEdgeInsets =  (3, 6, 3, 6)
-        self.newBadgeHorizontalEdgeInsets = .init(leading: 12, trailing: 24)
+        self.newBadgeHorizontalEdgeInsets = .init(
+            leading: 12,
+            trailing: 24
+        )
         self.newBadgeMaxWidthRatio = 0.5
 
         self.body = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
-        self.bodyHorizontalEdgeInsets = .init(leading: 24, trailing: 24)
+        self.bodyHorizontalEdgeInsets = .init(
+            leading: 24,
+            trailing: 24
+        )
         self.spacingBetweenTitleAndBody = 16
 
         self.footerContentEdgeInsets = (16, 24, 16, 24)
@@ -124,7 +133,12 @@ struct SwapIntroductionScreenTheme:
                 .highlighted("components/buttons/primary/bg-highlighted"),
             ])
         ]
-        self.primaryActionContentEdgeInsets = .init(top: 16, left: 0, bottom: 16, right: 0)
+        self.primaryActionContentEdgeInsets = .init(
+            top: 16,
+            left: 0,
+            bottom: 16,
+            right: 0
+        )
         self.primaryActionTopInset = 16
 
         self.termsOfService = [
