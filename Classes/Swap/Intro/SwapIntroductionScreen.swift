@@ -31,7 +31,7 @@ final class SwapIntroductionScreen: ScrollScreen {
     private lazy var poweredByTitleView = Label()
     private lazy var providerView = UIImageView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
-    private lazy var termsOfConditionsView = ALGActiveLabel()
+    private lazy var termsOfServiceView = ALGActiveLabel()
 
     private lazy var theme = SwapIntroductionScreenTheme()
 
@@ -228,7 +228,7 @@ extension SwapIntroductionScreen {
 
         addProviderContent()
         addPrimaryAction()
-        addTermsOfConditions()
+        addTermsOfService()
     }
 
     private func addProviderContent() {
@@ -288,18 +288,18 @@ extension SwapIntroductionScreen {
         )
     }
 
-    private func addTermsOfConditions() {
-        termsOfConditionsView.customizeAppearance(theme.termsOfConditions)
+    private func addTermsOfService() {
+        termsOfServiceView.customizeAppearance(theme.termsOfService)
 
-        footerContentView.addSubview(termsOfConditionsView)
-        termsOfConditionsView.snp.makeConstraints {
-            $0.top == primaryActionView.snp.bottom + theme.termsOfConditionsTopInset
+        footerContentView.addSubview(termsOfServiceView)
+        termsOfServiceView.snp.makeConstraints {
+            $0.top == primaryActionView.snp.bottom + theme.termsOfServiceTopInset
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
         }
 
-        bindTermsOfConditions()
+        bindTermsOfService()
     }
 }
 
@@ -339,27 +339,27 @@ extension SwapIntroductionScreen {
         providerView.image = draft.provider.icon.uiImage
     }
 
-    private func bindTermsOfConditions() {
+    private func bindTermsOfService() {
         let text =
-            "swap-introduction-terms-of-conditions"
+            "swap-introduction-terms-of-service"
                 .localized
                 .footnoteRegular(alignment: .center)
 
         let hyperlink: ALGActiveType =
-            .word("swap-introduction-terms-of-conditions-hyperlink".localized)
+            .word("swap-introduction-terms-of-service-hyperlink".localized)
 
         var attributes = Typography.footnoteMediumAttributes(
             alignment: .center
         )
         attributes.insert(.textColor(Colors.Helpers.positive.uiColor))
 
-        termsOfConditionsView.attachHyperlink(
+        termsOfServiceView.attachHyperlink(
             hyperlink,
             to: text,
             attributes: attributes
         ) {
             [unowned self] in
-            self.open(draft.provider.termsOfConditionsLink)
+            self.open(draft.provider.termsOfServiceLink)
         }
     }
 }
@@ -386,13 +386,11 @@ struct SwapIntroductionDraft {
 
     struct Provider {
         let icon: Image
-        let termsOfConditionsLink: URL?
+        let termsOfServiceLink: URL?
 
-        /// <todo>
-        /// Change the link when it is available.
         static let tinyman = Provider(
             icon: "swap-provider-tinyman",
-            termsOfConditionsLink: nil
+            termsOfServiceLink: AlgorandWeb.tinymanTermsOfService.link
         )
     }
 }

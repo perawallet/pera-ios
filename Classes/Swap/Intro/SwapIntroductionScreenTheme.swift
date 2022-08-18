@@ -54,8 +54,8 @@ struct SwapIntroductionScreenTheme:
     let primaryActionContentEdgeInsets: UIEdgeInsets
     let primaryActionTopInset: LayoutMetric
 
-    let termsOfConditions: TextStyle
-    let termsOfConditionsTopInset: LayoutMetric
+    let termsOfService: TextStyle
+    let termsOfServiceTopInset: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -127,10 +127,10 @@ struct SwapIntroductionScreenTheme:
         self.primaryActionContentEdgeInsets = .init(top: 16, left: 0, bottom: 16, right: 0)
         self.primaryActionTopInset = 16
 
-        self.termsOfConditions = [
+        self.termsOfService = [
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
-        self.termsOfConditionsTopInset = 20
+        self.termsOfServiceTopInset = 20
     }
 }
