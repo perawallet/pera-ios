@@ -77,7 +77,7 @@ final class Transaction:
         self.receiverRewards = apiModel.receiverRewards
         self.sender = apiModel.sender
         self.senderRewards = apiModel.senderRewards
-        self.type = apiModel.txType
+        self.type = apiModel.txType.unwrap(TransferType.init(rawValue:))
         self.createdAssetId = apiModel.createdAssetIndex
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
@@ -102,7 +102,7 @@ final class Transaction:
         apiModel.receiverRewards = receiverRewards
         apiModel.sender = sender
         apiModel.senderRewards = senderRewards
-        apiModel.txType = type
+        apiModel.txType = type?.rawValue
         apiModel.createdAssetIndex = createdAssetId
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
@@ -239,8 +239,29 @@ extension Transaction {
         case assetFreeze = "afrz"
         case applicationCall = "appl"
 
+        case other
+
         init() {
-            self = .payment
+            self = .other
+        }
+
+        init?(rawValue: String) {
+            switch rawValue {
+            case TransferType.payment.rawValue:
+                self = .payment
+            case TransferType.keyreg.rawValue:
+                self = .keyreg
+            case TransferType.assetConfig.rawValue:
+                self = .assetConfig
+            case TransferType.assetTransfer.rawValue:
+                self = .assetTransfer
+            case TransferType.assetFreeze.rawValue:
+                self = .assetFreeze
+            case TransferType.applicationCall.rawValue:
+                self = .applicationCall
+            default:
+                self = .other
+            }
         }
     }
 }
@@ -265,7 +286,7 @@ extension Transaction {
         var receiverRewards: UInt64?
         var sender: String?
         var senderRewards: UInt64?
-        var txType: TransferType?
+        var txType: String?
         var createdAssetIndex: Int64?
         var assetFreezeTransaction: AssetFreezeTransaction?
         var assetConfigTransaction: AssetConfigTransaction?
