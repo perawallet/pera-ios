@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetListItemViewModel.swift
+//   AssetAmountInputViewModel.swift
 
 import Foundation
 import MacaroonUIKit
@@ -20,42 +20,40 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct AssetListItemViewModel:
-    PrimaryListItemViewModel,
-    Hashable {
-    var imageSource: ImageSource?
-    var title: PrimaryTitleViewModel?
-    var value: PrimaryTitleViewModel?
-    var asset: Asset?
+struct AssetAmountInputViewModel: ViewModel {
+    private(set) var imageSource: ImageSource?
+    private(set) var inputValue: TextProvider?
+    private(set) var isInputEditable = true
+    private(set) var detail: TextProvider?
 
     init(
-        _ item: AssetItem
+        _ asset: Asset,
+        _ isInputEditable: Bool
     ) {
-        bindImageSource(item)
-        bindTitle(item)
-        bindValue(item)
-
-        asset = item.asset
+        bindIcon(asset)
+        bindInputValue(asset)
+        bindInputEditable(isInputEditable)
+        bindDetail(asset)
     }
 }
 
-extension AssetListItemViewModel {
-    mutating func bindImageSource(
-        _ item: AssetItem
+extension AssetAmountInputViewModel {
+    mutating func bindIcon(
+        _ asset: Asset
     ) {
-        if item.asset.isAlgo {
-            self.imageSource = AssetImageSource(
+        if asset.isAlgo {
+            imageSource = AssetImageSource(
                 asset: "icon-algo-circle-green".uiImage
             )
             return
         }
 
-        let title = item.asset.naming.name.isNilOrEmpty
+        let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
-            : item.asset.naming.name
+            : asset.naming.name
 
         let imageSize = CGSize(width: 40, height: 40)
-        let prismURL = PrismURL(baseURL: item.asset.logoURL)?
+        let prismURL = PrismURL(baseURL: asset.logoURL)?
             .setExpectedImageSize(imageSize)
             .setImageQuality(.normal)
             .build()
@@ -64,7 +62,7 @@ extension AssetListItemViewModel {
             (title.isNilOrEmpty ? "title-unknown".localized : title!)
         )
 
-        self.imageSource = PNGImageSource(
+        imageSource = PNGImageSource(
             url: prismURL,
             shape: .circle,
             placeholder: getPlaceholder(
@@ -77,20 +75,26 @@ extension AssetListItemViewModel {
         )
     }
 
-    mutating func bindTitle(
-        _ item: AssetItem
+    mutating func bindInputValue(
+        _ asset: Asset
     ) {
-        title = AssetNameViewModel(item.asset)
+        /// <todo> This will be implemented while constructing the screen.
     }
 
-    mutating func bindValue(
-        _ item: AssetItem
+    mutating func bindInputEditable(
+        _ isInputEditable: Bool
     ) {
-        value = AssetAmountViewModel(item)
+        self.isInputEditable = isInputEditable
+    }
+
+    mutating func bindDetail(
+        _ asset: Asset
+    ) {
+        /// <todo> This will be implemented while constructing the screen.
     }
 }
 
-extension AssetListItemViewModel {
+extension AssetAmountInputViewModel {
     private func getPlaceholder(
         _ aPlaceholder: String?,
         with attributes: TextAttributes
@@ -122,8 +126,3 @@ extension AssetListItemViewModel {
         )
     }
 }
-
-typealias TextAttributes = (
-    font: CustomFont,
-    lineHeightMultiplier: LayoutMetric
-)
