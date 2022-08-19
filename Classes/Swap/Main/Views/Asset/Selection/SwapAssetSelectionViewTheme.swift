@@ -21,7 +21,7 @@ import UIKit
 struct SwapAssetSelectionViewTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
+    let background: ViewStyle
     let corner: Corner
     let contentPaddings: LayoutPaddings
     let title: TextStyle
@@ -49,6 +49,6 @@ struct SwapAssetSelectionViewTheme:
             .image("icon-arrow"),
             .contentMode(.right),
         ]
-        self.accessoryContentEdgeInsets = (6, 0)
+        self.accessoryContentEdgeInsets = (8, 0)
     }
 }

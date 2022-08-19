@@ -1115,7 +1115,3 @@
 "verification-info-body-first-highlight" = "automatically";
 "verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
 "verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
-
-
-// MARK: Swap
-"title-swap" = "Swap";

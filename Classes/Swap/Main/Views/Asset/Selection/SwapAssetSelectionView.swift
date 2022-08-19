@@ -21,15 +21,14 @@ import MacaroonUIKit
 final class SwapAssetSelectionView:
     View,
     ViewModelBindable {
-    private lazy var titleView = Label()
+    private lazy var titleView = UILabel()
     private lazy var verificationTierView = ImageView()
     private lazy var accessoryView = ImageView()
 
     func customize(
         _ theme: SwapAssetSelectionViewTheme
     ) {
-        customizeAppearance(theme.background)
-
+        customizeView(theme)
         addTitle(theme)
         addVerificationTier(theme)
         addAccessory(theme)
@@ -57,6 +56,13 @@ final class SwapAssetSelectionView:
 }
 
 extension SwapAssetSelectionView {
+    private func customizeView(
+        _ theme: SwapAssetSelectionViewTheme
+    ) {
+        customizeAppearance(theme.background)
+        draw(corner: theme.corner)
+    }
+
     private func addTitle(
         _ theme: SwapAssetSelectionViewTheme
     ) {
@@ -81,7 +87,9 @@ extension SwapAssetSelectionView {
         verificationTierView.fitToIntrinsicSize()
         verificationTierView.snp.makeConstraints {
             $0.centerY == titleView
+            $0.top <= 0
             $0.leading == titleView.snp.trailing
+            $0.bottom <= 0
         }
     }
 
@@ -95,7 +103,9 @@ extension SwapAssetSelectionView {
         accessoryView.fitToIntrinsicSize()
         accessoryView.snp.makeConstraints {
             $0.centerY == titleView
+            $0.top <= 0
             $0.leading == verificationTierView.snp.trailing
+            $0.bottom <= 0
             $0.trailing == theme.contentPaddings.trailing
         }
     }
