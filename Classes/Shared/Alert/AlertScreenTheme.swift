@@ -74,20 +74,20 @@ extension AlertScreenTheme {
 
 struct AlertScreenCommonTheme:
     AlertScreenTheme {
-    var contextEdgeInsets: LayoutPaddings
-    var image: ImageStyle
-    var imageEdgeInsets: LayoutPaddings
-    var newBadge: TextStyle
-    var newBadgeCorner: Corner
-    var newBadgeContentEdgeInsets: LayoutPaddings
-    var newBadgeEdgeInsets: LayoutPaddings
-    var title: TextStyle
-    var titleEdgeInsets: LayoutPaddings
-    var body: TextStyle
-    var bodyEdgeInsets: LayoutPaddings
-    var actionSpacing: LayoutMetric
-    var actionsEdgeInsets: LayoutPaddings
-    var actionContentEdgeInsets: LayoutPaddings
+    let contextEdgeInsets: LayoutPaddings
+    let image: ImageStyle
+    let imageEdgeInsets: LayoutPaddings
+    let newBadge: TextStyle
+    let newBadgeCorner: Corner
+    let newBadgeContentEdgeInsets: LayoutPaddings
+    let newBadgeEdgeInsets: LayoutPaddings
+    let title: TextStyle
+    let titleEdgeInsets: LayoutPaddings
+    let body: TextStyle
+    let bodyEdgeInsets: LayoutPaddings
+    let actionSpacing: LayoutMetric
+    let actionsEdgeInsets: LayoutPaddings
+    let actionContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
@@ -129,19 +129,19 @@ struct AlertScreenCommonTheme:
 struct AlertScreenWithFillingImageTheme:
     AlertScreenTheme {
     var contextEdgeInsets: LayoutPaddings
-    var image: ImageStyle
-    var imageEdgeInsets: LayoutPaddings
-    var newBadge: TextStyle
-    var newBadgeCorner: Corner
-    var newBadgeContentEdgeInsets: LayoutPaddings
-    var newBadgeEdgeInsets: LayoutPaddings
-    var title: TextStyle
-    var titleEdgeInsets: LayoutPaddings
-    var body: TextStyle
-    var bodyEdgeInsets: LayoutPaddings
-    var actionSpacing: LayoutMetric
-    var actionsEdgeInsets: LayoutPaddings
-    var actionContentEdgeInsets: LayoutPaddings
+    let image: ImageStyle
+    let imageEdgeInsets: LayoutPaddings
+    let newBadge: TextStyle
+    let newBadgeCorner: Corner
+    let newBadgeContentEdgeInsets: LayoutPaddings
+    let newBadgeEdgeInsets: LayoutPaddings
+    let title: TextStyle
+    let titleEdgeInsets: LayoutPaddings
+    let body: TextStyle
+    let bodyEdgeInsets: LayoutPaddings
+    let actionSpacing: LayoutMetric
+    let actionsEdgeInsets: LayoutPaddings
+    let actionContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily

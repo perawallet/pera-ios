@@ -173,7 +173,7 @@ import MacaroonStorySheet
      private func addAction(
          _ action: AlertAction
      ) {
-         let actionView = createAction(action)
+         let actionView = createActionView(action)
 
          let interaction = TargetActionInteraction(
              actionView,
@@ -185,7 +185,7 @@ import MacaroonStorySheet
          actionsContextView.addArrangedSubview(actionView)
      }
 
-     private func createAction(
+     private func createActionView(
          _ action: AlertAction
      ) -> UIButton {
          let actionView = MacaroonUIKit.Button()
