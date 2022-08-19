@@ -203,6 +203,10 @@ indirect enum Screen {
         alert: Alert,
         theme: AlertScreenTheme = AlertScreenCommonTheme()
     )
+    case swapIntroduction(
+        draft: SwapIntroductionDraft,
+        eventHandler: EventHandler<SwapIntroductionEvent>
+    )
 }
 
 extension Screen {

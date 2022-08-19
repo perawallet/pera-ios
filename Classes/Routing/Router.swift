@@ -978,6 +978,10 @@ class Router:
                 alert: alert,
                 theme: theme
             )
+        case .swapIntroduction(let draft, let eventHandler):
+            let aViewController = SwapIntroductionScreen(draft: draft)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T

@@ -362,7 +362,9 @@ extension HomeViewController {
         cell.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
-            self.receiveTransactionFlowCoordinator.launch()
+            /// <todo>
+            /// Navigate to Swap
+            preconditionFailure("Not Implemented Yet")
         }
 
         cell.startObserving(event: .send) {
