@@ -613,7 +613,7 @@ extension HomeViewController {
         }
         alert.addAction(laterAction)
 
-        storyTransition.perform(
+        alertTransition.perform(
             .alert(
                 alert: alert,
                 theme: AlertScreenWithFillingImageTheme()
