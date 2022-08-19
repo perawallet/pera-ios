@@ -200,6 +200,10 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
+    case swapIntroduction(
+        draft: SwapIntroductionDraft,
+        eventHandler: EventHandler<SwapIntroductionEvent>
+    )
 }
 
 extension Screen {

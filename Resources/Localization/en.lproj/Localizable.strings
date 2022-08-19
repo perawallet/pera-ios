@@ -1116,3 +1116,11 @@
 "verification-info-body-first-highlight" = "automatically";
 "verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
 "verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+
+/// MARK: Swap Introduction
+"swap-introduction-title" = "Swap in Pera";
+"swap-introduction-body" = "Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees.";
+"swap-introduction-primary-action-title" = "Start Swapping";
+"swap-introduction-powered-by-title" = "Powered by";
+"swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
+"swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
