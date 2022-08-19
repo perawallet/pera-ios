@@ -75,7 +75,7 @@ import MacaroonStorySheet
 
          addImage()
 
-         if alert.isBadgeVisible {
+         if alert.isNewBadgeVisible {
              addNewBadge()
          }
 
@@ -113,14 +113,6 @@ import MacaroonStorySheet
      }
 
      private func addTitle() {
-         func resolveTitleTopConstraint() -> LayoutConstraint {
-             if alert.isBadgeVisible {
-                 return newBadgeView.snp.bottom + theme.newBadgeEdgeInsets.bottom
-             } else {
-                 return imageView.snp.bottom + theme.titleEdgeInsets.top
-             }
-         }
-
          contextView.addSubview(titleView)
          titleView.customizeAppearance(theme.title)
 
@@ -132,6 +124,14 @@ import MacaroonStorySheet
          }
 
          alert.title?.load(in: titleView)
+
+         func resolveTitleTopConstraint() -> LayoutConstraint {
+             if alert.isNewBadgeVisible {
+                 return newBadgeView.snp.bottom + theme.newBadgeEdgeInsets.bottom
+             }
+
+             return imageView.snp.bottom + theme.titleEdgeInsets.top
+         }
      }
 
      private func addBody() {

@@ -567,10 +567,10 @@ extension HomeViewController {
             )
         let alert = Alert(
             image: "swap-alert-illustration",
+            isNewBadgeVisible: true,
             title: title,
             body: body
         )
-        alert.isBadgeVisible = true
 
         let trySwapAction = AlertAction(
             title: "swap-alert-primary-action".localized,
