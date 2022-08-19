@@ -74,6 +74,7 @@
 "title-show-more-assets" = "Show +%@ more assets";
 "title-csv" = "CSV";
 "title-swap" = "Swap";
+"title-later" = "Later";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1116,6 +1117,11 @@
 "verification-info-body-first-highlight" = "automatically";
 "verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
 "verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+
+// MARK: - Swap Alert
+"swap-alert-title" = "Swap in Pera";
+"swap-alert-body" = "Pera Wallet now provides an easy and fast way to swap assets.";
+"swap-alert-primary-action" = "Try Swap";
 
 /// MARK: Swap Introduction
 "swap-introduction-title" = "Swap in Pera";

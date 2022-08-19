@@ -945,10 +945,6 @@ class Router:
             viewController = buyAlgoHomeScreen
         case let .buyAlgoTransaction(buyAlgoParams):
             viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
-        case .copyAddressStory(let eventHandler):
-            let screen = CopyAddressStoryScreen(configuration: configuration)
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -977,6 +973,11 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .alert(let alert, let theme):
+            viewController = AlertScreen(
+                alert: alert,
+                theme: theme
+            )
         case .swapIntroduction(let draft, let eventHandler):
             let aViewController = SwapIntroductionScreen(draft: draft)
             aViewController.eventHandler = eventHandler

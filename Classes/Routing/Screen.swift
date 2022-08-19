@@ -186,7 +186,6 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
-    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
@@ -199,6 +198,10 @@ indirect enum Screen {
     case innerTransactionList(
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
+    )
+    case alert(
+        alert: Alert,
+        theme: AlertScreenTheme = AlertScreenCommonTheme()
     )
     case swapIntroduction(
         draft: SwapIntroductionDraft,
