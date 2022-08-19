@@ -570,6 +570,58 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func presentSwapIntroductionAlert() {
+        let title = "swap-alert-title"
+            .localized
+            .bodyLargeMedium(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail
+            )
+        let body = "swap-alert-body"
+            .localized
+            .footnoteRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail
+            )
+        let alert = Alert(
+            image: "swap-alert-illustration",
+            isNewBadgeVisible: true,
+            title: title,
+            body: body
+        )
+
+        let trySwapAction = AlertAction(
+            title: "swap-alert-primary-action".localized,
+            style: .primary
+        ) {
+            [weak self] in
+//            guard let self = self else { return }
+            // <todo>
+           preconditionFailure("Navigate to swap")
+        }
+        alert.addAction(trySwapAction)
+
+        let laterAction = AlertAction(
+            title: "title-later".localized,
+            style: .secondary
+        ) {
+            [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true)
+        }
+        alert.addAction(laterAction)
+
+        storyTransition.perform(
+            .alert(
+                alert: alert,
+                theme: AlertScreenWithFillingImageTheme()
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension HomeViewController {
     private func configureWalletConnectIfNeeded() {
         onceWhenViewDidAppear.execute { [weak self] in
             guard let self = self else {

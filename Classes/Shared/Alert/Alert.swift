@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 final class Alert {
     let image: Image?
+    let isNewBadgeVisible: Bool
     let title: TextProvider?
     let body: TextProvider?
 
@@ -26,10 +27,12 @@ final class Alert {
 
     init(
         image: Image?,
+        isNewBadgeVisible: Bool = false,
         title: TextProvider?,
         body: TextProvider?
     ) {
         self.image = image
+        self.isNewBadgeVisible = isNewBadgeVisible
         self.title = title
         self.body = body
     }

@@ -201,7 +201,7 @@ indirect enum Screen {
     )
     case alert(
         alert: Alert,
-        theme: AlertScreenTheme = AlertScreenThemeCommonTheme()
+        theme: AlertScreenTheme = AlertScreenCommonTheme()
     )
 }
 

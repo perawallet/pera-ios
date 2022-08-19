@@ -12,67 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlertScreenTheme.swift
+//   AlertScreenWithFillingImageTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol AlertScreenTheme:
-    StyleSheet,
-    LayoutSheet {
-    var contextEdgeInsets: LayoutPaddings { get }
-    var image: ImageStyle { get }
-    var imageEdgeInsets: LayoutPaddings { get }
-    var newBadge: TextStyle { get }
-    var newBadgeCorner: Corner { get }
-    var newBadgeContentEdgeInsets: LayoutPaddings { get }
-    var newBadgeEdgeInsets: LayoutPaddings { get }
-    var title: TextStyle { get }
-    var titleEdgeInsets: LayoutPaddings { get }
-    var body: TextStyle { get }
-    var bodyEdgeInsets: LayoutPaddings { get }
-    var actionSpacing: LayoutMetric { get }
-    var actionsEdgeInsets: LayoutPaddings { get }
-    var actionContentEdgeInsets: LayoutPaddings { get }
-
-    func getActionStyle(
-        _ style: AlertAction.Style,
-        title: String
-    ) -> ButtonStyle
-}
-
-extension AlertScreenTheme {
-    func getActionStyle(
-        _ style: AlertAction.Style,
-        title: String
-    ) -> ButtonStyle {
-        switch style {
-        case .primary:
-            return [
-                .title(title),
-                .font(Typography.bodyMedium()),
-                .titleColor([ .normal(Colors.Button.Primary.text) ]),
-                .backgroundImage([
-                    .normal("components/buttons/primary/bg"),
-                    .highlighted("components/buttons/primary/bg-highlighted"),
-                ])
-            ]
-        case .secondary:
-            return [
-                .title(title),
-                .font(Typography.bodyMedium()),
-                .titleColor([ .normal(Colors.Button.Secondary.text) ]),
-                .backgroundImage([
-                    .normal("components/buttons/secondary/bg"),
-                    .highlighted("components/buttons/secondary/bg-highlighted"),
-                ])
-            ]
-        }
-    }
-}
-
-struct AlertScreenCommonTheme:
+struct AlertScreenWithFillingImageTheme:
     AlertScreenTheme {
     let contextEdgeInsets: LayoutPaddings
     let image: ImageStyle
@@ -92,9 +37,9 @@ struct AlertScreenCommonTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.contextEdgeInsets = (32, 24, 12, 24)
+        self.contextEdgeInsets = (0, 0, 12, 0)
         self.image = [
-            .contentMode(.scaleAspectFit)
+            .contentMode(.scaleAspectFill)
         ]
         self.imageEdgeInsets = (0, 0, 0, 0)
         self.newBadge = [
@@ -113,13 +58,13 @@ struct AlertScreenCommonTheme:
             .textColor(Colors.Text.main),
             .font(Typography.bodyLargeMedium())
         ]
-        self.titleEdgeInsets = (32, 0, .noMetric, 0)
+        self.titleEdgeInsets = (32, 24, .noMetric, 24)
         self.body = [
             .textOverflow(MultilineText(numberOfLines: 5)),
             .textColor(Colors.Text.gray),
             .font(Typography.footnoteRegular())
         ]
-        self.bodyEdgeInsets = (12, 0, 0, 0)
+        self.bodyEdgeInsets = (12, 24, 0, 24)
         self.actionSpacing = 12
         self.actionContentEdgeInsets = (16, 24, 16, 24)
         self.actionsEdgeInsets = (8, 24, 32, 24)
