@@ -137,7 +137,7 @@ extension UISheetActionScreen {
         )
 
         let interaction = TargetActionInteraction()
-        interaction.setHandler(action.handler)
+        interaction.setSelector(action.handler)
         interaction.attach(to: actionView)
         uiInteractions.append(interaction)
 

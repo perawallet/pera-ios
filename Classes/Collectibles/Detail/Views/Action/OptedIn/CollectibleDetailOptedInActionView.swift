@@ -69,16 +69,16 @@ final class CollectibleDetailOptedInActionView:
             [weak self] in
             guard let self = self else { return }
 
-            let interaction = self.uiInteractions[.performCopy] as? UIBlockInteraction
-            interaction?.notify()
+            let interaction = self.uiInteractions[.performCopy]
+            interaction?.publish()
         }
 
         accountShareView.startObserving(event: .performShareQR) {
             [weak self] in
             guard let self = self else { return }
 
-            let interaction = self.uiInteractions[.performShareQR] as? UIBlockInteraction
-            interaction?.notify()
+            let interaction = self.uiInteractions[.performShareQR]
+            interaction?.publish()
         }
     }
 }

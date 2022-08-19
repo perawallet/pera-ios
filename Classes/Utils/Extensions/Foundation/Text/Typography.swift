@@ -295,8 +295,8 @@ extension Typography {
     ) -> UIFont {
         let size = 28
         let font = supportsDynamicType
-            ? Fonts.DMSans.regular.make(size, .title2).uiFont
-            : Fonts.DMSans.regular.make(size).uiFont
+            ? Fonts.DMSans.medium.make(size, .title2).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }

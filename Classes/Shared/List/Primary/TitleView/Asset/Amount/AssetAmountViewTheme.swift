@@ -19,15 +19,23 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetAmountViewTheme: PrimaryTitleViewTheme {
-    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
-    let secondaryTitle: TextStyle
+    var primaryTitle: TextStyle
+    var primaryTitleAccessory: ImageStyle
+    var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    var secondaryTitle: TextStyle
+    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
+        self.primaryTitle = [
+            .textColor(Colors.Text.main),
+        ]
+        self.primaryTitleAccessory = []
         self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
         self.secondaryTitle = [
             .textColor(Colors.Text.gray)
         ]
+        self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }
 }

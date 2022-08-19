@@ -77,6 +77,8 @@
 "title-total-supply" = "Total Supply";
 "title-about-with-param" = "ABOUT %@";
 "title-csv" = "CSV";
+"activity" = "Activity";
+"about" = "About";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";

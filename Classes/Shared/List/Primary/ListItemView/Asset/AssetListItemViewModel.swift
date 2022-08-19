@@ -37,6 +37,27 @@ struct AssetListItemViewModel:
 
         asset = item.asset
     }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title?.primaryTitle?.string)
+        hasher.combine(title?.secondaryTitle?.string)
+        hasher.combine(value?.primaryTitle?.string)
+        hasher.combine(value?.secondaryTitle?.string)
+        hasher.combine(asset?.id)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
+            lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
+            lhs.value?.primaryTitle?.string == rhs.value?.primaryTitle?.string &&
+            lhs.value?.secondaryTitle?.string == rhs.value?.secondaryTitle?.string &&
+            lhs.asset?.id == rhs.asset?.id
+    }
 }
 
 extension AssetListItemViewModel {

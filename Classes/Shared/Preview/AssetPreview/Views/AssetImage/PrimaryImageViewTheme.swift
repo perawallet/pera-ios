@@ -37,16 +37,6 @@ struct AssetImageViewTheme: PrimaryImageViewTheme {
 }
 
 struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
-    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
-        let textPaddings: LayoutPaddings
-
-        init(
-            _ family: LayoutFamily
-        ) {
-            textPaddings = (2, 2, 2, 2)
-        }
-    }
-
     struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
         let background: ViewStyle
         let image: ImageStyle
@@ -58,9 +48,21 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
                 .image("asset-image-placeholder-border")
             ]
             text = [
+                .font(Typography.footnoteRegular()),
+                .textAlignment(.center),
                 .textColor(Colors.Text.gray),
                 .textOverflow(SingleLineFittingText())
             ]
+        }
+    }
+
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        let textPaddings: LayoutPaddings
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (2, 2, 2, 2)
         }
     }
 

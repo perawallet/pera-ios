@@ -38,6 +38,7 @@ final class ASAAboutScreen:
             $0.trailing == 0
         }
 
+        scrollView.showsVerticalScrollIndicator = true
         scrollView.delegate = self
     }
 

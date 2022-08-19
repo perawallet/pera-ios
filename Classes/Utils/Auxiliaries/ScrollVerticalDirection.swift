@@ -12,22 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgoLocalCurrency.swift
+//   ScrollVerticalDirection.swift
 
 import Foundation
+import UIKit
 
-/// <todo>
-/// Maybe the model support all assets, not just Algo.
-struct AlgoLocalCurrency: LocalCurrency {
-    let id: CurrencyID
-    let name: String?
-    let symbol: String?
+enum ScrollHorizontalDirection {
+    case undetermined
+    case left
+    case right
+}
 
-    init(
-        pairID: CurrencyID? = nil
-    ) {
-        self.id = CurrencyID.algo(pairID: pairID)
-        self.name = "title-algorand".localized
-        self.symbol = "\u{00A6}"
+enum ScrollVerticalDirection {
+    case undetermined
+    case up
+    case down
+
+    init(velocity: CGPoint) {
+        if velocity == .zero {
+            self = .undetermined
+        } else {
+            if velocity.y < 0 {
+                self = .down
+            } else {
+                self = .up
+            }
+        }
     }
 }

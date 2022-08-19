@@ -22,328 +22,507 @@ import UIKit
 final class ASADetailScreen:
     BaseViewController,
     Container {
-    private lazy var previewView = ASADetailPreviewView()
+    private lazy var profileView = ASAProfileView()
+    private lazy var quickActionsView = ASADetailQuickActionsView()
 
-    private lazy var moreDetailOverlayView = UIView()
-    private lazy var moreDetailFragmentScreen = ASAMoreDetailScreen(configuration: configuration)
+    private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
+    private lazy var activityFragmentScreen = ASAActivitiesScreen(configuration: configuration)
+    private lazy var aboutFragmentScreen = ASAAboutScreen(configuration: configuration)
 
-    private var lastScrollOverlayOffset: LayoutMetric = 0
-    private var lastScrollOverlayTranslationOnScroll: LayoutMetric = 0
-    private var isLayoutFinalized = false
+    private lazy var currencyFormatter = CurrencyFormatter()
 
-    private var runningScrollOverlayAnimator: UIViewPropertyAnimator?
+    private var lastDisplayState: DisplayState = .normal
+    private var lastFramesOfFoldingAreaPerDisplayState: [DisplayState : CGRect] = [:]
 
-    private var currentScrollOverlayOffset: LayoutMetric {
-        return moreDetailOverlayView.frame.minY
+    private var isDisplayStateInteractiveTransitionInProgress = false
+    private var displayStateInteractiveTransitionInitialScrollDirection: ScrollVerticalDirection?
+    private var displayStateInteractiveTransitionInitialFractionComplete: CGFloat = 0
+    private var displayStateInteractiveTransitionAnimator: UIViewPropertyAnimator?
+
+    private var pagesFragmentHeightConstraint: Constraint!
+    private var pagesFragmentTopEdgeConstraint: Constraint!
+    private var isViewLayoutLoaded = false
+
+    private var isDisplayStateTransitionAnimationInProgress: Bool {
+        return displayStateInteractiveTransitionAnimator?.state == .active
+    }
+
+    private let asset: Asset
+
+    private let theme = ASADetailScreenTheme()
+
+    init(
+        asset: Asset,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.asset = asset
+        super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Colors.Defaults.background.uiColor
-
-        view.addSubview(previewView)
-        previewView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-        }
-
-        previewView.startObserving(event: .layoutFinalized) {
-            [unowned self] in
-
-            if !self.isLayoutFinalized {
-                return
-            }
-
-            self.updateFragmentOverlayWhenViewDidFirstLayoutSubviews()
-            self.updateFragmentWhenViewDidLayoutSubviews()
-        }
-
-        moreDetailOverlayView.backgroundColor = .blue
-
-        view.addSubview(moreDetailOverlayView)
-        moreDetailOverlayView.snp.makeConstraints {
-            $0.matchToHeight(of: view)
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-        }
-
-        addFragment(moreDetailFragmentScreen) {
-            fragmentView in
-
-            moreDetailOverlayView.addSubview(fragmentView)
-            fragmentView.snp.makeConstraints {
-                $0.top == 0
-                $0.leading == 0
-                $0.bottom == 0
-                $0.trailing == 0
-            }
-        }
-        view.layoutIfNeeded()
-
-        moreDetailFragmentScreen.setPagesScrollEnabled(false)
-        moreDetailFragmentScreen.addTarget(
-            self,
-            action: #selector(moveScrollOverlay(by:))
-        )
+        addUI()
+        setPagesVerticalScrollingEnabled(false)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if !isLayoutFinalized {
-            defer {
-                isLayoutFinalized = true
-            }
+        if view.bounds.isEmpty { return }
 
-            moreDetailOverlayView.snp.updateConstraints {
-                $0.top == previewView.frame.maxY
-            }
-
-            if !previewView.isLayoutFinalized {
-                return
-            }
-
-            updateFragmentOverlayWhenViewDidFirstLayoutSubviews()
+        if !isViewLayoutLoaded {
+            updateUIWhenViewLayoutDidChangeIfNeeded()
+            isViewLayoutLoaded = true
         }
-
-        updateFragmentWhenViewDidLayoutSubviews()
     }
 }
 
 extension ASADetailScreen {
-    private func updateFragmentOverlayWhenViewDidFirstLayoutSubviews() {
-        moreDetailOverlayView.snp.updateConstraints {
-            $0.matchToHeight(
-                of: view,
-                offset: -previewView.compressedHeight
-            )
+    private func addUI() {
+        addBackground()
+        addProfile()
+        addQuickActions()
+
+        addPagesFragment()
+    }
+
+    private func updateUIWhenViewLayoutDidChangeIfNeeded() {
+        if isDisplayStateInteractiveTransitionInProgress { return }
+        if isDisplayStateTransitionAnimationInProgress { return }
+        if !isViewLayoutLoaded { return }
+        if !profileView.isLayoutLoaded { return }
+        if !quickActionsView.isLayoutLoaded { return }
+
+        saveFramesOfFoldingAreaForPerDisplayState()
+        updatePagesFragmentWhenViewLayoutDidChange()
+
+        if pagesFragmentScreen.items.isEmpty {
+            addPages()
+        }
+    }
+
+    private func updateUI(for state: DisplayState) {
+        updateProfile(for: state)
+        updateQuickActions(for: state)
+        updatePagesFragment(for: state)
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addProfile() {
+        profileView.customize(theme.profile)
+
+        view.addSubview(profileView)
+        profileView.snp.makeConstraints {
+            $0.top == theme.normalProfileVerticalEdgeInsets.top
+            $0.leading == theme.profileHorizontalEdgeInsets.leading
+            $0.trailing == theme.profileHorizontalEdgeInsets.trailing
         }
 
-        moveScrollOverlay(
-            to: .expanded,
-            withInitialVelocity: .zero,
-            animated: false
+        profileView.startObserving(event: .layoutChanged) {
+            [unowned self] in
+
+            self.updateUIWhenViewLayoutDidChangeIfNeeded()
+        }
+
+        let viewModel = ASAProfileViewModel(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
         )
+        profileView.bindData(viewModel)
+    }
+
+    private func updateProfile(for state: DisplayState) {
+        switch state {
+        case .normal:
+            profileView.expand()
+            profileView.snp.updateConstraints {
+                $0.top == theme.normalProfileVerticalEdgeInsets.top
+            }
+        case .folded:
+            profileView.compress()
+            profileView.snp.updateConstraints {
+                $0.top == theme.foldedProfileVerticalEdgeInsets.top
+            }
+        }
+    }
+
+    private func addQuickActions() {
+        quickActionsView.customize(theme.quickActions)
+
+        view.addSubview(quickActionsView)
+        quickActionsView.snp.makeConstraints {
+            $0.top == profileView.snp.bottom + theme.spacingBetweenProfileAndQuickActions
+            $0.leading >= theme.profileHorizontalEdgeInsets.leading
+            $0.trailing <= theme.profileHorizontalEdgeInsets.trailing
+            $0.centerX == 0
+        }
+
+        quickActionsView.startObserving(event: .layoutChanged) {
+            [unowned self] in
+
+            self.updateUIWhenViewLayoutDidChangeIfNeeded()
+        }
+
+        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
+        quickActionsView.bindData(viewModel)
+    }
+
+    private func updateQuickActions(for state: DisplayState) {
+        let isFolded = state == .folded
+        quickActionsView.alpha = isFolded ? 0 : 1
+    }
+
+    private func addPagesFragment() {
+        pagesFragmentScreen.view.customizeAppearance(theme.pagesFragmentBackground)
+
+        addContent(pagesFragmentScreen) {
+            fragmentView in
+
+            view.addSubview(fragmentView)
+            fragmentView.snp.makeConstraints {
+                $0.leading == 0
+                $0.trailing == 0
+
+                pagesFragmentHeightConstraint = $0.matchToHeight(of: view)
+                pagesFragmentTopEdgeConstraint = $0.top == 0
+            }
+        }
+    }
+
+    private func updatePagesFragmentWhenViewLayoutDidChange() {
+        updatePagesFragment(for: lastDisplayState)
+    }
+
+    private func updatePagesFragment(for state: DisplayState) {
+        let normalTopEdgeInset = getFrameOfFoldingArea(for: .folded).maxY
+        pagesFragmentHeightConstraint.update(offset: -normalTopEdgeInset)
+
+        updatePagesFragmentPosition(for: state)
+    }
+
+    private func updatePagesFragmentPosition(for state: DisplayState) {
+        let topEdgeInset = getFrameOfFoldingArea(for: state).maxY
+        pagesFragmentTopEdgeConstraint.update(inset: topEdgeInset)
     }
 
     private func updateFragmentWhenViewDidLayoutSubviews() {
-        if !previewView.isLayoutFinalized {
-            return
+//        if !profileView.isLayoutFinalized { return }
+//
+//        let arePagesScrollEnabled = calculateMoreDetailOverlayPosition() <= calculateHeaderHeight(for: .compressed)
+//        setPagesVerticalScrollingEnabled(arePagesScrollEnabled)
+    }
+
+    private func addPages() {
+        pagesFragmentScreen.items = [
+            ActivityPageBarItem(screen: activityFragmentScreen),
+            AboutPageBarItem(screen: aboutFragmentScreen)
+        ]
+
+        activityFragmentScreen.scrollView.panGestureRecognizer.addTarget(
+            self,
+            action: #selector(interactWithDisplayState(_:))
+        )
+        aboutFragmentScreen.scrollView.panGestureRecognizer.addTarget(
+            self,
+            action: #selector(interactWithDisplayState(_:))
+        )
+    }
+}
+
+extension ASADetailScreen {
+    private func getFrameOfFoldingArea(for state: DisplayState) -> CGRect {
+        let defaultFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 0)
+        return lastFramesOfFoldingAreaPerDisplayState[state] ?? defaultFrame
+    }
+
+    private func saveFramesOfFoldingAreaForPerDisplayState() {
+        for state in DisplayState.allCases {
+            lastFramesOfFoldingAreaPerDisplayState[state] = calculateFrameOfFoldingArea(for: state)
+        }
+    }
+
+    private func calculateFrameOfFoldingArea(for state: DisplayState) -> CGRect {
+        let height: CGFloat
+        switch state {
+        case .normal:
+            let topEdgeInset = theme.normalProfileVerticalEdgeInsets.top
+            let profileHeight = profileView.intrinsicExpandedContentSize.height
+            let quickActionsHeight = quickActionsView.bounds.height
+            let bottomEdgeInset = theme.normalProfileVerticalEdgeInsets.bottom
+            height =
+                topEdgeInset +
+                profileHeight +
+                theme.spacingBetweenProfileAndQuickActions +
+                quickActionsHeight +
+                bottomEdgeInset
+        case .folded:
+            let topEdgeInset = theme.foldedProfileVerticalEdgeInsets.top
+            let profileHeight = profileView.intrinsicCompressedContentSize.height
+            let bottomEdgeInset = theme.foldedProfileVerticalEdgeInsets.bottom
+            height =
+                topEdgeInset +
+                profileHeight +
+                bottomEdgeInset
         }
 
-        let arePagesScrollEnabled = currentScrollOverlayOffset <= previewView.compressedHeight
-        moreDetailFragmentScreen.setPagesScrollEnabled(arePagesScrollEnabled)
+        let origin = CGPoint.zero
+        let width = view.bounds.width
+        let size = CGSize(width: width, height: height)
+        return CGRect(origin: origin, size: size)
+    }
+}
+
+extension ASADetailScreen {
+    private func setPagesVerticalScrollingEnabled(_ enabled: Bool) {
+        activityFragmentScreen.isScrollEnabled = enabled
+        aboutFragmentScreen.isScrollEnabled = enabled
     }
 }
 
 extension ASADetailScreen {
     @objc
-    private func moveScrollOverlay(
-        by panGestureRecognizer: UIPanGestureRecognizer
-    ) {
-        let translation =
-            panGestureRecognizer.translation(
-                in: panGestureRecognizer.view
-            ).y
+    private func interactWithDisplayState(_ recognizer: UIPanGestureRecognizer) {
+//        if !moreDetailFragmentScreen.activeScrollView.isScrollAtTop {
+//            return
+//        }
 
-        if !moreDetailFragmentScreen.activeScrollView.isScrollAtTop {
-            lastScrollOverlayOffset = currentScrollOverlayOffset
-            lastScrollOverlayTranslationOnScroll = translation
-
-            return
-        }
-
-        switch panGestureRecognizer.state {
+        switch recognizer.state {
         case .began:
-            scrollGestureDidBegin(
-                panGestureRecognizer
-            )
+            prepareForDisplayStateInteractiveTransition()
         case .changed:
-            scrollGestureDidChange(
-                panGestureRecognizer,
-                byTranslation: translation
-            )
-        case .ended,
-             .failed,
-             .cancelled:
-            scrollGestureDidComplete(
-                panGestureRecognizer
-            )
-        default: break
-        }
-    }
-
-    private func scrollGestureDidBegin(
-        _ panGestureRecognizer: UIPanGestureRecognizer
-    ) {
-        discardRunningAnimationToMoveScrollOverlay()
-
-        lastScrollOverlayOffset = currentScrollOverlayOffset
-        lastScrollOverlayTranslationOnScroll = 0
-    }
-
-    private func scrollGestureDidChange(
-        _ panGestureRecognizer: UIPanGestureRecognizer,
-        byTranslation translation: CGFloat
-    ) {
-        let dTranslation = translation - lastScrollOverlayTranslationOnScroll
-        let preferredScrollOverlayOffset = lastScrollOverlayOffset + dTranslation
-        let newScrollOverlayOffset = max(previewView.compressedHeight, min(previewView.expandedHeight, preferredScrollOverlayOffset))
-
-        moreDetailOverlayView.snp.updateConstraints {
-            $0.top == newScrollOverlayOffset
-        }
-
-        lastScrollOverlayOffset = newScrollOverlayOffset
-        lastScrollOverlayTranslationOnScroll = translation
-    }
-
-    private func scrollGestureDidComplete(
-        _ panGestureRecognizer: UIPanGestureRecognizer
-    ) {
-        let newPosition = nearestScrollOverlayPosition(
-            atOffset: currentScrollOverlayOffset,
-            movingBy: panGestureRecognizer
-        )
-        let scrollOverlayOffsetAtPosition = newPosition == .expanded
-            ? previewView.expandedHeight
-            : previewView.compressedHeight
-        let distanceY = scrollOverlayOffsetAtPosition - currentScrollOverlayOffset
-        let velocity = panGestureRecognizer.initialVelocityForSpringAnimation(
-            forDistance: CGPoint(x: 0, y: distanceY),
-            in: panGestureRecognizer.view
-        )
-
-        moveScrollOverlay(
-            to: newPosition,
-            withInitialVelocity: velocity,
-            animated: true
-        )
-
-        lastScrollOverlayOffset = currentScrollOverlayOffset
-        lastScrollOverlayTranslationOnScroll = 0
-    }
-
-    private func nearestScrollOverlayPosition(
-        atOffset offset: LayoutMetric,
-        movingBy panGestureRecognizer: UIPanGestureRecognizer
-    ) -> VisibleState {
-        let projectedOffset =
-            panGestureRecognizer.project(
-                pointY: offset,
-                decelerationRate: UIScrollView.DecelerationRate.fast.rawValue
-            )
-        let distanceToExpandedPosition = abs(previewView.expandedHeight - projectedOffset)
-        let distanceToCompressedPosition = abs(previewView.compressedHeight - projectedOffset)
-
-        let expectedState: VisibleState
-        let expectedHeight: CGFloat
-
-        if distanceToExpandedPosition < distanceToCompressedPosition {
-            expectedState = .expanded
-            expectedHeight = previewView.expandedHeight
-        } else {
-            expectedState = .compressed
-            expectedHeight = previewView.compressedHeight
-        }
-
-        let velocity =
-            panGestureRecognizer.velocity(
-                in: panGestureRecognizer.view
-            ).y
-
-        if (expectedHeight - offset) * velocity >= 0 {
-            return expectedState
-        }
-
-        /// <note>
-        /// if velocity is too low to change the current anchor, select the next anchor anyway.
-        return velocity < 0 ?  .expanded : .compressed
-    }
-
-    private func moveScrollOverlay(
-        to state: VisibleState,
-        withInitialVelocity velocity: CGVector,
-        animated: Bool
-    ) {
-        let scrollOverlayOffsetAtPosition = state == .expanded
-            ? previewView.expandedHeight
-            : previewView.compressedHeight
-
-        if scrollOverlayOffsetAtPosition == currentScrollOverlayOffset {
-            return
-        }
-
-        discardRunningAnimationToMoveScrollOverlay()
-
-        moreDetailOverlayView.snp.updateConstraints {
-            $0.top == scrollOverlayOffsetAtPosition
-        }
-
-        if !animated {
-            return
-        }
-
-        startAnimationToMoveScrollOverlay(
-            withInitialVelocity: velocity
-        ) { _ in }
-    }
-
-    private func startAnimationToMoveScrollOverlay(
-        withInitialVelocity velocity: CGVector,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let springTimingParameters =
-            UISpringTimingParameters(dampingRatio: 0.8, initialVelocity: velocity)
-        let animator =
-            UIViewPropertyAnimator(duration: 0.5, timingParameters: springTimingParameters)
-        animator.addAnimations {
-            [unowned self] in
-
-            self.view.layoutIfNeeded()
-        }
-        animator.isUserInteractionEnabled = true
-        animator.isInterruptible = true
-        animator.addCompletion {
-            [weak self] state in
-
-            guard let self = self else {
-                return
+            if isDisplayStateTransitionAnimationInProgress {
+                updateDisplayStateInteractiveTransition(recognizer)
+            } else {
+                startDisplayStateInteractiveTransition(recognizer)
             }
-
-            self.runningScrollOverlayAnimator = nil
-
-            completion(
-                state == .end
-            )
+        case .ended:
+            completeDisplayStateInteractiveTransition(recognizer)
+        case .failed:
+            reverseDisplayStateInteractiveTransition(recognizer)
+        case .cancelled:
+            reverseDisplayStateInteractiveTransition(recognizer)
+        default:
+            break
         }
-        animator.startAnimation()
-
-        runningScrollOverlayAnimator = animator
     }
 
-    private func discardRunningAnimationToMoveScrollOverlay() {
-        guard let animator = runningScrollOverlayAnimator else {
+    private func prepareForDisplayStateInteractiveTransition() {
+        isDisplayStateInteractiveTransitionInProgress = true
+
+        let fractionComplete = displayStateInteractiveTransitionAnimator?.fractionComplete ?? 0
+        displayStateInteractiveTransitionInitialFractionComplete = fractionComplete
+    }
+
+    private func startDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
+        let velocity = recognizer.velocity(in: recognizer.view)
+        let direction = ScrollVerticalDirection(velocity: velocity)
+        displayStateInteractiveTransitionInitialScrollDirection = direction
+
+        let nextDisplayState = determineNextDisplayState(in: direction)
+        displayStateInteractiveTransitionAnimator = startDisplayStateTransitionAnimation(
+            to: nextDisplayState
+        )
+        displayStateInteractiveTransitionAnimator?.pauseAnimation()
+
+        let fractionComplete = displayStateInteractiveTransitionAnimator?.fractionComplete ?? 0
+        displayStateInteractiveTransitionInitialFractionComplete = fractionComplete
+    }
+
+    private func updateDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
+        guard
+            let animator = displayStateInteractiveTransitionAnimator,
+            let scrollDirection = displayStateInteractiveTransitionInitialScrollDirection
+        else { return }
+
+        let translation = recognizer.translation(in: view)
+        let normalPosition = getFrameOfFoldingArea(for: .normal).maxY
+        let foldedPosition = getFrameOfFoldingArea(for: .folded).maxY
+        let distance = normalPosition - foldedPosition
+
+        var fraction: CGFloat
+        switch scrollDirection {
+        case .undetermined: fraction = 0
+        case .up: fraction = max(0, translation.y / distance)
+        case .down: fraction = max(0, -translation.y / distance)
+        }
+
+        if animator.isReversed {
+            fraction *= -1
+        }
+
+        var fractionComplete: CGFloat = 0
+        fractionComplete += displayStateInteractiveTransitionInitialFractionComplete
+        fractionComplete += fraction
+
+        animator.pauseAnimation()
+        animator.fractionComplete = fractionComplete
+    }
+
+    private func completeDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
+        guard let animator = displayStateInteractiveTransitionAnimator else { return }
+
+        let scrollDirection = displayStateInteractiveTransitionInitialScrollDirection ?? .undetermined
+        let velocity = recognizer.velocity(in: recognizer.view)
+
+        if scrollDirection == .undetermined || velocity.y == 0 {
+            animator.startAnimation()
             return
         }
 
-        animator.stopAnimation(
-            false
-        )
-        animator.finishAnimation(
-            at: .current
-        )
+        let isReversed = isDisplayStateInteractiveTransitionReversed(recognizer)
+        if isReversed == animator.isReversed {
+            animator.startAnimation()
+        } else {
+            reverseDisplayStateInteractiveTransition(recognizer)
+        }
+    }
 
-        runningScrollOverlayAnimator = nil
+    private func reverseDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
+        guard let animator = displayStateInteractiveTransitionAnimator else { return }
+
+        animator.isReversed.toggle()
+        animator.continueAnimation(
+            withTimingParameters: nil,
+            durationFactor: 0
+        )
+    }
+
+    private func isDisplayStateInteractiveTransitionReversed(_ recognizer: UIPanGestureRecognizer) -> Bool {
+        let velocity = recognizer.velocity(in: recognizer.view)
+
+        switch displayStateInteractiveTransitionInitialScrollDirection {
+        case .none: return false
+        case .undetermined: return false
+        case .up: return velocity.y < 0
+        case .down: return velocity.y > 0
+        }
     }
 }
 
 extension ASADetailScreen {
-    enum VisibleState {
-        case expanded
-        case compressed
+    private func determineNextDisplayState(in scrollDirection: ScrollVerticalDirection) -> DisplayState {
+        switch scrollDirection {
+        case .undetermined: return lastDisplayState.reversed()
+        case .up: return .normal
+        case .down: return .folded
+        }
+    }
+}
+
+extension ASADetailScreen {
+    private func startDisplayStateTransitionAnimation(to state: DisplayState) -> UIViewPropertyAnimator {
+        let animator = makeTransitionAnimator(for: state)
+        animator.startAnimation()
+        return animator
+    }
+
+    private func makeTransitionAnimator(for state: DisplayState) -> UIViewPropertyAnimator {
+        switch state {
+        case .normal: return makeTransitionAnimatorForNormalDisplayState()
+        case .folded: return makeTransitionAnimatorForFoldedDisplayState()
+        }
+    }
+
+    private func makeTransitionAnimatorForNormalDisplayState() -> UIViewPropertyAnimator {
+        let animator = makeTransitionAnimatorForAnyDisplayState()
+        animator.addAnimations {
+            [unowned self] in
+
+            let state = DisplayState.normal
+
+            self.updateProfile(for: state)
+            self.updatePagesFragment(for: state)
+
+            UIView.animateKeyframes(
+                withDuration: 0,
+                delay: 0
+            ) {
+                UIView.addKeyframe(
+                    withRelativeStartTime: 0.75,
+                    relativeDuration: 0.25
+                ) { [unowned self] in
+                    self.updateQuickActions(for: state)
+                }
+            }
+
+            self.view.layoutIfNeeded()
+        }
+        return animator
+    }
+
+    private func makeTransitionAnimatorForFoldedDisplayState() -> UIViewPropertyAnimator {
+        let animator = makeTransitionAnimatorForAnyDisplayState()
+        animator.addAnimations {
+            [unowned self] in
+
+            let state = DisplayState.folded
+
+            self.updateProfile(for: state)
+            self.updatePagesFragment(for: state)
+
+            UIView.animateKeyframes(
+                withDuration: 0,
+                delay: 0
+            ) {
+                UIView.addKeyframe(
+                    withRelativeStartTime: 0,
+                    relativeDuration: 0.25
+                ) { [unowned self] in
+                    self.updateQuickActions(for: state)
+                }
+            }
+
+            self.view.layoutIfNeeded()
+        }
+        return animator
+    }
+
+    private func makeTransitionAnimatorForAnyDisplayState() -> UIViewPropertyAnimator {
+        let timingParameters = UISpringTimingParameters(
+            mass: 1.8,
+            stiffness: 707,
+            damping: 56,
+            initialVelocity: .zero
+        )
+        let animator = UIViewPropertyAnimator(duration: 0.386, timingParameters: timingParameters)
+        animator.addCompletion {
+            [weak self] position in
+            guard let self = self else { return }
+
+            if position == .end {
+                self.lastDisplayState.reverse()
+            }
+
+            self.updateUI(for: self.lastDisplayState)
+            self.view.setNeedsLayout()
+
+            self.displayStateInteractiveTransitionInitialScrollDirection = nil
+            self.displayStateInteractiveTransitionInitialFractionComplete = 0
+            self.isDisplayStateInteractiveTransitionInProgress = false
+        }
+        return animator
+    }
+}
+
+extension ASADetailScreen {
+    private enum DisplayState: CaseIterable {
+        case normal
+        case folded
+
+        mutating func reverse() {
+            self = reversed()
+        }
+
+        func reversed() -> DisplayState {
+            switch self {
+            case .normal: return .folded
+            case .folded: return .normal
+            }
+        }
     }
 }

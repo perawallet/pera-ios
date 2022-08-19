@@ -444,8 +444,8 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail:
-            viewController = ASADetailScreen(configuration: configuration)
+        case .asaDetail(let asset):
+            viewController = ASADetailScreen(asset: asset, configuration: configuration)
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):

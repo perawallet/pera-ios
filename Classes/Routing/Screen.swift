@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//  Screen.swift
+//  Screen.swifta
 
 import UIKit
 
 indirect enum Screen {
-    case asaDetail
+    case asaDetail(Asset)
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)

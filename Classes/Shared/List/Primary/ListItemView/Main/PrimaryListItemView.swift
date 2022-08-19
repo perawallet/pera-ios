@@ -119,16 +119,12 @@ extension PrimaryListItemView {
         titleView.customize(theme.title)
 
         contentView.addSubview(titleView)
-        titleView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.width >= contentView * theme.contentMinWidthRatio
-            $0.top == 0
+            $0.top >= 0
             $0.leading == 0
-            $0.bottom == 0
+            $0.bottom <= 0
+            $0.centerY == 0
         }
     }
 
@@ -138,16 +134,12 @@ extension PrimaryListItemView {
         valueView.customize(theme.value)
 
         contentView.addSubview(valueView)
-        valueView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        valueView.fitToVerticalIntrinsicSize()
         valueView.snp.makeConstraints {
-            $0.top == 0
+            $0.top >= 0
             $0.leading >= titleView.snp.trailing + theme.minSpacingBetweenTitleAndValue
             $0.bottom == 0
-            $0.trailing == 0
+            $0.trailing <= 0
+            $0.centerY == 0
         }
     }
 }

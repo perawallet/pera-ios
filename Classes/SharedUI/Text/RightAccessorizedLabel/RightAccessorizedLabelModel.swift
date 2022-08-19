@@ -12,22 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgoLocalCurrency.swift
+//   RightAccessorizedLabelModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-/// <todo>
-/// Maybe the model support all assets, not just Algo.
-struct AlgoLocalCurrency: LocalCurrency {
-    let id: CurrencyID
-    let name: String?
-    let symbol: String?
-
-    init(
-        pairID: CurrencyID? = nil
-    ) {
-        self.id = CurrencyID.algo(pairID: pairID)
-        self.name = "title-algorand".localized
-        self.symbol = "\u{00A6}"
-    }
+protocol RightAccessorizedLabelModel: ViewModel {
+    var text: TextProvider? { get }
+    var accessory: ImageProvider? { get }
 }

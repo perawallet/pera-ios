@@ -375,15 +375,11 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             switch itemIdentifier {
             case .asset(let item):
-                if item.asset is Algo {
-                    openAlgoDetail()
-                    return
-                }
-                
-                let assetIndex = indexPath.item
-                
-                if let assetDetail = dataController[assetIndex] {
-                    self.openAssetDetail(assetDetail, on: self)
+                if let asset = item.asset {
+                    open(
+                        .asaDetail(asset),
+                        by: .push
+                    )
                 }
             default:
                 break
