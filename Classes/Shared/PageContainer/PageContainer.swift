@@ -59,8 +59,7 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
     func customizePagesAppearance() {
         pagesView.showsHorizontalScrollIndicator = false
         pagesView.showsVerticalScrollIndicator = false
-        pagesView.alwaysBounceHorizontal = true
-        pagesView.alwaysBounceVertical = false
+        pagesView.bounces = false
         pagesView.isPagingEnabled = true
 
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {

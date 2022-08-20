@@ -20,8 +20,9 @@ import UIKit
 
 final class ASAAboutScreen:
     BaseScrollViewController,
+    ASADetailPageFragmentScreen,
     UIScrollViewDelegate {
-    var isScrollEnabled = true
+    var isScrollAnchoredOnTop = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,12 +43,17 @@ final class ASAAboutScreen:
         scrollView.delegate = self
     }
 
-    /// <mark>
-    /// UIScrollViewDelegate
-    func scrollViewDidScroll(
-        _ scrollView: UIScrollView
-    ) {
-        updateLayoutWhenScrollViewDidScroll()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateUIWhenViewDidLayoutSubviews()
+    }
+}
+
+/// <mark>
+/// UIScrollViewDelegate
+extension ASAAboutScreen {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateUIWhenViewDidScroll()
     }
 
     func scrollViewWillEndDragging(
@@ -55,7 +61,7 @@ final class ASAAboutScreen:
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        updateLayoutWhenScrollViewWillEndDragging(
+        updateUIWhenViewWillEndDragging(
             withVelocity: velocity,
             targetContentOffset: targetContentOffset
         )
@@ -63,24 +69,21 @@ final class ASAAboutScreen:
 }
 
 extension ASAAboutScreen {
-    private func updateLayoutWhenScrollViewDidScroll() {
-        if isScrollEnabled {
-            return
-        }
-
-        scrollView.scrollToTop(
-            animated: false
-        )
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateScrollWhenViewDidLayoutSubviews()
     }
 
-    private func updateLayoutWhenScrollViewWillEndDragging(
+    private func updateUIWhenViewDidScroll() {
+        updateScrollWhenViewDidScroll()
+    }
+
+    private func updateUIWhenViewWillEndDragging(
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        if isScrollEnabled {
-            return
-        }
-
-        targetContentOffset.pointee = scrollView.contentOffsetAtTop
+        updateScrollWhenViewWillEndDragging(
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset
+        )
     }
 }

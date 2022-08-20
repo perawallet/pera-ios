@@ -4887,6 +4887,9 @@
 		F039CE87288456D9008B4045 /* AlgoLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE86288456D9008B4045 /* AlgoLocalCurrency.swift */; };
 		F039CE88288456D9008B4045 /* AlgoLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE86288456D9008B4045 /* AlgoLocalCurrency.swift */; };
 		F039CE89288456D9008B4045 /* AlgoLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE86288456D9008B4045 /* AlgoLocalCurrency.swift */; };
+		F03E9ABB28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03E9ABA28B1215700A3F07E /* ASADetailPageFragmentScreen.swift */; };
+		F03E9ABC28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03E9ABA28B1215700A3F07E /* ASADetailPageFragmentScreen.swift */; };
+		F03E9ABD28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03E9ABA28B1215700A3F07E /* ASADetailPageFragmentScreen.swift */; };
 		F040FE07285777D500A74993 /* CopyToClipboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F040FE06285777D500A74993 /* CopyToClipboardController.swift */; };
 		F040FE08285777D500A74993 /* CopyToClipboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F040FE06285777D500A74993 /* CopyToClipboardController.swift */; };
 		F040FE09285777D500A74993 /* CopyToClipboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F040FE06285777D500A74993 /* CopyToClipboardController.swift */; };
@@ -6908,6 +6911,8 @@
 		F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		F039CE822884565B008B4045 /* LocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCurrency.swift; sourceTree = "<group>"; };
 		F039CE86288456D9008B4045 /* AlgoLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoLocalCurrency.swift; sourceTree = "<group>"; };
+		F03E9AB928AFE2BC00A3F07E /* macaroon-utils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "macaroon-utils"; path = "../../Developer/Open Source/iOS/macaroon-utils"; sourceTree = "<group>"; };
+		F03E9ABA28B1215700A3F07E /* ASADetailPageFragmentScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailPageFragmentScreen.swift; sourceTree = "<group>"; };
 		F040FE06285777D500A74993 /* CopyToClipboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardController.swift; sourceTree = "<group>"; };
 		F040FE0A285778DD00A74993 /* ALGCopyToClipboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGCopyToClipboardController.swift; sourceTree = "<group>"; };
 		F040FE0E2858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContextMenuConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -9624,6 +9629,7 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
+				F03E9AB928AFE2BC00A3F07E /* macaroon-utils */,
 				F0B27B3428AEDFA40071F262 /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
@@ -13279,21 +13285,21 @@
 		2BF727DD2747181600CCAC30 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				2B54DC862887E5020023F6DD /* MailCompose */,
-				F09608652795E36B00CFBB90 /* List */,
 				2BA713A92748719F00B8A907 /* AccountName */,
 				2BD063E225CEC89C008BD15E /* BottomWarning */,
 				2B571586263479A8002C876D /* Chart */,
 				2BC63643288FCBB200507AEA /* InfoBox */,
+				F09608652795E36B00CFBB90 /* List */,
 				D421179526D9018900C032B2 /* LoadingIndicators */,
+				2B54DC862887E5020023F6DD /* MailCompose */,
 				D41942FE27353FD80055EC70 /* PageContainer */,
 				2BF728132747237700CCAC30 /* PinCode */,
 				D411B37126EA1031004FF980 /* Preview */,
+				2B66871822491A46009F21E7 /* QR */,
+				95BFE78B2840AE9900A972A5 /* QuickActions */,
 				2B4A9C3E250782AB00D58B6B /* Transaction */,
 				17CADC812853A653001D19A8 /* TransactionOptions */,
 				2B9EF31925D57698004BCCC4 /* Tutorial */,
-				2B66871822491A46009F21E7 /* QR */,
-				95BFE78B2840AE9900A972A5 /* QuickActions */,
 				2BA713562748624A00B8A907 /* Views */,
 			);
 			path = Shared;
@@ -15579,6 +15585,7 @@
 			children = (
 				F010634B28AAE7FE00AB6873 /* ASAAboutScreen */,
 				F010634628AAE7E000AB6873 /* ASAActivitiesScreen */,
+				F03E9ABE28B121BE00A3F07E /* ASADetailPageFragmentScreen */,
 			);
 			path = Fragments;
 			sourceTree = "<group>";
@@ -15628,7 +15635,8 @@
 		F010637A28AC531700AB6873 /* SharedUI */ = {
 			isa = PBXGroup;
 			children = (
-				F010637B28AC532800AB6873 /* Text */,
+				F03E9AB828AFBE6000A3F07E /* Screens */,
+				F03E9AB728AFBE5800A3F07E /* Views */,
 			);
 			path = SharedUI;
 			sourceTree = "<group>";
@@ -15710,6 +15718,29 @@
 				17AC72A32871D209006919C3 /* ImageSource+Size.swift */,
 			);
 			path = Macaroon;
+			sourceTree = "<group>";
+		};
+		F03E9AB728AFBE5800A3F07E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F010637B28AC532800AB6873 /* Text */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F03E9AB828AFBE6000A3F07E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F03E9ABE28B121BE00A3F07E /* ASADetailPageFragmentScreen */ = {
+			isa = PBXGroup;
+			children = (
+				F03E9ABA28B1215700A3F07E /* ASADetailPageFragmentScreen.swift */,
+			);
+			path = ASADetailPageFragmentScreen;
 			sourceTree = "<group>";
 		};
 		F040FE052857778A00A74993 /* CopyToClipboardController */ = {
@@ -16682,6 +16713,7 @@
 				04F153B6274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
 				2BA172FB2649F6A300A613C4 /* ChartCircleMarker.swift in Sources */,
 				2B344B1D268A223000DA7B25 /* WCTransaction.swift in Sources */,
+				F03E9ABD28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */,
 				17BD4E092292F1260003E49A /* Notification+Keyboard.swift in Sources */,
 				D48FDFE527CF54D200C39FC7 /* ReceiveCollectibleAssetListLayout.swift in Sources */,
 				2BCE8F99284A4DFD00C6FD6C /* AssetManagementViewController+Theme.swift in Sources */,
@@ -18736,6 +18768,7 @@
 				2B4334A527C44C3200A3D9D6 /* Asset.swift in Sources */,
 				2B0F61F724EC129D00DA22A6 /* TransactionDraft.swift in Sources */,
 				2B85F3EB257A71D100C871A5 /* LedgerOperation.swift in Sources */,
+				F03E9ABC28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */,
 				D462DEDD285744DB0092DF5A /* CollectibleAscendingTitleAlgorithm.swift in Sources */,
 				D48D11DC27428D31000061CE /* AccountNameSwitchViewTheme.swift in Sources */,
 				17CADCB6285A266E001D19A8 /* AccountAssetDescendingAmountAlgorithm.swift in Sources */,
@@ -21283,6 +21316,7 @@
 				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				D4BAABC42770D73900FF3D22 /* TransactionAmountViewTheme.swift in Sources */,
 				F0A812E32837E16B00D27BD3 /* CollectibleFullScreenVideoViewController.swift in Sources */,
+				F03E9ABB28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */,
 				2B968A8428869BD000184ED5 /* AsaVerificationInfoScreen.swift in Sources */,
 				2B0E7CB927E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
