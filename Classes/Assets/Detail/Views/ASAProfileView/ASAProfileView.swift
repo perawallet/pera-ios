@@ -24,7 +24,8 @@ final class ASAProfileView:
     ViewModelBindable,
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .layoutChanged: UIBlockInteraction()
+        .layoutChanged: UIBlockInteraction(),
+        .copyAssetID: GestureInteraction(gesture: .longPress)
     ]
 
     private(set) var intrinsicExpandedContentSize: CGSize = .zero
@@ -214,6 +215,11 @@ extension ASAProfileView {
             $0.bottom == 0
             $0.trailing == 0
         }
+
+        startPublishing(
+            event: .copyAssetID,
+            for: idView
+        )
     }
 
     private func addPrimaryValue(_ theme: ASAProfileViewTheme) {
@@ -290,5 +296,6 @@ extension ASAProfileView {
 extension ASAProfileView {
     enum Event {
         case layoutChanged
+        case copyAssetID
     }
 }

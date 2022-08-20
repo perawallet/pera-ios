@@ -18,7 +18,7 @@
 import UIKit
 
 indirect enum Screen {
-    case asaDetail(Asset)
+    case asaDetail(account: Account, asset: Asset, eventHandler: ASADetailScreen.EventHandler)
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)

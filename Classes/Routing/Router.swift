@@ -444,8 +444,19 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let asset):
-            viewController = ASADetailScreen(asset: asset, configuration: configuration)
+        case .asaDetail(let account, let asset, let eventHandler):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let aViewController = ASADetailScreen(
+                account: account,
+                asset: asset,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):

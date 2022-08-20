@@ -61,10 +61,6 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
         pagesView.showsVerticalScrollIndicator = false
         pagesView.bounces = false
         pagesView.isPagingEnabled = true
-
-        if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
-            pagesView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
-        }
     }
 
     func addPageBar() {
@@ -127,6 +123,14 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
             pageSize = newPageSize
             pagesView.collectionViewLayout.invalidateLayout()
             pagesView.layoutIfNeededInParent()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
+            pagesView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
     }
 

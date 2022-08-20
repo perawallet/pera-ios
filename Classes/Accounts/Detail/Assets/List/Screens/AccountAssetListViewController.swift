@@ -375,9 +375,24 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             switch itemIdentifier {
             case .asset(let item):
+                /// <todo>
+                /// Normally, we should handle account error or asset error here even if it is
+                /// impossible to have an error. Either we should refactor the flow, or we should
+                /// handle the errors.
                 if let asset = item.asset {
+                    let screen = Screen.asaDetail(
+                        account: accountHandle.value,
+                        asset: asset
+                    ) { [weak self] event in
+                        guard let self = self else { return }
+
+                        switch event {
+                        case .didRenameAccount: self.eventHandler?(.didRenameAccount)
+                        case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
+                        }
+                    }
                     open(
-                        .asaDetail(asset),
+                        screen,
                         by: .push
                     )
                 }
@@ -649,6 +664,8 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
+        case didRenameAccount
+        case didRemoveAccount
         case manageAssets(isWatchAccount: Bool)
         case addAsset
         case buyAlgo

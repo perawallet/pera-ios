@@ -731,10 +731,12 @@ extension HomeViewController {
 
             switch event {
             case .didEdit:
-                self.popScreen()
                 self.dataController.reload()
             case .didRemove:
-                self.popScreen()
+                self.navigationController?.popToViewController(
+                    self,
+                    animated: true
+                )
                 self.dataController.reload()
             }
         }

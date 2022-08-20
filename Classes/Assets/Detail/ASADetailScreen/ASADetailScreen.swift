@@ -22,7 +22,15 @@ import UIKit
 
 final class ASADetailScreen:
     BaseViewController,
-    Container {
+    Container,
+    OptionsViewControllerDelegate,
+    ChoosePasswordViewControllerDelegate,
+    EditAccountViewControllerDelegate {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
+    private lazy var navigationTitleView = AccountNamePreviewView()
     private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
@@ -30,6 +38,21 @@ final class ASADetailScreen:
     private lazy var activityFragmentScreen = ASAActivitiesScreen(configuration: configuration)
     private lazy var aboutFragmentScreen = ASAAboutScreen(configuration: configuration)
 
+    private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
+
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        account: account,
+        asset: asset
+    )
+    private lazy var receiveTransactionFlowCoordinator =
+        ReceiveTransactionFlowCoordinator(presentingScreen: self, account: account)
+
+    private lazy var localAuthenticator = LocalAuthenticator()
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var lastDisplayState = DisplayState.normal
@@ -52,16 +75,29 @@ final class ASADetailScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
+    private let account: Account
     private let asset: Asset
+
+    private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
 
     init(
+        account: Account,
         asset: Asset,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.account = account
         self.asset = asset
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        addNavigationTitle()
+        addNavigationActions()
     }
 
     override func viewDidLoad() {
@@ -81,9 +117,179 @@ final class ASADetailScreen:
 
         updateUIWhenViewDidLayoutSubviewsIfNeeded()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        switchToHighlightedNavigationBarAppearance()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if presentedViewController == nil {
+            switchToDefaultNavigationBarAppearance()
+        }
+    }
+}
+
+/// <todo>
+/// Make it reusable
+/// <mark>
+/// OptionsViewControllerDelegate
+extension ASADetailScreen {
+    func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
+        analytics.track(.showQRCopy(account: account))
+        copyToClipboardController.copyAddress(account)
+    }
+
+    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+        open(
+            .rekeyInstruction(account: account),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
+    }
+
+    func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
+        guard let authAddress = account.authAddress else { return }
+
+        let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
+        open(
+            .qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true),
+            by: .present
+        )
+    }
+
+    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
+        guard let session = session else { return }
+
+        if !session.hasPassword() {
+            navigateToViewPassphrase()
+            return
+        }
+
+        if localAuthenticator.localAuthenticationStatus != .allowed {
+            let screen = open(
+                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
+                by: .present
+            ) as? ChoosePasswordViewController
+            screen?.delegate = self
+
+            return
+        }
+
+        localAuthenticator.authenticate {
+            [weak self] error in
+            guard let self = self else { return }
+
+            if error != nil { return }
+
+            self.navigateToViewPassphrase()
+        }
+    }
+
+    func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
+        open(
+            .editAccount(account: account, delegate: self),
+            by: .present
+        )
+    }
+
+    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-trash-red".uiImage,
+            title: "options-remove-account".localized,
+            description: .plain(
+                account.isWatchAccount()
+                ? "options-remove-watch-account-explanation".localized
+                : "options-remove-main-account-explanation".localized
+            ),
+            primaryActionButtonTitle: "title-remove".localized,
+            secondaryActionButtonTitle: "title-keep".localized,
+            primaryAction: { [weak self] in
+                self?.removeAccount()
+            }
+        )
+
+        transitionToConfirmToDeleteAccount.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func removeAccount() {
+        sharedDataController.resetPollingAfterRemoving(account)
+        eventHandler?(.didRemoveAccount)
+    }
+
+    private func navigateToViewPassphrase() {
+        transitionToPassphrase.perform(
+            .passphraseDisplay(address: account.address),
+            by: .present
+        )
+    }
+}
+
+/// <mark>
+/// ChoosePasswordViewControllerDelegate
+extension ASADetailScreen {
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        choosePasswordViewController.dismissScreen()
+
+        if isConfirmed {
+            navigateToViewPassphrase()
+        }
+    }
+}
+
+/// <mark>
+/// EditAccountViewControllerDelegate
+extension ASADetailScreen {
+    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
+        updateUIWhenAccountDidRename()
+        eventHandler?(.didRenameAccount)
+    }
 }
 
 extension ASADetailScreen {
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        let viewModel = AccountNamePreviewViewModel(account: account, with: .center)
+        navigationTitleView.bindData(viewModel)
+    }
+
+    private func addNavigationActions() {
+        let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
+            [unowned self] in
+
+            self.transitionToAccountActions.perform(
+                .options(account: self.account, delegate: self),
+                by: .presentWithoutNavigationController
+            )
+        }
+
+        rightBarButtonItems = [ accountActionsItem ]
+    }
+
     private func addUI() {
         addBackground()
         addProfile()
@@ -115,6 +321,10 @@ extension ASADetailScreen {
         updatePagesWhenViewDidLayoutSubviews()
     }
 
+    private func updateUIWhenAccountDidRename() {
+        bindNavigationTitle()
+    }
+
     private func updateUI(for state: DisplayState) {
         updateProfile(for: state)
         updateQuickActions(for: state)
@@ -139,6 +349,11 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
+        }
+        profileView.startObserving(event: .copyAssetID) {
+            [unowned self] in
+
+            self.copyToClipboardController.copyID(self.asset)
         }
 
         let viewModel = ASAProfileViewModel(
@@ -179,6 +394,21 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
+        }
+        quickActionsView.startObserving(event: .buy) {
+            [unowned self] in
+
+            self.navigateToBuyAlgo()
+        }
+        quickActionsView.startObserving(event: .send) {
+            [unowned self] in
+
+            self.navigateToSendTransaction()
+        }
+        quickActionsView.startObserving(event: .receive) {
+            [unowned self] in
+
+            self.navigateToReceiveTransaction()
         }
 
         let viewModel = ASADetailQuickActionsViewModel(asset: asset)
@@ -288,6 +518,33 @@ extension ASADetailScreen {
             theme.normalProfileVerticalEdgeInsets.bottom
         let height = maxHeight - minHeight
         return CGRect(x: 0, y: minHeight, width: width, height: height)
+    }
+}
+
+extension ASADetailScreen {
+    @objc
+    private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(account)
+        }
+    }
+}
+
+extension ASADetailScreen {
+    private func navigateToBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.address = account.address
+        buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func navigateToSendTransaction() {
+        sendTransactionFlowCoordinator.launch()
+        analytics.track(.tapSendInDetail(account: account))
+    }
+
+    private func navigateToReceiveTransaction() {
+        receiveTransactionFlowCoordinator.launch()
+        analytics.track(.tapReceiveAssetInDetail(account: account))
     }
 }
 
@@ -512,6 +769,11 @@ extension ASADetailScreen {
 }
 
 extension ASADetailScreen {
+    enum Event {
+        case didRenameAccount
+        case didRemoveAccount
+    }
+
     private enum DisplayState: CaseIterable {
         case normal
         case folded

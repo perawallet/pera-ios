@@ -144,6 +144,11 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .didRenameAccount:
+                self.bindTitle()
+                self.eventHandler?(.didEdit)
+            case .didRemoveAccount:
+                self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
 
@@ -247,12 +252,6 @@ extension AccountDetailViewController {
 
     private func addTitleView() {
         accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
 
         accountNamePreviewTitleView.addGestureRecognizer(
             UILongPressGestureRecognizer(
@@ -262,6 +261,17 @@ extension AccountDetailViewController {
         )
 
         navigationItem.titleView = accountNamePreviewTitleView
+
+        bindTitle()
+    }
+
+    private func bindTitle() {
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
     }
 
     private func addAccountActionsMenuAction() {
@@ -435,13 +445,7 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
-
+        bindTitle()
         eventHandler?(.didEdit)
     }
 }
