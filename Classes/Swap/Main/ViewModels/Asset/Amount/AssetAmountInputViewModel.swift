@@ -27,8 +27,8 @@ struct AssetAmountInputViewModel: ViewModel {
     private(set) var detail: TextProvider?
 
     init(
-        _ asset: Asset,
-        _ isInputEditable: Bool
+        asset: Asset,
+        isInputEditable: Bool
     ) {
         bindIcon(asset)
         bindInputValue(asset)

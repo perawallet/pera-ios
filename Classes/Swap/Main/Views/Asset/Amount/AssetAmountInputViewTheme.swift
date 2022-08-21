@@ -43,7 +43,8 @@ struct AssetAmountInputViewTheme:
             .returnKeyType(.done)
         ]
         self.detail = [
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .textOverflow(SingleLineFittingText())
         ]
     }
 
