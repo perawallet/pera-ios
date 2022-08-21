@@ -26,14 +26,6 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case let .algosInfo(item):
-                let cell = collectionView.dequeue(AlgosDetailInfoViewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
-            case let .assetInfo(item):
-                let cell = collectionView.dequeue(AssetDetailInfoViewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
             case let .filter(item):
                 let cell = collectionView.dequeue(TransactionHistoryFilterCell.self, at: indexPath)
                 cell.bindData(item)
@@ -70,10 +62,6 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                     return cell
                 case .transactionHistoryLoading:
                     return collectionView.dequeue(TransactionHistoryLoadingCell.self, at: indexPath)
-                case .algoTransactionHistoryLoading:
-                    return collectionView.dequeue(AlgoTransactionHistoryLoadingCell.self, at: indexPath)
-                case .assetTransactionHistoryLoading:
-                    return collectionView.dequeue(AssetTransactionHistoryLoadingCell.self, at: indexPath)
                 }
             case .nextList:
                 return collectionView.dequeue(LoadingCell.self, at: indexPath)
@@ -85,13 +73,9 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             PendingTransactionCell.self,
             TransactionHistoryTitleCell.self,
             TransactionHistoryFilterCell.self,
-            AlgosDetailInfoViewCell.self,
-            AssetDetailInfoViewCell.self,
             NoContentCell.self,
             LoadingCell.self,
-            TransactionHistoryLoadingCell.self,
-            AlgoTransactionHistoryLoadingCell.self,
-            AssetTransactionHistoryLoadingCell.self
+            TransactionHistoryLoadingCell.self
         ].forEach {
             collectionView.register($0)
         }

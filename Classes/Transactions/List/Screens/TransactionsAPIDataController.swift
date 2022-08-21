@@ -355,7 +355,6 @@ extension TransactionsAPIDataController {
             case .algos:
                 snapshot.appendItems(
                     [
-                        .empty(.algoTransactionHistoryLoading),
                         .empty(.transactionHistoryLoading)
                     ],
                     toSection: .empty
@@ -363,7 +362,6 @@ extension TransactionsAPIDataController {
             case .asset:
                 snapshot.appendItems(
                     [
-                        .empty(.assetTransactionHistoryLoading),
                         .empty(.transactionHistoryLoading)
                     ],
                     toSection: .empty
@@ -382,39 +380,6 @@ extension TransactionsAPIDataController {
             }
 
             var snapshot = Snapshot()
-
-            let account = self.draft.accountHandle.value
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
-
-            switch self.draft.type {
-            case .asset:
-                let viewModel = AssetDetailInfoViewModel(
-                    asset: self.draft.asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-
-                snapshot.appendSections([.info])
-                snapshot.appendItems(
-                    [ .assetInfo(viewModel) ],
-                    toSection: .info
-                )
-            case .algos:
-                let viewModel = AlgosDetailInfoViewModel(
-                    account: account,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-
-                snapshot.appendSections([.info])
-                snapshot.appendItems(
-                    [ .algosInfo(viewModel) ],
-                    toSection: .info
-                )
-            case .all:
-                break
-            }
 
             snapshot.appendSections([.transactionHistory])
             snapshot.appendItems(

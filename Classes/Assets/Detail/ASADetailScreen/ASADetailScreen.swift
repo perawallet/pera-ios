@@ -35,7 +35,12 @@ final class ASADetailScreen:
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
     private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
-    private lazy var activityFragmentScreen = ASAActivitiesScreen(configuration: configuration)
+    private lazy var activityFragmentScreen = ASAActivityScreen(
+        account: account,
+        asset: asset,
+        copyToClipboardController: copyToClipboardController,
+        configuration: configuration
+    )
     private lazy var aboutFragmentScreen = ASAAboutScreen(configuration: configuration)
 
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
@@ -60,7 +65,7 @@ final class ASADetailScreen:
 
     private var isDisplayStateInteractiveTransitionInProgress = false
     private var displayStateInteractiveTransitionInitialFractionComplete: CGFloat = 0
-    private var displayStateInteractiveTransitionScrollableAreaInitialContentOffset: CGPoint = .zero
+    private var displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY: CGFloat = 0
     private var displayStateInteractiveTransitionAnimator: UIViewPropertyAnimator?
 
     private var pagesFragmentHeightConstraint: Constraint!
@@ -577,8 +582,10 @@ extension ASADetailScreen {
         let fractionComplete = displayStateInteractiveTransitionAnimator?.fractionComplete ?? 0
         displayStateInteractiveTransitionInitialFractionComplete = fractionComplete
 
-        let contentOffset = selectedPageFragmentScreen?.scrollView.contentOffset ?? .zero
-        displayStateInteractiveTransitionScrollableAreaInitialContentOffset = contentOffset
+        let scrollView = selectedPageFragmentScreen?.scrollView
+        let contentOffsetY = scrollView?.contentOffset.y ?? 0
+        let contentInsetTop = scrollView?.adjustedContentInset.top ?? 0
+        displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY = contentOffsetY + contentInsetTop
     }
 
     private func updateDisplayStateInteractiveTransition(_ recognizer: UIPanGestureRecognizer) {
@@ -590,7 +597,7 @@ extension ASADetailScreen {
         let normalSpacing = calculateSpacingOverPagesFragment(for: .normal)
         let foldedSpacing = calculateSpacingOverPagesFragment(for: .folded)
         let distance = normalSpacing - foldedSpacing
-        let initialContentOffsetY = displayStateInteractiveTransitionScrollableAreaInitialContentOffset.y
+        let initialContentOffsetY = displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY
         /// <note>
         /// In order to switch between the normal and folded states, the scroll should be on top for
         /// the selected page; therefore, the translation is projected on the content offset of the
@@ -641,6 +648,7 @@ extension ASADetailScreen {
         }
 
         let nextDisplayState = lastDisplayState.reversed()
+        let contentOffsetYOnTop = -(selectedPageFragmentScreen?.scrollView.adjustedContentInset.top ?? 0)
         let contentOffsetY = selectedPageFragmentScreen?.scrollView.contentOffset.y ?? 0
         let velocityY = recognizer.velocity(in: recognizer.view).y
 
@@ -649,7 +657,7 @@ extension ASADetailScreen {
         /// the animation should be reversed so that the pages fragment can't change its position.
         switch nextDisplayState {
         case .normal:
-            if contentOffsetY > 0 {
+            if contentOffsetY > contentOffsetYOnTop {
                 return true
             }
 
@@ -659,7 +667,7 @@ extension ASADetailScreen {
 
             return velocityY < 0
         case .folded:
-            if contentOffsetY < 0 {
+            if contentOffsetY < contentOffsetYOnTop {
                 return true
             }
 
@@ -760,8 +768,8 @@ extension ASADetailScreen {
             self.view.setNeedsLayout()
 
             self.displayStateInteractiveTransitionInitialFractionComplete = 0
-            self.displayStateInteractiveTransitionScrollableAreaInitialContentOffset =
-                self.selectedPageFragmentScreen?.scrollView.contentOffset ?? .zero
+            self.displayStateInteractiveTransitionScrollableAreaInitialContentOffsetY =
+            self.selectedPageFragmentScreen?.scrollView.contentOffset.y ?? 0
             self.isDisplayStateInteractiveTransitionInProgress = false
         }
         return animator

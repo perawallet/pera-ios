@@ -12,35 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASATransactionsScreen.swift
+//   ASAActivityScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ASAActivitiesScreen:
-    BaseScrollViewController,
-    ASADetailPageFragmentScreen,
-    UIScrollViewDelegate {
+final class ASAActivityScreen:
+    TransactionsViewController,
+    ASADetailPageFragmentScreen {
     var isScrollAnchoredOnTop = true
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var scrollView: UIScrollView {
+        return listView
+    }
 
-        let contextView = UIView()
-        contextView.backgroundColor = .yellow
+    init(
+        account: Account,
+        asset: Asset,
+        copyToClipboardController: CopyToClipboardController?,
+        configuration: ViewControllerConfiguration
+    ) {
+        let accountHandle = AccountHandle(account: account, status: .ready)
 
-        contentView.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.fitToHeight(1000)
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+        let draft: TransactionListing
+        if asset.isAlgo {
+            /// <todo>
+            /// We should have a standardized way of using `Account` or `AccountHandle`, and manage
+            /// all related cases(success/failure) properly.
+            draft = AlgoTransactionListing(accountHandle: accountHandle)
+        } else {
+            draft = AssetTransactionListing(
+                accountHandle: accountHandle,
+                asset: asset as? StandardAsset
+            )
         }
 
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.delegate = self
+        super.init(
+            draft: draft,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
     }
 
     override func viewDidLayoutSubviews() {
@@ -51,7 +63,7 @@ final class ASAActivitiesScreen:
 
 /// <mark>
 /// UIScrollViewDelegate
-extension ASAActivitiesScreen {
+extension ASAActivityScreen {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateUIWhenViewDidScroll()
     }
@@ -68,7 +80,7 @@ extension ASAActivitiesScreen {
     }
 }
 
-extension ASAActivitiesScreen {
+extension ASAActivityScreen {
     private func updateUIWhenViewDidLayoutSubviews() {
         updateScrollWhenViewDidLayoutSubviews()
     }
