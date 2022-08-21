@@ -165,12 +165,12 @@ extension ASAProfileViewModel {
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
-        do {
-            guard let fiatCurrencyValue = currency.fiatValue else {
-                secondaryValue = nil
-                return
-            }
+        guard let fiatCurrencyValue = currency.fiatValue else {
+            secondaryValue = nil
+            return
+        }
 
+        do {
             let fiatRawCurrency = try fiatCurrencyValue.unwrap()
 
             let exchanger = CurrencyExchanger(currency: fiatRawCurrency)

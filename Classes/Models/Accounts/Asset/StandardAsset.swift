@@ -21,6 +21,7 @@ final class StandardAsset: Asset {
     let amount: UInt64
     let decimals: Int
     let decimalAmount: Decimal
+    let total: UInt64?
     let isFrozen: Bool?
     let isDeleted: Bool?
     let optedInAtRound: UInt64?
@@ -62,6 +63,7 @@ final class StandardAsset: Asset {
         self.creator = decoration.creator
         self.url = decoration.url
         self.logoURL = decoration.logoURL
+        self.total = decoration.total
 
         let amount = asset.amount
         let decimals = decoration.decimals

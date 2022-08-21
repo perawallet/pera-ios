@@ -250,7 +250,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         loadingController?.stopLoading()
 
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
             return
         }
 

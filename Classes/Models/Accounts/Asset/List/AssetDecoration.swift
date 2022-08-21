@@ -25,7 +25,7 @@ final class AssetDecoration: ALGEntityModel {
     let unitName: String?
     let decimals: Int
     let usdValue: Decimal?
-    let total: Int64?
+    let total: UInt64?
     let creator: AssetCreator?
     let collectible: Collectible?
     let explorerURL: URL?
@@ -47,7 +47,7 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = apiModel.unitName
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
-        self.total = apiModel.total.unwrap { Int64($0) }
+        self.total = apiModel.total.unwrap { UInt64($0) }
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
@@ -62,7 +62,7 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = assetDetail.unitName
         self.decimals = assetDetail.fractionDecimals
         self.usdValue = nil
-        self.total = nil
+        self.total = assetDetail.total
         self.creator = AssetCreator(address: assetDetail.creator)
         self.explorerURL = nil
         self.collectible = nil
@@ -94,7 +94,7 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = asset.naming.unitName
         self.decimals = asset.decimals
         self.usdValue = nil
-        self.total = nil
+        self.total = asset.total
         self.creator = asset.creator
         self.explorerURL = nil
         self.collectible = nil

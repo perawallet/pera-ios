@@ -4824,6 +4824,9 @@
 		F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
+		F03451CB28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03451CA28B23A39009467A0 /* ASAAboutScreenTheme.swift */; };
+		F03451CC28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03451CA28B23A39009467A0 /* ASAAboutScreenTheme.swift */; };
+		F03451CD28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03451CA28B23A39009467A0 /* ASAAboutScreenTheme.swift */; };
 		F039CE832884565B008B4045 /* LocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE822884565B008B4045 /* LocalCurrency.swift */; };
 		F039CE842884565B008B4045 /* LocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE822884565B008B4045 /* LocalCurrency.swift */; };
 		F039CE852884565B008B4045 /* LocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039CE822884565B008B4045 /* LocalCurrency.swift */; };
@@ -6833,6 +6836,7 @@
 		F0261A9727C4E28D009D8BF4 /* AppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthChecker.swift; sourceTree = "<group>"; };
 		F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppAuthChecker.swift; sourceTree = "<group>"; };
 		F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		F03451CA28B23A39009467A0 /* ASAAboutScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAAboutScreenTheme.swift; sourceTree = "<group>"; };
 		F039CE822884565B008B4045 /* LocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCurrency.swift; sourceTree = "<group>"; };
 		F039CE86288456D9008B4045 /* AlgoLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoLocalCurrency.swift; sourceTree = "<group>"; };
 		F03E9AB928AFE2BC00A3F07E /* macaroon-utils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "macaroon-utils"; path = "../../Developer/Open Source/iOS/macaroon-utils"; sourceTree = "<group>"; };
@@ -8597,6 +8601,7 @@
 			children = (
 				F010633A28AADBD100AB6873 /* ASADetailScreen */,
 				F010635228AAEBDA00AB6873 /* ASADiscoveryScreen */,
+				F03451C928B239AA009467A0 /* Fragments */,
 				F010635028AAEAA400AB6873 /* Views */,
 				2BA71330274856EA00B8A907 /* List */,
 			);
@@ -14971,20 +14976,6 @@
 			path = AssetAboutSection;
 			sourceTree = "<group>";
 		};
-		D4A0DE98289802F900CE3895 /* AssetStatisticsSection */ = {
-			isa = PBXGroup;
-			children = (
-				D4A0DEB128980ED100CE3895 /* AssetStatisticsSectionPriceViewModel.swift */,
-				D4A0DEA928980E0F00CE3895 /* AssetStatisticsSectionPriceViewTheme.swift */,
-				D4A0DEAD28980EC200CE3895 /* AssetStatisticsSectionTotalSupplyViewModel.swift */,
-				D4A0DEA528980B7900CE3895 /* AssetStatisticsSectionTotalSupplyViewTheme.swift */,
-				D4A0DE992898037300CE3895 /* AssetStatisticsSectionView.swift */,
-				D4A0DEA1289803F600CE3895 /* AssetStatisticsSectionViewModel.swift */,
-				D4A0DE9D289803BC00CE3895 /* AssetStatisticsSectionViewTheme.swift */,
-			);
-			path = AssetStatisticsSection;
-			sourceTree = "<group>";
-		};
 		D4A647AD2784F971009DE241 /* HistoryCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -15416,7 +15407,6 @@
 		F010633F28AAE5C700AB6873 /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
-				F010634B28AAE7FE00AB6873 /* ASAAboutScreen */,
 				F010634628AAE7E000AB6873 /* ASAActivityScreen */,
 				F03E9ABE28B121BE00A3F07E /* ASADetailPageFragmentScreen */,
 			);
@@ -15435,6 +15425,8 @@
 			isa = PBXGroup;
 			children = (
 				F010634C28AAE80900AB6873 /* ASAAboutScreen.swift */,
+				F03451CA28B23A39009467A0 /* ASAAboutScreenTheme.swift */,
+				F03451CE28B2515D009467A0 /* Views */,
 			);
 			path = ASAAboutScreen;
 			sourceTree = "<group>";
@@ -15551,6 +15543,53 @@
 				17AC72A32871D209006919C3 /* ImageSource+Size.swift */,
 			);
 			path = Macaroon;
+			sourceTree = "<group>";
+		};
+		F03451C928B239AA009467A0 /* Fragments */ = {
+			isa = PBXGroup;
+			children = (
+				F010634B28AAE7FE00AB6873 /* ASAAboutScreen */,
+			);
+			path = Fragments;
+			sourceTree = "<group>";
+		};
+		F03451CE28B2515D009467A0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D4A0DE972898001500CE3895 /* AssetAboutSection */,
+				F03451D028B25199009467A0 /* AssetStatisticsSectionPriceView */,
+				F03451D128B251A9009467A0 /* AssetStatisticsSectionTotalSupplyView */,
+				F03451CF28B2517E009467A0 /* AssetStatisticsSectionView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F03451CF28B2517E009467A0 /* AssetStatisticsSectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D4A0DE992898037300CE3895 /* AssetStatisticsSectionView.swift */,
+				D4A0DEA1289803F600CE3895 /* AssetStatisticsSectionViewModel.swift */,
+				D4A0DE9D289803BC00CE3895 /* AssetStatisticsSectionViewTheme.swift */,
+			);
+			path = AssetStatisticsSectionView;
+			sourceTree = "<group>";
+		};
+		F03451D028B25199009467A0 /* AssetStatisticsSectionPriceView */ = {
+			isa = PBXGroup;
+			children = (
+				D4A0DEB128980ED100CE3895 /* AssetStatisticsSectionPriceViewModel.swift */,
+				D4A0DEA928980E0F00CE3895 /* AssetStatisticsSectionPriceViewTheme.swift */,
+			);
+			path = AssetStatisticsSectionPriceView;
+			sourceTree = "<group>";
+		};
+		F03451D128B251A9009467A0 /* AssetStatisticsSectionTotalSupplyView */ = {
+			isa = PBXGroup;
+			children = (
+				D4A0DEAD28980EC200CE3895 /* AssetStatisticsSectionTotalSupplyViewModel.swift */,
+				D4A0DEA528980B7900CE3895 /* AssetStatisticsSectionTotalSupplyViewTheme.swift */,
+			);
+			path = AssetStatisticsSectionTotalSupplyView;
 			sourceTree = "<group>";
 		};
 		F03E9AB728AFBE5800A3F07E /* Views */ = {
@@ -15748,9 +15787,7 @@
 				F0431F25287781B20004CB7E /* PortfolioViewModel.swift */,
 				F0454214287B767B0081C01C /* TotalPortfolioItem.swift */,
 				F0454218287C00370081C01C /* AssetItem.swift */,
-				D4A0DE98289802F900CE3895 /* AssetStatisticsSection */,
 				F045421C287C13760081C01C /* AlgoAssetItem.swift */,
-				D4A0DE972898001500CE3895 /* AssetAboutSection */,
 				D4133D742885DB4A003EFB4F /* UISheet */,
 				F040FE052857778A00A74993 /* CopyToClipboardController */,
 				F0E72183284F6A3600865419 /* QuickActions */,
@@ -17320,6 +17357,7 @@
 				D4AEC3C027CAF1B400507965 /* CollectibleListLoadingViewCell.swift in Sources */,
 				17BD4E912292F1260003E49A /* ALGAPI+Transaction.swift in Sources */,
 				F0DB4175279440AD00EA437D /* ErrorViewModel.swift in Sources */,
+				F03451CD28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */,
 				2BC635DC2886FB4E00507AEA /* PrimaryTitleView.swift in Sources */,
 				D43A0C2A2790D177007430B9 /* NoContentView.swift in Sources */,
 				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
@@ -18921,6 +18959,7 @@
 				2B0F625624EC129D00DA22A6 /* PendingTransactionCell.swift in Sources */,
 				D4999DF928916DD100C7E05C /* OptInAssetViewModel.swift in Sources */,
 				2B0F625724EC129D00DA22A6 /* ALGAPI+Account.swift in Sources */,
+				F03451CC28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */,
 				2BD063FA25CED2E3008BD15E /* UIViewController+Layout.swift in Sources */,
 				2BD5A68C2632FA850048FA5E /* AlgoPriceHistory.swift in Sources */,
 				D41F93462722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
@@ -19987,6 +20026,7 @@
 				2B2A49792850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */,
 				2B9EF2F825D5761E004BCCC4 /* TutorialView.swift in Sources */,
 				2B4EEEC824BF453500059A16 /* NotificationMessage.swift in Sources */,
+				F03451CB28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */,
 				2B5715AE2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
 				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,

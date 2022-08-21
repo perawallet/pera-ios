@@ -24,23 +24,26 @@ final class ASAAboutScreen:
     UIScrollViewDelegate {
     var isScrollAnchoredOnTop = true
 
+    private lazy var contextView = VStackView()
+    private lazy var statisticsView = AssetStatisticsSectionView()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let asset: Asset
+
+    private let theme = ASAAboutScreenTheme()
+
+    init(
+        asset: Asset,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.asset = asset
+        super.init(configuration: configuration)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let contextView = UIView()
-        contextView.backgroundColor = .purple
-
-        contentView.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.fitToHeight(1500)
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.delegate = self
+        addUI()
     }
 
     override func viewDidLayoutSubviews() {
@@ -69,6 +72,13 @@ extension ASAAboutScreen {
 }
 
 extension ASAAboutScreen {
+    private func addUI() {
+        addBackground()
+        addContext()
+
+        updateScroll()
+    }
+
     private func updateUIWhenViewDidLayoutSubviews() {
         updateScrollWhenViewDidLayoutSubviews()
     }
@@ -84,6 +94,50 @@ extension ASAAboutScreen {
         updateScrollWhenViewWillEndDragging(
             withVelocity: velocity,
             targetContentOffset: targetContentOffset
+        )
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func updateScroll() {
+        scrollView.delegate = self
+    }
+
+    private func addContext() {
+        contextView.distribution = .fillProportionally
+        contextView.alignment = .fill
+        contextView.spacing = theme.spacingBetweenSections
+        contextView.directionalLayoutMargins = theme.contentEdgeInsets
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contentView.addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom <= 0
+            $0.trailing == 0
+        }
+
+        addStatistics()
+    }
+
+    private func addStatistics() {
+        statisticsView.customize(theme.statistics)
+
+        contextView.addArrangedSubview(statisticsView)
+
+        let viewModel = AssetStatisticsSectionViewModel(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+        statisticsView.bindData(viewModel)
+
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: statisticsView,
+            margin: theme.spacingBetweenSectionAndSeparator
         )
     }
 }

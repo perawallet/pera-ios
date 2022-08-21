@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct Algo: Asset {
+final class Algo: Asset {
     let id: AssetID = -1
     var amount: UInt64
     let isFrozen: Bool? = nil
@@ -25,6 +25,7 @@ struct Algo: Asset {
     let creator: AssetCreator? = nil
     let decimals: Int = 6
     let decimalAmount: Decimal
+    let total: UInt64?
     let usdValue: Decimal? = nil
     let totalUSDValue: Decimal? = nil
     var state: AssetState = .ready
@@ -47,5 +48,6 @@ struct Algo: Asset {
         /// <note>
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
+        self.total = 10_000
     }
 }

@@ -21,19 +21,22 @@ import MacaroonUIKit
 struct AssetStatisticsSectionViewTheme:
     StyleSheet,
     LayoutSheet {
-    var contentEdgeInsets: LayoutPaddings
+    var title: TextStyle
     var spacingBetweenTitleAndStatistics: LayoutMetric
-    var statisticsItemSpacing: LayoutMetric
     var price: PrimaryTitleViewTheme
+    var spacingBetweenPriceAndTotalSupply: LayoutMetric
     var totalSupply: PrimaryTitleViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
-        contentEdgeInsets = (0, 24, 0, 24)
-        spacingBetweenTitleAndStatistics = 24
-        statisticsItemSpacing = 12
-        price = AssetStatisticsSectionPriceViewTheme()
-        totalSupply = AssetStatisticsSectionTotalSupplyViewTheme()
+        self.title = [
+            .textColor(Colors.Text.grayLighter),
+            .textOverflow(SingleLineFittingText())
+        ]
+        self.spacingBetweenTitleAndStatistics = 24
+        self.price = AssetStatisticsSectionPriceViewTheme(family)
+        self.spacingBetweenPriceAndTotalSupply = 12
+        self.totalSupply = AssetStatisticsSectionTotalSupplyViewTheme(family)
     }
 }

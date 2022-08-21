@@ -22,9 +22,42 @@ struct AssetStatisticsSectionViewModel: ViewModel {
     private(set) var price: PrimaryTitleViewModel?
     private(set) var totalSupply: PrimaryTitleViewModel?
 
-    init() {
-        title = "algo-statistics-title".localized
-        price = AssetStatisticsSectionPriceViewModel()
+    init(
+        asset: Asset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        bindTitle()
+        bindPrice(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        bindTotalSupply()
+    }
+}
+
+extension AssetStatisticsSectionViewModel {
+    mutating func bindTitle() {
+        title = "algo-statistics-title"
+            .localized
+            .uppercased()
+            .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    mutating func bindPrice(
+        asset: Asset,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        price = AssetStatisticsSectionPriceViewModel(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+    }
+
+    mutating func bindTotalSupply() {
         totalSupply = AssetStatisticsSectionTotalSupplyViewModel()
     }
 }

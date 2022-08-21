@@ -29,7 +29,7 @@ struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
 }
 
 extension AssetStatisticsSectionTotalSupplyViewModel {
-    private mutating func bindTitle() {
+    mutating func bindTitle() {
         primaryTitle = "title-total-supply"
             .localized
             .footnoteRegular(
@@ -37,11 +37,11 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
             )
     }
 
-    private mutating func bindIcon() {
+    mutating func bindIcon() {
         primaryTitleAccessory = "icon-info-20"
     }
 
-    private mutating func bindSubtitle() {
+    mutating func bindSubtitle() {
         secondaryTitle = "7.27T"
             .bodyLargeMedium(
                 lineBreakMode: .byTruncatingTail

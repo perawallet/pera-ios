@@ -22,6 +22,7 @@ final class CollectibleAsset: Asset {
     let id: AssetID
     let amount: UInt64
     let decimals: Int
+    let total: UInt64?
     let decimalAmount: Decimal
     let isFrozen: Bool?
     let isDeleted: Bool?
@@ -31,7 +32,6 @@ final class CollectibleAsset: Asset {
     let unitName: String?
     let usdValue: Decimal?
     let totalUSDValue: Decimal?
-    let total: Int64?
     let verificationTier: AssetVerificationTier
     let thumbnailImage: URL?
     let media: [Media]
