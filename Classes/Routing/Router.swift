@@ -183,12 +183,25 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft, let preferences):
+        case .asaDetail(let account, let asset):
             launch(tab: .home)
 
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDetail(
+                account: account,
+                asset: asset
+            ) { [weak visibleScreen] event in
+                switch event {
+                case .didRemoveAccount:
+                    visibleScreen?.dismiss(animated: true)
+                case .didRenameAccount:
+                    break
+                }
+            }
+
             route(
-                to: .algosDetail(draft: draft, preferences: preferences),
-                from: findVisibleScreen(over: rootViewController),
+                to: screen,
+                from: visibleScreen,
                 by: .present
             )
         case .assetActionConfirmation(let draft, let theme):
@@ -205,15 +218,6 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft, let preferences):
-            launch(tab: .home)
-            
-            route(
-                to: .assetDetail(draft: draft, preferences: preferences),
-                from: findVisibleScreen(over: rootViewController),
-                by: .present
-            )
-
         case .sendTransaction(let draft, let shouldFilterAccount):
             launch(tab: .home)
 
@@ -554,22 +558,6 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
-            )
-        case let .assetDetail(draft, preferences):
-            viewController = AssetDetailViewController(
-                draft: draft,
-                preferences: preferences,
-                copyToClipboardController: ALGCopyToClipboardController(
-                    toastPresentationController: appConfiguration.toastPresentationController
-                ),
-                configuration: configuration
-            )
-        case let .algosDetail(draft, preferences):
-            viewController = AlgosDetailViewController(
-                draft: draft,
-                preferences: preferences,
-                copyToClipboardController: nil,
                 configuration: configuration
             )
         case let .accountDetail(accountHandle, eventHandler):

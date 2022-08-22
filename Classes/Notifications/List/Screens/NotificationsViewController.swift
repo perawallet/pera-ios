@@ -238,13 +238,43 @@ extension NotificationsViewController {
 
             switch assetMode {
             case .algo:
-                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
+                let account = accountHandle.value
+                screen = .asaDetail(
+                    account: account,
+                    asset: account.algo
+                ) { [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .didRemoveAccount:
+                        self.dataController.reload()
+                        self.navigationController?.popToViewController(
+                            self,
+                            animated: true
+                        )
+                    case .didRenameAccount:
+                        self.dataController.reload()
+                    }
+                }
             case .asset(let asset):
                 if let asset = asset as? StandardAsset {
-                    screen = .assetDetail(draft: AssetTransactionListing(
-                        accountHandle: accountHandle,
+                    screen = .asaDetail(
+                        account: accountHandle.value,
                         asset: asset
-                    ))
+                    ) { [weak self] event in
+                        guard let self = self else { return }
+
+                        switch event {
+                        case .didRemoveAccount:
+                            self.dataController.reload()
+                            self.navigationController?.popToViewController(
+                                self,
+                                animated: true
+                            )
+                        case .didRenameAccount:
+                            self.dataController.reload()
+                        }
+                    }
                 } else if let collectibleAsset = asset as? CollectibleAsset {
                     openCollectible(
                         asset: collectibleAsset,

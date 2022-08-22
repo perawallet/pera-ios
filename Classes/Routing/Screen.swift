@@ -33,14 +33,6 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
-    case algosDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
