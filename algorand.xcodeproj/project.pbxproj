@@ -4876,7 +4876,6 @@
 		F034521728B2CD9F009467A0 /* OptInAssetNameViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521528B2CD9F009467A0 /* OptInAssetNameViewTheme.swift */; };
 		F034521828B2CD9F009467A0 /* OptInAssetNameViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521528B2CD9F009467A0 /* OptInAssetNameViewTheme.swift */; };
 		F034521A28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521928B374BC009467A0 /* ASADiscoveryScreen.swift */; };
-		F034521B28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521928B374BC009467A0 /* ASADiscoveryScreen.swift */; };
 		F034521C28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521928B374BC009467A0 /* ASADiscoveryScreen.swift */; };
 		F034521E28B37596009467A0 /* ASADiscoveryScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521D28B37596009467A0 /* ASADiscoveryScreenTheme.swift */; };
 		F034521F28B37596009467A0 /* ASADiscoveryScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F034521D28B37596009467A0 /* ASADiscoveryScreenTheme.swift */; };
@@ -21697,7 +21696,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = J7DPKT9NB5;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -21710,7 +21709,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.3.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.stageee;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -21739,7 +21738,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.3.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.stageee;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
 				SWIFT_VERSION = 5.0;
@@ -21768,7 +21767,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.3.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.stageee;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
