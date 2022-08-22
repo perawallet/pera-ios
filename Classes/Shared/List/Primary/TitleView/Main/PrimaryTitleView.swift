@@ -144,7 +144,7 @@ extension PrimaryTitleView {
         )
         secondaryTitleView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
-            compression: .defaultLow
+            compression: .required
         )
         secondaryTitleView.contentEdgeInsets.top = theme.spacingBetweenPrimaryAndSecondaryTitles
         secondaryTitleView.snp.makeConstraints {

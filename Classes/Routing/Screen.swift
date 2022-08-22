@@ -203,7 +203,6 @@ indirect enum Screen {
     )
     case optInAsset(
         draft: OptInAssetDraft,
-        theme: OptInAssetScreenTheme = .init(),
         eventHandler: OptInAssetScreen.EventHandler
     )
     case optOutAsset(

@@ -85,7 +85,7 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
     }
 }
 
-extension PassphraseDisplayViewController: BottomSheetPresentable {
+extension PassphraseDisplayViewController: BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .preferred(theme.modalHeight)
     }

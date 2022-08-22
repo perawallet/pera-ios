@@ -21,7 +21,7 @@ import SwiftUI
 
 final class ManagementOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: ManagementOptionsViewControllerDelegate?
 
     private lazy var theme = Theme()

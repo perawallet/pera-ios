@@ -990,14 +990,14 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .optInAsset(let draft, let theme, let eventHandler):
+        case .optInAsset(let draft, let eventHandler):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
             viewController = OptInAssetScreen(
-                theme: theme,
                 draft: draft,
-                eventHandler: eventHandler,
-                copyToClipboardController: ALGCopyToClipboardController(
-                    toastPresentationController: appConfiguration.toastPresentationController
-                )
+                copyToClipboardController: copyToClipboardController,
+                eventHandler: eventHandler
             )
         case .optOutAsset(let draft, let theme, let eventHandler):
             viewController = OptOutAssetScreen(

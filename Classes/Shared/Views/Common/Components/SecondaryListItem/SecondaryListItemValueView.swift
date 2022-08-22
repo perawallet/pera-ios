@@ -109,6 +109,7 @@ extension SecondaryListItemValueView {
 
         contentView.addSubview(titleView)
         titleView.snp.makeConstraints {
+            $0.height >= iconView
             $0.top == 0
             $0.leading == iconView.snp.trailing
             $0.bottom == 0

@@ -23,9 +23,8 @@ protocol AssetListViewDataController {
 
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)? { get set }
 
-    func load(isPaginated: Bool)
+    func load()
     func search(for query: String?)
-    func resetSearch()
 }
 
 enum AssetListViewSection:
@@ -36,11 +35,12 @@ enum AssetListViewSection:
 }
 
 enum AssetListViewItem: Hashable {
-    case asset(AssetPreviewViewModel)
+    case asset(OptInAssetListItem)
     case loading(String)
     case noContent
 }
 
 enum AssetListViewDataControllerEvent {
     case didUpdate(AssetListViewDataController.Snapshot)
+    case didUpdateNext(AssetListViewDataController.Snapshot)
 }

@@ -60,92 +60,6 @@ final class SecondaryListItemView:
         }
 
         accessoryView.bindData(viewModel?.accessory)
-
-        /// <todo>: Remove this, it is only for debugging purposes.
-        _ = Self.calculatePreferredSize(
-            viewModel,
-            for: theme!,
-            fittingIn:  CGSize((UIScreen.main.bounds.width, .greatestFiniteMagnitude))
-        )
-    }
-
-    class func calculatePreferredSize(
-        _ viewModel: SecondaryListItemViewModel?,
-        for theme: SecondaryListItemViewTheme,
-        fittingIn size: CGSize
-    ) -> CGSize {
-        guard let viewModel = viewModel else {
-            return CGSize((size.width, 0))
-        }
-
-        let width = size.width
-
-        let contentWidth =
-            width
-            - theme.contentEdgeInsets.leading
-            - theme.contentEdgeInsets.trailing
-
-        let accessoryMaxWidth =
-            (contentWidth - theme.minimumSpacingBetweenTitleAndAccessory) * (1 - theme.titleMinimumWidthRatio)
-
-        let accessoryIconSize = viewModel.accessory?.icon?.image?.uiImage.size ?? .zero
-        let accessoryIconOffset =
-            accessoryIconSize != .zero
-            ? theme.accessory.iconLayoutOffset.x
-            : .zero
-
-        let accessoryTitleMaxWidth =
-            accessoryMaxWidth
-            - accessoryIconSize.width
-            - accessoryIconOffset
-            - theme.accessory.contentEdgeInsets.leading
-            - theme.accessory.contentEdgeInsets.trailing
-
-        let accessoryTitleSize = viewModel.accessory?.title?.boundingSize(
-            multiline: theme.accessory.supportsMultiline,
-            fittingSize: CGSize((accessoryTitleMaxWidth, .greatestFiniteMagnitude))
-        ) ?? .zero
-
-        let accessoryTitleEstimatedLineHeight: CGFloat = 30
-
-        let titleSize: CGSize
-
-        let isAccessoryTitleMultiline = accessoryTitleSize.height > accessoryTitleEstimatedLineHeight
-        if isAccessoryTitleMultiline {
-            let titleMaxWidth = (contentWidth - theme.minimumSpacingBetweenTitleAndAccessory) *  theme.titleMinimumWidthRatio
-
-            titleSize = viewModel.title?.boundingSize(
-                multiline: theme.titleSupportsMultiline,
-                fittingSize: CGSize((titleMaxWidth, .greatestFiniteMagnitude))
-            ) ?? .zero
-        } else {
-            let accessorySize =
-                accessoryTitleSize.width +
-                accessoryIconSize.width +
-                accessoryIconOffset +
-                theme.accessory.contentEdgeInsets.leading +
-                theme.accessory.contentEdgeInsets.trailing
-            let titleMaxWidth =
-                contentWidth -
-                accessorySize -
-                theme.minimumSpacingBetweenTitleAndAccessory
-
-            titleSize = viewModel.title?.boundingSize(
-                multiline: theme.titleSupportsMultiline,
-                fittingSize: CGSize((titleMaxWidth, .greatestFiniteMagnitude))
-            ) ?? .zero
-        }
-
-        let accessoryHeight =
-            theme.accessory.contentEdgeInsets.top +
-            max(accessoryIconSize.height, accessoryTitleSize.height) +
-            theme.accessory.contentEdgeInsets.bottom
-
-        let preferredHeight =
-            theme.contentEdgeInsets.top +
-            max(titleSize.height, accessoryHeight) +
-            theme.contentEdgeInsets.bottom
-        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
@@ -168,15 +82,13 @@ extension SecondaryListItemView {
         titleView.customizeAppearance(theme.title)
 
         contentView.addSubview(titleView)
-
         titleView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .defaultLow
+            hugging: .defaultHigh,
+            compression: .defaultHigh
         )
-
         titleView.snp.makeConstraints {
-            $0.width >=
-            (contentView.snp.width - theme.minimumSpacingBetweenTitleAndAccessory) * theme.titleMinimumWidthRatio
+            $0.width >= contentView.snp.width * theme.titleMinWidthRatio
+            $0.width <= contentView.snp.width * theme.titleMaxWidthRatio
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0

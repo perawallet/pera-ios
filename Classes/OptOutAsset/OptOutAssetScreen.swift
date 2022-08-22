@@ -20,7 +20,7 @@ import MacaroonBottomSheet
 
 final class OptOutAssetScreen:
     ScrollScreen,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

@@ -21,7 +21,7 @@ import MacaroonUIKit
 
 final class AccountRecoverOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
     private lazy var contextView = VStackView()

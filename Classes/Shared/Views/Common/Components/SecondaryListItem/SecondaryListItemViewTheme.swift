@@ -23,7 +23,8 @@ protocol SecondaryListItemViewTheme:
     LayoutSheet {
     var contentEdgeInsets: LayoutPaddings { get }
     var title: TextStyle { get }
-    var titleMinimumWidthRatio: LayoutMetric { get }
+    var titleMinWidthRatio: LayoutMetric { get }
+    var titleMaxWidthRatio: LayoutMetric { get }
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric { get }
     var accessory: SecondaryListItemValueViewTheme { get }
 }
@@ -38,7 +39,8 @@ extension SecondaryListItemViewTheme {
 struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
     var contentEdgeInsets: LayoutPaddings
     var title: TextStyle
-    var titleMinimumWidthRatio: LayoutMetric
+    var titleMinWidthRatio: LayoutMetric
+    var titleMaxWidthRatio: LayoutMetric
     var minimumSpacingBetweenTitleAndAccessory: LayoutMetric
     var accessory: SecondaryListItemValueViewTheme
 
@@ -46,8 +48,9 @@ struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
         _ family: LayoutFamily
     ) {
         self.contentEdgeInsets = (10, 24, 10, 24)
-        self.title = [ .textOverflow(FittingText()) ] /// <todo>: Change `textOverflow` to `MultilineText` with max 2 lines.
-        self.titleMinimumWidthRatio = 0.25
+        self.title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
+        self.titleMinWidthRatio = 0.2
+        self.titleMaxWidthRatio = 0.35
         self.minimumSpacingBetweenTitleAndAccessory = 12
         self.accessory = SecondaryListItemValueCommonViewTheme(
             isMultiline: true

@@ -459,34 +459,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension AccountAssetListViewController {
-    private func openAlgoDetail() {
-        open(
-            .algosDetail(
-                draft: AlgoTransactionListing(
-                    accountHandle: accountHandle
-                )
-            ),
-            by: .push
-        )
-    }
-
-    private func openAssetDetail(
-        _ asset: StandardAsset,
-        on screen: UIViewController
-    ) {
-        screen.open(
-            .assetDetail(
-                draft: AssetTransactionListing(
-                    accountHandle: accountHandle,
-                    asset: asset
-                )
-            ),
-            by: .push
-        )
-    }
-}
-
 /// <mark>
 /// SearchBarItemCellDelegate
 extension AccountAssetListViewController {

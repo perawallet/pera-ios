@@ -28,91 +28,103 @@ final class AssetListViewAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+
+    private var draft = AssetSearchQuery()
+
     private var ongoingEndpoint: EndpointOperatable?
+    private var ongoingEndpointToLoadNextPage: EndpointOperatable?
+
+    private var hasNextPage: Bool {
+        return draft.cursor != nil
+    }
 
     private let api: ALGAPI
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
-
-    private var nextCursor: String?
-
-    private var hasNext: Bool {
-        return nextCursor != nil
-    }
 
     init(
         _ api: ALGAPI
     ) {
         self.api = api
     }
-
 }
 
 extension AssetListViewAPIDataController {
-    func load(isPaginated: Bool = false) {
-        if !isPaginated {
-            deliverLoadingSnapshot()
-        }
-
-        load(with: nil)
+    func load() {
+        deliverLoadingSnapshot()
+        loadData()
     }
 
     func search(for query: String?) {
         searchThrottler.performNext {
             [weak self] in
+            guard let self = self else { return }
 
-            guard let self = self else {
-                return
-            }
+            self.draft.query = query
+            self.draft.cursor = nil
 
-            self.resetSearch()
-
-            self.load(with: query)
+            self.loadData()
         }
-    }
-
-    func resetSearch() {
-        nextCursor = nil
     }
 
     func loadNextPageIfNeeded(for indexPath: IndexPath) {
-        guard indexPath.item == assets.count - 3, hasNext else {
-            return
-        }
+        if ongoingEndpointToLoadNextPage != nil { return }
 
-        load(with: nil, isPaginated: true)
-    }
+        if !hasNextPage { return }
 
-    private func load(with query: String?, isPaginated: Bool = false) {
-        cancelOngoingEndpoint()
-        let searchDraft = AssetSearchQuery(query: query, cursor: nextCursor)
+        if indexPath.item < assets.count - 3 { return }
 
-        ongoingEndpoint =
-        api.searchAssets(
-            searchDraft,
+        ongoingEndpointToLoadNextPage = api.searchAssets(
+            draft,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
+            guard let self = self else { return }
+
+            self.ongoingEndpointToLoadNextPage = nil
+
             switch response {
             case let .success(searchResults):
-                guard let self = self else {
-                    return
-                }
+                let results = self.assets + searchResults.results
+                self.assets = results.uniqued()
+                self.draft.cursor = searchResults.nextCursor
 
-                if isPaginated {
-                    let results = self.assets + searchResults.results
-                    self.assets = results.uniqued()
-                } else {
-                    self.assets = searchResults.results.uniqued()
-                }
-
-                self.deliverContentSnapshot()
-                self.nextCursor = searchResults.nextCursor
+                self.deliverContentSnapshot(next: true)
             case .failure:
+                /// <todo>
+                /// Handle error properly.
+                break
+            }
+        }
+    }
+
+    private func loadData() {
+        cancelOngoingEndpoint()
+
+        ongoingEndpoint = api.searchAssets(
+            draft,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else { return }
+
+            self.ongoingEndpoint = nil
+
+            switch response {
+            case let .success(searchResults):
+                self.assets = searchResults.results.uniqued()
+                self.draft.cursor = searchResults.nextCursor
+
+                self.deliverContentSnapshot(next: false)
+            case .failure:
+                /// <todo>
+                /// Handle error properly.
                 break
             }
         }
     }
 
     private func cancelOngoingEndpoint() {
+        ongoingEndpointToLoadNextPage?.cancel()
+        ongoingEndpointToLoadNextPage = nil
+
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
     }
@@ -120,7 +132,7 @@ extension AssetListViewAPIDataController {
 
 extension AssetListViewAPIDataController {
     private func deliverLoadingSnapshot() {
-        deliverSnapshot {
+        deliverSnapshot(next: false) {
             var snapshot = Snapshot()
             snapshot.appendSections([.assets])
             snapshot.appendItems([.loading("1"), .loading("2")], toSection: .assets)
@@ -128,47 +140,26 @@ extension AssetListViewAPIDataController {
         }
     }
 
-    private func deliverContentSnapshot() {
+    private func deliverContentSnapshot(next: Bool) {
         guard !self.assets.isEmpty else {
             deliverNoContentSnapshot()
             return
         }
 
-        deliverSnapshot {
+        deliverSnapshot(next: next) {
             [weak self] in
             guard let self = self else {
                 return Snapshot()
             }
 
             var snapshot = Snapshot()
-            var assetItems: [AssetListViewItem] = []
 
-            for asset in self.assets {
-                let viewModel: AssetPreviewViewModel
+            snapshot.appendSections([ .assets ])
 
-                if asset.isCollectible {
-                    let collectibleAsset = CollectibleAsset(
-                        asset: ALGAsset(id: asset.id),
-                        decoration: asset
-                    )
-                    viewModel = AssetPreviewViewModel(
-                        CollectibleAssetPreviewAdditionDraft(asset: collectibleAsset)
-                    )
-
-                } else {
-                    let standardAsset = StandardAsset(
-                        asset: ALGAsset(id: asset.id),
-                        decoration: asset
-                    )
-                    viewModel = AssetPreviewViewModel(
-                        StandardAssetPreviewAdditionDraft(asset: standardAsset)
-                    )
-                }
-                
-                assetItems.append(.asset(viewModel))
+            let assetItems: [AssetListViewItem] = self.assets.map {
+                let item = OptInAssetListItem(asset: $0)
+                return AssetListViewItem.asset(item)
             }
-
-            snapshot.appendSections([.assets])
             snapshot.appendItems(
                 assetItems,
                 toSection: .assets
@@ -179,7 +170,7 @@ extension AssetListViewAPIDataController {
     }
 
     private func deliverNoContentSnapshot() {
-        deliverSnapshot {
+        deliverSnapshot(next: false) {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
@@ -191,6 +182,7 @@ extension AssetListViewAPIDataController {
     }
 
     private func deliverSnapshot(
+        next: Bool,
         _ snapshot: @escaping () -> Snapshot
     ) {
         snapshotQueue.async {
@@ -200,7 +192,15 @@ extension AssetListViewAPIDataController {
             let newSnapshot = snapshot()
 
             self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+
+            let event: AssetListViewDataControllerEvent
+            if next {
+                event = .didUpdateNext(newSnapshot)
+            } else {
+                event = .didUpdate(newSnapshot)
+            }
+
+            self.publish(event)
         }
     }
 }

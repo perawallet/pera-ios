@@ -22,7 +22,7 @@ import UIKit
 
 final class PortfolioCalculationInfoViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?

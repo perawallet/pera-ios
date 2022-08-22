@@ -16,7 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
-import CoreGraphics
+import UIKit
 
 struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
@@ -32,12 +32,12 @@ struct AccountSecondaryListItemViewModel: SecondaryListItemViewModel {
 
 extension AccountSecondaryListItemViewModel {
     private mutating func bindTitle() {
-        var attributes = Typography.bodyRegularAttributes()
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
-        title = "title-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsdtitle-account klsdlkf jslkdf jksdf jsdlkfjklsdfjfklsdjf klsjffsdnfhsfjhsdjkfh jshfjshd kfjhsdkjf hskjdfh jskdhf jkshfjkhssdfkjlslsd"
-                .localized
-                .attributed(attributes)
+        title = "title-account"
+            .localized
+            .attributed(attributes)
     }
 }
 
@@ -47,23 +47,26 @@ struct AccountSecondaryListItemValueViewModel: SecondaryListItemValueViewModel {
 
     init(account: Account) {
         bindIcon(account)
-        bindTitle()
+        bindTitle(account: account)
     }
 }
 
 extension AccountSecondaryListItemValueViewModel {
-    private mutating func bindTitle() {
-        var attributes = Typography.bodyRegularAttributes(
-            lineBreakMode: .byWordWrapping
-        )
+    private mutating func bindTitle(account: Account) {
+        let name: String
+        let lineBreakMode: NSLineBreakMode
+        if let accountName = account.name.unwrapNonEmptyString() {
+            name = accountName
+            lineBreakMode = .byTruncatingTail
+        } else {
+            name = account.address.shortAddressDisplay
+            lineBreakMode = .byTruncatingMiddle
+        }
 
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode:lineBreakMode)
         attributes.insert(.textColor(Colors.Text.main))
 
-        title =
-        "p234892348sdjfjlkfjsdlkfjdsk jslkf jlksdfjsdfj"
-            .attributed(
-                attributes
-            )
+        title = name.attributed(attributes)
     }
 
     private mutating func bindIcon(

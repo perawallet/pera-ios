@@ -48,7 +48,7 @@ extension LedgerPairWarningViewController {
     }
 }
 
-extension LedgerPairWarningViewController: BottomSheetPresentable {
+extension LedgerPairWarningViewController: BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

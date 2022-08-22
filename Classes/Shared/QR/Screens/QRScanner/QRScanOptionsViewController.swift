@@ -21,7 +21,7 @@ import UIKit
 
 final class QRScanOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable,
+    BottomSheetScrollPresentable,
     UIContextMenuInteractionDelegate {
     typealias EventHandler = (Event) -> Void
 

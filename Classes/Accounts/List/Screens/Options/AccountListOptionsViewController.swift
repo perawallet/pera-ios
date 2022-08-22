@@ -23,7 +23,7 @@ import UIKit
 
 final class AccountListOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?

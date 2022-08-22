@@ -22,7 +22,7 @@ import UIKit
 
 final class TransactionOptionsScreen:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
 
     weak var delegate: TransactionOptionsScreenDelegate?
 

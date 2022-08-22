@@ -19,12 +19,16 @@ import UIKit
 import MagpieHipo
 import MagpieExceptions
 
-final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
+final class AssetAdditionViewController:
+    BaseViewController,
+    TestNetTitleDisplayable,
+    TransactionSignChecking,
+    UICollectionViewDelegateFlowLayout {
     weak var delegate: AssetAdditionViewControllerDelegate?
 
     private lazy var theme = Theme()
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private var account: Account
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -84,9 +88,11 @@ final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplay
         super.linkInteractors()
 
         assetSearchInput.delegate = self
-        transactionController.delegate = self
-        assetListView.collectionView.delegate = listLayout
+
         assetListView.collectionView.dataSource = dataSource
+        assetListView.collectionView.delegate = self
+
+        transactionController.delegate = self
     }
 
     override func viewDidLoad() {
@@ -100,6 +106,24 @@ final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplay
 
             switch event {
             case .didUpdate(let snapshot):
+                if #available(iOS 15, *) {
+                    self.dataSource.applySnapshotUsingReloadData(snapshot) {
+                        [weak self] in
+                        guard let self = self else { return }
+
+                        self.assetListView.collectionView.scrollToTop(animated: true)
+                    }
+                } else {
+                    self.dataSource.apply(
+                        snapshot,
+                        animatingDifferences: self.isViewAppeared
+                    ) { [weak self] in
+                        guard let self = self else { return }
+
+                        self.assetListView.collectionView.scrollToTop(animated: true)
+                    }
+                }
+            case .didUpdateNext(let snapshot):
                 self.dataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
@@ -127,28 +151,97 @@ final class AssetAdditionViewController: BaseViewController, TestNetTitleDisplay
             loadingCell?.stopAnimating()
         }
     }
+}
 
-    override func setListeners() {
-        super.setListeners()
+/// <mark>
+/// UICollectionViewDelegateFlowLayout
+extension AssetAdditionViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
 
-        listLayout.handlers.willDisplay = {
-            [weak self] cell, indexPath in
-            guard let self = self else {
-                return
-            }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+}
 
-            self.dataController.loadNextPageIfNeeded(for: indexPath)
+/// <mark>
+/// UICollectionViewDelegate
+extension AssetAdditionViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        defer {
+            dataController.loadNextPageIfNeeded(for: indexPath)
         }
 
-        listLayout.handlers.didSelectAssetAt = {
-            [weak self] indexPath in
-            guard let self = self,
-                  let asset = self.dataController.assets[safe: indexPath.item] else {
-                return
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .asset(let item):
+            let asset = item.model
+            let assetCell = cell as! OptInAssetListItemCell
+
+            if self.account[asset.id] == nil {
+                assetCell.accessory = .add
+            } else {
+                assetCell.accessory = .check
             }
 
-            self.openAssetConfirmation(for: asset)
+            linkInteractors(
+                assetCell,
+                for: item
+            )
+        case .loading:
+            let loadingCell = cell as? PreviewLoadingCell
+            loadingCell?.startAnimating()
+        default:
+            break
         }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .loading:
+            let loadingCell = cell as? PreviewLoadingCell
+            loadingCell?.stopAnimating()
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
     }
 }
 
@@ -195,6 +288,59 @@ extension AssetAdditionViewController {
     }
 }
 
+extension AssetAdditionViewController {
+    private func linkInteractors(
+        _ cell: OptInAssetListItemCell,
+        for item: OptInAssetListItem
+    ) {
+        cell.startObserving(event: .add) {
+            [unowned self] in
+
+            let asset = item.model
+            let draft = OptInAssetDraft(account: self.account, asset: asset)
+            let screen = Screen.optInAsset(draft: draft) {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .performApprove: self.continueToOptInAsset(asset: asset)
+                case .performClose: self.cancelOptInAsset()
+                }
+            }
+            self.transitionToOptInAsset.perform(
+                screen,
+                by: .present
+            )
+        }
+    }
+
+    private func continueToOptInAsset(asset: AssetDecoration) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            if !self.canSignTransaction(for: &self.account) { return }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(from: self.account, assetIndex: asset.id)
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+
+            self.currentAsset = asset
+        }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
+    }
+}
+
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         let query = view.text
@@ -203,57 +349,6 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
-    }
-}
-
-extension AssetAdditionViewController:
-    AssetActionConfirmationViewControllerDelegate,
-    TransactionSignChecking {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
-    ) {
-        if !canSignTransaction(for: &account) {
-            return
-        }
-        
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        
-        if account.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-
-        currentAsset = asset
-    }
-}
-
-extension AssetAdditionViewController {
-    private func openAssetConfirmation(for asset: AssetDecoration) {
-        if account.containsAsset(asset.id) {
-            displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
-            return
-        }
-
-        let assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetId: asset.id,
-            asset: asset,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
-        )
-
-        assetActionConfirmationTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 

@@ -22,7 +22,7 @@ import UIKit
 
 final class InvalidAccountOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     var uiInteractions = InvalidAccountOptionsUIInteractions()
 
     private lazy var contextView = VStackView()

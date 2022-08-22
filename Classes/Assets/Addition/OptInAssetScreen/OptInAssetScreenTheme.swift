@@ -20,9 +20,13 @@ import MacaroonUIKit
 struct OptInAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
+    var background: ViewStyle
     var contentEdgeInsets: LayoutPaddings
     var separator: Separator
     var spacingBetweenSecondaryListItemAndSeparator: LayoutMetric
+    var title: PrimaryTitleViewTheme
+    var spacingBetweenTitleAndSeparator: LayoutMetric
+    var spacingBetweenTitleAndAssetID: LayoutMetric
     var assetIDView: SecondaryListItemViewTheme
     var accountView: SecondaryListItemViewTheme
     var transactionFeeView: SecondaryListItemViewTheme
@@ -38,6 +42,9 @@ struct OptInAssetScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         contentEdgeInsets = (36, 24, 32, 24)
         separator = Separator(
             color: Colors.Layer.grayLighter,
@@ -45,6 +52,9 @@ struct OptInAssetScreenTheme:
             position: .bottom((contentEdgeInsets.leading, contentEdgeInsets.trailing))
         )
         spacingBetweenSecondaryListItemAndSeparator = 10
+        title = OptInAssetNameViewTheme()
+        spacingBetweenTitleAndSeparator = 20
+        spacingBetweenTitleAndAssetID = 30
         assetIDView = AssetIDSecondaryListItemViewTheme()
         accountView = SecondaryListItemCommonViewTheme()
         transactionFeeView = TransactionFeeSecondaryListItemViewTheme()

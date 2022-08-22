@@ -23,7 +23,7 @@ import UIKit
 
 final class OptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: OptionsViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {

@@ -20,11 +20,12 @@ import MacaroonBottomSheet
 
 final class OptInAssetScreen:
     ScrollScreen,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }
-    
+
+    private lazy var titleView = PrimaryTitleView()
     private lazy var assetIDView = SecondaryListItemView()
     private lazy var accountView = SecondaryListItemView()
     private lazy var transactionFeeView = SecondaryListItemView()
@@ -32,7 +33,6 @@ final class OptInAssetScreen:
     private lazy var approveActionView = MacaroonUIKit.Button()
     private lazy var closeActionView = MacaroonUIKit.Button()
 
-    private let theme: OptInAssetScreenTheme
     private let draft: OptInAssetDraft
 
     typealias EventHandler = (Event) -> Void
@@ -40,16 +40,17 @@ final class OptInAssetScreen:
 
     private let copyToClipboardController: CopyToClipboardController
 
+    private let theme = OptInAssetScreenTheme()
+
     init(
-        theme: OptInAssetScreenTheme,
         draft: OptInAssetDraft,
-        eventHandler: @escaping EventHandler,
-        copyToClipboardController: CopyToClipboardController
+        copyToClipboardController: CopyToClipboardController,
+        eventHandler: @escaping EventHandler
     ) {
-        self.theme = theme
         self.draft = draft
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
+
         super.init()
     }
 
@@ -64,6 +65,8 @@ final class OptInAssetScreen:
 
         blursFooterBackgroundOnUnderScrolling = true
 
+        addBackground()
+        addTitle()
         addAssetID()
         addAccount()
         addTransactionFee()
@@ -77,7 +80,7 @@ final class OptInAssetScreen:
 
         let viewModel = OptInAssetViewModel(draft: draft)
 
-        title = viewModel.title
+        navigationItem.title = viewModel.title
 
         assetIDView.bindData(viewModel.assetID)
         accountView.bindData(viewModel.account)
@@ -91,12 +94,37 @@ final class OptInAssetScreen:
 }
 
 extension OptInAssetScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addTitle() {
+        titleView.customize(theme.title)
+
+        contentView.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
+        }
+
+        let asset = draft.asset
+        let viewModel = OptInAssetNameViewModel(asset: asset)
+        titleView.bindData(viewModel)
+
+        contentView.attachSeparator(
+            theme.separator,
+            to: titleView,
+            margin: theme.spacingBetweenTitleAndSeparator
+        )
+    }
+
     private func addAssetID() {
         assetIDView.customize(theme.assetIDView)
 
         contentView.addSubview(assetIDView)
         assetIDView.snp.makeConstraints {
-            $0.top == theme.contentEdgeInsets.top
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndAssetID
             $0.leading == 0
             $0.trailing == 0
         }
