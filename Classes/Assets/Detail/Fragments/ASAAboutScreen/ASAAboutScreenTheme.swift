@@ -30,10 +30,12 @@ struct ASAAboutScreenTheme:
     var spacingBetweenVerificationTierAndSections: CGFloat
     var description: ShowMoreViewTheme
     var spacingBetweenDescriptionAndSeparator: CGFloat
-    var socialMediaGroupedList: AssetSocialMediaGroupedListItemButtonTheme
+    var socialMedia: AssetSocialMediaGroupedListItemButtonTheme
     var spacingBetweenSocialMediaAndSeparator: CGFloat
-    var spacingBetweenSocialMediaAndAsaReport: CGFloat
-    var asaReport: ListItemButtonTheme
+    var reportAction: ListItemButtonTheme
+    var reportActionSeparator: Separator
+    var spacingBetweenSeparatorAndReportAction: CGFloat
+    var spacingBetweenSectionsAndReportAction: CGFloat
     var sectionSeparator: Separator
     var spacingBetweenSections: CGFloat
 
@@ -49,10 +51,17 @@ struct ASAAboutScreenTheme:
         self.spacingBetweenVerificationTierAndSections = 60
         self.description = ShowMoreViewTheme(numberOfLinesLimit: 4, family: family)
         self.spacingBetweenDescriptionAndSeparator = 34
-        self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
+        self.socialMedia = AssetSocialMediaGroupedListItemButtonTheme(family)
         self.spacingBetweenSocialMediaAndSeparator = 32
-        self.spacingBetweenSocialMediaAndAsaReport = 26
-        self.asaReport = ListItemButtonTheme(family)
+
+        var reportAction = ListItemButtonTheme(family)
+        reportAction.configureForAssetSocialMediaView()
+        self.reportAction = reportAction
+        self.reportActionSeparator =
+            Separator(color: Colors.Layer.grayLighter, position: .top((0, 0)))
+        self.spacingBetweenSeparatorAndReportAction = 26
+        self.spacingBetweenSectionsAndReportAction = 62
+
         self.sectionSeparator = Separator(color: Colors.Layer.grayLighter)
         self.spacingBetweenSections = 72
     }

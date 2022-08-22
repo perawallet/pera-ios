@@ -44,6 +44,9 @@ final class CollectibleAsset: Asset {
     let properties: [CollectibleTrait]?
     let explorerURL: URL?
     let logoURL: URL?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
     let isAlgo = false
     let isFault = false
 
@@ -103,6 +106,9 @@ final class CollectibleAsset: Asset {
         self.properties = decoration.collectible?.properties
         self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
 
         let amount = asset.amount
         let decimals = decoration.decimals

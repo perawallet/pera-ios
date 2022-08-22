@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSocialMediaListItemButtonViewModel.swift
+//   URL+SocialMedia.swift
 
-import MacaroonUIKit
+import Foundation
 
-protocol AssetSocialMediaListItemButtonViewModel: ListItemButtonViewModel { }
-
-extension AssetSocialMediaListItemButtonViewModel {
-    var subtitle: EditText? {
-        return nil
-    }
-
-    var accessory: Image? {
-        return "icon-external-link"
+extension URL {
+    static func twitterURL(username: String) -> URL? {
+        return URL(string: "https://twitter.com/\(username)")
     }
 }

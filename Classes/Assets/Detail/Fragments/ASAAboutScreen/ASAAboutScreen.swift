@@ -28,8 +28,8 @@ final class ASAAboutScreen:
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
     private lazy var descriptionView = ShowMoreView()
-    private lazy var socialMediaGroupedListView = GroupedListItemButton()
-    private lazy var asaReportView = ListItemButton()
+    private lazy var socialMediaView = GroupedListItemButton()
+    private lazy var reportActionView = ListItemButton()
 
     private lazy var transitionToTotalSupply = BottomSheetTransition(presentingViewController: self)
 
@@ -156,8 +156,8 @@ extension ASAAboutScreen {
             case .about: break
             case .verificationTier: addVerificationTier()
             case .description: addDescription()
-            case .socialMediaLinks: addSocialMediaLinks()
-            case .report: addAsaReport()
+            case .socialMedia: addSocialMedia()
+            case .report: addReportAction()
             }
         }
     }
@@ -183,10 +183,18 @@ extension ASAAboutScreen {
                 } else {
                     addDescription(atIndex: index)
                 }
-            case .socialMediaLinks:
-                break
+            case .socialMedia:
+                if socialMediaView.isDescendant(of: contextView) {
+                    bindSocialMediaData()
+                } else {
+                    addSocialMedia(atIndex: index)
+                }
             case .report:
-                break
+                if reportActionView.isDescendant(of: contextView) {
+                    bindReportActionData()
+                } else {
+                    addReportAction(atIndex: index)
+                }
             }
         }
     }
@@ -271,37 +279,84 @@ extension ASAAboutScreen {
         descriptionView.bindData(viewModel)
     }
 
-    private func addSocialMediaLinks() {
-        socialMediaGroupedListView.customize(theme.socialMediaGroupedList)
+    private func addSocialMedia(atIndex index: Int? = nil) {
+        socialMediaView.customize(theme.socialMedia)
 
-        contextView.addArrangedSubview(socialMediaGroupedListView)
-
-        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel([
-            .discord,
-            .telegram,
-            .twitter
-        ])
-        socialMediaGroupedListView.bindData(viewModel)
-    }
-
-    private func addAsaReport() {
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: socialMediaGroupedListView,
-            margin: theme.spacingBetweenSocialMediaAndAsaReport
+        contextView.insertArrangedSubview(
+            socialMediaView,
+            preferredAt: index
         )
 
-        asaReportView.customize(theme.asaReport)
+        bindSocialMediaData()
+    }
 
-        contextView.addArrangedSubview(asaReportView)
+    private func bindSocialMediaData() {
+        var items: [GroupedListItemButtonItemViewModel] = []
 
-        asaReportView.addTouch(
+        /// <todo> This should properly implemented, it is a temporary solution.
+        if let url = asset.discordURL {
+            let item = AssetDiscordListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        if let url = asset.telegramURL {
+            let item = AssetTelegramListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        if let url = asset.twitterURL {
+            let item = AssetTwitterListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel(items: items)
+        socialMediaView.bindData(viewModel)
+    }
+
+    private func addReportAction(atIndex index: Int? = nil) {
+        reportActionView.customize(theme.reportAction)
+
+        if let previousView = contextView.arrangedSubviews.last {
+            contextView.setCustomSpacing(
+                theme.spacingBetweenSectionsAndReportAction,
+                after: previousView
+            )
+        }
+
+        contextView.insertArrangedSubview(
+            reportActionView,
+            preferredAt: index
+        )
+
+        contextView.attachSeparator(
+            theme.reportActionSeparator,
+            to: reportActionView,
+            margin: theme.spacingBetweenSeparatorAndReportAction
+        )
+
+        reportActionView.addTouch(
             target: self,
             action: #selector(openMailComposer)
         )
 
+        bindReportActionData()
+    }
+
+    private func bindReportActionData() {
         let viewModel = AsaReportListItemButtonViewModel(asset)
-        asaReportView.bindData(viewModel)
+        reportActionView.bindData(viewModel)
     }
 }
 
@@ -345,7 +400,7 @@ extension ASAAboutScreen {
         case about
         case verificationTier
         case description
-        case socialMediaLinks
+        case socialMedia
         case report
 
         static func ordered(by asset: Asset) -> [Section] {
@@ -366,8 +421,15 @@ extension ASAAboutScreen {
                 list.append(.description)
             }
 
-            list.append(.socialMediaLinks)
-            list.append(.report)
+            if asset.discordURL != nil ||
+               asset.telegramURL != nil ||
+               asset.twitterURL != nil {
+                list.append(.socialMedia)
+            }
+
+            if asset.verificationTier.isSuspicious {
+                list.append(.report)
+            }
 
             return list
         }

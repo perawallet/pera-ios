@@ -20,5 +20,19 @@ import UIKit
 
 protocol GroupedListItemButtonViewModel: ViewModel {
     var title: TextProvider? { get }
-    var listItemButtons: [ListItemButton] { get }
+    var items: [GroupedListItemButtonItemViewModel] { get }
+}
+
+protocol GroupedListItemButtonItemViewModel: ViewModel {
+    var theme: ListItemButtonTheme { get }
+    var viewModel: ListItemButtonViewModel { get }
+    var selector: () -> Void { get }
+}
+
+extension GroupedListItemButtonItemViewModel {
+    static func makeTheme() -> ListItemButtonTheme {
+        var theme = ListItemButtonTheme()
+        theme.configureForAssetSocialMediaView()
+        return theme
+    }
 }

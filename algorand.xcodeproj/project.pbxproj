@@ -2018,9 +2018,6 @@
 		2B9FDEB228A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
 		2B9FDEB328A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
 		2B9FDEB428A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
-		2B9FDEB728A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
-		2B9FDEB828A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
-		2B9FDEB928A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
 		2B9FDEBB28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
 		2B9FDEBC28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
 		2B9FDEBD28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
@@ -5005,6 +5002,9 @@
 		F0772B5C275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
 		F0772B5D275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
 		F0772B5E275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
+		F07C3C1128B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
+		F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
+		F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
 		F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FC276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
@@ -5914,7 +5914,6 @@
 		2B9FDEA928A52C3700C8117D /* GroupedListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEAD28A54F3700C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaGroupedListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaGroupedListItemButtonTheme.swift; sourceTree = "<group>"; };
-		2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDiscordListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEBE28A55C2200C8117D /* AssetTelegramListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTelegramListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEC228A55C3800C8117D /* AssetTwitterListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTwitterListItemButtonViewModel.swift; sourceTree = "<group>"; };
@@ -6948,6 +6947,7 @@
 		F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppTarget.swift; sourceTree = "<group>"; };
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
+		F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SocialMedia.swift"; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
 		F07E61882897F564001D2C97 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		F08708C3278A179E00BEE5C2 /* AccountHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHandle.swift; sourceTree = "<group>"; };
@@ -8753,6 +8753,7 @@
 			isa = PBXGroup;
 			children = (
 				2B5C58E023AC364700B907E3 /* URL+Link.swift */,
+				F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */,
 			);
 			path = URL;
 			sourceTree = "<group>";
@@ -10443,7 +10444,6 @@
 			children = (
 				2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */,
 				2B9FDEAD28A54F3700C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift */,
-				2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */,
 				2B9FDEBE28A55C2200C8117D /* AssetTelegramListItemButtonViewModel.swift */,
 				2B9FDEC228A55C3800C8117D /* AssetTwitterListItemButtonViewModel.swift */,
 			);
@@ -17076,7 +17076,6 @@
 				D499D28A27C7DA8400641FF5 /* CollectibleListItemView.swift in Sources */,
 				D459E28527DDF48000F7FC33 /* ApproveCollectibleTransactionViewControllerTheme.swift in Sources */,
 				2B9FDE8928A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB928A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				2B69823C278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
 				F010637528AC4AB800AB6873 /* ASAProfileViewTheme.swift in Sources */,
@@ -18137,6 +18136,7 @@
 				17A011C727EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */,
 				D4CC28DF2875AD850082E038 /* InnerTransactionPreviewViewModel.swift in Sources */,
 				2BAD6CB127F88CAA0016E869 /* Collectible3DImageViewController.swift in Sources */,
+				F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2BA71A9F2891333E000C785A /* ShowMoreView.swift in Sources */,
 				D4592909276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
 				D4C601CE28436DD900CDF6CB /* SortAccountListViewController.swift in Sources */,
@@ -18749,7 +18749,6 @@
 				2B0F61FA24EC129D00DA22A6 /* Contact.swift in Sources */,
 				F0431F16287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B9FDE8828A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB828A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				F0DB4174279440AD00EA437D /* ErrorViewModel.swift in Sources */,
 				D4155E8E276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				D46E5E2026EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift in Sources */,
@@ -19413,6 +19412,7 @@
 				2B0F62AF24EC129D00DA22A6 /* TabBarItems.swift in Sources */,
 				2B0F62B124EC129D00DA22A6 /* TransactionID.swift in Sources */,
 				D4FC5F3427F4CAEF0017E81F /* CollectibleListSearchInputCell.swift in Sources */,
+				F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2B0F62B324EC129D00DA22A6 /* PinLimitStore.swift in Sources */,
 				2B0F62B424EC129D00DA22A6 /* PassphraseDisplayView.swift in Sources */,
 				F08708D1278C26B800BEE5C2 /* ALGBlockCycle.swift in Sources */,
@@ -20319,6 +20319,7 @@
 				2BCBBAEA24A66AFD002CD56F /* TransactionFilterOptionCell.swift in Sources */,
 				2B68A23426A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
+				F07C3C1128B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2B7E3065267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				2B2AACA9250A6D6600B8C5C5 /* RekeyAccountEvent.swift in Sources */,
 				2B83D05726C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
@@ -20427,7 +20428,6 @@
 				F03451E128B27F06009467A0 /* OptInAssetNameListItemViewModel.swift in Sources */,
 				F0431F15287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B9FDE8728A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB728A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				D4FC5F5927F525AF0017E81F /* SelectedAccountPreviewView.swift in Sources */,
 				D43A0C3D2790D753007430B9 /* NoContentWithActionView.swift in Sources */,

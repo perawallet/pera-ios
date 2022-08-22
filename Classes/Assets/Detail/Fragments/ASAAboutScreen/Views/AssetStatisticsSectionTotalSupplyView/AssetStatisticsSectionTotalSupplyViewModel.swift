@@ -53,7 +53,7 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
-            bindSubtitle(text: CurrencyConstanst.unavailable)
+            bindSubtitle(text: nil)
             return
         }
 
@@ -71,6 +71,6 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
     }
 
     mutating func bindSubtitle(text: String?) {
-        secondaryTitle = text?.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
+        secondaryTitle = (text ?? "-").bodyLargeMedium(lineBreakMode: .byTruncatingTail)
     }
 }

@@ -47,6 +47,10 @@ protocol Asset: AnyObject {
     var naming: AssetNaming { get }
     var amountWithFraction: Decimal { get }
 
+    var discordURL: URL? { get }
+    var telegramURL: URL? { get }
+    var twitterURL: URL? { get }
+
     var isAlgo: Bool { get }
 
     var isFault: Bool { get }

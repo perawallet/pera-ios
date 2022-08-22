@@ -70,7 +70,7 @@ extension AssetStatisticsSectionPriceViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         guard let fiatCurrencyValue = currency.fiatValue else {
-            secondaryTitle = nil
+            bindSubtitle(text: nil)
             return
         }
 
@@ -86,7 +86,7 @@ extension AssetStatisticsSectionPriceViewModel {
             let text = currencyFormatter.format(amount)
             bindSubtitle(text: text)
         } catch {
-            secondaryTitle = nil
+            bindSubtitle(text: nil)
         }
     }
 
@@ -96,7 +96,7 @@ extension AssetStatisticsSectionPriceViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         guard let currencyValue = currency.primaryValue else {
-            secondaryTitle = nil
+            bindSubtitle(text: nil)
             return
         }
 
@@ -115,11 +115,11 @@ extension AssetStatisticsSectionPriceViewModel {
             let text = currencyFormatter.format(amount)
             bindSubtitle(text: text)
         } catch {
-            secondaryTitle = nil
+            bindSubtitle(text: nil)
         }
     }
 
     mutating func bindSubtitle(text: String?) {
-        secondaryTitle = text?.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
+        secondaryTitle = (text ?? "-").bodyLargeMedium(lineBreakMode: .byTruncatingTail)
     }
 }
