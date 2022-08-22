@@ -191,7 +191,7 @@ extension ASAAboutScreen {
         contextView.addArrangedSubview(aboutView)
 
         let viewModel = AssetAboutSectionViewModel(asset: asset)
-        composeAboutItems(for: viewModel)
+        addAboutItems(to: viewModel)
 
         aboutView.bindData(viewModel)
     }
@@ -341,8 +341,8 @@ extension ASAAboutScreen: MailComposerDelegate {
 }
 
 extension ASAAboutScreen {
-    private func composeAboutItems(
-        for viewModel: AssetAboutSectionViewModel
+    private func addAboutItems(
+        to viewModel: AssetAboutSectionViewModel
     ) {
         if asset.isAlgo {
             addAlgoAboutItems(to: viewModel)
@@ -364,8 +364,8 @@ extension ASAAboutScreen {
         addASAIDItem(to: viewModel)
         addASACreatorItemIfNeeded(to: viewModel)
         addASAURLItemIfNeeded(to: viewModel)
-        addASAExplorerURLIfNeeded(to: viewModel)
-        addASAProjectWebsiteIfNeeded(to: viewModel)
+        addASAExplorerURLItemIfNeeded(to: viewModel)
+        addASAProjectWebsiteItemIfNeeded(to: viewModel)
     }
 
     private func addASAIDItem(to viewModel: AssetAboutSectionViewModel) {
@@ -433,7 +433,7 @@ extension ASAAboutScreen {
         }
     }
 
-    private func addASAExplorerURLIfNeeded(to viewModel: AssetAboutSectionViewModel) {
+    private func addASAExplorerURLItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
         if let explorerURL = asset.explorerURL {
             var handlers = AssetAboutSectionItem.Handlers()
             handlers.didTapAccessory = {
@@ -451,7 +451,7 @@ extension ASAAboutScreen {
         }
     }
 
-    private func addASAProjectWebsiteIfNeeded(to viewModel: AssetAboutSectionViewModel) {
+    private func addASAProjectWebsiteItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
         /// <todo>: Bind asset's `project_url` when it is ready.
         if let projectURL = URL(string: "projectURL TODO") {
             var handlers = AssetAboutSectionItem.Handlers()
