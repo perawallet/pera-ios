@@ -129,7 +129,7 @@ extension OptInAssetScreen {
             $0.trailing == 0
         }
 
-        assetIDView.startObserving(event: .performAccessory) {
+        assetIDView.startObserving(event: .didTapAccessory) {
             [weak self] in
             guard let self = self else {
                 return

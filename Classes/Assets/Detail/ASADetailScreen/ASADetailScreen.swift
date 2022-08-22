@@ -41,7 +41,11 @@ final class ASADetailScreen:
         copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
-    private lazy var aboutFragmentScreen = ASAAboutScreen(asset: asset, configuration: configuration)
+    private lazy var aboutFragmentScreen = ASAAboutScreen(
+        asset: asset,
+        copyToClipboardController: copyToClipboardController,
+        configuration: configuration
+    )
 
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)

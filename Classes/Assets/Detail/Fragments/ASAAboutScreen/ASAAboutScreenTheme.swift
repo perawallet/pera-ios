@@ -24,6 +24,8 @@ struct ASAAboutScreenTheme:
     var background: ViewStyle
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
+    var about: AssetAboutSectionViewTheme
+    var spacingBetweenAboutAndVerificationTier: CGFloat
     var verificationTier: AssetVerificationInfoViewTheme
     var spacingBetweenVerificationTierAndSeparator: CGFloat
     var description: ShowMoreViewTheme
@@ -39,6 +41,8 @@ struct ASAAboutScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
+        self.about = AssetAboutSectionViewTheme(family)
+        self.spacingBetweenAboutAndVerificationTier = 22
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.verificationTier = AssetVerificationInfoViewTheme(family)
         self.spacingBetweenVerificationTierAndSeparator = 20
@@ -46,7 +50,7 @@ struct ASAAboutScreenTheme:
         self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
         self.spacingBetweenSocialMediaAndAsaReport = 26
         self.asaReport = ListItemButtonTheme(family)
-        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((24, 24)))
+        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((0, 0)))
         self.spacingBetweenSectionAndSeparator = 36
         self.spacingBetweenSections = 72
     }

@@ -31,6 +31,7 @@ final class Algo: Asset {
     var state: AssetState = .ready
     let url: String? = "www.algorand.com"
     let verificationTier: AssetVerificationTier = .trusted
+    let explorerURL: URL? = nil
     let logoURL: URL? = nil
 
     let naming: AssetNaming = AssetNaming(
