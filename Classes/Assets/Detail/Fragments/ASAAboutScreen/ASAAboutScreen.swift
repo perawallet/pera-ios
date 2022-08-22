@@ -32,7 +32,7 @@ final class ASAAboutScreen:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let asset: Asset
+    private var asset: Asset
 
     private let theme = ASAAboutScreenTheme()
 
@@ -52,6 +52,13 @@ final class ASAAboutScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
+    }
+}
+
+extension ASAAboutScreen {
+    func bindData(asset: Asset) {
+        self.asset = asset
+        bindUIData()
     }
 }
 
@@ -80,6 +87,11 @@ extension ASAAboutScreen {
         addContext()
 
         updateScroll()
+    }
+
+    private func bindUIData() {
+        bindStatistics()
+        bindVerificationTier()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -129,51 +141,28 @@ extension ASAAboutScreen {
 
         contextView.addArrangedSubview(statisticsView)
 
-        let viewModel = AssetStatisticsSectionViewModel(
-            asset: asset,
-            currency: sharedDataController.currency,
-            currencyFormatter: currencyFormatter
-        )
-        statisticsView.bindData(viewModel)
-
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: statisticsView,
             margin: theme.spacingBetweenSectionAndSeparator
         )
 
-        statisticsView.startObserving(event: .showTotalSupplyInfo) {
-            openTotalSupplyInfo()
-        }
+        bindStatistics()
+    }
 
-        func openTotalSupplyInfo() {
-            let uiSheet = UISheet(
-                title: "title-total-supply".localized.bodyLargeMedium(),
-                body: "asset-total-supply-body".localized.bodyRegular()
-            )
-
-            let closeAction = UISheetAction(
-                title: "title-close".localized,
-                style: .cancel
-            ) { [unowned self] in
-                self.dismiss(animated: true)
-            }
-            uiSheet.addAction(closeAction)
-
-            sheetTransition.perform(
-                .sheetAction(sheet: uiSheet),
-                by: .presentWithoutNavigationController
-            )
-        }
+    private func bindStatistics() {
+        let viewModel = AssetStatisticsSectionViewModel(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+        statisticsView.bindData(viewModel)
     }
 
     private func addVerificationTier() {
         verificationTierView.customize(theme.verificationTier)
 
         contextView.addArrangedSubview(verificationTierView)
-
-        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
-        verificationTierView.bindData(viewModel)
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -185,5 +174,34 @@ extension ASAAboutScreen {
             [unowned self] in
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
+
+        bindVerificationTier()
+    }
+
+    private func bindVerificationTier() {
+        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
+        verificationTierView.bindData(viewModel)
+    }
+}
+
+extension ASAAboutScreen {
+    func openTotalSupplyInfo() {
+        let uiSheet = UISheet(
+            title: "title-total-supply".localized.bodyLargeMedium(),
+            body: "asset-total-supply-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        sheetTransition.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
     }
 }

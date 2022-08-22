@@ -47,6 +47,8 @@ protocol Asset: AnyObject {
     var amountWithFraction: Decimal { get }
 
     var isAlgo: Bool { get }
+
+    var isFault: Bool { get }
 }
 
 enum AssetState: Codable {

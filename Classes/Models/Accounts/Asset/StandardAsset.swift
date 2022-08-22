@@ -35,6 +35,8 @@ final class StandardAsset: Asset {
     let logoURL: URL?
     let isAlgo = false
 
+    let isFault: Bool
+
     var state: AssetState = .ready
 
     var naming: AssetNaming {
@@ -77,6 +79,29 @@ final class StandardAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.isFault = false
+    }
+
+    init(
+        decoration: AssetDecoration
+    ) {
+        self.id = decoration.id
+        self.isFrozen = nil
+        self.isDeleted = nil
+        self.optedInAtRound = nil
+        self.name = decoration.name
+        self.unitName = decoration.unitName
+        self.verificationTier = decoration.verificationTier
+        self.creator = decoration.creator
+        self.url = decoration.url
+        self.logoURL = decoration.logoURL
+        self.total = decoration.total
+        self.amount = 0
+        self.decimals = decoration.decimals
+        self.decimalAmount = 0
+        self.usdValue = decoration.usdValue
+        self.totalUSDValue = nil
+        self.isFault = true
     }
 }
 
