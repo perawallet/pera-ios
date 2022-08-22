@@ -242,6 +242,12 @@ extension AssetAdditionViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        if case .asset(let item) = dataSource.itemIdentifier(for: indexPath) {
+            open(
+                .asaDiscovery(item.model),
+                by: .push
+            )
+        }
     }
 }
 

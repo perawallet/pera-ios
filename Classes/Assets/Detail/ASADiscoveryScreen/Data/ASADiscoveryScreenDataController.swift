@@ -12,16 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASAProfileViewModel.swift
+//   ASADiscoveryScreenDataController.swift
 
 import Foundation
-import MacaroonUIKit
+import MagpieCore
+import MagpieHipo
 
-protocol ASAProfileViewModel: ViewModel {
-    var icon: ImageSource? { get }
-    var name: RightAccessorizedLabelModel? { get }
-    var titleSeparator: TextProvider? { get }
-    var id: TextProvider? { get }
-    var primaryValue: TextProvider? { get }
-    var secondaryValue: TextProvider? { get }
+protocol ASADiscoveryScreenDataController: AnyObject {
+    typealias EventHandler = (ASADiscoveryScreenDataControllerEvent) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
+
+    var eventHandler: EventHandler? { get set }
+
+    var asset: Asset { get }
+
+    func loadData()
+}
+
+enum ASADiscoveryScreenDataControllerEvent {
+    case willLoadData
+    case didLoadData
+    case didFailToLoadData(ASADiscoveryScreenDataController.Error)
 }

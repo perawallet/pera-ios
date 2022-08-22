@@ -40,6 +40,7 @@ final class Algo: Asset {
     )
     let amountWithFraction: Decimal = 0
     let isAlgo = true
+    let isFault = false
 
     init(
         amount: UInt64

@@ -30,7 +30,7 @@ final class ASAAboutScreen:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let asset: Asset
+    private var asset: Asset
 
     private let theme = ASAAboutScreenTheme()
 
@@ -50,6 +50,13 @@ final class ASAAboutScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
+    }
+}
+
+extension ASAAboutScreen {
+    func bindData(asset: Asset) {
+        self.asset = asset
+        bindUIData()
     }
 }
 
@@ -78,6 +85,11 @@ extension ASAAboutScreen {
         addContext()
 
         updateScroll()
+    }
+
+    private func bindUIData() {
+        bindStatistics()
+        bindVerificationTier()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -127,27 +139,28 @@ extension ASAAboutScreen {
 
         contextView.addArrangedSubview(statisticsView)
 
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: statisticsView,
+            margin: theme.spacingBetweenSectionAndSeparator
+        )
+
+        bindStatistics()
+    }
+
+    private func bindStatistics() {
         let viewModel = AssetStatisticsSectionViewModel(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         statisticsView.bindData(viewModel)
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: statisticsView,
-            margin: theme.spacingBetweenSectionAndSeparator
-        )
     }
 
     private func addVerificationTier() {
         verificationTierView.customize(theme.verificationTier)
 
         contextView.addArrangedSubview(verificationTierView)
-
-        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
-        verificationTierView.bindData(viewModel)
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -159,5 +172,12 @@ extension ASAAboutScreen {
             [unowned self] in
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
+
+        bindVerificationTier()
+    }
+
+    private func bindVerificationTier() {
+        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
+        verificationTierView.bindData(viewModel)
     }
 }
