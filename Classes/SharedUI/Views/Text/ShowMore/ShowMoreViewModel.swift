@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSocialMediaListItemButtonViewModel.swift
+//   ShowMoreViewModel.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-protocol AssetSocialMediaListItemButtonViewModel: ListItemButtonViewModel { }
-
-extension AssetSocialMediaListItemButtonViewModel {
-    var subtitle: EditText? {
-        return nil
-    }
-
-    var accessory: Image? {
-        return "icon-external-link"
-    }
+protocol ShowMoreViewModel: ViewModel {
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }

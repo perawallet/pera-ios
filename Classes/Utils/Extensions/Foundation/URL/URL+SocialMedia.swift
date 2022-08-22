@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ShowMoreDraft.swift
+//   URL+SocialMedia.swift
 
 import Foundation
 
-struct ShowMoreDraft {
-    let title: String?
-    let detail: String
-    let allowedNumberOfLines: NumberOfLineLimit
-}
-
-enum NumberOfLineLimit {
-    case none
-    case custom(Int)
-    case full /// State for limited lines to full display
+extension URL {
+    static func twitterURL(username: String) -> URL? {
+        return URL(string: "https://twitter.com/\(username)")
+    }
 }

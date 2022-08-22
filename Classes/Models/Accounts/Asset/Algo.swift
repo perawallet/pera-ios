@@ -33,6 +33,10 @@ final class Algo: Asset {
     let verificationTier: AssetVerificationTier = .trusted
     let explorerURL: URL? = nil
     let logoURL: URL? = nil
+    let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
 
     let naming: AssetNaming = AssetNaming(
         id: -1,
@@ -51,5 +55,9 @@ final class Algo: Asset {
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
         self.total = 10_000_000_000_000_000
+        self.description = "asset-algos-description".localized
+        self.discordURL = URL(string: "https://discord.com/invite/algorand")
+        self.telegramURL = URL(string: "https://t.me/algorand")
+        self.twitterURL = URL.twitterURL(username: "Algorand")
     }
 }

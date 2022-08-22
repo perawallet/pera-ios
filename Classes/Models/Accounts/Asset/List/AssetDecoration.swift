@@ -33,6 +33,9 @@ final class AssetDecoration: ALGEntityModel {
     let verificationTier: AssetVerificationTier
     let logoURL: URL?
     let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
 
     var state: AssetState = .ready
 
@@ -56,6 +59,15 @@ final class AssetDecoration: ALGEntityModel {
         self.verificationTier = apiModel.verificationTier ?? .unverified
         self.logoURL = apiModel.logo
         self.description = apiModel.description
+        self.discordURL = apiModel.discordURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
+        self.telegramURL = apiModel.telegramURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
+        self.twitterURL = apiModel.twitterUsername
+            .unwrapNonEmptyString()
+            .unwrap(URL.twitterURL(username:))
     }
     
     init(assetDetail: AssetDetail) {
@@ -72,6 +84,9 @@ final class AssetDecoration: ALGEntityModel {
         self.verificationTier = .unverified
         self.logoURL = nil
         self.description = nil
+        self.discordURL = nil
+        self.telegramURL = nil
+        self.twitterURL = nil
     }
 
     func encode() -> APIModel {
@@ -89,6 +104,9 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.verificationTier = verificationTier
         apiModel.logo = logoURL
         apiModel.description = description
+        apiModel.discordURL = discordURL?.absoluteString
+        apiModel.telegramURL = telegramURL?.absoluteString
+        apiModel.twitterUsername = twitterURL?.pathComponents.last
         return apiModel
     }
 
@@ -106,6 +124,9 @@ final class AssetDecoration: ALGEntityModel {
         self.verificationTier = .unverified
         self.logoURL = nil
         self.description = nil
+        self.discordURL = asset.discordURL
+        self.telegramURL = asset.telegramURL
+        self.twitterURL = asset.twitterURL
     }
 }
 
@@ -124,6 +145,9 @@ extension AssetDecoration {
         var verificationTier: AssetVerificationTier?
         var logo: URL?
         var description: String?
+        var discordURL: String?
+        var telegramURL: String?
+        var twitterUsername: String?
 
         init() {
             self.assetId = 0
@@ -144,6 +168,9 @@ extension AssetDecoration {
             case verificationTier = "verification_tier"
             case logo
             case description
+            case discordURL = "discord_url"
+            case telegramURL = "telegram_url"
+            case twitterUsername = "twitter_username"
         }
     }
 }

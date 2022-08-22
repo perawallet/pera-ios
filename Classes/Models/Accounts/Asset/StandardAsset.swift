@@ -34,8 +34,11 @@ final class StandardAsset: Asset {
     let url: String?
     let explorerURL: URL?
     let logoURL: URL?
-    let isAlgo = false
     let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
+    let isAlgo = false
 
     let isFault: Bool
 
@@ -83,6 +86,9 @@ final class StandardAsset: Asset {
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
         self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
         self.isFault = false
     }
 
@@ -107,6 +113,9 @@ final class StandardAsset: Asset {
         self.usdValue = decoration.usdValue
         self.totalUSDValue = nil
         self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
         self.isFault = true
     }
 }

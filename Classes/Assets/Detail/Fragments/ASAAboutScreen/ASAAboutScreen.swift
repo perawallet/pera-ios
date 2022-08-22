@@ -28,9 +28,9 @@ final class ASAAboutScreen:
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
-    private lazy var showMoreView = ShowMoreView()
-    private lazy var socialMediaGroupedListView = GroupedListItemButton()
-    private lazy var asaReportView = ListItemButton()
+    private lazy var descriptionView = ShowMoreView()
+    private lazy var socialMediaView = GroupedListItemButton()
+    private lazy var reportActionView = ListItemButton()
 
     private lazy var transitionToTotalSupply = BottomSheetTransition(presentingViewController: self)
 
@@ -107,8 +107,7 @@ extension ASAAboutScreen {
     }
 
     private func bindUIData() {
-        bindStatistics()
-        bindVerificationTier()
+        bindSectionsData()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -149,12 +148,59 @@ extension ASAAboutScreen {
             $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
-        addStatistics()
-        addAbout()
-        addVerificationTier()
-        addShowMore()
-        addSocialMediaGroupedList()
-        addASAReportIfNeeded()
+        addSections()
+    }
+
+    private func addSections() {
+        let sections = Section.ordered(by: asset)
+
+        for section in sections {
+            switch section {
+            case .statistics: addStatistics()
+            case .about: break
+            case .verificationTier: addVerificationTier()
+            case .description: addDescription()
+            case .socialMedia: addSocialMedia()
+            case .report: addReportAction()
+            }
+        }
+    }
+
+    private func bindSectionsData() {
+        let sections = Section.ordered(by: asset)
+
+        for (index, section) in sections.enumerated() {
+            switch section {
+            case .statistics:
+                bindStatisticsData()
+            case .about:
+                break
+            case .verificationTier:
+                if verificationTierView.isDescendant(of: contextView) {
+                    bindVerificationTierData()
+                } else {
+                    addVerificationTier(atIndex: index)
+                }
+            case .description:
+                if descriptionView.isDescendant(of: contextView) {
+                    bindDescriptionData()
+                } else {
+                    addDescription(atIndex: index)
+                }
+            case .socialMedia:
+                if socialMediaView.isDescendant(of: contextView) {
+                    bindSocialMediaData()
+                } else {
+                    addSocialMedia(atIndex: index)
+                }
+            case .report:
+                if reportActionView.isDescendant(of: contextView) {
+                    bindReportActionData()
+                } else {
+                    addReportAction(atIndex: index)
+                }
+            }
+        }
     }
 
     private func addStatistics() {
@@ -165,13 +211,13 @@ extension ASAAboutScreen {
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: statisticsView,
-            margin: theme.spacingBetweenSectionAndSeparator
+            margin: theme.spacingBetweenStatisticsAndSeparator
         )
 
-        bindStatistics()
+        bindStatisticsData()
     }
 
-    private func bindStatistics() {
+    private func bindStatisticsData() {
         let viewModel = AssetStatisticsSectionViewModel(
             asset: asset,
             currency: sharedDataController.currency,
@@ -196,13 +242,16 @@ extension ASAAboutScreen {
         aboutView.bindData(viewModel)
     }
 
-    private func addVerificationTier() {
+    private func addVerificationTier(atIndex index: Int? = nil) {
         verificationTierView.customize(theme.verificationTier)
 
-        contextView.addArrangedSubview(verificationTierView)
+        contextView.insertArrangedSubview(
+            verificationTierView,
+            preferredAt: index
+        )
         contextView.setCustomSpacing(
-            theme.spacingBetweenAboutAndVerificationTier,
-            after: aboutView
+            theme.spacingBetweenVerificationTierAndSections,
+            after: verificationTierView
         )
 
         contextView.attachSeparator(
@@ -213,96 +262,118 @@ extension ASAAboutScreen {
 
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
+
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
 
-        bindVerificationTier()
+        bindVerificationTierData()
     }
 
-    private func bindVerificationTier() {
+    private func bindVerificationTierData() {
         let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
         verificationTierView.bindData(viewModel)
     }
 
-    private func addShowMore() {
-        guard let standardAsset = asset as? StandardAsset,
-              let description = standardAsset.description,
-              !description.isEmptyOrBlank else {
-            return
-        }
+    private func addDescription(atIndex index: Int? = nil) {
+        descriptionView.customize(theme.description)
 
-        let frameWidth = view.frame.size.width
-        let contextHorizontalEdgeInset = theme.contextEdgeInsets.leading + theme.contextEdgeInsets.trailing
-        let width = frameWidth - contextHorizontalEdgeInset
-
-        showMoreView.customize(theme.description)
-        contextView.addArrangedSubview(showMoreView)
-
-        let draft = ShowMoreDraft(
-            title: "collectible-detail-description".localized,
-            detail: description,
-            allowedNumberOfLines: .custom(4)
+        contextView.insertArrangedSubview(
+            descriptionView,
+            preferredAt: index
         )
-        let viewModel = ShowMoreViewModel(
-            draft,
-            width: width
-        )
-        showMoreView.bindData(viewModel)
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: showMoreView,
-            margin: theme.spacingBetweenVerificationTierAndSeparator
-        )
-        showMoreView.startObserving(event: .show) {
-            let draft = ShowMoreDraft(
-                title: "collectible-detail-description".localized,
-                detail: description,
-                allowedNumberOfLines: self.isShowMoreVisible ? .full : .custom(4)
-            )
-
-            let viewModel = ShowMoreViewModel(
-                draft,
-                width: width
-            )
-            self.showMoreView.bindData(viewModel)
-
-            self.isShowMoreVisible.toggle()
-        }
-    }
-
-    private func addSocialMediaGroupedList() {
-        socialMediaGroupedListView.customize(theme.socialMediaGroupedList)
-
-        contextView.addArrangedSubview(socialMediaGroupedListView)
-
-        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel([
-            .discord,
-            .telegram,
-            .twitter
-        ])
-        socialMediaGroupedListView.bindData(viewModel)
-    }
-
-    private func addASAReportIfNeeded() {
-        if asset.verificationTier != .suspicious { return }
 
         contextView.attachSeparator(
             theme.sectionSeparator,
-            to: socialMediaGroupedListView,
-            margin: theme.spacingBetweenSocialMediaAndAsaReport
+            to: descriptionView,
+            margin: theme.spacingBetweenDescriptionAndSeparator
         )
 
-        asaReportView.customize(theme.asaReport)
+        bindDescriptionData()
+    }
 
-        contextView.addArrangedSubview(asaReportView)
+    private func bindDescriptionData() {
+        let viewModel = AssetDescriptionViewModel(asset: asset)
+        descriptionView.bindData(viewModel)
+    }
 
-        asaReportView.addTouch(
+    private func addSocialMedia(atIndex index: Int? = nil) {
+        socialMediaView.customize(theme.socialMedia)
+
+        contextView.insertArrangedSubview(
+            socialMediaView,
+            preferredAt: index
+        )
+
+        bindSocialMediaData()
+    }
+
+    private func bindSocialMediaData() {
+        var items: [GroupedListItemButtonItemViewModel] = []
+
+        /// <todo> This should properly implemented, it is a temporary solution.
+        if let url = asset.discordURL {
+            let item = AssetDiscordListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        if let url = asset.telegramURL {
+            let item = AssetTelegramListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        if let url = asset.twitterURL {
+            let item = AssetTwitterListItemViewModel {
+                [unowned self] in
+
+                self.openInBrowser(url)
+            }
+            items.append(item)
+        }
+
+        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel(items: items)
+        socialMediaView.bindData(viewModel)
+    }
+
+    private func addReportAction(atIndex index: Int? = nil) {
+        reportActionView.customize(theme.reportAction)
+
+        if let previousView = contextView.arrangedSubviews.last {
+            contextView.setCustomSpacing(
+                theme.spacingBetweenSectionsAndReportAction,
+                after: previousView
+            )
+        }
+
+        contextView.insertArrangedSubview(
+            reportActionView,
+            preferredAt: index
+        )
+
+        contextView.attachSeparator(
+            theme.reportActionSeparator,
+            to: reportActionView,
+            margin: theme.spacingBetweenSeparatorAndReportAction
+        )
+
+        reportActionView.addTouch(
             target: self,
             action: #selector(openMailComposer)
         )
 
+        bindReportActionData()
+    }
+
+    private func bindReportActionData() {
         let viewModel = AsaReportListItemButtonViewModel(asset)
-        asaReportView.bindData(viewModel)
+        reportActionView.bindData(viewModel)
     }
 }
 
@@ -470,3 +541,45 @@ extension ASAAboutScreen {
         }
     }
 }
+
+            extension ASAAboutScreen {
+                private enum Section {
+                    case statistics
+                    case about
+                    case verificationTier
+                    case description
+                    case socialMedia
+                    case report
+
+                    static func ordered(by asset: Asset) -> [Section] {
+                        var list: [Section] = []
+
+                        if asset.verificationTier.isSuspicious {
+                            list.append(.verificationTier)
+                        }
+
+                        list.append(.statistics)
+            //            list.append(.about)
+
+                        if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
+                            list.append(.verificationTier)
+                        }
+
+                        if asset.description.unwrapNonEmptyString() != nil {
+                            list.append(.description)
+                        }
+
+                        if asset.discordURL != nil ||
+                           asset.telegramURL != nil ||
+                           asset.twitterURL != nil {
+                            list.append(.socialMedia)
+                        }
+
+                        if asset.verificationTier.isSuspicious {
+                            list.append(.report)
+                        }
+
+                        return list
+                    }
+                }
+            }

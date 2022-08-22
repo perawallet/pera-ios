@@ -2017,9 +2017,6 @@
 		2B9FDEB228A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
 		2B9FDEB328A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
 		2B9FDEB428A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */; };
-		2B9FDEB728A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
-		2B9FDEB828A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
-		2B9FDEB928A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */; };
 		2B9FDEBB28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
 		2B9FDEBC28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
 		2B9FDEBD28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */; };
@@ -2132,9 +2129,6 @@
 		2BA71AA7289133BB000C785A /* ShowMoreViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */; };
 		2BA71AA8289133BB000C785A /* ShowMoreViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */; };
 		2BA71AA9289133BB000C785A /* ShowMoreViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */; };
-		2BA71AAB28914C47000C785A /* ShowMoreDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AAA28914C47000C785A /* ShowMoreDraft.swift */; };
-		2BA71AAC28914C47000C785A /* ShowMoreDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AAA28914C47000C785A /* ShowMoreDraft.swift */; };
-		2BA71AAD28914C47000C785A /* ShowMoreDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA71AAA28914C47000C785A /* ShowMoreDraft.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
 		2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */; };
 		2BA979D8284E216800EDA5EA /* ManagementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA979D7284E216700EDA5EA /* ManagementItemView.swift */; };
@@ -4989,6 +4983,7 @@
 		F04BD2CC28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
 		F04BD2CD28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
 		F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04BD2CB28611C4100F43878 /* ToastView.swift */; };
+		F05AA70228B3ECFB00AD449B /* AssetDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */; };
 		F05E6C4D28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
 		F05E6C4E28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
 		F05E6C4F28617580004E33D6 /* ToastViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */; };
@@ -5025,6 +5020,9 @@
 		F0772B5C275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
 		F0772B5D275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
 		F0772B5E275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */; };
+		F07C3C1128B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
+		F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
+		F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
 		F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FC276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
@@ -5933,7 +5931,6 @@
 		2B9FDEA928A52C3700C8117D /* GroupedListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEAD28A54F3700C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaGroupedListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEB128A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaGroupedListItemButtonTheme.swift; sourceTree = "<group>"; };
-		2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSocialMediaListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDiscordListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEBE28A55C2200C8117D /* AssetTelegramListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTelegramListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B9FDEC228A55C3800C8117D /* AssetTwitterListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTwitterListItemButtonViewModel.swift; sourceTree = "<group>"; };
@@ -5974,7 +5971,6 @@
 		2BA71A9C2891333E000C785A /* ShowMoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreView.swift; sourceTree = "<group>"; };
 		2BA71AA02891334E000C785A /* ShowMoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreViewModel.swift; sourceTree = "<group>"; };
 		2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreViewTheme.swift; sourceTree = "<group>"; };
-		2BA71AAA28914C47000C785A /* ShowMoreDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMoreDraft.swift; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
 		2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Additions.swift"; sourceTree = "<group>"; };
 		2BA979D7284E216700EDA5EA /* ManagementItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagementItemView.swift; sourceTree = "<group>"; };
@@ -6958,6 +6954,7 @@
 		F045BE602873801C0069056B /* CurrencyExchanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchanger.swift; sourceTree = "<group>"; };
 		F045BE64287384920069056B /* RemoteCurrencyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCurrencyValue.swift; sourceTree = "<group>"; };
 		F04BD2CB28611C4100F43878 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDescriptionViewModel.swift; sourceTree = "<group>"; };
 		F05E6C4C28617580004E33D6 /* ToastViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewTheme.swift; sourceTree = "<group>"; };
 		F05E6C5028617C9E004E33D6 /* ToastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModel.swift; sourceTree = "<group>"; };
 		F05E6C5A28634865004E33D6 /* AccountAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetCell.swift; sourceTree = "<group>"; };
@@ -6973,6 +6970,7 @@
 		F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppTarget.swift; sourceTree = "<group>"; };
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
+		F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SocialMedia.swift"; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
 		F07E61882897F564001D2C97 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		F08708C3278A179E00BEE5C2 /* AccountHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHandle.swift; sourceTree = "<group>"; };
@@ -8778,6 +8776,7 @@
 			isa = PBXGroup;
 			children = (
 				2B5C58E023AC364700B907E3 /* URL+Link.swift */,
+				F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */,
 			);
 			path = URL;
 			sourceTree = "<group>";
@@ -9506,7 +9505,6 @@
 		2B80C52127720A9800BB071E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				2BA71A99289132F4000C785A /* Detail */,
 				2BB0B12A278329E200A16494 /* List */,
 				17CADC8E2859C14B001D19A8 /* Sort */,
 				2B9FDE8528A4F95600C8117D /* Verification */,
@@ -10469,7 +10467,6 @@
 			children = (
 				2B9FDEBA28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift */,
 				2B9FDEAD28A54F3700C8117D /* AssetSocialMediaGroupedListItemButtonViewModel.swift */,
-				2B9FDEB628A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift */,
 				2B9FDEBE28A55C2200C8117D /* AssetTelegramListItemButtonViewModel.swift */,
 				2B9FDEC228A55C3800C8117D /* AssetTwitterListItemButtonViewModel.swift */,
 			);
@@ -11707,45 +11704,12 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		2BA71A99289132F4000C785A /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BA71AA428913356000C785A /* ViewModels */,
-				2BA71A9A28913304000C785A /* Views */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BA71A9A28913304000C785A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				2BA71A9B28913309000C785A /* ShowMore */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		2BA71A9B28913309000C785A /* ShowMore */ = {
 			isa = PBXGroup;
 			children = (
 				2BA71A9C2891333E000C785A /* ShowMoreView.swift */,
-				2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */,
-			);
-			path = ShowMore;
-			sourceTree = "<group>";
-		};
-		2BA71AA428913356000C785A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				2BA71AA52891335E000C785A /* ShowMore */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		2BA71AA52891335E000C785A /* ShowMore */ = {
-			isa = PBXGroup;
-			children = (
-				2BA71AAA28914C47000C785A /* ShowMoreDraft.swift */,
 				2BA71AA02891334E000C785A /* ShowMoreViewModel.swift */,
+				2BA71AA6289133BB000C785A /* ShowMoreViewTheme.swift */,
 			);
 			path = ShowMore;
 			sourceTree = "<group>";
@@ -15504,6 +15468,7 @@
 			isa = PBXGroup;
 			children = (
 				F010637C28AC532E00AB6873 /* RightAccessorizedLabel */,
+				2BA71A9B28913309000C785A /* ShowMore */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -15591,6 +15556,7 @@
 		F03451CE28B2515D009467A0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F05AA70028B3ECD700AD449B /* AssetDescriptionView */,
 				D4A0DE972898001500CE3895 /* AssetAboutSection */,
 				F03451D028B25199009467A0 /* AssetStatisticsSectionPriceView */,
 				F03451D128B251A9009467A0 /* AssetStatisticsSectionTotalSupplyView */,
@@ -15792,6 +15758,14 @@
 				F045BE44286C91D40069056B /* NumberRounder.swift */,
 			);
 			path = Currency;
+			sourceTree = "<group>";
+		};
+		F05AA70028B3ECD700AD449B /* AssetDescriptionView */ = {
+			isa = PBXGroup;
+			children = (
+				F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */,
+			);
+			path = AssetDescriptionView;
 			sourceTree = "<group>";
 		};
 		F05E6C4B2861756D004E33D6 /* ToastView */ = {
@@ -17128,7 +17102,6 @@
 				D499D28A27C7DA8400641FF5 /* CollectibleListItemView.swift in Sources */,
 				D459E28527DDF48000F7FC33 /* ApproveCollectibleTransactionViewControllerTheme.swift in Sources */,
 				2B9FDE8928A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB928A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				2B69823C278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
 				F010637528AC4AB800AB6873 /* ASAProfileViewTheme.swift in Sources */,
@@ -17996,7 +17969,6 @@
 				D41699562790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
 				F0A812E52837E16B00D27BD3 /* CollectibleFullScreenVideoViewController.swift in Sources */,
 				F0E7444727B465CA0063DD83 /* AlgoPriceAttributeViewModel.swift in Sources */,
-				2BA71AAD28914C47000C785A /* ShowMoreDraft.swift in Sources */,
 				17BD4EDF2292F1260003E49A /* ContactDetailViewController.swift in Sources */,
 				95BFE7902840AEBA00A972A5 /* HomeQuickActionsView.swift in Sources */,
 				2BCFD67A2791A35900406A2A /* AccountAssetListDataController.swift in Sources */,
@@ -18195,6 +18167,7 @@
 				17A011C727EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */,
 				D4CC28DF2875AD850082E038 /* InnerTransactionPreviewViewModel.swift in Sources */,
 				2BAD6CB127F88CAA0016E869 /* Collectible3DImageViewController.swift in Sources */,
+				F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2BA71A9F2891333E000C785A /* ShowMoreView.swift in Sources */,
 				D4592909276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
 				D4C601CE28436DD900CDF6CB /* SortAccountListViewController.swift in Sources */,
@@ -18808,7 +18781,6 @@
 				2B0F61FA24EC129D00DA22A6 /* Contact.swift in Sources */,
 				F0431F16287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B9FDE8828A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB828A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				F0DB4174279440AD00EA437D /* ErrorViewModel.swift in Sources */,
 				D4155E8E276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				D46E5E2026EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift in Sources */,
@@ -19475,6 +19447,7 @@
 				2B0F62AF24EC129D00DA22A6 /* TabBarItems.swift in Sources */,
 				2B0F62B124EC129D00DA22A6 /* TransactionID.swift in Sources */,
 				D4FC5F3427F4CAEF0017E81F /* CollectibleListSearchInputCell.swift in Sources */,
+				F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2B0F62B324EC129D00DA22A6 /* PinLimitStore.swift in Sources */,
 				2B0F62B424EC129D00DA22A6 /* PassphraseDisplayView.swift in Sources */,
 				F08708D1278C26B800BEE5C2 /* ALGBlockCycle.swift in Sources */,
@@ -19675,7 +19648,6 @@
 				F0CF6B6B285163D9007C30E4 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,
 				2B0F62DC24EC129D00DA22A6 /* NavigationController.swift in Sources */,
 				2B0F62DE24EC129D00DA22A6 /* NotificationView.swift in Sources */,
-				2BA71AAC28914C47000C785A /* ShowMoreDraft.swift in Sources */,
 				F0A812E42837E16B00D27BD3 /* CollectibleFullScreenVideoViewController.swift in Sources */,
 				F0E7444627B465CA0063DD83 /* AlgoPriceAttributeViewModel.swift in Sources */,
 				2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
@@ -20384,6 +20356,7 @@
 				2BCBBAEA24A66AFD002CD56F /* TransactionFilterOptionCell.swift in Sources */,
 				2B68A23426A6A1190076BD82 /* WCMultipleTransactionItemViewModel.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
+				F07C3C1128B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2B7E3065267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				2B2AACA9250A6D6600B8C5C5 /* RekeyAccountEvent.swift in Sources */,
 				2B83D05726C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
@@ -20493,7 +20466,6 @@
 				F03451E128B27F06009467A0 /* OptInAssetNameListItemViewModel.swift in Sources */,
 				F0431F15287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B9FDE8728A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
-				2B9FDEB728A55BD800C8117D /* AssetSocialMediaListItemButtonViewModel.swift in Sources */,
 				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				D4FC5F5927F525AF0017E81F /* SelectedAccountPreviewView.swift in Sources */,
 				D43A0C3D2790D753007430B9 /* NoContentWithActionView.swift in Sources */,
@@ -20780,6 +20752,7 @@
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
 				D4DC26C328B3A4C80068152E /* ASAAboutScreenInteractableSecondaryListItemTheme.swift in Sources */,
+				F05AA70228B3ECFB00AD449B /* AssetDescriptionViewModel.swift in Sources */,
 				D4150DCE27C4D3750064F736 /* CollectibleListLoadingView.swift in Sources */,
 				2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
 				2B3A34EC246EDA9C001C8F22 /* ImageWithTitleView.swift in Sources */,
@@ -21357,7 +21330,6 @@
 				D459E27227DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
 				2BA4B3F0267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				F034521E28B37596009467A0 /* ASADiscoveryScreenTheme.swift in Sources */,
-				2BA71AAB28914C47000C785A /* ShowMoreDraft.swift in Sources */,
 				D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				95BFE78E2840AEBA00A972A5 /* HomeQuickActionsView.swift in Sources */,
 				2BA4B3DC2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,

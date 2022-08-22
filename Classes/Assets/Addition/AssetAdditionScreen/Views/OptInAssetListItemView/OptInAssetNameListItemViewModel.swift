@@ -34,7 +34,15 @@ struct OptInAssetNameListItemViewModel: PrimaryTitleViewModel {
 extension OptInAssetNameListItemViewModel {
     mutating func bindPrimaryTitle(asset: AssetDecoration) {
         let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
-        primaryTitle = title.bodyRegular(lineBreakMode: .byTruncatingTail)
+
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        primaryTitle = title.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {

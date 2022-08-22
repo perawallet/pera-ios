@@ -31,7 +31,15 @@ struct ASAProfileNameViewModel: RightAccessorizedLabelModel {
 extension ASAProfileNameViewModel {
     mutating func bindText(asset: Asset) {
         let name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
-        text = name.footnoteRegular()
+
+        var attributes = Typography.footnoteRegularAttributes()
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.gray))
+        }
+
+        text = name.attributed(attributes)
     }
 
     mutating func bindAccessory(asset: Asset) {

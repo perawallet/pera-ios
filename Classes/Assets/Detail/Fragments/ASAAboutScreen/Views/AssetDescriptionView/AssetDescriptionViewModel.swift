@@ -12,31 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetSocialMediaGroupedListItemButtonViewModel.swift
+//   AssetDescriptionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AssetSocialMediaGroupedListItemButtonViewModel: GroupedListItemButtonViewModel {
+struct AssetDescriptionViewModel: ShowMoreViewModel {
     private(set) var title: TextProvider?
-    private(set) var items: [GroupedListItemButtonItemViewModel] = []
+    private(set) var body: TextProvider?
 
-    init(items: [GroupedListItemButtonItemViewModel]) {
+    init(asset: Asset) {
         bindTitle()
-        bindItems(items)
+        bindBody(asset: asset)
     }
 }
 
-extension AssetSocialMediaGroupedListItemButtonViewModel {
+extension AssetDescriptionViewModel {
     mutating func bindTitle() {
-        title = "social-media-platform-title"
+        title = "collectible-detail-description"
             .localized
             .uppercased()
-            .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
+            .footnoteHeadingMedium()
     }
 
-    mutating func bindItems(_ items: [GroupedListItemButtonItemViewModel]) {
-        self.items = items
+    mutating func bindBody(asset: Asset) {
+        body = asset.description?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }
