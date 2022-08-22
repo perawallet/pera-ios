@@ -33,8 +33,8 @@ final class StandardAsset: Asset {
     let creator: AssetCreator?
     let url: String?
     let logoURL: URL?
-    let isAlgo = false
     let description: String?
+    let isAlgo = false
 
     let isFault: Bool
 

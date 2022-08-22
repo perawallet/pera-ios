@@ -24,14 +24,17 @@ struct ASAAboutScreenTheme:
     var background: ViewStyle
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
+    var spacingBetweenStatisticsAndSeparator: CGFloat
     var verificationTier: AssetVerificationInfoViewTheme
     var spacingBetweenVerificationTierAndSeparator: CGFloat
+    var spacingBetweenVerificationTierAndSections: CGFloat
     var description: ShowMoreViewTheme
+    var spacingBetweenDescriptionAndSeparator: CGFloat
     var socialMediaGroupedList: AssetSocialMediaGroupedListItemButtonTheme
+    var spacingBetweenSocialMediaAndSeparator: CGFloat
     var spacingBetweenSocialMediaAndAsaReport: CGFloat
     var asaReport: ListItemButtonTheme
     var sectionSeparator: Separator
-    var spacingBetweenSectionAndSeparator: CGFloat
     var spacingBetweenSections: CGFloat
 
     init(_ family: LayoutFamily) {
@@ -40,14 +43,17 @@ struct ASAAboutScreenTheme:
         ]
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.statistics = AssetStatisticsSectionViewTheme(family)
+        self.spacingBetweenStatisticsAndSeparator = 36
         self.verificationTier = AssetVerificationInfoViewTheme(family)
         self.spacingBetweenVerificationTierAndSeparator = 20
-        self.description = ShowMoreViewTheme(family)
+        self.spacingBetweenVerificationTierAndSections = 60
+        self.description = ShowMoreViewTheme(numberOfLinesLimit: 4, family: family)
+        self.spacingBetweenDescriptionAndSeparator = 34
         self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
+        self.spacingBetweenSocialMediaAndSeparator = 32
         self.spacingBetweenSocialMediaAndAsaReport = 26
         self.asaReport = ListItemButtonTheme(family)
-        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((24, 24)))
-        self.spacingBetweenSectionAndSeparator = 36
+        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter)
         self.spacingBetweenSections = 72
     }
 }

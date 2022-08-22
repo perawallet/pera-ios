@@ -30,6 +30,7 @@ protocol Asset: AnyObject {
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
     var logoURL: URL? { get }
+    var description: String? { get }
 
     /// <todo>
     /// Switch decimalAmount -> amount

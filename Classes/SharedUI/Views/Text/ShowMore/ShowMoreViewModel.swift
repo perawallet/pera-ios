@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ShowMoreDraft.swift
+//   ShowMoreViewModel.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-struct ShowMoreDraft {
-    let title: String?
-    let detail: String
-    let allowedNumberOfLines: NumberOfLineLimit
-}
-
-enum NumberOfLineLimit {
-    case none
-    case custom(Int)
-    case full /// State for limited lines to full display
+protocol ShowMoreViewModel: ViewModel {
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }

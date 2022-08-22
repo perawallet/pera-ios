@@ -27,7 +27,7 @@ final class ASAAboutScreen:
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
-    private lazy var showMoreView = ShowMoreView()
+    private lazy var descriptionView = ShowMoreView()
     private lazy var socialMediaGroupedListView = GroupedListItemButton()
     private lazy var asaReportView = ListItemButton()
 
@@ -103,8 +103,7 @@ extension ASAAboutScreen {
     }
 
     private func bindUIData() {
-        bindStatistics()
-        bindVerificationTier()
+        bindSectionsData()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -145,11 +144,55 @@ extension ASAAboutScreen {
             $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
-        addStatistics()
-        addVerificationTier()
-        addShowMore()
-        addSocialMediaGroupedList()
-        addAsaReportIfNeeded()
+        addSections()
+    }
+
+    private func addSections() {
+        let sections = Section.ordered(by: asset)
+
+        for section in sections {
+            switch section {
+            case .statistics: addStatistics()
+            case .about: break
+            case .verificationTier: addVerificationTier()
+            case .description: addDescription()
+            case .socialMediaLinks: addSocialMediaLinks()
+            case .report: addAsaReport()
+            }
+        }
+    }
+
+    private func bindSectionsData() {
+        let sections = Section.ordered(by: asset)
+
+        for (index, section) in sections.enumerated() {
+            switch section {
+            case .statistics:
+                bindStatisticsData()
+            case .about:
+                break
+            case .verificationTier:
+                if verificationTierView.isDescendant(of: contextView) {
+                    bindVerificationTierData()
+                } else {
+                    addVerificationTier(atIndex: index)
+                }
+            case .description:
+                if descriptionView.isDescendant(of: contextView) {
+                    bindDescriptionData()
+                } else {
+                    addDescription(atIndex: index)
+                }
+            case .socialMediaLinks:
+                break
+            case .report:
+                break
+            }
+        }
+    }
+
+    private func removeSections() {
+        contextView.deleteAllSubviews()
     }
 
     private func addStatistics() {
@@ -160,13 +203,13 @@ extension ASAAboutScreen {
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: statisticsView,
-            margin: theme.spacingBetweenSectionAndSeparator
+            margin: theme.spacingBetweenStatisticsAndSeparator
         )
 
-        bindStatistics()
+        bindStatisticsData()
     }
 
-    private func bindStatistics() {
+    private func bindStatisticsData() {
         let viewModel = AssetStatisticsSectionViewModel(
             asset: asset,
             currency: sharedDataController.currency,
@@ -175,10 +218,17 @@ extension ASAAboutScreen {
         statisticsView.bindData(viewModel)
     }
 
-    private func addVerificationTier() {
+    private func addVerificationTier(atIndex index: Int? = nil) {
         verificationTierView.customize(theme.verificationTier)
 
-        contextView.addArrangedSubview(verificationTierView)
+        contextView.insertArrangedSubview(
+            verificationTierView,
+            preferredAt: index
+        )
+        contextView.setCustomSpacing(
+            theme.spacingBetweenVerificationTierAndSections,
+            after: verificationTierView
+        )
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -191,61 +241,37 @@ extension ASAAboutScreen {
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
 
-        bindVerificationTier()
+        bindVerificationTierData()
     }
 
-    private func bindVerificationTier() {
+    private func bindVerificationTierData() {
         let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
         verificationTierView.bindData(viewModel)
     }
 
-    private func addShowMore() {
-        guard let standardAsset = asset as? StandardAsset,
-              let description = standardAsset.description,
-              !description.isEmptyOrBlank else {
-                  return
-              }
+    private func addDescription(atIndex index: Int? = nil) {
+        descriptionView.customize(theme.description)
 
-        let frameWidth = view.frame.size.width
-        let contextHorizontalEdgeInset = theme.contextEdgeInsets.leading + theme.contextEdgeInsets.trailing
-        let width = frameWidth - contextHorizontalEdgeInset
-
-        showMoreView.customize(theme.description)
-        contextView.addArrangedSubview(showMoreView)
-
-        let draft = ShowMoreDraft(
-            title: "collectible-detail-description".localized,
-            detail: description,
-            allowedNumberOfLines: .custom(4)
+        contextView.insertArrangedSubview(
+            descriptionView,
+            preferredAt: index
         )
-        let viewModel = ShowMoreViewModel(
-            draft,
-            width: width
-        )
-        showMoreView.bindData(viewModel)
+
         contextView.attachSeparator(
             theme.sectionSeparator,
-            to: showMoreView,
-            margin: theme.spacingBetweenVerificationTierAndSeparator
+            to: descriptionView,
+            margin: theme.spacingBetweenDescriptionAndSeparator
         )
-        showMoreView.startObserving(event: .show) {
-            let draft = ShowMoreDraft(
-                title: "collectible-detail-description".localized,
-                detail: description,
-                allowedNumberOfLines: self.isShowMoreVisible ? .full : .custom(4)
-            )
 
-            let viewModel = ShowMoreViewModel(
-                draft,
-                width: width
-            )
-            self.showMoreView.bindData(viewModel)
-
-            self.isShowMoreVisible.toggle()
-        }
+        bindDescriptionData()
     }
 
-    private func addSocialMediaGroupedList() {
+    private func bindDescriptionData() {
+        let viewModel = AssetDescriptionViewModel(asset: asset)
+        descriptionView.bindData(viewModel)
+    }
+
+    private func addSocialMediaLinks() {
         socialMediaGroupedListView.customize(theme.socialMediaGroupedList)
 
         contextView.addArrangedSubview(socialMediaGroupedListView)
@@ -258,9 +284,7 @@ extension ASAAboutScreen {
         socialMediaGroupedListView.bindData(viewModel)
     }
 
-    private func addAsaReportIfNeeded() {
-        if asset.verificationTier != .suspicious { return }
-
+    private func addAsaReport() {
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: socialMediaGroupedListView,
@@ -313,4 +337,39 @@ extension ASAAboutScreen {
 extension ASAAboutScreen: MailComposerDelegate {
     func mailComposerDidSent(_ mailComposer: MailComposer) {}
     func mailComposerDidFailed(_ mailComposer: MailComposer) {}
+}
+
+extension ASAAboutScreen {
+    private enum Section {
+        case statistics
+        case about
+        case verificationTier
+        case description
+        case socialMediaLinks
+        case report
+
+        static func ordered(by asset: Asset) -> [Section] {
+            var list: [Section] = []
+
+            if asset.verificationTier.isSuspicious {
+                list.append(.verificationTier)
+            }
+
+            list.append(.statistics)
+//            list.append(.about)
+
+            if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
+                list.append(.verificationTier)
+            }
+
+            if asset.description.unwrapNonEmptyString() != nil {
+                list.append(.description)
+            }
+
+            list.append(.socialMediaLinks)
+            list.append(.report)
+
+            return list
+        }
+    }
 }

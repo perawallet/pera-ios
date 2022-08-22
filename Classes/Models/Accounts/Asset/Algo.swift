@@ -32,6 +32,7 @@ final class Algo: Asset {
     let url: String? = "www.algorand.com"
     let verificationTier: AssetVerificationTier = .trusted
     let logoURL: URL? = nil
+    let description: String?
 
     let naming: AssetNaming = AssetNaming(
         id: -1,
@@ -50,5 +51,6 @@ final class Algo: Asset {
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
         self.total = 10_000_000_000_000_000
+        self.description = "asset-algos-description".localized
     }
 }

@@ -233,6 +233,7 @@
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
+"asset-algos-description" = "Algorand builds technology that accelerates the convergence between decentralized & traditional finance by enabling the simple creation of next generation.";
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
