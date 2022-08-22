@@ -17,7 +17,6 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
-import MacaroonURLImage
 
 final class SwapAssetAmountView: View {
     private lazy var leftTitleView = Label()

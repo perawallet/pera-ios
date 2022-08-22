@@ -16,8 +16,6 @@
 
 import Foundation
 import MacaroonUIKit
-import MacaroonURLImage
-import Prism
 import UIKit
 
 struct SwapAssetAmountViewModel: ViewModel {
