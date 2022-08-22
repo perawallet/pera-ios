@@ -45,6 +45,7 @@ final class CollectibleAsset: Asset {
     let explorerURL: URL?
     let logoURL: URL?
     let isAlgo = false
+    let isFault = false
 
     var state: AssetState = .ready
 

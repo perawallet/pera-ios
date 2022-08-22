@@ -62,12 +62,12 @@ final class ASADetailQuickActionsView:
 
         if bounds.isEmpty { return }
 
+        isLayoutLoaded = true
+
         let isSaved = saveContentSizeIfNeeded()
         if isSaved {
             uiInteractions[.layoutChanged]?.publish()
         }
-
-        isLayoutLoaded = true
     }
 }
 

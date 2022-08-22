@@ -28,12 +28,17 @@ final class ASAAboutScreen:
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
     private lazy var showMoreView = ShowMoreView()
+    private lazy var socialMediaGroupedListView = GroupedListItemButton()
+    private lazy var asaReportView = ListItemButton()
+
+    private lazy var transitionToTotalSupply = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var mailComposer = MailComposer()
+
+    private var asset: Asset
 
     private var isShowMoreVisible: Bool = true
-
-    private let asset: Asset
 
     private let theme = ASAAboutScreenTheme()
 
@@ -43,6 +48,13 @@ final class ASAAboutScreen:
     ) {
         self.asset = asset
         super.init(configuration: configuration)
+
+        self.mailComposer.configureMail(for: .report(assetId: asset.id))
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        mailComposer.delegate = self
     }
 
     override func viewDidLoad() {
@@ -53,6 +65,13 @@ final class ASAAboutScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
+    }
+}
+
+extension ASAAboutScreen {
+    func bindData(asset: Asset) {
+        self.asset = asset
+        bindUIData()
     }
 }
 
@@ -81,6 +100,11 @@ extension ASAAboutScreen {
         addContext()
 
         updateScroll()
+    }
+
+    private func bindUIData() {
+        bindStatistics()
+        bindVerificationTier()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -117,13 +141,15 @@ extension ASAAboutScreen {
         contextView.snp.makeConstraints {
             $0.top == 0 + theme.contextEdgeInsets.top
             $0.leading == 0 + theme.contextEdgeInsets.leading
-            $0.bottom <= 0 + theme.contextEdgeInsets.bottom
+            $0.bottom <= 0 + theme.contextEdgeInsets.bottom + view.safeAreaBottom
             $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
         addStatistics()
         addVerificationTier()
         addShowMore()
+        addSocialMediaGroupedList()
+        addAsaReportIfNeeded()
     }
 
     private func addStatistics() {
@@ -131,27 +157,28 @@ extension ASAAboutScreen {
 
         contextView.addArrangedSubview(statisticsView)
 
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: statisticsView,
+            margin: theme.spacingBetweenSectionAndSeparator
+        )
+
+        bindStatistics()
+    }
+
+    private func bindStatistics() {
         let viewModel = AssetStatisticsSectionViewModel(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         statisticsView.bindData(viewModel)
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: statisticsView,
-            margin: theme.spacingBetweenSectionAndSeparator
-        )
     }
 
     private func addVerificationTier() {
         verificationTierView.customize(theme.verificationTier)
 
         contextView.addArrangedSubview(verificationTierView)
-
-        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
-        verificationTierView.bindData(viewModel)
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -163,6 +190,13 @@ extension ASAAboutScreen {
             [unowned self] in
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
+
+        bindVerificationTier()
+    }
+
+    private func bindVerificationTier() {
+        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
+        verificationTierView.bindData(viewModel)
     }
 
     private func addShowMore() {
@@ -210,4 +244,73 @@ extension ASAAboutScreen {
             self.isShowMoreVisible.toggle()
         }
     }
+
+    private func addSocialMediaGroupedList() {
+        socialMediaGroupedListView.customize(theme.socialMediaGroupedList)
+
+        contextView.addArrangedSubview(socialMediaGroupedListView)
+
+        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel([
+            .discord,
+            .telegram,
+            .twitter
+        ])
+        socialMediaGroupedListView.bindData(viewModel)
+    }
+
+    private func addAsaReportIfNeeded() {
+        if asset.verificationTier != .suspicious { return }
+
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: socialMediaGroupedListView,
+            margin: theme.spacingBetweenSocialMediaAndAsaReport
+        )
+
+        asaReportView.customize(theme.asaReport)
+
+        contextView.addArrangedSubview(asaReportView)
+
+        asaReportView.addTouch(
+            target: self,
+            action: #selector(openMailComposer)
+        )
+
+        let viewModel = AsaReportListItemButtonViewModel(asset)
+        asaReportView.bindData(viewModel)
+    }
+}
+
+extension ASAAboutScreen {
+    func openTotalSupplyInfo() {
+        let uiSheet = UISheet(
+            title: "title-total-supply".localized.bodyLargeMedium(),
+            body: "asset-total-supply-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToTotalSupply.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension ASAAboutScreen {
+    @objc
+    private func openMailComposer() {
+        mailComposer.present(from: self)
+    }
+}
+
+extension ASAAboutScreen: MailComposerDelegate {
+    func mailComposerDidSent(_ mailComposer: MailComposer) {}
+    func mailComposerDidFailed(_ mailComposer: MailComposer) {}
 }

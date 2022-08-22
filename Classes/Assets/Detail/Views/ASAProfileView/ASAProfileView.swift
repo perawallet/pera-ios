@@ -99,12 +99,12 @@ final class ASAProfileView:
 
         if bounds.isEmpty { return }
 
+        isLayoutLoaded = true
+
         let isSaved = saveContentSizesIfNeeded()
         if isSaved {
             uiInteractions[.layoutChanged]?.publish()
         }
-
-        isLayoutLoaded = true
     }
 }
 

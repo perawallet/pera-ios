@@ -361,7 +361,7 @@ extension ASADetailScreen {
             self.copyToClipboardController.copyID(self.asset)
         }
 
-        let viewModel = ASAProfileViewModel(
+        let viewModel = ASADetailProfileViewModel(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter

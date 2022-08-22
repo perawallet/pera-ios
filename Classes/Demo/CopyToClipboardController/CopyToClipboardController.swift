@@ -54,6 +54,18 @@ extension CopyToClipboardController {
     }
 
     func copyID(
+        _ asset: AssetDecoration
+    ) {
+        let idCopy = String(asset.id)
+        let interaction = CopyToClipboardInteraction(
+            title: "asset-id-copied-title".localized,
+            body: "#\(idCopy)"
+        )
+        let item = ClipboardItem(copy: idCopy, interaction: interaction)
+        return copy(item)
+    }
+
+    func copyID(
         _ id: AssetID
     ) {
         let idCopy = String(id)

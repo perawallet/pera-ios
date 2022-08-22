@@ -12,16 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASAProfileViewModel.swift
+//   AsaReportListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol ASAProfileViewModel: ViewModel {
-    var icon: ImageSource? { get }
-    var name: RightAccessorizedLabelModel? { get }
-    var titleSeparator: TextProvider? { get }
-    var id: TextProvider? { get }
-    var primaryValue: TextProvider? { get }
-    var secondaryValue: TextProvider? { get }
+struct AsaReportListItemButtonViewModel: ListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+
+    init(_ asset: Asset) {
+        self.icon = "icon-asset-report"
+        self.title = Self.getTitle(
+            "asa-verification-suspicious-report".localized(asset.naming.unitName ?? ""),
+            Colors.Helpers.negative
+        )
+        self.subtitle = nil
+    }
 }

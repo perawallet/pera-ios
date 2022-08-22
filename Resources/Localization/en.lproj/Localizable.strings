@@ -1135,6 +1135,7 @@
 "asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
 "asa-verification-detail-suspicious-bold" = "scam attempt";
 "asa-verification-learn-more" = "Learn more about ASA verification";
+"asa-verification-suspicious-report" = "Report %@";
 
 // MARK: Social Media Platforms
 "social-media-platform-title" = "SOCIAL MEDIA";
@@ -1152,3 +1153,6 @@
 "verification-info-body-first-highlight" = "automatically";
 "verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
 "verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+
+// MARK: Total Supply
+"asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";

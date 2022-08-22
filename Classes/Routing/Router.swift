@@ -461,6 +461,17 @@ class Router:
             aViewController.eventHandler = eventHandler
 
             viewController = aViewController
+        case .asaDiscovery(let asset):
+            let dataController =
+                ASADiscoveryScreenAPIDataController(asset: asset, api: appConfiguration.api)
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = ASADiscoveryScreen(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
