@@ -28,7 +28,11 @@ final class ASADiscoveryScreen:
     private lazy var profileView = ASAProfileView()
 
     private lazy var aboutFragmentScreen =
-        ASAAboutScreen(asset: dataController.asset, configuration: configuration)
+        ASAAboutScreen(
+            asset: dataController.asset,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
 
     private lazy var currencyFormatter = CurrencyFormatter()
 

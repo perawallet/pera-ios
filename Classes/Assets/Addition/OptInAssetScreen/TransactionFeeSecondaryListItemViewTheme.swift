@@ -33,8 +33,6 @@ struct TransactionFeeSecondaryListItemViewTheme: SecondaryListItemViewTheme {
         titleMinWidthRatio = 0.2
         titleMaxWidthRatio = 0.35
         minimumSpacingBetweenTitleAndAccessory = 12
-        accessory = SecondaryListItemValueCommonViewTheme(
-            isMultiline: false
-        )
+        accessory = SecondaryListItemValueCommonViewTheme(family)
     }
 }

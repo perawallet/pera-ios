@@ -26,6 +26,7 @@ final class ASAAboutScreen:
 
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
+    private lazy var aboutView = AssetAboutSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
     private lazy var descriptionView = ShowMoreView()
     private lazy var socialMediaView = GroupedListItemButton()
@@ -37,24 +38,19 @@ final class ASAAboutScreen:
     private lazy var mailComposer = MailComposer()
 
     private var asset: Asset
-
-    private var isShowMoreVisible: Bool = true
+    private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASAAboutScreenTheme()
 
     init(
         asset: Asset,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
-
-        self.mailComposer.configureMail(for: .report(assetId: asset.id))
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        mailComposer.delegate = self
     }
 
     override func viewDidLoad() {
@@ -153,7 +149,7 @@ extension ASAAboutScreen {
         for section in sections {
             switch section {
             case .statistics: addStatistics()
-            case .about: break
+            case .about: addAbout()
             case .verificationTier: addVerificationTier()
             case .description: addDescription()
             case .socialMedia: addSocialMedia()
@@ -170,7 +166,7 @@ extension ASAAboutScreen {
             case .statistics:
                 bindStatisticsData()
             case .about:
-                break
+                bindAboutData()
             case .verificationTier:
                 if verificationTierView.isDescendant(of: contextView) {
                     bindVerificationTierData()
@@ -199,14 +195,14 @@ extension ASAAboutScreen {
         }
     }
 
-    private func removeSections() {
-        contextView.deleteAllSubviews()
-    }
-
     private func addStatistics() {
         statisticsView.customize(theme.statistics)
 
         contextView.addArrangedSubview(statisticsView)
+        contextView.setCustomSpacing(
+            theme.spacingBetweenStatisticsAndAbout,
+            after: statisticsView
+        )
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -224,6 +220,167 @@ extension ASAAboutScreen {
             currencyFormatter: currencyFormatter
         )
         statisticsView.bindData(viewModel)
+
+        statisticsView.startObserving(event: .showTotalSupplyInfo) {
+            [unowned self] in
+            self.openTotalSupplyInfo()
+        }
+    }
+
+    private func addAbout() {
+        aboutView.customize(theme.about)
+
+        contextView.addArrangedSubview(aboutView)
+
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: aboutView,
+            margin: theme.spacingBetweenAboutAndSeparator
+        )
+
+        bindAboutData()
+    }
+
+    private func bindAboutData() {
+        if asset.isAlgo {
+            bindAlgoAboutData()
+        } else {
+            bindAssetAboutData()
+        }
+    }
+
+    private func bindAlgoAboutData() {
+        let viewModel = AssetAboutSectionViewModel(asset: asset)
+
+        if asset.url.unwrapNonEmptyString() != nil {
+            let item = makeASAURLItem()
+            viewModel.addItem(item)
+        }
+
+        aboutView.bindData(viewModel)
+    }
+
+    private func bindAssetAboutData() {
+        let viewModel = AssetAboutSectionViewModel(asset: asset)
+
+        viewModel.addItem(makeASAIDItem())
+
+        if asset.creator != nil {
+            let item = makeASACreatorItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.url.unwrapNonEmptyString() != nil {
+            let item = makeASAURLItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.explorerURL != nil {
+            let item = makeASAExplorerURLItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.projectURL != nil {
+            let item = makeASAProjectWebsiteItem()
+            viewModel.addItem(item)
+        }
+
+        aboutView.bindData(viewModel)
+    }
+
+    private func makeASAIDItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+            self.copyToClipboardController.copyID(self.asset)
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAIDSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASACreatorItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let address = self.asset.creator?.address {
+                let source = AlgoExplorerExternalSource(
+                    address: address,
+                    network: self.api!.network
+                )
+                self.open(source.url)
+            }
+        }
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+
+            if let address = self.asset.creator?.address {
+                self.copyToClipboardController.copyAddress(address)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASACreatorSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAURLItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+
+            if let urlString = self.asset.url {
+                self.copyToClipboardController.copyURL(urlString)
+            }
+        }
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let urlString = self.asset.url {
+                self.open(URL(string: urlString))
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAURLSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAExplorerURLItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let explorerURL = self.asset.explorerURL {
+                self.open(explorerURL)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenShowOnSecondaryListItemViewModel(),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAProjectWebsiteItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let projectURL = self.asset.projectURL {
+                self.open(projectURL)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
     }
 
     private func addVerificationTier(atIndex index: Int? = nil) {
@@ -246,6 +403,7 @@ extension ASAAboutScreen {
 
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
+
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
 
@@ -361,7 +519,7 @@ extension ASAAboutScreen {
 }
 
 extension ASAAboutScreen {
-    func openTotalSupplyInfo() {
+    private func openTotalSupplyInfo() {
         let uiSheet = UISheet(
             title: "title-total-supply".localized.bodyLargeMedium(),
             body: "asset-total-supply-body".localized.bodyRegular()
@@ -385,6 +543,8 @@ extension ASAAboutScreen {
 extension ASAAboutScreen {
     @objc
     private func openMailComposer() {
+        mailComposer.delegate = self
+        mailComposer.configureMail(for: .report(assetId: asset.id))
         mailComposer.present(from: self)
     }
 }
@@ -411,7 +571,7 @@ extension ASAAboutScreen {
             }
 
             list.append(.statistics)
-//            list.append(.about)
+            list.append(.about)
 
             if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
                 list.append(.verificationTier)
@@ -422,8 +582,8 @@ extension ASAAboutScreen {
             }
 
             if asset.discordURL != nil ||
-               asset.telegramURL != nil ||
-               asset.twitterURL != nil {
+                asset.telegramURL != nil ||
+                asset.twitterURL != nil {
                 list.append(.socialMedia)
             }
 

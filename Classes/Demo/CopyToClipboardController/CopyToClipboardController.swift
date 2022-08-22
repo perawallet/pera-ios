@@ -30,6 +30,17 @@ extension CopyToClipboardController {
         copyAddress(account.address)
     }
 
+    func copyURL(
+        _ url: String
+    ) {
+        let interaction = CopyToClipboardInteraction(
+            title: "url-copied".localized,
+            body: url /// <todo> Remove protocol parts & trailing slash from URL.
+        )
+        let item = ClipboardItem(copy: url, interaction: interaction)
+        copy(item)
+    }
+
     func copyAddress(
         _ address: String
     ) {

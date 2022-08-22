@@ -12,31 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SecondaryListItemViewTheme.swift
+//   ASAAboutScreenInteractableSecondaryListItemTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol SecondaryListItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var contentEdgeInsets: LayoutPaddings { get }
-    var title: TextStyle { get }
-    var titleMinWidthRatio: LayoutMetric { get }
-    var titleMaxWidthRatio: LayoutMetric { get }
-    var minimumSpacingBetweenTitleAndAccessory: LayoutMetric { get }
-    var accessory: SecondaryListItemValueViewTheme { get }
-}
-
-extension SecondaryListItemViewTheme {
-    var titleSupportsMultiline: Bool {
-        let numberOfLines = title.textOverflow?.numberOfLines ?? 1
-        return numberOfLines > 1 || numberOfLines == 0
-    }
-}
-
-struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
+struct ASAAboutScreenInteractableSecondaryListItemViewTheme: SecondaryListItemViewTheme {
     var contentEdgeInsets: LayoutPaddings
     var title: TextStyle
     var titleMinWidthRatio: LayoutMetric
@@ -47,14 +28,14 @@ struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
     init(
         _ family: LayoutFamily
     ) {
-        self.contentEdgeInsets = (10, 24, 10, 24)
+        self.contentEdgeInsets = (10, 0, 10, 0)
         self.title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
         self.titleMinWidthRatio = 0.2
         self.titleMaxWidthRatio = 0.35
         self.minimumSpacingBetweenTitleAndAccessory = 12
         self.accessory = SecondaryListItemValueCommonViewTheme(
-            isMultiline: true,
-            isInteractable: false
+            isMultiline: false,
+            isInteractable: true
         )
     }
 }

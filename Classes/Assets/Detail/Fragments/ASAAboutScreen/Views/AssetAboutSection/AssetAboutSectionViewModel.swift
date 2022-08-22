@@ -17,9 +17,27 @@
 import Foundation
 import MacaroonUIKit
 
-protocol AssetAboutSectionViewModel: ViewModel {
-    var title: TextProvider? { get }
-    var items: [AssetAboutSectionItem]? { get }
+final class AssetAboutSectionViewModel: ViewModel {
+    private(set) var title: TextProvider?
+    private(set) var items: [AssetAboutSectionItem] = []
+
+    init(asset: Asset) {
+        bindTitle(asset: asset)
+    }
+
+    func addItem(
+        _ item: AssetAboutSectionItem
+    ) {
+        items.append(item)
+    }
+}
+
+extension AssetAboutSectionViewModel {
+    func bindTitle(asset: Asset) {
+        title = getAboutTitle(
+            param: asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        )
+    }
 }
 
 extension AssetAboutSectionViewModel {

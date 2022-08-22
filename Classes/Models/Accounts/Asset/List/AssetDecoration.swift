@@ -28,6 +28,7 @@ final class AssetDecoration: ALGEntityModel {
     let total: UInt64?
     let creator: AssetCreator?
     let collectible: Collectible?
+    let projectURL: URL?
     let explorerURL: URL?
     let url: String?
     let verificationTier: AssetVerificationTier
@@ -53,6 +54,9 @@ final class AssetDecoration: ALGEntityModel {
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.total = apiModel.total.unwrap { UInt64($0) }
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
+        self.projectURL = apiModel.projectURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
@@ -78,6 +82,7 @@ final class AssetDecoration: ALGEntityModel {
         self.usdValue = nil
         self.total = assetDetail.total
         self.creator = AssetCreator(address: assetDetail.creator)
+        self.projectURL = nil
         self.explorerURL = nil
         self.collectible = nil
         self.url = assetDetail.url
@@ -98,6 +103,7 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.total = total.unwrap { String(describing: $0) }
         apiModel.creator = creator?.encode()
+        apiModel.projectURL = projectURL?.absoluteString
         apiModel.explorerURL = explorerURL
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
@@ -118,6 +124,7 @@ final class AssetDecoration: ALGEntityModel {
         self.usdValue = nil
         self.total = asset.total
         self.creator = asset.creator
+        self.projectURL = asset.projectURL
         self.explorerURL = nil
         self.collectible = nil
         self.url = asset.url
@@ -138,6 +145,7 @@ extension AssetDecoration {
         var fractionDecimals: Int?
         var usdValue: String?
         var creator: AssetCreator.APIModel?
+        var projectURL: String?
         var explorerURL: URL?
         var collectible: Collectible.APIModel?
         var url: String?
@@ -161,6 +169,7 @@ extension AssetDecoration {
             case fractionDecimals = "fraction_decimals"
             case usdValue = "usd_value"
             case creator
+            case projectURL = "project_url"
             case explorerURL = "explorer_url"
             case collectible
             case url

@@ -42,6 +42,7 @@ final class CollectibleAsset: Asset {
     let url: String?
     let description: String?
     let properties: [CollectibleTrait]?
+    let projectURL: URL?
     let explorerURL: URL?
     let logoURL: URL?
     let discordURL: URL?
@@ -104,6 +105,7 @@ final class CollectibleAsset: Asset {
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
+        self.projectURL = decoration.projectURL
         self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
         self.discordURL = decoration.discordURL

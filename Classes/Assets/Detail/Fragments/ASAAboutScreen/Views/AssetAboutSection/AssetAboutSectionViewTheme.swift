@@ -28,7 +28,7 @@ struct AssetAboutSectionViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        titleEdgeInsets = (0, 24, 0, 24)
+        titleEdgeInsets = (0, 0, 0, 0)
         spacingBetweenTitleAndItems = 14
         itemSpacing = .zero
     }

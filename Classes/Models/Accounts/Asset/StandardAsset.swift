@@ -32,6 +32,8 @@ final class StandardAsset: Asset {
     let verificationTier: AssetVerificationTier
     let creator: AssetCreator?
     let url: String?
+    let projectURL: URL?
+    let explorerURL: URL?
     let logoURL: URL?
     let description: String?
     let discordURL: URL?
@@ -68,6 +70,8 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
         self.total = decoration.total
 
@@ -102,6 +106,8 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
         self.total = decoration.total
         self.amount = 0

@@ -79,6 +79,7 @@
 "title-csv" = "CSV";
 "activity" = "Activity";
 "about" = "About";
+"url-copied" = "URL copied to clipboard";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1157,3 +1158,12 @@
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
+
+// MARK: ASA About
+"asa-about-asa-id" = "ASA ID";
+"asa-about-asa-url" = "ASA URL";
+"asa-about-asa-creator" = "Creator";
+"asa-about-asa-show-on" = "Show on";
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+"asa-about-asa-project-website" = "Project website";
+"asa-about-asa-open-with-browser" = "Open with Browser";

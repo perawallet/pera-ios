@@ -12,29 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetAboutSectionItem.swift
+//   URL+Extensions.swift
 
 import Foundation
 
-final class AssetAboutSectionItem {
-    let viewModel: SecondaryListItemViewModel
-    let theme: SecondaryListItemViewTheme
-    let handlers: Handlers?
-    
-    init(
-        viewModel: SecondaryListItemViewModel,
-        theme: SecondaryListItemViewTheme,
-        handlers: Handlers? = nil
-    ) {
-        self.viewModel = viewModel
-        self.theme = theme
-        self.handlers = handlers
-    }
-}
-
-extension AssetAboutSectionItem {
-    struct Handlers {
-        var didTapAccessory: EmptyHandler?
-        var didLongPressAccessory: EmptyHandler?
+extension URL {
+    var presentationString: String? {
+        return host?.without(prefix: "www.")
     }
 }

@@ -43,9 +43,10 @@ struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
 
     init(
         _ family: LayoutFamily = .current,
-        isMultiline: Bool
+        isMultiline: Bool,
+        isInteractable: Bool
     ) {
-        self.view = [ .isInteractable(false) ]
+        self.view = [ .isInteractable(isInteractable) ]
         self.backgroundImage = [ .isInteractable(false) ]
         self.contentEdgeInsets = (0, 0, 0, 0)
         self.iconLayoutOffset = (10, 0)
@@ -62,7 +63,8 @@ struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
     ) {
         self.init(
             family,
-            isMultiline: false
+            isMultiline: false,
+            isInteractable: false
         )
     }
 }
