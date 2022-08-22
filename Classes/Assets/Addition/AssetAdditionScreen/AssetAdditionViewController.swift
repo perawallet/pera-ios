@@ -167,8 +167,40 @@ extension AssetAdditionViewController {
     private func clearTransactionCache(
         _ transactionController: TransactionController
     ) {
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex {
+        if let assetID = getAssetID(from: transactionController) {
             optInTransactions[assetID] = nil
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func findCell(
+        from asset: AssetDecoration
+    ) -> OptInAssetListItemCell?  {
+        let item = AssetListViewItem.asset(OptInAssetListItem(asset: asset))
+        guard let indexPath = dataSource.indexPath(for: item) else {
+            return nil
+        }
+
+        let cell = dataSource.collectionView(
+            assetListView.collectionView,
+            cellForItemAt: indexPath
+        ) as? OptInAssetListItemCell
+
+        return cell
+    }
+
+    private func restoreCellState(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let assetDetail = optInTransactions[assetID]?.asset,
+           let cell = findCell(from: assetDetail) {
+            cell.accessory = .add
         }
     }
 }
@@ -380,8 +412,9 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
+        restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
-        
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -392,6 +425,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
+        restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
         switch error {
@@ -408,7 +442,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     ) {
         loadingController?.stopLoading()
 
-        guard let assetID = transactionController.assetTransactionDraft?.assetIndex,
+        guard let assetID = getAssetID(from: transactionController),
               let assetDetail = optInTransactions[assetID]?.asset else {
             return
         }
@@ -418,14 +452,24 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             didAdd: assetDetail
         )
 
-        /// <todo> Change state as loading
+        if let cell = findCell(from: assetDetail) {
+            cell.accessory = .loading
+        }
     }
 
     func transactionController(
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
     ) {
-        /// <todo> Change state as complete
+        guard let assetID = getAssetID(from: transactionController),
+              let assetDetail = optInTransactions[assetID]?.asset else {
+            return
+        }
+
+        if let cell = findCell(from: assetDetail) {
+            cell.accessory = .check
+        }
+
         clearTransactionCache(transactionController)
     }
 
