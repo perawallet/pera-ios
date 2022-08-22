@@ -62,9 +62,9 @@ extension Colors {
         Color {
         case suspiciousBannerBackground = "ASABanners/suspiciousBannerBg"
         case suspiciousBannerContent = "ASABanners/suspiciousBannerContent"
-        case trustedBannerBackground = "ASABanners/trustedIconBg"
+        case trustedBannerBackground = "ASABanners/trustedBannerBg"
         case trustedBannerContent = "ASABanners/trustedBannerContent"
-        case verifiedBannerBackground = "ASABanners/verifiedIconBg"
+        case verifiedBannerBackground = "ASABanners/verifiedBannerBg"
         case verifiedBannerContent = "ASABanners/verifiedBannerContent"
     }
 }

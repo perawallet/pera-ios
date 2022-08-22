@@ -48,6 +48,6 @@ final class Algo: Asset {
         /// <note>
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
-        self.total = 10_000
+        self.total = 10_000_000_000_000_000
     }
 }

@@ -26,6 +26,7 @@ final class ASAAboutScreen:
 
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
+    private lazy var verificationTierView = AssetVerificationInfoView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -106,20 +107,19 @@ extension ASAAboutScreen {
     }
 
     private func addContext() {
-        contextView.distribution = .fillProportionally
+        contextView.distribution = .fill
         contextView.alignment = .fill
         contextView.spacing = theme.spacingBetweenSections
-        contextView.directionalLayoutMargins = theme.contentEdgeInsets
-        contextView.isLayoutMarginsRelativeArrangement = true
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom <= 0
-            $0.trailing == 0
+            $0.top == 0 + theme.contextEdgeInsets.top
+            $0.leading == 0 + theme.contextEdgeInsets.leading
+            $0.bottom <= 0 + theme.contextEdgeInsets.bottom
+            $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
         addStatistics()
+        addVerificationTier()
     }
 
     private func addStatistics() {
@@ -139,5 +139,25 @@ extension ASAAboutScreen {
             to: statisticsView,
             margin: theme.spacingBetweenSectionAndSeparator
         )
+    }
+
+    private func addVerificationTier() {
+        verificationTierView.customize(theme.verificationTier)
+
+        contextView.addArrangedSubview(verificationTierView)
+
+        let viewModel = AssetVerificationInfoViewModel(asset.verificationTier)
+        verificationTierView.bindData(viewModel)
+
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: verificationTierView,
+            margin: theme.spacingBetweenVerificationTierAndSeparator
+        )
+
+        verificationTierView.startObserving(event: .learnMore) {
+            [unowned self] in
+            self.open(AlgorandWeb.asaVerificationSupport.link)
+        }
     }
 }

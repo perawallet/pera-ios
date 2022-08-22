@@ -34,7 +34,8 @@ struct AssetStatisticsSectionTotalSupplyViewTheme: PrimaryTitleViewTheme {
         ]
         primaryTitleAccessoryContentEdgeInsets = (6, 0)
         secondaryTitle = [
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .textOverflow(SingleLineFittingText())
         ]
         spacingBetweenPrimaryAndSecondaryTitles = 4
     }

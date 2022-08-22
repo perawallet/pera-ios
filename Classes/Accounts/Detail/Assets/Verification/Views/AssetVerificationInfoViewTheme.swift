@@ -23,13 +23,19 @@ struct AssetVerificationInfoViewTheme:
     LayoutSheet {
     let assetVerification: AssetVerificationTierInfoBoxViewTheme
     let learnMore: ListItemButtonTheme
+    let learnMoreMinHeight: LayoutMetric
     let spacingBetweenAssetVerificationAndLearnMore: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        self.assetVerification = AssetVerificationTierInfoBoxViewTheme()
-        self.learnMore = ListItemButtonTheme()
-        self.spacingBetweenAssetVerificationAndLearnMore = 24
+        self.assetVerification = AssetVerificationTierInfoBoxViewTheme(family)
+
+        var learnMoreTheme = ListItemButtonTheme(family)
+        learnMoreTheme.contentMinHeight = nil
+        self.learnMore = learnMoreTheme
+
+        self.learnMoreMinHeight = 44
+        self.spacingBetweenAssetVerificationAndLearnMore = 20
     }
 }

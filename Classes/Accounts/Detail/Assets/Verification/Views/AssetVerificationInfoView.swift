@@ -104,6 +104,7 @@ extension AssetVerificationInfoView {
         addSubview(learnMoreView)
         learnMoreView.fitToVerticalIntrinsicSize()
         learnMoreView.snp.makeConstraints {
+            $0.greaterThanHeight(theme.learnMoreMinHeight)
             $0.top == assetVerificationBoxView.snp.bottom + theme.spacingBetweenAssetVerificationAndLearnMore
             $0.leading == 0
             $0.bottom == 0

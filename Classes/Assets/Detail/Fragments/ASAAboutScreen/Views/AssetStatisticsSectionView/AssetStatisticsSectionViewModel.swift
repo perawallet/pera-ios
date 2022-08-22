@@ -33,7 +33,10 @@ struct AssetStatisticsSectionViewModel: ViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        bindTotalSupply()
+        bindTotalSupply(
+            asset: asset,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -57,7 +60,13 @@ extension AssetStatisticsSectionViewModel {
         )
     }
 
-    mutating func bindTotalSupply() {
-        totalSupply = AssetStatisticsSectionTotalSupplyViewModel()
+    mutating func bindTotalSupply(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        totalSupply = AssetStatisticsSectionTotalSupplyViewModel(
+            asset: asset,
+            currencyFormatter: currencyFormatter
+        )
     }
 }

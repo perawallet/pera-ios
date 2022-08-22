@@ -25,7 +25,7 @@ struct ListItemButtonTheme:
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
     var iconAlignment: ListItemButton.IconViewAlignment
-    var contentMinHeight: LayoutMetric
+    var contentMinHeight: LayoutMetric?
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
     var subtitle: TextStyle

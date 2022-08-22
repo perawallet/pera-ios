@@ -22,8 +22,10 @@ struct ASAAboutScreenTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var contentEdgeInsets: NSDirectionalEdgeInsets
+    var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
+    var verificationTier: AssetVerificationInfoViewTheme
+    var spacingBetweenVerificationTierAndSeparator: CGFloat
     var sectionSeparator: Separator
     var spacingBetweenSectionAndSeparator: CGFloat
     var spacingBetweenSections: CGFloat
@@ -32,8 +34,10 @@ struct ASAAboutScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contentEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
+        self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.statistics = AssetStatisticsSectionViewTheme(family)
+        self.verificationTier = AssetVerificationInfoViewTheme(family)
+        self.spacingBetweenVerificationTierAndSeparator = 20
         self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((24, 24)))
         self.spacingBetweenSectionAndSeparator = 36
         self.spacingBetweenSections = 72

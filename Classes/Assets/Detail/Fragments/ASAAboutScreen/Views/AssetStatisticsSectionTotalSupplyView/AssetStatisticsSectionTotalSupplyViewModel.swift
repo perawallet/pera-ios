@@ -14,6 +14,7 @@
 
 //   AssetStatisticsSectionTotalSupplyViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
@@ -21,10 +22,16 @@ struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?
 
-    init() {
+    init(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
         bindTitle()
         bindIcon()
-        bindSubtitle()
+        bindSubtitle(
+            asset: asset,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -41,10 +48,29 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
         primaryTitleAccessory = "icon-info-20"
     }
 
-    mutating func bindSubtitle() {
-        secondaryTitle = "7.27T"
-            .bodyLargeMedium(
-                lineBreakMode: .byTruncatingTail
-            )
+    mutating func bindSubtitle(
+        asset: Asset,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
+            bindSubtitle(text: CurrencyConstanst.unavailable)
+            return
+        }
+
+        /// totalSupply = total * 10^-(decimals)
+        let decimals = asset.decimals
+        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
+
+        /// <note>
+        /// The total supply isn't a value based on any currency.
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = nil
+
+        let text = currencyFormatter.format(totalSupply)
+        bindSubtitle(text: text)
+    }
+
+    mutating func bindSubtitle(text: String?) {
+        secondaryTitle = text?.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
     }
 }

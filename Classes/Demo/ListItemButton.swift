@@ -96,12 +96,13 @@ extension ListItemButton {
         
         addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.centerY == 0
-            $0.top == 0 + theme.contentVerticalPaddings.top
+            $0.top == theme.contentVerticalPaddings.top
             $0.leading == iconView.snp.trailing
-            $0.bottom == 0 + theme.contentVerticalPaddings.bottom
-            
-            $0.greaterThanHeight(theme.contentMinHeight)
+            $0.bottom == theme.contentVerticalPaddings.bottom
+
+            if let contentMinHeight = theme.contentMinHeight {
+                $0.greaterThanHeight(contentMinHeight)
+            }
         }
         
         addTitle(theme)
