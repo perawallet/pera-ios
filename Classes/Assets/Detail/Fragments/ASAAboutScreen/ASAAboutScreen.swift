@@ -40,8 +40,6 @@ final class ASAAboutScreen:
     private var asset: Asset
     private let copyToClipboardController: CopyToClipboardController
 
-    private var isShowMoreVisible: Bool = true
-
     private let theme = ASAAboutScreenTheme()
 
     init(
@@ -51,14 +49,8 @@ final class ASAAboutScreen:
     ) {
         self.asset = asset
         self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
-
-        self.mailComposer.configureMail(for: .report(assetId: asset.id))
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        mailComposer.delegate = self
     }
 
     override func viewDidLoad() {
@@ -157,7 +149,7 @@ extension ASAAboutScreen {
         for section in sections {
             switch section {
             case .statistics: addStatistics()
-            case .about: break
+            case .about: addAbout()
             case .verificationTier: addVerificationTier()
             case .description: addDescription()
             case .socialMedia: addSocialMedia()
@@ -174,7 +166,7 @@ extension ASAAboutScreen {
             case .statistics:
                 bindStatisticsData()
             case .about:
-                break
+                bindAboutData()
             case .verificationTier:
                 if verificationTierView.isDescendant(of: contextView) {
                     bindVerificationTierData()
@@ -207,6 +199,10 @@ extension ASAAboutScreen {
         statisticsView.customize(theme.statistics)
 
         contextView.addArrangedSubview(statisticsView)
+        contextView.setCustomSpacing(
+            theme.spacingBetweenStatisticsAndAbout,
+            after: statisticsView
+        )
 
         contextView.attachSeparator(
             theme.sectionSeparator,
@@ -236,10 +232,155 @@ extension ASAAboutScreen {
 
         contextView.addArrangedSubview(aboutView)
 
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: aboutView,
+            margin: theme.spacingBetweenAboutAndSeparator
+        )
+
+        bindAboutData()
+    }
+
+    private func bindAboutData() {
+        if asset.isAlgo {
+            bindAlgoAboutData()
+        } else {
+            bindAssetAboutData()
+        }
+    }
+
+    private func bindAlgoAboutData() {
         let viewModel = AssetAboutSectionViewModel(asset: asset)
-        addAboutItems(to: viewModel)
+
+        if asset.url.unwrapNonEmptyString() != nil {
+            let item = makeASAURLItem()
+            viewModel.addItem(item)
+        }
 
         aboutView.bindData(viewModel)
+    }
+
+    private func bindAssetAboutData() {
+        let viewModel = AssetAboutSectionViewModel(asset: asset)
+
+        viewModel.addItem(makeASAIDItem())
+
+        if asset.creator != nil {
+            let item = makeASACreatorItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.url.unwrapNonEmptyString() != nil {
+            let item = makeASAURLItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.explorerURL != nil {
+            let item = makeASAExplorerURLItem()
+            viewModel.addItem(item)
+        }
+
+        if asset.projectURL != nil {
+            let item = makeASAProjectWebsiteItem()
+            viewModel.addItem(item)
+        }
+
+        aboutView.bindData(viewModel)
+    }
+
+    private func makeASAIDItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+            self.copyToClipboardController.copyID(self.asset)
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAIDSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASACreatorItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let address = self.asset.creator?.address {
+                let source = AlgoExplorerExternalSource(
+                    address: address,
+                    network: self.api!.network
+                )
+                self.open(source.url)
+            }
+        }
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+
+            if let address = self.asset.creator?.address {
+                self.copyToClipboardController.copyAddress(address)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASACreatorSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAURLItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didLongPressAccessory = {
+            [unowned self] in
+
+            if let urlString = self.asset.url {
+                self.copyToClipboardController.copyURL(urlString)
+            }
+        }
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let urlString = self.asset.url {
+                self.open(URL(string: urlString))
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAURLSecondaryListItemViewModel(asset: asset),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAExplorerURLItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let explorerURL = self.asset.explorerURL {
+                self.open(explorerURL)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenShowOnSecondaryListItemViewModel(),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
+    }
+
+    private func makeASAProjectWebsiteItem() -> AssetAboutSectionItem {
+        var handlers = AssetAboutSectionItem.Handlers()
+        handlers.didTapAccessory = {
+            [unowned self] in
+
+            if let projectURL = self.asset.projectURL {
+                self.open(projectURL)
+            }
+        }
+        return AssetAboutSectionItem(
+            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(),
+            theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
+            handlers: handlers
+        )
     }
 
     private func addVerificationTier(atIndex index: Int? = nil) {
@@ -402,6 +543,8 @@ extension ASAAboutScreen {
 extension ASAAboutScreen {
     @objc
     private func openMailComposer() {
+        mailComposer.delegate = self
+        mailComposer.configureMail(for: .report(assetId: asset.id))
         mailComposer.present(from: self)
     }
 }
@@ -412,174 +555,43 @@ extension ASAAboutScreen: MailComposerDelegate {
 }
 
 extension ASAAboutScreen {
-    private func addAboutItems(
-        to viewModel: AssetAboutSectionViewModel
-    ) {
-        if asset.isAlgo {
-            addAlgoAboutItems(to: viewModel)
-            return
-        }
+    private enum Section {
+        case statistics
+        case about
+        case verificationTier
+        case description
+        case socialMedia
+        case report
 
-        addAssetAboutItems(to: viewModel)
-    }
+        static func ordered(by asset: Asset) -> [Section] {
+            var list: [Section] = []
 
-    private func addAlgoAboutItems(
-        to viewModel: AssetAboutSectionViewModel
-    ) {
-        addASAURLItemIfNeeded(to: viewModel)
-    }
-
-    private func addAssetAboutItems(
-        to viewModel: AssetAboutSectionViewModel
-    ) {
-        addASAIDItem(to: viewModel)
-        addASACreatorItemIfNeeded(to: viewModel)
-        addASAURLItemIfNeeded(to: viewModel)
-        addASAExplorerURLItemIfNeeded(to: viewModel)
-        addASAProjectWebsiteItemIfNeeded(to: viewModel)
-    }
-
-    private func addASAIDItem(to viewModel: AssetAboutSectionViewModel) {
-        var handlers = AssetAboutSectionItem.Handlers()
-        handlers.didLongPressAccessory = {
-            [unowned self] in
-            self.copyToClipboardController.copyID(self.asset)
-        }
-
-        viewModel.addItem(
-            AssetAboutSectionItem(
-                viewModel: ASAAboutScreenASAIDSecondaryListItemViewModel(asset: asset),
-                theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
-                handlers: handlers
-            )
-        )
-    }
-
-    private func addASACreatorItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
-        if let creator = asset.creator {
-            var handlers = AssetAboutSectionItem.Handlers()
-            handlers.didTapAccessory = {
-                [unowned self] in
-                let source = AlgoExplorerExternalSource(
-                    address: creator.address,
-                    network: self.api!.network
-                )
-
-                self.open(source.url)
-            }
-            handlers.didLongPressAccessory = {
-                [unowned self] in
-                self.copyToClipboardController.copyAddress(creator.address)
+            if asset.verificationTier.isSuspicious {
+                list.append(.verificationTier)
             }
 
-            viewModel.addItem(
-                AssetAboutSectionItem(
-                    viewModel: ASAAboutScreenASACreatorSecondaryListItemViewModel(asset: asset),
-                    theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
-                    handlers: handlers
-                )
-            )
-        }
-    }
+            list.append(.statistics)
+            list.append(.about)
 
-    private func addASAURLItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
-        if let urlString = asset.url {
-            var handlers = AssetAboutSectionItem.Handlers()
-            handlers.didLongPressAccessory = {
-                [unowned self] in
-                self.copyToClipboardController.copyURL(urlString)
-            }
-            handlers.didTapAccessory = {
-                [unowned self] in
-                self.open(URL(string: urlString))
+            if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
+                list.append(.verificationTier)
             }
 
-            viewModel.addItem(
-                AssetAboutSectionItem(
-                    viewModel: ASAAboutScreenASAURLSecondaryListItemViewModel(asset: asset),
-                    theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
-                    handlers: handlers
-                )
-            )
-        }
-    }
-
-    private func addASAExplorerURLItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
-        if let explorerURL = asset.explorerURL {
-            var handlers = AssetAboutSectionItem.Handlers()
-            handlers.didTapAccessory = {
-                [unowned self] in
-                self.open(explorerURL)
+            if asset.description.unwrapNonEmptyString() != nil {
+                list.append(.description)
             }
 
-            viewModel.addItem(
-                AssetAboutSectionItem(
-                    viewModel: ASAAboutScreenShowOnSecondaryListItemViewModel(),
-                    theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
-                    handlers: handlers
-                )
-            )
-        }
-    }
-
-    private func addASAProjectWebsiteItemIfNeeded(to viewModel: AssetAboutSectionViewModel) {
-        /// <todo>: Bind asset's `project_url` when it is ready.
-        if let projectURL = URL(string: "projectURL TODO") {
-            var handlers = AssetAboutSectionItem.Handlers()
-            handlers.didTapAccessory = {
-                [unowned self] in
-                self.open(projectURL)
+            if asset.discordURL != nil ||
+                asset.telegramURL != nil ||
+                asset.twitterURL != nil {
+                list.append(.socialMedia)
             }
 
-            viewModel.addItem(
-                AssetAboutSectionItem(
-                    viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(),
-                    theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
-                    handlers: handlers
-                )
-            )
+            if asset.verificationTier.isSuspicious {
+                list.append(.report)
+            }
+
+            return list
         }
     }
 }
-
-            extension ASAAboutScreen {
-                private enum Section {
-                    case statistics
-                    case about
-                    case verificationTier
-                    case description
-                    case socialMedia
-                    case report
-
-                    static func ordered(by asset: Asset) -> [Section] {
-                        var list: [Section] = []
-
-                        if asset.verificationTier.isSuspicious {
-                            list.append(.verificationTier)
-                        }
-
-                        list.append(.statistics)
-            //            list.append(.about)
-
-                        if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
-                            list.append(.verificationTier)
-                        }
-
-                        if asset.description.unwrapNonEmptyString() != nil {
-                            list.append(.description)
-                        }
-
-                        if asset.discordURL != nil ||
-                           asset.telegramURL != nil ||
-                           asset.twitterURL != nil {
-                            list.append(.socialMedia)
-                        }
-
-                        if asset.verificationTier.isSuspicious {
-                            list.append(.report)
-                        }
-
-                        return list
-                    }
-                }
-            }

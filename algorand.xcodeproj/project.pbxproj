@@ -5023,6 +5023,9 @@
 		F07C3C1128B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
 		F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
 		F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */; };
+		F07C3C1528B43D9F003D55BC /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1428B43D9F003D55BC /* URL+Extensions.swift */; };
+		F07C3C1628B43D9F003D55BC /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1428B43D9F003D55BC /* URL+Extensions.swift */; };
+		F07C3C1728B43D9F003D55BC /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C1428B43D9F003D55BC /* URL+Extensions.swift */; };
 		F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FC276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
@@ -6971,6 +6974,7 @@
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
 		F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+SocialMedia.swift"; sourceTree = "<group>"; };
+		F07C3C1428B43D9F003D55BC /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
 		F07E61882897F564001D2C97 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		F08708C3278A179E00BEE5C2 /* AccountHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHandle.swift; sourceTree = "<group>"; };
@@ -8775,6 +8779,7 @@
 		2B5C58DF23AC363400B907E3 /* URL */ = {
 			isa = PBXGroup;
 			children = (
+				F07C3C1428B43D9F003D55BC /* URL+Extensions.swift */,
 				2B5C58E023AC364700B907E3 /* URL+Link.swift */,
 				F07C3C1028B40C8C003D55BC /* URL+SocialMedia.swift */,
 			);
@@ -16890,6 +16895,7 @@
 				2BD0E7E32789BFA2001145E6 /* AccountListOptionsViewControllerTheme.swift in Sources */,
 				953DEE25279EF63700D76957 /* WCAlgosTransactionViewTheme.swift in Sources */,
 				D46C648B26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
+				F07C3C1728B43D9F003D55BC /* URL+Extensions.swift in Sources */,
 				9568ADE227C7827300668053 /* BuyAlgoDraft.swift in Sources */,
 				2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				2B7A1F9327DE64C80010F52E /* CollectibleDescriptionViewTheme.swift in Sources */,
@@ -19814,6 +19820,7 @@
 				2BCFD6752791A34D00406A2A /* AccountAssetListDataSource.swift in Sources */,
 				2B0F631024EC129D00DA22A6 /* ContactDisplayView.swift in Sources */,
 				2B0F631124EC129D00DA22A6 /* BLEConnectionManager.swift in Sources */,
+				F07C3C1628B43D9F003D55BC /* URL+Extensions.swift in Sources */,
 				2B0F631224EC129D00DA22A6 /* TransactionSendDraft.swift in Sources */,
 				2B58CE1A27FBB9D500A95BB4 /* ManageAssetsListDataController.swift in Sources */,
 				D4241FD126E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
@@ -20321,6 +20328,7 @@
 				D41F4F0B2892E24600B59559 /* TransferAssetBalanceDraft.swift in Sources */,
 				17CADC9C2859C7C1001D19A8 /* SortAccountAssetListLocalDataController.swift in Sources */,
 				D45EC27827C38856004D5E46 /* BannerDraft.swift in Sources */,
+				F07C3C1528B43D9F003D55BC /* URL+Extensions.swift in Sources */,
 				D4241FBA26E763090064CDD0 /* FloatingTextInputFieldView.swift in Sources */,
 				D473CA4C26E15F0C00558598 /* PassphraseCellViewTheme.swift in Sources */,
 				2B3E227526C0837700ED0AAF /* WCAppCallTransactionItemView.swift in Sources */,

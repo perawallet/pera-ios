@@ -43,6 +43,8 @@ final class AssetAboutSectionView:
         _ viewModel: AssetAboutSectionViewModel?
     ) {
         viewModel?.title?.load(in: titleView)
+
+        itemsContextView.deleteAllArrangedSubviews()
         viewModel?.items.forEach(addItem)
     }
 }

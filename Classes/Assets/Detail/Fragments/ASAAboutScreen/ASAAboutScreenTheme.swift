@@ -25,8 +25,9 @@ struct ASAAboutScreenTheme:
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
     var spacingBetweenStatisticsAndSeparator: CGFloat
+    var spacingBetweenStatisticsAndAbout: CGFloat
     var about: AssetAboutSectionViewTheme
-    var spacingBetweenAboutAndVerificationTier: CGFloat
+    var spacingBetweenAboutAndSeparator: CGFloat
     var verificationTier: AssetVerificationInfoViewTheme
     var spacingBetweenVerificationTierAndSeparator: CGFloat
     var spacingBetweenVerificationTierAndSections: CGFloat
@@ -46,10 +47,11 @@ struct ASAAboutScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
-        self.about = AssetAboutSectionViewTheme(family)
-        self.spacingBetweenAboutAndVerificationTier = 22
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.spacingBetweenStatisticsAndSeparator = 36
+        self.spacingBetweenStatisticsAndAbout = 62
+        self.about = AssetAboutSectionViewTheme(family)
+        self.spacingBetweenAboutAndSeparator = 26
         self.verificationTier = AssetVerificationInfoViewTheme(family)
         self.spacingBetweenVerificationTierAndSeparator = 20
         self.description = ShowMoreViewTheme(family)

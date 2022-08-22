@@ -31,6 +31,7 @@ final class Algo: Asset {
     var state: AssetState = .ready
     let url: String? = AlgorandWeb.algorand.rawValue
     let verificationTier: AssetVerificationTier = .trusted
+    let projectURL: URL?
     let explorerURL: URL? = nil
     let logoURL: URL? = nil
     let description: String?
@@ -56,6 +57,7 @@ final class Algo: Asset {
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
         self.total = 10_000_000_000_000_000
         self.description = "asset-algos-description".localized
+        self.projectURL = AlgorandWeb.algorand.link
         self.discordURL = URL(string: "https://discord.com/invite/algorand")
         self.telegramURL = URL(string: "https://t.me/algorand")
         self.twitterURL = URL.twitterURL(username: "Algorand")
