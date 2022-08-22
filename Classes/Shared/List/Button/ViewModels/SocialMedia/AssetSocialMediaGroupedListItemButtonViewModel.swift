@@ -32,7 +32,7 @@ struct AssetSocialMediaGroupedListItemButtonViewModel: GroupedListItemButtonView
 
 extension AssetSocialMediaGroupedListItemButtonViewModel {
     private mutating func bindTitle() {
-        title = "social-media-platform-title".footnoteMedium()
+        title = "social-media-platform-title".localized.footnoteMedium()
     }
 
     private mutating func bindListItemButtons(

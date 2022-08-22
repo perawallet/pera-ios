@@ -27,6 +27,7 @@ final class ASAAboutScreen:
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
+    private lazy var socialMediaGroupedListView = GroupedListItemButton()
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -120,6 +121,7 @@ extension ASAAboutScreen {
 
         addStatistics()
         addVerificationTier()
+        addSocialMediaGroupedList()
     }
 
     private func addStatistics() {
@@ -159,5 +161,18 @@ extension ASAAboutScreen {
             [unowned self] in
             self.open(AlgorandWeb.asaVerificationSupport.link)
         }
+    }
+
+    private func addSocialMediaGroupedList() {
+        socialMediaGroupedListView.customize(theme.socialMediaGroupedList)
+
+        contextView.addArrangedSubview(socialMediaGroupedListView)
+
+        let viewModel = AssetSocialMediaGroupedListItemButtonViewModel([
+            .discord,
+            .telegram,
+            .twitter
+        ])
+        socialMediaGroupedListView.bindData(viewModel)
     }
 }
