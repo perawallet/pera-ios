@@ -27,8 +27,11 @@ final class ASAAboutScreen:
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
+    private lazy var showMoreView = ShowMoreView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
+
+    private var isShowMoreVisible: Bool = true
 
     private let asset: Asset
 
@@ -120,6 +123,7 @@ extension ASAAboutScreen {
 
         addStatistics()
         addVerificationTier()
+        addShowMore()
     }
 
     private func addStatistics() {
@@ -158,6 +162,52 @@ extension ASAAboutScreen {
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
             self.open(AlgorandWeb.asaVerificationSupport.link)
+        }
+    }
+
+    private func addShowMore() {
+        guard let standardAsset = asset as? StandardAsset,
+              let description = standardAsset.description,
+              !description.isEmptyOrBlank else {
+                  return
+              }
+
+        let frameWidth = view.frame.size.width
+        let contextHorizontalEdgeInset = theme.contextEdgeInsets.leading + theme.contextEdgeInsets.trailing
+        let width = frameWidth - contextHorizontalEdgeInset
+
+        showMoreView.customize(theme.description)
+        contextView.addArrangedSubview(showMoreView)
+
+        let draft = ShowMoreDraft(
+            title: "collectible-detail-description".localized,
+            detail: description,
+            allowedNumberOfLines: .custom(4)
+        )
+        let viewModel = ShowMoreViewModel(
+            draft,
+            width: width
+        )
+        showMoreView.bindData(viewModel)
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: showMoreView,
+            margin: theme.spacingBetweenVerificationTierAndSeparator
+        )
+        showMoreView.startObserving(event: .show) {
+            let draft = ShowMoreDraft(
+                title: "collectible-detail-description".localized,
+                detail: description,
+                allowedNumberOfLines: self.isShowMoreVisible ? .full : .custom(4)
+            )
+
+            let viewModel = ShowMoreViewModel(
+                draft,
+                width: width
+            )
+            self.showMoreView.bindData(viewModel)
+
+            self.isShowMoreVisible.toggle()
         }
     }
 }

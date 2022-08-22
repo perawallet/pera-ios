@@ -34,6 +34,7 @@ final class StandardAsset: Asset {
     let url: String?
     let logoURL: URL?
     let isAlgo = false
+    let description: String?
 
     var state: AssetState = .ready
 
@@ -77,6 +78,7 @@ final class StandardAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.description = decoration.description
     }
 }
 
