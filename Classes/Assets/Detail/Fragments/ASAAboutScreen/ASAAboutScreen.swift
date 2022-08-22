@@ -178,6 +178,11 @@ extension ASAAboutScreen {
             currencyFormatter: currencyFormatter
         )
         statisticsView.bindData(viewModel)
+
+        statisticsView.startObserving(event: .showTotalSupplyInfo) {
+            [unowned self] in
+            self.openTotalSupplyInfo()
+        }
     }
 
     private func addAbout() {

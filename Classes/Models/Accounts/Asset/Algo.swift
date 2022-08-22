@@ -29,7 +29,7 @@ final class Algo: Asset {
     let usdValue: Decimal? = nil
     let totalUSDValue: Decimal? = nil
     var state: AssetState = .ready
-    let url: String? = "www.algorand.com"
+    let url: String? = AlgorandWeb.algorand.rawValue
     let verificationTier: AssetVerificationTier = .trusted
     let explorerURL: URL? = nil
     let logoURL: URL? = nil
