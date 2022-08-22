@@ -32,6 +32,7 @@ final class AssetDecoration: ALGEntityModel {
     let url: String?
     let verificationTier: AssetVerificationTier
     let logoURL: URL?
+    let description: String?
 
     var state: AssetState = .ready
 
@@ -54,6 +55,7 @@ final class AssetDecoration: ALGEntityModel {
         self.url = apiModel.url
         self.verificationTier = apiModel.verificationTier ?? .unverified
         self.logoURL = apiModel.logo
+        self.description = apiModel.description
     }
     
     init(assetDetail: AssetDetail) {
@@ -69,6 +71,7 @@ final class AssetDecoration: ALGEntityModel {
         self.url = assetDetail.url
         self.verificationTier = .unverified
         self.logoURL = nil
+        self.description = nil
     }
 
     func encode() -> APIModel {
@@ -85,6 +88,7 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.url = url
         apiModel.verificationTier = verificationTier
         apiModel.logo = logoURL
+        apiModel.description = description
         return apiModel
     }
 
@@ -101,6 +105,7 @@ final class AssetDecoration: ALGEntityModel {
         self.url = asset.url
         self.verificationTier = .unverified
         self.logoURL = nil
+        self.description = nil
     }
 }
 
@@ -118,6 +123,7 @@ extension AssetDecoration {
         var total: String?
         var verificationTier: AssetVerificationTier?
         var logo: URL?
+        var description: String?
 
         init() {
             self.assetId = 0
@@ -137,6 +143,7 @@ extension AssetDecoration {
             case total
             case verificationTier = "verification_tier"
             case logo
+            case description
         }
     }
 }

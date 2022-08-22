@@ -25,13 +25,14 @@ struct ASAAboutScreenTheme:
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
     var verificationTier: AssetVerificationInfoViewTheme
-    var socialMediaGroupedList: AssetSocialMediaGroupedListItemButtonTheme
-    var asaReport: ListItemButtonTheme
     var spacingBetweenVerificationTierAndSeparator: CGFloat
+    var description: ShowMoreViewTheme
+    var socialMediaGroupedList: AssetSocialMediaGroupedListItemButtonTheme
+    var spacingBetweenSocialMediaAndAsaReport: CGFloat
+    var asaReport: ListItemButtonTheme
     var sectionSeparator: Separator
     var spacingBetweenSectionAndSeparator: CGFloat
     var spacingBetweenSections: CGFloat
-    var spacingBetweenSocialMediaAndAsaReport: CGFloat
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -40,12 +41,13 @@ struct ASAAboutScreenTheme:
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.verificationTier = AssetVerificationInfoViewTheme(family)
-        self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
-        self.asaReport = ListItemButtonTheme(family)
         self.spacingBetweenVerificationTierAndSeparator = 20
+        self.description = ShowMoreViewTheme(family)
+        self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
+        self.spacingBetweenSocialMediaAndAsaReport = 26
+        self.asaReport = ListItemButtonTheme(family)
         self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((24, 24)))
         self.spacingBetweenSectionAndSeparator = 36
         self.spacingBetweenSections = 72
-        self.spacingBetweenSocialMediaAndAsaReport = 26
     }
 }

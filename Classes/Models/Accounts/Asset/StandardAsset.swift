@@ -34,6 +34,7 @@ final class StandardAsset: Asset {
     let url: String?
     let logoURL: URL?
     let isAlgo = false
+    let description: String?
 
     let isFault: Bool
 
@@ -79,6 +80,7 @@ final class StandardAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.description = decoration.description
         self.isFault = false
     }
 
@@ -101,6 +103,7 @@ final class StandardAsset: Asset {
         self.decimalAmount = 0
         self.usdValue = decoration.usdValue
         self.totalUSDValue = nil
+        self.description = decoration.description
         self.isFault = true
     }
 }
