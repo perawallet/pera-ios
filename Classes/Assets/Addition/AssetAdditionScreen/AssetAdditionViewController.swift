@@ -32,17 +32,12 @@ final class AssetAdditionViewController:
     private var account: Account
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
+
+    private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
+
+    private var transactionControllers: [TransactionController] {
+        return Array(optInTransactions.values.map { $0.transactionController })
+    }
 
     private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
     private lazy var dataController = AssetListViewAPIDataController(self.api!)
@@ -52,8 +47,6 @@ final class AssetAdditionViewController:
     private lazy var assetListView = AssetListView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
-
-    private var currentAsset: AssetDecoration?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -66,8 +59,11 @@ final class AssetAdditionViewController:
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
+
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
+        }
     }
     
     override func configureAppearance() {
@@ -91,8 +87,6 @@ final class AssetAdditionViewController:
 
         assetListView.collectionView.dataSource = dataSource
         assetListView.collectionView.delegate = self
-
-        transactionController.delegate = self
     }
 
     override func viewDidLoad() {
@@ -149,6 +143,32 @@ final class AssetAdditionViewController:
         assetListView.collectionView.visibleCells.forEach {
             let loadingCell = $0 as? PreviewLoadingCell
             loadingCell?.stopAnimating()
+        }
+    }
+}
+
+extension AssetAdditionViewController {
+    private func createNewTransactionController(
+        for asset: AssetDecoration
+    ) -> TransactionController {
+        let transactionController = TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+        optInTransactions[asset.id] = AssetOptInTransaction(
+            asset: asset,
+            transactionController: transactionController
+        )
+        transactionController.delegate = self
+        return transactionController
+    }
+
+    private func clearTransactionCache(
+        _ transactionController: TransactionController
+    ) {
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex {
+            optInTransactions[assetID] = nil
         }
     }
 }
@@ -328,17 +348,16 @@ extension AssetAdditionViewController {
             if !self.canSignTransaction(for: &self.account) { return }
 
             let assetTransactionDraft = AssetTransactionSendDraft(from: self.account, assetIndex: asset.id)
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            let transactionController = self.createNewTransactionController(for: asset)
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
             if self.account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
             }
-
-            self.currentAsset = asset
         }
     }
 
@@ -361,7 +380,7 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
-        currentAsset = nil
+        clearTransactionCache(transactionController)
         
         switch error {
         case let .inapp(transactionError):
@@ -373,7 +392,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
-        currentAsset = nil
+        clearTransactionCache(transactionController)
 
         switch error {
         case let .network(apiError):
@@ -389,11 +408,25 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     ) {
         loadingController?.stopLoading()
 
-        guard let assetDetail = currentAsset else {
+        guard let assetID = transactionController.assetTransactionDraft?.assetIndex,
+              let assetDetail = optInTransactions[assetID]?.asset else {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+        delegate?.assetAdditionViewController(
+            self,
+            didAdd: assetDetail
+        )
+
+        /// <todo> Change state as loading
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) {
+        /// <todo> Change state as complete
+        clearTransactionCache(transactionController)
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -463,4 +496,16 @@ protocol AssetAdditionViewControllerDelegate: AnyObject {
         _ assetAdditionViewController: AssetAdditionViewController,
         didAdd asset: AssetDecoration
     )
+}
+
+struct AssetOptInTransaction: Equatable {
+    let asset: AssetDecoration
+    let transactionController: TransactionController
+
+    static func == (
+        lhs: AssetOptInTransaction,
+        rhs: AssetOptInTransaction
+    ) -> Bool {
+        return lhs.asset.id == rhs.asset.id
+    }
 }

@@ -473,8 +473,6 @@ extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
             standardAsset.state = .pending(.add)
             assetListScreen.addAsset(standardAsset)
         }
-        
-        assetAdditionViewController.dismissScreen()
     }
 }
 

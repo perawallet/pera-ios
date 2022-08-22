@@ -23,7 +23,7 @@ final class AssetListViewAPIDataController:
     AssetListViewDataController {
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)?
 
-    var assets: [AssetDecoration] = []
+    private var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 

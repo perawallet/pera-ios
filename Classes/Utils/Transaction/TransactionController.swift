@@ -59,15 +59,15 @@ extension TransactionController {
         return transactionDraft?.from
     }
 
-    private var assetTransactionDraft: AssetTransactionSendDraft? {
+    var assetTransactionDraft: AssetTransactionSendDraft? {
         return transactionDraft as? AssetTransactionSendDraft
     }
 
-    private var algosTransactionDraft: AlgosTransactionSendDraft? {
+    var algosTransactionDraft: AlgosTransactionSendDraft? {
         return transactionDraft as? AlgosTransactionSendDraft
     }
 
-    private var rekeyTransactionDraft: RekeyTransactionSendDraft? {
+    var rekeyTransactionDraft: RekeyTransactionSendDraft? {
         return transactionDraft as? RekeyTransactionSendDraft
     }
 
