@@ -1135,6 +1135,7 @@
 "asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
 "asa-verification-detail-suspicious-bold" = "scam attempt";
 "asa-verification-learn-more" = "Learn more about ASA verification";
+"asa-verification-suspicious-report" = "Report %@";
 
 // MARK: Social Media Platforms
 "social-media-platform-title" = "SOCIAL MEDIA";

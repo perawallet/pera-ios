@@ -26,10 +26,12 @@ struct ASAAboutScreenTheme:
     var statistics: AssetStatisticsSectionViewTheme
     var verificationTier: AssetVerificationInfoViewTheme
     var socialMediaGroupedList: AssetSocialMediaGroupedListItemButtonTheme
+    var asaReport: ListItemButtonTheme
     var spacingBetweenVerificationTierAndSeparator: CGFloat
     var sectionSeparator: Separator
     var spacingBetweenSectionAndSeparator: CGFloat
     var spacingBetweenSections: CGFloat
+    var spacingBetweenSocialMediaAndAsaReport: CGFloat
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -39,9 +41,11 @@ struct ASAAboutScreenTheme:
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.verificationTier = AssetVerificationInfoViewTheme(family)
         self.socialMediaGroupedList = AssetSocialMediaGroupedListItemButtonTheme(family)
+        self.asaReport = ListItemButtonTheme(family)
         self.spacingBetweenVerificationTierAndSeparator = 20
         self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .bottom((24, 24)))
         self.spacingBetweenSectionAndSeparator = 36
         self.spacingBetweenSections = 72
+        self.spacingBetweenSocialMediaAndAsaReport = 26
     }
 }

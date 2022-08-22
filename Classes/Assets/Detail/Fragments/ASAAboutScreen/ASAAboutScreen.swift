@@ -28,6 +28,9 @@ final class ASAAboutScreen:
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
     private lazy var socialMediaGroupedListView = GroupedListItemButton()
+    private lazy var asaReportView = ListItemButton()
+
+    private lazy var mailComposer = MailComposer()
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -41,6 +44,13 @@ final class ASAAboutScreen:
     ) {
         self.asset = asset
         super.init(configuration: configuration)
+
+        self.mailComposer.configureMail(for: .report(assetId: asset.id))
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        mailComposer.delegate = self
     }
 
     override func viewDidLoad() {
@@ -115,13 +125,23 @@ extension ASAAboutScreen {
         contextView.snp.makeConstraints {
             $0.top == 0 + theme.contextEdgeInsets.top
             $0.leading == 0 + theme.contextEdgeInsets.leading
-            $0.bottom <= 0 + theme.contextEdgeInsets.bottom
+            $0.bottom <= 0 + theme.contextEdgeInsets.bottom + view.safeAreaBottom
             $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
         addStatistics()
         addVerificationTier()
         addSocialMediaGroupedList()
+
+        if asset.verificationTier == .suspicious {
+            contextView.attachSeparator(
+                theme.sectionSeparator,
+                to: socialMediaGroupedListView,
+                margin: theme.spacingBetweenSocialMediaAndAsaReport
+            )
+
+            addAsaReport()
+        }
     }
 
     private func addStatistics() {
@@ -174,5 +194,31 @@ extension ASAAboutScreen {
             .twitter
         ])
         socialMediaGroupedListView.bindData(viewModel)
+    }
+
+    private func addAsaReport() {
+        asaReportView.customize(theme.asaReport)
+
+        contextView.addArrangedSubview(asaReportView)
+
+        let viewModel = AsaReportListItemButtonViewModel(asset)
+        asaReportView.bindData(viewModel)
+
+        asaReportView.addTouch(
+            target: self,
+            action: #selector(openMailComposer)
+        )
+    }
+}
+
+extension ASAAboutScreen: MailComposerDelegate {
+    func mailComposerDidSent(_ mailComposer: MailComposer) {}
+    func mailComposerDidFailed(_ mailComposer: MailComposer) {}
+}
+
+extension ASAAboutScreen {
+    @objc
+    private func openMailComposer() {
+        mailComposer.present(from: self)
     }
 }
