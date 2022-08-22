@@ -15,15 +15,13 @@
 //   UISheetActionScreen.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 import MacaroonBottomSheet
 
-/// <todo>:
-/// Linear gradient / Blur is missing behind the actions context.
 final class UISheetActionScreen:
     MacaroonUIKit.ScrollScreen,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }
@@ -50,6 +48,8 @@ final class UISheetActionScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
+        blursFooterBackgroundOnUnderScrolling = true
+
         addContext()
 
         if sheet.actions.isEmpty {
@@ -64,13 +64,11 @@ extension UISheetActionScreen {
     private func addContext() {
         contentView.addSubview(contextView)
 
-        let bottom = calculateBottomPaddingForContext()
-
         contextView.snp.makeConstraints {
             $0.top == theme.contextEdgeInsets.top
             $0.leading == theme.contextEdgeInsets.leading
             $0.trailing == theme.contextEdgeInsets.trailing
-            $0.bottom == bottom
+            $0.bottom == theme.contextEdgeInsets.bottom
         }
 
         addTitle()
@@ -108,16 +106,14 @@ extension UISheetActionScreen {
     }
 
     private func addActionsContext() {
-        view.addSubview(actionsContextView)
+        footerView.addSubview(actionsContextView)
         actionsContextView.spacing = theme.actionSpacing
 
         actionsContextView.snp.makeConstraints {
+            $0.top == theme.actionsEdgeInsets.top
             $0.leading == theme.actionsEdgeInsets.leading
             $0.trailing == theme.actionsEdgeInsets.trailing
-            $0.setBottomPadding(
-                theme.actionsEdgeInsets.bottom,
-                inSafeAreaOf: view
-            )
+            $0.bottom == theme.actionsEdgeInsets.bottom
         }
 
         addActions()
@@ -132,9 +128,7 @@ extension UISheetActionScreen {
     private func addAction(
         _ action: UISheetAction
     ) {
-        let actionView = createAction(
-            action
-        )
+        let actionView = createActionView(action)
 
         let interaction = TargetActionInteraction()
         interaction.setSelector(action.handler)
@@ -144,11 +138,10 @@ extension UISheetActionScreen {
         actionsContextView.addArrangedSubview(actionView)
     }
 
-    private func createAction(
+    private func createActionView(
         _ action: UISheetAction
     ) -> UIButton {
         let actionView = MacaroonUIKit.Button()
-        actionView.draw(corner: theme.actionCorner)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
         actionView.customizeAppearance(
@@ -159,28 +152,5 @@ extension UISheetActionScreen {
         )
 
         return actionView
-    }
-}
-
-extension UISheetActionScreen {
-    private func calculateBottomPaddingForContext() -> CGFloat {
-        let bottom: CGFloat
-
-        if sheet.actions.isEmpty {
-            bottom = theme.contextEdgeInsets.bottom
-        } else {
-            let actionHeight: CGFloat = 53.5 /// <note>: Button height from view hiearchy.
-            let actionsCount = sheet.actions.count
-            let actionsHeight = actionsCount.cgFloat * actionHeight
-            let actionsSpacing = (actionsCount - 1).cgFloat * theme.actionSpacing
-
-            bottom =
-            theme.contextEdgeInsets.bottom +
-            actionsHeight +
-            actionsSpacing +
-            theme.actionsEdgeInsets.bottom
-        }
-
-        return bottom
     }
 }

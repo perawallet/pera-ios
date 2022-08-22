@@ -28,6 +28,8 @@ final class ASAAboutScreen:
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var verificationTierView = AssetVerificationInfoView()
 
+    private lazy var sheetTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let asset: Asset
@@ -139,6 +141,30 @@ extension ASAAboutScreen {
             to: statisticsView,
             margin: theme.spacingBetweenSectionAndSeparator
         )
+
+        statisticsView.startObserving(event: .showTotalSupplyInfo) {
+            openTotalSupplyInfo()
+        }
+
+        func openTotalSupplyInfo() {
+            let uiSheet = UISheet(
+                title: "title-total-supply".localized.bodyLargeMedium(),
+                body: "asset-total-supply-body".localized.bodyRegular()
+            )
+
+            let closeAction = UISheetAction(
+                title: "title-close".localized,
+                style: .cancel
+            ) { [unowned self] in
+                self.dismiss(animated: true)
+            }
+            uiSheet.addAction(closeAction)
+
+            sheetTransition.perform(
+                .sheetAction(sheet: uiSheet),
+                by: .presentWithoutNavigationController
+            )
+        }
     }
 
     private func addVerificationTier() {
