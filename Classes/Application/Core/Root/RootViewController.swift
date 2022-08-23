@@ -44,6 +44,7 @@ class RootViewController: UIViewController {
         sharedDataController: appConfiguration.sharedDataController,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController,
+        loadingController: appConfiguration.loadingController,
         analytics: appConfiguration.analytics
     )
     
