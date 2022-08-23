@@ -21,5 +21,6 @@ import MacaroonURLImage
 protocol PrimaryListItemViewModel: ViewModel {
     var imageSource: ImageSource? { get }
     var title: PrimaryTitleViewModel? { get }
-    var value: PrimaryTitleViewModel? { get }
+    var primaryValue: TextProvider? { get }
+    var secondaryValue: TextProvider? { get }
 }

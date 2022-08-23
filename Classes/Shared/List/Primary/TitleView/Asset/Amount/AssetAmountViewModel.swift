@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUIKit
 
 struct AssetAmountViewModel:
-    ALGAssetAmountViewModel,
+    ViewModel,
     Hashable {
     var primaryTitle: TextProvider?
     var primaryTitleAccessory: Image?
@@ -32,6 +32,23 @@ struct AssetAmountViewModel:
         bindPrimaryTitle(item)
         bindPrimaryTitleAccessory()
         bindSecondaryTitle(item)
+    }
+}
+
+extension AssetAmountViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(primaryTitle?.string)
+        hasher.combine(secondaryTitle?.string)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.primaryTitle?.string == rhs.primaryTitle?.string &&
+            lhs.secondaryTitle?.string == rhs.secondaryTitle?.string
     }
 }
 
@@ -51,7 +68,10 @@ extension AssetAmountViewModel {
 
 
         let text = formatter.format(asset.decimalAmount)
-        primaryTitle = text?.bodyRegular(alignment: .right)
+        primaryTitle = text?.bodyRegular(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
     }
 
     mutating func bindPrimaryTitleAccessory() {
@@ -100,7 +120,10 @@ extension AssetAmountViewModel {
 
 
             let text = formatter.format(amount)
-            secondaryTitle = text?.footnoteRegular(alignment: .right)
+            secondaryTitle = text?.footnoteRegular(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail
+            )
         } catch {
             secondaryTitle = nil
             valueInUSD = 0

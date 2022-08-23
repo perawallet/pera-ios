@@ -26,6 +26,7 @@ protocol PrimaryListItemViewTheme:
     var contentHorizontalPadding: LayoutMetric { get }
     var contentMinWidthRatio: LayoutMetric { get }
     var title: PrimaryTitleViewTheme { get }
-    var value: PrimaryTitleViewTheme { get }
+    var primaryValue: TextStyle { get }
+    var secondaryValue: TextStyle { get }
     var minSpacingBetweenTitleAndValue: LayoutMetric { get }
 }

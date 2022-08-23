@@ -25,8 +25,11 @@ struct AssetListItemViewModel:
     Hashable {
     var imageSource: ImageSource?
     var title: PrimaryTitleViewModel?
-    var value: PrimaryTitleViewModel?
+    var primaryValue: TextProvider?
+    var secondaryValue: TextProvider?
     var asset: Asset?
+
+    private(set) var valueInUSD: Decimal?
 
     init(
         _ item: AssetItem
@@ -43,8 +46,8 @@ struct AssetListItemViewModel:
     ) {
         hasher.combine(title?.primaryTitle?.string)
         hasher.combine(title?.secondaryTitle?.string)
-        hasher.combine(value?.primaryTitle?.string)
-        hasher.combine(value?.secondaryTitle?.string)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
         hasher.combine(asset?.id)
     }
 
@@ -54,8 +57,8 @@ struct AssetListItemViewModel:
     ) -> Bool {
         return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
             lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
-            lhs.value?.primaryTitle?.string == rhs.value?.primaryTitle?.string &&
-            lhs.value?.secondaryTitle?.string == rhs.value?.secondaryTitle?.string &&
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
             lhs.asset?.id == rhs.asset?.id
     }
 }
@@ -107,7 +110,11 @@ extension AssetListItemViewModel {
     mutating func bindValue(
         _ item: AssetItem
     ) {
-        value = AssetAmountViewModel(item)
+        let amountViewModel = AssetAmountViewModel(item)
+
+        primaryValue = amountViewModel.primaryTitle
+        secondaryValue = amountViewModel.secondaryTitle
+        valueInUSD = amountViewModel.valueInUSD
     }
 }
 
