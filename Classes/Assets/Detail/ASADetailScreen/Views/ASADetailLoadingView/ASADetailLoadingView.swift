@@ -20,20 +20,37 @@ import UIKit
 
 final class ASADetailLoadingView:
     UIView,
-    ShimmerAnimationDisplaying {
+    ShimmerAnimationDisplaying,
+    UIScrollViewDelegate {
+    var animatableSubviews: [ShimmerAnimatable] {
+        var subviews: [ShimmerAnimatable] = [
+            iconView,
+            titleView,
+            primaryValueView,
+            secondaryValueView
+        ]
+        subviews += activityView.animatableSubviews
+        subviews += aboutView.animatableSubviews
+        return subviews
+    }
+
     private lazy var profileView = UIView()
     private lazy var iconView = ShimmerView()
     private lazy var titleView = ShimmerView()
     private lazy var primaryValueView = ShimmerView()
     private lazy var secondaryValueView = ShimmerView()
     private lazy var quickActionsView = HStackView()
+    private lazy var pageBar = PageBar()
+    private lazy var pagesView = UIScrollView()
+    private lazy var activityContainerView = UIView()
+    private lazy var activityView = TransactionHistoryLoadingView()
     private lazy var aboutView = ASAAboutLoadingView()
 
     func customize(_ theme: ASADetailLoadingViewTheme) {
         addBackground(theme)
         addProfile(theme)
         addQuickActions(theme)
-//        addAbout(theme)
+        addPagesFragment(theme)
     }
 }
 
@@ -111,7 +128,7 @@ extension ASADetailLoadingView {
         quickActionsView.directionalLayoutMargins = .init(
             top: theme.spacingBetweenProfileAndQuickActions,
             leading: 0,
-            bottom: theme.spacingBetweenQuickActionsAndPagesFragment,
+            bottom: theme.spacingBetweenQuickActionsAndPageBar,
             trailing: 0
         )
         quickActionsView.isLayoutMarginsRelativeArrangement = true
@@ -187,14 +204,85 @@ extension ASADetailLoadingView {
         quickActionsView.addArrangedSubview(view)
     }
 
-    private func addAbout(_ theme: ASADetailLoadingViewTheme) {
-        aboutView.customize(theme.about)
+    private func addPagesFragment(_ theme: ASADetailLoadingViewTheme) {
+        addPageBar(theme)
+        addPages(theme)
+    }
 
-        addSubview(aboutView)
-        aboutView.snp.makeConstraints {
-            $0.top == profileView.snp.bottom
+    private func addPageBar(_ theme: ASADetailLoadingViewTheme) {
+        pageBar.customizeAppearance(theme.pageBarStyle)
+        pageBar.prepareLayout(theme.pageBarLayout)
+
+        addSubview(pageBar)
+        pageBar.snp.makeConstraints {
+            $0.top == quickActionsView.snp.bottom
             $0.leading == 0
             $0.trailing == 0
         }
+
+        pageBar.items = [
+            theme.activityPageBarItem,
+            theme.aboutPageBarItem
+        ]
+    }
+
+    private func addPages(_ theme: ASADetailLoadingViewTheme) {
+        addSubview(pagesView)
+        pagesView.bounces = false
+        pagesView.showsHorizontalScrollIndicator = false
+        pagesView.showsVerticalScrollIndicator = false
+        pagesView.isPagingEnabled = true
+        pagesView.delegate = self
+        pagesView.snp.makeConstraints {
+            $0.top == pageBar.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        addActivity(theme)
+        addAbout(theme)
+    }
+
+    private func addActivity(_ theme: ASADetailLoadingViewTheme) {
+        pagesView.addSubview(activityContainerView)
+        activityContainerView.snp.makeConstraints {
+            $0.width == self
+            $0.top == 0
+            $0.leading == 0
+        }
+
+        activityView.customize(theme.activity)
+
+        activityContainerView.addSubview(activityView)
+        activityView.snp.makeConstraints {
+            $0.top == theme.activityContentEdgeInsets.top
+            $0.leading == theme.activityContentEdgeInsets.leading
+            $0.bottom == theme.activityContentEdgeInsets.bottom
+            $0.trailing == theme.activityContentEdgeInsets.trailing
+        }
+    }
+
+    private func addAbout(_ theme: ASADetailLoadingViewTheme) {
+        aboutView.customize(theme.about)
+
+        pagesView.addSubview(aboutView)
+        aboutView.snp.makeConstraints {
+            $0.width == self
+            $0.top == 0
+            $0.leading == activityContainerView.snp.trailing
+            $0.trailing == 0
+        }
+    }
+}
+
+/// <mark>
+/// UIScrollViewDelegate
+extension ASADetailLoadingView {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        pageBar.scrollToItem(
+            at: scrollView.contentOffset.x - pageBar.frame.minX,
+            animated: false
+        )
     }
 }

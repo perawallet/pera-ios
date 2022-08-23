@@ -289,6 +289,7 @@ extension ASAAboutLoadingView {
         descriptionView.snp.makeConstraints {
             $0.top == aboutView.snp.bottom + theme.spacingBetweenAboutAndDescription
             $0.leading == theme.contentEdgeInsets.leading
+            $0.bottom == 0
             $0.trailing == theme.contentEdgeInsets.trailing
         }
 
