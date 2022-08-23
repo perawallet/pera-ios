@@ -31,18 +31,20 @@ final class ASADetailScreen:
     var eventHandler: EventHandler?
 
     private lazy var navigationTitleView = AccountNamePreviewView()
+    private lazy var loadingView = makeLoading()
+    private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
 
     private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
     private lazy var activityFragmentScreen = ASAActivityScreen(
-        account: account,
-        asset: asset,
+        account: dataController.account,
+        asset: dataController.asset,
         copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
     private lazy var aboutFragmentScreen = ASAAboutScreen(
-        asset: asset,
+        asset: dataController.asset,
         copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
@@ -55,11 +57,11 @@ final class ASADetailScreen:
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
-        account: account,
-        asset: asset
+        account: dataController.account,
+        asset: dataController.asset
     )
     private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self, account: account)
+        ReceiveTransactionFlowCoordinator(presentingScreen: self, account: dataController.account)
 
     private lazy var localAuthenticator = LocalAuthenticator()
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -84,21 +86,17 @@ final class ASADetailScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
-    private let account: Account
-    private let asset: Asset
-
+    private let dataController: ASADetailScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
 
     init(
-        account: Account,
-        asset: Asset,
+        dataController: ASADetailScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
-        self.asset = asset
+        self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -111,7 +109,9 @@ final class ASADetailScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addUI()
+        loadData()
     }
 
     override func viewDidLayoutSubviews() {
@@ -147,13 +147,14 @@ final class ASADetailScreen:
 /// OptionsViewControllerDelegate
 extension ASADetailScreen {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
+        let account = dataController.account
         analytics.track(.showQRCopy(account: account))
         copyToClipboardController.copyAddress(account)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
         open(
-            .rekeyInstruction(account: account),
+            .rekeyInstruction(account: dataController.account),
             by: .customPresent(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,
@@ -163,6 +164,8 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
+        let account = dataController.account
+
         guard let authAddress = account.authAddress else { return }
 
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
@@ -202,7 +205,7 @@ extension ASADetailScreen {
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
         open(
-            .editAccount(account: account, delegate: self),
+            .editAccount(account: dataController.account, delegate: self),
             by: .present
         )
     }
@@ -212,9 +215,9 @@ extension ASADetailScreen {
             image: "icon-trash-red".uiImage,
             title: "options-remove-account".localized,
             description: .plain(
-                account.isWatchAccount()
-                ? "options-remove-watch-account-explanation".localized
-                : "options-remove-main-account-explanation".localized
+                dataController.account.isWatchAccount()
+                    ? "options-remove-watch-account-explanation".localized
+                    : "options-remove-main-account-explanation".localized
             ),
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
@@ -230,13 +233,13 @@ extension ASADetailScreen {
     }
 
     private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(account)
+        sharedDataController.resetPollingAfterRemoving(dataController.account)
         eventHandler?(.didRemoveAccount)
     }
 
     private func navigateToViewPassphrase() {
         transitionToPassphrase.perform(
-            .passphraseDisplay(address: account.address),
+            .passphraseDisplay(address: dataController.account.address),
             by: .present
         )
     }
@@ -282,16 +285,18 @@ extension ASADetailScreen {
     }
 
     private func bindNavigationTitle() {
+        let account = dataController.account
         let viewModel = AccountNamePreviewViewModel(account: account, with: .center)
         navigationTitleView.bindData(viewModel)
     }
 
     private func addNavigationActions() {
+        let account = dataController.account
         let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
             [unowned self] in
 
             self.transitionToAccountActions.perform(
-                .options(account: self.account, delegate: self),
+                .options(account: self.dataController.account, delegate: self),
                 by: .presentWithoutNavigationController
             )
         }
@@ -340,14 +345,90 @@ extension ASADetailScreen {
         bindNavigationTitle()
     }
 
+    private func updateUIWhenDataWillLoad() {
+        addLoading()
+        removeError()
+    }
+
+    private func updateUIWhenDataDidLoad() {
+        bindUIData()
+        removeLoading()
+        removeError()
+    }
+
+    private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
+        addError()
+        removeLoading()
+    }
+
     private func updateUI(for state: DisplayState) {
         updateProfile(for: state)
         updateQuickActions(for: state)
         updatePagesFragment(for: state)
     }
 
+    private func bindUIData() {
+        bindProfileData()
+        bindPagesFragmentData()
+    }
+
     private func addBackground() {
         view.customizeAppearance(theme.background)
+    }
+
+    private func makeLoading() -> ASADetailLoadingView {
+        let loadingView = ASADetailLoadingView()
+        loadingView.customize(theme.loading)
+        return loadingView
+    }
+
+    private func addLoading() {
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        loadingView.startAnimating()
+    }
+
+    private func removeLoading() {
+        loadingView.removeFromSuperview()
+        loadingView.stopAnimating()
+    }
+
+    private func makeError() -> NoContentWithActionView {
+        let errorView = NoContentWithActionView()
+        errorView.customizeAppearance(theme.errorBackground)
+        errorView.customize(theme.error)
+        return errorView
+    }
+
+    private func addError() {
+        view.addSubview(errorView)
+        errorView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        errorView.startObserving(event: .performPrimaryAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.loadData()
+        }
+
+        /// <todo>
+        /// Why don't we take as a reference the error for the view.
+        errorView.bindData(ListErrorViewModel())
+    }
+
+    private func removeError() {
+        errorView.removeFromSuperview()
     }
 
     private func addProfile() {
@@ -368,11 +449,15 @@ extension ASADetailScreen {
         profileView.startObserving(event: .copyAssetID) {
             [unowned self] in
 
-            self.copyToClipboardController.copyID(self.asset)
+            self.copyToClipboardController.copyID(self.dataController.asset)
         }
 
+        bindProfileData()
+    }
+
+    private func bindProfileData() {
         let viewModel = ASADetailProfileViewModel(
-            asset: asset,
+            asset: dataController.asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
@@ -426,6 +511,7 @@ extension ASADetailScreen {
             self.navigateToReceiveTransaction()
         }
 
+        let asset = dataController.asset
         let viewModel = ASADetailQuickActionsViewModel(asset: asset)
         quickActionsView.bindData(viewModel)
     }
@@ -465,6 +551,10 @@ extension ASADetailScreen {
     private func updatePagesFragmentPosition(for state: DisplayState) {
         let topEdgeInset = calculateSpacingOverPagesFragment(for: state)
         pagesFragmentTopEdgeConstraint.update(inset: topEdgeInset)
+    }
+
+    private func bindPagesFragmentData() {
+        bindPagesData()
     }
 
     private func addPages() {
@@ -509,6 +599,15 @@ extension ASADetailScreen {
         activityFragmentScreen.isScrollAnchoredOnTop = !enabled
         aboutFragmentScreen.isScrollAnchoredOnTop = !enabled
     }
+
+    private func bindPagesData() {
+        bindAboutPageData()
+    }
+
+    private func bindAboutPageData() {
+        let asset = dataController.asset
+        aboutFragmentScreen.bindData(asset: asset)
+    }
 }
 
 extension ASADetailScreen {
@@ -547,26 +646,24 @@ extension ASADetailScreen {
     @objc
     private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
-            copyToClipboardController.copyAddress(account)
+            copyToClipboardController.copyAddress(dataController.account)
         }
     }
 }
 
 extension ASADetailScreen {
-    private func navigateToBuyAlgo() {
-        let draft = BuyAlgoDraft()
-        draft.address = account.address
-        buyAlgoFlowCoordinator.launch(draft: draft)
-    }
+    private func loadData() {
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
 
-    private func navigateToSendTransaction() {
-        sendTransactionFlowCoordinator.launch()
-        analytics.track(.tapSendInDetail(account: account))
-    }
-
-    private func navigateToReceiveTransaction() {
-        receiveTransactionFlowCoordinator.launch()
-        analytics.track(.tapReceiveAssetInDetail(account: account))
+            switch event {
+            case .willLoadData: self.updateUIWhenDataWillLoad()
+            case .didLoadData: self.updateUIWhenDataDidLoad()
+            case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
+            }
+        }
+        dataController.loadData()
     }
 }
 
@@ -790,6 +887,24 @@ extension ASADetailScreen {
             self.isDisplayStateInteractiveTransitionInProgress = false
         }
         return animator
+    }
+}
+
+extension ASADetailScreen {
+    private func navigateToBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.address = dataController.account.address
+        buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func navigateToSendTransaction() {
+        sendTransactionFlowCoordinator.launch()
+        analytics.track(.tapSendInDetail(account: dataController.account))
+    }
+
+    private func navigateToReceiveTransaction() {
+        receiveTransactionFlowCoordinator.launch()
+        analytics.track(.tapReceiveAssetInDetail(account: dataController.account))
     }
 }
 

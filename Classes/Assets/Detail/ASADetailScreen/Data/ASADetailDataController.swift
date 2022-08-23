@@ -12,14 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   URL+Extensions.swift
+//   ASADetailDataController.swift
 
 import Foundation
-import MacaroonUtils
+import MagpieCore
+import MagpieHipo
 
-extension URL {
-    var presentationString: String? {
-        let host = host.unwrapNonEmptyString() ?? absoluteString
-        return host.without(prefix: "www.")
-    }
+protocol ASADetailScreenDataController: AnyObject {
+    typealias EventHandler = (ASADetailScreenDataControllerEvent) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
+
+    var eventHandler: EventHandler? { get set }
+
+    var account: Account { get }
+    var asset: Asset { get }
+
+    func loadData()
+}
+
+enum ASADetailScreenDataControllerEvent {
+    case willLoadData
+    case didLoadData
+    case didFailToLoadData(ASADiscoveryScreenDataController.Error)
 }

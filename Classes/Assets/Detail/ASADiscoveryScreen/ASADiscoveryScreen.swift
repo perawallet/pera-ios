@@ -24,7 +24,8 @@ import UIKit
 final class ASADiscoveryScreen:
     BaseViewController,
     Container {
-    private lazy var loadingView = ASADiscoveryLoadingView()
+    private lazy var loadingView = makeLoading()
+    private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
 
     private lazy var aboutFragmentScreen =
@@ -144,14 +145,17 @@ extension ASADiscoveryScreen {
 
     private func updateUIWhenDataWillLoad() {
         addLoading()
+        removeError()
     }
 
     private func updateUIWhenDataDidLoad() {
         bindUIData()
         removeLoading()
+        removeError()
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADiscoveryScreenDataController.Error) {
+        addError()
         removeLoading()
     }
 
@@ -164,9 +168,13 @@ extension ASADiscoveryScreen {
         view.customizeAppearance(theme.background)
     }
 
-    private func addLoading() {
+    private func makeLoading() -> ASADiscoveryLoadingView {
+        let loadingView = ASADiscoveryLoadingView()
         loadingView.customize(theme.loading)
+        return loadingView
+    }
 
+    private func addLoading() {
         view.addSubview(loadingView)
         loadingView.snp.makeConstraints {
             $0.top == 0
@@ -181,6 +189,38 @@ extension ASADiscoveryScreen {
     private func removeLoading() {
         loadingView.removeFromSuperview()
         loadingView.stopAnimating()
+    }
+
+    private func makeError() -> NoContentWithActionView {
+        let errorView = NoContentWithActionView()
+        errorView.customizeAppearance(theme.errorBackground)
+        errorView.customize(theme.error)
+        return errorView
+    }
+
+    private func addError() {
+        view.addSubview(errorView)
+        errorView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        errorView.startObserving(event: .performPrimaryAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.loadData()
+        }
+
+        /// <todo>
+        /// Why don't we take as a reference the error for the view.
+        errorView.bindData(ListErrorViewModel())
+    }
+
+    private func removeError() {
+        errorView.removeFromSuperview()
     }
 
     private func addProfile() {

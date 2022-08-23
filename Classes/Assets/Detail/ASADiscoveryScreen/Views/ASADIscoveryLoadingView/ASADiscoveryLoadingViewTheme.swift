@@ -21,29 +21,33 @@ import UIKit
 struct ASADiscoveryLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-    var corner: Corner
     var background: ViewStyle
-    var contentEdgeInsets: LayoutPaddings
+    var profile: ViewStyle
+    var profileContentEdgeInsets: NSDirectionalEdgeInsets
     var iconSize: LayoutSize
     var iconCorner: Corner
-    var spacingBetweenIconAndInfo: LayoutMetric
-    var infoSize: LayoutSize
-    var spacingBetweeenPrimaryValueAndInfo: LayoutMetric
-    var primaryValueSize: LayoutSize
-    var spacingBetweeenPrimaryValueAndSecondaryValue: LayoutMetric
+    var spacingBetweenIconAndTitle: LayoutMetric
+    var titleSize: LayoutSize
+    var spacingBetweenTitleAndValue: LayoutMetric
+    var valueSize: LayoutSize
+    var about: ASAAboutLoadingViewTheme
+    var corner: Corner
 
     init(_ family: LayoutFamily) {
-        corner = Corner(radius: 4)
-        contentEdgeInsets = (40, 0, 40, 0)
-        background = [
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.profile = [
             .backgroundColor(Colors.Helpers.heroBackground)
         ]
-        iconSize = (40, 40)
-        iconCorner = Corner(radius: iconSize.h / 2)
-        spacingBetweenIconAndInfo = 20
-        infoSize = (89, 20)
-        spacingBetweeenPrimaryValueAndInfo = 8
-        primaryValueSize = (210, 36)
-        spacingBetweeenPrimaryValueAndSecondaryValue = 8
+        self.profileContentEdgeInsets = .init(top: 50, leading: 24, bottom: 36, trailing: 24)
+        self.iconSize = (40, 40)
+        self.iconCorner = Corner(radius: iconSize.h / 2)
+        self.spacingBetweenIconAndTitle = 20
+        self.titleSize = (90, 20)
+        self.spacingBetweenTitleAndValue = 8
+        self.valueSize = (210, 36)
+        self.about = ASAAboutLoadingViewTheme()
+        self.corner = Corner(radius: 4)
     }
 }

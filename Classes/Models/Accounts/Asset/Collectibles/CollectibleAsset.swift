@@ -125,6 +125,38 @@ final class CollectibleAsset: Asset {
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
     }
+
+    init(decoration: AssetDecoration) {
+        self.id = decoration.id
+        self.isFrozen = nil
+        self.isDeleted = nil
+        self.optedInAtRound = nil
+        self.creator = decoration.creator
+        self.name = decoration.name
+        self.unitName = decoration.unitName
+        self.total = decoration.total
+        self.verificationTier = decoration.verificationTier
+        self.thumbnailImage = decoration.collectible?.thumbnailImage
+        self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
+        self.standard = decoration.collectible?.standard ?? .unknown("")
+        self.media = decoration.collectible?.media ?? []
+        self.title = decoration.collectible?.title
+        self.collectionName = decoration.collectible?.collectionName
+        self.url = decoration.url
+        self.description = decoration.collectible?.description
+        self.properties = decoration.collectible?.properties
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
+        self.logoURL = decoration.logoURL
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
+        self.amount = 0
+        self.decimals = decoration.decimals
+        self.decimalAmount = 0
+        self.usdValue = decoration.usdValue
+        self.totalUSDValue = 0
+    }
 }
 
 extension CollectibleAsset: Hashable {

@@ -12,35 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASADiscoveryScreenAPIDataController.swift
+//   ASADetailAPIDataController.swift
 
 import Foundation
 import MagpieHipo
 
-final class ASADiscoveryScreenAPIDataController: ASADiscoveryScreenDataController {
+final class ASADetailScreenAPIDataController: ASADetailScreenDataController {
     var eventHandler: EventHandler?
 
+    private(set) var account: Account
     private(set) var asset: Asset
 
     private let api: ALGAPI
 
     init(
-        asset: AssetDecoration,
+        account: Account,
+        asset: Asset,
         api: ALGAPI
     ) {
-        if asset.isCollectible {
-            self.asset = CollectibleAsset(decoration: asset)
-        } else {
-            self.asset = StandardAsset(decoration: asset)
-        }
-
+        self.account = account
+        self.asset = asset
         self.api = api
     }
 }
 
-extension ASADiscoveryScreenAPIDataController {
+extension ASADetailScreenAPIDataController {
     func loadData() {
-        if !asset.isFault {
+        if asset.isAlgo {
             eventHandler?(.didLoadData)
             return
         }
@@ -54,7 +52,8 @@ extension ASADiscoveryScreenAPIDataController {
 
             switch result {
             case .success(let newAsset):
-                self.asset = StandardAsset(decoration: newAsset)
+                let algAsset = ALGAsset(asset: self.asset)
+                self.asset = StandardAsset(asset: algAsset, decoration: newAsset)
                 self.eventHandler?(.didLoadData)
             case .failure(let apiError, let apiErrorDetail):
                 let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
