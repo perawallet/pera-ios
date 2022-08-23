@@ -35,7 +35,7 @@ struct TransactionFilterOptionViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.regular.make(15)),
+            .font(Fonts.DMSans.medium.make(15)),
             .textColor(Colors.Text.main)
         ]
         self.date = [
@@ -51,7 +51,7 @@ struct TransactionFilterOptionViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.bold.make(9))
+            .font(Fonts.DMSans.bold.make(10))
         ]
         self.verticalInset = 8
         self.titleLabelLeadingInset = 20

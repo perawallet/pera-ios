@@ -216,7 +216,7 @@
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
-"accounts-transaction-history-title" = "Transaction History";
+"accounts-transactions-title" = "Transactions";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
