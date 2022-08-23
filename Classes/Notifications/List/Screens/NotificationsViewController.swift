@@ -20,7 +20,6 @@ import MagpieCore
 
 final class NotificationsViewController:
     BaseViewController,
-    AssetActionConfirmationViewControllerDelegate,
     TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
@@ -47,7 +46,7 @@ final class NotificationsViewController:
         )
     }()
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
@@ -211,9 +210,9 @@ extension NotificationsViewController {
                 to: assetId,
                 for: receiverAccount
             ) {
-                openAssetAddition(
-                    account: receiverAccount,
-                    asset: asset
+                openOptInAsset(
+                    asset: asset,
+                    account: receiverAccount
                 )
                 return
             }
@@ -291,31 +290,84 @@ extension NotificationsViewController {
         }
     }
 
-    private func openAssetAddition(
-        account: Account,
-        asset: NotificationAsset
+    private func openOptInAsset(
+        asset: NotificationAsset,
+        account: Account
     ) {
-        guard let assetId = asset.id else {
+        guard let assetID = asset.id else {
             return
         }
 
-        let assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetId: assetId,
-            asset: nil,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
-        )
+        if let asset = sharedDataController.assetDetailCollection[assetID] {
+            openOptInAsset(
+                asset: asset,
+                account: account
+            )
+            return
+        }
 
-        assetActionConfirmationTransition.perform(
-            .assetActionConfirmation(
-                assetAlertDraft: assetAlertDraft,
-                delegate: self
-            ),
-            by: .presentWithoutNavigationController
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        api?.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController?.stopLoading()
+
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "asset-confirmation-not-found".localized
+                    )
+                    return
+                }
+
+                if let asset = assetResponse.results.first {
+                    self.openOptInAsset(
+                        asset: asset,
+                        account: account
+                    )
+                }
+            case .failure:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "asset-confirmation-not-fetched".localized
+                )
+            }
+        }
+    }
+
+    private func openOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: asset
+        )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performApprove:
+                self.continueToOptInAsset(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelOptInAsset()
+            }
+        }
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
         )
     }
     
@@ -341,31 +393,36 @@ extension NotificationsViewController {
         )
     }
 
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        account: Account
     ) {
-        if let receiverAccount = dataController.getReceiverAccount(from: currentNotification) {
-            var account = receiverAccount
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
 
-            if !canSignTransaction(for: &account) {
-                return
-            }
+            var account = account
+
+            if !self.canSignTransaction(for: &account) { return }
 
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
             )
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
             if account.requiresLedgerConnection() {
-                transactionController.initializeLedgerTransactionAccount()
-                transactionController.startTimer()
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
             }
         }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
     }
 
     func transactionController(
