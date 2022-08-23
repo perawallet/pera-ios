@@ -22,7 +22,8 @@ final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     NotificationObserver,
-    UIContextMenuInteractionDelegate {
+    UIContextMenuInteractionDelegate,
+    TransactionSignChecking {
     var notificationObservations: [NSObjectProtocol] = []
 
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
@@ -42,9 +43,7 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var selectedAccountPreviewCanvasView = MacaroonUIKit.BaseView()
     private lazy var selectedAccountPreviewView = SelectedAccountPreviewView()
 
-    private lazy var bottomSheetTransition = BottomSheetTransition(
-        presentingViewController: self
-    )
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
@@ -420,23 +419,57 @@ extension ReceiveCollectibleAssetListViewController {
                 return
             }
 
-            let assetAlertDraft = AssetAlertDraft(
+            let draft = OptInAssetDraft(
                 account: account.value,
-                assetId: selectedAsset.id,
-                asset: selectedAsset,
-                transactionFee: Transaction.Constant.minimumFee,
-                title: "asset-add-confirmation-title".localized,
-                detail: "asset-add-warning".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
+                asset: selectedAsset
             )
+            let screen = Screen.optInAsset(draft: draft) {
+                [weak self] event in
+                guard let self = self else { return }
 
-            bottomSheetTransition.perform(
-                .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-                by: .presentWithoutNavigationController
+                switch event {
+                case .performApprove: self.continueToOptInAsset(asset: selectedAsset)
+                case .performClose: self.cancelOptInAsset()
+                }
+            }
+
+            transitionToOptInAsset.perform(
+                screen,
+                by: .present
             )
         default: break
         }
+    }
+
+    private func continueToOptInAsset(asset: AssetDecoration) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            var account = self.account.value
+
+            if !self.canSignTransaction(for: &account) { return }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+
+            self.currentAsset = asset
+        }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
     }
 }
 
@@ -459,37 +492,6 @@ extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
-    }
-}
-
-extension ReceiveCollectibleAssetListViewController:
-    AssetActionConfirmationViewControllerDelegate,
-    TransactionSignChecking {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
-    ) {
-        var anAccount = account.value
-
-        if !canSignTransaction(for: &anAccount) {
-            return
-        }
-
-        let assetTransactionDraft = AssetTransactionSendDraft(
-            from: anAccount,
-            assetIndex: asset.id
-        )
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        if anAccount.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-
-        currentAsset = asset
     }
 }
 
