@@ -92,6 +92,6 @@ struct UISheetActionScreenCommonTheme:
         ]
         actionSpacing = 16
         actionsEdgeInsets = (8, 24, 16, 24)
-        actionContentEdgeInsets = (14, 24, 14, 24)
+        actionContentEdgeInsets = (16, 24, 16, 24)
     }
 }

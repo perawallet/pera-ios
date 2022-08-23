@@ -20,9 +20,12 @@ import MacaroonUIKit
 struct OptOutAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
+    var background: ViewStyle
     var contentEdgeInsets: LayoutPaddings
     var separator: Separator
     var spacingBetweenSecondaryListItemAndSeparator: LayoutMetric
+    var title: PrimaryTitleViewTheme
+    var spacingBetweenTitleAndSeparator: LayoutMetric
     var assetIDView: SecondaryListItemViewTheme
     var accountView: SecondaryListItemViewTheme
     var transactionFeeView: SecondaryListItemViewTheme
@@ -32,37 +35,48 @@ struct OptOutAssetScreenTheme:
     var closeActionView: ButtonStyle
     var spacingBetweenActions: LayoutMetric
     var actionContentEdgeInsets: LayoutPaddings
-    let actionCorner: Corner
     var actionsContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
-        contentEdgeInsets = (36, 24, 32, 24)
-        separator = Separator(
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.contentEdgeInsets = (36, 24, 32, 24)
+        self.separator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((contentEdgeInsets.leading, contentEdgeInsets.trailing))
         )
-        spacingBetweenSecondaryListItemAndSeparator = 10
-        assetIDView = AssetIDSecondaryListItemViewTheme()
-        accountView = SecondaryListItemCommonViewTheme()
-        transactionFeeView = TransactionFeeSecondaryListItemViewTheme()
-        descriptionTopPadding = 22
-        description = [
+        self.spacingBetweenSecondaryListItemAndSeparator = 10
+        self.title = OptOutAssetNameViewTheme()
+        self.spacingBetweenTitleAndSeparator = 20
+        self.assetIDView = AssetIDSecondaryListItemViewTheme()
+        self.accountView = SecondaryListItemCommonViewTheme()
+        self.transactionFeeView = TransactionFeeSecondaryListItemViewTheme()
+        self.descriptionTopPadding = 22
+        self.description = [
             .textOverflow(FittingText())
         ]
-        approveActionView = [
+        self.approveActionView = [
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
-            .backgroundColor(Colors.Button.Primary.background),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+            ])
         ]
-        closeActionView = [
+        self.closeActionView = [
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
-            .backgroundColor(Colors.Button.Secondary.background)
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/secondary/bg"),
+                .highlighted("components/buttons/secondary/bg-highlighted"),
+            ])
         ]
-        spacingBetweenActions = 16
-        actionContentEdgeInsets = (14, 0, 14, 0)
-        actionCorner = Corner(radius: 4)
-        actionsContentEdgeInsets = (16, 24, 16, 24)
+        self.spacingBetweenActions = 16
+        self.actionContentEdgeInsets = (16, 24, 16, 24)
+        self.actionsContentEdgeInsets = (16, 24, 16, 24)
     }
 }

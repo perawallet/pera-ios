@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OptInAssetNameViewTheme.swift
+//   TransferAssetBalanceNameViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct OptInAssetNameViewTheme: PrimaryTitleViewTheme {
+struct TransferAssetBalanceNameViewTheme: PrimaryTitleViewTheme {
     var primaryTitle: TextStyle
     var primaryTitleAccessory: ImageStyle
     var primaryTitleAccessoryContentEdgeInsets: LayoutOffset

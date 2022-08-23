@@ -25,6 +25,7 @@ final class TransferAssetBalanceScreen:
         return .compressed
     }
 
+    private lazy var titleView = PrimaryTitleView()
     private lazy var assetIDView = SecondaryListItemView()
     private lazy var accountView = SecondaryListItemView()
     private lazy var descriptionView = Label()
@@ -63,6 +64,8 @@ final class TransferAssetBalanceScreen:
 
         blursFooterBackgroundOnUnderScrolling = true
 
+        addBackground()
+        addTitle()
         addAssetID()
         addAccount()
         addDescription()
@@ -88,12 +91,36 @@ final class TransferAssetBalanceScreen:
 }
 
 extension TransferAssetBalanceScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addTitle() {
+        titleView.customize(theme.title)
+        contentView.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
+        }
+
+        let asset = draft.asset
+        let viewModel = OptOutAssetNameViewModel(asset: asset)
+        titleView.bindData(viewModel)
+    }
+
     private func addAssetID() {
         assetIDView.customize(theme.assetIDView)
 
+        let topSeparator = contentView.attachSeparator(
+            theme.separator,
+            to: titleView,
+            margin: theme.spacingBetweenTitleAndSeparator
+        )
+
         contentView.addSubview(assetIDView)
         assetIDView.snp.makeConstraints {
-            $0.top == theme.contentEdgeInsets.top
+            $0.top == topSeparator.snp.bottom + theme.spacingBetweenSecondaryListItemAndSeparator
             $0.leading == 0
             $0.trailing == 0
         }
@@ -136,7 +163,6 @@ extension TransferAssetBalanceScreen {
 
     private func addApproveAction() {
         approveActionView.customizeAppearance(theme.approveActionView)
-        approveActionView.draw(corner: theme.actionCorner)
         approveActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
         footerView.addSubview(approveActionView)
@@ -154,7 +180,6 @@ extension TransferAssetBalanceScreen {
 
     private func addCloseAction() {
         closeActionView.customizeAppearance(theme.closeActionView)
-        closeActionView.draw(corner: theme.actionCorner)
         closeActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
         footerView.addSubview(closeActionView)
