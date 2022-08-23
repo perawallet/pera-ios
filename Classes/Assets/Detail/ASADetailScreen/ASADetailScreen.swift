@@ -307,11 +307,7 @@ extension ASADetailScreen {
     private func addUI() {
         addBackground()
         addProfile()
-
-        if !account.isWatchAccount() {
-            addQuickActions()
-        }
-
+        addQuickActions()
         addPagesFragment()
     }
 
@@ -321,7 +317,7 @@ extension ASADetailScreen {
         if !isViewLayoutLoaded { return }
         if !profileView.isLayoutLoaded { return }
 
-        if !account.isWatchAccount() {
+        if !dataController.account.isWatchAccount() {
             if !quickActionsView.isLayoutLoaded { return }
         }
 
@@ -480,6 +476,10 @@ extension ASADetailScreen {
     }
 
     private func addQuickActions() {
+        if dataController.account.isWatchAccount() {
+            return
+        }
+
         quickActionsView.customize(theme.quickActions)
 
         view.addSubview(quickActionsView)
@@ -632,7 +632,7 @@ extension ASADetailScreen {
             theme.spacingBetweenProfileAndQuickActions +
             quickActionsView.bounds.height
 
-        if !account.isWatchAccount() {
+        if !dataController.account.isWatchAccount() {
             maxHeight += quickActionsHeight
         }
 
