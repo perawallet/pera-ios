@@ -42,8 +42,13 @@ struct ASADetailLoadingViewTheme:
     var receiveActionTitle: TextProvider
     var quickActionMinWidth: LayoutMetric
     var spacingBetweenQuickActionIconAndTitle: LayoutMetric
-    var spacingBetweenQuickActionsAndPagesFragment: LayoutMetric
+    var spacingBetweenQuickActionsAndPageBar: LayoutMetric
+    var pageBarStyle: PageBarStyleSheet
+    var pageBarLayout: PageBarLayoutSheet
+    var activityPageBarItem: PageBarButtonItem
     var activity: TransactionHistoryLoadingViewTheme
+    var activityContentEdgeInsets: NSDirectionalEdgeInsets
+    var aboutPageBarItem: PageBarButtonItem
     var about: ASAAboutLoadingViewTheme
     var corner: Corner
 
@@ -87,8 +92,13 @@ struct ASADetailLoadingViewTheme:
 
         self.quickActionMinWidth = 64
         self.spacingBetweenQuickActionIconAndTitle = 12
-        self.spacingBetweenQuickActionsAndPagesFragment = 36
+        self.spacingBetweenQuickActionsAndPageBar = 36
+        self.pageBarStyle = PageBarCommonStyleSheet()
+        self.pageBarLayout = PageBarCommonLayoutSheet()
+        self.activityPageBarItem = PrimaryPageBarButtonItem(title: "activity".localized)
         self.activity = TransactionHistoryLoadingViewCommonTheme()
+        self.activityContentEdgeInsets = .init(top: 36, leading: 24, bottom: 0, trailing: 24)
+        self.aboutPageBarItem = PrimaryPageBarButtonItem(title: "about".localized)
         self.about = ASAAboutLoadingViewTheme()
         self.corner = Corner(radius: 4)
     }
