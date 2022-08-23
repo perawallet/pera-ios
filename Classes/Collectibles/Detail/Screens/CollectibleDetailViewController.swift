@@ -528,7 +528,10 @@ extension CollectibleDetailViewController {
 
 extension CollectibleDetailViewController {
     private func openOptOutAsset() {
-        let draft = collectibleDetailTransactionController.makeOptOutAssetDraft()
+        let draft = OptOutAssetDraft(
+            account: account,
+            asset: asset
+        )
 
         let screen = Screen.optOutAsset(draft: draft) {
             [weak self] event in

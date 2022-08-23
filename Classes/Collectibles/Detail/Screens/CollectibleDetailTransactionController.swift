@@ -35,19 +35,6 @@ final class CollectibleDetailTransactionController {
 }
 
 extension CollectibleDetailTransactionController {
-    func makeOptOutAssetDraft() -> OptOutAssetDraft {
-        let assetDecoration = AssetDecoration(asset: asset)
-
-        let draft = OptOutAssetDraft(
-            account: account,
-            asset: assetDecoration
-        )
-
-        return draft
-    }
-}
-
-extension CollectibleDetailTransactionController {
     func optOutAsset() {
         guard let creator = asset.creator else {
             return

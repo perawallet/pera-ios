@@ -18,5 +18,9 @@ import Foundation
 
 struct TransferAssetBalanceDraft {
     let account: Account
-    let asset: AssetDecoration
+    let asset: Asset
+
+    var isTransferingCollectibleAssetBalance: Bool {
+        return (asset as? CollectibleAsset) != nil
+    }
 }

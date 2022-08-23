@@ -151,20 +151,18 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 
 extension ManageAssetsViewController {
     private func showAlertToDelete(_ asset: Asset) {
-        let assetDecoration = AssetDecoration(asset: asset)
-
         if isValidAssetDeletion(asset) {
-            openOptOutAsset(asset: assetDecoration)
+            openOptOutAsset(asset: asset)
             return
         }
 
-        openTransferAssetBalance(asset: assetDecoration)
+        openTransferAssetBalance(asset: asset)
     }
 }
 
 extension ManageAssetsViewController {
     private func openOptOutAsset(
-        asset: AssetDecoration
+        asset: Asset
     ) {
         let draft = OptOutAssetDraft(
             account: account,
@@ -193,16 +191,12 @@ extension ManageAssetsViewController {
     }
 
     private func continueToOptOutAsset(
-        asset: AssetDecoration,
+        asset: Asset,
         account: Account
     ) {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            guard let asset = self.dataController[asset.id] else {
-                return
-            }
 
             self.removeAssetFromAccount(asset)
         }
@@ -215,7 +209,7 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController {
     private func openTransferAssetBalance(
-        asset: AssetDecoration
+        asset: Asset
     ) {
         let draft = TransferAssetBalanceDraft(
             account: account,
@@ -244,16 +238,12 @@ extension ManageAssetsViewController {
     }
 
     private func continueToTransferAssetBalance(
-        asset: AssetDecoration,
+        asset: Asset,
         account: Account
     ) {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            guard let asset = self.dataController[asset.id] else {
-                return
-            }
 
             var draft = SendTransactionDraft(
                 from: account,

@@ -21,19 +21,19 @@ struct AssetIDSecondaryListItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
     var accessory: SecondaryListItemValueViewModel?
 
-    init(asset: AssetDecoration) {
-        bindTitle(asset)
+    init(assetID: AssetID) {
+        bindTitle(assetID)
 
         accessory = AssetIDSecondaryListItemValueViewModel()
     }
 }
 
 extension AssetIDSecondaryListItemViewModel {
-    private mutating func bindTitle(_ asset: AssetDecoration) {
+    private mutating func bindTitle(_ assetID: AssetID) {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
-        title = "\(asset.id)".attributed(attributes)
+        title = "\(assetID)".attributed(attributes)
     }
 }
 
