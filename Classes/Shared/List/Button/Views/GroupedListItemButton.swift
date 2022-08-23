@@ -18,35 +18,29 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// This component seems hard to undestand / use, and naming doesn't look good here. Let's refactor
+/// it later.
 final class GroupedListItemButton:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [:]
+
     private lazy var titleView = Label()
     private lazy var contentView = VStackView()
 
-    func customize(
-        _ theme: GroupedListItemButtonTheme
-    ) {
+    func customize(_ theme: GroupedListItemButtonTheme) {
         addTitle(theme)
         addContent(theme)
     }
 
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(
-        _ viewModel: GroupedListItemButtonViewModel?
-    ) {
-        guard let viewModel = viewModel else {
-            return
-        }
-
-        if let title = viewModel.title {
+    func bindData(_ viewModel: GroupedListItemButtonViewModel?) {
+        if let title = viewModel?.title {
             title.load(in: titleView)
         } else {
             titleView.text = nil
@@ -54,8 +48,27 @@ final class GroupedListItemButton:
         }
 
         contentView.deleteAllArrangedSubviews()
-        viewModel.listItemButtons.forEach {
-            addButton($0)
+        uiInteractions.removeAll()
+
+        let items = viewModel?.items ?? []
+        for item in items {
+            let itemView = ListItemButton()
+            itemView.customize(item.theme)
+            itemView.bindData(item.viewModel)
+
+            let event = Event()
+            uiInteractions[event] = TargetActionInteraction()
+
+            startObserving(
+                event: event,
+                using: item.selector
+            )
+            startPublishing(
+                event: event,
+                for: itemView
+            )
+
+            contentView.addArrangedSubview(itemView)
         }
     }
 }
@@ -103,9 +116,11 @@ extension GroupedListItemButton {
 }
 
 extension GroupedListItemButton {
-    private func addButton(
-        _ button: ListItemButton
-    ) {
-        contentView.addArrangedSubview(button)
+    struct Event: Hashable {
+        private let uuid: UUID
+
+        init(uuid: UUID = .init()) {
+            self.uuid = uuid
+        }
     }
 }

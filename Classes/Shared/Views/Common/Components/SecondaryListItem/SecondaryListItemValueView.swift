@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class SecondaryListItemValueView:
-    Control,
+    View,
     ViewModelBindable {
     private lazy var backgroundImageView = UIImageView()
     private lazy var contentView = MacaroonUIKit.BaseView()

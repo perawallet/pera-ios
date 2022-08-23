@@ -16,14 +16,32 @@
 
 import MacaroonUIKit
 
-struct AssetTwitterListItemButtonViewModel: AssetSocialMediaListItemButtonViewModel {
-    let icon: Image?
-    let title: EditText?
+struct AssetTwitterListItemViewModel: GroupedListItemButtonItemViewModel {
+    var theme: ListItemButtonTheme
+    var viewModel: ListItemButtonViewModel
+    var selector: () -> Void
+
+    init(selector: @escaping () -> Void) {
+        self.theme = Self.makeTheme()
+        self.viewModel = AssetTwitterListItemButtonViewModel()
+        self.selector = selector
+    }
+}
+
+private struct AssetTwitterListItemButtonViewModel: ListItemButtonViewModel {
+    var icon: Image?
+    var title: EditText?
+    var subtitle: EditText?
+    var accessory: Image?
 
     init() {
         self.icon = "icon-twitter"
-        self.title = Self.getTitle(
-            "social-media-platform-twitter".localized
+        self.title = .attributedString(
+            "social-media-platform-twitter"
+                .localized
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
+        self.subtitle = nil
+        self.accessory = "icon-external-link"
     }
 }

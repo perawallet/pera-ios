@@ -32,9 +32,14 @@ final class StandardAsset: Asset {
     let verificationTier: AssetVerificationTier
     let creator: AssetCreator?
     let url: String?
+    let projectURL: URL?
+    let explorerURL: URL?
     let logoURL: URL?
-    let isAlgo = false
     let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
+    let isAlgo = false
 
     let isFault: Bool
 
@@ -65,6 +70,8 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
         self.total = decoration.total
 
@@ -81,6 +88,9 @@ final class StandardAsset: Asset {
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
         self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
         self.isFault = false
     }
 
@@ -96,6 +106,8 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
         self.total = decoration.total
         self.amount = 0
@@ -104,6 +116,9 @@ final class StandardAsset: Asset {
         self.usdValue = decoration.usdValue
         self.totalUSDValue = nil
         self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
         self.isFault = true
     }
 }

@@ -23,6 +23,8 @@ struct ASADiscoveryScreenTheme:
     LayoutSheet {
     var background: ViewStyle
     var loading: ASADiscoveryLoadingViewTheme
+    var error: NoContentWithActionViewCommonTheme
+    var errorBackground: ViewStyle
     var profile: ASAProfileViewTheme
     var profileHorizontalEdgeInsets: LayoutHorizontalPaddings
     var normalProfileVerticalEdgeInsets: LayoutVerticalPaddings
@@ -33,6 +35,10 @@ struct ASADiscoveryScreenTheme:
             .backgroundColor(Colors.Helpers.heroBackground)
         ]
         self.loading = ASADiscoveryLoadingViewTheme()
+        self.error = NoContentWithActionViewCommonTheme()
+        self.errorBackground = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.profile = ASAProfileViewTheme(family)
         self.profileHorizontalEdgeInsets = (24, 24)
         self.normalProfileVerticalEdgeInsets = (50, 36)

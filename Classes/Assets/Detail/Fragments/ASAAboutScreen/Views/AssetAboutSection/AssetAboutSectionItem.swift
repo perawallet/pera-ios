@@ -19,17 +19,22 @@ import Foundation
 final class AssetAboutSectionItem {
     let viewModel: SecondaryListItemViewModel
     let theme: SecondaryListItemViewTheme
-    let handler: Handler?
+    let handlers: Handlers?
     
     init(
         viewModel: SecondaryListItemViewModel,
-        theme: SecondaryListItemViewTheme = SecondaryListItemCommonViewTheme(),
-        handler: Handler? = nil
+        theme: SecondaryListItemViewTheme,
+        handlers: Handlers? = nil
     ) {
         self.viewModel = viewModel
         self.theme = theme
-        self.handler = handler
+        self.handlers = handlers
     }
-    
-    typealias Handler = () -> Void
+}
+
+extension AssetAboutSectionItem {
+    struct Handlers {
+        var didTapAccessory: EmptyHandler?
+        var didLongPressAccessory: EmptyHandler?
+    }
 }

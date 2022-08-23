@@ -29,7 +29,10 @@ protocol Asset: AnyObject {
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
+    var projectURL: URL? { get }
+    var explorerURL: URL? { get }
     var logoURL: URL? { get }
+    var description: String? { get }
 
     /// <todo>
     /// Switch decimalAmount -> amount
@@ -45,6 +48,10 @@ protocol Asset: AnyObject {
     /// /// <todo> AssetNaming implementation structure should be changed.
     var naming: AssetNaming { get }
     var amountWithFraction: Decimal { get }
+
+    var discordURL: URL? { get }
+    var telegramURL: URL? { get }
+    var twitterURL: URL? { get }
 
     var isAlgo: Bool { get }
 

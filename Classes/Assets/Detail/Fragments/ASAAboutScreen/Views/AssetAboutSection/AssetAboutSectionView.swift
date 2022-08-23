@@ -43,7 +43,9 @@ final class AssetAboutSectionView:
         _ viewModel: AssetAboutSectionViewModel?
     ) {
         viewModel?.title?.load(in: titleView)
-        viewModel?.items?.forEach(addItem)
+
+        itemsContextView.deleteAllArrangedSubviews()
+        viewModel?.items.forEach(addItem)
     }
 }
 
@@ -84,10 +86,17 @@ extension AssetAboutSectionView {
             item
         )
 
-        if let handler = item.handler {
+        if let didTapAccessoryHandler = item.handlers?.didTapAccessory {
             itemView.startObserving(
-                event: .performAccessory,
-                using: handler
+                event: .didTapAccessory,
+                using: didTapAccessoryHandler
+            )
+        }
+
+        if let didLongPressAccessoryHandler = item.handlers?.didLongPressAccessory {
+            itemView.startObserving(
+                event: .didLongPressAccessory,
+                using: didLongPressAccessoryHandler
             )
         }
 

@@ -53,7 +53,8 @@ struct SecondaryListItemCommonViewTheme: SecondaryListItemViewTheme {
         self.titleMaxWidthRatio = 0.35
         self.minimumSpacingBetweenTitleAndAccessory = 12
         self.accessory = SecondaryListItemValueCommonViewTheme(
-            isMultiline: true
+            isMultiline: true,
+            isInteractable: false
         )
     }
 }

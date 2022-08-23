@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ShowMoreDraft.swift
+//   ASADetailDataController.swift
 
 import Foundation
+import MagpieCore
+import MagpieHipo
 
-struct ShowMoreDraft {
-    let title: String?
-    let detail: String
-    let allowedNumberOfLines: NumberOfLineLimit
+protocol ASADetailScreenDataController: AnyObject {
+    typealias EventHandler = (ASADetailScreenDataControllerEvent) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
+
+    var eventHandler: EventHandler? { get set }
+
+    var account: Account { get }
+    var asset: Asset { get }
+
+    func loadData()
 }
 
-enum NumberOfLineLimit {
-    case none
-    case custom(Int)
-    case full /// State for limited lines to full display
+enum ASADetailScreenDataControllerEvent {
+    case willLoadData
+    case didLoadData
+    case didFailToLoadData(ASADiscoveryScreenDataController.Error)
 }

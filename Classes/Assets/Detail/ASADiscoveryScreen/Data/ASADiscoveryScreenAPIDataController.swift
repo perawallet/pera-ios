@@ -28,7 +28,12 @@ final class ASADiscoveryScreenAPIDataController: ASADiscoveryScreenDataControlle
         asset: AssetDecoration,
         api: ALGAPI
     ) {
-        self.asset = StandardAsset(decoration: asset)
+        if asset.isCollectible {
+            self.asset = CollectibleAsset(decoration: asset)
+        } else {
+            self.asset = StandardAsset(decoration: asset)
+        }
+
         self.api = api
     }
 }

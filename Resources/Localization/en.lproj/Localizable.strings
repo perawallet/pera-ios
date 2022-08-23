@@ -79,6 +79,7 @@
 "title-csv" = "CSV";
 "activity" = "Activity";
 "about" = "About";
+"url-copied" = "URL copied to clipboard";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -233,6 +234,7 @@
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
+"asset-algos-description" = "Algorand builds technology that accelerates the convergence between decentralized & traditional finance by enabling the simple creation of next generation.";
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
@@ -1156,3 +1158,12 @@
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
+
+// MARK: ASA About
+"asa-about-asa-id" = "ASA ID";
+"asa-about-asa-url" = "ASA URL";
+"asa-about-asa-creator" = "Creator";
+"asa-about-asa-show-on" = "Show on";
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+"asa-about-asa-project-website" = "Project website";
+"asa-about-asa-open-with-browser" = "Open with Browser";

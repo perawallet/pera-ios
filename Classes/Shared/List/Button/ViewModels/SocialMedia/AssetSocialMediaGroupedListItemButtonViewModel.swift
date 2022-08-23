@@ -20,54 +20,23 @@ import UIKit
 
 struct AssetSocialMediaGroupedListItemButtonViewModel: GroupedListItemButtonViewModel {
     private(set) var title: TextProvider?
-    private(set) var listItemButtons: [ListItemButton] = []
+    private(set) var items: [GroupedListItemButtonItemViewModel] = []
 
-    init(
-        _ socialMedia: [AssetSocialMedia]
-    ) {
+    init(items: [GroupedListItemButtonItemViewModel]) {
         bindTitle()
-        bindListItemButtons(socialMedia)
+        bindItems(items)
     }
 }
 
 extension AssetSocialMediaGroupedListItemButtonViewModel {
-    private mutating func bindTitle() {
-        title = "social-media-platform-title".localized.footnoteMedium()
+    mutating func bindTitle() {
+        title = "social-media-platform-title"
+            .localized
+            .uppercased()
+            .footnoteHeadingMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindListItemButtons(
-        _ socialMedia: [AssetSocialMedia]
-    ) {
-        var buttons: [ListItemButton] = []
-
-        for platform in socialMedia {
-            var theme = ListItemButtonTheme()
-            theme.configureForAssetSocialMediaView()
-
-            let button = ListItemButton()
-            button.customize(theme)
-
-            switch platform {
-            case .discord:
-                let viewModel = AssetDiscordListItemButtonViewModel()
-                button.bindData(viewModel)
-            case .telegram:
-                let viewModel = AssetTelegramListItemButtonViewModel()
-                button.bindData(viewModel)
-            case .twitter:
-                let viewModel = AssetTwitterListItemButtonViewModel()
-                button.bindData(viewModel)
-            }
-
-            buttons.append(button)
-        }
-
-        self.listItemButtons = buttons
+    mutating func bindItems(_ items: [GroupedListItemButtonItemViewModel]) {
+        self.items = items
     }
-}
-
-enum AssetSocialMedia {
-    case discord
-    case telegram
-    case twitter
 }

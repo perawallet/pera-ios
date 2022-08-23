@@ -24,7 +24,8 @@ final class SecondaryListItemView:
     UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAccessory: TargetActionInteraction()
+        .didTapAccessory: GestureInteraction(gesture: .tap),
+        .didLongPressAccessory: GestureInteraction(gesture: .longPress)
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()
@@ -110,7 +111,11 @@ extension SecondaryListItemView {
         }
 
         startPublishing(
-            event: .performAccessory,
+            event: .didTapAccessory,
+            for: accessoryView
+        )
+        startPublishing(
+            event: .didLongPressAccessory,
             for: accessoryView
         )
     }
@@ -118,6 +123,7 @@ extension SecondaryListItemView {
 
 extension SecondaryListItemView {
     enum Event {
-        case performAccessory
+        case didTapAccessory
+        case didLongPressAccessory
     }
 }
