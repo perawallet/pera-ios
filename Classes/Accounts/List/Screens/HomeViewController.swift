@@ -50,6 +50,7 @@ final class HomeViewController:
             presentingScreen: self,
             api: api!,
             bannerController: bannerController!,
+            loadingController: loadingController!,
             analytics: analytics
         )
 
