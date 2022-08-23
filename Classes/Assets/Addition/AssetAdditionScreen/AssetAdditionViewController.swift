@@ -361,7 +361,11 @@ extension AssetAdditionViewController {
                 guard let self = self else { return }
 
                 switch event {
-                case .performApprove: self.continueToOptInAsset(asset: asset)
+                case .performApprove:
+                    self.continueToOptInAsset(
+                        asset: asset,
+                        from: cell
+                    )
                 case .performClose: self.cancelOptInAsset()
                 }
             }
@@ -372,7 +376,10 @@ extension AssetAdditionViewController {
         }
     }
 
-    private func continueToOptInAsset(asset: AssetDecoration) {
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        from cell: OptInAssetListItemCell
+    ) {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
@@ -390,6 +397,8 @@ extension AssetAdditionViewController {
                 transactionController.initializeLedgerTransactionAccount()
                 transactionController.startTimer()
             }
+
+            cell.accessory = .loading
         }
     }
 
@@ -451,20 +460,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             self,
             didAdd: assetDetail
         )
-
-        if let cell = findCell(from: assetDetail) {
-            cell.accessory = .loading
-        }
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didCompletedTransaction id: TransactionID
-    ) {
-        guard let assetID = getAssetID(from: transactionController),
-              let assetDetail = optInTransactions[assetID]?.asset else {
-            return
-        }
 
         if let cell = findCell(from: assetDetail) {
             cell.accessory = .check
