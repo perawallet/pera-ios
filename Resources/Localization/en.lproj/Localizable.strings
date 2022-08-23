@@ -353,7 +353,7 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
-"accounts-title-assets" = "Assets";
+"accounts-title-overview" = "Overview";
 "accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
