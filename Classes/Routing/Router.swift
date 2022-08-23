@@ -466,17 +466,24 @@ class Router:
             aViewController.eventHandler = eventHandler
 
             viewController = aViewController
-        case .asaDiscovery(let asset):
+        case .asaDiscovery(let account, let asset, let eventHandler):
             let dataController =
-                ASADiscoveryScreenAPIDataController(asset: asset, api: appConfiguration.api)
+                ASADiscoveryScreenAPIDataController(
+                    asset: asset,
+                    api: appConfiguration.api
+                )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
-            viewController = ASADiscoveryScreen(
+            let aViewController = ASADiscoveryScreen(
+                account: account,
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
@@ -895,8 +902,8 @@ class Router:
                 ),
                 configuration: configuration
             )
-        case let .collectibleDetail(asset, account, thumbnailImage):
-            viewController = CollectibleDetailViewController(
+        case .collectibleDetail(let asset, let account, let thumbnailImage, let eventHandler):
+            let aViewController = CollectibleDetailViewController(
                 asset: asset,
                 account: account,
                 thumbnailImage: thumbnailImage,
@@ -905,6 +912,9 @@ class Router:
                 ),
                 configuration: configuration
             )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case let .sendCollectible(draft):
             let aViewController = SendCollectibleViewController(
                 draft: draft,

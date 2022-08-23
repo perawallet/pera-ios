@@ -95,8 +95,72 @@ final class ManageAssetsViewController:
                 break
             }
         }
+
+        listLayout.handlers.didSelect = {
+            [weak self] indexPath in
+            guard let self = self,
+                  let asset = self.dataController[indexPath.item] else {
+                return
+            }
+
+            self.openAssetDetail(asset)
+        }
     }
-    
+
+    private func openAssetDetail(
+        _ asset: Asset
+    ) {
+        let assetDecoration = AssetDecoration(asset: asset)
+        if assetDecoration.isCollectible {
+            openCollectibleDetail(asset)
+            return
+        }
+
+        openASADiscovery(assetDecoration)
+    }
+
+    private func openCollectibleDetail(
+        _ asset: Asset
+    ) {
+        guard let collectibleAsset = asset as? CollectibleAsset else { return }
+        let screen = Screen.collectibleDetail(
+            asset: collectibleAsset,
+            account: account,
+            thumbnailImage: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: break
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADiscovery(
+        _ asset: AssetDecoration
+    ) {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            asset: asset
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+
     override func prepareLayout() {
         contextView.customize(theme.contextViewTheme)
         

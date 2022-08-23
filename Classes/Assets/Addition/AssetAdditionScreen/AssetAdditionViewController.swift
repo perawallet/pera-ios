@@ -243,11 +243,56 @@ extension AssetAdditionViewController {
         didSelectItemAt indexPath: IndexPath
     ) {
         if case .asset(let item) = dataSource.itemIdentifier(for: indexPath) {
-            open(
-                .asaDiscovery(item.model),
-                by: .push
-            )
+            if item.model.isCollectible {
+                openCollectibleDetail(item.model)
+                return
+            }
+            openASADiscovery(item.model)
         }
+    }
+
+    private func openCollectibleDetail(
+        _ asset: AssetDecoration
+    ) {
+        let collectibleAsset = CollectibleAsset(
+            asset: ALGAsset(id: asset.id),
+            decoration: asset
+        )
+        let screen = Screen.collectibleDetail(
+            asset: collectibleAsset,
+            account: account,
+            thumbnailImage: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: break
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADiscovery(
+        _ asset: AssetDecoration
+    ) {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            asset: asset
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
     }
 }
 

@@ -21,7 +21,11 @@ import MacaroonURLImage
 final class CollectibleDetailViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    TransactionControllerDelegate {
+    TransactionControllerDelegate,
+    TransactionSignChecking {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
 
     private lazy var bottomBannerController = BottomActionableBannerController(
         presentingView: view,
@@ -44,6 +48,7 @@ final class CollectibleDetailViewController:
     }()
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
@@ -53,7 +58,9 @@ final class CollectibleDetailViewController:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    lazy var eventHandlers = Event()
+    private var isQuickActionVisible: Bool {
+        return account[asset.id] == nil
+    }
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleDetailLayout.build()
@@ -67,6 +74,8 @@ final class CollectibleDetailViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+
+    private lazy var assetQuickActionView = AssetQuickActionView()
 
     private lazy var listLayout = CollectibleDetailLayout(dataSource: dataSource)
     private lazy var dataSource = CollectibleDetailDataSource(
@@ -83,7 +92,7 @@ final class CollectibleDetailViewController:
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var asset: CollectibleAsset
-    private let account: Account
+    private var account: Account
     private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
     private let copyToClipboardController: CopyToClipboardController
@@ -154,6 +163,7 @@ final class CollectibleDetailViewController:
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addQuickAction()
     }
 
     override func setListeners() {
@@ -180,6 +190,30 @@ extension CollectibleDetailViewController {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.setPaddings()
+        }
+    }
+
+    private func addQuickAction() {
+        if !isQuickActionVisible {
+            return
+        }
+
+        assetQuickActionView.customize(AssetQuickActionViewTheme())
+
+        view.addSubview(assetQuickActionView)
+        assetQuickActionView.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.linkAssetQuickActionViewInteractors()
         }
     }
 }
@@ -564,11 +598,74 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
+    private func linkAssetQuickActionViewInteractors() {
+        let assetDecoration = AssetDecoration(asset: asset)
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: assetDecoration
+        )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptInAsset(asset: assetDecoration)
+            case .performClose: self.cancelOptInAsset()
+            }
+        }
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptInAsset(
+        asset: AssetDecoration
+    ) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            if !self.canSignTransaction(for: &self.account) { return }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: self.account,
+                assetIndex: asset.id
+            )
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+        }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension CollectibleDetailViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
+
+        if isQuickActionVisible {
+            bannerController?.presentSuccessBanner(
+                title: "asset-opt-in-successful-message".localized(
+                    params: asset.title ?? asset.name ?? .empty
+                )
+            )
+
+            eventHandler?(.didOptInToAsset)
+            return
+        }
 
         bannerController?.presentSuccessBanner(
             title: "collectible-detail-opt-out-success".localized(
@@ -584,7 +681,7 @@ extension CollectibleDetailViewController {
             ]
         )
 
-        eventHandlers.didOptOutAssetFromAccount?()
+        eventHandler?(.didOptOutAssetFromAccount)
     }
 
     func transactionController(
@@ -689,7 +786,8 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
-    struct Event {
-        var didOptOutAssetFromAccount: EmptyHandler?
+    enum Event {
+        case didOptOutAssetFromAccount
+        case didOptInToAsset
     }
 }

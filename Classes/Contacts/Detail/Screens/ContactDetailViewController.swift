@@ -232,13 +232,50 @@ extension ContactDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
+        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.item]))
         cell.delegate = self
         return cell
     }
 }
 
 extension ContactDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        openASADiscoveryScreen(at: indexPath)
+    }
+
+    private func openASADiscoveryScreen(
+        at indexPath: IndexPath
+    ) {
+        /// <note> Do not open the Discovery screen for Algo
+        if indexPath.item == 0 {
+            return
+        }
+
+        guard let asset = assetPreviews[safe: indexPath.item]?.asset else {
+            return
+        }
+
+        let assetDecoration = AssetDecoration(asset: asset)
+
+        let screen = Screen.asaDiscovery(
+            account: nil,
+            asset: assetDecoration
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptInToAsset: self.dismissScreen()
+            }
+        }
+        open(
+            screen,
+            by: .present
+        )
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,

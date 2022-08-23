@@ -371,19 +371,26 @@ extension NotificationsViewController {
         )
     }
     
-    private func openCollectible(asset: CollectibleAsset, with account: Account) {
-        let controller = open(
-            .collectibleDetail(
-                asset: asset,
-                account: account,
-                thumbnailImage: nil
-            ),
-            by: .push
-        ) as? CollectibleDetailViewController
-        
-        controller?.eventHandlers.didOptOutAssetFromAccount = { [weak controller] in
-            controller?.popScreen()
+    private func openCollectible(
+        asset: CollectibleAsset,
+        with account: Account
+    ) {
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account,
+            thumbnailImage: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptInToAsset: break
+            }
         }
+        open(
+            screen,
+            by: .push
+        )
     }
     
     private func presentAssetNotFoundError() {
