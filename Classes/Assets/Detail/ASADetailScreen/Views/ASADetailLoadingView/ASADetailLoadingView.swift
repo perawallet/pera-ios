@@ -21,19 +21,33 @@ import UIKit
 final class ASADetailLoadingView:
     UIView,
     ShimmerAnimationDisplaying {
+    var animatableSubviews: [ShimmerAnimatable] {
+        var subviews: [ShimmerAnimatable] = [
+            iconView,
+            titleView,
+            primaryValueView,
+            secondaryValueView
+        ]
+        subviews += activityView.animatableSubviews
+        subviews += aboutView.animatableSubviews
+        return subviews
+    }
+
     private lazy var profileView = UIView()
     private lazy var iconView = ShimmerView()
     private lazy var titleView = ShimmerView()
     private lazy var primaryValueView = ShimmerView()
     private lazy var secondaryValueView = ShimmerView()
     private lazy var quickActionsView = HStackView()
+    private lazy var pagesFragmentView = UIScrollView()
+    private lazy var activityView = TransactionHistoryLoadingView()
     private lazy var aboutView = ASAAboutLoadingView()
 
     func customize(_ theme: ASADetailLoadingViewTheme) {
         addBackground(theme)
         addProfile(theme)
         addQuickActions(theme)
-//        addAbout(theme)
+        addPagesFragment(theme)
     }
 }
 
@@ -187,13 +201,42 @@ extension ASADetailLoadingView {
         quickActionsView.addArrangedSubview(view)
     }
 
+    private func addPagesFragment(_ theme: ASADetailLoadingViewTheme) {
+        addSubview(pagesFragmentView)
+        pagesFragmentView.bounces = false
+        pagesFragmentView.showsHorizontalScrollIndicator = false
+        pagesFragmentView.showsVerticalScrollIndicator = false
+        pagesFragmentView.isPagingEnabled = true
+        pagesFragmentView.snp.makeConstraints {
+            $0.top == quickActionsView.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        addActivity(theme)
+        addAbout(theme)
+    }
+
+    private func addActivity(_ theme: ASADetailLoadingViewTheme) {
+        activityView.customize(theme.activity)
+
+        pagesFragmentView.addSubview(activityView)
+        activityView.snp.makeConstraints {
+            $0.width == self
+            $0.top == 0
+            $0.leading == 0
+        }
+    }
+
     private func addAbout(_ theme: ASADetailLoadingViewTheme) {
         aboutView.customize(theme.about)
 
-        addSubview(aboutView)
+        pagesFragmentView.addSubview(aboutView)
         aboutView.snp.makeConstraints {
-            $0.top == profileView.snp.bottom
-            $0.leading == 0
+            $0.width == self
+            $0.top == 0
+            $0.leading == activityView.snp.trailing
             $0.trailing == 0
         }
     }

@@ -43,6 +43,7 @@ struct ASADetailLoadingViewTheme:
     var quickActionMinWidth: LayoutMetric
     var spacingBetweenQuickActionIconAndTitle: LayoutMetric
     var spacingBetweenQuickActionsAndPagesFragment: LayoutMetric
+    var activity: TransactionHistoryLoadingViewTheme
     var about: ASAAboutLoadingViewTheme
     var corner: Corner
 
@@ -87,6 +88,7 @@ struct ASADetailLoadingViewTheme:
         self.quickActionMinWidth = 64
         self.spacingBetweenQuickActionIconAndTitle = 12
         self.spacingBetweenQuickActionsAndPagesFragment = 36
+        self.activity = TransactionHistoryLoadingViewCommonTheme()
         self.about = ASAAboutLoadingViewTheme()
         self.corner = Corner(radius: 4)
     }
