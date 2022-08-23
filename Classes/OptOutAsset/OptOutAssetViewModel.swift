@@ -114,10 +114,7 @@ extension OptOutAssetViewModel {
             aTitle = "title-remove".localized
         }
 
-        approveAction =
-        aTitle
-            .localized
-            .bodyMedium()
+        approveAction = aTitle.localized
     }
 
     private mutating func bindCloseAction(
@@ -131,9 +128,6 @@ extension OptOutAssetViewModel {
             aTitle = "title-keep".localized
         }
 
-        closeAction =
-        aTitle
-            .localized
-            .bodyMedium()
+        closeAction = aTitle.localized
     }
 }
