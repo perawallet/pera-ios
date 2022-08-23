@@ -43,11 +43,11 @@ extension TransferAssetBalanceViewModel {
     ) {
         let asset = draft.asset
 
-        if asset.isCollectible {
+        if draft.isTransferingCollectibleAssetBalance {
             title =
             "collectible-detail-opt-out-alert-title"
                 .localized(
-                    params: asset.unitName ?? "title-unknown".localized
+                    params: asset.naming.unitName ?? "title-unknown".localized
                 )
         } else {
             title = "asset-remove-confirmation-title".localized
@@ -58,7 +58,7 @@ extension TransferAssetBalanceViewModel {
         _ draft: TransferAssetBalanceDraft
     ) {
         assetID = AssetIDSecondaryListItemViewModel(
-            asset: draft.asset
+            assetID: draft.asset.id
         )
     }
 
@@ -75,7 +75,7 @@ extension TransferAssetBalanceViewModel {
     ) {
         let asset = draft.asset
 
-        let assetName = asset.unitName ?? "title-unknown".localized
+        let assetName = asset.naming.unitName ?? "title-unknown".localized
         let accountName = draft.account.name ?? draft.account.address.shortAddressDisplay
         
         let aDescription =

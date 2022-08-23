@@ -22,7 +22,7 @@ struct OptOutAssetNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
-    init(asset: AssetDecoration) {
+    init(asset: Asset) {
         bindPrimaryTitle(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
@@ -30,12 +30,12 @@ struct OptOutAssetNameViewModel: PrimaryTitleViewModel {
 }
 
 extension OptOutAssetNameViewModel {
-    mutating func bindPrimaryTitle(asset: AssetDecoration) {
-        let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
+    mutating func bindPrimaryTitle(asset: Asset) {
+        let title = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
         primaryTitle = title.titleSmallMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {
+    mutating func bindPrimaryTitleAccessory(asset: Asset) {
         switch asset.verificationTier {
         case .trusted: primaryTitleAccessory = "icon-trusted"
         case .verified: primaryTitleAccessory = "icon-verified"
@@ -44,7 +44,7 @@ extension OptOutAssetNameViewModel {
         }
     }
 
-    mutating func bindSecondaryTitle(asset: AssetDecoration) {
-        secondaryTitle = asset.unitName?.bodyRegular(lineBreakMode: .byTruncatingTail)
+    mutating func bindSecondaryTitle(asset: Asset) {
+        secondaryTitle = asset.naming.unitName?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

@@ -18,6 +18,10 @@ import Foundation
 
 struct OptOutAssetDraft {
     let account: Account
-    let asset: AssetDecoration
+    let asset: Asset
     let transactionFee = Transaction.Constant.minimumFee
+
+    var isOptingOutCollectibleAsset: Bool {
+        return (asset as? CollectibleAsset) != nil
+    }
 }

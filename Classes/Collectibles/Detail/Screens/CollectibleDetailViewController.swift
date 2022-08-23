@@ -43,7 +43,7 @@ final class CollectibleDetailViewController:
         )
     }()
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
@@ -456,19 +456,9 @@ extension CollectibleDetailViewController {
     ) {
         cell.startObserving(event: .performOptOut) {
             [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
-
-            let draft = self.collectibleDetailTransactionController.createOptOutAlertDraft()
-            self.assetActionConfirmationTransition.perform(
-                .assetActionConfirmation(
-                    assetAlertDraft: draft,
-                    delegate: self.collectibleDetailTransactionController
-                ),
-                by: .presentWithoutNavigationController
-            )
+            self.openOptOutAsset()
         }
 
         cell.startObserving(event: .performCopy) {
@@ -533,6 +523,43 @@ extension CollectibleDetailViewController {
                 self.open(url)
             }
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openOptOutAsset() {
+        let draft = OptOutAssetDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.optOutAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptOutAsset()
+            case .performClose: self.cancelOptOutAsset()
+            }
+        }
+
+        transitionToOptOutAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptOutAsset() {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.collectibleDetailTransactionController.optOutAsset()
+        }
+    }
+
+    private func cancelOptOutAsset() {
+        dismiss(animated: true)
     }
 }
 

@@ -54,7 +54,7 @@ extension OptInAssetViewModel {
         _ draft: OptInAssetDraft
     ) {
         assetID = AssetIDSecondaryListItemViewModel(
-            asset: draft.asset
+            assetID: draft.asset.id
         )
     }
 
