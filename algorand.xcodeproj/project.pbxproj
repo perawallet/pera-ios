@@ -2345,9 +2345,6 @@
 		2BC635E428870B6F00507AEA /* PrimaryTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635E328870B6F00507AEA /* PrimaryTitleViewModel.swift */; };
 		2BC635E528870B6F00507AEA /* PrimaryTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635E328870B6F00507AEA /* PrimaryTitleViewModel.swift */; };
 		2BC635E628870B6F00507AEA /* PrimaryTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635E328870B6F00507AEA /* PrimaryTitleViewModel.swift */; };
-		2BC6360028899EFC00507AEA /* AssetAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635FF28899EFC00507AEA /* AssetAmountViewModel.swift */; };
-		2BC6360128899EFC00507AEA /* AssetAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635FF28899EFC00507AEA /* AssetAmountViewModel.swift */; };
-		2BC6360228899EFC00507AEA /* AssetAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC635FF28899EFC00507AEA /* AssetAmountViewModel.swift */; };
 		2BC6360828899F8200507AEA /* AssetNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6360728899F8200507AEA /* AssetNameViewModel.swift */; };
 		2BC6360928899F8200507AEA /* AssetNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6360728899F8200507AEA /* AssetNameViewModel.swift */; };
 		2BC6360A28899F8200507AEA /* AssetNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6360728899F8200507AEA /* AssetNameViewModel.swift */; };
@@ -6083,7 +6080,6 @@
 		2BC635D92886FB4D00507AEA /* PrimaryTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryTitleView.swift; sourceTree = "<group>"; };
 		2BC635DF2886FE7C00507AEA /* PrimaryTitleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryTitleViewTheme.swift; sourceTree = "<group>"; };
 		2BC635E328870B6F00507AEA /* PrimaryTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryTitleViewModel.swift; sourceTree = "<group>"; };
-		2BC635FF28899EFC00507AEA /* AssetAmountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAmountViewModel.swift; sourceTree = "<group>"; };
 		2BC6360728899F8200507AEA /* AssetNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNameViewModel.swift; sourceTree = "<group>"; };
 		2BC6360B28899F9E00507AEA /* AssetNameViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNameViewTheme.swift; sourceTree = "<group>"; };
 		2BC636132889BA9E00507AEA /* PrimaryListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryListItemView.swift; sourceTree = "<group>"; };
@@ -12117,7 +12113,6 @@
 		2BC636202889D5A500507AEA /* Asset */ = {
 			isa = PBXGroup;
 			children = (
-				2BC635FF28899EFC00507AEA /* AssetAmountViewModel.swift */,
 				2BC6362A288A96C100507AEA /* AssetListItemTheme.swift */,
 				2BC6362E288A96CC00507AEA /* AssetListItemViewModel.swift */,
 			);
@@ -17284,7 +17279,6 @@
 				2B5739F726F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				D473CA5E26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				D446A743272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift in Sources */,
-				2BC6360228899EFC00507AEA /* AssetAmountViewModel.swift in Sources */,
 				D4979440287CC2C5004FBF8E /* AppCallAssetPreviewView.swift in Sources */,
 				17BD4E622292F1260003E49A /* ContactContextView.swift in Sources */,
 				2BECB4A825A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
@@ -18964,7 +18958,6 @@
 				2B0F620C24EC129D00DA22A6 /* PendingTransactions.swift in Sources */,
 				2BB8482427E8CA66004F2E39 /* CollectibleMediaPreviewViewController+Theme.swift in Sources */,
 				2B0F620D24EC129D00DA22A6 /* ContactDetailView.swift in Sources */,
-				2BC6360128899EFC00507AEA /* AssetAmountViewModel.swift in Sources */,
 				D497943F287CC2C5004FBF8E /* AppCallAssetPreviewView.swift in Sources */,
 				2B9A3E7826E7C7A200B050ED /* ALGAPIModel.swift in Sources */,
 				D43A0C2D2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
@@ -20668,7 +20661,6 @@
 				D45DF91027F9A1EF008076E6 /* CollectibleListInfoWithFilterView.swift in Sources */,
 				2B5739F526F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				D497943E287CC2C5004FBF8E /* AppCallAssetPreviewView.swift in Sources */,
-				2BC6360028899EFC00507AEA /* AssetAmountViewModel.swift in Sources */,
 				D473CA5C26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				D446A741272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift in Sources */,
 				2BB8482327E8CA66004F2E39 /* CollectibleMediaPreviewViewController+Theme.swift in Sources */,

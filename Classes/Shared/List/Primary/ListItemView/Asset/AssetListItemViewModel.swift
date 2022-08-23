@@ -36,7 +36,8 @@ struct AssetListItemViewModel:
     ) {
         bindImageSource(item)
         bindTitle(item)
-        bindValue(item)
+        bindPrimaryValue(item)
+        bindSecondaryValue(item)
 
         asset = item.asset
     }
@@ -107,14 +108,75 @@ extension AssetListItemViewModel {
         title = AssetNameViewModel(item.asset)
     }
 
-    mutating func bindValue(
+    mutating func bindPrimaryValue(
         _ item: AssetItem
     ) {
-        let amountViewModel = AssetAmountViewModel(item)
+        let asset = item.asset
 
-        primaryValue = amountViewModel.primaryTitle
-        secondaryValue = amountViewModel.secondaryTitle
-        valueInUSD = amountViewModel.valueInUSD
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+        } else {
+            formatter.currency = nil
+        }
+
+
+        let text = formatter.format(asset.decimalAmount)
+        primaryValue = text?.bodyRegular(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating private func bindSecondaryValue(
+        _ item: AssetItem
+    ) {
+        let asset = item.asset
+        valueInUSD = asset.totalUSDValue ?? 0
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+
+        do {
+            let exchanger: CurrencyExchanger
+            if asset.isAlgo {
+                guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+            } else {
+                guard let currencyValue = item.currency.primaryValue else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                let rawCurrency = try currencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawCurrency)
+
+                formatter.currency = rawCurrency
+            }
+
+            let amount: Decimal
+            if asset.isAlgo {
+                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
+            } else {
+                amount = try exchanger.exchange(asset)
+            }
+
+            let text = formatter.format(amount)
+            secondaryValue = text?.footnoteRegular(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail
+            )
+        } catch {
+            secondaryValue = nil
+            valueInUSD = 0
+        }
     }
 }
 
