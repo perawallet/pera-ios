@@ -121,9 +121,8 @@ extension AssetListItemViewModel {
             formatter.currency = nil
         }
 
-
         let text = formatter.format(asset.decimalAmount)
-        primaryValue = text?.bodyRegular(
+        primaryValue = text?.bodyMedium(
             alignment: .right,
             lineBreakMode: .byTruncatingTail
         )
