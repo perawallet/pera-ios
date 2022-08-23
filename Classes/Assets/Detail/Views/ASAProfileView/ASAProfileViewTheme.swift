@@ -59,7 +59,7 @@ struct ASAProfileViewTheme:
         self.titleSeparatorContentEdgeInsets = (0, 8, 0, 8)
 
         self.id = [
-            .textColor(Colors.Text.grayLighter),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText())
         ]
 
