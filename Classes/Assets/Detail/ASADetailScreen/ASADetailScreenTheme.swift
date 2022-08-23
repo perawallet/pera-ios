@@ -23,6 +23,9 @@ struct ASADetailScreenTheme:
     LayoutSheet {
     var background: ViewStyle
     var navigationTitle: AccountNamePreviewViewTheme
+    var loading: ASADetailLoadingViewTheme
+    var error: NoContentWithActionViewCommonTheme
+    var errorBackground: ViewStyle
     var profile: ASAProfileViewTheme
     var profileHorizontalEdgeInsets: LayoutHorizontalPaddings
     var normalProfileVerticalEdgeInsets: LayoutVerticalPaddings
@@ -36,6 +39,11 @@ struct ASADetailScreenTheme:
             .backgroundColor(Colors.Helpers.heroBackground)
         ]
         self.navigationTitle = AccountNamePreviewViewTheme(family)
+        self.loading = ASADetailLoadingViewTheme()
+        self.error = NoContentWithActionViewCommonTheme()
+        self.errorBackground = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.profile = ASAProfileViewTheme(family)
         self.profileHorizontalEdgeInsets = (24, 24)
         self.normalProfileVerticalEdgeInsets = (50, 36)

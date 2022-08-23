@@ -64,7 +64,7 @@ extension CollectibleDetailAPIDataController {
             switch response {
             case .success(let asset):
                 self.asset = CollectibleAsset(
-                    asset: ALGAsset(collectibleAsset: self.asset),
+                    asset: ALGAsset(asset: self.asset),
                     decoration: asset
                 )
 

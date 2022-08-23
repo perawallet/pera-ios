@@ -67,7 +67,10 @@ final class ASAAboutScreen:
 extension ASAAboutScreen {
     func bindData(asset: Asset) {
         self.asset = asset
-        bindUIData()
+
+        if isViewLoaded {
+            bindUIData()
+        }
     }
 }
 

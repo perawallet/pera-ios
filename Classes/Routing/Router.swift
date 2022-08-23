@@ -449,12 +449,16 @@ class Router:
         
         switch screen {
         case .asaDetail(let account, let asset, let eventHandler):
+            let dataController = ASADetailScreenAPIDataController(
+                account: account,
+                asset: asset,
+                api: appConfiguration.api
+            )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADetailScreen(
-                account: account,
-                asset: asset,
+                dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
