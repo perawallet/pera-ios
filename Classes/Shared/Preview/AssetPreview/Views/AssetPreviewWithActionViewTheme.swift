@@ -29,7 +29,9 @@ struct AssetPreviewWithActionViewTheme:
     let actionThirdShadow: MacaroonUIKit.Shadow
 
     let minSpacingBetweenContentAndAction: LayoutMetric
-    
+
+    let separator: Separator
+
     init(_ family: LayoutFamily) {
         content = AssetPreviewViewTheme()
 
@@ -64,5 +66,6 @@ struct AssetPreviewWithActionViewTheme:
         )
 
         minSpacingBetweenContentAndAction = 20
+        separator = Separator(color: Colors.Layer.grayLighter, position: .bottom((80, 24)))
     }
 }

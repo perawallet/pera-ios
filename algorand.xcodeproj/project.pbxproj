@@ -4534,6 +4534,9 @@
 		D4CCA1DD27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DE27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DF27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
+		D4CDF92128B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
+		D4CDF92228B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
+		D4CDF92328B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */; };
 		D4CEEC11280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CEEC10280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift */; };
 		D4CEEC12280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CEEC10280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift */; };
 		D4CEEC13280848A10010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CEEC10280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift */; };
@@ -6859,6 +6862,7 @@
 		D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewTheme.swift; sourceTree = "<group>"; };
 		D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemView.swift; sourceTree = "<group>"; };
 		D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemViewTheme.swift; sourceTree = "<group>"; };
+		D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemAccessory.swift; sourceTree = "<group>"; };
 		D4CEEC10280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactImageProcessor.swift; sourceTree = "<group>"; };
 		D4D09B6E27EE43B900DEEECA /* SendCollectibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleView.swift; sourceTree = "<group>"; };
@@ -11133,6 +11137,7 @@
 				D411B38026EA22F2004FF980 /* AssetPreviewView.swift */,
 				D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */,
 				2BCCB5BD27D755E500C5E497 /* AssetPreviewWithActionCell.swift */,
+				D4CDF92028B5A036006F140E /* OptOutAssetListItemAccessory.swift */,
 				2BCCB5B527D755B200C5E497 /* AssetPreviewWithActionView.swift */,
 				2BCCB5B927D755CA00C5E497 /* AssetPreviewWithActionViewTheme.swift */,
 				2B698245278C90B4008EC669 /* Pending */,
@@ -17381,6 +17386,7 @@
 				2B8E5F1125471F6E001D8E30 /* ShowQRShareEvent.swift in Sources */,
 				2B2DF29628103522008BC52D /* CurrencySelectionListLayout+Theme.swift in Sources */,
 				F040FE09285777D500A74993 /* CopyToClipboardController.swift in Sources */,
+				D4CDF92328B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */,
 				175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B2626FE284D4DB600ADE371 /* AlgoTransactionListGrouping.swift in Sources */,
 				2B835B7B27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
@@ -19638,6 +19644,7 @@
 				D4DDF3BB27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				D4FC47542714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				17CADCA12859DDE0001D19A8 /* SortAccountAssetListLayout.swift in Sources */,
+				D4CDF92228B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */,
 				D49D77D72789ED16001FD5F6 /* TransactionFloatingActionButtonViewController.swift in Sources */,
 				D4A70AFB2878363100FB52B0 /* AssetConfigInnerTransactionPreviewViewModel.swift in Sources */,
 				2B0F62B624EC129D00DA22A6 /* WaitRoundDraft.swift in Sources */,
@@ -20779,6 +20786,7 @@
 				2BD063ED25CEC8E5008BD15E /* BottomWarningView.swift in Sources */,
 				170A650D27ED9814006AC9DF /* AnnouncementCell.swift in Sources */,
 				F034521A28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */,
+				D4CDF92128B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */,
 				D48FDFA927CE2AE200C39FC7 /* TitleSupplementaryCell.swift in Sources */,
 				D4FC5F4127F500C50017E81F /* InfoBoxViewTheme.swift in Sources */,
 				D4710B18276A526300F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
