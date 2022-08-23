@@ -1099,17 +1099,19 @@ extension Router {
 }
 
 extension Router {
+    /// <todo>:
+    /// Remove this after all asset action confirmation screen transformations to new componants (e.g `OptInAssetScreen`) are completed.
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
         let draft = assetActionConfirmationViewController.draft
-        
+
         guard let account = draft.account,
               !account.isWatchAccount() else {
             return
         }
-        
+
         let assetTransactionDraft =
         AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
@@ -1317,33 +1319,81 @@ extension Router {
     }
 
     private func requestOptingInToAsset(
-        _ asset: AssetID,
+        _ assetID: AssetID,
         to account: Account
     ) {
-        if account.containsAsset(asset) {
+        if account.containsAsset(assetID) {
             appConfiguration.bannerController.presentInfoBanner("asset-you-already-own-message".localized)
             return
         }
 
-        let assetAlertDraft = AssetAlertDraft(
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
+        appConfiguration.api.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+            self.appConfiguration.loadingController.stopLoading()
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.appConfiguration.bannerController.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "asset-confirmation-not-found".localized
+                    )
+                    return
+                }
+
+                if let asset = assetResponse.results.first {
+                    self.openOptInAsset(
+                        asset: asset,
+                        account: account
+                    )
+                }
+            case .failure:
+                self.appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "asset-confirmation-not-fetched".localized
+                )
+            }
+        }
+    }
+
+    private func openOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let draft = OptInAssetDraft(
             account: account,
-            assetId: asset,
-            asset: nil,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
+            asset: asset
         )
 
-        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performApprove:
+                self.continueToOptInAsset(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelOptInAsset()
+            }
+        }
+
+        let visibleScreen = findVisibleScreen()
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         ongoingTransitions.append(transition)
 
         transition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-            by: .presentWithoutNavigationController
+            screen,
+            by: .present
         )
     }
 
@@ -1364,6 +1414,47 @@ extension Router {
         )
     }
 }
+
+extension Router {
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let visibleScreen = findVisibleScreen()
+
+        visibleScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            guard !account.isWatchAccount() else {
+                return
+            }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
+
+            let transactionController = TransactionController(
+                api: self.appConfiguration.api,
+                bannerController: self.appConfiguration.bannerController,
+                analytics: self.appConfiguration.analytics
+            )
+
+            self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
+            transactionController.delegate = self
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        }
+    }
+
+    private func cancelOptInAsset() {
+        let visibleScreen = findVisibleScreen()
+        visibleScreen.dismiss(animated: true)
+    }
+}
+
 
 extension Router: BuyAlgoHomeScreenDelegate {
     func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
@@ -1396,6 +1487,8 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1408,6 +1501,8 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         switch error {
         case let .network(apiError):
             appConfiguration.bannerController.presentErrorBanner(
@@ -1426,6 +1521,8 @@ extension Router {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         let visibleScreen = findVisibleScreen(over: rootViewController)
         visibleScreen.dismissScreen()
     }
