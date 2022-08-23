@@ -328,37 +328,24 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
             
-            //  /// <todo>
-            //  /// How to manage it without knowing view controller. Name conventions vs. protocols???
-            //  let eventHandler: PortfolioCalculationInfoViewController.EventHandler = {
-            //      [weak self] event in
-            //      guard let self = self else { return }
-            //
-            //      switch event {
-            //      case .close:
-            //          self.dismiss(animated: true)
-            //      }
-            //  }
-            let eventHandler: TransferAssetBalanceScreen.EventHandler = {
+            /// <todo>
+            /// How to manage it without knowing view controller. Name conventions vs. protocols???
+            let eventHandler: PortfolioCalculationInfoViewController.EventHandler = {
                 [weak self] event in
                 guard let self = self else { return }
+
                 switch event {
-                case .performApprove:
-                    break
-                case .performClose:
+                case .close:
                     self.dismiss(animated: true)
                 }
             }
-            let draft = TransferAssetBalanceDraft(
-                account: self.sharedDataController.accountCollection.first!.value,
-                asset: self.sharedDataController.assetDetailCollection.first!
-            )
+
             self.modalTransition.perform(
-                .transferAssetBalance(
-                    draft: draft,
+                .portfolioCalculationInfo(
+                    result: self.totalPortfolioValue,
                     eventHandler: eventHandler
                 ),
-                by: .present
+                by: .presentWithoutNavigationController
             )
         }
     }

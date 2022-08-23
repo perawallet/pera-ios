@@ -345,9 +345,9 @@ extension ASADetailScreen {
     }
 
     private func updateUIWhenDataDidLoad() {
-//        bindUIData()
-//        removeLoading()
-//        removeError()
+        bindUIData()
+        removeLoading()
+        removeError()
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
