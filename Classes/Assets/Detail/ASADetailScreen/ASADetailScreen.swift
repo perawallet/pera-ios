@@ -302,7 +302,10 @@ extension ASADetailScreen {
     private func addUI() {
         addBackground()
         addProfile()
-        addQuickActions()
+
+        if !account.isWatchAccount() {
+            addQuickActions()
+        }
 
         addPagesFragment()
     }
@@ -312,7 +315,10 @@ extension ASADetailScreen {
         if isDisplayStateTransitionAnimationInProgress { return }
         if !isViewLayoutLoaded { return }
         if !profileView.isLayoutLoaded { return }
-        if !quickActionsView.isLayoutLoaded { return }
+
+        if !account.isWatchAccount() {
+            if !quickActionsView.isLayoutLoaded { return }
+        }
 
         lastFrameOfFoldableArea = calculateFrameOfFoldableArea()
 
@@ -519,13 +525,20 @@ extension ASADetailScreen {
             theme.foldedProfileVerticalEdgeInsets.top +
             profileView.intrinsicCompressedContentSize.height +
             theme.foldedProfileVerticalEdgeInsets.bottom
-        let maxHeight =
+        var maxHeight =
             theme.normalProfileVerticalEdgeInsets.top +
             profileView.intrinsicExpandedContentSize.height +
-            theme.spacingBetweenProfileAndQuickActions +
-            quickActionsView.bounds.height +
             theme.normalProfileVerticalEdgeInsets.bottom
+        let quickActionsHeight =
+            theme.spacingBetweenProfileAndQuickActions +
+            quickActionsView.bounds.height
+
+        if !account.isWatchAccount() {
+            maxHeight += quickActionsHeight
+        }
+
         let height = maxHeight - minHeight
+
         return CGRect(x: 0, y: minHeight, width: width, height: height)
     }
 }
