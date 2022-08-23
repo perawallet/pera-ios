@@ -21,76 +21,81 @@ import UIKit
 final class ASADiscoveryLoadingView:
     UIView,
     ShimmerAnimationDisplaying {
-    private lazy var contentView = UIView()
+    private lazy var profileView = UIView()
     private lazy var iconView = ShimmerView()
     private lazy var titleView = ShimmerView()
-    private lazy var primaryValueView = ShimmerView()
+    private lazy var valueView = ShimmerView()
+    private lazy var aboutView = ASAAboutLoadingView()
 
     func customize(_ theme: ASADiscoveryLoadingViewTheme) {
         addBackground(theme)
-        addContent(theme)
+        addProfile(theme)
+        addAbout(theme)
     }
 }
 
 extension ASADiscoveryLoadingView {
-    private func addBackground(
-        _ theme: ASADiscoveryLoadingViewTheme
-    ) {
+    private func addBackground(_ theme: ASADiscoveryLoadingViewTheme) {
         customizeAppearance(theme.background)
     }
 
-    private func addContent(
-        _ theme: ASADiscoveryLoadingViewTheme
-    ) {
-        addSubview(contentView)
-        contentView.snp.makeConstraints {
-            $0.top == theme.contentEdgeInsets.top
-            $0.leading == theme.contentEdgeInsets.leading
-            $0.trailing == theme.contentEdgeInsets.trailing
+    private func addProfile(_ theme: ASADiscoveryLoadingViewTheme) {
+        profileView.customizeAppearance(theme.profile)
+
+        addSubview(profileView)
+        profileView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
 
         addIcon(theme)
-        addInfo(theme)
-        addPrimaryValue(theme)
+        addTitle(theme)
+        addValue(theme)
     }
 
-    private func addIcon(
-        _ theme: ASADiscoveryLoadingViewTheme
-    ) {
+    private func addIcon(_ theme: ASADiscoveryLoadingViewTheme) {
         iconView.draw(corner: theme.iconCorner)
 
-        contentView.addSubview(iconView)
+        profileView.addSubview(iconView)
         iconView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
+            $0.top == theme.profileContentEdgeInsets.top
             $0.centerX == 0
-            $0.top == 0
         }
     }
 
-    private func addInfo(
-        _ theme: ASADiscoveryLoadingViewTheme
-    ) {
+    private func addTitle(_ theme: ASADiscoveryLoadingViewTheme) {
         titleView.draw(corner: theme.corner)
 
-        contentView.addSubview(titleView)
+        profileView.addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.fitToSize(theme.infoSize)
+            $0.fitToSize(theme.titleSize)
+            $0.top == iconView.snp.bottom + theme.spacingBetweenIconAndTitle
             $0.centerX == 0
-            $0.top == iconView.snp.bottom + theme.spacingBetweenIconAndInfo
         }
     }
 
-    private func addPrimaryValue(
-        _ theme: ASADiscoveryLoadingViewTheme
-    ) {
-        primaryValueView.draw(corner: theme.corner)
+    private func addValue(_ theme: ASADiscoveryLoadingViewTheme) {
+        valueView.draw(corner: theme.corner)
 
-        contentView.addSubview(primaryValueView)
-        primaryValueView.snp.makeConstraints {
-            $0.fitToSize(theme.primaryValueSize)
+        profileView.addSubview(valueView)
+        valueView.snp.makeConstraints {
+            $0.fitToSize(theme.valueSize)
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
+            $0.bottom == theme.profileContentEdgeInsets.bottom
             $0.centerX == 0
-            $0.top == titleView.snp.bottom + theme.spacingBetweeenPrimaryValueAndInfo
-            $0.bottom == 0
+        }
+    }
+
+    private func addAbout(_ theme: ASADiscoveryLoadingViewTheme) {
+        aboutView.customize(theme.about)
+
+        addSubview(aboutView)
+        aboutView.snp.makeConstraints {
+            $0.top == profileView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
         }
     }
 }

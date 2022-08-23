@@ -22,6 +22,7 @@ struct ASAAboutScreenTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
+    var loading: ASAAboutLoadingViewTheme
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
     var spacingBetweenStatisticsAndSeparator: CGFloat
@@ -46,6 +47,7 @@ struct ASAAboutScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
+        self.loading = ASAAboutLoadingViewTheme()
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.statistics = AssetStatisticsSectionViewTheme(family)
         self.spacingBetweenStatisticsAndSeparator = 36

@@ -15,9 +15,11 @@
 //   URL+Extensions.swift
 
 import Foundation
+import MacaroonUtils
 
 extension URL {
     var presentationString: String? {
-        return host?.without(prefix: "www.")
+        let host = host.unwrapNonEmptyString() ?? absoluteString
+        return host.without(prefix: "www.")
     }
 }
