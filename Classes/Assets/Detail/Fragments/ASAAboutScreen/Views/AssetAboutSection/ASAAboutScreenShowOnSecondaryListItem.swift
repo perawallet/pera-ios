@@ -52,7 +52,7 @@ struct ASAAboutScreenShowOnListItemValueViewModel: SecondaryListItemValueViewMod
 extension ASAAboutScreenShowOnListItemValueViewModel {
     private mutating func bindTitle() {
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
-        attributes.insert(.textColor(Colors.Helpers.positive))
+        attributes.insert(.textColor(Colors.Link.primary))
 
         title =
             "asa-about-asa-show-on-pera-explorer"

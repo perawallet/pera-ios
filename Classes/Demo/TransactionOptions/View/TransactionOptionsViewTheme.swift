@@ -38,7 +38,7 @@ struct TransactionOptionsViewTheme:
             .backgroundColor(UIColor.clear)
         ]
         self.backgroundEnd = [
-            .backgroundColor(Colors.Other.chrome.uiColor)
+            .backgroundColor(Colors.Backdrop.modalBackground.uiColor)
         ]
         self.content = [
             .backgroundColor(Colors.Defaults.background)
