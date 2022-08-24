@@ -12,40 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionRejectedEvent.swift
+//   TapAlgoPriceTabEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionRejectedEvent: ALGAnalyticsEvent {
+struct TapAlgoPriceTabEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    fileprivate init(
-        topic: String,
-        dappName: String,
-        dappURL: String
-    ) {
-        self.name = .wcSessionRejected
-        self.metadata = [
-            .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
-        ]
+    fileprivate init() {
+        self.name = .tapAlgoPriceMenu
+        self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WCSessionRejectedEvent {
-    static func wcSessionRejected(
-        topic: String,
-        dappName: String,
-        dappURL: String
-    ) -> Self {
-        return WCSessionRejectedEvent(
-            topic: topic,
-            dappName: dappName,
-            dappURL: dappURL
-        )
+extension AnalyticsEvent where Self == TapAlgoPriceTabEvent {
+    static func tapAlgoPrice() -> Self {
+        return TapAlgoPriceTabEvent()
     }
 }

@@ -202,6 +202,7 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
+            self.analytics.track(.onboardSetPinCode(type: .verify))
             let controller = open(
                 .tutorial(flow: flow, tutorial: .localAuthentication),
                 by: .push

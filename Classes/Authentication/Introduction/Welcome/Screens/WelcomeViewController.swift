@@ -88,10 +88,12 @@ extension WelcomeViewController {
 
 extension WelcomeViewController: WelcomeViewDelegate {
     func welcomeViewDidSelectAdd(_ welcomeView: WelcomeView) {
+        analytics.track(.onboardWelcomeScreen(type: .create))
         open(.addAccount(flow: flow), by: .push)
     }
 
     func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView) {
+        analytics.track(.onboardWelcomeScreen(type: .recover))
         open(.recoverAccount(flow: flow), by: .push)
     }
 

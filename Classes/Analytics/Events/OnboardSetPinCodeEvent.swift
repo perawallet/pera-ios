@@ -12,40 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionRejectedEvent.swift
+//   OnboardSetPinCodeEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionRejectedEvent: ALGAnalyticsEvent {
+struct OnboardSetPinCodeEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        topic: String,
-        dappName: String,
-        dappURL: String
+        type: Type
     ) {
-        self.name = .wcSessionRejected
-        self.metadata = [
-            .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
-        ]
+        self.name = type.rawValue
+        self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WCSessionRejectedEvent {
-    static func wcSessionRejected(
-        topic: String,
-        dappName: String,
-        dappURL: String
+extension OnboardSetPinCodeEvent {
+    enum `Type` {
+        case create
+        case verify
+
+        var rawValue: ALGAnalyticsEventName {
+            switch self {
+            case .create:
+                return .onboardVerifiedSetPinCode
+            case .verify:
+                return .onboardVerifiedSetPinCodeCompleted
+            }
+        }
+    }
+}
+
+extension AnalyticsEvent where Self == OnboardSetPinCodeEvent {
+    static func onboardSetPinCode(
+        type: OnboardSetPinCodeEvent.`Type`
     ) -> Self {
-        return WCSessionRejectedEvent(
-            topic: topic,
-            dappName: dappName,
-            dappURL: dappURL
-        )
+        return OnboardSetPinCodeEvent(type: type)
     }
 }

@@ -114,6 +114,12 @@ final class AccountAssetListViewController:
         dataController.load()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

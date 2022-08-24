@@ -12,40 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionRejectedEvent.swift
+//   MoonpayEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionRejectedEvent: ALGAnalyticsEvent {
+struct MoonpayEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        topic: String,
-        dappName: String,
-        dappURL: String
+        type: Type
     ) {
-        self.name = .wcSessionRejected
-        self.metadata = [
-            .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
-        ]
+        self.name = type.rawValue
+        self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WCSessionRejectedEvent {
-    static func wcSessionRejected(
-        topic: String,
-        dappName: String,
-        dappURL: String
+extension MoonpayEvent {
+    enum `Type` {
+        case tapBuy
+        case completed
+        case tapBottomsheetBuy
+
+        var rawValue: ALGAnalyticsEventName {
+            switch self {
+            case .tapBuy:
+                return .tapBuyAlgoInMoonpay
+            case .completed:
+                return .buyAlgoFromMoonpayCompleted
+            case .tapBottomsheetBuy:
+                return .tapBuyAlgoInBottomsheet
+            }
+        }
+    }
+}
+
+extension AnalyticsEvent where Self == MoonpayEvent {
+    static func moonpay(
+        type: MoonpayEvent.`Type`
     ) -> Self {
-        return WCSessionRejectedEvent(
-            topic: topic,
-            dappName: dappName,
-            dappURL: dappURL
-        )
+        return MoonpayEvent(type: type)
     }
 }

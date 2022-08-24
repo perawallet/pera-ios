@@ -12,40 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionRejectedEvent.swift
+//   TapNFTReceiveEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionRejectedEvent: ALGAnalyticsEvent {
+struct TapNFTReceiveEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    fileprivate init(
-        topic: String,
-        dappName: String,
-        dappURL: String
-    ) {
-        self.name = .wcSessionRejected
-        self.metadata = [
-            .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
-        ]
+    fileprivate init() {
+        self.name = .tapNftReceive
+        self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WCSessionRejectedEvent {
-    static func wcSessionRejected(
-        topic: String,
-        dappName: String,
-        dappURL: String
-    ) -> Self {
-        return WCSessionRejectedEvent(
-            topic: topic,
-            dappName: dappName,
-            dappURL: dappURL
-        )
+extension AnalyticsEvent where Self == TapNFTReceiveEvent {
+    static func tapNFTReceive() -> Self {
+        return TapNFTReceiveEvent()
     }
 }
