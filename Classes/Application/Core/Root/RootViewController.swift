@@ -149,6 +149,9 @@ extension RootViewController {
     func launch(
         tab: TabBarItemID
     ) {
+        if tab == .algoStatistics {
+            appConfiguration.analytics.track(.tapAlgoPrice())
+        }
         mainContainer.selectedTab = tab
     }
     

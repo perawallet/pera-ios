@@ -24,9 +24,8 @@ class BaseViewController:
     StatusBarConfigurable,
     TabBarConfigurable,
     UIAdaptivePresentationControllerDelegate {
-    var analyticsScreen: ALGAnalyticsScreen {
-        let name = String(describing: self)
-        return ALGAnalyticsScreen(name: name)
+    var analyticsScreen: ALGAnalyticsScreen? {
+        return nil
     }
 
     var isStatusBarHidden = false
@@ -141,7 +140,9 @@ class BaseViewController:
 
         setNeedsTabBarAppearanceUpdateOnAppeared()
 
-        analytics.track(analyticsScreen)
+        if let screen = analyticsScreen {
+            analytics.track(screen)
+        }
         
         isViewAppearing = false
         isViewAppeared = true

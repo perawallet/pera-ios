@@ -300,6 +300,9 @@ extension TransactionsViewController {
 
 extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     func transactionHistoryFilterCellDidOpenFilterOptions(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
+
+        analytics.track(.recordAccountDetailScreen(type: .tapTransactionFilter))
+
         filterOptionsTransition.perform(
             .transactionFilter(filterOption: filterOption, delegate: self),
             by: .present
@@ -307,6 +310,8 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     }
 
     func transactionHistoryFilterCellDidShareHistory(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
+        analytics.track(.recordAccountDetailScreen(type: .tapTransactionDownload))
+        
         fetchAllTransactionsForCSV()
     }
 }

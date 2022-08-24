@@ -12,40 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionRejectedEvent.swift
+//   OnboardWelcomeScreenEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct WCSessionRejectedEvent: ALGAnalyticsEvent {
+struct OnboardWelcomeScreenEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        topic: String,
-        dappName: String,
-        dappURL: String
+        type: Type
     ) {
-        self.name = .wcSessionRejected
-        self.metadata = [
-            .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
-        ]
+        self.name = type.rawValue
+        self.metadata = [:]
     }
 }
 
-extension AnalyticsEvent where Self == WCSessionRejectedEvent {
-    static func wcSessionRejected(
-        topic: String,
-        dappName: String,
-        dappURL: String
+extension OnboardWelcomeScreenEvent {
+    enum `Type` {
+        case create
+        case recover
+
+        var rawValue: ALGAnalyticsEventName {
+            switch self {
+            case .recover:
+                return .onboardWelcomeScreenAccountRecover
+            case .create:
+                return .onboardWelcomeScreenAccountCreate
+            }
+        }
+    }
+}
+
+extension AnalyticsEvent where Self == OnboardWelcomeScreenEvent {
+    static func onboardWelcomeScreen(
+        type: OnboardWelcomeScreenEvent.`Type`
     ) -> Self {
-        return WCSessionRejectedEvent(
-            topic: topic,
-            dappName: dappName,
-            dappURL: dappURL
-        )
+        return OnboardWelcomeScreenEvent(type: type)
     }
 }

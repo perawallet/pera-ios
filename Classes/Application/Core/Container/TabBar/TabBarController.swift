@@ -300,6 +300,8 @@ extension TabBarController {
     private func navigateToBuyAlgo() {
         toggleTransactionOptions()
         buyAlgoFlowCoordinator.launch()
+
+        analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
 
     private func navigateToQRScanner() {

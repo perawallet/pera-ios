@@ -145,6 +145,7 @@ extension AccountDetailViewController {
                 self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
                 self.modalTransition.perform(
                     .managementOptions(
@@ -155,11 +156,12 @@ extension AccountDetailViewController {
                 )
             case .addAsset:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
                 self.openAddAssetScreen()
             case .buyAlgo:
                 self.assetListScreen.endEditing()
-
+                self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
                 self.buyAlgoFlowCoordinator.launch()
             case .send:
                 self.assetListScreen.endEditing()

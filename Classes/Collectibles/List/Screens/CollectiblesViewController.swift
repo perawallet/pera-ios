@@ -21,7 +21,7 @@ final class CollectiblesViewController: BaseViewController {
         return true
     }
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .collectibleList)
     }
 
