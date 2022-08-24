@@ -23,7 +23,6 @@ final class AccountAssetListAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
-    var addedAssetDetails: [StandardAsset] = []
     var removedAssetDetails: [StandardAsset] = []
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -68,6 +67,15 @@ extension AccountAssetListAPIDataController {
 
     func reload() {
         deliverContentUpdates()
+    }
+
+    func reloadIfThereIsPendingUpdates() {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let account = accountHandle.value
+
+        if monitor.hasAnyPendingOptInRequest(for: account) {
+            reload()
+        }
     }
 }
 
@@ -162,7 +170,6 @@ extension AccountAssetListAPIDataController {
             assetItems.append(titleItem)
             assetItems.append(.search)
 
-            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
             self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
             self.load(with: self.searchKeyword)
@@ -213,10 +220,14 @@ extension AccountAssetListAPIDataController {
                 )
             }
 
-            /// <todo> Use new list item structure
-            self.addedAssetDetails.forEach {
-                let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
-                assetItems.append(assetItem)
+            let account = self.accountHandle.value
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
+            for pendingOptInAsset in pendingOptInAssets {
+                let update = pendingOptInAsset.value
+                let viewModel = PendingAssetPreviewViewModel(update: update)
+                let item = AccountAssetsItem.pendingAsset(viewModel)
+                assetItems.append(item)
             }
 
             self.removedAssetDetails.forEach {
@@ -271,10 +282,6 @@ extension AccountAssetListAPIDataController {
             guard let self = self else { return }
             self.eventHandler?(event)
         }
-    }
-
-    private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.containsAsset($0.id) }.uniqueElements()
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {

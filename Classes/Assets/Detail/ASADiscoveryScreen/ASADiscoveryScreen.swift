@@ -767,6 +767,15 @@ extension ASADiscoveryScreen {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        if let account = dataController.account {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let asset = dataController.asset
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: asset.id,
+                for: account
+            )
+        }
+
         loadingController?.stopLoading()
 
         switch error {
@@ -781,7 +790,17 @@ extension ASADiscoveryScreen {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        if let account = dataController.account {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let asset = dataController.asset
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: asset.id,
+                for: account
+            )
+        }
+
         loadingController?.stopLoading()
+
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(

@@ -27,18 +27,74 @@ struct PendingAssetPreviewModel: Hashable {
 
 /// <todo> Use new list item structure
 struct PendingAssetPreviewViewModel:
-    PairedViewModel,
+    ViewModel,
     Hashable {
+    private(set) var id: AssetID
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: String?
     private(set) var assetSecondaryTitle: String?
     private(set) var assetStatus: String?
 
+    init(update: OptInBlockchainUpdate) {
+        self.id = update.assetID
+
+        bindSecondaryImage(update: update)
+        bindAssetPrimaryTitle(update: update)
+        bindAssetSecondaryTitle(update: update)
+        bindAssetStatus(update: update)
+    }
+
     init(_ model: PendingAssetPreviewModel) {
+        self.id = 0
+
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetStatus(model.assetStatus)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(assetPrimaryTitle)
+        hasher.combine(assetSecondaryTitle)
+        hasher.combine(assetStatus)
+    }
+
+    static func == (
+        lhs: PendingAssetPreviewViewModel,
+        rhs: PendingAssetPreviewViewModel
+    ) -> Bool {
+        return
+            lhs.id == rhs.id &&
+            lhs.assetPrimaryTitle == rhs.assetPrimaryTitle &&
+            lhs.assetSecondaryTitle == rhs.assetSecondaryTitle &&
+            lhs.assetStatus == rhs.assetStatus
+    }
+}
+
+extension PendingAssetPreviewViewModel {
+    mutating func bindSecondaryImage(update: OptInBlockchainUpdate) {
+        let icon: Image?
+        switch update.assetVerificationTier {
+        case .trusted: icon = "icon-trusted"
+        case .verified: icon = "icon-verified"
+        case .unverified: icon = nil
+        case .suspicious: icon = "icon-suspicious"
+        }
+        self.secondaryImage = icon?.uiImage
+    }
+
+    mutating func bindAssetPrimaryTitle(update: OptInBlockchainUpdate) {
+        let title = update.assetName ?? "title-unknown".localized
+        self.assetPrimaryTitle = title
+    }
+
+    mutating func bindAssetSecondaryTitle(update: OptInBlockchainUpdate) {
+        self.assetSecondaryTitle = update.assetUnitName
+    }
+
+    mutating func bindAssetStatus(update: OptInBlockchainUpdate) {
+        self.assetStatus = "asset-add-confirmation-title".localized
     }
 }
 

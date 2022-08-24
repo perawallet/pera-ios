@@ -23,6 +23,7 @@ protocol AccountAssetListDataController: AnyObject {
 
     func load()
     func reload()
+    func reloadIfThereIsPendingUpdates()
 }
 
 enum AccountAssetsSection:

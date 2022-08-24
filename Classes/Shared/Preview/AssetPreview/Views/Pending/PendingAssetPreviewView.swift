@@ -18,7 +18,9 @@
 import MacaroonUIKit
 import UIKit
 
-final class PendingAssetPreviewView: View {
+final class PendingAssetPreviewView:
+    View,
+    ListReusable {
     private lazy var imageView = PendingAssetImageView()
     private lazy var assetTitleVerticalStackView = UIStackView()
     private lazy var assetTitleHorizontalStackView = UIStackView()
@@ -65,6 +67,7 @@ extension PendingAssetPreviewView {
 
     private func addAssetTitleHorizontalStackView(_ theme: PendingAssetPreviewViewTheme) {
         assetTitleVerticalStackView.addArrangedSubview(assetTitleHorizontalStackView)
+        assetTitleHorizontalStackView.alignment = .center
         assetTitleHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
 
         addPrimaryAssetTitleLabel(theme)
@@ -79,6 +82,7 @@ extension PendingAssetPreviewView {
     }
 
     private func addSecondaryImage(_ theme: PendingAssetPreviewViewTheme) {
+        secondaryImageView.fitToIntrinsicSize()
         assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
 
@@ -119,10 +123,17 @@ extension PendingAssetPreviewView: ViewModelBindable {
     }
 }
 
-final class PendingAssetPreviewCell: BaseCollectionViewCell<PendingAssetPreviewView> {
+final class PendingAssetPreviewCell: CollectionCell<PendingAssetPreviewView> {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(PendingAssetPreviewViewTheme())
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        separatorStyle = .single(separator)
     }
 
     func bindData(_ viewModel: PendingAssetPreviewViewModel) {
