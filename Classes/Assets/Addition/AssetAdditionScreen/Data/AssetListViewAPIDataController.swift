@@ -20,10 +20,13 @@ import MacaroonUtils
 import MagpieCore
 
 final class AssetListViewAPIDataController:
-    AssetListViewDataController {
+    AssetListViewDataController,
+    SharedDataControllerObserver {
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)?
 
-    var assets: [AssetDecoration] = []
+    private(set) var account: Account
+
+    private var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -39,12 +42,24 @@ final class AssetListViewAPIDataController:
     }
 
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
+
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
 
     init(
-        _ api: ALGAPI
+        account: Account,
+        api: ALGAPI,
+        sharedDataController: SharedDataController
     ) {
+        self.account = account
         self.api = api
+        self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
 }
 
@@ -84,7 +99,7 @@ extension AssetListViewAPIDataController {
             switch response {
             case let .success(searchResults):
                 let results = self.assets + searchResults.results
-                self.assets = results.uniqued()
+                self.assets = results
                 self.draft.cursor = searchResults.nextCursor
 
                 self.deliverContentSnapshot(next: true)
@@ -109,7 +124,7 @@ extension AssetListViewAPIDataController {
 
             switch response {
             case let .success(searchResults):
-                self.assets = searchResults.results.uniqued()
+                self.assets = searchResults.results
                 self.draft.cursor = searchResults.nextCursor
 
                 self.deliverContentSnapshot(next: false)
@@ -127,6 +142,68 @@ extension AssetListViewAPIDataController {
 
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
+    }
+}
+
+extension AssetListViewAPIDataController {
+    func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptedIn = monitor.hasPendingOptInRequest(
+            assetID: asset.id,
+            for: account
+        )
+        let hasAlreadyOptedIn = account[asset.id] != nil
+
+        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
+        case (true, false): return .pending
+        case (true, true): return .optedIn
+        case (false, true): return .optedIn
+        case (false, false): return .rejected
+        }
+    }
+}
+
+/// <mark>
+/// SharedDataControllerObserver
+extension AssetListViewAPIDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+            deliverOptedInAssetsIfNeeded()
+        }
+    }
+
+    private func updateAccountIfNeeded() {
+        let updatedAccount = sharedDataController.accountCollection[account.address]
+
+        guard let account = updatedAccount else { return }
+
+        if !account.isAvailable { return }
+
+        self.account = account.value
+    }
+
+    private func deliverOptedInAssetsIfNeeded() {
+        snapshotQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let optedInAssetUpdates = monitor.filterOptedInAssetUpdates(for: self.account)
+
+            var optedInAssetItems: [OptInAssetListItem] = []
+            for update in optedInAssetUpdates {
+                if let asset = self.assets.first(matching: ((\.id, update.key))) {
+                    let item = OptInAssetListItem(asset: asset)
+                    optedInAssetItems.append(item)
+                }
+            }
+
+            self.publish(.didOptInAssets(optedInAssetItems))
+        }
     }
 }
 

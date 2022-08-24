@@ -5049,6 +5049,30 @@
 		F07C3C3028B46D98003D55BC /* ASADetailLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C2F28B46D98003D55BC /* ASADetailLoadingViewTheme.swift */; };
 		F07C3C3128B46D98003D55BC /* ASADetailLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C2F28B46D98003D55BC /* ASADetailLoadingViewTheme.swift */; };
 		F07C3C3228B46D98003D55BC /* ASADetailLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C2F28B46D98003D55BC /* ASADetailLoadingViewTheme.swift */; };
+		F07C3C3828B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */; };
+		F07C3C3928B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */; };
+		F07C3C3A28B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */; };
+		F07C3C3C28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */; };
+		F07C3C3D28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */; };
+		F07C3C3E28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */; };
+		F07C3C4028B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3F28B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift */; };
+		F07C3C4128B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3F28B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift */; };
+		F07C3C4228B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C3F28B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift */; };
+		F07C3C4428B5449E003D55BC /* BlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4328B5449E003D55BC /* BlockchainUpdate.swift */; };
+		F07C3C4528B5449E003D55BC /* BlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4328B5449E003D55BC /* BlockchainUpdate.swift */; };
+		F07C3C4628B5449E003D55BC /* BlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4328B5449E003D55BC /* BlockchainUpdate.swift */; };
+		F07C3C4928B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4828B55AF0003D55BC /* BlockchainBatchRequest.swift */; };
+		F07C3C4A28B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4828B55AF0003D55BC /* BlockchainBatchRequest.swift */; };
+		F07C3C4B28B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4828B55AF0003D55BC /* BlockchainBatchRequest.swift */; };
+		F07C3C4D28B55EF7003D55BC /* BlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4C28B55EF7003D55BC /* BlockchainRequest.swift */; };
+		F07C3C4E28B55EF7003D55BC /* BlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4C28B55EF7003D55BC /* BlockchainRequest.swift */; };
+		F07C3C4F28B55EF7003D55BC /* BlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C4C28B55EF7003D55BC /* BlockchainRequest.swift */; };
+		F07C3C5128B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */; };
+		F07C3C5228B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */; };
+		F07C3C5328B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */; };
+		F07C3C5528B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5428B562FB003D55BC /* BlockchainBatchUpdates.swift */; };
+		F07C3C5628B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5428B562FB003D55BC /* BlockchainBatchUpdates.swift */; };
+		F07C3C5728B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07C3C5428B562FB003D55BC /* BlockchainBatchUpdates.swift */; };
 		F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FC276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
 		F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CD2FA276A1E39006665FE /* AccountCollection.swift */; };
@@ -7005,6 +7029,14 @@
 		F07C3C2628B46935003D55BC /* ASADetailAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailAPIDataController.swift; sourceTree = "<group>"; };
 		F07C3C2B28B46D94003D55BC /* ASADetailLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailLoadingView.swift; sourceTree = "<group>"; };
 		F07C3C2F28B46D98003D55BC /* ASADetailLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailLoadingViewTheme.swift; sourceTree = "<group>"; };
+		F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInBlockchainUpdate.swift; sourceTree = "<group>"; };
+		F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainUpdatesMonitor.swift; sourceTree = "<group>"; };
+		F07C3C3F28B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainAccountUpdatesMonitor.swift; sourceTree = "<group>"; };
+		F07C3C4328B5449E003D55BC /* BlockchainUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainUpdate.swift; sourceTree = "<group>"; };
+		F07C3C4828B55AF0003D55BC /* BlockchainBatchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainBatchRequest.swift; sourceTree = "<group>"; };
+		F07C3C4C28B55EF7003D55BC /* BlockchainRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainRequest.swift; sourceTree = "<group>"; };
+		F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInBlockchainRequest.swift; sourceTree = "<group>"; };
+		F07C3C5428B562FB003D55BC /* BlockchainBatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainBatchUpdates.swift; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
 		F07E61882897F564001D2C97 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		F08708C3278A179E00BEE5C2 /* AccountHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHandle.swift; sourceTree = "<group>"; };
@@ -15895,6 +15927,7 @@
 		F0772B52275EB17F003A9329 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				F07C3C4728B54FFC003D55BC /* Blockchain */,
 				F05E6C5A28634865004E33D6 /* AccountAssetCell.swift */,
 				F07CD2FA276A1E39006665FE /* AccountCollection.swift */,
 				F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */,
@@ -16025,6 +16058,21 @@
 				F07C3C2F28B46D98003D55BC /* ASADetailLoadingViewTheme.swift */,
 			);
 			path = ASADetailLoadingView;
+			sourceTree = "<group>";
+		};
+		F07C3C4728B54FFC003D55BC /* Blockchain */ = {
+			isa = PBXGroup;
+			children = (
+				F07C3C3F28B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift */,
+				F07C3C4828B55AF0003D55BC /* BlockchainBatchRequest.swift */,
+				F07C3C5428B562FB003D55BC /* BlockchainBatchUpdates.swift */,
+				F07C3C4C28B55EF7003D55BC /* BlockchainRequest.swift */,
+				F07C3C4328B5449E003D55BC /* BlockchainUpdate.swift */,
+				F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */,
+				F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */,
+				F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */,
+			);
+			path = Blockchain;
 			sourceTree = "<group>";
 		};
 		F07E61872897F545001D2C97 /* Effects */ = {
@@ -16645,6 +16693,7 @@
 				2B4BDA0C238C9EDF00491149 /* AssetAlertDraft.swift in Sources */,
 				2B7A1F2127DBD1B40010F52E /* CollectibleDetailLoadingViewTheme.swift in Sources */,
 				2B571596263479DC002C876D /* AlgorandLineChartView.swift in Sources */,
+				F07C3C4628B5449E003D55BC /* BlockchainUpdate.swift in Sources */,
 				F045BE3B286B9BC30069056B /* CurrencyFormattingContextHandling.swift in Sources */,
 				D4710B1A276A529D00F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
 				D411B37E26EA126D004FF980 /* AccountPreviewViewTheme.swift in Sources */,
@@ -17402,6 +17451,7 @@
 				D4C601D228436F8800CDF6CB /* SortAccountListDataController.swift in Sources */,
 				17BD4E722292F1260003E49A /* BaseViewController.swift in Sources */,
 				D4979488287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
+				F07C3C5728B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */,
 				D4176C2726F340590017A4AB /* LedgerAccountViewTheme.swift in Sources */,
 				17BD4E732292F1260003E49A /* Keychain+Additions.swift in Sources */,
 				2B9A0DA427F45863006FC587 /* ManageAssetsListDataSource.swift in Sources */,
@@ -17409,6 +17459,7 @@
 				048B3C2027229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */,
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
 				D405058E26F0EE73001D0D11 /* LottieImageView.swift in Sources */,
+				F07C3C3E28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */,
 				2BA4B3ED267819530041586B /* WCSessionListView.swift in Sources */,
 				D421178226D8D3D500C032B2 /* BottomSheetTransitionController.swift in Sources */,
 				F01264352835A46F00380C4E /* DeeplinkConfig.swift in Sources */,
@@ -17784,6 +17835,7 @@
 				D4487AA727BD372C00B4B0AB /* RecoverAccountViewController+Theme.swift in Sources */,
 				2B5739FF26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				17BD4EB32292F1260003E49A /* UIFont+Additions.swift in Sources */,
+				F07C3C4B28B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */,
 				2B9A3E7D26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
 				2B6B422B27BEA3A50036BF9E /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				2BC6360A28899F8200507AEA /* AssetNameViewModel.swift in Sources */,
@@ -17922,7 +17974,9 @@
 				2B4BDA22238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
 				F03451DF28B27B8C009467A0 /* OptInAssetListItemViewTheme.swift in Sources */,
 				F0E7444F27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift in Sources */,
+				F07C3C5328B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */,
 				D4CC28E32875B2F30082E038 /* InnerTransactionPreviewViewTheme.swift in Sources */,
+				F07C3C3A28B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */,
 				2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				2BA4B42026793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				F0B5B0CD27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
@@ -18181,6 +18235,7 @@
 				D45C47FD277E1737001853A3 /* RangeSelectionViewModel.swift in Sources */,
 				95D11D0F2771D704001B2C37 /* TitleHeaderViewModel.swift in Sources */,
 				2BF811AE25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */,
+				F07C3C4F28B55EF7003D55BC /* BlockchainRequest.swift in Sources */,
 				D459E28D27DE540600F7FC33 /* CollectibleTransactionInfoView.swift in Sources */,
 				2B9352D227F3BA03000DA8DB /* AccountShareViewModel.swift in Sources */,
 				955B616E2783508B005A5C7E /* WCMainTransactionScreen.swift in Sources */,
@@ -18269,6 +18324,7 @@
 				F07C3C1328B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
 				2BA71A9F2891333E000C785A /* ShowMoreView.swift in Sources */,
 				D4592909276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
+				F07C3C4228B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */,
 				D4C601CE28436DD900CDF6CB /* SortAccountListViewController.swift in Sources */,
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B0322DF269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
@@ -18337,6 +18393,7 @@
 				F045BE3A286B9BC30069056B /* CurrencyFormattingContextHandling.swift in Sources */,
 				17AC727B286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */,
 				D411B37D26EA126D004FF980 /* AccountPreviewViewTheme.swift in Sources */,
+				F07C3C4528B5449E003D55BC /* BlockchainUpdate.swift in Sources */,
 				2B56B82E2505013600AC7B8D /* RekeyTransactionSendDraft.swift in Sources */,
 				2B288AE82693A5B700BC6FB6 /* WCSingleTransactionViewControllerAssetActionable.swift in Sources */,
 				D4BC640026DE22A3000CFD28 /* ButtonViewModel.swift in Sources */,
@@ -18480,6 +18537,7 @@
 				2B0F617D24EC129D00DA22A6 /* Notification+Keyboard.swift in Sources */,
 				2B0F618024EC129D00DA22A6 /* Device.swift in Sources */,
 				D4092BB2276B55D40009722D /* WCSessionShortListItemView.swift in Sources */,
+				F07C3C5228B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */,
 				2B2AACB9250AA5DE00B8C5C5 /* Settings.swift in Sources */,
 				D48FDFE427CF54D200C39FC7 /* ReceiveCollectibleAssetListLayout.swift in Sources */,
 				2B0AD81B2756AE9F00F83660 /* AssetCreator.swift in Sources */,
@@ -18982,6 +19040,7 @@
 				D4ADED9A2821505F00A834FD /* CollectibleDetailCreatorAccountActionCell.swift in Sources */,
 				D4D656E6277CC5A7007C32F0 /* TransactionStatusInformationViewModel.swift in Sources */,
 				17F8BF6228A2BAC500992F91 /* ALGAnalytics.swift in Sources */,
+				F07C3C3928B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */,
 				2B0F621324EC129D00DA22A6 /* AssetActionConfirmationView.swift in Sources */,
 				2B6B3EF32774C003006379F4 /* WalletRatingView.swift in Sources */,
 				F096086D2795E36B00CFBB90 /* SingleLineIconTitleViewModel.swift in Sources */,
@@ -19083,6 +19142,7 @@
 				D4092B9B276B48360009722D /* WCSessionShortListViewController.swift in Sources */,
 				2B9A0DA327F45863006FC587 /* ManageAssetsListDataSource.swift in Sources */,
 				D4979483287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
+				F07C3C4A28B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */,
 				2B0F623224EC129D00DA22A6 /* AlgorandNotification.swift in Sources */,
 				2B0F623324EC129D00DA22A6 /* BaseControl.swift in Sources */,
 				D4979487287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
@@ -19372,6 +19432,7 @@
 				2B7A1F8E27DE64BA0010F52E /* CollectibleDescriptionCell.swift in Sources */,
 				17CADC7A28531305001D19A8 /* AccountQuickActionsView.swift in Sources */,
 				2BD5A6AE263330A00048FA5E /* FetchAlgoPriceHistoryDraft.swift in Sources */,
+				F07C3C4128B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */,
 				2B7A1F8627DE64840010F52E /* CollectibleDescriptionViewModel.swift in Sources */,
 				D40553AB28AA73D900C4126D /* SecondaryListItemValueViewModel.swift in Sources */,
 				2B0F628624EC129D00DA22A6 /* String+Localization.swift in Sources */,
@@ -19549,6 +19610,7 @@
 				2B0F62B124EC129D00DA22A6 /* TransactionID.swift in Sources */,
 				D4FC5F3427F4CAEF0017E81F /* CollectibleListSearchInputCell.swift in Sources */,
 				F07C3C1228B40C8C003D55BC /* URL+SocialMedia.swift in Sources */,
+				F07C3C5628B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */,
 				2B0F62B324EC129D00DA22A6 /* PinLimitStore.swift in Sources */,
 				2B0F62B424EC129D00DA22A6 /* PassphraseDisplayView.swift in Sources */,
 				F08708D1278C26B800BEE5C2 /* ALGBlockCycle.swift in Sources */,
@@ -19926,6 +19988,7 @@
 				D4241FD126E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
 				D4092BB6276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
 				F034520C28B2A0F6009467A0 /* OptInAssetListItemAccessory.swift in Sources */,
+				F07C3C4E28B55EF7003D55BC /* BlockchainRequest.swift in Sources */,
 				D47C4AA2279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				95C95913278A12A9003D0D78 /* WCSingleTransactionRequestBottomViewModel.swift in Sources */,
 				1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */,
@@ -19970,6 +20033,7 @@
 				2B88F51027E2ADCD00E6E296 /* CollectibleMediaImagePreviewViewTheme.swift in Sources */,
 				2B233B4A27C452B200D16B82 /* BuyAlgoHomeViewTheme.swift in Sources */,
 				2B0322DE269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
+				F07C3C3D28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */,
 				2B4334AD27C44CA000A3D9D6 /* CollectibleAsset.swift in Sources */,
 				2B0F631E24EC129D00DA22A6 /* AssetAdditionViewController.swift in Sources */,
 				F0431F2B28778D900004CB7E /* HomePortfolioNavigationViewModel.swift in Sources */,
@@ -20025,6 +20089,7 @@
 				2B571594263479DC002C876D /* AlgorandLineChartView.swift in Sources */,
 				D411B37C26EA126D004FF980 /* AccountPreviewViewTheme.swift in Sources */,
 				2B80C51E27720A9300BB071E /* AccountDetailViewController.swift in Sources */,
+				F07C3C4428B5449E003D55BC /* BlockchainUpdate.swift in Sources */,
 				2B7A1F1F27DBD1B40010F52E /* CollectibleDetailLoadingViewTheme.swift in Sources */,
 				F045BE39286B9BC30069056B /* CurrencyFormattingContextHandling.swift in Sources */,
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
@@ -20782,6 +20847,7 @@
 				D4FC5F5D27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
 				9511C297242E2B3C003211ED /* BaseControl.swift in Sources */,
 				D4979486287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
+				F07C3C5528B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */,
 				2B3A34D7246D71E6001C8F22 /* SettingsFooterSupplementaryView.swift in Sources */,
 				D48FDF9B27CDFDC500C39FC7 /* ReceiveCollectibleAccountListLayout.swift in Sources */,
 				F01264332835A46F00380C4E /* DeeplinkConfig.swift in Sources */,
@@ -20789,6 +20855,7 @@
 				D4A70AF2287835C000FB52B0 /* AlgoInnerTransactionPreviewViewModel.swift in Sources */,
 				D4E34CCA27F87EED00B0C3F4 /* CollectiblesFilterSelectionViewControllerTheme.swift in Sources */,
 				2B0AD8432757E1E800F83660 /* SingleLineTitleActionViewTheme.swift in Sources */,
+				F07C3C3C28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift in Sources */,
 				95EE6FDA278C670600E9F1E1 /* WCSingleTransactionRequestScreen+Theme.swift in Sources */,
 				D462DEDC285744DB0092DF5A /* CollectibleAscendingTitleAlgorithm.swift in Sources */,
 				2BA172902649580000A613C4 /* AlgorandLineChartDataComposer.swift in Sources */,
@@ -21164,6 +21231,7 @@
 				D4241FBE26E7639B0064CDD0 /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
 				2BD6A06A24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */,
 				2B5739FD26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
+				F07C3C4928B55AF0003D55BC /* BlockchainBatchRequest.swift in Sources */,
 				2B0F635224ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */,
 				2B7A1F2327DBD1BC0010F52E /* CollectibleDetailLoadingCell.swift in Sources */,
 				2B9A3E7B26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
@@ -21302,7 +21370,9 @@
 				2B7A1FD527DFF1A10010F52E /* CollectibleExternalSource.swift in Sources */,
 				D431505B27EA24710084CA41 /* ALGActiveLabel.swift in Sources */,
 				2B57BC57280EF45A00F958C4 /* CurrencySelectionDataController.swift in Sources */,
+				F07C3C5128B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */,
 				2BCCB5BE27D755E500C5E497 /* AssetPreviewWithActionCell.swift in Sources */,
+				F07C3C3828B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */,
 				D4CC28D52875AC0B0082E038 /* InnerTransactionPreviewView.swift in Sources */,
 				F0E7444D27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift in Sources */,
 				F0B5B0CB27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
@@ -21561,6 +21631,7 @@
 				D47956852769D16F003766D2 /* WCSessionListViewTheme.swift in Sources */,
 				2BD6AB6E26EA3424001C4257 /* ALGAPIPath.swift in Sources */,
 				D41F4EFE2892D1B300B59559 /* OptOutAssetViewModel.swift in Sources */,
+				F07C3C4D28B55EF7003D55BC /* BlockchainRequest.swift in Sources */,
 				2B9352D027F3BA02000DA8DB /* AccountShareViewModel.swift in Sources */,
 				2B85F3F1257A721D00C871A5 /* LedgerTransactionOperation.swift in Sources */,
 				2BF811AC25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */,
@@ -21649,6 +21720,7 @@
 				2BAD559423A29C830037079F /* Optional+Nil.swift in Sources */,
 				2BA71A9D2891333E000C785A /* ShowMoreView.swift in Sources */,
 				2B288ACF268F158100BC6FB6 /* AssetCachable.swift in Sources */,
+				F07C3C4028B50C50003D55BC /* BlockchainAccountUpdatesMonitor.swift in Sources */,
 				2B7E5816257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				2B0322E7269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift in Sources */,
 				2B9A0DA627F45B0D006FC587 /* ManageAssetsListLocalDataController.swift in Sources */,

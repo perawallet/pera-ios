@@ -18,13 +18,18 @@
 import Foundation
 import UIKit
 
-protocol AssetListViewDataController {
+protocol AssetListViewDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<AssetListViewSection, AssetListViewItem>
 
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)? { get set }
 
+    var account: Account { get }
+
     func load()
+    func loadNextPageIfNeeded(for indexPath: IndexPath)
     func search(for query: String?)
+
+    func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus
 }
 
 enum AssetListViewSection:
@@ -43,4 +48,11 @@ enum AssetListViewItem: Hashable {
 enum AssetListViewDataControllerEvent {
     case didUpdate(AssetListViewDataController.Snapshot)
     case didUpdateNext(AssetListViewDataController.Snapshot)
+    case didOptInAssets([OptInAssetListItem])
+}
+
+enum OptInStatus {
+    case pending
+    case optedIn
+    case rejected
 }

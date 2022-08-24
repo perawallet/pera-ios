@@ -29,23 +29,16 @@ final class AssetAdditionViewController:
     private lazy var theme = Theme()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
-    private var account: Account
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
+
+    private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
+
+    private var transactionControllers: [TransactionController] {
+        return Array(optInTransactions.values.map { $0.transactionController })
+    }
 
     private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
-    private lazy var dataController = AssetListViewAPIDataController(self.api!)
     private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
 
     private lazy var assetSearchInput = SearchInputView()
@@ -53,10 +46,13 @@ final class AssetAdditionViewController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private var currentAsset: AssetDecoration?
+    private let dataController: AssetListViewDataController
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.account = account
+    init(
+        dataController: AssetListViewDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
     
@@ -66,8 +62,11 @@ final class AssetAdditionViewController:
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
+
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
+        }
     }
     
     override func configureAppearance() {
@@ -91,8 +90,6 @@ final class AssetAdditionViewController:
 
         assetListView.collectionView.dataSource = dataSource
         assetListView.collectionView.delegate = self
-
-        transactionController.delegate = self
     }
 
     override func viewDidLoad() {
@@ -128,6 +125,16 @@ final class AssetAdditionViewController:
                     snapshot,
                     animatingDifferences: self.isViewAppeared
                 )
+            case .didOptInAssets(let items):
+                for item in items {
+                    if let indexPath = self.dataSource.indexPath(for: .asset(item)),
+                       let cell = self.assetListView.collectionView.cellForItem(at: indexPath) {
+                        self.configureAccessory(
+                            cell as? OptInAssetListItemCell,
+                            for: item
+                        )
+                    }
+                }
             }
         }
 
@@ -149,6 +156,58 @@ final class AssetAdditionViewController:
         assetListView.collectionView.visibleCells.forEach {
             let loadingCell = $0 as? PreviewLoadingCell
             loadingCell?.stopAnimating()
+        }
+    }
+}
+
+extension AssetAdditionViewController {
+    private func createNewTransactionController(
+        for asset: AssetDecoration
+    ) -> TransactionController {
+        let transactionController = TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+        optInTransactions[asset.id] = AssetOptInTransaction(
+            asset: asset,
+            transactionController: transactionController
+        )
+        transactionController.delegate = self
+        return transactionController
+    }
+
+    private func clearTransactionCache(
+        _ transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController) {
+            optInTransactions[assetID] = nil
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func findCell(
+        from asset: AssetDecoration
+    ) -> OptInAssetListItemCell?  {
+        let item = AssetListViewItem.asset(OptInAssetListItem(asset: asset))
+        let indexPath = dataSource.indexPath(for: item)
+        return indexPath.unwrap {
+            assetListView.collectionView.cellForItem(at: $0)
+        } as? OptInAssetListItemCell
+    }
+
+    private func restoreCellState(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let assetDetail = optInTransactions[assetID]?.asset,
+           let cell = findCell(from: assetDetail) {
+            cell.accessory = .add
         }
     }
 }
@@ -199,17 +258,12 @@ extension AssetAdditionViewController {
 
         switch itemIdentifier {
         case .asset(let item):
-            let asset = item.model
-            let assetCell = cell as! OptInAssetListItemCell
-
-            if self.account[asset.id] == nil {
-                assetCell.accessory = .add
-            } else {
-                assetCell.accessory = .check
-            }
-
+            configureAccessory(
+                cell as? OptInAssetListItemCell,
+                for: item
+            )
             linkInteractors(
-                assetCell,
+                cell as? OptInAssetListItemCell,
                 for: item
             )
         case .loading:
@@ -340,22 +394,45 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
-    private func linkInteractors(
-        _ cell: OptInAssetListItemCell,
+    private func configureAccessory(
+        _ cell: OptInAssetListItemCell?,
         for item: OptInAssetListItem
     ) {
-        cell.startObserving(event: .add) {
+        let asset = item.model
+        let status = dataController.hasOptedIn(asset)
+
+        let accessory: OptInAssetListItemAccessory
+        switch status {
+        case .pending: accessory = .loading
+        case .optedIn: accessory = .check
+        case .rejected: accessory = .add
+        }
+
+        cell?.accessory = accessory
+    }
+}
+
+extension AssetAdditionViewController {
+    private func linkInteractors(
+        _ cell: OptInAssetListItemCell?,
+        for item: OptInAssetListItem
+    ) {
+        cell?.startObserving(event: .add) {
             [unowned self] in
 
+            let account = self.dataController.account
             let asset = item.model
-            let draft = OptInAssetDraft(account: self.account, asset: asset)
+            let draft = OptInAssetDraft(account: account, asset: asset)
             let screen = Screen.optInAsset(draft: draft) {
                 [weak self] event in
                 guard let self = self else { return }
 
                 switch event {
-                case .performApprove: self.continueToOptInAsset(asset: asset)
-                case .performClose: self.cancelOptInAsset()
+                case .performApprove:
+                    cell?.accessory = .loading
+                    self.continueToOptInAsset(asset: asset)
+                case .performClose:
+                    self.cancelOptInAsset()
                 }
             }
             self.transitionToOptInAsset.perform(
@@ -370,20 +447,26 @@ extension AssetAdditionViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if !self.canSignTransaction(for: &self.account) { return }
+            var account = self.dataController.account
 
-            let assetTransactionDraft = AssetTransactionSendDraft(from: self.account, assetIndex: asset.id)
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            if !self.canSignTransaction(for: &account) { return }
 
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptInUpdates(
+                request,
+                for: account
+            )
 
-            if self.account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
+            let transactionController = self.createNewTransactionController(for: asset)
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
             }
-
-            self.currentAsset = asset
         }
     }
 
@@ -405,9 +488,9 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
-        loadingController?.stopLoading()
-        currentAsset = nil
-        
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -417,8 +500,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
-        loadingController?.stopLoading()
-        currentAsset = nil
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
 
         switch error {
         case let .network(apiError):
@@ -432,13 +515,17 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        loadingController?.stopLoading()
-
-        guard let assetDetail = currentAsset else {
+        guard let assetID = getAssetID(from: transactionController),
+              let assetDetail = optInTransactions[assetID]?.asset else {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+        delegate?.assetAdditionViewController(
+            self,
+            didAdd: assetDetail
+        )
+
+        clearTransactionCache(transactionController)
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -498,9 +585,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
-    ) {
-        loadingController?.stopLoading()
-    }
+    ) {}
 }
 
 protocol AssetAdditionViewControllerDelegate: AnyObject {
@@ -508,4 +593,16 @@ protocol AssetAdditionViewControllerDelegate: AnyObject {
         _ assetAdditionViewController: AssetAdditionViewController,
         didAdd asset: AssetDecoration
     )
+}
+
+struct AssetOptInTransaction: Equatable {
+    let asset: AssetDecoration
+    let transactionController: TransactionController
+
+    static func == (
+        lhs: AssetOptInTransaction,
+        rhs: AssetOptInTransaction
+    ) -> Bool {
+        return lhs.asset.id == rhs.asset.id
+    }
 }
