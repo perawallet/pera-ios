@@ -147,6 +147,8 @@ extension AssetListItemViewModel {
 
                 exchanger = CurrencyExchanger(currency: fiatRawCurrency)
                 valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+
+                formatter.currency = fiatRawCurrency
             } else {
                 guard let currencyValue = item.currency.primaryValue else {
                     secondaryValue = nil

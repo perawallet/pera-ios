@@ -474,6 +474,11 @@ extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
             assetListScreen.addAsset(standardAsset)
         }
     }
+
+    func assetAdditionViewControllerDidRemoveAccount(_ assetAdditionViewController: AssetAdditionViewController) {
+        assetAdditionViewController.closeScreen(by: .dismiss)
+        eventHandler?(.didRemove)
+    }
 }
 
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {

@@ -154,6 +154,23 @@ final class CollectibleDetailViewController:
         mediaPreviewController.didMove(toParent: self)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if isQuickActionVisible {
+            /// <note>
+            /// The safe area of the view will equal to the one it set as
+            /// `additionalSafeAreaInsets.bottom` next time this method is called.
+            let safeAreaBottom = view.window?.safeAreaInsets.bottom ?? 0
+            let bottom = assetQuickActionView.bounds.height - safeAreaBottom
+            additionalSafeAreaInsets.bottom = bottom
+        } else {
+            additionalSafeAreaInsets.bottom = 0
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
@@ -628,6 +645,13 @@ extension CollectibleDetailViewController {
 
             if !self.canSignTransaction(for: &self.account) { return }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptInUpdates(
+                request,
+                for: self.account
+            )
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: self.account,
                 assetIndex: asset.id
@@ -657,12 +681,6 @@ extension CollectibleDetailViewController {
         loadingController?.stopLoading()
 
         if isQuickActionVisible {
-            bannerController?.presentSuccessBanner(
-                title: "asset-opt-in-successful-message".localized(
-                    params: asset.title ?? asset.name ?? .empty
-                )
-            )
-
             eventHandler?(.didOptInToAsset)
             return
         }

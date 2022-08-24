@@ -132,7 +132,7 @@ extension AssetQuickActionView {
         accountNameLabel.snp.makeConstraints {
             $0.centerY == accountTypeImageView
             $0.leading == accountTypeImageView.snp.trailing + theme.spacingBetweenAccountTypeAndName
-            $0.trailing >= button.snp.trailing + theme.spacingBetweenTitleAndButton
+            $0.trailing <= button.snp.trailing - theme.spacingBetweenTitleAndButton
         }
     }
 }

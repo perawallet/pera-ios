@@ -26,4 +26,10 @@ struct OptInBlockchainRequest: BlockchainRequest {
         self.assetName = asset.name
         self.assetUnitName = asset.unitName
     }
+
+    init(asset: Asset) {
+        self.assetID = asset.id
+        self.assetName = asset.naming.name
+        self.assetUnitName = asset.naming.unitName
+    }
 }

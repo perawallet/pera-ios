@@ -362,6 +362,13 @@ extension ASADiscoveryScreen {
         let isFolding = frameOfFoldingArea.contains(positionOfAboutFragment)
 
         aboutFragmentScreen.isScrollAnchoredOnTop = isFolding
+
+        let aboutFragmentScrollView = aboutFragmentScreen.scrollView
+        if assetQuickActionView.isDescendant(of: view) {
+            aboutFragmentScrollView.setContentInset(bottom: assetQuickActionView.bounds.height)
+        } else {
+            aboutFragmentScrollView.setContentInset(bottom: 0)
+        }
     }
 
     private func bindAboutFragmentData() {
@@ -687,9 +694,17 @@ extension ASADiscoveryScreen {
 
             if !self.canSignTransaction(for: &account) { return }
 
+            let asset = self.dataController.asset
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptInUpdates(
+                request,
+                for: account
+            )
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
-                assetIndex: self.dataController.asset.id
+                assetIndex: asset.id
             )
             self.transactionController.setTransactionDraft(assetTransactionDraft)
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
@@ -742,15 +757,6 @@ extension ASADiscoveryScreen {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
-
-        let asset = dataController.asset
-
-        bannerController?.presentSuccessBanner(
-            title: "asset-opt-in-successful-message".localized(
-                params: asset.naming.name ?? asset.naming.unitName ?? .empty
-            )
-        )
-
         eventHandler?(.didOptInToAsset)
     }
 
