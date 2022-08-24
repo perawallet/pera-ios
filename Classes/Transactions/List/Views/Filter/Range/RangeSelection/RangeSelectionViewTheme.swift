@@ -38,7 +38,7 @@ struct RangeSelectionViewTheme: StyleSheet, LayoutSheet {
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(Colors.Text.gray),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.dateLabel = [
@@ -46,7 +46,7 @@ struct RangeSelectionViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(15)),
+            .font(Fonts.DMSans.regular.make(15)),
         ]
         self.focusIndicator = [
             .isInteractable(false),

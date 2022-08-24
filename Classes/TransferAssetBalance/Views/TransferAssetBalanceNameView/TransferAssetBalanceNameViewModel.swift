@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OptInAssetNameViewModel.swift
+//   TransferAssetBalanceNameViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct OptInAssetNameViewModel: PrimaryTitleViewModel {
+struct TransferAssetBalanceNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
@@ -29,7 +29,7 @@ struct OptInAssetNameViewModel: PrimaryTitleViewModel {
     }
 }
 
-extension OptInAssetNameViewModel {
+extension TransferAssetBalanceNameViewModel {
     mutating func bindPrimaryTitle(asset: AssetDecoration) {
         let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
         primaryTitle = title.titleSmallMedium(lineBreakMode: .byTruncatingTail)
@@ -48,3 +48,4 @@ extension OptInAssetNameViewModel {
         secondaryTitle = asset.unitName?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }
+

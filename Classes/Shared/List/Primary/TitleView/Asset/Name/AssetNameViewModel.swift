@@ -44,7 +44,7 @@ extension AssetNameViewModel {
             aTitle = "title-unknown".localized
         }
 
-        primaryTitle = aTitle.bodyRegular()
+        primaryTitle = aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindPrimaryTitleAccessory(
@@ -65,6 +65,6 @@ extension AssetNameViewModel {
             return
         }
 
-        secondaryTitle = unitName.footnoteRegular()
+        secondaryTitle = unitName.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

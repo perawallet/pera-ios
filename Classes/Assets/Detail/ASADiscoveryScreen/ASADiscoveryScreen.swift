@@ -23,7 +23,14 @@ import UIKit
 
 final class ASADiscoveryScreen:
     BaseViewController,
-    Container {
+    Container,
+    SelectAccountViewControllerDelegate,
+    TransactionControllerDelegate,
+    TransactionSignChecking {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
@@ -35,10 +42,23 @@ final class ASADiscoveryScreen:
             configuration: configuration
         )
 
+    private lazy var assetQuickActionView = AssetQuickActionView()
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var lastDisplayState = DisplayState.normal
     private var lastFrameOfFoldableArea = CGRect.zero
+
+    private lazy var transactionController: TransactionController = {
+        return TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+    }()
+
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(presentingViewController: self)
 
     private var isDisplayStateInteractiveTransitionInProgress = false
     private var displayStateInteractiveTransitionInitialFractionComplete: CGFloat = 0
@@ -53,16 +73,21 @@ final class ASADiscoveryScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private var account: Account?
     private let dataController: ASADiscoveryScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADiscoveryScreenTheme()
 
     init(
+        account: Account?,
         dataController: ASADiscoveryScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.account = account
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -80,6 +105,11 @@ final class ASADiscoveryScreen:
 
         addUI()
         loadData()
+    }
+
+    override func setListeners() {
+        super.setListeners()
+        transactionController.delegate = self
     }
 
     override func viewDidLayoutSubviews() {
@@ -120,6 +150,7 @@ extension ASADiscoveryScreen {
         addProfile()
 
         addAboutFragment()
+        addAssetQuickAction()
     }
 
     private func updateUIWhenViewLayoutDidChangeIfNeeded() {
@@ -336,6 +367,55 @@ extension ASADiscoveryScreen {
     private func bindAboutFragmentData() {
         let asset = dataController.asset
         aboutFragmentScreen.bindData(asset: asset)
+    }
+
+    private func addAssetQuickAction() {
+        if let account = account,
+           account[dataController.asset.id] != nil {
+            return
+        }
+
+        assetQuickActionView.customize(AssetQuickActionViewTheme())
+
+        view.addSubview(assetQuickActionView)
+        assetQuickActionView.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        if let account = account {
+            bindAssetOptInActionView(with: account)
+            return
+        }
+
+        bindAssetOptInActionView()
+    }
+
+    private func bindAssetOptInActionView(
+        with account: Account
+    ) {
+        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.linkOptInAssetInteractions(with: account)
+        }
+    }
+
+    private func bindAssetOptInActionView() {
+        let viewModel = AssetQuickActionViewModel(type: .addAssetWithoutAccount)
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.linkOptInAssetInteractions()
+        }
     }
 }
 
@@ -570,6 +650,207 @@ extension ASADiscoveryScreen {
             self.isDisplayStateInteractiveTransitionInProgress = false
         }
         return animator
+    }
+}
+
+extension ASADiscoveryScreen {
+    private func linkOptInAssetInteractions(
+        with account: Account
+    ) {
+        let assetDecoration = AssetDecoration(asset: dataController.asset)
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: assetDecoration
+        )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptInAsset()
+            case .performClose: self.cancelOptInAsset()
+            }
+        }
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptInAsset() {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self,
+                  var account = self.account else {
+                return
+            }
+
+            if !self.canSignTransaction(for: &account) { return }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: self.dataController.asset.id
+            )
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+        }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
+    }
+
+    private func linkOptInAssetInteractions() {
+        let draft = SelectAccountDraft(
+            transactionAction: .optIn(asset: dataController.asset.id),
+            requiresAssetSelection: false
+        )
+
+        let screen: Screen = .accountSelection(
+            draft: draft,
+            delegate: self
+        )
+
+        open(
+            screen,
+            by: .present
+        )
+    }
+}
+
+extension ASADiscoveryScreen {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for draft: SelectAccountDraft
+    ) {
+        self.account = account
+        continueToOptInAsset()
+    }
+}
+
+extension ASADiscoveryScreen {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+
+        let asset = dataController.asset
+
+        bannerController?.presentSuccessBanner(
+            title: "asset-opt-in-successful-message".localized(
+                params: asset.naming.name ?? asset.naming.unitName ?? .empty
+            )
+        )
+
+        eventHandler?(.didOptInToAsset)
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
+            .ledgerApproval(
+                mode: .approve,
+                deviceName: ledger
+            ),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+    }
+
+    private func displayTransactionError(
+        _ transactionError: TransactionError
+    ) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let warningTransition = BottomSheetTransition(presentingViewController: self)
+
+            warningTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+}
+
+extension ASADiscoveryScreen {
+    enum Event {
+        case didOptInToAsset
     }
 }
 

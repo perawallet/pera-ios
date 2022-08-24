@@ -452,17 +452,23 @@ extension CollectibleListViewController {
         asset: CollectibleAsset,
         thumbnailImage: UIImage?
     ) {
-        let controller = open(
-            .collectibleDetail(
-                asset: asset,
-                account: account,
-                thumbnailImage: thumbnailImage
-            ),
-            by: .push
-        ) as? CollectibleDetailViewController
-        controller?.eventHandlers.didOptOutAssetFromAccount = { [weak controller] in
-            controller?.popScreen()
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account,
+            thumbnailImage: thumbnailImage
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptInToAsset: break
+            }
         }
+
+        open(
+            screen,
+            by: .push
+        )
     }
 
     private func openReceiveCollectibleAccountList() {

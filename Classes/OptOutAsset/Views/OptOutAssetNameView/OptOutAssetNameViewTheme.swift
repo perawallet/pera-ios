@@ -12,30 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetAmountViewTheme.swift
+//   OptOutAssetNameViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AssetAmountViewTheme: PrimaryTitleViewTheme {
+struct OptOutAssetNameViewTheme: PrimaryTitleViewTheme {
     var primaryTitle: TextStyle
     var primaryTitleAccessory: ImageStyle
     var primaryTitleAccessoryContentEdgeInsets: LayoutOffset
     var secondaryTitle: TextStyle
     var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
 
-    init(
-        _ family: LayoutFamily
-    ) {
+    init(_ family: LayoutFamily) {
         self.primaryTitle = [
             .textColor(Colors.Text.main),
+            .textOverflow(SingleLineFittingText())
         ]
-        self.primaryTitleAccessory = []
-        self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
+        self.primaryTitleAccessory = [
+            .contentMode(.right),
+        ]
+        self.primaryTitleAccessoryContentEdgeInsets = (8, 0)
         self.secondaryTitle = [
-            .textColor(Colors.Text.gray)
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineFittingText())
         ]
-        self.spacingBetweenPrimaryAndSecondaryTitles = 0
+        self.spacingBetweenPrimaryAndSecondaryTitles = 4
     }
 }

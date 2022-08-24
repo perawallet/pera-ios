@@ -111,20 +111,20 @@ extension OptInAssetScreen {
         let asset = draft.asset
         let viewModel = OptInAssetNameViewModel(asset: asset)
         titleView.bindData(viewModel)
-
-        contentView.attachSeparator(
-            theme.separator,
-            to: titleView,
-            margin: theme.spacingBetweenTitleAndSeparator
-        )
     }
 
     private func addAssetID() {
         assetIDView.customize(theme.assetIDView)
 
+        let topSeparator = contentView.attachSeparator(
+            theme.separator,
+            to: titleView,
+            margin: theme.spacingBetweenTitleAndSeparator
+        )
+
         contentView.addSubview(assetIDView)
         assetIDView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndAssetID
+            $0.top == topSeparator.snp.bottom + theme.spacingBetweenSecondaryListItemAndSeparator
             $0.leading == 0
             $0.trailing == 0
         }
@@ -180,7 +180,6 @@ extension OptInAssetScreen {
 
     private func addApproveAction() {
         approveActionView.customizeAppearance(theme.approveActionView)
-        approveActionView.draw(corner: theme.actionCorner)
         approveActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
         footerView.addSubview(approveActionView)
@@ -198,7 +197,6 @@ extension OptInAssetScreen {
 
     private func addCloseAction() {
         closeActionView.customizeAppearance(theme.closeActionView)
-        closeActionView.draw(corner: theme.actionCorner)
         closeActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
         footerView.addSubview(closeActionView)

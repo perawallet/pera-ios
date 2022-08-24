@@ -556,7 +556,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.assets.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-assets".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-overview".localized)
             self.screen = screen
         }
     }

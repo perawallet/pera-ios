@@ -216,7 +216,7 @@
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
-"accounts-transaction-history-title" = "Transaction History";
+"accounts-transactions-title" = "Transactions";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
@@ -274,7 +274,7 @@
 "asset-quick-action-title-add" = "You can add this asset to";
 "asset-quick-action-title-add-without-account" = "You can opt-in to this asset from one of your accounts.";
 "asset-quick-action-title-remove" = "Opted in to";
-"asset-optin-notification-message" = "%@ successfully added to your account.";
+"asset-opt-in-successful-message" = "%@ successfully added to your account.";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -354,7 +354,7 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
-"accounts-title-assets" = "Assets";
+"accounts-title-overview" = "Overview";
 "accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";

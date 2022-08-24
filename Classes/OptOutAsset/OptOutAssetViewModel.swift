@@ -45,10 +45,10 @@ extension OptOutAssetViewModel {
     ) {
         let asset = draft.asset
 
-        if asset.isCollectible {
+        if draft.isOptingOutCollectibleAsset {
             title =
             "collectible-detail-opt-out-alert-title"
-                .localized(params: asset.unitName ?? "title-unknown".localized)
+                .localized(params: asset.naming.unitName ?? "title-unknown".localized)
         } else {
             title = "asset-remove-confirmation-title".localized
         }
@@ -58,7 +58,7 @@ extension OptOutAssetViewModel {
         _ draft: OptOutAssetDraft
     ) {
         assetID = AssetIDSecondaryListItemViewModel(
-            asset: draft.asset
+            assetID: draft.asset.id
         )
     }
 
@@ -83,12 +83,12 @@ extension OptOutAssetViewModel {
     ) {
         let asset = draft.asset
 
-        let assetName = asset.unitName ?? "title-unknown".localized
+        let assetName = asset.naming.unitName ?? "title-unknown".localized
         let accountName = draft.account.name ?? draft.account.address.shortAddressDisplay
 
         let aDescription: String
 
-        if asset.isCollectible {
+        if draft.isOptingOutCollectibleAsset {
             aDescription =
             "collectible-detail-opt-out-alert-message"
                 .localized(params: accountName)
@@ -108,16 +108,13 @@ extension OptOutAssetViewModel {
     ) {
         let aTitle: String
 
-        if draft.asset.isCollectible {
+        if draft.isOptingOutCollectibleAsset {
             aTitle = "transaction-item-opt-out".localized
         } else {
             aTitle = "title-remove".localized
         }
 
-        approveAction =
-        aTitle
-            .localized
-            .bodyMedium()
+        approveAction = aTitle.localized
     }
 
     private mutating func bindCloseAction(
@@ -125,15 +122,12 @@ extension OptOutAssetViewModel {
     ) {
         let aTitle: String
 
-        if draft.asset.isCollectible {
+        if draft.isOptingOutCollectibleAsset {
             aTitle = "title-cancel".localized
         } else {
             aTitle = "title-keep".localized
         }
 
-        closeAction =
-        aTitle
-            .localized
-            .bodyMedium()
+        closeAction = aTitle.localized
     }
 }

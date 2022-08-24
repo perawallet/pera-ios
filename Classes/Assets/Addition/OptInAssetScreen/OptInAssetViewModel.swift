@@ -54,7 +54,7 @@ extension OptInAssetViewModel {
         _ draft: OptInAssetDraft
     ) {
         assetID = AssetIDSecondaryListItemViewModel(
-            asset: draft.asset
+            assetID: draft.asset.id
         )
     }
 
@@ -89,16 +89,10 @@ extension OptInAssetViewModel {
     }
 
     private mutating func bindApproveAction() {
-        approveAction =
-        "title-approve"
-            .localized
-            .bodyMedium()
+        approveAction = "title-approve".localized
     }
 
     private mutating func bindCloseAction() {
-        closeAction =
-        "title-close"
-            .localized
-            .bodyMedium()
+        closeAction = "title-close".localized
     }
 }

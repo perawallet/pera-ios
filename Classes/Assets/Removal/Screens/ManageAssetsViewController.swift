@@ -18,7 +18,9 @@
 import UIKit
 import MagpieHipo
 
-final class ManageAssetsViewController: BaseViewController {
+final class ManageAssetsViewController:
+    BaseViewController,
+    TransactionSignChecking {
     weak var delegate: ManageAssetsViewControllerDelegate?
     
     private lazy var theme = Theme()
@@ -26,8 +28,9 @@ final class ManageAssetsViewController: BaseViewController {
     private lazy var listLayout = ManageAssetsListLayout(dataSource)
     private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
+
     private lazy var contextView = ManageAssetsView()
     
     private var account: Account {
@@ -92,8 +95,72 @@ final class ManageAssetsViewController: BaseViewController {
                 break
             }
         }
+
+        listLayout.handlers.didSelect = {
+            [weak self] indexPath in
+            guard let self = self,
+                  let asset = self.dataController[indexPath.item] else {
+                return
+            }
+
+            self.openAssetDetail(asset)
+        }
     }
-    
+
+    private func openAssetDetail(
+        _ asset: Asset
+    ) {
+        let assetDecoration = AssetDecoration(asset: asset)
+        if assetDecoration.isCollectible {
+            openCollectibleDetail(asset)
+            return
+        }
+
+        openASADiscovery(assetDecoration)
+    }
+
+    private func openCollectibleDetail(
+        _ asset: Asset
+    ) {
+        guard let collectibleAsset = asset as? CollectibleAsset else { return }
+        let screen = Screen.collectibleDetail(
+            asset: collectibleAsset,
+            account: account,
+            thumbnailImage: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: break
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADiscovery(
+        _ asset: AssetDecoration
+    ) {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            asset: asset
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptInToAsset: self.popScreen()
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+
     override func prepareLayout() {
         contextView.customize(theme.contextViewTheme)
         
@@ -148,82 +215,130 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 
 extension ManageAssetsViewController {
     private func showAlertToDelete(_ asset: Asset) {
-        let assetDecoration = AssetDecoration(asset: asset)
-        
-        let assetAlertDraft: AssetAlertDraft
-
         if isValidAssetDeletion(asset) {
-            assetAlertDraft = AssetAlertDraft(
-                account: account,
-                assetId: assetDecoration.id,
-                asset: assetDecoration,
-                title: "asset-remove-confirmation-title".localized,
-                detail: String(
-                    format: "asset-remove-transaction-warning".localized,
-                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
-                    "\(account.name ?? "")"
-                ),
-                actionTitle: "title-remove".localized,
-                cancelTitle: "title-keep".localized
-            )
-        } else {
-            assetAlertDraft = AssetAlertDraft(
-                account: account,
-                assetId: assetDecoration.id,
-                asset: assetDecoration,
-                title: "asset-remove-confirmation-title".localized,
-                detail: String(
-                    format: "asset-remove-warning".localized,
-                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
-                    "\(account.name ?? "")"
-                ),
-                actionTitle: "asset-transfer-balance".localized,
-                cancelTitle: "title-keep".localized
-            )
+            openOptOutAsset(asset: asset)
+            return
         }
-        
-        assetActionConfirmationTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-            by: .presentWithoutNavigationController
-        )
+
+        openTransferAssetBalance(asset: asset)
     }
 }
 
-extension ManageAssetsViewController:
-    AssetActionConfirmationViewControllerDelegate,
-    TransactionSignChecking {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
+extension ManageAssetsViewController {
+    private func openOptOutAsset(
+        asset: Asset
     ) {
+        let draft = OptOutAssetDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.optOutAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                self.continueToOptOutAsset(
+                    asset: asset,
+                    account: self.account
+                )
+            case .performClose:
+                self.cancelOptOutAsset()
+            }
+        }
+
+        transitionToOptOutAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptOutAsset(
+        asset: Asset,
+        account: Account
+    ) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.removeAssetFromAccount(asset)
+        }
+    }
+
+    private func cancelOptOutAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension ManageAssetsViewController {
+    private func openTransferAssetBalance(
+        asset: Asset
+    ) {
+        let draft = TransferAssetBalanceDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.transferAssetBalance(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                self.continueToTransferAssetBalance(
+                    asset: asset,
+                    account: self.account
+                )
+            case .performClose:
+                self.cancelTransferAssetBalance()
+            }
+        }
+
+        transitionToTransferAssetBalance.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToTransferAssetBalance(
+        asset: Asset,
+        account: Account
+    ) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            var draft = SendTransactionDraft(
+                from: account,
+                transactionMode: .asset(asset)
+            )
+            draft.amount = asset.amountWithFraction
+
+            self.open(
+                .sendTransaction(draft: draft),
+                by: .push
+            )
+        }
+    }
+
+    private func cancelTransferAssetBalance() {
+        dismiss(animated: true)
+    }
+}
+
+extension ManageAssetsViewController {
+    private func isValidAssetDeletion(_ asset: Asset) -> Bool {
+        return asset.amountWithFraction == 0
+    }
+    
+    private func removeAssetFromAccount(_ asset: Asset) {
         var account = dataController.account
 
         if !canSignTransaction(for: &account) {
             return
         }
 
-        guard let asset = self.dataController[asset.id] else {
-            return
-        }
-        
-        if !isValidAssetDeletion(asset) {
-            var draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
-            draft.amount = asset.amountWithFraction
-            open(
-                .sendTransaction(draft: draft),
-                by: .push
-            )
-            return
-        }
-        
-        removeAssetFromAccount(asset)
-    }
-
-    private func isValidAssetDeletion(_ asset: Asset) -> Bool {
-        return asset.amountWithFraction == 0
-    }
-    
-    private func removeAssetFromAccount(_ asset: Asset) {
         guard let creator = asset.creator else {
             return
         }

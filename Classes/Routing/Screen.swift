@@ -19,7 +19,11 @@ import UIKit
 
 indirect enum Screen {
     case asaDetail(account: Account, asset: Asset, eventHandler: ASADetailScreen.EventHandler)
-    case asaDiscovery(AssetDecoration)
+    case asaDiscovery(
+        account: Account?,
+        asset: AssetDecoration,
+        eventHandler: ASADiscoveryScreen.EventHandler
+    )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
@@ -160,7 +164,8 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?
+        thumbnailImage: UIImage?,
+        eventHandler: CollectibleDetailViewController.EventHandler
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
