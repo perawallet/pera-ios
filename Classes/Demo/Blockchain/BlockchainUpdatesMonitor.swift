@@ -112,6 +112,12 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    func filterPendingOptOutAssetUpdates(for account: Account) -> [AssetID : OptOutBlockchainUpdate] {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.filterPendingOptOutAssetUpdates() ?? [:]
+    }
+
     func filterOptedOutAssetUpdates(for account: Account) -> [AssetID: OptOutBlockchainUpdate] {
         let address = account.address
         let monitor = table[address]
@@ -120,6 +126,12 @@ extension BlockchainUpdatesMonitor {
 }
 
 extension BlockchainUpdatesMonitor {
+    func hasAnyPendingOptOutRequest(for account: Account) -> Bool {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.hasAnyPendingOptOutRequest() ?? false
+    }
+
     func hasPendingOptOutRequest(
         assetID: AssetID,
         for account: Account

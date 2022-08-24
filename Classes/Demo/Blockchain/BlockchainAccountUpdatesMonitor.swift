@@ -84,6 +84,10 @@ extension BlockchainAccountUpdatesMonitor {
 }
 
 extension BlockchainAccountUpdatesMonitor {
+    func hasAnyPendingOptOutRequest() -> Bool {
+        return optOutUpdates.contains { $0.value.status == .pending }
+    }
+
     func hasPendingOptOutRequest(assetID: AssetID) -> Bool {
         let update = optOutUpdates[assetID]
         return update?.status == .pending

@@ -18,13 +18,6 @@
 import MacaroonUIKit
 import UIKit
 
-struct PendingAssetPreviewModel: Hashable {
-    let verificationTier: AssetVerificationTier
-    let assetPrimaryTitle: String?
-    let assetSecondaryTitle: String?
-    let assetStatus: String?
-}
-
 /// <todo> Use new list item structure
 struct PendingAssetPreviewViewModel:
     ViewModel,
@@ -46,14 +39,14 @@ struct PendingAssetPreviewViewModel:
         bindAssetStatus(update: update)
     }
 
-    init(_ model: PendingAssetPreviewModel) {
-        self.id = 0
+    init(update: OptOutBlockchainUpdate) {
+        self.id = update.assetID
 
-        bindAssetPrimaryTitle(model.assetPrimaryTitle)
-        bindAssetPrimaryTitleColor(model.verificationTier)
-        bindSecondaryImage(model.verificationTier)
-        bindAssetSecondaryTitle(model.assetSecondaryTitle)
-        bindAssetStatus(model.assetStatus)
+        bindAssetPrimaryTitle(update: update)
+        bindAssetPrimaryTitleColor(update: update)
+        bindSecondaryImage(update: update)
+        bindAssetSecondaryTitle(update: update)
+        bindAssetStatus(update: update)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -77,49 +70,59 @@ struct PendingAssetPreviewViewModel:
 
 extension PendingAssetPreviewViewModel {
     mutating func bindAssetPrimaryTitle(update: OptInBlockchainUpdate) {
-        let title = update.assetName ?? "title-unknown".localized
-        self.assetPrimaryTitle = title
+        bindAssetPrimaryTitle(title: update.assetName)
     }
 
-    private mutating func bindAssetPrimaryTitleColor(update: OptInBlockchainUpdate) {
-        let isSuspicious = update.assetVerificationTier.isSuspicious
-        assetPrimaryTitleColor = isSuspicious ? Colors.Helpers.negative : Colors.Text.main
+    mutating func bindAssetPrimaryTitleColor(update: OptInBlockchainUpdate) {
+        bindAssetPrimaryTitleColor(verificationTier: update.assetVerificationTier)
     }
 
     mutating func bindSecondaryImage(update: OptInBlockchainUpdate) {
-        let icon: Image?
-        switch update.assetVerificationTier {
-        case .trusted: icon = "icon-trusted"
-        case .verified: icon = "icon-verified"
-        case .unverified: icon = nil
-        case .suspicious: icon = "icon-suspicious"
-        }
-        self.secondaryImage = icon?.uiImage
+        bindSecondaryImage(verificationTier: update.assetVerificationTier)
     }
 
     mutating func bindAssetSecondaryTitle(update: OptInBlockchainUpdate) {
-        self.assetSecondaryTitle = update.assetUnitName
+        bindAssetSecondaryTitle(title: update.assetUnitName)
     }
 
     mutating func bindAssetStatus(update: OptInBlockchainUpdate) {
-        self.assetStatus = "asset-add-confirmation-title".localized
+        bindAssetStatus(status: "asset-add-confirmation-title".localized)
     }
 }
 
 extension PendingAssetPreviewViewModel {
-    private mutating func bindAssetPrimaryTitle(_ title: String?) {
-        self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
+    mutating func bindAssetPrimaryTitle(update: OptOutBlockchainUpdate) {
+        bindAssetPrimaryTitle(title: update.assetName)
     }
 
-    private mutating func bindAssetPrimaryTitleColor(_ verificationTier: AssetVerificationTier) {
-        if verificationTier.isSuspicious {
-            assetPrimaryTitleColor = Colors.Helpers.negative
-        } else {
-            assetPrimaryTitleColor = Colors.Text.main
-        }
+    mutating func bindAssetPrimaryTitleColor(update: OptOutBlockchainUpdate) {
+        bindAssetPrimaryTitleColor(verificationTier: update.assetVerificationTier)
     }
 
-    private mutating func bindSecondaryImage(_ verificationTier: AssetVerificationTier) {
+    mutating func bindSecondaryImage(update: OptOutBlockchainUpdate) {
+        bindSecondaryImage(verificationTier: update.assetVerificationTier)
+    }
+
+    mutating func bindAssetSecondaryTitle(update: OptOutBlockchainUpdate) {
+        bindAssetSecondaryTitle(title: update.assetUnitName)
+    }
+
+    mutating func bindAssetStatus(update: OptOutBlockchainUpdate) {
+        bindAssetStatus(status: "asset-removing-status".localized)
+    }
+}
+
+extension PendingAssetPreviewViewModel {
+    mutating func bindAssetPrimaryTitle(title: String?) {
+        self.assetPrimaryTitle = title.unwrapNonEmptyString() ?? "title-unknown".localized
+    }
+
+    mutating func bindAssetPrimaryTitleColor(verificationTier: AssetVerificationTier) {
+        let isSuspicious = verificationTier.isSuspicious
+        assetPrimaryTitleColor = isSuspicious ? Colors.Helpers.negative : Colors.Text.main
+    }
+
+    mutating func bindSecondaryImage(verificationTier: AssetVerificationTier) {
         switch verificationTier {
         case .trusted: self.secondaryImage = "icon-trusted".uiImage
         case .verified: self.secondaryImage = "icon-verified".uiImage
@@ -128,11 +131,11 @@ extension PendingAssetPreviewViewModel {
         }
     }
 
-    private mutating func bindAssetSecondaryTitle(_ title: String?) {
+    mutating func bindAssetSecondaryTitle(title: String?) {
         self.assetSecondaryTitle = title
     }
 
-    private mutating func bindAssetStatus(_ value: String?) {
-        self.assetStatus = value
+    mutating func bindAssetStatus(status: String?) {
+        self.assetStatus = status
     }
 }

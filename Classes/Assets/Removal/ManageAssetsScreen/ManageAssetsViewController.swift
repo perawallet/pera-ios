@@ -21,9 +21,7 @@ import MagpieHipo
 final class ManageAssetsViewController:
     BaseViewController,
     TransactionSignChecking,
-    UICollectionViewDelegateFlowLayout {
-    weak var delegate: ManageAssetsViewControllerDelegate?
-    
+    UICollectionViewDelegateFlowLayout {    
     private lazy var theme = Theme()
     
     private lazy var listLayout = ManageAssetsListLayout(dataSource)
@@ -488,15 +486,17 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetID = getAssetID(from: transactionController),
-              let asset = optOutTransactions[assetID]?.asset else {
-            return
-        }
+        if let assetID = getAssetID(from: transactionController),
+           let collectibleAsset = optOutTransactions[assetID]?.asset as? CollectibleAsset {
+            let account = dataController.account
 
-        if let standardAsset = asset as? StandardAsset {
-            delegate?.manageAssetsViewController(self, didRemove: standardAsset)
-        } else if let collectibleAsset = asset as? CollectibleAsset {
-            delegate?.manageAssetsViewController(self, didRemove: collectibleAsset)
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didRemoveCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
+                ]
+            )
         }
 
         clearTransactionCache(transactionController)
@@ -616,17 +616,6 @@ extension ManageAssetsViewController {
             )
         }
     }
-}
-
-protocol ManageAssetsViewControllerDelegate: AnyObject {
-    func manageAssetsViewController(
-        _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove asset: StandardAsset
-    )
-    func manageAssetsViewController(
-        _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove asset: CollectibleAsset
-    )
 }
 
 struct AssetOptOutTransaction: Equatable {
