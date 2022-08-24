@@ -39,8 +39,9 @@ struct PendingAssetPreviewViewModel:
     init(update: OptInBlockchainUpdate) {
         self.id = update.assetID
 
-        bindSecondaryImage(update: update)
         bindAssetPrimaryTitle(update: update)
+        bindAssetPrimaryTitleColor(update: update)
+        bindSecondaryImage(update: update)
         bindAssetSecondaryTitle(update: update)
         bindAssetStatus(update: update)
     }
@@ -75,6 +76,16 @@ struct PendingAssetPreviewViewModel:
 }
 
 extension PendingAssetPreviewViewModel {
+    mutating func bindAssetPrimaryTitle(update: OptInBlockchainUpdate) {
+        let title = update.assetName ?? "title-unknown".localized
+        self.assetPrimaryTitle = title
+    }
+
+    private mutating func bindAssetPrimaryTitleColor(update: OptInBlockchainUpdate) {
+        let isSuspicious = update.assetVerificationTier.isSuspicious
+        assetPrimaryTitleColor = isSuspicious ? Colors.Helpers.negative : Colors.Text.main
+    }
+
     mutating func bindSecondaryImage(update: OptInBlockchainUpdate) {
         let icon: Image?
         switch update.assetVerificationTier {
@@ -84,11 +95,6 @@ extension PendingAssetPreviewViewModel {
         case .suspicious: icon = "icon-suspicious"
         }
         self.secondaryImage = icon?.uiImage
-    }
-
-    mutating func bindAssetPrimaryTitle(update: OptInBlockchainUpdate) {
-        let title = update.assetName ?? "title-unknown".localized
-        self.assetPrimaryTitle = title
     }
 
     mutating func bindAssetSecondaryTitle(update: OptInBlockchainUpdate) {
