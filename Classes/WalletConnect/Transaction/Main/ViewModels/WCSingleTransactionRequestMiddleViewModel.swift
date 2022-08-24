@@ -22,7 +22,7 @@ import UIKit
 final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var title: String?
     private(set) var subtitle: String?
-    private(set) var isAssetIconHidden: Bool = true
+    private(set) var verificationTierIcon: UIImage?
 
     var asset: Asset? {
         didSet {
@@ -73,7 +73,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 title = ""
             }
 
-            self.isAssetIconHidden = true
+            self.verificationTierIcon = getVerificationTierIcon(.trusted)
             self.setUsdValue(transaction: transaction, asset: nil)
         case .asset:
             guard
@@ -104,8 +104,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 self.title = "\(text) \(assetCode)"
             }
 
-            self.isAssetIconHidden = !asset.verificationTier.isVerified
-
+            self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
                 .possibleAssetAddition:
@@ -114,7 +113,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             }
             self.title = asset.naming.displayNames.primaryName
             self.subtitle = "\(asset.id)"
-            self.isAssetIconHidden = !asset.verificationTier.isVerified
+            self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             return
         case .appCall:
             let appCallOncomplete = transaction.transactionDetail?.appCallOnComplete ?? .noOp
@@ -125,11 +124,10 @@ final class WCSingleTransactionRequestMiddleViewModel {
             case .update:
                 break
             default:
-
                 if (transaction.transactionDetail?.isAppCreateTransaction ?? false) {
                     self.title = "single-transaction-request-opt-in-title".localized
                     self.subtitle = appCallOncomplete.representation
-                    self.isAssetIconHidden = true
+                    self.verificationTierIcon = nil
                     return
                 }
             }
@@ -140,26 +138,27 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
             self.title = "#\(id)"
             self.subtitle = "wallet-connect-transaction-title-app-id".localized
-            self.isAssetIconHidden = true
+            self.verificationTierIcon = nil
         case .assetConfig(let type):
             switch type {
             case .create:
                 if let assetConfigParams = transaction.transactionDetail?.assetConfigParams {
                     self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
 
-                    self.isAssetIconHidden = assetConfigParams.name.isNilOrEmpty && assetConfigParams.unitName.isNilOrEmpty
+                    /// <note> Newly created asset should be unverified.
+                    self.verificationTierIcon = getVerificationTierIcon(.unverified)
                 }
             case .reconfig:
                 if let asset = asset {
                     self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.verificationTier.isVerified
+                    self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             case .delete:
                 if let asset = asset {
                     self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.verificationTier.isVerified
+                    self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             }
         }
@@ -200,6 +199,17 @@ final class WCSingleTransactionRequestMiddleViewModel {
             subtitle = currencyFormatter.format(amountInCurrency)
         } catch {
             subtitle = nil
+        }
+    }
+
+    private func getVerificationTierIcon(
+        _ verificationTier: AssetVerificationTier
+    ) -> UIImage? {
+        switch verificationTier {
+        case .trusted: return "icon-trusted".uiImage
+        case .verified: return "icon-verified".uiImage
+        case .unverified: return nil
+        case .suspicious: return "icon-suspicious".uiImage
         }
     }
 }

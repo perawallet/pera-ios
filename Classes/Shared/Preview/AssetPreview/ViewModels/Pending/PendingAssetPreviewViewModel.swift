@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 struct PendingAssetPreviewModel: Hashable {
-    let secondaryImage: UIImage?
+    let verificationTier: AssetVerificationTier
     let assetPrimaryTitle: String?
     let assetSecondaryTitle: String?
     let assetStatus: String?
@@ -35,7 +35,7 @@ struct PendingAssetPreviewViewModel:
     private(set) var assetStatus: String?
 
     init(_ model: PendingAssetPreviewModel) {
-        bindSecondaryImage(model.secondaryImage)
+        bindSecondaryImage(model.verificationTier)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetStatus(model.assetStatus)
@@ -43,8 +43,13 @@ struct PendingAssetPreviewViewModel:
 }
 
 extension PendingAssetPreviewViewModel {
-    private mutating func bindSecondaryImage(_ image: UIImage?) {
-        self.secondaryImage = image
+    private mutating func bindSecondaryImage(_ verificationTier: AssetVerificationTier) {
+        switch verificationTier {
+        case .trusted: self.secondaryImage = "icon-trusted".uiImage
+        case .verified: self.secondaryImage = "icon-verified".uiImage
+        case .unverified: self.secondaryImage = nil
+        case .suspicious: self.secondaryImage = "icon-suspicious".uiImage
+        }
     }
 
     private mutating func bindAssetPrimaryTitle(_ title: String?) {

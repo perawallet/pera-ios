@@ -17,19 +17,16 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 final class WCAssetInformationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var name: String?
     private(set) var assetId: String?
+    private(set) var verificationTierIcon: UIImage?
 
     var isAlgo: Bool {
         asset == nil
-    }
-
-    var isVerified: Bool {
-        let isVerifiedAsset = asset?.verificationTier.isVerified ?? false
-        return isAlgo || isVerifiedAsset
     }
 
     private let asset: Asset?
@@ -37,10 +34,11 @@ final class WCAssetInformationViewModel: ViewModel {
     init(title: String?, asset: Asset?) {
         self.title = title
         self.asset = asset
-        setName()
+        bindName()
+        bindVerificationTierIcon()
     }
 
-    private func setName() {
+    private func bindName() {
         guard let asset = asset else {
             name = "ALGO"
             return
@@ -48,5 +46,23 @@ final class WCAssetInformationViewModel: ViewModel {
 
         name = asset.naming.name
         assetId = "\(asset.id)"
+    }
+
+    private func bindVerificationTierIcon() {
+        if isAlgo {
+            verificationTierIcon = "icon-trusted".uiImage
+            return
+        }
+
+        guard let asset = asset else {
+            return
+        }
+
+        switch asset.verificationTier {
+        case .trusted: self.verificationTierIcon = "icon-trusted".uiImage
+        case .verified: self.verificationTierIcon = "icon-verified".uiImage
+        case .unverified: self.verificationTierIcon = nil
+        case .suspicious: self.verificationTierIcon = "icon-suspicious".uiImage
+        }
     }
 }

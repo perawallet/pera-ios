@@ -15,12 +15,13 @@
 //
 //  AssetActionConfirmationViewModel.swift
 
-import UIKit
 import MacaroonUIKit
+import UIKit
 
 final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var id: String?
+    private(set) var verificationTierImage: UIImage?
     private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
@@ -33,6 +34,7 @@ final class AssetActionConfirmationViewModel: ViewModel {
     ) {
         bindTitle(model)
         bindID(model)
+        bindverificationTierImage(model)
         bindTransactionFee(
             model,
             currencyFormatter: currencyFormatter
@@ -51,6 +53,19 @@ extension AssetActionConfirmationViewModel {
 
     private func bindID(_ draft: AssetAlertDraft) {
         id = "\(draft.assetId)"
+    }
+
+    private func bindverificationTierImage(
+        _ draft: AssetAlertDraft
+    ) {
+        guard let asset = draft.asset else { return }
+
+        switch asset.verificationTier {
+        case .trusted: verificationTierImage = "icon-trusted".uiImage
+        case .verified: verificationTierImage = "icon-verified".uiImage
+        case .unverified: verificationTierImage = nil
+        case .suspicious: verificationTierImage = "icon-suspicious".uiImage
+        }
     }
     
     private func bindTransactionFee(

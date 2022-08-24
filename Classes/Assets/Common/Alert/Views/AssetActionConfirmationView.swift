@@ -131,8 +131,6 @@ extension AssetActionConfirmationView {
     }
 
     private func addVerifiedImage(_ theme: AssetActionConfirmationViewTheme) {
-        verifiedImage.customizeAppearance(theme.verifiedImage)
-
         assetIDView.addSubview(verifiedImage)
         verifiedImage.fitToIntrinsicSize()
         verifiedImage.snp.makeConstraints {
@@ -306,6 +304,7 @@ extension AssetActionConfirmationView: ViewModelBindable {
             verifiedImage.removeFromSuperview()
         }
         assetIDLabel.text = viewModel?.id
+        verifiedImage.image = viewModel?.verificationTierImage
 
         if viewModel?.transactionFee.isNilOrEmpty ?? true {
             transactionView.removeFromSuperview()

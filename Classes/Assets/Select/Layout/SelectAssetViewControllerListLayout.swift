@@ -72,7 +72,7 @@ extension SelectAssetViewControllerListLayout {
 
         let sampleAssetPreview = AssetPreviewModel(
             icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
+            verificationTier: .trusted,
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,
             primaryAccessory: "title-unknown".localized,

@@ -52,7 +52,7 @@ final class AssetPreviewView:
     ) {
         iconView.bindData(viewModel?.assetImageViewModel)
         titleView.editText = viewModel?.title
-        verifiedIconView.image = viewModel?.verifiedIcon
+        verifiedIconView.image = viewModel?.verificationTierIcon
         subtitleView.editText = viewModel?.subtitle
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
@@ -94,7 +94,7 @@ final class AssetPreviewView:
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let accessoryIconSize = viewModel.verifiedIcon?.size ?? .zero
+        let accessoryIconSize = viewModel.verificationTierIcon?.size ?? .zero
         let contentHeight = max(titleSize.height, accessoryIconSize.height) + subtitleSize.height
         let accessoryHeight = primaryAccessorySize.height + secondaryAccessorySize.height
         let preferredHeight = max(iconSize.h, max(contentHeight, accessoryHeight))

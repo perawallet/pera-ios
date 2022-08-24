@@ -18,20 +18,17 @@
 import Foundation
 import MacaroonUIKit
 
-struct WCAssetInformationViewTheme: LayoutSheet, StyleSheet {
+struct WCAssetInformationViewTheme:
+    LayoutSheet,
+    StyleSheet {
     let title: TextStyle
-    let verifiedIcon: ImageStyle
     let asset: TextStyle
+    let detailLabelLeadingPadding: LayoutMetric
+    let spacing: LayoutMetric
 
-    var detailLabelLeadingPadding: LayoutMetric {
-        return 137
-    }
-
-    var spacing: LayoutMetric {
-        return 8
-    }
-
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily
+    ) {
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
@@ -44,8 +41,7 @@ struct WCAssetInformationViewTheme: LayoutSheet, StyleSheet {
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
-        self.verifiedIcon = [
-            .image("icon-shield-small")
-        ]
+        self.detailLabelLeadingPadding = 137
+        self.spacing = 8
     }
 }

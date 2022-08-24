@@ -32,7 +32,6 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let assetNameLabel: TextStyle
     let transactionFeeTitleLabel: TextStyle
     let transactionFeeAmountLabel: TextStyle
-    let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
     let separator: Separator
@@ -75,9 +74,6 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())
-        ]
-        self.verifiedImage = [
-            .image("icon-verified-shield")
         ]
         self.assetCodeLabel = [
             .textColor(Colors.Text.main),

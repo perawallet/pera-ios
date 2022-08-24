@@ -49,9 +49,11 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindAccessoryIcon(
         _ asset: StandardAsset
     ) {
-        if asset.verificationTier.isVerified {
-            accessoryIcon = "icon-verified-shield"
-            return
+        switch asset.verificationTier {
+        case .trusted: accessoryIcon = "icon-trusted"
+        case .verified: accessoryIcon = "icon-verified"
+        case .unverified: accessoryIcon = nil
+        case .suspicious: accessoryIcon = "icon-suspicious"
         }
     }
 
