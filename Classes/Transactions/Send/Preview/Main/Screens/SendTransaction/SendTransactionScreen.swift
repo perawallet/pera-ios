@@ -74,8 +74,6 @@ final class SendTransactionScreen: BaseViewController {
         return draft.from.algo.amount == decimalAmount.toMicroAlgos
     }
 
-    private var isViewFirstAppeared = true
-
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -117,7 +115,6 @@ final class SendTransactionScreen: BaseViewController {
 
         if isViewFirstAppeared {
             presentTransactionTutorialIfNeeded()
-            isViewFirstAppeared = false
         }
     }
 

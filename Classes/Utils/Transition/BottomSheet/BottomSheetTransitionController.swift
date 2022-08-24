@@ -33,7 +33,7 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
         ]
 
         presentationConfiguration.chromeStyle = [
-            .backgroundColor(Colors.Other.chrome.uiColor)
+            .backgroundColor(Colors.Backdrop.modalBackground.uiColor)
         ]
 
         presentationConfiguration.overlayStyleSheet.backgroundShadow = MacaroonUIKit.Shadow(

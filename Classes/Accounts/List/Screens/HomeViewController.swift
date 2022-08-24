@@ -75,8 +75,6 @@ final class HomeViewController:
     private var selectedAccountHandle: AccountHandle? = nil
     private var sendTransactionDraft: SendTransactionDraft?
     
-    private var isViewFirstAppeared = true
-
     private var totalPortfolioValue: PortfolioValue?
 
     private let dataController: HomeDataController
@@ -162,7 +160,6 @@ final class HomeViewController:
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
-            isViewFirstAppeared = false
         }
         
         dataController.fetchAnnouncements()

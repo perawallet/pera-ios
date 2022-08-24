@@ -20,6 +20,9 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
     let assetID: AssetID
     let assetName: String?
     let assetUnitName: String?
+    let assetVerificationTier: AssetVerificationTier
+    let isCollectibleAsset: Bool
+    let collectibleAssetTitle: String?
     let status: Status
     let notificationMessage: String
 
@@ -27,6 +30,9 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         self.assetID = request.assetID
         self.assetName = request.assetName
         self.assetUnitName = request.assetUnitName
+        self.assetVerificationTier = request.assetVerificationTier
+        self.isCollectibleAsset = request.isCollectibleAsset
+        self.collectibleAssetTitle = request.collectibleAssetTitle
         self.status = .pending
 
         let name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
@@ -40,6 +46,9 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         self.assetID = update.assetID
         self.assetName = update.assetName
         self.assetUnitName = update.assetUnitName
+        self.assetVerificationTier = update.assetVerificationTier
+        self.isCollectibleAsset = update.isCollectibleAsset
+        self.collectibleAssetTitle = update.collectibleAssetTitle
         self.status = status
         self.notificationMessage = update.notificationMessage
     }

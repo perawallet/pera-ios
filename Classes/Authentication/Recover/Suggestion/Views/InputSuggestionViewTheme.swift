@@ -27,8 +27,8 @@ struct InputSuggestionViewTheme: StyleSheet, LayoutSheet {
     let separatorVerticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Other.inputSuggestion
-        self.separator = Separator(color: Colors.Other.inputSuggestionSeparator)
+        self.backgroundColor = Colors.Keyboard.accessoryBackground
+        self.separator = Separator(color: Colors.Keyboard.accessoryLine)
         self.suggestionTitle = [
             .textOverflow(SingleLineFittingText(minimumScaleFactor: 0.7)),
             .textAlignment(.center),

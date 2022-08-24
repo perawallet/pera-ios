@@ -70,6 +70,14 @@ extension Colors {
 }
 
 extension Colors {
+    enum Backdrop:
+        String,
+        Color {
+        case modalBackground = "Backdrop/modalBg"
+    }
+}
+
+extension Colors {
     enum Banner:
         String,
         Color {
@@ -184,6 +192,15 @@ extension Colors {
 }
 
 extension Colors {
+    enum Keyboard:
+        String,
+        Color {
+        case accessoryBackground = "Keyboard/accessoryBg"
+        case accessoryLine = "Keyboard/accessoryLine"
+    }
+}
+
+extension Colors {
     enum Layer:
         String,
         Color {
@@ -220,10 +237,20 @@ extension Colors {
 }
 
 extension Colors {
+    enum QRScanner:
+        String,
+        Color {
+        case background = "QRScanner/bg"
+    }
+}
+
+extension Colors {
     enum Shadows {
         enum Cards:
             String,
             Color {
+            case largeShadow1 = "Shadows/Cards/largeShadow1"
+            case largeShadow2 = "Shadows/Cards/largeShadow2"
             case shadow1 = "Shadows/Cards/shadow1"
             case shadow2 = "Shadows/Cards/shadow2"
             case shadow3 = "Shadows/Cards/shadow3"
@@ -283,6 +310,7 @@ extension Colors {
         case main = "Text/main"
         case gray = "Text/gray"
         case grayLighter = "Text/grayLighter"
+        case white = "Text/white"
     }
 }
 
@@ -325,24 +353,14 @@ extension Colors {
     enum Other:
         String,
         Color {
-        case alertShadow1 = "Other/alertShadow1"
-        case alertShadow2 = "Other/alertShadow2"
-        case chrome = "Other/chrome"
-        case dropShadow = "Other/dropShadow"
-        case inputSuggestion = "Other/inputSuggestion"
-        case inputSuggestionSeparator = "Other/inputSuggestionSeparator"
         case loadingGradient1 = "Other/loadingGradient1"
         case loadingGradient2 = "Other/loadingGradient2"
-        case qrBackground = "Other/qrBackground"
-        case titleDropShadow = "Other/titleDropShadow"
 
         enum Global:
             String,
             Color {
             case gray400 = "Other/Global/gray400"
             case gray800 = "Other/Global/gray800"
-            case turquoise600 = "Other/Global/turquoise600"
-            case white = "Other/Global/white"
         }
     }
 }
