@@ -232,12 +232,12 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
 
         let screen = Screen.asaDiscovery(
             account: nil,
+            quickAction: nil,
             asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
+        ) { event in
             switch event {
-            case .didOptInToAsset: self.dismissScreen()
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
             }
         }
         open(

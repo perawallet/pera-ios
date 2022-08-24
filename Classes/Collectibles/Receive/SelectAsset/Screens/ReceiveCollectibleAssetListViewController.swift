@@ -427,11 +427,12 @@ extension ReceiveCollectibleAssetListViewController {
         let screen = Screen.collectibleDetail(
             asset: collectibleAsset,
             account: account,
-            thumbnailImage: nil
+            thumbnailImage: nil,
+            quickAction: .optIn
         ) { event in
             switch event {
-            case .didOptOutAssetFromAccount:
-                break
+            case .didOptOutAssetFromAccount: break
+            case .didOptOutFromAssetWithQuickAction: break
             case .didOptInToAsset:
                 cell?.accessory = .loading
             }

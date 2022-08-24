@@ -21,6 +21,7 @@ indirect enum Screen {
     case asaDetail(account: Account, asset: Asset, eventHandler: ASADetailScreen.EventHandler)
     case asaDiscovery(
         account: Account?,
+        quickAction: AssetQuickAction?,
         asset: AssetDecoration,
         eventHandler: ASADiscoveryScreen.EventHandler
     )
@@ -162,6 +163,7 @@ indirect enum Screen {
         asset: CollectibleAsset,
         account: Account,
         thumbnailImage: UIImage?,
+        quickAction: AssetQuickAction?,
         eventHandler: CollectibleDetailViewController.EventHandler
     )
     case sendCollectible(draft: SendCollectibleDraft)

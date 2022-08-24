@@ -42,7 +42,7 @@ final class AssetQuickActionViewModel {
             return
         case .addAsset(let account),
                 .optIn(let account),
-                .removeCollectible(let account):
+                .optOutAsset(let account):
             bindTitle(type)
             bindButton(type)
             bindAccountTypeImage(account)
@@ -73,7 +73,7 @@ extension AssetQuickActionViewModel {
                     .footnoteRegular()
             )
             self.titleTopPadding = 26
-        case .removeCollectible:
+        case .optOutAsset:
             self.title = .attributedString(
                 "asset-quick-action-title-remove"
                     .localized
@@ -124,7 +124,7 @@ extension AssetQuickActionViewModel {
             )
             self.buttonTitleColor = Colors.Button.Primary.text
             self.buttonBackgroundColor = Colors.Button.Primary.background
-        case .removeCollectible:
+        case .optOutAsset:
             self.buttonIcon = img("icon-quick-action-remove")
             self.buttonTitle = .attributedString(
                 "title-remove"
@@ -176,6 +176,6 @@ extension AssetQuickActionViewModel {
         case optIn(with: Account)
         case addAsset(to: Account)
         case addAssetWithoutAccount
-        case removeCollectible(from: Account)
+        case optOutAsset(from: Account)
     }
 }

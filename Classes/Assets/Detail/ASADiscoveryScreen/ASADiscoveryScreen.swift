@@ -75,16 +75,19 @@ final class ASADiscoveryScreen:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    private let quickAction: AssetQuickAction?
     private let dataController: ASADiscoveryScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADiscoveryScreenTheme()
 
     init(
+        quickAction: AssetQuickAction?,
         dataController: ASADiscoveryScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.quickAction = quickAction
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -378,8 +381,28 @@ extension ASADiscoveryScreen {
     }
 
     private func addAssetQuickActionIfNeeded() {
-        if !dataController.hasOptedIn().isRejected { return }
+        guard let quickAction = quickAction else { return }
+        switch quickAction {
+        case .optIn:
+            if !dataController.hasOptedIn().isRejected { return }
 
+            addAssetQuickAction()
+
+            if let account = dataController.account {
+                bindAssetOptInAction(with: account)
+            } else {
+                bindAssetOptInAction()
+            }
+        case .optOut:
+            addAssetQuickAction()
+
+            if let account = dataController.account {
+                bindAssetOptOutAction(from: account)
+            }
+        }
+    }
+
+    private func addAssetQuickAction() {
         assetQuickActionView.customize(AssetQuickActionViewTheme())
 
         view.addSubview(assetQuickActionView)
@@ -388,19 +411,13 @@ extension ASADiscoveryScreen {
             $0.bottom == 0
             $0.trailing == 0
         }
-
-        if let account = dataController.account {
-            bindAssetOptInActionView(with: account)
-        } else {
-            bindAssetOptInActionView()
-        }
     }
 
     private func removeAssetQuickAction() {
         assetQuickActionView.removeFromSuperview()
     }
 
-    private func bindAssetOptInActionView(
+    private func bindAssetOptInAction(
         with account: Account
     ) {
         let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
@@ -414,7 +431,7 @@ extension ASADiscoveryScreen {
         }
     }
 
-    private func bindAssetOptInActionView() {
+    private func bindAssetOptInAction() {
         let viewModel = AssetQuickActionViewModel(type: .addAssetWithoutAccount)
         assetQuickActionView.bindData(viewModel)
 
@@ -423,6 +440,20 @@ extension ASADiscoveryScreen {
             guard let self = self else { return }
 
             self.linkOptInAssetInteractions()
+        }
+    }
+
+    private func bindAssetOptOutAction(
+        from account: Account
+    ) {
+        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.linkOptOutAssetInteractions(with: account)
         }
     }
 }
@@ -752,6 +783,77 @@ extension ASADiscoveryScreen {
 }
 
 extension ASADiscoveryScreen {
+    private func linkOptOutAssetInteractions(
+        with account: Account
+    ) {
+        let draft = OptOutAssetDraft(
+            account: account,
+            asset: dataController.asset
+        )
+
+        let screen = Screen.optOutAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptOutFromAsset()
+            case .performClose: self.cancelOptOutAsset()
+            }
+        }
+
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptOutFromAsset() {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self,
+                  var account = self.dataController.account else {
+                return
+            }
+
+            if !self.canSignTransaction(for: &account) { return }
+
+            let asset = self.dataController.asset
+
+            guard let creator = asset.creator else { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptOutBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptOutUpdates(
+                request,
+                for: account
+            )
+            
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                toAccount: Account(address: creator.address, type: .standard),
+                amount: 0,
+                assetIndex: asset.id,
+                assetCreator: creator.address
+            )
+
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+        }
+    }
+
+    private func cancelOptOutAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension ASADiscoveryScreen {
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
@@ -760,7 +862,14 @@ extension ASADiscoveryScreen {
 
         updateUIWhenAssetWasOptedIn()
 
-        eventHandler?(.didOptInToAsset)
+        guard let action = quickAction else { return }
+
+        switch action {
+        case .optIn:
+            eventHandler?(.didOptInToAsset)
+        case .optOut:
+            eventHandler?(.didOptOutFromAsset)
+        }
     }
 
     func transactionController(
@@ -860,6 +969,7 @@ extension ASADiscoveryScreen {
 extension ASADiscoveryScreen {
     enum Event {
         case didOptInToAsset
+        case didOptOutFromAsset
     }
 }
 
@@ -883,4 +993,9 @@ extension ASADiscoveryScreen {
             }
         }
     }
+}
+
+enum AssetQuickAction {
+    case optIn
+    case optOut
 }

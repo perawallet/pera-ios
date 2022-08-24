@@ -262,12 +262,12 @@ extension ContactDetailViewController: UICollectionViewDelegateFlowLayout {
 
         let screen = Screen.asaDiscovery(
             account: nil,
+            quickAction: nil,
             asset: assetDecoration
-        ) { [weak self] event in
-            guard let self = self else { return }
-
+        ) { event in
             switch event {
-            case .didOptInToAsset: self.dismissScreen()
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
             }
         }
         open(
