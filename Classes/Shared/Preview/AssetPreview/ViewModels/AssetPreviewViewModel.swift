@@ -53,7 +53,15 @@ extension AssetPreviewViewModel {
         _ model: T
     ) {
         if let preview = model as? AssetPreviewModel {
-            bindTitle(preview.title)
+            let titleColor: Color =
+            preview.verificationTier.isSuspicious
+            ? Colors.Helpers.negative
+            : Colors.Text.main
+
+            bindTitle(
+                preview.title,
+                titleColor: titleColor
+            )
             bindAssetImageView(preview.icon)
             bindVerificationTierIcon(preview.verificationTier)
             bindSubtitle(preview.subtitle)
@@ -111,12 +119,17 @@ extension AssetPreviewViewModel {
         self.verificationTierIcon = getVerificationTierIcon(verificationTier)
     }
     
-    private mutating func bindTitle(_ title: String?) {
+    private mutating func bindTitle(
+        _ title: String?,
+        titleColor: Color
+    ) {
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(titleColor))
+
+        let aTitle = title.isNilOrEmpty ? "title-unknown".localized : title!
+
         self.title = .attributedString(
-            (title.isNilOrEmpty ? "title-unknown".localized : title!)
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
+            aTitle.attributed(attributes)
         )
     }
     
@@ -202,7 +215,15 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.naming.name)
+        let titleColor: Color =
+        assetAddition.asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            assetAddition.asset.naming.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -261,7 +282,17 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.naming.name)
+        let asset = assetAddition.asset
+
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            assetAddition.asset.naming.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -308,7 +339,15 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ asset: CollectibleAsset
     ) {
-        bindTitle(asset.name)
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            asset.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -349,7 +388,17 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        bindTitle(draft.asset.name)
+        let asset = draft.asset
+
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            asset.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
