@@ -21,11 +21,11 @@ import MacaroonUIKit
 final class WCAssetInformationView: View {
     private lazy var titleLabel = UILabel()
     private lazy var detailStackView = HStackView()
-    private lazy var verifiedIcon = UIImageView()
+    private lazy var verificationTierIcon = UIImageView()
     private lazy var assetLabel = UILabel()
 
     func customize(_ theme: WCAssetInformationViewTheme) {
-        addTitleLabel(theme)
+        addTitle(theme)
         addDetail(theme)
     }
 
@@ -35,7 +35,9 @@ final class WCAssetInformationView: View {
 }
 
 extension WCAssetInformationView {
-    private func addTitleLabel(_ theme: WCAssetInformationViewTheme) {
+    private func addTitle(
+        _ theme: WCAssetInformationViewTheme
+    ) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -44,7 +46,9 @@ extension WCAssetInformationView {
         }
     }
     
-    private func addDetail(_ theme: WCAssetInformationViewTheme) {
+    private func addDetail(
+        _ theme: WCAssetInformationViewTheme
+    ) {
         detailStackView.spacing = theme.spacing
 
         addSubview(detailStackView)
@@ -54,16 +58,17 @@ extension WCAssetInformationView {
             $0.trailing.lessThanOrEqualToSuperview()
         }
 
-        verifiedIcon.customizeAppearance(theme.verifiedIcon)
         assetLabel.customizeAppearance(theme.asset)
 
-        detailStackView.addArrangedSubview(verifiedIcon)
+        detailStackView.addArrangedSubview(verificationTierIcon)
         detailStackView.addArrangedSubview(assetLabel)
     }
 }
 
 extension WCAssetInformationView: ViewModelBindable {
-    func bindData(_ viewModel: WCAssetInformationViewModel?) {
+    func bindData(
+        _ viewModel: WCAssetInformationViewModel?
+    ) {
         guard let viewModel = viewModel else {
             return
         }
@@ -75,16 +80,13 @@ extension WCAssetInformationView: ViewModelBindable {
         if let name = viewModel.name {
             if let assetId = viewModel.assetId {
                 assetLabel.text = "\(name) \(assetId)"
+                assetLabel.textColor = viewModel.nameColor?.uiColor
             } else {
                 assetLabel.text = name
+                assetLabel.textColor = viewModel.nameColor?.uiColor
             }
         }
 
-
-        if viewModel.isVerified {
-            verifiedIcon.showViewInStack()
-        } else {
-            verifiedIcon.hideViewInStack()
-        }
+        verificationTierIcon.image = viewModel.verificationTierIcon
     }
 }

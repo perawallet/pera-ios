@@ -39,7 +39,6 @@ final class WCSingleTransactionRequestMiddleView:
     override func configureAppearance() {
         super.configureAppearance()
 
-        icon.customizeAppearance(theme.checkmarkIcon)
         titleLabel.customizeAppearance(theme.titleLabel)
         subtitleLabel.customizeAppearance(theme.subtitleLabel)
 
@@ -98,10 +97,13 @@ extension WCSingleTransactionRequestMiddleView {
 }
 
 extension WCSingleTransactionRequestMiddleView {
-    func bind(_ viewModel: WCSingleTransactionRequestMiddleViewModel?) {
+    func bind(
+        _ viewModel: WCSingleTransactionRequestMiddleViewModel?
+    ) {
         titleLabel.text = viewModel?.title
+        titleLabel.textColor = viewModel?.titleColor?.uiColor
         subtitleLabel.text = viewModel?.subtitle
-        icon.isHidden = viewModel?.isAssetIconHidden ?? true
+        icon.image = viewModel?.verificationTierIcon
     }
 }
 

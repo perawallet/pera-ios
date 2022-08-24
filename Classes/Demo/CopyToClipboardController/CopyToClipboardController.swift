@@ -35,7 +35,7 @@ extension CopyToClipboardController {
     ) {
         let interaction = CopyToClipboardInteraction(
             title: "url-copied".localized,
-            body: url /// <todo> Remove protocol parts & trailing slash from URL.
+            body: url
         )
         let item = ClipboardItem(copy: url, interaction: interaction)
         copy(item)
