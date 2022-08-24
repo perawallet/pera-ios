@@ -29,20 +29,52 @@ struct PendingAssetPreviewModel: Hashable {
 struct PendingAssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: String?
+    private(set) var assetPrimaryTitleColor: Color?
+    private(set) var secondaryImage: UIImage?
     private(set) var assetSecondaryTitle: String?
     private(set) var assetStatus: String?
 
     init(_ model: PendingAssetPreviewModel) {
-        bindSecondaryImage(model.verificationTier)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
+        bindAssetPrimaryTitleColor(model.verificationTier)
+        bindSecondaryImage(model.verificationTier)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetStatus(model.assetStatus)
     }
 }
 
 extension PendingAssetPreviewViewModel {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(assetPrimaryTitle)
+        hasher.combine(assetSecondaryTitle)
+        hasher.combine(assetStatus)
+    }
+
+    static func == (
+        lhs: PendingAssetPreviewViewModel,
+        rhs: PendingAssetPreviewViewModel
+    ) -> Bool {
+        return
+            lhs.assetPrimaryTitle == rhs.assetPrimaryTitle &&
+            lhs.assetSecondaryTitle == rhs.assetSecondaryTitle &&
+            lhs.assetStatus == rhs.assetStatus
+    }
+}
+
+extension PendingAssetPreviewViewModel {
+    private mutating func bindAssetPrimaryTitle(_ title: String?) {
+        self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
+    }
+
+    private mutating func bindAssetPrimaryTitleColor(_ verificationTier: AssetVerificationTier) {
+        if verificationTier.isSuspicious {
+            assetPrimaryTitleColor = Colors.Helpers.negative
+        } else {
+            assetPrimaryTitleColor = Colors.Text.main
+        }
+    }
+
     private mutating func bindSecondaryImage(_ verificationTier: AssetVerificationTier) {
         switch verificationTier {
         case .trusted: self.secondaryImage = "icon-trusted".uiImage
@@ -50,10 +82,6 @@ extension PendingAssetPreviewViewModel {
         case .unverified: self.secondaryImage = nil
         case .suspicious: self.secondaryImage = "icon-suspicious".uiImage
         }
-    }
-
-    private mutating func bindAssetPrimaryTitle(_ title: String?) {
-        self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
     }
 
     private mutating func bindAssetSecondaryTitle(_ title: String?) {

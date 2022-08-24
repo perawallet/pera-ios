@@ -107,6 +107,7 @@ extension PendingAssetPreviewView: ViewModelBindable {
     func bindData(_ viewModel: PendingAssetPreviewViewModel?) {
         imageView.startLoading()
         primaryAssetTitleLabel.text = viewModel?.assetPrimaryTitle
+        primaryAssetTitleLabel.textColor = viewModel?.assetPrimaryTitleColor?.uiColor
         secondaryImageView.image = viewModel?.secondaryImage
         secondaryAssetTitleLabel.text = viewModel?.assetSecondaryTitle
         assetStatusLabel.text = viewModel?.assetStatus
