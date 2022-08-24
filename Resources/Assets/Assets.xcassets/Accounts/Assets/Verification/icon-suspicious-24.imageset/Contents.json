@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-suspicious-24.pdf",
+      "filename" : "danger-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-suspicious-25.pdf",
+      "filename" : "danger.pdf",
       "idiom" : "universal"
     }
   ],

@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-verified-24.pdf",
+      "filename" : "verified-solid.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "verified-solid-1.pdf",
       "idiom" : "universal"
     }
   ],

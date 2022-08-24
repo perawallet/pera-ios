@@ -43,7 +43,7 @@ extension TransactionHistoryFilterViewModel {
     private mutating func bindTitle(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
-            title = "contacts-transactions-title".localized
+            title = "accounts-transactions-title".localized
         case .today:
             title = "transaction-filter-option-today".localized
         case .yesterday:

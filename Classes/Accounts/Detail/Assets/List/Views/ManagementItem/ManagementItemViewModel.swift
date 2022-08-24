@@ -50,7 +50,7 @@ extension ManagementItemViewModel {
             )
         case .asset:
             self.title = .attributedString(
-                "accounts-title-assets"
+                "assets-title"
                     .localized
                     .bodyMedium(
                         lineBreakMode: .byTruncatingTail

@@ -30,5 +30,13 @@ final class AssetPreviewWithActionCell:
     override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+
+        separatorStyle = .single(separator)
     }
 }

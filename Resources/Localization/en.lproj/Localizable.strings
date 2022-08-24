@@ -216,7 +216,7 @@
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
-"accounts-transaction-history-title" = "Transaction History";
+"accounts-transactions-title" = "Transactions";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
@@ -354,7 +354,7 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
-"accounts-title-assets" = "Assets";
+"accounts-title-overview" = "Overview";
 "accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
