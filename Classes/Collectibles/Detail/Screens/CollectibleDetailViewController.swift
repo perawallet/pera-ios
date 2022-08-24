@@ -159,7 +159,7 @@ final class CollectibleDetailViewController:
 
         if view.bounds.isEmpty { return }
 
-        if isQuickActionVisible {
+        if isQuickActionVisible && assetQuickActionView.isDescendant(of: self.view) {
             /// <note>
             /// The safe area of the view will equal to the one it set as
             /// `additionalSafeAreaInsets.bottom` next time this method is called.
@@ -179,8 +179,9 @@ final class CollectibleDetailViewController:
 
     override func prepareLayout() {
         super.prepareLayout()
+
         addListView()
-        addQuickAction()
+        addQuickActionIfNeeded()
     }
 
     override func setListeners() {
@@ -210,7 +211,7 @@ extension CollectibleDetailViewController {
         }
     }
 
-    private func addQuickAction() {
+    private func addQuickActionIfNeeded() {
         if !isQuickActionVisible {
             return
         }
@@ -232,6 +233,10 @@ extension CollectibleDetailViewController {
             guard let self = self else { return }
             self.linkAssetQuickActionViewInteractors()
         }
+    }
+
+    private func removeQuickAction() {
+        assetQuickActionView.removeFromSuperview()
     }
 }
 
@@ -681,6 +686,7 @@ extension CollectibleDetailViewController {
         loadingController?.stopLoading()
 
         if isQuickActionVisible {
+            removeQuickAction()
             eventHandler?(.didOptInToAsset)
             return
         }

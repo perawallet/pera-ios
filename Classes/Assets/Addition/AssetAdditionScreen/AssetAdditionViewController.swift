@@ -141,13 +141,9 @@ final class AssetAdditionViewController:
         dataController.load()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        assetListView.collectionView.visibleCells.forEach {
-            let loadingCell = $0 as? PreviewLoadingCell
-            loadingCell?.startAnimating()
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restartLoadingOfVisibleCellsIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -308,18 +304,12 @@ extension AssetAdditionViewController {
                 from: optInCell
             )
         } else {
-            let account = dataController.account
-
-            if let optedInAsset = account[asset.id] {
-                openAssetDetail(optedInAsset)
-            } else {
-                let cell = collectionView.cellForItem(at: indexPath)
-                let optInCell = cell as? OptInAssetListItemCell
-                openASADiscovery(
-                    asset,
-                    from: optInCell
-                )
-            }
+            let cell = collectionView.cellForItem(at: indexPath)
+            let optInCell = cell as? OptInAssetListItemCell
+            openASADiscovery(
+                asset,
+                from: optInCell
+            )
         }
     }
 
@@ -336,36 +326,12 @@ extension AssetAdditionViewController {
             asset: collectibleAsset,
             account: account,
             thumbnailImage: nil
-        ) { [weak self] event in
-            guard let self = self else { return }
-
+        ) { event in
             switch event {
             case .didOptOutAssetFromAccount:
                 break
             case .didOptInToAsset:
                 cell?.accessory = .loading
-                self.popScreen()
-            }
-        }
-        open(
-            screen,
-            by: .push
-        )
-    }
-
-    private func openAssetDetail(_ asset: Asset) {
-        let account = dataController.account
-        let screen = Screen.asaDetail(
-            account: account,
-            asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didRemoveAccount:
-                self.delegate?.assetAdditionViewControllerDidRemoveAccount(self)
-            case .didRenameAccount:
-                break
             }
         }
         open(
@@ -382,13 +348,10 @@ extension AssetAdditionViewController {
         let screen = Screen.asaDiscovery(
             account: account,
             asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
+        ) { event in
             switch event {
             case .didOptInToAsset:
                 cell?.accessory = .loading
-                self.popScreen()
             }
         }
         open(
@@ -523,6 +486,19 @@ extension AssetAdditionViewController {
     }
 }
 
+extension AssetAdditionViewController {
+    private func restartLoadingOfVisibleCellsIfNeeded() {
+        for cell in assetListView.collectionView.visibleCells {
+            if let assetCell = cell as? OptInAssetListItemCell,
+               assetCell.accessory == .loading {
+                assetCell.accessory = .loading
+            } else if let loadingCell = cell as? PreviewLoadingCell {
+                loadingCell.startAnimating()
+            }
+        }
+    }
+}
+
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         let query = view.text
@@ -641,7 +617,6 @@ protocol AssetAdditionViewControllerDelegate: AnyObject {
         _ assetAdditionViewController: AssetAdditionViewController,
         didAdd asset: AssetDecoration
     )
-    func assetAdditionViewControllerDidRemoveAccount(_ assetAdditionViewController: AssetAdditionViewController)
 }
 
 struct AssetOptInTransaction: Equatable {
