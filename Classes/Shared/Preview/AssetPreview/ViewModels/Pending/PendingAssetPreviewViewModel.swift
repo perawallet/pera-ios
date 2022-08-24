@@ -101,24 +101,6 @@ extension PendingAssetPreviewViewModel {
 }
 
 extension PendingAssetPreviewViewModel {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(assetPrimaryTitle)
-        hasher.combine(assetSecondaryTitle)
-        hasher.combine(assetStatus)
-    }
-
-    static func == (
-        lhs: PendingAssetPreviewViewModel,
-        rhs: PendingAssetPreviewViewModel
-    ) -> Bool {
-        return
-            lhs.assetPrimaryTitle == rhs.assetPrimaryTitle &&
-            lhs.assetSecondaryTitle == rhs.assetSecondaryTitle &&
-            lhs.assetStatus == rhs.assetStatus
-    }
-}
-
-extension PendingAssetPreviewViewModel {
     private mutating func bindAssetPrimaryTitle(_ title: String?) {
         self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
     }
