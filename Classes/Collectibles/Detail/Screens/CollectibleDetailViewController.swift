@@ -113,7 +113,8 @@ final class CollectibleDetailViewController:
             api: configuration.api!,
             asset: asset,
             account: account,
-            quickAction: quickAction
+            quickAction: quickAction,
+            sharedDataController: configuration.sharedDataController
         )
         self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
@@ -221,11 +222,25 @@ extension CollectibleDetailViewController {
 
     private func addAssetQuickActionIfNeeded() {
         guard let quickAction = quickAction else { return }
+
         switch quickAction {
         case .optIn:
+            let optInStatus = dataController.hasOptedIn()
+
+            if optInStatus != .rejected { return }
+
             addAssetQuickAction()
             bindAssetOptInQuickAction()
         case .optOut:
+            let optInStatus = dataController.hasOptedIn()
+            let optOutStatus = dataController.hasOptedOut()
+
+            /// <note>
+            /// It has already been opted out or not opted in.
+            if optOutStatus != .rejected || optInStatus == .rejected {
+                return
+            }
+
             addAssetQuickAction()
             bindAssetOptOutAction()
         }
@@ -726,14 +741,6 @@ extension CollectibleDetailViewController {
             return
         }
 
-        NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didRemoveCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-            ]
-        )
-
         bannerController?.presentSuccessBanner(
             title: "collectible-detail-opt-out-success".localized(
                 params: asset.title ?? asset.name ?? .empty
@@ -755,11 +762,24 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        let monitor = self.sharedDataController.blockchainUpdatesMonitor
-        monitor.finishMonitoringOptInUpdates(
-            forAssetID: asset.id,
-            for: account
-        )
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+
+            switch transactionType {
+            case .assetAddition:
+                monitor.finishMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.finishMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
 
         loadingController?.stopLoading()
 
@@ -775,11 +795,24 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        let monitor = self.sharedDataController.blockchainUpdatesMonitor
-        monitor.finishMonitoringOptInUpdates(
-            forAssetID: asset.id,
-            for: account
-        )
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+
+            switch transactionType {
+            case .assetAddition:
+                monitor.finishMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.finishMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
 
         loadingController?.stopLoading()
 

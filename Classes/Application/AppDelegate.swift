@@ -365,8 +365,8 @@ extension AppDelegate {
     ) {
         if case .didFinishRunning = event {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            let optedInUpdates = monitor.filterOptedInAssetUpdates()
 
+            let optedInUpdates = monitor.filterOptedInAssetUpdates()
             for update in optedInUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
             }

@@ -384,7 +384,9 @@ extension ASADiscoveryScreen {
         guard let quickAction = quickAction else { return }
         switch quickAction {
         case .optIn:
-            if !dataController.hasOptedIn().isRejected { return }
+            let optInStatus = dataController.hasOptedIn()
+
+            if optInStatus != .rejected { return }
 
             addAssetQuickAction()
 
@@ -394,6 +396,15 @@ extension ASADiscoveryScreen {
                 bindAssetOptInAction()
             }
         case .optOut:
+            let optInStatus = dataController.hasOptedIn()
+            let optOutStatus = dataController.hasOptedOut()
+
+            /// <note>
+            /// It has already been opted out or not opted in.
+            if optOutStatus != .rejected || optInStatus == .rejected {
+                return
+            }
+
             addAssetQuickAction()
 
             if let account = dataController.account {
@@ -417,9 +428,7 @@ extension ASADiscoveryScreen {
         assetQuickActionView.removeFromSuperview()
     }
 
-    private func bindAssetOptInAction(
-        with account: Account
-    ) {
+    private func bindAssetOptInAction(with account: Account) {
         let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
         assetQuickActionView.bindData(viewModel)
 
@@ -443,9 +452,7 @@ extension ASADiscoveryScreen {
         }
     }
 
-    private func bindAssetOptOutAction(
-        from account: Account
-    ) {
+    private func bindAssetOptOutAction(from account: Account) {
         let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
         assetQuickActionView.bindData(viewModel)
 
@@ -877,12 +884,25 @@ extension ASADiscoveryScreen {
         didFailedComposing error: HIPTransactionError
     ) {
         if let account = dataController.account {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let asset = dataController.asset
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: asset.id,
-                for: account
-            )
+            if let transactionType = transactionController.currentTransactionType {
+                let monitor = self.sharedDataController.blockchainUpdatesMonitor
+                let asset = dataController.asset
+
+                switch transactionType {
+                case .assetAddition:
+                    monitor.finishMonitoringOptInUpdates(
+                        forAssetID: asset.id,
+                        for: account
+                    )
+                case .assetRemoval:
+                    monitor.finishMonitoringOptOutUpdates(
+                        forAssetID: asset.id,
+                        for: account
+                    )
+                default:
+                    break
+                }
+            }
         }
 
         loadingController?.stopLoading()
@@ -900,12 +920,25 @@ extension ASADiscoveryScreen {
         didFailedTransaction error: HIPTransactionError
     ) {
         if let account = dataController.account {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let asset = dataController.asset
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: asset.id,
-                for: account
-            )
+            if let transactionType = transactionController.currentTransactionType {
+                let monitor = self.sharedDataController.blockchainUpdatesMonitor
+                let asset = dataController.asset
+
+                switch transactionType {
+                case .assetAddition:
+                    monitor.finishMonitoringOptInUpdates(
+                        forAssetID: asset.id,
+                        for: account
+                    )
+                case .assetRemoval:
+                    monitor.finishMonitoringOptOutUpdates(
+                        forAssetID: asset.id,
+                        for: account
+                    )
+                default:
+                    break
+                }
+            }
         }
 
         loadingController?.stopLoading()

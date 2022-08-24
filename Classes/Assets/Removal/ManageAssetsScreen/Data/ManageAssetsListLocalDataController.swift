@@ -129,7 +129,6 @@ extension ManageAssetsListLocalDataController {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            deliverOptedOutAssetsIfNeeded()
             fetchAssets()
         }
     }
@@ -142,31 +141,6 @@ extension ManageAssetsListLocalDataController {
         if !account.isAvailable { return }
 
         self.account = account.value
-    }
-
-    private func deliverOptedOutAssetsIfNeeded() {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let optedOutAssetUpdates = monitor.filterOptedOutAssetUpdates(for: self.account)
-
-            var optedOutAssetItems: [OptOutAssetListItem] = []
-            for update in optedOutAssetUpdates {
-                if let asset = self.accountAssets.first(matching: ((\.id, update.key))) {
-                    let assetItem = AssetItem(
-                        asset: asset,
-                        currency: self.sharedDataController.currency,
-                        currencyFormatter: self.currencyFormatter
-                    )
-                    let item = OptOutAssetListItem(item: assetItem)
-                    optedOutAssetItems.append(item)
-                }
-            }
-
-            self.publish(.didOptOutAssets(optedOutAssetItems))
-        }
     }
 }
 

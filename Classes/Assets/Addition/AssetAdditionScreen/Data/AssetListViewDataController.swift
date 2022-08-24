@@ -50,13 +50,3 @@ enum AssetListViewDataControllerEvent {
     case didUpdateNext(AssetListViewDataController.Snapshot)
     case didOptInAssets([OptInAssetListItem])
 }
-
-enum OptInStatus {
-    case pending
-    case optedIn
-    case rejected
-
-    var isRejected: Bool {
-        return self == .rejected
-    }
-}

@@ -37,7 +37,6 @@ protocol ManageAssetsListDataController: AnyObject {
 
 enum ManageAssetsListDataControllerEvent {
     case didUpdate(ManageAssetsListDataController.Snapshot)
-    case didOptOutAssets([OptOutAssetListItem])
 }
 
 enum ManageAssetSearchSection:
@@ -50,10 +49,4 @@ enum ManageAssetSearchSection:
 enum ManageAssetSearchItem: Hashable {
     case asset(OptOutAssetListItem)
     case empty(AssetListSearchNoContentViewModel)
-}
-
-enum OptOutStatus {
-    case pending
-    case optedOut
-    case rejected
 }

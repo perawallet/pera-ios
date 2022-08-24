@@ -131,7 +131,6 @@ extension BlockchainAccountUpdatesMonitor {
         var batchRequest = BlockchainAccountBatchRequest()
         batchRequest.optInAssets = pendingOptInUpdates
         batchRequest.optOutAssets = pendingOptOutUpdates
-
         return batchRequest
     }
 }

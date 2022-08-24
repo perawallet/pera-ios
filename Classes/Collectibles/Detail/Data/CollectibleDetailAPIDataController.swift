@@ -31,17 +31,20 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private var asset: CollectibleAsset
     private let account: Account
     private let quickAction: AssetQuickAction?
+    private let sharedDataController: SharedDataController
 
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
         account: Account,
-        quickAction: AssetQuickAction?
+        quickAction: AssetQuickAction?,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
         self.asset = asset
         self.account = account
         self.quickAction = quickAction
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -90,6 +93,22 @@ extension CollectibleDetailAPIDataController {
     private func cancelOngoingEndpoint() {
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
+    }
+}
+
+extension CollectibleDetailAPIDataController {
+    func hasOptedIn() -> OptInStatus {
+        return sharedDataController.hasOptedIn(
+            assetID: asset.id,
+            for: account
+        )
+    }
+
+    func hasOptedOut() -> OptOutStatus {
+        return sharedDataController.hasOptedOut(
+            assetID: asset.id,
+            for: account
+        )
     }
 }
 

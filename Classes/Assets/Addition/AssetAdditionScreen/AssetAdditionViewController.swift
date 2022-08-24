@@ -327,8 +327,10 @@ extension AssetAdditionViewController {
             quickAction: .optIn
         ) { event in
             switch event {
-            case .didOptOutAssetFromAccount: break
-            case .didOptOutFromAssetWithQuickAction: break
+            case .didOptOutAssetFromAccount:
+                break
+            case .didOptOutFromAssetWithQuickAction:
+                break
             case .didOptInToAsset:
                 cell?.accessory = .loading
             }
@@ -352,7 +354,8 @@ extension AssetAdditionViewController {
             switch event {
             case .didOptInToAsset:
                 cell?.accessory = .loading
-            case .didOptOutFromAsset: break
+            case .didOptOutFromAsset:
+                break
             }
         }
         open(
@@ -528,8 +531,11 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
-        default:
-            break
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         }
     }
 
@@ -548,9 +554,15 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
         switch error {
         case let .network(apiError):
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
     }
 
