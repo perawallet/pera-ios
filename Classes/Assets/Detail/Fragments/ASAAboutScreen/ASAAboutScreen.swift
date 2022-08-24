@@ -479,7 +479,7 @@ extension ASAAboutScreen {
     private func addSeparator(verticalPaddings: LayoutVerticalPaddings) {
         let lastView = contextView.arrangedSubviews.last!
 
-        let separator = Separator(color: Colors.Layer.grayLighter, position: .bottom((0, 0)))
+        let separator = theme.sectionSeparator
         contextView.attachSeparator(
             separator,
             to: lastView,
