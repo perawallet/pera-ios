@@ -24,8 +24,6 @@ final class AssetAdditionViewController:
     TestNetTitleDisplayable,
     TransactionSignChecking,
     UICollectionViewDelegateFlowLayout {
-    weak var delegate: AssetAdditionViewControllerDelegate?
-
     private lazy var theme = Theme()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
@@ -515,6 +513,15 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -527,6 +534,15 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -542,15 +558,20 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetID = getAssetID(from: transactionController),
-              let assetDetail = optInTransactions[assetID]?.asset else {
-            return
-        }
+        if let assetID = getAssetID(from: transactionController),
+           let asset = optInTransactions[assetID]?.asset,
+           asset.isCollectible  {
+            let account = dataController.account
+            let collectibleAsset = CollectibleAsset(decoration: asset)
 
-        delegate?.assetAdditionViewController(
-            self,
-            didAdd: assetDetail
-        )
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
+                ]
+            )
+        }
 
         clearTransactionCache(transactionController)
     }
@@ -613,13 +634,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) {}
-}
-
-protocol AssetAdditionViewControllerDelegate: AnyObject {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd asset: AssetDecoration
-    )
 }
 
 struct AssetOptInTransaction: Equatable {

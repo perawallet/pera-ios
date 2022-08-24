@@ -29,7 +29,7 @@ enum AssetPreviewModelAdapter {
             : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             title: title,
             subtitle: asset.naming.unitName,
             primaryAccessory: assetViewModel.amount,
@@ -45,7 +45,7 @@ enum AssetPreviewModelAdapter {
         let algoAssetViewModel = AlgoAssetViewModel(item)
         return AssetPreviewModel(
             icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
+            verificationTier: .trusted,
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
@@ -65,7 +65,7 @@ enum AssetPreviewModelAdapter {
             : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: asset.naming.name),
-            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             title: title,
             subtitle: "ID \(asset.id)",
             primaryAccessory: assetViewModel.amount,
@@ -90,20 +90,18 @@ enum AssetPreviewModelAdapter {
         }
 
         return PendingAssetPreviewModel(
-            secondaryImage: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             assetPrimaryTitle: asset.name,
-            assetSecondaryTitle: "ID \(asset.id)",
+            assetSecondaryTitle: asset.naming.unitName,
             assetStatus: status
         )
     }
 
     static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
         return PendingAssetPreviewModel(
-            secondaryImage: asset.verificationTier.isVerified
-                ? img("icon-verified-shield")
-                : nil,
+            verificationTier: asset.verificationTier,
             assetPrimaryTitle: asset.naming.name,
-            assetSecondaryTitle: "ID \(asset.id)",
+            assetSecondaryTitle: asset.naming.unitName,
             assetStatus: "asset-removing-status".localized
         )
     }

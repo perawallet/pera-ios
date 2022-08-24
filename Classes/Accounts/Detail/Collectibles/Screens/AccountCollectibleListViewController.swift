@@ -40,7 +40,6 @@ final class AccountCollectibleListViewController: BaseViewController {
     )
 
     private lazy var optInActionView = FloatingActionItemButton(hasTitleLabel: false)
-    private var runningOptInActionViewVisibilityAnimator: UIViewPropertyAnimator?
 
     private var account: AccountHandle
 
@@ -55,6 +54,12 @@ final class AccountCollectibleListViewController: BaseViewController {
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analytics.track(.recordAccountDetailScreen(type: .tapCollectibles))
     }
 
     override func prepareLayout() {
@@ -89,9 +94,14 @@ extension AccountCollectibleListViewController {
                     return
                 }
 
+                self.analytics.track(.tapNFTReceive())
                 self.openReceiveCollectible()
             case .didUpdate(let accounts):
                 self.account = accounts.first!
+            case .willDisplayListHeader:
+                self.setOptInActionHidden(true)
+            case .didEndDisplayingListHeader:
+                self.setOptInActionHidden(false)
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(
@@ -181,39 +191,24 @@ extension AccountCollectibleListViewController {
             $0.bottom == bottom
         }
 
-        optInActionView.alpha = 0
-
         optInActionView.addTouch(
             target: self,
             action: #selector(openReceiveCollectible)
         )
+
+        setOptInActionHidden(true)
+    }
+
+    private func setOptInActionHidden(_ hidden: Bool) {
+        optInActionView.isHidden = hidden
     }
 
     private func updateSafeAreaWhenOptInActionWasAdded() {
         let listSafeAreaBottom =
-        theme.spacingBetweenListAndAOptInAction +
-        theme.optInActionSize.h +
-        theme.optInActionBottomPadding
-        additionalSafeAreaInsets.bottom = listSafeAreaBottom
-    }
-
-    private func setOptInActionViewVisible(
-        _ visible: Bool
-    ) {
-        if let animator =  runningOptInActionViewVisibilityAnimator,
-           animator.isRunning {
-            animator.isReversed.toggle()
-            return
-        }
-
-        runningOptInActionViewVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.2,
-            delay: 0.0
-        ) {
-            let alpha: CGFloat = visible ? 1 : 0
-
-            self.optInActionView.alpha = alpha
-        }
+            theme.spacingBetweenListAndAOptInAction +
+            theme.optInActionSize.h +
+            theme.optInActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 

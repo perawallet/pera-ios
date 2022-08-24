@@ -680,17 +680,51 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        loadingController?.stopLoading()
+
         if let quickAction = quickAction {
             switch quickAction {
             case .optIn:
                 removeQuickAction()
+
+                NotificationCenter.default.post(
+                    name: CollectibleListLocalDataController.didAddCollectible,
+                    object: self,
+                    userInfo: [
+                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+                    ]
+                )
+                
                 eventHandler?(.didOptInToAsset)
             case .optOut:
                 removeQuickAction()
+
+                NotificationCenter.default.post(
+                    name: CollectibleListLocalDataController.didRemoveCollectible,
+                    object: self,
+                    userInfo: [
+                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+                    ]
+                )
+                
                 eventHandler?(.didOptOutFromAssetWithQuickAction)
             }
             return
         }
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didRemoveCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+            ]
+        )
+
+        bannerController?.presentSuccessBanner(
+            title: "collectible-detail-opt-out-success".localized(
+                params: asset.title ?? asset.name ?? .empty
+            )
+        )
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didRemoveCollectible,
@@ -707,6 +741,14 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        let monitor = self.sharedDataController.blockchainUpdatesMonitor
+        monitor.finishMonitoringOptInUpdates(
+            forAssetID: asset.id,
+            for: account
+        )
+
+        loadingController?.stopLoading()
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -719,6 +761,14 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        let monitor = self.sharedDataController.blockchainUpdatesMonitor
+        monitor.finishMonitoringOptInUpdates(
+            forAssetID: asset.id,
+            for: account
+        )
+
+        loadingController?.stopLoading()
+
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(

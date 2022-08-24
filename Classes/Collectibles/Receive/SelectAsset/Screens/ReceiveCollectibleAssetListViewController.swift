@@ -567,6 +567,15 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -582,6 +591,15 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 

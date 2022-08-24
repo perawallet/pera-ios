@@ -37,6 +37,12 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    func filterPendingOptInAssetUpdates(for account: Account) -> [AssetID : OptInBlockchainUpdate] {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.filterPendingOptInAssetUpdates() ?? [:]
+    }
+
     func filterOptedInAssetUpdates(for account: Account) -> [AssetID : OptInBlockchainUpdate] {
         let address = account.address
         let monitor = table[address]
@@ -45,6 +51,12 @@ extension BlockchainUpdatesMonitor {
 }
 
 extension BlockchainUpdatesMonitor {
+    func hasAnyPendingOptInRequest(for account: Account) -> Bool {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.hasAnyPendingOptInRequest() ?? false
+    }
+
     func hasPendingOptInRequest(
         assetID: AssetID,
         for account: Account

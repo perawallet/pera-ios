@@ -19,9 +19,14 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionsDataSource: UICollectionViewDiffableDataSource<TransactionsSection, TransactionsItem> {
+    let noContentType: NoContentCellType
+
     init(
-        _ collectionView: UICollectionView
+        _ collectionView: UICollectionView,
+        noContentType: NoContentCellType = .centered
     ) {
+        self.noContentType = noContentType
+        
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
 
@@ -57,9 +62,17 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             case let .empty(state):
                 switch state {
                 case .noContent:
-                    let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                    cell.bindData(TransactionHistoryNoContentViewModel())
-                    return cell
+                    switch noContentType {
+                    case .topAligned:
+                        let cell = collectionView.dequeue(NoContentTopAlignedCell.self, at: indexPath)
+                        cell.bindData(TransactionHistoryNoContentViewModel())
+                        return cell
+                    case .centered:
+                        let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                        cell.bindData(TransactionHistoryNoContentViewModel())
+                        return cell
+                    }
+
                 case .transactionHistoryLoading:
                     return collectionView.dequeue(TransactionHistoryLoadingCell.self, at: indexPath)
                 }
@@ -74,6 +87,7 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             TransactionHistoryTitleCell.self,
             TransactionHistoryFilterCell.self,
             NoContentCell.self,
+            NoContentTopAlignedCell.self,
             LoadingCell.self,
             TransactionHistoryLoadingCell.self
         ].forEach {

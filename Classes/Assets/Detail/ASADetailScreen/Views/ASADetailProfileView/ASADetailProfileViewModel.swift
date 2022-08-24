@@ -47,14 +47,6 @@ struct ASADetailProfileViewModel: ASAProfileViewModel {
             currencyFormatter: currencyFormatter
         )
     }
-
-    init(
-        asset: AssetDecoration,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
-    ) {
-        
-    }
 }
 
 extension ASADetailProfileViewModel {

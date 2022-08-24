@@ -44,6 +44,8 @@ final class CollectibleListViewController:
     private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
+    private var positionYForDisplayingListHeader: CGFloat?
+
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -199,6 +201,7 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
+            positionYForDisplayingListHeader = cell.frame.maxY
             linkInteractors(cell as! ManagementItemWithSecondaryActionCell)
         case .watchAccountHeader:
             linkInteractors(cell as! ManagementItemCell)
@@ -352,6 +355,19 @@ extension CollectibleListViewController {
         default:
             return nil
         }
+    }
+}
+
+/// <mark>
+/// UIScrollViewDelegate
+extension CollectibleListViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let positionY = positionYForDisplayingListHeader else { return }
+
+        let currentContentOffset = listView.contentOffset
+        let isDisplayingListHeader = currentContentOffset.y < positionY
+        let event: Event = isDisplayingListHeader ? .willDisplayListHeader : .didEndDisplayingListHeader
+        eventHandler?(event)
     }
 }
 
@@ -593,6 +609,8 @@ extension CollectibleListViewController {
     enum Event {
         case didUpdate([AccountHandle])
         case didTapReceive
+        case willDisplayListHeader
+        case didEndDisplayingListHeader
         case didFinishRunning(hasError: Bool)
     }
 }

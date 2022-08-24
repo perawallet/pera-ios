@@ -125,6 +125,19 @@ final class AccountAssetListViewController:
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        reloadDataIfThereIsPendingUpdates()
+
+        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
+    }
+
+    override func viewDidAppearAfterInteractiveDismiss() {
+        super.viewDidAppearAfterInteractiveDismiss()
+        reloadDataIfThereIsPendingUpdates()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         
@@ -137,8 +150,13 @@ final class AccountAssetListViewController:
         listView.delegate = self
     }
 
-    func reload() {
+    func reloadData() {
         dataController.reload()
+    }
+
+    func reloadDataIfThereIsPendingUpdates() {
+        if isViewFirstAppeared { return }
+        dataController.reloadIfThereIsPendingUpdates()
     }
 }
 
@@ -271,10 +289,10 @@ extension AccountAssetListViewController {
 
     private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
         let listSafeAreaBottom =
-        theme.spacingBetweenListAndAccountActionsMenuAction +
-        theme.accountActionsMenuActionSize.h +
-        theme.accountActionsMenuActionBottomPadding
-        additionalSafeAreaInsets.bottom = listSafeAreaBottom
+            theme.spacingBetweenListAndAccountActionsMenuAction +
+            theme.accountActionsMenuActionSize.h +
+            theme.accountActionsMenuActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
@@ -563,10 +581,6 @@ extension AccountAssetListViewController {
 }
 
 extension AccountAssetListViewController {
-    func addAsset(_ assetDetail: StandardAsset) {
-        dataController.addedAssetDetails.append(assetDetail)
-    }
-
     func removeAsset(_ assetDetail: StandardAsset) {
         dataController.removedAssetDetails.append(assetDetail)
     }

@@ -44,6 +44,10 @@ extension BlockchainAccountUpdatesMonitor {
 }
 
 extension BlockchainAccountUpdatesMonitor {
+    func hasAnyPendingOptInRequest() -> Bool {
+        return optInUpdates.contains { $0.value.status == .pending }
+    }
+
     func hasPendingOptInRequest(assetID: AssetID) -> Bool {
         let update = optInUpdates[assetID]
         return update?.status == .pending

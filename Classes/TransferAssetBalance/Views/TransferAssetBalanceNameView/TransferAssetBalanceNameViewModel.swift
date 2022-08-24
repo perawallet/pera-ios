@@ -32,7 +32,14 @@ struct TransferAssetBalanceNameViewModel: PrimaryTitleViewModel {
 extension TransferAssetBalanceNameViewModel {
     mutating func bindPrimaryTitle(asset: AssetDecoration) {
         let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
-        primaryTitle = title.titleSmallMedium(lineBreakMode: .byTruncatingTail)
+
+        var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
+
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        }
+
+        primaryTitle = title.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {

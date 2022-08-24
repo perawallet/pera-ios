@@ -145,6 +145,7 @@ extension AccountDetailViewController {
                 self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
                 self.modalTransition.perform(
                     .managementOptions(
@@ -155,11 +156,12 @@ extension AccountDetailViewController {
                 )
             case .addAsset:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
                 self.openAddAssetScreen()
             case .buyAlgo:
                 self.assetListScreen.endEditing()
-
+                self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
                 self.buyAlgoFlowCoordinator.launch()
             case .send:
                 self.assetListScreen.endEditing()
@@ -250,7 +252,7 @@ extension AccountDetailViewController {
             ),
             by: .present
         ) as? AssetAdditionViewController
-        controller?.delegate = self
+        controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
 
     private func setPageBarItems() {
@@ -431,32 +433,6 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
     }
 }
 
-extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd asset: AssetDecoration
-    ) {
-        if asset.isCollectible {
-            let collectibleAsset = CollectibleAsset(
-                asset: ALGAsset(id: asset.id),
-                decoration: asset
-            )
-
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, collectibleAsset)
-                ]
-            )
-        } else {
-            let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-            standardAsset.state = .pending(.add)
-            assetListScreen.addAsset(standardAsset)
-        }
-    }
-}
-
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
@@ -492,7 +468,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
                 guard let self = self else { return }
 
                 switch event {
-                case .didComplete: self.assetListScreen.reload()
+                case .didComplete: self.assetListScreen.reloadData()
                 }
             }
         }

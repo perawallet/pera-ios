@@ -53,6 +53,8 @@ final class ASAActivityScreen:
             copyToClipboardController: copyToClipboardController,
             configuration: configuration
         )
+
+        transactionsDataSource = TransactionsDataSource(listView, noContentType: .topAligned)
     }
 
     override func viewDidLayoutSubviews() {
