@@ -101,6 +101,7 @@ extension WCSingleTransactionRequestMiddleView {
         _ viewModel: WCSingleTransactionRequestMiddleViewModel?
     ) {
         titleLabel.text = viewModel?.title
+        titleLabel.textColor = viewModel?.titleColor?.uiColor
         subtitleLabel.text = viewModel?.subtitle
         icon.image = viewModel?.verificationTierIcon
     }

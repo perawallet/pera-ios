@@ -80,8 +80,10 @@ extension WCAssetInformationView: ViewModelBindable {
         if let name = viewModel.name {
             if let assetId = viewModel.assetId {
                 assetLabel.text = "\(name) \(assetId)"
+                assetLabel.textColor = viewModel.nameColor?.uiColor
             } else {
                 assetLabel.text = name
+                assetLabel.textColor = viewModel.nameColor?.uiColor
             }
         }
 

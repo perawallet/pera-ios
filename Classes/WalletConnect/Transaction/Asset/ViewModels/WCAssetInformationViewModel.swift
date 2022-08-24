@@ -22,6 +22,7 @@ import UIKit
 final class WCAssetInformationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var name: String?
+    private(set) var nameColor: Color?
     private(set) var assetId: String?
     private(set) var verificationTierIcon: UIImage?
 
@@ -45,6 +46,14 @@ final class WCAssetInformationViewModel: ViewModel {
         }
 
         name = asset.naming.name
+
+        let nameColor: Color =
+            asset.verificationTier.isSuspicious
+            ? Colors.Helpers.negative
+            : Colors.Text.main
+
+        self.nameColor = nameColor
+
         assetId = "\(asset.id)"
     }
 

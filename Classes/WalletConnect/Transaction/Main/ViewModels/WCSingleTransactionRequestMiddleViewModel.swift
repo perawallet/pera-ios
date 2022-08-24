@@ -21,6 +21,7 @@ import UIKit
 
 final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var title: String?
+    private(set) var titleColor: Color?
     private(set) var subtitle: String?
     private(set) var verificationTierIcon: UIImage?
 
@@ -73,6 +74,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 title = ""
             }
 
+            self.titleColor = getTitleColor(.trusted)
             self.verificationTierIcon = getVerificationTierIcon(.trusted)
             self.setUsdValue(transaction: transaction, asset: nil)
         case .asset:
@@ -102,6 +104,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     asset.naming.displayNames.primaryName :
                     asset.naming.displayNames.secondaryName {
                 self.title = "\(text) \(assetCode)"
+                self.titleColor = getTitleColor(asset.verificationTier)
             }
 
             self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
@@ -112,6 +115,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 return
             }
             self.title = asset.naming.displayNames.primaryName
+            self.titleColor = getTitleColor(asset.verificationTier)
             self.subtitle = "\(asset.id)"
             self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             return
@@ -126,6 +130,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             default:
                 if (transaction.transactionDetail?.isAppCreateTransaction ?? false) {
                     self.title = "single-transaction-request-opt-in-title".localized
+                    self.titleColor = getTitleColor(nil)
                     self.subtitle = appCallOncomplete.representation
                     self.verificationTierIcon = nil
                     return
@@ -137,6 +142,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             }
 
             self.title = "#\(id)"
+            self.titleColor = getTitleColor(nil)
             self.subtitle = "wallet-connect-transaction-title-app-id".localized
             self.verificationTierIcon = nil
         case .assetConfig(let type):
@@ -144,25 +150,26 @@ final class WCSingleTransactionRequestMiddleViewModel {
             case .create:
                 if let assetConfigParams = transaction.transactionDetail?.assetConfigParams {
                     self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
-
                     /// <note> Newly created asset should be unverified.
+                    self.titleColor = getTitleColor(.unverified)
                     self.verificationTierIcon = getVerificationTierIcon(.unverified)
                 }
             case .reconfig:
                 if let asset = asset {
                     self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
+                    self.titleColor = getTitleColor(asset.verificationTier)
                     self.subtitle = "#\(asset.id)"
                     self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             case .delete:
                 if let asset = asset {
                     self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
+                    self.titleColor = getTitleColor(asset.verificationTier)
                     self.subtitle = "#\(asset.id)"
                     self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             }
         }
-
     }
 
     private func setUsdValue(
@@ -200,6 +207,18 @@ final class WCSingleTransactionRequestMiddleViewModel {
         } catch {
             subtitle = nil
         }
+    }
+
+    private func getTitleColor(
+        _ verificationTier: AssetVerificationTier?
+    ) -> Color {
+        let isSuspicious = verificationTier?.isSuspicious ?? false
+
+        if isSuspicious {
+            return Colors.Helpers.negative
+        }
+
+        return Colors.Text.main
     }
 
     private func getVerificationTierIcon(
