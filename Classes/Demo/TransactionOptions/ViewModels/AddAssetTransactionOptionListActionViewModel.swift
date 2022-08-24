@@ -16,7 +16,7 @@
 
 import MacaroonUIKit
 
-struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?

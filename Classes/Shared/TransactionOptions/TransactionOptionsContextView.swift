@@ -95,8 +95,8 @@ extension TransactionOptionsContextView {
                     event: .receive
                 )
             case .addAsset:
-                addAction(
-                    theme: theme.action,
+                addButton(
+                    theme: theme.button,
                     viewModel: AddAssetTransactionOptionListActionViewModel(),
                     event: .addAsset
                 )
