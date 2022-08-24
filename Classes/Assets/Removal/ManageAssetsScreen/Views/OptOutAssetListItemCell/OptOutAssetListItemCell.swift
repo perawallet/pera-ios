@@ -17,8 +17,8 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewWithActionCell:
-    CollectionCell<AssetPreviewWithActionView>,
+final class OptOutAssetListItemCell:
+    CollectionCell<OptOutAssetListItemView>,
     ViewModelBindable,
     UIInteractable {
     var accessory: OptOutAssetListItemAccessory = .remove {
@@ -30,10 +30,10 @@ final class AssetPreviewWithActionCell:
     ]
 
     override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
+        return theme.contextEdgeInsets
     }
 
-    static let theme: AssetPreviewWithActionViewTheme = AssetPreviewWithActionViewTheme()
+    static let theme = OptOutAssetListItemCellTheme()
 
     private lazy var accessoryView: LoadingButton = {
         let loadingIndicator = ViewLoadingIndicator(indicator: "List/Accessories/loading".uiImage)
@@ -60,8 +60,8 @@ final class AssetPreviewWithActionCell:
     }
     
     static func calculatePreferredSize(
-        _ viewModel: OptInAssetListItemViewModel?,
-        for theme: AssetPreviewWithActionViewTheme,
+        _ viewModel: OptOutAssetListItemViewModel?,
+        for theme: OptOutAssetListItemCellTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
@@ -85,7 +85,7 @@ final class AssetPreviewWithActionCell:
     }
 }
 
-extension AssetPreviewWithActionCell {
+extension OptOutAssetListItemCell {
     private func addAccessory() {
         let theme = Self.theme
 
@@ -105,7 +105,7 @@ extension AssetPreviewWithActionCell {
         updateAccessory()
     }
 
-    private func updateAccessoryIfNeeded(old: OptInAssetListItemAccessory) {
+    private func updateAccessoryIfNeeded(old: OptOutAssetListItemAccessory) {
         if accessory != old {
             updateAccessory()
         }
@@ -123,8 +123,8 @@ extension AssetPreviewWithActionCell {
         let style: ButtonStyle
         let isInteractable: Bool
         switch accessory {
-        case .add:
-            style = theme.addAccessory
+        case .remove:
+            style = theme.removeAccessory
             isInteractable = true
         case .loading:
             style = theme.loadingAccessory
@@ -144,7 +144,7 @@ extension AssetPreviewWithActionCell {
     }
 }
 
-extension AssetPreviewWithActionCell {
+extension OptOutAssetListItemCell {
     @objc
     private func publishAccessoryAction() {
         let accessoryInteraction: MacaroonUIKit.UIInteraction?
@@ -157,7 +157,7 @@ extension AssetPreviewWithActionCell {
     }
 }
 
-extension AssetPreviewWithActionCell {
+extension OptOutAssetListItemCell {
     enum Event {
         case remove
     }

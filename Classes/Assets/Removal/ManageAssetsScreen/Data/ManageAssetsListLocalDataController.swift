@@ -218,31 +218,13 @@ extension ManageAssetsListLocalDataController {
                     return
                 }
 
-                let viewModel: AssetPreviewViewModel
-
-                if let collectibleAsset = asset as? CollectibleAsset {
-                    let draft = CollectibleAssetPreviewSelectionDraft(
-                        asset: collectibleAsset,
-                        currency: currency,
-                        currencyFormatter: currencyFormatter
-                    )
-                    viewModel = AssetPreviewViewModel(draft)
-                } else {
-                    let assetItem = AssetItem(
-                        asset: asset,
-                        currency: currency,
-                        currencyFormatter: currencyFormatter
-                    )
-                    /// <todo> Use new list item structure
-                    let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
-                    viewModel = AssetPreviewViewModel(assetPreview)
-                }
-
-                let assetItem: ManageAssetSearchItem = .asset(
-                    AssetPreviewWithRemoveActionViewModel(
-                        contentViewModel: viewModel
-                    )
+                let item = AssetItem(
+                    asset: asset,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
                 )
+                let optOutAssetListItem = OptOutAssetListItem(item: item)
+                let assetItem = ManageAssetSearchItem.asset(optOutAssetListItem)
                 assetItems.append(assetItem)
 
                 self.assetItems[asset.id] = assetItem

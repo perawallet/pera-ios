@@ -48,7 +48,7 @@ enum ManageAssetSearchSection:
 }
 
 enum ManageAssetSearchItem: Hashable {
-    case asset(AssetPreviewWithRemoveActionViewModel)
+    case asset(OptOutAssetListItem)
     case pendingAsset(PendingAssetPreviewViewModel)
     case empty(AssetListSearchNoContentViewModel)
 }

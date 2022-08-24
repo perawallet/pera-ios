@@ -32,7 +32,6 @@ final class ManageAssetsView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.register(AssetPreviewWithActionCell.self)
         return collectionView
     }()
     
