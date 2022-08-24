@@ -18,7 +18,13 @@
 import UIKit
 import MacaroonUIKit
 
-final class WCAssetInformationView: View {
+final class WCAssetInformationView:
+    View,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performAction: GestureInteraction(),
+    ]
+    
     private lazy var titleLabel = UILabel()
     private lazy var detailStackView = HStackView()
     private lazy var verificationTierIcon = UIImageView()
@@ -62,6 +68,11 @@ extension WCAssetInformationView {
 
         detailStackView.addArrangedSubview(verificationTierIcon)
         detailStackView.addArrangedSubview(assetLabel)
+
+        startPublishing(
+            event: .performAction,
+            for: detailStackView
+        )
     }
 }
 
@@ -88,5 +99,11 @@ extension WCAssetInformationView: ViewModelBindable {
         }
 
         verificationTierIcon.image = viewModel.verificationTierIcon
+    }
+}
+
+extension WCAssetInformationView {
+    enum Event {
+        case performAction
     }
 }
