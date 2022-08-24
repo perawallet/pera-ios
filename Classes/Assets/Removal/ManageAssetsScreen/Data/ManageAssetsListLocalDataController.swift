@@ -30,7 +30,6 @@ final class ManageAssetsListLocalDataController:
     
     private var searchResults: [Asset] = []
     private var accountAssets: [Asset] = []
-    private var removedAssetDetails: [Asset] = []
     
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
@@ -47,6 +46,8 @@ final class ManageAssetsListLocalDataController:
     ) {
         self.account = account
         self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
     }
     
     deinit {
@@ -64,13 +65,7 @@ final class ManageAssetsListLocalDataController:
 
 extension ManageAssetsListLocalDataController {
     func fetchAssets() {
-        searchResults.removeAll()
-        accountAssets.removeAll()
-        account.allAssets?.forEach {
-            if !$0.state.isPending {
-                accountAssets.append($0)
-            }
-        }
+        accountAssets = account.allAssets ?? []
         searchResults = accountAssets
 
         if let lastQuery = lastQuery {
@@ -78,10 +73,6 @@ extension ManageAssetsListLocalDataController {
         } else {
             deliverContentSnapshot()
         }
-    }
-    
-    func load() {
-        sharedDataController.add(self)
     }
 
     func search(for query: String) {
@@ -106,58 +97,27 @@ extension ManageAssetsListLocalDataController {
     private func isAssetContainsUnitName(_ asset: Asset, query: String) -> Bool {
         return asset.naming.unitName.someString.localizedCaseInsensitiveContains(query)
     }
-    
+
     func resetSearch() {
         lastQuery = nil
         fetchAssets()
     }
+}
 
-    private func clearRemovedAssetDetailsIfNeeded() {
-        removedAssetDetails = removedAssetDetails.filter {
-            account.containsAsset($0.id)
-        }
-    }
-
-    func removeAsset(
-        _ asset: Asset
-    ) {
-        let isAlreadyPending = removedAssetDetails.contains {
-            $0.id == asset.id
-        }
-
-        guard !isAlreadyPending else {
-            return
-        }
-
-        removedAssetDetails.append(asset)
-
-        guard let dataSource = dataSource,
-              let assetItemToDelete = assetItems[asset.id] else {
-            return
-        }
-
-        let viewModel = PendingAssetPreviewViewModel(
-            AssetPreviewModelAdapter.adaptRemovingAsset(asset)
+extension ManageAssetsListLocalDataController {
+    func hasOptedOut(_ asset: Asset) -> OptOutStatus {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptedOut = monitor.hasPendingOptOutRequest(
+            assetID: asset.id,
+            for: account
         )
+        let hasAlreadyOptedOut = account[asset.id] == nil
 
-        let pendingItem: ManageAssetSearchItem =
-            .pendingAsset(
-                viewModel
-            )
-
-        var snapshot = dataSource.snapshot()
-
-        snapshot.deleteItems([ assetItemToDelete ])
-
-        snapshot.appendItems(
-            [ pendingItem ],
-            toSection: .assets
-        )
-
-        assetItems.removeValue(forKey: asset.id)
-
-        deliverSnapshot {
-            return snapshot
+        switch (hasPendingOptedOut, hasAlreadyOptedOut) {
+        case (true, false): return .pending
+        case (true, true): return .optedOut
+        case (false, true): return .optedOut
+        case (false, false): return .rejected
         }
     }
 }
@@ -167,19 +127,45 @@ extension ManageAssetsListLocalDataController {
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
     ) {
-        switch event {
-        case let .didStartRunning(first):
-            if first ||
-                lastSnapshot == nil {
-                deliverContentSnapshot()
-            }
-        case .didFinishRunning:
-            if let updatedAccount = sharedDataController.accountCollection[account.address] {
-                account = updatedAccount.value
-            }
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+            deliverOptedOutAssetsIfNeeded()
             fetchAssets()
-        default:
-            break
+        }
+    }
+
+    private func updateAccountIfNeeded() {
+        let updatedAccount = sharedDataController.accountCollection[account.address]
+
+        guard let account = updatedAccount else { return }
+
+        if !account.isAvailable { return }
+
+        self.account = account.value
+    }
+
+    private func deliverOptedOutAssetsIfNeeded() {
+        snapshotQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let optedOutAssetUpdates = monitor.filterOptedOutAssetUpdates(for: self.account)
+
+            var optedOutAssetItems: [OptOutAssetListItem] = []
+            for update in optedOutAssetUpdates {
+                if let asset = self.accountAssets.first(matching: ((\.id, update.key))) {
+                    let assetItem = AssetItem(
+                        asset: asset,
+                        currency: self.sharedDataController.currency,
+                        currencyFormatter: self.currencyFormatter
+                    )
+                    let item = OptOutAssetListItem(item: assetItem)
+                    optedOutAssetItems.append(item)
+                }
+            }
+
+            self.publish(.didOptOutAssets(optedOutAssetItems))
         }
     }
 }
@@ -209,15 +195,7 @@ extension ManageAssetsListLocalDataController {
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
 
-            self.clearRemovedAssetDetailsIfNeeded()
-
             self.searchResults.forEach { asset in
-                if self.removedAssetDetails.contains(where: { removedAsset in
-                    asset.id == removedAsset.id
-                }) {
-                    return
-                }
-
                 let item = AssetItem(
                     asset: asset,
                     currency: currency,
@@ -228,18 +206,6 @@ extension ManageAssetsListLocalDataController {
                 assetItems.append(assetItem)
 
                 self.assetItems[asset.id] = assetItem
-            }
-
-            self.removedAssetDetails.forEach { asset in
-                let viewModel = PendingAssetPreviewViewModel(
-                    AssetPreviewModelAdapter.adaptRemovingAsset(asset)
-                )
-
-                let pendingItem: ManageAssetSearchItem =
-                    .pendingAsset(
-                        viewModel
-                    )
-                assetItems.append(pendingItem)
             }
 
             snapshot.appendSections([.assets])

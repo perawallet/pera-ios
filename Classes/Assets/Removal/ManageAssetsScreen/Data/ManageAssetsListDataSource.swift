@@ -29,10 +29,6 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
                 let cell = collectionView.dequeue(OptOutAssetListItemCell.self, at: indexPath)
                 cell.bindData(item.viewModel)
                 return cell
-            case let .pendingAsset(item):
-                let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
             case .empty(let item):
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
                 cell.bindData(item)
@@ -41,7 +37,6 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
         }
         
         collectionView.register(OptOutAssetListItemCell.self)
-        collectionView.register(PendingAssetPreviewCell.self)
         collectionView.register(NoContentCell.self)
     }
 }
