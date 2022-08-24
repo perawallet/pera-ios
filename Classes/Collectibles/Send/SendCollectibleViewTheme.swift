@@ -52,7 +52,7 @@ struct SendCollectibleViewTheme:
 
         subtitle = [
             .textAlignment(.center),
-            .textColor(Colors.Text.main),
+            .textColor(Colors.Text.white),
             .textOverflow(MultilineText(numberOfLines: 2)),
         ]
 

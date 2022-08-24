@@ -61,12 +61,11 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         ]
         self.statusLabel = [
             .isInteractable(false),
-            .text("wallet-connect-session-select-account".localized),
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(Colors.Helpers.positive),
-            .backgroundColor(Colors.Other.Global.turquoise600)
+            .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
         ]
         self.dateLabel = [
             .isInteractable(false),

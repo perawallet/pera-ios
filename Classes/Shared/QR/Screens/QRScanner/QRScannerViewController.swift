@@ -458,7 +458,7 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
             .bottomWarning(
                 configurator:
                     BottomWarningViewConfigurator(
-                        image: "icon-approval-check".uiImage,
+                        image: "icon-check-positive".uiImage,
                         title: "wallet-connect-session-connection-approved-title".localized(dAppName),
                         description: .plain(
                             "wallet-connect-session-connection-approved-description".localized(dAppName)

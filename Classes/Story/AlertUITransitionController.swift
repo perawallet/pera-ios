@@ -23,11 +23,11 @@ final class AlertUITransitionController: MacaroonStorySheet.AlertUITransitionCon
     init() {
         var configuration = AlertUIConfiguration()
         configuration.chromeStyle = [
-            .backgroundColor(Colors.Other.chrome)
+            .backgroundColor(Colors.Backdrop.modalBackground.uiColor)
         ]
         configuration.contentAreaCorner = 16
         configuration.contentAreaPrimaryShadow = MacaroonUIKit.Shadow(
-            color: Colors.Other.alertShadow1.uiColor,
+            color: Colors.Shadows.Cards.largeShadow1.uiColor,
             opacity: 1,
             offset: (0, 16),
             radius: 68,
@@ -36,7 +36,7 @@ final class AlertUITransitionController: MacaroonStorySheet.AlertUITransitionCon
             corners: .allCorners
         )
         configuration.contentAreaSecondaryShadow = MacaroonUIKit.Shadow(
-            color: Colors.Other.alertShadow2.uiColor,
+            color: Colors.Shadows.Cards.largeShadow2.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 1,
