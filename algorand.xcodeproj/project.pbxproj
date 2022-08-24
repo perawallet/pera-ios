@@ -14714,12 +14714,6 @@
 		D4411D2B2837E52D00080911 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				D4411D152837B0E100080911 /* BuyAlgoTransactionOptionListActionViewModel.swift */,
-				D4411D1D2837E04D00080911 /* ReceiveTransactionOptionListActionViewModel.swift */,
-				D4411D212837E0AE00080911 /* ScanQRCodeTransactionOptionListActionViewModel.swift */,
-				D4411D192837E03F00080911 /* SendTransactionOptionListActionViewModel.swift */,
-				D4411D252837E35E00080911 /* TransactionOptionListActionViewModel.swift */,
-				17CADC8A2853DC43001D19A8 /* MoreTransactionOptionListActionViewModel.swift */,
 				D48B033628869532009AF715 /* AddAssetTransactionOptionListActionViewModel.swift */,
 				F010635A28AC270100AB6873 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift */,
 				F010635B28AC270100AB6873 /* ReceiveTransactionOptionListItemButtonViewModel.swift */,

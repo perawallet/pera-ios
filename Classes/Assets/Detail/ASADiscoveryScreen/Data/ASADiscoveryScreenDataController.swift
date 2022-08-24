@@ -22,11 +22,14 @@ protocol ASADiscoveryScreenDataController: AnyObject {
     typealias EventHandler = (ASADiscoveryScreenDataControllerEvent) -> Void
     typealias Error = HIPNetworkError<NoAPIModel>
 
+    var account: Account? { get set }
     var eventHandler: EventHandler? { get set }
 
     var asset: Asset { get }
 
     func loadData()
+
+    func hasOptedIn() -> OptInStatus
 }
 
 enum ASADiscoveryScreenDataControllerEvent {

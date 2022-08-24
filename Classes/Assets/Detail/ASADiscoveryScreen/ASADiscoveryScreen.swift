@@ -75,19 +75,16 @@ final class ASADiscoveryScreen:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    private var account: Account?
     private let dataController: ASADiscoveryScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADiscoveryScreenTheme()
 
     init(
-        account: Account?,
         dataController: ASADiscoveryScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -150,7 +147,7 @@ extension ASADiscoveryScreen {
         addProfile()
 
         addAboutFragment()
-        addAssetQuickAction()
+        addAssetQuickActionIfNeeded()
     }
 
     private func updateUIWhenViewLayoutDidChangeIfNeeded() {
@@ -190,6 +187,10 @@ extension ASADiscoveryScreen {
     private func updateUIWhenDataDidFailToLoad(_ error: ASADiscoveryScreenDataController.Error) {
         addError()
         removeLoading()
+    }
+
+    private func updateUIWhenAssetWasOptedIn() {
+        removeAssetQuickAction()
     }
 
     private func bindUIData() {
@@ -376,11 +377,8 @@ extension ASADiscoveryScreen {
         aboutFragmentScreen.bindData(asset: asset)
     }
 
-    private func addAssetQuickAction() {
-        if let account = account,
-           account[dataController.asset.id] != nil {
-            return
-        }
+    private func addAssetQuickActionIfNeeded() {
+        if !dataController.hasOptedIn().isRejected { return }
 
         assetQuickActionView.customize(AssetQuickActionViewTheme())
 
@@ -391,12 +389,15 @@ extension ASADiscoveryScreen {
             $0.trailing == 0
         }
 
-        if let account = account {
+        if let account = dataController.account {
             bindAssetOptInActionView(with: account)
-            return
+        } else {
+            bindAssetOptInActionView()
         }
+    }
 
-        bindAssetOptInActionView()
+    private func removeAssetQuickAction() {
+        assetQuickActionView.removeFromSuperview()
     }
 
     private func bindAssetOptInActionView(
@@ -687,10 +688,9 @@ extension ASADiscoveryScreen {
     private func continueToOptInAsset() {
         dismiss(animated: true) {
             [weak self] in
-            guard let self = self,
-                  var account = self.account else {
-                return
-            }
+            guard let self = self else { return }
+
+            guard var account = self.dataController.account else { return }
 
             if !self.canSignTransaction(for: &account) { return }
 
@@ -746,7 +746,7 @@ extension ASADiscoveryScreen {
         didSelect account: Account,
         for draft: SelectAccountDraft
     ) {
-        self.account = account
+        self.dataController.account = account
         continueToOptInAsset()
     }
 }
@@ -757,6 +757,9 @@ extension ASADiscoveryScreen {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
+
+        updateUIWhenAssetWasOptedIn()
+
         eventHandler?(.didOptInToAsset)
     }
 

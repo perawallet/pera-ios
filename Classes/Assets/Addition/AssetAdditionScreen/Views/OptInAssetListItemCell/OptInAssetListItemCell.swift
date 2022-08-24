@@ -111,7 +111,7 @@ extension OptInAssetListItemCell {
             updateAccessory()
         }
 
-        if accessory == .loading && !accessoryView.isLoading {
+        if accessory == .loading {
             accessoryView.startLoading()
         }
     }
