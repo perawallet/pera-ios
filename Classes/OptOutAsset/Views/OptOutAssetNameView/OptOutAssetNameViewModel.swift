@@ -32,7 +32,14 @@ struct OptOutAssetNameViewModel: PrimaryTitleViewModel {
 extension OptOutAssetNameViewModel {
     mutating func bindPrimaryTitle(asset: Asset) {
         let title = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
-        primaryTitle = title.titleSmallMedium(lineBreakMode: .byTruncatingTail)
+
+        var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
+
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        }
+
+        primaryTitle = title.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(asset: Asset) {
