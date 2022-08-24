@@ -96,14 +96,29 @@ extension TransactionsListLayout {
         _ listView: UICollectionView,
         _ item: TransactionHistoryNoContentViewModel
     ) -> CGSize {
-        return NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
-            fittingIn: CGSize((
-                listView.bounds.width,
-                .greatestFiniteMagnitude
-            ))
-        )
+
+        let noContentType = transactionsDataSource?.noContentType ?? .centered
+
+        switch noContentType {
+        case .topAligned:
+            return NoContentTopAlignedCell.calculatePreferredSize(
+                item,
+                for: NoContentTopAlignedCell.theme,
+                fittingIn: CGSize((
+                    listView.bounds.width,
+                    .greatestFiniteMagnitude
+                ))
+            )
+        case .centered:
+            return NoContentCell.calculatePreferredSize(
+                item,
+                for: NoContentCell.theme,
+                fittingIn: CGSize((
+                    listView.bounds.width,
+                    .greatestFiniteMagnitude
+                ))
+            )
+        }
     }
 
     private func calculateSizeWithAvailableSpace(
