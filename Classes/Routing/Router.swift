@@ -901,9 +901,13 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .receiveCollectibleAssetList(account, dataController):
+        case let .receiveCollectibleAssetList(account):
+            let dataController = ReceiveCollectibleAssetListAPIDataController(
+                account: account.value,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
             viewController = ReceiveCollectibleAssetListViewController(
-                account: account,
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController

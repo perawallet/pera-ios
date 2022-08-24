@@ -74,11 +74,11 @@ extension ReceiveCollectibleAssetListLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                return listView(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    sizeForAssetCellItem: nil
-                )
+                let width =
+                    collectionView.bounds.width -
+                    sectionHorizontalInsets.leading -
+                    sectionHorizontalInsets.trailing
+                return CGSize(width: width, height: 72)
             case .noContent:
                 return sizeForSearchNoContent(
                     collectionView
@@ -205,8 +205,10 @@ extension ReceiveCollectibleAssetListLayout {
             insets.top = 20
         case .collectibles:
             insets.top = 16
-            let defaultAdditionalBottomInset: LayoutMetric = 8
+            insets.left = 0
+            insets.right = 0
 
+            let defaultAdditionalBottomInset: LayoutMetric = 8
             let bottomInset =
             defaultAdditionalBottomInset +
             selectedAccountPreviewCanvasViewHeight -
@@ -245,33 +247,20 @@ extension ReceiveCollectibleAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel?
+        sizeForAssetCellItem item: OptInAssetListItem
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = OptInAssetListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
-
-        let sampleAssetPreview = AssetPreviewModel(
-            icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized,
-            primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unknown".localized,
-            currencyAmount: 0,
-            asset: nil
-        )
-
-        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
-
-        let newSize = AssetPreviewCell.calculatePreferredSize(
-            sampleAssetItem,
-            for: AssetPreviewCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        let width = listView.bounds.width - listView.contentInset.horizontal
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = OptInAssetListItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: OptInAssetListItemCell.theme,
+            fittingIn:maxSize
         )
 
         sizeCache[sizeCacheIdentifier] = newSize

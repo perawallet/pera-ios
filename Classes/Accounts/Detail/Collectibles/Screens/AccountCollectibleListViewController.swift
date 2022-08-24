@@ -165,10 +165,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
 extension AccountCollectibleListViewController {
     private func openReceiveCollectible() {
         let controller = open(
-            .receiveCollectibleAssetList(
-                account: account,
-                dataController: ReceiveCollectibleAssetListAPIDataController(api!)
-            ),
+            .receiveCollectibleAssetList(account: account),
             by: .present
         ) as? ReceiveCollectibleAssetListViewController
 
