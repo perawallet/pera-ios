@@ -61,7 +61,7 @@ final class AccountAssetListViewController:
     )
 
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
-    private var runningAccountActionsMenuActionViewVisibilityAnimator: UIViewPropertyAnimator?
+    private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
     private var accountHandle: AccountHandle
 
@@ -160,6 +160,7 @@ extension AccountAssetListViewController {
 
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
+        updateAccountActionsMenuActionWhenListDidScroll()
     }
 
     private func addListBackground() {
@@ -243,12 +244,24 @@ extension AccountAssetListViewController {
             $0.bottom == bottom
         }
 
-        accountActionsMenuActionView.alpha = 0
-
         accountActionsMenuActionView.addTouch(
             target: self,
             action: #selector(openAccountActionsMenu)
         )
+
+        updateAccountActionsMenuActionWhenListDidScroll()
+    }
+
+    private func updateAccountActionsMenuActionWhenListDidScroll() {
+        let isVisible: Bool
+        if let positionY = positionYForVisibleAccountActionsMenuAction {
+            let currentContentOffset = listView.contentOffset
+            isVisible = currentContentOffset.y >= positionY
+        } else {
+            isVisible = false
+        }
+
+        accountActionsMenuActionView.isHidden = !isVisible
     }
 
     @objc
@@ -341,7 +354,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
-            setAccountActionsMenuActionViewVisible(false)
+            positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
                 [weak self] in
@@ -380,41 +393,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
         default:
             return
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didEndDisplaying cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
-            return
-        }
-
-        switch itemIdentifier {
-        case .quickActions:
-            setAccountActionsMenuActionViewVisible(true)
-        default: break
-        }
-    }
-
-    private func setAccountActionsMenuActionViewVisible(
-        _ visible: Bool
-    ) {
-        if let animator =  runningAccountActionsMenuActionViewVisibilityAnimator,
-           animator.isRunning {
-            animator.isReversed.toggle()
-            return
-        }
-
-        runningAccountActionsMenuActionViewVisibilityAnimator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.2,
-            delay: 0.0
-        ) {
-            let alpha: CGFloat = visible ? 1 : 0
-
-            self.accountActionsMenuActionView.alpha = alpha
         }
     }
     

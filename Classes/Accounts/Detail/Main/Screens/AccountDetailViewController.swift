@@ -248,7 +248,7 @@ extension AccountDetailViewController {
             .addAsset(
                 account: accountHandle.value
             ),
-            by: .push
+            by: .present
         ) as? AssetAdditionViewController
         controller?.delegate = self
     }

@@ -77,6 +77,12 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidReceive(self)
         }
 
+        contextView.startObserving(event: .addAsset) {
+            [unowned self] in
+
+            self.delegate?.transactionOptionsScreenDidAddAsset(self)
+        }
+
         contextView.startObserving(event: .more) {
             [weak self] in
             guard let self = self else {
