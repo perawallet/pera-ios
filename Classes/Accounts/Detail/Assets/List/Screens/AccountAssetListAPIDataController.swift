@@ -23,8 +23,6 @@ final class AccountAssetListAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
-    var removedAssetDetails: [StandardAsset] = []
-
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var accountHandle: AccountHandle
@@ -73,7 +71,8 @@ extension AccountAssetListAPIDataController {
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let account = accountHandle.value
 
-        if monitor.hasAnyPendingOptInRequest(for: account) {
+        if monitor.hasAnyPendingOptInRequest(for: account) ||
+           monitor.hasAnyPendingOptOutRequest(for: account){
             reload()
         }
     }
@@ -170,8 +169,6 @@ extension AccountAssetListAPIDataController {
             assetItems.append(titleItem)
             assetItems.append(.search)
 
-            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
-
             self.load(with: self.searchKeyword)
 
             var assetViewModels: [AssetListItemViewModel] = []
@@ -187,8 +184,15 @@ extension AccountAssetListAPIDataController {
                 assetViewModels.append(viewModel)
             }
 
+            let account = self.accountHandle.value
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+
             self.searchResults.forEach { asset in
-                if self.removedAssetDetails.contains(asset) {
+                let hasPendingOptOut = monitor.hasPendingOptOutRequest(
+                    assetID: asset.id,
+                    for: account
+                )
+                if hasPendingOptOut {
                     return
                 }
 
@@ -220,19 +224,26 @@ extension AccountAssetListAPIDataController {
                 )
             }
 
-            let account = self.accountHandle.value
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
             for pendingOptInAsset in pendingOptInAssets {
                 let update = pendingOptInAsset.value
-                let viewModel = PendingAssetPreviewViewModel(update: update)
-                let item = AccountAssetsItem.pendingAsset(viewModel)
-                assetItems.append(item)
+
+                if !update.isCollectibleAsset {
+                    let viewModel = PendingAssetPreviewViewModel(update: update)
+                    let item = AccountAssetsItem.pendingAsset(viewModel)
+                    assetItems.append(item)
+                }
             }
 
-            self.removedAssetDetails.forEach {
-                let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
-                assetItems.append(assetItem)
+            let pendingOptOutAssets = monitor.filterPendingOptOutAssetUpdates(for: account)
+            for pendingOptOutAsset in pendingOptOutAssets {
+                let update = pendingOptOutAsset.value
+
+                if !update.isCollectibleAsset {
+                    let viewModel = PendingAssetPreviewViewModel(update: update)
+                    let item = AccountAssetsItem.pendingAsset(viewModel)
+                    assetItems.append(item)
+                }
             }
 
             snapshot.appendSections([.assets])
@@ -282,10 +293,6 @@ extension AccountAssetListAPIDataController {
             guard let self = self else { return }
             self.eventHandler?(event)
         }
-    }
-
-    private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }.uniqueElements()
     }
 }
 

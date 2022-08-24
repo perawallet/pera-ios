@@ -433,28 +433,6 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
     }
 }
 
-extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
-    func manageAssetsViewController(
-        _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove asset: StandardAsset
-    ) {
-        assetListScreen.removeAsset(asset)
-    }
-
-    func manageAssetsViewController(
-        _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove asset: CollectibleAsset
-    ) {
-        NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didRemoveCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
-            ]
-        )
-    }
-}
-
 extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapSort(
         _ managementOptionsViewController: ManagementOptionsViewController
@@ -501,7 +479,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             .removeAsset(dataController: dataController),
             by: .present
         ) as? ManageAssetsViewController
-        controller?.delegate = self
+        controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
 }
 

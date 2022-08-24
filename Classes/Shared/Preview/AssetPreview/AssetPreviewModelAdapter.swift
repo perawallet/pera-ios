@@ -74,35 +74,4 @@ enum AssetPreviewModelAdapter {
             asset: asset
         )
     }
-
-    static func adaptPendingAsset(_ asset: StandardAsset) -> PendingAssetPreviewModel {
-        let status: String
-        switch asset.state {
-        case let .pending(operation):
-            switch operation {
-            case .add:
-                status = "asset-add-confirmation-title".localized
-            case .remove:
-                status = "asset-removing-status".localized
-            }
-        case .ready:
-            status = ""
-        }
-
-        return PendingAssetPreviewModel(
-            verificationTier: asset.verificationTier,
-            assetPrimaryTitle: asset.name,
-            assetSecondaryTitle: asset.naming.unitName,
-            assetStatus: status
-        )
-    }
-
-    static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
-        return PendingAssetPreviewModel(
-            verificationTier: asset.verificationTier,
-            assetPrimaryTitle: asset.naming.name,
-            assetSecondaryTitle: asset.naming.unitName,
-            assetStatus: "asset-removing-status".localized
-        )
-    }
 }

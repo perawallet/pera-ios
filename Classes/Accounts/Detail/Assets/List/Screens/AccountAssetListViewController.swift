@@ -172,8 +172,9 @@ extension AccountAssetListViewController {
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
         updateListWhenViewDidLayoutSubviews()
+        updateListBackgroundWhenViewDidLayoutSubviews()
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
@@ -267,10 +268,14 @@ extension AccountAssetListViewController {
             action: #selector(openAccountActionsMenu)
         )
 
-        updateAccountActionsMenuActionWhenListDidScroll()
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
     }
 
     private func updateAccountActionsMenuActionWhenListDidScroll() {
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
+    }
+
+    private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
         let isVisible: Bool
         if let positionY = positionYForVisibleAccountActionsMenuAction {
             let currentContentOffset = listView.contentOffset
@@ -578,12 +583,6 @@ extension AccountAssetListViewController {
     func searchBarItemCellDidEndEditing(
         _ cell: SearchBarItemCell
     ) {}
-}
-
-extension AccountAssetListViewController {
-    func removeAsset(_ assetDetail: StandardAsset) {
-        dataController.removedAssetDetails.append(assetDetail)
-    }
 }
 
 extension AccountAssetListViewController {
