@@ -189,6 +189,20 @@ final class CollectibleDetailViewController:
         super.setListeners()
         listView.delegate = self
         transactionController.delegate = self
+
+        collectibleDetailTransactionController.eventHandlers.didStartRemovingAsset = {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+        }
+
+        collectibleDetailTransactionController.eventHandlers.didStartOptingInToAsset = {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+        }
     }
 
     override func linkInteractors() {
@@ -706,7 +720,7 @@ extension CollectibleDetailViewController {
                         CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
                     ]
                 )
-                
+
                 eventHandler?(.didOptOutFromAssetWithQuickAction)
             }
             return
@@ -802,6 +816,12 @@ extension CollectibleDetailViewController {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

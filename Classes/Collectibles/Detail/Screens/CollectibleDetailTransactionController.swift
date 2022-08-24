@@ -83,6 +83,8 @@ extension CollectibleDetailTransactionController {
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
+        eventHandlers.didStartOptingInToAsset?()
+
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -93,5 +95,6 @@ extension CollectibleDetailTransactionController {
 extension CollectibleDetailTransactionController {
     struct Event {
         var didStartRemovingAsset: EmptyHandler?
+        var didStartOptingInToAsset: EmptyHandler?
     }
 }
