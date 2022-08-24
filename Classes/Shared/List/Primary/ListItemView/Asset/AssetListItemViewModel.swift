@@ -68,37 +68,47 @@ extension AssetListItemViewModel {
     mutating func bindImageSource(
         _ item: AssetItem
     ) {
-        if item.asset.isAlgo {
-            self.imageSource = AssetImageSource(
-                asset: "icon-algo-circle-green".uiImage
-            )
+        let asset = item.asset
+
+        if asset.isAlgo {
+            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
             return
         }
 
-        let title = item.asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : item.asset.naming.name
+        let iconURL: URL?
+        let iconShape: ImageShape
 
-        let imageSize = CGSize(width: 40, height: 40)
-        let prismURL = PrismURL(baseURL: item.asset.logoURL)?
-            .setExpectedImageSize(imageSize)
+        if let collectibleAsset = asset as? CollectibleAsset {
+            iconURL = collectibleAsset.thumbnailImage
+            iconShape = .rounded(4)
+        } else {
+            iconURL = asset.logoURL
+            iconShape = .circle
+        }
+
+        let size = CGSize(width: 40, height: 40)
+        let url = PrismURL(baseURL: iconURL)?
+            .setExpectedImageSize(size)
             .setImageQuality(.normal)
             .build()
 
-        let placeholderText = TextFormatter.assetShortName.format(
-            (title.isNilOrEmpty ? "title-unknown".localized : title!)
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholder = getPlaceholder(
+            placeholderText,
+            with: TextAttributes(
+                font: Fonts.DMSans.regular.make(13),
+                lineHeightMultiplier: 1.18
+            )
         )
 
-        self.imageSource = PNGImageSource(
-            url: prismURL,
-            shape: .circle,
-            placeholder: getPlaceholder(
-                placeholderText,
-                with: TextAttributes(
-                    font: Fonts.DMSans.regular.make(13),
-                    lineHeightMultiplier: 1.18
-                )
-            )
+        imageSource = PNGImageSource(
+            url: url,
+            shape: iconShape,
+            placeholder: placeholder
         )
     }
 
