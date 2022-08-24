@@ -30,7 +30,7 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         self.status = .pending
 
         let name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
-        self.notificationMessage = "asset-optin-notification-message".localized(name)
+        self.notificationMessage = "asset-opt-in-successful-message".localized(name)
     }
 
     init(

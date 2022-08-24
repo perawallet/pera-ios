@@ -308,6 +308,7 @@ extension AssetAdditionViewController {
     private func openCollectibleDetail(
         _ asset: AssetDecoration
     ) {
+        let account = dataController.account
         let collectibleAsset = CollectibleAsset(
             asset: ALGAsset(id: asset.id),
             decoration: asset
@@ -333,6 +334,7 @@ extension AssetAdditionViewController {
     private func openASADiscovery(
         _ asset: AssetDecoration
     ) {
+        let account = dataController.account
         let screen = Screen.asaDiscovery(
             account: account,
             asset: asset
