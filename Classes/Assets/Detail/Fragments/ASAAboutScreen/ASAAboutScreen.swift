@@ -18,6 +18,8 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// We should find a generic and better solution for handling separators.
 final class ASAAboutScreen:
     BaseScrollViewController,
     ASADetailPageFragmentScreen,
@@ -157,6 +159,7 @@ extension ASAAboutScreen {
             case .description: addDescription()
             case .socialMedia: addSocialMedia()
             case .report: addReportAction()
+            case .separator(let verticalPaddings): addSeparator(verticalPaddings: verticalPaddings)
             }
         }
     }
@@ -194,6 +197,7 @@ extension ASAAboutScreen {
                 } else {
                     addReportAction(atIndex: index)
                 }
+            case .separator: break
             }
         }
     }
@@ -202,17 +206,6 @@ extension ASAAboutScreen {
         statisticsView.customize(theme.statistics)
 
         contextView.addArrangedSubview(statisticsView)
-        contextView.setCustomSpacing(
-            theme.spacingBetweenStatisticsAndAbout,
-            after: statisticsView
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: statisticsView,
-            margin: theme.spacingBetweenStatisticsAndSeparator
-        )
-
         bindStatisticsData()
     }
 
@@ -234,12 +227,6 @@ extension ASAAboutScreen {
         aboutView.customize(theme.about)
 
         contextView.addArrangedSubview(aboutView)
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: aboutView,
-            margin: theme.spacingBetweenAboutAndSeparator
-        )
 
         bindAboutData()
     }
@@ -393,15 +380,10 @@ extension ASAAboutScreen {
             verificationTierView,
             preferredAt: index
         )
+        
         contextView.setCustomSpacing(
-            theme.spacingBetweenVerificationTierAndSections,
+            theme.spacingBeforeReportAction,
             after: verificationTierView
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: verificationTierView,
-            margin: theme.spacingBetweenVerificationTierAndSeparator
         )
 
         verificationTierView.startObserving(event: .learnMore) {
@@ -424,12 +406,6 @@ extension ASAAboutScreen {
         contextView.insertArrangedSubview(
             descriptionView,
             preferredAt: index
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: descriptionView,
-            margin: theme.spacingBetweenDescriptionAndSeparator
         )
 
         bindDescriptionData()
@@ -489,22 +465,9 @@ extension ASAAboutScreen {
     private func addReportAction(atIndex index: Int? = nil) {
         reportActionView.customize(theme.reportAction)
 
-        if let previousView = contextView.arrangedSubviews.last {
-            contextView.setCustomSpacing(
-                theme.spacingBetweenSectionsAndReportAction,
-                after: previousView
-            )
-        }
-
         contextView.insertArrangedSubview(
             reportActionView,
             preferredAt: index
-        )
-
-        contextView.attachSeparator(
-            theme.reportActionSeparator,
-            to: reportActionView,
-            margin: theme.spacingBetweenSeparatorAndReportAction
         )
 
         reportActionView.addTouch(
@@ -518,6 +481,26 @@ extension ASAAboutScreen {
     private func bindReportActionData() {
         let viewModel = AsaReportListItemButtonViewModel(asset)
         reportActionView.bindData(viewModel)
+    }
+
+    private func addSeparator(verticalPaddings: LayoutVerticalPaddings) {
+        let lastView = contextView.arrangedSubviews.last!
+
+        let separator = theme.sectionSeparator
+        contextView.attachSeparator(
+            separator,
+            to: lastView,
+            margin: verticalPaddings.top
+        )
+
+        let customSpacingAfterLastView =
+            verticalPaddings.top +
+            separator.size +
+            verticalPaddings.bottom
+        contextView.setCustomSpacing(
+            customSpacingAfterLastView,
+            after: lastView
+        )
     }
 }
 
@@ -558,22 +541,28 @@ extension ASAAboutScreen: MailComposerDelegate {
 }
 
 extension ASAAboutScreen {
-    private enum Section {
+    private enum Section: Equatable {
         case statistics
         case about
         case verificationTier
         case description
         case socialMedia
         case report
+        case separator(LayoutVerticalPaddings)
 
-        static func ordered(by asset: Asset) -> [Section] {
+        static func ordered(
+            by asset: Asset
+        ) -> [Section] {
             var list: [Section] = []
+
+            let separatorVerticalPaddings: LayoutVerticalPaddings = (36, 36)
 
             if asset.verificationTier.isSuspicious {
                 list.append(.verificationTier)
             }
 
             list.append(.statistics)
+            list.append(.separator(separatorVerticalPaddings))
             list.append(.about)
 
             if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
@@ -581,20 +570,47 @@ extension ASAAboutScreen {
             }
 
             if asset.description.unwrapNonEmptyString() != nil {
+                list.append(.separator(separatorVerticalPaddings))
                 list.append(.description)
             }
 
             if asset.discordURL != nil ||
                 asset.telegramURL != nil ||
                 asset.twitterURL != nil {
+                list.append(.separator(separatorVerticalPaddings))
                 list.append(.socialMedia)
             }
 
             if asset.verificationTier.isSuspicious {
+                list.append(.separator((separatorVerticalPaddings.top, 27)))
                 list.append(.report)
             }
 
+            if let verificationTierIndex = list.firstIndex(of: .verificationTier),
+               verificationTierIndex < list.endIndex {
+                let indexAfterVerificationTier = list.index(after: verificationTierIndex)
+
+                if case .separator(let paddings) = list[safe: indexAfterVerificationTier] {
+                    list[indexAfterVerificationTier] = .separator((27, paddings.bottom))
+                }
+            }
+
             return list
+        }
+
+        static func == (lhs: ASAAboutScreen.Section, rhs: ASAAboutScreen.Section) -> Bool {
+            switch (lhs, rhs) {
+            case (.statistics, .statistics),
+                 (.about, .about),
+                 (.verificationTier, .verificationTier),
+                 (.description, .description),
+                 (.socialMedia, .socialMedia),
+                 (.report, .report),
+                 (.separator, .separator):
+                return true
+            default:
+                return false
+            }
         }
     }
 }

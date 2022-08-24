@@ -33,10 +33,11 @@ struct AssetVerificationInfoViewTheme:
 
         var learnMoreTheme = ListItemButtonTheme(family)
         learnMoreTheme.contentMinHeight = nil
+        learnMoreTheme.contentVerticalPaddings = (0, 0)
         learnMoreTheme.iconContentEdgeInsets = (12, 0)
         self.learnMore = learnMoreTheme
 
         self.learnMoreMinHeight = 44
-        self.spacingBetweenAssetVerificationAndLearnMore = 20
+        self.spacingBetweenAssetVerificationAndLearnMore = 15
     }
 }
