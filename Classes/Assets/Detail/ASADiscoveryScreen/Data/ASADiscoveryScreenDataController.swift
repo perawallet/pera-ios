@@ -30,6 +30,7 @@ protocol ASADiscoveryScreenDataController: AnyObject {
     func loadData()
 
     func hasOptedIn() -> OptInStatus
+    func hasOptedOut() -> OptOutStatus
 }
 
 enum ASADiscoveryScreenDataControllerEvent {

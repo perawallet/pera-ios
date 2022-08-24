@@ -53,14 +53,11 @@ final class CollectibleDetailViewController:
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
         asset: asset,
-        transactionController: transactionController
+        transactionController: transactionController,
+        sharedDataController: sharedDataController
     )
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-
-    private var isQuickActionVisible: Bool {
-        return account[asset.id] == nil
-    }
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleDetailLayout.build()
@@ -93,6 +90,7 @@ final class CollectibleDetailViewController:
 
     private var asset: CollectibleAsset
     private var account: Account
+    private let quickAction: AssetQuickAction?
     private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
     private let copyToClipboardController: CopyToClipboardController
@@ -102,17 +100,21 @@ final class CollectibleDetailViewController:
     init(
         asset: CollectibleAsset,
         account: Account,
+        quickAction: AssetQuickAction?,
         thumbnailImage: UIImage?,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
         self.account = account
+        self.quickAction = quickAction
         self.thumbnailImage = thumbnailImage
         self.dataController = CollectibleDetailAPIDataController(
             api: configuration.api!,
             asset: asset,
-            account: account
+            account: account,
+            quickAction: quickAction,
+            sharedDataController: configuration.sharedDataController
         )
         self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
@@ -159,7 +161,7 @@ final class CollectibleDetailViewController:
 
         if view.bounds.isEmpty { return }
 
-        if isQuickActionVisible && assetQuickActionView.isDescendant(of: self.view) {
+        if quickAction != nil && assetQuickActionView.isDescendant(of: self.view) {
             /// <note>
             /// The safe area of the view will equal to the one it set as
             /// `additionalSafeAreaInsets.bottom` next time this method is called.
@@ -181,7 +183,7 @@ final class CollectibleDetailViewController:
         super.prepareLayout()
 
         addListView()
-        addQuickActionIfNeeded()
+        addAssetQuickActionIfNeeded()
     }
 
     override func setListeners() {
@@ -190,6 +192,13 @@ final class CollectibleDetailViewController:
         transactionController.delegate = self
 
         collectibleDetailTransactionController.eventHandlers.didStartRemovingAsset = {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+        }
+
+        collectibleDetailTransactionController.eventHandlers.didStartOptingInToAsset = {
             [weak self] in
             guard let self = self else { return }
 
@@ -211,11 +220,33 @@ extension CollectibleDetailViewController {
         }
     }
 
-    private func addQuickActionIfNeeded() {
-        if !isQuickActionVisible {
-            return
-        }
+    private func addAssetQuickActionIfNeeded() {
+        guard let quickAction = quickAction else { return }
 
+        switch quickAction {
+        case .optIn:
+            let optInStatus = dataController.hasOptedIn()
+
+            if optInStatus != .rejected { return }
+
+            addAssetQuickAction()
+            bindAssetOptInQuickAction()
+        case .optOut:
+            let optInStatus = dataController.hasOptedIn()
+            let optOutStatus = dataController.hasOptedOut()
+
+            /// <note>
+            /// It has already been opted out or not opted in.
+            if optOutStatus != .rejected || optInStatus == .rejected {
+                return
+            }
+
+            addAssetQuickAction()
+            bindAssetOptOutAction()
+        }
+    }
+
+    private func addAssetQuickAction() {
         assetQuickActionView.customize(AssetQuickActionViewTheme())
 
         view.addSubview(assetQuickActionView)
@@ -224,7 +255,9 @@ extension CollectibleDetailViewController {
             $0.bottom == 0
             $0.trailing == 0
         }
+    }
 
+    private func bindAssetOptInQuickAction() {
         let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
         assetQuickActionView.bindData(viewModel)
 
@@ -232,6 +265,18 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
             self.linkAssetQuickActionViewInteractors()
+        }
+    }
+
+    private func bindAssetOptOutAction() {
+        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.openOptOutAsset()
         }
     }
 
@@ -650,26 +695,7 @@ extension CollectibleDetailViewController {
 
             if !self.canSignTransaction(for: &self.account) { return }
 
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptInUpdates(
-                request,
-                for: self.account
-            )
-
-            let assetTransactionDraft = AssetTransactionSendDraft(
-                from: self.account,
-                assetIndex: asset.id
-            )
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            if self.account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
-            }
+            self.collectibleDetailTransactionController.optInToAsset()
         }
     }
 
@@ -685,46 +711,75 @@ extension CollectibleDetailViewController {
     ) {
         loadingController?.stopLoading()
 
-        if isQuickActionVisible {
-            removeQuickAction()
+        if let quickAction = quickAction {
+            switch quickAction {
+            case .optIn:
+                removeQuickAction()
 
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                ]
-            )
-
-            eventHandler?(.didOptInToAsset)
-        } else {
-            bannerController?.presentSuccessBanner(
-                title: "collectible-detail-opt-out-success".localized(
-                    params: asset.title ?? asset.name ?? .empty
+                NotificationCenter.default.post(
+                    name: CollectibleListLocalDataController.didAddCollectible,
+                    object: self,
+                    userInfo: [
+                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+                    ]
                 )
-            )
+                
+                eventHandler?(.didOptInToAsset)
+            case .optOut:
+                removeQuickAction()
 
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didRemoveCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                ]
-            )
+                NotificationCenter.default.post(
+                    name: CollectibleListLocalDataController.didRemoveCollectible,
+                    object: self,
+                    userInfo: [
+                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+                    ]
+                )
 
-            eventHandler?(.didOptOutAssetFromAccount)
+                eventHandler?(.didOptOutFromAssetWithQuickAction)
+            }
+            return
         }
+
+        bannerController?.presentSuccessBanner(
+            title: "collectible-detail-opt-out-success".localized(
+                params: asset.title ?? asset.name ?? .empty
+            )
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didRemoveCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+            ]
+        )
+
+        eventHandler?(.didOptOutAssetFromAccount)
     }
 
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        let monitor = self.sharedDataController.blockchainUpdatesMonitor
-        monitor.finishMonitoringOptInUpdates(
-            forAssetID: asset.id,
-            for: account
-        )
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+
+            switch transactionType {
+            case .assetAddition:
+                monitor.finishMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.finishMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
 
         loadingController?.stopLoading()
 
@@ -740,19 +795,38 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        let monitor = self.sharedDataController.blockchainUpdatesMonitor
-        monitor.finishMonitoringOptInUpdates(
-            forAssetID: asset.id,
-            for: account
-        )
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+
+            switch transactionType {
+            case .assetAddition:
+                monitor.finishMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.finishMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
 
         loadingController?.stopLoading()
 
         switch error {
         case let .network(apiError):
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
     }
 
@@ -833,6 +907,7 @@ extension CollectibleDetailViewController {
 extension CollectibleDetailViewController {
     enum Event {
         case didOptOutAssetFromAccount
+        case didOptOutFromAssetWithQuickAction
         case didOptInToAsset
     }
 }

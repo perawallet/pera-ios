@@ -139,6 +139,9 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                 var newCollectibleAssetsIndexer: Account.CollectibleAssetIndexer = [:]
 
                 var optedInAssets: Set<AssetID> = []
+
+                let pendingOptOutAssets = self.input.blockchainRequests.optOutAssets
+                var optedOutAssets: Set<AssetID> = Set(pendingOptOutAssets.keys)
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
@@ -161,6 +164,14 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     if self.input.blockchainRequests.optInAssets[id] != nil {
                         optedInAssets.insert(id)
                     }
+
+                    /// <note>
+                    /// Check if the opt-out request is granted assuming initially that all pending
+                    /// requests are granted. If it is still opted-in to the account, then we
+                    /// determines that the request is still in progress.
+                    if pendingOptOutAssets[id] != nil {
+                        optedOutAssets.remove(id)
+                    }
                 }
                 
                 account.setStandardAssets(
@@ -173,7 +184,10 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     newCollectibleAssetsIndexer
                 )
 
-                let blockchainUpdates = BlockchainAccountBatchUpdates(optedInAssets: optedInAssets)
+                let blockchainUpdates = BlockchainAccountBatchUpdates(
+                    optedInAssets: optedInAssets,
+                    optedOutAssets: optedOutAssets
+                )
                 let output = Output(
                     account: account,
                     newAssetDetails: newAssetDetails,

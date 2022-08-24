@@ -20,7 +20,8 @@ import MagpieHipo
 
 final class ManageAssetsViewController:
     BaseViewController,
-    TransactionSignChecking {
+    TransactionSignChecking,
+    UICollectionViewDelegateFlowLayout {
     weak var delegate: ManageAssetsViewControllerDelegate?
     
     private lazy var theme = Theme()
@@ -39,16 +40,11 @@ final class ManageAssetsViewController:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
+    private var optOutTransactions: [AssetID: AssetOptOutTransaction] = [:]
+
+    private var transactionControllers: [TransactionController] {
+        return Array(optOutTransactions.values.map { $0.transactionController })
+    }
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -61,104 +57,40 @@ final class ManageAssetsViewController:
         self.dataController = dataController
         super.init(configuration: configuration)
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restartLoadingOfVisibleCellsIfNeeded()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
+        }
+    }
     
     override func setListeners() {
         dataController.dataSource = dataSource
         contextView.assetsCollectionView.dataSource = dataSource
-        contextView.assetsCollectionView.delegate = listLayout
+        contextView.assetsCollectionView.delegate = self
         contextView.setSearchInputDelegate(self)
-        transactionController.delegate = self
-        setListLayoutListeners()
-    }
-    
-    private func setListLayoutListeners() {
-        listLayout.handlers.willDisplay = {
-            [weak self] cell, indexPath in
-            guard let self = self,
-                  let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath),
-                  let asset = self.dataController[indexPath.item] else {
-                return
-            }
-            
-            switch itemIdentifier {
-            case .asset:
-                let assetCell = cell as! OptOutAssetListItemCell
-                assetCell.startObserving(event: .remove) {
-                    [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.showAlertToDelete(asset)
-                }
-            default:
-                break
-            }
-        }
-
-        listLayout.handlers.didSelect = {
-            [weak self] indexPath in
-            guard let self = self,
-                  let asset = self.dataController[indexPath.item] else {
-                return
-            }
-
-            self.openAssetDetail(asset)
-        }
-    }
-
-    private func openAssetDetail(
-        _ asset: Asset
-    ) {
-        let assetDecoration = AssetDecoration(asset: asset)
-        if assetDecoration.isCollectible {
-            openCollectibleDetail(asset)
-            return
-        }
-
-        openASADiscovery(assetDecoration)
-    }
-
-    private func openCollectibleDetail(
-        _ asset: Asset
-    ) {
-        guard let collectibleAsset = asset as? CollectibleAsset else { return }
-        let screen = Screen.collectibleDetail(
-            asset: collectibleAsset,
-            account: account,
-            thumbnailImage: nil
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didOptOutAssetFromAccount: break
-            case .didOptInToAsset: self.popScreen()
-            }
-        }
-        
-        open(
-            screen,
-            by: .push
-        )
-    }
-
-    private func openASADiscovery(
-        _ asset: AssetDecoration
-    ) {
-        let screen = Screen.asaDiscovery(
-            account: account,
-            asset: asset
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didOptInToAsset: self.popScreen()
-            }
-        }
-        open(
-            screen,
-            by: .push
-        )
     }
 
     override func prepareLayout() {
@@ -169,28 +101,191 @@ final class ManageAssetsViewController:
             $0.edges.equalToSuperview()
         }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            
+}
+
+/// <mark>
+/// UICollectionViewDelegateFlowLayout
+extension ManageAssetsViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+}
+
+/// <mark>
+/// UICollectionViewDelegate
+extension ManageAssetsViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath) else { return }
+
+        switch itemIdentifier {
+        case .asset(let item):
+            configureAccessory(
+                cell as? OptOutAssetListItemCell,
+                for: item
+            )
+            linkInteractors(
+                cell as? OptOutAssetListItemCell,
+                for: item
+            )
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard case .asset(let item) = self.dataSource.itemIdentifier(for: indexPath) else { return }
+
+        let asset = item.model
+
+        if let collectibleAsset = asset as? CollectibleAsset {
+            let cell = collectionView.cellForItem(at: indexPath)
+            let optOutCell = cell as? OptOutAssetListItemCell
+            openCollectibleDetail(
+                collectibleAsset,
+                from: optOutCell
+            )
+        } else {
+            let cell = collectionView.cellForItem(at: indexPath)
+            let optOutCell = cell as? OptOutAssetListItemCell
+            let assetDetail = AssetDecoration(asset: asset)
+            openASADiscovery(
+                assetDetail,
+                from: optOutCell
+            )
+        }
+    }
+}
+
+extension ManageAssetsViewController {
+    private func openCollectibleDetail(
+        _ asset: CollectibleAsset,
+        from cell: OptOutAssetListItemCell? = nil
+    ) {
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account,
+            thumbnailImage: nil,
+            quickAction: .optOut
+        ) { event in
             switch event {
-            case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didOptOutAssetFromAccount: break
+            case .didOptOutFromAssetWithQuickAction:
+                cell?.accessory = .loading
+            case .didOptInToAsset: break
             }
         }
-        
-        dataController.load()
+
+        open(
+            screen,
+            by: .push
+        )
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
+
+    private func openASADiscovery(
+        _ asset: AssetDecoration,
+        from cell: OptOutAssetListItemCell? = nil
+    ) {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: .optOut,
+            asset: asset
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset:
+                cell?.accessory = .loading
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+}
+
+extension ManageAssetsViewController {
+    private func createNewTransactionController(
+        for asset: Asset
+    ) -> TransactionController {
+        let transactionController = TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+        optOutTransactions[asset.id] = AssetOptOutTransaction(
+            asset: asset,
+            transactionController: transactionController
+        )
+        transactionController.delegate = self
+        return transactionController
+    }
+
+    private func clearTransactionCache(
+        _ transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController) {
+            optOutTransactions[assetID] = nil
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func findCell(
+        from asset: Asset
+    ) -> OptOutAssetListItemCell?  {
+        let assetItem = AssetItem(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+        let optOutAssetListItem = OptOutAssetListItem(item: assetItem)
+        let listItem = ManageAssetSearchItem.asset(optOutAssetListItem)
+        let indexPath = dataSource.indexPath(for: listItem)
+
+        return indexPath.unwrap {
+            contextView.assetsCollectionView.cellForItem(at: $0)
+        } as? OptOutAssetListItemCell
+    }
+
+    private func restoreCellState(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let assetDetail = optOutTransactions[assetID]?.asset,
+           let cell = findCell(from: assetDetail) {
+            cell.accessory = .remove
+        }
     }
 }
 
@@ -214,44 +309,72 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 }
 
 extension ManageAssetsViewController {
-    private func showAlertToDelete(_ asset: Asset) {
-        if isValidAssetDeletion(asset) {
-            openOptOutAsset(asset: asset)
-            return
+    private func restartLoadingOfVisibleCellsIfNeeded() {
+        for cell in contextView.assetsCollectionView.visibleCells {
+            if let assetCell = cell as? OptOutAssetListItemCell,
+               assetCell.accessory == .loading {
+                assetCell.accessory = .loading
+            }
         }
-
-        openTransferAssetBalance(asset: asset)
     }
 }
 
 extension ManageAssetsViewController {
-    private func openOptOutAsset(
-        asset: Asset
+    private func configureAccessory(
+        _ cell: OptOutAssetListItemCell?,
+        for item: OptOutAssetListItem
     ) {
-        let draft = OptOutAssetDraft(
-            account: account,
-            asset: asset
-        )
+        let asset = item.model
+        let status = dataController.hasOptedOut(asset)
 
-        let screen = Screen.optOutAsset(draft: draft) {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .performApprove:
-                self.continueToOptOutAsset(
-                    asset: asset,
-                    account: self.account
-                )
-            case .performClose:
-                self.cancelOptOutAsset()
-            }
+        let accessory: OptOutAssetListItemAccessory
+        switch status {
+        case .pending: accessory = .loading
+        case .rejected: accessory = .remove
+        case .optedOut: accessory = .loading
         }
 
-        transitionToOptOutAsset.perform(
-            screen,
-            by: .present
-        )
+        cell?.accessory = accessory
+    }
+}
+
+extension ManageAssetsViewController {
+    private func linkInteractors(
+        _ cell: OptOutAssetListItemCell?,
+        for item: OptOutAssetListItem
+    ) {
+        cell?.startObserving(event: .remove) {
+            [unowned self] in
+
+            let asset = item.model
+
+            if !self.isValidAssetDeletion(asset) {
+                self.openTransferAssetBalance(asset: asset)
+                return
+            }
+
+            let account = self.dataController.account
+            let draft = OptOutAssetDraft(account: account, asset: asset)
+            let screen = Screen.optOutAsset(draft: draft) {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .performApprove:
+                    cell?.accessory = .loading
+                    self.continueToOptOutAsset(
+                        asset: asset,
+                        account: self.account
+                    )
+                case .performClose:
+                    self.cancelOptOutAsset()
+                }
+            }
+            transitionToOptOutAsset.perform(
+                screen,
+                by: .present
+            )
+        }
     }
 
     private func continueToOptOutAsset(
@@ -262,7 +385,34 @@ extension ManageAssetsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.removeAssetFromAccount(asset)
+            var account = self.dataController.account
+
+            if !self.canSignTransaction(for: &account) { return }
+
+            guard let creator = asset.creator else { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptOutBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptOutUpdates(
+                request,
+                for: account
+            )
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                toAccount: Account(address: creator.address, type: .standard),
+                amount: 0,
+                assetIndex: asset.id,
+                assetCreator: creator.address
+            )
+            let transactionController = self.createNewTransactionController(for: asset)
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+
+            if account.requiresLedgerConnection() {
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
 
@@ -331,64 +481,41 @@ extension ManageAssetsViewController {
     private func isValidAssetDeletion(_ asset: Asset) -> Bool {
         return asset.amountWithFraction == 0
     }
-    
-    private func removeAssetFromAccount(_ asset: Asset) {
-        var account = dataController.account
-
-        if !canSignTransaction(for: &account) {
-            return
-        }
-
-        guard let creator = asset.creator else {
-            return
-        }
-
-        let assetTransactionDraft = AssetTransactionSendDraft(
-            from: account,
-            toAccount: Account(address: creator.address, type: .standard),
-            amount: 0,
-            assetIndex: asset.id,
-            assetCreator: creator.address
-        )
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
-        
-        if account.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-    }
 }
 
 extension ManageAssetsViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        loadingController?.stopLoading()
-
-        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        guard let assetID = getAssetID(from: transactionController),
+              let asset = optOutTransactions[assetID]?.asset else {
             return
         }
 
-        removedAssetDetail.state = .pending(.remove)
-
-        dataController.removeAsset(removedAssetDetail)
-
-        if let standardAsset = removedAssetDetail as? StandardAsset {
+        if let standardAsset = asset as? StandardAsset {
             delegate?.manageAssetsViewController(self, didRemove: standardAsset)
-        } else if let collectibleAsset = removedAssetDetail as? CollectibleAsset {
+        } else if let collectibleAsset = asset as? CollectibleAsset {
             delegate?.manageAssetsViewController(self, didRemove: collectibleAsset)
         }
+
+        clearTransactionCache(transactionController)
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
-        loadingController?.stopLoading()
-        
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
         default:
             break
         }
+
+        finishMonitoringOptOutUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
     }
     
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -434,17 +561,32 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
-        loadingController?.stopLoading()
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
         switch error {
         case let .network(apiError):
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
+
+        finishMonitoringOptOutUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
     }
 
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
         let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
@@ -452,18 +594,27 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         )
     }
 
-    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-    }
-
-    func transactionControllerDidRejectedLedgerOperation(
+    func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        loadingController?.stopLoading()
+        ledgerApprovalViewController?.dismissScreen()
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
         return draft?.assetIndex.unwrap { account[$0] }
+    }
+}
+
+extension ManageAssetsViewController {
+    private func finishMonitoringOptOutUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.finishMonitoringOptOutUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
     }
 }
 
@@ -476,4 +627,16 @@ protocol ManageAssetsViewControllerDelegate: AnyObject {
         _ manageAssetsViewController: ManageAssetsViewController,
         didRemove asset: CollectibleAsset
     )
+}
+
+struct AssetOptOutTransaction: Equatable {
+    let asset: Asset
+    let transactionController: TransactionController
+
+    static func == (
+        lhs: AssetOptOutTransaction,
+        rhs: AssetOptOutTransaction
+    ) -> Bool {
+        return lhs.asset.id == rhs.asset.id
+    }
 }

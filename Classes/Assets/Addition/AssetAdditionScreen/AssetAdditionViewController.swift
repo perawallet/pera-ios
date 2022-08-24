@@ -53,11 +53,11 @@ final class AssetAdditionViewController:
         self.dataController = dataController
         super.init(configuration: configuration)
     }
-    
+
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
-    
+
     override func configureAppearance() {
         super.configureAppearance()
 
@@ -323,10 +323,13 @@ extension AssetAdditionViewController {
         let screen = Screen.collectibleDetail(
             asset: collectibleAsset,
             account: account,
-            thumbnailImage: nil
+            thumbnailImage: nil,
+            quickAction: .optIn
         ) { event in
             switch event {
             case .didOptOutAssetFromAccount:
+                break
+            case .didOptOutFromAssetWithQuickAction:
                 break
             case .didOptInToAsset:
                 cell?.accessory = .loading
@@ -345,11 +348,14 @@ extension AssetAdditionViewController {
         let account = dataController.account
         let screen = Screen.asaDiscovery(
             account: account,
+            quickAction: .optIn,
             asset: asset
         ) { event in
             switch event {
             case .didOptInToAsset:
                 cell?.accessory = .loading
+            case .didOptOutFromAsset:
+                break
             }
         }
         open(
@@ -525,8 +531,11 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
-        default:
-            break
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         }
     }
 
@@ -545,12 +554,18 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
         switch error {
         case let .network(apiError):
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
         default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
     }
-    
+
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?

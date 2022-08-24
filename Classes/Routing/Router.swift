@@ -466,7 +466,7 @@ class Router:
             aViewController.eventHandler = eventHandler
 
             viewController = aViewController
-        case .asaDiscovery(let account, let asset, let eventHandler):
+        case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
             let dataController =
                 ASADiscoveryScreenAPIDataController(
                     account: account,
@@ -478,6 +478,7 @@ class Router:
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADiscoveryScreen(
+                quickAction: quickAction,
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
@@ -915,10 +916,11 @@ class Router:
                 ),
                 configuration: configuration
             )
-        case .collectibleDetail(let asset, let account, let thumbnailImage, let eventHandler):
+        case .collectibleDetail(let asset, let account, let thumbnailImage,  let quickAction, let eventHandler):
             let aViewController = CollectibleDetailViewController(
                 asset: asset,
                 account: account,
+                quickAction: quickAction,
                 thumbnailImage: thumbnailImage,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController

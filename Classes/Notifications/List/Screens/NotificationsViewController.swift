@@ -378,12 +378,14 @@ extension NotificationsViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: nil
+            thumbnailImage: nil,
+            quickAction: nil
         ) { [weak self] event in
             guard let self = self else { return }
 
             switch event {
             case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptOutFromAssetWithQuickAction: break
             case .didOptInToAsset: break
             }
         }

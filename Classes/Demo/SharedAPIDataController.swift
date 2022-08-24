@@ -169,6 +169,44 @@ extension SharedAPIDataController {
 }
 
 extension SharedAPIDataController {
+    func hasOptedIn(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptInStatus {
+        let hasPendingOptedIn = blockchainUpdatesMonitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: account
+        )
+        let hasAlreadyOptedIn = account[assetID] != nil
+
+        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
+        case (true, false): return .pending
+        case (true, true): return .optedIn
+        case (false, true): return .optedIn
+        case (false, false): return .rejected
+        }
+    }
+
+    func hasOptedOut(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptOutStatus {
+        let hasPendingOptedOut = blockchainUpdatesMonitor.hasPendingOptOutRequest(
+            assetID: assetID,
+            for: account
+        )
+        let hasAlreadyOptedOut = account[assetID] == nil
+
+        switch (hasPendingOptedOut, hasAlreadyOptedOut) {
+        case (true, false): return .pending
+        case (true, true): return .optedOut
+        case (false, true): return .optedOut
+        case (false, false): return .rejected
+        }
+    }
+}
+
+extension SharedAPIDataController {
     func add(
         _ observer: SharedDataControllerObserver
     ) {
@@ -310,6 +348,13 @@ extension SharedAPIDataController {
 
         for assetID in blockchainUpdates.optedInAssets {
             blockchainUpdatesMonitor.stopMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
+        for assetID in blockchainUpdates.optedOutAssets {
+            blockchainUpdatesMonitor.stopMonitoringOptOutUpdates(
                 forAssetID: assetID,
                 for: account
             )

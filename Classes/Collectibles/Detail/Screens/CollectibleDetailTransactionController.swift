@@ -22,15 +22,18 @@ final class CollectibleDetailTransactionController {
     private let account: Account
     private let asset: CollectibleAsset
     private let transactionController: TransactionController
+    private let sharedDataController: SharedDataController
 
     init(
         account: Account,
         asset: CollectibleAsset,
-        transactionController: TransactionController
+        transactionController: TransactionController,
+        sharedDataController: SharedDataController
     ) {
         self.account = account
         self.asset = asset
         self.transactionController = transactionController
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -39,6 +42,13 @@ extension CollectibleDetailTransactionController {
         guard let creator = asset.creator else {
             return
         }
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let request = OptOutBlockchainRequest(asset: asset)
+        monitor.startMonitoringOptOutUpdates(
+            request,
+            for: account
+        )
 
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
@@ -57,10 +67,34 @@ extension CollectibleDetailTransactionController {
             transactionController.startTimer()
         }
     }
+
+    func optInToAsset() {
+        let monitor = self.sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(asset: asset)
+        monitor.startMonitoringOptInUpdates(
+            request,
+            for: account
+        )
+
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: asset.id
+        )
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        eventHandlers.didStartOptingInToAsset?()
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+    }
 }
 
 extension CollectibleDetailTransactionController {
     struct Event {
         var didStartRemovingAsset: EmptyHandler?
+        var didStartOptingInToAsset: EmptyHandler?
     }
 }

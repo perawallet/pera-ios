@@ -30,15 +30,21 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private let api: ALGAPI
     private var asset: CollectibleAsset
     private let account: Account
+    private let quickAction: AssetQuickAction?
+    private let sharedDataController: SharedDataController
 
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
-        account: Account
+        account: Account,
+        quickAction: AssetQuickAction?,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
         self.asset = asset
         self.account = account
+        self.quickAction = quickAction
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -91,6 +97,22 @@ extension CollectibleDetailAPIDataController {
 }
 
 extension CollectibleDetailAPIDataController {
+    func hasOptedIn() -> OptInStatus {
+        return sharedDataController.hasOptedIn(
+            assetID: asset.id,
+            for: account
+        )
+    }
+
+    func hasOptedOut() -> OptOutStatus {
+        return sharedDataController.hasOptedOut(
+            assetID: asset.id,
+            for: account
+        )
+    }
+}
+
+extension CollectibleDetailAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
@@ -111,7 +133,7 @@ extension CollectibleDetailAPIDataController {
             var snapshot = Snapshot()
 
             self.addMediaContent(&snapshot)
-            self.addActionContent(&snapshot)
+            self.addActionContentIfNeeded(&snapshot)
             self.addDescriptionContent(&snapshot)
             self.addPropertiesContent(&snapshot)
 
@@ -151,9 +173,11 @@ extension CollectibleDetailAPIDataController {
         )
     }
 
-    private func addActionContent(
+    private func addActionContentIfNeeded(
         _ snapshot: inout Snapshot
     ) {
+        if quickAction != nil { return }
+
         if account.isWatchAccount() {
             addWatchAccountActionContent(&snapshot)
             return

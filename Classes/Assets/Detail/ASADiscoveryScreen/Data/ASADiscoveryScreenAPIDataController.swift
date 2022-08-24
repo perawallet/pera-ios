@@ -77,18 +77,20 @@ extension ASADiscoveryScreenAPIDataController {
             return .rejected
         }
 
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-        let hasPendingOptedIn = monitor.hasPendingOptInRequest(
+        return sharedDataController.hasOptedIn(
             assetID: asset.id,
             for: account
         )
-        let hasAlreadyOptedIn = account[asset.id] != nil
+    }
 
-        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
-        case (true, false): return .pending
-        case (true, true): return .optedIn
-        case (false, true): return .optedIn
-        case (false, false): return .rejected
+    func hasOptedOut() -> OptOutStatus {
+        guard let account = account else {
+            return .rejected
         }
+
+        return sharedDataController.hasOptedOut(
+            assetID: asset.id,
+            for: account
+        )
     }
 }

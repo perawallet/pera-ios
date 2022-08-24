@@ -19,8 +19,6 @@ import UIKit
 import MacaroonUIKit
 
 final class ManageAssetsListLayout: NSObject {
-    lazy var handlers = Handlers()
-    
     private let dataSource: ManageAssetsListDataSource
     
     private var sizeCache: [String: CGSize] = [:]
@@ -32,7 +30,7 @@ final class ManageAssetsListLayout: NSObject {
     }
 }
 
-extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
+extension ManageAssetsListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -78,11 +76,6 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
                 layout: collectionViewLayout,
                 sizeForAssetCellItem: item,
                 forSectionAt: indexPath.section
-            )
-        case .pendingAsset:
-            return CGSize(
-                width: UIScreen.main.bounds.width - 48,
-                height: 72
             )
         case .empty(let item):
             return sizeForNoContent(
@@ -138,21 +131,6 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
         
         return newSize
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        handlers.willDisplay?(cell, indexPath)
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-        handlers.didSelect?(indexPath)
-    }
 }
 
 extension ManageAssetsListLayout {
@@ -170,12 +148,5 @@ extension ManageAssetsListLayout {
             collectionView.contentInset.horizontal -
             sectionInset.left -
             sectionInset.right
-    }
-}
-
-extension ManageAssetsListLayout {
-    struct Handlers {
-        var willDisplay: ((UICollectionViewCell, IndexPath) -> Void)?
-        var didSelect: ((IndexPath) -> Void)?
     }
 }

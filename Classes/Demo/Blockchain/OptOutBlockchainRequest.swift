@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BlockchainBatchRequest.swift
+//   OptOutBlockchainRequest.swift
 
 import Foundation
 
-/// <note>
-/// Key -> account address
-typealias BlockchainBatchRequest = [String: BlockchainAccountBatchRequest]
+struct OptOutBlockchainRequest: BlockchainRequest {
+    let assetID: AssetID
+    let assetName: String?
+    let assetUnitName: String?
 
-struct BlockchainAccountBatchRequest {
-    /// <note>
-    /// The dictionary is used to search faster.
-    var optInAssets: [AssetID : Any] = [:]
-    var optOutAssets: [AssetID: Any] = [:]
+    init(asset: AssetDecoration) {
+        self.assetID = asset.id
+        self.assetName = asset.name
+        self.assetUnitName = asset.unitName
+    }
+
+    init(asset: Asset) {
+        self.assetID = asset.id
+        self.assetName = asset.naming.name
+        self.assetUnitName = asset.naming.unitName
+    }
 }

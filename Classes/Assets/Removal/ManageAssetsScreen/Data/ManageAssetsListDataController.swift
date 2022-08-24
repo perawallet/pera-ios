@@ -28,12 +28,11 @@ protocol ManageAssetsListDataController: AnyObject {
     subscript(index: Int) -> Asset? { get }
     subscript(assetID: AssetID) -> Asset? { get }
 
-    func load()
     func search(for query: String)
     func resetSearch()
-    func removeAsset(
+    func hasOptedOut(
         _ asset: Asset
-    )
+    ) -> OptOutStatus
 }
 
 enum ManageAssetsListDataControllerEvent {
@@ -49,6 +48,5 @@ enum ManageAssetSearchSection:
 
 enum ManageAssetSearchItem: Hashable {
     case asset(OptOutAssetListItem)
-    case pendingAsset(PendingAssetPreviewViewModel)
     case empty(AssetListSearchNoContentViewModel)
 }

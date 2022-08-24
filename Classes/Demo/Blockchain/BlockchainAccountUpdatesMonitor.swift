@@ -19,7 +19,8 @@ import Foundation
 struct BlockchainAccountUpdatesMonitor {
     let accountAddress: String
 
-    private var optInUpdates: [AssetID : OptInBlockchainUpdate] = [:]
+    private var optInUpdates: [AssetID: OptInBlockchainUpdate] = [:]
+    private var optOutUpdates: [AssetID: OptOutBlockchainUpdate] = [:]
 
     init(accountAddress: String) {
         self.accountAddress = accountAddress
@@ -28,7 +29,7 @@ struct BlockchainAccountUpdatesMonitor {
 
 extension BlockchainAccountUpdatesMonitor {
     func hasMonitoringUpdates() -> Bool {
-        return !optInUpdates.isEmpty
+        return !optInUpdates.isEmpty || !optOutUpdates.isEmpty
     }
 }
 
@@ -73,8 +74,45 @@ extension BlockchainAccountUpdatesMonitor {
 }
 
 extension BlockchainAccountUpdatesMonitor {
+    func filterPendingOptOutAssetUpdates() -> [AssetID: OptOutBlockchainUpdate] {
+        return optOutUpdates.filter { $0.value.status == .pending }
+    }
+
+    func filterOptedOutAssetUpdates() -> [AssetID: OptOutBlockchainUpdate] {
+        return optOutUpdates.filter { $0.value.status == .waitingForNotification }
+    }
+}
+
+extension BlockchainAccountUpdatesMonitor {
+    func hasPendingOptOutRequest(assetID: AssetID) -> Bool {
+        let update = optOutUpdates[assetID]
+        return update?.status == .pending
+    }
+
+    mutating func startMonitoringOptOutUpdates(_ request: OptOutBlockchainRequest) {
+        let update = OptOutBlockchainUpdate(request: request)
+        optOutUpdates[update.assetID] = update
+    }
+
+    mutating func stopMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
+        guard let pendingUpdate = optOutUpdates[assetID] else { return }
+
+        let waitingUpdate = OptOutBlockchainUpdate(
+            update: pendingUpdate,
+            status: .waitingForNotification
+        )
+        optOutUpdates[assetID] = waitingUpdate
+    }
+
+    mutating func finishMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
+        optOutUpdates[assetID] = nil
+    }
+}
+
+extension BlockchainAccountUpdatesMonitor {
     mutating func removeUnmonitoredUpdates() {
         optInUpdates = filterPendingOptInAssetUpdates()
+        optOutUpdates = filterPendingOptOutAssetUpdates()
     }
 }
 
@@ -85,9 +123,14 @@ extension BlockchainAccountUpdatesMonitor {
             pendingOptInUpdates[update.key] = true
         }
 
+        var pendingOptOutUpdates: [AssetID : Any] = [:]
+        for update in optOutUpdates where update.value.status == .pending {
+            pendingOptOutUpdates[update.key] = true
+        }
+
         var batchRequest = BlockchainAccountBatchRequest()
         batchRequest.optInAssets = pendingOptInUpdates
-
+        batchRequest.optOutAssets = pendingOptOutUpdates
         return batchRequest
     }
 }

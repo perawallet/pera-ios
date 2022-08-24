@@ -106,6 +106,69 @@ extension BlockchainUpdatesMonitor {
 }
 
 extension BlockchainUpdatesMonitor {
+    func filterOptedOutAssetUpdates() -> [OptOutBlockchainUpdate] {
+        return table.reduce(into: [OptOutBlockchainUpdate]()) {
+            $0 += $1.value.filterOptedOutAssetUpdates().values
+        }
+    }
+
+    func filterOptedOutAssetUpdates(for account: Account) -> [AssetID: OptOutBlockchainUpdate] {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.filterOptedOutAssetUpdates() ?? [:]
+    }
+}
+
+extension BlockchainUpdatesMonitor {
+    func hasPendingOptOutRequest(
+        assetID: AssetID,
+        for account: Account
+    ) -> Bool {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.hasPendingOptOutRequest(assetID: assetID) ?? false
+    }
+
+    func startMonitoringOptOutUpdates(
+        _ request: OptOutBlockchainRequest,
+        for account: Account
+    ) {
+        let address = account.address
+
+        var monitor = table[address] ?? .init(accountAddress: address)
+        monitor.startMonitoringOptOutUpdates(request)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func stopMonitoringOptOutUpdates(
+        forAssetID assetID: AssetID,
+        for account: Account
+    ) {
+        let address = account.address
+
+        guard var monitor = table[address] else { return }
+
+        monitor.stopMonitoringOptOutUpdates(forAssetID: assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func finishMonitoringOptOutUpdates(
+        forAssetID assetID: AssetID,
+        for account: Account
+    ) {
+        let address = account.address
+
+        guard var monitor = table[address] else { return }
+
+        monitor.finishMonitoringOptOutUpdates(forAssetID: assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+}
+
+extension BlockchainUpdatesMonitor {
     func removeUnmonitoredUpdates() {
         $table.mutate {
             var newTable: Table = [:]

@@ -1047,6 +1047,12 @@
 		2B344B1B268A223000DA7B25 /* WCTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B344B1A268A223000DA7B25 /* WCTransaction.swift */; };
 		2B344B1C268A223000DA7B25 /* WCTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B344B1A268A223000DA7B25 /* WCTransaction.swift */; };
 		2B344B1D268A223000DA7B25 /* WCTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B344B1A268A223000DA7B25 /* WCTransaction.swift */; };
+		2B36FCC728B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */; };
+		2B36FCC828B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */; };
+		2B36FCC928B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */; };
+		2B36FCCB28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
+		2B36FCCC28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
+		2B36FCCD28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -5620,6 +5626,8 @@
 		2B343D0A259D17B0001EA8C8 /* NotificationFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFilterViewController.swift; sourceTree = "<group>"; };
 		2B344B16268A0F8200DA7B25 /* WCTransactionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionDetail.swift; sourceTree = "<group>"; };
 		2B344B1A268A223000DA7B25 /* WCTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransaction.swift; sourceTree = "<group>"; };
+		2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutBlockchainUpdate.swift; sourceTree = "<group>"; };
+		2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutBlockchainRequest.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* InstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemView.swift; sourceTree = "<group>"; };
@@ -16142,6 +16150,8 @@
 				F07C3C3B28B50BC5003D55BC /* BlockchainUpdatesMonitor.swift */,
 				F07C3C5028B55F12003D55BC /* OptInBlockchainRequest.swift */,
 				F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */,
+				2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */,
+				2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */,
 			);
 			path = Blockchain;
 			sourceTree = "<group>";
@@ -17414,6 +17424,7 @@
 				D44265C227746E3C0094E2CA /* TransactionHistoryHeaderViewTheme.swift in Sources */,
 				D4F6818B2897DEC5005F9B26 /* AssetAboutSectionItem.swift in Sources */,
 				2BB8482527E8CA66004F2E39 /* CollectibleMediaPreviewViewController+Theme.swift in Sources */,
+				2B36FCCD28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */,
 				D46E5E1D26EA904B00EFEF66 /* LedgerTutorialInstructionListViewTheme.swift in Sources */,
 				2B7E302F267A4A2400E89EE3 /* WCAlgosTransactionViewModel.swift in Sources */,
 				2B64DACD2369B9E400C09582 /* Participation.swift in Sources */,
@@ -18390,6 +18401,7 @@
 				2B7A1FAB27DE6A410010F52E /* CollectibleDetailWatchAccountActionCell.swift in Sources */,
 				2BAD559523A29C830037079F /* Optional+Nil.swift in Sources */,
 				F045421F287C13760081C01C /* AlgoAssetItem.swift in Sources */,
+				2B36FCC928B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */,
 				F0431F1F287577660004CB7E /* FiatCurrency.swift in Sources */,
 				95BB6C2627A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
 				D497945C287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
@@ -19066,6 +19078,7 @@
 				2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
 				2B0F620524EC129D00DA22A6 /* PendingTransactionView.swift in Sources */,
 				2B7A1FC627DEA4B80010F52E /* CollectibleDetailHeaderViewModel.swift in Sources */,
+				2B36FCCC28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */,
 				2B5739F626F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				F08709062790D67B00BEE5C2 /* HomeListDataSource.swift in Sources */,
 				953DEE1C279ED4CC00D76957 /* WCAssetInformationViewModel.swift in Sources */,
@@ -19773,6 +19786,7 @@
 				95AF1C6127AD4EE7001AB131 /* PreviewLoadingView.swift in Sources */,
 				2BDD43C82513A7F600C6D3B5 /* SingleSelectionViewModel.swift in Sources */,
 				F0B5B0CC27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
+				2B36FCC828B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */,
 				2B57BC58280EF45A00F958C4 /* CurrencySelectionDataController.swift in Sources */,
 				D411B38A26EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */,
 				D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */,
@@ -20839,6 +20853,7 @@
 				D4FDA57728258BA600BFB778 /* CollectibleFullScreenImageViewController.swift in Sources */,
 				95C95912278A12A9003D0D78 /* WCSingleTransactionRequestBottomViewModel.swift in Sources */,
 				95FE4BD027BFB81400D8C38E /* BuyAlgoParams.swift in Sources */,
+				2B36FCCB28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */,
 				2B2DF29428103522008BC52D /* CurrencySelectionListLayout+Theme.swift in Sources */,
 				D4F681892897DEC5005F9B26 /* AssetAboutSectionItem.swift in Sources */,
 				954DFF23279438DA0066FFF6 /* WCUnsignedRequestScreen+Theme.swift in Sources */,
@@ -21815,6 +21830,7 @@
 				2BD36E002681DB7B00C57728 /* WCGroupTransactionAccountInformationView.swift in Sources */,
 				F045421D287C13760081C01C /* AlgoAssetItem.swift in Sources */,
 				F0431F1D287577660004CB7E /* FiatCurrency.swift in Sources */,
+				2B36FCC728B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */,
 				2BE4D16325967F78005F5764 /* AccountResponse.swift in Sources */,
 				D497945A287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
 				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,

@@ -471,12 +471,14 @@ extension CollectibleListViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: thumbnailImage
+            thumbnailImage: thumbnailImage,
+            quickAction: nil
         ) { [weak self] event in
             guard let self = self else { return }
 
             switch event {
             case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptOutFromAssetWithQuickAction: break
             case .didOptInToAsset: break
             }
         }
