@@ -73,6 +73,6 @@ struct ASAAboutScreenTheme:
         self.spacingBetweenSectionsAndReportAction = 62
 
         self.sectionSeparator = Separator(color: Colors.Layer.grayLighter)
-        self.spacingBetweenSections = 72
+        self.spacingBetweenSections = 36
     }
 }

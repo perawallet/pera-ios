@@ -28,7 +28,7 @@ struct ASAAboutScreenInteractableSecondaryListItemViewTheme: SecondaryListItemVi
     init(
         _ family: LayoutFamily
     ) {
-        self.contentEdgeInsets = (10, 0, 10, 0)
+        self.contentEdgeInsets = (0, 0, 0, 0)
         self.title = [ .textOverflow(MultilineText(numberOfLines: 2)) ]
         self.titleMinWidthRatio = 0.2
         self.titleMaxWidthRatio = 0.35

@@ -157,6 +157,7 @@ extension ASAAboutScreen {
             case .description: addDescription()
             case .socialMedia: addSocialMedia()
             case .report: addReportAction()
+            case .separator(let verticalPaddings): addSeparator(verticalPaddings: verticalPaddings)
             }
         }
     }
@@ -194,6 +195,7 @@ extension ASAAboutScreen {
                 } else {
                     addReportAction(atIndex: index)
                 }
+            case .separator: break
             }
         }
     }
@@ -202,17 +204,6 @@ extension ASAAboutScreen {
         statisticsView.customize(theme.statistics)
 
         contextView.addArrangedSubview(statisticsView)
-        contextView.setCustomSpacing(
-            theme.spacingBetweenStatisticsAndAbout,
-            after: statisticsView
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: statisticsView,
-            margin: theme.spacingBetweenStatisticsAndSeparator
-        )
-
         bindStatisticsData()
     }
 
@@ -234,12 +225,6 @@ extension ASAAboutScreen {
         aboutView.customize(theme.about)
 
         contextView.addArrangedSubview(aboutView)
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: aboutView,
-            margin: theme.spacingBetweenAboutAndSeparator
-        )
 
         bindAboutData()
     }
@@ -393,16 +378,6 @@ extension ASAAboutScreen {
             verificationTierView,
             preferredAt: index
         )
-        contextView.setCustomSpacing(
-            theme.spacingBetweenVerificationTierAndSections,
-            after: verificationTierView
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: verificationTierView,
-            margin: theme.spacingBetweenVerificationTierAndSeparator
-        )
 
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
@@ -424,12 +399,6 @@ extension ASAAboutScreen {
         contextView.insertArrangedSubview(
             descriptionView,
             preferredAt: index
-        )
-
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: descriptionView,
-            margin: theme.spacingBetweenDescriptionAndSeparator
         )
 
         bindDescriptionData()
@@ -489,22 +458,9 @@ extension ASAAboutScreen {
     private func addReportAction(atIndex index: Int? = nil) {
         reportActionView.customize(theme.reportAction)
 
-        if let previousView = contextView.arrangedSubviews.last {
-            contextView.setCustomSpacing(
-                theme.spacingBetweenSectionsAndReportAction,
-                after: previousView
-            )
-        }
-
         contextView.insertArrangedSubview(
             reportActionView,
             preferredAt: index
-        )
-
-        contextView.attachSeparator(
-            theme.reportActionSeparator,
-            to: reportActionView,
-            margin: theme.spacingBetweenSeparatorAndReportAction
         )
 
         reportActionView.addTouch(
@@ -518,6 +474,26 @@ extension ASAAboutScreen {
     private func bindReportActionData() {
         let viewModel = AsaReportListItemButtonViewModel(asset)
         reportActionView.bindData(viewModel)
+    }
+
+    private func addSeparator(verticalPaddings: LayoutVerticalPaddings) {
+        let lastView = contextView.arrangedSubviews.last!
+
+        let separator = Separator(color: Colors.Layer.grayLighter, position: .bottom((0, 0)))
+        contextView.attachSeparator(
+            separator,
+            to: lastView,
+            margin: verticalPaddings.top
+        )
+
+        let customSpacingAfterLastView =
+            verticalPaddings.top +
+            separator.size +
+            verticalPaddings.bottom
+        contextView.setCustomSpacing(
+            customSpacingAfterLastView,
+            after: lastView
+        )
     }
 }
 
@@ -565,15 +541,19 @@ extension ASAAboutScreen {
         case description
         case socialMedia
         case report
+        case separator(LayoutVerticalPaddings)
 
         static func ordered(by asset: Asset) -> [Section] {
             var list: [Section] = []
+
+            let separatorVerticalPaddings: LayoutVerticalPaddings = (36, 36)
 
             if asset.verificationTier.isSuspicious {
                 list.append(.verificationTier)
             }
 
             list.append(.statistics)
+            list.append(.separator(separatorVerticalPaddings))
             list.append(.about)
 
             if !asset.verificationTier.isSuspicious && !asset.verificationTier.isUnverified {
@@ -581,16 +561,19 @@ extension ASAAboutScreen {
             }
 
             if asset.description.unwrapNonEmptyString() != nil {
+                list.append(.separator(separatorVerticalPaddings))
                 list.append(.description)
             }
 
             if asset.discordURL != nil ||
                 asset.telegramURL != nil ||
                 asset.twitterURL != nil {
+                list.append(.separator(separatorVerticalPaddings))
                 list.append(.socialMedia)
             }
 
             if asset.verificationTier.isSuspicious {
+                list.append(.separator(separatorVerticalPaddings))
                 list.append(.report)
             }
 
