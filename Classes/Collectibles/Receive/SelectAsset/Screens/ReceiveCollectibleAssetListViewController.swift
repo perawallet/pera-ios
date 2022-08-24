@@ -50,13 +50,11 @@ final class ReceiveCollectibleAssetListViewController:
 
     private var isLayoutFinalized = false
 
-    private lazy var transactionController: TransactionController = {
-        return TransactionController(
-            api: api!,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
+    private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
+
+    private var transactionControllers: [TransactionController] {
+        return Array(optInTransactions.values.map { $0.transactionController })
+    }
 
     private lazy var accountMenuInteraction = UIContextMenuInteraction(delegate: self)
 
@@ -65,7 +63,6 @@ final class ReceiveCollectibleAssetListViewController:
     private let copyToClipboardController: CopyToClipboardController
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var currentAsset: AssetDecoration?
 
     private let dataController: ReceiveCollectibleAssetListDataController
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
@@ -102,33 +99,33 @@ final class ReceiveCollectibleAssetListViewController:
             case .didUpdate(let snapshot):
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             case .didOptInAssets(let items):
-                break
+                for item in items {
+                    if let indexPath = self.listDataSource.indexPath(for: .collectible(item)),
+                       let cell = self.listView.cellForItem(at: indexPath) {
+                        self.configureAccessory(
+                            cell as? OptInAssetListItemCell,
+                            for: item
+                        )
+                    }
+                }
             }
         }
 
         dataController.load()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        listView
-            .visibleCells
-            .forEach {
-                let loadingCell = $0 as? PreviewLoadingCell
-                loadingCell?.startAnimating()
-            }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restartLoadingOfVisibleCellsIfNeeded()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
 
-        listView
-            .visibleCells
-            .forEach {
-                let loadingCell = $0 as? PreviewLoadingCell
-                loadingCell?.stopAnimating()
-            }
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
+        }
     }
 
     override func prepareLayout() {
@@ -140,8 +137,6 @@ final class ReceiveCollectibleAssetListViewController:
         super.setListeners()
 
         listView.delegate = self
-
-        transactionController.delegate = self
 
         selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
@@ -166,8 +161,6 @@ final class ReceiveCollectibleAssetListViewController:
     }
 
     override func linkInteractors() {
-        transactionController.delegate = self
-
         selectedAccountPreviewView.addInteraction(accountMenuInteraction)
 
         selectedAccountPreviewView.startObserving(event: .performCopyAction) {
@@ -410,6 +403,43 @@ extension ReceiveCollectibleAssetListViewController {
         didSelectItemAt indexPath: IndexPath
     ) {
         view.endEditing(true)
+
+        guard case .collectible(let item) = listDataSource.itemIdentifier(for: indexPath) else { return }
+
+        let asset = item.model
+        let cell = collectionView.cellForItem(at: indexPath)
+        let optInCell = cell as? OptInAssetListItemCell
+        openCollectibleDetail(
+            asset,
+            from: optInCell
+        )
+    }
+
+    private func openCollectibleDetail(
+        _ asset: AssetDecoration,
+        from cell: OptInAssetListItemCell? = nil
+    ) {
+        let account = dataController.account
+        let collectibleAsset = CollectibleAsset(
+            asset: ALGAsset(id: asset.id),
+            decoration: asset
+        )
+        let screen = Screen.collectibleDetail(
+            asset: collectibleAsset,
+            account: account,
+            thumbnailImage: nil
+        ) { event in
+            switch event {
+            case .didOptOutAssetFromAccount:
+                break
+            case .didOptInToAsset:
+                cell?.accessory = .loading
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
     }
 
     private func continueToOptInAsset(asset: AssetDecoration) {
@@ -421,21 +451,25 @@ extension ReceiveCollectibleAssetListViewController {
 
             if !self.canSignTransaction(for: &account) { return }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptInUpdates(
+                request,
+                for: account
+            )
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
             )
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+            let transactionController = self.createNewTransactionController(for: asset)
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             if account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
             }
-
-            self.currentAsset = asset
         }
     }
 
@@ -514,13 +548,26 @@ extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
     }
 }
 
+extension ReceiveCollectibleAssetListViewController {
+    private func restartLoadingOfVisibleCellsIfNeeded() {
+        for cell in listView.visibleCells {
+            if let assetCell = cell as? OptInAssetListItemCell,
+               assetCell.accessory == .loading {
+                assetCell.accessory = .loading
+            } else if let loadingCell = cell as? PreviewLoadingCell {
+                loadingCell.startAnimating()
+            }
+        }
+    }
+}
+
 extension ReceiveCollectibleAssetListViewController: TransactionControllerDelegate {
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
-        currentAsset = nil
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
 
         switch error {
         case let .inapp(transactionError):
@@ -534,8 +581,8 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
-        currentAsset = nil
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
 
         switch error {
         case let .network(apiError):
@@ -549,27 +596,32 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        loadingController?.stopLoading()
-
-        if let currentAsset = currentAsset {
-            let collectibleAsset = CollectibleAsset(
-                asset: ALGAsset(id: currentAsset.id),
-                decoration: currentAsset
-            )
-
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (dataController.account, collectibleAsset)
-                ]
-            )
+        guard
+            let assetID = getAssetID(from: transactionController),
+            let assetDetail = optInTransactions[assetID]?.asset
+        else {
+            return
         }
+
+        let collectibleAsset = CollectibleAsset(
+            asset: ALGAsset(id: assetDetail.id),
+            decoration: assetDetail
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didAddCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (dataController.account, collectibleAsset)
+            ]
+        )
 
         delegate?.receiveCollectibleAssetListViewController(
             self,
             didCompleteTransaction: dataController.account
         )
+
+        clearTransactionCache(transactionController)
     }
 
     private func displayTransactionError(
@@ -636,8 +688,58 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
 
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
+    ) {}
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    private func createNewTransactionController(
+        for asset: AssetDecoration
+    ) -> TransactionController {
+        let transactionController = TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+        optInTransactions[asset.id] = AssetOptInTransaction(
+            asset: asset,
+            transactionController: transactionController
+        )
+        transactionController.delegate = self
+        return transactionController
+    }
+
+    private func clearTransactionCache(
+        _ transactionController: TransactionController
     ) {
-        loadingController?.stopLoading()
+        if let assetID = getAssetID(from: transactionController) {
+            optInTransactions[assetID] = nil
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func findCell(
+        from asset: AssetDecoration
+    ) -> OptInAssetListItemCell?  {
+        let item = ReceiveCollectibleAssetListItem.collectible(OptInAssetListItem(asset: asset))
+        let indexPath = listDataSource.indexPath(for: item)
+        return indexPath.unwrap {
+            listView.cellForItem(at: $0)
+        } as? OptInAssetListItemCell
+    }
+
+    private func restoreCellState(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let assetDetail = optInTransactions[assetID]?.asset,
+           let cell = findCell(from: assetDetail) {
+            cell.accessory = .add
+        }
     }
 }
 

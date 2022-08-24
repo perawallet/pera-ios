@@ -18,16 +18,22 @@ import Foundation
 import MagpieHipo
 
 final class ASADiscoveryScreenAPIDataController: ASADiscoveryScreenDataController {
+    var account: Account?
     var eventHandler: EventHandler?
 
     private(set) var asset: Asset
 
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
 
     init(
+        account: Account?,
         asset: AssetDecoration,
-        api: ALGAPI
+        api: ALGAPI,
+        sharedDataController: SharedDataController
     ) {
+        self.account = account
+
         if asset.isCollectible {
             self.asset = CollectibleAsset(decoration: asset)
         } else {
@@ -35,6 +41,7 @@ final class ASADiscoveryScreenAPIDataController: ASADiscoveryScreenDataControlle
         }
 
         self.api = api
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -60,6 +67,28 @@ extension ASADiscoveryScreenAPIDataController {
                 let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
                 self.eventHandler?(.didFailToLoadData(error))
             }
+        }
+    }
+}
+
+extension ASADiscoveryScreenAPIDataController {
+    func hasOptedIn() -> OptInStatus {
+        guard let account = account else {
+            return .rejected
+        }
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptedIn = monitor.hasPendingOptInRequest(
+            assetID: asset.id,
+            for: account
+        )
+        let hasAlreadyOptedIn = account[asset.id] != nil
+
+        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
+        case (true, false): return .pending
+        case (true, true): return .optedIn
+        case (false, true): return .optedIn
+        case (false, false): return .rejected
         }
     }
 }

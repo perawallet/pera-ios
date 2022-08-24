@@ -12,29 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   OptInAssetListItemCell.swift
+//   AssetPreviewWithActionCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class OptInAssetListItemCell:
-    CollectionCell<OptInAssetListItemView>,
+final class OptOutAssetListItemCell:
+    CollectionCell<OptOutAssetListItemView>,
     ViewModelBindable,
     UIInteractable {
-    var accessory: OptInAssetListItemAccessory = .add {
+    var accessory: OptOutAssetListItemAccessory = .remove {
         didSet { updateAccessoryIfNeeded(old: oldValue) }
     }
 
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .add: TargetActionInteraction()
+        .remove: TargetActionInteraction()
     ]
 
     override class var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
     }
 
-    static let theme = OptInAssetListItemCellTheme()
+    static let theme = OptOutAssetListItemCellTheme()
 
     private lazy var accessoryView: LoadingButton = {
         let loadingIndicator = ViewLoadingIndicator(indicator: "List/Accessories/loading".uiImage)
@@ -59,10 +58,10 @@ final class OptInAssetListItemCell:
             $0.bottom == theme.contextEdgeInsets.bottom
         }
     }
-
+    
     static func calculatePreferredSize(
-        _ viewModel: OptInAssetListItemViewModel?,
-        for theme: OptInAssetListItemCellTheme,
+        _ viewModel: OptOutAssetListItemViewModel?,
+        for theme: OptOutAssetListItemCellTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
@@ -86,7 +85,7 @@ final class OptInAssetListItemCell:
     }
 }
 
-extension OptInAssetListItemCell {
+extension OptOutAssetListItemCell {
     private func addAccessory() {
         let theme = Self.theme
 
@@ -106,12 +105,12 @@ extension OptInAssetListItemCell {
         updateAccessory()
     }
 
-    private func updateAccessoryIfNeeded(old: OptInAssetListItemAccessory) {
+    private func updateAccessoryIfNeeded(old: OptOutAssetListItemAccessory) {
         if accessory != old {
             updateAccessory()
         }
 
-        if accessory == .loading {
+        if accessory == .loading && !accessoryView.isLoading {
             accessoryView.startLoading()
         }
     }
@@ -124,12 +123,9 @@ extension OptInAssetListItemCell {
         let style: ButtonStyle
         let isInteractable: Bool
         switch accessory {
-        case .add:
-            style = theme.addAccessory
+        case .remove:
+            style = theme.removeAccessory
             isInteractable = true
-        case .check:
-            style = theme.checkAccessory
-            isInteractable = false
         case .loading:
             style = theme.loadingAccessory
             isInteractable = false
@@ -148,12 +144,12 @@ extension OptInAssetListItemCell {
     }
 }
 
-extension OptInAssetListItemCell {
+extension OptOutAssetListItemCell {
     @objc
     private func publishAccessoryAction() {
         let accessoryInteraction: MacaroonUIKit.UIInteraction?
         switch accessory {
-        case .add: accessoryInteraction = uiInteractions[.add]
+        case .remove: accessoryInteraction = uiInteractions[.remove]
         default: accessoryInteraction = nil
         }
 
@@ -161,8 +157,8 @@ extension OptInAssetListItemCell {
     }
 }
 
-extension OptInAssetListItemCell {
+extension OptOutAssetListItemCell {
     enum Event {
-        case add
+        case remove
     }
 }

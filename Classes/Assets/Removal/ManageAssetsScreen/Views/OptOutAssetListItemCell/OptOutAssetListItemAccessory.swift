@@ -12,28 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASADiscoveryScreenDataController.swift
+//   OptOutAssetListItemAccessory.swift
 
 import Foundation
-import MagpieCore
-import MagpieHipo
 
-protocol ASADiscoveryScreenDataController: AnyObject {
-    typealias EventHandler = (ASADiscoveryScreenDataControllerEvent) -> Void
-    typealias Error = HIPNetworkError<NoAPIModel>
-
-    var account: Account? { get set }
-    var eventHandler: EventHandler? { get set }
-
-    var asset: Asset { get }
-
-    func loadData()
-
-    func hasOptedIn() -> OptInStatus
-}
-
-enum ASADiscoveryScreenDataControllerEvent {
-    case willLoadData
-    case didLoadData
-    case didFailToLoadData(ASADiscoveryScreenDataController.Error)
+enum OptOutAssetListItemAccessory {
+    case remove
+    case loading
 }

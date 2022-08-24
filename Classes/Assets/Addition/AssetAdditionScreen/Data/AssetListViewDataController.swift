@@ -55,4 +55,8 @@ enum OptInStatus {
     case pending
     case optedIn
     case rejected
+
+    var isRejected: Bool {
+        return self == .rejected
+    }
 }

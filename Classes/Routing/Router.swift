@@ -469,14 +469,15 @@ class Router:
         case .asaDiscovery(let account, let asset, let eventHandler):
             let dataController =
                 ASADiscoveryScreenAPIDataController(
+                    account: account,
                     asset: asset,
-                    api: appConfiguration.api
+                    api: appConfiguration.api,
+                    sharedDataController: appConfiguration.sharedDataController
                 )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADiscoveryScreen(
-                account: account,
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration

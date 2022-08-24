@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListLayout+Theme.swift
+//   OptOutAssetListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
+import Prism
 import UIKit
 
-extension ManageAssetsListLayout {
-    struct Theme:
-        LayoutSheet,
-        StyleSheet {
-        let horizontalPaddings: LayoutHorizontalPaddings
-        let topContentInset: LayoutMetric
-        
-        init(_ family: LayoutFamily) {
-            self.horizontalPaddings = (24, 24)
-            self.topContentInset = 20
-        }
+struct OptOutAssetListItemViewModel: ViewModel {
+    private(set) var content: AssetListItemViewModel?
+
+    init(item: AssetItem) {
+        content = AssetListItemViewModel(item)
     }
 }

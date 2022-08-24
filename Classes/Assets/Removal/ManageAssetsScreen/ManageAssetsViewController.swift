@@ -82,8 +82,8 @@ final class ManageAssetsViewController:
             
             switch itemIdentifier {
             case .asset:
-                let assetCell = cell as! AssetPreviewWithActionCell
-                assetCell.startObserving(event: .performAction) {
+                let assetCell = cell as! OptOutAssetListItemCell
+                assetCell.startObserving(event: .remove) {
                     [weak self] in
                     guard let self = self else {
                         return

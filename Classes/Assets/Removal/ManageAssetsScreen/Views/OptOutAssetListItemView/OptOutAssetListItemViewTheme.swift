@@ -12,28 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ASADiscoveryScreenDataController.swift
+//   OptOutAssetListItemViewTheme.swift
 
 import Foundation
-import MagpieCore
-import MagpieHipo
+import MacaroonUIKit
+import MacaroonURLImage
+import UIKit
 
-protocol ASADiscoveryScreenDataController: AnyObject {
-    typealias EventHandler = (ASADiscoveryScreenDataControllerEvent) -> Void
-    typealias Error = HIPNetworkError<NoAPIModel>
+struct OptOutAssetListItemViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var content: AssetListItemTheme
 
-    var account: Account? { get set }
-    var eventHandler: EventHandler? { get set }
-
-    var asset: Asset { get }
-
-    func loadData()
-
-    func hasOptedIn() -> OptInStatus
-}
-
-enum ASADiscoveryScreenDataControllerEvent {
-    case willLoadData
-    case didLoadData
-    case didFailToLoadData(ASADiscoveryScreenDataController.Error)
+    init(_ family: LayoutFamily) {
+        self.content = AssetListItemTheme()
+    }
 }

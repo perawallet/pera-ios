@@ -19,8 +19,6 @@ import UIKit
 import MacaroonUIKit
 
 final class ManageAssetsListLayout: NSObject {
-    private lazy var theme = Theme()
-    
     lazy var handlers = Handlers()
     
     private let dataSource: ManageAssetsListDataSource
@@ -46,17 +44,21 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        var insets =
-            UIEdgeInsets(
-                (0, theme.horizontalPaddings.leading, 0, theme.horizontalPaddings.trailing)
-            )
-
         switch listSection {
         case .empty:
-            return insets
+            return UIEdgeInsets(
+                top: 0,
+                left: 24,
+                bottom: 0,
+                right: 24
+            )
         case .assets:
-            insets.top = theme.topContentInset
-            return insets
+            return UIEdgeInsets(
+                top: 20,
+                left: 0,
+                bottom: 0,
+                right: 0
+            )
         }
     }
     
@@ -74,63 +76,60 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetCellItem: item
+                sizeForAssetCellItem: item,
+                forSectionAt: indexPath.section
             )
         case .pendingAsset:
-            return CGSize(width: UIScreen.main.bounds.width - 48, height: 72)
+            return CGSize(
+                width: UIScreen.main.bounds.width - 48,
+                height: 72
+            )
         case .empty(let item):
             return sizeForNoContent(
                 collectionView,
-                item: item
+                item: item,
+                forSectionAt: indexPath.section
             )
         }
     }
-    
+
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewWithRemoveActionViewModel?
+        sizeForAssetCellItem item: OptOutAssetListItem,
+        forSectionAt section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewWithActionCell.reuseIdentifier
-        
+        let sizeCacheIdentifier = OptOutAssetListItemCell.reuseIdentifier
+
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
-        
-        let width = calculateContentWidth(for: listView)
-        
-        let sampleAssetPreview = AssetPreviewModel(
-            icon: .algo,
-            verificationTier: .trusted,
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized,
-            primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unkown".localized,
-            currencyAmount: 0,
-            asset: nil
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
         )
-        
-        let sampleAssetItem = AssetPreviewWithRemoveActionViewModel(
-            contentViewModel: AssetPreviewViewModel(sampleAssetPreview)
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = OptOutAssetListItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: OptOutAssetListItemCell.theme,
+            fittingIn:maxSize
         )
 
-        let newSize = AssetPreviewWithActionCell.calculatePreferredSize(
-            sampleAssetItem,
-            for: AssetPreviewWithActionCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-        
         sizeCache[sizeCacheIdentifier] = newSize
-        
+
         return newSize
     }
     
     private func sizeForNoContent(
         _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel
+        item: AssetListSearchNoContentViewModel,
+        forSectionAt section: Int
     ) -> CGSize {
-        let width = calculateContentWidth(for: listView)
-        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
@@ -158,12 +157,19 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
 
 extension ManageAssetsListLayout {
     private func calculateContentWidth(
-        for listView: UICollectionView
+        _ collectionView: UICollectionView,
+        forSectionAt section: Int
     ) -> LayoutMetric {
-        return listView.bounds.width -
-        listView.contentInset.horizontal -
-        theme.horizontalPaddings.leading -
-        theme.horizontalPaddings.trailing
+        let sectionInset = self.collectionView(
+            collectionView,
+            layout: collectionView.collectionViewLayout,
+            insetForSectionAt: section
+        )
+        return
+            collectionView.bounds.width -
+            collectionView.contentInset.horizontal -
+            sectionInset.left -
+            sectionInset.right
     }
 }
 
