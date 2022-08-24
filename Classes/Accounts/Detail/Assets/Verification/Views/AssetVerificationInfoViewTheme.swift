@@ -38,6 +38,6 @@ struct AssetVerificationInfoViewTheme:
         self.learnMore = learnMoreTheme
 
         self.learnMoreMinHeight = 44
-        self.spacingBetweenAssetVerificationAndLearnMore = 24
+        self.spacingBetweenAssetVerificationAndLearnMore = 15
     }
 }

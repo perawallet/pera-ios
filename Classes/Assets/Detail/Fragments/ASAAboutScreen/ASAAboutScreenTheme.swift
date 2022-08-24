@@ -29,6 +29,7 @@ struct ASAAboutScreenTheme:
     var verificationTier: AssetVerificationInfoViewTheme
     var description: ShowMoreViewTheme
     var socialMedia: AssetSocialMediaGroupedListItemButtonTheme
+    var spacingBeforeReportAction: LayoutMetric
     var reportAction: ListItemButtonTheme
     var sectionSeparator: Separator
     var spacingBetweenSections: CGFloat
@@ -46,6 +47,7 @@ struct ASAAboutScreenTheme:
         self.description = ShowMoreViewTheme(numberOfLinesLimit: 4, family: family)
         self.socialMedia = AssetSocialMediaGroupedListItemButtonTheme(family)
 
+        self.spacingBeforeReportAction = 27
         var reportAction = ListItemButtonTheme(family)
         reportAction.configureForAssetSocialMediaView()
         self.reportAction = reportAction

@@ -18,6 +18,8 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// We should find a generic and better solution for handling separators.
 final class ASAAboutScreen:
     BaseScrollViewController,
     ASADetailPageFragmentScreen,
@@ -378,6 +380,11 @@ extension ASAAboutScreen {
             verificationTierView,
             preferredAt: index
         )
+        
+        contextView.setCustomSpacing(
+            theme.spacingBeforeReportAction,
+            after: verificationTierView
+        )
 
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
@@ -534,7 +541,7 @@ extension ASAAboutScreen: MailComposerDelegate {
 }
 
 extension ASAAboutScreen {
-    private enum Section {
+    private enum Section: Equatable {
         case statistics
         case about
         case verificationTier
@@ -543,7 +550,9 @@ extension ASAAboutScreen {
         case report
         case separator(LayoutVerticalPaddings)
 
-        static func ordered(by asset: Asset) -> [Section] {
+        static func ordered(
+            by asset: Asset
+        ) -> [Section] {
             var list: [Section] = []
 
             let separatorVerticalPaddings: LayoutVerticalPaddings = (36, 36)
@@ -573,11 +582,35 @@ extension ASAAboutScreen {
             }
 
             if asset.verificationTier.isSuspicious {
-                list.append(.separator(separatorVerticalPaddings))
+                list.append(.separator((separatorVerticalPaddings.top, 27)))
                 list.append(.report)
             }
 
+            if let verificationTierIndex = list.firstIndex(of: .verificationTier),
+               verificationTierIndex < list.endIndex {
+                let indexAfterVerificationTier = list.index(after: verificationTierIndex)
+
+                if case .separator(let paddings) = list[safe: indexAfterVerificationTier] {
+                    list[indexAfterVerificationTier] = .separator((27, paddings.bottom))
+                }
+            }
+
             return list
+        }
+
+        static func == (lhs: ASAAboutScreen.Section, rhs: ASAAboutScreen.Section) -> Bool {
+            switch (lhs, rhs) {
+            case (.statistics, .statistics),
+                 (.about, .about),
+                 (.verificationTier, .verificationTier),
+                 (.description, .description),
+                 (.socialMedia, .socialMedia),
+                 (.report, .report),
+                 (.separator, .separator):
+                return true
+            default:
+                return false
+            }
         }
     }
 }
