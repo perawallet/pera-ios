@@ -25,15 +25,19 @@ struct AssetListItemViewModel:
     Hashable {
     var imageSource: ImageSource?
     var title: PrimaryTitleViewModel?
-    var value: PrimaryTitleViewModel?
+    var primaryValue: TextProvider?
+    var secondaryValue: TextProvider?
     var asset: Asset?
+
+    private(set) var valueInUSD: Decimal?
 
     init(
         _ item: AssetItem
     ) {
         bindImageSource(item)
         bindTitle(item)
-        bindValue(item)
+        bindPrimaryValue(item)
+        bindSecondaryValue(item)
 
         asset = item.asset
     }
@@ -43,8 +47,8 @@ struct AssetListItemViewModel:
     ) {
         hasher.combine(title?.primaryTitle?.string)
         hasher.combine(title?.secondaryTitle?.string)
-        hasher.combine(value?.primaryTitle?.string)
-        hasher.combine(value?.secondaryTitle?.string)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
         hasher.combine(asset?.id)
     }
 
@@ -54,8 +58,8 @@ struct AssetListItemViewModel:
     ) -> Bool {
         return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
             lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
-            lhs.value?.primaryTitle?.string == rhs.value?.primaryTitle?.string &&
-            lhs.value?.secondaryTitle?.string == rhs.value?.secondaryTitle?.string &&
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
             lhs.asset?.id == rhs.asset?.id
     }
 }
@@ -104,10 +108,74 @@ extension AssetListItemViewModel {
         title = AssetNameViewModel(item.asset)
     }
 
-    mutating func bindValue(
+    mutating func bindPrimaryValue(
         _ item: AssetItem
     ) {
-        value = AssetAmountViewModel(item)
+        let asset = item.asset
+
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+        } else {
+            formatter.currency = nil
+        }
+
+        let text = formatter.format(asset.decimalAmount)
+        primaryValue = text?.bodyMedium(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating private func bindSecondaryValue(
+        _ item: AssetItem
+    ) {
+        let asset = item.asset
+        valueInUSD = asset.totalUSDValue ?? 0
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+
+        do {
+            let exchanger: CurrencyExchanger
+            if asset.isAlgo {
+                guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+            } else {
+                guard let currencyValue = item.currency.primaryValue else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                let rawCurrency = try currencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawCurrency)
+
+                formatter.currency = rawCurrency
+            }
+
+            let amount: Decimal
+            if asset.isAlgo {
+                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
+            } else {
+                amount = try exchanger.exchange(asset)
+            }
+
+            let text = formatter.format(amount)
+            secondaryValue = text?.footnoteRegular(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail
+            )
+        } catch {
+            secondaryValue = nil
+            valueInUSD = 0
+        }
     }
 }
 
