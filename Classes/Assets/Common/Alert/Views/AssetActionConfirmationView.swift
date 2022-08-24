@@ -297,6 +297,7 @@ extension AssetActionConfirmationView {
 extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
         titleLabel.text = viewModel?.title
+        titleLabel.textColor = viewModel?.titleColor?.uiColor
         assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
         assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
 

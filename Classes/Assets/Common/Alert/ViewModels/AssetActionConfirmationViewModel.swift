@@ -20,6 +20,7 @@ import UIKit
 
 final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: String?
+    private(set) var titleColor: Color?
     private(set) var id: String?
     private(set) var verificationTierImage: UIImage?
     private(set) var transactionFee: String?
@@ -33,6 +34,7 @@ final class AssetActionConfirmationViewModel: ViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(model)
+        bindTitleColor(model)
         bindID(model)
         bindverificationTierImage(model)
         bindTransactionFee(
@@ -49,6 +51,15 @@ final class AssetActionConfirmationViewModel: ViewModel {
 extension AssetActionConfirmationViewModel {
     private func bindTitle(_ draft: AssetAlertDraft) {
         title = draft.title
+    }
+
+    private func bindTitleColor(_ draft: AssetAlertDraft) {
+        if let asset = draft.asset,
+            asset.verificationTier.isSuspicious {
+            titleColor = Colors.Helpers.negative
+        } else {
+            titleColor = Colors.Text.main
+        }
     }
 
     private func bindID(_ draft: AssetAlertDraft) {
