@@ -58,7 +58,6 @@ final class AccountDetailViewController: PageContainer {
     private lazy var localAuthenticator = LocalAuthenticator()
 
     private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
-    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
 
     private var accountHandle: AccountHandle
 
@@ -80,11 +79,6 @@ final class AccountDetailViewController: PageContainer {
 
         setPageBarItems()
         addTitleView()
-
-        if !accountHandle.value.isWatchAccount() {
-            addAccountActionsMenuAction()
-            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
-        }
     }
 
     override func viewWillAppear(
@@ -162,13 +156,7 @@ extension AccountDetailViewController {
             case .addAsset:
                 self.assetListScreen.endEditing()
 
-                let controller = self.open(
-                    .addAsset(
-                        account: self.accountHandle.value
-                    ),
-                    by: .present
-                ) as? AssetAdditionViewController
-                controller?.delegate = self
+                self.openAddAssetScreen()
             case .buyAlgo:
                 self.assetListScreen.endEditing()
 
@@ -185,12 +173,25 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
 
                 self.presentOptionsScreen()
+            case .transactionOption:
+                self.openAccountActionsMenu()
             }
         }
     }
 }
 
 extension AccountDetailViewController: TransactionOptionsScreenDelegate {
+    func transactionOptionsScreenDidAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openAddAssetScreen()
+        }
+    }
+
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
@@ -242,6 +243,16 @@ extension AccountDetailViewController {
         )
     }
 
+    private func openAddAssetScreen() {
+        let controller = open(
+            .addAsset(
+                account: accountHandle.value
+            ),
+            by: .present
+        ) as? AssetAdditionViewController
+        controller?.delegate = self
+    }
+
     private func setPageBarItems() {
         items = [
             AssetListPageBarItem(screen: assetListScreen),
@@ -272,36 +283,6 @@ extension AccountDetailViewController {
                 with: .center
             )
         )
-    }
-
-    private func addAccountActionsMenuAction() {
-        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
-
-        view.addSubview(accountActionsMenuActionView)
-
-        accountActionsMenuActionView.snp.makeConstraints {
-            let safeAreaBottom = view.compactSafeAreaInsets.bottom
-            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
-
-            $0.fitToSize(theme.accountActionsMenuActionSize)
-            $0.trailing == theme.accountActionsMenuActionTrailingPadding
-            $0.bottom == bottom
-        }
-
-        accountActionsMenuActionView.addTouch(
-            target: self,
-            action: #selector(openAccountActionsMenu)
-        )
-    }
-
-    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
-        let listSafeAreaBottom =
-            theme.spacingBetweenListAndAccountActionsMenuAction +
-            theme.accountActionsMenuActionSize.h +
-            theme.accountActionsMenuActionBottomPadding
-        assetListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
-        collectibleListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
-        transactionListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 

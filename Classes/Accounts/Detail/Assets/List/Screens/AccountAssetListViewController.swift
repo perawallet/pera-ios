@@ -39,7 +39,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -59,6 +59,9 @@ final class AccountAssetListViewController:
         scrollView: listView,
         screen: self
     )
+
+    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
+    private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
     private var accountHandle: AccountHandle
 
@@ -143,6 +146,11 @@ extension AccountAssetListViewController {
     private func addUI() {
         addListBackground()
         addList()
+
+        if !accountHandle.value.isWatchAccount() {
+            addAccountActionsMenuAction()
+            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
+        }
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -152,6 +160,7 @@ extension AccountAssetListViewController {
 
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
+        updateAccountActionsMenuActionWhenListDidScroll()
     }
 
     private func addListBackground() {
@@ -217,6 +226,55 @@ extension AccountAssetListViewController {
 
         let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
         listView.setContentInset(bottom: bottom)
+    }
+}
+
+extension AccountAssetListViewController {
+    private func addAccountActionsMenuAction() {
+        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
+
+        view.addSubview(accountActionsMenuActionView)
+
+        accountActionsMenuActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
+
+            $0.fitToSize(theme.accountActionsMenuActionSize)
+            $0.trailing == theme.accountActionsMenuActionTrailingPadding
+            $0.bottom == bottom
+        }
+
+        accountActionsMenuActionView.addTouch(
+            target: self,
+            action: #selector(openAccountActionsMenu)
+        )
+
+        updateAccountActionsMenuActionWhenListDidScroll()
+    }
+
+    private func updateAccountActionsMenuActionWhenListDidScroll() {
+        let isVisible: Bool
+        if let positionY = positionYForVisibleAccountActionsMenuAction {
+            let currentContentOffset = listView.contentOffset
+            isVisible = currentContentOffset.y >= positionY
+        } else {
+            isVisible = false
+        }
+
+        accountActionsMenuActionView.isHidden = !isVisible
+    }
+
+    @objc
+    private func openAccountActionsMenu() {
+        eventHandler?(.transactionOption)
+    }
+
+    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
+        let listSafeAreaBottom =
+        theme.spacingBetweenListAndAccountActionsMenuAction +
+        theme.accountActionsMenuActionSize.h +
+        theme.accountActionsMenuActionBottomPadding
+        additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
@@ -295,6 +353,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             guard let item = cell as? AccountQuickActionsCell else {
                 return
             }
+
+            positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
                 [weak self] in
@@ -644,5 +704,6 @@ extension AccountAssetListViewController {
         case send
         case address
         case more
+        case transactionOption
     }
 }

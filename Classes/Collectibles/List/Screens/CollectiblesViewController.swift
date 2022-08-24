@@ -39,7 +39,6 @@ final class CollectiblesViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
-        theme: .common,
         configuration: configuration
     )
 

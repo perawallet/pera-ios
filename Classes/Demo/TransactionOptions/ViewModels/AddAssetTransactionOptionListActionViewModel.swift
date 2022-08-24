@@ -12,19 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountDetailViewController+Theme.swift
+//   AddAssetTransactionOptionListActionViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-extension AccountDetailViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
+struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = Colors.Defaults.background
-        }
+    init() {
+        icon = "add-icon-40"
+        title = Self.getTitle("transaction-option-list-add-asset-title".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-add-asset-subtitle".localized)
     }
 }
