@@ -587,7 +587,15 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .addAsset(account):
-            viewController = AssetAdditionViewController(account: account, configuration: configuration)
+            let dataController = AssetListViewAPIDataController(
+                account: account,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            viewController = AssetAdditionViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(dataController):

@@ -67,6 +67,8 @@ final class ASADiscoveryScreen:
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+
+        isModalInPresentation = true
     }
 
     override func configureNavigationBarAppearance() {

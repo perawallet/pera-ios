@@ -137,6 +137,8 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
                 var newCollectibles: [CollectibleAsset] = []
                 var newCollectibleAssetsIndexer: Account.CollectibleAssetIndexer = [:]
+
+                var optedInAssets: Set<AssetID> = []
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
@@ -153,6 +155,12 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                             newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
                         }
                     }
+
+                    /// <note>
+                    /// Check if the opt-in request is granted.
+                    if self.input.blockchainRequests.optInAssets[id] != nil {
+                        optedInAssets.insert(id)
+                    }
                 }
                 
                 account.setStandardAssets(
@@ -164,8 +172,13 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     newCollectibles,
                     newCollectibleAssetsIndexer
                 )
-                
-                let output = Output(account: account, newAssetDetails: newAssetDetails)
+
+                let blockchainUpdates = BlockchainAccountBatchUpdates(optedInAssets: optedInAssets)
+                let output = Output(
+                    account: account,
+                    newAssetDetails: newAssetDetails,
+                    blockchainUpdates: blockchainUpdates
+                )
                 self.result = .success(output)
             }
             
@@ -229,10 +242,12 @@ extension AssetDetailGroupFetchOperation {
         var cachedAccounts: AccountCollection = []
         var cachedAssetDetails: AssetDetailCollection = []
         var error: AssetDetailGroupFetchOperation.Error?
+        var blockchainRequests: BlockchainAccountBatchRequest = .init()
     }
     
     struct Output {
         let account: Account
         let newAssetDetails: [AssetID: AssetDecoration]
+        let blockchainUpdates: BlockchainAccountBatchUpdates
     }
 }
