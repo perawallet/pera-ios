@@ -63,7 +63,12 @@ final class OptInAssetScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        blursFooterBackgroundOnUnderScrolling = true
+        footerViewEffectStyle = .linearGradient(
+            .init(colors: [
+                Colors.Defaults.background.uiColor.withAlphaComponent(0),
+                Colors.Defaults.background.uiColor
+            ])
+        )
 
         addBackground()
         addTitle()
