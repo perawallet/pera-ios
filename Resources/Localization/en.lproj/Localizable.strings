@@ -275,6 +275,7 @@
 "asset-quick-action-title-add-without-account" = "You can opt-in to this asset from one of your accounts.";
 "asset-quick-action-title-remove" = "Opted in to";
 "asset-opt-in-successful-message" = "%@ successfully added to your account.";
+"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";

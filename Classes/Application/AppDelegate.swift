@@ -370,6 +370,11 @@ extension AppDelegate {
             for update in optedInUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
             }
+
+            let optedOutUpdates = monitor.filterOptedOutAssetUpdates()
+            for update in optedOutUpdates {
+                bannerController.presentSuccessBanner(title: update.notificationMessage)
+            }
         }
     }
 }
