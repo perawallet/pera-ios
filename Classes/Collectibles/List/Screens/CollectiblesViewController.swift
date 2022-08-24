@@ -53,8 +53,8 @@ final class CollectiblesViewController: BaseViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
         bindNavigationItemTitle()
+        setOptInBarButtonHidden(true)
     }
 
     override func customizeTabBarAppearence() {
@@ -74,18 +74,21 @@ final class CollectiblesViewController: BaseViewController {
 }
 
 extension CollectiblesViewController {
-    private func addBarButtons() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
-            guard let self = self else {
-                return
+    private func setOptInBarButtonHidden(_ hidden: Bool) {
+        if hidden {
+            rightBarButtonItems = []
+        } else {
+            let addBarButtonItem = ALGBarButtonItem(kind: .add) {
+                [unowned self] in
+
+                self.endEditing()
+                self.openReceiveCollectible()
             }
 
-            self.endEditing()
-
-            self.openReceiveCollectible()
+            rightBarButtonItems = [ addBarButtonItem ]
         }
 
-        rightBarButtonItems = [addBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 
     private func bindNavigationItemTitle() {
@@ -106,6 +109,10 @@ extension CollectiblesViewController {
             switch event {
             case .didTapReceive:
                 self.openReceiveCollectible()
+            case .willDisplayListHeader:
+                self.setOptInBarButtonHidden(true)
+            case .didEndDisplayingListHeader:
+                self.setOptInBarButtonHidden(false)
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(

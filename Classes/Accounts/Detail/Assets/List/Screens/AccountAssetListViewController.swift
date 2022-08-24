@@ -286,10 +286,10 @@ extension AccountAssetListViewController {
 
     private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
         let listSafeAreaBottom =
-        theme.spacingBetweenListAndAccountActionsMenuAction +
-        theme.accountActionsMenuActionSize.h +
-        theme.accountActionsMenuActionBottomPadding
-        additionalSafeAreaInsets.bottom = listSafeAreaBottom
+            theme.spacingBetweenListAndAccountActionsMenuAction +
+            theme.accountActionsMenuActionSize.h +
+            theme.accountActionsMenuActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
