@@ -106,7 +106,7 @@ final class AccountDetailViewController: PageContainer {
         super.customizePageBarAppearance()
 
         pageBar.customizeAppearance([
-            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            .backgroundColor(Colors.Helpers.heroBackground)
         ])
     }
 
@@ -138,6 +138,11 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .didRenameAccount:
+                self.bindTitle()
+                self.eventHandler?(.didEdit)
+            case .didRemoveAccount:
+                self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
 
@@ -258,12 +263,6 @@ extension AccountDetailViewController {
 
     private func addTitleView() {
         accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
 
         accountNamePreviewTitleView.addGestureRecognizer(
             UILongPressGestureRecognizer(
@@ -273,6 +272,17 @@ extension AccountDetailViewController {
         )
 
         navigationItem.titleView = accountNamePreviewTitleView
+
+        bindTitle()
+    }
+
+    private func bindTitle() {
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
     }
 }
 
@@ -301,8 +311,9 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        log(ReceiveCopyEvent(address: accountHandle.value.address))
-        copyToClipboardController.copyAddress(accountHandle.value)
+        let account = accountHandle.value
+        analytics.track(.showQRCopy(account: account))
+        copyToClipboardController.copyAddress(account)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
@@ -415,22 +426,39 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
-
+        bindTitle()
         eventHandler?(.didEdit)
     }
 }
 
 extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-        standardAsset.state = .pending(.add)
-        assetListScreen.addAsset(standardAsset)
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd asset: AssetDecoration
+    ) {
+        if asset.isCollectible {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: asset.id),
+                decoration: asset
+            )
+
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, collectibleAsset)
+                ]
+            )
+        } else {
+            let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+            standardAsset.state = .pending(.add)
+            assetListScreen.addAsset(standardAsset)
+        }
+    }
+
+    func assetAdditionViewControllerDidRemoveAccount(_ assetAdditionViewController: AssetAdditionViewController) {
+        assetAdditionViewController.closeScreen(by: .dismiss)
+        eventHandler?(.didRemove)
     }
 }
 
@@ -493,7 +521,15 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+        let dataController = ManageAssetsListLocalDataController(
+            account: accountHandle.value,
+            sharedDataController: sharedDataController
+        )
+
+        let controller = open(
+            .removeAsset(dataController: dataController),
+            by: .present
+        ) as? ManageAssetsViewController
         controller?.delegate = self
     }
 }
@@ -506,7 +542,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.assets.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-assets".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-overview".localized)
             self.screen = screen
         }
     }

@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class AssetPreviewWithActionCell:
     CollectionCell<AssetPreviewWithActionView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (14, 0, 14, 0)
     }
@@ -30,5 +30,13 @@ final class AssetPreviewWithActionCell:
     override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+
+        separatorStyle = .single(separator)
     }
 }

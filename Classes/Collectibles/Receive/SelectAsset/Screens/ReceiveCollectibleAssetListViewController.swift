@@ -22,7 +22,8 @@ final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     NotificationObserver,
-    UIContextMenuInteractionDelegate {
+    UIContextMenuInteractionDelegate,
+    TransactionSignChecking {
     var notificationObservations: [NSObjectProtocol] = []
 
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
@@ -42,9 +43,7 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var selectedAccountPreviewCanvasView = MacaroonUIKit.BaseView()
     private lazy var selectedAccountPreviewView = SelectedAccountPreviewView()
 
-    private lazy var bottomSheetTransition = BottomSheetTransition(
-        presentingViewController: self
-    )
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
@@ -54,7 +53,8 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var transactionController: TransactionController = {
         return TransactionController(
             api: api!,
-            bannerController: bannerController
+            bannerController: bannerController,
+            analytics: analytics
         )
     }()
 
@@ -67,18 +67,15 @@ final class ReceiveCollectibleAssetListViewController:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var currentAsset: AssetDecoration?
 
-    private let account: AccountHandle
     private let dataController: ReceiveCollectibleAssetListDataController
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
     init(
-        account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController,
         theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
         self.dataController = dataController
         self.theme = theme
         self.copyToClipboardController = copyToClipboardController
@@ -104,6 +101,8 @@ final class ReceiveCollectibleAssetListViewController:
             switch event {
             case .didUpdate(let snapshot):
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didOptInAssets(let items):
+                break
             }
         }
 
@@ -144,7 +143,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         transactionController.delegate = self
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -153,7 +152,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -171,7 +170,7 @@ final class ReceiveCollectibleAssetListViewController:
 
         selectedAccountPreviewView.addInteraction(accountMenuInteraction)
 
-        selectedAccountPreviewView.observe(event: .performCopyAction) {
+        selectedAccountPreviewView.startObserving(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -180,7 +179,7 @@ final class ReceiveCollectibleAssetListViewController:
             self.copyAddress()
         }
 
-        selectedAccountPreviewView.observe(event: .performQRAction) {
+        selectedAccountPreviewView.startObserving(event: .performQRAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -194,7 +193,7 @@ final class ReceiveCollectibleAssetListViewController:
         selectedAccountPreviewView.bindData(
             SelectedAccountPreviewViewModel(
                 IconWithShortAddressDraft(
-                    account.value
+                    dataController.account
                 )
             )
         )
@@ -250,11 +249,12 @@ extension ReceiveCollectibleAssetListViewController {
 
 extension ReceiveCollectibleAssetListViewController {
     private func copyAddress() {
-        copyToClipboardController.copyAddress(self.account.value)
+        let account = dataController.account
+        copyToClipboardController.copyAddress(account)
     }
 
     private func openQRGenerator() {
-        let account = account.value
+        let account = dataController.account
         
         let draft = QRCreationDraft(
             address: account.address,
@@ -281,7 +281,8 @@ extension ReceiveCollectibleAssetListViewController {
          return UIContextMenuConfiguration { _ in
              let copyActionItem = UIAction(item: .copyAddress) {
                  [unowned self] _ in
-                 self.copyToClipboardController.copyAddress(self.account.value)
+                 let account = self.dataController.account
+                 self.copyToClipboardController.copyAddress(account)
              }
              return UIMenu(children: [ copyActionItem ])
          }
@@ -297,7 +298,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -311,7 +312,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
  }
@@ -363,7 +364,16 @@ extension ReceiveCollectibleAssetListViewController {
             }
         case .search:
             linkInteractors(cell as! CollectibleReceiveSearchInputCell)
-        case .collectible:
+        case .collectible(let item):
+            configureAccessory(
+                cell as? OptInAssetListItemCell,
+                for: item
+            )
+            linkInteractors(
+                cell as? OptInAssetListItemCell,
+                for: item
+            )
+
             dataController.loadNextPageIfNeeded(for: indexPath)
         default:
             break
@@ -399,43 +409,57 @@ extension ReceiveCollectibleAssetListViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
-            return
-        }
-
         view.endEditing(true)
+    }
 
-        switch itemIdentifier {
-        case .collectible:
-            guard let selectedAsset = dataController[indexPath.item] else {
-                return
+    private func continueToOptInAsset(asset: AssetDecoration) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            var account = self.dataController.account
+
+            if !self.canSignTransaction(for: &account) { return }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
             }
 
-            if account.value.containsAsset(selectedAsset.id) {
-                displaySimpleAlertWith(
-                    title: "asset-you-already-own-message".localized,
-                    message: .empty
-                )
-                return
-            }
-
-            let assetAlertDraft = AssetAlertDraft(
-                account: account.value,
-                assetId: selectedAsset.id,
-                asset: selectedAsset,
-                transactionFee: Transaction.Constant.minimumFee,
-                title: "asset-add-confirmation-title".localized,
-                detail: "asset-add-warning".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
-            )
-
-            bottomSheetTransition.perform(
-                .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-                by: .presentWithoutNavigationController
-            )
-        default: break
+            self.currentAsset = asset
         }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    private func configureAccessory(
+        _ cell: OptInAssetListItemCell?,
+        for item: OptInAssetListItem
+    ) {
+        let asset = item.model
+        let status = dataController.hasOptedIn(asset)
+
+        let accessory: OptInAssetListItemAccessory
+        switch status {
+        case .pending: accessory = .loading
+        case .optedIn: accessory = .check
+        case .rejected: accessory = .add
+        }
+
+        cell?.accessory = accessory
     }
 }
 
@@ -444,6 +468,35 @@ extension ReceiveCollectibleAssetListViewController {
         _ cell: CollectibleReceiveSearchInputCell
     ) {
         cell.delegate = self
+    }
+
+    private func linkInteractors(
+        _ cell: OptInAssetListItemCell?,
+        for item: OptInAssetListItem
+    ) {
+        cell?.startObserving(event: .add) {
+            [unowned self] in
+
+            let account = self.dataController.account
+            let asset = item.model
+            let draft = OptInAssetDraft(account: account, asset: asset)
+            let screen = Screen.optInAsset(draft: draft) {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .performApprove:
+                    cell?.accessory = .loading
+                    self.continueToOptInAsset(asset: asset)
+                case .performClose:
+                    self.cancelOptInAsset()
+                }
+            }
+            self.transitionToOptInAsset.perform(
+                screen,
+                by: .present
+            )
+        }
     }
 }
 
@@ -458,37 +511,6 @@ extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
-    }
-}
-
-extension ReceiveCollectibleAssetListViewController:
-    AssetActionConfirmationViewControllerDelegate,
-    TransactionSignChecking {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
-    ) {
-        var anAccount = account.value
-
-        if !canSignTransaction(for: &anAccount) {
-            return
-        }
-
-        let assetTransactionDraft = AssetTransactionSendDraft(
-            from: anAccount,
-            assetIndex: asset.id
-        )
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        if anAccount.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-
-        currentAsset = asset
     }
 }
 
@@ -539,12 +561,15 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
                 name: CollectibleListLocalDataController.didAddCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account.value, collectibleAsset)
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (dataController.account, collectibleAsset)
                 ]
             )
         }
 
-        delegate?.receiveCollectibleAssetListViewController(self, didCompleteTransaction: account.value)
+        delegate?.receiveCollectibleAssetListViewController(
+            self,
+            didCompleteTransaction: dataController.account
+        )
     }
 
     private func displayTransactionError(
@@ -607,6 +632,12 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

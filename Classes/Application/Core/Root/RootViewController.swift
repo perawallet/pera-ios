@@ -43,7 +43,9 @@ class RootViewController: UIViewController {
     private lazy var mainContainer = TabBarController(
         sharedDataController: appConfiguration.sharedDataController,
         api: appConfiguration.api,
-        bannerController: appConfiguration.bannerController
+        bannerController: appConfiguration.bannerController,
+        loadingController: appConfiguration.loadingController,
+        analytics: appConfiguration.analytics
     )
     
     private lazy var pushNotificationController = PushNotificationController(
@@ -307,7 +309,7 @@ extension RootViewController {
     }
     
     private func addBackground() {
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
     }
     
     private func addMain() {

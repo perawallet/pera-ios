@@ -64,7 +64,7 @@ extension CollectibleDetailAPIDataController {
             switch response {
             case .success(let asset):
                 self.asset = CollectibleAsset(
-                    asset: ALGAsset(collectibleAsset: self.asset),
+                    asset: ALGAsset(asset: self.asset),
                     decoration: asset
                 )
 
@@ -124,26 +124,24 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        guard let asset = account[asset.id] as? CollectibleAsset else {
-            return
-        }
-
-        if !asset.isOwned {
-            mediaItems.append(
-                .error(
-                    CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+        if let asset = account[asset.id] as? CollectibleAsset {
+            if !asset.isOwned {
+                mediaItems.append(
+                    .error(
+                        CollectibleMediaErrorViewModel(
+                            .notOwner(isWatchAccount: account.isWatchAccount())
+                        )
                     )
                 )
-            )
-        } else if !asset.mediaType.isSupported {
-            mediaItems.append(
-                .error(
-                    CollectibleMediaErrorViewModel(
-                        .unsupported
+            } else if !asset.mediaType.isSupported {
+                mediaItems.append(
+                    .error(
+                        CollectibleMediaErrorViewModel(
+                            .unsupported
+                        )
                     )
                 )
-            )
+            }
         }
 
         snapshot.appendSections([.media])
@@ -172,7 +170,9 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        addOptedInActionContent(&snapshot)
+        if account[asset.id] != nil {
+            addOptedInActionContent(&snapshot)
+        }
     }
 
     private func addWatchAccountActionContent(

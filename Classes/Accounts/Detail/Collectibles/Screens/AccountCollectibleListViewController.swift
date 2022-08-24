@@ -118,24 +118,15 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     ) {
         let account = account.value
 
-        log(SendAssetDetailEvent(address: account.address))
+        analytics.track(.tapSendInDetail(account: account))
 
-        let controller = open(
+        open(
             .assetSelection(
                 filter: nil,
                 account: account
             ),
             by: .present
-        ) as? SelectAssetViewController
-
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.closeScreen(
-                by: .dismiss,
-                animated: true
-            )
-        }
-
-        controller?.leftBarButtonItems = [closeBarButtonItem]
+        )
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(
@@ -143,7 +134,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     ) {
         let account = account.value
 
-        log(ReceiveAssetDetailEvent(address: account.address))
+        analytics.track(.tapReceiveAssetInDetail(account: account))
 
         let draft = QRCreationDraft(
             address: account.address,
@@ -232,20 +223,11 @@ extension AccountCollectibleListViewController {
         view.endEditing(true)
 
         let controller = open(
-            .receiveCollectibleAssetList(
-                account: account,
-                dataController: ReceiveCollectibleAssetListAPIDataController(api!)
-            ),
+            .receiveCollectibleAssetList(account: account),
             by: .present
         ) as? ReceiveCollectibleAssetListViewController
 
         controller?.delegate = self
-
-        let close = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.dismissScreen()
-        }
-
-        controller?.leftBarButtonItems = [close]
     }
 }
 

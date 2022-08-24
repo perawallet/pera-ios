@@ -59,21 +59,14 @@ final class WelcomeViewController: BaseViewController {
 extension WelcomeViewController {
     private func addBarButtons() {
         switch flow {
-        case .addNewAccount:
-            addCloseBarButtonItem()
         case .initializeAccount:
+            hidesCloseBarButtonItem = true
+
             addSkipBarButtonItem()
-        case .none:
+        case .addNewAccount,
+             .none:
             break
         }
-    }
-
-    private func addCloseBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 
     private func addSkipBarButtonItem() {

@@ -21,7 +21,11 @@ import MacaroonURLImage
 final class CollectibleDetailViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    TransactionControllerDelegate {
+    TransactionControllerDelegate,
+    TransactionSignChecking {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
 
     private lazy var bottomBannerController = BottomActionableBannerController(
         presentingView: view,
@@ -36,10 +40,15 @@ final class CollectibleDetailViewController:
             fatalError("API should be set.")
         }
 
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
@@ -49,7 +58,9 @@ final class CollectibleDetailViewController:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    lazy var eventHandlers = Event()
+    private var isQuickActionVisible: Bool {
+        return account[asset.id] == nil
+    }
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleDetailLayout.build()
@@ -63,6 +74,8 @@ final class CollectibleDetailViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+
+    private lazy var assetQuickActionView = AssetQuickActionView()
 
     private lazy var listLayout = CollectibleDetailLayout(dataSource: dataSource)
     private lazy var dataSource = CollectibleDetailDataSource(
@@ -79,7 +92,7 @@ final class CollectibleDetailViewController:
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var asset: CollectibleAsset
-    private let account: Account
+    private var account: Account
     private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
     private let copyToClipboardController: CopyToClipboardController
@@ -133,12 +146,29 @@ final class CollectibleDetailViewController:
             }
         }
 
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
 
         dataController.load()
 
         addChild(mediaPreviewController)
         mediaPreviewController.didMove(toParent: self)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if isQuickActionVisible {
+            /// <note>
+            /// The safe area of the view will equal to the one it set as
+            /// `additionalSafeAreaInsets.bottom` next time this method is called.
+            let safeAreaBottom = view.window?.safeAreaInsets.bottom ?? 0
+            let bottom = assetQuickActionView.bounds.height - safeAreaBottom
+            additionalSafeAreaInsets.bottom = bottom
+        } else {
+            additionalSafeAreaInsets.bottom = 0
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,6 +180,7 @@ final class CollectibleDetailViewController:
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addQuickAction()
     }
 
     override func setListeners() {
@@ -176,6 +207,30 @@ extension CollectibleDetailViewController {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.setPaddings()
+        }
+    }
+
+    private func addQuickAction() {
+        if !isQuickActionVisible {
+            return
+        }
+
+        assetQuickActionView.customize(AssetQuickActionViewTheme())
+
+        view.addSubview(assetQuickActionView)
+        assetQuickActionView.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        assetQuickActionView.bindData(viewModel)
+
+        assetQuickActionView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.linkAssetQuickActionViewInteractors()
         }
     }
 }
@@ -326,7 +381,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performSend) {
+        cell.startObserving(event: .performSend) {
             [weak self] in
             guard let self = self,
                   let asset = self.account[self.asset.id] as? CollectibleAsset else {
@@ -352,12 +407,6 @@ extension CollectibleDetailViewController {
                         self.popScreen()
                     }
                 }
-
-                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                    [weak controller] in
-                    controller?.dismissScreen()
-                }
-                controller?.leftBarButtonItems = [closeBarButtonItem]
                 return
             }
 
@@ -391,7 +440,7 @@ extension CollectibleDetailViewController {
             }
         }
 
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -428,7 +477,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailWatchAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -442,7 +491,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailCreatorAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
-        cell.observe(event: .performShare) {
+        cell.startObserving(event: .performShare) {
             [weak self] in
             guard let self = self else {
                 return
@@ -456,24 +505,14 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailOptedInActionCell,
         for item: CollectibleDetailOptedInActionViewModel
     ) {
-        cell.observe(event: .performOptOut) {
+        cell.startObserving(event: .performOptOut) {
             [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
-
-            let draft = self.collectibleDetailTransactionController.createOptOutAlertDraft()
-            self.assetActionConfirmationTransition.perform(
-                .assetActionConfirmation(
-                    assetAlertDraft: draft,
-                    delegate: self.collectibleDetailTransactionController
-                ),
-                by: .presentWithoutNavigationController
-            )
+            self.openOptOutAsset()
         }
 
-        cell.observe(event: .performCopy) {
+        cell.startObserving(event: .performCopy) {
             [weak self] in
             guard let self = self else {
                 return
@@ -483,7 +522,7 @@ extension CollectibleDetailViewController {
             UIPasteboard.general.string = self.account.address
         }
 
-        cell.observe(event: .performShareQR) {
+        cell.startObserving(event: .performShareQR) {
             [weak self] in
             guard let self = self else {
                 return
@@ -512,7 +551,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleDetailInformationCell,
         for item: CollectibleTransactionInformation
     ) {
-        cell.observe(event: .performAction) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self,
                   let actionURL = item.actionURL else {
@@ -527,7 +566,7 @@ extension CollectibleDetailViewController {
         _ cell: CollectibleExternalSourceCell,
         for item: CollectibleExternalSourceViewModel
     ) {
-        cell.observe(event: .performAction) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self else { return }
 
@@ -539,11 +578,112 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
+    private func openOptOutAsset() {
+        let draft = OptOutAssetDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.optOutAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptOutAsset()
+            case .performClose: self.cancelOptOutAsset()
+            }
+        }
+
+        transitionToOptOutAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptOutAsset() {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.collectibleDetailTransactionController.optOutAsset()
+        }
+    }
+
+    private func cancelOptOutAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func linkAssetQuickActionViewInteractors() {
+        let assetDecoration = AssetDecoration(asset: asset)
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: assetDecoration
+        )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove: self.continueToOptInAsset(asset: assetDecoration)
+            case .performClose: self.cancelOptInAsset()
+            }
+        }
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToOptInAsset(
+        asset: AssetDecoration
+    ) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            if !self.canSignTransaction(for: &self.account) { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(asset: asset)
+            monitor.startMonitoringOptInUpdates(
+                request,
+                for: self.account
+            )
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: self.account,
+                assetIndex: asset.id
+            )
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+        }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension CollectibleDetailViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
+
+        if isQuickActionVisible {
+            eventHandler?(.didOptInToAsset)
+            return
+        }
 
         bannerController?.presentSuccessBanner(
             title: "collectible-detail-opt-out-success".localized(
@@ -559,7 +699,7 @@ extension CollectibleDetailViewController {
             ]
         )
 
-        eventHandlers.didOptOutAssetFromAccount?()
+        eventHandler?(.didOptOutAssetFromAccount)
     }
 
     func transactionController(
@@ -608,6 +748,12 @@ extension CollectibleDetailViewController {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 
@@ -658,7 +804,8 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
-    struct Event {
-        var didOptOutAssetFromAccount: EmptyHandler?
+    enum Event {
+        case didOptOutAssetFromAccount
+        case didOptInToAsset
     }
 }

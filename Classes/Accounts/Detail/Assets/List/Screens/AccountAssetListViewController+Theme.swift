@@ -32,7 +32,7 @@ extension AccountAssetListViewController {
         init(
             _ family: LayoutFamily
         ) {
-            self.listBackgroundColor = AppColors.Shared.System.background.uiColor
+            self.listBackgroundColor = Colors.Defaults.background
             self.accountActionsMenuActionIcon = "fab-swap".uiImage
             self.accountActionsMenuActionSize = (64, 64)
             self.accountActionsMenuActionTrailingPadding = 24

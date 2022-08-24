@@ -21,7 +21,7 @@ import SwiftUI
 
 final class ManagementOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: ManagementOptionsViewControllerDelegate?
 
     private lazy var theme = Theme()
@@ -47,19 +47,6 @@ final class ManagementOptionsViewController:
             title = "options-manage-collectibles".localized
         }
     }
-    
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-    
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.dismissScreen()
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +56,7 @@ final class ManagementOptionsViewController:
     private func build() {
         addBackground()
         addContext()
-        addActions()
+        addButtons()
     }
 }
 
@@ -95,52 +82,52 @@ extension ManagementOptionsViewController {
         }
     }
     
-    private func addActions() {
+    private func addButtons() {
         switch managementType {
         case .assets:
-            addSortAction()
-            addRemoveAction()
+            addSortButton()
+            addRemoveButton()
         case .collectibles:
-            addSortAction()
-            addfilterAction()
+            addSortButton()
+            addFilterButton()
         case .watchAccountAssets:
-            addSortAction()
+            addSortButton()
         }
     }
     
-    private func addSortAction() {
-        addAction(
-            SortListActionViewModel(),
+    private func addSortButton() {
+        addButton(
+            SortListItemButtonViewModel(),
             #selector(sort)
         )
     }
     
-    private func addRemoveAction() {
-        addAction(
-            RemoveAssetsListActionViewModel(),
+    private func addRemoveButton() {
+        addButton(
+            RemoveAssetsListItemButtonViewModel(),
             #selector(removeAssets)
         )
     }
 
-    private func addfilterAction() {
-        addAction(
-            FilterCollectiblesActionViewModel(),
+    private func addFilterButton() {
+        addButton(
+            FilterCollectiblesItemButtonViewModel(),
             #selector(filterCollectibles)
         )
     }
     
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector
     ) {
-        let actionView = ListActionView()
+        let button = ListItemButton()
         
-        actionView.customize(theme.listActionViewTheme)
-        actionView.bindData(viewModel)
+        button.customize(theme.listItemButtonTheme)
+        button.bindData(viewModel)
         
-        contextView.addArrangedSubview(actionView)
+        contextView.addArrangedSubview(button)
         
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )

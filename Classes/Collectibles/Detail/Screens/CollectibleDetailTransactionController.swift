@@ -16,18 +16,12 @@
 
 import Foundation
 
-final class CollectibleDetailTransactionController:
-    NSObject,
-    AssetActionConfirmationViewControllerDelegate {
+final class CollectibleDetailTransactionController {
+    lazy var eventHandlers = Event()
+
     private let account: Account
     private let asset: CollectibleAsset
     private let transactionController: TransactionController
-
-    lazy var eventHandlers = Event()
-
-    private var isValidAssetDeletion: Bool {
-        return asset.amountWithFraction == 0
-    }
 
     init(
         account: Account,
@@ -41,32 +35,7 @@ final class CollectibleDetailTransactionController:
 }
 
 extension CollectibleDetailTransactionController {
-    func createOptOutAlertDraft() -> AssetAlertDraft {
-        let assetDecoration = AssetDecoration(asset: asset)
-
-        let assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetId: assetDecoration.id,
-            asset: assetDecoration,
-            title: "collectible-detail-opt-out-alert-title".localized(params: asset.title ?? asset.name ?? ""),
-            detail: "collectible-detail-opt-out-alert-message".localized(params: account.name ?? account.address.shortAddressDisplay),
-            actionTitle: "collectible-detail-opt-out".localized,
-            cancelTitle: "title-cancel".localized
-        )
-
-        return assetAlertDraft
-    }
-}
-
-extension CollectibleDetailTransactionController {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
-    ) {
-        removeAsset()
-    }
-
-    private func removeAsset() {
+    func optOutAsset() {
         guard let creator = asset.creator else {
             return
         }

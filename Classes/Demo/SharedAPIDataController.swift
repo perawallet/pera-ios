@@ -42,6 +42,8 @@ final class SharedAPIDataController:
 
     private(set) var currency: CurrencyProvider
 
+    private(set) var blockchainUpdatesMonitor: BlockchainUpdatesMonitor = .init()
+
     private(set) var lastRound: BlockRound?
 
     private(set) lazy var accountSortingAlgorithms: [AccountSortingAlgorithm] = [
@@ -188,11 +190,14 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
+            self.blockchainUpdatesMonitor.removeUnmonitoredUpdates()
+
             return ALGBlockRequest(
                 localAccounts: self.session.authenticatedUser?.accounts ?? [],
                 cachedAccounts: self.accountCollection,
                 cachedAssetDetails: self.assetDetailCollection,
-                cachedCurrency: self.currency
+                cachedCurrency: self.currency,
+                blockchainRequests: self.blockchainUpdatesMonitor.makeBatchRequest()
             )
         }
         let cycle = ALGBlockCycle(api: api)
@@ -216,9 +221,10 @@ extension SharedAPIDataController {
                 )
             case .willFetchAssetDetails(let account):
                 self.blockProcessorWillFetchAssetDetails(for: account)
-            case .didFetchAssetDetails(let account, let assetDetails):
+            case .didFetchAssetDetails(let account, let assetDetails, let blockchainUpdates):
                 self.blockProcessorDidFetchAssetDetails(
-                    assetDetails,
+                    assetDetails: assetDetails,
+                    blockchainUpdates: blockchainUpdates,
                     for: account
                 )
             case .didFailToFetchAssetDetails(let account, let error):
@@ -291,18 +297,22 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFetchAssetDetails(
-        _ assetDetails: [AssetID: AssetDecoration],
+        assetDetails: [AssetID: AssetDecoration],
+        blockchainUpdates: BlockchainAccountBatchUpdates,
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .ready)
         nextAccountCollection[account.address] = updatedAccount
-        
-        if assetDetails.isEmpty {
-            return
+
+        for assetDetail in assetDetails {
+            assetDetailCollection[assetDetail.key] = assetDetail.value
         }
-        
-        assetDetails.forEach {
-            assetDetailCollection[$0.key] = $0.value
+
+        for assetID in blockchainUpdates.optedInAssets {
+            blockchainUpdatesMonitor.stopMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
         }
     }
     

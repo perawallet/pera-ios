@@ -19,7 +19,14 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class WCSingleTransactionRequestMiddleView: BaseView {
+final class WCSingleTransactionRequestMiddleView:
+    BaseView,
+    UIInteractable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .didOpenASADiscovery: GestureInteraction()
+    ]
+
+    private lazy var backgroundView = UIView()
     private lazy var verticalStack = VStackView()
     private lazy var horizontalStack = HStackView()
 
@@ -44,18 +51,34 @@ final class WCSingleTransactionRequestMiddleView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
 
-        addStackViews()
-        addItems()
+        addBackground()
+        addVerticalStack()
+        addHorizontalStack()
     }
 }
 
 extension WCSingleTransactionRequestMiddleView {
-    private func addStackViews() {
-        addSubview(verticalStack)
+    private func addBackground() {
+        addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        startPublishing(
+            event: .didOpenASADiscovery,
+            for: backgroundView
+        )
+    }
+
+    private func addVerticalStack() {
+        backgroundView.addSubview(verticalStack)
         verticalStack.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview()
         }
+    }
+
+    private func addHorizontalStack() {
         verticalStack.addArrangedSubview(horizontalStack)
         horizontalStack.snp.makeConstraints { make in
             make.height.equalTo(theme.horizontalStackViewHeight)
@@ -64,10 +87,7 @@ extension WCSingleTransactionRequestMiddleView {
         horizontalStack.distribution = .equalSpacing
         horizontalStack.alignment = .center
         horizontalStack.spacing = theme.horizontalStackViewSpacing
-        
-    }
 
-    private func addItems() {
         horizontalStack.addArrangedSubview(icon)
         icon.snp.makeConstraints { make in
             make.height.width.equalTo(theme.iconHeight)
@@ -82,5 +102,11 @@ extension WCSingleTransactionRequestMiddleView {
         titleLabel.text = viewModel?.title
         subtitleLabel.text = viewModel?.subtitle
         icon.isHidden = viewModel?.isAssetIconHidden ?? true
+    }
+}
+
+extension WCSingleTransactionRequestMiddleView {
+    enum Event {
+        case didOpenASADiscovery
     }
 }

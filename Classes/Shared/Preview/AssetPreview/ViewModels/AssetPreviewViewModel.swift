@@ -29,11 +29,12 @@ struct AssetPreviewModel {
     let asset: Asset?
 }
 
+/// <todo> Use new list item structure
 struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
     private(set) var assetID: AssetID?
-    private(set) var assetImageViewModel: AssetImageViewModel?
+    private(set) var assetImageViewModel: PrimaryImageViewModel?
     private(set) var verifiedIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
@@ -109,20 +110,11 @@ extension AssetPreviewViewModel {
     }
     
     private mutating func bindTitle(_ title: String?) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
         self.title = .attributedString(
             (title.isNilOrEmpty ? "title-unknown".localized : title!)
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .bodyRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
     
@@ -130,21 +122,12 @@ extension AssetPreviewViewModel {
         guard let subtitle = subtitle else {
             return
         }
-        
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-        
+
         self.subtitle = .attributedString(
             subtitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
     
@@ -154,22 +137,18 @@ extension AssetPreviewViewModel {
         guard let accessory = accessory else {
             return
         }
-        
-        let font = Fonts.DMMono.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
+
+        var attributes = Typography.bodyMonoRegularAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.formUnion([ .textColor(Colors.Text.main) ])
+
         primaryAccessory = .attributedString(
             accessory
-                .attributed([
-                    .textColor(AppColors.Components.Text.main.uiColor),
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.right)
-                    ])
-                ])
+                .attributed(
+                    attributes
+                )
         )
     }
 
@@ -178,21 +157,18 @@ extension AssetPreviewViewModel {
             return
         }
         
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.18
+
+        var attributes = Typography.footnoteMonoRegularAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.formUnion([ .textColor(Colors.Text.grayLighter) ])
         
         secondaryAccessory = .attributedString(
             accessory
-                .attributed([
-                    .textColor(AppColors.Components.Text.grayLighter.uiColor),
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.right)
-                    ])
-                ])
+                .attributed(
+                    attributes
+                )
         )
     }
 }
@@ -207,7 +183,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -218,7 +194,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 nil,
-                title: assetAddition.asset.presentation.name
+                title: assetAddition.asset.naming.name
             )
         )
     }
@@ -226,13 +202,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -240,21 +216,18 @@ extension AssetPreviewViewModel {
     ) {
         let accessory =  String(assetAddition.asset.id)
 
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.18
+
+        var attributes = Typography.footnoteMonoRegularAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
-                .attributed([
-                    .textColor(AppColors.Components.Text.gray),
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.right)
-                    ])
-                ])
+                .attributed(
+                    attributes
+                )
         )
     }
 }
@@ -269,7 +242,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }
@@ -282,7 +255,7 @@ extension AssetPreviewViewModel {
         bindAssetImageView(
             .url(
                 asset.thumbnailImage,
-                title: asset.presentation.name
+                title: asset.naming.name
             )
         )
     }
@@ -290,13 +263,13 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.presentation.name)
+        bindTitle(assetAddition.asset.naming.name)
     }
 
     private mutating func bindSubtitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindSubtitle(assetAddition.asset.presentation.unitName)
+        bindSubtitle(assetAddition.asset.naming.unitName)
     }
 
     private mutating func bindPrimaryAccessory(
@@ -304,21 +277,17 @@ extension AssetPreviewViewModel {
     ) {
         let accessory =  String(assetAddition.asset.id)
 
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.18
+        var attributes = Typography.footnoteMonoRegularAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.formUnion([ .textColor(Colors.Text.gray) ])
 
         primaryAccessory = .attributedString(
             accessory
-                .attributed([
-                    .textColor(AppColors.Components.Text.gray),
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.right)
-                    ])
-                ])
+                .attributed(
+                    attributes
+                )
         )
     }
 }
@@ -367,7 +336,7 @@ extension AssetPreviewViewModel {
     private mutating func bindVerifiedIcon(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        let icon = draft.asset.presentation.isVerified ? img("icon-verified-shield") : nil
+        let icon = draft.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
 
         bindVerifiedIcon(icon)
     }

@@ -30,33 +30,33 @@ struct FloatingActionItemButtonTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.container = [
             .isInteractable(false),
-            .backgroundColor(AppColors.Shared.Global.white),
+            .backgroundColor(Colors.Other.Global.white),
         ]
         self.title = [
             .isInteractable(false),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Shared.Global.white)
+            .textColor(Colors.Other.Global.white)
         ]
         self.titleLabelTrailingPadding = 22
 
         // <todo> Apply same shadow with designs.
         self.titleShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Other.titleDropShadow.uiColor,
             opacity: 1,
             offset: (0, 1),
             radius: 3,
             fillColor: UIColor.clear
         )
         self.containerFirstShadow = MacaroonUIKit.Shadow(
-            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.16),
+            color: Colors.Other.dropShadow.uiColor,
             opacity: 1,
             offset: (0, 28),
             radius: 32,
             fillColor: UIColor.clear
         )
         self.containerSecondShadow = MacaroonUIKit.Shadow(
-            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.16),
+            color: Colors.Other.dropShadow.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,

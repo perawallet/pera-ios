@@ -35,19 +35,19 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
         self.accountName = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.assetAndCollectibles = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.secondaryAssetValue = [
             .textAlignment(.right),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
         self.actionButton = actionButtonStyle

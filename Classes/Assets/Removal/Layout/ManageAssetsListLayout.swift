@@ -36,29 +36,29 @@ final class ManageAssetsListLayout: NSObject {
 
 extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(
-            _ collectionView: UICollectionView,
-            layout collectionViewLayout: UICollectionViewLayout,
-            insetForSectionAt section: Int
-        ) -> UIEdgeInsets {
-            let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
 
-            guard let listSection = sectionIdentifiers[safe: section] else {
-                return .zero
-            }
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
 
-            var insets =
+        var insets =
             UIEdgeInsets(
                 (0, theme.horizontalPaddings.leading, 0, theme.horizontalPaddings.trailing)
             )
 
-            switch listSection {
-            case .empty:
-                return insets
-            case .assets:
-                insets.top = theme.topContentInset
-                return insets
-            }
+        switch listSection {
+        case .empty:
+            return insets
+        case .assets:
+            insets.top = theme.topContentInset
+            return insets
         }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -147,6 +147,13 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
     ) {
         handlers.willDisplay?(cell, indexPath)
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        handlers.didSelect?(indexPath)
+    }
 }
 
 extension ManageAssetsListLayout {
@@ -163,5 +170,6 @@ extension ManageAssetsListLayout {
 extension ManageAssetsListLayout {
     struct Handlers {
         var willDisplay: ((UICollectionViewCell, IndexPath) -> Void)?
+        var didSelect: ((IndexPath) -> Void)?
     }
 }
