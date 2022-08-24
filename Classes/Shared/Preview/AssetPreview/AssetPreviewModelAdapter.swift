@@ -92,7 +92,7 @@ enum AssetPreviewModelAdapter {
         return PendingAssetPreviewModel(
             verificationTier: asset.verificationTier,
             assetPrimaryTitle: asset.name,
-            assetSecondaryTitle: "ID \(asset.id)",
+            assetSecondaryTitle: asset.naming.unitName,
             assetStatus: status
         )
     }
@@ -101,7 +101,7 @@ enum AssetPreviewModelAdapter {
         return PendingAssetPreviewModel(
             verificationTier: asset.verificationTier,
             assetPrimaryTitle: asset.naming.name,
-            assetSecondaryTitle: "ID \(asset.id)",
+            assetSecondaryTitle: asset.naming.unitName,
             assetStatus: "asset-removing-status".localized
         )
     }
