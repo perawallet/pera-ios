@@ -236,22 +236,6 @@ extension AccountCollectibleListViewController: ReceiveCollectibleAssetListViewC
         _ controller: ReceiveCollectibleAssetListViewController,
         didCompleteTransaction account: Account
     ) {
-        controller.dismissScreen {
-            let draft = QRCreationDraft(
-                address: account.address,
-                mode: .address,
-                title: account.name
-            )
-
-            self.open(
-                .qrGenerator(
-                    title: account.name ?? account.address.shortAddressDisplay,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
-        }
     }
 }
 

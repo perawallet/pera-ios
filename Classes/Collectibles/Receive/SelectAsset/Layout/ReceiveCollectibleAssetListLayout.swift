@@ -165,40 +165,8 @@ extension ReceiveCollectibleAssetListLayout {
         case .empty:
             break
         case .loading:
-            let infoHeight = self.listView(
-                listView,
-                layout: listViewLayout,
-                sizeForInfoItem: .init()
-            ).height
-            let infoSectionVerticalInsets = self.listView(
-                listView,
-                layout: listViewLayout,
-                insetForSectionAt: .info
-            ).vertical
-            let searchHeight = sizeForSearch(
-                listView,
-                layout: listViewLayout
-            ).height
-            let searchSectionVerticalInsets = self.listView(
-                listView,
-                layout: listViewLayout,
-                insetForSectionAt: .search
-            ).vertical
-            let collectiblesSectionTopInset = self.listView(
-                listView,
-                layout: listViewLayout,
-                insetForSectionAt: .collectibles
-            ).top
-            let topInset =
-            infoHeight +
-            infoSectionVerticalInsets +
-            searchHeight +
-            searchSectionVerticalInsets +
-            collectiblesSectionTopInset +
-            CollectibleListItemCell.contextPaddings.top
-
-            insets.top = topInset
-            insets.bottom = 8
+            insets.top = 16
+            return insets
         case .info:
             insets.top = 12
         case .search:

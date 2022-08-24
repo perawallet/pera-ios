@@ -60,15 +60,6 @@ final class AssetAdditionViewController:
         addBarButtons()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        transactionControllers.forEach { controller in
-            controller.stopBLEScan()
-            controller.stopTimer()
-        }
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
 
@@ -144,6 +135,15 @@ final class AssetAdditionViewController:
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         restartLoadingOfVisibleCellsIfNeeded()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
