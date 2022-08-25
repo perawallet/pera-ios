@@ -34,10 +34,6 @@ final class RewardDetailViewController: BaseViewController {
         self.account = account
         super.init(configuration: configuration)
     }
-
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
@@ -68,16 +64,6 @@ final class RewardDetailViewController: BaseViewController {
         rewardDetailView.bindData(
             viewModel
         )
-    }
-}
-
-extension RewardDetailViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

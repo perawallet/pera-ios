@@ -21,7 +21,7 @@ final class QRCreationViewController: BaseScrollViewController {
     private lazy var qrCreationView = QRCreationView(draft: draft)
     private lazy var theme = Theme()
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .showQR)
     }
     
@@ -39,11 +39,6 @@ final class QRCreationViewController: BaseScrollViewController {
         self.copyToClipboardController = copyToClipboardController
         self.isTrackable = isTrackable
         super.init(configuration: configuration)
-    }
-    
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
     }
     
     override func configureAppearance() {
@@ -81,18 +76,6 @@ extension QRCreationViewController {
         qrCreationView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension QRCreationViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        hidesCloseBarButtonItem = true
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

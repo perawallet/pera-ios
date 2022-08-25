@@ -88,40 +88,22 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
 
 extension PinLimitViewTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         return .attributedString(
             "pin-limit-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private static func getBody(_ text: String) -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             text
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 }

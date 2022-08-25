@@ -91,20 +91,10 @@ extension CollectibleDetailActionViewTheme {
     private static func getActionTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

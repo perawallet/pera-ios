@@ -16,12 +16,13 @@
 //   WCSessionRejectedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
 struct WCSessionRejectedEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
+    fileprivate init(
         topic: String,
         dappName: String,
         dappURL: String
@@ -32,5 +33,19 @@ struct WCSessionRejectedEvent: ALGAnalyticsEvent {
             .dappName: dappName,
             .dappURL: dappURL
         ]
+    }
+}
+
+extension AnalyticsEvent where Self == WCSessionRejectedEvent {
+    static func wcSessionRejected(
+        topic: String,
+        dappName: String,
+        dappURL: String
+    ) -> Self {
+        return WCSessionRejectedEvent(
+            topic: topic,
+            dappName: dappName,
+            dappURL: dappURL
+        )
     }
 }

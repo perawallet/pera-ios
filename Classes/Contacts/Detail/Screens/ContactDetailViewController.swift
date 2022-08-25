@@ -20,7 +20,7 @@ import UIKit
 final class ContactDetailViewController: BaseScrollViewController {
     weak var delegate: ContactDetailViewControllerDelegate?
 
-    override var analyticsScreen: ALGAnalyticsScreen {
+    override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .contactDetail)
     }
 
@@ -130,6 +130,7 @@ extension ContactDetailViewController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
+                /// <todo> Use new list item structure
                 let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
                 self.assetPreviews.append(algoAssetPreview)
                 
@@ -231,13 +232,50 @@ extension ContactDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
+        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.item]))
         cell.delegate = self
         return cell
     }
 }
 
 extension ContactDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        openASADiscoveryScreen(at: indexPath)
+    }
+
+    private func openASADiscoveryScreen(
+        at indexPath: IndexPath
+    ) {
+        /// <note> Do not open the Discovery screen for Algo
+        if indexPath.item == 0 {
+            return
+        }
+
+        guard let asset = assetPreviews[safe: indexPath.item]?.asset else {
+            return
+        }
+
+        let assetDecoration = AssetDecoration(asset: asset)
+
+        let screen = Screen.asaDiscovery(
+            account: nil,
+            quickAction: nil,
+            asset: assetDecoration
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
+            }
+        }
+        open(
+            screen,
+            by: .present
+        )
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -342,11 +380,7 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
 
         transactionDraft.toContact = contact
 
-        let controller = open(.sendTransaction(draft: transactionDraft), by: .present) as? SendTransactionScreen
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.closeScreen(by: .dismiss, animated: true)
-        }
-        controller?.leftBarButtonItems = [closeBarButtonItem]
+        open(.sendTransaction(draft: transactionDraft), by: .present)
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {

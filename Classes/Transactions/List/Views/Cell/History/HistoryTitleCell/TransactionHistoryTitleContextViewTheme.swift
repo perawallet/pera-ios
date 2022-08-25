@@ -19,7 +19,10 @@ import MacaroonUIKit
 
 struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
     let titleLabel: TextStyle
+    let lineStyle: ViewStyle
     let paddings: LayoutPaddings
+    let linePaddings: LayoutHorizontalPaddings
+    let lineHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
@@ -28,6 +31,11 @@ struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
         ]
+        self.lineStyle = [
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
         self.paddings = (28, 24, 4, 24)
+        self.linePaddings = (20, 20)
+        self.lineHeight = 1
     }
 }

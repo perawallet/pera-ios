@@ -42,20 +42,10 @@ struct ReceiveCollectibleAccountListViewControllerTheme:
 
 extension ReceiveCollectibleAccountListViewControllerTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(32)
-        let lineHeightMultiplier = 0.96
-
         return .attributedString(
-            "collectibles-receive-action"
+            "collectibles-receive-asset-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .titleMedium()
         )
     }
 }

@@ -48,7 +48,7 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         self.floatingPlaceholder = [
             .textColor(Colors.Text.grayLighter),
             .text(
-                (floatingPlaceholder ?? placeholder).body(hasMultilines: false)
+                (floatingPlaceholder ?? placeholder).footnoteRegular()
             )
         ]
         self.focusIndicator = [
@@ -70,28 +70,6 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
             textInput: [],
             placeholder: "",
             family
-        )
-    }
-}
-
-extension String {
-    func body(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        hasMultilines: Bool = true
-    ) -> NSAttributedString {
-        return attributed(
-            [
-                .font(Fonts.DMSans.regular.make(13, .body).uiFont),
-                .letterSpacing(0.4),
-                .paragraph(
-                    [
-                        .alignment(alignment),
-                        .lineBreakMode(lineBreakMode),
-                        .lineHeightMultiple(hasMultilines ? 0.67 : 0)
-                    ]
-                )
-            ]
         )
     }
 }
