@@ -45,17 +45,17 @@ struct CollectibleDetailOptedInActionViewTheme:
         title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         subtitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         optedInTitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text(Self.getOptedInTitle("collectible-detail-opted-in"))
         ]
 
@@ -65,14 +65,14 @@ struct CollectibleDetailOptedInActionViewTheme:
         optOut = [
             .title(Self.getActionTitle("collectible-detail-opt-out")),
             .titleColor(
-                [ .normal(AppColors.Components.Button.Secondary.text)]
+                [ .normal(Colors.Button.Secondary.text)]
             ),
-            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .backgroundColor(Colors.Button.Secondary.background),
             .icon([.normal("icon-trash-24")])
         ]
 
         separator = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
 
         topInset = 24

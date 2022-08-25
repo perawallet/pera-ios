@@ -15,12 +15,14 @@
 //
 //  AssetActionConfirmationViewModel.swift
 
-import UIKit
 import MacaroonUIKit
+import UIKit
 
 final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: String?
+    private(set) var titleColor: Color?
     private(set) var id: String?
+    private(set) var verificationTierImage: UIImage?
     private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
@@ -32,7 +34,9 @@ final class AssetActionConfirmationViewModel: ViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(model)
+        bindTitleColor(model)
         bindID(model)
+        bindverificationTierImage(model)
         bindTransactionFee(
             model,
             currencyFormatter: currencyFormatter
@@ -49,8 +53,30 @@ extension AssetActionConfirmationViewModel {
         title = draft.title
     }
 
+    private func bindTitleColor(_ draft: AssetAlertDraft) {
+        if let asset = draft.asset,
+            asset.verificationTier.isSuspicious {
+            titleColor = Colors.Helpers.negative
+        } else {
+            titleColor = Colors.Text.main
+        }
+    }
+
     private func bindID(_ draft: AssetAlertDraft) {
         id = "\(draft.assetId)"
+    }
+
+    private func bindverificationTierImage(
+        _ draft: AssetAlertDraft
+    ) {
+        guard let asset = draft.asset else { return }
+
+        switch asset.verificationTier {
+        case .trusted: verificationTierImage = "icon-trusted".uiImage
+        case .verified: verificationTierImage = "icon-verified".uiImage
+        case .unverified: verificationTierImage = nil
+        case .suspicious: verificationTierImage = "icon-suspicious".uiImage
+        }
     }
     
     private func bindTransactionFee(
@@ -92,8 +118,8 @@ extension AssetActionConfirmationViewModel {
               }
 
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         detail = attributedDetailText
     }
 

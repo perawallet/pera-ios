@@ -35,7 +35,7 @@ extension CollectibleMediaPreviewViewController {
             self.tap3DActionViewTopPadding = 16
             self.tap3DActionView = [
                 .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
-                .titleColor([ .normal(AppColors.Components.Text.grayLighter) ]),
+                .titleColor([ .normal(Colors.Text.grayLighter) ]),
                 .title(Self.getTitle())
             ]
         }

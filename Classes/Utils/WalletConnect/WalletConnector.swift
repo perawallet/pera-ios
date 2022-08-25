@@ -32,7 +32,13 @@ class WalletConnector {
 
     weak var delegate: WalletConnectorDelegate?
 
-    init() {
+    private let analytics: ALGAnalytics
+
+    init(
+        analytics: ALGAnalytics
+    ) {
+        self.analytics = analytics
+
         walletConnectBridge.delegate = self
     }
 }
@@ -114,27 +120,8 @@ extension WalletConnector {
             WCSessionHistory.create(
                 entity: WCSessionHistory.entityName,
                 with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            ) { result in
-                switch result {
-                case .error:
-                    asyncMain(afterDuration: 0) { [weak self] in
-                        guard let self = self else {
-                            return
-                        }
-
-                        self.logWCSessionSavingError(session)
-                    }
-                default:
-                    break
-                }
-            }
+            )
         }
-    }
-
-    private func logWCSessionSavingError(_ session: WCSession) {
-        UIApplication.shared.firebaseAnalytics?.record(
-            WCSessionSaveErrorLog(dappURL: session.urlMeta.wcURL.absoluteString)
-        )
     }
 }
 

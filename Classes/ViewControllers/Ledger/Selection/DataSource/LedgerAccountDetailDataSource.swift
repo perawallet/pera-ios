@@ -151,6 +151,7 @@ extension LedgerAccountDetailDataSource {
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
+        /// <todo> Use new list item structure
         let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
         assetPreviews.append(algoAssetPreview)
 

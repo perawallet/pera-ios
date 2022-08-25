@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct AssetPreviewViewTheme:
     LayoutSheet,
     StyleSheet {
-    let icon: AssetImageViewTheme
+    let icon: PrimaryImageViewTheme
     let verifiedIcon: ImageStyle
     let title: TextStyle
     let subtitle: TextStyle
@@ -42,16 +42,16 @@ struct AssetPreviewViewTheme:
             .contentMode(.right)
         ]
         title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         subtitle = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
         ]
         primaryAccessory = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         secondaryAccessory = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
         ]
 
         imageSize = (40, 40)

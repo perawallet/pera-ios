@@ -20,18 +20,23 @@ import UIKit
 /// <todo>
 /// This should be removed after the routing refactor.
 final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate {
-    private unowned let presentingScreen: UIViewController
-    private let sharedDataController: SharedDataController
     private var account: Account?
+    private var asset: Asset?
+
+    private unowned let presentingScreen: UIViewController
+
+    private let sharedDataController: SharedDataController
 
     init(
         presentingScreen: UIViewController,
         sharedDataController: SharedDataController,
-        account: Account? = nil
+        account: Account? = nil,
+        asset: Asset? = nil
     ) {
         self.presentingScreen = presentingScreen
         self.sharedDataController = sharedDataController
         self.account = account
+        self.asset = asset
 
         guard account != nil else {
             return
@@ -49,14 +54,22 @@ final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate 
 extension SendTransactionFlowCoordinator {
     func launch() {
         guard let account = account else {
-            openAccountSelection()
+            navigateToSelectAccount()
             return
         }
 
-        openAssetSelection(with: account)
+        guard let asset = asset else {
+            navigateToSelectAsset(account: account)
+            return
+        }
+
+        navigateToSendTransaction(
+            account: account,
+            asset: asset
+        )
     }
 
-    private func openAccountSelection() {
+    private func navigateToSelectAccount() {
         let draft = SelectAccountDraft(
             transactionAction: .send,
             requiresAssetSelection: true
@@ -68,24 +81,53 @@ extension SendTransactionFlowCoordinator {
         )
     }
 
-    private func openAssetSelection(with account: Account, on screen: UIViewController? = nil) {
+    private func navigateToSelectAsset(
+        account: Account,
+        on screen: UIViewController? = nil
+    ) {
         let assetSelectionScreen: Screen = .assetSelection(
             filter: nil,
             account: account
         )
 
-        guard let screen = screen else {
+        if let screen = screen {
+            screen.open(
+                assetSelectionScreen,
+                by: .push
+            )
+        } else {
             presentingScreen.open(
                 assetSelectionScreen,
                 by: .present
             )
-            return
+        }
+    }
+
+    private func navigateToSendTransaction(
+        account: Account,
+        asset: Asset,
+        on screen: UIViewController? = nil
+    ) {
+        let draft: SendTransactionDraft
+        if asset.isAlgo {
+            draft = SendTransactionDraft(from: account, transactionMode: .algo)
+        } else {
+            draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
         }
 
-        screen.open(
-            assetSelectionScreen,
-            by: .push
-        )
+        let sendTransactionScreen = Screen.sendTransaction(draft: draft)
+
+        if let screen = screen {
+            screen.open(
+                sendTransactionScreen,
+                by: .push
+            )
+        } else {
+            presentingScreen.open(
+                sendTransactionScreen,
+                by: .present
+            )
+        }
     }
 }
 
@@ -101,7 +143,10 @@ extension SendTransactionFlowCoordinator {
             return
         }
 
-        openAssetSelection(with: account, on: selectAccountViewController)
+        navigateToSelectAsset(
+            account: account,
+            on: selectAccountViewController
+        )
     }
 }
 

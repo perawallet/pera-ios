@@ -18,8 +18,8 @@
 import UIKit
 
 final class TransactionDetailViewController: BaseScrollViewController {
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .transactionDetail)
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
@@ -61,11 +61,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-    
     override func linkInteractors() {
         transactionDetailView.delegate = self
     }
@@ -100,7 +95,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         title = "transaction-detail-title".localized
         configureTransactionDetail()
     }
@@ -108,16 +103,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addTransactionDetailView()
-    }
-}
-
-extension TransactionDetailViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

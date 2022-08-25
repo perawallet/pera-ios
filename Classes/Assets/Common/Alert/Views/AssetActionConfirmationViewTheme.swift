@@ -32,7 +32,6 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let assetNameLabel: TextStyle
     let transactionFeeTitleLabel: TextStyle
     let transactionFeeAmountLabel: TextStyle
-    let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
     let separator: Separator
@@ -57,66 +56,63 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.minimumHorizontalSpacing = 8
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.titleLabel = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.warningIcon = [
             .image("icon-red-warning".templateImage),
-            .tintColor(AppColors.Shared.Helpers.negative),
+            .tintColor(Colors.Helpers.negative),
             .contentMode(.left)
         ]
         self.warningIconContentEdgeInsets = (12, 0)
         self.detail = [
-            .textColor(AppColors.Shared.Helpers.negative),
+            .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.verifiedImage = [
-            .image("icon-verified-shield")
-        ]
         self.assetCodeLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         self.assetNameLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         self.assetIDLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText())
         ]
         self.copyIDButton = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter),
+            .backgroundColor(Colors.Layer.grayLighter),
             .title("asset-copy-id".localized),
             .font(Fonts.DMSans.medium.make(13)),
-            .titleColor([.normal(AppColors.Components.Text.main)])
+            .titleColor([.normal(Colors.Text.main)])
         ]
         self.transactionFeeTitleLabel = [
             .text("collectible-approve-transaction-fee".localized),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         self.transactionFeeAmountLabel = [
-            .textColor(AppColors.Shared.Helpers.negative),
+            .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.right),
             .textOverflow(SingleLineText())
         ]
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.separatorPadding = -20
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.secondaryButtonTheme = ButtonSecondaryTheme()

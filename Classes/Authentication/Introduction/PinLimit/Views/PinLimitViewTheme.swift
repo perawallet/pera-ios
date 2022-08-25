@@ -40,40 +40,40 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.lockIcon = [
             .image("icon-lock")
         ]
         self.title = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text(Self.getTitle())
         ]
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .text(Self.getBody("pin-limit-too-many"))
         ]
         self.tryAgain = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .text(Self.getBody("pin-limit-try-again"))
         ]
         self.counter = [
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
         ]
         self.resetButton = [
             .title("pin-limit-reset-all".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.resetButtonContentEdgeInsets = (14, 0, 14, 0)
         self.resetButtonCorner = Corner(radius: 4)
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
 
         self.tryAgainLabelTopInset = 65
         self.titleLabelTopInset = 116

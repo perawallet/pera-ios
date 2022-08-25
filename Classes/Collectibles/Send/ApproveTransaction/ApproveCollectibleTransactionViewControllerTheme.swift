@@ -53,19 +53,19 @@ struct ApproveCollectibleTransactionViewControllerTheme:
     ) {
         minimumHorizontalSpacing = 8
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
-        separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         contentEdgeInsets = (24, 24, 16, 24)
 
         title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         description = [
             .text(Self.getDescription()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
 
         ]
@@ -82,16 +82,16 @@ struct ApproveCollectibleTransactionViewControllerTheme:
                     .selected("icon-border-checkbox-selected")
                 ]
             ),
-            .tintColor(AppColors.Shared.Helpers.success)
+            .tintColor(Colors.Helpers.success)
         ]
         optOutTitle = [
             .text(Self.getOptOutTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         optOutInfo = [
             .icon([.normal("icon-info-24".templateImage)]),
-            .tintColor(AppColors.Components.Text.grayLighter)
+            .tintColor(Colors.Text.grayLighter)
         ]
         optOutTitleLeadingMargin = 12
 
@@ -105,18 +105,18 @@ struct ApproveCollectibleTransactionViewControllerTheme:
         confirmAction = [
             .title(Self.getActionTitle("collectible-approve-transaction-action-title")),
             .titleColor([
-                .normal(AppColors.Components.Button.Primary.text),
+                .normal(Colors.Button.Primary.text),
             ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         cancelAction = [
             .title(Self.getActionTitle("title-cancel")),
             .titleColor([
-                .normal(AppColors.Components.Button.Secondary.text),
+                .normal(Colors.Button.Secondary.text),
             ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         confirmActionHeight = 52
         spacingBetweenActions = 12
@@ -128,7 +128,7 @@ extension ApproveCollectibleTransactionViewControllerTheme {
         return .attributedString(
             "collectible-approve-transaction-title"
                 .localized
-                .title2Medium()
+                .titleSmallMedium()
         )
     }
 

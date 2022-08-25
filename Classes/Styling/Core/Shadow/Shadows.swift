@@ -38,7 +38,7 @@ extension Shadows {
                 opacity: 0.08,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: AppColors.Shared.System.background.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )

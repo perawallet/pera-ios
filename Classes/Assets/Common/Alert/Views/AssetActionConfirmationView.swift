@@ -131,8 +131,6 @@ extension AssetActionConfirmationView {
     }
 
     private func addVerifiedImage(_ theme: AssetActionConfirmationViewTheme) {
-        verifiedImage.customizeAppearance(theme.verifiedImage)
-
         assetIDView.addSubview(verifiedImage)
         verifiedImage.fitToIntrinsicSize()
         verifiedImage.snp.makeConstraints {
@@ -277,7 +275,7 @@ extension AssetActionConfirmationView {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -291,7 +289,7 @@ extension AssetActionConfirmationView {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
  }
@@ -299,6 +297,7 @@ extension AssetActionConfirmationView {
 extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
         titleLabel.text = viewModel?.title
+        titleLabel.textColor = viewModel?.titleColor?.uiColor
         assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
         assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
 
@@ -306,6 +305,7 @@ extension AssetActionConfirmationView: ViewModelBindable {
             verifiedImage.removeFromSuperview()
         }
         assetIDLabel.text = viewModel?.id
+        verifiedImage.image = viewModel?.verificationTierImage
 
         if viewModel?.transactionFee.isNilOrEmpty ?? true {
             transactionView.removeFromSuperview()
