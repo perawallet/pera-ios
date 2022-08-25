@@ -205,7 +205,7 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             let buyAlgoDraft = BuyAlgoDraft()
             buyAlgoDraft.address = self?.accountHandle.value.address
             
-            self?.buyAlgoFlowCoordinator.launch(buyAlgoDraft)
+            self?.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
         }
     }
 
