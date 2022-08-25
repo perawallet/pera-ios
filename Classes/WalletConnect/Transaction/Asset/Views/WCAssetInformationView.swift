@@ -28,7 +28,7 @@ final class WCAssetInformationView:
     private lazy var titleLabel = UILabel()
     private lazy var assetBackgroundView = UIView()
     private lazy var detailStackView = HStackView()
-    private lazy var verificationTierIcon = UIImageView()
+    private lazy var verificationTierIcon = ImageView()
     private lazy var assetLabel = UILabel()
 
     func customize(_ theme: WCAssetInformationViewTheme) {
@@ -63,16 +63,17 @@ extension WCAssetInformationView {
             $0.trailing.lessThanOrEqualToSuperview()
         }
 
-        detailStackView.spacing = theme.spacing
-
         assetBackgroundView.addSubview(detailStackView)
         detailStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
 
-        assetLabel.customizeAppearance(theme.asset)
-
+        verificationTierIcon.customizeAppearance(theme.verificationTierIcon)
+        verificationTierIcon.contentEdgeInsets = theme.verificationTierIconOffset
+        verificationTierIcon.fitToHorizontalIntrinsicSize()
         detailStackView.addArrangedSubview(verificationTierIcon)
+
+        assetLabel.customizeAppearance(theme.asset)
         detailStackView.addArrangedSubview(assetLabel)
 
         startPublishing(
