@@ -125,76 +125,36 @@ struct ApproveCollectibleTransactionViewControllerTheme:
 
 extension ApproveCollectibleTransactionViewControllerTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(28)
-        let lineHeightMultiplier = 0.99
-
         return .attributedString(
             "collectible-approve-transaction-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .titleSmallMedium()
         )
     }
 
     private static func getDescription() -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-approve-transaction-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private static func getOptOutTitle() -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-approve-transaction-opt-out"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private static func getActionTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

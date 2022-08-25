@@ -41,11 +41,6 @@ final class QRCreationViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -81,18 +76,6 @@ extension QRCreationViewController {
         qrCreationView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension QRCreationViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        hidesCloseBarButtonItem = true
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

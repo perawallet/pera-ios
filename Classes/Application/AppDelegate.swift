@@ -29,7 +29,8 @@ import UserNotifications
 class AppDelegate:
     UIResponder,
     UIApplicationDelegate,
-    AppLaunchUIHandler ,
+    AppLaunchUIHandler,
+    SharedDataControllerObserver,
     NotificationObserver {
     static var shared: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
@@ -240,7 +241,6 @@ class AppDelegate:
         }
 
         return false
-        
     }
 }
 
@@ -353,6 +353,29 @@ extension AppDelegate {
         deeplinkWithSource src: DeeplinkSource
     ) {
         appLaunchController.receive(deeplinkWithSource: src)
+    }
+}
+
+/// <mark>
+/// SharedDataControllerObserver
+extension AppDelegate {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+
+            let optedInUpdates = monitor.filterOptedInAssetUpdates()
+            for update in optedInUpdates {
+                bannerController.presentSuccessBanner(title: update.notificationMessage)
+            }
+
+            let optedOutUpdates = monitor.filterOptedOutAssetUpdates()
+            for update in optedOutUpdates {
+                bannerController.presentSuccessBanner(title: update.notificationMessage)
+            }
+        }
     }
 }
 
@@ -478,7 +501,15 @@ extension AppDelegate {
 
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
-        return SharedAPIDataController(currency: currency, session: session, api: api)
+        let sharedDataController = SharedAPIDataController(
+            currency: currency,
+            session: session,
+            api: api
+        )
+
+        sharedDataController.add(self)
+
+        return sharedDataController
     }
 
     private func createAnalytics() -> ALGAnalytics {

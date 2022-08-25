@@ -72,21 +72,12 @@ struct CollectibleListItemReceiveViewTheme:
             .image("icon-plus-24")
         ]
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         let titleText: EditText = .attributedString(
             "collectibles-receive-action"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyMedium(
+                    alignment: .center
+                )
         )
 
         title = [

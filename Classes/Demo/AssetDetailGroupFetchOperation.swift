@@ -137,12 +137,17 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
                 var newCollectibles: [CollectibleAsset] = []
                 var newCollectibleAssetsIndexer: Account.CollectibleAssetIndexer = [:]
+
+                var optedInAssets: Set<AssetID> = []
+
+                let pendingOptOutAssets = self.input.blockchainRequests.optOutAssets
+                var optedOutAssets: Set<AssetID> = Set(pendingOptOutAssets.keys)
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
                     
                     if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
-                        if !assetDetail.isCollectible {
+                        if assetDetail.isCollectible {
                             let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
                             collectible.optedInAddress = account.address
                             newCollectibles.append(collectible)
@@ -152,6 +157,20 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                             newStandardAssets.append(standardAsset)
                             newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
                         }
+                    }
+
+                    /// <note>
+                    /// Check if the opt-in request is granted.
+                    if self.input.blockchainRequests.optInAssets[id] != nil {
+                        optedInAssets.insert(id)
+                    }
+
+                    /// <note>
+                    /// Check if the opt-out request is granted assuming initially that all pending
+                    /// requests are granted. If it is still opted-in to the account, then we
+                    /// determines that the request is still in progress.
+                    if pendingOptOutAssets[id] != nil {
+                        optedOutAssets.remove(id)
                     }
                 }
                 
@@ -164,8 +183,16 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     newCollectibles,
                     newCollectibleAssetsIndexer
                 )
-                
-                let output = Output(account: account, newAssetDetails: newAssetDetails)
+
+                let blockchainUpdates = BlockchainAccountBatchUpdates(
+                    optedInAssets: optedInAssets,
+                    optedOutAssets: optedOutAssets
+                )
+                let output = Output(
+                    account: account,
+                    newAssetDetails: newAssetDetails,
+                    blockchainUpdates: blockchainUpdates
+                )
                 self.result = .success(output)
             }
             
@@ -229,10 +256,12 @@ extension AssetDetailGroupFetchOperation {
         var cachedAccounts: AccountCollection = []
         var cachedAssetDetails: AssetDetailCollection = []
         var error: AssetDetailGroupFetchOperation.Error?
+        var blockchainRequests: BlockchainAccountBatchRequest = .init()
     }
     
     struct Output {
         let account: Account
         let newAssetDetails: [AssetID: AssetDecoration]
+        let blockchainUpdates: BlockchainAccountBatchUpdates
     }
 }

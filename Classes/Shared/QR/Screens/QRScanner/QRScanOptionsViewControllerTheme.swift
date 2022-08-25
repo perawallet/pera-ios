@@ -36,7 +36,7 @@ struct QRScanOptionsViewControllerTheme:
     var addressValueOffset: LayoutMetric
     var separator: Separator
     var separatorPadding: LayoutMetric
-    var action: ListActionViewTheme
+    var button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
@@ -80,7 +80,7 @@ struct QRScanOptionsViewControllerTheme:
             position: .bottom((60, horizontalPadding))
         )
         separatorPadding = 2
-        action = ListActionViewTheme(family)
-        action.configureForQRScanOptionsView()
+        button = ListItemButtonTheme(family)
+        button.configureForQRScanOptionsView()
     }
 }

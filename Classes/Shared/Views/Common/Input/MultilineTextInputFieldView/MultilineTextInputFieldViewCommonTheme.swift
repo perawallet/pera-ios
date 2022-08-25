@@ -48,7 +48,10 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
         ]
         self.floatingPlaceholder = [
             .textColor(Colors.Text.grayLighter),
-            .text((floatingPlaceholder ?? placeholder).body(hasMultilines: false))
+            .text(
+                (floatingPlaceholder ?? placeholder)
+                    .footnoteRegular()
+            )
         ]
         self.topInset = 24.0
         self.focusIndicator = [

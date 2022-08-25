@@ -50,6 +50,7 @@ final class HomeViewController:
             presentingScreen: self,
             api: api!,
             bannerController: bannerController!,
+            loadingController: loadingController!,
             analytics: analytics
         )
 
@@ -74,8 +75,6 @@ final class HomeViewController:
     private var selectedAccountHandle: AccountHandle? = nil
     private var sendTransactionDraft: SendTransactionDraft?
     
-    private var isViewFirstAppeared = true
-
     private var totalPortfolioValue: PortfolioValue?
 
     private let dataController: HomeDataController
@@ -161,7 +160,6 @@ final class HomeViewController:
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
-            isViewFirstAppeared = false
         }
         
         dataController.fetchAnnouncements()
@@ -496,6 +494,7 @@ extension HomeViewController {
                 .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
+            controller?.hidesCloseBarButtonItem = true
             controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
                 tutorialViewController.dismissScreen()
             }
@@ -723,10 +722,12 @@ extension HomeViewController {
 
             switch event {
             case .didEdit:
-                self.popScreen()
                 self.dataController.reload()
             case .didRemove:
-                self.popScreen()
+                self.navigationController?.popToViewController(
+                    self,
+                    animated: true
+                )
                 self.dataController.reload()
             }
         }

@@ -27,11 +27,6 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-    
     override func linkInteractors() {
         super.linkInteractors()
         rekeyInstructionsView.delegate = self
@@ -61,16 +56,6 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
     override func bindData() {
         super.bindData()
         rekeyInstructionsView.bindData(RekeyInstructionsViewModel(account.requiresLedgerConnection()))
-    }
-}
-
-extension RekeyInstructionsViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

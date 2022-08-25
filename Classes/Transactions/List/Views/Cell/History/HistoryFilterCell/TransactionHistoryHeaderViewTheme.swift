@@ -23,10 +23,12 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let titleLabel: TextStyle
     let shareButton: ButtonStyle
+    let filterButton: ButtonStyle
 
-    let buttonSize: LayoutSize
+    let buttonHeight: LayoutMetric
     let buttonInset: LayoutMetric
     let horizontalInset: LayoutMetric
+    let buttonContentInset: UIEdgeInsets
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
@@ -37,10 +39,21 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15)),
         ]
         self.shareButton = [
-            .icon([.normal("icon-share-gray")])
+            .icon([.normal("icon-csv")]),
+            .backgroundImage([.normal("light-button-rect-background")]),
+            .title("title-csv".localized),
+            .titleColor([.normal(Colors.Helpers.positive)]),
+            .font(Fonts.DMSans.medium.make(13))
         ]
-        self.buttonSize = (40, 40)
-        self.buttonInset = 4
+        self.filterButton = [
+            .icon([.normal("icon-transaction-filter-primary")]),
+            .titleColor([.normal(Colors.Helpers.positive)]),
+            .title("collectible-filter-selection-title".localized),
+            .font(Fonts.DMSans.medium.make(15))
+        ]
+        self.buttonHeight = 40
+        self.buttonInset = 8
         self.horizontalInset = 24
+        self.buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     }
 }

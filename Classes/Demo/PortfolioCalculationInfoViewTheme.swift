@@ -44,39 +44,19 @@ struct PortfolioCalculationInfoViewTheme:
 }
 
 extension PortfolioCalculationInfoViewTheme {
-    private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-        
+    private static func getTitle() -> EditText {        
         return .attributedString(
             "portfolio-calculation-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium()
         )
     }
     
     private static func getBody() -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
         return .attributedString(
             "portfolio-calculation-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 }

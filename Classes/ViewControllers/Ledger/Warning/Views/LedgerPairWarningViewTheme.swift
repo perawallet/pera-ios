@@ -76,40 +76,22 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
 
 extension LedgerPairWarningViewTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         return .attributedString(
             "ledger-pairing-first-warning-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private static func getSubtitle()  -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "ledger-pairing-first-warning-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 }

@@ -22,7 +22,8 @@ import UIKit
 class BaseViewController:
     UIViewController,
     StatusBarConfigurable,
-    TabBarConfigurable{
+    TabBarConfigurable,
+    UIAdaptivePresentationControllerDelegate {
     var analyticsScreen: ALGAnalyticsScreen? {
         return nil
     }
@@ -40,6 +41,7 @@ class BaseViewController:
     
     private(set) var isViewFirstLoaded = true
     private(set) var isViewAppearing = false
+    private(set) var isViewFirstAppeared = true
     private(set) var isViewAppeared = false
     private(set) var isViewDisappearing = false
     private(set) var isViewDisappeared = false
@@ -152,6 +154,7 @@ class BaseViewController:
         setNeedsStatusBarLayoutUpdateWhenDisappearing()
 
         isViewFirstLoaded = false
+        isViewFirstAppeared = false
         isViewAppeared = false
         isViewDisappearing = true
     }
@@ -163,6 +166,17 @@ class BaseViewController:
 
         isViewDisappearing = false
         isViewDisappeared = true
+    }
+
+    /// <note> To be able to use this method, the screen should be the delegate of the presentation
+    /// controller of presented screen. If it is contained in a navigation controller,
+    /// controller?.navigationController?.presentationController?.delegate = ...
+    func viewDidAppearAfterInteractiveDismiss() {
+        isViewFirstAppeared = false
+
+        if let parentScreen = parent as? BaseViewController {
+            parentScreen.viewDidAppearAfterInteractiveDismiss()
+        }
     }
 
     private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
@@ -183,6 +197,14 @@ class BaseViewController:
         if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
             preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
         }
+    }
+}
+
+/// <mark>
+/// UIAdaptivePresentationControllerDelegate
+extension BaseViewController {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        viewDidAppearAfterInteractiveDismiss()
     }
 }
 

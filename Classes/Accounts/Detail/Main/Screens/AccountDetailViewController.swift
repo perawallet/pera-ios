@@ -58,7 +58,6 @@ final class AccountDetailViewController: PageContainer {
     private lazy var localAuthenticator = LocalAuthenticator()
 
     private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
-    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
 
     private var accountHandle: AccountHandle
 
@@ -80,11 +79,6 @@ final class AccountDetailViewController: PageContainer {
 
         setPageBarItems()
         addTitleView()
-
-        if !accountHandle.value.isWatchAccount() {
-            addAccountActionsMenuAction()
-            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
-        }
     }
 
     override func viewWillAppear(
@@ -144,6 +138,11 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .didRenameAccount:
+                self.bindTitle()
+                self.eventHandler?(.didEdit)
+            case .didRemoveAccount:
+                self.eventHandler?(.didRemove)
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .manageAssets))
@@ -159,8 +158,7 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
-                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
-                controller?.delegate = self
+                self.openAddAssetScreen()
             case .buyAlgo:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
@@ -177,12 +175,25 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
 
                 self.presentOptionsScreen()
+            case .transactionOption:
+                self.openAccountActionsMenu()
             }
         }
     }
 }
 
 extension AccountDetailViewController: TransactionOptionsScreenDelegate {
+    func transactionOptionsScreenDidAddAsset(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openAddAssetScreen()
+        }
+    }
+
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
@@ -234,6 +245,16 @@ extension AccountDetailViewController {
         )
     }
 
+    private func openAddAssetScreen() {
+        let controller = open(
+            .addAsset(
+                account: accountHandle.value
+            ),
+            by: .present
+        ) as? AssetAdditionViewController
+        controller?.navigationController?.presentationController?.delegate = assetListScreen
+    }
+
     private func setPageBarItems() {
         items = [
             AssetListPageBarItem(screen: assetListScreen),
@@ -244,12 +265,6 @@ extension AccountDetailViewController {
 
     private func addTitleView() {
         accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
 
         accountNamePreviewTitleView.addGestureRecognizer(
             UILongPressGestureRecognizer(
@@ -259,36 +274,17 @@ extension AccountDetailViewController {
         )
 
         navigationItem.titleView = accountNamePreviewTitleView
+
+        bindTitle()
     }
 
-    private func addAccountActionsMenuAction() {
-        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
-
-        view.addSubview(accountActionsMenuActionView)
-
-        accountActionsMenuActionView.snp.makeConstraints {
-            let safeAreaBottom = view.compactSafeAreaInsets.bottom
-            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
-
-            $0.fitToSize(theme.accountActionsMenuActionSize)
-            $0.trailing == theme.accountActionsMenuActionTrailingPadding
-            $0.bottom == bottom
-        }
-
-        accountActionsMenuActionView.addTouch(
-            target: self,
-            action: #selector(openAccountActionsMenu)
+    private func bindTitle() {
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
         )
-    }
-
-    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
-        let listSafeAreaBottom =
-            theme.spacingBetweenListAndAccountActionsMenuAction +
-            theme.accountActionsMenuActionSize.h +
-            theme.accountActionsMenuActionBottomPadding
-        assetListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
-        collectibleListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
-        transactionListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
@@ -432,44 +428,8 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
-
+        bindTitle()
         eventHandler?(.didEdit)
-    }
-}
-
-extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-        standardAsset.state = .pending(.add)
-        assetListScreen.addAsset(standardAsset)
-    }
-}
-
-extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
-    func manageAssetsViewController(
-        _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove asset: StandardAsset
-    ) {
-        assetListScreen.removeAsset(asset)
-    }
-
-    func manageAssetsViewController(
-        _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove asset: CollectibleAsset
-    ) {
-        NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didRemoveCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
-            ]
-        )
     }
 }
 
@@ -486,7 +446,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
                 guard let self = self else { return }
 
                 switch event {
-                case .didComplete: self.assetListScreen.reload()
+                case .didComplete: self.assetListScreen.reloadData()
                 }
             }
         }
@@ -519,7 +479,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             .removeAsset(dataController: dataController),
             by: .present
         ) as? ManageAssetsViewController
-        controller?.delegate = self
+        controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
 }
 
@@ -531,7 +491,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.assets.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-assets".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-overview".localized)
             self.screen = screen
         }
     }

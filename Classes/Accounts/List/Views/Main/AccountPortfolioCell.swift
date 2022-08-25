@@ -23,7 +23,7 @@ class AccountPortfolioCell:
     CollectionCell<AccountPortfolioView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
+        return (45, 24, 8, 24)
     }
     
     static let theme = AccountPortfolioViewTheme()
