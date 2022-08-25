@@ -65,6 +65,11 @@ final class OptInAssetListItemView:
         let preferredHeight = max(iconSize.h, titleSize.height)
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
+
+    func prepareForReuse() {
+        iconView.prepareForReuse()
+        titleView.prepareForReuse()
+    }
 }
 
 extension OptInAssetListItemView {
