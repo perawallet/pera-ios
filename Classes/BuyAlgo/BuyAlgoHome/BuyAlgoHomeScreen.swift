@@ -76,6 +76,8 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 return
             }
 
+            self.analytics.track(.moonpay(type: .tapBuy))
+
             if self.buyAlgoDraft.hasValidAddress() {
                 self.openMoonPay(for: self.buyAlgoDraft)
                 return
@@ -103,6 +105,7 @@ extension BuyAlgoHomeScreen {
             return
         }
 
+        analytics.track(.moonpay(type: .completed))
         delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: buyAlgoParams)
     }
 }

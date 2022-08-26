@@ -49,11 +49,6 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -74,16 +69,6 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
         super.linkInteractors()
         ledgerAccountDetailView.collectionView.delegate = ledgerAccountDetailLayoutBuilder
         ledgerAccountDetailView.collectionView.dataSource = ledgerAccountDetailDataSource
-    }
-}
-
-extension LedgerAccountDetailViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

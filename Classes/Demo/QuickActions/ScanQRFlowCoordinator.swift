@@ -22,7 +22,6 @@ import UIKit
 final class ScanQRFlowCoordinator:
     QRScannerViewControllerDelegate,
     SelectAccountViewControllerDelegate,
-    AssetActionConfirmationViewControllerDelegate,
     TransactionControllerDelegate {
     private lazy var currencyFormatter = CurrencyFormatter()
 
@@ -36,17 +35,23 @@ final class ScanQRFlowCoordinator:
     private let sharedDataController: SharedDataController
     private var api: ALGAPI
     private let bannerController: BannerController
+    private let loadingController: LoadingController
+    private let analytics: ALGAnalytics
 
     init(
         sharedDataController: SharedDataController,
         presentingScreen: UIViewController,
         api: ALGAPI,
-        bannerController: BannerController
+        bannerController: BannerController,
+        loadingController: LoadingController,
+        analytics: ALGAnalytics
     ) {
         self.sharedDataController = sharedDataController
         self.presentingScreen = presentingScreen
         self.api = api
         self.bannerController = bannerController
+        self.loadingController = loadingController
+        self.analytics = analytics
     }
 }
 
@@ -124,9 +129,9 @@ extension ScanQRFlowCoordinator {
         for draft: SelectAccountDraft
     ) {
         switch draft.transactionAction {
-        case .optIn(let asset):
+        case .optIn(let assetID):
             requestOptingInToAsset(
-                asset,
+                assetID,
                 to: account
             )
         default:
@@ -148,31 +153,81 @@ extension ScanQRFlowCoordinator {
     }
 
     private func requestOptingInToAsset(
-        _ asset: AssetID,
+        _ assetID: AssetID,
         to account: Account
     ) {
-        if account.containsAsset(asset) {
+        if account.containsAsset(assetID) {
             bannerController.presentInfoBanner("asset-you-already-own-message".localized)
             return
         }
 
-        let assetAlertDraft = AssetAlertDraft(
+        loadingController.startLoadingWithMessage("title-loading".localized)
+
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController.stopLoading()
+
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.bannerController.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "asset-confirmation-not-found".localized
+                    )
+                    return
+                }
+
+                if let asset = assetResponse.results.first {
+                    self.openOptInAsset(
+                        asset: asset,
+                        account: account
+                    )
+                }
+            case .failure:
+                self.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "asset-confirmation-not-fetched".localized
+                )
+            }
+        }
+    }
+
+    private func openOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let draft = OptInAssetDraft(
             account: account,
-            assetId: asset,
-            asset: nil,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
+            asset: asset
         )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                self.continueToOptInAsset(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelOptInAsset()
+            }
+        }
 
         let visibleScreen = presentingScreen.findVisibleScreen()
         optInRequestTransition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         optInRequestTransition?.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-            by: .presentWithoutNavigationController
+            screen,
+            by: .present
         )
     }
 
@@ -245,29 +300,43 @@ extension ScanQRFlowCoordinator {
 /// <todo>
 /// Should be handled for each specific transaction separately.
 extension ScanQRFlowCoordinator {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        account: Account
     ) {
-        let draft = assetActionConfirmationViewController.draft
+        let visibleScreen = presentingScreen.findVisibleScreen()
 
-        guard let account = draft.account,
-              !account.isWatchAccount() else {
-            return
+        visibleScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            guard !account.isWatchAccount() else {
+                return
+            }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
+
+            let transactionController = TransactionController(
+                api: self.api,
+                bannerController: self.bannerController,
+                analytics: self.analytics
+            )
+
+            self.loadingController.startLoadingWithMessage("title-loading".localized)
+
+            transactionController.delegate = self
+            transactionController.setTransactionDraft(assetTransactionDraft)
+            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
         }
+    }
 
-        let assetTransactionDraft = AssetTransactionSendDraft(
-            from: account,
-            assetIndex: Int64(draft.assetId)
-        )
-        let transactionController = TransactionController(
-            api: api,
-            bannerController: bannerController
-        )
+    private func cancelOptInAsset() {
+        let visibleScreen = presentingScreen.findVisibleScreen()
 
-        transactionController.delegate = self
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        visibleScreen.dismiss(animated: true)
     }
 }
 
@@ -278,6 +347,8 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        loadingController.stopLoading()
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -290,6 +361,8 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        loadingController.stopLoading()
+
         switch error {
         case let .network(apiError):
             bannerController.presentErrorBanner(
@@ -308,6 +381,8 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        loadingController.stopLoading()
+
         let visibleScreen = presentingScreen.findVisibleScreen()
         visibleScreen.dismissScreen()
     }

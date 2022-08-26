@@ -49,7 +49,9 @@ final class HomeViewController:
             sharedDataController: sharedDataController,
             presentingScreen: self,
             api: api!,
-            bannerController: bannerController!
+            bannerController: bannerController!,
+            loadingController: loadingController!,
+            analytics: analytics
         )
 
     private let copyToClipboardController: CopyToClipboardController
@@ -57,8 +59,8 @@ final class HomeViewController:
     private let onceWhenViewDidAppear = Once()
     private let storyOnceWhenViewDidAppear = Once()
 
-    override var name: AnalyticsScreenName? {
-        return .accounts
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .accountList)
     }
 
     private lazy var listView =
@@ -73,8 +75,6 @@ final class HomeViewController:
     private var selectedAccountHandle: AccountHandle? = nil
     private var sendTransactionDraft: SendTransactionDraft?
     
-    private var isViewFirstAppeared = true
-
     private var totalPortfolioValue: PortfolioValue?
 
     private let dataController: HomeDataController
@@ -160,7 +160,6 @@ final class HomeViewController:
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
-            isViewFirstAppeared = false
         }
         
         dataController.fetchAnnouncements()
@@ -222,7 +221,7 @@ extension HomeViewController {
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -355,6 +354,7 @@ extension HomeViewController {
         cell.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
             self.buyAlgoFlowCoordinator.launch()
         }
 
@@ -373,6 +373,8 @@ extension HomeViewController {
         cell.startObserving(event: .scanQR) {
             [weak self] in
             guard let self = self else { return }
+
+            self.analytics.track(.recordHomeScreen(type: .qrScan))
             self.scanQRFlowCoordinator.launch()
         }
     }
@@ -416,6 +418,8 @@ extension HomeViewController {
             if let url = item.ctaUrl {
                 self.openInBrowser(url)
             }
+
+            self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
     }
     
@@ -451,6 +455,7 @@ extension HomeViewController {
             )
         }
         cell.startObserving(event: .secondaryAction) {
+            self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
                 .welcome(flow: .addNewAccount(mode: .none)),
                 by: .customPresent(
@@ -489,6 +494,7 @@ extension HomeViewController {
                 .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
+            controller?.hidesCloseBarButtonItem = true
             controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
                 tutorialViewController.dismissScreen()
             }
@@ -716,10 +722,12 @@ extension HomeViewController {
 
             switch event {
             case .didEdit:
-                self.popScreen()
                 self.dataController.reload()
             case .didRemove:
-                self.popScreen()
+                self.navigationController?.popToViewController(
+                    self,
+                    animated: true
+                )
                 self.dataController.reload()
             }
         }
@@ -763,7 +771,7 @@ extension HomeViewController {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -780,7 +788,7 @@ extension HomeViewController {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
@@ -883,8 +891,10 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            self.log(ReceiveCopyEvent(address: accountHandle.value.address))
-            self.copyToClipboardController.copyAddress(accountHandle.value)
+            let account = accountHandle.value
+
+            self.analytics.track(.showQRCopy(account: account))
+            self.copyToClipboardController.copyAddress(account)
         }
 
         return uiInteractions
