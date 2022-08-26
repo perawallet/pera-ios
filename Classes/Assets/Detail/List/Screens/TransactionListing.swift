@@ -62,7 +62,7 @@ enum TransactionTypeFilter {
     case asset
     case all
 
-    var currentTransactionType: Transaction.TransferType? {
+    var currentTransactionType: TransactionType? {
         switch self {
         case .algos:
             return .payment

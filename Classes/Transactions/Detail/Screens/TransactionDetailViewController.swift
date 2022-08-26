@@ -29,7 +29,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     private var transaction: Transaction
     private let account: Account
     private var assetDetail: StandardAsset?
-    private let transactionType: TransactionType
+    private let transactionType: TransferType
 
     private lazy var transactionDetailViewModel = TransactionDetailViewModel(
         transactionType: transactionType,
@@ -47,7 +47,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     init(
         account: Account,
         transaction: Transaction,
-        transactionType: TransactionType,
+        transactionType: TransferType,
         assetDetail: StandardAsset?,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
@@ -170,7 +170,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
 
     private func getUserAddress(
         transaction: Transaction,
-        type: TransactionType
+        type: TransferType
     ) -> String? {
         switch type {
         case .received:
@@ -239,7 +239,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 }
 
-enum TransactionType {
+enum TransferType {
     case sent
     case received
 }
