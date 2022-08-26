@@ -45,9 +45,9 @@ final class TransactionDetailView:
     private lazy var idContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var noteContextMenuInteraction = UIContextMenuInteraction(delegate: self)
 
-    private let transactionType: TransactionType
+    private let transactionType: TransferType
     
-    init(transactionType: TransactionType) {
+    init(transactionType: TransferType) {
         self.transactionType = transactionType
         super.init(frame: .zero)
 

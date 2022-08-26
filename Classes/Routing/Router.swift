@@ -548,7 +548,7 @@ class Router:
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
-            ? TransactionType.sent
+            ? TransferType.sent
             : .received
 
             viewController = TransactionDetailViewController(

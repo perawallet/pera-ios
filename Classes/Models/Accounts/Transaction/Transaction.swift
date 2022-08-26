@@ -44,7 +44,7 @@ final class Transaction:
     let receiverRewards: UInt64?
     let sender: String?
     let senderRewards: UInt64?
-    let type: TransferType?
+    let type: TransactionType
     let createdAssetId: Int64?
     let assetFreeze: AssetFreezeTransaction?
     let assetConfig: AssetConfigTransaction?
@@ -77,7 +77,7 @@ final class Transaction:
         self.receiverRewards = apiModel.receiverRewards
         self.sender = apiModel.sender
         self.senderRewards = apiModel.senderRewards
-        self.type = apiModel.txType.unwrap(TransferType.init(rawValue:))
+        self.type = apiModel.txType.unwrap(TransactionType.init(rawValue:)) ?? .random()
         self.createdAssetId = apiModel.createdAssetIndex
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
@@ -102,7 +102,7 @@ final class Transaction:
         apiModel.receiverRewards = receiverRewards
         apiModel.sender = sender
         apiModel.senderRewards = senderRewards
-        apiModel.txType = type?.rawValue
+        apiModel.txType = type.rawValue
         apiModel.createdAssetIndex = createdAssetId
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
@@ -227,42 +227,6 @@ extension Transaction {
         case pending = "PENDING"
         case completed = "COMPLETED"
         case failed = "FAILED"
-    }
-}
-
-extension Transaction {
-    enum TransferType: String, ALGAPIModel {
-        case payment = "pay"
-        case keyreg = "keyreg"
-        case assetConfig = "acfg"
-        case assetTransfer = "axfer"
-        case assetFreeze = "afrz"
-        case applicationCall = "appl"
-
-        case other
-
-        init() {
-            self = .other
-        }
-
-        init?(rawValue: String) {
-            switch rawValue {
-            case TransferType.payment.rawValue:
-                self = .payment
-            case TransferType.keyreg.rawValue:
-                self = .keyreg
-            case TransferType.assetConfig.rawValue:
-                self = .assetConfig
-            case TransferType.assetTransfer.rawValue:
-                self = .assetTransfer
-            case TransferType.assetFreeze.rawValue:
-                self = .assetFreeze
-            case TransferType.applicationCall.rawValue:
-                self = .applicationCall
-            default:
-                self = .other
-            }
-        }
     }
 }
 
