@@ -190,7 +190,19 @@ extension HomeViewController {
                 return
             }
 
-            self.open(.notifications, by: .push)
+            let screen = Screen.exportAccountList {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .didContinue(_):
+                    self.dataController.reload()
+                }
+            }
+
+            self.open(
+                screen,
+                by: .present)
         }
 
         rightBarButtonItems = [notificationBarButtonItem]

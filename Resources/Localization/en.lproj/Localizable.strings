@@ -80,6 +80,8 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"title-select-all" = "Select all";
+"title-unselect-all" = "Unselect all";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -678,6 +680,8 @@
 "title-plus-asset-singular-count" = "%@ Asset";
 "title-plus-collectible-count" = "%@ NFTs";
 "title-plus-collectible-singular-count" = "%@ NFT";
+"title-plus-account-count" = "%@ Accounts";
+"title-plus-account-singular-count" = "%@ Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
@@ -1171,3 +1175,8 @@
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 "asa-about-asa-project-website" = "Project website";
 "asa-about-asa-open-with-browser" = "Open with Browser";
+
+// MARK: Web Export
+"web-export-account-list-title" = "Export to Pera Web";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";

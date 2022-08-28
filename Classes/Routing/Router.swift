@@ -1051,6 +1051,16 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .exportAccountList(let eventHandler):
+            let dataController = ExportAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = ExportAccountListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
