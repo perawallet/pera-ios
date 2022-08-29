@@ -18,7 +18,8 @@ import UIKit
 import MacaroonUIKit
 
 final class ExportAccountListItemHeader:
-    CollectionSupplementaryView<TitleView> {
+    CollectionSupplementaryView<TitleView>,
+    ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return (0, 24, 0, 24)
     }
@@ -31,11 +32,5 @@ final class ExportAccountListItemHeader:
         super.init(frame: frame)
 
         contextView.customize(Self.theme)
-    }
-
-    func bindData(
-        _ viewModel: TitleViewModel
-    ) {
-        contextView.bindData(viewModel)
     }
 }

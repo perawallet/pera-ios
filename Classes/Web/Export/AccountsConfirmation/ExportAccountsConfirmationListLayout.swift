@@ -165,7 +165,7 @@ extension ExportAccountsConfirmationListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = TitleView.calculatePreferredSize(
+        let newSize = ExportAccountsConfirmationListItemHeader.calculatePreferredSize(
             item,
             for: ExportAccountsConfirmationListItemHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))

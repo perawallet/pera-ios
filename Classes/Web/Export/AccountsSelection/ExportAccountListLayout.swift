@@ -196,7 +196,7 @@ extension ExportAccountListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = TitleView.calculatePreferredSize(
+        let newSize = ExportAccountListItemHeader.calculatePreferredSize(
             item,
             for: ExportAccountListItemHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
