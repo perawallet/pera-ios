@@ -17,7 +17,7 @@
 import Foundation
 import MagpieCore
 
-struct ExportAccountDraft: JSONObjectBody {
+final class ExportAccountDraft: JSONObjectBody {
     var deviceId: String = "-1"
     var accounts: [[String: String]] = []
 
@@ -52,6 +52,8 @@ struct ExportAccountDraft: JSONObjectBody {
                 APIParamKey.privateKey.rawValue: bytes
             ])
         }
+
+        self.accounts = tempAccounts
     }
 }
 
