@@ -1061,6 +1061,10 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .exportAccountsResult(let eventHandler):
+            let screen = ExportsAccountsResultScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

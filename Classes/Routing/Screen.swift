@@ -219,6 +219,9 @@ indirect enum Screen {
     case exportAccountList(
         eventHandler: ExportAccountListScreen.EventHandler
     )
+    case exportAccountsResult(
+        eventHandler: ExportsAccountsResultScreen.EventHandler
+    )
 }
 
 extension Screen {

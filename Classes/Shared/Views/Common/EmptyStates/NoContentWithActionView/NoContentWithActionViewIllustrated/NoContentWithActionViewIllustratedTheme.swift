@@ -18,6 +18,7 @@ import MacaroonUIKit
 
 struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
+    let iconAlignment: ResultView.IconViewAlignment
     let title: TextStyle
     let titleTopMargin: LayoutMetric
     let body: TextStyle
@@ -38,6 +39,7 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         let resultTheme = ResultViewIllustratedTheme()
 
         icon = resultTheme.icon
+        iconAlignment = resultTheme.iconAlignment
         title = resultTheme.title
         titleTopMargin = resultTheme.titleTopMargin
         body = resultTheme.body

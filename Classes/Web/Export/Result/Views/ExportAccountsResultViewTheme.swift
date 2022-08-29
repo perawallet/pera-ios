@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ResultViewCommonTheme.swift
+//   ExportAccountsResultViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct ResultViewCommonTheme: ResultViewTheme {
+struct ExportAccountsResultViewTheme: ResultViewTheme {
     let icon: ImageStyle
     let iconAlignment: ResultView.IconViewAlignment
     let title: TextStyle
@@ -30,25 +28,17 @@ struct ResultViewCommonTheme: ResultViewTheme {
     init(
         _ family: LayoutFamily
     ) {
-        self.icon = [
-            .adjustsImageForContentSizeCategory(true)
-        ]
-        self.iconAlignment = .centered
+        self.icon = []
+        self.iconAlignment = .leading(0)
         self.title = [
-            .font(Fonts.DMSans.medium.make(19)),
-            .textAlignment(.center),
-            .adjustsFontForContentSizeCategory(true),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
         ]
-        self.titleTopMargin = 32
+        self.titleTopMargin = 40
         self.body = [
-            .font(Fonts.DMSans.regular.make(15)),
-            .textAlignment(.center),
-            .adjustsFontForContentSizeCategory(true),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
         ]
-        self.bodyTopMargin = 16
+        self.bodyTopMargin = 22
     }
 }

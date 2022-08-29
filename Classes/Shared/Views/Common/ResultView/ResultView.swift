@@ -98,11 +98,30 @@ extension ResultView {
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
-        iconView.snp.makeConstraints {
-            $0.centerHorizontally(
-                offset: 0,
-                verticalPaddings: (0, .noMetric)
-            )
+
+        alignIcon(
+            iconView,
+            with: theme
+        )
+    }
+
+    private func alignIcon(
+        _ view: UIView,
+        with theme: ResultViewTheme
+    ) {
+        switch theme.iconAlignment {
+        case .centered:
+            view.snp.makeConstraints {
+                $0.centerHorizontally(
+                    offset: 0,
+                    verticalPaddings: (0, .noMetric)
+                )
+            }
+        case let .leading(padding):
+            view.snp.makeConstraints {
+                $0.top == 0
+                $0.leading == padding
+            }
         }
     }
 
@@ -133,5 +152,12 @@ extension ResultView {
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
+    }
+}
+
+extension ResultView {
+    enum IconViewAlignment {
+        case centered
+        case leading(LayoutMetric)
     }
 }

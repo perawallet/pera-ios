@@ -190,19 +190,24 @@ extension HomeViewController {
                 return
             }
 
-            let screen = Screen.exportAccountList {
+            let screen = Screen.exportAccountsResult {
                 [weak self] event in
                 guard let self = self else { return }
 
                 switch event {
-                case .didContinue(_):
-                    self.dataController.reload()
+                case .performClose:
+                    self.dismiss(animated: true)
                 }
             }
 
             self.open(
                 screen,
-                by: .present)
+                by: .customPresentWithoutNavigationController(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
