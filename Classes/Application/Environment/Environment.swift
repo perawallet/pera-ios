@@ -118,6 +118,8 @@ enum AlgorandWeb: String {
 
     var presentation: String {
         switch self {
+        case .peraWebApp:
+            return "wallet.perawallet.app"
         case .support:
             return "www.perawallet.app/support/"
         default:

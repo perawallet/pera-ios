@@ -267,7 +267,9 @@ extension ExportAccountsDomainConfirmationScreen: FormInputFieldViewEditingDeleg
 extension ExportAccountsDomainConfirmationScreen {
     var isContinueActionEnabled: Bool {
         let domainInput = domainInputView.text
-        let isDomainInputValid = domainInput == AlgorandWeb.peraWebApp.rawValue
+        let isDomainInputValid =
+            domainInput == AlgorandWeb.peraWebApp.rawValue ||
+            domainInput == AlgorandWeb.peraWebApp.presentation
         return isDomainInputValid
     }
 }
