@@ -213,7 +213,9 @@ extension ExportAccountListLocalDataController {
             sharedDataController
                 .sortedAccounts()
                 .filter {
-                    $0.value.type != .watch
+                    let isWatchAccount = $0.value.isWatchAccount()
+                    let isRekeyedAccount = $0.value.isRekeyed()
+                    return !isWatchAccount && !isRekeyedAccount
                 }
 
         addAccountsHeader(
