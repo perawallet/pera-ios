@@ -209,7 +209,12 @@ extension ExportAccountListLocalDataController {
     ) {
         snapshot.appendSections([.accounts])
 
-        let accounts = sharedDataController.sortedAccounts()
+        let accounts =
+            sharedDataController
+                .sortedAccounts()
+                .filter {
+                    $0.value.type != .watch
+                }
 
         addAccountsHeader(
             &snapshot,
