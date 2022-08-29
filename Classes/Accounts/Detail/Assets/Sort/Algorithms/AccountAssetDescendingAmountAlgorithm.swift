@@ -31,13 +31,10 @@ extension AccountAssetDescendingAmountAlgorithm {
         viewModel: AssetListItemViewModel,
         otherViewModel: AssetListItemViewModel
     ) -> Bool {
-        guard let amountViewModel = viewModel.value as? ALGAssetAmountViewModel,
-              let otherAmountViewModel = otherViewModel.value as? ALGAssetAmountViewModel else {
+        guard let assetPreviewCurrencyValue = viewModel.valueInUSD,
+              let otherAssetPreviewCurrencyValue = otherViewModel.valueInUSD else {
             return false
         }
-
-        let assetPreviewCurrencyValue = amountViewModel.valueInUSD
-        let otherAssetPreviewCurrencyValue = otherAmountViewModel.valueInUSD
 
         if assetPreviewCurrencyValue != otherAssetPreviewCurrencyValue {
             return assetPreviewCurrencyValue > otherAssetPreviewCurrencyValue

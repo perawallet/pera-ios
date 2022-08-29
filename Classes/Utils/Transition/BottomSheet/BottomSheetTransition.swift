@@ -86,19 +86,3 @@ extension BottomSheetTransition {
         case presentWithoutNavigationController
     }
 }
-
-extension BottomSheetPresentable where Self: ScrollScreen {
-    var presentedScrollView: UIScrollView? {
-        return scrollView
-    }
-
-    var presentedScrollContentView: UIView? {
-        return contentView
-    }
-}
-
-extension BottomSheetPresentable where Self: ListScreen {
-    var presentedScrollView: UIScrollView? {
-        return listView
-    }
-}

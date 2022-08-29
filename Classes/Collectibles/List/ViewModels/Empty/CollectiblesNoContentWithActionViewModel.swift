@@ -85,7 +85,7 @@ extension CollectiblesNoContentWithActionViewModel {
 extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindPrimaryActionTitle() {
         primaryAction = Action(
-            title: .string("collectibles-receive-action".localized),
+            title: .string("collectibles-receive-asset-title".localized),
             image: "icon-plus".uiImage
         )
     }

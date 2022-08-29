@@ -25,17 +25,42 @@ struct AssetListItemViewModel:
     Hashable {
     var imageSource: ImageSource?
     var title: PrimaryTitleViewModel?
-    var value: PrimaryTitleViewModel?
+    var primaryValue: TextProvider?
+    var secondaryValue: TextProvider?
     var asset: Asset?
+
+    private(set) var valueInUSD: Decimal?
 
     init(
         _ item: AssetItem
     ) {
         bindImageSource(item)
         bindTitle(item)
-        bindValue(item)
+        bindPrimaryValue(item)
+        bindSecondaryValue(item)
 
         asset = item.asset
+    }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title?.primaryTitle?.string)
+        hasher.combine(title?.secondaryTitle?.string)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
+        hasher.combine(asset?.id)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
+            lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
+            lhs.asset?.id == rhs.asset?.id
     }
 }
 
@@ -43,37 +68,47 @@ extension AssetListItemViewModel {
     mutating func bindImageSource(
         _ item: AssetItem
     ) {
-        if item.asset.isAlgo {
-            self.imageSource = AssetImageSource(
-                asset: "icon-algo-circle-green".uiImage
-            )
+        let asset = item.asset
+
+        if asset.isAlgo {
+            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
             return
         }
 
-        let title = item.asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : item.asset.naming.name
+        let iconURL: URL?
+        let iconShape: ImageShape
 
-        let imageSize = CGSize(width: 40, height: 40)
-        let prismURL = PrismURL(baseURL: item.asset.logoURL)?
-            .setExpectedImageSize(imageSize)
+        if let collectibleAsset = asset as? CollectibleAsset {
+            iconURL = collectibleAsset.thumbnailImage
+            iconShape = .rounded(4)
+        } else {
+            iconURL = asset.logoURL
+            iconShape = .circle
+        }
+
+        let size = CGSize(width: 40, height: 40)
+        let url = PrismURL(baseURL: iconURL)?
+            .setExpectedImageSize(size)
             .setImageQuality(.normal)
             .build()
 
-        let placeholderText = TextFormatter.assetShortName.format(
-            (title.isNilOrEmpty ? "title-unknown".localized : title!)
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholder = getPlaceholder(
+            placeholderText,
+            with: TextAttributes(
+                font: Fonts.DMSans.regular.make(13),
+                lineHeightMultiplier: 1.18
+            )
         )
 
-        self.imageSource = PNGImageSource(
-            url: prismURL,
-            shape: .circle,
-            placeholder: getPlaceholder(
-                placeholderText,
-                with: TextAttributes(
-                    font: Fonts.DMSans.regular.make(13),
-                    lineHeightMultiplier: 1.18
-                )
-            )
+        imageSource = PNGImageSource(
+            url: url,
+            shape: iconShape,
+            placeholder: placeholder
         )
     }
 
@@ -83,10 +118,76 @@ extension AssetListItemViewModel {
         title = AssetNameViewModel(item.asset)
     }
 
-    mutating func bindValue(
+    mutating func bindPrimaryValue(
         _ item: AssetItem
     ) {
-        value = AssetAmountViewModel(item)
+        let asset = item.asset
+
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+        } else {
+            formatter.currency = nil
+        }
+
+        let text = formatter.format(asset.decimalAmount)
+        primaryValue = text?.bodyMedium(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating private func bindSecondaryValue(
+        _ item: AssetItem
+    ) {
+        let asset = item.asset
+        valueInUSD = asset.totalUSDValue ?? 0
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+
+        do {
+            let exchanger: CurrencyExchanger
+            if asset.isAlgo {
+                guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+
+                formatter.currency = fiatRawCurrency
+            } else {
+                guard let currencyValue = item.currency.primaryValue else {
+                    secondaryValue = nil
+                    valueInUSD = 0
+                    return
+                }
+
+                let rawCurrency = try currencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawCurrency)
+
+                formatter.currency = rawCurrency
+            }
+
+            let amount: Decimal
+            if asset.isAlgo {
+                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
+            } else {
+                amount = try exchanger.exchange(asset)
+            }
+
+            let text = formatter.format(amount)
+            secondaryValue = text?.footnoteRegular(
+                alignment: .right,
+                lineBreakMode: .byTruncatingTail
+            )
+        } catch {
+            secondaryValue = nil
+            valueInUSD = 0
+        }
     }
 }
 

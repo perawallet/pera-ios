@@ -100,6 +100,7 @@ class Environment {
 }
 
 enum AlgorandWeb: String {
+    case algorand = "https://www.algorand.com"
     case termsAndServices = "https://www.perawallet.app/terms-and-services/"
     case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
     case support = "https://perawallet.app/support/"

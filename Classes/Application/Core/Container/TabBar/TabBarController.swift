@@ -49,6 +49,7 @@ final class TabBarController: TabBarContainer {
             presentingScreen: self,
             api: api,
             bannerController: bannerController,
+            loadingController: loadingController,
             analytics: analytics
         )
 
@@ -60,17 +61,20 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private let bannerController: BannerController
+    private let loadingController: LoadingController
     private let analytics: ALGAnalytics
 
     init(
         sharedDataController: SharedDataController,
         api: ALGAPI,
         bannerController: BannerController,
+        loadingController: LoadingController,
         analytics: ALGAnalytics
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
         self.bannerController = bannerController
+        self.loadingController = loadingController
         self.analytics = analytics
     }
     
@@ -303,6 +307,8 @@ extension TabBarController {
     private func navigateToBuyAlgo() {
         toggleTransactionOptions()
         buyAlgoFlowCoordinator.launch()
+
+        analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
 
     private func navigateToQRScanner() {

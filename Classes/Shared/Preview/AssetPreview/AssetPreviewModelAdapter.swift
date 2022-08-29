@@ -29,7 +29,7 @@ enum AssetPreviewModelAdapter {
             : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             title: title,
             subtitle: asset.naming.unitName,
             primaryAccessory: assetViewModel.amount,
@@ -45,7 +45,7 @@ enum AssetPreviewModelAdapter {
         let algoAssetViewModel = AlgoAssetViewModel(item)
         return AssetPreviewModel(
             icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
+            verificationTier: .trusted,
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
@@ -65,46 +65,13 @@ enum AssetPreviewModelAdapter {
             : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: asset.naming.name),
-            verifiedIcon: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             title: title,
             subtitle: "ID \(asset.id)",
             primaryAccessory: assetViewModel.amount,
             secondaryAccessory: assetViewModel.valueInCurrency,
             currencyAmount: assetViewModel.valueInUSD,
             asset: asset
-        )
-    }
-
-    static func adaptPendingAsset(_ asset: StandardAsset) -> PendingAssetPreviewModel {
-        let status: String
-        switch asset.state {
-        case let .pending(operation):
-            switch operation {
-            case .add:
-                status = "asset-add-confirmation-title".localized
-            case .remove:
-                status = "asset-removing-status".localized
-            }
-        case .ready:
-            status = ""
-        }
-
-        return PendingAssetPreviewModel(
-            secondaryImage: asset.verificationTier.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: asset.name,
-            assetSecondaryTitle: "ID \(asset.id)",
-            assetStatus: status
-        )
-    }
-
-    static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
-        return PendingAssetPreviewModel(
-            secondaryImage: asset.verificationTier.isVerified
-                ? img("icon-verified-shield")
-                : nil,
-            assetPrimaryTitle: asset.naming.name,
-            assetSecondaryTitle: "ID \(asset.id)",
-            assetStatus: "asset-removing-status".localized
         )
     }
 }

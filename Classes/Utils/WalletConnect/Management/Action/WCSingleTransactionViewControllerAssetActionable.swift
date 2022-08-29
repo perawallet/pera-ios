@@ -21,6 +21,7 @@ protocol WCSingleTransactionViewControllerAssetActionable: WCSingleTransactionVi
     func openInExplorer(_ asset: Asset?)
     func openAssetURL(_ asset: Asset?)
     func displayAssetMetadata(_ asset: Asset?)
+    func openAssetDiscovery(_ asset: Asset?)
 }
 
 extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleTransactionViewController {
@@ -56,6 +57,27 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
         }
 
         open(.jsonDisplay(jsonData: data, title: "wallet-connect-transaction-title-metadata".localized), by: .present)
+    }
+
+    func openAssetDiscovery(_ asset: Asset?) {
+        guard let asset = asset else { return }
+
+        let assetDecoration = AssetDecoration(asset: asset)
+
+        let screen = Screen.asaDiscovery(
+            account: nil,
+            quickAction: nil,
+            asset: assetDecoration
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
+            }
+        }
+        open(
+            screen,
+            by: .present
+        )
     }
 }
 
