@@ -22,10 +22,12 @@ import UIKit
 struct NoContentViewCommonTheme: NoContentViewTheme {
     let icon: ImageStyle
     let iconAlignment: ResultView.IconViewAlignment
+    let spacingBetweenIconAndTitle: LayoutMetric
     let title: TextStyle
-    let titleTopMargin: LayoutMetric
+    let titleHorizontalMargins: LayoutHorizontalMargins
+    let spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
-    let bodyTopMargin: LayoutMetric
+    let bodyHorizontalMargins: LayoutHorizontalMargins
     var contentHorizontalPaddings: LayoutHorizontalPaddings
     var contentVerticalPaddings: LayoutVerticalPaddings
     let resultAlignment: NoContentView.ResultViewAlignment
@@ -37,10 +39,12 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
 
         self.icon = resultTheme.icon
         self.iconAlignment = resultTheme.iconAlignment
+        self.spacingBetweenIconAndTitle = resultTheme.spacingBetweenIconAndTitle
         self.title = resultTheme.title
+        self.titleHorizontalMargins = resultTheme.titleHorizontalMargins
+        self.spacingBetweenTitleAndBody = resultTheme.spacingBetweenTitleAndBody
         self.body = resultTheme.body
-        self.titleTopMargin = resultTheme.titleTopMargin
-        self.bodyTopMargin = resultTheme.bodyTopMargin
+        self.bodyHorizontalMargins = resultTheme.bodyHorizontalMargins
         self.contentHorizontalPaddings = (24, 24)
         self.contentVerticalPaddings = (32, 32)
         self.resultAlignment = .centered

@@ -24,8 +24,10 @@ protocol ResultViewTheme:
     LayoutSheet {
     var icon: ImageStyle { get }
     var iconAlignment: ResultView.IconViewAlignment { get }
+    var spacingBetweenIconAndTitle: LayoutMetric { get }
     var title: TextStyle { get }
-    var titleTopMargin: LayoutMetric { get }
+    var titleHorizontalMargins: LayoutHorizontalMargins { get }
+    var spacingBetweenTitleAndBody: LayoutMetric { get }
     var body: TextStyle { get }
-    var bodyTopMargin: LayoutMetric { get }
+    var bodyHorizontalMargins: LayoutHorizontalMargins { get }
 }

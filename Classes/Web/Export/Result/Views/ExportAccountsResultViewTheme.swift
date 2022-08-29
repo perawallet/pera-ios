@@ -20,25 +20,31 @@ import MacaroonUIKit
 struct ExportAccountsResultViewTheme: ResultViewTheme {
     let icon: ImageStyle
     let iconAlignment: ResultView.IconViewAlignment
+    let spacingBetweenIconAndTitle: LayoutMetric
     let title: TextStyle
-    let titleTopMargin: LayoutMetric
+    let titleHorizontalMargins: LayoutHorizontalMargins
+    let spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
-    let bodyTopMargin: LayoutMetric
+    let bodyHorizontalMargins: LayoutHorizontalMargins
 
     init(
         _ family: LayoutFamily
     ) {
-        self.icon = []
-        self.iconAlignment = .leading(0)
+        self.icon = [
+            .adjustsImageForContentSizeCategory(true)
+        ]
+        self.iconAlignment = .leading(margin: 10)
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
         ]
-        self.titleTopMargin = 40
+        self.titleHorizontalMargins = (24, 24)
+        self.spacingBetweenIconAndTitle = 40
         self.body = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
         ]
-        self.bodyTopMargin = 22
+        self.spacingBetweenTitleAndBody = 22
+        self.bodyHorizontalMargins = (24, 24)
     }
 }

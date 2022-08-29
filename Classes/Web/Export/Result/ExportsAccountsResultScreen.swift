@@ -68,7 +68,7 @@ extension ExportsAccountsResultScreen {
             $0.top == theme.contextEdgeInsets.top
             $0.leading == theme.contextEdgeInsets.leading
             $0.trailing == theme.contextEdgeInsets.trailing
-            $0.bottom <= theme.contextEdgeInsets.bottom
+            $0.bottom == theme.contextEdgeInsets.bottom
         }
 
         contextView.bindData(ExportAccountsResultViewModel())
