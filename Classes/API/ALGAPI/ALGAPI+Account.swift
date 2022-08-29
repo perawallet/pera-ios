@@ -51,4 +51,21 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+
+    @discardableResult
+    func exportAccounts(
+        _ draft: EncryptedExportAccountDraft,
+        onCompleted handler: @escaping (Response.RawResult) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.backups, args: draft.qrExportInformations.backupIdentifier)
+            .method(.put)
+            .headers([
+                ModificationHeader(draft.qrExportInformations.modificationKey)
+            ])
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 }
