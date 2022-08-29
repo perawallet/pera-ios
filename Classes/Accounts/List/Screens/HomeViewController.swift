@@ -190,23 +190,19 @@ extension HomeViewController {
                 return
             }
 
-            let screen = Screen.exportAccountsResult {
+            let screen = Screen.exportAccountsDomainConfirmation {
                 [weak self] event in
                 guard let self = self else { return }
 
                 switch event {
-                case .performClose:
+                case .performContinue:
                     self.dismiss(animated: true)
                 }
             }
 
             self.open(
                 screen,
-                by: .customPresentWithoutNavigationController(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
+                by: .present
             )
         }
 

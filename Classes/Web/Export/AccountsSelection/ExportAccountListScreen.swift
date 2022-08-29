@@ -136,7 +136,7 @@ extension ExportAccountListScreen {
          let inset =
             theme.spacingBetweenListAndContinueAction +
             continueActionView.frame.height +
-            theme.continueActionMargins.bottom
+            theme.continueActionContentEdgeInsets.bottom
 
          additionalSafeAreaInsets.bottom = inset
      }
@@ -165,12 +165,12 @@ extension ExportAccountListScreen {
          continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueActionEdgeInsets)
          continueActionView.snp.makeConstraints {
              let safeAreaBottom = view.compactSafeAreaInsets.bottom
-             let bottom = safeAreaBottom + theme.continueActionMargins.bottom
+             let bottom = safeAreaBottom + theme.continueActionContentEdgeInsets.bottom
 
              $0.top == theme.spacingBetweenListAndContinueAction
-             $0.leading == theme.continueActionMargins.leading
+             $0.leading == theme.continueActionContentEdgeInsets.leading
              $0.bottom == bottom
-             $0.trailing == theme.continueActionMargins.trailing
+             $0.trailing == theme.continueActionContentEdgeInsets.trailing
          }
 
          continueActionView.addTouch(
@@ -184,7 +184,7 @@ extension ExportAccountListScreen {
      @objc
      private func performContinue() {
          let selectedAccounts = dataController.getSelectedAccounts()
-         eventHandler?(.didContinue(with: selectedAccounts))
+         eventHandler?(.performContinue(with: selectedAccounts))
      }
  }
 
@@ -299,6 +299,6 @@ extension ExportAccountListScreen {
 
 extension ExportAccountListScreen {
     enum Event {
-        case didContinue(with: [AccountHandle])
+        case performContinue(with: [AccountHandle])
     }
 }

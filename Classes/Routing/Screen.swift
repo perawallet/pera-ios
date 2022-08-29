@@ -219,6 +219,9 @@ indirect enum Screen {
     case exportAccountList(
         eventHandler: ExportAccountListScreen.EventHandler
     )
+    case exportAccountsDomainConfirmation(
+        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
+    )
     case exportAccountsConfirmationList(
         selectedAccounts: [AccountHandle],
         eventHandler: ExportAccountsConfirmationListScreen.EventHandler

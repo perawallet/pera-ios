@@ -3623,6 +3623,12 @@
 		D4320F1C28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F1B28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift */; };
 		D4320F1D28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F1B28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift */; };
 		D4320F1E28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F1B28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift */; };
+		D4320F2128BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2028BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift */; };
+		D4320F2228BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2028BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift */; };
+		D4320F2328BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2028BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift */; };
+		D4320F2528BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2428BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift */; };
+		D4320F2628BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2428BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift */; };
+		D4320F2728BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4320F2428BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift */; };
 		D432865726DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865826DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865926DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
@@ -6704,6 +6710,8 @@
 		D4320F1328BC46FB00920722 /* ExportAccountsConfirmationListItemHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsConfirmationListItemHeader.swift; sourceTree = "<group>"; };
 		D4320F1728BC489800920722 /* ExportAccountsConfirmationListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsConfirmationListLocalDataController.swift; sourceTree = "<group>"; };
 		D4320F1B28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsConfirmationListAccountCell.swift; sourceTree = "<group>"; };
+		D4320F2028BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsDomainConfirmationScreen.swift; sourceTree = "<group>"; };
+		D4320F2428BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountsDomainConfirmationScreenTheme.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D43682A52767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountSelectionViewTheme.swift; sourceTree = "<group>"; };
 		D4389354280428460038F7AD /* URLImageViewNoStyleLayoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageViewNoStyleLayoutSheet.swift; sourceTree = "<group>"; };
@@ -14794,9 +14802,10 @@
 		D4320E9928B8BD1F00920722 /* Export */ = {
 			isa = PBXGroup;
 			children = (
-				D4320EE528BC2EF300920722 /* AccountsSelection */,
-				D4320EE628BC2F1500920722 /* Result */,
 				D4320EF828BC421300920722 /* AccountsConfirmation */,
+				D4320EE528BC2EF300920722 /* AccountsSelection */,
+				D4320F1F28BC4FBF00920722 /* DomainConfirmation */,
+				D4320EE628BC2F1500920722 /* Result */,
 			);
 			path = Export;
 			sourceTree = "<group>";
@@ -14920,6 +14929,15 @@
 				D4320F1B28BC4A8200920722 /* ExportAccountsConfirmationListAccountCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D4320F1F28BC4FBF00920722 /* DomainConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				D4320F2028BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift */,
+				D4320F2428BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift */,
+			);
+			path = DomainConfirmation;
 			sourceTree = "<group>";
 		};
 		D43A0C202790CAD8007430B9 /* LoadingView */ = {
@@ -17968,6 +17986,7 @@
 				D48FDFC527CEBA0400C39FC7 /* ReceiveCollectibleAccountListHeaderViewModel.swift in Sources */,
 				D4999DFA28916DD100C7E05C /* OptInAssetViewModel.swift in Sources */,
 				2BD36DB2267CCB4D00C57728 /* WCAlgosTransactionView.swift in Sources */,
+				D4320F2328BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */,
 				D46AC87726E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */,
 				D4194311273541170055EC70 /* PageContainer.swift in Sources */,
 				2B69824E278C90DF008EC669 /* PendingAssetPreviewViewModel.swift in Sources */,
@@ -18336,6 +18355,7 @@
 				2B7A1F9F27DE69480010F52E /* CollectibleDetailActionViewTheme.swift in Sources */,
 				2B7E58852586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				D4006DE12710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */,
+				D4320F2728BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */,
 				D412C19327F1BCFC00E79308 /* SendCollectibleContactCell.swift in Sources */,
 				D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				D4FC47552714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
@@ -19133,6 +19153,7 @@
 				2B7A1F9227DE64C80010F52E /* CollectibleDescriptionViewTheme.swift in Sources */,
 				2B0F61B824EC129D00DA22A6 /* APIParamKey.swift in Sources */,
 				D4AC1FBB272D406C0027353F /* AccountListViewModel.swift in Sources */,
+				D4320F2628BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */,
 				D432865826DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */,
 				D419433A27356FEB0055EC70 /* AssetListViewLayout.swift in Sources */,
 				95D11D062771CC0F001B2C37 /* TitleHeaderView.swift in Sources */,
@@ -19799,6 +19820,7 @@
 				D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */,
 				2B9352C327F2EF90000DA8DB /* CollectibleDetailOptedInActionViewModel.swift in Sources */,
 				D419430C273541100055EC70 /* PageCell.swift in Sources */,
+				D4320F2228BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */,
 				D499D28D27C7DA8900641FF5 /* CollectibleListItemViewModel.swift in Sources */,
 				048B3C1B27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */,
 				2B0F627224EC129D00DA22A6 /* CursorQuery.swift in Sources */,
@@ -21461,6 +21483,7 @@
 				2B461B7626CAFF970079BF29 /* WCAccountInformationNameView.swift in Sources */,
 				2B9FDEA628A52C2A00C8117D /* GroupedListItemButtonTheme.swift in Sources */,
 				2BD063E425CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
+				D4320F2128BCA3AA00920722 /* ExportAccountsDomainConfirmationScreen.swift in Sources */,
 				2BB350EC258A64D400A03BAC /* LedgerMessage.swift in Sources */,
 				D41F93492723038F00E9F2E7 /* RekeyInstructionsViewModel.swift in Sources */,
 				D4999DF828916DD100C7E05C /* OptInAssetViewModel.swift in Sources */,
@@ -21829,6 +21852,7 @@
 				D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift in Sources */,
 				D4FC47532714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
 				2B7A1F9D27DE69480010F52E /* CollectibleDetailActionViewTheme.swift in Sources */,
+				D4320F2528BCA3BF00920722 /* ExportAccountsDomainConfirmationScreenTheme.swift in Sources */,
 				2B7E58832586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				D412C19127F1BCFC00E79308 /* SendCollectibleContactCell.swift in Sources */,
 				F0DB41AF2794C64600EA437D /* AddAccountListItemButtonViewModel.swift in Sources */,

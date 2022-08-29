@@ -45,6 +45,10 @@ final class ExportsAccountsResultScreen: MacaroonUIKit.ScrollScreen  {
             ])
         )
 
+        addUI()
+    }
+
+    private func addUI() {
         addBackground()
         addContext()
         addCloseAction()
@@ -84,7 +88,7 @@ extension ExportsAccountsResultScreen {
 
         closeActionView.addTouch(
             target: self,
-            action: #selector(didClose)
+            action: #selector(performClose)
         )
     }
 }
@@ -92,7 +96,7 @@ extension ExportsAccountsResultScreen {
 
 extension ExportsAccountsResultScreen {
     @objc
-    private func didClose() {
+    private func performClose() {
         eventHandler?(.performClose)
     }
 }

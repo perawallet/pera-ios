@@ -24,14 +24,14 @@ struct ExportAccountListScreenTheme:
     let spacingBetweenListAndContinueAction: LayoutMetric
     let continueAction: ButtonStyle
     let continueActionEdgeInsets: LayoutPaddings
-    let continueActionMargins: LayoutMargins
+    let continueActionContentEdgeInsets: LayoutMargins
 
     init(_ family: LayoutFamily) {
-        background = [
+        self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        spacingBetweenListAndContinueAction = 16
-        continueAction = [
+        self.spacingBetweenListAndContinueAction = 16
+        self.continueAction = [
             .title("title-continue".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
@@ -44,7 +44,7 @@ struct ExportAccountListScreenTheme:
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
-        continueActionEdgeInsets = (16, 8, 16, 8)
-        continueActionMargins = (.noMetric, 24, 12, 24)
+        self.continueActionEdgeInsets = (16, 8, 16, 8)
+        self.continueActionContentEdgeInsets = (.noMetric, 24, 12, 24)
     }
 }

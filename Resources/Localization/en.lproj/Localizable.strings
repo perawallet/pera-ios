@@ -82,6 +82,7 @@
 "url-copied" = "URL copied to clipboard";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
+"title-disclaimer" = "DISCLAIMER";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1180,6 +1181,11 @@
 "web-export-account-list-title" = "Export to Pera Web";
 "web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
 "web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
+"web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL of the Web Wallet";
+"web-export-accounts-domain-confirmation-input-placeholder" = "Enter URL of the Web Wallet";
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:";
 "web-export-accounts-confirmation-list-title" = "Confirm Accounts";
 "web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
 "web-export-result-title" = "Accounts exported successfully!";

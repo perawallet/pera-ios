@@ -199,12 +199,12 @@ extension ExportAccountsConfirmationListScreen {
     @objc
     private func performContinue() {
         let accounts = dataController.getAccounts()
-        eventHandler?(.didContinue(with: accounts))
+        eventHandler?(.performContinue(with: accounts))
     }
 
     @objc
     private func performCancel() {
-        eventHandler?(.didCancel)
+        eventHandler?(.performCancel)
     }
 }
 
@@ -248,7 +248,7 @@ extension ExportAccountsConfirmationListScreen {
 
 extension ExportAccountsConfirmationListScreen {
     enum Event {
-        case didContinue(with: [AccountHandle])
-        case didCancel
+        case performContinue(with: [AccountHandle])
+        case performCancel
     }
 }
