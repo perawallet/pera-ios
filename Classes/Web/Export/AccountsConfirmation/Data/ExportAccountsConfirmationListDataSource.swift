@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ExportAccountListDataSource.swift
+//   ExportAccountsConfirmationListDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ExportAccountListDataSource:
-    UICollectionViewDiffableDataSource<ExportAccountListSectionIdentifier, ExportAccountListItemIdentifier> {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<ExportAccountListSectionIdentifier, ExportAccountListItemIdentifier>
+final class ExportAccountsConfirmationListDataSource:
+    UICollectionViewDiffableDataSource<ExportAccountsConfirmationListSectionIdentifier, ExportAccountsConfirmationListItemIdentifier> {
+    typealias Snapshot =  NSDiffableDataSourceSnapshot<ExportAccountsConfirmationListSectionIdentifier, ExportAccountsConfirmationListItemIdentifier>
 
     init(
         _ collectionView: UICollectionView
@@ -31,16 +31,9 @@ final class ExportAccountListDataSource:
             switch itemIdentifier {
             case .account(let item):
                 switch item {
-                case .header(let headerItem):
-                    let cell = collectionView.dequeue(
-                        ExportAccountListAccountsHeader.self,
-                        at: indexPath
-                    )
-                    cell.bindData(headerItem.viewModel)
-                    return cell
                 case .cell(let cellItem):
                     let cell = collectionView.dequeue(
-                        ExportAccountListAccountCell.self,
+                        ExportAccountsConfirmationListAccountCell.self,
                         at: indexPath
                     )
                     cell.bindData(cellItem.viewModel)
@@ -58,22 +51,21 @@ final class ExportAccountListDataSource:
             }
 
             let header = collectionView.dequeueHeader(
-                ExportAccountListItemHeader.self,
+                ExportAccountsConfirmationListItemHeader.self,
                 at: indexPath
             )
 
-            header.bindData(ExportAccountListItemHeaderViewModel())
+            header.bindData(ExportAccountsConfirmationListItemHeaderViewModel())
 
             return header
         }
 
         [
-            ExportAccountListAccountsHeader.self,
-            ExportAccountListAccountCell.self,
+            ExportAccountsConfirmationListAccountCell.self,
         ].forEach {
             collectionView.register($0)
         }
 
-        collectionView.register(header: ExportAccountListItemHeader.self)
+        collectionView.register(header: ExportAccountsConfirmationListItemHeader.self)
     }
 }

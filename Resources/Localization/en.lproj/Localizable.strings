@@ -1180,5 +1180,7 @@
 "web-export-account-list-title" = "Export to Pera Web";
 "web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
 "web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-accounts-confirmation-list-title" = "Confirm Accounts";
+"web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";

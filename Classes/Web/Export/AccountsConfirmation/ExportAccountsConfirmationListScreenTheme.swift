@@ -12,19 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ExportAccountListScreenTheme.swift
+//   ExportAccountsConfirmationListScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct ExportAccountListScreenTheme:
+struct ExportAccountsConfirmationListScreenTheme:
     LayoutSheet,
     StyleSheet {
     let background: ViewStyle
     let spacingBetweenListAndContinueAction: LayoutMetric
     let continueAction: ButtonStyle
-    let continueActionEdgeInsets: LayoutPaddings
-    let continueActionMargins: LayoutMargins
+    let cancelAction: ButtonStyle
+    let actionEdgeInsets: LayoutPaddings
+    let actionMargins: LayoutMargins
+    let spacingBetweenActions: LayoutMetric
 
     init(_ family: LayoutFamily) {
         background = [
@@ -35,16 +37,26 @@ struct ExportAccountListScreenTheme:
             .title("title-continue".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
-                .normal(Colors.Button.Primary.text),
-                .disabled(Colors.Button.Primary.disabledText)
+                .normal(Colors.Button.Primary.text)
             ]),
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),
-                .highlighted("components/buttons/primary/bg-highlighted"),
-                .disabled("components/buttons/primary/bg-disabled")
+                .highlighted("components/buttons/primary/bg-highlighted")
             ])
         ]
-        continueActionEdgeInsets = (16, 8, 16, 8)
-        continueActionMargins = (.noMetric, 24, 12, 24)
+        cancelAction = [
+            .title("title-cancel".localized),
+            .font(Typography.bodyMedium()),
+            .titleColor([
+                .normal(Colors.Button.Secondary.text)
+            ]),
+            .backgroundImage([
+                .normal("components/buttons/secondary/bg"),
+                .highlighted("components/buttons/secondary/bg-highlighted")
+            ])
+        ]
+        actionEdgeInsets = (16, 8, 16, 8)
+        actionMargins = (.noMetric, 24, 12, 24)
+        spacingBetweenActions = 16
     }
 }

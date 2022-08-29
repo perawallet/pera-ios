@@ -136,7 +136,7 @@ extension ExportAccountListScreen {
          let inset =
             theme.spacingBetweenListAndContinueAction +
             continueActionView.frame.height +
-            theme.continueAllActionMargins.bottom
+            theme.continueActionMargins.bottom
 
          additionalSafeAreaInsets.bottom = inset
      }
@@ -159,18 +159,18 @@ extension ExportAccountListScreen {
      }
 
      private func addContinueActionView() {
-         continueActionView.customizeAppearance(theme.continueAllAction)
+         continueActionView.customizeAppearance(theme.continueAction)
 
          continueActionViewGradient.addSubview(continueActionView)
-         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueAllActionEdgeInsets)
+         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueActionEdgeInsets)
          continueActionView.snp.makeConstraints {
              let safeAreaBottom = view.compactSafeAreaInsets.bottom
-             let bottom = safeAreaBottom + theme.continueAllActionMargins.bottom
+             let bottom = safeAreaBottom + theme.continueActionMargins.bottom
 
              $0.top == theme.spacingBetweenListAndContinueAction
-             $0.leading == theme.continueAllActionMargins.leading
+             $0.leading == theme.continueActionMargins.leading
              $0.bottom == bottom
-             $0.trailing == theme.continueAllActionMargins.trailing
+             $0.trailing == theme.continueActionMargins.trailing
          }
 
          continueActionView.addTouch(
