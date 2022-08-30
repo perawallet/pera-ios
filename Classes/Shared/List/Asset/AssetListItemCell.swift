@@ -35,7 +35,7 @@ final class AssetListItemCell:
         let separator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
-            position: .bottom((80, 0))
+            position: .bottom((80, 24))
         )
         separatorStyle = .single(separator)
     }

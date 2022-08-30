@@ -114,7 +114,7 @@ extension TransactionTutorialViewModel {
             range: highlightedTextRange
         )
 
-        secondTip = .attributedString(
+        tapToMoreText = .attributedString(
             textAttributes
         )
     }

@@ -22,31 +22,35 @@ import UIKit
 struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
     let accountName: TextStyle
     let assetAndCollectibles: TextStyle
+    let secondaryImage: ImageStyle
     let secondaryAssetValue: TextStyle
     let actionButton: ButtonStyle
 
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
-    let assetNameVerticalStackViewTrailingPadding: LayoutMetric
     let verticalPadding: LayoutMetric
-    let secondaryImageLeadingPadding: LayoutMetric
+    let secondaryImageOffset: LayoutOffset
 
     init(actionButtonStyle: ButtonStyle, _ family: LayoutFamily = LayoutFamily.current) {
         self.accountName = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.assetAndCollectibles = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
+        self.secondaryImage = [
+            .contentMode(.right)
+        ]
+        self.secondaryImageOffset = (8, 0)
         self.secondaryAssetValue = [
             .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
@@ -54,9 +58,7 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
 
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
-        self.secondaryImageLeadingPadding = 8
         self.verticalPadding = 16
-        self.assetNameVerticalStackViewTrailingPadding = 80
     }
 
     init(_ family: LayoutFamily) {

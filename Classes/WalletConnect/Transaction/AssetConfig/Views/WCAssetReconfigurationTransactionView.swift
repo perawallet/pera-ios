@@ -65,6 +65,12 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
         algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
         showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
+
+        assetInformationView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcAssetReconfigurationTransactionViewDidOpenAssetDiscovery(self)
+        }
     }
 }
 
@@ -272,6 +278,9 @@ protocol WCAssetReconfigurationTransactionViewDelegate: AnyObject {
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     )
     func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    )
+    func wcAssetReconfigurationTransactionViewDidOpenAssetDiscovery(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     )
 }

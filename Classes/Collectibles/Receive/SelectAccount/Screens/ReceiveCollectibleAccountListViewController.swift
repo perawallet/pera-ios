@@ -204,10 +204,7 @@ extension ReceiveCollectibleAccountListViewController {
                   }
 
             let controller = open(
-                .receiveCollectibleAssetList(
-                    account: account,
-                    dataController: ReceiveCollectibleAssetListAPIDataController(api!)
-                ),
+                .receiveCollectibleAssetList(account: account),
                 by: .push
             ) as? ReceiveCollectibleAssetListViewController
 

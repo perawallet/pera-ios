@@ -13,11 +13,18 @@
 // limitations under the License.
 
 //
-//  Screen.swift
+//  Screen.swifta
 
 import UIKit
 
 indirect enum Screen {
+    case asaDetail(account: Account, asset: Asset, eventHandler: ASADetailScreen.EventHandler)
+    case asaDiscovery(
+        account: Account?,
+        quickAction: AssetQuickAction?,
+        asset: AssetDecoration,
+        eventHandler: ASADiscoveryScreen.EventHandler
+    )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
@@ -32,14 +39,6 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
-    case algosDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
@@ -159,14 +158,13 @@ indirect enum Screen {
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
-    case receiveCollectibleAssetList(
-        account: AccountHandle,
-        dataController: ReceiveCollectibleAssetListDataController
-    )
+    case receiveCollectibleAssetList(account: AccountHandle)
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?
+        thumbnailImage: UIImage?,
+        quickAction: AssetQuickAction?,
+        eventHandler: CollectibleDetailViewController.EventHandler
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
@@ -186,7 +184,6 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
-    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
@@ -203,6 +200,32 @@ indirect enum Screen {
     case swapAsset(
         draft: SwapScreenDraft,
         theme: SwapAssetViewControllerTheme = .init()
+    )
+    case alert(
+        alert: Alert,
+        theme: AlertScreenTheme = AlertScreenCommonTheme()
+    )
+    case swapIntroduction(
+        draft: SwapIntroductionDraft,
+        eventHandler: EventHandler<SwapIntroductionEvent>
+    )
+    case optInAsset(
+        draft: OptInAssetDraft,
+        eventHandler: OptInAssetScreen.EventHandler
+    )
+    case optOutAsset(
+        draft: OptOutAssetDraft,
+        theme: OptOutAssetScreenTheme = .init(),
+        eventHandler: OptOutAssetScreen.EventHandler
+    )
+    case transferAssetBalance(
+        draft: TransferAssetBalanceDraft,
+        theme: TransferAssetBalanceScreenTheme = .init(),
+        eventHandler: TransferAssetBalanceScreen.EventHandler
+    )
+    case sheetAction(
+        sheet: UISheet,
+        theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
 }
 

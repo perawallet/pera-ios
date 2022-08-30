@@ -103,11 +103,10 @@ extension PrimaryTitleView {
         primaryTitleView.customizeAppearance(theme.primaryTitle)
 
         addSubview(primaryTitleView)
-        primaryTitleView.fitToHorizontalIntrinsicSize(
+        primaryTitleView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
-        primaryTitleView.fitToVerticalIntrinsicSize()
         primaryTitleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -135,16 +134,11 @@ extension PrimaryTitleView {
         secondaryTitleView.customizeAppearance(theme.secondaryTitle)
 
         addSubview(secondaryTitleView)
-        secondaryTitleView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
         secondaryTitleView.fitToVerticalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .defaultLow
+            hugging: .required,
+            compression: .defaultHigh
         )
         secondaryTitleView.contentEdgeInsets.top = theme.spacingBetweenPrimaryAndSecondaryTitles
-        secondaryTitleView.fitToIntrinsicSize()
         secondaryTitleView.snp.makeConstraints {
             $0.top == primaryTitleView.snp.bottom
             $0.leading == 0

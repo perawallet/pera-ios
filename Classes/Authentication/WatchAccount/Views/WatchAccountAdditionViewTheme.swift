@@ -69,7 +69,7 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.pasteTextAttributes = [
             .font(Fonts.DMSans.regular.make(15).uiFont),
-            .textColor(Colors.Other.Global.white.uiColor)
+            .textColor(Colors.Text.white.uiColor)
         ]
 
         self.copiedTextAttributes = [

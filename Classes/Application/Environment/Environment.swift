@@ -100,6 +100,7 @@ class Environment {
 }
 
 enum AlgorandWeb: String {
+    case algorand = "https://www.algorand.com"
     case termsAndServices = "https://www.perawallet.app/terms-and-services/"
     case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
     case support = "https://perawallet.app/support/"
@@ -113,6 +114,7 @@ enum AlgorandWeb: String {
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
+    case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
 
     var presentation: String {
         switch self {

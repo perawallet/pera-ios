@@ -57,7 +57,7 @@ class WCTransactionDappMessageView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(Colors.Other.Global.white.uiColor)
+            .withTextColor(Colors.Text.white.uiColor)
             .withFont(Fonts.DMSans.medium.make(19).uiFont)
     }()
 

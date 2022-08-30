@@ -24,7 +24,8 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
     let title: PrimaryTitleViewTheme
-    let value: PrimaryTitleViewTheme
+    let primaryValue: TextStyle
+    let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
 
     init(
@@ -35,7 +36,14 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
         self.contentHorizontalPadding = 16
         self.contentMinWidthRatio = 0.25
         self.title = AssetNameViewTheme()
-        self.value = AssetAmountViewTheme()
+        self.primaryValue = [
+            .textColor(Colors.Text.main),
+            .textOverflow(SingleLineText())
+        ]
+        self.secondaryValue = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
         self.minSpacingBetweenTitleAndValue = 16
     }
 }

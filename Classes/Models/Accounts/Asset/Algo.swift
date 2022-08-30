@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct Algo: Asset {
+final class Algo: Asset {
     let id: AssetID = -1
     var amount: UInt64
     let isFrozen: Bool? = nil
@@ -25,12 +25,19 @@ struct Algo: Asset {
     let creator: AssetCreator? = nil
     let decimals: Int = 6
     let decimalAmount: Decimal
+    let total: UInt64?
     let usdValue: Decimal? = nil
     let totalUSDValue: Decimal? = nil
     var state: AssetState = .ready
-    let url: String? = "www.algorand.com"
+    let url: String? = AlgorandWeb.algorand.rawValue
     let verificationTier: AssetVerificationTier = .trusted
+    let projectURL: URL?
+    let explorerURL: URL? = nil
     let logoURL: URL? = nil
+    let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
 
     let naming: AssetNaming = AssetNaming(
         id: -1,
@@ -39,6 +46,7 @@ struct Algo: Asset {
     )
     let amountWithFraction: Decimal = 0
     let isAlgo = true
+    let isFault = false
 
     init(
         amount: UInt64
@@ -47,5 +55,11 @@ struct Algo: Asset {
         /// <note>
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
+        self.total = 10_000_000_000_000_000
+        self.description = "asset-algos-description".localized
+        self.projectURL = AlgorandWeb.algorand.link
+        self.discordURL = URL(string: "https://discord.com/invite/algorand")
+        self.telegramURL = URL(string: "https://t.me/algorand")
+        self.twitterURL = URL.twitterURL(username: "Algorand")
     }
 }

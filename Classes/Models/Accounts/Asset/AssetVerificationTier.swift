@@ -51,4 +51,10 @@ extension AssetVerificationTier {
     var isVerified: Bool {
         return self == .verified
     }
+    var isUnverified: Bool {
+        return self == .unverified
+    }
+    var isSuspicious: Bool {
+        return self == .suspicious
+    }
 }

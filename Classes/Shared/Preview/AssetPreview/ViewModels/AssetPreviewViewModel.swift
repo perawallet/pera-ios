@@ -20,7 +20,7 @@ import UIKit
 
 struct AssetPreviewModel {
     let icon: AssetImage
-    let verifiedIcon: UIImage?
+    let verificationTier: AssetVerificationTier
     let title: String?
     let subtitle: String?
     let primaryAccessory: String?
@@ -35,7 +35,7 @@ struct AssetPreviewViewModel:
     Hashable {
     private(set) var assetID: AssetID?
     private(set) var assetImageViewModel: PrimaryImageViewModel?
-    private(set) var verifiedIcon: UIImage?
+    private(set) var verificationTierIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var primaryAccessory: EditText?
@@ -53,9 +53,17 @@ extension AssetPreviewViewModel {
         _ model: T
     ) {
         if let preview = model as? AssetPreviewModel {
-            bindTitle(preview.title)
+            let titleColor: Color =
+            preview.verificationTier.isSuspicious
+            ? Colors.Helpers.negative
+            : Colors.Text.main
+
+            bindTitle(
+                preview.title,
+                titleColor: titleColor
+            )
             bindAssetImageView(preview.icon)
-            bindVerifiedIcon(preview.verifiedIcon)
+            bindVerificationTierIcon(preview.verificationTier)
             bindSubtitle(preview.subtitle)
             bindPrimaryAccessory(preview.primaryAccessory)
             bindSecondaryAccessory(preview.secondaryAccessory)
@@ -66,7 +74,7 @@ extension AssetPreviewViewModel {
         /// We should think about the draft approach. (e.g Create container views for each case.)
         if let standardAssetPreviewAddition = model as? StandardAssetPreviewAdditionDraft {
             bindAssetID(standardAssetPreviewAddition)
-            bindVerifiedIcon(standardAssetPreviewAddition)
+            bindVerificationTierIcon(standardAssetPreviewAddition)
             bindTitle(standardAssetPreviewAddition)
             bindImage(standardAssetPreviewAddition)
             bindSubtitle(standardAssetPreviewAddition)
@@ -76,7 +84,7 @@ extension AssetPreviewViewModel {
 
         if let collectibleAssetPreviewAddition = model as? CollectibleAssetPreviewAdditionDraft {
             bindAssetID(collectibleAssetPreviewAddition)
-            bindVerifiedIcon(collectibleAssetPreviewAddition)
+            bindVerificationTierIcon(collectibleAssetPreviewAddition)
             bindTitle(collectibleAssetPreviewAddition)
             bindImage(collectibleAssetPreviewAddition)
             bindSubtitle(collectibleAssetPreviewAddition)
@@ -85,7 +93,7 @@ extension AssetPreviewViewModel {
 
         if let collectibleAssetSelectionDraft = model as? CollectibleAssetPreviewSelectionDraft {
             bindAssetID(collectibleAssetSelectionDraft)
-            bindVerifiedIcon(collectibleAssetSelectionDraft)
+            bindVerificationTierIcon(collectibleAssetSelectionDraft)
             bindTitle(collectibleAssetSelectionDraft)
             bindImage(collectibleAssetSelectionDraft)
             bindSubtitle(collectibleAssetSelectionDraft)
@@ -105,16 +113,23 @@ extension AssetPreviewViewModel {
         )
     }
     
-    private mutating func bindVerifiedIcon(_ image: UIImage?) {
-        self.verifiedIcon = image
+    private mutating func bindVerificationTierIcon(
+        _ verificationTier: AssetVerificationTier
+    ) {
+        self.verificationTierIcon = getVerificationTierIcon(verificationTier)
     }
     
-    private mutating func bindTitle(_ title: String?) {
+    private mutating func bindTitle(
+        _ title: String?,
+        titleColor: Color
+    ) {
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(titleColor))
+
+        let aTitle = title.isNilOrEmpty ? "title-unknown".localized : title!
+
         self.title = .attributedString(
-            (title.isNilOrEmpty ? "title-unknown".localized : title!)
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
+            aTitle.attributed(attributes)
         )
     }
     
@@ -180,12 +195,10 @@ extension AssetPreviewViewModel {
         assetID = assetAddition.asset.id
     }
 
-    private mutating func bindVerifiedIcon(
+    private mutating func bindVerificationTierIcon(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
-
-        bindVerifiedIcon(icon)
+        self.verificationTierIcon = getVerificationTierIcon(assetAddition.asset.verificationTier)
     }
 
     private mutating func bindImage(
@@ -202,7 +215,15 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: StandardAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.naming.name)
+        let titleColor: Color =
+        assetAddition.asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            assetAddition.asset.naming.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -239,12 +260,10 @@ extension AssetPreviewViewModel {
         assetID = assetAddition.asset.id
     }
 
-    private mutating func bindVerifiedIcon(
+    private mutating func bindVerificationTierIcon(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        let icon = assetAddition.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
-
-        bindVerifiedIcon(icon)
+        self.verificationTierIcon = getVerificationTierIcon(assetAddition.asset.verificationTier)
     }
 
     private mutating func bindImage(
@@ -263,7 +282,17 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ assetAddition: CollectibleAssetPreviewAdditionDraft
     ) {
-        bindTitle(assetAddition.asset.naming.name)
+        let asset = assetAddition.asset
+
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            assetAddition.asset.naming.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -310,7 +339,15 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ asset: CollectibleAsset
     ) {
-        bindTitle(asset.name)
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            asset.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -333,12 +370,11 @@ extension AssetPreviewViewModel {
         assetID = draft.asset.id
     }
 
-    private mutating func bindVerifiedIcon(
+    private mutating func bindVerificationTierIcon(
         _ draft: CollectibleAssetPreviewSelectionDraft
+        
     ) {
-        let icon = draft.asset.verificationTier.isVerified ? img("icon-verified-shield") : nil
-
-        bindVerifiedIcon(icon)
+        self.verificationTierIcon = getVerificationTierIcon(draft.asset.verificationTier)
     }
 
     private mutating func bindImage(
@@ -352,7 +388,17 @@ extension AssetPreviewViewModel {
     private mutating func bindTitle(
         _ draft: CollectibleAssetPreviewSelectionDraft
     ) {
-        bindTitle(draft.asset.name)
+        let asset = draft.asset
+
+        let titleColor: Color =
+        asset.verificationTier.isSuspicious
+        ? Colors.Helpers.negative
+        : Colors.Text.main
+
+        bindTitle(
+            asset.name,
+            titleColor: titleColor
+        )
     }
 
     private mutating func bindSubtitle(
@@ -405,6 +451,17 @@ extension AssetPreviewViewModel {
             bindSecondaryAccessory(nil)
         }
     }
+
+    private func getVerificationTierIcon(
+        _ verificationTier: AssetVerificationTier
+    ) -> UIImage? {
+        switch verificationTier {
+        case .trusted: return "icon-trusted".uiImage
+        case .verified: return "icon-verified".uiImage
+        case .unverified: return nil
+        case .suspicious: return "icon-suspicious".uiImage
+        }
+    }
 }
 
 extension AssetPreviewViewModel {
@@ -413,7 +470,7 @@ extension AssetPreviewViewModel {
     ) {
         hasher.combine(assetID)
         hasher.combine(assetImageViewModel?.image)
-        hasher.combine(verifiedIcon)
+        hasher.combine(verificationTierIcon)
         hasher.combine(title)
         hasher.combine(subtitle)
         hasher.combine(primaryAccessory)
@@ -426,7 +483,7 @@ extension AssetPreviewViewModel {
     ) -> Bool {
         return lhs.assetID == rhs.assetID &&
         lhs.assetImageViewModel?.image == rhs.assetImageViewModel?.image &&
-        lhs.verifiedIcon == rhs.verifiedIcon &&
+        lhs.verificationTierIcon == rhs.verificationTierIcon &&
         lhs.title == rhs.title &&
         lhs.subtitle == rhs.subtitle &&
         lhs.primaryAccessory == rhs.primaryAccessory &&

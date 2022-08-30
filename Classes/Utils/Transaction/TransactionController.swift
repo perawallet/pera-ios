@@ -20,6 +20,8 @@ import UIKit
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
+
+    private(set) var currentTransactionType: TransactionType?
     
     private var api: ALGAPI
     private let bannerController: BannerController?
@@ -34,8 +36,6 @@ class TransactionController {
         LedgerTransactionOperation(api: api, analytics: analytics)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
-    
-    private var currentTransactionType: TransactionType?
 
     private var isLedgerRequiredTransaction: Bool {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
@@ -59,15 +59,15 @@ extension TransactionController {
         return transactionDraft?.from
     }
 
-    private var assetTransactionDraft: AssetTransactionSendDraft? {
+    var assetTransactionDraft: AssetTransactionSendDraft? {
         return transactionDraft as? AssetTransactionSendDraft
     }
 
-    private var algosTransactionDraft: AlgosTransactionSendDraft? {
+    var algosTransactionDraft: AlgosTransactionSendDraft? {
         return transactionDraft as? AlgosTransactionSendDraft
     }
 
-    private var rekeyTransactionDraft: RekeyTransactionSendDraft? {
+    var rekeyTransactionDraft: RekeyTransactionSendDraft? {
         return transactionDraft as? RekeyTransactionSendDraft
     }
 

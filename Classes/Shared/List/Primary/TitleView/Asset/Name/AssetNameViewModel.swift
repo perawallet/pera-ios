@@ -44,7 +44,15 @@ extension AssetNameViewModel {
             aTitle = "title-unknown".localized
         }
 
-        primaryTitle = aTitle.bodyRegular()
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        primaryTitle = aTitle.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(
@@ -65,6 +73,6 @@ extension AssetNameViewModel {
             return
         }
 
-        secondaryTitle = unitName.footnoteRegular()
+        secondaryTitle = unitName.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
