@@ -267,6 +267,20 @@ extension String {
 // MARK: - Footnote
 
 extension String {
+    func footnoteHeadingMedium(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> NSAttributedString {
+        return attributed(
+            Typography.footnoteHeadingAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
+        )
+    }
+
     func footnoteBold(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,

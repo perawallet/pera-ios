@@ -52,8 +52,8 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.buttonHeight = 40
-        self.buttonInset = 20
+        self.buttonInset = 8
         self.horizontalInset = 24
-        self.buttonContentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        self.buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     }
 }

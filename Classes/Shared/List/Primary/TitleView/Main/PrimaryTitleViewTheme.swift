@@ -27,19 +27,3 @@ protocol PrimaryTitleViewTheme:
     var secondaryTitle: TextStyle { get }
     var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric { get }
 }
-
-extension PrimaryTitleViewTheme {
-    var primaryTitle: TextStyle {
-        return [
-            .textColor(Colors.Text.main),
-        ]
-    }
-
-    var primaryTitleAccessory: ImageStyle {
-        return []
-    }
-
-    var spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric {
-        return 0
-    }
-}

@@ -84,8 +84,8 @@ extension BannerViewTheme {
 
     mutating func configureForNotification() {
         backgroundShadow = MacaroonUIKit.Shadow(
-            color: Colors.Other.dropShadow.uiColor,
-            opacity: 1,
+            color: UIColor.black,
+            opacity: 0.08,
             offset: (0, 8),
             radius: 20,
             fillColor: Colors.Defaults.background.uiColor,

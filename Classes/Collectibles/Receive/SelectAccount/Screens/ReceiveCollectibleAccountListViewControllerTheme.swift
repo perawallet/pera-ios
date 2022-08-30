@@ -43,7 +43,7 @@ struct ReceiveCollectibleAccountListViewControllerTheme:
 extension ReceiveCollectibleAccountListViewControllerTheme {
     private static func getTitle() -> EditText {
         return .attributedString(
-            "collectibles-receive-action"
+            "collectibles-receive-asset-title"
                 .localized
                 .titleMedium()
         )

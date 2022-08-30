@@ -25,7 +25,9 @@ struct AccountQuickActionsViewTheme:
     var spacingBetweenActions: LayoutMetric
     var buyAlgoAction: AccountQuickActionViewTheme
     var sendAction: AccountQuickActionViewTheme
-    var addressAction: AccountQuickActionViewTheme
+    var swapNewBadge: BadgeButtonTheme
+    var swapNewBadgeEdgeInsets: NSDirectionalEdgeInsets
+    var swapAction: AccountQuickActionViewTheme
     var moreAction: AccountQuickActionViewTheme
 
     init(
@@ -39,15 +41,22 @@ struct AccountQuickActionsViewTheme:
         buyAlgoAction.title = "quick-actions-buy-algo-title".localized
         self.buyAlgoAction = buyAlgoAction
 
+        self.swapNewBadge = BadgeButtonTheme()
+        self.swapNewBadgeEdgeInsets = NSDirectionalEdgeInsets(
+            top: 9,
+            leading: 0,
+            bottom: 0,
+            trailing: 16
+        )
+        var swapAction = AccountQuickActionViewTheme(family)
+        swapAction.icon = "swap-icon"
+        swapAction.title = "title-swap".localized
+        self.swapAction = swapAction
+
         var sendAction = AccountQuickActionViewTheme(family)
         sendAction.icon = "send-icon"
         sendAction.title = "quick-actions-send-title".localized
         self.sendAction = sendAction
-
-        var addressAction = AccountQuickActionViewTheme(family)
-        addressAction.icon = "address-icon"
-        addressAction.title = "quick-actions-address-title".localized
-        self.addressAction = addressAction
 
         var moreAction = AccountQuickActionViewTheme(family)
         moreAction.icon = "more-icon"

@@ -35,7 +35,12 @@ final class AsaVerificationInfoScreen: ScrollScreen {
 
     override init() {
         super.init()
-        blursFooterBackgroundOnUnderScrolling = true
+        footerViewEffectStyle = .linearGradient(
+            .init(colors: [
+                Colors.Defaults.background.uiColor.withAlphaComponent(0),
+                Colors.Defaults.background.uiColor
+            ])
+        )
     }
 
     override func viewDidLoad() {

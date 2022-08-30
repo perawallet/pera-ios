@@ -24,8 +24,10 @@ struct HomeQuickActionsViewTheme:
     var maxContentHorizontalInsets: LayoutHorizontalPaddings
     var spacingBetweenActions: LayoutMetric
     var buyAlgoAction: HomeQuickActionViewTheme
+    var swapNewBadge: BadgeButtonTheme
+    var swapNewBadgeEdgeInsets: NSDirectionalEdgeInsets
+    var swapAction: HomeQuickActionViewTheme
     var sendAction: HomeQuickActionViewTheme
-    var receiveAction: HomeQuickActionViewTheme
     var scanAction: HomeQuickActionViewTheme
 
     init(
@@ -39,15 +41,22 @@ struct HomeQuickActionsViewTheme:
         buyAlgoAction.title = "quick-actions-buy-algo-title".localized
         self.buyAlgoAction = buyAlgoAction
 
+        self.swapNewBadge = BadgeButtonTheme()
+        self.swapNewBadgeEdgeInsets = NSDirectionalEdgeInsets(
+            top: 9,
+            leading: 0,
+            bottom: 0,
+            trailing: 16
+        )
+        var swapAction = HomeQuickActionViewTheme(family)
+        swapAction.icon = "swap-icon"
+        swapAction.title = "title-swap".localized
+        self.swapAction = swapAction
+
         var sendAction = HomeQuickActionViewTheme(family)
         sendAction.icon = "send-icon"
         sendAction.title = "quick-actions-send-title".localized
         self.sendAction = sendAction
-
-        var receiveAction = HomeQuickActionViewTheme(family)
-        receiveAction.icon = "receive-icon"
-        receiveAction.title = "quick-actions-receive-title".localized
-        self.receiveAction = receiveAction
 
         var scanAction = HomeQuickActionViewTheme(family)
         scanAction.icon = "scan-qr-icon"

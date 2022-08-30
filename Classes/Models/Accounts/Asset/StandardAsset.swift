@@ -21,6 +21,7 @@ final class StandardAsset: Asset {
     let amount: UInt64
     let decimals: Int
     let decimalAmount: Decimal
+    let total: UInt64?
     let isFrozen: Bool?
     let isDeleted: Bool?
     let optedInAtRound: UInt64?
@@ -31,8 +32,16 @@ final class StandardAsset: Asset {
     let verificationTier: AssetVerificationTier
     let creator: AssetCreator?
     let url: String?
+    let projectURL: URL?
+    let explorerURL: URL?
     let logoURL: URL?
+    let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
     let isAlgo = false
+
+    let isFault: Bool
 
     var state: AssetState = .ready
 
@@ -61,7 +70,10 @@ final class StandardAsset: Asset {
         self.verificationTier = decoration.verificationTier
         self.creator = decoration.creator
         self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
         self.logoURL = decoration.logoURL
+        self.total = decoration.total
 
         let amount = asset.amount
         let decimals = decoration.decimals
@@ -75,6 +87,39 @@ final class StandardAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
+        self.isFault = false
+    }
+
+    init(
+        decoration: AssetDecoration
+    ) {
+        self.id = decoration.id
+        self.isFrozen = nil
+        self.isDeleted = nil
+        self.optedInAtRound = nil
+        self.name = decoration.name
+        self.unitName = decoration.unitName
+        self.verificationTier = decoration.verificationTier
+        self.creator = decoration.creator
+        self.url = decoration.url
+        self.projectURL = decoration.projectURL
+        self.explorerURL = decoration.explorerURL
+        self.logoURL = decoration.logoURL
+        self.total = decoration.total
+        self.amount = 0
+        self.decimals = decoration.decimals
+        self.decimalAmount = 0
+        self.usdValue = decoration.usdValue
+        self.totalUSDValue = nil
+        self.description = decoration.description
+        self.discordURL = decoration.discordURL
+        self.telegramURL = decoration.telegramURL
+        self.twitterURL = decoration.twitterURL
+        self.isFault = true
     }
 }
 

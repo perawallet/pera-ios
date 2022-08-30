@@ -295,8 +295,8 @@ extension Typography {
     ) -> UIFont {
         let size = 28
         let font = supportsDynamicType
-            ? Fonts.DMSans.regular.make(size, .title2).uiFont
-            : Fonts.DMSans.regular.make(size).uiFont
+            ? Fonts.DMSans.medium.make(size, .title2).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
 
         return font
     }
@@ -552,6 +552,37 @@ extension Typography {
 // MARK: - Footnote
 
 extension Typography {
+    static func footnoteHeadingAttributes(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> TextAttributeGroup {
+        let font = Self.footnoteHeading(supportsDynamicType: supportsDynamicType)
+        let lineHeightMultiplier = 1.18
+
+        return [
+            .font(font),
+            .letterSpacing(1.04),
+            .lineHeightMultiplier(lineHeightMultiplier, font),
+            .paragraph([
+                .textAlignment(alignment),
+                .lineBreakMode(lineBreakMode),
+                .lineHeightMultiple(lineHeightMultiplier)
+            ])
+        ]
+    }
+
+    static func footnoteHeading(
+        supportsDynamicType: Bool = false
+    ) -> UIFont {
+        let size = 13
+        let font = supportsDynamicType
+            ? Fonts.DMSans.medium.make(size, .footnote).uiFont
+            : Fonts.DMSans.medium.make(size).uiFont
+
+        return font
+    }
+
     static func footnoteBoldAttributes(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,

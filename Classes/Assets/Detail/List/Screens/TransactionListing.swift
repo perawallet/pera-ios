@@ -18,6 +18,8 @@
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Get rid of this object.
 protocol TransactionListing {
     var type: TransactionTypeFilter { get }
     var accountHandle: AccountHandle { get set }

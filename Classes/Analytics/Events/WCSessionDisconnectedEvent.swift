@@ -16,12 +16,13 @@
 //   WCSessionDisconnectedEvent.swift
 
 import Foundation
+import MacaroonVendors
 
 struct WCSessionDisconnectedEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    init(
+    fileprivate init(
         dappName: String,
         dappURL: String,
         address: String?
@@ -36,5 +37,19 @@ struct WCSessionDisconnectedEvent: ALGAnalyticsEvent {
 
         self.name = .wcSessionDisconnected
         self.metadata = metadata
+    }
+}
+
+extension AnalyticsEvent where Self == WCSessionDisconnectedEvent {
+    static func wcSessionDisconnected(
+        dappName: String,
+        dappURL: String,
+        address: String?
+    ) -> Self {
+        return WCSessionDisconnectedEvent(
+            dappName: dappName,
+            dappURL: dappURL,
+            address: address
+        )
     }
 }

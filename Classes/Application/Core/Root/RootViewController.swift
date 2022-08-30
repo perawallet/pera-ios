@@ -44,6 +44,7 @@ class RootViewController: UIViewController {
         sharedDataController: appConfiguration.sharedDataController,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController,
+        loadingController: appConfiguration.loadingController,
         analytics: appConfiguration.analytics
     )
     
@@ -148,6 +149,9 @@ extension RootViewController {
     func launch(
         tab: TabBarItemID
     ) {
+        if tab == .algoStatistics {
+            appConfiguration.analytics.track(.tapAlgoPrice())
+        }
         mainContainer.selectedTab = tab
     }
     
