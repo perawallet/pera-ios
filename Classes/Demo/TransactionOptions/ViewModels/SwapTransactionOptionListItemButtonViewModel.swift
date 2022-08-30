@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapTransactionOptionListActionViewModel.swift
+//   SwapTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
 
-struct SwapTransactionOptionListActionViewModel: TransactionOptionListActionViewModel {
+struct SwapTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let isBadgeVisible: Bool
     let title: EditText?

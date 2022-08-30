@@ -26,7 +26,7 @@ protocol ListItemButtonViewModel: ViewModel {
     var accessory: Image? { get }
 }
 
-extension ListActionViewModel {
+extension ListItemButtonViewModel {
     var isBadgeVisible: Bool {
         return false
     }

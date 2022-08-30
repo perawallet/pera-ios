@@ -201,9 +201,9 @@ extension TransactionOptionsView {
                     event: .buyAlgo
                 )
             case .swap:
-                addAction(
-                    theme: theme.action,
-                    viewModel: SwapTransactionOptionListActionViewModel(),
+                addButton(
+                    theme: theme.button,
+                    viewModel: SwapTransactionOptionListItemButtonViewModel(),
                     event: .swap
                 )
             case .send:

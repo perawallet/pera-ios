@@ -42,8 +42,6 @@ final class SwapIntroductionScreen: ScrollScreen {
     ) {
         self.draft = draft
         super.init()
-
-        blursFooterBackgroundOnUnderScrolling = true
     }
 
     override func configureNavigationBar() {
@@ -99,6 +97,15 @@ extension SwapIntroductionScreen {
 
 extension SwapIntroductionScreen {
     private func addUI() {
+        footerViewEffectStyle = .linearGradient(
+            .init(
+                colors: [
+                    Colors.Defaults.background.uiColor.withAlphaComponent(0),
+                    Colors.Defaults.background.uiColor
+                ]
+            )
+        )
+
         addIllustrationImage()
         addCloseAction()
         addTitle()

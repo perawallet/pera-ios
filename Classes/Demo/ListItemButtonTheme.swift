@@ -24,12 +24,12 @@ struct ListItemButtonTheme:
     LayoutSheet {
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
-    var iconAlignment: ListActionView.IconViewAlignment
+    var iconAlignment: ListItemButton.IconViewAlignment
     var badge: ViewStyle
     var badgeSize: LayoutSize
     var badgeCorner: Corner
     var badgeContentEdgeInsets: NSDirectionalEdgeInsets
-    var contentMinHeight: LayoutMetric
+    var contentMinHeight: LayoutMetric?
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
     var subtitle: TextStyle

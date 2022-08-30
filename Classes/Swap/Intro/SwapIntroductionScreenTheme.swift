@@ -73,7 +73,7 @@ struct SwapIntroductionScreenTheme:
 
         self.closeAction = [
             .icon([ .normal("icon-close".templateImage) ]),
-            .tintColor(Colors.Other.Global.white)
+            .tintColor(Colors.Text.white)
         ]
         self.closeActionSize = (40, 40)
         self.closeActionTopInset = 10

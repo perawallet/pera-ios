@@ -78,7 +78,7 @@ extension ListItemButton {
     }
 
     private func addBadge(
-        _ theme: ListActionViewTheme
+        _ theme: ListItemButtonTheme
     ) {
         badgeView.customizeAppearance(theme.badge)
         badgeView.draw(corner: theme.badgeCorner)

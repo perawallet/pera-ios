@@ -205,11 +205,11 @@ import MacaroonStorySheet
  fileprivate extension TargetActionInteraction {
      convenience init(
          _ control: UIControl,
-         handler: @escaping Handler
+         handler: @escaping (() -> Void)
      ) {
          self.init()
 
          attach(to: control)
-         setHandler(handler)
+         setSelector(handler)
      }
  }
