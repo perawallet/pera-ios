@@ -112,6 +112,7 @@ final class ExportAccountListScreen:
     }
 
     private func addUI() {
+        addBackground()
         addList()
         addContinueActionViewGradient()
         addContinueActionView()
@@ -119,6 +120,10 @@ final class ExportAccountListScreen:
 }
 
 extension ExportAccountListScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addList() {
         view.addSubview(listView)
         listView.snp.makeConstraints {

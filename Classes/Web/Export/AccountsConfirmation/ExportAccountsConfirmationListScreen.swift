@@ -40,7 +40,12 @@ final class ExportAccountsConfirmationListScreen:
     }()
 
     private lazy var continueActionViewGradient = GradientView()
-    private lazy var continueActionView = MacaroonUIKit.Button()
+    private lazy var continueActionView: LoadingButton = {
+        let loadingIndicator = ViewLoadingIndicator()
+        loadingIndicator.applyStyle(theme.continueActionIndicator)
+        return LoadingButton(loadingIndicator: loadingIndicator)
+    }()
+
     private lazy var cancelActionView = MacaroonUIKit.Button()
 
     private lazy var listLayout = ExportAccountsConfirmationListLayout(listDataSource: listDataSource)
@@ -111,6 +116,7 @@ final class ExportAccountsConfirmationListScreen:
     }
 
     private func addUI() {
+        addBackground()
         addList()
         addContinueActionViewGradient()
         addContinueActionView()
@@ -119,6 +125,10 @@ final class ExportAccountsConfirmationListScreen:
 }
 
 extension ExportAccountsConfirmationListScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addList() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
@@ -162,6 +172,7 @@ extension ExportAccountsConfirmationListScreen {
         continueActionViewGradient.addSubview(continueActionView)
         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
         continueActionView.snp.makeConstraints {
+            $0.fitToHeight(theme.continueActionHeight)
             $0.top == theme.spacingBetweenListAndContinueAction
             $0.leading == theme.actionMargins.leading
             $0.trailing == theme.actionMargins.trailing
@@ -192,6 +203,16 @@ extension ExportAccountsConfirmationListScreen {
             target: self,
             action: #selector(performCancel)
         )
+    }
+}
+
+extension ExportAccountsConfirmationListScreen {
+    func startLoading() {
+        continueActionView.startLoading()
+    }
+
+    func stopLoading() {
+        continueActionView.stopLoading()
     }
 }
 

@@ -22,18 +22,23 @@ struct ExportAccountsConfirmationListScreenTheme:
     StyleSheet {
     let background: ViewStyle
     let spacingBetweenListAndContinueAction: LayoutMetric
+    let continueActionIndicator: ImageStyle
     let continueAction: ButtonStyle
+    let continueActionHeight: LayoutMetric
     let cancelAction: ButtonStyle
     let actionEdgeInsets: LayoutPaddings
     let actionMargins: LayoutMargins
     let spacingBetweenActions: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        background = [
+        self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        spacingBetweenListAndContinueAction = 16
-        continueAction = [
+        self.spacingBetweenListAndContinueAction = 16
+        self.continueActionIndicator = [
+            .image("button-loading-indicator")
+        ]
+        self.continueAction = [
             .title("title-continue".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
@@ -44,7 +49,8 @@ struct ExportAccountsConfirmationListScreenTheme:
                 .highlighted("components/buttons/primary/bg-highlighted")
             ])
         ]
-        cancelAction = [
+        self.continueActionHeight = 52
+        self.cancelAction = [
             .title("title-cancel".localized),
             .font(Typography.bodyMedium()),
             .titleColor([
@@ -55,8 +61,8 @@ struct ExportAccountsConfirmationListScreenTheme:
                 .highlighted("components/buttons/secondary/bg-highlighted")
             ])
         ]
-        actionEdgeInsets = (16, 8, 16, 8)
-        actionMargins = (.noMetric, 24, 12, 24)
-        spacingBetweenActions = 16
+        self.actionEdgeInsets = (16, 8, 16, 8)
+        self.actionMargins = (.noMetric, 24, 12, 24)
+        self.spacingBetweenActions = 16
     }
 }
