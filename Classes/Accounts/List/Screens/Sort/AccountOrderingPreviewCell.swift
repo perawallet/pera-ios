@@ -43,10 +43,10 @@ final class AccountOrderingPreviewCell:
         draw(
             shadow: MacaroonUIKit.Shadow(
                 color: Colors.Shadows.Cards.shadow2.uiColor,
+                fillColor: Colors.Defaults.background.uiColor.withAlphaComponent(0.7),
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: Colors.Defaults.background.uiColor.withAlphaComponent(0.7),
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )

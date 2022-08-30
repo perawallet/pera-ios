@@ -38,10 +38,10 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
 
         presentationConfiguration.overlayStyleSheet.backgroundShadow = MacaroonUIKit.Shadow(
             color: UIColor.clear,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 0,
             offset: (0, 0),
             radius: 0,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (16, 16),
             corners: .allCorners
         )

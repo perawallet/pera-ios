@@ -38,10 +38,10 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.containerShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow4.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 14),
             radius: 60,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (0, 0),
             corners: [.topLeft, .topRight]
         )

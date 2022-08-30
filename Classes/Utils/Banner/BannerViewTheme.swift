@@ -39,10 +39,10 @@ struct BannerViewTheme: LayoutSheet, StyleSheet {
         backgroundShadow =
         MacaroonUIKit.Shadow(
             color: Colors.Alert.negative.uiColor,
+            fillColor: Colors.Alert.negative.uiColor,
             opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Alert.negative.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
@@ -70,10 +70,10 @@ extension BannerViewTheme {
         backgroundShadow =
         MacaroonUIKit.Shadow(
             color: Colors.Toast.background.uiColor,
+            fillColor: Colors.Toast.background.uiColor,
             opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Toast.background.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
@@ -85,10 +85,10 @@ extension BannerViewTheme {
     mutating func configureForNotification() {
         backgroundShadow = MacaroonUIKit.Shadow(
             color: UIColor.black,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 0.08,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
@@ -100,10 +100,10 @@ extension BannerViewTheme {
     mutating func configureForSuccess() {
         backgroundShadow = MacaroonUIKit.Shadow(
             color: Colors.Alert.positive.uiColor,
+            fillColor: Colors.Alert.positive.uiColor,
             opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Alert.positive.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
