@@ -1015,6 +1015,12 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .swapAsset(let draft, let theme):
+            viewController = SwapAssetViewController(
+                draft: draft,
+                configuration: configuration,
+                theme: theme
+            )
         case .alert(let alert, let theme):
             viewController = AlertScreen(
                 alert: alert,
