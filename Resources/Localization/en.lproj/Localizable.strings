@@ -1175,6 +1175,9 @@
 "swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
 "swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
+/// MARK: Swap Asset
+"swap-asset-choose-title" = "Choose an asset";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
