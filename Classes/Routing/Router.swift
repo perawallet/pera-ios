@@ -864,8 +864,6 @@ class Router:
             let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .transactionFloatingActionButton:
-            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(

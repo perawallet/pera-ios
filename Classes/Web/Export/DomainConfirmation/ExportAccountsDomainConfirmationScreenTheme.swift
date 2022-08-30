@@ -35,7 +35,9 @@ struct ExportAccountsDomainConfirmationScreenTheme:
     let disclaimerBody: TextStyle
     let spacingBetweenDisclaimerBodyAndPeraWebURL: LayoutMetric
     let contextEdgeInsets: LayoutPaddings
-    let peraWebURLContent: ImageStyle
+    let peraWebURLContentFirstShadow: MacaroonUIKit.Shadow
+    let peraWebURLContentSecondShadow: MacaroonUIKit.Shadow
+    let peraWebURLContentThirdShadow: MacaroonUIKit.Shadow
     let peraWebURLContentMinHeight: LayoutMetric
     let peraWebURLContentEdgeInsets: LayoutPaddings
     let peraWebURLAccessoryIcon: ImageStyle
@@ -94,9 +96,36 @@ struct ExportAccountsDomainConfirmationScreenTheme:
             .textOverflow(FittingText())
         ]
         self.spacingBetweenDisclaimerBodyAndPeraWebURL = 10
-        self.peraWebURLContent = [
-            .image("Card/shadow") /// <todo> Change image.
-        ]
+        self.peraWebURLContentFirstShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            spread: 1,
+            fillColor: Colors.Defaults.background.uiColor,
+            cornerRadii: (12, 12),
+            corners: .allCorners
+        )
+        self.peraWebURLContentSecondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: 0,
+            fillColor: Colors.Defaults.background.uiColor,
+            cornerRadii: (12, 12),
+            corners: .allCorners
+        )
+        self.peraWebURLContentThirdShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
+            fillColor: Colors.Defaults.background.uiColor,
+            cornerRadii: (12, 12),
+            corners: .allCorners
+        )
         self.peraWebURLContentMinHeight = 44
         self.peraWebURLContentEdgeInsets = (12, 12, 12, 12)
         self.peraWebURLAccessoryIcon = [

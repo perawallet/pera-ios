@@ -40,7 +40,6 @@ struct FloatingActionItemButtonTheme: StyleSheet, LayoutSheet {
         ]
         self.titleLabelTrailingPadding = 22
 
-        // <todo> Apply same shadow with designs.
         self.titleShadow = MacaroonUIKit.Shadow(
             color: Colors.Defaults.background.uiColor,
             opacity: 1,

@@ -33,7 +33,7 @@ final class ExportAccountsDomainConfirmationScreen:
     private lazy var disclaimerIconView = ImageView()
     private lazy var disclaimerTitleView = UILabel()
     private lazy var disclaimerBodyView = UILabel()
-    private lazy var peraWebURLContentView = UIImageView()
+    private lazy var peraWebURLContentView = TripleShadowView()
     private lazy var peraWebURLAcccesoryIconView = UIImageView()
     private lazy var peraWebURLView = UILabel()
     private lazy var continueActionView = MacaroonUIKit.Button()
@@ -184,7 +184,9 @@ extension ExportAccountsDomainConfirmationScreen {
     }
 
     private func addPeraWebURLContent() {
-        peraWebURLContentView.customizeAppearance(theme.peraWebURLContent)
+        peraWebURLContentView.drawAppearance(shadow: theme.peraWebURLContentFirstShadow)
+        peraWebURLContentView.drawAppearance(secondShadow: theme.peraWebURLContentSecondShadow)
+        peraWebURLContentView.drawAppearance(thirdShadow: theme.peraWebURLContentThirdShadow)
 
         contextView.addSubview(peraWebURLContentView)
         peraWebURLContentView.fitToVerticalIntrinsicSize()

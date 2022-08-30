@@ -19,6 +19,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
+// <todo> Remove `FloatingActionItemButton`.
 final class FloatingActionItemButton: Control {
     private lazy var theme = FloatingActionItemButtonTheme()
 
@@ -91,7 +92,9 @@ extension FloatingActionItemButton {
     }
 }
 
-final fileprivate class FloatingButtomItemImageViewContainer: View, DoubleShadowDrawable {
+final fileprivate class FloatingButtomItemImageViewContainer:
+    View,
+    DoubleShadowDrawable {
     var secondShadow: MacaroonUIKit.Shadow?
     var secondShadowLayer = CAShapeLayer()
 

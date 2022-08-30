@@ -21,9 +21,9 @@ import UIKit
 struct QRScanOptionsViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    let addressContainerCorner: Corner
-    let addressContainerBorder: Border
-    let addressContainerShadow: MacaroonUIKit.Shadow
+    let addressContainerFirstShadow: Shadow?
+    let addressContainerSecondShadow: Shadow?
+    let addressContainerThirdShadow: Shadow?
     let addressTitle: TextStyle
     let addressValue: TextStyle
 
@@ -41,13 +41,32 @@ struct QRScanOptionsViewControllerTheme:
     init(
         _ family: LayoutFamily
     ) {
-        addressContainerCorner = Corner(radius: 4)
-        addressContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
-        addressContainerShadow = MacaroonUIKit.Shadow(
+        addressContainerFirstShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            spread: 1,
+            fillColor: Colors.Defaults.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        addressContainerSecondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: 0,
+            fillColor: Colors.Defaults.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        addressContainerThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
+            spread: -1,
             fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners

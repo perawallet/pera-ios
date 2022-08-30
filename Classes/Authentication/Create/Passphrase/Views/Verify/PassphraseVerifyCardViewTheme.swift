@@ -26,7 +26,6 @@ struct PassphraseVerifyCardViewTheme:
     let headerLabel: TextStyle
     
     let containerViewTopPadding: LayoutMetric
-    let containerViewCorner: Corner
     let containerViewFirstShadow: MacaroonUIKit.Shadow
     let containerViewSecondShadow: MacaroonUIKit.Shadow
     let containerViewThirdShadow: MacaroonUIKit.Shadow
@@ -52,12 +51,13 @@ struct PassphraseVerifyCardViewTheme:
         ]
         
         self.containerViewTopPadding = 12
-        self.containerViewCorner = Corner(radius: 4)
+
         self.containerViewFirstShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow1.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             opacity: 1,
-            offset: (0, 2),
-            radius: 4,
+            offset: (0, 0),
+            radius: 0,
+            spread: 1,
             fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
@@ -67,15 +67,17 @@ struct PassphraseVerifyCardViewTheme:
             opacity: 1,
             offset: (0, 2),
             radius: 4,
+            spread: 0,
             fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.containerViewThirdShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow3.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             opacity: 1,
-            offset: (0, 0),
-            radius: 0,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
             fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
