@@ -199,7 +199,7 @@ indirect enum Screen {
     )
     case swapAsset(
         draft: SwapScreenDraft,
-        theme: SwapAssetViewControllerTheme = .init()
+        theme: SwapAssetScreenTheme = .init()
     )
     case alert(
         alert: Alert,

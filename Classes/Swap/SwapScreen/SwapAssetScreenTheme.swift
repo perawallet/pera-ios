@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetViewControllerTheme.swift
+//   SwapAssetScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapAssetViewControllerTheme:
+struct SwapAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
     let swapAction: ButtonStyle
