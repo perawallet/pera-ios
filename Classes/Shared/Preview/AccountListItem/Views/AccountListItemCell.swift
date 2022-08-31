@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPreviewTableCell.swift
+//   AccountListItemCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountPreviewTableCell:
-    TableCell<AccountPreviewView>,
-    ViewModelBindable,
-    ListIdentifiable {
+final class AccountListItemCell:
+    CollectionCell<AccountListItemView>,
+    ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
+        return (14, 0, 14, 0)
     }
     
+    static let theme = AccountListItemViewTheme()
+    
     override init(
-        style: UITableViewCell.CellStyle,
-        reuseIdentifier: String?
+        frame: CGRect
     ) {
-        super.init(
-            style: style,
-            reuseIdentifier: reuseIdentifier
-        )
-        
-        backgroundColor = .clear
-        selectionStyle = .none
+        super.init(frame: frame)
 
-        contextView.customize(AccountPreviewViewTheme())
+        contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        separatorStyle = .single(separator)
     }
 }

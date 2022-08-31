@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   AccountPreviewViewTheme.swift
+//   AccountListItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPreviewViewTheme:
+struct AccountListItemViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: ImageStyle
@@ -42,7 +42,7 @@ struct AccountPreviewViewTheme:
         self.horizontalPadding = 16
         self.contentMinWidthRatio = 0.25
         var namePreviewViewTheme = AccountNamePreviewViewTheme()
-        namePreviewViewTheme.configureForAccountPreviewView()
+        namePreviewViewTheme.configureForAccountAccountListItemView()
         self.namePreviewView = namePreviewViewTheme
         self.primaryAccessory = [
             .textColor(Colors.Text.main)

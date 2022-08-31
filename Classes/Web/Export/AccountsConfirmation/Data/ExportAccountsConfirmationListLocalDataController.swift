@@ -79,7 +79,7 @@ extension ExportAccountsConfirmationListLocalDataController {
                 let accountHandle = $0
                 let account = accountHandle.value
                 let draft = IconWithShortAddressDraft(account)
-                let viewModel = AccountPreviewViewModel(draft)
+                let viewModel = AccountListItemViewModel(draft)
 
                 let item =  ExportAccountsConfirmationListAccountCellItemIdentifier(
                     model: accountHandle,

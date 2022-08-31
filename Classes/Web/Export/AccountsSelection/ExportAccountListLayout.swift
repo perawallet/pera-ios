@@ -153,7 +153,7 @@ extension ExportAccountListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountPreviewViewModel,
+        sizeForAccountCellItem item: AccountListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = ExportAccountListAccountCell.reuseIdentifier
@@ -163,13 +163,13 @@ extension ExportAccountListLayout {
         }
 
         let width = listView.bounds.width
-        let sampleAccountPreview = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
         let newSize = ExportAccountListAccountCell.calculatePreferredSize(
             sampleAccountItem,
             for: ExportAccountListAccountCell.theme,

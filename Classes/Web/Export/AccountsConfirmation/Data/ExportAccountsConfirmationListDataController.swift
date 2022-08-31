@@ -43,7 +43,7 @@ enum ExportAccountsConfirmationListAccountItemIdentifier: Hashable {
 struct ExportAccountsConfirmationListAccountCellItemIdentifier:
     Hashable {
     private(set) var model: AccountHandle
-    private(set) var viewModel: AccountPreviewViewModel
+    private(set) var viewModel: AccountListItemViewModel
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(model.value.address)

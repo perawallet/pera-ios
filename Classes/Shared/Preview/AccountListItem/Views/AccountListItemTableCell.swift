@@ -12,34 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleAccountPreviewCell.swift
+//
+//   AccountListItemTableCell.swift
 
+import Foundation
 import MacaroonUIKit
-import CoreGraphics
+import UIKit
 
-final class SendCollectibleAccountPreviewCell:
-    CollectionCell<AccountPreviewView>,
-    ViewModelBindable {
-    var isPreviouslySelected: Bool = false {
-        didSet {
-            recustomizeAppearanceWhenSelectedStateDidChange()
-        }
-    }
-
+final class AccountListItemTableCell:
+    TableCell<AccountListItemView>,
+    ViewModelBindable,
+    ListIdentifiable {
     override class var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
+        return (0, 24, 0, 24)
     }
-
-    static let theme = AccountPreviewViewTheme()
-
+    
     override init(
-        frame: CGRect
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
     ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+        
+        backgroundColor = .clear
+        selectionStyle = .none
 
-    private func recustomizeAppearanceWhenSelectedStateDidChange() {
-        backgroundColor = isPreviouslySelected ? Colors.Layer.grayLighter.uiColor : .clear
+        contextView.customize(AccountListItemViewTheme())
     }
 }

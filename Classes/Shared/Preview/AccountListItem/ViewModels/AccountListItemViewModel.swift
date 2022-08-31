@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   AccountPreviewViewModel.swift
+//   AccountListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 import MacaroonURLImage
 
-struct AccountPreviewViewModel:
+struct AccountListItemViewModel:
     PortfolioViewModel,
     BindableViewModel,
     Hashable {
@@ -41,7 +41,7 @@ struct AccountPreviewViewModel:
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
@@ -70,14 +70,14 @@ extension AccountPreviewViewModel {
             return
         }
         
-        if let customAccountPreview = model as? CustomAccountPreview {
-            address = customAccountPreview.address
+        if let customAccountListItem = model as? CustomAccountListItem {
+            address = customAccountListItem.address
 
-            bindIcon(customAccountPreview)
-            bindNamePreviewViewModel(customAccountPreview)
-            bindPrimaryAccessory(customAccountPreview)
-            bindSecondaryAccessory(customAccountPreview)
-            bindAccessoryIcon(customAccountPreview)
+            bindIcon(customAccountListItem)
+            bindNamePreviewViewModel(customAccountListItem)
+            bindPrimaryAccessory(customAccountListItem)
+            bindSecondaryAccessory(customAccountListItem)
+            bindAccessoryIcon(customAccountListItem)
             
             return
         }
@@ -99,16 +99,16 @@ extension AccountPreviewViewModel {
             return
         }
 
-        if let nameServiceAccountPreview = model as? NameServiceAccountPreview {
-            address = nameServiceAccountPreview.address
+        if let mameServiceAccountListItem = model as? NameServiceAccountListItem {
+            address = mameServiceAccountListItem.address
 
-            bindIcon(nameServiceAccountPreview)
-            bindNamePreviewViewModel(nameServiceAccountPreview)
+            bindIcon(mameServiceAccountListItem)
+            bindNamePreviewViewModel(mameServiceAccountListItem)
         }
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
         _ accountPortfolioItem: AccountPortfolioItem
     ) {
@@ -162,7 +162,7 @@ extension AccountPreviewViewModel {
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
         _ account: Account
     ) {
@@ -188,43 +188,43 @@ extension AccountPreviewViewModel {
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
-        _ customAccountPreview: CustomAccountPreview
+        _ customAccountListItem: CustomAccountListItem
     ) {
-        icon = customAccountPreview.icon
+        icon = customAccountListItem.icon
     }
     
     mutating func bindNamePreviewViewModel(
-        _ customAccountPreview: CustomAccountPreview
+        _ customAccountListItem: CustomAccountListItem
     ) {
         namePreviewViewModel = AccountNamePreviewViewModel(
-            title: customAccountPreview.title,
-            subtitle: customAccountPreview.subtitle,
+            title: customAccountListItem.title,
+            subtitle: customAccountListItem.subtitle,
             with: .left
         )
     }
     
     mutating func bindPrimaryAccessory(
-        _ customAccountPreview: CustomAccountPreview
+        _ customAccountListItem: CustomAccountListItem
     ) {
-        bindPrimaryAccessory(customAccountPreview.accessory)
+        bindPrimaryAccessory(customAccountListItem.accessory)
     }
     
     mutating func bindSecondaryAccessory(
-        _ customAccountPreview: CustomAccountPreview
+        _ customAccountListItem: CustomAccountListItem
     ) {
         secondaryAccessory = nil
     }
     
     mutating func bindAccessoryIcon(
-        _ customAccountPreview: CustomAccountPreview
+        _ customAccountListItem: CustomAccountListItem
     ) {
         accessoryIcon = nil
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
@@ -240,7 +240,7 @@ extension AccountPreviewViewModel {
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
         _ accountOrderingDraft: AccountOrderingDraft
     ) {
@@ -260,7 +260,7 @@ extension AccountPreviewViewModel {
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindNamePreviewViewModel(
         _ account: Account
     ) {
@@ -309,25 +309,25 @@ extension AccountPreviewViewModel {
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     mutating func bindIcon(
-        _ nameServiceAccountPreview: NameServiceAccountPreview
+        _ mameServiceAccountListItem: NameServiceAccountListItem
     ) {
-        icon = nameServiceAccountPreview.icon
+        icon = mameServiceAccountListItem.icon
     }
 
     mutating func bindNamePreviewViewModel(
-        _ nameServiceAccountPreview: NameServiceAccountPreview
+        _ mameServiceAccountListItem: NameServiceAccountListItem
     ) {
         namePreviewViewModel = AccountNamePreviewViewModel(
-            title: nameServiceAccountPreview.title,
-            subtitle: nameServiceAccountPreview.subtitle,
+            title: mameServiceAccountListItem.title,
+            subtitle: mameServiceAccountListItem.subtitle,
             with: .left
         )
     }
 }
 
-extension AccountPreviewViewModel {
+extension AccountListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -338,8 +338,8 @@ extension AccountPreviewViewModel {
     }
 
     static func == (
-        lhs: AccountPreviewViewModel,
-        rhs: AccountPreviewViewModel
+        lhs: AccountListItemViewModel,
+        rhs: AccountListItemViewModel
     ) -> Bool {
         return
             lhs.address == rhs.address &&
@@ -349,7 +349,7 @@ extension AccountPreviewViewModel {
     }
 }
 
-struct CustomAccountPreview {
+struct CustomAccountListItem {
     /// <note>
     /// For uniqueness purposes, we need to store the address of the account.
     var address: String?
@@ -425,7 +425,7 @@ struct AccountOrderingDraft {
     let account: Account
 }
 
-struct NameServiceAccountPreview {
+struct NameServiceAccountListItem {
     /// <note>
     /// For uniqueness purposes, we need to store the address of the account.
     let address: String?

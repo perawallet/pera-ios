@@ -155,7 +155,7 @@ extension ExportAccountListLocalDataController {
                 let accountHandle = $0.element
                 let account = accountHandle.value
                 let draft = IconWithShortAddressDraft(account)
-                let viewModel = AccountPreviewViewModel(draft)
+                let viewModel = AccountListItemViewModel(draft)
 
                 let item = ExportAccountListAccountCellItemIdentifier(
                     model: accountHandle,

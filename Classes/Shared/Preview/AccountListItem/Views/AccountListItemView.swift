@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   AccountPreviewView.swift
+//   AccountListItemView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountPreviewView:
+final class AccountListItemView:
     View,
     ViewModelBindable,
     ListReusable {
@@ -35,7 +35,7 @@ final class AccountPreviewView:
     private lazy var accessoryIconView = ImageView()
 
     func customize(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         addIcon(theme)
         addContentAndAccessoryContext(theme)
@@ -51,7 +51,7 @@ final class AccountPreviewView:
     ) {}
 
     func bindData(
-        _ viewModel: AccountPreviewViewModel?
+        _ viewModel: AccountListItemViewModel?
     ) {
         iconView.load(from: viewModel?.icon)
         namePreviewView.bindData(viewModel?.namePreviewViewModel)
@@ -61,8 +61,8 @@ final class AccountPreviewView:
     }
 
     class func calculatePreferredSize(
-        _ viewModel: AccountPreviewViewModel?,
-        for theme: AccountPreviewViewTheme,
+        _ viewModel: AccountListItemViewModel?,
+        for theme: AccountListItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -96,9 +96,9 @@ final class AccountPreviewView:
     }
 }
 
-extension AccountPreviewView {
+extension AccountListItemView {
     private func addIcon(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
 
@@ -112,7 +112,7 @@ extension AccountPreviewView {
     }
 
     private func addContentAndAccessoryContext(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         addSubview(contentAndAccessoryContextView)
         contentAndAccessoryContextView.snp.makeConstraints {
@@ -126,7 +126,7 @@ extension AccountPreviewView {
     }
 
     private func addContent(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         contentAndAccessoryContextView.addSubview(contentView)
         contentView.snp.makeConstraints {
@@ -140,7 +140,7 @@ extension AccountPreviewView {
     }
 
     private func addNamePreview(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         namePreviewView.customize(theme.namePreviewView)
 
@@ -155,7 +155,7 @@ extension AccountPreviewView {
     }
 
     private func addAccessory(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         contentAndAccessoryContextView.addSubview(accessoryView)
         accessoryView.snp.makeConstraints {
@@ -170,7 +170,7 @@ extension AccountPreviewView {
     }
 
     private func addPrimaryAccessory(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         primaryAccessoryView.customizeAppearance(theme.primaryAccessory)
 
@@ -197,7 +197,7 @@ extension AccountPreviewView {
     }
 
     private func addSecondaryAccessory(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         secondaryAccessoryView.customizeAppearance(theme.secondaryAccessory)
 
@@ -222,7 +222,7 @@ extension AccountPreviewView {
     }
 
     private func addAccessoryIcon(
-        _ theme: AccountPreviewViewTheme
+        _ theme: AccountListItemViewTheme
     ) {
         accessoryIconView.customizeAppearance(theme.accessoryIcon)
 

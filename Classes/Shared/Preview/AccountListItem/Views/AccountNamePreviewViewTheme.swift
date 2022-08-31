@@ -41,7 +41,7 @@ struct AccountNamePreviewViewTheme:
 }
 
 extension AccountNamePreviewViewTheme {
-    mutating func configureForAccountPreviewView() {
+    mutating func configureForAccountAccountListItemView() {
         titleContentEdgeInsets = (0, 0, 0, 0)
         subtitleContentEdgeInsets = (0, 0, 0, 0)
     }

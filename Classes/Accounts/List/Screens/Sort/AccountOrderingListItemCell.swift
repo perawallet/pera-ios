@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountOrderingPreviewCell.swift
+//   AccountOrderingListItemCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class AccountOrderingPreviewCell:
-    CollectionCell<AccountPreviewView>,
+final class AccountOrderingListItemCell:
+    CollectionCell<AccountListItemView>,
     ViewModelBindable,
     ShadowDrawable {
     override class var contextPaddings: LayoutPaddings {
@@ -28,8 +28,8 @@ final class AccountOrderingPreviewCell:
     var shadow: MacaroonUIKit.Shadow?
     var shadowLayer: CAShapeLayer = CAShapeLayer()
 
-    static let theme: AccountPreviewViewTheme = {
-        var theme = AccountPreviewViewTheme()
+    static let theme: AccountListItemViewTheme = {
+        var theme = AccountListItemViewTheme()
         theme.configureForAccountOrdering()
         return theme
     }()
@@ -63,7 +63,7 @@ final class AccountOrderingPreviewCell:
     }
 }
 
-fileprivate extension AccountPreviewViewTheme {
+fileprivate extension AccountListItemViewTheme {
     mutating func configureForAccountOrdering() {
         accessoryIcon = accessoryIcon.modify(
             [ .tintColor(Colors.Text.grayLighter) ]
@@ -71,7 +71,7 @@ fileprivate extension AccountPreviewViewTheme {
     }
 }
 
-extension AccountOrderingPreviewCell {
+extension AccountOrderingListItemCell {
     func recustomizeAppearanceOnMove(
         isMoving: Bool
     ) {
