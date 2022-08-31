@@ -143,7 +143,6 @@ indirect enum Screen {
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
-    case transactionFloatingActionButton
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
@@ -215,6 +214,19 @@ indirect enum Screen {
     case sheetAction(
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
+    )
+    case exportAccountList(
+        eventHandler: ExportAccountListScreen.EventHandler
+    )
+    case exportAccountsDomainConfirmation(
+        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
+    )
+    case exportAccountsConfirmationList(
+        selectedAccounts: [Account],
+        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case exportAccountsResult(
+        eventHandler: ExportsAccountsResultScreen.EventHandler
     )
 }
 

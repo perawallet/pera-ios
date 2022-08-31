@@ -190,7 +190,10 @@ extension HomeViewController {
                 return
             }
 
-            self.open(.notifications, by: .push)
+            self.open(
+                .notifications,
+                by: .push
+            )
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
