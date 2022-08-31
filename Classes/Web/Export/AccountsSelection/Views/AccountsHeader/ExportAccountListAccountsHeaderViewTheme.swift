@@ -25,8 +25,10 @@ struct ExportAccountListAccountsHeaderViewTheme:
     let minimumHorizontalSpacing: LayoutMetric
     let info: TextStyle
     let infoMinWidthRatio: LayoutMetric
-    let action: ButtonStyle
     let actionLayout: MacaroonUIKit.Button.Layout
+    let selectAllAction: ButtonStyle
+    let partialSelectionAction: ButtonStyle
+    let unselectAllAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
@@ -40,9 +42,30 @@ struct ExportAccountListAccountsHeaderViewTheme:
             .textColor(Colors.Text.main),
         ]
         self.infoMinWidthRatio = 0.5
-        self.action = [
+        self.selectAllAction = [
+            .title("title-select-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
             .titleColor([ .normal(Colors.Link.primary) ]),
+            .icon([ .normal("icon-checkbox-unselected") ])
         ]
+        self.partialSelectionAction = [
+            .title("title-select-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
+            .titleColor([ .normal(Colors.Link.primary) ]),
+            .icon([ .normal("icon-checkbox-partial-selected") ])
+        ]
+        self.unselectAllAction = [
+            .title("title-unselect-all".localized.bodyMedium(lineBreakMode: .byTruncatingTail)),
+            .titleColor([ .normal(Colors.Link.primary) ]),
+            .icon([ .normal("icon-checkbox-selected") ])
+        ]
+
         self.actionLayout = .imageAtRight(spacing: 12)
+    }
+
+    subscript (state: ExportAccountListAccountHeaderItemState) -> ButtonStyle {
+        switch state {
+        case .selectAll: return selectAllAction
+        case .partialSelection: return partialSelectionAction
+        case .unselectAll: return unselectAllAction
+        }
     }
 }

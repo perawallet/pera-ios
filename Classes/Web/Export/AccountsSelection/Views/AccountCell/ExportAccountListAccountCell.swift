@@ -20,22 +20,10 @@ import MacaroonUIKit
 
 final class ExportAccountListAccountCell:
     CollectionCell<AccountPreviewView>,
-    ViewModelBindable,
-    UIInteractable {
-    var isChecked: Bool = false {
-        didSet {
-            if isChecked != oldValue { accessory.toggle() }
-        }
-    }
-
-    var accessory: ExportAccountListItemAccessory = .uncheck {
+    ViewModelBindable  {
+    var accessory: ExportAccountListItemAccessory = .unselected {
         didSet { updateAccessoryIfNeeded(old: oldValue) }
     }
-
-    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .check: TargetActionInteraction(),
-        .uncheck: TargetActionInteraction()
-    ]
 
     override class var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
@@ -43,7 +31,7 @@ final class ExportAccountListAccountCell:
 
     static let theme = ExportAccountListItemCellTheme()
 
-    private lazy var accessoryView = MacaroonUIKit.Button()
+    private lazy var accessoryView = UIImageView()
 
     override func prepareLayout() {
         addContext()
@@ -88,12 +76,6 @@ final class ExportAccountListAccountCell:
             theme.contextEdgeInsets.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        isChecked = false
-    }
 }
 
 extension ExportAccountListAccountCell {
@@ -107,11 +89,6 @@ extension ExportAccountListAccountCell {
             $0.trailing == theme.contextEdgeInsets.trailing
             $0.centerY == 0
         }
-
-        accessoryView.addTouch(
-            target: self,
-            action: #selector(publishAccessoryAction)
-        )
         
         updateAccessory()
     }
@@ -129,25 +106,5 @@ extension ExportAccountListAccountCell {
 
     private func addSeparator() {
         separatorStyle = .single(Self.theme.separator)
-    }
-}
-
-extension ExportAccountListAccountCell {
-    @objc
-    private func publishAccessoryAction() {
-        let accessoryInteraction: MacaroonUIKit.UIInteraction?
-        switch accessory {
-        case .check: accessoryInteraction = uiInteractions[.check]
-        case .uncheck: accessoryInteraction = uiInteractions[.uncheck]
-        }
-
-        accessoryInteraction?.publish()
-    }
-}
-
-extension ExportAccountListAccountCell {
-    enum Event {
-        case check
-        case uncheck
     }
 }

@@ -12,17 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ExportAccountListItemAccessory.swift
+//   ExportAccountListAccountHeaderItemState.swift
 
 import Foundation
 
-enum ExportAccountListItemAccessory {
-    case selected
-    case unselected
-}
-
-extension ExportAccountListItemAccessory {
-    mutating func toggle() {
-        self = self == .selected ? .unselected : .selected
-    }
+enum ExportAccountListAccountHeaderItemState {
+    case selectAll
+    case unselectAll
+    case partialSelection
 }

@@ -78,8 +78,6 @@ final class ExportAccountListScreen:
                     snapshot,
                     animatingDifferences: false
                 )
-
-                self.toggleContinueActionStateIfNeeded()
             }
         }
 
@@ -234,6 +232,28 @@ extension ExportAccountListScreen {
 extension ExportAccountListScreen {
     func collectionView(
         _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .account(let item):
+            switch item {
+            case .cell:
+                toggleAccountSelection(at: indexPath)
+
+                updateAccountsHeaderIfNeeded()
+                toggleContinueActionStateIfNeeded()
+            default:
+                break
+            }
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
@@ -245,11 +265,16 @@ extension ExportAccountListScreen {
         case .account(let item):
             switch item {
             case .header:
-                linkInteractors(cell as! ExportAccountListAccountsHeader)
+                self.collectionView(
+                    collectionView,
+                    willDisplay: cell as! ExportAccountListAccountsHeader,
+                    forItemAt: indexPath
+                )
             case .cell:
-                linkInteractors(
-                    cell as! ExportAccountListAccountCell,
-                    atIndexPath: indexPath
+                self.collectionView(
+                    collectionView,
+                    willDisplay: cell as! ExportAccountListAccountCell,
+                    forItemAt: indexPath
                 )
             }
         }
@@ -257,48 +282,112 @@ extension ExportAccountListScreen {
 }
 
 extension ExportAccountListScreen {
-    private func linkInteractors(
-        _ cell: ExportAccountListAccountsHeader
+    private func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: ExportAccountListAccountsHeader,
+        forItemAt indexPath: IndexPath
     ) {
+        cell.state = dataController.getAccountsHeaderItemState()
+
         cell.startObserving(event: .performAction) {
             [unowned self] in
 
-            let snapshot = listDataSource.snapshot()
-            let headerState = dataController.getAccountHeaderItemState()
+            let headerState = dataController.getAccountsHeaderItemState()
 
             switch headerState {
             case .selectAll,
                  .partialSelection:
-                dataController.selectAllAccountsItems(snapshot)
+                selectAllAccounts()
             case .unselectAll:
-                dataController.unselectAllAccountsItems(snapshot)
+                unselectAllAccounts()
             }
+
+            updateAccountsHeaderIfNeeded()
+            toggleContinueActionStateIfNeeded()
         }
     }
 
-    private func linkInteractors(
-        _ cell: ExportAccountListAccountCell,
-        atIndexPath indexPath: IndexPath
+    private func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: ExportAccountListAccountCell,
+        forItemAt indexPath: IndexPath
     ) {
-        cell.isChecked = dataController.isAccountSelected(atIndex: indexPath.row.advanced(by: -1))
+        let index = indexPath.row.advanced(by: -1)
+        let isSelected = dataController.isAccountSelected(at: index)
+        cell.accessory = isSelected ? .selected : .unselected
+    }
+}
 
-        cell.startObserving(event: .check) {
-            [unowned self] in
+extension ExportAccountListScreen {
+    func updateAccountsHeaderIfNeeded() {
+        let itemIdentifier: ExportAccountListItemIdentifier = .account(.header(dataController.accountsHeaderViewModel))
 
-            dataController.unselectAccountItem(
-                listDataSource.snapshot(),
-                atIndex: indexPath.row.advanced(by: -1)
-            )
+        guard let indexPath = listDataSource.indexPath(for: itemIdentifier) else {
+            return
         }
 
-        cell.startObserving(event: .uncheck) {
-            [unowned self] in
-
-            dataController.selectAccountItem(
-                listDataSource.snapshot(),
-                atIndex: indexPath.row.advanced(by: -1)
-            )
+        guard let cell = listView.cellForItem(at: indexPath) as? ExportAccountListAccountsHeader else {
+            return
         }
+
+        cell.state = dataController.getAccountsHeaderItemState()
+    }
+}
+
+extension ExportAccountListScreen {
+    private func selectAllAccounts() {
+        listView.indexPathsForVisibleItems.forEach { indexPath in
+            let item = listDataSource.itemIdentifier(for: indexPath)
+
+            if case .account(.cell) = item {
+                selectAccount(at: indexPath)
+            }
+        }
+
+        dataController.selectAllAccountsItems()
+    }
+
+    private func selectAccount(
+        at indexPath: IndexPath
+    ) {
+        let cell = listView.cellForItem(at: indexPath) as! ExportAccountListAccountCell
+        cell.accessory = .selected
+    }
+
+    private func unselectAllAccounts() {
+        listView.indexPathsForVisibleItems.forEach { indexPath in
+            let item = listDataSource.itemIdentifier(for: indexPath)
+
+            if case .account(.cell) = item {
+                unselectAccount(at: indexPath)
+            }
+        }
+
+        dataController.unselectAllAccountsItems()
+    }
+
+    private func unselectAccount(
+        at indexPath: IndexPath
+    ) {
+        let cell = listView.cellForItem(at: indexPath) as! ExportAccountListAccountCell
+        cell.accessory = .unselected
+    }
+
+    private func toggleAccountSelection(
+        at indexPath: IndexPath
+    ) {
+        let cell = listView.cellForItem(at: indexPath) as! ExportAccountListAccountCell
+        let index = indexPath.row.advanced(by: -1)
+        let isSelected = cell.accessory == .selected
+
+        cell.accessory.toggle()
+
+        if isSelected {
+            dataController.unselectAccountItem(at: index)
+            return
+        }
+
+        dataController.selectAccountItem(at: index)
     }
 }
 

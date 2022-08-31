@@ -18,16 +18,25 @@ import UIKit
 import MacaroonUIKit
 
 struct ExportAccountListAccountsHeaderViewModel:
-    ViewModel {
+    ViewModel,
+    Hashable {
     private(set) var info: TextProvider?
-    private(set) var actionStyle: ButtonStyle?
 
     init(
-        accountsCount: Int,
-        state: ExportAccountListAccountHeaderItemState
+        accountsCount: Int
     ) {
         bindInfo(accountsCount)
-        bindAction(state)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(info?.string)
+    }
+
+    static func == (
+        lhs: ExportAccountListAccountsHeaderViewModel,
+        rhs: ExportAccountListAccountsHeaderViewModel
+    ) -> Bool {
+        return lhs.info?.string == rhs.info?.string
     }
 }
 
@@ -44,38 +53,5 @@ extension ExportAccountListAccountsHeaderViewModel {
         }
 
         self.info = info.bodyMedium(lineBreakMode: .byTruncatingTail)
-    }
-
-    private mutating func bindAction(
-        _ state: ExportAccountListAccountHeaderItemState
-    ) {
-        let title: NSAttributedString
-        let icon: Image
-
-        switch state {
-        case .selectAll:
-            title =
-                "title-select-all"
-                    .localized
-                    .bodyMedium(lineBreakMode: .byTruncatingTail)
-            icon = "icon-checkbox-unselected"
-        case .partialSelection:
-            title =
-                "title-select-all"
-                    .localized
-                    .bodyMedium(lineBreakMode: .byTruncatingTail)
-            icon = "icon-checkbox-partial-selected"
-        case .unselectAll:
-            title =
-                "title-unselect-all"
-                    .localized
-                    .bodyMedium(lineBreakMode: .byTruncatingTail)
-            icon = "icon-checkbox-selected"
-        }
-
-        actionStyle = [
-            .title(title),
-            .icon([ .normal(icon) ])
-        ]
     }
 }

@@ -22,6 +22,10 @@ final class ExportAccountListAccountsHeader:
     CollectionCell<ExportAccountListAccountsHeaderView>,
     ViewModelBindable,
     UIInteractable {
+    var state: ExportAccountListAccountHeaderItemState = .selectAll {
+        didSet { updateStateIfNeeded(old: oldValue) }
+    }
+    
     override class var contextPaddings: LayoutPaddings {
         return (0, 24, 20, 24)
     }
@@ -34,5 +38,13 @@ final class ExportAccountListAccountsHeader:
         super.init(frame: frame)
 
         contextView.customize(Self.theme)
+    }
+}
+
+extension ExportAccountListAccountsHeader {
+    private func updateStateIfNeeded(old: ExportAccountListAccountHeaderItemState) {
+        if state != old {
+            contextView.updateState(state)
+        }
     }
 }

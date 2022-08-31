@@ -22,14 +22,11 @@ final class ExportAccountsConfirmationListLocalDataController: ExportAccountsCon
     private let snapshotQueue = DispatchQueue(label: "exportAccountsConfirmationListSnapshot")
 
     private let selectedAccounts: [AccountHandle]
-    private let sharedDataController: SharedDataController
 
     init(
-        selectedAccounts: [AccountHandle],
-        sharedDataController: SharedDataController
+        selectedAccounts: [AccountHandle]
     ) {
         self.selectedAccounts = selectedAccounts
-        self.sharedDataController = sharedDataController
     }
 }
 
@@ -66,17 +63,9 @@ extension ExportAccountsConfirmationListLocalDataController {
     ) {
         snapshot.appendSections([.accounts])
 
-        let accounts: [AccountHandle]
-
-        if let accountSortingAlgorithm = sharedDataController.selectedAccountSortingAlgorithm {
-            accounts = selectedAccounts.sorted(by: accountSortingAlgorithm.getFormula)
-        } else {
-            accounts = selectedAccounts
-        }
-
         addAccounts(
             &snapshot,
-            accounts: accounts
+            accounts: selectedAccounts
         )
     }
 

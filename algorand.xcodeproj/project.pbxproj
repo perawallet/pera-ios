@@ -4576,6 +4576,12 @@
 		D4C85B5627690F5000655238 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C85B5527690F5000655238 /* ButtonStyles.swift */; };
 		D4C85B5727690F5000655238 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C85B5527690F5000655238 /* ButtonStyles.swift */; };
 		D4C85B5827690F5000655238 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C85B5527690F5000655238 /* ButtonStyles.swift */; };
+		D4C8798C28BF4C1B0070CF93 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D4C8798B28BF4C1B0070CF93 /* OrderedCollections */; };
+		D4C8798E28BF4C750070CF93 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D4C8798D28BF4C750070CF93 /* OrderedCollections */; };
+		D4C8799028BF4C820070CF93 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D4C8798F28BF4C820070CF93 /* OrderedCollections */; };
+		D4C8799328BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C8799228BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift */; };
+		D4C8799428BF99750070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C8799228BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift */; };
+		D4C8799628BF99760070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C8799228BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift */; };
 		D4CC28B528759F6F0082E038 /* InnerTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28B428759F6F0082E038 /* InnerTransactionListViewController.swift */; };
 		D4CC28B628759F720082E038 /* InnerTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28B428759F6F0082E038 /* InnerTransactionListViewController.swift */; };
 		D4CC28B728759F720082E038 /* InnerTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC28B428759F6F0082E038 /* InnerTransactionListViewController.swift */; };
@@ -6984,6 +6990,7 @@
 		D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputView.swift; sourceTree = "<group>"; };
 		D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewTheme.swift; sourceTree = "<group>"; };
 		D4C85B5527690F5000655238 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		D4C8799228BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccountListAccountHeaderItemState.swift; sourceTree = "<group>"; };
 		D4CC28B428759F6F0082E038 /* InnerTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListViewController.swift; sourceTree = "<group>"; };
 		D4CC28B82875A0A90082E038 /* InnerTransactionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListLayout.swift; sourceTree = "<group>"; };
 		D4CC28BC2875A0CD0082E038 /* InnerTransactionListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTransactionListDataSource.swift; sourceTree = "<group>"; };
@@ -7279,6 +7286,7 @@
 				D4A241E027D2BF1C00641FF0 /* Prism in Frameworks */,
 				17392E3328BCE531008AF742 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD47352745434A00C91946 /* FirebaseAnalytics in Frameworks */,
+				D4C8799028BF4C820070CF93 /* OrderedCollections in Frameworks */,
 				CBAD472C2745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
@@ -7314,6 +7322,7 @@
 				CBAD471C2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				17392E3228BCE531008AF742 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD47132745434A00C91946 /* MagpieExceptions in Frameworks */,
+				D4C8798E28BF4C750070CF93 /* OrderedCollections in Frameworks */,
 				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
@@ -7349,6 +7358,7 @@
 				CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */,
 				17392E3128BCE531008AF742 /* AlgoSDK.xcframework in Frameworks */,
 				D499D27E27C7D40B00641FF5 /* Prism in Frameworks */,
+				D4C8798C28BF4C1B0070CF93 /* OrderedCollections in Frameworks */,
 				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
@@ -14795,6 +14805,7 @@
 				D4320EB628B8C99000920722 /* ExportAccountListLayout.swift */,
 				D4320E9A28B8C25700920722 /* ExportAccountListScreen.swift */,
 				D4320ECE28BA991900920722 /* ExportAccountListScreenTheme.swift */,
+				D4C8799128BF99560070CF93 /* Auxiliaries */,
 				D4320EBC28BA3A3B00920722 /* Data */,
 				D4320EBD28BA3A6900920722 /* Views */,
 			);
@@ -15549,6 +15560,14 @@
 				D4AF540127676CB400A94200 /* WCConnectionApprovalViewTheme.swift */,
 			);
 			path = Approval;
+			sourceTree = "<group>";
+		};
+		D4C8799128BF99560070CF93 /* Auxiliaries */ = {
+			isa = PBXGroup;
+			children = (
+				D4C8799228BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift */,
+			);
+			path = Auxiliaries;
 			sourceTree = "<group>";
 		};
 		D4CC28B328759ED40082E038 /* InnerTransactionsList */ = {
@@ -16534,6 +16553,7 @@
 				2B77FAB1280D7FD30020376D /* KingfisherWebP */,
 				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
 				F0454224287D8C940081C01C /* MacaroonStorySheet */,
+				D4C8798F28BF4C820070CF93 /* OrderedCollections */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -16581,6 +16601,7 @@
 				2B77FAAF280D7FC90020376D /* KingfisherWebP */,
 				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
 				F0454222287D8C8D0081C01C /* MacaroonStorySheet */,
+				D4C8798D28BF4C750070CF93 /* OrderedCollections */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -16628,6 +16649,7 @@
 				2B77FAAD280D7F900020376D /* KingfisherWebP */,
 				F05E6C58286300B7004E33D6 /* MacaroonToastUIKit */,
 				F0454220287D8C820081C01C /* MacaroonStorySheet */,
+				D4C8798B28BF4C1B0070CF93 /* OrderedCollections */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -16713,6 +16735,7 @@
 				D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */,
 				D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */,
 				2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
+				D4C8798A28BF4C1B0070CF93 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -17773,6 +17796,7 @@
 				D4DC26BD28B3A3C00068152E /* ASAAboutScreenASAProjectWebsiteSecondaryListItem.swift in Sources */,
 				D4A0DEA4289803F600CE3895 /* AssetStatisticsSectionViewModel.swift in Sources */,
 				F034523928B3946B009467A0 /* ASADiscoveryScreenDataController.swift in Sources */,
+				D4C8799628BF99760070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */,
 				D459E28927DE052500F7FC33 /* ApproveCollectibleTransactionViewModel.swift in Sources */,
 				95266BFE27B538B800E99EC7 /* SelectAccountAPIDataController.swift in Sources */,
 				D421178A26D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
@@ -19503,6 +19527,7 @@
 				F0DB41A42794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				D46432D528B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift in Sources */,
 				F0DB415E2793839B00EA437D /* TitleWithAccessoryView.swift in Sources */,
+				D4C8799428BF99750070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */,
 				2B26270A284D640D00ADE371 /* AlgoTransactionItemDraftComposer.swift in Sources */,
 				D4822736272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
 				2B0F623724EC129D00DA22A6 /* EditAccountView.swift in Sources */,
@@ -21246,6 +21271,7 @@
 				D4C85B5627690F5000655238 /* ButtonStyles.swift in Sources */,
 				F0B50EA627FC6D0900478017 /* Bool+Additions.swift in Sources */,
 				D42A022726D7A52F00CEFC16 /* BottomSheetTransitionController.swift in Sources */,
+				D4C8799328BF996E0070CF93 /* ExportAccountListAccountHeaderItemState.swift in Sources */,
 				D4A70AF62878361700FB52B0 /* AssetInnerTransactionPreviewViewModel.swift in Sources */,
 				2B88CC862618A509000027B4 /* Array+View.swift in Sources */,
 				2BD36E052681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
@@ -22900,6 +22926,14 @@
 				kind = branch;
 			};
 		};
+		D4C8798A28BF4C1B0070CF93 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -23277,6 +23311,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
+		};
+		D4C8798B28BF4C1B0070CF93 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C8798A28BF4C1B0070CF93 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		D4C8798D28BF4C750070CF93 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C8798A28BF4C1B0070CF93 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		D4C8798F28BF4C820070CF93 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C8798A28BF4C1B0070CF93 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 		F0454220287D8C820081C01C /* MacaroonStorySheet */ = {
 			isa = XCSwiftPackageProductDependency;

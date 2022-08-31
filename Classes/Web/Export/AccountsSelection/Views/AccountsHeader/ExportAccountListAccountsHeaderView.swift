@@ -57,12 +57,6 @@ final class ExportAccountListAccountsHeaderView:
         } else {
             infoView.clearText()
         }
-
-        if let actionStyle = viewModel?.actionStyle {
-            actionView.customizeAppearance(actionStyle)
-        } else {
-            actionView.resetAppearance()
-        }
     }
 
     class func calculatePreferredSize(
@@ -110,8 +104,6 @@ extension ExportAccountListAccountsHeaderView {
     private func addAction(
         _ theme: ExportAccountListAccountsHeaderViewTheme
     ) {
-        actionView.customizeAppearance(theme.action)
-
         addSubview(actionView)
         actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
@@ -125,6 +117,20 @@ extension ExportAccountListAccountsHeaderView {
             event: .performAction,
             for: actionView
         )
+
+        updateAction(.selectAll)
+    }
+}
+
+extension ExportAccountListAccountsHeaderView {
+    func updateState(_ state: ExportAccountListAccountHeaderItemState) {
+        updateAction(state)
+    }
+
+    func updateAction(_ state: ExportAccountListAccountHeaderItemState) {
+        let actionStyle = theme[state]
+
+        actionView.customizeAppearance(actionStyle)
     }
 }
 

@@ -1065,8 +1065,7 @@ class Router:
             viewController = screen
         case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
             let dataController = ExportAccountsConfirmationListLocalDataController(
-                selectedAccounts: selectedAccounts,
-                sharedDataController: appConfiguration.sharedDataController
+                selectedAccounts: selectedAccounts
             )
             let screen = ExportAccountsConfirmationListScreen(
                 dataController: dataController,

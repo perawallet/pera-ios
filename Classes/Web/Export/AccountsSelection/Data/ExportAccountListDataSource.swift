@@ -22,6 +22,8 @@ final class ExportAccountListDataSource:
     UICollectionViewDiffableDataSource<ExportAccountListSectionIdentifier, ExportAccountListItemIdentifier> {
     typealias Snapshot = NSDiffableDataSourceSnapshot<ExportAccountListSectionIdentifier, ExportAccountListItemIdentifier>
 
+    private(set) lazy var listHeader = ExportAccountListItemHeaderViewModel()
+
     init(
         _ collectionView: UICollectionView
     ) {
@@ -36,7 +38,7 @@ final class ExportAccountListDataSource:
                         ExportAccountListAccountsHeader.self,
                         at: indexPath
                     )
-                    cell.bindData(headerItem.viewModel)
+                    cell.bindData(headerItem)
                     return cell
                 case .cell(let cellItem):
                     let cell = collectionView.dequeue(
@@ -62,7 +64,7 @@ final class ExportAccountListDataSource:
                 at: indexPath
             )
 
-            header.bindData(ExportAccountListItemHeaderViewModel())
+            header.bindData(self?.listHeader)
 
             return header
         }

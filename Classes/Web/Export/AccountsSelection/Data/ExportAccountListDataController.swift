@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import OrderedCollections
 
 protocol ExportAccountListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<ExportAccountListSectionIdentifier, ExportAccountListItemIdentifier>
@@ -27,21 +28,16 @@ protocol ExportAccountListDataController: AnyObject {
     func load()
 
     func getSelectedAccounts() -> [AccountHandle]
-    
-    func getAccountHeaderItemState() -> ExportAccountListAccountHeaderItemState
+
+    var accountsHeaderViewModel: ExportAccountListAccountsHeaderViewModel! { get }
+    func getAccountsHeaderItemState() -> ExportAccountListAccountHeaderItemState
 
     typealias Index = Int
-    func selectAccountItem(
-        _ snapshot: Snapshot,
-        atIndex index: Index
-    )
-    func unselectAccountItem(
-        _ snapshot: Snapshot,
-        atIndex index: Index
-    )
-    func selectAllAccountsItems(_ snapshot: Snapshot)
-    func unselectAllAccountsItems(_ snapshot: Snapshot)
-    func isAccountSelected(atIndex index: Index) -> Bool
+    func selectAccountItem(at index: Index)
+    func unselectAccountItem(at index: Index)
+    func selectAllAccountsItems()
+    func unselectAllAccountsItems()
+    func isAccountSelected(at index: Index) -> Bool
 }
 
 enum ExportAccountListSectionIdentifier:
@@ -54,25 +50,8 @@ enum ExportAccountListItemIdentifier: Hashable {
 }
 
 enum ExportAccountListAccountItemIdentifier: Hashable {
-    case header(ExportAccountListAccountHeaderItemIdentifier)
+    case header(ExportAccountListAccountsHeaderViewModel)
     case cell(ExportAccountListAccountCellItemIdentifier)
-}
-
-struct ExportAccountListAccountHeaderItemIdentifier:
-    Hashable {
-    private let id = UUID()
-    private(set) var viewModel: ExportAccountListAccountsHeaderViewModel
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (
-        lhs: ExportAccountListAccountHeaderItemIdentifier,
-        rhs: ExportAccountListAccountHeaderItemIdentifier
-    ) -> Bool {
-        return lhs.id == rhs.id
-    }
 }
 
 struct ExportAccountListAccountCellItemIdentifier:
@@ -100,10 +79,4 @@ enum ExportAccountListDataControllerEvent {
         case .didUpdate(let snapshot): return snapshot
         }
     }
-}
-
-enum ExportAccountListAccountHeaderItemState {
-    case selectAll
-    case unselectAll
-    case partialSelection
 }

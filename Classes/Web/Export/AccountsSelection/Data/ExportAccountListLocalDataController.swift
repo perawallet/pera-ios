@@ -15,14 +15,15 @@
 //   ExportAccountListLocalDataController.swift
 
 import Foundation
+import OrderedCollections
 
 final class ExportAccountListLocalDataController: ExportAccountListDataController {
     var eventHandler: ((ExportAccountListDataControllerEvent) -> Void)?
 
-    private lazy var headerItem: ExportAccountListAccountHeaderItemIdentifier? = nil
+    private(set) var accountsHeaderViewModel: ExportAccountListAccountsHeaderViewModel!
 
-    private lazy var accounts: [Index: ExportAccountListAccountCellItemIdentifier] = [:]
-    private lazy var selectedAccounts: [Index: ExportAccountListAccountCellItemIdentifier] = [:]
+    private lazy var accounts: OrderedDictionary<Index, AccountHandle> = [:]
+    private lazy var selectedAccounts: OrderedDictionary<Index, AccountHandle> = [:]
 
     private let snapshotQueue = DispatchQueue(label: "exportAccountListSnapshot")
 
@@ -40,7 +41,7 @@ extension ExportAccountListLocalDataController {
 }
 
 extension ExportAccountListLocalDataController {
-    func isAccountSelected(atIndex index: Index) -> Bool {
+    func isAccountSelected(at index: Index) -> Bool {
         return selectedAccounts[index] != nil
     }
 
@@ -49,35 +50,12 @@ extension ExportAccountListLocalDataController {
     }
 
     func getSelectedAccounts() -> [AccountHandle] {
-        return selectedAccounts.values.map(\.model)
+        return selectedAccounts.values.elements
     }
 }
 
 extension ExportAccountListLocalDataController {
-    func updateAccountsHeader(
-        _ snapshot: inout Snapshot
-    ) {
-        let viewModel = ExportAccountListAccountsHeaderViewModel(
-            accountsCount: accounts.values.count,
-            state: getAccountHeaderItemState()
-        )
-
-        let updatedItem = ExportAccountListAccountHeaderItemIdentifier(
-            viewModel: viewModel
-        )
-
-        snapshot.insertItems(
-            [.account(.header(updatedItem))],
-            beforeItem: .account(.header(headerItem!))
-        )
-        snapshot.deleteItems([ .account(.header(headerItem!)) ])
-
-        self.headerItem = updatedItem
-    }
-}
-
-extension ExportAccountListLocalDataController {
-    func getAccountHeaderItemState() -> ExportAccountListAccountHeaderItemState {
+    func getAccountsHeaderItemState() -> ExportAccountListAccountHeaderItemState {
         if selectedAccounts.isEmpty {
             return .selectAll
         }
@@ -91,100 +69,24 @@ extension ExportAccountListLocalDataController {
 }
 
 extension ExportAccountListLocalDataController {
-    func selectAccountItem(
-        _ snapshot: Snapshot,
-        atIndex index: Index
-    ) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return nil }
-
-            var snapshot = snapshot
-
-            guard let selectedAccount = self.accounts[index] else {
-                return nil
-            }
-
-            self.selectedAccounts[index] = selectedAccount
-
-            self.updateAccountsHeader(&snapshot)
-
-            snapshot.reloadItems([ .account(.cell(selectedAccount)) ])
-
-            return snapshot
+    func selectAccountItem(at index: Index) {
+        guard let selectedAccount = accounts[index] else {
+            return
         }
+
+        selectedAccounts[index] = selectedAccount
     }
 
-    func unselectAccountItem(
-        _ snapshot: Snapshot,
-        atIndex index: Index
-    ) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return nil }
-
-            var snapshot = snapshot
-
-            guard let unselectedAccount = self.accounts[index] else {
-                return nil
-            }
-
-            self.selectedAccounts[index] = nil
-
-            self.updateAccountsHeader(&snapshot)
-
-            snapshot.reloadItems([ .account(.cell(unselectedAccount)) ])
-
-            return snapshot
-        }
+    func unselectAccountItem(at index: Index ) {
+        selectedAccounts[index] = nil
     }
 
-    func selectAllAccountsItems(_ snapshot: Snapshot) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return nil }
-
-            var snapshot = snapshot
-
-            self.selectedAccounts = self.accounts
-
-            self.updateAccountsHeader(&snapshot)
-
-            let accountItems: [ExportAccountListItemIdentifier] =
-                self.accounts.values.map {
-                    return .account(.cell($0))
-                }
-
-            snapshot.reloadItems(
-                accountItems
-            )
-
-            return snapshot
-        }
+    func selectAllAccountsItems() {
+        selectedAccounts = accounts
     }
 
-    func unselectAllAccountsItems(_ snapshot: Snapshot) {
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else { return nil }
-
-            var snapshot = snapshot
-
-            self.selectedAccounts = [:]
-
-            self.updateAccountsHeader(&snapshot)
-
-            let accountItems: [ExportAccountListItemIdentifier] =
-                self.accounts.values.map {
-                    return .account(.cell($0))
-                }
-
-            snapshot.reloadItems(
-                accountItems
-            )
-
-            return snapshot
-        }
+    func unselectAllAccountsItems() {
+        selectedAccounts = [:]
     }
 }
 
@@ -232,18 +134,12 @@ extension ExportAccountListLocalDataController {
         _ snapshot: inout Snapshot,
         accounts: [AccountHandle]
     ) {
-        let viewModel = ExportAccountListAccountsHeaderViewModel(
-            accountsCount: accounts.count,
-            state: getAccountHeaderItemState()
-        )
-        let item = ExportAccountListAccountHeaderItemIdentifier(
-            viewModel: viewModel
-        )
+        let viewModel = ExportAccountListAccountsHeaderViewModel(accountsCount: accounts.count)
 
-        self.headerItem = item
+        accountsHeaderViewModel = viewModel
 
         snapshot.appendItems(
-            [ .account(.header(item)) ],
+            [ .account(.header(accountsHeaderViewModel)) ],
             toSection: .accounts
         )
     }
@@ -266,7 +162,7 @@ extension ExportAccountListLocalDataController {
                     viewModel: viewModel
                 )
 
-                self.accounts[$0.offset] = item
+                self.accounts[$0.offset] = accountHandle
 
                 return .account(.cell(item))
             }

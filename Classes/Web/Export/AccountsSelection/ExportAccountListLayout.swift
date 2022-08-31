@@ -74,7 +74,7 @@ extension ExportAccountListLayout {
 
         let size = listView(
             collectionView,
-            sizeForHeaderItem: ExportAccountListItemHeaderViewModel(),
+            sizeForHeaderItem: listDataSource.listHeader,
             atSection: section
         )
         return size
@@ -113,7 +113,7 @@ extension ExportAccountListLayout {
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForAccountHeaderItem: item.viewModel,
+                sizeForAccountHeaderItem: item,
                 atSection: section
             )
         case .cell(let item):

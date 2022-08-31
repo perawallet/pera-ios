@@ -25,8 +25,8 @@ struct ExportAccountListItemCellTheme:
     var contextEdgeInsets: LayoutPaddings
     var spacingBetweenContextAndAccessory: LayoutMetric
     var accessorySize: LayoutSize
-    var checkAccessory: ButtonStyle
-    var uncheckAccessory: ButtonStyle
+    var selectedAccessory: ImageStyle
+    var unselectedAccessory: ImageStyle
     var separator: Separator
 
     init(_ family: LayoutFamily) {
@@ -34,11 +34,11 @@ struct ExportAccountListItemCellTheme:
         self.contextEdgeInsets = (14, 24, 14, 24)
         self.spacingBetweenContextAndAccessory = 20
         self.accessorySize = (24, 24)
-        self.checkAccessory = [
-            .icon([ .normal("icon-checkbox-selected") ])
+        self.selectedAccessory = [
+            .image("icon-checkbox-selected")
         ]
-        self.uncheckAccessory = [
-            .icon([ .normal("icon-checkbox-unselected") ])
+        self.unselectedAccessory = [
+            .image("icon-checkbox-unselected")
         ]
         self.separator = Separator(
             color: Colors.Layer.grayLighter,
@@ -46,10 +46,10 @@ struct ExportAccountListItemCellTheme:
         )
     }
 
-    subscript (accessory: ExportAccountListItemAccessory) -> ButtonStyle {
+    subscript (accessory: ExportAccountListItemAccessory) -> ImageStyle {
         switch accessory {
-        case .check: return checkAccessory
-        case .uncheck: return uncheckAccessory
+        case .selected: return selectedAccessory
+        case .unselected: return unselectedAccessory
         }
     }
 }
