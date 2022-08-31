@@ -22,7 +22,7 @@ import MacaroonForm
 /// <todo>: Handle keyboard properly
 final class ExportAccountsDomainConfirmationScreen:
     MacaroonUIKit.ScrollScreen,
-    KeyboardControllerDataSource {
+    MacaroonForm.KeyboardControllerDataSource {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -38,7 +38,10 @@ final class ExportAccountsDomainConfirmationScreen:
     private lazy var peraWebURLView = UILabel()
     private lazy var continueActionView = MacaroonUIKit.Button()
 
-    private lazy var keyboardController = KeyboardController()
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: scrollView,
+        screen: self
+    )
 
     private let theme: ExportAccountsDomainConfirmationScreenTheme
 
@@ -47,37 +50,18 @@ final class ExportAccountsDomainConfirmationScreen:
     ) {
         self.theme = theme
         super.init()
+
+        keyboardController.activate()
     }
 
     deinit {
-        keyboardController.endTracking()
+        keyboardController.deactivate()
     }
 
     override func configureNavigationBar() {
         super.configureNavigationBar()
         /// <todo> Macaroon
         title = "web-export-accounts-domain-confirmation-title".localized
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-
-        keyboardController.dataSource = self
-        keyboardController.beginTracking()
-
-//        keyboardController.notificationHandlerWhenKeyboardShown = {
-//            [weak self] keyboard in
-//            self?.footerBackgroundView.snp.updateConstraints {
-//                $0.bottom == keyboard.height
-//            }
-//        }
-
-//        keyboardController.notificationHandlerWhenKeyboardHidden = {
-//            [weak self] _ in
-//            self?.footerBackgroundView.snp.updateConstraints {
-//                $0.bottom == 0
-//            }
-//        }
     }
 
     override func prepareLayout() {
@@ -276,29 +260,77 @@ extension ExportAccountsDomainConfirmationScreen {
     }
 }
 
+/// <mark>
+/// MacaroonForm.KeyboardControllerDataSource
 extension ExportAccountsDomainConfirmationScreen {
-    func bottomInsetWhenKeyboardPresented(
-        for keyboardController: KeyboardController
-    ) -> CGFloat {
-        return .zero
+    func keyboardController(
+        _ keyboardController: MacaroonForm.KeyboardController,
+        editingRectIn view: UIView
+    ) -> CGRect? {
+        return peraWebURLContentView.frame
     }
 
-    func firstResponder(
-        for keyboardController: KeyboardController
-    ) -> UIView? {
-        return domainInputView
+    func bottomInsetOverKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        if let keyboardHeight = keyboardController.keyboard?.height {
+            footerBackgroundView.snp.updateConstraints { make in
+                make.bottom == keyboardHeight
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+
+            return spacingBetweenURLAndKeyboard()
+        }
+        return 0
     }
 
-    func containerView(
-        for keyboardController: KeyboardController
-    ) -> UIView {
-        return contentView
+    func additionalBottomInsetOverKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return 0
     }
 
-    func bottomInsetWhenKeyboardDismissed(
-        for keyboardController: KeyboardController
-    ) -> CGFloat {
-        return .zero
+    func bottomInsetUnderKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return 0
+    }
+
+    func bottomInsetWhenKeyboardDidHide(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        /// <note>
+        /// It doesn't scroll to the bottom during the transition to another screen. When the
+        /// screen is back, it will show the keyboard again anyway.
+        if isViewDisappearing {
+            return scrollView.contentInset.bottom
+        }
+
+        footerBackgroundView.snp.updateConstraints { make in
+            make.bottom == 0
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+
+        return 0
+    }
+
+    func spacingBetweenEditingRectAndKeyboard(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return spacingBetweenURLAndKeyboard()
+    }
+
+    private func spacingBetweenURLAndKeyboard() -> LayoutMetric {
+        return footerView.frame.height +
+            theme.continueActionEdgeInsets.top +
+            theme.continueActionEdgeInsets.bottom
+
     }
 }
 

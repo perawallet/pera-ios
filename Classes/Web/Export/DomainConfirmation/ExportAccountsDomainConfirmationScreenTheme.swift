@@ -65,7 +65,8 @@ struct ExportAccountsDomainConfirmationScreenTheme:
             .clearButtonMode(.whileEditing),
             .returnKeyType(.done),
             .textContentType(.URL),
-            .keyboardType(.URL)
+            .keyboardType(.URL),
+            .autocapitalizationType(.none)
         ]
         let domainInput =
             FloatingTextInputFieldViewCommonTheme(
