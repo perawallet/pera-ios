@@ -57,20 +57,30 @@ final class ExportAccountDraft: JSONObjectBody {
     }
 }
 
-struct EncryptedExportAccountDraft: JSONObjectBody {
+final class EncryptedExportAccountDraft: JSONObjectBody {
     let draft: ExportAccountDraft
     let qrExportInformations: QRExportInformations
 
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
+    private lazy var encryptedContent: String? = {
         if let encodedContent = try? draft.encoded() {
             let cryptor = Cryptor(key: qrExportInformations.encryptionKey)
 
             if let encryptedContent = cryptor.encrypt(data: encodedContent) {
                 let content = encryptedContent.toBytes().map({ String($0) }).joined(separator: ",")
-                params.append(.init(.encryptedContent, content))
+                return content
             }
         }
+
+        return nil
+    }()
+
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
+
+        if let content = encryptedContent {
+            params.append(.init(.encryptedContent, content))
+        }
+        
         return params
     }
 
