@@ -22,9 +22,9 @@ protocol ExportAccountsConfirmationListDataController: AnyObject {
 
     var eventHandler: ((ExportAccountsConfirmationListDataControllerEvent) -> Void)? { get set }
 
+    var selectedAccounts: [Account] { get }
+
     func load()
-    
-    func getAccounts() -> [AccountHandle]
 }
 
 enum ExportAccountsConfirmationListSectionIdentifier:
@@ -42,18 +42,18 @@ enum ExportAccountsConfirmationListAccountItemIdentifier: Hashable {
 
 struct ExportAccountsConfirmationListAccountCellItemIdentifier:
     Hashable {
-    private(set) var model: AccountHandle
+    private(set) var model: Account
     private(set) var viewModel: AccountListItemViewModel
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(model.value.address)
+        hasher.combine(model.address)
     }
 
     static func == (
         lhs: ExportAccountsConfirmationListAccountCellItemIdentifier,
         rhs: ExportAccountsConfirmationListAccountCellItemIdentifier
     ) -> Bool {
-        return lhs.model.value.address == rhs.model.value.address
+        return lhs.model.address == rhs.model.address
     }
 }
 

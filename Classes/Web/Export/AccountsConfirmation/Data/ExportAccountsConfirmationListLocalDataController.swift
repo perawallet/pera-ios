@@ -21,10 +21,10 @@ final class ExportAccountsConfirmationListLocalDataController: ExportAccountsCon
 
     private let snapshotQueue = DispatchQueue(label: "exportAccountsConfirmationListSnapshot")
 
-    private let selectedAccounts: [AccountHandle]
+    let selectedAccounts: [Account]
 
     init(
-        selectedAccounts: [AccountHandle]
+        selectedAccounts: [Account]
     ) {
         self.selectedAccounts = selectedAccounts
     }
@@ -33,12 +33,6 @@ final class ExportAccountsConfirmationListLocalDataController: ExportAccountsCon
 extension ExportAccountsConfirmationListLocalDataController {
     func load() {
         deliverContentSnapshot()
-    }
-}
-
-extension ExportAccountsConfirmationListLocalDataController {
-    func getAccounts() -> [AccountHandle] {
-        return selectedAccounts
     }
 }
 
@@ -71,18 +65,16 @@ extension ExportAccountsConfirmationListLocalDataController {
 
     private func addAccounts(
         _ snapshot: inout Snapshot,
-        accounts: [AccountHandle]
+        accounts: [Account]
     ) {
         let accountItems: [ExportAccountsConfirmationListItemIdentifier] =
         accounts
-            .map {
-                let accountHandle = $0
-                let account = accountHandle.value
+            .map { account in
                 let draft = IconWithShortAddressDraft(account)
                 let viewModel = AccountListItemViewModel(draft)
 
                 let item =  ExportAccountsConfirmationListAccountCellItemIdentifier(
-                    model: accountHandle,
+                    model: account,
                     viewModel: viewModel
                 )
                 return .account(.cell(item))

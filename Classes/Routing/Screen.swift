@@ -222,7 +222,7 @@ indirect enum Screen {
         eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
     )
     case exportAccountsConfirmationList(
-        selectedAccounts: [AccountHandle],
+        selectedAccounts: [Account],
         eventHandler: ExportAccountsConfirmationListScreen.EventHandler
     )
     case exportAccountsResult(
