@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapDividerView.swift
+//   SwapQuickActionsView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class SwapDividerView:
+final class SwapQuickActionsView:
     View,
     ViewModelBindable {
     private lazy var switchControl = SegmentedControl()
     private lazy var setAmountControl = SegmentedControl(distributionMode: .fillProportionally)
 
-    func customize(_ theme: SwapDividerViewTheme) {
+    func customize(_ theme: SwapQuickActionsViewTheme) {
         addSeparator(theme)
         addSwitch(theme)
         addSetAmount(theme)
@@ -34,7 +34,7 @@ final class SwapDividerView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ viewModel: SwapDividerViewModel?) {
+    func bindData(_ viewModel: SwapQuickActionsViewModel?) {
         setAmountControl.removeAllSegments()
 
         guard let viewModel = viewModel else {
@@ -57,12 +57,12 @@ final class SwapDividerView:
     }
 }
 
-extension SwapDividerView {
-    private func addSeparator(_ theme: SwapDividerViewTheme) {
+extension SwapQuickActionsView {
+    private func addSeparator(_ theme: SwapQuickActionsViewTheme) {
         addSeparator(theme.horizontalSeparator)
     }
 
-    private func addSwitch(_ theme: SwapDividerViewTheme) {
+    private func addSwitch(_ theme: SwapQuickActionsViewTheme) {
         switchControl.backgroundImage = theme.backgroundImage
         switchControl.add(segment: SwitchSegment())
 
@@ -73,7 +73,7 @@ extension SwapDividerView {
         }
     }
 
-    private func addSetAmount(_ theme: SwapDividerViewTheme) {
+    private func addSetAmount(_ theme: SwapQuickActionsViewTheme) {
         setAmountControl.separatorImage = theme.verticalSeparatorImage
         setAmountControl.backgroundImage = theme.backgroundImage
 
