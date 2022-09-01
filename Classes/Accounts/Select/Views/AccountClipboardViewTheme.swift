@@ -47,30 +47,30 @@ struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
 
         containerFirstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

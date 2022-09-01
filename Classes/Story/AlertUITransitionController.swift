@@ -28,19 +28,19 @@ final class AlertUITransitionController: MacaroonStorySheet.AlertUITransitionCon
         configuration.contentAreaCorner = 16
         configuration.contentAreaPrimaryShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.largeShadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 16),
             radius: 68,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (16, 16),
             corners: .allCorners
         )
         configuration.contentAreaSecondaryShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.largeShadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 1,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (16, 16),
             corners: .allCorners
         )
