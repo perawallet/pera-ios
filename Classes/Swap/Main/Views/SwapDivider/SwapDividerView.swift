@@ -18,7 +18,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class SwapDividerView: View {
+final class SwapDividerView:
+    View,
+    ViewModelBindable {
     private lazy var switchControl = SegmentedControl()
     private lazy var setAmountControl = SegmentedControl(distributionMode: .fillProportionally)
 
@@ -31,6 +33,28 @@ final class SwapDividerView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func bindData(_ viewModel: SwapDividerViewModel?) {
+        setAmountControl.removeAllSegments()
+
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        if let title = viewModel.amountAdjustTitle {
+            setAmountControl.add(
+                segment: AmountAdjustSegment(title: title)
+            )
+        } else {
+            setAmountControl.add(
+                segment: AmountAdjustSegment()
+            )
+        }
+
+        setAmountControl.add(
+            segment: MaxSegment()
+        )
+    }
 }
 
 extension SwapDividerView {
@@ -57,7 +81,6 @@ extension SwapDividerView {
         amountAdjustSegment.configureForDisabledState()
         var maxSegment = MaxSegment()
         maxSegment.configureForDisabledState()
-
         setAmountControl.add(segments: [
             amountAdjustSegment,
             maxSegment
@@ -65,6 +88,7 @@ extension SwapDividerView {
 
         addSubview(setAmountControl)
         setAmountControl.snp.makeConstraints {
+            $0.leading >= switchControl.snp.trailing
             $0.trailing == theme.horizontalPadding
             $0.top.bottom == 0
         }
