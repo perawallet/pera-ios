@@ -316,7 +316,7 @@ extension ASAAboutScreen {
                     address: address,
                     network: self.api!.network
                 )
-                self.open(source.url)
+                self.open(source.url?.straightened())
             }
         }
         handlers.didLongPressAccessory = {
@@ -345,8 +345,9 @@ extension ASAAboutScreen {
         handlers.didTapAccessory = {
             [unowned self] in
 
-            if let urlString = self.asset.url {
-                self.open(URL(string: urlString))
+            if let urlString = self.asset.url,
+               let url = URL(string: urlString) {
+                self.open(url.straightened())
             }
         }
         return AssetAboutSectionItem(
@@ -362,7 +363,7 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let explorerURL = self.asset.explorerURL {
-                self.open(explorerURL)
+                self.open(explorerURL.straightened())
             }
         }
         return AssetAboutSectionItem(
@@ -378,11 +379,11 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let projectURL = self.asset.projectURL {
-                self.open(projectURL)
+                self.open(projectURL.straightened())
             }
         }
         return AssetAboutSectionItem(
-            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(),
+            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(asset: asset),
             theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
             handlers: handlers
         )
