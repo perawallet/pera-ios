@@ -18,6 +18,8 @@ import Foundation
 import MagpieHipo
 
 final class SwapAssetAPIDataController: SwapAssetDataController {
+    var eventHandler: EventHandler?
+    
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
