@@ -145,22 +145,8 @@ extension ASAAboutScreen {
             $0.trailing == 0 + theme.contextEdgeInsets.trailing
         }
 
-        addSections()
-    }
-
-    private func addSections() {
-        let sections = Section.ordered(by: asset)
-
-        for section in sections {
-            switch section {
-            case .statistics: addStatistics()
-            case .about: addAbout()
-            case .verificationTier: addVerificationTier()
-            case .description: addDescription()
-            case .socialMedia: addSocialMedia()
-            case .report: addReportAction()
-            }
-        }
+        addStatistics()
+        addAbout()
     }
 
     private func bindSectionsData() {
@@ -209,12 +195,6 @@ extension ASAAboutScreen {
             after: statisticsView
         )
 
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: statisticsView,
-            margin: theme.spacingBetweenStatisticsAndSeparator
-        )
-
         bindStatisticsData()
     }
 
@@ -240,7 +220,7 @@ extension ASAAboutScreen {
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: aboutView,
-            margin: theme.spacingBetweenAboutAndSeparator
+            margin: theme.spacingBetweenSeparatorAndAbout
         )
 
         bindAboutData()
@@ -316,7 +296,7 @@ extension ASAAboutScreen {
                     address: address,
                     network: self.api!.network
                 )
-                self.open(source.url)
+                self.open(source.url?.straightened())
             }
         }
         handlers.didLongPressAccessory = {
@@ -345,8 +325,9 @@ extension ASAAboutScreen {
         handlers.didTapAccessory = {
             [unowned self] in
 
-            if let urlString = self.asset.url {
-                self.open(URL(string: urlString))
+            if let urlString = self.asset.url,
+               let url = URL(string: urlString) {
+                self.open(url.straightened())
             }
         }
         return AssetAboutSectionItem(
@@ -362,7 +343,7 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let explorerURL = self.asset.explorerURL {
-                self.open(explorerURL)
+                self.open(explorerURL.straightened())
             }
         }
         return AssetAboutSectionItem(
@@ -378,34 +359,42 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let projectURL = self.asset.projectURL {
-                self.open(projectURL)
+                self.open(projectURL.straightened())
             }
         }
         return AssetAboutSectionItem(
-            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(),
+            viewModel: ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel(asset: asset),
             theme: ASAAboutScreenInteractableSecondaryListItemViewTheme(),
             handlers: handlers
         )
     }
 
-    private func addVerificationTier(atIndex index: Int? = nil) {
+    private func addVerificationTier(atIndex index: Int) {
         verificationTierView.customize(theme.verificationTier)
+
+        if let previousView = contextView.arrangedSubviews[safe: index - 1] {
+            contextView.setCustomSpacing(
+                theme.spacingBetweenSectionsAndVerificationTier,
+                after: previousView
+            )
+        }
 
         contextView.insertArrangedSubview(
             verificationTierView,
             preferredAt: index
         )
-        
-        contextView.setCustomSpacing(
-            theme.spacingBetweenVerificationTierAndSections,
-            after: verificationTierView
-        )
 
-        contextView.attachSeparator(
-            theme.sectionSeparator,
-            to: verificationTierView,
-            margin: theme.spacingBetweenVerificationTierAndSeparator
-        )
+        if index == 0 {
+            contextView.setCustomSpacing(
+                theme.spacingBetweenVerificationTierAndFirstSection,
+                after: verificationTierView
+            )
+        } else {
+            contextView.setCustomSpacing(
+                theme.spacingBetweenVerificationTierAndSections,
+                after: verificationTierView
+            )
+        }
 
         verificationTierView.startObserving(event: .learnMore) {
             [unowned self] in
@@ -421,7 +410,7 @@ extension ASAAboutScreen {
         verificationTierView.bindData(viewModel)
     }
 
-    private func addDescription(atIndex index: Int? = nil) {
+    private func addDescription(atIndex index: Int) {
         descriptionView.customize(theme.description)
 
         contextView.insertArrangedSubview(
@@ -432,7 +421,7 @@ extension ASAAboutScreen {
         contextView.attachSeparator(
             theme.sectionSeparator,
             to: descriptionView,
-            margin: theme.spacingBetweenDescriptionAndSeparator
+            margin: theme.spacingBetweenSeparatorAndDescription
         )
 
         bindDescriptionData()
@@ -443,12 +432,18 @@ extension ASAAboutScreen {
         descriptionView.bindData(viewModel)
     }
 
-    private func addSocialMedia(atIndex index: Int? = nil) {
+    private func addSocialMedia(atIndex index: Int) {
         socialMediaView.customize(theme.socialMedia)
 
         contextView.insertArrangedSubview(
             socialMediaView,
             preferredAt: index
+        )
+
+        contextView.attachSeparator(
+            theme.sectionSeparator,
+            to: socialMediaView,
+            margin: theme.spacingBetweenSeparatorAndSocialMedia
         )
 
         bindSocialMediaData()
@@ -489,7 +484,7 @@ extension ASAAboutScreen {
         socialMediaView.bindData(viewModel)
     }
 
-    private func addReportAction(atIndex index: Int? = nil) {
+    private func addReportAction(atIndex index: Int) {
         reportActionView.customize(theme.reportAction)
 
         if let previousView = contextView.arrangedSubviews.last {
@@ -505,7 +500,7 @@ extension ASAAboutScreen {
         )
 
         contextView.attachSeparator(
-            theme.reportActionSeparator,
+            theme.sectionSeparator,
             to: reportActionView,
             margin: theme.spacingBetweenSeparatorAndReportAction
         )
@@ -593,7 +588,7 @@ extension ASAAboutScreen {
                 list.append(.socialMedia)
             }
 
-            if asset.verificationTier.isSuspicious {
+            if !asset.verificationTier.isTrusted {
                 list.append(.report)
             }
 

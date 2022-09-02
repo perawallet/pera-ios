@@ -43,24 +43,24 @@ struct FloatingActionItemButtonTheme: StyleSheet, LayoutSheet {
         // <todo> Apply same shadow with designs.
         self.titleShadow = MacaroonUIKit.Shadow(
             color: Colors.Defaults.background.uiColor,
+            fillColor: UIColor.clear,
             opacity: 1,
             offset: (0, 1),
-            radius: 3,
-            fillColor: UIColor.clear
+            radius: 3
         )
         self.containerFirstShadow = MacaroonUIKit.Shadow(
             color: UIColor.black,
+            fillColor: UIColor.clear,
             opacity: 0.16,
             offset: (0, 28),
-            radius: 32,
-            fillColor: UIColor.clear
+            radius: 32
         )
         self.containerSecondShadow = MacaroonUIKit.Shadow(
             color: UIColor.black,
+            fillColor: UIColor.clear,
             opacity: 0.16,
             offset: (0, 2),
-            radius: 4,
-            fillColor: UIColor.clear
+            radius: 4
         )
     }
 }

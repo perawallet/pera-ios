@@ -21,13 +21,12 @@ import UIKit
 final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var titleColor: Color?
+    private(set) var name: PrimaryTitleViewModel?
     private(set) var id: String?
-    private(set) var verificationTierImage: UIImage?
     private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
     private(set) var detail: NSAttributedString?
-    private(set) var assetDisplayViewModel: AssetDisplayViewModel?
 
     init(
         _ model: AssetAlertDraft,
@@ -35,8 +34,8 @@ final class AssetActionConfirmationViewModel: ViewModel {
     ) {
         bindTitle(model)
         bindTitleColor(model)
+        bindName(model)
         bindID(model)
-        bindverificationTierImage(model)
         bindTransactionFee(
             model,
             currencyFormatter: currencyFormatter
@@ -44,7 +43,6 @@ final class AssetActionConfirmationViewModel: ViewModel {
         bindActionTitle(model)
         bindCancelTitle(model)
         bindDetail(model)
-        bindAssetDisplayViewModel(model)
     }
 }
 
@@ -62,21 +60,12 @@ extension AssetActionConfirmationViewModel {
         }
     }
 
-    private func bindID(_ draft: AssetAlertDraft) {
-        id = "\(draft.assetId)"
+    private func bindName(_ draft: AssetAlertDraft) {
+        name = draft.asset.unwrap(OptInAssetNameViewModel.init)
     }
 
-    private func bindverificationTierImage(
-        _ draft: AssetAlertDraft
-    ) {
-        guard let asset = draft.asset else { return }
-
-        switch asset.verificationTier {
-        case .trusted: verificationTierImage = "icon-trusted".uiImage
-        case .verified: verificationTierImage = "icon-verified".uiImage
-        case .unverified: verificationTierImage = nil
-        case .suspicious: verificationTierImage = "icon-suspicious".uiImage
-        }
+    private func bindID(_ draft: AssetAlertDraft) {
+        id = "\(draft.assetId)"
     }
     
     private func bindTransactionFee(
@@ -121,9 +110,5 @@ extension AssetActionConfirmationViewModel {
         attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         detail = attributedDetailText
-    }
-
-    private func bindAssetDisplayViewModel(_ draft: AssetAlertDraft) {
-        assetDisplayViewModel = AssetDisplayViewModel(draft.asset)
     }
 }

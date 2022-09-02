@@ -50,24 +50,24 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
         self.corner = Corner(radius: 4)
         self.firstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor
+            radius: 4
         )
         self.secondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor
+            radius: 4
         )
         self.thirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
-            radius: 0,
-            fillColor: Colors.Defaults.background.uiColor
+            radius: 0
         )
 
         self.horizontalInset = 16

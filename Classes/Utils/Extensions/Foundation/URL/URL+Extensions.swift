@@ -23,3 +23,15 @@ extension URL {
         return host.without(prefix: "www.")
     }
 }
+
+extension URL {
+    func straightened() -> URL? {
+        var components = URLComponents(string: absoluteString)
+
+        if components?.scheme == nil {
+            components?.scheme = "https"
+        }
+
+        return components?.url
+    }
+}
