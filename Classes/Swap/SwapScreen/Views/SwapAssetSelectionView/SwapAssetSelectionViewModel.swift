@@ -34,15 +34,17 @@ extension SwapAssetSelectionViewModel {
         _ asset: Asset
     ) {
         guard let unitName = asset.naming.unitName else {
+            ///  <todo> How should we represent unknown here?
             return
         }
 
-        title = unitName.bodyRegular()
+        title = unitName.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindVerificationTier(
         _ asset: Asset
     ) {
+        ///  <todo> Check verification tier icon setting after ASA Detail is merged.
         switch asset.verificationTier {
         case .trusted: verificationTier = "icon-trusted"
         case .verified: verificationTier = "icon-verified"

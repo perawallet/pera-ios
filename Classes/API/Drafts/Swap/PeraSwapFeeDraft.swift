@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   PeraSwapFeeDraft.swift
 
+import Foundation
 import MagpieCore
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
+struct PeraSwapFeeDraft: JSONObjectBody {
+    let assetID: Int
+    let amount: String
+
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
+        params.append(.init(.assetInID, assetID))
+        params.append(.init(.amount, amount))
         return params
     }
 }

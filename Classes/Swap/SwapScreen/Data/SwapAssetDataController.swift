@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   SwapAssetDataController.swift
 
+import Foundation
 import MagpieCore
+import MagpieHipo
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
-        return params
-    }
+protocol SwapAssetDataController: AnyObject {
+    typealias EventHandler = (SwapAssetDataControllerEvent) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
+
+    var eventHandler: EventHandler? { get set }
+}
+
+enum SwapAssetDataControllerEvent {
+    case willLoadData
+    case didLoadData
+    case didFailToLoadData(SwapAssetDataController.Error)
 }

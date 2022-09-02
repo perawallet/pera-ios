@@ -192,11 +192,6 @@ extension AssetListItemViewModel {
 }
 
 extension AssetListItemViewModel {
-    typealias TextAttributes = (
-        font: CustomFont,
-        lineHeightMultiplier: LayoutMetric
-    )
-
     private func getPlaceholder(
         _ aPlaceholder: String?,
         with attributes: TextAttributes
@@ -228,3 +223,8 @@ extension AssetListItemViewModel {
         )
     }
 }
+
+typealias TextAttributes = (
+    font: CustomFont,
+    lineHeightMultiplier: LayoutMetric
+)

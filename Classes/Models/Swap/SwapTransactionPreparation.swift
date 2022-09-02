@@ -12,17 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   SwapTransactionPreparation.swift
 
-import MagpieCore
+import Foundation
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
-        return params
+final class SwapTransactionPreparation: ALGAPIModel {
+    let transactionGroups: [SwapTransactionGroup.APIModel]
+
+    init() {
+        transactionGroups = []
+    }
+}
+
+extension SwapTransactionPreparation {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case transactionGroups =  "transaction_groups"
     }
 }

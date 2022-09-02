@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   SwapTransactionPreparationDraft.swift
 
+import Foundation
 import MagpieCore
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
+struct SwapTransactionPreparationDraft: JSONObjectBody {
+    let quoteID: Int
+
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
+        params.append(.init(.quote, quoteID))
         return params
     }
 }

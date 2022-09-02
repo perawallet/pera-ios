@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetViewController.swift
+//   SwapAssetScreen.swift
 
 import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
-final class SwapAssetViewController: BaseScrollViewController {
+final class SwapAssetScreen: BaseScrollViewController {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
 
     private let draft: SwapScreenDraft
-    private let theme: SwapAssetViewControllerTheme
+    private let theme: SwapAssetScreenTheme
 
     private lazy var swapActionView = MacaroonUIKit.Button()
 
     init(
         draft: SwapScreenDraft,
         configuration: ViewControllerConfiguration,
-        theme: SwapAssetViewControllerTheme = .init()
+        theme: SwapAssetScreenTheme = .init()
     ) {
         self.draft = draft
         self.theme = theme
@@ -49,7 +49,7 @@ final class SwapAssetViewController: BaseScrollViewController {
     }
 }
 
-extension SwapAssetViewController {
+extension SwapAssetScreen {
     private func addBarButtons() {
         let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
             [weak self] in
@@ -67,7 +67,7 @@ extension SwapAssetViewController {
     }
 }
 
-extension SwapAssetViewController {
+extension SwapAssetScreen {
     private func addSwapAction() {
         swapActionView.customizeAppearance(theme.swapAction)
 
@@ -86,14 +86,14 @@ extension SwapAssetViewController {
     }
 }
 
-extension SwapAssetViewController {
+extension SwapAssetScreen {
     @objc
     private func swap() {
         eventHandler?(.swap)
     }
 }
 
-extension SwapAssetViewController {
+extension SwapAssetScreen {
     enum Event {
         case swap
     }

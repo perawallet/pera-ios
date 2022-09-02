@@ -12,17 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   AvailablePoolAssetsQuery.swift
 
+import Foundation
 import MagpieCore
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
+struct AvailablePoolAssetsQuery: ObjectQuery {
+    let assetID: AssetID
+    let providers: [SwapProvider]
+    let query: String?
+
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
+        params.append(.init(.assetInID, assetID))
+        params.append(.init(.providers, providers.map { $0.rawValue}))
+
+        if let query = query {
+            params.append(.init(.query, query))
+        }
+
         return params
     }
 }

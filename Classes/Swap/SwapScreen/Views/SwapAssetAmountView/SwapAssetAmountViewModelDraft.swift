@@ -12,17 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionTrackDraft.swift
+//   SwapAssetAmountViewModelDraft.swift
 
-import MagpieCore
+import Foundation
 
-struct TransactionTrackDraft: JSONObjectBody {
-    let transactionId: String
-    
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        params.append(.init(.transactionID, transactionId))
-        return params
-    }
+struct SwapAssetAmountViewModelDraft {
+    let leftTitle: String?
+    let rightTitle: String?
+    let asset: Asset
+    let isInputEditable: Bool
 }

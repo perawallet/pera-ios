@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetViewControllerTheme.swift
+//   SwapAssetScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapAssetViewControllerTheme:
+struct SwapAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
     let swapAction: ButtonStyle
@@ -36,18 +36,18 @@ struct SwapAssetViewControllerTheme:
                     .disabled(Colors.Button.Primary.disabledText)
                 ]
             ),
-            .font(Fonts.DMSans.medium.make(15)),
+            .font(Typography.bodyMedium()),
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),
                 .highlighted("components/buttons/primary/bg-highlighted"),
-                .selected("components/buttons/primary/bg-selected")
+                .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
         self.swapActionContentEdgeInsets = .init(
             (
-                top: 14,
+                top: 16,
                 leading: 0,
-                bottom: 14,
+                bottom: 16,
                 trailing: 0
             )
         )
