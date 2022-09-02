@@ -84,6 +84,12 @@ final class OptInAssetListItemCell:
             theme.contextEdgeInsets.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        accessory = .add
+    }
 }
 
 extension OptInAssetListItemCell {
