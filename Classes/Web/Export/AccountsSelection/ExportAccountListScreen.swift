@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class ExportAccountListScreen:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    typealias EventHandler = (Event) -> Void
+    typealias EventHandler = (Event, ExportAccountListScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -187,7 +187,7 @@ extension ExportAccountListScreen {
      @objc
      private func performContinue() {
          let selectedAccounts = dataController.getSelectedAccounts()
-         eventHandler?(.performContinue(with: selectedAccounts))
+         eventHandler?(.performContinue(with: selectedAccounts), self)
      }
  }
 
@@ -393,6 +393,6 @@ extension ExportAccountListScreen {
 
 extension ExportAccountListScreen {
     enum Event {
-        case performContinue(with: [AccountHandle])
+        case performContinue(with: [Account])
     }
 }

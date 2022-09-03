@@ -18,8 +18,8 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class ExportsAccountsResultScreen: MacaroonUIKit.ScrollScreen  {
-    typealias EventHandler = (Event) -> Void
+final class ExportsAccountsResultScreen: BaseScrollViewController  {
+    typealias EventHandler = (Event, ExportsAccountsResultScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -29,10 +29,11 @@ final class ExportsAccountsResultScreen: MacaroonUIKit.ScrollScreen  {
     private let theme: ExportAccountsResultScreenTheme
 
     init(
+        configuration: ViewControllerConfiguration,
         theme: ExportAccountsResultScreenTheme = .init()
     ) {
         self.theme = theme
-        super.init()
+        super.init(configuration: configuration)
     }
 
     override func prepareLayout() {
@@ -97,7 +98,7 @@ extension ExportsAccountsResultScreen {
 extension ExportsAccountsResultScreen {
     @objc
     private func performClose() {
-        eventHandler?(.performClose)
+        eventHandler?(.performClose, self)
     }
 }
 

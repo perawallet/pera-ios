@@ -27,7 +27,7 @@ protocol ExportAccountListDataController: AnyObject {
 
     func load()
 
-    func getSelectedAccounts() -> [AccountHandle]
+    func getSelectedAccounts() -> [Account]
 
     var accountsHeaderViewModel: ExportAccountListAccountsHeaderViewModel! { get }
     func getAccountsHeaderItemState() -> ExportAccountListAccountHeaderItemState
@@ -56,18 +56,18 @@ enum ExportAccountListAccountItemIdentifier: Hashable {
 
 struct ExportAccountListAccountCellItemIdentifier:
     Hashable {
-    private(set) var model: AccountHandle
+    private(set) var model: Account
     private(set) var viewModel: AccountListItemViewModel
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(model.value.address)
+        hasher.combine(model.address)
     }
 
     static func == (
         lhs: ExportAccountListAccountCellItemIdentifier,
         rhs: ExportAccountListAccountCellItemIdentifier
     ) -> Bool {
-        return lhs.model.value.address == rhs.model.value.address
+        return lhs.model.address == rhs.model.address
     }
 }
 

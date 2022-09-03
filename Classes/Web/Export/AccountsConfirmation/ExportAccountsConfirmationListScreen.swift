@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class ExportAccountsConfirmationListScreen:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    typealias EventHandler = (Event) -> Void
+    typealias EventHandler = (Event, ExportAccountsConfirmationListScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -220,12 +220,12 @@ extension ExportAccountsConfirmationListScreen {
     @objc
     private func performContinue() {
         let accounts = dataController.selectedAccounts
-        eventHandler?(.performContinue(with: accounts))
+        eventHandler?(.performContinue(with: accounts), self)
     }
 
     @objc
     private func performCancel() {
-        eventHandler?(.performCancel)
+        eventHandler?(.performCancel, self)
     }
 }
 

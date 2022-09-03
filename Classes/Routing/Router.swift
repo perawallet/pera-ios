@@ -1060,7 +1060,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .exportAccountsDomainConfirmation(let eventHandler):
-            let screen = ExportAccountsDomainConfirmationScreen()
+            let screen = ExportAccountsDomainConfirmationScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
@@ -1074,7 +1074,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .exportAccountsResult(let eventHandler):
-            let screen = ExportsAccountsResultScreen()
+            let screen = ExportsAccountsResultScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         }

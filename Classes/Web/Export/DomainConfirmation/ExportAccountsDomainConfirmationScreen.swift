@@ -19,11 +19,10 @@ import UIKit
 import MacaroonUIKit
 import MacaroonForm
 
-/// <todo>: Handle keyboard properly
 final class ExportAccountsDomainConfirmationScreen:
-    MacaroonUIKit.ScrollScreen,
+    BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource {
-    typealias EventHandler = (Event) -> Void
+    typealias EventHandler = (Event, ExportAccountsDomainConfirmationScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -46,10 +45,11 @@ final class ExportAccountsDomainConfirmationScreen:
     private let theme: ExportAccountsDomainConfirmationScreenTheme
 
     init(
+        configuration: ViewControllerConfiguration,
         theme: ExportAccountsDomainConfirmationScreenTheme = .init()
     ) {
         self.theme = theme
-        super.init()
+        super.init(configuration: configuration)
 
         keyboardController.activate()
     }
@@ -58,9 +58,9 @@ final class ExportAccountsDomainConfirmationScreen:
         keyboardController.deactivate()
     }
 
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
-        /// <todo> Macaroon
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
         title = "web-export-accounts-domain-confirmation-title".localized
     }
 
@@ -267,7 +267,7 @@ extension ExportAccountsDomainConfirmationScreen {
         _ keyboardController: MacaroonForm.KeyboardController,
         editingRectIn view: UIView
     ) -> CGRect? {
-        return peraWebURLContentView.frame
+        return domainInputView.frame
     }
 
     func bottomInsetOverKeyboardWhenKeyboardDidShow(
@@ -330,14 +330,13 @@ extension ExportAccountsDomainConfirmationScreen {
         return footerView.frame.height +
             theme.continueActionEdgeInsets.top +
             theme.continueActionEdgeInsets.bottom
-
     }
 }
 
 extension ExportAccountsDomainConfirmationScreen {
     @objc
     private func performContinue() {
-        eventHandler?(.performContinue)
+        eventHandler?(.performContinue, self)
     }
 }
 

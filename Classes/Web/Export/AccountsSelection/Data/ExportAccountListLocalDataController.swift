@@ -22,8 +22,8 @@ final class ExportAccountListLocalDataController: ExportAccountListDataControlle
 
     private(set) var accountsHeaderViewModel: ExportAccountListAccountsHeaderViewModel!
 
-    private lazy var accounts: OrderedDictionary<Index, AccountHandle> = [:]
-    private lazy var selectedAccounts: OrderedDictionary<Index, AccountHandle> = [:]
+    private lazy var accounts: OrderedDictionary<Index, Account> = [:]
+    private lazy var selectedAccounts: OrderedDictionary<Index, Account> = [:]
 
     private let snapshotQueue = DispatchQueue(label: "exportAccountListSnapshot")
 
@@ -49,7 +49,7 @@ extension ExportAccountListLocalDataController {
         return !selectedAccounts.isEmpty
     }
 
-    func getSelectedAccounts() -> [AccountHandle] {
+    func getSelectedAccounts() -> [Account] {
         return selectedAccounts.values.elements
     }
 }
@@ -118,6 +118,8 @@ extension ExportAccountListLocalDataController {
                     let isWatchAccount = $0.value.isWatchAccount()
                     let isRekeyedAccount = $0.value.isRekeyed()
                     return !isWatchAccount && !isRekeyedAccount
+                }.map {
+                    $0.value
                 }
 
         addAccountsHeader(
@@ -132,7 +134,7 @@ extension ExportAccountListLocalDataController {
 
     private func addAccountsHeader(
         _ snapshot: inout Snapshot,
-        accounts: [AccountHandle]
+        accounts: [Account]
     ) {
         let viewModel = ExportAccountListAccountsHeaderViewModel(accountsCount: accounts.count)
 
@@ -146,23 +148,22 @@ extension ExportAccountListLocalDataController {
 
     private func addAccounts(
         _ snapshot: inout Snapshot,
-        accounts: [AccountHandle]
+        accounts: [Account]
     ) {
         let accountItems: [ExportAccountListItemIdentifier] =
         accounts
             .enumerated()
             .map {
-                let accountHandle = $0.element
-                let account = accountHandle.value
+                let account = $0.element
                 let draft = IconWithShortAddressDraft(account)
                 let viewModel = AccountListItemViewModel(draft)
 
                 let item = ExportAccountListAccountCellItemIdentifier(
-                    model: accountHandle,
+                    model: account,
                     viewModel: viewModel
                 )
 
-                self.accounts[$0.offset] = accountHandle
+                self.accounts[$0.offset] = account
 
                 return .account(.cell(item))
             }
