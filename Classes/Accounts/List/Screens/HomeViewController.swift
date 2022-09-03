@@ -37,6 +37,13 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        session: session!
+    )
+
     private lazy var sendTransactionFlowCoordinator =
     SendTransactionFlowCoordinator(
         presentingScreen: self,
@@ -46,12 +53,13 @@ final class HomeViewController:
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
         ScanQRFlowCoordinator(
-            sharedDataController: sharedDataController,
-            presentingScreen: self,
+            analytics: analytics,
             api: api!,
             bannerController: bannerController!,
             loadingController: loadingController!,
-            analytics: analytics
+            presentingScreen: self,
+            session: session!,
+            sharedDataController: sharedDataController
         )
 
     private let copyToClipboardController: CopyToClipboardController

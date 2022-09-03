@@ -19,28 +19,30 @@ import UIKit
 
 /// <todo>
 /// This should be removed after the routing refactor.
-final class AccountExporterFlowCoordinator {
+final class AccountExportFlowCoordinator {
     private unowned let presentingScreen: UIViewController
-    private let qrExportInformation: QRExportInformations
     private let api: ALGAPI
     private var accounts: [Account] = []
     private var session: Session?
     private var confirmDomainScreen: UIViewController?
+    private var qrExportInformations: QRExportInformations?
 
     init(
         presentingScreen: UIViewController,
-        qrExportInformations: QRExportInformations,
         api: ALGAPI,
         session: Session?
     ) {
         self.presentingScreen = presentingScreen
-        self.qrExportInformation = qrExportInformations
         self.api = api
         self.session = session
     }
 }
 
-extension AccountExporterFlowCoordinator {
+extension AccountExportFlowCoordinator {
+    func populate(qrExportInformations: QRExportInformations) {
+        self.qrExportInformations = qrExportInformations
+    }
+
     func launch() {
         navigateToAccountSelection()
     }
@@ -153,7 +155,7 @@ extension AccountExporterFlowCoordinator {
     }
 }
 
-extension AccountExporterFlowCoordinator: ChoosePasswordViewControllerDelegate {
+extension AccountExportFlowCoordinator: ChoosePasswordViewControllerDelegate {
     func choosePasswordViewController(
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
@@ -168,11 +170,15 @@ extension AccountExporterFlowCoordinator: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension AccountExporterFlowCoordinator {
+extension AccountExportFlowCoordinator {
     private func exportAccounts(
         on screen: ExportAccountsConfirmationListScreen,
         didSelectAccounts accounts: [Account]
     ) {
+        guard let qrExportInformations = self.qrExportInformations else {
+            return
+        }
+
         screen.startLoading()
 
         guard let deviceId = session?.authenticatedUser?.getDeviceId(on: api.network) else {
@@ -184,7 +190,7 @@ extension AccountExporterFlowCoordinator {
 
         let encryptedAccountDraft = EncryptedExportAccountDraft(
             draft: exportAccountDraft,
-            qrExportInformations: qrExportInformation
+            qrExportInformations: qrExportInformations
         )
         api.exportAccounts(encryptedAccountDraft) { [weak self] response in
             guard let self = self else {
