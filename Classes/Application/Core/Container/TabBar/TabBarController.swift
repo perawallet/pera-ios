@@ -80,6 +80,11 @@ final class TabBarController: TabBarContainer {
         self.loadingController = loadingController
         self.session = session
         self.sharedDataController = sharedDataController
+        super.init()
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
     
     override func addTabBar() {
@@ -112,6 +117,12 @@ final class TabBarController: TabBarContainer {
         } else {
             addShowTransactionOptionsAction()
         }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        self.sharedDataController.add(self)
     }
 }
 
@@ -152,6 +163,8 @@ extension TabBarController {
         toggleTransactionOptionsActionView.addTouch(
             target: self,
             action: #selector(toggleTransactionOptions))
+
+        toggleTransactionOptionsActionView.isUserInteractionEnabled = false
     }
     
     private func removeShowTransactionOptionsAction() {
@@ -333,6 +346,20 @@ extension TabBarContainer {
             if $1.isSelectable {
                 tabBar.barButtons[$0].isEnabled = isEnabled
             }
+        }
+    }
+}
+
+extension TabBarController: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            toggleTransactionOptionsActionView.isUserInteractionEnabled = sharedDataController.isAvailable
+        default:
+            break
         }
     }
 }
