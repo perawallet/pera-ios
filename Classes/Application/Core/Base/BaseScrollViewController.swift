@@ -22,6 +22,12 @@ import MacaroonUIKit
 import UIKit
 
 class BaseScrollViewController: BaseViewController {
+    var footerViewEffectStyle: ScrollScreenFooterView.EffectStyle = .none {
+        willSet {
+            footerBackgroundView.effectStyle = newValue
+        }
+    }
+
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
@@ -35,6 +41,9 @@ class BaseScrollViewController: BaseViewController {
         contentView.backgroundColor = .clear
         return contentView
     }()
+
+    private(set) lazy var footerView: UIView = .init()
+    private(set) lazy var footerBackgroundView = ScrollScreenFooterView()
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -45,8 +54,93 @@ class BaseScrollViewController: BaseViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupScrollViewLayout()
-        setupContentViewLayout()
+        addScroll()
+        addFooter()
+    }
+
+    private func addScroll() {
+        view.addSubview(
+            scrollView
+        )
+        scrollView.snp.makeConstraints {
+            $0.setPaddings(
+                (0, 0, 0, 0)
+            )
+        }
+
+        addContent()
+    }
+
+    private func addContent() {
+        scrollView.addSubview(
+            contentView
+        )
+        contentView.snp.makeConstraints {
+            $0.width == view
+
+            $0.setPaddings(
+                (0, 0, 0, 0)
+            )
+        }
+    }
+
+    private func addFooter() {
+        view.addSubview(
+            footerBackgroundView
+        )
+        footerBackgroundView.snp.makeConstraints {
+            $0.setPaddings(
+                (.noMetric, 0, 0, 0)
+            )
+        }
+
+        footerBackgroundView.addSubview(
+            footerView
+        )
+        footerView.snp.makeConstraints {
+            $0.setPaddings(
+                (0, 0, .noMetric, 0)
+            )
+            $0.setBottomPadding(
+                0,
+                inSafeAreaOf: footerBackgroundView
+            )
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if contentView.bounds.isEmpty {
+            return
+        }
+
+        updateScrollLayoutWhenViewDidLayoutSubviews()
+        updateLayoutOnScroll()
+    }
+
+    private func updateLayoutOnScroll() {
+        if footerView.bounds.isEmpty {
+            return
+        }
+
+        footerBackgroundView.addBlur()
+        footerBackgroundView.addGradient()
+
+        let endOfContent = contentView.frame.maxY - scrollView.contentOffset.y
+        let isFooterBackgroundViewHidden = endOfContent <= footerBackgroundView.frame.minY
+        footerBackgroundView.setBlurVisible(!isFooterBackgroundViewHidden)
+        footerBackgroundView.setGradientVisible(!isFooterBackgroundViewHidden)
+    }
+
+    private func updateScrollLayoutWhenViewDidLayoutSubviews() {
+        if footerView.bounds.isEmpty {
+            return
+        }
+
+        scrollView.setContentInset(
+            bottom: footerView.bounds.height
+        )
     }
 }
 
