@@ -52,7 +52,7 @@ final class ExportAccountListScreen:
         return collectionView
     }()
 
-    private lazy var continueActionViewGradient = GradientView()
+    private lazy var continueActionEffectView = EffectView()
     private lazy var continueActionView = MacaroonUIKit.Button()
 
     private lazy var listLayout = ExportAccountListLayout(listDataSource: listDataSource)
@@ -183,12 +183,16 @@ extension ExportAccountListScreen {
     }
 
     private func addContinueActionViewGradient() {
-        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0)
-        let color1 = Colors.Defaults.background.uiColor
-        continueActionViewGradient.colors = [color0, color1]
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+        continueActionEffectView.effect = LinearGradientEffect(gradient: backgroundGradient)
 
-        view.addSubview(continueActionViewGradient)
-        continueActionViewGradient.snp.makeConstraints {
+        view.addSubview(continueActionEffectView)
+        continueActionEffectView.snp.makeConstraints {
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
@@ -198,7 +202,7 @@ extension ExportAccountListScreen {
     private func addContinueActionView() {
         continueActionView.customizeAppearance(theme.continueAction)
 
-        continueActionViewGradient.addSubview(continueActionView)
+        continueActionEffectView.addSubview(continueActionView)
         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueActionEdgeInsets)
         continueActionView.snp.makeConstraints {
             let safeAreaBottom = view.compactSafeAreaInsets.bottom

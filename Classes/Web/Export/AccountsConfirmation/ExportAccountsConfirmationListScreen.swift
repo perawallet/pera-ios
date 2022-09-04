@@ -48,7 +48,7 @@ final class ExportAccountsConfirmationListScreen:
         return collectionView
     }()
 
-    private lazy var continueActionViewGradient = GradientView()
+    private lazy var continueActionEffectView = EffectView()
     private lazy var continueActionView: LoadingButton = {
         let loadingIndicator = ViewLoadingIndicator()
         loadingIndicator.applyStyle(theme.continueActionIndicator)
@@ -186,12 +186,16 @@ extension ExportAccountsConfirmationListScreen {
     }
 
     private func addContinueActionViewGradient() {
-        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0)
-        let color1 = Colors.Defaults.background.uiColor
-        continueActionViewGradient.colors = [color0, color1]
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+        continueActionEffectView.effect = LinearGradientEffect(gradient: backgroundGradient)
 
-        view.addSubview(continueActionViewGradient)
-        continueActionViewGradient.snp.makeConstraints {
+        view.addSubview(continueActionEffectView)
+        continueActionEffectView.snp.makeConstraints {
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
@@ -201,7 +205,7 @@ extension ExportAccountsConfirmationListScreen {
     private func addContinueActionView() {
         continueActionView.customizeAppearance(theme.continueAction)
 
-        continueActionViewGradient.addSubview(continueActionView)
+        continueActionEffectView.addSubview(continueActionView)
         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
         continueActionView.snp.makeConstraints {
             $0.fitToHeight(theme.continueActionHeight)
@@ -219,7 +223,7 @@ extension ExportAccountsConfirmationListScreen {
     private func addCancelActionView() {
         cancelActionView.customizeAppearance(theme.cancelAction)
 
-        continueActionViewGradient.addSubview(cancelActionView)
+        continueActionEffectView.addSubview(cancelActionView)
         cancelActionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
         cancelActionView.snp.makeConstraints {
             let safeAreaBottom = view.compactSafeAreaInsets.bottom
