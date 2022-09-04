@@ -7526,16 +7526,6 @@
 			path = CoreImage;
 			sourceTree = "<group>";
 		};
-		1717CE0828B7B8370093F415 /* ExportAccount */ = {
-			isa = PBXGroup;
-			children = (
-				1717CE0928B7BC8F0093F415 /* Cryptor.swift */,
-				1717CE1128B7BCB90093F415 /* QRExportInformations.swift */,
-				1717CE0D28B7BCB30093F415 /* ExportAccountDraft.swift */,
-			);
-			path = ExportAccount;
-			sourceTree = "<group>";
-		};
 		1746715B225B6BE600B78641 /* TypeAliases */ = {
 			isa = PBXGroup;
 			children = (
@@ -9914,7 +9904,6 @@
 				D4150DD527C4F78D0064F736 /* Collectibles */,
 				2BF727B62747140B00CCAC30 /* Contacts */,
 				F0772B52275EB17F003A9329 /* Demo */,
-				1717CE0828B7B8370093F415 /* ExportAccount */,
 				2B567155240074F60037FCFA /* Ledger */,
 				17B7D8A42240D79200A6FF9E /* Models */,
 				2BF727B72747144E00CCAC30 /* Notifications */,
@@ -14762,6 +14751,9 @@
 				D4320F1F28BC4FBF00920722 /* DomainConfirmation */,
 				D4320EE628BC2F1500920722 /* Result */,
 				17EEC2F828BFF122008E223E /* AccountExportFlowCoordinator.swift */,
+				1717CE0928B7BC8F0093F415 /* Cryptor.swift */,
+				1717CE1128B7BCB90093F415 /* QRExportInformations.swift */,
+				1717CE0D28B7BCB30093F415 /* ExportAccountDraft.swift */,
 			);
 			path = Export;
 			sourceTree = "<group>";
