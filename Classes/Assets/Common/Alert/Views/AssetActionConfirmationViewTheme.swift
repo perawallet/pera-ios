@@ -28,8 +28,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let warningIcon: ImageStyle
     let warningIconContentEdgeInsets: LayoutOffset
     let detail: TextStyle
-    let assetCodeLabel: TextStyle
-    let assetNameLabel: TextStyle
+    let assetName: PrimaryTitleViewTheme
     let transactionFeeTitleLabel: TextStyle
     let transactionFeeAmountLabel: TextStyle
     let assetIDLabel: TextStyle
@@ -37,10 +36,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
 
     let titleTopPadding: LayoutMetric
-    let assetCodeLabelTopPadding: LayoutMetric
-    let assetCodeLabelMinHeight: LayoutMetric
-    let assetNameLabelTopPadding: LayoutMetric
-    let assetNameLabelMinHeight: LayoutMetric
+    let assetNameTopPadding: LayoutMetric
+    let spacingBetweenAssetNameAndSeparator: LayoutMetric
     let assetIDPaddings: LayoutPaddings
     let transactionTopPadding: LayoutMetric
     let transactionBottomPadding: LayoutMetric
@@ -75,18 +72,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.assetCodeLabel = [
-            .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
-        ]
-        self.assetNameLabel = [
-            .textColor(Colors.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
-        ]
+        self.assetName = OptInAssetNameViewTheme(family)
         self.assetIDLabel = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
@@ -122,10 +108,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.titleTopPadding = 22
         self.bottomInset = 16
         self.descriptionTopInset = 44
-        self.assetCodeLabelTopPadding = 42
-        self.assetCodeLabelMinHeight = 42
-        self.assetNameLabelTopPadding = 4
-        self.assetNameLabelMinHeight = 20
+        self.assetNameTopPadding = 42
+        self.spacingBetweenAssetNameAndSeparator = 20
         self.assetIDPaddings = (40, 8, .noMetric, .noMetric)
         self.transactionTopPadding = 48
         self.transactionBottomPadding = 32

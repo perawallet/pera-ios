@@ -50,7 +50,7 @@ final class ALGAPI: API {
         self.ignoresResponseWhenEndpointsFailedFromUnauthorizedRequest = false
 
         debug {
-//            enableLogsInConsole()
+            enableLogsInConsole()
         }
     }
 }

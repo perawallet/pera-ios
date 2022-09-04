@@ -12,39 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountClipboardViewTheme.swift
+//   CollectibleListItemReceiveViewTheme.swift
 
-
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: UIColor
+struct CollectibleListItemReceiveViewTheme:
+    LayoutSheet,
+    StyleSheet {
     let containerCorner: Corner
     let containerBorder: Border
     let containerFirstShadow: MacaroonUIKit.Shadow
     let containerSecondShadow: MacaroonUIKit.Shadow
     let containerThirdShadow: MacaroonUIKit.Shadow
-    let titleLabel: TextStyle
-    let addressLabel: TextStyle
-    let copyIcon: ImageStyle
 
-    let titleLabelTopInset: LayoutMetric
-    let titleLabelLeadingInset: LayoutMetric
-    let addressLabelTopOffset: LayoutMetric
-    let copyIconBottomInset: LayoutMetric
-    let copyIconTrailingInset: LayoutMetric
-    let copyIconLeadingOffset: LayoutMetric
-    let copyIconSize: LayoutSize
+    let icon: ImageStyle
 
-    init(_ family: LayoutFamily) {
-        backgroundColor = Colors.Defaults.background.uiColor
+    let title: TextStyle
+    let titleTopPadding: LayoutMetric
 
+    let contentEdgeInsets: LayoutPaddings
+
+    init(
+        _ family: LayoutFamily
+    ) {
         containerCorner = Corner(radius: 4)
         containerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
-
+        
         containerFirstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
@@ -74,29 +67,27 @@ struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
             cornerRadii: (4, 4),
             corners: .allCorners
         )
-        titleLabel = [
-            .textColor(Colors.Text.grayLighter),
-            .font(Fonts.DMSans.regular.make(13)),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText())
+
+        icon = [
+            .image("icon-plus-24")
         ]
-        addressLabel = [
+
+        let titleText: EditText = .attributedString(
+            "collectibles-receive-action"
+                .localized
+                .bodyMedium(
+                    alignment: .center
+                )
+        )
+
+        title = [
             .textColor(Colors.Text.main),
-            .font(Fonts.DMMono.regular.make(13)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
+            .textOverflow(FittingText()),
+            .text(titleText)
         ]
-        copyIcon = [
-            .image("icon-paste")
-        ]
+        
+        titleTopPadding = 8
 
-        titleLabelTopInset = 16
-        titleLabelLeadingInset = 16
-        addressLabelTopOffset = 4
-
-        copyIconBottomInset = 24
-        copyIconTrailingInset = 16
-        copyIconLeadingOffset = 16
-        copyIconSize = (24, 24)
+        contentEdgeInsets = (8, 8, 8, 8)
     }
 }

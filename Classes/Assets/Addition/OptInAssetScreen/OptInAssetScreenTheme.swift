@@ -43,7 +43,7 @@ struct OptInAssetScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contentEdgeInsets = (36, 24, 32, 24)
+        self.contentEdgeInsets = (36, 24, 0, 24)
         self.separator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
@@ -77,6 +77,6 @@ struct OptInAssetScreenTheme:
         ]
         self.spacingBetweenActions = 16
         self.actionContentEdgeInsets = (16, 24, 16, 24)
-        self.actionsContentEdgeInsets = (16, 24, 16, 24)
+        self.actionsContentEdgeInsets = (36, 24, 16, 24)
     }
 }
