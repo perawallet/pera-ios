@@ -46,12 +46,13 @@ struct ExportAccountsDomainConfirmationScreenTheme:
     let continueAction: ButtonStyle
     let continueActionEdgeInsets: LayoutPaddings
     let continueActionContentEdgeInsets: LayoutPaddings
+    let navigationBarEdgeInset: LayoutMargins
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contextEdgeInsets = (0, 24, 8, 24)
+        self.contextEdgeInsets = (16, 24, 8, 24)
         self.body = [
             .text("web-export-accounts-domain-confirmation-body".localized.bodyRegular()),
             .textColor(Colors.Text.gray),
@@ -154,5 +155,6 @@ struct ExportAccountsDomainConfirmationScreenTheme:
         ]
         self.continueActionEdgeInsets = (16, 8, 16, 8)
         self.continueActionContentEdgeInsets = (8, 24, 12, 24)
+        self.navigationBarEdgeInset = (0, 24, .noMetric, 24) // It's different from other navigation bar insets because content has already top inset
     }
 }

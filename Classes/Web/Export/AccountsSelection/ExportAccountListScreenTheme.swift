@@ -25,6 +25,8 @@ struct ExportAccountListScreenTheme:
     let continueAction: ButtonStyle
     let continueActionEdgeInsets: LayoutPaddings
     let continueActionContentEdgeInsets: LayoutMargins
+    let navigationBarEdgeInset: LayoutMargins
+    let listContentTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -46,5 +48,7 @@ struct ExportAccountListScreenTheme:
         ]
         self.continueActionEdgeInsets = (16, 8, 16, 8)
         self.continueActionContentEdgeInsets = (.noMetric, 24, 12, 24)
+        self.navigationBarEdgeInset = (12, 24, .noMetric, 24)
+        self.listContentTopInset = 16
     }
 }

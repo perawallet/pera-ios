@@ -21,10 +21,22 @@ import MacaroonForm
 
 final class ExportAccountsDomainConfirmationScreen:
     BaseScrollViewController,
-    MacaroonForm.KeyboardControllerDataSource {
+    MacaroonForm.KeyboardControllerDataSource,
+    NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event, ExportAccountsDomainConfirmationScreen) -> Void
 
     var eventHandler: EventHandler?
+
+    var navigationBarScrollView: UIScrollView {
+        scrollView
+    }
+
+    var isNavigationBarAppeared: Bool {
+        return isViewAppeared
+    }
+
+    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
+    private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
 
     private lazy var contextView = ResultView()
     private lazy var bodyView = UILabel()
@@ -42,6 +54,12 @@ final class ExportAccountsDomainConfirmationScreen:
         screen: self
     )
 
+    private lazy var navigationBarLargeTitleController =
+        NavigationBarLargeTitleController(screen: self)
+
+    private var isLayoutFinalized = false
+
+
     private let theme: ExportAccountsDomainConfirmationScreenTheme
 
     init(
@@ -52,16 +70,18 @@ final class ExportAccountsDomainConfirmationScreen:
         super.init(configuration: configuration)
 
         keyboardController.activate()
+        navigationBarLargeTitleController.activate()
     }
 
     deinit {
         keyboardController.deactivate()
+        navigationBarLargeTitleController.deactivate()
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "web-export-accounts-domain-confirmation-title".localized
+        navigationBarLargeTitleController.title = "web-export-accounts-domain-confirmation-title".localized
     }
 
     override func prepareLayout() {
@@ -79,6 +99,7 @@ final class ExportAccountsDomainConfirmationScreen:
 
     private func addUI() {
         addBackground()
+        addNavigationBarLargeTitle()
         addContext()
         addContinueAction()
     }
@@ -88,11 +109,20 @@ extension ExportAccountsDomainConfirmationScreen {
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
+    
+    private func addNavigationBarLargeTitle() {
+        contentView.addSubview(navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(
+                theme.navigationBarEdgeInset
+            )
+        }
+    }
 
     private func addContext() {
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.top == theme.contextEdgeInsets.top
+            $0.top == navigationBarLargeTitleView.snp.bottom + theme.contextEdgeInsets.top
             $0.leading == theme.contextEdgeInsets.leading
             $0.trailing == theme.contextEdgeInsets.trailing
             $0.bottom == theme.contextEdgeInsets.bottom
@@ -267,7 +297,7 @@ extension ExportAccountsDomainConfirmationScreen {
         _ keyboardController: MacaroonForm.KeyboardController,
         editingRectIn view: UIView
     ) -> CGRect? {
-        return domainInputView.frame
+        return getEditingRectOfSearchInputField()
     }
 
     func bottomInsetOverKeyboardWhenKeyboardDidShow(
@@ -290,7 +320,7 @@ extension ExportAccountsDomainConfirmationScreen {
     func additionalBottomInsetOverKeyboardWhenKeyboardDidShow(
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
-        return 0
+        return calculateEmptySpacingToScrollSearchInputFieldToTop()
     }
 
     func bottomInsetUnderKeyboardWhenKeyboardDidShow(
@@ -323,13 +353,50 @@ extension ExportAccountsDomainConfirmationScreen {
     func spacingBetweenEditingRectAndKeyboard(
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
-        return spacingBetweenURLAndKeyboard()
+        return calculateSpacingToScrollSearchInputFieldToTop()
     }
 
     private func spacingBetweenURLAndKeyboard() -> LayoutMetric {
         return footerView.frame.height +
             theme.continueActionEdgeInsets.top +
             theme.continueActionEdgeInsets.bottom
+    }
+
+    private func calculateEmptySpacingToScrollSearchInputFieldToTop() -> CGFloat {
+        guard let editingRectOfSearchInputField = getEditingRectOfSearchInputField() else {
+            return 0
+        }
+
+        let editingOriginYOfSearchInputField = editingRectOfSearchInputField.minY
+        let visibleHeight = view.bounds.height
+        let minContentHeight =
+            editingOriginYOfSearchInputField +
+            visibleHeight
+        let keyboardHeight = keyboardController.keyboard?.height ?? 0
+        let contentHeight = scrollView.contentSize.height + scrollView.contentInset.top
+        let maybeEmptySpacing =
+            minContentHeight -
+            contentHeight -
+            keyboardHeight
+        return max(maybeEmptySpacing, 0)
+    }
+
+    private func calculateSpacingToScrollSearchInputFieldToTop() -> CGFloat {
+        guard let editingRectOfSearchInputField = getEditingRectOfSearchInputField() else {
+            return 20
+        }
+
+        let visibleHeight = view.bounds.height
+        let editingHeightOfSearchInputField = editingRectOfSearchInputField.height
+        let keyboardHeight = keyboardController.keyboard?.height ?? 0
+        return
+            visibleHeight -
+            editingHeightOfSearchInputField -
+            keyboardHeight
+    }
+
+    private func getEditingRectOfSearchInputField() -> CGRect? {
+        return domainInputView.frame
     }
 }
 

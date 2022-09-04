@@ -29,6 +29,8 @@ struct ExportAccountsConfirmationListScreenTheme:
     let actionEdgeInsets: LayoutPaddings
     let actionMargins: LayoutMargins
     let spacingBetweenActions: LayoutMetric
+    let navigationBarEdgeInset: LayoutMargins
+    let listContentTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -64,5 +66,7 @@ struct ExportAccountsConfirmationListScreenTheme:
         self.actionEdgeInsets = (16, 8, 16, 8)
         self.actionMargins = (.noMetric, 24, 12, 24)
         self.spacingBetweenActions = 16
+        self.navigationBarEdgeInset = (12, 24, .noMetric, 24)
+        self.listContentTopInset = 56
     }
 }

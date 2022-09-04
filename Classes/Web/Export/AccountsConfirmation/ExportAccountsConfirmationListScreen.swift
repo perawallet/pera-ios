@@ -19,10 +19,19 @@ import MacaroonUIKit
 
 final class ExportAccountsConfirmationListScreen:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event, ExportAccountsConfirmationListScreen) -> Void
 
     var eventHandler: EventHandler?
+
+    var navigationBarScrollView: UIScrollView {
+        listView
+    }
+
+    var isNavigationBarAppeared: Bool {
+        return isViewAppeared
+    }
 
     private lazy var theme = ExportAccountsConfirmationListScreenTheme()
 
@@ -51,6 +60,12 @@ final class ExportAccountsConfirmationListScreen:
     private lazy var listLayout = ExportAccountsConfirmationListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ExportAccountsConfirmationListDataSource(listView)
 
+    private lazy var navigationBarLargeTitleController =
+        NavigationBarLargeTitleController(screen: self)
+
+    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
+    private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
+
     private var isLayoutFinalized = false
 
     private let dataController: ExportAccountsConfirmationListDataController
@@ -64,9 +79,14 @@ final class ExportAccountsConfirmationListScreen:
         super.init(configuration: configuration)
     }
 
+    deinit {
+        navigationBarLargeTitleController.deactivate()
+    }
+
     override func configureNavigationBarAppearance() {
-        /// <todo> Macaroon
-        title = "web-export-accounts-confirmation-list-title".localized
+        super.configureNavigationBarAppearance()
+
+        navigationBarLargeTitleController.title = "web-export-accounts-confirmation-list-title".localized
     }
 
     override func viewDidLoad() {
@@ -107,6 +127,7 @@ final class ExportAccountsConfirmationListScreen:
         super.setListeners()
 
         listView.delegate = self
+        navigationBarLargeTitleController.activate()
     }
 
     override func prepareLayout() {
@@ -117,6 +138,7 @@ final class ExportAccountsConfirmationListScreen:
 
     private func addUI() {
         addBackground()
+        addNavigationBarLargeTitle()
         addList()
         addContinueActionViewGradient()
         addContinueActionView()
@@ -127,6 +149,15 @@ final class ExportAccountsConfirmationListScreen:
 extension ExportAccountsConfirmationListScreen {
     private func addBackground() {
         view.customizeAppearance(theme.background)
+    }
+
+    private func addNavigationBarLargeTitle() {
+        view.addSubview(navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(
+                theme.navigationBarEdgeInset
+            )
+        }
     }
 
     private func addList() {
@@ -151,6 +182,7 @@ extension ExportAccountsConfirmationListScreen {
         theme.actionMargins.bottom
 
         additionalSafeAreaInsets.bottom = inset
+        listView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.listContentTopInset
     }
 
     private func addContinueActionViewGradient() {

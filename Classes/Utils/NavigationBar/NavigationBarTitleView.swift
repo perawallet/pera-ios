@@ -12,40 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomePortfolioCell.swift
+//   NavigationBarTitleView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomePortfolioCell:
-    CollectionCell<HomePortfolioView>,
-    ViewModelBindable,
-    UIInteractable {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
+final class NavigationBarTitleView:
+    BaseView,
+    MacaroonUIKit.NavigationBarTitleView {
+    var title: EditText? {
+        get { titleView.editText }
+        set { titleView.editText = newValue }
+    }
+    var titleAlpha: CGFloat {
+        get { titleView.alpha }
+        set { titleView.alpha = newValue }
     }
 
-    static let theme = HomePortfolioViewTheme()
-    
+    private lazy var titleView = Label()
+
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
 
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-        contextView.customize(Self.theme)
+        addTitle()
     }
 }
 
-extension HomePortfolioCell: MacaroonUIKit.NavigationBarLargeTitleView {
-    var title: EditText? {
-        get { contextView.titleView.editText }
-        set { contextView.titleView.editText = newValue }
-    }
-
-    var scrollEdgeOffset: CGFloat {
-        return bounds.height - contextView.frame.maxY
+extension NavigationBarTitleView {
+    private func addTitle() {
+        addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.setPaddings()
+        }
     }
 }

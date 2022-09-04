@@ -19,12 +19,25 @@ import MacaroonUIKit
 
 final class ExportAccountListScreen:
     BaseViewController,
+    NavigationBarLargeTitleConfigurable,
     UICollectionViewDelegateFlowLayout {
+
     typealias EventHandler = (Event, ExportAccountListScreen) -> Void
 
     var eventHandler: EventHandler?
 
+    var navigationBarScrollView: UIScrollView {
+        listView
+    }
+
+    var isNavigationBarAppeared: Bool {
+        return isViewAppeared
+    }
+
     private lazy var theme = ExportAccountListScreenTheme()
+
+    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
+    private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = ExportAccountListLayout.build()
@@ -45,6 +58,9 @@ final class ExportAccountListScreen:
     private lazy var listLayout = ExportAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ExportAccountListDataSource(listView)
 
+    private lazy var navigationBarLargeTitleController =
+    NavigationBarLargeTitleController(screen: self)
+
     private var isLayoutFinalized = false
 
     private let dataController: ExportAccountListDataController
@@ -58,9 +74,14 @@ final class ExportAccountListScreen:
         super.init(configuration: configuration)
     }
 
+    deinit {
+        navigationBarLargeTitleController.deactivate()
+    }
+
     override func configureNavigationBarAppearance() {
-        /// <todo> Macaroon
-        title = "web-export-account-list-title".localized
+        super.configureNavigationBarAppearance()
+
+        navigationBarLargeTitleController.title = "web-export-account-list-title".localized
     }
 
     override func viewDidLoad() {
@@ -88,7 +109,7 @@ final class ExportAccountListScreen:
         super.viewDidLayoutSubviews()
 
         if isLayoutFinalized ||
-           continueActionView.bounds.isEmpty {
+            continueActionView.bounds.isEmpty {
             return
         }
 
@@ -101,6 +122,7 @@ final class ExportAccountListScreen:
         super.setListeners()
 
         listView.delegate = self
+        navigationBarLargeTitleController.activate()
     }
 
     override func prepareLayout() {
@@ -111,9 +133,19 @@ final class ExportAccountListScreen:
 
     private func addUI() {
         addBackground()
+        addNavigationBarLargeTitle()
         addList()
         addContinueActionViewGradient()
         addContinueActionView()
+    }
+
+    private func addNavigationBarLargeTitle() {
+        view.addSubview(navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(
+                theme.navigationBarEdgeInset
+            )
+        }
     }
 }
 
@@ -135,61 +167,63 @@ extension ExportAccountListScreen {
         updateAdditionalSafeAreaInetsWhenViewDidLayout()
     }
 
-     private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
-         let inset =
+    private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
+        let inset =
             theme.spacingBetweenListAndContinueAction +
             continueActionView.frame.height +
             theme.continueActionContentEdgeInsets.bottom
 
-         additionalSafeAreaInsets.bottom = inset
-     }
+        additionalSafeAreaInsets.bottom = inset
 
-     private func toggleContinueActionStateIfNeeded() {
-         continueActionView.isEnabled = dataController.isContinueActionEnabled
-     }
+        listView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.listContentTopInset
+    }
 
-     private func addContinueActionViewGradient() {
-         let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0)
-         let color1 = Colors.Defaults.background.uiColor
-         continueActionViewGradient.colors = [color0, color1]
+    private func toggleContinueActionStateIfNeeded() {
+        continueActionView.isEnabled = dataController.isContinueActionEnabled
+    }
 
-         view.addSubview(continueActionViewGradient)
-         continueActionViewGradient.snp.makeConstraints {
-             $0.leading == 0
-             $0.bottom == 0
-             $0.trailing == 0
-         }
-     }
+    private func addContinueActionViewGradient() {
+        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0)
+        let color1 = Colors.Defaults.background.uiColor
+        continueActionViewGradient.colors = [color0, color1]
 
-     private func addContinueActionView() {
-         continueActionView.customizeAppearance(theme.continueAction)
+        view.addSubview(continueActionViewGradient)
+        continueActionViewGradient.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
 
-         continueActionViewGradient.addSubview(continueActionView)
-         continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueActionEdgeInsets)
-         continueActionView.snp.makeConstraints {
-             let safeAreaBottom = view.compactSafeAreaInsets.bottom
-             let bottom = safeAreaBottom + theme.continueActionContentEdgeInsets.bottom
+    private func addContinueActionView() {
+        continueActionView.customizeAppearance(theme.continueAction)
 
-             $0.top == theme.spacingBetweenListAndContinueAction
-             $0.leading == theme.continueActionContentEdgeInsets.leading
-             $0.bottom == bottom
-             $0.trailing == theme.continueActionContentEdgeInsets.trailing
-         }
+        continueActionViewGradient.addSubview(continueActionView)
+        continueActionView.contentEdgeInsets = UIEdgeInsets(theme.continueActionEdgeInsets)
+        continueActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.continueActionContentEdgeInsets.bottom
 
-         continueActionView.addTouch(
-             target: self,
-             action: #selector(performContinue)
-         )
+            $0.top == theme.spacingBetweenListAndContinueAction
+            $0.leading == theme.continueActionContentEdgeInsets.leading
+            $0.bottom == bottom
+            $0.trailing == theme.continueActionContentEdgeInsets.trailing
+        }
 
-         toggleContinueActionStateIfNeeded()
-     }
+        continueActionView.addTouch(
+            target: self,
+            action: #selector(performContinue)
+        )
 
-     @objc
-     private func performContinue() {
-         let selectedAccounts = dataController.getSelectedAccounts()
-         eventHandler?(.performContinue(with: selectedAccounts), self)
-     }
- }
+        toggleContinueActionStateIfNeeded()
+    }
+
+    @objc
+    private func performContinue() {
+        let selectedAccounts = dataController.getSelectedAccounts()
+        eventHandler?(.performContinue(with: selectedAccounts), self)
+    }
+}
 
 extension ExportAccountListScreen {
     func collectionView(
@@ -295,8 +329,7 @@ extension ExportAccountListScreen {
             let headerState = dataController.getAccountsHeaderItemState()
 
             switch headerState {
-            case .selectAll,
-                 .partialSelection:
+            case .selectAll, .partialSelection:
                 selectAllAccounts()
             case .unselectAll:
                 unselectAllAccounts()
