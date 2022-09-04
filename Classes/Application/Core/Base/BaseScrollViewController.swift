@@ -80,7 +80,7 @@ class BaseScrollViewController: BaseViewController {
         }
     }
 
-    private func addFooter() {
+    func addFooter() {
         view.addSubview(footerBackgroundView)
         footerBackgroundView.snp.makeConstraints {
             $0.leading == 0

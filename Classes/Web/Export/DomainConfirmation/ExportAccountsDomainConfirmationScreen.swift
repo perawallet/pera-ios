@@ -87,14 +87,20 @@ final class ExportAccountsDomainConfirmationScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        footerViewEffectStyle = .linearGradient(
-            .init(colors: [
-                Colors.Defaults.background.uiColor.withAlphaComponent(0),
-                Colors.Defaults.background.uiColor
-            ])
-        )
-
         addUI()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     private func addUI() {
