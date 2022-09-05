@@ -37,6 +37,7 @@ class WCSingleTransactionView: BaseView {
         participantInformationStackView.backgroundColor = Colors.Defaults.background.uiColor
         participantInformationStackView.stackView.distribution = .equalSpacing
         participantInformationStackView.stackView.spacing = 20
+        participantInformationStackView.stackView.isUserInteractionEnabled = true
         return participantInformationStackView
     }()
 

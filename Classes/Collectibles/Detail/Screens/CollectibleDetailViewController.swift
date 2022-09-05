@@ -258,7 +258,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptInQuickAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optIn(with: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -269,7 +272,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptOutAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optOut(from: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
