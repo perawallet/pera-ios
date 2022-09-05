@@ -27,17 +27,13 @@ final class Cryptor {
     }
 
     func encrypt(data: Data) -> Data? {
-        var encryptionError: NSError?
-        let encryptedData = AlgoMobileEncrypt(data, generateKeyData(), &encryptionError)
-
-        return encryptedData
+        let encryptedContent = AlgoMobileEncrypt(data, generateKeyData())
+        return encryptedContent?.encryptedData
     }
 
     func decrypt(data: Data) -> Data? {
-        var decryptionError: NSError?
-        let decryptedData = AlgoMobileDecrypt(data, generateKeyData(), &decryptionError)
-
-        return decryptedData
+        let decryptedContent = AlgoMobileDecrypt(data, generateKeyData())
+        return decryptedContent?.decryptedData
     }
 
     private func generateKeyData() -> Data {
