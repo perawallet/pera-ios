@@ -49,6 +49,10 @@ extension ExportAccountListLocalDataController {
         return !selectedAccounts.isEmpty
     }
 
+    var hasAccounts: Bool {
+        return !accounts.isEmpty
+    }
+
     func getSelectedAccounts() -> [Account] {
         return selectedAccounts.values.elements
     }
@@ -109,9 +113,7 @@ extension ExportAccountListLocalDataController {
     private func addAccountsSection(
         _ snapshot: inout Snapshot
     ) {
-        snapshot.appendSections([.accounts])
-
-        let accounts =
+        let accounts: [Account] =
             sharedDataController
                 .sortedAccounts()
                 .filter {
@@ -121,6 +123,19 @@ extension ExportAccountListLocalDataController {
                 }.map {
                     $0.value
                 }
+
+        if accounts.isEmpty {
+            addNoContent(&snapshot)
+        } else {
+            addAccountItems(&snapshot, accounts: accounts)
+        }
+    }
+
+    private func addAccountItems(
+        _ snapshot: inout Snapshot,
+        accounts: [Account]
+    ) {
+        snapshot.appendSections([.accounts])
 
         addAccountsHeader(
             &snapshot,
@@ -172,6 +187,13 @@ extension ExportAccountListLocalDataController {
             accountItems,
             toSection: .accounts
         )
+    }
+
+    private func addNoContent(
+        _ snapshot: inout Snapshot
+    ) {
+        snapshot.appendSections([.empty])
+        snapshot.appendItems([.noContent], toSection: .empty)
     }
 }
 

@@ -23,10 +23,12 @@ struct ExportAccountListScreenTheme:
     let background: ViewStyle
     let spacingBetweenListAndContinueAction: LayoutMetric
     let continueAction: ButtonStyle
+    let closeAction: ButtonStyle
     let continueActionEdgeInsets: LayoutPaddings
     let continueActionContentEdgeInsets: LayoutMargins
     let navigationBarEdgeInset: LayoutMargins
     let listContentTopInset: LayoutMetric
+    let noContentAdditionalHorizontalInset: LayoutHorizontalMargins
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -46,9 +48,23 @@ struct ExportAccountListScreenTheme:
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
+        self.closeAction = [
+            .title("title-close".localized),
+            .font(Typography.bodyMedium()),
+            .titleColor([
+                .normal(Colors.Button.Secondary.text),
+                .disabled(Colors.Button.Secondary.disabledText)
+            ]),
+            .backgroundImage([
+                .normal("components/buttons/secondary/bg"),
+                .highlighted("components/buttons/secondary/bg-highlighted"),
+                .disabled("components/buttons/secondary/bg-disabled")
+            ])
+        ]
         self.continueActionEdgeInsets = (16, 8, 16, 8)
         self.continueActionContentEdgeInsets = (.noMetric, 24, 12, 24)
         self.navigationBarEdgeInset = (12, 24, .noMetric, 24)
         self.listContentTopInset = 16
+        self.noContentAdditionalHorizontalInset = (30, 30)
     }
 }

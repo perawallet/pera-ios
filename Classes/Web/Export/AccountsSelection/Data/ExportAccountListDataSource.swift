@@ -48,6 +48,13 @@ final class ExportAccountListDataSource:
                     cell.bindData(cellItem.viewModel)
                     return cell
                 }
+            case .noContent:
+                let cell = collectionView.dequeue(
+                    NoContentCell.self,
+                    at: indexPath
+                )
+                cell.bindData(ExportAccountListItemNoContentViewModel())
+                return cell
             }
         }
 
@@ -72,6 +79,7 @@ final class ExportAccountListDataSource:
         [
             ExportAccountListAccountsHeader.self,
             ExportAccountListAccountCell.self,
+            NoContentCell.self
         ].forEach {
             collectionView.register($0)
         }

@@ -58,8 +58,9 @@ extension AccountExportFlowCoordinator {
             switch event {
             case .performContinue(let accounts):
                 self.accounts = accounts
-
                 self.navigateToConfirmDomain(on: exportAccountListScreen)
+            case .performClose:
+                exportAccountListScreen.dismissScreen()
             }
         }
 

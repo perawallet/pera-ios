@@ -57,6 +57,8 @@ extension ExportAccountListLayout {
                 bottom: 8,
                 right: 0
             )
+        case .empty:
+            return .zero
         }
     }
 
@@ -95,6 +97,12 @@ extension ExportAccountListLayout {
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForAccountItem: item,
+                atSection: indexPath.section
+            )
+        case .noContent:
+            return sizeForNoContent(
+                collectionView,
+                item: ExportAccountListItemNoContentViewModel(),
                 atSection: indexPath.section
             )
         }
@@ -205,6 +213,47 @@ extension ExportAccountListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
 
         return newSize
+    }
+
+    private func sizeForNoContent(
+        _ listView: UICollectionView,
+        item: ExportAccountListItemNoContentViewModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let theme = ExportAccountListScreenTheme()
+        let noContentAdditionalHorizontalInset = theme.noContentAdditionalHorizontalInset.leading +
+            theme.noContentAdditionalHorizontalInset.trailing
+
+        let width = calculateContentWidth(
+            for: listView,
+            forSectionAt: section
+        ) - noContentAdditionalHorizontalInset
+
+        let safeAreaBottom = listView.compactSafeAreaInsets.bottom
+        let bottom = safeAreaBottom + theme.continueActionContentEdgeInsets.bottom
+
+        let height = listView.bounds.height -
+            listView.adjustedContentInset.bottom -
+            listView.contentInset.top -
+            bottom -
+            theme.continueActionEdgeInsets.top -
+            theme.continueActionEdgeInsets.bottom -
+            theme.spacingBetweenListAndContinueAction
+
+        let size = CGSize(
+            width: width,
+            height: height
+        )
+
+        sizeCache[sizeCacheIdentifier] = size
+
+        return size
     }
 }
 

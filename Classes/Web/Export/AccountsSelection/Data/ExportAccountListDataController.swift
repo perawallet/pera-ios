@@ -23,6 +23,7 @@ protocol ExportAccountListDataController: AnyObject {
 
     var eventHandler: ((ExportAccountListDataControllerEvent) -> Void)? { get set }
 
+    var hasAccounts: Bool { get }
     var isContinueActionEnabled: Bool { get }
 
     func load()
@@ -43,10 +44,12 @@ protocol ExportAccountListDataController: AnyObject {
 enum ExportAccountListSectionIdentifier:
     Hashable {
     case accounts
+    case empty
 }
 
 enum ExportAccountListItemIdentifier: Hashable {
     case account(ExportAccountListAccountItemIdentifier)
+    case noContent
 }
 
 enum ExportAccountListAccountItemIdentifier: Hashable {

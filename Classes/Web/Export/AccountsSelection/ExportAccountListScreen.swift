@@ -99,6 +99,7 @@ final class ExportAccountListScreen:
                     snapshot,
                     animatingDifferences: false
                 )
+                self.updateActionButton()
             }
         }
 
@@ -179,7 +180,12 @@ extension ExportAccountListScreen {
     }
 
     private func toggleContinueActionStateIfNeeded() {
-        continueActionView.isEnabled = dataController.isContinueActionEnabled
+        if dataController.hasAccounts {
+            continueActionView.isEnabled = dataController.isContinueActionEnabled
+            return
+        }
+
+        continueActionView.isEnabled = true
     }
 
     private func addContinueActionViewGradient() {
@@ -222,10 +228,24 @@ extension ExportAccountListScreen {
         toggleContinueActionStateIfNeeded()
     }
 
+    private func updateActionButton() {
+        if dataController.hasAccounts {
+            continueActionView.customizeAppearance(theme.continueAction)
+        } else {
+            continueActionView.customizeAppearance(theme.closeAction)
+        }
+        toggleContinueActionStateIfNeeded()
+    }
+
     @objc
     private func performContinue() {
-        let selectedAccounts = dataController.getSelectedAccounts()
-        eventHandler?(.performContinue(with: selectedAccounts), self)
+        if dataController.hasAccounts {
+            let selectedAccounts = dataController.getSelectedAccounts()
+            eventHandler?(.performContinue(with: selectedAccounts), self)
+            return
+        }
+        
+        eventHandler?(.performClose, self)
     }
 }
 
@@ -287,6 +307,8 @@ extension ExportAccountListScreen {
             default:
                 break
             }
+        case .noContent:
+            break
         }
     }
 
@@ -315,6 +337,8 @@ extension ExportAccountListScreen {
                     forItemAt: indexPath
                 )
             }
+        case .noContent:
+            break
         }
     }
 }
@@ -431,5 +455,6 @@ extension ExportAccountListScreen {
 extension ExportAccountListScreen {
     enum Event {
         case performContinue(with: [Account])
+        case performClose
     }
 }
