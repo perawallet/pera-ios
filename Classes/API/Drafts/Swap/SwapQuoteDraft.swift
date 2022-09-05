@@ -40,3 +40,17 @@ struct SwapQuoteDraft: JSONObjectBody {
         return params
     }
 }
+
+extension SwapQuoteDraft {
+    func validate() -> ValidationResult {
+        /// <todo> Handle validations
+        return .validated
+    }
+}
+
+extension SwapQuoteDraft {
+    enum ValidationResult {
+        case validated
+        case failed
+    }
+}

@@ -21,6 +21,12 @@ import UIKit
 struct SwapAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let userAsset: SwapAssetAmountViewTheme
+    let assetHorizontalInset: LayoutMetric
+    let userAssetTopInset: LayoutMetric
+    let emptyPoolAsset: SwapAssetSelectionEmptyViewTheme
+    let poolAsset: SwapAssetAmountViewTheme
+    let poolAssetTopInset: LayoutMetric
     let swapAction: ButtonStyle
     let swapActionContentEdgeInsets: UIEdgeInsets
     let swapActionEdgeInsets: LayoutPaddings
@@ -28,6 +34,12 @@ struct SwapAssetScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
+        self.assetHorizontalInset = 24
+        self.userAssetTopInset = 24
+        self.emptyPoolAsset = SwapAssetSelectionEmptyViewTheme()
+        self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
+        self.poolAssetTopInset = 32
         self.swapAction = [
             .title("title-swap".localized),
             .titleColor(
@@ -51,6 +63,6 @@ struct SwapAssetScreenTheme:
                 trailing: 0
             )
         )
-        self.swapActionEdgeInsets = (36, 24, 16, 24)
+        self.swapActionEdgeInsets = (24, 24, 16, 24)
     }
 }
