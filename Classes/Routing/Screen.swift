@@ -198,7 +198,7 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
-        draft: SwapScreenDraft,
+        draft: SwapAssetScreenDraft,
         theme: SwapAssetScreenTheme = .init()
     )
     case alert(
