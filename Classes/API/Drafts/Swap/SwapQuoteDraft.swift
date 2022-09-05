@@ -24,8 +24,8 @@ struct SwapQuoteDraft: JSONObjectBody {
     let deviceID: String
     let assetInID: AssetID
     let assetOutID: AssetID
-    let amount: String
-    let slippage: String
+    let amount: Decimal
+    let slippage: Decimal
 
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
