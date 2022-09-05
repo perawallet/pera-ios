@@ -17,29 +17,27 @@
 import Foundation
 import MacaroonUtils
 
-final class WCSessionListLocalDataController:
-    WCSessionListDataController {
+final class WCSessionListLocalDataController: WCSessionListDataController {
     typealias EventHandler = (WCSessionListDataControllerEvent) -> Void
 
     var eventHandler: EventHandler?
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.wcSessionListLocalDataController")
 
-    private lazy var sessions: [WCSession] = walletConnector.allWalletConnectSessions
-
-    var disconnectedSessions: Set<WCSession> = []
+    private var lastSnapshot: Snapshot? = nil
+    private var disconnectedSessions: Set<WCSession> = []
 
     private var cachedSessionListItems: [WCSession: WCSessionListItem] = [:]
 
-    private let analytics: ALGAnalytics
-    private let walletConnector: WalletConnector
+    private lazy var sessions: [WCSession] = walletConnector.allWalletConnectSessions
 
     var shouldShowDisconnectAllAction: Bool {
         return walletConnector.allWalletConnectSessions.count > 1
     }
 
-    private var lastSnapshot: Snapshot? = nil
-    
+    private let analytics: ALGAnalytics
+    private let walletConnector: WalletConnector
+
     init(
         analytics: ALGAnalytics,
         walletConnector: WalletConnector
