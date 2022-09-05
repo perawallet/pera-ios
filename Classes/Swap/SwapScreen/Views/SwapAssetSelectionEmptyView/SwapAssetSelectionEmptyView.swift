@@ -18,19 +18,28 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SwapAssetSelectionEmptyView: View {
+final class SwapAssetSelectionEmptyView:
+    View,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .didSelectAsset: TargetActionInteraction()
+    ]
+
     private lazy var titleView = Label()
     private lazy var iconView = UIImageView()
-    private lazy var emptyTitleView = UILabel()
-    private lazy var accessoryView = UIImageView()
+    private lazy var emptyAssetView = MacaroonUIKit.Button(.imageAtRight(spacing: theme.buttonIconSpacing))
 
-    func customize(
-        _ theme: SwapAssetSelectionEmptyViewTheme
-    ) {
-        addTitle(theme)
-        addIcon(theme)
-        addEmptyTitleView(theme)
-        addAccessory(theme)
+    private let theme: SwapAssetSelectionEmptyViewTheme
+
+    init(theme: SwapAssetSelectionEmptyViewTheme) {
+        self.theme = theme
+        super.init(frame: .zero)
+    }
+
+    func customize() {
+        addTitle()
+        addIcon()
+        addEmptyAsset()
     }
 
     func customizeAppearance(
@@ -53,9 +62,7 @@ final class SwapAssetSelectionEmptyView: View {
 }
 
 extension SwapAssetSelectionEmptyView {
-    private func addTitle(
-        _ theme: SwapAssetSelectionEmptyViewTheme
-    ) {
+    private func addTitle() {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
@@ -67,9 +74,7 @@ extension SwapAssetSelectionEmptyView {
         }
     }
 
-    private func addIcon(
-        _ theme: SwapAssetSelectionEmptyViewTheme
-    ) {
+    private func addIcon() {
         iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
@@ -81,32 +86,26 @@ extension SwapAssetSelectionEmptyView {
         }
     }
 
-    private func addEmptyTitleView(
-        _ theme: SwapAssetSelectionEmptyViewTheme
-    ) {
-        emptyTitleView.customizeAppearance(theme.emptyTitle)
+    private func addEmptyAsset() {
+        emptyAssetView.customizeAppearance(theme.emptyAsset)
 
-        addSubview(emptyTitleView)
-        emptyTitleView.fitToIntrinsicSize()
-        emptyTitleView.snp.makeConstraints {
+        addSubview(emptyAssetView)
+        emptyAssetView.fitToIntrinsicSize()
+        emptyAssetView.snp.makeConstraints {
             $0.centerY == iconView
-            $0.leading == iconView.snp.trailing + theme.emptyTitleLeadingInset
+            $0.leading == iconView.snp.trailing + theme.emptyAssetLeadingInset
             $0.bottom <= 0
         }
+
+        startPublishing(
+            event: .didSelectAsset,
+            for: emptyAssetView
+        )
     }
+}
 
-    private func addAccessory(
-        _ theme: SwapAssetSelectionEmptyViewTheme
-    ) {
-        accessoryView.customizeAppearance(theme.accessory)
-
-        addSubview(accessoryView)
-        accessoryView.fitToIntrinsicSize()
-        accessoryView.snp.makeConstraints {
-            $0.centerY == iconView
-            $0.leading == emptyTitleView.snp.trailing + theme.accessoryLeadingInset
-            $0.bottom <= 0
-            $0.trailing == 0
-        }
+extension SwapAssetSelectionEmptyView {
+    enum Event {
+        case didSelectAsset
     }
 }

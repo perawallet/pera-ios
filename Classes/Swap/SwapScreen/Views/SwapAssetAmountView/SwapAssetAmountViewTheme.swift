@@ -31,7 +31,7 @@ struct SwapAssetAmountViewTheme:
     
     init(
         placeholder: String,
-        family: LayoutFamily
+        family: LayoutFamily = .current
     ) {
         self.leftTitle = [
             .textColor(Colors.Text.gray),

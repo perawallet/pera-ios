@@ -42,7 +42,7 @@ struct SwapAssetSelectionViewTheme:
             .textColor(Colors.Text.main)
         ]
         self.verificationTier = [
-            .contentMode(.left),
+            .contentMode(.right),
         ]
         self.verificationTierContentEdgeInsets = (6, 0)
         self.accessory = [

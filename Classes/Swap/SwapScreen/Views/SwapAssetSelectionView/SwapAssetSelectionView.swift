@@ -87,9 +87,7 @@ extension SwapAssetSelectionView {
         verificationTierView.fitToIntrinsicSize()
         verificationTierView.snp.makeConstraints {
             $0.centerY == titleView
-            $0.top <= 0
             $0.leading == titleView.snp.trailing
-            $0.bottom <= 0
         }
     }
 
@@ -103,9 +101,7 @@ extension SwapAssetSelectionView {
         accessoryView.fitToIntrinsicSize()
         accessoryView.snp.makeConstraints {
             $0.centerY == titleView
-            $0.top <= 0
             $0.leading == verificationTierView.snp.trailing
-            $0.bottom <= 0
             $0.trailing == theme.contentPaddings.trailing
         }
     }
