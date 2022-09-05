@@ -52,11 +52,14 @@ final class ExportAccountListAccountsHeaderView:
     func bindData(
         _ viewModel: ExportAccountListAccountsHeaderViewModel?
     ) {
-        if let info = viewModel?.info {
-            info.load(in: infoView)
-        } else {
+        guard let viewModel = viewModel else {
             infoView.clearText()
+            return
         }
+
+        viewModel.info?.load(in: infoView)
+        
+        actionView.isHidden = viewModel.hasSingularAccount
     }
 
     class func calculatePreferredSize(

@@ -20,11 +20,19 @@ import MacaroonUIKit
 struct ExportAccountListAccountsHeaderViewModel:
     ViewModel,
     Hashable {
+    var hasSingularAccount: Bool {
+        accountsCount == 1
+    }
+
     private(set) var info: TextProvider?
+
+    private let accountsCount: Int
 
     init(
         accountsCount: Int
     ) {
+        self.accountsCount = accountsCount
+
         bindInfo(accountsCount)
     }
 
@@ -46,8 +54,8 @@ extension ExportAccountListAccountsHeaderViewModel {
     ) {
         let info: String
 
-        if accountsCount < 2 {
-            info = "title-plus-account-singular-count".localized(params: "\(accountsCount)")
+        if hasSingularAccount {
+            info = "title-plus-account-singular-count".localized
         } else {
             info = "title-plus-account-count".localized(params: "\(accountsCount)")
         }

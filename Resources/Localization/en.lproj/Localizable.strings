@@ -682,7 +682,7 @@
 "title-plus-collectible-count" = "%@ NFTs";
 "title-plus-collectible-singular-count" = "%@ NFT";
 "title-plus-account-count" = "%@ Accounts";
-"title-plus-account-singular-count" = "%@ Account";
+"title-plus-account-singular-count" = "Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
