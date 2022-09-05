@@ -59,6 +59,7 @@ final class ASADiscoveryScreen:
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerApproval = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
     private var isDisplayStateInteractiveTransitionInProgress = false
     private var displayStateInteractiveTransitionInitialFractionComplete: CGFloat = 0
@@ -429,7 +430,10 @@ extension ASADiscoveryScreen {
     }
 
     private func bindAssetOptInAction(with account: Account) {
-        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: dataController.asset,
+            type: .optIn(with: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -441,7 +445,10 @@ extension ASADiscoveryScreen {
     }
 
     private func bindAssetOptInAction() {
-        let viewModel = AssetQuickActionViewModel(type: .addAssetWithoutAccount)
+        let viewModel = AssetQuickActionViewModel(
+            asset: dataController.asset,
+            type: .optInWithoutAccount
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -453,7 +460,10 @@ extension ASADiscoveryScreen {
     }
 
     private func bindAssetOptOutAction(from account: Account) {
-        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: dataController.asset,
+            type: .optOut(from: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -784,7 +794,7 @@ extension ASADiscoveryScreen {
         didSelect account: Account,
         for draft: SelectAccountDraft
     ) {
-        self.dataController.account = account
+        dataController.account = account
         continueToOptInAsset()
     }
 }
@@ -793,6 +803,15 @@ extension ASADiscoveryScreen {
     private func linkOptOutAssetInteractions(
         with account: Account
     ) {
+        if let asset = account[dataController.asset.id],
+           asset.amountWithFraction != 0 {
+            openTransferAssetBalance(
+                with: account,
+                for: asset
+            )
+            return
+        }
+
         let draft = OptOutAssetDraft(
             account: account,
             asset: dataController.asset
@@ -856,6 +875,63 @@ extension ASADiscoveryScreen {
     }
 
     private func cancelOptOutAsset() {
+        dismiss(animated: true)
+    }
+}
+
+extension ASADiscoveryScreen {
+    private func openTransferAssetBalance(
+        with account: Account,
+        for asset: Asset
+    ) {
+        let draft = TransferAssetBalanceDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.transferAssetBalance(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                self.continueToTransferAssetBalance(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelTransferAssetBalance()
+            }
+        }
+
+        transitionToTransferAssetBalance.perform(
+            screen,
+            by: .present
+        )
+    }
+
+    private func continueToTransferAssetBalance(
+        asset: Asset,
+        account: Account
+    ) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            var draft = SendTransactionDraft(
+                from: account,
+                transactionMode: .asset(asset)
+            )
+            draft.amount = asset.amountWithFraction
+
+            self.open(
+                .sendTransaction(draft: draft),
+                by: .push
+            )
+        }
+    }
+
+    private func cancelTransferAssetBalance() {
         dismiss(animated: true)
     }
 }
