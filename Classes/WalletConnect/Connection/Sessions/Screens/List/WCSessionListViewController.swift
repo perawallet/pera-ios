@@ -21,12 +21,14 @@ import MacaroonUIKit
 
 final class WCSessionListViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout,
-    WalletConnectorDelegate {
+    UICollectionViewDelegateFlowLayout {
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = WCSessionListLayout.build()
         let collectionView =
-        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
@@ -78,17 +80,28 @@ final class WCSessionListViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataController.dataSource = listDataSource
-
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
             switch event {
             case .didUpdate(let snapshot):
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
 
                 self.showDisconnectAllActionIfNeeded()
+            case .didStartDisconnectingFromSession,
+                 .didStartDisconnectingFromSessions:
+                self.startLoading()
+            case .didDisconnectFromSessions:
+                self.stopLoading()
+            case .didFailDisconnectingFromSession:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "title-generic-error".localized
+                )
             }
         }
 
@@ -98,7 +111,7 @@ final class WCSessionListViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        walletConnector.delegate = self
+        walletConnector.delegate = dataController
     }
 
     override func viewDidLayoutSubviews() {
@@ -209,9 +222,7 @@ extension WCSessionListViewController {
         }
     }
 
-    private func openDisconnectSessionMenu(
-        for session: WCSession
-    ) {
+    private func openDisconnectSessionMenu(for session: WCSession) {
         let actionSheet = UIAlertController(
             title: nil,
             message: "wallet-connect-session-disconnect-message".localized(params: session.peerMeta.name),
@@ -226,10 +237,12 @@ extension WCSessionListViewController {
                 return
             }
 
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+            let snapshot = self.listDataSource.snapshot()
 
-            self.dataController.disconnectedSessions.insert(session)
-            self.walletConnector.disconnectFromSession(session)
+            self.dataController.disconnectSession(
+                snapshot,
+                session: session
+            )
         }
 
         let cancelAction = UIAlertAction(
@@ -239,6 +252,7 @@ extension WCSessionListViewController {
         
         actionSheet.addAction(disconnectAction)
         actionSheet.addAction(cancelAction)
+
         present(
             actionSheet,
             animated: true
@@ -247,9 +261,7 @@ extension WCSessionListViewController {
 }
 
 extension WCSessionListViewController {
-    private func linkInteractors(
-        _ cell: NoContentWithActionCell
-    ) {
+    private func linkInteractors(_ cell: NoContentWithActionCell) {
         cell.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
@@ -276,12 +288,18 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
         _ controller: QRScannerViewController,
         session: WCSession
     ) {
-        dataController.addSession(session)
+        let snapshot = listDataSource.snapshot()
+
+        dataController.addSessionItem(
+            snapshot,
+            session: session
+        )
     }
 
     func qrScannerViewController(
         _ controller: QRScannerViewController,
-        didFail error: QRScannerError, completionHandler: EmptyHandler?
+        didFail error: QRScannerError,
+        completionHandler: EmptyHandler?
     ) {
         displaySimpleAlertWith(
             title: "title-error".localized,
@@ -294,7 +312,7 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
 
 extension WCSessionListViewController {
     private func showDisconnectAllActionIfNeeded() {
-        if walletConnector.allWalletConnectSessions.count < 2 {
+        if !dataController.shouldShowDisconnectAllAction {
             if disconnectAllActionViewGradient.isDescendant(of: view),
                !disconnectAllActionViewGradient.isHidden {
                 updateSafeAreaWhenDisconnectAllActionVisible(false)
@@ -314,9 +332,7 @@ extension WCSessionListViewController {
         addDisconnectAllActionView()
     }
 
-    private func updateSafeAreaWhenDisconnectAllActionVisible(
-        _ isVisible: Bool
-    ) {
+    private func updateSafeAreaWhenDisconnectAllActionVisible(_ isVisible: Bool) {
         let safeAreaBottom: CGFloat
 
         if isVisible {
@@ -331,9 +347,7 @@ extension WCSessionListViewController {
         additionalSafeAreaInsets.bottom = safeAreaBottom
     }
 
-    private func updateDisconnectAllActionVisibility(
-        _ isVisible: Bool
-    ) {
+    private func updateDisconnectAllActionVisibility(_ isVisible: Bool) {
         disconnectAllActionViewGradient.isHidden = !isVisible
     }
 
@@ -387,13 +401,10 @@ extension WCSessionListViewController {
             guard let self = self else {
                 return
             }
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
-            
-            let allSessions = self.walletConnector.allWalletConnectSessions
 
-            self.dataController.disconnectedSessions = Set(allSessions)
+            let snapshot = self.listDataSource.snapshot()
 
-            allSessions.forEach(self.walletConnector.disconnectFromSession)
+            self.dataController.disconnectAllSessions(snapshot)
         }
 
         let cancelAction = UIAlertAction(
@@ -411,49 +422,13 @@ extension WCSessionListViewController {
     }
 }
 
+
 extension WCSessionListViewController {
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        didFailWith error: WalletConnector.Error
-    ) {
-        switch error {
-        case .failedToDisconnectWithTryingToDisconnectInactiveSession(let session):
-            dataController.removeSession(session)
-
-            stopLoadingIfNeeded()
-        case .failedToDisconnect(let session):
-            dataController.disconnectedSessions.remove(session)
-
-            stopLoadingIfNeeded()
-
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "title-generic-error".localized
-            )
-        default: break
-        }
+    private func startLoading() {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
     }
 
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        didDisconnectFrom session: WCSession
-    ) {
-        analytics.track(
-            .wcSessionDisconnected(
-                dappName: session.peerMeta.name,
-                dappURL: session.peerMeta.url.absoluteString,
-                address: session.walletMeta?.accounts?.first
-            )
-        )
-
-        dataController.removeSession(session)
-
-        stopLoadingIfNeeded()
-    }
-
-    private func stopLoadingIfNeeded() {
-        if dataController.disconnectedSessions.isEmpty {
-            loadingController?.stopLoading()
-        }
+    private func stopLoading() {
+        loadingController?.stopLoading()
     }
 }

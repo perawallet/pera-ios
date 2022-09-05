@@ -36,38 +36,38 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
     let statusContentEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        horizontalPadding = 24
-        image = URLImageViewNoStyleLayoutSheet()
-        imageSize = (40, 40)
-        imageBorder = Border(
+        self.horizontalPadding = 24
+        self.image = URLImageViewNoStyleLayoutSheet()
+        self.imageSize = (40, 40)
+        self.imageBorder = Border(
             color: Colors.Layer.grayLighter.uiColor,
             width: 1
         )
-        imageCorner = Corner(radius: imageSize.h / 2)
-        name = [
+        self.imageCorner = Corner(radius: imageSize.h / 2)
+        self.name = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
-        nameHorizontalPadding = 16
-        description = [
+        self.nameHorizontalPadding = 16
+        self.description = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
         ]
-        descriptionTopPadding = 8
-        optionsAction = [
+        self.descriptionTopPadding = 8
+        self.optionsAction = [
             .icon([ .normal("icon-options") ])
         ]
-        date = [
+        self.date = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter)
         ]
-        dateTopPadding = 12
-        status = [
+        self.dateTopPadding = 12
+        self.status = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Helpers.positive),
             .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
         ]
-        statusTopPadding = 10
-        statusContentEdgeInsets = (2, 8, 2, 8)
+        self.statusTopPadding = 10
+        self.statusContentEdgeInsets = (2, 8, 2, 8)
     }
 }

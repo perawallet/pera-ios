@@ -67,7 +67,7 @@ extension WalletConnector {
             try walletConnectBridge.disconnect(from: session.sessionBridgeValue)
             removeFromSessions(session)
         } catch WalletConnectSwift.WalletConnect.WalletConnectError.tryingToDisconnectInactiveSession {
-            delegate?.walletConnector(self, didFailWith: .failedToDisconnectWithTryingToDisconnectInactiveSession(session: session))
+            delegate?.walletConnector(self, didFailWith: .failedToDisconnectInactiveSession(session: session))
         } catch {
             delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
@@ -174,7 +174,7 @@ extension WalletConnector {
     enum Error {
         case failedToConnect(url: WalletConnectURL)
         case failedToCreateSession(qr: String)
-        case failedToDisconnectWithTryingToDisconnectInactiveSession(session: WCSession)
+        case failedToDisconnectInactiveSession(session: WCSession)
         case failedToDisconnect(session: WCSession)
     }
 }

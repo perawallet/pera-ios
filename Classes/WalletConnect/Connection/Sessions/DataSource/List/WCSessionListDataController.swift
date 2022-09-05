@@ -16,23 +16,25 @@
 
 import UIKit
 
-protocol WCSessionListDataController: AnyObject {
+protocol WCSessionListDataController: WalletConnectorDelegate {
     typealias Snapshot = NSDiffableDataSourceSnapshot<WCSessionListSection, WCSessionListItem>
 
     var eventHandler: ((WCSessionListDataControllerEvent) -> Void)? { get set }
 
-    var dataSource: WCSessionListDataSource! { get set }
+    var shouldShowDisconnectAllAction: Bool { get }
 
     func load()
 
-    func removeSession(
-        _ session: WCSession
-    )
-    func addSession(
-        _ session: WCSession
+    func disconnectAllSessions(_ snapshot: Snapshot)
+    func disconnectSession(
+        _ snapshot: Snapshot,
+        session: WCSession
     )
 
-    var disconnectedSessions: Set<WCSession> { get set }
+    func addSessionItem(
+        _ snapshot: Snapshot,
+        session: WCSession
+    )
 }
 
 enum WCSessionListSection:
@@ -58,11 +60,15 @@ extension WCSessionListItem {
 
 enum WCSessionListDataControllerEvent {
     case didUpdate(WCSessionListDataController.Snapshot)
-
-    var snapshot: WCSessionListDataController.Snapshot {
+    case didStartDisconnectingFromSession
+    case didStartDisconnectingFromSessions
+    case didDisconnectFromSessions
+    case didFailDisconnectingFromSession
+    
+    var snapshot: WCSessionListDataController.Snapshot? {
         switch self {
-        case .didUpdate(let snapshot):
-            return snapshot
+        case .didUpdate(let snapshot): return snapshot
+        default: return nil
         }
     }
 }

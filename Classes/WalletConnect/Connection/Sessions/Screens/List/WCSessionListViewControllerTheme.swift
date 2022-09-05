@@ -19,7 +19,7 @@ import MacaroonUIKit
 
 struct WCSessionListViewControllerTheme:
     LayoutSheet,
-        StyleSheet {
+    StyleSheet {
     let background: ViewStyle
     let disconnectAllAction: ButtonStyle
     let disconnectAllActionEdgeInsets: LayoutPaddings
@@ -28,10 +28,10 @@ struct WCSessionListViewControllerTheme:
     let spacingBetweenListAndDisconnectAllAction: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        background = [
+        self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        disconnectAllAction = [
+        self.disconnectAllAction = [
             .title("wallet-connect-session-disconnect-all-action".localized),
             .titleColor([
                 .normal(Colors.Button.Secondary.text)
@@ -39,9 +39,9 @@ struct WCSessionListViewControllerTheme:
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)
         ]
-        disconnectAllActionEdgeInsets = (16, 8, 16, 8)
-        disconnectAllActionMargins = (.noMetric, 24, 12, 24)
-        disconnectAllActionCorner = Corner(radius: 4)
-        spacingBetweenListAndDisconnectAllAction = 16
+        self.disconnectAllActionEdgeInsets = (16, 8, 16, 8)
+        self.disconnectAllActionMargins = (.noMetric, 24, 12, 24)
+        self.disconnectAllActionCorner = Corner(radius: 4)
+        self.spacingBetweenListAndDisconnectAllAction = 16
     }
 }
