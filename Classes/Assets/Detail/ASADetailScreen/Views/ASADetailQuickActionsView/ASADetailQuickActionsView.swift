@@ -25,6 +25,7 @@ final class ASADetailQuickActionsView:
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
         .buy: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .receive: TargetActionInteraction()
     ]
@@ -33,7 +34,8 @@ final class ASADetailQuickActionsView:
 
     private lazy var contentView = HStackView()
     private lazy var buyActionView = makeActionView()
-    private lazy var sendActionView = makeActionView()
+    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var sendActionView =  makeActionView()
     private lazy var receiveActionView = makeActionView()
 
     private var lastContentSize: CGSize = .zero
@@ -76,6 +78,18 @@ extension ASADetailQuickActionsView {
         let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
         return MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: titleAdjustmentY))
     }
+
+    private func makeBadgeActionView() -> BadgeButton {
+        return BadgeButton(
+            badgePosition: .topTrailing(
+                theme.swapNewBadgeEdgeInsets
+            ),
+            .imageAtTopmost(
+                padding: 0,
+                titleAdjustmentY: HomeQuickActionViewTheme.spacingBetweenIconAndTitle
+            )
+        )
+    }
 }
 
 extension ASADetailQuickActionsView {
@@ -92,6 +106,7 @@ extension ASADetailQuickActionsView {
         }
 
         addBuyAction(theme)
+        addSwapAction(theme)
         addSendAction(theme)
         addReceiveAction(theme)
     }
@@ -108,6 +123,22 @@ extension ASADetailQuickActionsView {
         startPublishing(
             event: .buy,
             for: buyActionView
+        )
+    }
+
+    private func addSwapAction(_ theme: ASADetailQuickActionsViewTheme) {
+        swapActionView.customize(theme: theme.swapNewBadge)
+        swapActionView.customizeAppearance(theme.swapAction)
+        customizeAction(
+            swapActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(swapActionView)
+
+        startPublishing(
+            event: .swap,
+            for: swapActionView
         )
     }
 
@@ -170,6 +201,7 @@ extension ASADetailQuickActionsView {
     enum Event {
         case layoutChanged
         case buy
+        case swap
         case send
         case receive
     }
