@@ -36,22 +36,20 @@ final class TabBarController: TabBarContainer {
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
-    private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(
-            sharedDataController: sharedDataController,
-            presentingScreen: self,
-            api: api,
-            bannerController: bannerController,
-            loadingController: loadingController,
-            analytics: analytics
-        )
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        sharedDataController: sharedDataController,
+        presentingScreen: self,
+        api: api,
+        bannerController: bannerController,
+        loadingController: loadingController,
+        analytics: analytics
+    )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
@@ -169,9 +167,7 @@ extension TabBarController {
         aView.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
-            /// <todo>
-            /// Navigate to Swap
-            preconditionFailure("Not Implemented Yet")
+            self.navigateToSwapAssetFlow()
         }
         aView.startObserving(event: .send) {
             [weak self] in
@@ -290,6 +286,11 @@ extension TabBarController {
 }
 
 extension TabBarController {
+    private func navigateToSwapAssetFlow() {
+        toggleTransactionOptions()
+        swapAssetFlowCoordinator.launch()
+    }
+
     private func navigateToSendTransaction() {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
@@ -314,7 +315,6 @@ extension TabBarController {
     private func navigateToQRScanner() {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
-
     }
 }
 

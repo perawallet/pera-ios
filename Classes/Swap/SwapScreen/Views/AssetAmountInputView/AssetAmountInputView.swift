@@ -19,7 +19,11 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class AssetAmountInputView: View {
+final class AssetAmountInputView:
+    View,
+    UITextFieldDelegate {
+    weak var delegate: AssetAmountInputViewDelegate?
+
     private lazy var iconView = URLImageView()
     private lazy var amountInputView = TextField()
     private lazy var detailView = UILabel()
@@ -39,6 +43,10 @@ final class AssetAmountInputView: View {
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+
+    func setListeners() {
+        amountInputView.delegate = self
+    }
 
     func bindData(
         _ viewModel: AssetAmountInputViewModel?
@@ -61,12 +69,21 @@ final class AssetAmountInputView: View {
             detailView.clearText()
         }
     }
+
+    func beginEditing() {
+        amountInputView.becomeFirstResponder()
+    }
+
+    func endEditing() {
+        amountInputView.resignFirstResponder()
+    }
 }
 
 extension AssetAmountInputView {
     private func addIcon(
         _ theme: AssetAmountInputViewTheme
     ) {
+        iconView.build(theme.icon)
         iconView.customizeAppearance(theme.icon)
         
         addSubview(iconView)
@@ -85,11 +102,19 @@ extension AssetAmountInputView {
         
         addSubview(amountInputView)
         amountInputView.fitToIntrinsicSize()
+        amountInputView.contentEdgeInsets = theme.amountContentEdgeInsets
+        amountInputView.textEdgeInsets = theme.amountTextEdgeInsets
         amountInputView.snp.makeConstraints {
             $0.top == 0
             $0.leading == iconView.snp.trailing + theme.contentHorizontalOffset
-            $0.trailing <= 0
+            $0.trailing == 0
         }
+
+        amountInputView.addTarget(
+            self,
+            action: #selector(didChangeText),
+            for: .editingChanged
+        )
     }
 
     private func addDetail(
@@ -101,8 +126,72 @@ extension AssetAmountInputView {
         detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
             $0.top == amountInputView.snp.bottom
+            $0.leading == amountInputView
             $0.bottom == 0
             $0.trailing <= 0
         }
     }
+}
+
+extension AssetAmountInputView {
+    @objc
+    private func didChangeText() {
+        delegate?.assetAmountInputView(
+            self,
+            didChangeTextIn: amountInputView
+        )
+    }
+
+    func textFieldDidBeginEditing(
+        _ textField: UITextField
+    ) {
+        delegate?.assetAmountInputView(
+            self,
+            didBeginEditingIn: amountInputView
+        )
+    }
+
+    func textFieldDidEndEditing(
+        _ textField: UITextField
+    ) {
+        delegate?.assetAmountInputView(
+            self,
+            didEndEditingIn: amountInputView
+        )
+    }
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard let delegate = delegate else { return false }
+        return delegate.assetAmountInputView(
+            self,
+            shouldChangeCharactersIn: amountInputView,
+            with: range,
+            replacementString: string
+        )
+    }
+}
+
+protocol AssetAmountInputViewDelegate: AnyObject {
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didChangeTextIn textField: TextField
+    )
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didBeginEditingIn textField: TextField
+    )
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didEndEditingIn textField: TextField
+    )
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        shouldChangeCharactersIn textField: TextField,
+        with range: NSRange,
+        replacementString string: String
+    ) -> Bool
 }

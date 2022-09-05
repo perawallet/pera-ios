@@ -1106,6 +1106,7 @@
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";
 "quick-actions-address-title" = "Address";
+"quick-actions-receive-title" = "Receive";
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options

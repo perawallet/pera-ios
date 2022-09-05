@@ -1016,8 +1016,15 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .swapAsset(let draft, let theme):
+            let dataController = SwapAssetAPIDataController(
+                account: draft.account,
+                userAsset: draft.asset ?? draft.account.algo,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+
             viewController = SwapAssetScreen(
-                draft: draft,
+                dataController: dataController,
                 configuration: configuration,
                 theme: theme
             )

@@ -24,8 +24,8 @@ struct SwapQuoteDraft: JSONObjectBody {
     let deviceID: String
     let assetInID: AssetID
     let assetOutID: AssetID
-    let amount: String
-    let slippage: String
+    let amount: Decimal
+    let slippage: Decimal
 
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
@@ -38,5 +38,19 @@ struct SwapQuoteDraft: JSONObjectBody {
         params.append(.init(.amount, amount))
         params.append(.init(.slippage, slippage))
         return params
+    }
+}
+
+extension SwapQuoteDraft {
+    func validate() -> ValidationResult {
+        /// <todo> Handle validations
+        return .validated
+    }
+}
+
+extension SwapQuoteDraft {
+    enum ValidationResult {
+        case validated
+        case failed
     }
 }

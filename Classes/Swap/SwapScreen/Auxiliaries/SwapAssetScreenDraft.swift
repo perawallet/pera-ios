@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapScreenDraft.swift
+//   SwapAssetScreenDraft.swift
 
 import Foundation
 
-struct SwapScreenDraft {
-    let account: AccountHandle
+struct SwapAssetScreenDraft {
+    let account: Account
     let asset: Asset?
 }

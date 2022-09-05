@@ -24,6 +24,8 @@ struct AssetAmountInputViewTheme:
     let iconSize: LayoutSize
     let contentHorizontalOffset: LayoutMetric
     let amountInput: TextInputStyle
+    let amountContentEdgeInsets: LayoutPaddings
+    let amountTextEdgeInsets: LayoutPaddings
     let detail: TextStyle
 
     init(
@@ -39,11 +41,16 @@ struct AssetAmountInputViewTheme:
             .textColor(Colors.Text.main),
             .placeholder(placeholder),
             .placeholderColor(Colors.Text.grayLighter),
-            .clearButtonMode(.whileEditing),
-            .returnKeyType(.done)
+            .clearButtonMode(.never),
+            .returnKeyType(.done),
+            .keyboardType(.numberPad),
+            .autocapitalizationType(.none),
+            .autocorrectionType(.no)
         ]
+        self.amountContentEdgeInsets = (0, 0, 0, 0)
+        self.amountTextEdgeInsets = (0, 0, 0, 0)
         self.detail = [
-            .textColor(Colors.Text.main),
+            .textColor(Colors.Text.grayLighter),
             .textOverflow(SingleLineFittingText())
         ]
     }

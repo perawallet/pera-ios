@@ -48,30 +48,25 @@ extension AssetAmountInputViewModel {
             return
         }
 
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : asset.naming.name
-
         let imageSize = CGSize(width: 40, height: 40)
         let prismURL = PrismURL(baseURL: asset.logoURL)?
             .setExpectedImageSize(imageSize)
             .setImageQuality(.normal)
             .build()
 
-        let placeholderText = TextFormatter.assetShortName.format(
-            (title.isNilOrEmpty ? "title-unknown".localized : title!)
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+            : asset.naming.name
+        let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholder = ImagePlaceholder.init(
+            image: .init(asset: "asset-image-placeholder-border".uiImage),
+            text: .string(placeholderText)
         )
 
         imageSource = PNGImageSource(
             url: prismURL,
             shape: .circle,
-            placeholder: getPlaceholder(
-                placeholderText,
-                with: TextAttributes(
-                    font: Fonts.DMSans.regular.make(13),
-                    lineHeightMultiplier: 1.18
-                )
-            )
+            placeholder: placeholder
         )
     }
 
@@ -91,38 +86,6 @@ extension AssetAmountInputViewModel {
         _ asset: Asset
     ) {
         /// <todo> This will be implemented while constructing the screen.
-    }
-}
-
-extension AssetAmountInputViewModel {
-    private func getPlaceholder(
-        _ aPlaceholder: String?,
-        with attributes: TextAttributes
-    ) -> ImagePlaceholder? {
-        guard let aPlaceholder = aPlaceholder else {
-            return nil
-        }
-
-        let font = attributes.font
-        let lineHeightMultiplier = attributes.lineHeightMultiplier
-
-        let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
-        )
-
-        return ImagePlaceholder(
-            image: AssetImageSource(
-                asset: "asset-image-placeholder-border".uiImage
-            ),
-            text: placeholderText
-        )
+        detail = "0.00".footnoteRegular()
     }
 }
