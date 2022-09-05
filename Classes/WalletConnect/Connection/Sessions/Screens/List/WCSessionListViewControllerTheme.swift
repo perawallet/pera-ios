@@ -29,15 +29,15 @@ struct WCSessionListViewControllerTheme:
 
     init(_ family: LayoutFamily) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         disconnectAllAction = [
             .title("wallet-connect-session-disconnect-all-action".localized),
             .titleColor([
-                .normal(AppColors.Components.Button.Secondary.text)
+                .normal(Colors.Button.Secondary.text)
             ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         disconnectAllActionEdgeInsets = (16, 8, 16, 8)
         disconnectAllActionMargins = (.noMetric, 24, 12, 24)

@@ -338,8 +338,8 @@ extension WCSessionListViewController {
     }
 
     private func addDisconnectAllActionViewGradient() {
-        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0)
-        let color1 = AppColors.Shared.System.background.uiColor
+        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0)
+        let color1 = Colors.Defaults.background.uiColor
         disconnectAllActionViewGradient.colors = [color0, color1]
 
         view.addSubview(disconnectAllActionViewGradient)
@@ -388,14 +388,6 @@ extension WCSessionListViewController {
                 return
             }
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            self.analytics.track(
-                .wcSessionDisconnected(
-                    dappName: session.peerMeta.name,
-                    dappURL: session.peerMeta.url.absoluteString,
-                    address: session.walletMeta?.accounts?.first
-                )
-            )
             
             let allSessions = self.walletConnector.allWalletConnectSessions
 
@@ -446,8 +438,8 @@ extension WCSessionListViewController {
         _ walletConnector: WalletConnector,
         didDisconnectFrom session: WCSession
     ) {
-        log(
-            WCSessionDisconnectedEvent(
+        analytics.track(
+            .wcSessionDisconnected(
                 dappName: session.peerMeta.name,
                 dappURL: session.peerMeta.url.absoluteString,
                 address: session.walletMeta?.accounts?.first

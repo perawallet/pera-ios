@@ -40,18 +40,18 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         image = URLImageViewNoStyleLayoutSheet()
         imageSize = (40, 40)
         imageBorder = Border(
-            color: Colors.Shared.Layer.grayLighter.uiColor,
+            color: Colors.Layer.grayLighter.uiColor,
             width: 1
         )
         imageCorner = Corner(radius: imageSize.h / 2)
         name = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         nameHorizontalPadding = 16
         description = [
             .textOverflow(FittingText()),
-            .textColor(Colors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
         ]
         descriptionTopPadding = 8
         optionsAction = [
@@ -59,13 +59,13 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         ]
         date = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         dateTopPadding = 12
         status = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Shared.Helpers.positive),
-            .backgroundColor(Colors.Shared.Global.turquoise600.uiColor.withAlphaComponent(0.1))
+            .textColor(Colors.Helpers.positive),
+            .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
         ]
         statusTopPadding = 10
         statusContentEdgeInsets = (2, 8, 2, 8)
