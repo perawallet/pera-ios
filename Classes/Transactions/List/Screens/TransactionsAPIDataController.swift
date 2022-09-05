@@ -479,12 +479,11 @@ extension TransactionsAPIDataController {
                 }
 
                 if let transaction = transaction as? Transaction {
-                    guard let transactionID = transaction.id,
-                          let transactionType = transaction.type else {
+                    guard let transactionID = transaction.id else {
                         continue
                     }
 
-                    switch transactionType {
+                    switch transaction.type {
                     case .payment:
                         let draftComposer = AlgoTransactionItemDraftComposer(
                             draft: draft,
