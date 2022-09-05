@@ -622,7 +622,9 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController,
+                bannerController: appConfiguration.bannerController,
                 theme: theme
             )
             aViewController.delegate = delegate

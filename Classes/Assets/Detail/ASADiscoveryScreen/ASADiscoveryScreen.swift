@@ -368,7 +368,7 @@ extension ASADiscoveryScreen {
         aboutFragmentScreen.isScrollAnchoredOnTop = isFolding
 
         let aboutFragmentScrollView = aboutFragmentScreen.scrollView
-        if assetQuickActionView.isDescendant(of: view) {
+        if assetQuickActionView.isDescendant(of: view) && aboutFragmentScrollView.isScrollable {
             aboutFragmentScrollView.setContentInset(bottom: assetQuickActionView.bounds.height)
         } else {
             aboutFragmentScrollView.setContentInset(bottom: 0)

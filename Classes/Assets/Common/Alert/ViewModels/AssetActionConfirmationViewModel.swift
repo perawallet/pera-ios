@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetActionConfirmationViewModel: ViewModel {
-    private(set) var title: String?
+    private(set) var title: NSAttributedString?
     private(set) var titleColor: Color?
     private(set) var name: PrimaryTitleViewModel?
     private(set) var id: String?
@@ -48,7 +48,7 @@ final class AssetActionConfirmationViewModel: ViewModel {
 
 extension AssetActionConfirmationViewModel {
     private func bindTitle(_ draft: AssetAlertDraft) {
-        title = draft.title
+        title = draft.title?.bodyMedium(alignment: .center)
     }
 
     private func bindTitleColor(_ draft: AssetAlertDraft) {
@@ -76,7 +76,7 @@ extension AssetActionConfirmationViewModel {
             return
         }
 
-        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
 
         transactionFee = currencyFormatter.format(fee)
@@ -96,7 +96,7 @@ extension AssetActionConfirmationViewModel {
         }
 
         let attributedDetailText = NSMutableAttributedString(
-            attributedString: detailText.bodyRegular()
+            attributedString: detailText.footnoteMedium()
         )
 
         guard let asset = draft.asset,
@@ -107,7 +107,6 @@ extension AssetActionConfirmationViewModel {
               }
 
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         detail = attributedDetailText
     }
