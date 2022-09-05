@@ -18,6 +18,8 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Just one of these themes is enough to cover all, i.e. TransferAssetBalanceNameViewTheme etc.
 struct OptInAssetNameViewTheme: PrimaryTitleViewTheme {
     var primaryTitle: TextStyle
     var primaryTitleAccessory: ImageStyle

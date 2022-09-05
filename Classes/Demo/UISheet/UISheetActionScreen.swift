@@ -48,20 +48,24 @@ final class UISheetActionScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        footerViewEffectStyle = .linearGradient(
-            .init(colors: [
-                Colors.Defaults.background.uiColor.withAlphaComponent(0),
-                Colors.Defaults.background.uiColor
-            ])
-        )
-
         addContext()
 
-        if sheet.actions.isEmpty {
-            return
+        if !sheet.actions.isEmpty {
+            addActionsContext()
         }
+    }
 
-        addActionsContext()
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.3, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 }
 

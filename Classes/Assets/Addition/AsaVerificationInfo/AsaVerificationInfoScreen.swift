@@ -33,19 +33,22 @@ final class AsaVerificationInfoScreen: ScrollScreen {
         navigationBarController.isNavigationBarHidden = true
     }
 
-    override init() {
-        super.init()
-        footerViewEffectStyle = .linearGradient(
-            .init(colors: [
-                Colors.Defaults.background.uiColor.withAlphaComponent(0),
-                Colors.Defaults.background.uiColor
-            ])
-        )
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         addUI()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     override func viewDidLayoutSubviews() {

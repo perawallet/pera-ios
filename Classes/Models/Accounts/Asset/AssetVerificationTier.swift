@@ -48,6 +48,9 @@ enum AssetVerificationTier:
 }
 
 extension AssetVerificationTier {
+    var isTrusted: Bool {
+        return self == .trusted
+    }
     var isVerified: Bool {
         return self == .verified
     }

@@ -163,10 +163,9 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
 
-                let buyAlgoDraft = BuyAlgoDraft()
-                buyAlgoDraft.address = self.accountHandle.value.address
-
-                self.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
+                let draft = BuyAlgoDraft()
+                draft.address = self.accountHandle.value.address
+                self.buyAlgoFlowCoordinator.launch(draft: draft)
             case .send:
                 self.assetListScreen.endEditing()
 

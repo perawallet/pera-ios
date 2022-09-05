@@ -45,10 +45,10 @@ struct QRScanOptionsViewControllerTheme:
         addressContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
         addressContainerShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

@@ -22,9 +22,10 @@ struct WCAssetInformationViewTheme:
     LayoutSheet,
     StyleSheet {
     let title: TextStyle
+    let verificationTierIcon: ImageStyle
+    let verificationTierIconOffset: LayoutOffset
     let asset: TextStyle
     let detailLabelLeadingPadding: LayoutMetric
-    let spacing: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -35,6 +36,10 @@ struct WCAssetInformationViewTheme:
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.verificationTierIcon = [
+            .contentMode(.left)
+        ]
+        self.verificationTierIconOffset = (8, 0)
         self.asset = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
@@ -42,6 +47,5 @@ struct WCAssetInformationViewTheme:
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.detailLabelLeadingPadding = 137
-        self.spacing = 8
     }
 }

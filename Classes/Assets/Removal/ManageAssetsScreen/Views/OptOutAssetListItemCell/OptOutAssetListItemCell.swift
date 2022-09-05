@@ -83,6 +83,12 @@ final class OptOutAssetListItemCell:
             theme.contextEdgeInsets.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        accessory = .remove
+    }
 }
 
 extension OptOutAssetListItemCell {

@@ -118,9 +118,7 @@ extension UIViewController {
     public func openInBrowser(
         _ url: URL
     ) {
-        if !UIApplication.shared.canOpenURL(
-            url
-        ) {
+        if !UIApplication.shared.canOpenURL(url) {
             return
         }
 
