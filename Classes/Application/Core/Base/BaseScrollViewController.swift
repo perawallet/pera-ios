@@ -77,6 +77,7 @@ class BaseScrollViewController: BaseViewController {
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
+            $0.height.equalToSuperview().priority(.low)
         }
     }
 
@@ -121,28 +122,6 @@ class BaseScrollViewController: BaseViewController {
     private func updateScrollLayoutWhenViewDidLayoutSubviews() {
         if !footerView.bounds.isEmpty {
             scrollView.setContentInset(bottom: footerView.bounds.height)
-        }
-    }
-}
-
-extension BaseScrollViewController {
-    private func setupScrollViewLayout() {
-        view.addSubview(scrollView)
-        
-        scrollView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupContentViewLayout() {
-        scrollView.addSubview(contentView)
-        
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.leading.trailing.equalTo(view)
-            make.height.equalToSuperview().priority(.low)
         }
     }
 }

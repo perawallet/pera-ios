@@ -20,7 +20,7 @@ import MacaroonUIKit
 import MacaroonForm
 
 final class ExportAccountsDomainConfirmationScreen:
-    BaseScrollViewController,
+    ScrollScreen,
     MacaroonForm.KeyboardControllerDataSource,
     NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event, ExportAccountsDomainConfirmationScreen) -> Void
@@ -59,18 +59,14 @@ final class ExportAccountsDomainConfirmationScreen:
 
     private var isLayoutFinalized = false
 
-
     private let theme: ExportAccountsDomainConfirmationScreenTheme
 
     init(
-        configuration: ViewControllerConfiguration,
         theme: ExportAccountsDomainConfirmationScreenTheme = .init()
     ) {
         self.theme = theme
-        super.init(configuration: configuration)
 
-        keyboardController.activate()
-        navigationBarLargeTitleController.activate()
+        super.init()
     }
 
     deinit {
@@ -78,8 +74,15 @@ final class ExportAccountsDomainConfirmationScreen:
         navigationBarLargeTitleController.deactivate()
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
+    override func setListeners() {
+        super.setListeners()
+
+        keyboardController.activate()
+        navigationBarLargeTitleController.activate()
+    }
+
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
 
         navigationBarLargeTitleController.title = "web-export-accounts-domain-confirmation-title".localized
     }
