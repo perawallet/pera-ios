@@ -17,6 +17,8 @@
 
 import Foundation
 import MagpieCore
+import MagpieHipo
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
@@ -55,7 +57,7 @@ extension ALGAPI {
     @discardableResult
     func exportAccounts(
         _ draft: EncryptedExportAccountDraft,
-        onCompleted handler: @escaping (Response.RawResult) -> Void
+        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

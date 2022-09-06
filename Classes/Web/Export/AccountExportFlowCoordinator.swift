@@ -193,20 +193,20 @@ extension AccountExportFlowCoordinator {
             draft: exportAccountDraft,
             qrExportInformations: qrExportInformations
         )
-        api.exportAccounts(encryptedAccountDraft) { [weak self] response in
+        api.exportAccounts(encryptedAccountDraft) { [weak self] result in
             guard let self = self else {
                 return
             }
 
             screen.stopLoading()
 
-            switch response {
+            switch result {
             case .success:
                 self.navigateToSuccessScreen(on: screen)
-            case .failure(let apiError):
+            case let .failure(apiError, errorModel):
                 screen.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
-                    message: apiError.description
+                    message: errorModel?.message() ?? apiError.description
                 )
             }
         }
