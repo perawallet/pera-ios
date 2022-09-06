@@ -57,7 +57,9 @@ final class ASAAboutScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addUI()
+        bindUIData()
     }
 
     override func viewDidLayoutSubviews() {
