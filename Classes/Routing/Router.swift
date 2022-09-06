@@ -819,9 +819,8 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account, let receiver):
+        case .assetSelection(let account, let receiver):
             viewController = SelectAssetViewController(
-                filter: filter,
                 account: account,
                 receiver: receiver,
                 configuration: configuration
@@ -1431,7 +1430,6 @@ extension Router {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )

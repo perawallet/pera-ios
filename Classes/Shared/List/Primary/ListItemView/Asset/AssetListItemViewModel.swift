@@ -31,9 +31,7 @@ struct AssetListItemViewModel:
 
     private(set) var valueInUSD: Decimal?
 
-    init(
-        _ item: AssetItem
-    ) {
+    init(_ item: AssetItem) {
         bindImageSource(item)
         bindTitle(item)
         bindPrimaryValue(item)
