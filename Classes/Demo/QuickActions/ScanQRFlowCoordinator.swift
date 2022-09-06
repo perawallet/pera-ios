@@ -303,7 +303,6 @@ extension ScanQRFlowCoordinator {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )

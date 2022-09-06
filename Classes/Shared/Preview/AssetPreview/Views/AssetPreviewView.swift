@@ -15,14 +15,15 @@
 //
 //   AssetPreviewView.swift
 
-import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
+import UIKit
 
 final class AssetPreviewView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = PrimaryImageView()
+    private lazy var iconView = URLImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
@@ -50,7 +51,7 @@ final class AssetPreviewView:
     func bindData(
         _ viewModel: AssetPreviewViewModel?
     ) {
-        iconView.bindData(viewModel?.assetImageViewModel)
+//        iconView.bindData(viewModel?.assetImageViewModel)
         titleView.editText = viewModel?.title
         verifiedIconView.image = viewModel?.verificationTierIcon
         subtitleView.editText = viewModel?.subtitle
@@ -106,7 +107,7 @@ extension AssetPreviewView {
     private func addIconView(
         _ theme: AssetPreviewViewTheme
     ) {
-        iconView.customize(theme.icon)
+//        iconView.customize(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()

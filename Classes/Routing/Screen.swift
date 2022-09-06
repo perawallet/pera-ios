@@ -128,7 +128,6 @@ indirect enum Screen {
         shouldFilterAccount: ((Account) -> Bool)? = nil
     )
     case assetSelection(
-        filter: AssetType?,
         account: Account,
         receiver: String? = nil
     )
