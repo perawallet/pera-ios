@@ -190,7 +190,7 @@ extension AssetListItemViewModel {
 }
 
 extension AssetListItemViewModel {
-    private func getPlaceholder(
+    static func getPlaceholder(
         _ aPlaceholder: String?,
         with attributes: TextAttributes
     ) -> ImagePlaceholder? {
