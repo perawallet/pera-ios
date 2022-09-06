@@ -18,7 +18,9 @@ import UIKit
 import MacaroonUIKit
 import MacaroonForm
 
-final class SelectorInputView: View {
+final class SelectorInputView:
+    View,
+    ViewModelBindable {
     private(set) lazy var textInputView = FloatingTextInputFieldView()
     private lazy var selectorOptionsView = SegmentedControl()
 
@@ -30,6 +32,18 @@ final class SelectorInputView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func bindData(_ viewModel: SelectorInputViewModel?) {
+        selectorOptionsView.removeAllSegments()
+
+        if let options = viewModel?.selectorOptions {
+            selectorOptionsView.add(segments: options)
+        }
+
+        if let selectedIndex = viewModel?.defaultSelectedIndex {
+            selectorOptionsView.selectedSegmentIndex = selectedIndex
+        }
+    }
 }
 
 extension SelectorInputView {

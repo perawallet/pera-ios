@@ -50,6 +50,12 @@ final class SetSlippageToleranceScreen:
         addBackground(theme)
         addContext(theme)
     }
+
+    override func bindData() {
+        super.bindData()
+
+        contextView.bindData(SlippageSelectorInputViewModel())
+    }
 }
 
 extension SetSlippageToleranceScreen {
