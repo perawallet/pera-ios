@@ -16,12 +16,13 @@
 //   AssetPreviewActionView.swift
 
 import MacaroonUIKit
+import MacaroonURLImage
 import UIKit
 
 final class AssetPreviewActionView: View {
     weak var delegate: AssetPreviewActionViewDelegate?
 
-    private lazy var imageView = PrimaryImageView()
+    private lazy var imageView = URLImageView()
     private lazy var assetNameVerticalStackView = UIStackView()
     private lazy var assetNameHorizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
@@ -59,9 +60,9 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView {
     private func addImage(_ theme: AssetPreviewActionViewTheme) {
-        imageView.customize(AssetImageViewTheme())
-        addSubview(imageView)
+        imageView.build(theme.image)
 
+        addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.fitToSize(theme.imageSize)
@@ -125,7 +126,7 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(viewModel?.assetImageViewModel)
+        imageView.load(from: viewModel?.assetImageViewModel)
         assetNameLabel.editText = viewModel?.title
         secondaryImageView.image = viewModel?.verificationTierIcon
         assetShortNameLabel.editText = viewModel?.subtitle

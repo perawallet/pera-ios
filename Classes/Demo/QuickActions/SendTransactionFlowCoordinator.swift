@@ -85,10 +85,7 @@ extension SendTransactionFlowCoordinator {
         account: Account,
         on screen: UIViewController? = nil
     ) {
-        let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
-            account: account
-        )
+        let assetSelectionScreen: Screen = .assetSelection(account: account)
 
         if let screen = screen {
             screen.open(

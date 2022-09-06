@@ -33,7 +33,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private lazy var nextButton = Button()
     private lazy var accountContainerView = TripleShadowView()
-    private lazy var accountView = AssetPreviewView()
+    private lazy var accountView = PrimaryListItemView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
@@ -191,38 +191,25 @@ extension SendTransactionScreen {
     private func bindAssetPreview() {
         let currency = sharedDataController.currency
 
-        let viewModel: AssetPreviewViewModel
+        let viewModel: PrimaryListItemViewModel
 
         switch draft.transactionMode {
         case .algo:
-            let algoAssetItem = AlgoAssetItem(
-                account: draft.from,
+            let algoAssetItem = AssetItem(
+                asset: draft.from.algo,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(algoAssetItem)
+        case .asset(let asset):
+            let assetItem = AssetItem(
+                asset: asset,
                 currency: currency,
                 currencyFormatter: currencyFormatter,
                 currencyFormattingContext: .standalone()
             )
-            /// <todo> Use new list item structure
-            let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-            viewModel = AssetPreviewViewModel(algoAssetPreview)
-        case .asset(let asset):
-            if let collectibleAsset = asset as? CollectibleAsset {
-                let draft = CollectibleAssetPreviewSelectionDraft(
-                    asset: collectibleAsset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter,
-                    currencyFormattingContext: .standalone()
-                )
-                viewModel = AssetPreviewViewModel(draft)
-            } else {
-                let assetItem = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter,
-                    currencyFormattingContext: .standalone()
-                )
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
-                viewModel = AssetPreviewViewModel(assetPreview)
-            }
+            viewModel = AssetListItemViewModel(assetItem)
         }
 
         accountView.bindData(viewModel)
@@ -349,7 +336,7 @@ extension SendTransactionScreen {
     }
 
     private func addAccountView() {
-        accountView.customize(AssetPreviewViewTheme())
+        accountView.customize(AssetListItemTheme())
 
         accountContainerView.draw(corner: theme.accountContainerCorner)
         accountContainerView.drawAppearance(border: theme.accountContainerBorder)

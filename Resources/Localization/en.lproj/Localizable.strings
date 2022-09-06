@@ -274,7 +274,8 @@
 "asset-quick-action-button-add" = "Add Asset";
 "asset-quick-action-title-opt-in" = "You can add this NFT to";
 "asset-quick-action-title-add" = "You can add this asset to";
-"asset-quick-action-title-add-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
 "asset-quick-action-title-remove" = "Opted in to";
 "asset-opt-in-successful-message" = "%@ successfully added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully removed from your account.";

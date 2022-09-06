@@ -548,7 +548,7 @@ class Router:
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
-            ? TransactionType.sent
+            ? TransferType.sent
             : .received
 
             viewController = TransactionDetailViewController(
@@ -622,7 +622,9 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController,
+                bannerController: appConfiguration.bannerController,
                 theme: theme
             )
             aViewController.delegate = delegate
@@ -817,9 +819,8 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account, let receiver):
+        case .assetSelection(let account, let receiver):
             viewController = SelectAssetViewController(
-                filter: filter,
                 account: account,
                 receiver: receiver,
                 configuration: configuration
@@ -1447,7 +1448,6 @@ extension Router {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )
