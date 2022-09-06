@@ -54,24 +54,4 @@ enum AssetPreviewModelAdapter {
             asset: nil
         )
     }
-
-    static func adaptAssetSelection(
-        _ item: AssetItem
-    ) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(item)
-        let asset = item.asset
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : asset.naming.name
-        return AssetPreviewModel(
-            icon: .url(nil, title: asset.naming.name),
-            verificationTier: asset.verificationTier,
-            title: title,
-            subtitle: "ID \(asset.id)",
-            primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.valueInCurrency,
-            currencyAmount: assetViewModel.valueInUSD,
-            asset: asset
-        )
-    }
 }
