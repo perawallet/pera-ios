@@ -532,7 +532,7 @@ extension WCMainTransactionScreen: AssetCachable {
 
                 if assetDetail == nil {
                     self.loadingController?.stopLoading()
-                    self.rejectSigning(reason: .invalidInput(.asset))
+                    self.rejectSigning(reason: .invalidInput(.unableToFetchAsset))
                     return
                 }
 

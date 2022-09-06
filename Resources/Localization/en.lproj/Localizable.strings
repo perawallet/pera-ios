@@ -869,6 +869,7 @@
 "wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
 "wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
 "wallet-connect-transaction-error-unable-sign" = "Invalid Input: Unable to be signed";
+"wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
