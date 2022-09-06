@@ -998,6 +998,12 @@
 		2B2C67B228C785B90099C2CE /* SelectorOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B128C785B90099C2CE /* SelectorOption.swift */; };
 		2B2C67B328C785B90099C2CE /* SelectorOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B128C785B90099C2CE /* SelectorOption.swift */; };
 		2B2C67B428C785B90099C2CE /* SelectorOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B128C785B90099C2CE /* SelectorOption.swift */; };
+		2B2C67B628C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */; };
+		2B2C67B728C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */; };
+		2B2C67B828C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */; };
+		2B2C67BA28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */; };
+		2B2C67BB28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */; };
+		2B2C67BC28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */; };
 		2B2DF286281014E7008BC52D /* CurrencySelectionListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DF285281014E7008BC52D /* CurrencySelectionListAPIDataController.swift */; };
 		2B2DF287281014E7008BC52D /* CurrencySelectionListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DF285281014E7008BC52D /* CurrencySelectionListAPIDataController.swift */; };
 		2B2DF288281014E7008BC52D /* CurrencySelectionListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DF285281014E7008BC52D /* CurrencySelectionListAPIDataController.swift */; };
@@ -5728,6 +5734,8 @@
 		2B2C679F28C75F9C0099C2CE /* SelectorInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorInputView.swift; sourceTree = "<group>"; };
 		2B2C67A328C7605A0099C2CE /* SelectorInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorInputViewTheme.swift; sourceTree = "<group>"; };
 		2B2C67B128C785B90099C2CE /* SelectorOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorOption.swift; sourceTree = "<group>"; };
+		2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSlippageToleranceScreen.swift; sourceTree = "<group>"; };
+		2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSlippageToleranceScreenTheme.swift; sourceTree = "<group>"; };
 		2B2DF285281014E7008BC52D /* CurrencySelectionListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionListAPIDataController.swift; sourceTree = "<group>"; };
 		2B2DF28A28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionNoContentViewModel.swift; sourceTree = "<group>"; };
 		2B2DF28F28103499008BC52D /* CurrencySelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionListLayout.swift; sourceTree = "<group>"; };
@@ -8141,6 +8149,7 @@
 		2B2C679528C5F2F90099C2CE /* SelectorInputScreen */ = {
 			isa = PBXGroup;
 			children = (
+				2B2C67BD28C787A80099C2CE /* Screens */,
 				2B2C679E28C75F890099C2CE /* Views */,
 			);
 			path = SelectorInputScreen;
@@ -8154,6 +8163,23 @@
 				2B2C67B128C785B90099C2CE /* SelectorOption.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2B2C67BD28C787A80099C2CE /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B2C67BE28C787B00099C2CE /* SlippageTolerance */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2B2C67BE28C787B00099C2CE /* SlippageTolerance */ = {
+			isa = PBXGroup;
+			children = (
+				2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */,
+				2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */,
+			);
+			path = SlippageTolerance;
 			sourceTree = "<group>";
 		};
 		2B2DF28928102B3F008BC52D /* ViewModels */ = {
@@ -17358,6 +17384,7 @@
 				2B3C73052898627900A0181F /* Colors.swift in Sources */,
 				179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */,
 				D4A8759D27C9439200550935 /* ShimmerAnimatable.swift in Sources */,
+				2B2C67B828C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */,
 				17BD4E1A2292F1260003E49A /* AccountCellViewModel.swift in Sources */,
 				D4B1524826F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift in Sources */,
 				D4C45BF92726C60500F4AE31 /* ContactInformationViewTheme.swift in Sources */,
@@ -18431,6 +18458,7 @@
 				2BA4B42026793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				F0B5B0CD27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
 				95D11D0B2771D4D0001B2C37 /* TitleHeaderViewTheme.swift in Sources */,
+				2B2C67BC28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */,
 				95B0114B2769DB9200B5CA7B /* SendTransactionScreen+Theme.swift in Sources */,
 				2B83D04D26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */,
 				D4CC28D72875AC0B0082E038 /* InnerTransactionPreviewView.swift in Sources */,
@@ -19529,6 +19557,7 @@
 				D4F22127270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				F022D1DE276365DE00D786CD /* BlockProcessor.swift in Sources */,
 				2B0F621624EC129D00DA22A6 /* Utils.swift in Sources */,
+				2B2C67BB28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */,
 				D4CCA1DE27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */,
 				170A650E27ED9814006AC9DF /* AnnouncementCell.swift in Sources */,
 				F034521F28B37596009467A0 /* ASADiscoveryScreenTheme.swift in Sources */,
@@ -20422,6 +20451,7 @@
 				2B0F62FA24EC129D00DA22A6 /* NodeTestDraft.swift in Sources */,
 				2BA4B3FA267819B20041586B /* WCSessionItemCell.swift in Sources */,
 				2B0F62FB24EC129D00DA22A6 /* PushNotificationController.swift in Sources */,
+				2B2C67B728C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */,
 				2B7A1F5127DD26D40010F52E /* CollectibleMediaPreviewCell.swift in Sources */,
 				2B85F3F2257A721D00C871A5 /* LedgerTransactionOperation.swift in Sources */,
 				959672E627BA4E3A00BFDE5D /* NotificationLoadingViewCommonTheme.swift in Sources */,
@@ -20869,6 +20899,7 @@
 				D4D3AE79284A722400D51A08 /* AccountNamePreviewView.swift in Sources */,
 				D4CCA1D527241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */,
 				17CADC872853A672001D19A8 /* TransactionOptionsContextView.swift in Sources */,
+				2B2C67B628C786C10099C2CE /* SetSlippageToleranceScreen.swift in Sources */,
 				2B01E2C824EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */,
 				D48FDFEF27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */,
 				2B3A4D0128736CAD00AB19A1 /* CurrencySelectionLoadingViewCell.swift in Sources */,
@@ -21942,6 +21973,7 @@
 				F0B5B0CB27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
 				D4B6EA66276FAC46005E2D2C /* TransactionStatusViewTheme.swift in Sources */,
 				95AF1C6027AD4EE7001AB131 /* PreviewLoadingView.swift in Sources */,
+				2B2C67BA28C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift in Sources */,
 				2BA4B41E26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				D4B6EA5E276F92E3005E2D2C /* ContactDisplayViewTheme.swift in Sources */,
 				F0E72189284F6A7B00865419 /* ReceiveTransactionFlowCoordinator.swift in Sources */,

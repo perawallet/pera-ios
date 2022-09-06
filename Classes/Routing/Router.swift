@@ -1062,6 +1062,8 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .setSlippage(let theme):
+            viewController = SetSlippageToleranceScreen(theme: theme)
         }
 
         return viewController as? T
