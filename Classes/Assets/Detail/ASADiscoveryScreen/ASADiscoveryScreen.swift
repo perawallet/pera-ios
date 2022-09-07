@@ -138,6 +138,11 @@ final class ASADiscoveryScreen:
             switchToDefaultNavigationBarAppearance()
         }
     }
+
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        bindUIDataWhenPreferredUserInterfaceStyleDidChange()
+    }
 }
 
 extension ASADiscoveryScreen {
@@ -200,6 +205,10 @@ extension ASADiscoveryScreen {
     private func bindUIData() {
         bindProfileData()
         bindAboutFragmentData()
+    }
+
+    private func bindUIDataWhenPreferredUserInterfaceStyleDidChange() {
+        bindProfileDataWhenPreferredUserInterfaceStyleDidChange()
     }
 
     private func addBackground() {
@@ -311,6 +320,14 @@ extension ASADiscoveryScreen {
         profileView.bindData(viewModel)
     }
 
+    private func bindProfileDataWhenPreferredUserInterfaceStyleDidChange() {
+        let asset = dataController.asset
+
+        var viewModel = ASADiscoveryProfileViewModel()
+        viewModel.bindIcon(asset: asset)
+        profileView.bindIcon(viewModel)
+    }
+
     private func addAboutFragment() {
         addContent(aboutFragmentScreen) {
             fragmentView in
@@ -331,10 +348,6 @@ extension ASADiscoveryScreen {
         )
     }
 
-    private func updateAboutFragmentWhenViewLayoutDidChange() {
-        updateAboutFragment(for: lastDisplayState)
-    }
-
     private func updateAboutFragment(for state: DisplayState) {
         let normalTopEdgeInset = calculateSpacingOverAboutFragment(for: .folded)
         aboutFragmentHeightConstraint.update(offset: -normalTopEdgeInset)
@@ -345,6 +358,10 @@ extension ASADiscoveryScreen {
     private func updateAboutFragmentPosition(for state: DisplayState) {
         let topEdgeInset = calculateSpacingOverAboutFragment(for: state)
         aboutFragmentTopEdgeConstraint.update(inset: topEdgeInset)
+    }
+
+    private func updateAboutFragmentWhenViewLayoutDidChange() {
+        updateAboutFragment(for: lastDisplayState)
     }
 
     private func updateAboutFragmentWhenPagesScrollableAreaDidChange() {
@@ -369,8 +386,13 @@ extension ASADiscoveryScreen {
         aboutFragmentScreen.isScrollAnchoredOnTop = isFolding
 
         let aboutFragmentScrollView = aboutFragmentScreen.scrollView
-        if assetQuickActionView.isDescendant(of: view) && aboutFragmentScrollView.isScrollable {
-            aboutFragmentScrollView.setContentInset(bottom: assetQuickActionView.bounds.height)
+        if assetQuickActionView.isDescendant(of: view) {
+            let assetQuickActionHeight = assetQuickActionView.bounds.height
+            let aboutFragmentContentHeight = aboutFragmentScreen.contentSize.height + assetQuickActionHeight
+            let aboutFragmentHeight = aboutFragmentScreen.view.bounds.height
+            let aboutFragmentScrollableAreaHeight = aboutFragmentContentHeight - aboutFragmentHeight
+            let bottom = aboutFragmentScrollableAreaHeight.clamped(0...assetQuickActionHeight)
+            aboutFragmentScrollView.setContentInset(bottom: bottom)
         } else {
             aboutFragmentScrollView.setContentInset(bottom: 0)
         }
