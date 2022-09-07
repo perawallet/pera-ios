@@ -48,6 +48,11 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
 
         super.init(configuration: configuration)
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadData()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -69,6 +74,24 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
         super.linkInteractors()
         ledgerAccountDetailView.collectionView.delegate = ledgerAccountDetailLayoutBuilder
         ledgerAccountDetailView.collectionView.dataSource = ledgerAccountDetailDataSource
+    }
+}
+
+extension LedgerAccountDetailViewController {
+    private func loadData() {
+        ledgerAccountDetailDataSource.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didLoadData:
+                self.ledgerAccountDetailView.collectionView.reloadData()
+            case .didFailLoadingData:
+                self.ledgerAccountDetailView.collectionView.reloadData()
+            }
+        }
+
+        ledgerAccountDetailDataSource.fetchAssets()
     }
 }
 

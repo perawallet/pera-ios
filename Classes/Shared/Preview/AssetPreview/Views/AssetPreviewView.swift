@@ -51,7 +51,7 @@ final class AssetPreviewView:
     func bindData(
         _ viewModel: AssetPreviewViewModel?
     ) {
-//        iconView.bindData(viewModel?.assetImageViewModel)
+        iconView.load(from: viewModel?.imageSource)
         titleView.editText = viewModel?.title
         verifiedIconView.image = viewModel?.verificationTierIcon
         subtitleView.editText = viewModel?.subtitle
@@ -107,7 +107,8 @@ extension AssetPreviewView {
     private func addIconView(
         _ theme: AssetPreviewViewTheme
     ) {
-//        iconView.customize(theme.icon)
+        iconView.build(theme.icon)
+        iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
