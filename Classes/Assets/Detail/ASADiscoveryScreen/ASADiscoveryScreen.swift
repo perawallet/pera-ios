@@ -766,11 +766,8 @@ extension ASADiscoveryScreen {
 
             let asset = self.dataController.asset
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptInUpdates(
-                request,
-                for: account
-            )
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
@@ -870,11 +867,8 @@ extension ASADiscoveryScreen {
             guard let creator = asset.creator else { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptOutBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptOutUpdates(
-                request,
-                for: account
-            )
+            let request = OptOutBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptOutUpdates(request)
             
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
