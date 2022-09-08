@@ -36,7 +36,7 @@ struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
     private(set) var assetID: AssetID?
-    private(set) var assetImageViewModel: ImageSource?
+    private(set) var imageSource: ImageSource?
     private(set) var verificationTierIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
@@ -64,7 +64,7 @@ extension AssetPreviewViewModel {
                 preview.title,
                 titleColor: titleColor
             )
-            bindAssetImageView(preview.asset)
+            bindImageSource(preview.asset)
             bindVerificationTierIcon(preview.verificationTier)
             bindSubtitle(preview.subtitle)
             bindPrimaryAccessory(preview.primaryAccessory)
@@ -75,16 +75,16 @@ extension AssetPreviewViewModel {
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetImageView(
+    private mutating func bindImageSource(
         _ asset: Asset?
     ) {
         guard let asset = asset else {
-            assetImageViewModel = nil
+            imageSource = nil
             return
         }
 
         if asset.isAlgo {
-            assetImageViewModel = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
             return
         }
 
@@ -118,7 +118,7 @@ extension AssetPreviewViewModel {
             )
         )
 
-        assetImageViewModel = PNGImageSource(
+        imageSource = PNGImageSource(
             url: url,
             shape: iconShape,
             placeholder: placeholder
@@ -201,43 +201,7 @@ extension AssetPreviewViewModel {
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetID(
-        _ asset: CollectibleAsset
-    ) {
-        assetID = asset.id
-    }
 
-    private mutating func bindImage(
-        _ asset: CollectibleAsset
-    ) {
-        bindAssetImageView(asset)
-    }
-
-    private mutating func bindTitle(
-        _ asset: CollectibleAsset
-    ) {
-        let titleColor: Color =
-        asset.verificationTier.isSuspicious
-        ? Colors.Helpers.negative
-        : Colors.Text.main
-
-        bindTitle(
-            asset.name,
-            titleColor: titleColor
-        )
-    }
-
-    private mutating func bindSubtitle(
-        _ asset: CollectibleAsset
-    ) {
-        bindSubtitle(asset.unitName)
-    }
-
-    private mutating func bindSecondAccessory(
-        _ asset: CollectibleAsset
-    ) {
-        bindSecondaryAccessory(String(asset.id))
-    }
 }
 
 extension AssetPreviewViewModel {

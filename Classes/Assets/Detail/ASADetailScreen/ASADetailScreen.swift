@@ -144,6 +144,11 @@ final class ASADetailScreen:
             switchToDefaultNavigationBarAppearance()
         }
     }
+
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        bindUIDataWhenPreferredUserInterfaceStyleDidChange()
+    }
 }
 
 /// <todo>
@@ -377,6 +382,10 @@ extension ASADetailScreen {
         bindPagesFragmentData()
     }
 
+    private func bindUIDataWhenPreferredUserInterfaceStyleDidChange() {
+        bindProfileDataWhenPreferredUserInterfaceStyleDidChange()
+    }
+
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
@@ -461,12 +470,21 @@ extension ASADetailScreen {
     }
 
     private func bindProfileData() {
+        let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
-            asset: dataController.asset,
+            asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         profileView.bindData(viewModel)
+    }
+
+    private func bindProfileDataWhenPreferredUserInterfaceStyleDidChange() {
+        let asset = dataController.asset
+
+        var viewModel = ASADiscoveryProfileViewModel()
+        viewModel.bindIcon(asset: asset)
+        profileView.bindIcon(viewModel)
     }
 
     private func updateProfile(for state: DisplayState) {

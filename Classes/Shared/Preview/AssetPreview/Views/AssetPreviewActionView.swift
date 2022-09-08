@@ -126,7 +126,7 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.load(from: viewModel?.assetImageViewModel)
+        imageView.load(from: viewModel?.imageSource)
         assetNameLabel.editText = viewModel?.title
         secondaryImageView.image = viewModel?.verificationTierIcon
         assetShortNameLabel.editText = viewModel?.subtitle
