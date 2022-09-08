@@ -14,33 +14,47 @@
 
 //   SetSlippageToleranceScreen.swift
 
-import Foundation
+import UIKit
 import MacaroonUIKit
 import MacaroonForm
 import MacaroonBottomSheet
-import SwiftUI
+import MacaroonUtils
 
 final class SetSlippageToleranceScreen:
-    ScrollScreen,
-    BottomSheetScrollPresentable {
+    BaseScrollViewController,
+    BottomSheetScrollPresentable,
+    MacaroonForm.KeyboardControllerDataSource {
     var modalHeight: ModalHeight {
         return .compressed
     }
 
-    private let theme: SetSlippageToleranceScreenTheme
-
     private lazy var contextView = SelectorInputView()
 
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: scrollView,
+        screen: self
+    )
+
+    private let theme: SetSlippageToleranceScreenTheme
+
     init(
-        theme: SetSlippageToleranceScreenTheme = .init()
+        theme: SetSlippageToleranceScreenTheme = .init(),
+        configuration: ViewControllerConfiguration
     ) {
         self.theme = theme
-        super.init()
+        super.init(configuration: configuration)
+
+        keyboardController.activate()
     }
 
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
+    deinit {
+        keyboardController.deactivate()
+    }
 
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        addBarButtons()
         bindNavigationItemTitle()
     }
 
@@ -56,9 +70,24 @@ final class SetSlippageToleranceScreen:
 
         contextView.bindData(SlippageSelectorInputViewModel())
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        updateLayoutWithKeyboardAppearance()
+    }
 }
 
 extension SetSlippageToleranceScreen {
+    private func addBarButtons() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+        }
+        rightBarButtonItems = [doneBarButtonItem]
+    }
     private func bindNavigationItemTitle() {
         navigationItem.largeTitleDisplayMode = .never
         title = "swap-slippage-title".localized
@@ -69,6 +98,7 @@ extension SetSlippageToleranceScreen {
     private func addBackground(_ theme: SetSlippageToleranceScreenTheme) {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
+
     private func addContext(_ theme: SetSlippageToleranceScreenTheme) {
         contextView.customize(theme.contextView)
 
@@ -76,5 +106,22 @@ extension SetSlippageToleranceScreen {
         contextView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension SetSlippageToleranceScreen {
+    private func updateLayoutWithKeyboardAppearance() {
+        if keyboardController.isKeyboardVisible {
+            guard let keyboardHeight = keyboardController.keyboard?.height else {
+                return
+            }
+
+            contextView.setBottomPaddingForKeyboard(keyboardHeight)
+            performLayoutUpdates()
+            return
+        }
+
+        contextView.setBottomPadding()
+        performLayoutUpdates()
     }
 }

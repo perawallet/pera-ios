@@ -1063,7 +1063,10 @@ class Router:
                 theme: theme
             )
         case .setSlippage(let theme):
-            viewController = SetSlippageToleranceScreen(theme: theme)
+            viewController = SetSlippageToleranceScreen(
+                theme: theme,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

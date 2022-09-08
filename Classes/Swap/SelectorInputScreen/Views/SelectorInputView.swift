@@ -70,3 +70,21 @@ extension SelectorInputView {
         }
     }
 }
+
+extension SelectorInputView {
+    func resetSelectedOption() {
+        selectorOptionsView.selectedSegmentIndex = -1
+    }
+
+    func setBottomPadding() {
+        selectorOptionsView.snp.updateConstraints {
+            $0.bottom == 40
+        }
+    }
+
+    func setBottomPaddingForKeyboard(_ bottomPadding: LayoutMetric) {
+        selectorOptionsView.snp.updateConstraints {
+            $0.bottom == bottomPadding
+        }
+    }
+}
