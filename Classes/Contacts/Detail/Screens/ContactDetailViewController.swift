@@ -124,15 +124,14 @@ extension ContactDetailViewController {
 
                 let account = accountWrapper.account
                 self.contactAccount = account
-
-                let algoAssetItem = AlgoAssetItem(
-                    account: account,
+                
+                let algoAssetItem = AssetItem(
+                    asset: account.algo,
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                /// <todo> Use new list item structure
-                let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-                self.assetPreviews.append(algoAssetPreview)
+                let preview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+                self.assetPreviews.append(preview)
                 
                 if account.hasAnyAssets() {
                     if let assets = account.assets {

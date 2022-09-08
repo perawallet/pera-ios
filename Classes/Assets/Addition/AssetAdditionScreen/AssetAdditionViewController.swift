@@ -467,11 +467,8 @@ extension AssetAdditionViewController {
             if !self.canSignTransaction(for: &account) { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptInUpdates(
-                request,
-                for: account
-            )
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
             let transactionController = self.createNewTransactionController(for: asset)

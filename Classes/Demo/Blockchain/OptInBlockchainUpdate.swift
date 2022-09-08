@@ -17,6 +17,7 @@
 import Foundation
 
 struct OptInBlockchainUpdate: BlockchainUpdate {
+    let accountAddress: String
     let assetID: AssetID
     let assetName: String?
     let assetUnitName: String?
@@ -27,6 +28,7 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
     let notificationMessage: String
 
     init(request: OptInBlockchainRequest) {
+        self.accountAddress = request.accountAddress
         self.assetID = request.assetID
         self.assetName = request.assetName
         self.assetUnitName = request.assetUnitName
@@ -43,6 +45,7 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         update: OptInBlockchainUpdate,
         status: Status
     ) {
+        self.accountAddress = update.accountAddress
         self.assetID = update.assetID
         self.assetName = update.assetName
         self.assetUnitName = update.assetUnitName

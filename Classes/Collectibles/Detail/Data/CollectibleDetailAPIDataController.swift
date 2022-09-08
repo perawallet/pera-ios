@@ -176,7 +176,10 @@ extension CollectibleDetailAPIDataController {
     private func addActionContentIfNeeded(
         _ snapshot: inout Snapshot
     ) {
-        if quickAction != nil { return }
+        if quickAction != nil {
+            addWatchAccountActionContent(&snapshot)
+            return
+        }
 
         if account.isWatchAccount() {
             addWatchAccountActionContent(&snapshot)
