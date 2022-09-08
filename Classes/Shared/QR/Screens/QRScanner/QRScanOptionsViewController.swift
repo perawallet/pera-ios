@@ -29,7 +29,7 @@ final class QRScanOptionsViewController:
 
     private let copyToClipboardController: CopyToClipboardController
 
-    private lazy var addressContextView = UIView()
+    private lazy var addressContextView = TripleShadowView()
     private lazy var addressTitleLabel = UILabel()
     private lazy var addressValueLabel = UILabel()
     private lazy var optionContextView = VStackView()
@@ -80,10 +80,7 @@ extension QRScanOptionsViewController {
 
 extension QRScanOptionsViewController {
     private func addAddressContextView() {
-        addressContextView.customizeAppearance(theme.background)
-        addressContextView.layer.draw(corner: theme.addressContainerCorner)
-        addressContextView.layer.draw(border: theme.addressContainerBorder)
-        addressContextView.layer.draw(shadow: theme.addressContainerShadow)
+        addressContextView.drawAppearance(shadow: theme.addressContainerShadow)
         addressContextView.addInteraction(addressMenuInteraction)
 
         contentView.addSubview(addressContextView)

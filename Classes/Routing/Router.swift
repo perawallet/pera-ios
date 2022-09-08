@@ -865,8 +865,6 @@ class Router:
             let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .transactionFloatingActionButton:
-            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
@@ -1070,6 +1068,34 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .exportAccountList(let eventHandler):
+            let dataController = ExportAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = ExportAccountListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsDomainConfirmation(let eventHandler):
+            let screen = ExportAccountsDomainConfirmationScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
+            let dataController = ExportAccountsConfirmationListLocalDataController(
+                selectedAccounts: selectedAccounts
+            )
+            let screen = ExportAccountsConfirmationListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsResult(let eventHandler):
+            let screen = ExportsAccountsResultScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

@@ -306,6 +306,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession = nil
                 closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+            } else if let qrExportInformations = try? JSONDecoder().decode(QRExportInformations.self, from: qrStringData) {
+                captureSession = nil
+                closeScreen()
+                delegate?.qrScannerViewController(self, didRead: qrExportInformations, completionHandler: nil)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                 return
@@ -506,12 +510,14 @@ protocol QRScannerViewControllerDelegate: AnyObject {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrExportInformations: QRExportInformations, completionHandler: EmptyHandler?)
 }
 
 extension QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrExportInformations: QRExportInformations, completionHandler: EmptyHandler?) {}
 }
 
 enum QRScannerError: Swift.Error {

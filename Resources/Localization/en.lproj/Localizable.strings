@@ -82,6 +82,9 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"title-select-all" = "Select all";
+"title-unselect-all" = "Unselect all";
+"title-disclaimer" = "DISCLAIMER";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -681,6 +684,8 @@
 "title-plus-asset-singular-count" = "%@ Asset";
 "title-plus-collectible-count" = "%@ NFTs";
 "title-plus-collectible-singular-count" = "%@ NFT";
+"title-plus-account-count" = "%@ Accounts";
+"title-plus-account-singular-count" = "Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
@@ -1191,3 +1196,19 @@
 "asa-about-asa-show-on" = "Show on";
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 "asa-about-asa-project-website" = "Project website";
+"asa-about-asa-open-with-browser" = "Open with Browser";
+
+// MARK: Web Export
+"web-export-account-list-title" = "Export to Pera Web";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
+"web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
+"web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL of the Web Wallet";
+"web-export-accounts-domain-confirmation-input-placeholder" = "Enter URL of the Web Wallet";
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:";
+"web-export-accounts-confirmation-list-title" = "Confirm Accounts";
+"web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
+"web-export-result-title" = "Accounts exported successfully!";
+"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";

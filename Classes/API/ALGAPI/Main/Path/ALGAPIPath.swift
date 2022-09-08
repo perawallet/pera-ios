@@ -29,6 +29,7 @@ enum ALGAPIPath: String {
     case assetRequest = "/asset-requests/"
     case assets = "/assets/"
     case assetSearch = "/assets/search/"
+    case backups = "/backups/%@"
     case blockDetail = "/blocks/%d"
     case calculatePeraFee = "/dex-swap/calculate-pera-fee/"
     case currencies = "/currencies/"

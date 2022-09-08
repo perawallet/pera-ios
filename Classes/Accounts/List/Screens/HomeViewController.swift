@@ -37,6 +37,13 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        session: session!
+    )
+
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(presentingScreen: self)
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
@@ -188,7 +195,10 @@ extension HomeViewController {
                 return
             }
 
-            self.open(.notifications, by: .push)
+            self.open(
+                .notifications,
+                by: .push
+            )
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
