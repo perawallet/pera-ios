@@ -43,12 +43,13 @@ final class TabBarController: TabBarContainer {
     )
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
-        sharedDataController: sharedDataController,
-        presentingScreen: self,
+        analytics: analytics,
         api: api,
         bannerController: bannerController,
         loadingController: loadingController,
-        analytics: analytics
+        presentingScreen: self,
+        session: session,
+        sharedDataController: sharedDataController
     )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
