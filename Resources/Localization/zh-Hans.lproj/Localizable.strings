@@ -1,4 +1,7 @@
 /* (No Comment) */
+"about" = "About";
+
+/* (No Comment) */
 "account-detail-assets-search" = "搜索资产";
 
 /* (No Comment) */
@@ -107,28 +110,31 @@
 "accounts-title" = "账户";
 
 /* (No Comment) */
-"accounts-title-assets" = "资产";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "收藏品";
 
 /* (No Comment) */
 "accounts-title-history" = "历史";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "没有发起与该资产相关的交易";
-
-/* MARK: Accounts */
-"accounts-tranaction-empty-text" = "尚未有交易";
+"accounts-title-overview" = "Overview";
 
 /* (No Comment) */
-"accounts-transaction-history-title" = "交易记录";
+"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "No Transactions";
 
 /* (No Comment) */
 "accounts-transaction-value" = "价值";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "余额";
+
+/* (No Comment) */
+"accounts-transactions-title" = "Transactions";
+
+/* (No Comment) */
+"activity" = "Activity";
 
 /* (No Comment) */
 "add-node-title" = "添加备注";
@@ -152,10 +158,64 @@
 "algo-statistics-title" = "数据";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "Creator";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "Project website";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "Show on";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "scam attempt";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "This is a well-known and established project in the Algorand ecosystem.";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "well-known";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "This ASA was automatically verified through the Pera ASA Verification program.";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "automatically verified";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "Learn more about ASA verification";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "Report %@";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "Suspicious";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "Trusted ASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "Verified ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "添加资产";
 
 /* (No Comment) */
 "asset-add-warning" = "添加资产前，需要发送一笔产生最低交易费用的交易。交易记录中将会显示该笔交易。";
+
+/* (No Comment) */
+"asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
 
 /* (No Comment) */
 "asset-algos-title" = "ALGO";
@@ -198,6 +258,30 @@
 
 /* (No Comment) */
 "asset-not-found-title" = "未找到资产";
+
+/* (No Comment) */
+"asset-opt-in-successful-message" = "%@ successfully added to your account.";
+
+/* (No Comment) */
+"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
+
+/* (No Comment) */
+"asset-quick-action-button-add" = "Add Asset";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "You can add this asset to";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "You can add this NFT to";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "Opted in to";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "移除资产";
@@ -246,6 +330,9 @@
 
 /* MARK: Asset */
 "asset-title" = "资产";
+
+/* MARK: Total Supply */
+"asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
 /* (No Comment) */
 "asset-transfer-balance" = "余额转账";
@@ -464,10 +551,10 @@
 "collectible-opt-out-info-title" = "选择退出NFT ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "您的账户需要先选择加入NFT，才能接受NFT。请在确认过程中，检查资产ID。";
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "您可以通过在下面的搜索栏中粘贴其名称或资产ID来搜索您想要选择加入的 NFT。";
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "已选账户";
@@ -970,6 +1057,12 @@
 /* MARK: Login */
 "login-title" = "解锁";
 
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASA Report: %d";
+
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "基于您的账户设置，您的最低余额为%@\n\n点击继续，您的交易金河将会自动更新，以维持Algorand区块链所要求的的最低余额值。您将可以在下一步中预览此变化。";
 
@@ -1146,6 +1239,12 @@
 
 /* (No Comment) */
 "opitons-collectibles-filter" = "筛选NFT";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "Opt-in to NFT";
 
 /* (No Comment) */
 "options-auth-account" = "授权账户地址";
@@ -1789,6 +1888,18 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "显示交易细节";
 
+/* (No Comment) */
+"social-media-platform-discord" = "Discord";
+
+/* (No Comment) */
+"social-media-platform-telegram" = "Telegram";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "SOCIAL MEDIA";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "Twitter";
+
 /* MARK: Sort Account List */
 "sort-account-list-manually-header-title" = "手动重新整理帐户";
 
@@ -1800,6 +1911,9 @@
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "服务条款";
+
+/* (No Comment) */
+"title-about-with-param" = "ABOUT %@";
 
 /* (No Comment) */
 "title-accept" = "接受";
@@ -1863,6 +1977,9 @@
 
 /* (No Comment) */
 "title-copy" = "复制";
+
+/* (No Comment) */
+"title-csv" = "CSV";
 
 /* (No Comment) */
 "title-decline" = "拒绝";
@@ -2036,6 +2153,12 @@
 "title-show-all-detail" = "显示全部细节";
 
 /* (No Comment) */
+"title-show-less" = "Show less";
+
+/* (No Comment) */
+"title-show-more" = "Show more";
+
+/* (No Comment) */
 "title-show-more-assets" = "显示+%@ 更多的资产";
 
 /* (No Comment) */
@@ -2064,6 +2187,9 @@
 
 /* (No Comment) */
 "title-testnet" = "测试网";
+
+/* (No Comment) */
+"title-total-supply" = "Total Supply";
 
 /* (No Comment) */
 "title-unknown" = "未命名";
@@ -2242,6 +2368,12 @@
 /* (No Comment) */
 "transaction-menu-copy-note" = "复制备注";
 
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "Add Asset";
+
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "用信用卡或银行转账方式购买加密货币";
 
@@ -2364,6 +2496,24 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "请准备写下您的恢复助记词";
+
+/* (No Comment) */
+"url-copied" = "URL copied to clipboard";
+
+/* (No Comment) */
+"verification-info-body" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "automatically";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA Verification";
 
 /* (No Comment) */
 "verified-asset-double-check" = "请再次确认";
@@ -2507,6 +2657,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "无效输入：资产无效";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "无效输入：公钥无效";
 
 /* (No Comment) */
@@ -2529,6 +2682,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "无效输入：无法签署";
@@ -2713,4 +2869,3 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "您的交易正在处理中！";
 
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
