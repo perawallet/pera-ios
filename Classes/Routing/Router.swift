@@ -38,6 +38,12 @@ class Router:
 
     private unowned let appConfiguration: AppConfiguration
 
+    private lazy var transactionController = TransactionController(
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController,
+        analytics: appConfiguration.analytics
+    )
+
     /// <todo>
     /// Change after refactoring routing
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -1139,17 +1145,19 @@ extension Router {
             return
         }
 
-        let assetTransactionDraft =
-        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
-        let transactionController = TransactionController(
-            api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController,
-            analytics: appConfiguration.analytics
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: Int64(draft.assetId)
         )
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
@@ -1461,17 +1469,16 @@ extension Router {
                 assetIndex: asset.id
             )
 
-            let transactionController = TransactionController(
-                api: self.appConfiguration.api,
-                bannerController: self.appConfiguration.bannerController,
-                analytics: self.appConfiguration.analytics
-            )
-
             self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
 
-            transactionController.delegate = self
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
         }
     }
 
@@ -1605,7 +1612,10 @@ extension Router {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         ongoingTransitions.append(ledgerApprovalTransition)
 
@@ -1613,6 +1623,16 @@ extension Router {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

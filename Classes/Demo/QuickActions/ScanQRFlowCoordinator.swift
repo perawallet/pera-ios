@@ -25,6 +25,12 @@ final class ScanQRFlowCoordinator:
     TransactionControllerDelegate {
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private lazy var transactionController = TransactionController(
+        api: api,
+        bannerController: bannerController,
+        analytics: analytics
+    )
+
     private var assetConfirmationTransition: BottomSheetTransition?
     private var accountQRTransition: BottomSheetTransition?
     private var optInRequestTransition: BottomSheetTransition?
@@ -318,17 +324,16 @@ extension ScanQRFlowCoordinator {
                 assetIndex: asset.id
             )
 
-            let transactionController = TransactionController(
-                api: self.api,
-                bannerController: self.bannerController,
-                analytics: self.analytics
-            )
-
             self.loadingController.startLoadingWithMessage("title-loading".localized)
 
-            transactionController.delegate = self
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
         }
     }
 
@@ -435,11 +440,24 @@ extension ScanQRFlowCoordinator {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = presentingScreen.findVisibleScreen()
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(
