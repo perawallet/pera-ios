@@ -58,7 +58,10 @@ final class ASADiscoveryScreen:
     }()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToLedgerApproval = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
     private var isDisplayStateInteractiveTransitionInProgress = false
@@ -1060,6 +1063,16 @@ extension ASADiscoveryScreen {
             ),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(
