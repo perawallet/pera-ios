@@ -22620,8 +22620,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
 			requirement = {
-				kind = exactVersion;
-				version = 3.6.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 		2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */ = {
