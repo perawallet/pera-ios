@@ -80,7 +80,10 @@ extension QRScanOptionsViewController {
 
 extension QRScanOptionsViewController {
     private func addAddressContextView() {
-        addressContextView.drawAppearance(shadow: theme.addressContainerShadow)
+        addressContextView.drawAppearance(shadow: theme.addressContainerFirstShadow)
+        addressContextView.drawAppearance(secondShadow: theme.addressContainerSecondShadow)
+        addressContextView.drawAppearance(thirdShadow: theme.addressContainerThirdShadow)
+
         addressContextView.addInteraction(addressMenuInteraction)
 
         contentView.addSubview(addressContextView)

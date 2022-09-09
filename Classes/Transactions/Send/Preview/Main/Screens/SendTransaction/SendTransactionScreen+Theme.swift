@@ -27,8 +27,6 @@ extension SendTransactionScreen {
         let disabledValueLabelStyle: TextStyle
         let valueLabelStyle: TextStyle
         let currencyValueLabelStyle: TextStyle
-        let accountContainerCorner: Corner
-        let accountContainerBorder: Border
         let accountContainerFirstShadow: MacaroonUIKit.Shadow
         let accountContainerSecondShadow: MacaroonUIKit.Shadow
         let accountContainerThirdShadow: MacaroonUIKit.Shadow
@@ -68,15 +66,13 @@ extension SendTransactionScreen {
                 .textOverflow(SingleLineFittingText())
             ]
 
-            accountContainerCorner = Corner(radius: 4)
-            accountContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
-
             accountContainerFirstShadow = MacaroonUIKit.Shadow(
-                color: Colors.Shadows.Cards.shadow1.uiColor,
+                color: Colors.Shadows.Cards.shadow3.uiColor,
                 fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
-                offset: (0, 2),
-                radius: 4,
+                offset: (0, 0),
+                radius: 0,
+                spread: 1,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
@@ -87,16 +83,18 @@ extension SendTransactionScreen {
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
+                spread: 0,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
 
             accountContainerThirdShadow = MacaroonUIKit.Shadow(
-                color: Colors.Shadows.Cards.shadow3.uiColor,
+                color: Colors.Shadows.Cards.shadow1.uiColor,
                 fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
-                offset: (0, 0),
-                radius: 0,
+                offset: (0, 2),
+                radius: 4,
+                spread: -1,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
