@@ -1027,6 +1027,47 @@ class Router:
                 configuration: configuration,
                 theme: theme
             )
+        case .swapAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = SwapAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = SwapAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = SwapAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<SwapAccountSelectionListSectionIdentifier, SwapAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: SwapAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
         case .alert(let alert, let theme):
             viewController = AlertScreen(
                 alert: alert,

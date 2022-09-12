@@ -73,6 +73,7 @@ final class SwapAssetScreen:
 
     override func prepareLayout() {
         super.prepareLayout()
+        addBackground()
         addUserAsset()
         addPoolAssetIfNeeded()
         addSwapAction()
@@ -117,6 +118,10 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addUserAsset() {
         userAssetView.customize(theme.userAsset)
         

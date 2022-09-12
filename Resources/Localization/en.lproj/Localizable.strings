@@ -85,6 +85,7 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-select-account" = "Select Account";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1182,6 +1183,9 @@
 "swap-introduction-powered-by-title" = "Powered by";
 "swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
 "swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
+
+/// MARK: Swap Account Selection
+"swap-account-selection-header-description" = "Select an account to make the swap";
 
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";

@@ -149,7 +149,11 @@ extension SwapAssetFlowCoordinator {
 extension SwapAssetFlowCoordinator {
     private func startSwapFlow() {
         if let account = account {
-            openSwapAsset(from: account)
+            openSwapAsset(
+                from: presentingScreen,
+                for: account,
+                by: .present
+            )
             return
         }
 
@@ -157,20 +161,37 @@ extension SwapAssetFlowCoordinator {
     }
 
     private func openSelectAccount() {
-        /// <todo> Update after implementing new account selection structure
+        let screen = Screen.swapAccountSelection {
+            [unowned self] event, screen in
+            switch event {
+            case .didSelect(let accountHandle):
+                openSwapAsset(
+                    from: screen,
+                    for: accountHandle.value,
+                    by: .push
+                )
+            }
+        }
+
+        presentingScreen.open(
+            screen,
+            by: .present
+        )
     }
 
     private func openSwapAsset(
-        from account: Account
+        from screen: UIViewController,
+        for account: Account,
+        by style: Screen.Transition.Open
     ) {
         let draft = SwapAssetScreenDraft(
             account: account,
             asset: asset
         )
 
-        presentingScreen.open(
+        screen.open(
             .swapAsset(draft: draft),
-            by: .present
+            by: style
         )
     }
 }

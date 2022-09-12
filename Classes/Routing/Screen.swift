@@ -199,6 +199,7 @@ indirect enum Screen {
         draft: SwapAssetScreenDraft,
         theme: SwapAssetScreenTheme = .init()
     )
+    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
     case alert(
         alert: Alert,
         theme: AlertScreenTheme = AlertScreenCommonTheme()
