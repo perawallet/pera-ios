@@ -354,6 +354,10 @@ extension AppDelegate {
     ) {
         appLaunchController.receive(deeplinkWithSource: src)
     }
+
+    func authStatus() -> AppAuthStatus {
+        return appLaunchController.authStatus()
+    }
 }
 
 /// <mark>

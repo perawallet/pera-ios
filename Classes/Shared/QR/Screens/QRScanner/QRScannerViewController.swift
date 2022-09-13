@@ -62,12 +62,8 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     private var dAppName: String? = nil
     private var wcConnectionRepeater: Repeater?
 
-    private lazy var connector: WalletConnector = {
-        return WalletConnector(analytics: self.analytics)
-    }()
-
     private lazy var isShowingConnectedAppsButton: Bool = {
-        canReadWCSession && !connector.allWalletConnectSessions.isEmpty
+        canReadWCSession && !walletConnector.allWalletConnectSessions.isEmpty
     }()
 
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
@@ -86,28 +82,21 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if self.captureSession?.isRunning == false {
-            self.captureSessionQueue.async {
-                self.captureSession?.startRunning()
-            }
-        }
+
+        enableCapturingIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if canReadWCSession {
-            connector.delegate = self
+            walletConnector.delegate = self
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if captureSession?.isRunning == true {
-            captureSessionQueue.async {
-                self.captureSession?.stopRunning()
-            }
-        }
+        disableCapturingIfNeeded()
     }
 
     override func prepareLayout() {
@@ -120,7 +109,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
 
         if isShowingConnectedAppsButton {
             overlayView.bindData(
-                QRScannerOverlayViewModel(dAppCount: UInt(connector.allWalletConnectSessions.count))
+                QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
             )
         }
     }
@@ -135,13 +124,26 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         observeWhenApplicationDidEnterBackground {
             [weak self] _ in
             guard let self = self else { return }
-            self.connector.delegate = nil
+            self.walletConnector.delegate = nil
+            self.disableCapturingIfNeeded()
         }
+    }
+}
 
-        observeWhenApplicationWillEnterForeground { [weak self] _ in
-            guard let self = self else { return }
-            self.connector = WalletConnector(analytics: self.analytics)
-            self.connector.delegate = self
+extension QRScannerViewController {
+    private func enableCapturingIfNeeded() {
+        if self.captureSession?.isRunning == false && UIApplication.shared.authStatus == .ready {
+            self.captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
+    }
+
+    private func disableCapturingIfNeeded() {
+        if captureSession?.isRunning == true {
+            captureSessionQueue.async {
+                self.captureSession?.stopRunning()
+            }
         }
     }
 }
@@ -304,8 +306,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     return
                 }
 
-                connector.delegate = self
-                connector.connect(to: qrString)
+                walletConnector.delegate = self
+                walletConnector.connect(to: qrString)
                 startWCConnectionTimer()
             } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
@@ -519,7 +521,7 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
 extension QRScannerViewController: WCSessionShortListViewControllerDelegate {
     func wcSessionShortListViewControllerDidClose(_ controller: WCSessionShortListViewController) {
         overlayView.bindData(
-            QRScannerOverlayViewModel(dAppCount: UInt(connector.allWalletConnectSessions.count))
+            QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
         )
     }
 }
