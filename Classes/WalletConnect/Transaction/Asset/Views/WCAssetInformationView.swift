@@ -46,7 +46,7 @@ extension WCAssetInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top.bottom.leading.equalToSuperview()
         }
     }
     
@@ -92,6 +92,11 @@ extension WCAssetInformationView: ViewModelBindable {
 
         assetView.setTitleColor(viewModel.nameColor?.uiColor, for: .normal)
         assetView.setImage(viewModel.verificationTierIcon, for: .normal)
+
+        if viewModel.verificationTierIcon == nil {
+            assetView.layout = .none
+            invalidateIntrinsicContentSize()
+        }
     }
 }
 
