@@ -19,18 +19,18 @@ import UIKit
 import MacaroonUIKit
 
 final class SwapAccountSelectionListLayout: AccountSelectionListLayout {
-    typealias DataSource = SwapAccountSelectionListDataSource.DataSource
+    typealias ListDataSource = SwapAccountSelectionListDataSource.DataSource
 
     private var sizeCache: [String: CGSize] = [:]
 
-    private unowned let dataSource: DataSource
+    private unowned let listDataSource: ListDataSource
     private unowned let itemDataSource: SwapAccountSelectionListItemDataSource
 
     init(
-        dataSource: DataSource,
+        dataSource: ListDataSource,
         itemDataSource: SwapAccountSelectionListItemDataSource
     ) {
-        self.dataSource = dataSource
+        self.listDataSource = dataSource
         self.itemDataSource = itemDataSource
     }
 
@@ -45,7 +45,7 @@ final class SwapAccountSelectionListLayout: AccountSelectionListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        let snapshot = dataSource.snapshot()
+        let snapshot = listDataSource.snapshot()
         let sectionIdentifiers = snapshot.sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: section] else {
@@ -55,7 +55,8 @@ final class SwapAccountSelectionListLayout: AccountSelectionListLayout {
         switch listSection {
         case .empty:
             return .zero
-        case .accounts:
+        case .accounts,
+             .loading:
             return UIEdgeInsets(
                 top: 24,
                 left: .zero,
@@ -70,20 +71,11 @@ final class SwapAccountSelectionListLayout: AccountSelectionListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        let snapshot = dataSource.snapshot()
-        let sectionIdentifiers = snapshot.sectionIdentifiers
-
-        guard let listSection = sectionIdentifiers[safe: section],
-              listSection == .accounts else {
-            return .zero
-        }
-
-        let size = listView(
+        return listView(
             collectionView,
             sizeForHeaderItem: itemDataSource.headerItem,
             atSection: section
         )
-        return size
     }
 
     func collectionView(
@@ -91,11 +83,18 @@ final class SwapAccountSelectionListLayout: AccountSelectionListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return .zero
         }
 
         switch itemIdentifier {
+        case .loading:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountCellItem: nil,
+                atSection: indexPath.section
+            )
         case .empty(let item):
             return listView(
                 collectionView,
@@ -130,11 +129,16 @@ extension SwapAccountSelectionListLayout {
             layout: listViewLayout,
             insetForSectionAt: section
         )
+        let headerSize = collectionView(
+            listView,
+            layout: listViewLayout,
+            referenceSizeForHeaderInSection: section
+        )
         let height =
             listView.bounds.height -
             listView.contentInset.top -
+            headerSize.height -
             sectionInset.vertical -
-            listView.safeAreaTop -
             listView.safeAreaBottom
         return CGSize((width, height))
     }
@@ -142,7 +146,7 @@ extension SwapAccountSelectionListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountListItemViewModel,
+        sizeForAccountCellItem item: AccountListItemViewModel?,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = SwapAccountSelectionListAccountListItemCell.reuseIdentifier

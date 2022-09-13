@@ -37,7 +37,7 @@ final class SwapAccountSelectionListLocalDataController:
 
     private var accounts: [AccountHandle] = []
 
-    private(set) var noContentItem: NoContentViewModel = HomeNoContentViewModel()
+    private(set) var noContentItem: NoContentViewModel = AccountSelectionListNoContentViewModel()
     private(set) var headerItem = SwapAccountSelectionListHeaderViewModel()
     private(set) var accountItems: [AccountAddress: AccountListItemViewModel] = [:]
 
@@ -66,6 +66,8 @@ extension SwapAccountSelectionListLocalDataController {
             [weak self] in
             guard let self = self else { return }
 
+            self.deliverLoadingSnapshot()
+
             let sortedAccounts = self.sharedDataController.sortedAccounts()
 
             let filterAlgorithm = NonWatchAccountListFilterAlgorithm()
@@ -83,6 +85,25 @@ extension SwapAccountSelectionListLocalDataController {
 }
 
 extension SwapAccountSelectionListLocalDataController {
+    private func deliverLoadingSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.loading])
+
+            let items: [SwapAccountSelectionListItemIdentifier] = [
+                .loading(.account(UUID())),
+                .loading(.account(UUID())),
+                .loading(.account(UUID()))
+            ]
+
+            snapshot.appendItems(
+                items,
+                toSection: .loading
+            )
+            return snapshot
+        }
+    }
+
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
@@ -176,16 +197,22 @@ extension SwapAccountSelectionListLocalDataController {
 
 enum SwapAccountSelectionListSectionIdentifier: Hashable {
     case empty
+    case loading
     case accounts
 }
 
 enum SwapAccountSelectionListItemIdentifier: Hashable {
     case empty(SwapAccountSelectionListEmptyItemIdentifier)
+    case loading(SwapAccountSelectionListLoadingItemIdentifier)
     case account(SwapAccountSelectionListAccountItemIdentifier)
 }
 
 enum SwapAccountSelectionListEmptyItemIdentifier: Hashable {
     case noContent
+}
+
+enum SwapAccountSelectionListLoadingItemIdentifier: Hashable {
+    case account(UUID)
 }
 
 struct SwapAccountSelectionListAccountItemIdentifier: Hashable {

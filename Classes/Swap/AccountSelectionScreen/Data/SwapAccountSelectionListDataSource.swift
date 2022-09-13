@@ -28,7 +28,8 @@ final class SwapAccountSelectionListDataSource: AccountSelectionListDataSource {
     }
 
     var supportedCells: [UICollectionViewCell.Type] = [
-        NoContentCell.self,
+        AccountSelectionListLoadingAccountItemCell.self,
+        AccountSelectionListNoContentCell.self,
         SwapAccountSelectionListAccountListItemCell.self
     ]
 
@@ -36,15 +37,22 @@ final class SwapAccountSelectionListDataSource: AccountSelectionListDataSource {
         return { collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
+            case .loading(let item):
+                switch item {
+                case .account:
+                    return collectionView.dequeue(
+                        AccountSelectionListLoadingAccountItemCell.self,
+                        at: indexPath
+                    )
+                }
             case .empty(let item):
                 switch item {
                 case .noContent:
                     let cell = collectionView.dequeue(
-                        NoContentCell.self,
+                        AccountSelectionListNoContentCell.self,
                         at: indexPath
                     )
                     let viewModel = self.itemDataSource.noContentItem
-                    cell.isUserInteractionEnabled = false
                     cell.bindData(viewModel)
                     return cell
                 }
@@ -65,14 +73,8 @@ final class SwapAccountSelectionListDataSource: AccountSelectionListDataSource {
     ]
 
     func getSupplementaryViewProvider(_ dataSource: DataSource) -> SupplementaryViewProvider? {
-        return { [unowned dataSource] collectionView, elementKind, indexPath in
+        return { collectionView, elementKind, indexPath in
 
-            guard let section = dataSource.getSectionIdentifier(at: indexPath),
-                  section == .accounts,
-                  elementKind == UICollectionView.elementKindSectionHeader else {
-                return nil
-            }
-            
             let header = collectionView.dequeueHeader(
                 SwapAccountSelectionListHeader.self,
                 at: indexPath

@@ -969,7 +969,7 @@
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";
-"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
 

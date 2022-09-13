@@ -145,6 +145,25 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         eventHandler(.didSelect(account), self)
     }
 
+    /// <todo> Refactor
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        let loadingCell = cell as? AccountSelectionListLoadingAccountItemCell
+        loadingCell?.startAnimating()
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        let loadingCell = cell as? AccountSelectionListLoadingAccountItemCell
+        loadingCell?.stopAnimating()
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
