@@ -20,17 +20,17 @@ import UIKit
 
 struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
-    let accessory: Image?
 
     init() {
-        self.icon = "icon-pera-solid"
-        self.title = Self.getTitle(
+        icon = "icon-pera-solid"
+        isBadgeVisible = false
+        title = Self.getTitle(
             "asa-verification-learn-more".localized,
             Colors.Helpers.positive
         )
-        self.subtitle = nil
-        self.accessory = nil
+        subtitle = nil
     }
 }

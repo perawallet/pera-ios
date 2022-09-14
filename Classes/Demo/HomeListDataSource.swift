@@ -21,19 +21,23 @@ import UIKit
 
 final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionIdentifier, HomeItemIdentifier> {
     init(
-        _ collectionView: UICollectionView
+        _ collectionView: UICollectionView,
+        itemDataSource: HomeItemDataSource
     ) {
         super.init(collectionView: collectionView) {
+            [unowned itemDataSource]
             collectionView, indexPath, itemIdentifier in
             
             switch itemIdentifier {
             case .empty(let item):
                 switch item {
                 case .loading:
-                    return collectionView.dequeue(
+                    let cell = collectionView.dequeue(
                         HomeLoadingCell.self,
                         at: indexPath
                     )
+                    cell.bindData(itemDataSource.quickActionsItem)
+                    return cell
                 case .noContent:
                     let cell = collectionView.dequeue(
                         NoContentWithActionCell.self,
@@ -54,10 +58,12 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     cell.bindData(portfolioItem)
                     return cell
                 case .quickActions:
-                    return collectionView.dequeue(
+                    let cell = collectionView.dequeue(
                         HomeQuickActionsCell.self,
                         at: indexPath
                     )
+                    cell.bindData(itemDataSource.quickActionsItem)
+                    return cell
                 }
             case .announcement(let item):
                 if item.isGeneric {

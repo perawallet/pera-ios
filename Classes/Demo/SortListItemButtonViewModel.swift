@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct SortListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-options-sort"
-        self.title = Self.getTitle("options-sort-title".localized)
-        self.subtitle = nil
+        icon = "icon-options-sort"
+        isBadgeVisible = false
+        title = Self.getTitle("options-sort-title".localized)
+        subtitle = nil
     }
 }

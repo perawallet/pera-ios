@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct ScanQRCodeListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-qr-scan"
-        self.title = Self.getTitle("qr-scan-title".localized)
-        self.subtitle = nil
+        icon = "icon-qr-scan"
+        isBadgeVisible = false
+        title = Self.getTitle("qr-scan-title".localized)
+        subtitle = nil
     }
 }

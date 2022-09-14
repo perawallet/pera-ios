@@ -20,6 +20,7 @@ import UIKit
 
 final class HomeQuickActionsCell:
     CollectionCell<HomeQuickActionsView>,
+    ViewModelBindable,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (36, 24, 36, 24)
@@ -33,24 +34,29 @@ final class HomeQuickActionsCell:
         super.init(frame: frame)
 
         contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+
         contextView.customize(Self.theme)
     }
-    
+
     class func calculatePreferredSize(
         for theme: HomeQuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
+        let width = size.width
         let contextPaddings = Self.contextPaddings
-        let contextWidth = size.width - contextPaddings.leading - contextPaddings.trailing
-        let contextMaxSize = CGSize(width: contextWidth, height: .greatestFiniteMagnitude)
-        let contextPreferredSize = ContextView.calculatePreferredSize(
+        let contextWidth =
+            width -
+            contextPaddings.leading -
+            contextPaddings.trailing
+        let maxContextSize = CGSize((contextWidth, .greatestFiniteMagnitude))
+        let contextSize = ContextView.calculatePreferredSize(
             for: theme,
-            fittingIn: contextMaxSize
+            fittingIn: maxContextSize
         )
         let preferredHeight =
-            contextPreferredSize.height +
             contextPaddings.top +
+            contextSize.height +
             contextPaddings.bottom
-        return CGSize(width: size.width, height: min(preferredHeight, size.height))
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }

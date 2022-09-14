@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasteFullPassphraseListItemButtonViewModel.swift
+//   TransactionOptionsListAction.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    var isBadgeVisible: Bool
-    let title: EditText?
-    let subtitle: EditText?
-    
-    init() {
-        icon = "icon-paste"
-        isBadgeVisible = false
-        title = Self.getTitle("title-paste-passphrase".localized)
-        subtitle = nil
+final class TransactionOptionListAction {
+    let viewModel: TransactionOptionListItemButtonViewModel
+    let handler: Handler
+
+    init(
+        viewModel: TransactionOptionListItemButtonViewModel,
+        handler: @escaping Handler
+    ) {
+        self.viewModel = viewModel
+        self.handler = handler
     }
+
+    typealias Handler = (ListItemButton) -> Void
 }

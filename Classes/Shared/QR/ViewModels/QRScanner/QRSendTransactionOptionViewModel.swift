@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct QRSendTransactionOptionViewModel: QRScanOptionListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-qr-option-transaction"
-        self.title = Self.getTitle("qr-scan-option-send-transaction".localized)
-        self.subtitle = nil
+        icon = "icon-qr-option-transaction"
+        isBadgeVisible = false
+        title = Self.getTitle("qr-scan-option-send-transaction".localized)
+        subtitle = nil
     }
 }

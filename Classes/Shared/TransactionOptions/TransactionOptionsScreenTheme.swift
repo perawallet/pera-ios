@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasteFullPassphraseListItemButtonViewModel.swift
+//   TransactionOptionsScreenTheme.swift
 
-import Foundation
 import MacaroonUIKit
 
-struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    var isBadgeVisible: Bool
-    let title: EditText?
-    let subtitle: EditText?
-    
-    init() {
-        icon = "icon-paste"
-        isBadgeVisible = false
-        title = Self.getTitle("title-paste-passphrase".localized)
-        subtitle = nil
+struct TransactionOptionsScreenTheme:
+    LayoutSheet,
+    StyleSheet {
+    let context: TransactionOptionsViewTheme
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        var context = TransactionOptionsViewTheme()
+        context.contentPaddings.bottom = 20
+        self.context = context
     }
 }

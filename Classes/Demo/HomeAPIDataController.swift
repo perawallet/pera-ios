@@ -19,21 +19,27 @@ import Foundation
 
 final class HomeAPIDataController:
     HomeDataController,
+    HomeItemDataSource,
     SharedDataControllerObserver {
-
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    
+
+    private(set) var quickActionsItem: HomeQuickActionsViewModel = {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return HomeQuickActionsViewModel(isSwapBadgeVisible: !isOnboardedToSwap)
+    }()
+
     private var visibleAnnouncement: Announcement?
 
     private var lastSnapshot: Snapshot?
     
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
-    
+
     init(
         _ sharedDataController: SharedDataController,
         announcementDataController: AnnouncementAPIDataController
@@ -96,6 +102,13 @@ extension HomeAPIDataController {
         case .didFinishRunning:
             deliverContentUpdates()
         }
+    }
+}
+
+extension HomeAPIDataController {
+    func updatedQuickActionsItem(isSwapBadgeVisible: Bool) -> HomeQuickActionsViewModel {
+        quickActionsItem.bindIsSwapBadgeVisible(isSwapBadgeVisible)
+        return quickActionsItem
     }
 }
 

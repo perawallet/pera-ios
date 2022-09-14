@@ -20,12 +20,14 @@ import MacaroonUIKit
 
 struct AddAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-plus-24"
-        self.title = Self.getTitle("account-options-add-account-title".localized)
-        self.subtitle = nil
+        icon = "icon-plus-24"
+        isBadgeVisible = false
+        title = Self.getTitle("account-options-add-account-title".localized)
+        subtitle = nil
     }
 }

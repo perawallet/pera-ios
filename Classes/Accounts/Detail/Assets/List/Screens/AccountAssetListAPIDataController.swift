@@ -20,6 +20,7 @@ import MacaroonUtils
 
 final class AccountAssetListAPIDataController:
     AccountAssetListDataController,
+    AccountAssetListItemDataSource,
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
@@ -30,6 +31,12 @@ final class AccountAssetListAPIDataController:
 
     private var searchKeyword: String? = nil
     private var searchResults: [StandardAsset] = []
+
+    private(set) var quickActionsItem: AccountQuickActionsViewModel = {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return AccountQuickActionsViewModel(isSwapBadgeVisible: !isOnboardedToSwap)
+    }()
 
     private var assetListItems: [AssetListItemViewModel] = []
 
@@ -75,6 +82,13 @@ extension AccountAssetListAPIDataController {
            monitor.hasAnyPendingOptOutRequest(for: account){
             reload()
         }
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    func updatedQuickActionsItem(isSwapBadgeVisible: Bool) -> AccountQuickActionsViewModel {
+        quickActionsItem.bindIsSwapBadgeVisible(isSwapBadgeVisible)
+        return quickActionsItem
     }
 }
 

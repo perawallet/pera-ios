@@ -18,7 +18,13 @@
 import Foundation
 import UIKit
 
-protocol HomeDataController: AnyObject {
+protocol HomeItemDataSource: AnyObject {
+    var quickActionsItem: HomeQuickActionsViewModel { get }
+}
+
+protocol HomeDataController:
+    AnyObject,
+    HomeItemDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSectionIdentifier, HomeItemIdentifier>
     typealias Updates = (totalPortfolioItem: TotalPortfolioItem?, snapshot: Snapshot)
     
@@ -30,6 +36,7 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func hideAnnouncement()
+    func updatedQuickActionsItem(isSwapBadgeVisible: Bool) -> HomeQuickActionsViewModel
 }
 
 enum HomeSectionIdentifier:

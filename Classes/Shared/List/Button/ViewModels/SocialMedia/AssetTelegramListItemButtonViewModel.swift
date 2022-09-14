@@ -29,19 +29,21 @@ struct AssetTelegramListItemViewModel: GroupedListItemButtonItemViewModel {
 }
 
 private struct AssetTelegramListItemButtonViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
-    var accessory: Image?
-
+    let icon: Image?
+    var isBadgeVisible: Bool
+    let title: EditText?
+    let subtitle: EditText?
+    let accessory: Image?
+    
     init() {
-        self.icon = "icon-telegram"
-        self.title = .attributedString(
+        icon = "icon-telegram"
+        isBadgeVisible = false
+        title = .attributedString(
             "social-media-platform-telegram"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        self.subtitle = nil
-        self.accessory = "icon-external-link"
+        subtitle = nil
+        accessory = "icon-external-link"
     }
 }

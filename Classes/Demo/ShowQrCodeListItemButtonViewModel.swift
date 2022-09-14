@@ -20,12 +20,14 @@ import MacaroonUIKit
 
 struct ShowQrCodeListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-qr"
-        self.title = Self.getTitle("options-show-qr".localized)
-        self.subtitle = nil
+        icon = "icon-qr"
+        isBadgeVisible = false
+        title = Self.getTitle("options-show-qr".localized)
+        subtitle = nil
     }
 }

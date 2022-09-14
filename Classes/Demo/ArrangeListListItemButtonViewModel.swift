@@ -20,12 +20,14 @@ import MacaroonUIKit
 
 struct ArrangeListListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-arrange-24"
-        self.title = Self.getTitle("account-options-arrange-list-title".localized)
-        self.subtitle = nil
+        icon = "icon-arrange-24"
+        isBadgeVisible = false
+        title = Self.getTitle("account-options-arrange-list-title".localized)
+        subtitle = nil
     }
 }

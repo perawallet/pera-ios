@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct RekeyAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-options-rekey"
-        self.title = Self.getTitle("options-rekey".localized)
-        self.subtitle = nil
+        icon = "icon-options-rekey"
+        isBadgeVisible = false
+        title = Self.getTitle("options-rekey".localized)
+        subtitle = nil
     }
 }

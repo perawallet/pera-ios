@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct LearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-info-black-24"
-        self.title = Self.getTitle("title-learn-more".localized)
-        self.subtitle = nil
+        icon = "icon-info-black-24"
+        isBadgeVisible = false
+        title = Self.getTitle("title-learn-more".localized)
+        subtitle = nil
     }
 }

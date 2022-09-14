@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct FilterCollectiblesItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-collectibles-filter"
-        self.title = Self.getTitle("opitons-collectibles-filter".localized)
-        self.subtitle = nil
+        icon = "icon-collectibles-filter"
+        isBadgeVisible = false
+        title = Self.getTitle("opitons-collectibles-filter".localized)
+        subtitle = nil
     }
 }

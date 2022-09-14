@@ -20,17 +20,13 @@ import MacaroonUIKit
 
 protocol ListItemButtonViewModel: ViewModel {
     var icon: Image? { get }
-    var isBadgeVisible: Bool { get }
+    var isBadgeVisible: Bool { get set }
     var title: EditText? { get }
     var subtitle: EditText? { get }
     var accessory: Image? { get }
 }
 
 extension ListItemButtonViewModel {
-    var isBadgeVisible: Bool {
-        return false
-    }
-
     var accessory: Image? {
         return nil
     }

@@ -44,6 +44,17 @@ final class SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     func launch() {
+        let displayStore = SwapDisplayStore()
+
+        if !displayStore.isOnboardedToSwap {
+            displayStore.isOnboardedToSwap = true
+
+            NotificationCenter.default.post(
+                name: SwapDisplayStore.isOnboardedToSwapNotification,
+                object: nil
+            )
+        }
+
         if !swapAssetFlowStorage.isDisplayedOnce(for: .swapAlert) {
             openSwapAlert()
             return
@@ -173,4 +184,31 @@ extension SwapAssetFlowCoordinator {
             by: .present
         )
     }
+}
+
+final class SwapDisplayStore: Storable {
+    typealias Object = Any
+
+    static var isOnboardedToSwapNotification: Notification.Name {
+        .init(rawValue: "isOnboardedToSwap")
+    }
+
+    var isOnboardedToSwap: Bool {
+        get { userDefaults.bool(forKey: isOnboardedToSwapKey) }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardedToSwapKey)
+            userDefaults.synchronize()
+        }
+    }
+
+    var hasShownSwapIntroductionAlert: Bool {
+        get { userDefaults.bool(forKey: hasShownSwapIntroductionAlertKey) }
+        set {
+            userDefaults.set(newValue, forKey: hasShownSwapIntroductionAlertKey)
+            userDefaults.synchronize()
+        }
+    }
+
+    private let isOnboardedToSwapKey = "cache.key.isOnboardedToSwap"
+    private let hasShownSwapIntroductionAlertKey = "cache.key.hasShownSwapIntroductionAlert"
 }

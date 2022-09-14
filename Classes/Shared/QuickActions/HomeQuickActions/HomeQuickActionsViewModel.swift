@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PasteFullPassphraseListItemButtonViewModel.swift
+//   HomeQuickActionsViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    var isBadgeVisible: Bool
-    let title: EditText?
-    let subtitle: EditText?
-    
-    init() {
-        icon = "icon-paste"
-        isBadgeVisible = false
-        title = Self.getTitle("title-paste-passphrase".localized)
-        subtitle = nil
+struct HomeQuickActionsViewModel: ViewModel {
+    private(set) var isSwapBadgeVisible = false
+
+    init(isSwapBadgeVisible: Bool) {
+        bindIsSwapBadgeVisible(isSwapBadgeVisible)
+    }
+}
+
+extension HomeQuickActionsViewModel {
+    mutating func bindIsSwapBadgeVisible(_ isVisible: Bool) {
+        isSwapBadgeVisible = isVisible
     }
 }

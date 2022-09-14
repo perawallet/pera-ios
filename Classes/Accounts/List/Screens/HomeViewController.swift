@@ -22,7 +22,10 @@ import MacaroonUtils
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     private lazy var alertTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -74,7 +77,10 @@ final class HomeViewController:
     private lazy var listBackgroundView = UIView()
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = HomeListDataSource(listView)
+    private lazy var listDataSource = HomeListDataSource(
+        listView,
+        itemDataSource: dataController
+    )
 
     /// <todo>: Refactor
     /// This is needed for ChoosePasswordViewControllerDelegate's method.
@@ -94,6 +100,10 @@ final class HomeViewController:
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+    }
+
+    deinit {
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -186,6 +196,12 @@ final class HomeViewController:
         
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.stopAnimating()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        observeWhenUserIsOnboardedToSwap()
     }
 }
 
@@ -479,6 +495,25 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] notification in
+            guard let self = self else { return }
+
+            guard
+                let indexPath = self.listDataSource.indexPath(for: .portfolio(.quickActions)),
+                let cell = self.listView.cellForItem(at: indexPath) as? HomeQuickActionsCell
+            else {
+                return
+            }
+
+            let viewModel = self.dataController.updatedQuickActionsItem(isSwapBadgeVisible: false)
+            cell.bindData(viewModel)
+        }
+    }
+}
+
+extension HomeViewController {
     private func requestAppReview() {
         asyncMain(afterDuration: 1.0) {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
@@ -584,6 +619,16 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func presentSwapIntroductionAlertIfNeeded() {
+        let swapDisplayStore = SwapDisplayStore()
+
+        if swapDisplayStore.hasShownSwapIntroductionAlert {
+            return
+        }
+
+        presentSwapIntroductionAlert()
+    }
+
     private func presentSwapIntroductionAlert() {
         let title = "swap-alert-title"
             .localized
@@ -609,9 +654,12 @@ extension HomeViewController {
             style: .primary
         ) {
             [weak self] in
-//            guard let self = self else { return }
-            // <todo>
-           preconditionFailure("Navigate to swap")
+            guard let self = self else { return }
+
+            let swapDisplayStore = SwapDisplayStore()
+            swapDisplayStore.hasShownSwapIntroductionAlert = true
+
+            self.swapAssetFlowCoordinator.launch()
         }
         alert.addAction(trySwapAction)
 
@@ -621,6 +669,10 @@ extension HomeViewController {
         ) {
             [weak self] in
             guard let self = self else { return }
+
+            let swapDisplayStore = SwapDisplayStore()
+            swapDisplayStore.hasShownSwapIntroductionAlert = true
+
             self.dismiss(animated: true)
         }
         alert.addAction(laterAction)

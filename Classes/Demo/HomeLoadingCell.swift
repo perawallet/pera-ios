@@ -19,7 +19,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeLoadingCell: CollectionCell<HomeLoadingView> {
+final class HomeLoadingCell:
+    CollectionCell<HomeLoadingView>,
+    ViewModelBindable {
     func restartAnimating() {
         contextView.restartAnimating()
     }

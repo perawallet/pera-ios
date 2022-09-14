@@ -18,11 +18,13 @@ import MacaroonUIKit
 
 struct SendTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "icon-transaction-option-list-send"
+        isBadgeVisible = false
         title = Self.getTitle("title-send".localized)
         subtitle = Self.getSubtitle("transaction-option-list-send-subtitle".localized)
     }

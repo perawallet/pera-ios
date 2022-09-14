@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 struct RenameAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
+    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-edit-account"
-        self.title = Self.getTitle("options-edit-account-name".localized)
-        self.subtitle = nil
+        icon = "icon-edit-account"
+        isBadgeVisible = false
+        title = Self.getTitle("options-edit-account-name".localized)
+        subtitle = nil
     }
 }
