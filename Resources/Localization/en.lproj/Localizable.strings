@@ -1183,6 +1183,12 @@
 "swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
 "swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
+/// MARK: Swap Sign With Ledger
+"swap-sign-with-ledger-title" = "Sign with Ledger";
+"swap-sign-with-ledger-body" = "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token.";
+"swap-sign-with-ledger-body-highlighted" = "You will need to sign %@ transactions one by one";
+"swap-sign-with-ledger-action-title" = "Sign Transactions";
+
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 

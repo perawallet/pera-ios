@@ -22,6 +22,8 @@ protocol UISheetActionScreenTheme:
     StyleSheet,
     LayoutSheet {
     var contextEdgeInsets: LayoutPaddings { get }
+    var image: ImageStyle { get }
+    var imageLayoutOffset: LayoutOffset { get }
     var title: TextStyle { get }
     var spacingBetweenTitleAndBody: LayoutMetric { get }
     var body: TextStyle { get }
@@ -68,6 +70,8 @@ extension UISheetActionScreenTheme {
 struct UISheetActionScreenCommonTheme:
     UISheetActionScreenTheme {
     var contextEdgeInsets: LayoutPaddings
+    var image: ImageStyle
+    var imageLayoutOffset: LayoutOffset
     var title: TextStyle
     var spacingBetweenTitleAndBody: LayoutMetric
     var body: TextStyle
@@ -79,6 +83,8 @@ struct UISheetActionScreenCommonTheme:
         _ family: LayoutFamily
     ) {
         contextEdgeInsets = (36, 24, 24, 24)
+        image = []
+        imageLayoutOffset = (0, 0)
         title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
