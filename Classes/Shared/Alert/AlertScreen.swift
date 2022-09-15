@@ -35,17 +35,14 @@ import MacaroonStorySheet
      private lazy var bodyView = Label()
      private lazy var actionsContextView = MacaroonUIKit.VStackView()
 
-     private let alert: Alert
-     private let theme: AlertScreenTheme
+     private lazy var theme: AlertScreenTheme = alert.theme
 
      private var uiInteractions: [TargetActionInteraction] = []
 
-     init(
-        alert: Alert,
-        theme: AlertScreenTheme
-     ) {
+     private let alert: Alert
+
+     init(alert: Alert) {
          self.alert = alert
-         self.theme = theme
          super.init()
      }
 

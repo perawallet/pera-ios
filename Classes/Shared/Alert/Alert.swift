@@ -23,18 +23,22 @@ final class Alert {
     let title: TextProvider?
     let body: TextProvider?
 
+    let theme: AlertScreenTheme
+
     private(set) var actions: [AlertAction] = []
 
     init(
         image: Image?,
         isNewBadgeVisible: Bool = false,
         title: TextProvider?,
-        body: TextProvider?
+        body: TextProvider?,
+        theme: AlertScreenTheme = AlertScreenCommonTheme()
     ) {
         self.image = image
         self.isNewBadgeVisible = isNewBadgeVisible
         self.title = title
         self.body = body
+        self.theme = theme
     }
 
     func addAction(
