@@ -76,15 +76,7 @@ extension SelectorInputView {
         selectorOptionsView.selectedSegmentIndex = -1
     }
 
-    func setBottomPadding() {
-        selectorOptionsView.snp.updateConstraints {
-            $0.bottom == 40
-        }
-    }
-
-    func setBottomPaddingForKeyboard(_ bottomPadding: LayoutMetric) {
-        selectorOptionsView.snp.updateConstraints {
-            $0.bottom == bottomPadding
-        }
+    func getSelectedIndex() -> Int {
+        return selectorOptionsView.selectedSegmentIndex
     }
 }

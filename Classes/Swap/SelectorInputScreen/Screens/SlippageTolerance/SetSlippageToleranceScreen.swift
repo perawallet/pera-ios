@@ -28,6 +28,10 @@ final class SetSlippageToleranceScreen:
         return .compressed
     }
 
+    private var draft = SetSlippageToleranceDraft()
+
+    private var validationStatus = true
+
     private lazy var contextView = SelectorInputView()
 
     private lazy var keyboardController = MacaroonForm.KeyboardController(
@@ -37,11 +41,16 @@ final class SetSlippageToleranceScreen:
 
     private let theme: SetSlippageToleranceScreenTheme
 
+    typealias EventHandler = (Event) -> Void
+    private let eventHandler: EventHandler
+
     init(
         theme: SetSlippageToleranceScreenTheme = .init(),
+        eventHandler: @escaping EventHandler,
         configuration: ViewControllerConfiguration
     ) {
         self.theme = theme
+        self.eventHandler = eventHandler
         super.init(configuration: configuration)
 
         keyboardController.activate()
@@ -49,6 +58,13 @@ final class SetSlippageToleranceScreen:
 
     deinit {
         keyboardController.deactivate()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        contextView.textInputView.validator = draft.slippageToleranceValidator
+        contextView.textInputView.editingDelegate = self
     }
 
     override func configureNavigationBarAppearance() {
@@ -68,7 +84,8 @@ final class SetSlippageToleranceScreen:
     override func bindData() {
         super.bindData()
 
-        contextView.bindData(SlippageSelectorInputViewModel())
+        let viewModel = SlippageSelectorInputViewModel(options: draft.optionValues)
+        contextView.bindData(viewModel)
     }
 
     override func viewDidLayoutSubviews() {
@@ -83,6 +100,22 @@ extension SetSlippageToleranceScreen {
         let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
             [weak self] in
             guard let self = self else {
+                return
+            }
+
+            let inputIndex = self.contextView.getSelectedIndex()
+
+            if inputIndex != -1 {
+                self.eventHandler(.setSlippage(self.draft.optionValues[inputIndex]))
+                self.dismissScreen()
+                return
+            }
+
+            if let input = self.contextView.textInputView.text,
+               let inputDecimal = Decimal(string: input),
+               self.validationStatus {
+                self.eventHandler(.setSlippage(inputDecimal))
+                self.dismissScreen()
                 return
             }
         }
@@ -116,12 +149,47 @@ extension SetSlippageToleranceScreen {
                 return
             }
 
-            contextView.setBottomPaddingForKeyboard(keyboardHeight)
+            contextView.snp.updateConstraints {
+                $0.bottom == keyboardHeight - view.safeAreaBottom
+            }
             performLayoutUpdates()
             return
         }
 
-        contextView.setBottomPadding()
+        contextView.snp.updateConstraints {
+            $0.bottom == 0
+        }
         performLayoutUpdates()
+    }
+}
+
+extension SetSlippageToleranceScreen: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {}
+
+    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
+        contextView.resetSelectedOption()
+
+        setTextInputState()
+    }
+
+    func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
+
+    private func setTextInputState() {
+        let validation = draft.validateSlippageTolerance(contextView.textInputView.text)
+
+        switch validation {
+        case .success:
+            contextView.textInputView.inputState = .focus
+            validationStatus = true
+        case .failure(let error):
+            contextView.textInputView.inputState = .invalid(error)
+            validationStatus = false
+        }
+    }
+}
+
+extension SetSlippageToleranceScreen {
+    enum Event {
+        case setSlippage(Decimal)
     }
 }

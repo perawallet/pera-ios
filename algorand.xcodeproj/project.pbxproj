@@ -1098,6 +1098,9 @@
 		2B3C73032898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
 		2B3C73042898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
 		2B3C73052898627900A0181F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C73022898627900A0181F /* Colors.swift */; };
+		2B3CB7C228D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3CB7C128D32D350080F3E1 /* SetSlippageToleranceDraft.swift */; };
+		2B3CB7C328D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3CB7C128D32D350080F3E1 /* SetSlippageToleranceDraft.swift */; };
+		2B3CB7C428D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3CB7C128D32D350080F3E1 /* SetSlippageToleranceDraft.swift */; };
 		2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */; };
 		2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */; };
 		2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */; };
@@ -1128,6 +1131,9 @@
 		2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
 		2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
 		2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
+		2B3F6BD328CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */; };
+		2B3F6BD428CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */; };
+		2B3F6BD528CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */; };
 		2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AssetViewModel.swift */; };
 		2B432A50237C4F5D009191BF /* AssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AssetViewModel.swift */; };
 		2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */; };
@@ -5782,6 +5788,7 @@
 		2B3BC385266FEBCD007D7107 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2B3C72FE2898606600A0181F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		2B3C73022898627900A0181F /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		2B3CB7C128D32D350080F3E1 /* SetSlippageToleranceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSlippageToleranceDraft.swift; sourceTree = "<group>"; };
 		2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetList.swift; sourceTree = "<group>"; };
 		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
 		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
@@ -5795,6 +5802,7 @@
 		2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
 		2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Additions.swift"; sourceTree = "<group>"; };
 		2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Additions.swift"; sourceTree = "<group>"; };
+		2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlippageToleranceValidator.swift; sourceTree = "<group>"; };
 		2B432A4E237C4F5D009191BF /* AssetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewModel.swift; sourceTree = "<group>"; };
 		2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSupplementaryView.swift; sourceTree = "<group>"; };
 		2B4334A327C44C3200A3D9D6 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
@@ -8187,6 +8195,7 @@
 			children = (
 				2B2C67B528C786C10099C2CE /* SetSlippageToleranceScreen.swift */,
 				2B2C67B928C787A40099C2CE /* SetSlippageToleranceScreenTheme.swift */,
+				2B3CB7C128D32D350080F3E1 /* SetSlippageToleranceDraft.swift */,
 			);
 			path = SlippageTolerance;
 			sourceTree = "<group>";
@@ -8419,6 +8428,14 @@
 				2BF53175224AA50F00A7455F /* TabBarController.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		2B3F6BD128CB3030009DF7E6 /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */,
+			);
+			path = Validators;
 			sourceTree = "<group>";
 		};
 		2B4334BB27CEEA0100A3D9D6 /* List */ = {
@@ -13965,6 +13982,7 @@
 		2BF7280227471E4700CCAC30 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2B3F6BD128CB3030009DF7E6 /* Validators */,
 				F010639F28AD7A5C00AB6873 /* Auxiliaries */,
 				D44500F2283BA292003E9D59 /* Tooltip */,
 				2BE4D0F82594D328005F5764 /* AppStoreReview */,
@@ -17464,6 +17482,7 @@
 				D45038E52842C81C009EDE44 /* String+Typography.swift in Sources */,
 				D4DF3F6D26F1EED4006625E6 /* LedgerApprovalViewTheme.swift in Sources */,
 				F0B5B0D927A1CF8600BC3E2D /* UserInterfaceStyleController.swift in Sources */,
+				2B3CB7C428D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */,
 				17BD4E212292F1260003E49A /* Int.swift in Sources */,
 				95B388AD27F1725700A500B3 /* AnnouncementViewModel.swift in Sources */,
 				2B77472A25FFE88C0083EFFA /* InputSuggestionDataSource.swift in Sources */,
@@ -17783,6 +17802,7 @@
 				2B51A83F288AE9C6004E004C /* AssetQuickActionView.swift in Sources */,
 				2B4487292379653700C19FDE /* AssetActionConfirmationViewController.swift in Sources */,
 				958416E327B29612005B1627 /* HomeLoadingViewTheme.swift in Sources */,
+				2B3F6BD528CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */,
 				D41868E1287F0D8D0066DDC0 /* ManagementItemCell.swift in Sources */,
 				953DEE19279ED0D000D76957 /* WCAssetInformationViewTheme.swift in Sources */,
 				2B9E2F3F26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */,
@@ -19532,6 +19552,7 @@
 				95AF1C8427B13EE1001AB131 /* TransactionHistoryLoadingItemView.swift in Sources */,
 				D4C45BF42726C54800F4AE31 /* ContactInformationView.swift in Sources */,
 				D41F4F082892E22E00B59559 /* TransferAssetBalanceScreenTheme.swift in Sources */,
+				2B3CB7C328D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */,
 				D46AC87A26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				D419430F273541140055EC70 /* PageBarButton.swift in Sources */,
 				D478AA9028AAE734001958C8 /* SwapTransactionOptionListItemButtonViewModel.swift in Sources */,
@@ -20302,6 +20323,7 @@
 				F09608702795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
 				F07C3C3128B46D98003D55BC /* ASADetailLoadingViewTheme.swift in Sources */,
 				2B4FD20B27C654A60097AB65 /* BuyAlgoTransactionDataController.swift in Sources */,
+				2B3F6BD428CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */,
 				2B0F62CF24EC129D00DA22A6 /* OptionsViewController.swift in Sources */,
 				2B0F62D024EC129D00DA22A6 /* algorand.xcdatamodeld in Sources */,
 				2BC63655288FDC6F00507AEA /* InfoBoxViewStyle.swift in Sources */,
@@ -20983,6 +21005,7 @@
 				2B77472825FFE88C0083EFFA /* InputSuggestionDataSource.swift in Sources */,
 				D45038E32842C81C009EDE44 /* String+Typography.swift in Sources */,
 				F096086C2795E36B00CFBB90 /* SingleLineIconTitleViewModel.swift in Sources */,
+				2B3CB7C228D32D350080F3E1 /* SetSlippageToleranceDraft.swift in Sources */,
 				F0CF6B5E2851637A007C30E4 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				95B388AB27F1725700A500B3 /* AnnouncementViewModel.swift in Sources */,
 				2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */,
@@ -21302,6 +21325,7 @@
 				F040FE07285777D500A74993 /* CopyToClipboardController.swift in Sources */,
 				D41868DF287F0D8C0066DDC0 /* ManagementItemCell.swift in Sources */,
 				D4F068B126EF461100C26F43 /* TutorialStepsViewController+Theme.swift in Sources */,
+				2B3F6BD328CB305C009DF7E6 /* SlippageToleranceValidator.swift in Sources */,
 				2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */,
 				2BF7190E224ECF4A001E8420 /* ContactDetailView.swift in Sources */,
 				D44EB6B326DF7A390008E234 /* AccountTypeViewTheme.swift in Sources */,

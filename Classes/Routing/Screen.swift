@@ -227,7 +227,10 @@ indirect enum Screen {
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
-    case setSlippage(theme: SetSlippageToleranceScreenTheme = .init())
+    case setSlippage(
+        theme: SetSlippageToleranceScreenTheme = .init(),
+        eventHandler: SetSlippageToleranceScreen.EventHandler
+    )
 }
 
 extension Screen {

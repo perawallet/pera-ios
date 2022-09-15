@@ -20,19 +20,24 @@ struct SlippageSelectorInputViewModel: SelectorInputViewModel {
     private(set) var selectorOptions: [SelectorOption]?
     private(set) var defaultSelectedIndex: Int?
 
-    init() {
-        bindSelectedOptions()
+    init(options: [Decimal]) {
+        bindSelectedOptions(options)
         bindDefaultSelectedIndex()
     }
 }
 
 extension SlippageSelectorInputViewModel {
-    private mutating func bindSelectedOptions() {
+    private mutating func bindSelectedOptions(_ options: [Decimal]) {
+        let firstOptionTitle = "swap-slippage-percentage-auto".localized
+        let secondOptionTitle = options[1].doubleValue.toPercentageWith(fractions: 3).someString
+        let thirdOptionTitle = options[2].doubleValue.toPercentageWith(fractions: 3).someString
+        let fourthOptionTitle = options[3].doubleValue.toPercentageWith(fractions: 3).someString
+
         self.selectorOptions = [
-            SelectorOption(title: "swap-slippage-percentage-auto".localized),
-            SelectorOption(title: "0.1%"),
-            SelectorOption(title: "0.5%"),
-            SelectorOption(title: "1%")
+            SelectorOption(title: firstOptionTitle),
+            SelectorOption(title: secondOptionTitle),
+            SelectorOption(title: thirdOptionTitle),
+            SelectorOption(title: fourthOptionTitle)
         ]
     }
 
