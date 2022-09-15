@@ -32,6 +32,10 @@ final class CopyAddressIntroductionAlertItem:
 
 extension CopyAddressIntroductionAlertItem {
     func canBeDisplayed() -> Bool {
+        if isDisplayed {
+            return false
+        }
+
         let resolveLegacyShouldDisplayCopyAddress = {
             let legacyCopyAddressAppOpenCountKey = "com.algorand.algorand.copy.address.count.key"
             let legacyCopyAddressAppOpenCountValue = userDefaults.integer(forKey: legacyCopyAddressAppOpenCountKey)
