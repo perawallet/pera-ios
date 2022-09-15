@@ -169,10 +169,47 @@ extension SetSlippageToleranceScreen: FormInputFieldViewEditingDelegate {
     func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
         contextView.resetSelectedOption()
 
+        setSingleDecimalSeparator()
+        setInputNumberWith3Fractions()
         setTextInputState()
     }
 
     func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
+
+    private func setSingleDecimalSeparator() {
+        guard let text = contextView.textInputView.text,
+              let lastChar = text.last,
+              let decimalSeparator = Locale.current.decimalSeparator
+        else {
+            return
+        }
+
+        if String([lastChar]) == decimalSeparator {
+            if text.filter({
+                $0 == lastChar
+            }).count > 1 {
+                contextView.textInputView.text = String(text.dropLast())
+            }
+        }
+    }
+
+    private func setInputNumberWith3Fractions() {
+        guard let text = contextView.textInputView.text,
+              let decimalSeparator = Locale.current.decimalSeparator
+        else {
+            return
+        }
+
+        let components = text.components(separatedBy: decimalSeparator)
+
+        guard let decimalPart = components.last, components.count > 1 else {
+            return
+        }
+
+        if decimalPart.count > 3 {
+            contextView.textInputView.text = String(text.dropLast())
+        }
+    }
 
     private func setTextInputState() {
         let validation = draft.validateSlippageTolerance(contextView.textInputView.text)
