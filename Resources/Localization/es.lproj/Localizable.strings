@@ -1,5 +1,5 @@
 /* (No Comment) */
-"about" = "About";
+"about" = "Acerca de";
 
 /* (No Comment) */
 "account-detail-assets-search" = "Buscar activos";
@@ -116,13 +116,13 @@
 "accounts-title-history" = "Historial";
 
 /* (No Comment) */
-"accounts-title-overview" = "Overview";
+"accounts-title-overview" = "Vista general";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+"accounts-tranaction-empty-detail" = "No hay transacciones para mostrar para el período seleccionado";
 
 /* MARK: Accounts */
-"accounts-tranaction-empty-text" = "No Transactions";
+"accounts-tranaction-empty-text" = "Sin transacciones";
 
 /* (No Comment) */
 "accounts-transaction-value" = "Valor";
@@ -131,10 +131,10 @@
 "accounts-transaction-your-balance" = "Saldo";
 
 /* (No Comment) */
-"accounts-transactions-title" = "Transactions";
+"accounts-transactions-title" = "Transacciones";
 
 /* (No Comment) */
-"activity" = "Activity";
+"activity" = "Actividad";
 
 /* (No Comment) */
 "add-node-title" = "Agregar nodo";
@@ -158,55 +158,55 @@
 "algo-statistics-title" = "Estadísticas";
 
 /* (No Comment) */
-"asa-about-asa-creator" = "Creator";
+"asa-about-asa-creator" = "Creador";
 
 /* MARK: ASA About */
-"asa-about-asa-id" = "ASA ID";
+"asa-about-asa-id" = "ID del ASA";
 
 /* (No Comment) */
-"asa-about-asa-project-website" = "Project website";
+"asa-about-asa-project-website" = "Sitio web del proyecto";
 
 /* (No Comment) */
-"asa-about-asa-show-on" = "Show on";
+"asa-about-asa-show-on" = "Mostrar en";
 
 /* (No Comment) */
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 
 /* (No Comment) */
-"asa-about-asa-url" = "ASA URL";
+"asa-about-asa-url" = "URL del ASA";
 
 /* (No Comment) */
-"asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
+"asa-verification-detail-suspicious" = "Recibimos reportes que indican que este ASA estuvo involucrado en un intento de estafa. Ten cuidado si interactúas con el.";
 
 /* (No Comment) */
-"asa-verification-detail-suspicious-bold" = "scam attempt";
+"asa-verification-detail-suspicious-bold" = "intento de estafa";
 
 /* (No Comment) */
-"asa-verification-detail-trusted" = "This is a well-known and established project in the Algorand ecosystem.";
+"asa-verification-detail-trusted" = "Este es un proyecto reconocido y establecido en el ecosistema Algorand.";
 
 /* (No Comment) */
-"asa-verification-detail-trusted-bold" = "well-known";
+"asa-verification-detail-trusted-bold" = "reconocido";
 
 /* (No Comment) */
-"asa-verification-detail-verified" = "This ASA was automatically verified through the Pera ASA Verification program.";
+"asa-verification-detail-verified" = "Este ASA se verificó mediante el programa de verificación de ASA de Pera.";
 
 /* (No Comment) */
-"asa-verification-detail-verified-bold" = "automatically verified";
+"asa-verification-detail-verified-bold" = "verificado automáticamente";
 
 /* (No Comment) */
-"asa-verification-learn-more" = "Learn more about ASA verification";
+"asa-verification-learn-more" = "Obtén más información sobre la verificación de ASA";
 
 /* (No Comment) */
-"asa-verification-suspicious-report" = "Report %@";
+"asa-verification-suspicious-report" = "Reportar %@";
 
 /* (No Comment) */
-"asa-verification-title-suspicious" = "Suspicious";
+"asa-verification-title-suspicious" = "Sospechoso";
 
 /* MARK: ASA Verification */
-"asa-verification-title-trusted" = "Trusted ASA";
+"asa-verification-title-trusted" = "ASA confiable";
 
 /* (No Comment) */
-"asa-verification-title-verified" = "Verified ASA";
+"asa-verification-title-verified" = "ASA verificado";
 
 /* (No Comment) */
 "asset-add-confirmation-title" = "Agregando activo";
@@ -215,7 +215,7 @@
 "asset-add-warning" = "Agregar un activo requiere que se envíe una transacción con una tarifa mínima. Esto aparecerá en tu historial de transacciones.";
 
 /* (No Comment) */
-"asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
+"asset-algos-description" = "El Algo es la criptomoneda oficial de la blockchain de Algorand. La blockchain de Algorand se creó para ayudar a crear una economía abierta y sin fronteras en la que todos pueden participar. Este nuevo tipo de economía digital solo puede existir con una moneda verdaderamente digital que funcione al instante y para todos. Esa moneda es el Algo.";
 
 /* (No Comment) */
 "asset-algos-title" = "Algo";
@@ -260,28 +260,28 @@
 "asset-not-found-title" = "No se encontraron activos";
 
 /* (No Comment) */
-"asset-opt-in-successful-message" = "%@ successfully added to your account.";
+"asset-opt-in-successful-message" = "Se agregó %@ correctamente a tu cuenta.";
 
 /* (No Comment) */
-"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
+"asset-opt-out-successful-message" = "Se eliminó %@ correctamente de tu cuenta.";
 
 /* (No Comment) */
-"asset-quick-action-button-add" = "Add Asset";
+"asset-quick-action-button-add" = "Agregar activo";
 
 /* (No Comment) */
-"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-title-add" = "Puedes agregar este activo a";
 
 /* (No Comment) */
-"asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-add-asset-without-account" = "Puedes suscribirte a este activo con una de tus cuentas.";
 
 /* (No Comment) */
-"asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
+"asset-quick-action-title-add-nft-without-account" = "Puedes suscribirte a este NFT con una de tus cuentas.";
 
 /* (No Comment) */
-"asset-quick-action-title-opt-in" = "You can add this NFT to";
+"asset-quick-action-title-opt-in" = "Puedes agregar este NFT a";
 
 /* (No Comment) */
-"asset-quick-action-title-remove" = "Opted in to";
+"asset-quick-action-title-remove" = "Suscrito a";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "Eliminar activo";
@@ -332,7 +332,7 @@
 "asset-title" = "Activo";
 
 /* MARK: Total Supply */
-"asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
+"asset-total-supply-body" = "El suministro total de un activo es el total de unidades creadas del activo y se determina en el momento de su creación.";
 
 /* (No Comment) */
 "asset-transfer-balance" = "Transferir el saldo";
@@ -374,7 +374,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "Se deben otorgar permisos de Bluetooth para poder buscar los Ledgers cercanos.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "El dispositivo al que estás intentando conectarte no es compatible con el monedero Algorand.";
+"ble-error-fail-ble-connection-unsupported" = "El dispositivo al que estás intentando conectarte no es compatible con Pera Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "No es posible conectar con el dispositivo Ledger. Asegúrate de que el dispositivo esté desbloqueado, esté cerca y tenga Blueetooth activado.";
@@ -551,10 +551,10 @@
 "collectible-opt-out-info-title" = "Dar de baja el NFT.";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectible-receive-account-list-info" = "Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-receive-asset-list-info" = "Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero. Pega el ID del ASA en la barra de búsqueda.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "Cuenta seleccionada";
@@ -992,7 +992,7 @@
 "ledger-troubleshooting-open-app-second-html" = "Si aún no instalaste la aplicación <b>Algorand</b> en tu dispositivo Ledger, cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa \"<b>Algorand</b>\" en la barra de búsqueda e instala.";
 
 /* (No Comment) */
-"ledger-troubleshooting-restart" = "Reinicia el monedero Algorand o tu dispositivo.";
+"ledger-troubleshooting-restart" = "Reinicia la app de Algorand Wallet o tu dispositivo.";
 
 /* (No Comment) */
 "ledger-troubleshooting-title" = "Resolución de problemas avanzada";
@@ -1061,7 +1061,7 @@
 "mail-report-address" = "verification@perawallet.app";
 
 /* (No Comment) */
-"mail-report-subject" = "ASA Report: %d";
+"mail-report-subject" = "Informe de ASA: %d";
 
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "Según la configuración de tu cuenta, tu saldo mínimo es %@. \n\nAl presionar continuar, el monto de tu transacción se actualizará para mantener el saldo mínimo requerido por la Blockchain de Algorand. Obtendrás una vista previa de este cambio en el siguiente paso.";
@@ -1241,10 +1241,10 @@
 "opitons-collectibles-filter" = "Filtrar NFT";
 
 /* (No Comment) */
-"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"opt-in-description-adding-nft" = "Se debe realizar una transacción con una tarifa mínima de transacción para suscribirse a un NFT. Esta transacción aparecerá en el historial de transacciones.";
 
 /* MARK: Opt In Asset */
-"opt-in-title-adding-nft" = "Opt-in to NFT";
+"opt-in-title-adding-nft" = "Suscribirse al NFT";
 
 /* (No Comment) */
 "options-auth-account" = "Autorizar dirección de la cuenta";
@@ -1550,7 +1550,7 @@
 "recover-from-seed-verify-pop-up-description-watch-account-initialize" = "¡Bienvenido a Pera Wallet!\nLa cuenta en observación se ha agregado con éxito.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation" = "¡Bienvenido a Algorand!\nTu cuenta está lista para usarse.";
+"recover-from-seed-verify-pop-up-explanation" = "¡Bienvenido a Pera Wallet!\nTu cuenta está lista para usarse.";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation-already-added" = "Felicitaciones, ya puedes usar tu cuenta.";
@@ -1838,7 +1838,7 @@
 "settings-rate-modal-title" = "Califica tu experiencia";
 
 /* (No Comment) */
-"settings-rate-title" = "Califica a Pera Wallet";
+"settings-rate-title" = "Deja una valoración de Pera Wallet";
 
 /* MARK: Settings */
 "settings-sections-account" = "Cuenta";
@@ -1895,7 +1895,7 @@
 "social-media-platform-telegram" = "Telegram";
 
 /* MARK: Social Media Platforms */
-"social-media-platform-title" = "SOCIAL MEDIA";
+"social-media-platform-title" = "REDES SOCIALES";
 
 /* (No Comment) */
 "social-media-platform-twitter" = "Twitter";
@@ -1913,7 +1913,7 @@
 "terms-and-services-title" = "Términos y condiciones de servicio";
 
 /* (No Comment) */
-"title-about-with-param" = "ABOUT %@";
+"title-about-with-param" = "ACERCA DE %@";
 
 /* (No Comment) */
 "title-accept" = "Aceptar";
@@ -2153,10 +2153,10 @@
 "title-show-all-detail" = "Mostrar toda la información";
 
 /* (No Comment) */
-"title-show-less" = "Show less";
+"title-show-less" = "Ver menos";
 
 /* (No Comment) */
-"title-show-more" = "Show more";
+"title-show-more" = "Ver más";
 
 /* (No Comment) */
 "title-show-more-assets" = "Mostrar +%@ activos más";
@@ -2189,7 +2189,7 @@
 "title-testnet" = "TestNet";
 
 /* (No Comment) */
-"title-total-supply" = "Total Supply";
+"title-total-supply" = "Suministro total";
 
 /* (No Comment) */
 "title-unknown" = "Sin nombre";
@@ -2369,10 +2369,10 @@
 "transaction-menu-copy-note" = "Copiar nota";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+"transaction-option-list-add-asset-subtitle" = "Suscribirse a un ASA o NFT";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-title" = "Add Asset";
+"transaction-option-list-add-asset-title" = "Agregar activo";
 
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "Compra criptomonedas con tarjeta de crédito o transferencias bancarias";
@@ -2441,7 +2441,7 @@
 "tutorial-description-ledger" = "Asegúrate de que el dispositivo Ledger esté desbloqueado y el Bluetooth esté activado.";
 
 /* (No Comment) */
-"tutorial-description-ledger-connected" = "¡Bienvenido a Algorand!\nTu cuenta ya está lista para usarse.";
+"tutorial-description-ledger-connected" = "¡Bienvenido a Pera Wallet!\nTu cuenta ya está lista para usarse.";
 
 /* (No Comment) */
 "tutorial-description-local" = "Necesitarás tu FaceID o TouchID para usar la aplicación. Recomendamos habilitar la autenticación biométrica para aumentar la seguridad del monedero en caso de que te roben el teléfono.";
@@ -2471,7 +2471,7 @@
 "tutorial-main-title-back-up" = "Entiendo";
 
 /* (No Comment) */
-"tutorial-main-title-ledger-connected" = "Comienza a usar Algorand";
+"tutorial-main-title-ledger-connected" = "Comienza a usar Pera Wallet";
 
 /* (No Comment) */
 "tutorial-main-title-passcode" = "Establecer código PIN";
@@ -2498,22 +2498,22 @@
 "tutorial-title-write" = "Prepárate para escribir\nla frase secreta de recuperación";
 
 /* (No Comment) */
-"url-copied" = "URL copied to clipboard";
+"url-copied" = "URL copiada al portapapeles";
 
 /* (No Comment) */
-"verification-info-body" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+"verification-info-body" = "El Programa de Verificación de Activos Estándar de Algorand (ASA) de Pera Wallet permite que los creadores de ASA obtengan una verificación automática si validan que son los dueños del activo.\nEl objetivo principal de la verificación de ASA es evitar que un ASA simule estar afiliado al token de un proyecto con el que no está relacionado o se haga pasar por dicho token.\nLa verificación de ASA no implica el respaldo del proyecto. Ni Algorand ni Pera usarán el proceso de verificación como forma de respaldo a un proyecto.";
 
 /* (No Comment) */
-"verification-info-body-first-highlight" = "automatically";
+"verification-info-body-first-highlight" = "automáticamente";
 
 /* (No Comment) */
-"verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-body-second-highlight" = "evitar que un ASA simule estar afiliado al token de un proyecto con el que no está relacionado o se haga pasar por dicho token.";
 
 /* (No Comment) */
-"verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+"verification-info-body-third-highlight" = "La verificación de ASA no implica el respaldo del proyecto.";
 
 /* MARK: Verification Information */
-"verification-info-title" = "ASA Verification";
+"verification-info-title" = "Verificación de ASA";
 
 /* (No Comment) */
 "verified-asset-double-check" = "siempre comprueba dos veces";
@@ -2657,7 +2657,7 @@
 "wallet-connect-transaction-error-invalid-asset" = "Entrada inválida: Activo inválido";
 
 /* (No Comment) */
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
+"wallet-connect-transaction-error-invalid-group" = "Parece que faltan una o más transacciones en este grupo de transacciones. Por motivos de seguridad, Pera Wallet no permite firmar grupos de transacciones con información oculta. Ponte en contacto con la dApp que envió esta transacción para que puedan rectificar el problema.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "Entrada inválida: Clave pública inválida";
@@ -2684,7 +2684,7 @@
 "wallet-connect-transaction-error-transaction-size" = "Entrada inválida: La solicitud de transacción contiene más de 16 transacciones";
 
 /* (No Comment) */
-"wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
+"wallet-connect-transaction-error-unable-fetch-asset" = "No pudimos recuperar la información del activo y se canceló la transacción. Verifica la conexión de la red e inténtalo nuevamente.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "Entrada inválida: No se puede firmar";
