@@ -1186,6 +1186,10 @@
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 
+/// MARK: Swap Slippage Tolerance Info
+"swap-slippage-tolerance-info-title" = "Slippage Tolerance";
+"swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 

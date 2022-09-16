@@ -24,6 +24,8 @@ final class SwapAssetFlowCoordinator {
 
     private lazy var alertTransition = AlertUITransition(presentingViewController: presentingScreen)
 
+    private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: presentingScreen)
+
     private var swapAlertScreen: AlertScreen?
     private var swapIntroductionScreen: SwapIntroductionScreen?
 
@@ -171,6 +173,28 @@ extension SwapAssetFlowCoordinator {
         presentingScreen.open(
             .swapAsset(draft: draft),
             by: .present
+        )
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    private func openSlippageToleranceInfo() {
+        let uiSheet = UISheet(
+            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
+            body:"swap-slippage-tolerance-info-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.presentingScreen.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToSlippageToleranceInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
         )
     }
 }
