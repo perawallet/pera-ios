@@ -1185,6 +1185,7 @@
 
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
+"swap-asset-amount-title-balance" = "Balance: %@";
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
