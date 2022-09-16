@@ -37,7 +37,7 @@ struct AlertScreenWithFillingImageTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.contextEdgeInsets = (0, 0, 12, 0)
+        self.contextEdgeInsets = (0, 0, 24, 0)
         self.image = [
             .contentMode(.scaleAspectFill)
         ]
