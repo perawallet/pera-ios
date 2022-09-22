@@ -1186,6 +1186,10 @@
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 
+/// MARK: Swap Price Impact Info
+"swap-price-impact-info-title" = "Price Impact";
+"swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
