@@ -1185,6 +1185,7 @@
 
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
+"swap-asset-amount-title-balance" = "Balance: %@";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";

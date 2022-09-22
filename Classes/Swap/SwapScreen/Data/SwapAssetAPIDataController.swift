@@ -29,6 +29,8 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
 
     private let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var currentSwapQuote: SwapQuote?
 
     private let api: ALGAPI
@@ -123,5 +125,13 @@ extension SwapAssetAPIDataController {
         _ slippage: Decimal
     ) {
         self.slippage = slippage
+    }
+
+    func getUserAssetItem() -> AssetItem {
+        return AssetItem(
+            asset: self.userAsset,
+            currency: self.sharedDataController.currency,
+            currencyFormatter: self.currencyFormatter
+        )
     }
 }
