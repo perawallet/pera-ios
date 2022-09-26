@@ -72,7 +72,7 @@ struct URLImageViewCollectibleMediaTheme:
             ]
             image = []
             text = [
-                .textColor(Colors.Layer.gray),
+                .textColor(Colors.Text.gray),
                 .textOverflow(FittingText())
             ]
         }

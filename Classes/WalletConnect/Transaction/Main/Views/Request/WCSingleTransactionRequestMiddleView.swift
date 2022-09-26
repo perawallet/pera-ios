@@ -106,6 +106,7 @@ extension WCSingleTransactionRequestMiddleView {
 
         if let verificationTierIcon = viewModel?.verificationTierIcon {
             icon.image = verificationTierIcon
+            icon.isHidden = false
         } else {
             icon.isHidden = true
         }

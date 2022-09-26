@@ -34,6 +34,8 @@ class WalletConnector {
 
     private let analytics: ALGAnalytics
 
+    private var ongoingConnections: [String: Bool] = [:]
+
     init(
         analytics: ALGAnalytics
     ) {
@@ -55,9 +57,17 @@ extension WalletConnector {
             return
         }
 
+        let key = url.absoluteString
+
+        if ongoingConnections[key] != nil {
+            return
+        }
+
         do {
+            ongoingConnections[key] = true
             try walletConnectBridge.connect(to: url)
         } catch {
+            ongoingConnections.removeValue(forKey: key)
             delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
@@ -136,6 +146,8 @@ extension WalletConnector: WalletConnectBridgeDelegate {
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
+        let key = url.absoluteString
+        ongoingConnections.removeValue(forKey: key)
         delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
     }
 
@@ -147,6 +159,8 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
             let wcSession = session.toWCSession()
             self.addToSavedSessions(wcSession)
+            let key = session.url.absoluteString
+            self.ongoingConnections.removeValue(forKey: key)
             self.delegate?.walletConnector(self, didConnectTo: wcSession)
         }
     }

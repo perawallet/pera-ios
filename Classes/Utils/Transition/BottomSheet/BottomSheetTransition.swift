@@ -24,11 +24,14 @@ final class BottomSheetTransition {
     private(set) var transitionController: BottomSheetTransitionController?
 
     unowned let presentingViewController: UIViewController
+    let isInteractable: Bool
 
     init(
-        presentingViewController: UIViewController
+        presentingViewController: UIViewController,
+        interactable: Bool = true
     ) {
         self.presentingViewController = presentingViewController
+        self.isInteractable = interactable
     }
 }
 
@@ -41,6 +44,7 @@ extension BottomSheetTransition {
     ) -> T? {
         let transitionController =
             BottomSheetTransitionController(
+                interactable: isInteractable,
                 presentingViewController: presentingViewController
             ) { [weak self] in
 

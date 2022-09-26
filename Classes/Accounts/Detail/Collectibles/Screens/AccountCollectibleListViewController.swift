@@ -122,60 +122,6 @@ extension AccountCollectibleListViewController {
     }
 }
 
-extension AccountCollectibleListViewController: TransactionFloatingActionButtonViewControllerDelegate {
-    func transactionFloatingActionButtonViewControllerDidSend(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        let account = account.value
-
-        analytics.track(.tapSendInDetail(account: account))
-
-        open(
-            .assetSelection(
-                filter: nil,
-                account: account
-            ),
-            by: .present
-        )
-    }
-
-    func transactionFloatingActionButtonViewControllerDidReceive(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        let account = account.value
-
-        analytics.track(.tapReceiveAssetInDetail(account: account))
-
-        let draft = QRCreationDraft(
-            address: account.address,
-            mode: .address,
-            title: account.name
-        )
-
-        open(
-            .qrGenerator(
-                title: account.name ?? account.address.shortAddressDisplay,
-                draft: draft,
-                isTrackable: true
-            ),
-            by: .present
-        )
-    }
-
-    func transactionFloatingActionButtonViewControllerDidBuy(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        openBuyAlgo()
-    }
-
-    private func openBuyAlgo() {
-        let draft = BuyAlgoDraft()
-        draft.address = account.value.address
-
-        launchBuyAlgo(draft: draft)
-    }
-}
-
 extension AccountCollectibleListViewController {
     private func addOptInAction() {
         optInActionView.image = theme.optInActionIcon

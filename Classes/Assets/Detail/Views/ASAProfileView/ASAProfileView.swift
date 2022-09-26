@@ -53,7 +53,7 @@ final class ASAProfileView:
     }
 
     func bindData(_ viewModel: ASAProfileViewModel?) {
-        iconView.load(from: viewModel?.icon)
+        bindIcon(viewModel)
 
         nameView.bindData(viewModel?.name)
 
@@ -84,6 +84,10 @@ final class ASAProfileView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
+    }
+
+    func bindIcon(_ viewModel: ASAProfileViewModel?) {
+        iconView.load(from: viewModel?.icon)
     }
 
     static func calculatePreferredSize(

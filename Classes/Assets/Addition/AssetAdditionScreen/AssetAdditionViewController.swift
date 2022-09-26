@@ -467,11 +467,8 @@ extension AssetAdditionViewController {
             if !self.canSignTransaction(for: &account) { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptInUpdates(
-                request,
-                for: account
-            )
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
             let transactionController = self.createNewTransactionController(for: asset)
@@ -632,11 +629,23 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
