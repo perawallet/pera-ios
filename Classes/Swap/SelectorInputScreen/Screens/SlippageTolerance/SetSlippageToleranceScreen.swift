@@ -170,7 +170,7 @@ extension SetSlippageToleranceScreen: FormInputFieldViewEditingDelegate {
         contextView.resetSelectedOption()
 
         setSingleDecimalSeparator()
-        setInputNumberWith3Fractions()
+        setInputNumberWithThreeFractions()
         setTextInputState()
     }
 
@@ -183,17 +183,21 @@ extension SetSlippageToleranceScreen: FormInputFieldViewEditingDelegate {
         else {
             return
         }
+        
+        let lastCharacterOfInput = String([lastChar])
 
-        if String([lastChar]) == decimalSeparator {
-            if text.filter({
+        if lastCharacterOfInput == decimalSeparator {
+            let numberOfDecimalSeparator = text.filter({
                 $0 == lastChar
-            }).count > 1 {
+            }).count
+            
+            if numberOfDecimalSeparator > 1 {
                 contextView.textInputView.text = String(text.dropLast())
             }
         }
     }
 
-    private func setInputNumberWith3Fractions() {
+    private func setInputNumberWithThreeFractions() {
         guard let text = contextView.textInputView.text,
               let decimalSeparator = Locale.current.decimalSeparator
         else {
@@ -202,11 +206,15 @@ extension SetSlippageToleranceScreen: FormInputFieldViewEditingDelegate {
 
         let components = text.components(separatedBy: decimalSeparator)
 
-        guard let decimalPart = components.last, components.count > 1 else {
+        guard let decimalPart = components.last,
+              components.count > 1
+        else {
             return
         }
+        
+        let numberOfFractions = 3
 
-        if decimalPart.count > 3 {
+        if decimalPart.count > numberOfFractions {
             contextView.textInputView.text = String(text.dropLast())
         }
     }
