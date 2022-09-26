@@ -377,7 +377,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
-        delegate?.qrScannerViewControllerDidApproveWCConnection(self)
+        delegate?.qrScannerViewControllerDidApproveWCConnection(self, session: session)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
     }
@@ -527,13 +527,13 @@ extension QRScannerViewController: WCSessionShortListViewControllerDelegate {
 }
 
 protocol QRScannerViewControllerDelegate: AnyObject {
-    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController)
+    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController, session: WCSession)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
 }
 
 extension QRScannerViewControllerDelegate {
-    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {}
+    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController, session: WCSession) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
 }
