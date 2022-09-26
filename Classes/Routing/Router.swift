@@ -1033,6 +1033,11 @@ class Router:
                 configuration: configuration,
                 theme: theme
             )
+        case .swapSignWithLedgerProcess(let draft, let eventHandler):
+            viewController = SignWithLedgerProcessScreen(
+                draft: draft,
+                eventHandler: eventHandler
+            )
         case .alert(let alert, let theme):
             viewController = AlertScreen(
                 alert: alert,

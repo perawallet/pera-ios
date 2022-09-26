@@ -23,7 +23,7 @@ final class SwapAssetFlowCoordinator {
     private lazy var swapAssetFlowStorage = OneTimeDisplayStorage()
 
     private lazy var alertTransition = AlertUITransition(presentingViewController: presentingScreen)
-
+    private lazy var transitionToSignWithLedger = BottomSheetTransition(presentingViewController: presentingScreen)
     private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: presentingScreen)
     private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: presentingScreen)
 
@@ -174,6 +174,48 @@ extension SwapAssetFlowCoordinator {
         presentingScreen.open(
             .swapAsset(draft: draft),
             by: .present
+        )
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+     private func openSignWithLedgerConfirmation(totalTransactionCountToSign: Int) {
+        let title =
+            "swap-sign-with-ledger-title"
+                .localized
+                .bodyLargeMedium(alignment: .center)
+        let highlightedBodyPart =
+            "swap-sign-with-ledger-body-highlighted"
+                .localized(params: "\(totalTransactionCountToSign)")
+        let body =
+            "swap-sign-with-ledger-body"
+                .localized(params: "\(totalTransactionCountToSign)")
+                .bodyRegular(alignment: .center)
+                .addAttributes(
+                    to: highlightedBodyPart,
+                    newAttributes: Typography.bodyMediumAttributes(alignment: .center)
+                )
+
+        let uiSheet = UISheet(
+            image: "icon-ledger-48",
+            title: title,
+            body: body
+        )
+
+        let signTransactionsAction = UISheetAction(
+            title: "swap-sign-with-ledger-action-title".localized,
+            style: .default
+        ) {
+            // <todo> Sign transactions
+        }
+        uiSheet.addAction(signTransactionsAction)
+
+        transitionToSignWithLedger.perform(
+            .sheetAction(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }

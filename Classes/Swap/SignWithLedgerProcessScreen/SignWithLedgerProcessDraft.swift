@@ -12,31 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   UISheet.swift
+//   SignWithLedgerProcessDraft.swift
 
 import Foundation
-import MacaroonUIKit
 
-final class UISheet {
-    let image: Image?
-    let title: TextProvider?
-    let body: TextProvider?
-
-    private(set) var actions: [UISheetAction] = []
-
-    init(
-        image: Image? = nil,
-        title: TextProvider? = nil,
-        body: TextProvider? = nil
-    ) {
-        self.image = image
-        self.title = title
-        self.body = body
-    }
-
-    func addAction(
-        _ action: UISheetAction
-    ) {
-        actions.append(action)
-    }
+struct SignWithLedgerProcessDraft {
+    let ledgerDeviceName: String
+    let totalTransactionCount: Int
 }
