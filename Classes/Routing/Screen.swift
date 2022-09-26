@@ -128,7 +128,6 @@ indirect enum Screen {
         shouldFilterAccount: ((Account) -> Bool)? = nil
     )
     case assetSelection(
-        filter: AssetType?,
         account: Account,
         receiver: String? = nil
     )
@@ -143,7 +142,6 @@ indirect enum Screen {
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
-    case transactionFloatingActionButton
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
@@ -198,8 +196,12 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
-        draft: SwapScreenDraft,
+        draft: SwapAssetScreenDraft,
         theme: SwapAssetScreenTheme = .init()
+    )
+    case swapSignWithLedgerProcess(
+        draft: SignWithLedgerProcessDraft,
+        eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
     case alert(
         alert: Alert,
@@ -230,6 +232,19 @@ indirect enum Screen {
     case setSlippage(
         theme: SetSlippageToleranceScreenTheme = .init(),
         eventHandler: SetSlippageToleranceScreen.EventHandler
+    )
+    case exportAccountList(
+        eventHandler: ExportAccountListScreen.EventHandler
+    )
+    case exportAccountsDomainConfirmation(
+        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
+    )
+    case exportAccountsConfirmationList(
+        selectedAccounts: [Account],
+        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case exportAccountsResult(
+        eventHandler: ExportsAccountsResultScreen.EventHandler
     )
 }
 

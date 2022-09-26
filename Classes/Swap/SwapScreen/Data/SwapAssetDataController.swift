@@ -16,17 +16,29 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 import MagpieHipo
 
 protocol SwapAssetDataController: AnyObject {
     typealias EventHandler = (SwapAssetDataControllerEvent) -> Void
-    typealias Error = HIPNetworkError<NoAPIModel>
+    typealias Error = HIPNetworkError<HIPAPIError>
+
+    var account: Account { get }
+    var userAsset: Asset { get }
+    var poolAsset: Asset? { get }
 
     var eventHandler: EventHandler? { get set }
+
+    func loadData(swapAmount: Decimal)
+    func toggleSwapType()
+    func updateUserAsset(_ asset: Asset)
+    func updatePoolAsset(_ asset: Asset)
+    func updateSlippage(_ slippage: Decimal)
+    func getUserAssetItem() -> AssetItem
 }
 
 enum SwapAssetDataControllerEvent {
     case willLoadData
-    case didLoadData
+    case didLoadData(SwapQuote)
     case didFailToLoadData(SwapAssetDataController.Error)
 }

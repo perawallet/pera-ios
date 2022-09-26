@@ -100,7 +100,7 @@ extension NotificationsAPIDataController {
                 }
 
                 self.nextCursor = notifications.nextCursor
-                
+
                 let newNotifications = notifications.results.filterDuplicates()
                 if isPaginated {
                     self.notifications.append(contentsOf: newNotifications)

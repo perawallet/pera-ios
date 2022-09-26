@@ -31,9 +31,7 @@ struct AssetListItemViewModel:
 
     private(set) var valueInUSD: Decimal?
 
-    init(
-        _ item: AssetItem
-    ) {
+    init(_ item: AssetItem) {
         bindImageSource(item)
         bindTitle(item)
         bindPrimaryValue(item)
@@ -97,7 +95,7 @@ extension AssetListItemViewModel {
         : asset.naming.name
 
         let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = getPlaceholder(
+        let placeholder = Self.getPlaceholder(
             placeholderText,
             with: TextAttributes(
                 font: Fonts.DMSans.regular.make(13),
@@ -192,7 +190,7 @@ extension AssetListItemViewModel {
 }
 
 extension AssetListItemViewModel {
-    private func getPlaceholder(
+    static func getPlaceholder(
         _ aPlaceholder: String?,
         with attributes: TextAttributes
     ) -> ImagePlaceholder? {

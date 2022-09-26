@@ -18,7 +18,11 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SwapAssetAmountView: View {
+final class SwapAssetAmountView:
+    View,
+    AssetAmountInputViewDelegate {
+    weak var delegate: SwapAssetAmountViewDelegate?
+
     private lazy var leftTitleView = Label()
     private lazy var rightTitleView = Label()
     private lazy var amountInputView = AssetAmountInputView()
@@ -29,8 +33,8 @@ final class SwapAssetAmountView: View {
     ) {
         addLeftTitle(theme)
         addRightTitle(theme)
-        addAmountInput(theme)
         addAssetSelection(theme)
+        addAmountInput(theme)
     }
 
     func customizeAppearance(
@@ -40,6 +44,10 @@ final class SwapAssetAmountView: View {
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+
+    func setListeners() {
+        amountInputView.delegate = self
+    }
 
     func bindData(
         _ viewModel: SwapAssetAmountViewModel?
@@ -62,6 +70,14 @@ final class SwapAssetAmountView: View {
 
         amountInputView.bindData(viewModel.assetAmountValue)
         assetSelectionView.bindData(viewModel.assetSelectionValue)
+    }
+
+    func beginEditing() {
+        amountInputView.beginEditing()
+    }
+
+    func endEditing() {
+        amountInputView.endEditing()
     }
 }
 
@@ -95,27 +111,6 @@ extension SwapAssetAmountView {
         }
     }
 
-    private func addAmountInput(
-        _ theme: SwapAssetAmountViewTheme
-    ) {
-        amountInputView.customize(theme.assetAmountInput)
-
-        addSubview(amountInputView)
-        amountInputView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultLow,
-            compression: .required
-        )
-        amountInputView.fitToVerticalIntrinsicSize(
-             hugging: .defaultLow,
-             compression: .required
-         )
-        amountInputView.snp.makeConstraints {
-            $0.top == leftTitleView.snp.bottom
-            $0.leading == 0
-            $0.bottom == 0
-        }
-    }
-
     private func addAssetSelection(
         _ theme: SwapAssetAmountViewTheme
     ) {
@@ -129,9 +124,95 @@ extension SwapAssetAmountView {
         )
         assetSelectionView.snp.makeConstraints {
             $0.top == rightTitleView.snp.bottom
-            $0.leading == amountInputView.snp.trailing + theme.minimumSpacingBetweenInputAndSelection
             $0.trailing == 0
             $0.bottom <= 0
         }
     }
+
+    private func addAmountInput(
+        _ theme: SwapAssetAmountViewTheme
+    ) {
+        amountInputView.customize(theme.assetAmountInput)
+
+        addSubview(amountInputView)
+        amountInputView.fitToHorizontalIntrinsicSize()
+        amountInputView.fitToVerticalIntrinsicSize(
+             hugging: .defaultLow,
+             compression: .required
+         )
+        amountInputView.snp.makeConstraints {
+            $0.top == leftTitleView.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing <= assetSelectionView.snp.leading - theme.minimumSpacingBetweenInputAndSelection
+        }
+    }
+}
+
+extension SwapAssetAmountView {
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didChangeTextIn textField: TextField
+    ) {
+        delegate?.swapAssetAmountView(
+            self,
+            didChangeTextIn: textField
+        )
+    }
+
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didBeginEditingIn textField: TextField
+    ) {
+        delegate?.swapAssetAmountView(
+            self,
+            didBeginEditingIn: textField
+        )
+    }
+
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        didEndEditingIn textField: TextField
+    ) {
+        delegate?.swapAssetAmountView(
+            self,
+            didEndEditingIn: textField
+        )
+    }
+
+    func assetAmountInputView(
+        _ assetAmountInputView: AssetAmountInputView,
+        shouldChangeCharactersIn textField: TextField,
+        with range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard let delegate = delegate else { return false }
+        return delegate.swapAssetAmountView(
+            self,
+            shouldChangeCharactersIn: textField,
+            with: range,
+            replacementString: string
+        )
+    }
+}
+
+protocol SwapAssetAmountViewDelegate: AnyObject {
+    func swapAssetAmountView(
+        _ swapAssetAmountView: SwapAssetAmountView,
+        didChangeTextIn textField: TextField
+    )
+    func swapAssetAmountView(
+        _ swapAssetAmountView: SwapAssetAmountView,
+        didBeginEditingIn textField: TextField
+    )
+    func swapAssetAmountView(
+        _ swapAssetAmountView: SwapAssetAmountView,
+        didEndEditingIn textField: TextField
+    )
+    func swapAssetAmountView(
+        _ swapAssetAmountView: SwapAssetAmountView,
+        shouldChangeCharactersIn textField: TextField,
+        with range: NSRange,
+        replacementString string: String
+    ) -> Bool
 }

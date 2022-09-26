@@ -16,12 +16,13 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
     func getAvailablePoolAssets(
         _ draft: AvailablePoolAssetsQuery,
-        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
+        onCompleted handler: @escaping (Response.Result<AssetDecorationList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
@@ -35,7 +36,7 @@ extension ALGAPI {
     @discardableResult
     func calculatePeraSwapFee(
         _ draft: PeraSwapFeeDraft,
-        onCompleted handler: @escaping (Response.ModelResult<PeraSwapFee>) -> Void
+        onCompleted handler: @escaping (Response.Result<PeraSwapFee, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
@@ -50,7 +51,7 @@ extension ALGAPI {
     func prepareSwapTransactions(
         _ draft: SwapTransactionPreparationDraft,
         ignoreResponseOnCancelled: Bool = true,
-        onCompleted handler: @escaping (Response.ModelResult<SwapTransactionPreparation>) -> Void
+        onCompleted handler: @escaping (Response.Result<SwapTransactionPreparation, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
@@ -64,7 +65,7 @@ extension ALGAPI {
     @discardableResult
     func getSwapQuote(
         _ draft: SwapQuoteDraft,
-        onCompleted handler: @escaping (Response.ModelResult<SwapQuote>) -> Void
+        onCompleted handler: @escaping (Response.Result<SwapQuote, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

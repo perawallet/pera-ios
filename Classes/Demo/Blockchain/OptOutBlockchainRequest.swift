@@ -17,13 +17,18 @@
 import Foundation
 
 struct OptOutBlockchainRequest: BlockchainRequest {
+    let accountAddress: String
     let assetID: AssetID
     let assetName: String?
     let assetUnitName: String?
     let assetVerificationTier: AssetVerificationTier
     let isCollectibleAsset: Bool
 
-    init(asset: AssetDecoration) {
+    init(
+        account: Account,
+        asset: AssetDecoration
+    ) {
+        self.accountAddress = account.address
         self.assetID = asset.id
         self.assetName = asset.name
         self.assetUnitName = asset.unitName
@@ -31,7 +36,11 @@ struct OptOutBlockchainRequest: BlockchainRequest {
         self.isCollectibleAsset = asset.collectible != nil
     }
 
-    init(asset: Asset) {
+    init(
+        account: Account,
+        asset: Asset
+    ) {
+        self.accountAddress = account.address
         self.assetID = asset.id
         self.assetName = asset.naming.name
         self.assetUnitName = asset.naming.unitName

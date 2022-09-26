@@ -23,10 +23,9 @@ struct SwapAssetSelectionEmptyViewTheme:
     let title: TextStyle
     let spacingBetweenTitleAndIcon: LayoutMetric
     let icon: ImageStyle
-    let emptyTitle: TextStyle
-    let emptyTitleLeadingInset: LayoutMetric
-    let accessory: ImageStyle
-    let accessoryLeadingInset: LayoutMetric
+    let emptyAsset: ButtonStyle
+    let emptyAssetLeadingInset: LayoutMetric
+    let buttonIconSpacing: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -39,15 +38,13 @@ struct SwapAssetSelectionEmptyViewTheme:
         self.icon = [
             .image("icon-swap-empty")
         ]
-        self.emptyTitle = [
-            .textColor(Colors.Text.main),
-            .textOverflow(SingleLineFittingText()),
-            .text("swap-asset-choose-title".localized)
+        self.emptyAsset = [
+            .font(Typography.bodyMedium()),
+            .titleColor([.normal(Colors.Text.main)]),
+            .title("swap-asset-choose-title".localized),
+            .icon([.normal("icon-arrow")])
         ]
-        self.emptyTitleLeadingInset = 16
-        self.accessory = [
-            .image("icon-arrow")
-        ]
-        self.accessoryLeadingInset = 8
+        self.emptyAssetLeadingInset = 16
+        self.buttonIconSpacing = 8
     }
 }

@@ -110,7 +110,7 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        let accountName = account.value.name.someString
+        let accountName = account.value.name ?? accountAddress
         let draft = AssetAlertDraft(
             account: account.value,
             assetId: assetId,

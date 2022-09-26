@@ -42,6 +42,7 @@ final class WCAssetInformationViewModel: ViewModel {
     private func bindName() {
         guard let asset = asset else {
             name = "ALGO"
+            nameColor = Colors.Text.main
             return
         }
 

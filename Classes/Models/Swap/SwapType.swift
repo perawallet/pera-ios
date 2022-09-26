@@ -19,6 +19,15 @@ import Foundation
 enum SwapType:
     String,
     Codable {
-    case fixedInput = "fixed-input"
-    case fixedOutput = "fixed-output"
+    case fixedInput = "fixed-input" /// <note> Input is from the user's selected asset
+    case fixedOutput = "fixed-output" /// <note> Input is from the selected pool
+
+    mutating func toggle() {
+        switch self {
+        case .fixedInput:
+            self = .fixedOutput
+        case .fixedOutput:
+            self = .fixedInput
+        }
+    }
 }

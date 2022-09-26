@@ -38,6 +38,12 @@ class Router:
 
     private unowned let appConfiguration: AppConfiguration
 
+    private lazy var transactionController = TransactionController(
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController,
+        analytics: appConfiguration.analytics
+    )
+
     /// <todo>
     /// Change after refactoring routing
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -548,7 +554,7 @@ class Router:
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
-            ? TransactionType.sent
+            ? TransferType.sent
             : .received
 
             viewController = TransactionDetailViewController(
@@ -622,7 +628,9 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController,
+                bannerController: appConfiguration.bannerController,
                 theme: theme
             )
             aViewController.delegate = delegate
@@ -817,9 +825,8 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account, let receiver):
+        case .assetSelection(let account, let receiver):
             viewController = SelectAssetViewController(
-                filter: filter,
                 account: account,
                 receiver: receiver,
                 configuration: configuration
@@ -864,8 +871,6 @@ class Router:
             let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .transactionFloatingActionButton:
-            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
@@ -1016,10 +1021,22 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .swapAsset(let draft, let theme):
+            let dataController = SwapAssetAPIDataController(
+                account: draft.account,
+                userAsset: draft.asset ?? draft.account.algo,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+
             viewController = SwapAssetScreen(
-                draft: draft,
+                dataController: dataController,
                 configuration: configuration,
                 theme: theme
+            )
+        case .swapSignWithLedgerProcess(let draft, let eventHandler):
+            viewController = SignWithLedgerProcessScreen(
+                draft: draft,
+                eventHandler: eventHandler
             )
         case .alert(let alert, let theme):
             viewController = AlertScreen(
@@ -1068,6 +1085,34 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .exportAccountList(let eventHandler):
+            let dataController = ExportAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = ExportAccountListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsDomainConfirmation(let eventHandler):
+            let screen = ExportAccountsDomainConfirmationScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
+            let dataController = ExportAccountsConfirmationListLocalDataController(
+                selectedAccounts: selectedAccounts
+            )
+            let screen = ExportAccountsConfirmationListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsResult(let eventHandler):
+            let screen = ExportsAccountsResultScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
@@ -1155,17 +1200,19 @@ extension Router {
             return
         }
 
-        let assetTransactionDraft =
-        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
-        let transactionController = TransactionController(
-            api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController,
-            analytics: appConfiguration.analytics
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: Int64(draft.assetId)
         )
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
@@ -1446,7 +1493,6 @@ extension Router {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )
@@ -1478,17 +1524,16 @@ extension Router {
                 assetIndex: asset.id
             )
 
-            let transactionController = TransactionController(
-                api: self.appConfiguration.api,
-                bannerController: self.appConfiguration.bannerController,
-                analytics: self.appConfiguration.analytics
-            )
-
             self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
 
-            transactionController.delegate = self
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
         }
     }
 
@@ -1622,7 +1667,10 @@ extension Router {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         ongoingTransitions.append(ledgerApprovalTransition)
 
@@ -1630,6 +1678,16 @@ extension Router {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

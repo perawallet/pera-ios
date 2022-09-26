@@ -37,22 +37,28 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        session: session!
+    )
+
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
-    private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(
-            sharedDataController: sharedDataController,
-            presentingScreen: self,
-            api: api!,
-            bannerController: bannerController!,
-            loadingController: loadingController!,
-            analytics: analytics
-        )
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController
+    )
 
     private let copyToClipboardController: CopyToClipboardController
 
@@ -190,7 +196,10 @@ extension HomeViewController {
                 return
             }
 
-            self.open(.notifications, by: .push)
+            self.open(
+                .notifications,
+                by: .push
+            )
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
@@ -361,9 +370,7 @@ extension HomeViewController {
         cell.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
-            /// <todo>
-            /// Navigate to Swap
-            preconditionFailure("Not Implemented Yet")
+            self.swapAssetFlowCoordinator.launch()
         }
 
         cell.startObserving(event: .send) {

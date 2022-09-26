@@ -28,9 +28,13 @@ final class SendCollectibleViewController:
     KeyboardControllerDataSource {
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
-    private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var bottomTransition = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var approveModalTransition = BottomSheetTransition(
-        presentingViewController: approveCollectibleTransactionViewController!
+        presentingViewController: approveCollectibleTransactionViewController!,
+        interactable: false
     )
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
@@ -615,6 +619,16 @@ extension SendCollectibleViewController {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

@@ -26,6 +26,13 @@ final class ASAAboutScreen:
     UIScrollViewDelegate {
     var isScrollAnchoredOnTop = true
 
+    var contentSize: CGSize {
+        return CGSize(
+            width: contextView.bounds.width,
+            height: contextView.frame.maxY
+        )
+    }
+
     private lazy var contextView = VStackView()
     private lazy var statisticsView = AssetStatisticsSectionView()
     private lazy var aboutView = AssetAboutSectionView()
@@ -57,7 +64,9 @@ final class ASAAboutScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addUI()
+        bindUIData()
     }
 
     override func viewDidLayoutSubviews() {
@@ -139,10 +148,10 @@ extension ASAAboutScreen {
         contextView.spacing = theme.spacingBetweenSections
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.top == 0 + theme.contextEdgeInsets.top
-            $0.leading == 0 + theme.contextEdgeInsets.leading
-            $0.bottom <= 0 + theme.contextEdgeInsets.bottom + view.safeAreaBottom
-            $0.trailing == 0 + theme.contextEdgeInsets.trailing
+            $0.top == theme.contextEdgeInsets.top
+            $0.leading == theme.contextEdgeInsets.leading
+            $0.bottom <= theme.contextEdgeInsets.bottom + view.safeAreaBottom
+            $0.trailing == theme.contextEdgeInsets.trailing
         }
 
         addStatistics()
@@ -296,7 +305,7 @@ extension ASAAboutScreen {
                     address: address,
                     network: self.api!.network
                 )
-                self.open(source.url?.straightened())
+                self.open(source.url)
             }
         }
         handlers.didLongPressAccessory = {
@@ -327,7 +336,7 @@ extension ASAAboutScreen {
 
             if let urlString = self.asset.url,
                let url = URL(string: urlString) {
-                self.open(url.straightened())
+                self.open(url)
             }
         }
         return AssetAboutSectionItem(
@@ -343,7 +352,7 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let explorerURL = self.asset.explorerURL {
-                self.open(explorerURL.straightened())
+                self.open(explorerURL)
             }
         }
         return AssetAboutSectionItem(
@@ -359,7 +368,7 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let projectURL = self.asset.projectURL {
-                self.open(projectURL.straightened())
+                self.open(projectURL)
             }
         }
         return AssetAboutSectionItem(

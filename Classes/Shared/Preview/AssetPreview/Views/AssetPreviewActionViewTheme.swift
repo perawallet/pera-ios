@@ -26,6 +26,7 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
     let secondaryAssetValue: TextStyle
     let actionButton: ButtonStyle
 
+    let image: URLImageViewStyleLayoutSheet
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
     let verticalPadding: LayoutMetric
@@ -56,6 +57,7 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
         ]
         self.actionButton = actionButtonStyle
 
+        self.image = URLImageViewAssetTheme()
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
         self.verticalPadding = 16
