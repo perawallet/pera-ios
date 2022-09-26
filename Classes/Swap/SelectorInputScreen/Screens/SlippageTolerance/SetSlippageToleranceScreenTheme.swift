@@ -12,14 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   Sequence+Additions.swift
+//   SetSlippageToleranceScreenTheme.swift
 
 import Foundation
+import MacaroonUIKit
 
-extension Sequence where Element: Hashable {
-    func filterDuplicates() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
+struct SetSlippageToleranceScreenTheme:
+    StyleSheet,
+    LayoutSheet {
+    let backgroundColor: Color
+    let contextView: SelectorInputViewTheme
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = Colors.Defaults.background
+        self.contextView = SelectorInputViewTheme()
     }
 }

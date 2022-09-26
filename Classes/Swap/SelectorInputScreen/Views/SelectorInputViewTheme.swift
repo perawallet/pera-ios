@@ -37,7 +37,8 @@ struct SelectorInputViewTheme:
         let textInputBaseStyle: TextInputStyle = [
             .font(Typography.bodyRegular()),
             .tintColor(Colors.Text.main),
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .keyboardType(.decimalPad)
         ]
         self.textInput = FloatingTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,

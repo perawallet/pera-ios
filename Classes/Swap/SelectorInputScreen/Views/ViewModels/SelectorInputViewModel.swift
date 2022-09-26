@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   Sequence+Additions.swift
+//   SelectorInputViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-extension Sequence where Element: Hashable {
-    func filterDuplicates() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
-    }
+protocol SelectorInputViewModel: ViewModel {
+    var selectorOptions: [SelectorOption]? { get }
+    var defaultSelectedIndex: Int? { get }
 }
