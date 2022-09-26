@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetAmountViewModelDraft.swift
+//   SignWithLedgerProcessDraft.swift
 
 import Foundation
 
-struct SwapAssetAmountViewModelDraft {
-    let leftTitle: String?
-    let assetItem: AssetItem
-    let isInputEditable: Bool
+struct SignWithLedgerProcessDraft {
+    let ledgerDeviceName: String
+    let totalTransactionCount: Int
 }

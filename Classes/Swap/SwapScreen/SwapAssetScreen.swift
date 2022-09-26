@@ -52,8 +52,7 @@ final class SwapAssetScreen:
         self.theme = theme
         let userAssetViewModelDraft = SwapAssetAmountViewModelDraft(
             leftTitle: "transaction-detail-from".localized,
-            rightTitle: "title-account-balance".localized,
-            asset: dataController.userAsset,
+            assetItem: dataController.getUserAssetItem(),
             isInputEditable: true
         )
         self.userAssetViewModel = SwapAssetAmountViewModel(userAssetViewModelDraft)

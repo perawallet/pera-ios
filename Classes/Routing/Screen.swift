@@ -199,6 +199,10 @@ indirect enum Screen {
         draft: SwapAssetScreenDraft,
         theme: SwapAssetScreenTheme = .init()
     )
+    case swapSignWithLedgerProcess(
+        draft: SignWithLedgerProcessDraft,
+        eventHandler: SignWithLedgerProcessScreen.EventHandler
+    )
     case alert(
         alert: Alert,
         theme: AlertScreenTheme = AlertScreenCommonTheme()

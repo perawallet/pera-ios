@@ -1,5 +1,5 @@
 /* (No Comment) */
-"about" = "About";
+"about" = "Hakkında";
 
 /* (No Comment) */
 "account-detail-assets-search" = "Varlıkları ara";
@@ -116,13 +116,13 @@
 "accounts-title-history" = "Geçmiş";
 
 /* (No Comment) */
-"accounts-title-overview" = "Overview";
+"accounts-title-overview" = "Genel Bakış";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+"accounts-tranaction-empty-detail" = "Seçili dönem için gösterilecek hiçbir işlem bulunmuyor";
 
 /* MARK: Accounts */
-"accounts-tranaction-empty-text" = "No Transactions";
+"accounts-tranaction-empty-text" = "İşlem Yok";
 
 /* (No Comment) */
 "accounts-transaction-value" = "Değeri";
@@ -131,10 +131,10 @@
 "accounts-transaction-your-balance" = "Bakiye";
 
 /* (No Comment) */
-"accounts-transactions-title" = "Transactions";
+"accounts-transactions-title" = "İşlemler";
 
 /* (No Comment) */
-"activity" = "Activity";
+"activity" = "Etkinlik";
 
 /* (No Comment) */
 "add-node-title" = "Düğüm Ekle";
@@ -158,55 +158,55 @@
 "algo-statistics-title" = "İstatistikler";
 
 /* (No Comment) */
-"asa-about-asa-creator" = "Creator";
+"asa-about-asa-creator" = "Oluşturan";
 
 /* MARK: ASA About */
-"asa-about-asa-id" = "ASA ID";
+"asa-about-asa-id" = "ASA Kimliği";
 
 /* (No Comment) */
-"asa-about-asa-project-website" = "Project website";
+"asa-about-asa-project-website" = "Projenin web sitesi";
 
 /* (No Comment) */
-"asa-about-asa-show-on" = "Show on";
+"asa-about-asa-show-on" = "Göster";
 
 /* (No Comment) */
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 
 /* (No Comment) */
-"asa-about-asa-url" = "ASA URL";
+"asa-about-asa-url" = "ASA URL'si";
 
 /* (No Comment) */
-"asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
+"asa-verification-detail-suspicious" = "Bu ASA'nın bir dolandırıcılık girişimi içerisinde yer aldığına yönelik bildirimler aldık. Etkileşimde bulunurken dikkatli olun.";
 
 /* (No Comment) */
-"asa-verification-detail-suspicious-bold" = "scam attempt";
+"asa-verification-detail-suspicious-bold" = "dolandırıcılık girişimi";
 
 /* (No Comment) */
-"asa-verification-detail-trusted" = "This is a well-known and established project in the Algorand ecosystem.";
+"asa-verification-detail-trusted" = "Bu ASA, Algorand ekosistemi içerisinde tanınmış ve kabul görmüş bir projedir.";
 
 /* (No Comment) */
-"asa-verification-detail-trusted-bold" = "well-known";
+"asa-verification-detail-trusted-bold" = "tanınmış";
 
 /* (No Comment) */
-"asa-verification-detail-verified" = "This ASA was automatically verified through the Pera ASA Verification program.";
+"asa-verification-detail-verified" = "Bu ASA, Pera ASA Doğrulama programı kapsamında otomatik olarak doğrulanmıştır.";
 
 /* (No Comment) */
-"asa-verification-detail-verified-bold" = "automatically verified";
+"asa-verification-detail-verified-bold" = "otomatik olarak doğrulandı";
 
 /* (No Comment) */
-"asa-verification-learn-more" = "Learn more about ASA verification";
+"asa-verification-learn-more" = "ASA doğrulaması hakkında daha fazla bilgi alın";
 
 /* (No Comment) */
-"asa-verification-suspicious-report" = "Report %@";
+"asa-verification-suspicious-report" = "%@ Varlığını Bildir";
 
 /* (No Comment) */
-"asa-verification-title-suspicious" = "Suspicious";
+"asa-verification-title-suspicious" = "Şüpheli";
 
 /* MARK: ASA Verification */
-"asa-verification-title-trusted" = "Trusted ASA";
+"asa-verification-title-trusted" = "Güvenilir ASA";
 
 /* (No Comment) */
-"asa-verification-title-verified" = "Verified ASA";
+"asa-verification-title-verified" = "Doğrulanmış ASA";
 
 /* (No Comment) */
 "asset-add-confirmation-title" = "Varlık Ekleme";
@@ -215,7 +215,7 @@
 "asset-add-warning" = "Varlık eklemek, minimum işlem komisyonuyla işlem gönderimini gerektirir. Bu, işlem geçmişinizde görünür.";
 
 /* (No Comment) */
-"asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
+"asset-algos-description" = "Algo, Algorand blok zincirinin resmi kripto para birimidir. Algorand blok zinciri, herkesin katılım sağlayabileceği, açık ve sınırların olmadığı bir ekonomi modeli oluşturmaya yardımcı olmak için tasarlanmıştır. Bu yeni dijital ekonomi türü, herkes için anında çalışan ve gerçek anlamda dijital olan bir para birimiyle mümkündür. Algo, tam olarak böyle bir para birimidir.";
 
 /* (No Comment) */
 "asset-algos-title" = "Algo";
@@ -260,28 +260,28 @@
 "asset-not-found-title" = "Varlık bulunamadı";
 
 /* (No Comment) */
-"asset-opt-in-successful-message" = "%@ successfully added to your account.";
+"asset-opt-in-successful-message" = "%@, hesabınıza başarıyla eklendi.";
 
 /* (No Comment) */
-"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
+"asset-opt-out-successful-message" = "%@, hesabınızdan başarıyla kaldırıldı.";
 
 /* (No Comment) */
-"asset-quick-action-button-add" = "Add Asset";
+"asset-quick-action-button-add" = "Varlık Ekle";
 
 /* (No Comment) */
-"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-title-add" = "Bu varlığı şuraya ekleyebilirsiniz:";
 
 /* (No Comment) */
-"asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-add-asset-without-account" = "Bu varlığa hesaplarınızın biriyle katılabilirsiniz.";
 
 /* (No Comment) */
-"asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
+"asset-quick-action-title-add-nft-without-account" = "Bu NFT'ye hesaplarınızın biriyle katılabilirsiniz.";
 
 /* (No Comment) */
-"asset-quick-action-title-opt-in" = "You can add this NFT to";
+"asset-quick-action-title-opt-in" = "Bu NFT'yi şuraya ekleyebilirsiniz:";
 
 /* (No Comment) */
-"asset-quick-action-title-remove" = "Opted in to";
+"asset-quick-action-title-remove" = "Katılım sağlanan:";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "Varlığı Kaldır";
@@ -332,7 +332,7 @@
 "asset-title" = "Varlık";
 
 /* MARK: Total Supply */
-"asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
+"asset-total-supply-body" = "Varlığın toplam arzı, varlık oluşturulduğunda belirlenir ve varlığın çıkarılan toplam birimlerine karşılık gelir.";
 
 /* (No Comment) */
 "asset-transfer-balance" = "Transfer Bakiyesi";
@@ -551,10 +551,10 @@
 "collectible-opt-out-info-title" = "NFT katılımından çıkış";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectible-receive-account-list-info" = "NFT'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-receive-asset-list-info" = "NFT'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir. ASA Kimliğini arama çubuğuna yapıştırın.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "Seçili hesap";
@@ -1061,7 +1061,7 @@
 "mail-report-address" = "verification@perawallet.app";
 
 /* (No Comment) */
-"mail-report-subject" = "ASA Report: %d";
+"mail-report-subject" = "ASA Raporu: %d";
 
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "Hesap yapılandırmanıza göre minimum bakiyeniz: %@. \n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız Algorand Blok Zinciri'nin gerekli olan minimum bakiyesini sürdürmek için güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
@@ -1241,10 +1241,10 @@
 "opitons-collectibles-filter" = "NFT'leri Filtrele";
 
 /* (No Comment) */
-"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"opt-in-description-adding-nft" = "Bir NFT'ye katılmak, işlemin minimum işlem ücretiyle gönderilmesini gerektirir. Bu, işlem geçmişinizde görünür.";
 
 /* MARK: Opt In Asset */
-"opt-in-title-adding-nft" = "Opt-in to NFT";
+"opt-in-title-adding-nft" = "NFT'ye Katılım";
 
 /* (No Comment) */
 "options-auth-account" = "Hesap Adresini Doğrula";
@@ -1895,7 +1895,7 @@
 "social-media-platform-telegram" = "Telegram";
 
 /* MARK: Social Media Platforms */
-"social-media-platform-title" = "SOCIAL MEDIA";
+"social-media-platform-title" = "SOSYAL MEDYA";
 
 /* (No Comment) */
 "social-media-platform-twitter" = "Twitter";
@@ -1913,7 +1913,7 @@
 "terms-and-services-title" = "Koşullar ve Hizmetler";
 
 /* (No Comment) */
-"title-about-with-param" = "ABOUT %@";
+"title-about-with-param" = "%@ HAKKINDA";
 
 /* (No Comment) */
 "title-accept" = "Kabul et";
@@ -2153,10 +2153,10 @@
 "title-show-all-detail" = "Tüm Ayrıntıları Göster";
 
 /* (No Comment) */
-"title-show-less" = "Show less";
+"title-show-less" = "Daha az göster";
 
 /* (No Comment) */
-"title-show-more" = "Show more";
+"title-show-more" = "Daha fazla göster";
 
 /* (No Comment) */
 "title-show-more-assets" = "Diğer %@ varlığı göster";
@@ -2189,7 +2189,7 @@
 "title-testnet" = "TESTNET";
 
 /* (No Comment) */
-"title-total-supply" = "Total Supply";
+"title-total-supply" = "Toplam Arz";
 
 /* (No Comment) */
 "title-unknown" = "Adsız";
@@ -2369,10 +2369,10 @@
 "transaction-menu-copy-note" = "Notu Kopyala";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+"transaction-option-list-add-asset-subtitle" = "Bir ASA veya NFT'ye Katılın";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-title" = "Add Asset";
+"transaction-option-list-add-asset-title" = "Varlık Ekle";
 
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "Kredi kartıyla veya banka transferiyle kripto alın";
@@ -2498,22 +2498,22 @@
 "tutorial-title-write" = "Kurtarma parolanızı \nyazmaya hazırlanın";
 
 /* (No Comment) */
-"url-copied" = "URL copied to clipboard";
+"url-copied" = "URL panoya kopyalandı";
 
 /* (No Comment) */
-"verification-info-body" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+"verification-info-body" = "Pera Wallet kapsamındaki Algorand Standard Asset (Algorand Standart Varlık - ASA) Doğrulama Programı, ASA oluşturucularının varlığın sahibi olduklarını doğrulamak suretiyle otomatik olarak doğrulanmalarını sağlar.\nASA Doğrulamasının temel amacı, ASA'nın bağlantılı olmadığı bir projeyle bağlıymış ve söz konusu projenin tokeniymiş gibi hareket etmesinin önüne geçmektir.\nASA Doğrulaması, projenin onaylandığı anlamına gelmez. Algorand ve  Pera, bir projenin onaylanması için doğrulama sürecini kesinlikle kullanmamaktadır.";
 
 /* (No Comment) */
-"verification-info-body-first-highlight" = "automatically";
+"verification-info-body-first-highlight" = "otomatik olarak";
 
 /* (No Comment) */
-"verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-body-second-highlight" = "ASA'nın bağlantılı olmadığı bir projeyle bağlıymış ve söz konusu projenin tokeniymiş gibi hareket etmesinin önüne geçmek için.";
 
 /* (No Comment) */
-"verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+"verification-info-body-third-highlight" = "ASA Doğrulaması, projenin onaylandığı anlamına gelmez.";
 
 /* MARK: Verification Information */
-"verification-info-title" = "ASA Verification";
+"verification-info-title" = "ASA Doğrulaması";
 
 /* (No Comment) */
 "verified-asset-double-check" = "her zaman tekrar kontrol edin";
@@ -2657,7 +2657,7 @@
 "wallet-connect-transaction-error-invalid-asset" = "Geçersiz Giriş: Geçersiz Varlık";
 
 /* (No Comment) */
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
+"wallet-connect-transaction-error-invalid-group" = "Görünüşe göre bu işlem grubundan bir veya daha fazla işlem eksik. Güvenliğiniz için Pera Wallet belirsiz bilgileri olan işlem gruplarını imzalamanıza izin vermeyecek. Lütfen bu işlemi gönderen dApp ile iletişime geçin ve bu sorunu düzeltmesini isteyin.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "Geçersiz Giriş: Ortak Anahtar Geçersiz";
@@ -2684,7 +2684,7 @@
 "wallet-connect-transaction-error-transaction-size" = "Geçersiz Giriş: İşlem isteği 64'ten fazla işlemi içeriyor";
 
 /* (No Comment) */
-"wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
+"wallet-connect-transaction-error-unable-fetch-asset" = "Varlık ayrıntılarını getiremedik ve işlem iptal edildi. Lütfen ağ bağlantınızı kontrol ederek tekrar deneyin.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "Geçersiz Giriş: İmzalanamıyor";

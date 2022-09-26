@@ -51,21 +51,36 @@ extension SwapAssetAmountViewModel {
     mutating func bindRightTitle(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
-        if let title = draft.rightTitle {
-            rightTitle = title.footnoteRegular(
+        let asset = draft.assetItem.asset
+
+        let formatter = draft.assetItem.currencyFormatter
+        formatter.formattingContext = draft.assetItem.currencyFormattingContext ?? .standalone()
+
+        if asset.isAlgo {
+            formatter.currency = AlgoLocalCurrency()
+        } else {
+            formatter.currency = nil
+        }
+
+        var text = formatter.format(asset.decimalAmount)
+
+        if !asset.isAlgo {
+            text = [text, asset.naming.unitName].compound(" ")
+        }
+
+        rightTitle = "swap-asset-amount-title-balance"
+            .localized(params: text ?? "")
+            .footnoteRegular(
                 alignment: .right,
                 lineBreakMode: .byTruncatingTail
             )
-        } else {
-            rightTitle = nil
-        }
     }
 
     mutating func bindAssetAmountValue(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
         assetAmountValue = AssetAmountInputViewModel(
-            asset: draft.asset,
+            asset: draft.assetItem.asset,
             isInputEditable: draft.isInputEditable
         )
     }
@@ -73,6 +88,6 @@ extension SwapAssetAmountViewModel {
     mutating func bindAssetSelectionValue(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
-        assetSelectionValue = SwapAssetSelectionViewModel(draft.asset)
+        assetSelectionValue = SwapAssetSelectionViewModel(draft.assetItem.asset)
     }
 }

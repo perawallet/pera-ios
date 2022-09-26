@@ -1183,8 +1183,26 @@
 "swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
 "swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
+/// MARK: Swap Sign With Ledger
+"swap-sign-with-ledger-title" = "Sign with Ledger";
+"swap-sign-with-ledger-body" = "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token.";
+"swap-sign-with-ledger-body-highlighted" = "You will need to sign %@ transactions one by one";
+"swap-sign-with-ledger-action-title" = "Sign Transactions";
+
+/// MARK: Swap Sign With Ledger Process
+"swap-sign-with-ledger-process-title" = "Signing %@ out of %@...";
+
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
+"swap-asset-amount-title-balance" = "Balance: %@";
+
+/// MARK: Swap Price Impact Info
+"swap-price-impact-info-title" = "Price Impact";
+"swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
+
+/// MARK: Swap Slippage Tolerance Info
+"swap-slippage-tolerance-info-title" = "Slippage Tolerance";
+"swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
