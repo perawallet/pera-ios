@@ -35,23 +35,23 @@ struct SignWithLedgerProcessScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
-        progressTopInset = 8
-        progressTintColor = Colors.Helpers.positive
-        trackTintColor = Colors.Layer.grayLighter
-        contextEdgeInsets = (58, 24, 28, 24)
-        titleTopInset = 24
-        title = [
+        self.progressTopInset = 8
+        self.progressTintColor = Colors.Helpers.positive
+        self.trackTintColor = Colors.Layer.grayLighter
+        self.contextEdgeInsets = (58, 24, 28, 24)
+        self.titleTopInset = 24
+        self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.bodyLargeMedium())
         ]
-        spacingBetweenTitleAndBody = 12
-        body = [
+        self.spacingBetweenTitleAndBody = 12
+        self.body = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular())
         ]
-        action = [
+        self.action = [
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .backgroundImage([
@@ -59,7 +59,7 @@ struct SignWithLedgerProcessScreenTheme:
                 .highlighted("components/buttons/secondary/bg-highlighted"),
             ])
         ]
-        actionEdgeInsets = (8, 24, 16, 24)
-        actionContentEdgeInsets = (16, 24, 16, 24)
+        self.actionEdgeInsets = (8, 24, 16, 24)
+        self.actionContentEdgeInsets = (16, 24, 16, 24)
     }
 }
