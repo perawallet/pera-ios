@@ -147,7 +147,7 @@ final class HomeViewController:
                     animatingDifferences: true
                 )
 
-                self.alertPresenter.present()
+                self.alertPresenter.presentIfNeeded()
             }
         }
         dataController.load()

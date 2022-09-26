@@ -39,9 +39,7 @@ final class AlertPresenter {
         self.items = items
     }
 
-    /// <todo>
-    /// Rename? `presentIfNeeded`
-    func present() {
+    func presentIfNeeded() {
         if !canDisplayItem() {
             return
         }
@@ -61,11 +59,13 @@ final class AlertPresenter {
     }
 
     private func canDisplayItem() -> Bool {
-        /// <todo>
-        /// 1 - Add check for: Only start showing after the second launch of the app
-        /// 2 - Should we check any native alert is presenting, like notification permission or app store rating request?
-
         if isPresented {
+            return false
+        }
+
+        let appLaunchStore = ALGAppLaunchStore()
+
+        if !appLaunchStore.hasLaunchedBefore {
             return false
         }
 

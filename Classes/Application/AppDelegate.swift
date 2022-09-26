@@ -106,6 +106,8 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        resolveLegacyHasLaunchedBeforeIfNeeded()
+
         setupAppTarget()
         setupAppLibs()
         
@@ -149,6 +151,8 @@ class AppDelegate:
     func applicationDidEnterBackground(
         _ application: UIApplication
     ) {
+        setHasLaunchedBeforeIfNeeded()
+
         appLaunchController.enterBackground()
         showBlurOnWindow()
     }
@@ -381,6 +385,35 @@ extension AppDelegate {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
                 monitor.finishMonitoringOptOutUpdates(associatedWith: update)
             }
+        }
+    }
+}
+
+extension AppDelegate {
+    private func resolveLegacyHasLaunchedBeforeIfNeeded() {
+        var appLaunchStore = ALGAppLaunchStore()
+
+        if appLaunchStore.hasLaunchedBefore {
+            return
+        }
+
+        let legacyHasLaunchedBefore = {
+            let legacyCopyAddressAppOpenCountKey = "com.algorand.algorand.copy.address.count.key"
+            let legacyCopyAddressAppOpenCountValue = UserDefaults.standard.integer(forKey: legacyCopyAddressAppOpenCountKey)
+
+            return legacyCopyAddressAppOpenCountValue != 0
+        }()
+
+        if legacyHasLaunchedBefore {
+            appLaunchStore.hasLaunchedBefore = true
+        }
+    }
+
+    private func setHasLaunchedBeforeIfNeeded() {
+        var appLaunchStore = ALGAppLaunchStore()
+
+        if !appLaunchStore.hasLaunchedBefore {
+            appLaunchStore.hasLaunchedBefore = true
         }
     }
 }
