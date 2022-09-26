@@ -1189,6 +1189,9 @@
 "swap-sign-with-ledger-body-highlighted" = "You will need to sign %@ transactions one by one";
 "swap-sign-with-ledger-action-title" = "Sign Transactions";
 
+/// MARK: Swap Sign With Ledger Process
+"swap-sign-with-ledger-process-title" = "Signing %@ out of %@...";
+
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 
