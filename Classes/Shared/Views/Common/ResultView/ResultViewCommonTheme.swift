@@ -21,10 +21,13 @@ import UIKit
 
 struct ResultViewCommonTheme: ResultViewTheme {
     let icon: ImageStyle
+    let iconAlignment: ResultView.IconViewAlignment
+    let spacingBetweenIconAndTitle: LayoutMetric
     let title: TextStyle
-    let titleTopMargin: LayoutMetric
+    let titleHorizontalMargins: LayoutHorizontalMargins
+    let spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
-    let bodyTopMargin: LayoutMetric
+    let bodyHorizontalMargins: LayoutHorizontalMargins
 
     init(
         _ family: LayoutFamily
@@ -32,6 +35,8 @@ struct ResultViewCommonTheme: ResultViewTheme {
         self.icon = [
             .adjustsImageForContentSizeCategory(true)
         ]
+        self.iconAlignment = .centered
+        self.spacingBetweenIconAndTitle = 32
         self.title = [
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
@@ -39,7 +44,8 @@ struct ResultViewCommonTheme: ResultViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
         ]
-        self.titleTopMargin = 32
+        self.titleHorizontalMargins = (0, 0)
+        self.spacingBetweenTitleAndBody = 16
         self.body = [
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
@@ -47,6 +53,6 @@ struct ResultViewCommonTheme: ResultViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
         ]
-        self.bodyTopMargin = 16
+        self.bodyHorizontalMargins = (0, 0)
     }
 }

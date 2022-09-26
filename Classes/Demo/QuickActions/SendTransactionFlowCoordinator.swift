@@ -85,10 +85,7 @@ extension SendTransactionFlowCoordinator {
         account: Account,
         on screen: UIViewController? = nil
     ) {
-        let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
-            account: account
-        )
+        let assetSelectionScreen: Screen = .assetSelection(account: account)
 
         if let screen = screen {
             screen.open(
@@ -164,10 +161,36 @@ extension SendTransactionFlowCoordinator: SharedDataControllerObserver {
             }
 
             if let updatedAccountHandle = sharedDataController.accountCollection[address] {
-                self.account = updatedAccountHandle.value
+                let updatedAccount = updatedAccountHandle.value
+                self.account = updatedAccount
+
+                self.updateAssetIfNeeded(updatedAccount, on: sharedDataController)
             }
         default:
             break
         }
+    }
+
+    private func updateAssetIfNeeded(_ account: Account, on sharedDataController: SharedDataController) {
+        guard let asset = asset, let newAsset = account[asset.id] else {
+            return
+        }
+
+        guard isAssetUpdated(newAsset),
+              let assetDetail = sharedDataController.assetDetailCollection[asset.id] else {
+            return
+        }
+
+        let algAsset = ALGAsset(asset: newAsset)
+        self.asset = StandardAsset(asset: algAsset, decoration: assetDetail)
+    }
+
+    private func isAssetUpdated(_ newAsset: Asset) -> Bool {
+        guard let asset = asset else {
+            return false
+        }
+
+        return asset.decimalAmount != newAsset.decimalAmount ||
+            asset.usdValue != newAsset.usdValue
     }
 }

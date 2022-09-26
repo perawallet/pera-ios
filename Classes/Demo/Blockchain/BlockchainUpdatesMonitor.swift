@@ -66,11 +66,8 @@ extension BlockchainUpdatesMonitor {
         return monitor?.hasPendingOptInRequest(assetID: assetID) ?? false
     }
 
-    func startMonitoringOptInUpdates(
-        _ request: OptInBlockchainRequest,
-        for account: Account
-    ) {
-        let address = account.address
+    func startMonitoringOptInUpdates(_ request: OptInBlockchainRequest) {
+        let address = request.accountAddress
 
         var monitor = table[address] ?? .init(accountAddress: address)
         monitor.startMonitoringOptInUpdates(request)
@@ -95,8 +92,23 @@ extension BlockchainUpdatesMonitor {
         forAssetID assetID: AssetID,
         for account: Account
     ) {
-        let address = account.address
+        finishMonitoringOptInUpdates(
+            forAssetID: assetID,
+            forAccountAddress: account.address
+        )
+    }
 
+    func finishMonitoringOptInUpdates(associatedWith update: OptInBlockchainUpdate) {
+        finishMonitoringOptInUpdates(
+            forAssetID: update.assetID,
+            forAccountAddress: update.accountAddress
+        )
+    }
+
+    private func finishMonitoringOptInUpdates(
+        forAssetID assetID: AssetID,
+        forAccountAddress address: String
+    ) {
         guard var monitor = table[address] else { return }
 
         monitor.finishMonitoringOptInUpdates(forAssetID: assetID)
@@ -141,11 +153,8 @@ extension BlockchainUpdatesMonitor {
         return monitor?.hasPendingOptOutRequest(assetID: assetID) ?? false
     }
 
-    func startMonitoringOptOutUpdates(
-        _ request: OptOutBlockchainRequest,
-        for account: Account
-    ) {
-        let address = account.address
+    func startMonitoringOptOutUpdates(_ request: OptOutBlockchainRequest) {
+        let address = request.accountAddress
 
         var monitor = table[address] ?? .init(accountAddress: address)
         monitor.startMonitoringOptOutUpdates(request)
@@ -170,8 +179,23 @@ extension BlockchainUpdatesMonitor {
         forAssetID assetID: AssetID,
         for account: Account
     ) {
-        let address = account.address
+        finishMonitoringOptOutUpdates(
+            forAssetID: assetID,
+            forAccountAddress: account.address
+        )
+    }
 
+    func finishMonitoringOptOutUpdates(associatedWith update: OptOutBlockchainUpdate) {
+        finishMonitoringOptOutUpdates(
+            forAssetID: update.assetID,
+            forAccountAddress: update.accountAddress
+        )
+    }
+
+    private func finishMonitoringOptOutUpdates(
+        forAssetID assetID: AssetID,
+        forAccountAddress address: String
+    ) {
         guard var monitor = table[address] else { return }
 
         monitor.finishMonitoringOptOutUpdates(forAssetID: assetID)

@@ -103,7 +103,13 @@ extension WCSingleTransactionRequestMiddleView {
         titleLabel.text = viewModel?.title
         titleLabel.textColor = viewModel?.titleColor?.uiColor
         subtitleLabel.text = viewModel?.subtitle
-        icon.image = viewModel?.verificationTierIcon
+
+        if let verificationTierIcon = viewModel?.verificationTierIcon {
+            icon.image = verificationTierIcon
+            icon.isHidden = false
+        } else {
+            icon.isHidden = true
+        }
     }
 }
 

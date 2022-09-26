@@ -54,6 +54,11 @@ final class ASADetailScreen:
     private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        presentingScreen: self,
+        account: dataController.account,
+        asset: dataController.asset
+    )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -138,6 +143,11 @@ final class ASADetailScreen:
         if presentedViewController == nil {
             switchToDefaultNavigationBarAppearance()
         }
+    }
+
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        bindUIDataWhenPreferredUserInterfaceStyleDidChange()
     }
 }
 
@@ -372,6 +382,10 @@ extension ASADetailScreen {
         bindPagesFragmentData()
     }
 
+    private func bindUIDataWhenPreferredUserInterfaceStyleDidChange() {
+        bindProfileDataWhenPreferredUserInterfaceStyleDidChange()
+    }
+
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
@@ -456,12 +470,21 @@ extension ASADetailScreen {
     }
 
     private func bindProfileData() {
+        let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
-            asset: dataController.asset,
+            asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         profileView.bindData(viewModel)
+    }
+
+    private func bindProfileDataWhenPreferredUserInterfaceStyleDidChange() {
+        let asset = dataController.asset
+
+        var viewModel = ASADiscoveryProfileViewModel()
+        viewModel.bindIcon(asset: asset)
+        profileView.bindIcon(viewModel)
     }
 
     private func updateProfile(for state: DisplayState) {
@@ -503,6 +526,11 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.navigateToBuyAlgo()
+        }
+        quickActionsView.startObserving(event: .swap) {
+            [unowned self] in
+
+            self.navigateToSwapAsset()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
@@ -899,6 +927,10 @@ extension ASADetailScreen {
         let draft = BuyAlgoDraft()
         draft.address = dataController.account.address
         buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func navigateToSwapAsset() {
+        swapAssetFlowCoordinator.launch()
     }
 
     private func navigateToSendTransaction() {

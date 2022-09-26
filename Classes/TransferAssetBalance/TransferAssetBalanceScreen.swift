@@ -50,6 +50,7 @@ final class TransferAssetBalanceScreen:
         self.draft = draft
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
+
         super.init()
     }
 
@@ -62,13 +63,6 @@ final class TransferAssetBalanceScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        footerViewEffectStyle = .linearGradient(
-            .init(colors: [
-                Colors.Defaults.background.uiColor.withAlphaComponent(0),
-                Colors.Defaults.background.uiColor
-            ])
-        )
-
         addBackground()
         addTitle()
         addAssetID()
@@ -76,6 +70,19 @@ final class TransferAssetBalanceScreen:
         addDescription()
         addApproveAction()
         addCloseAction()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     override func bindData() {

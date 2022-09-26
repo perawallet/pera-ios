@@ -130,7 +130,7 @@ extension TransactionsAPIDataController {
                 }
                 switch response {
                 case let .success(pendingTransactionList):
-                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions.uniqued()
+                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions.filterDuplicates()
                     if !self.pendingTransactions.isEmpty && updatedPendingTransactions.isEmpty {
                         self.pendingTransactions = []
                         return
@@ -479,12 +479,11 @@ extension TransactionsAPIDataController {
                 }
 
                 if let transaction = transaction as? Transaction {
-                    guard let transactionID = transaction.id,
-                          let transactionType = transaction.type else {
+                    guard let transactionID = transaction.id else {
                         continue
                     }
 
-                    switch transactionType {
+                    switch transaction.type {
                     case .payment:
                         let draftComposer = AlgoTransactionItemDraftComposer(
                             draft: draft,

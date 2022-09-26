@@ -27,6 +27,7 @@ final class UISheetActionScreen:
     }
 
     private lazy var contextView = MacaroonUIKit.BaseView()
+    private lazy var imageView = ImageView()
     private lazy var titleView = Label()
     private lazy var bodyView = Label()
     private lazy var actionsContextView = MacaroonUIKit.VStackView()
@@ -48,20 +49,24 @@ final class UISheetActionScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        footerViewEffectStyle = .linearGradient(
-            .init(colors: [
-                Colors.Defaults.background.uiColor.withAlphaComponent(0),
-                Colors.Defaults.background.uiColor
-            ])
-        )
-
         addContext()
 
-        if sheet.actions.isEmpty {
-            return
+        if !sheet.actions.isEmpty {
+            addActionsContext()
         }
+    }
 
-        addActionsContext()
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.3, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 }
 
@@ -76,8 +81,24 @@ extension UISheetActionScreen {
             $0.bottom == theme.contextEdgeInsets.bottom
         }
 
+        addImage()
         addTitle()
         addBody()
+    }
+
+    private func addImage() {
+        contextView.addSubview(imageView)
+        imageView.customizeAppearance(theme.image)
+
+        imageView.fitToIntrinsicSize()
+        imageView.contentEdgeInsets = theme.imageLayoutOffset
+        imageView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+
+        imageView.image = sheet.image?.uiImage
     }
 
     private func addTitle() {
@@ -86,7 +107,7 @@ extension UISheetActionScreen {
 
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.top == 0
+            $0.top == imageView.snp.bottom
             $0.leading == 0
             $0.trailing == 0
         }

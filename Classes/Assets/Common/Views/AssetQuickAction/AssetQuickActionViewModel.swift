@@ -34,17 +34,31 @@ final class AssetQuickActionViewModel {
     private(set) var buttonSecondShadow: MacaroonUIKit.Shadow?
     private(set) var buttonThirdShadow: MacaroonUIKit.Shadow?
 
-    init(type: ActionType) {
+    init(
+        asset: Asset,
+        type: ActionType
+    ) {
         switch type {
-        case .addAssetWithoutAccount:
-            bindTitle(type)
-            bindButton(type)
+        case .optInWithoutAccount:
+            bindTitle(
+                asset: asset,
+                type: type
+            )
+            bindButton(
+                asset: asset,
+                type: type
+            )
             return
-        case .addAsset(let account),
-                .optIn(let account),
-                .optOutAsset(let account):
-            bindTitle(type)
-            bindButton(type)
+        case .optIn(let account),
+                .optOut(let account):
+            bindTitle(
+                asset: asset,
+                type: type
+            )
+            bindButton(
+                asset: asset,
+                type: type
+            )
             bindAccountTypeImage(account)
             bindAccountName(account)
         }
@@ -52,28 +66,44 @@ final class AssetQuickActionViewModel {
 }
 
 extension AssetQuickActionViewModel {
-    private func bindTitle(_ type: ActionType) {
+    private func bindTitle(
+        asset: Asset,
+        type: ActionType
+    ) {
         switch type {
         case .optIn:
-            self.title = .attributedString(
-                "asset-quick-action-title-opt-in"
-                    .localized
-                    .footnoteRegular()
-            )
-        case .addAsset:
+            if asset is CollectibleAsset {
+                self.title = .attributedString(
+                    "asset-quick-action-title-opt-in"
+                        .localized
+                        .footnoteRegular()
+                )
+                return
+            }
+
             self.title = .attributedString(
                 "asset-quick-action-title-add"
                     .localized
                     .footnoteRegular()
             )
-        case .addAssetWithoutAccount:
+        case .optInWithoutAccount:
+            self.titleTopPadding = 26
+
+            if asset is CollectibleAsset {
+                self.title = .attributedString(
+                    "asset-quick-action-title-add-nft-without-account"
+                        .localized
+                        .footnoteRegular()
+                )
+                return
+            }
+
             self.title = .attributedString(
-                "asset-quick-action-title-add-without-account"
+                "asset-quick-action-title-add-asset-without-account"
                     .localized
                     .footnoteRegular()
             )
-            self.titleTopPadding = 26
-        case .optOutAsset:
+        case .optOut:
             self.title = .attributedString(
                 "asset-quick-action-title-remove"
                     .localized
@@ -95,36 +125,50 @@ extension AssetQuickActionViewModel {
         )
     }
 
-    private func bindButton(_ actionType: ActionType) {
-        switch actionType {
+    func bindButton(
+        asset: Asset,
+        type: ActionType
+    ) {
+        switch type {
         case .optIn:
             self.buttonIcon = img("icon-quick-action-plus")
-            self.buttonTitle = .attributedString(
-                "single-transaction-request-opt-in-title"
-                    .localized
-                    .footnoteMedium()
-            )
             self.buttonTitleColor = Colors.Button.Primary.text
             self.buttonBackgroundColor = Colors.Button.Primary.background
-        case .addAsset:
-            self.buttonIcon = img("icon-quick-action-plus")
-            self.buttonTitle = .attributedString(
-                "asset-quick-action-button-add"
-                    .localized
-                    .footnoteMedium()
-            )
-            self.buttonTitleColor = Colors.Button.Primary.text
-            self.buttonBackgroundColor = Colors.Button.Primary.background
-        case .addAssetWithoutAccount:
-            self.buttonIcon = img("icon-quick-action-plus")
+
+            if asset is CollectibleAsset {
+                self.buttonTitle = .attributedString(
+                    "single-transaction-request-opt-in-title"
+                        .localized
+                        .footnoteMedium()
+                )
+                return
+            }
+
             self.buttonTitle = .attributedString(
                 "asset-quick-action-button-add"
                     .localized
                     .footnoteMedium()
             )
+        case .optInWithoutAccount:
+            self.buttonIcon = img("icon-quick-action-plus")
             self.buttonTitleColor = Colors.Button.Primary.text
             self.buttonBackgroundColor = Colors.Button.Primary.background
-        case .optOutAsset:
+
+            if asset is CollectibleAsset {
+                self.buttonTitle = .attributedString(
+                    "single-transaction-request-opt-in-title"
+                        .localized
+                        .footnoteMedium()
+                )
+                return
+            }
+
+            self.buttonTitle = .attributedString(
+                "asset-quick-action-button-add"
+                    .localized
+                    .footnoteMedium()
+            )
+        case .optOut:
             self.buttonIcon = img("icon-quick-action-remove")
             self.buttonTitle = .attributedString(
                 "title-remove"
@@ -137,34 +181,37 @@ extension AssetQuickActionViewModel {
             bindButtonShadows()
         }
     }
+}
 
+extension AssetQuickActionViewModel {
     private func bindButtonShadows() {
         self.buttonFirstShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow1.uiColor,
-            opacity: 1,
-            offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor,
-            cornerRadii: (4, 4),
-            corners: .allCorners
-        )
-
-        self.buttonSecondShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow2.uiColor,
-            opacity: 1,
-            offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor,
-            cornerRadii: (4, 4),
-            corners: .allCorners
-        )
-
-        self.buttonThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
+            spread: 1,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.buttonSecondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: 0,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.buttonThirdShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
@@ -174,8 +221,7 @@ extension AssetQuickActionViewModel {
 extension AssetQuickActionViewModel {
     enum ActionType {
         case optIn(with: Account)
-        case addAsset(to: Account)
-        case addAssetWithoutAccount
-        case optOutAsset(from: Account)
+        case optInWithoutAccount
+        case optOut(from: Account)
     }
 }

@@ -36,46 +36,53 @@ final class TabBarController: TabBarContainer {
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
-    private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(
-            sharedDataController: sharedDataController,
-            presentingScreen: self,
-            api: api,
-            bannerController: bannerController,
-            loadingController: loadingController,
-            analytics: analytics
-        )
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api,
+        bannerController: bannerController,
+        loadingController: loadingController,
+        presentingScreen: self,
+        session: session,
+        sharedDataController: sharedDataController
+    )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
-    private let sharedDataController: SharedDataController
+    private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController
     private let loadingController: LoadingController
-    private let analytics: ALGAnalytics
+    private let session: Session
+    private let sharedDataController: SharedDataController
 
     init(
-        sharedDataController: SharedDataController,
+        analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
         loadingController: LoadingController,
-        analytics: ALGAnalytics
+        session: Session,
+        sharedDataController: SharedDataController
     ) {
-        self.sharedDataController = sharedDataController
+        self.analytics = analytics
         self.api = api
         self.bannerController = bannerController
         self.loadingController = loadingController
-        self.analytics = analytics
+        self.session = session
+        self.sharedDataController = sharedDataController
+        super.init()
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
     
     override func addTabBar() {
@@ -108,6 +115,12 @@ final class TabBarController: TabBarContainer {
         } else {
             addShowTransactionOptionsAction()
         }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        self.sharedDataController.add(self)
     }
 }
 
@@ -148,6 +161,8 @@ extension TabBarController {
         toggleTransactionOptionsActionView.addTouch(
             target: self,
             action: #selector(toggleTransactionOptions))
+
+        toggleTransactionOptionsActionView.isUserInteractionEnabled = false
     }
     
     private func removeShowTransactionOptionsAction() {
@@ -169,9 +184,7 @@ extension TabBarController {
         aView.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
-            /// <todo>
-            /// Navigate to Swap
-            preconditionFailure("Not Implemented Yet")
+            self.navigateToSwapAssetFlow()
         }
         aView.startObserving(event: .send) {
             [weak self] in
@@ -290,6 +303,11 @@ extension TabBarController {
 }
 
 extension TabBarController {
+    private func navigateToSwapAssetFlow() {
+        toggleTransactionOptions()
+        swapAssetFlowCoordinator.launch()
+    }
+
     private func navigateToSendTransaction() {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
@@ -314,7 +332,6 @@ extension TabBarController {
     private func navigateToQRScanner() {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
-
     }
 }
 
@@ -336,6 +353,20 @@ extension TabBarContainer {
             if $1.isSelectable {
                 tabBar.barButtons[$0].isEnabled = isEnabled
             }
+        }
+    }
+}
+
+extension TabBarController: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            toggleTransactionOptionsActionView.isUserInteractionEnabled = sharedDataController.isAvailable
+        default:
+            break
         }
     }
 }

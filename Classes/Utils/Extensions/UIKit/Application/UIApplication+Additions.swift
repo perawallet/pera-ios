@@ -110,4 +110,8 @@ extension UIApplication {
         
         return rootViewController.traitCollection.userInterfaceStyle == .dark
     }
+
+    var authStatus: AppAuthStatus {
+        appDelegate?.authStatus() ?? .ready
+    }
 }

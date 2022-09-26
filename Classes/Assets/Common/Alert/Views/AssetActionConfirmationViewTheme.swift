@@ -28,8 +28,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let warningIcon: ImageStyle
     let warningIconContentEdgeInsets: LayoutOffset
     let detail: TextStyle
-    let assetCodeLabel: TextStyle
-    let assetNameLabel: TextStyle
+    let assetName: PrimaryTitleViewTheme
+    let assetNameSeparator: Separator
     let transactionFeeTitleLabel: TextStyle
     let transactionFeeAmountLabel: TextStyle
     let assetIDLabel: TextStyle
@@ -37,12 +37,9 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
 
     let titleTopPadding: LayoutMetric
-    let assetCodeLabelTopPadding: LayoutMetric
-    let assetCodeLabelMinHeight: LayoutMetric
-    let assetNameLabelTopPadding: LayoutMetric
-    let assetNameLabelMinHeight: LayoutMetric
+    let assetNameTopPadding: LayoutMetric
+    let spacingBetweenAssetNameAndSeparator: LayoutMetric
     let assetIDPaddings: LayoutPaddings
-    let transactionTopPadding: LayoutMetric
     let transactionBottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let spacingBetweenButtonAndDetail: LayoutMetric
@@ -68,25 +65,19 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .tintColor(Colors.Helpers.negative),
             .contentMode(.left)
         ]
-        self.warningIconContentEdgeInsets = (12, 0)
+        self.warningIconContentEdgeInsets = (8, 0)
         self.detail = [
             .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.assetCodeLabel = [
-            .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
-        ]
-        self.assetNameLabel = [
-            .textColor(Colors.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
-        ]
+        self.assetName = OptInAssetNameViewTheme(family)
+        self.assetNameSeparator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((24, 24))
+        )
         self.assetIDLabel = [
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
@@ -117,26 +108,17 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.secondaryButtonTheme = ButtonSecondaryTheme()
         self.horizontalPadding = 24
-        self.buttonInset = 16
+        self.buttonInset = 12
         self.spacingBetweenButtonAndDetail = 24
-        self.titleTopPadding = 22
+        self.titleTopPadding = 10
         self.bottomInset = 16
-        self.descriptionTopInset = 44
-        self.assetCodeLabelTopPadding = 42
-        self.assetCodeLabelMinHeight = 42
-        self.assetNameLabelTopPadding = 4
-        self.assetNameLabelMinHeight = 20
+        self.descriptionTopInset = 45
+        self.assetNameTopPadding = 46
+        self.spacingBetweenAssetNameAndSeparator = 20
         self.assetIDPaddings = (40, 8, .noMetric, .noMetric)
-        self.transactionTopPadding = 48
-        self.transactionBottomPadding = 32
+        self.transactionBottomPadding = 40
         self.copyIDButtonEdgeInsets = (6, 12, 6, 12)
         self.copyIDButtonHeight = 32
         self.copyIDButtonCorner = Corner(radius: 16)
-    }
-}
-
-extension AssetActionConfirmationViewTheme {
-    mutating func configureForSecondaryActionOnly() {
-        buttonInset = .zero
     }
 }

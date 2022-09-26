@@ -16,6 +16,8 @@
 //   AssetPreviewViewModel.swift
 
 import MacaroonUIKit
+import MacaroonURLImage
+import Prism
 import UIKit
 
 struct AssetPreviewModel {
@@ -34,7 +36,7 @@ struct AssetPreviewViewModel:
     BindableViewModel,
     Hashable {
     private(set) var assetID: AssetID?
-    private(set) var assetImageViewModel: PrimaryImageViewModel?
+    private(set) var imageSource: ImageSource?
     private(set) var verificationTierIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
@@ -62,54 +64,64 @@ extension AssetPreviewViewModel {
                 preview.title,
                 titleColor: titleColor
             )
-            bindAssetImageView(preview.icon)
+            bindImageSource(preview.asset)
             bindVerificationTierIcon(preview.verificationTier)
             bindSubtitle(preview.subtitle)
             bindPrimaryAccessory(preview.primaryAccessory)
             bindSecondaryAccessory(preview.secondaryAccessory)
             return
         }
-
-        /// <todo>
-        /// We should think about the draft approach. (e.g Create container views for each case.)
-        if let standardAssetPreviewAddition = model as? StandardAssetPreviewAdditionDraft {
-            bindAssetID(standardAssetPreviewAddition)
-            bindVerificationTierIcon(standardAssetPreviewAddition)
-            bindTitle(standardAssetPreviewAddition)
-            bindImage(standardAssetPreviewAddition)
-            bindSubtitle(standardAssetPreviewAddition)
-            bindPrimaryAccessory(standardAssetPreviewAddition)
-            return
-        }
-
-        if let collectibleAssetPreviewAddition = model as? CollectibleAssetPreviewAdditionDraft {
-            bindAssetID(collectibleAssetPreviewAddition)
-            bindVerificationTierIcon(collectibleAssetPreviewAddition)
-            bindTitle(collectibleAssetPreviewAddition)
-            bindImage(collectibleAssetPreviewAddition)
-            bindSubtitle(collectibleAssetPreviewAddition)
-            bindPrimaryAccessory(collectibleAssetPreviewAddition)
-        }
-
-        if let collectibleAssetSelectionDraft = model as? CollectibleAssetPreviewSelectionDraft {
-            bindAssetID(collectibleAssetSelectionDraft)
-            bindVerificationTierIcon(collectibleAssetSelectionDraft)
-            bindTitle(collectibleAssetSelectionDraft)
-            bindImage(collectibleAssetSelectionDraft)
-            bindSubtitle(collectibleAssetSelectionDraft)
-            bindPrimaryAccessory(collectibleAssetSelectionDraft)
-            bindSecondaryAccessory(collectibleAssetSelectionDraft)
-            return
-        }
     }
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetImageView(
-        _ image: AssetImage
+    private mutating func bindImageSource(
+        _ asset: Asset?
     ) {
-        assetImageViewModel = AssetImageLargeViewModel(
-            image: image
+        guard let asset = asset else {
+            imageSource = nil
+            return
+        }
+
+        if asset.isAlgo {
+            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            return
+        }
+
+        let iconURL: URL?
+        let iconShape: ImageShape
+
+        if let collectibleAsset = asset as? CollectibleAsset {
+            iconURL = collectibleAsset.thumbnailImage
+            iconShape = .rounded(4)
+        } else {
+            iconURL = asset.logoURL
+            iconShape = .circle
+        }
+
+        let size = CGSize(width: 40, height: 40)
+        let url = PrismURL(baseURL: iconURL)?
+            .setExpectedImageSize(size)
+            .setImageQuality(.normal)
+            .build()
+
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholder = AssetListItemViewModel.getPlaceholder(
+            placeholderText,
+            with: TextAttributes(
+                font: Fonts.DMSans.regular.make(13),
+                lineHeightMultiplier: 1.18
+            )
+        )
+
+        imageSource = PNGImageSource(
+            url: url,
+            shape: iconShape,
+            placeholder: placeholder
         )
     }
     
@@ -189,269 +201,10 @@ extension AssetPreviewViewModel {
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetID(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        assetID = assetAddition.asset.id
-    }
 
-    private mutating func bindVerificationTierIcon(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        self.verificationTierIcon = getVerificationTierIcon(assetAddition.asset.verificationTier)
-    }
-
-    private mutating func bindImage(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        bindAssetImageView(
-            .url(
-                nil,
-                title: assetAddition.asset.naming.name
-            )
-        )
-    }
-
-    private mutating func bindTitle(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        let titleColor: Color =
-        assetAddition.asset.verificationTier.isSuspicious
-        ? Colors.Helpers.negative
-        : Colors.Text.main
-
-        bindTitle(
-            assetAddition.asset.naming.name,
-            titleColor: titleColor
-        )
-    }
-
-    private mutating func bindSubtitle(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        bindSubtitle(assetAddition.asset.naming.unitName)
-    }
-
-    private mutating func bindPrimaryAccessory(
-        _ assetAddition: StandardAssetPreviewAdditionDraft
-    ) {
-        let accessory =  String(assetAddition.asset.id)
-
-
-        var attributes = Typography.footnoteMonoRegularAttributes(
-            alignment: .right,
-            lineBreakMode: .byTruncatingTail
-        )
-        attributes.formUnion([ .textColor(Colors.Text.gray) ])
-
-        primaryAccessory = .attributedString(
-            accessory
-                .attributed(
-                    attributes
-                )
-        )
-    }
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetID(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        assetID = assetAddition.asset.id
-    }
-
-    private mutating func bindVerificationTierIcon(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        self.verificationTierIcon = getVerificationTierIcon(assetAddition.asset.verificationTier)
-    }
-
-    private mutating func bindImage(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        let asset = assetAddition.asset
-
-        bindAssetImageView(
-            .url(
-                asset.thumbnailImage,
-                title: asset.naming.name
-            )
-        )
-    }
-
-    private mutating func bindTitle(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        let asset = assetAddition.asset
-
-        let titleColor: Color =
-        asset.verificationTier.isSuspicious
-        ? Colors.Helpers.negative
-        : Colors.Text.main
-
-        bindTitle(
-            assetAddition.asset.naming.name,
-            titleColor: titleColor
-        )
-    }
-
-    private mutating func bindSubtitle(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        bindSubtitle(assetAddition.asset.naming.unitName)
-    }
-
-    private mutating func bindPrimaryAccessory(
-        _ assetAddition: CollectibleAssetPreviewAdditionDraft
-    ) {
-        let accessory =  String(assetAddition.asset.id)
-
-        var attributes = Typography.footnoteMonoRegularAttributes(
-            alignment: .right,
-            lineBreakMode: .byTruncatingTail
-        )
-        attributes.formUnion([ .textColor(Colors.Text.gray) ])
-
-        primaryAccessory = .attributedString(
-            accessory
-                .attributed(
-                    attributes
-                )
-        )
-    }
-}
-
-extension AssetPreviewViewModel {
-    private mutating func bindAssetID(
-        _ asset: CollectibleAsset
-    ) {
-        assetID = asset.id
-    }
-
-    private mutating func bindImage(
-        _ asset: CollectibleAsset
-    ) {
-        bindAssetImageView(
-            .url(asset.thumbnailImage, title: asset.name)
-        )
-    }
-
-    private mutating func bindTitle(
-        _ asset: CollectibleAsset
-    ) {
-        let titleColor: Color =
-        asset.verificationTier.isSuspicious
-        ? Colors.Helpers.negative
-        : Colors.Text.main
-
-        bindTitle(
-            asset.name,
-            titleColor: titleColor
-        )
-    }
-
-    private mutating func bindSubtitle(
-        _ asset: CollectibleAsset
-    ) {
-        bindSubtitle(asset.unitName)
-    }
-
-    private mutating func bindSecondAccessory(
-        _ asset: CollectibleAsset
-    ) {
-        bindSecondaryAccessory(String(asset.id))
-    }
-}
-
-extension AssetPreviewViewModel {
-    private mutating func bindAssetID(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        assetID = draft.asset.id
-    }
-
-    private mutating func bindVerificationTierIcon(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-        
-    ) {
-        self.verificationTierIcon = getVerificationTierIcon(draft.asset.verificationTier)
-    }
-
-    private mutating func bindImage(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        bindAssetImageView(
-            .url(draft.asset.thumbnailImage, title: draft.asset.name)
-        )
-    }
-
-    private mutating func bindTitle(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        let asset = draft.asset
-
-        let titleColor: Color =
-        asset.verificationTier.isSuspicious
-        ? Colors.Helpers.negative
-        : Colors.Text.main
-
-        bindTitle(
-            asset.name,
-            titleColor: titleColor
-        )
-    }
-
-    private mutating func bindSubtitle(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        bindSubtitle("ID \(draft.asset.id)")
-    }
-
-    private mutating func bindPrimaryAccessory(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        let asset = draft.asset
-
-        let formatter = draft.currencyFormatter
-        formatter.formattingContext = draft.currencyFormattingContext ?? .listItem
-        formatter.currency = nil
-
-        let amount = formatter.format(asset.amountWithFraction)
-
-        bindPrimaryAccessory(amount)
-    }
-
-    private mutating func bindSecondaryAccessory(
-        _ draft: CollectibleAssetPreviewSelectionDraft
-    ) {
-        guard let currencyValue = draft.currency.primaryValue else {
-            bindSecondaryAccessory(nil)
-            return
-        }
-
-        let asset = draft.asset
-
-        do {
-            let rawCurrency = try currencyValue.unwrap()
-
-            let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(asset)
-
-            let formatter = draft.currencyFormatter
-            formatter.formattingContext = draft.currencyFormattingContext ?? .listItem
-            formatter.currency = rawCurrency
-
-            if amount > 0 {
-                let value = formatter.format(amount)
-                bindSecondaryAccessory(value)
-            } else {
-                bindSecondaryAccessory(nil)
-            }
-        } catch {
-            bindSecondaryAccessory(nil)
-        }
-    }
-
     private func getVerificationTierIcon(
         _ verificationTier: AssetVerificationTier
     ) -> UIImage? {
@@ -469,7 +222,6 @@ extension AssetPreviewViewModel {
         into hasher: inout Hasher
     ) {
         hasher.combine(assetID)
-        hasher.combine(assetImageViewModel?.image)
         hasher.combine(verificationTierIcon)
         hasher.combine(title)
         hasher.combine(subtitle)
@@ -482,38 +234,10 @@ extension AssetPreviewViewModel {
         rhs: AssetPreviewViewModel
     ) -> Bool {
         return lhs.assetID == rhs.assetID &&
-        lhs.assetImageViewModel?.image == rhs.assetImageViewModel?.image &&
         lhs.verificationTierIcon == rhs.verificationTierIcon &&
         lhs.title == rhs.title &&
         lhs.subtitle == rhs.subtitle &&
         lhs.primaryAccessory == rhs.primaryAccessory &&
         lhs.secondaryAccessory == rhs.secondaryAccessory
     }
-}
-
-struct CollectibleAssetPreviewSelectionDraft {
-    let asset: CollectibleAsset
-    let currency: CurrencyProvider
-    let currencyFormatter: CurrencyFormatter
-    let currencyFormattingContext: CurrencyFormattingContext?
-
-    init(
-        asset: CollectibleAsset,
-        currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter,
-        currencyFormattingContext: CurrencyFormattingContext? = nil
-    ) {
-        self.asset = asset
-        self.currency = currency
-        self.currencyFormatter = currencyFormatter
-        self.currencyFormattingContext = currencyFormattingContext
-    }
-}
-
-struct StandardAssetPreviewAdditionDraft {
-    let asset: StandardAsset
-}
-
-struct CollectibleAssetPreviewAdditionDraft {
-    let asset: CollectibleAsset
 }

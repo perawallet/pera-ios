@@ -55,25 +55,34 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
         ]
         self.corner = Corner(radius: 4)
         self.firstShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow1.uiColor,
-            opacity: 1,
-            offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor
-        )
-        self.secondShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow2.uiColor,
-            opacity: 1,
-            offset: (0, 2),
-            radius: 4,
-            fillColor: Colors.Defaults.background.uiColor
-        )
-        self.thirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: Colors.Defaults.background.uiColor
+            spread: 1,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.secondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: 0,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.thirdShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
+            cornerRadii: (4, 4),
+            corners: .allCorners
         )
         self.infoButtonStyle = [
             .backgroundImage([.normal("icon-info-gray")])

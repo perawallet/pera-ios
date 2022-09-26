@@ -25,6 +25,9 @@ struct ASADetailQuickActionsViewTheme:
     var actionMinWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
     var buyAction: ButtonStyle
+    var swapAction: ButtonStyle
+    var swapNewBadge: BadgeButtonTheme
+    var swapNewBadgeEdgeInsets: NSDirectionalEdgeInsets
     var sendAction: ButtonStyle
     var receiveAction: ButtonStyle
 
@@ -36,6 +39,17 @@ struct ASADetailQuickActionsViewTheme:
             .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
             .title(Self.makeActionTitle(title: "quick-actions-buy-algo-title".localized))
         ]
+        self.swapAction = [
+            .icon(Self.makeActionIcon(icon: "swap-icon")),
+            .title(Self.makeActionTitle(title: "title-swap".localized))
+        ]
+        self.swapNewBadge = BadgeButtonTheme()
+        self.swapNewBadgeEdgeInsets = NSDirectionalEdgeInsets(
+            top: 9,
+            leading: 0,
+            bottom: 0,
+            trailing: 16
+        )
         self.sendAction = [
             .icon(Self.makeActionIcon(icon: "send-icon")),
             .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))

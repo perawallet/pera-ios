@@ -46,14 +46,19 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        presentingScreen: self,
+        account: accountHandle.value
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
         account: accountHandle.value
     )
-    private lazy var receiveTransactionFlowCoordinator =
-    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(
+        presentingScreen: self,
+        account: accountHandle.value
+    )
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
@@ -162,11 +167,14 @@ extension AccountDetailViewController {
             case .buyAlgo:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
-                self.buyAlgoFlowCoordinator.launch()
+
+                let draft = BuyAlgoDraft()
+                draft.address = self.accountHandle.value.address
+                self.buyAlgoFlowCoordinator.launch(draft: draft)
             case .swap:
                 self.assetListScreen.endEditing()
 
-                self.receiveTransactionFlowCoordinator.launch()
+                self.swapAssetFlowCoordinator.launch()
             case .send:
                 self.assetListScreen.endEditing()
 
@@ -202,9 +210,10 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     }
 
     func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
-        /// <todo>
-        /// Navigate to Swap
-        preconditionFailure("Not Implemented Yet")
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.swapAssetFlowCoordinator.launch()
+        }
     }
 
     func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {

@@ -22,7 +22,7 @@ import UIKit
 struct ASAProfileViewTheme:
     StyleSheet,
     LayoutSheet {
-    var icon: URLImageViewStyleSheet & URLImageViewLayoutSheet
+    var icon: ASAProfileIconViewTheme
     var expandedIconSize: LayoutSize
     var compressedIconSize: LayoutSize
     var expandedSpacingBetweenIconAndTitle: LayoutMetric
@@ -37,7 +37,7 @@ struct ASAProfileViewTheme:
     var secondaryValue: TextStyle
 
     init(_ family: LayoutFamily) {
-        self.icon = URLImageViewAssetTheme()
+        self.icon = ASAProfileIconViewTheme(family)
         self.expandedIconSize = (40, 40)
         self.compressedIconSize = (20, 20)
 
@@ -74,5 +74,43 @@ struct ASAProfileViewTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText())
         ]
+    }
+}
+
+struct ASAProfileIconViewTheme: URLImageViewStyleLayoutSheet {
+    var background: ViewStyle
+    var content: ImageStyle
+    var placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    var placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
+
+    init(_ family: LayoutFamily) {
+        background = []
+        content = .aspectFit()
+        placeholderStyleSheet = PlaceholderStyleSheet()
+        placeholderLayoutSheet = PlaceholderLayoutSheet()
+    }
+}
+
+extension ASAProfileIconViewTheme {
+    struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
+        var background: ViewStyle
+        var image: ImageStyle
+        var text: TextStyle
+
+        init() {
+            background = []
+            image = [
+                .contentMode(.scaleAspectFit)
+            ]
+            text = []
+        }
+    }
+
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        var textPaddings: LayoutPaddings
+
+        init(_ family: LayoutFamily) {
+            textPaddings = (0, 0, 0, 0)
+        }
     }
 }

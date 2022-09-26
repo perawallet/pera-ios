@@ -390,11 +390,8 @@ extension ManageAssetsViewController {
             guard let creator = asset.creator else { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptOutBlockchainRequest(asset: asset)
-            monitor.startMonitoringOptOutUpdates(
-                request,
-                for: account
-            )
+            let request = OptOutBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptOutUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
@@ -587,11 +584,23 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

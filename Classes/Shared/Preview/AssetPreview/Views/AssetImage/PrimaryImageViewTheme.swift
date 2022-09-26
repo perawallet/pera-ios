@@ -27,7 +27,7 @@ protocol PrimaryImageViewTheme:
 }
 
 struct AssetImageViewTheme: PrimaryImageViewTheme {
-    let image: URLImageViewStyleLayoutSheet
+    var image: URLImageViewStyleLayoutSheet
 
     init(
         _ family: LayoutFamily
@@ -38,9 +38,9 @@ struct AssetImageViewTheme: PrimaryImageViewTheme {
 
 struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
     struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
-        let background: ViewStyle
-        let image: ImageStyle
-        let text: TextStyle
+        var background: ViewStyle
+        var image: ImageStyle
+        var text: TextStyle
 
         init() {
             background = []
@@ -57,7 +57,7 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
     }
 
     struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
-        let textPaddings: LayoutPaddings
+        var textPaddings: LayoutPaddings
 
         init(
             _ family: LayoutFamily
@@ -66,10 +66,10 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
         }
     }
 
-    let background: ViewStyle
-    let content: ImageStyle
-    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
-    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
+    var background: ViewStyle
+    var content: ImageStyle
+    var placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    var placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
 
     init(
         _ family: LayoutFamily

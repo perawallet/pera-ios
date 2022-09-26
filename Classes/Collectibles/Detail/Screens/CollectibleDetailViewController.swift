@@ -258,7 +258,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptInQuickAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optIn(with: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -269,7 +272,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptOutAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optOut(from: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -834,7 +840,10 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(
                 mode: .approve,
@@ -842,6 +851,16 @@ extension CollectibleDetailViewController {
             ),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

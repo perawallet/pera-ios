@@ -21,10 +21,10 @@ import MacaroonBottomSheet
 import UIKit
 
 final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTransitionController {
-    init(presentingViewController: UIViewController, completion: @escaping () -> Void) {
+    init(interactable: Bool, presentingViewController: UIViewController, completion: @escaping () -> Void) {
         super.init(
             presentingViewController: presentingViewController,
-            presentationConfiguration: BottomSheetPresentationConfiguration(),
+            presentationConfiguration: BottomSheetPresentationConfiguration(interactable: interactable),
             completion: completion
         )
 
@@ -38,10 +38,10 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
 
         presentationConfiguration.overlayStyleSheet.backgroundShadow = MacaroonUIKit.Shadow(
             color: UIColor.clear,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 0,
             offset: (0, 0),
             radius: 0,
-            fillColor: Colors.Defaults.background.uiColor,
             cornerRadii: (16, 16),
             corners: .allCorners
         )

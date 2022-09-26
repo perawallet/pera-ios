@@ -24,6 +24,17 @@ final class ScanQRFlowCoordinator:
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate {
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: presentingScreen,
+        api: api,
+        session: session
+    )
+
+    private lazy var transactionController = TransactionController(
+        api: api,
+        bannerController: bannerController,
+        analytics: analytics
+    )
 
     private var assetConfirmationTransition: BottomSheetTransition?
     private var accountQRTransition: BottomSheetTransition?
@@ -32,26 +43,30 @@ final class ScanQRFlowCoordinator:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
-    private let sharedDataController: SharedDataController
-    private var api: ALGAPI
+    
+    private let analytics: ALGAnalytics
+    private let api: ALGAPI
     private let bannerController: BannerController
     private let loadingController: LoadingController
-    private let analytics: ALGAnalytics
+    private let session: Session
+    private let sharedDataController: SharedDataController
 
     init(
-        sharedDataController: SharedDataController,
-        presentingScreen: UIViewController,
+        analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
         loadingController: LoadingController,
-        analytics: ALGAnalytics
+        presentingScreen: UIViewController,
+        session: Session,
+        sharedDataController: SharedDataController
     ) {
-        self.sharedDataController = sharedDataController
-        self.presentingScreen = presentingScreen
+        self.analytics = analytics
         self.api = api
         self.bannerController = bannerController
         self.loadingController = loadingController
-        self.analytics = analytics
+        self.presentingScreen = presentingScreen
+        self.session = session
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -117,6 +132,15 @@ extension ScanQRFlowCoordinator {
                 handler()
             }
         }
+    }
+
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead qrExportInformations: QRExportInformations,
+        completionHandler: EmptyHandler?
+    ) {
+        accountExportCoordinator.populate(qrExportInformations: qrExportInformations)
+        accountExportCoordinator.launch()
     }
 }
 
@@ -285,7 +309,6 @@ extension ScanQRFlowCoordinator {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )
@@ -319,17 +342,16 @@ extension ScanQRFlowCoordinator {
                 assetIndex: asset.id
             )
 
-            let transactionController = TransactionController(
-                api: self.api,
-                bannerController: self.bannerController,
-                analytics: self.analytics
-            )
-
             self.loadingController.startLoadingWithMessage("title-loading".localized)
 
-            transactionController.delegate = self
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
         }
     }
 
@@ -436,11 +458,24 @@ extension ScanQRFlowCoordinator {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = presentingScreen.findVisibleScreen()
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

@@ -25,19 +25,18 @@ struct ASAAboutScreenTheme:
     var loading: ASAAboutLoadingViewTheme
     var contextEdgeInsets: NSDirectionalEdgeInsets
     var statistics: AssetStatisticsSectionViewTheme
-    var spacingBetweenStatisticsAndSeparator: CGFloat
     var spacingBetweenStatisticsAndAbout: CGFloat
+    var spacingBetweenSeparatorAndAbout: CGFloat
     var about: AssetAboutSectionViewTheme
-    var spacingBetweenAboutAndSeparator: CGFloat
+    var spacingBetweenSectionsAndVerificationTier: CGFloat
     var verificationTier: AssetVerificationInfoViewTheme
-    var spacingBetweenVerificationTierAndSeparator: CGFloat
+    var spacingBetweenVerificationTierAndFirstSection: CGFloat
     var spacingBetweenVerificationTierAndSections: CGFloat
+    var spacingBetweenSeparatorAndDescription: CGFloat
     var description: ShowMoreViewTheme
-    var spacingBetweenDescriptionAndSeparator: CGFloat
+    var spacingBetweenSeparatorAndSocialMedia: CGFloat
     var socialMedia: AssetSocialMediaGroupedListItemButtonTheme
-    var spacingBetweenSocialMediaAndSeparator: CGFloat
     var reportAction: ListItemButtonTheme
-    var reportActionSeparator: Separator
     var spacingBetweenSeparatorAndReportAction: CGFloat
     var spacingBetweenSectionsAndReportAction: CGFloat
     var sectionSeparator: Separator
@@ -50,27 +49,25 @@ struct ASAAboutScreenTheme:
         self.loading = ASAAboutLoadingViewTheme()
         self.contextEdgeInsets = .init(top: 36, leading: 24, bottom: 8, trailing: 24)
         self.statistics = AssetStatisticsSectionViewTheme(family)
-        self.spacingBetweenStatisticsAndSeparator = 36
         self.spacingBetweenStatisticsAndAbout = 62
+        self.spacingBetweenSeparatorAndAbout = 26
         self.about = AssetAboutSectionViewTheme(family)
-        self.spacingBetweenAboutAndSeparator = 26
+        self.spacingBetweenSectionsAndVerificationTier = 22
         self.verificationTier = AssetVerificationInfoViewTheme(family)
-        self.spacingBetweenVerificationTierAndSeparator = 20
+        self.spacingBetweenVerificationTierAndFirstSection = 24
         self.spacingBetweenVerificationTierAndSections = 60
+        self.spacingBetweenSeparatorAndDescription = 36
         self.description = ShowMoreViewTheme(numberOfLinesLimit: 4, family: family)
-        self.spacingBetweenDescriptionAndSeparator = 34
+        self.spacingBetweenSeparatorAndSocialMedia = 36
         self.socialMedia = AssetSocialMediaGroupedListItemButtonTheme(family)
-        self.spacingBetweenSocialMediaAndSeparator = 32
 
         var reportAction = ListItemButtonTheme(family)
         reportAction.configureForAssetSocialMediaView()
         self.reportAction = reportAction
-        self.reportActionSeparator =
-            Separator(color: Colors.Layer.grayLighter, position: .top((0, 0)))
         self.spacingBetweenSeparatorAndReportAction = 26
         self.spacingBetweenSectionsAndReportAction = 62
 
-        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter)
+        self.sectionSeparator = Separator(color: Colors.Layer.grayLighter, position: .top((0, 0)))
         self.spacingBetweenSections = 72
     }
 }
