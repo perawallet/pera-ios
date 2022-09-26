@@ -292,8 +292,12 @@ extension RootViewController {
 
             if isCompleted {
                 self.appConfiguration.session.reset(includingContacts: true)
+
+                self.appConfiguration.walletConnector.disconnectFromAllSessions()
                 self.appConfiguration.walletConnector.resetAllSessions()
+
                 self.appConfiguration.sharedDataController.resetPolling()
+
                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
             } else {
                 self.appConfiguration.sharedDataController.startPolling()

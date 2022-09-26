@@ -81,6 +81,10 @@ extension WalletConnector {
         }
     }
 
+    func disconnectFromAllSessions() {
+        allWalletConnectSessions.forEach(disconnectFromSession)
+    }
+
     func reconnectToSavedSessionsIfPossible() {
         for session in allWalletConnectSessions {
             do {
