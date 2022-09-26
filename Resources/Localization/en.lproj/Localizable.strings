@@ -1191,6 +1191,10 @@
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 
+/// MARK: Swap Slippage Tolerance Info
+"swap-slippage-tolerance-info-title" = "Slippage Tolerance";
+"swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
