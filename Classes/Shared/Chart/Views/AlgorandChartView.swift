@@ -27,7 +27,7 @@ final class AlgorandChartView: BaseView {
 
     private lazy var lineChartView: AlgorandLineChartView = {
         let lineChartView = AlgorandLineChartView()
-        lineChartView.chartDescription?.enabled = chartCustomizer.isDescriptionEnabled
+        lineChartView.chartDescription.enabled = chartCustomizer.isDescriptionEnabled
         lineChartView.dragEnabled = chartCustomizer.isDragEnabled
         lineChartView.setScaleEnabled(chartCustomizer.isScaleEnabled)
         lineChartView.pinchZoomEnabled = chartCustomizer.isPinchZoomEnabled
