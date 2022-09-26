@@ -1185,6 +1185,11 @@
 
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
+"swap-asset-amount-title-balance" = "Balance: %@";
+
+/// MARK: Swap Price Impact Info
+"swap-price-impact-info-title" = "Price Impact";
+"swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
