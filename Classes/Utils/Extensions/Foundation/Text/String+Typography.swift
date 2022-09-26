@@ -26,23 +26,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.medium.make(36, .largeTitle).uiFont
-            : Fonts.DMSans.medium.make(36).uiFont
-        let lineHeightMultiplier = 1.02
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.36),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.largeTitleMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -51,23 +40,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(36, .largeTitle).uiFont
-            : Fonts.DMSans.regular.make(36).uiFont
-        let lineHeightMultiplier = 1.02
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.36),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.largeTitleRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -76,23 +54,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.medium.make(36, .largeTitle).uiFont
-            : Fonts.DMMono.medium.make(36).uiFont
-        let lineHeightMultiplier = 1.02
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.largeTitleMonoMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -101,58 +68,8 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.regular.make(36, .largeTitle).uiFont
-            : Fonts.DMMono.regular.make(36).uiFont
-        let lineHeightMultiplier = 1.02
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
-        )
-    }
-
-    func title1Bold(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.bold.make(32, .largeTitle).uiFont
-            : Fonts.DMSans.bold.make(32).uiFont
-        let lineHeightMultiplier = 0.96
-
-        return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.32),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
-        )
-    }
-
-    func title1Medium(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> NSAttributedString {
-        return attributed(
-            .title1Medium(
+            Typography.largeTitleMonoRegularAttributes(
                 alignment: alignment,
                 lineBreakMode: lineBreakMode,
                 supportsDynamicType: supportsDynamicType
@@ -160,78 +77,73 @@ extension String {
         )
     }
 
-    func title1MonoRegular(
+    func titleBold(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.regular.make(36, .title1).uiFont
-            : Fonts.DMMono.regular.make(36).uiFont
-        let lineHeightMultiplier = 0.85
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.titleBoldAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
-    func title2Bold(
+    func titleMedium(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.bold.make(28, .title2).uiFont
-            : Fonts.DMSans.bold.make(28).uiFont
-        let lineHeightMultiplier = 0.99
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.28),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.titleMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
-    func title2Medium(
+    func titleMonoRegular(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.medium.make(28, .title2).uiFont
-            : Fonts.DMSans.medium.make(28).uiFont
-        let lineHeightMultiplier = 0.99
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.28),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.titleMonoRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
+        )
+    }
+
+    func titleSmallBold(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> NSAttributedString {
+        return attributed(
+            Typography.titleSmallBoldAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
+        )
+    }
+
+    func titleSmallMedium(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> NSAttributedString {
+        return attributed(
+            Typography.titleSmallMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 }
@@ -244,22 +156,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.medium.make(19, .body).uiFont
-            : Fonts.DMSans.medium.make(19).uiFont
-        let lineHeightMultiplier = 1.13
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyLargeMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -268,22 +170,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(19, .body).uiFont
-            : Fonts.DMSans.regular.make(19).uiFont
-        let lineHeightMultiplier = 1.13
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyLargeRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -292,23 +184,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.regular.make(19, .body).uiFont
-            : Fonts.DMMono.regular.make(19).uiFont
-        let lineHeightMultiplier = 1.13
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.38),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyLargeMonoRegular(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -317,22 +198,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.bold.make(15, .body).uiFont
-            : Fonts.DMSans.bold.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyBoldAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -342,7 +213,7 @@ extension String {
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
         return attributed(
-            .bodyMedium(
+            Typography.bodyMediumAttributes(
                 alignment: alignment,
                 lineBreakMode: lineBreakMode,
                 supportsDynamicType: supportsDynamicType
@@ -355,22 +226,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(15, .body).uiFont
-            : Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -379,23 +240,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.medium.make(15, .body).uiFont
-            : Fonts.DMMono.medium.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.3),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.bodyMonoMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -405,7 +255,7 @@ extension String {
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
         return attributed(
-            .bodyMonoRegular(
+            Typography.bodyMonoRegularAttributes(
                 alignment: alignment,
                 lineBreakMode: lineBreakMode,
                 supportsDynamicType: supportsDynamicType
@@ -417,28 +267,31 @@ extension String {
 // MARK: - Footnote
 
 extension String {
+    func footnoteHeadingMedium(
+        alignment: NSTextAlignment = .left,
+        lineBreakMode: NSLineBreakMode = .byWordWrapping,
+        supportsDynamicType: Bool = false
+    ) -> NSAttributedString {
+        return attributed(
+            Typography.footnoteHeadingAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
+        )
+    }
+
     func footnoteBold(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.bold.make(13, .footnote).uiFont
-            : Fonts.DMSans.bold.make(13).uiFont
-        let lineHeightMultiplier = 1.18
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.07),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.footnoteBoldAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -447,22 +300,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.medium.make(13, .footnote).uiFont
-            : Fonts.DMSans.medium.make(13).uiFont
-        let lineHeightMultiplier = 1.18
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.footnoteMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -471,22 +314,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(13, .footnote).uiFont
-            : Fonts.DMSans.regular.make(13).uiFont
-        let lineHeightMultiplier = 1.18
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.footnoteRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -495,23 +328,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.medium.make(13, .footnote).uiFont
-            : Fonts.DMMono.medium.make(13).uiFont
-        let lineHeightMultiplier = 1.18
-
         return attributed(
-            [
-                .font(font),
-                .letterSpacing(-0.26),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.footnoteMonoMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -521,7 +343,7 @@ extension String {
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
         return attributed(
-            .footnoteMonoRegular(
+            Typography.footnoteMonoRegularAttributes(
                 alignment: alignment,
                 lineBreakMode: lineBreakMode,
                 supportsDynamicType: supportsDynamicType
@@ -538,22 +360,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.bold.make(11, .caption1).uiFont
-            : Fonts.DMSans.bold.make(11).uiFont
-        let lineHeightMultiplier = 1.12
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.captionBoldAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -562,22 +374,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.medium.make(11, .caption1).uiFont
-            : Fonts.DMSans.medium.make(11).uiFont
-        let lineHeightMultiplier = 1.12
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.captionMediumAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -586,22 +388,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(11, .caption1).uiFont
-            : Fonts.DMSans.regular.make(11).uiFont
-        let lineHeightMultiplier = 1.12
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.captionMonoRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
     }
 
@@ -610,136 +402,12 @@ extension String {
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> NSAttributedString {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.regular.make(11, .caption1).uiFont
-            : Fonts.DMMono.regular.make(11).uiFont
-        let lineHeightMultiplier = 1.12
-
         return attributed(
-            [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
+            Typography.captionMonoRegularAttributes(
+                alignment: alignment,
+                lineBreakMode: lineBreakMode,
+                supportsDynamicType: supportsDynamicType
+            )
         )
-    }
-}
-
-extension Set where Element == AnyTextAttribute {
-    static func title1Medium(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> Self {
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(32, .title1).uiFont
-        : Fonts.DMSans.medium.make(32).uiFont
-        let lineHeightMultiplier = 0.96
-
-        return [
-            .font(font),
-            .letterSpacing(-0.32),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(alignment),
-                .lineBreakMode(lineBreakMode),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
-    }
-
-    static func bodyRegular(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> Self {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMSans.regular.make(15, .body).uiFont
-            : Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
-        return [
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(alignment),
-                    .lineBreakMode(lineBreakMode),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ]
-    }
-
-    static func bodyMedium(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> Self {
-        let font =
-        supportsDynamicType
-        ? Fonts.DMSans.medium.make(15, .body).uiFont
-        : Fonts.DMSans.medium.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
-        return [
-            .font(font),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(alignment),
-                .lineBreakMode(lineBreakMode),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
-    }
-
-    static func bodyMonoRegular(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = false
-    ) -> Self {
-        let font =
-        supportsDynamicType
-        ? Fonts.DMMono.regular.make(15, .body).uiFont
-        : Fonts.DMMono.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
-        return [
-            .font(font),
-            .letterSpacing(-0.3),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(alignment),
-                .lineBreakMode(lineBreakMode),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
-    }
-
-    static func footnoteMonoRegular(
-        alignment: NSTextAlignment = .center,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        supportsDynamicType: Bool = true
-    ) -> Self {
-        let font =
-            supportsDynamicType
-            ? Fonts.DMMono.regular.make(13, .footnote).uiFont
-            : Fonts.DMMono.regular.make(13).uiFont
-        let lineHeightMultiplier = 1.18
-
-        return [
-            .font(font),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(alignment),
-                .lineBreakMode(lineBreakMode),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
     }
 }

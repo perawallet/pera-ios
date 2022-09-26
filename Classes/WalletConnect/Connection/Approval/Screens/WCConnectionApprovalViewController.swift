@@ -49,12 +49,19 @@ final class WCConnectionApprovalViewController: BaseViewController {
         super.init(configuration: configuration)
 
         if !hasMultipleAccounts {
-            selectedAccount = sharedDataController.sortedAccounts().first
+            let selectedAccount =
+                sharedDataController
+                    .accountCollection
+                    .first {
+                        $0.value.type != .watch
+                    }
+
+            self.selectedAccount = selectedAccount
         }
     }
 
     override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
         if let account = selectedAccount?.value {
@@ -94,8 +101,8 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
-        log(
-            WCSessionApprovedEvent(
+        analytics.track(
+            .wcSessionApproved(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
@@ -114,8 +121,8 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        log(
-            WCSessionRejectedEvent(
+        analytics.track(
+            .wcSessionRejected(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString

@@ -32,7 +32,7 @@ final class HomeQuickActionsCell:
     ) {
         super.init(frame: frame)
 
-        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
+        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
     }
     

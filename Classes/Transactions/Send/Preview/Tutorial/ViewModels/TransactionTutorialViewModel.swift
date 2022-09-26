@@ -78,7 +78,7 @@ extension TransactionTutorialViewModel {
         )
 
         let highlightedTextAttributes: TextAttributeGroup = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.regular.make(13).uiFont)
         ]
 
@@ -103,7 +103,7 @@ extension TransactionTutorialViewModel {
         )
 
         let highlightedTextAttributes: TextAttributeGroup = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Link.primary),
             .font(Fonts.DMSans.regular.make(13).uiFont)
         ]
 
@@ -114,7 +114,7 @@ extension TransactionTutorialViewModel {
             range: highlightedTextRange
         )
 
-        secondTip = .attributedString(
+        tapToMoreText = .attributedString(
             textAttributes
         )
     }

@@ -42,15 +42,25 @@ extension AssetSearchListHeaderViewModel {
     mutating func bindTitle(
         _ title: String
     ) {
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.02
+
         self.title = .attributedString(
             title
-                .bodyMedium()
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
         )
     }
 
     mutating func bindTitleStyle() {
         titleStyle = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
     }

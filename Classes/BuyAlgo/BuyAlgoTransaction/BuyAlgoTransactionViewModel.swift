@@ -71,7 +71,7 @@ extension BuyAlgoTransactionViewModel {
         title = .attributedString(
             titleString
                 .localized
-                .title1Medium()
+                .titleMedium()
         )
     }
     
