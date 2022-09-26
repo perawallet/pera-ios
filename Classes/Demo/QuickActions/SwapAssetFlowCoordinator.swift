@@ -177,9 +177,7 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSignWithLedgerConfirmation() {
-        let transactionsCountToSign = 4 /// <todo> Remove mock data.
-
+    private func openSignWithLedgerConfirmation(transactionsCountToSign: Int) {
         let title =
             "swap-sign-with-ledger-title"
                 .localized

@@ -19,37 +19,37 @@ import MacaroonUIKit
 
 struct UISheetActionScreenImageTheme:
     UISheetActionScreenTheme {
-    var contextEdgeInsets: LayoutPaddings
-    var image: ImageStyle
-    var imageLayoutOffset: LayoutOffset
-    var title: TextStyle
-    var spacingBetweenTitleAndBody: LayoutMetric
-    var body: TextStyle
-    var actionSpacing: LayoutMetric
-    var actionsEdgeInsets: LayoutPaddings
-    var actionContentEdgeInsets: LayoutPaddings
+    let contextEdgeInsets: LayoutPaddings
+    let image: ImageStyle
+    let imageLayoutOffset: LayoutOffset
+    let title: TextStyle
+    let spacingBetweenTitleAndBody: LayoutMetric
+    let body: TextStyle
+    let actionSpacing: LayoutMetric
+    let actionsEdgeInsets: LayoutPaddings
+    let actionContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
-        contextEdgeInsets = (32, 24, 24, 24)
-        image = [
+        self.contextEdgeInsets = (32, 24, 24, 24)
+        self.image = [
             .contentMode(.top)
         ]
-        imageLayoutOffset = (0, 16)
-        title = [
+        self.imageLayoutOffset = (0, 16)
+        self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.bodyLargeMedium())
         ]
-        spacingBetweenTitleAndBody = 12
-        body = [
+        self.spacingBetweenTitleAndBody = 12
+        self.body = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular())
         ]
-        actionSpacing = 16
-        actionsEdgeInsets = (8, 24, 16, 24)
-        actionContentEdgeInsets = (16, 24, 16, 24)
+        self.actionSpacing = 16
+        self.actionsEdgeInsets = (8, 24, 16, 24)
+        self.actionContentEdgeInsets = (16, 24, 16, 24)
     }
 }

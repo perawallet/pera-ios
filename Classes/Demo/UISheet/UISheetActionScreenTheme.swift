@@ -82,22 +82,22 @@ struct UISheetActionScreenCommonTheme:
     init(
         _ family: LayoutFamily
     ) {
-        contextEdgeInsets = (36, 24, 24, 24)
-        image = []
-        imageLayoutOffset = (0, 0)
-        title = [
+        self.contextEdgeInsets = (36, 24, 24, 24)
+        self.image = []
+        self.imageLayoutOffset = (0, 0)
+        self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.bodyLargeMedium())
         ]
-        spacingBetweenTitleAndBody = 16
-        body = [
+        self.spacingBetweenTitleAndBody = 16
+        self.body = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.bodyRegular())
         ]
-        actionSpacing = 16
-        actionsEdgeInsets = (8, 24, 16, 24)
-        actionContentEdgeInsets = (16, 24, 16, 24)
+        self.actionSpacing = 16
+        self.actionsEdgeInsets = (8, 24, 16, 24)
+        self.actionContentEdgeInsets = (16, 24, 16, 24)
     }
 }
