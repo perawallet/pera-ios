@@ -1079,6 +1079,12 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .setSlippage(let theme, let eventHandler):
+            viewController = SetSlippageToleranceScreen(
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController

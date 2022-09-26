@@ -1204,6 +1204,13 @@
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
 "swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
 
+/// MARK: Swap Slippage
+"swap-slippage-title" = "Slippage Tolerance";
+"swap-slippage-placeholder" = "Set custom slippage";
+"swap-slippage-percentage-auto" = "Auto";
+"swap-slippage-error-value" = "Slippage tolerance must be between 0.1% and 1%";
+"swap-slippage-error-required" = "Please enter or select a value";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
