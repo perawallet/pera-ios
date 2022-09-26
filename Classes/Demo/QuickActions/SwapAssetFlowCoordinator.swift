@@ -24,6 +24,8 @@ final class SwapAssetFlowCoordinator {
 
     private lazy var alertTransition = AlertUITransition(presentingViewController: presentingScreen)
     private lazy var transitionToSignWithLedger = BottomSheetTransition(presentingViewController: presentingScreen)
+    private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: presentingScreen)
+    private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: presentingScreen)
 
     private var swapAlertScreen: AlertScreen?
     private var swapIntroductionScreen: SwapIntroductionScreen?
@@ -177,17 +179,17 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSignWithLedgerConfirmation(transactionsCountToSign: Int) {
+     private func openSignWithLedgerConfirmation(totalTransactionCountToSign: Int) {
         let title =
             "swap-sign-with-ledger-title"
                 .localized
                 .bodyLargeMedium(alignment: .center)
         let highlightedBodyPart =
             "swap-sign-with-ledger-body-highlighted"
-                .localized(params: "\(transactionsCountToSign)")
+                .localized(params: "\(totalTransactionCountToSign)")
         let body =
             "swap-sign-with-ledger-body"
-                .localized(params: "\(transactionsCountToSign)")
+                .localized(params: "\(totalTransactionCountToSign)")
                 .bodyRegular(alignment: .center)
                 .addAttributes(
                     to: highlightedBodyPart,
@@ -213,6 +215,50 @@ extension SwapAssetFlowCoordinator {
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    private func openSlippageToleranceInfo() {
+        let uiSheet = UISheet(
+            title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
+            body:"swap-slippage-tolerance-info-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.presentingScreen.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToSlippageToleranceInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    private func openPriceImpactInfo() {
+        let uiSheet = UISheet(
+            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            body:"swap-price-impact-info-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.presentingScreen.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToPriceImpactInfo.perform(
+            .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
     }
