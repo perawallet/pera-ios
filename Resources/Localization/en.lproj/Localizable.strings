@@ -1124,7 +1124,7 @@
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
-"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+"transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";

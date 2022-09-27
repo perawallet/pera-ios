@@ -204,8 +204,7 @@ indirect enum Screen {
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
     case alert(
-        alert: Alert,
-        theme: AlertScreenTheme = AlertScreenCommonTheme()
+        alert: Alert
     )
     case swapIntroduction(
         draft: SwapIntroductionDraft,

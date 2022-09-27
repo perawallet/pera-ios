@@ -1038,11 +1038,8 @@ class Router:
                 draft: draft,
                 eventHandler: eventHandler
             )
-        case .alert(let alert, let theme):
-            viewController = AlertScreen(
-                alert: alert,
-                theme: theme
-            )
+        case .alert(let alert):
+            viewController = AlertScreen(alert: alert)
         case .swapIntroduction(let draft, let eventHandler):
             let aViewController = SwapIntroductionScreen(draft: draft)
             aViewController.eventHandler = eventHandler

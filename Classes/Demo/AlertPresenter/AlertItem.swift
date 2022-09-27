@@ -12,23 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetLearnMoreListItemButtonViewModel.swift
+//   AlertItem.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    let title: EditText?
-    let subtitle: EditText?
+protocol AlertItem:
+    AnyObject,
+    Storable {
+    var storeKey: String { get }
 
-    init() {
-        icon = "icon-pera-solid"
-        title = Self.getTitle(
-            "asa-verification-learn-more".localized,
-            Colors.Helpers.positive
-        )
-        subtitle = nil
+    func canBeDisplayed() -> Bool
+    func makeAlert() -> Alert
+}
+
+extension AlertItem {
+    func canBeDisplayed() -> Bool {
+        return !isDisplayed
+    }
+}
+
+extension AlertItem {
+    private var underlyingStoreKey: String {
+        return "cache.key.alertItem." + storeKey
+    }
+
+    var isDisplayed: Bool {
+        get { userDefaults.bool(forKey: underlyingStoreKey) }
+        set {
+            userDefaults.set(newValue, forKey: underlyingStoreKey)
+            userDefaults.synchronize()
+        }
     }
 }

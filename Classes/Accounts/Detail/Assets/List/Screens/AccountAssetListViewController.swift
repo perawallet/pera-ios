@@ -18,12 +18,16 @@
 import Foundation
 import MacaroonForm
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class AccountAssetListViewController:
     BaseViewController,
     SearchBarItemCellDelegate,
-    MacaroonForm.KeyboardControllerDataSource {
+    MacaroonForm.KeyboardControllerDataSource,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -82,6 +86,8 @@ final class AccountAssetListViewController:
 
     deinit {
         keyboardController.deactivate()
+
+        stopObservingNotifications()
     }
 
     override func viewDidLoad() {
@@ -147,7 +153,10 @@ final class AccountAssetListViewController:
 
     override func linkInteractors() {
         super.linkInteractors()
+
         listView.delegate = self
+
+        observeWhenUserIsOnboardedToSwap()
     }
 
     func reloadData() {
@@ -389,6 +398,10 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+            item.isSwapBadgeVisible = !isOnboardedToSwap
+
             positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
@@ -551,6 +564,24 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             view: cell,
             backgroundColor: Colors.Defaults.background.uiColor
         )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            guard
+                let indexPath = self.listDataSource.indexPath(for: .quickActions),
+                let cell = self.listView.cellForItem(at: indexPath) as? AccountQuickActionsCell
+            else {
+                return
+            }
+
+            cell.isSwapBadgeVisible = false
+        }
     }
 }
 

@@ -22,19 +22,19 @@ struct ASADetailQuickActionsViewTheme:
     StyleSheet,
     LayoutSheet {
     var spacingBetweenActions: LayoutMetric
-    var actionMinWidth: LayoutMetric
+    var actionWidth: LayoutMetric
     var actionSpacingBetweenIconAndTitle: LayoutMetric
     var buyAction: ButtonStyle
     var swapAction: ButtonStyle
-    var swapNewBadge: BadgeButtonTheme
-    var swapNewBadgeEdgeInsets: NSDirectionalEdgeInsets
+    var swapBadge: BadgeButtonTheme
+    var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
     var sendAction: ButtonStyle
     var receiveAction: ButtonStyle
 
     init(_ family: LayoutFamily) {
         self.spacingBetweenActions = 16
-        self.actionSpacingBetweenIconAndTitle = 14
-        self.actionMinWidth = 64
+        self.actionSpacingBetweenIconAndTitle = 12
+        self.actionWidth = 64
         self.buyAction = [
             .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
             .title(Self.makeActionTitle(title: "quick-actions-buy-algo-title".localized))
@@ -43,8 +43,8 @@ struct ASADetailQuickActionsViewTheme:
             .icon(Self.makeActionIcon(icon: "swap-icon")),
             .title(Self.makeActionTitle(title: "title-swap".localized))
         ]
-        self.swapNewBadge = BadgeButtonTheme()
-        self.swapNewBadgeEdgeInsets = NSDirectionalEdgeInsets(
+        self.swapBadge = BadgeButtonTheme()
+        self.swapBadgeEdgeInsets = NSDirectionalEdgeInsets(
             top: 9,
             leading: 0,
             bottom: 0,
@@ -63,7 +63,7 @@ struct ASADetailQuickActionsViewTheme:
 
 extension ASADetailQuickActionsViewTheme {
     private static func makeActionIcon(icon: Image) -> StateImageGroup {
-        return [ .normal(icon) ]
+        return [ .normal(icon), .highlighted(icon) ]
     }
 
     private static func makeActionTitle(title: String) -> Text {

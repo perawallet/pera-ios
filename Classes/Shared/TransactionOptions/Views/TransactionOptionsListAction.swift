@@ -12,23 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetLearnMoreListItemButtonViewModel.swift
+//   TransactionOptionsListAction.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    let title: EditText?
-    let subtitle: EditText?
+final class TransactionOptionListAction {
+    let viewModel: TransactionOptionListItemButtonViewModel
+    let handler: Handler
 
-    init() {
-        icon = "icon-pera-solid"
-        title = Self.getTitle(
-            "asa-verification-learn-more".localized,
-            Colors.Helpers.positive
-        )
-        subtitle = nil
+    init(
+        viewModel: TransactionOptionListItemButtonViewModel,
+        handler: @escaping Handler
+    ) {
+        self.viewModel = viewModel
+        self.handler = handler
     }
+
+    typealias Handler = (ListItemButton) -> Void
 }

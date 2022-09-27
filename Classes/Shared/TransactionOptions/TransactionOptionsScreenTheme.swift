@@ -12,23 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetLearnMoreListItemButtonViewModel.swift
+//   TransactionOptionsScreenTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AssetLearnMoreListItemButtonViewModel: ListItemButtonViewModel {
-    let icon: Image?
-    let title: EditText?
-    let subtitle: EditText?
+struct TransactionOptionsScreenTheme:
+    LayoutSheet,
+    StyleSheet {
+    let context: TransactionOptionsViewTheme
 
-    init() {
-        icon = "icon-pera-solid"
-        title = Self.getTitle(
-            "asa-verification-learn-more".localized,
-            Colors.Helpers.positive
-        )
-        subtitle = nil
+    init(
+        _ family: LayoutFamily
+    ) {
+        var context = TransactionOptionsViewTheme()
+        context.contentPaddings.bottom = 20
+        self.context = context
     }
 }
