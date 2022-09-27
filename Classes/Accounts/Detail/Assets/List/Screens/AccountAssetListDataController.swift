@@ -18,19 +18,12 @@
 import Foundation
 import UIKit
 
-protocol AccountAssetListItemDataSource: AnyObject {
-    var quickActionsItem: AccountQuickActionsViewModel { get }
-}
-
-protocol AccountAssetListDataController:
-    AnyObject,
-    AccountAssetListItemDataSource {
+protocol AccountAssetListDataController: AnyObject {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }
 
     func load()
     func reload()
     func reloadIfThereIsPendingUpdates()
-    func updatedQuickActionsItem(isSwapBadgeVisible: Bool) -> AccountQuickActionsViewModel
 }
 
 enum AccountAssetsSection:

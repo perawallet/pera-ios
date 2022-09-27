@@ -28,6 +28,12 @@ final class AccountQuickActionsCell:
 
     static let theme = AccountQuickActionsViewTheme()
 
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            contextView.isSwapBadgeVisible = isSwapBadgeVisible
+        }
+    }
+
     override init(
         frame: CGRect
     ) {

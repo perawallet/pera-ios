@@ -23,11 +23,10 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
     lazy var handlers = Handlers()
 
     init(
-        _ collectionView: UICollectionView,
-        itemDataSource: AccountAssetListItemDataSource
+        _ collectionView: UICollectionView
     ) {
         super.init(collectionView: collectionView) {
-            [unowned itemDataSource] collectionView, indexPath, itemIdentifier in
+            collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
             case let .portfolio(item):
@@ -71,7 +70,6 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                     AccountQuickActionsCell.self,
                     at: indexPath
                 )
-                cell.bindData(itemDataSource.quickActionsItem)
                 return cell
             case .empty(let item):
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)

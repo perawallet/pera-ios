@@ -21,7 +21,6 @@ import UIKit
 
 final class HomeLoadingView:
     View,
-    ViewModelBindable,
     ListReusable,
     ShimmerAnimationDisplaying {
     private lazy var theme = HomeLoadingViewTheme()
@@ -36,6 +35,12 @@ final class HomeLoadingView:
     private lazy var accountsHeaderView = ManagementItemView()
     private lazy var accountsView = VStackView()
     private lazy var backgroundView = UIView()
+
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            quickActionsView.isSwapBadgeVisible = isSwapBadgeVisible
+        }
+    }
     
     override init(
         frame: CGRect
@@ -51,10 +56,6 @@ final class HomeLoadingView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-
-    func bindData(_ viewModel: HomeQuickActionsViewModel?) {
-        quickActionsView.bindData(viewModel)
-    }
 }
 
 extension HomeLoadingView {

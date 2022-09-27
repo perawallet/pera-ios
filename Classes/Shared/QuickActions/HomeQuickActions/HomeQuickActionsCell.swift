@@ -20,13 +20,18 @@ import UIKit
 
 final class HomeQuickActionsCell:
     CollectionCell<HomeQuickActionsView>,
-    ViewModelBindable,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (36, 24, 36, 24)
     }
 
     static let theme = HomeQuickActionsViewTheme()
+
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            contextView.isSwapBadgeVisible = isSwapBadgeVisible
+        }
+    }
 
     override init(
         frame: CGRect

@@ -20,8 +20,13 @@ import MacaroonUIKit
 import UIKit
 
 final class HomeLoadingCell:
-    CollectionCell<HomeLoadingView>,
-    ViewModelBindable {
+    CollectionCell<HomeLoadingView> {
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            contextView.isSwapBadgeVisible = isSwapBadgeVisible
+        }
+    }
+
     func restartAnimating() {
         contextView.restartAnimating()
     }

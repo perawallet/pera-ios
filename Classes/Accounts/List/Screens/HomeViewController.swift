@@ -82,10 +82,7 @@ final class HomeViewController:
     private lazy var listBackgroundView = UIView()
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = HomeListDataSource(
-        listView,
-        itemDataSource: dataController
-    )
+    private lazy var listDataSource = HomeListDataSource(listView)
 
     /// <todo>: Refactor
     /// This is needed for ChoosePasswordViewControllerDelegate's method.
@@ -512,8 +509,7 @@ extension HomeViewController {
                 return
             }
 
-            let viewModel = self.dataController.updatedQuickActionsItem(isSwapBadgeVisible: false)
-            cell.bindData(viewModel)
+            cell.isSwapBadgeVisible = false
         }
     }
 }
@@ -642,8 +638,11 @@ extension HomeViewController {
             case .loading:
                 setListBackgroundVisible(true)
 
-                let loadingCell = cell as? HomeLoadingCell
-                loadingCell?.startAnimating()
+                let cell = cell as! HomeLoadingCell
+
+                cell.isSwapBadgeVisible = !isOnboardedToSwap
+
+                cell.startAnimating()
             case .noContent:
                 setListBackgroundVisible(false)
                 linkInteractors(cell as! NoContentWithActionCell)
@@ -658,7 +657,11 @@ extension HomeViewController {
                     for: portfolioItem
                 )
             case .quickActions:
-                linkInteractors(cell as! HomeQuickActionsCell)
+                let cell = cell as! HomeQuickActionsCell
+
+                cell.isSwapBadgeVisible = !isOnboardedToSwap
+
+                linkInteractors(cell)
             }
         case .announcement(let item):
             if item.isGeneric {
@@ -677,6 +680,12 @@ extension HomeViewController {
                 break
             }
         }
+    }
+
+    private var isOnboardedToSwap: Bool {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return isOnboardedToSwap
     }
     
     func collectionView(

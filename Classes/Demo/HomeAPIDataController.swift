@@ -19,7 +19,6 @@ import Foundation
 
 final class HomeAPIDataController:
     HomeDataController,
-    HomeItemDataSource,
     SharedDataControllerObserver {
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
@@ -27,12 +26,6 @@ final class HomeAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-
-    private(set) var quickActionsItem: HomeQuickActionsViewModel = {
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-        return HomeQuickActionsViewModel(isSwapBadgeVisible: !isOnboardedToSwap)
-    }()
 
     private var visibleAnnouncement: Announcement?
 
@@ -102,13 +95,6 @@ extension HomeAPIDataController {
         case .didFinishRunning:
             deliverContentUpdates()
         }
-    }
-}
-
-extension HomeAPIDataController {
-    func updatedQuickActionsItem(isSwapBadgeVisible: Bool) -> HomeQuickActionsViewModel {
-        quickActionsItem.bindIsSwapBadgeVisible(isSwapBadgeVisible)
-        return quickActionsItem
     }
 }
 

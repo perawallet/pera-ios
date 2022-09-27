@@ -21,7 +21,6 @@ import UIKit
 
 final class HomeQuickActionsView:
     View,
-    ViewModelBindable,
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
@@ -39,6 +38,12 @@ final class HomeQuickActionsView:
 
     private var theme: HomeQuickActionsViewTheme!
 
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            swapActionView.isBadgeVisible = isSwapBadgeVisible
+        }
+    }
+
     func customize(
         _ theme:HomeQuickActionsViewTheme
     ) {
@@ -54,12 +59,6 @@ final class HomeQuickActionsView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-
-    func bindData(
-        _ viewModel: HomeQuickActionsViewModel?
-    ) {
-        swapActionView.isBadgeVisible = viewModel?.isSwapBadgeVisible ?? false
-    }
 
     class func calculatePreferredSize(
         for theme: HomeQuickActionsViewTheme,

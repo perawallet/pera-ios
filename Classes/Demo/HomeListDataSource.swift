@@ -21,11 +21,9 @@ import UIKit
 
 final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionIdentifier, HomeItemIdentifier> {
     init(
-        _ collectionView: UICollectionView,
-        itemDataSource: HomeItemDataSource
+        _ collectionView: UICollectionView
     ) {
         super.init(collectionView: collectionView) {
-            [unowned itemDataSource]
             collectionView, indexPath, itemIdentifier in
             
             switch itemIdentifier {
@@ -36,7 +34,6 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                         HomeLoadingCell.self,
                         at: indexPath
                     )
-                    cell.bindData(itemDataSource.quickActionsItem)
                     return cell
                 case .noContent:
                     let cell = collectionView.dequeue(
@@ -62,7 +59,6 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                         HomeQuickActionsCell.self,
                         at: indexPath
                     )
-                    cell.bindData(itemDataSource.quickActionsItem)
                     return cell
                 }
             case .announcement(let item):

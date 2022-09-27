@@ -39,10 +39,7 @@ final class AccountAssetListViewController:
         listDataSource: listDataSource
     )
 
-    private lazy var listDataSource = AccountAssetListDataSource(
-        listView,
-        itemDataSource: dataController
-    )
+    private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -401,6 +398,10 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+            item.isSwapBadgeVisible = !isOnboardedToSwap
+
             positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
@@ -579,8 +580,7 @@ extension AccountAssetListViewController {
                 return
             }
 
-            let viewModel = self.dataController.updatedQuickActionsItem(isSwapBadgeVisible: false)
-            cell.bindData(viewModel)
+            cell.isSwapBadgeVisible = false
         }
     }
 }

@@ -39,6 +39,12 @@ final class AccountQuickActionsView:
 
     private var theme: AccountQuickActionsViewTheme!
 
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            swapActionView.isBadgeVisible = isSwapBadgeVisible
+        }
+    }
+
     func customize(
         _ theme: AccountQuickActionsViewTheme
     ) {
