@@ -19,13 +19,11 @@ import MacaroonUIKit
 
 struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
         icon = "icon-paste"
-        isBadgeVisible = false
         title = Self.getTitle("title-paste-passphrase".localized)
         subtitle = nil
     }

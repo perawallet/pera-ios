@@ -18,13 +18,11 @@ import MacaroonUIKit
 
 struct ReceiveTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init(isQR: Bool = false) {
         icon = isQR ? "icon-transaction-option-list-receive-qr" : "icon-transaction-option-list-receive"
-        isBadgeVisible = false
         title = Self.getTitle("title-receive".localized)
         subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
     }

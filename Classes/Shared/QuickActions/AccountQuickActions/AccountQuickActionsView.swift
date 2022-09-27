@@ -21,7 +21,6 @@ import UIKit
 
 final class AccountQuickActionsView:
     View,
-    ViewModelBindable,
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
@@ -45,25 +44,15 @@ final class AccountQuickActionsView:
         }
     }
 
-    func customize(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
+    func customize(_ theme: AccountQuickActionsViewTheme) {
         self.theme = theme
 
         addActions(theme)
     }
 
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
-
-    func bindData(_ viewModel: AccountQuickActionsViewModel?) {
-        swapActionView.isBadgeVisible = viewModel?.isSwapBadgeVisible ?? false
-    }
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     class func calculatePreferredSize(
         for theme: AccountQuickActionsViewTheme,
@@ -119,9 +108,7 @@ final class AccountQuickActionsView:
 }
 
 extension AccountQuickActionsView {
-    private func addActions(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
+    private func addActions(_ theme: AccountQuickActionsViewTheme) {
         addSubview(contentView)
         contentView.distribution = .fillEqually
         contentView.alignment = .top

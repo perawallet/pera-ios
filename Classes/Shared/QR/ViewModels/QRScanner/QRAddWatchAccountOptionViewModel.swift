@@ -19,13 +19,11 @@ import MacaroonUIKit
 
 struct QRAddWatchAccountOptionViewModel: QRScanOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "icon-qr-option-watch"
-        isBadgeVisible = false
         title = Self.getTitle("qr-scan-option-add-watch".localized)
         subtitle = nil
     }

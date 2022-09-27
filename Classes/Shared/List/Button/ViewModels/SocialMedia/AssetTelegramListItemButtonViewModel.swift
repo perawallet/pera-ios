@@ -30,14 +30,12 @@ struct AssetTelegramListItemViewModel: GroupedListItemButtonItemViewModel {
 
 private struct AssetTelegramListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     let accessory: Image?
     
     init() {
         icon = "icon-telegram"
-        isBadgeVisible = false
         title = .attributedString(
             "social-media-platform-telegram"
                 .localized

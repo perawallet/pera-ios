@@ -30,14 +30,12 @@ struct AssetDiscordListItemViewModel: GroupedListItemButtonItemViewModel {
 
 private struct AssetDiscordListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     var accessory: Image?
 
     init() {
         icon = "icon-discord"
-        isBadgeVisible = false
         title = .attributedString(
             "social-media-platform-discord"
                 .localized

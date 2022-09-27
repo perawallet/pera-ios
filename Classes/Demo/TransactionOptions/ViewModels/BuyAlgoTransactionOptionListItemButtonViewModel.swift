@@ -18,13 +18,11 @@ import MacaroonUIKit
 
 struct BuyAlgoTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "icon-transaction-option-list-buy-algo"
-        isBadgeVisible = false
         title = Self.getTitle("title-buy-algo".localized)
         subtitle = Self.getSubtitle("transaction-option-list-buy-algo-subtitle".localized)
     }

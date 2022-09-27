@@ -44,21 +44,15 @@ final class HomeQuickActionsView:
         }
     }
 
-    func customize(
-        _ theme:HomeQuickActionsViewTheme
-    ) {
+    func customize(_ theme: HomeQuickActionsViewTheme) {
         self.theme = theme
 
         addActions(theme)
     }
 
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     class func calculatePreferredSize(
         for theme: HomeQuickActionsViewTheme,
@@ -114,9 +108,7 @@ final class HomeQuickActionsView:
 }
 
 extension HomeQuickActionsView {
-    private func addActions(
-        _ theme: HomeQuickActionsViewTheme
-    ) {
+    private func addActions(_ theme: HomeQuickActionsViewTheme) {
         addSubview(contentView)
         contentView.distribution = .fillEqually
         contentView.alignment = .top

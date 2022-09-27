@@ -80,7 +80,7 @@ extension TransactionOptionsScreen {
             guard let self = self else { return }
 
             if !isOnboardedToSwap {
-                swapActionViewModel.isBadgeVisible = false
+                swapActionViewModel.bindIsBadgeVisible(false)
                 actionView.bindData(swapActionViewModel)
             }
 

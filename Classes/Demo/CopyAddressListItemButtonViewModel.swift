@@ -22,7 +22,6 @@ struct CopyAddressListItemButtonViewModel:
     ListItemButtonViewModel,
     BindableViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
 
     private(set) var subtitle: EditText?
@@ -31,7 +30,6 @@ struct CopyAddressListItemButtonViewModel:
         _ model: T
     ) {
         icon = "icon-copy"
-        isBadgeVisible = false
         title = Self.getTitle("options-copy-address".localized)
         
         bind(model)

@@ -22,7 +22,6 @@ struct MuteNotificationsListItemButtonViewModel:
     PairedViewModel {
     private(set) var title: EditText?
     private(set) var icon: Image?
-    var isBadgeVisible: Bool = false
     private(set) var subtitle: EditText?
     
     init(

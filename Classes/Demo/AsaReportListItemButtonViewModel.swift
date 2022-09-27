@@ -19,13 +19,11 @@ import MacaroonUIKit
 
 struct AsaReportListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init(_ asset: Asset) {
         icon = "icon-asset-report"
-        isBadgeVisible = false
         title = Self.getTitle(
             "asa-verification-suspicious-report".localized(asset.naming.unitName ?? ""),
             Colors.Helpers.negative

@@ -19,13 +19,11 @@ import MacaroonUIKit
 
 struct QRAddContactOptionViewModel: QRScanOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "icon-qr-option-contact"
-        isBadgeVisible = false
         title = Self.getTitle("qr-scan-option-add-contact".localized)
         subtitle = nil
     }

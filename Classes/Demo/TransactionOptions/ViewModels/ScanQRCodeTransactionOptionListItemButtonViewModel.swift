@@ -18,13 +18,11 @@ import MacaroonUIKit
 
 struct ScanQRCodeTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "icon-transaction-option-list-scan-qr-code"
-        isBadgeVisible = false
         title = Self.getTitle("qr-scan-title".localized)
         subtitle = Self.getSubtitle("transaction-option-list-scan-qr-code-subtitle".localized)
     }

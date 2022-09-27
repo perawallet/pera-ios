@@ -20,7 +20,6 @@ import UIKit
 
 final class AccountQuickActionsCell:
     CollectionCell<AccountQuickActionsView>,
-    ViewModelBindable,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (36, 24, 36, 24)

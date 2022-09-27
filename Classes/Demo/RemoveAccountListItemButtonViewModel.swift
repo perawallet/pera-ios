@@ -19,13 +19,11 @@ import MacaroonUIKit
 
 struct RemoveAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
     
     init() {
         icon = "icon-remove-account"
-        isBadgeVisible = false
         title = Self.getTitle(
             "options-remove-account".localized,
             Colors.Helpers.negative

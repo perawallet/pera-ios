@@ -18,13 +18,11 @@ import MacaroonUIKit
 
 struct AddAssetTransactionOptionListActionViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
-    var isBadgeVisible: Bool
     let title: EditText?
     let subtitle: EditText?
 
     init() {
         icon = "add-icon-40"
-        isBadgeVisible = false
         title = Self.getTitle("transaction-option-list-add-asset-title".localized)
         subtitle = Self.getSubtitle("transaction-option-list-add-asset-subtitle".localized)
     }
