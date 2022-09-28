@@ -12,13 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetAmountViewModelDraft.swift
+//   SelectAssetNoContentItemViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct SwapAssetAmountViewModelDraft {
-    let leftTitle: String?
-    let asset: Asset
-    let currencyFormatter: CurrencyFormatter
-    let isInputEditable: Bool
+struct SelectAssetNoContentItemViewModel:
+    NoContentViewModel,
+    Hashable {
+    private(set) var icon: Image?
+    private(set) var title: EditText?
+    private(set) var body: EditText?
+
+    init() {
+        bindTitle()
+    }
+}
+
+extension SelectAssetNoContentItemViewModel {
+    mutating func bindTitle() {
+        title = .attributedString(
+            "asset-not-found-title"
+                .localized
+                .bodyLargeMedium(
+                    alignment: .center
+                )
+        )
+    }
 }

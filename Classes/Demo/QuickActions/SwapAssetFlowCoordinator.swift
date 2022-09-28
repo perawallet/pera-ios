@@ -191,6 +191,33 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
+    func openAssetSelection(
+        dataController: SelectAssetDataController,
+        title: String,
+        _ completion: @escaping (Asset) -> Void
+    ) {
+        let selectAssetScreen = presentingScreen.open(
+            .selectAsset(
+                dataController: dataController,
+                title: title
+            ),
+            by: .push
+        ) as? SelectAssetScreen
+
+        selectAssetScreen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectAsset(let asset):
+                self.presentingScreen.popScreen()
+                completion(asset)
+            }
+        }
+    }
+}
+
+extension SwapAssetFlowCoordinator {
     private func openSlippageToleranceInfo() {
         let uiSheet = UISheet(
             title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),

@@ -44,7 +44,7 @@ struct PreviewLoadingViewCommonTheme: PreviewLoadingViewTheme {
         self.titleViewSize = (114, 20)
 
         self.subtitleViewCorner = 4
-        self.subtitleMargin = (8, 16, .noMetric, .noMetric)
+        self.subtitleMargin = (8, 16, 14, .noMetric)
         self.subtitleViewSize = (44, 16)
 
         self.supplementaryViewCorner = 4

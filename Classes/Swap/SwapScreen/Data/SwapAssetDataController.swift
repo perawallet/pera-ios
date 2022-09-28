@@ -34,7 +34,6 @@ protocol SwapAssetDataController: AnyObject {
     func updateUserAsset(_ asset: Asset)
     func updatePoolAsset(_ asset: Asset)
     func updateSlippage(_ slippage: Decimal)
-    func getUserAssetItem() -> AssetItem
 }
 
 enum SwapAssetDataControllerEvent {
