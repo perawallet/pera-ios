@@ -1195,6 +1195,9 @@
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 "swap-asset-amount-title-balance" = "Balance: %@";
+"swap-asset-pool-search-error" = "We can't show assets right now. Please try again.";
+"swap-asset-from" = "Swap From";
+"swap-asset-to" = "Swap To";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
