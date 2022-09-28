@@ -4724,6 +4724,9 @@
 		D4F681912897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681922897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681932897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
+		D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
+		D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
+		D4F72B6C28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
 		D4F8F28A273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
 		D4F8F28B273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
 		D4F8F28C273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */; };
@@ -6989,6 +6992,7 @@
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
 		D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewModel.swift; sourceTree = "<group>"; };
+		D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationController.swift; sourceTree = "<group>"; };
 		D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseDisplayViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4F8F28D273EA74D003DCE1D /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D4F8F291273EA8C3003DCE1D /* PassphraseDisplayViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewTheme.swift; sourceTree = "<group>"; };
@@ -8441,6 +8445,7 @@
 		2B4DF407236C5EEB00FF9551 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */,
 				2B191C81232150C900EAB1B8 /* PushNotificationController.swift */,
 			);
 			path = Notifications;
@@ -18385,6 +18390,7 @@
 				2B5F6F922768D8BB00C9B780 /* SettingsToggleView.swift in Sources */,
 				2BCBBAE324A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
 				D4FDC5CE289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */,
+				D4F72B6C28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				959672DF27BA455000BFDE5D /* NotificationLoadingView.swift in Sources */,
 				2BB8482A27E8EC99004F2E39 /* Media.swift in Sources */,
 				2BA4B3D72673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
@@ -20103,6 +20109,7 @@
 				2B0F630024EC129D00DA22A6 /* QRCreationView.swift in Sources */,
 				959672DE27BA455000BFDE5D /* NotificationLoadingView.swift in Sources */,
 				2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */,
+				D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				2BB8482927E8EC98004F2E39 /* Media.swift in Sources */,
 				D4FDC5CD289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */,
 				2B0F630324EC129D00DA22A6 /* AssetPreviewActionCell.swift in Sources */,
@@ -21821,6 +21828,7 @@
 				D45DF91927F9D09B008076E6 /* CollectibleListInfoWithFilterViewTheme.swift in Sources */,
 				D48FDFA527CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift in Sources */,
 				D49D77DA2789ED33001FD5F6 /* FloatingActionButtonViewController+Theme.swift in Sources */,
+				D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				D4155E95276CDB5400BCBFA4 /* AccountCheckmarkSelectionViewCell.swift in Sources */,
 				953DEE1B279ED4CC00D76957 /* WCAssetInformationViewModel.swift in Sources */,
 				2B2626EF2844CD0C00ADE371 /* AppCallTransaction.swift in Sources */,

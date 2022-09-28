@@ -508,6 +508,7 @@ extension AppDelegate {
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         let sharedDataController = SharedAPIDataController(
+            target: ALGAppTarget.current,
             currency: currency,
             session: session,
             api: api
