@@ -245,6 +245,11 @@ indirect enum Screen {
     case exportAccountsResult(
         eventHandler: ExportsAccountsResultScreen.EventHandler
     )
+    case selectAsset(
+        dataController: SelectAssetDataController,
+        title: String,
+        theme: SelectAssetScreenTheme = .init()
+    )
 }
 
 extension Screen {

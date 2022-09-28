@@ -18,6 +18,7 @@ import Foundation
 
 struct SwapAssetAmountViewModelDraft {
     let leftTitle: String?
-    let assetItem: AssetItem
+    let asset: Asset
+    let currencyFormatter: CurrencyFormatter
     let isInputEditable: Bool
 }
