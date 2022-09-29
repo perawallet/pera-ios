@@ -242,7 +242,7 @@
 "asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
 "title-add-asset" = "Add New Asset";
-"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"asset-add-warning" = "Adding an asset requires you to opt in and sending a minimum transaction to the blockchain. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
@@ -252,7 +252,7 @@
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
-"asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
+"asset-remove-transaction-warning" = "You're about to remove and opt-out %@ from %@. You'll not be able to transact with this asset from this account unless you opt-in to it again.";
 "asset-creation-fee-title" = "Add Asset Fee";
 "asset-min-transaction-error-title" = "Min Transaction Error!";
 "asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
@@ -260,12 +260,12 @@
 "asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
 "asset-support-not-same-title" = "Account does not accept this asset";
 "asset-support-add-title" = "You are about to receive an asset!";
-"asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
+"asset-support-add-message" = "You are about to receive an asset on the account %@. Would you like to opt-in the asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts don't contain this asset";
-"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
+"asset-support-your-add-message" = "Your accounts don't contain this asset. Please opt-in to this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
@@ -800,7 +800,7 @@
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
 "wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
-"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance and will remove %@ from your account.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance, it will opt-out and remove the %@ from your account.";
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
