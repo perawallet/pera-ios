@@ -12,37 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountNamePreviewViewTheme.swift
+//   AccountNameTitleViewTheme.swift
 
 import MacaroonUIKit
 
-struct AccountNamePreviewViewTheme:
+struct AccountNameTitleViewTheme:
     LayoutSheet,
     StyleSheet {
     var title: TextStyle
-    var titleContentEdgeInsets: LayoutPaddings
+    var spacingBetweenTitleAndSubtitle: LayoutMetric
+    var spacingBetweenIconAndSubtitle: LayoutMetric
     var subtitle: TextStyle
-    var subtitleContentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
-        title = [
+        self.title = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
-        titleContentEdgeInsets = (2, 0, 2, 0)
-        subtitle = [
+        self.spacingBetweenTitleAndSubtitle = 2
+        self.spacingBetweenIconAndSubtitle = 6
+        self.subtitle = [
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayLighter)
+            .textColor(Colors.Text.gray)
         ]
-        subtitleContentEdgeInsets = (0, 0, 2, 0)
-    }
-}
-
-extension AccountNamePreviewViewTheme {
-    mutating func configureForAccountPreviewView() {
-        titleContentEdgeInsets = (0, 0, 0, 0)
-        subtitleContentEdgeInsets = (0, 0, 0, 0)
     }
 }
