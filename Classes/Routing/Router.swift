@@ -454,12 +454,13 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let account, let asset, let eventHandler):
+        case .asaDetail(let account, let asset, let screenConfiguration, let eventHandler):
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
                 api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                configuration: screenConfiguration
             )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
