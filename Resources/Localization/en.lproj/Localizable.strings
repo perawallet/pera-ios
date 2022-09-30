@@ -1132,7 +1132,7 @@
 
 // MARK: Opt In Asset
 "opt-in-title-adding-nft" = "Opt-in to NFT";
-"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"opt-in-description-adding-nft" = "Opting in to an NFT requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 
 // MARK: ASA Verification
 "asa-verification-title-trusted" = "Trusted ASA";
