@@ -18,7 +18,12 @@
 import UIKit
 
 indirect enum Screen {
-    case asaDetail(account: Account, asset: Asset, eventHandler: ASADetailScreen.EventHandler)
+    case asaDetail(
+        account: Account,
+        asset: Asset,
+        configuration: ASADetailScreenConfiguration? = nil,
+        eventHandler: ASADetailScreen.EventHandler
+    )
     case asaDiscovery(
         account: Account?,
         quickAction: AssetQuickAction?,
@@ -51,13 +56,13 @@ indirect enum Screen {
     case transactionDetail(
         account: Account,
         transaction: Transaction,
-        assetDetail: StandardAsset?
+        assetDetail: Asset?
     )
     case appCallTransactionDetail(
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assets: [StandardAsset]?
+        assets: [Asset]?
     )
     case appCallAssetList(
         dataController: AppCallAssetListDataController

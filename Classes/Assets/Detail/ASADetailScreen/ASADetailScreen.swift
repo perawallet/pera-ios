@@ -309,6 +309,17 @@ extension ASADetailScreen {
     }
 
     private func addNavigationActions() {
+        var rightBarButtonItems: [ALGBarButtonItem] = []
+
+        if dataController.configuration.shouldDisplayAccountActionsBarButtonItem {
+            let accountActionsBarButtonItem = makeAccountActionsBarButtonItem()
+            rightBarButtonItems.append(accountActionsBarButtonItem)
+        }
+
+        self.rightBarButtonItems = rightBarButtonItems
+    }
+
+    private func makeAccountActionsBarButtonItem() ->  ALGBarButtonItem {
         let account = dataController.account
         let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
             [unowned self] in
@@ -319,14 +330,14 @@ extension ASADetailScreen {
             )
         }
 
-        rightBarButtonItems = [ accountActionsItem ]
+        return accountActionsItem
     }
 
     private func addUI() {
         addBackground()
         addProfile()
 
-        if !dataController.account.isWatchAccount() {
+        if dataController.configuration.shouldDisplayQuickActions {
             addQuickActions()
         }
 
@@ -339,7 +350,7 @@ extension ASADetailScreen {
         if !isViewLayoutLoaded { return }
         if !profileView.isLayoutLoaded { return }
 
-        if !dataController.account.isWatchAccount() && !quickActionsView.isLayoutLoaded {
+        if dataController.configuration.shouldDisplayQuickActions && !quickActionsView.isLayoutLoaded {
             return
         }
 
@@ -511,7 +522,7 @@ extension ASADetailScreen {
     }
 
     private func addQuickActions() {
-        if dataController.account.isWatchAccount() {
+        if !dataController.configuration.shouldDisplayQuickActions {
             return
         }
 
@@ -664,7 +675,7 @@ extension ASADetailScreen {
             profileView.intrinsicExpandedContentSize.height +
             theme.normalProfileVerticalEdgeInsets.bottom
 
-        if !dataController.account.isWatchAccount() {
+        if dataController.configuration.shouldDisplayQuickActions {
             let quickActionsHeight =
                 theme.spacingBetweenProfileAndQuickActions +
                 quickActionsView.bounds.height
