@@ -167,7 +167,7 @@ extension AccountAssetListViewController {
 
         if !accountHandle.value.isWatchAccount() {
             addAccountActionsMenuAction()
-            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
+            updateSafeAreaWhenViewDidLayoutSubviews()
         }
     }
 
@@ -175,11 +175,13 @@ extension AccountAssetListViewController {
         updateListWhenViewDidLayoutSubviews()
         updateListBackgroundWhenViewDidLayoutSubviews()
         updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
+        updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
         updateAccountActionsMenuActionWhenListDidScroll()
+        updateSafeAreaWhenListDidScroll()
     }
 
     private func addListBackground() {
@@ -246,6 +248,23 @@ extension AccountAssetListViewController {
         let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
         listView.setContentInset(bottom: bottom)
     }
+
+    private func updateSafeAreaWhenListDidScroll() {
+        updateSafeAreaWhenViewDidLayoutSubviews()
+    }
+
+    private func updateSafeAreaWhenViewDidLayoutSubviews() {
+        if !canAccessAccountActionsMenu() {
+            additionalSafeAreaInsets.bottom = 0
+            return
+        }
+
+        let listSafeAreaBottom =
+            theme.spacingBetweenListAndAccountActionsMenuAction +
+            theme.accountActionsMenuActionSize.h +
+            theme.accountActionsMenuActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
+    }
 }
 
 extension AccountAssetListViewController {
@@ -276,15 +295,7 @@ extension AccountAssetListViewController {
     }
 
     private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        let isVisible: Bool
-        if let positionY = positionYForVisibleAccountActionsMenuAction {
-            let currentContentOffset = listView.contentOffset
-            isVisible = currentContentOffset.y >= positionY
-        } else {
-            isVisible = false
-        }
-
-        accountActionsMenuActionView.isHidden = !isVisible
+        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
     }
 
     @objc
@@ -292,12 +303,13 @@ extension AccountAssetListViewController {
         eventHandler?(.transactionOption)
     }
 
-    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
-        let listSafeAreaBottom =
-            theme.spacingBetweenListAndAccountActionsMenuAction +
-            theme.accountActionsMenuActionSize.h +
-            theme.accountActionsMenuActionBottomPadding
-            additionalSafeAreaInsets.bottom = listSafeAreaBottom
+    private func canAccessAccountActionsMenu() -> Bool {
+        guard let positionY = positionYForVisibleAccountActionsMenuAction else {
+            return false
+        }
+
+        let currentContentOffset = listView.contentOffset
+        return currentContentOffset.y >= positionY
     }
 }
 

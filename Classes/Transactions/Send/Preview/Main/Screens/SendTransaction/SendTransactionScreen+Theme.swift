@@ -23,6 +23,7 @@ import UIKit
 extension SendTransactionScreen {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: UIColor
+        let navigationTitle: AccountNameTitleViewTheme
         let nextButtonStyle: ButtonTheme
         let disabledValueLabelStyle: TextStyle
         let valueLabelStyle: TextStyle
@@ -48,6 +49,7 @@ extension SendTransactionScreen {
 
         init(_ family: LayoutFamily) {
             backgroundColor = Colors.Defaults.background.uiColor
+            navigationTitle = AccountNameTitleViewTheme(family)
             nextButtonStyle = ButtonPrimaryTheme(family)
             valueLabelStyle = [
                 .textColor(Colors.Text.main),
@@ -73,30 +75,30 @@ extension SendTransactionScreen {
 
             accountContainerFirstShadow = MacaroonUIKit.Shadow(
                 color: Colors.Shadows.Cards.shadow1.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: Colors.Defaults.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
 
             accountContainerSecondShadow = MacaroonUIKit.Shadow(
                 color: Colors.Shadows.Cards.shadow2.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: Colors.Defaults.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
 
             accountContainerThirdShadow = MacaroonUIKit.Shadow(
                 color: Colors.Shadows.Cards.shadow3.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 0),
                 radius: 0,
-                fillColor: Colors.Defaults.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )

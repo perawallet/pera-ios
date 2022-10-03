@@ -17,6 +17,8 @@
 import Foundation
 import MacaroonUIKit
 
+/// <todo>
+/// Just one of these view models is enough to cover all, i.e. TransferAssetBalanceNameViewModel etc.
 struct OptInAssetNameViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?

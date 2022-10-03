@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionListViewTheme.swift
+//   RekeyAccountInformationListActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct WCSessionListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
+struct RekeyAccountInformationListActionViewModel: ListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.cellSpacing = 32
-        self.contentInset = (32, 0, 0, 0)
+    init() {
+        self.icon = "icon-qr"
+        self.title = Self.getTitle("options-auth-account".localized)
+        self.subtitle = nil
     }
 }

@@ -31,10 +31,10 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         self.background =
             MacaroonUIKit.Shadow(
                 color: Colors.Defaults.background.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 0.16,
                 offset: (0, 20),
                 radius: 80,
-                fillColor: Colors.Defaults.background.uiColor,
                 cornerRadii: (8, 8),
                 corners: .allCorners
             )

@@ -109,8 +109,14 @@ extension DeepLinkParser {
         else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
+
+        let isWatchAccount = account.value.isWatchAccount()
+
+        if isWatchAccount {
+            return nil
+        }
         
-        let accountName = account.value.name.someString
+        let accountName = account.value.name ?? accountAddress
         let draft = AssetAlertDraft(
             account: account.value,
             assetId: assetId,

@@ -17,6 +17,7 @@
 import Foundation
 
 struct OptInBlockchainRequest: BlockchainRequest {
+    let accountAddress: String
     let assetID: AssetID
     let assetName: String?
     let assetUnitName: String?
@@ -24,7 +25,11 @@ struct OptInBlockchainRequest: BlockchainRequest {
     let isCollectibleAsset: Bool
     let collectibleAssetTitle: String?
 
-    init(asset: AssetDecoration) {
+    init(
+        account: Account,
+        asset: AssetDecoration
+    ) {
+        self.accountAddress = account.address
         self.assetID = asset.id
         self.assetName = asset.name
         self.assetUnitName = asset.unitName
@@ -33,7 +38,11 @@ struct OptInBlockchainRequest: BlockchainRequest {
         self.collectibleAssetTitle = asset.collectible?.title
     }
 
-    init(asset: Asset) {
+    init(
+        account: Account,
+        asset: Asset
+    ) {
+        self.accountAddress = account.address
         self.assetID = asset.id
         self.assetName = asset.naming.name
         self.assetUnitName = asset.naming.unitName

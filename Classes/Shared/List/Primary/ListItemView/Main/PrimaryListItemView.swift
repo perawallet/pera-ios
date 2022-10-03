@@ -16,8 +16,8 @@
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 import MacaroonURLImage
+import UIKit
 
 final class PrimaryListItemView:
     View,

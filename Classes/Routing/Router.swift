@@ -38,6 +38,12 @@ class Router:
 
     private unowned let appConfiguration: AppConfiguration
 
+    private lazy var transactionController = TransactionController(
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController,
+        analytics: appConfiguration.analytics
+    )
+
     /// <todo>
     /// Change after refactoring routing
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -448,12 +454,13 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let account, let asset, let eventHandler):
+        case .asaDetail(let account, let asset, let screenConfiguration, let eventHandler):
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
                 api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                configuration: screenConfiguration
             )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -622,7 +629,9 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController,
+                bannerController: appConfiguration.bannerController,
                 theme: theme
             )
             aViewController.delegate = delegate
@@ -731,7 +740,14 @@ class Router:
             wcConnectionApprovalViewController.delegate = delegate
             viewController = wcConnectionApprovalViewController
         case .walletConnectSessionList:
-            viewController = WCSessionListViewController(configuration: configuration)
+            let dataController = WCSessionListLocalDataController(
+                analytics: configuration.analytics,
+                walletConnector: configuration.walletConnector
+            )
+            viewController = WCSessionListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case .walletConnectSessionShortList:
             viewController = WCSessionShortListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(viewModel):
@@ -817,15 +833,20 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account, let receiver):
+        case .assetSelection(let account, let receiver):
             viewController = SelectAssetViewController(
-                filter: filter,
                 account: account,
                 receiver: receiver,
                 configuration: configuration
             )
         case .sendTransaction(let draft):
-            let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
+            let sendScreen = SendTransactionScreen(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
             sendScreen.isModalInPresentation = true
             viewController = sendScreen
         case .editNote(let note, let isLocked, let delegate):
@@ -1051,6 +1072,11 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .insufficientAlgoBalance(let draft, let eventHandler):
+            viewController = InsufficientAlgoBalanceScreen(
+                draft: draft,
+                eventHandler: eventHandler
+            )
         }
 
         return viewController as? T
@@ -1138,17 +1164,19 @@ extension Router {
             return
         }
 
-        let assetTransactionDraft =
-        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
-        let transactionController = TransactionController(
-            api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController,
-            analytics: appConfiguration.analytics
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: Int64(draft.assetId)
         )
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
@@ -1429,7 +1457,6 @@ extension Router {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )
@@ -1461,17 +1488,16 @@ extension Router {
                 assetIndex: asset.id
             )
 
-            let transactionController = TransactionController(
-                api: self.appConfiguration.api,
-                bannerController: self.appConfiguration.bannerController,
-                analytics: self.appConfiguration.analytics
-            )
-
             self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
 
-            transactionController.delegate = self
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
         }
     }
 
@@ -1605,7 +1631,10 @@ extension Router {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         ongoingTransitions.append(ledgerApprovalTransition)
 
@@ -1613,6 +1642,16 @@ extension Router {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

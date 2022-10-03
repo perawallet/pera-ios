@@ -21,10 +21,10 @@ struct ASAAboutScreenASAProjectWebsiteSecondaryListItemViewModel: SecondaryListI
     var title: TextProvider?
     var accessory: SecondaryListItemValueViewModel?
 
-    init() {
+    init(asset: Asset) {
         bindTitle()
         
-        accessory = ASAAboutScreenASAProjectWebsiteSecondaryListItemValueViewModel()
+        accessory = ASAAboutScreenASAProjectWebsiteSecondaryListItemValueViewModel(asset: asset)
     }
 }
 
@@ -44,19 +44,18 @@ fileprivate struct ASAAboutScreenASAProjectWebsiteSecondaryListItemValueViewMode
     var icon: ImageStyle?
     var title: TextProvider?
 
-    init() {
-        bindTitle()
+    init(asset: Asset) {
+        bindTitle(asset: asset)
     }
 }
 
 extension ASAAboutScreenASAProjectWebsiteSecondaryListItemValueViewModel {
-    private mutating func bindTitle() {
+    private mutating func bindTitle(asset: Asset) {
+        let aTitle = asset.projectURL?.presentationString
+
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.positive))
 
-        title =
-            "asa-about-asa-open-with-browser"
-                .localized
-                .attributed(attributes)
+        title = aTitle?.attributed(attributes)
     }
 }

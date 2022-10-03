@@ -30,7 +30,7 @@ final class ASADetailScreen:
 
     var eventHandler: EventHandler?
 
-    private lazy var navigationTitleView = AccountNamePreviewView()
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
@@ -139,6 +139,11 @@ final class ASADetailScreen:
             switchToDefaultNavigationBarAppearance()
         }
     }
+
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        bindUIDataWhenPreferredUserInterfaceStyleDidChange()
+    }
 }
 
 /// <todo>
@@ -150,6 +155,17 @@ extension ASADetailScreen {
         let account = dataController.account
         analytics.track(.showQRCopy(account: account))
         copyToClipboardController.copyAddress(account)
+    }
+
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        let account = dataController.account
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
+        let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
+        open(
+            screen,
+            by: .present
+        )
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
@@ -168,9 +184,11 @@ extension ASADetailScreen {
 
         guard let authAddress = account.authAddress else { return }
 
+        let title = "options-auth-account".localized
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
+        let screen: Screen = .qrGenerator(title: title, draft: draft, isTrackable: true)
         open(
-            .qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true),
+            screen,
             by: .present
         )
     }
@@ -286,11 +304,22 @@ extension ASADetailScreen {
 
     private func bindNavigationTitle() {
         let account = dataController.account
-        let viewModel = AccountNamePreviewViewModel(account: account, with: .center)
+        let viewModel = AccountNameTitleViewModel(account)
         navigationTitleView.bindData(viewModel)
     }
 
     private func addNavigationActions() {
+        var rightBarButtonItems: [ALGBarButtonItem] = []
+
+        if dataController.configuration.shouldDisplayAccountActionsBarButtonItem {
+            let accountActionsBarButtonItem = makeAccountActionsBarButtonItem()
+            rightBarButtonItems.append(accountActionsBarButtonItem)
+        }
+
+        self.rightBarButtonItems = rightBarButtonItems
+    }
+
+    private func makeAccountActionsBarButtonItem() ->  ALGBarButtonItem {
         let account = dataController.account
         let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
             [unowned self] in
@@ -301,14 +330,14 @@ extension ASADetailScreen {
             )
         }
 
-        rightBarButtonItems = [ accountActionsItem ]
+        return accountActionsItem
     }
 
     private func addUI() {
         addBackground()
         addProfile()
 
-        if !dataController.account.isWatchAccount() {
+        if dataController.configuration.shouldDisplayQuickActions {
             addQuickActions()
         }
 
@@ -321,7 +350,7 @@ extension ASADetailScreen {
         if !isViewLayoutLoaded { return }
         if !profileView.isLayoutLoaded { return }
 
-        if !dataController.account.isWatchAccount() && !quickActionsView.isLayoutLoaded {
+        if dataController.configuration.shouldDisplayQuickActions && !quickActionsView.isLayoutLoaded {
             return
         }
 
@@ -370,6 +399,10 @@ extension ASADetailScreen {
     private func bindUIData() {
         bindProfileData()
         bindPagesFragmentData()
+    }
+
+    private func bindUIDataWhenPreferredUserInterfaceStyleDidChange() {
+        bindProfileDataWhenPreferredUserInterfaceStyleDidChange()
     }
 
     private func addBackground() {
@@ -456,12 +489,21 @@ extension ASADetailScreen {
     }
 
     private func bindProfileData() {
+        let asset = dataController.asset
         let viewModel = ASADetailProfileViewModel(
-            asset: dataController.asset,
+            asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         profileView.bindData(viewModel)
+    }
+
+    private func bindProfileDataWhenPreferredUserInterfaceStyleDidChange() {
+        let asset = dataController.asset
+
+        var viewModel = ASADiscoveryProfileViewModel()
+        viewModel.bindIcon(asset: asset)
+        profileView.bindIcon(viewModel)
     }
 
     private func updateProfile(for state: DisplayState) {
@@ -480,7 +522,7 @@ extension ASADetailScreen {
     }
 
     private func addQuickActions() {
-        if dataController.account.isWatchAccount() {
+        if !dataController.configuration.shouldDisplayQuickActions {
             return
         }
 
@@ -633,7 +675,7 @@ extension ASADetailScreen {
             profileView.intrinsicExpandedContentSize.height +
             theme.normalProfileVerticalEdgeInsets.bottom
 
-        if !dataController.account.isWatchAccount() {
+        if dataController.configuration.shouldDisplayQuickActions {
             let quickActionsHeight =
                 theme.spacingBetweenProfileAndQuickActions +
                 quickActionsView.bounds.height

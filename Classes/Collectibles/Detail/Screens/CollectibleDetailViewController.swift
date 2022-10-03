@@ -258,7 +258,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptInQuickAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optIn(with: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optIn(with: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -269,7 +272,10 @@ extension CollectibleDetailViewController {
     }
 
     private func bindAssetOptOutAction() {
-        let viewModel = AssetQuickActionViewModel(type: .optOutAsset(from: account))
+        let viewModel = AssetQuickActionViewModel(
+            asset: asset,
+            type: .optOut(from: account)
+        )
         assetQuickActionView.bindData(viewModel)
 
         assetQuickActionView.startObserving(event: .performAction) {
@@ -386,6 +392,8 @@ extension CollectibleDetailViewController {
                     for: item
                 )
             }
+        case .assetID:
+            linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
         case .external(let item):
             linkInteractors(
                 cell as! CollectibleExternalSourceCell,
@@ -569,7 +577,6 @@ extension CollectibleDetailViewController {
             }
 
             self.copyToClipboardController.copyAddress(self.account)
-            UIPasteboard.general.string = self.account.address
         }
 
         cell.startObserving(event: .performShareQR) {
@@ -610,6 +617,68 @@ extension CollectibleDetailViewController {
 
             self.open(actionURL)
         }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailAssetIDItemCell
+    ) {
+        cell.startObserving(event: .didTapAccessory) {
+            [unowned self] in
+
+            let optInStatus = dataController.hasOptedIn()
+
+            if optInStatus == .rejected {
+                openASADiscovery()
+                return
+            }
+
+            openASADetail()
+        }
+
+        cell.startObserving(event: .didLongPressAccessory) {
+            [unowned self] in
+            self.copyToClipboardController.copyID(self.asset)
+            return
+        }
+    }
+
+    private func openASADiscovery() {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: nil,
+            asset: AssetDecoration(asset: asset)
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADetail() {
+        let screen = Screen.asaDetail(
+            account: account,
+            asset: asset,
+            configuration: ASADetailScreenConfiguration(
+                shouldDisplayAccountActionsBarButtonItem: false,
+                shouldDisplayQuickActions: false
+            )
+        ) { [weak self] event in
+            switch event {
+            case .didRemoveAccount: break
+            case .didRenameAccount: break
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
     }
 
     private func linkInteractors(
@@ -834,7 +903,10 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(
                 mode: .approve,
@@ -842,6 +914,16 @@ extension CollectibleDetailViewController {
             ),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

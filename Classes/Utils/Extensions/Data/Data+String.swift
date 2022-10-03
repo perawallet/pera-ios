@@ -12,33 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountAssetCell.swift
+//   Data+String.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-final class AccountAssetCell:
-    CollectionCell<AssetPreviewView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 24, 14, 24)
-    }
-
-    static let theme = AssetPreviewViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme)
-
-        let separator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 0))
+extension Data {
+    var utf8String: String? {
+        return String(
+            data: self,
+            encoding: .utf8
         )
-        separatorStyle = .single(separator)
     }
 }

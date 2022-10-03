@@ -176,7 +176,10 @@ extension CollectibleDetailAPIDataController {
     private func addActionContentIfNeeded(
         _ snapshot: inout Snapshot
     ) {
-        if quickAction != nil { return }
+        if quickAction != nil {
+            addWatchAccountActionContent(&snapshot)
+            return
+        }
 
         if account.isWatchAccount() {
             addWatchAccountActionContent(&snapshot)
@@ -305,13 +308,8 @@ extension CollectibleDetailAPIDataController {
         }
 
         descriptionItems.append(
-            .information(
-                CollectibleTransactionInformation(
-                    icon: nil,
-                    title: "title-asset-id".localized,
-                    value: String(asset.id),
-                    isCollectibleSpecificValue: false
-                )
+            .assetID(
+                CollectibleDetailAssetIDItemIdentifier(viewModel: CollectibleDetailAssetIDItemViewModel(asset: asset))
             )
         )
 

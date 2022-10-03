@@ -14,6 +14,7 @@
 
 //   ASADiscoveryProfileViewModel.swift
 
+import CoreGraphics
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
@@ -27,6 +28,8 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
     private(set) var id: TextProvider?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+
+    init() {}
 
     init(
         asset: Asset,
@@ -59,15 +62,14 @@ extension ASADiscoveryProfileViewModel {
             .setImageQuality(.normal)
             .build()
         /// <todo>
-        /// Find a bettet way of formatting name
+        /// Find a better way of formatting name
         let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
             : asset.naming.name
         let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = ImagePlaceholder.init(
-            image: .init(asset: "asset-image-placeholder-border".uiImage),
-            text: .string(placeholderText)
-        )
+        let placeholderImage = placeholderText?.toPlaceholderImage(size: size)
+        let placeholderAsset = AssetImageSource(asset: placeholderImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
         icon = PNGImageSource(url: url, shape: .circle, placeholder: placeholder)
     }
 
