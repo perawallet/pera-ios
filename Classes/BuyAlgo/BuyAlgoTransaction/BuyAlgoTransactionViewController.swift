@@ -47,7 +47,7 @@ final class BuyAlgoTransactionViewController: BaseViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         addTransactionView()
     }
     

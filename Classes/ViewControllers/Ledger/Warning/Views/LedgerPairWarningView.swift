@@ -119,23 +119,13 @@ extension LedgerPairWarningView {
 
 extension LedgerPairWarningView {
     private struct Instruction {
-        private let font = Fonts.DMSans.regular.make(15)
-        private let lineHeightMultiplier = 1.23
-
         private(set) var title: EditText?
 
         init(_ title: String) {
             self.title = .attributedString(
                 title
                     .localized
-                    .attributed([
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ])
-                    ])
+                    .bodyRegular()
             )
         }
 

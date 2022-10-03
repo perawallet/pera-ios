@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct RekeyAccountInformationListActionViewModel: ListActionViewModel {
+struct RekeyAccountInformationListActionViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
