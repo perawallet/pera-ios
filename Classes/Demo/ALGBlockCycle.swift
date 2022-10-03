@@ -25,8 +25,7 @@ final class ALGBlockCycle: BlockCycle {
     private var lastRound: BlockRound?
     private var notificationQueue: DispatchQueue?
     private var notificationHandler: NotificationHandler?
-    
-    private var ongoingEndpointToFetchTransactionParams: EndpointOperatable?
+
     private var ongoingEndpointToWaitForNextBlock: EndpointOperatable?
 
     private let api: ALGAPI
@@ -48,6 +47,7 @@ extension ALGBlockCycle {
     }
     
     func startListening() {
+        sendNotification()
         if let lastRound = lastRound {
             watchNextBlock(after: lastRound)
         } else {
@@ -56,9 +56,6 @@ extension ALGBlockCycle {
     }
 
     func stopListening() {
-        ongoingEndpointToFetchTransactionParams?.cancel()
-        ongoingEndpointToFetchTransactionParams = nil
-
         ongoingEndpointToWaitForNextBlock?.cancel()
         ongoingEndpointToWaitForNextBlock = nil
     }
@@ -71,18 +68,7 @@ extension ALGBlockCycle {
 
 extension ALGBlockCycle {
     private func watchNextBlock() {
-        self.fetchTransactionParams { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let round):
-                self.watchNextBlock(after: round)
-            case .failure:
-                /// <todo>
-                /// How to handle network/server errors?
-                self.watchNextBlock(after: 0)
-            }
-        }
+        self.watchNextBlock(after: 0)
     }
     
     private func watchNextBlock(
@@ -96,6 +82,7 @@ extension ALGBlockCycle {
                 let lastRound = roundDetail.lastRound
                 
                 self.lastRound = lastRound
+
                 self.sendNotification()
                 
                 self.watchNextBlock(after: lastRound)
@@ -105,30 +92,6 @@ extension ALGBlockCycle {
                 self.watchNextBlock()
             }
         }
-    }
-}
-
-extension ALGBlockCycle {
-    private typealias FetchTransactionParamsCompletionHandler = (Result<BlockRound, HIPNetworkError<NoAPIModel>>) -> Void
-    
-    private func fetchTransactionParams(
-        onCompletion handler: @escaping FetchTransactionParamsCompletionHandler
-    ) {
-        ongoingEndpointToFetchTransactionParams?.cancel()
-        ongoingEndpointToFetchTransactionParams =
-            api.getTransactionParams { [weak self] result in
-                guard let self = self else { return }
-            
-                self.ongoingEndpointToFetchTransactionParams = nil
-            
-                switch result {
-                case .success(let params):
-                    handler(.success(params.lastRound))
-                case .failure(let apiError, let apiErrorDetail):
-                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                    handler(.failure(error))
-                }
-            }
     }
 }
 
@@ -163,7 +126,7 @@ extension ALGBlockCycle {
     private func sendNotification() {
         notificationQueue?.async { [weak self] in
             guard let self = self else { return }
-            self.notificationHandler?(self.lastRound)
+            self.notificationHandler?()
         }
     }
 }
