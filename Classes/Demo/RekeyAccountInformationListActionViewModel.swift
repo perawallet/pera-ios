@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountDetailViewController+Theme.swift
+//   RekeyAccountInformationListActionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-extension AccountDetailViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let navigationTitle: AccountNameTitleViewTheme
+struct RekeyAccountInformationListActionViewModel: ListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
 
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = Colors.Defaults.background
-            self.navigationTitle = AccountNameTitleViewTheme(family)
-        }
+    init() {
+        self.icon = "icon-qr"
+        self.title = Self.getTitle("options-auth-account".localized)
+        self.subtitle = nil
     }
 }

@@ -30,7 +30,7 @@ final class ASADetailScreen:
 
     var eventHandler: EventHandler?
 
-    private lazy var navigationTitleView = AccountNamePreviewView()
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
@@ -157,6 +157,17 @@ extension ASADetailScreen {
         copyToClipboardController.copyAddress(account)
     }
 
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        let account = dataController.account
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
+        let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
+        open(
+            screen,
+            by: .present
+        )
+    }
+
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
         open(
             .rekeyInstruction(account: dataController.account),
@@ -173,9 +184,11 @@ extension ASADetailScreen {
 
         guard let authAddress = account.authAddress else { return }
 
+        let title = "options-auth-account".localized
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
+        let screen: Screen = .qrGenerator(title: title, draft: draft, isTrackable: true)
         open(
-            .qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true),
+            screen,
             by: .present
         )
     }
@@ -291,7 +304,7 @@ extension ASADetailScreen {
 
     private func bindNavigationTitle() {
         let account = dataController.account
-        let viewModel = AccountNamePreviewViewModel(account: account, with: .center)
+        let viewModel = AccountNameTitleViewModel(account)
         navigationTitleView.bindData(viewModel)
     }
 
