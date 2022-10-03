@@ -32,18 +32,17 @@ extension CollectibleDescendingTitleAlgorithm {
         otherCollectible: CollectibleAsset
     ) -> Bool {
         let collectibleTitle =
-        collectible.title ??
-        collectible.name ??
-        collectible.id.stringWithHashtag
-
+            collectible.title ??
+            collectible.name ??
+            String(collectible.id)
         let otherCollectibleTitle =
-        otherCollectible.title ??
-        otherCollectible.name ??
-        otherCollectible.id.stringWithHashtag
+            otherCollectible.title ??
+            otherCollectible.name ??
+            String(otherCollectible.id)
 
-        if collectibleTitle.lowercased() != otherCollectibleTitle.lowercased() {
-            let comparison = collectibleTitle.localizedCaseInsensitiveCompare(otherCollectibleTitle)
-            return comparison == .orderedDescending
+        if collectibleTitle != otherCollectibleTitle {
+            let result = collectibleTitle.localizedCaseInsensitiveCompare(otherCollectibleTitle)
+            return result == .orderedDescending
         }
 
         guard let collectibleOptedInAddress = collectible.optedInAddress else {
@@ -54,8 +53,7 @@ extension CollectibleDescendingTitleAlgorithm {
             return true
         }
 
-        let comparison = collectibleOptedInAddress
-            .localizedCaseInsensitiveCompare(otherCollectibleOptedInAddress)
-        return comparison == .orderedDescending
+        let result = collectibleOptedInAddress.localizedCaseInsensitiveCompare(otherCollectibleOptedInAddress)
+        return result == .orderedDescending
     }
 }
