@@ -208,7 +208,7 @@
 
 // MARK: Login
 "login-title" = "Unlock";
-"login-subtitle" = "Enter your\n6-digit pin";
+"login-subtitle" = "Enter your PIN";
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions";
