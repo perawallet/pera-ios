@@ -57,7 +57,7 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
-    private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
+    private lazy var navigationTitleView = AccountNameTitleView()
 
     private var accountHandle: AccountHandle
 
@@ -78,7 +78,6 @@ final class AccountDetailViewController: PageContainer {
         super.viewDidLoad()
 
         setPageBarItems()
-        addTitleView()
     }
 
     override func viewWillAppear(
@@ -99,7 +98,8 @@ final class AccountDetailViewController: PageContainer {
     }
 
     override func configureNavigationBarAppearance() {
-        addOptionsBarButton()
+        addNavigationTitle()
+        addNavigationActions()
     }
 
     override func customizePageBarAppearance() {
@@ -139,7 +139,7 @@ extension AccountDetailViewController {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
             case .didRenameAccount:
-                self.bindTitle()
+                self.bindNavigationTitle()
                 self.eventHandler?(.didEdit)
             case .didRemoveAccount:
                 self.eventHandler?(.didRemove)
@@ -227,18 +227,16 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
 }
 
 extension AccountDetailViewController {
-    private func addOptionsBarButton() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) { [weak self] in
-            guard let self = self else {
-                return
-            }
+    private func addNavigationActions() {
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) {
+            [unowned self] in
 
             self.endEditing()
 
             self.presentOptionsScreen()
         }
 
-        rightBarButtonItems = [optionsBarButtonItem]
+        rightBarButtonItems = [ optionsBarButtonItem ]
     }
 
     private func presentOptionsScreen() {
@@ -266,43 +264,37 @@ extension AccountDetailViewController {
         ]
     }
 
-    private func addTitleView() {
-        accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
 
-        accountNamePreviewTitleView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(didLongPressToAccountNamePreviewTitleView)
-            )
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
         )
+        navigationTitleView.addGestureRecognizer(recognizer)
 
-        navigationItem.titleView = accountNamePreviewTitleView
-
-        bindTitle()
+        bindNavigationTitle()
     }
 
-    private func bindTitle() {
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
+    private func bindNavigationTitle() {
+        let account = accountHandle.value
+        let viewModel = AccountNameTitleViewModel(account)
+        navigationTitleView.bindData(viewModel)
     }
 }
 
 extension AccountDetailViewController {
     @objc
-    private func didLongPressToAccountNamePreviewTitleView(
-        _ gesture: UILongPressGestureRecognizer
-    ) {
-        guard gesture.state == .began else {
-            return
+    private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(accountHandle.value)
         }
-
-        copyToClipboardController.copyAddress(accountHandle.value)
     }
+}
 
+extension AccountDetailViewController {
     @objc
     private func openAccountActionsMenu() {
         view.endEditing(true)
@@ -431,7 +423,7 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        bindTitle()
+        bindNavigationTitle()
         eventHandler?(.didEdit)
     }
 }

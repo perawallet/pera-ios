@@ -832,7 +832,13 @@ class Router:
                 configuration: configuration
             )
         case .sendTransaction(let draft):
-            let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
+            let sendScreen = SendTransactionScreen(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
             sendScreen.isModalInPresentation = true
             viewController = sendScreen
         case .editNote(let note, let isLocked, let delegate):
