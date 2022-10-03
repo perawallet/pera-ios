@@ -1065,6 +1065,11 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .insufficientAlgoBalance(let draft, let eventHandler):
+            viewController = InsufficientAlgoBalanceScreen(
+                draft: draft,
+                eventHandler: eventHandler
+            )
         }
 
         return viewController as? T

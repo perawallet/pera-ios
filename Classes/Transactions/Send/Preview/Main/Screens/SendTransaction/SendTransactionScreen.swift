@@ -30,6 +30,7 @@ final class SendTransactionScreen: BaseViewController {
     var eventHandler: EventHandler?
 
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToInsufficientAlgoBalance = BottomSheetTransition(presentingViewController: self)
 
     private lazy var nextButton = Button()
     private lazy var accountContainerView = TripleShadowView()
@@ -544,22 +545,30 @@ extension SendTransactionScreen {
     }
 }
 
-// MARK: - Warning Sheets
 extension SendTransactionScreen {
     private func displayRequiredMinAlgoWarning() {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "required-min-balance-title".localized,
-            description: .plain("required-min-balance-description".localized),
-            secondaryActionButtonTitle: "title-got-it".localized
+        let algoAssetItem = AssetItem(
+            asset: draft.from.algo,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter,
+            currencyFormattingContext: .standalone()
         )
 
-        self.modalTransition.perform(
-            .bottomWarning(configurator: configurator),
+        let draft = InsufficientAlgoBalanceDraft(algoAssetItem: algoAssetItem)
+
+        let screen = Screen.insufficientAlgoBalance(draft: draft) {
+            [unowned self] event in
+            self.dismiss(animated: true)
+        }
+
+        transitionToInsufficientAlgoBalance.perform(
+            screen,
             by: .presentWithoutNavigationController
         )
     }
+}
 
+extension SendTransactionScreen {
     private func displayMaxTransactionWarning() {
         guard let transactionParams = transactionParams else {
             return

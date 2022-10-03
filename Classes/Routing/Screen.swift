@@ -215,6 +215,10 @@ indirect enum Screen {
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
+    case insufficientAlgoBalance(
+        draft: InsufficientAlgoBalanceDraft,
+        eventHandler: InsufficientAlgoBalanceScreen.EventHandler
+    )
 }
 
 extension Screen {
