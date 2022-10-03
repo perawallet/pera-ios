@@ -30,7 +30,7 @@ final class ASADetailScreen:
 
     var eventHandler: EventHandler?
 
-    private lazy var navigationTitleView = AccountNamePreviewView()
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
@@ -291,7 +291,7 @@ extension ASADetailScreen {
 
     private func bindNavigationTitle() {
         let account = dataController.account
-        let viewModel = AccountNamePreviewViewModel(account: account, with: .center)
+        let viewModel = AccountNameTitleViewModel(account)
         navigationTitleView.bindData(viewModel)
     }
 
