@@ -897,10 +897,10 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             self.copyToClipboardController.copyAddress(account)
         }
 
-        uiInteractions.didTapRemoveAccount = {
+        uiInteractions.didTapRemoveAccount = {
             [weak self] in
             
-            guard let self = self else {
+            guard let self = self else {
                 return
             }
 

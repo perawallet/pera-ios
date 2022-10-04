@@ -106,6 +106,6 @@ extension HomePortfolioViewModel {
         return
             lhs.primaryValue?.string == rhs.primaryValue?.string &&
             lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
-            lhs.titleColor == rhs.titleColor
+            lhs.titleColor?.hex == rhs.titleColor?.hex
     }
 }
