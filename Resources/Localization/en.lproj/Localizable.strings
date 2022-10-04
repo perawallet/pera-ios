@@ -937,6 +937,7 @@
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
+"account-listing-partial-error-message" = "Sorry, there was an error fetching some of your accounts. The portfolio value is calculated based only on successfully fetched ones.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search assets";
