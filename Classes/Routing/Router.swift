@@ -1077,6 +1077,36 @@ class Router:
                 draft: draft,
                 eventHandler: eventHandler
             )
+        case .exportAccountList(let eventHandler):
+            let dataController = ExportAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = ExportAccountListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
+            let screen = ExportAccountsDomainConfirmationScreen(
+                theme: .init(hasSingularAccount: hasSingularAccount, .current)
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
+            let dataController = ExportAccountsConfirmationListLocalDataController(
+                selectedAccounts: selectedAccounts
+            )
+            let screen = ExportAccountsConfirmationListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .exportAccountsResult(let accounts, let eventHandler):
+            let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

@@ -224,6 +224,21 @@ indirect enum Screen {
         draft: InsufficientAlgoBalanceDraft,
         eventHandler: InsufficientAlgoBalanceScreen.EventHandler
     )
+    case exportAccountList(
+        eventHandler: ExportAccountListScreen.EventHandler
+    )
+    case exportAccountsDomainConfirmation(
+        hasSingularAccount: Bool,
+        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
+    )
+    case exportAccountsConfirmationList(
+        selectedAccounts: [Account],
+        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case exportAccountsResult(
+        accounts: [Account],
+        eventHandler: ExportsAccountsResultScreen.EventHandler
+    )
 }
 
 extension Screen {
