@@ -1103,8 +1103,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .exportAccountsResult(let hasSingularAccount, let eventHandler):
-            let screen = ExportsAccountsResultScreen(configuration: configuration, hasSingularAccount: hasSingularAccount)
+        case .exportAccountsResult(let accounts, let eventHandler):
+            let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
             screen.eventHandler = eventHandler
             viewController = screen
         }

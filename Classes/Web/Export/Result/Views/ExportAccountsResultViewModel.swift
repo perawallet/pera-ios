@@ -22,7 +22,8 @@ struct ExportAccountsResultViewModel: ResultViewModel {
     private(set) var title: EditText?
     private(set) var body: EditText?
 
-    init(hasSingularAccount: Bool) {
+    init(accounts: [Account]) {
+        let hasSingularAccount = accounts.isSingular
         bindIcon()
         bindTitle(hasSingularAccount: hasSingularAccount)
         bindBody(hasSingularAccount: hasSingularAccount)

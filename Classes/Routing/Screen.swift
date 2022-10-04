@@ -236,7 +236,7 @@ indirect enum Screen {
         eventHandler: ExportAccountsConfirmationListScreen.EventHandler
     )
     case exportAccountsResult(
-        hasSingularAccount: Bool,
+        accounts: [Account],
         eventHandler: ExportsAccountsResultScreen.EventHandler
     )
 }

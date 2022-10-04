@@ -177,6 +177,8 @@ extension AccountExportFlowCoordinator {
         on screen: ExportAccountsConfirmationListScreen,
         didSelectAccounts accounts: [Account]
     ) {
+        /// TODO:
+        /// These logics should be located in necessary screens not coordinator
         guard let qrExportInformations = self.qrExportInformations else {
             return
         }
@@ -196,6 +198,10 @@ extension AccountExportFlowCoordinator {
         )
         let encryptedContent = encryptedAccountDraft.encryptedContent
 
+        /// <note>
+        /// Encrypted content may be nil on SDK side and we are checking it first
+        /// Then, if encryption error is not noError that means there is an error, we are showing banner error
+        /// Dismiss screen after 3 seconds because we should show the message
         if encryptedContent.isNilOrEmpty || encryptedAccountDraft.encryptionError != .noError {
             screen.stopLoading()
             screen.bannerController?.presentErrorBanner(
@@ -228,8 +234,7 @@ extension AccountExportFlowCoordinator {
     }
 
     private func navigateToSuccessScreen(with accounts: [Account], on viewController: UIViewController) {
-        let hasSingularAccount = accounts.isSingular
-        let screen = Screen.exportAccountsResult(hasSingularAccount: hasSingularAccount) { event, screen in
+        let screen = Screen.exportAccountsResult(accounts: accounts) { event, screen in
             switch event {
             case .performClose:
                 screen.dismissScreen()
