@@ -277,7 +277,7 @@ extension Session {
 
 /// <mark> Password Management
 extension Session {
-    /// <note> Password should be MD5 hashed
+    /// <note> Password shouldn't be MD5 hashed
     func savePassword(_ password: String) {
         privateStorage.set(password.md5(), for: passwordKey)
     }
