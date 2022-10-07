@@ -28,6 +28,7 @@ class Session: Storable {
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
+    private let passwordKey = "com.algorand.algorand.app.password"
     /// <todo> Remove this key in other releases later when the v2 is accepted.
     private let termsAndServicesKey = "com.algorand.algorand.terms.services"
     private let termsAndServicesKeyV2 = "com.algorand.algorand.terms.services.v2"
@@ -189,7 +190,7 @@ extension Session {
 }
 
 extension Session {
-    func savePassword(_ password: String) {
+    func savePasswordToDatabase(_ password: String) {
         if let config = applicationConfiguration {
             config.update(entity: ApplicationConfiguration.entityName, with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
         } else {
@@ -199,21 +200,21 @@ extension Session {
             )
         }
     }
-    
-    func deletePassword() {
+
+    func deletePasswordOnDatabase() {
         if let config = applicationConfiguration {
             config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
         }
     }
-    
-    func isPasswordMatching(with password: String) -> Bool {
+
+    func isPasswordMatchingOnDatabase(with password: String) -> Bool {
         guard let config = applicationConfiguration else {
             return false
         }
         return config.password == password
     }
     
-    func hasPassword() -> Bool {
+    func hasPasswordOnDatabase() -> Bool {
         guard let config = applicationConfiguration else {
             return false
         }
@@ -271,6 +272,31 @@ extension Session {
     func removePrivateData(for account: String) {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
+    }
+}
+
+/// <mark> Password Management
+extension Session {
+    /// <note> Password should be MD5 hashed
+    func savePassword(_ password: String) {
+        privateStorage.set(password.md5(), for: passwordKey)
+    }
+
+    func deletePassword() {
+        privateStorage.remove(for: passwordKey)
+    }
+
+    /// <note> Password shouldn't be MD5 hashed
+    func isPasswordMatching(with password: String) -> Bool {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            return false
+        }
+
+        return password.md5() == passwordOnKeychain
+    }
+
+    func hasPassword() -> Bool {
+        return privateStorage.string(for: passwordKey) != nil
     }
 }
 
