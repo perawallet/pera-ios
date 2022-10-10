@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetDataController.swift
+//   ConfirmSwapDataController.swift
 
 import Foundation
 import MagpieCore
 import MagpieExceptions
 import MagpieHipo
 
-protocol SwapAssetDataController: AnyObject {
-    typealias EventHandler = (SwapAssetDataControllerEvent) -> Void
+protocol ConfirmSwapDataController: AnyObject {
+    typealias EventHandler = (ConfirmSwapDataControllerEvent) -> Void
     typealias Error = HIPNetworkError<HIPAPIError>
 
     var account: Account { get }
-    var userAsset: Asset { get }
-    var poolAsset: Asset? { get }
+    var quote: SwapQuote { get }
 
     var eventHandler: EventHandler? { get set }
 
-    func loadData(swapAmount: Decimal)
-    func updateUserAsset(_ asset: Asset)
-    func updatePoolAsset(_ asset: Asset)
     func updateSlippage(_ slippage: Decimal)
+    func confirmSwap()
 }
 
-enum SwapAssetDataControllerEvent {
-    case willLoadData
-    case didLoadData(SwapQuote)
-    case didFailToLoadData(SwapAssetDataController.Error)
+enum ConfirmSwapDataControllerEvent {
+    case willUpdateSlippage
+    case didUpdateSlippage(SwapQuote)
+    case didFailToUpdateSlippage(SwapAssetDataController.Error)
+    case willPrepareTransactions
+    case didPrepareTransactions(SwapTransactionPreparation)
+    case didFailToPrepareTransactions(SwapAssetDataController.Error)
 }

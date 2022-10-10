@@ -250,6 +250,11 @@ indirect enum Screen {
         title: String,
         theme: SelectAssetScreenTheme = .init()
     )
+    case confirmSwap(
+        dataController: ConfirmSwapDataController,
+        eventHandler: EventHandler<ConfirmSwapScreen.Event>,
+        theme: ConfirmSwapScreenTheme = .init()
+    )
 }
 
 extension Screen {
