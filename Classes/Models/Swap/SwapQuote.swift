@@ -31,8 +31,8 @@ final class SwapQuote: ALGEntityModel {
     let slippage: Decimal?
     let price: Decimal?
     let priceImpact: Decimal?
-    let peraFee: Decimal?
-    let exchangeFee: Decimal?
+    let peraFee: UInt64?
+    let exchangeFee: UInt64?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -51,8 +51,8 @@ final class SwapQuote: ALGEntityModel {
         self.slippage = apiModel.slippage.unwrap { Decimal(string: $0) }
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
         self.priceImpact = apiModel.priceImpact.unwrap { Decimal(string: $0) }
-        self.peraFee = apiModel.peraFee.unwrap { Decimal(string: $0) }
-        self.exchangeFee = apiModel.exchangeFee.unwrap { Decimal(string: $0) }
+        self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))
+        self.exchangeFee = UInt64(apiModel.exchangeFee.unwrap(or: "0"))
     }
 
     func encode() -> APIModel {

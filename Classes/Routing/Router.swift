@@ -1119,6 +1119,14 @@ class Router:
 
             aViewController.title = title
             viewController = aViewController
+        case .confirmSwap(let dataController, let eventHandler, let theme):
+            let screen = ConfirmSwapScreen(
+                dataController: dataController,
+                theme: theme,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
