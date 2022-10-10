@@ -85,6 +85,8 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-to" = "To";
+"title-try-again" = "Try Again";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1213,6 +1215,31 @@
 "swap-slippage-percentage-auto" = "Auto";
 "swap-slippage-error-value" = "Slippage tolerance must be between 0.1% and 1%";
 "swap-slippage-error-required" = "Please enter or select a value";
+
+/// MARK: Swap Confirm Asset
+"swap-confirm-title" = "Confirm Swap";
+"swap-price-impact-title" = "Price Impact";
+"swap-confirm-minimum-received-title" = "Minimum Received";
+"swap-confirm-total-fee-title" = "Total Swap Fee";
+"swap-confirm-view-summary-title" = "View Swap Summary";
+"swap-confirm-exchange-fee-title" = "Exchange Fee";
+"swap-confirm-pera-fee-title" = "Pera Fee";
+"swap-confirm-total-fee-detail" = "Amount displayed in the Total Swap Fee will be included in the swap. Algorand Network fees will be added as extra.";
+"swap-confirm-summary-title" = "Swap Summary";
+
+// MARK: Swap Loading
+"swap-loading-title" = "Sending the transaction";
+"swap-loading-detail" = "You will receive at least %@ or the transaction will revert.";
+
+// MARK: Swap Success
+"swap-success-title" = "%@ swap completed";
+"swap-success-detail" = "You received %@ in exchange for %@";
+"swap-success-view-explorer" = "View Transaction detail in AlgoExplorer";
+"swap-success-view-summary" = "View Swap Summary";
+
+// MARK: Swap Error
+"swap-error-failed" = "%@ swap has failed";
+"swao-error-go-home" = "Go to Homepage";
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
