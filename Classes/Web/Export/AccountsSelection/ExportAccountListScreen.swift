@@ -82,6 +82,7 @@ final class ExportAccountListScreen:
         super.configureNavigationBarAppearance()
 
         navigationBarLargeTitleController.title = "web-export-account-list-title".localized
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
     }
 
     override func viewDidLoad() {
