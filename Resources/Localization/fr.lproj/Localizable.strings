@@ -14,6 +14,9 @@
 "account-listing-error-message" = "Désolé, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul. \n\n Veuillez noter que certaines valeurs d'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "Sorry, there was an error fetching some of your accounts. The portfolio value is calculated based only on successfully fetched ones.";
+
+/* (No Comment) */
 "account-name-setup-description" = "Nommez votre compte pour l'identifier facilement lorsque vous utilisez Pera Wallet. Ces noms sont stockés localement et ne peuvent être vus que par vous.";
 
 /* (No Comment) */
@@ -1052,7 +1055,7 @@
 "local-authentication-reason-touch-id-title" = "Utiliser Touch ID pour déverrouiller";
 
 /* (No Comment) */
-"login-subtitle" = "Entrez le code\nPIN à 6 chiffres";
+"login-subtitle" = "Enter your PIN";
 
 /* MARK: Login */
 "login-title" = "Déverrouiller";
@@ -1988,6 +1991,9 @@
 "title-decline-all" = "Tout refuser";
 
 /* (No Comment) */
+"title-disclaimer" = "DISCLAIMER";
+
+/* (No Comment) */
 "title-disconnect" = "Déconnecter";
 
 /* (No Comment) */
@@ -2099,6 +2105,12 @@
 "title-paste-passphrase" = "Coller la phrase de passe complète";
 
 /* (No Comment) */
+"title-plus-account-count" = "%@ Accounts";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "Account";
+
+/* (No Comment) */
 "title-plus-asset-count" = "%@ Actifs";
 
 /* (No Comment) */
@@ -2139,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "Sauvegarder";
+
+/* (No Comment) */
+"title-select-all" = "Select all";
 
 /* (No Comment) */
 "title-select-asset" = "Sélectionner l'actif";
@@ -2193,6 +2208,9 @@
 
 /* (No Comment) */
 "title-unknown" = "Sans nom";
+
+/* (No Comment) */
+"title-unselect-all" = "Unselect all";
 
 /* (No Comment) */
 "title-verify" = "Vérifier";
@@ -2585,6 +2603,12 @@
 "wallet-connect-session-connection-description" = "%@ veut se connecter à votre compte";
 
 /* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
+
+/* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "Échec de la déconnexion de la session %@ .";
 
 /* (No Comment) */
@@ -2868,4 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "Votre transaction est en cours de traitement !";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "To make sure that you are exporting your account to a safe location, always verify you are on the official Pera Web URL:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
+
+/* (No Comment) */
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "Export to Pera Web";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "Confirm Accounts";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "Confirm Account";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "For your security, please confirm that you are exporting your account to Pera Web by entering the domain name you see on your computer.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL of the Web Wallet";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "Enter URL of the Web Wallet";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+/* (No Comment) */
+"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+
+/* (No Comment) */
+"web-export-result-title" = "Accounts exported successfully!";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "Account exported successfully!";
 
