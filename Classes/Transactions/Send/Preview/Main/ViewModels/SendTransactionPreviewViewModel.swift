@@ -26,7 +26,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var opponentView: TitledTransactionAccountNameViewModel?
     private(set) var feeViewMode: TransactionAmountView.Mode?
     private(set) var balanceViewMode: TransactionAmountView.Mode?
-    private(set) var noteViewDetail: String?
+    private(set) var noteView: TransactionActionInformationViewModel?
 
     init(
         _ model: TransactionSendDraft,
@@ -206,8 +206,6 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private func setNote(
         for draft: TransactionSendDraft
     ) {
-        if let note = draft.note {
-            noteViewDetail = note
-        }
+        noteView = TransactionActionInformationViewModel(description: draft.note)
     }
 }
