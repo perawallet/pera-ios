@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmPriceInfoViewModel.swift
+//   SwapConfirmSummaryPeraFeeInfoViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct SwapConfirmPriceInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmSummaryPeraFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -34,11 +32,11 @@ struct SwapConfirmPriceInfoViewModel: SwapInfoItemViewModel {
     }
 }
 
-extension SwapConfirmPriceInfoViewModel {
+extension SwapConfirmSummaryPeraFeeInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-minimum-received-title"
+        title = "swap-confirm-pera-fee-title"
             .localized
-            .footnoteRegular()
+            .bodyRegular()
     }
 
     mutating func bindIcon() {
@@ -48,12 +46,11 @@ extension SwapConfirmPriceInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        guard let price = quote.price else { return }
-
-        detail = "\(price)"
+        guard let peraFee = quote.peraFee?.toAlgos else { return }
+        detail = "\(peraFee)".bodyRegular() /// <todo> Will handle formatting when the flow is completed.
     }
 
     mutating func bindAction() {
-        action = "icon-repeat"
+        action = nil
     }
 }

@@ -14,7 +14,6 @@
 
 //   ConfirmSwapScreen.swift
 
-import MacaroonForm
 import MacaroonUIKit
 import UIKit
 

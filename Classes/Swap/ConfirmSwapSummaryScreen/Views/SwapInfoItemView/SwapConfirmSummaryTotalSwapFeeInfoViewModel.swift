@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmPriceImpactInfoViewModel.swift
+//   SwapConfirmSummaryTotalSwapFeeInfoViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct SwapConfirmPriceImpactInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmSummaryTotalSwapFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -30,26 +28,35 @@ struct SwapConfirmPriceImpactInfoViewModel: SwapInfoItemViewModel {
         bindTitle()
         bindIcon()
         bindDetail(quote)
-        action = nil
+        bindAction()
     }
 }
 
-extension SwapConfirmPriceImpactInfoViewModel {
+extension SwapConfirmSummaryTotalSwapFeeInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-price-impact-title"
-            .localized
-            .footnoteRegular()
+        let aTitle = "swap-confirm-total-fee-title".localized + "*"
+
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Text.main))
+        title = aTitle.attributed(attributes)
     }
 
     mutating func bindIcon() {
-        icon = "icon-info-20"
+        icon = nil
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        guard let priceImpact = quote.priceImpact else { return }
+        guard let peraFee = quote.peraFee?.toAlgos,
+              let exchangeFee = quote.peraFee?.toAlgos else {
+            return
+        }
 
-        detail = priceImpact.doubleValue.toPercentage
+        detail = "\(peraFee + exchangeFee)".bodyMedium() /// <todo> Will handle formatting when the flow is completed.
+    }
+
+    mutating func bindAction() {
+        action = nil
     }
 }
