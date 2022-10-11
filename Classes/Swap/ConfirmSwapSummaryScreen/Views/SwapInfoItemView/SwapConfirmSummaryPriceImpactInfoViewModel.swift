@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmMinimumReceivedInfoViewModel.swift
+//   SwapConfirmSummaryPriceImpactInfoViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmSummaryPriceImpactInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -30,15 +28,15 @@ struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
         bindTitle()
         bindIcon()
         bindDetail(quote)
-        action = nil
+        bindAction()
     }
 }
 
-extension SwapConfirmMinimumReceivedInfoViewModel {
+extension SwapConfirmSummaryPriceImpactInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-minimum-received-title"
+        title = "swap-price-impact-title"
             .localized
-            .footnoteRegular()
+            .bodyRegular()
     }
 
     mutating func bindIcon() {
@@ -48,6 +46,15 @@ extension SwapConfirmMinimumReceivedInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        
+        guard let priceImpact = quote.priceImpact else { return }
+
+        detail = priceImpact
+            .doubleValue
+            .toPercentage?
+            .bodyRegular()
+    }
+
+    mutating func bindAction() {
+        action = nil
     }
 }

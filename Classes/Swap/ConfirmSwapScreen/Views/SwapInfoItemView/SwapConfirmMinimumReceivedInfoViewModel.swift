@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmTotalFeeInfoViewModel.swift
+//   SwapConfirmMinimumReceivedInfoViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapConfirmTotalFeeInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
     private(set) var action: Image?
-
-    private lazy var currencyFormatter = CurrencyFormatter()
 
     init(
         _ quote: SwapQuote
@@ -36,9 +34,9 @@ struct SwapConfirmTotalFeeInfoViewModel: SwapInfoItemViewModel {
     }
 }
 
-extension SwapConfirmTotalFeeInfoViewModel {
+extension SwapConfirmMinimumReceivedInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-total-fee-title"
+        title = "swap-confirm-minimum-received-title"
             .localized
             .footnoteRegular()
     }
@@ -50,9 +48,6 @@ extension SwapConfirmTotalFeeInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        let totalFee = quote.peraFee.unwrap(or: 0) + quote.exchangeFee.unwrap(or: 0)
-        currencyFormatter.formattingContext = .standalone()
-        currencyFormatter.currency = AlgoLocalCurrency()
-        detail = currencyFormatter.format(totalFee.toAlgos)
+        /// <todo> Will be implemented after the main structure is completed.
     }
 }

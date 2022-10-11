@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmSlippageToleranceInfoViewModel.swift
+//   SwapConfirmPriceImpactInfoViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapConfirmSlippageToleranceInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmPriceImpactInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -30,13 +30,13 @@ struct SwapConfirmSlippageToleranceInfoViewModel: SwapInfoItemViewModel {
         bindTitle()
         bindIcon()
         bindDetail(quote)
-        bindAction()
+        action = nil
     }
 }
 
-extension SwapConfirmSlippageToleranceInfoViewModel {
+extension SwapConfirmPriceImpactInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-slippage-tolerance-info-title"
+        title = "swap-price-impact-title"
             .localized
             .footnoteRegular()
     }
@@ -48,12 +48,11 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        guard let slippage = quote.slippage else { return }
+        guard let priceImpact = quote.priceImpact else { return }
 
-        detail = slippage.doubleValue.toPercentage
-    }
-
-    mutating func bindAction() {
-        action = "icon-list-arrow"
+        detail = priceImpact
+            .doubleValue
+            .toPercentage?
+            .footnoteRegular()
     }
 }
