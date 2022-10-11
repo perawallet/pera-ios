@@ -1,0 +1,148 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   ErrorScreen.swift
+
+import MacaroonUIKit
+import UIKit
+
+final class ErrorScreen: ScrollScreen {
+    typealias EventHandler = (Event) -> Void
+
+    private lazy var iconView = UIImageView()
+    private lazy var titleView = UILabel()
+    private lazy var detailView = UILabel()
+    private lazy var primaryActionView = MacaroonUIKit.Button()
+    private lazy var secondaryActionView = MacaroonUIKit.Button()
+
+    private let viewModel: ErrorScreenViewModel
+    private let theme: ErrorScreenTheme
+    private let eventHandler: EventHandler
+
+    init(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme,
+        eventHandler: @escaping EventHandler
+    ) {
+        self.viewModel = viewModel
+        self.theme = theme
+        self.eventHandler = eventHandler
+        super.init()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        addTitle()
+        addIcon()
+        addDetail()
+        addSecondaryAction()
+        addPrimaryAction()
+    }
+
+    override func bindData() {
+        super.bindData()
+        viewModel.title?.load(in: titleView)
+        viewModel.detail?.load(in: detailView)
+        viewModel.primaryAction?.load(in: primaryActionView)
+        viewModel.secondaryAction?.load(in: secondaryActionView)
+    }
+}
+
+extension ErrorScreen {
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+
+        contentView.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.center == 0
+            $0.leading == theme.titleHorizontalInset
+            $0.trailing == theme.titleHorizontalInset
+        }
+
+    }
+
+    private func addIcon() {
+        contentView.addSubview(iconView)
+        iconView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
+            $0.centerX == 0
+            $0.bottom == titleView.snp.top + theme.spacingBetweenIconAndTitle
+        }
+    }
+
+    private func addDetail() {
+        detailView.customizeAppearance(theme.detail)
+
+        contentView.addSubview(detailView)
+        detailView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndDetail
+            $0.leading == theme.detailHorizontalInset
+            $0.trailing == theme.detailHorizontalInset
+        }
+    }
+
+    private func addPrimaryAction() {
+        primaryActionView.customizeAppearance(theme.primaryAction)
+        primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+
+        footerView.addSubview(primaryActionView)
+        primaryActionView.snp.makeConstraints {
+            $0.top ==  theme.actionEdgeInsets.top
+            $0.leading == theme.actionEdgeInsets.leading
+            $0.trailing == theme.actionEdgeInsets.trailing
+        }
+
+        primaryActionView.addTouch(
+            target: self,
+            action: #selector(didTapPrimaryAction)
+        )
+    }
+
+    private func addSecondaryAction() {
+        secondaryActionView.customizeAppearance(theme.secondaryAction)
+        secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+
+        footerView.addSubview(secondaryActionView)
+        secondaryActionView.snp.makeConstraints {
+            $0.top == primaryActionView.snp.bottom + theme.spacingBetweenActions
+            $0.leading == theme.actionEdgeInsets.leading
+            $0.trailing == theme.actionEdgeInsets.trailing
+            $0.bottom == theme.actionEdgeInsets.bottom
+        }
+
+        secondaryActionView.addTouch(
+            target: self,
+            action: #selector(didTapSecondaryAction)
+        )
+    }
+}
+
+extension ErrorScreen {
+    @objc
+    private func didTapPrimaryAction() {
+        eventHandler(.didTapPrimaryAction)
+    }
+
+    @objc
+    private func didTapSecondaryAction() {
+        eventHandler(.didTapSecondaryAction)
+    }
+}
+
+extension ErrorScreen {
+    enum Event {
+        case didTapPrimaryAction
+        case didTapSecondaryAction
+    }
+}
