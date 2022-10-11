@@ -12,42 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmMinimumReceivedInfoViewModel.swift
+//   SwapAssetLoadingScreenViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
+struct SwapAssetLoadingScreenViewModel: LoadingScreenViewModel {
+    private(set) var imageName: String?
     private(set) var title: TextProvider?
-    private(set) var icon: Image?
     private(set) var detail: TextProvider?
-    private(set) var action: Image?
 
     init(
         _ quote: SwapQuote
     ) {
+        bindImageName()
         bindTitle()
-        bindIcon()
         bindDetail(quote)
-        action = nil
     }
 }
 
-extension SwapConfirmMinimumReceivedInfoViewModel {
-    mutating func bindTitle() {
-        title = "swap-confirm-minimum-received-title"
-            .localized
-            .footnoteRegular()
+extension SwapAssetLoadingScreenViewModel {
+    mutating func bindImageName() {
+        imageName = "pera_loader_240x240"
     }
 
-    mutating func bindIcon() {
-        icon = nil
+    mutating func bindTitle() {
+        title = "swap-loading-title"
+            .localized
+            .bodyLargeMedium()
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        
+        let receivedAmount = "" /// <todo> This will be handled when the flow is completed.
+        detail = "swap-loading-detail"
+            .localized(params: receivedAmount)
+            .bodyRegular()
     }
 }
