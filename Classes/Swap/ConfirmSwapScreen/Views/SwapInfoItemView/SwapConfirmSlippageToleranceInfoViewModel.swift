@@ -52,7 +52,7 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
 
         detail = slippage
             .doubleValue
-            .toPercentage
+            .toPercentage?
             .footnoteRegular()
     }
 
