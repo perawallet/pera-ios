@@ -23,6 +23,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
    var eventHandler: EventHandler?
+   
+   private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
    private lazy var nextButtonContainer = UIView()
@@ -31,7 +33,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    private lazy var currencyFormatter = CurrencyFormatter()
 
-   private let draft: TransactionSendDraft
+   private var draft: TransactionSendDraft
    private let transactionController: TransactionController
 
    private var isLayoutFinalized = false
@@ -106,6 +108,22 @@ extension SendTransactionPreviewScreen {
       transactionDetailView.snp.makeConstraints {
          $0.edges.equalToSuperview()
       }
+      
+      transactionDetailView.startObserving(event: .performEditNote) {
+         [weak self] in
+         guard let self = self else { return }
+         
+         let isLocked = self.draft.lockedNote != nil
+         let editNote = self.draft.lockedNote ?? self.draft.note
+         
+         self.modalTransition.perform(
+            .editNote(
+               note: editNote,
+               isLocked: isLocked,
+               delegate: self
+            ), by: .present
+         )
+      }
    }
 
    private func addNextButton() {
@@ -141,6 +159,19 @@ extension SendTransactionPreviewScreen {
 
        layer.colors = [color0, color1]
        nextButtonContainer.layer.insertSublayer(layer, at: 0)
+   }
+}
+
+extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
+   func editNoteScreen(
+      _ editNoteScreen: EditNoteScreen,
+      didUpdateNote note: String?
+   ) {
+      self.draft.updateNote(note)
+      
+      transactionDetailView.bindData(
+         TransactionActionInformationViewModel(description: self.draft.note)
+      )
    }
 }
 
