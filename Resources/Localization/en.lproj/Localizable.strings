@@ -1237,6 +1237,14 @@
 "swap-success-view-explorer" = "View Transaction detail in AlgoExplorer";
 "swap-success-view-summary" = "View Swap Summary";
 
+// MARK: Swap Summary
+"swap-summary-received-title" = "Received";
+"swap-summary-paid-title" = "Paid";
+"swap-summary-algorand-fees-title" = "Algorand Fees";
+"swap-summary-opt-in-fees-title" = "Opt-in Fees";
+"swap-confirm-exchange-fees-title" = "Exchange Fees";
+"swap-confirm-pera-fees-title" = "Pera Fees";
+
 // MARK: Swap Error
 "swap-error-failed" = "%@ swap has failed";
 "swao-error-go-home" = "Go to Homepage";
