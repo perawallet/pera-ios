@@ -25,7 +25,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.devices)
             .method(.post)
             .body(draft)
@@ -40,7 +40,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.deviceDetail, args: draft.id)
             .method(.put)
             .body(draft)
@@ -57,7 +57,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.deviceDetail, args: draft.id)
             .method(.put)
             .body(draft)
@@ -71,7 +71,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ErrorModelResult<HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.devices)
             .method(.delete)
             .body(draft)
@@ -86,7 +86,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<NotificationMessageList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV2)
             .path(.notifications, args: id)
             .method(.get)
             .query(cursorQuery)
@@ -100,7 +100,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<NotificationFilterResponse, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.deviceAccountUpdate, args: draft.deviceId, draft.accountAddress)
             .method(.patch)
             .body(draft)

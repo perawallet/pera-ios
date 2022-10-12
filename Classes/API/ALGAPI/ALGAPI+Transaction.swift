@@ -74,7 +74,7 @@ extension ALGAPI {
     @discardableResult
     func trackTransaction(_ draft: TransactionTrackDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.trackTransactions)
             .method(.post)
             .body(draft)

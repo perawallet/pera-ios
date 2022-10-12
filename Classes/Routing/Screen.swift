@@ -166,9 +166,9 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?,
-        quickAction: AssetQuickAction?,
-        eventHandler: CollectibleDetailViewController.EventHandler
+        thumbnailImage: UIImage? = nil,
+        quickAction: AssetQuickAction? = nil,
+        eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(

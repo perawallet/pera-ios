@@ -189,7 +189,6 @@ extension ManageAssetsViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: nil,
             quickAction: .optOut
         ) { event in
             switch event {

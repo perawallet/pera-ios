@@ -30,8 +30,7 @@ final class NotificationsViewController:
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
     private lazy var dataController = NotificationsAPIDataController(
         sharedDataController: sharedDataController,
-        api: api!,
-        currencyFormatter: currencyFormatter
+        api: api!
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
@@ -49,11 +48,11 @@ final class NotificationsViewController:
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
+
+    private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    private var currentNotification: NotificationDetail?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -86,15 +85,43 @@ final class NotificationsViewController:
                 return
             }
 
-            guard
-                let notification = self.dataController.notifications[safe: indexPath.item],
-                let notificationDetail = notification.detail
-            else {
+            guard let notification = self.dataController.notifications[safe: indexPath.item] else {
                 return
             }
 
-            self.openAssetDetail(from: notificationDetail)
-            self.currentNotification = notificationDetail
+            let parserResult = self.deeplinkParser.discover(notification: notification)
+
+            switch parserResult {
+            case .success(let screen):
+                switch screen {
+                case let .optInAsset(account, assetID):
+                    self.openOptInAssetIfCan(
+                        account: account,
+                        assetID: assetID
+                    )
+                case let .asaDetail(account, asset):
+                    self.openASADetail(
+                        account: account,
+                        asset: asset
+                    )
+                case let .collectibleDetail(account, asset):
+                    self.openCollectibleDetail(
+                        account: account,
+                        asset: asset
+                    )
+                default:
+                    break
+                }
+            case .failure(let error):
+                switch error {
+                case .assetNotFound:
+                    self.presentAssetNotFoundError()
+                default:
+                    break
+                }
+            case .none:
+                break
+            }
         }
 
         dataController.load()
@@ -192,116 +219,35 @@ extension NotificationsViewController {
             reloadNotifications()
         }
     }
+}
 
-    private func openAssetDetail(from notificationDetail: NotificationDetail) {
-        if notificationDetail.type == .assetSupportRequest {
-            guard let receiverAccount = dataController.getReceiverAccount(from: notificationDetail),
-                  let asset = notificationDetail.asset,
-                  let assetId = asset.id
-            else {
-                return
-            }
-
-            if receiverAccount.isWatchAccount() {
-                return
-            }
-
-            if dataController.canOptIn(
-                to: assetId,
-                for: receiverAccount
-            ) {
-                openOptInAsset(
-                    asset: asset,
-                    account: receiverAccount
-                )
-                return
-            }
-
-            displaySimpleAlertWith(title: "asset-you-already-own-message".localized)
+extension NotificationsViewController {
+    private func openOptInAssetIfCan(
+        account: Account,
+        assetID: AssetID
+    ) {
+        if dataController.canOptIn(
+            to: assetID,
+            for: account
+        ) {
+            openOptInAsset(
+                account: account,
+                assetID: assetID
+            )
             return
         }
 
-        let accountDetails = dataController.getUserAccount(from: notificationDetail)
-
-        if let account = accountDetails.account {
-            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
-                return
-            }
-
-            let screen: Screen
-
-            guard let assetMode = accountDetails.asset else {
-                presentAssetNotFoundError()
-                return
-            }
-
-            switch assetMode {
-            case .algo:
-                let account = accountHandle.value
-                screen = .asaDetail(
-                    account: account,
-                    asset: account.algo
-                ) { [weak self] event in
-                    guard let self = self else { return }
-
-                    switch event {
-                    case .didRemoveAccount:
-                        self.dataController.reload()
-                        self.navigationController?.popToViewController(
-                            self,
-                            animated: true
-                        )
-                    case .didRenameAccount:
-                        self.dataController.reload()
-                    }
-                }
-            case .asset(let asset):
-                if let asset = asset as? StandardAsset {
-                    screen = .asaDetail(
-                        account: accountHandle.value,
-                        asset: asset
-                    ) { [weak self] event in
-                        guard let self = self else { return }
-
-                        switch event {
-                        case .didRemoveAccount:
-                            self.dataController.reload()
-                            self.navigationController?.popToViewController(
-                                self,
-                                animated: true
-                            )
-                        case .didRenameAccount:
-                            self.dataController.reload()
-                        }
-                    }
-                } else if let collectibleAsset = asset as? CollectibleAsset {
-                    openCollectible(
-                        asset: collectibleAsset,
-                        with: accountHandle.value
-                    )
-                    return
-                } else {
-                    presentAssetNotFoundError()
-                    return
-                }
-            }
-
-            open(screen, by: .push)
-        }
+        displaySimpleAlertWith(title: "asset-you-already-own-message".localized)
     }
 
     private func openOptInAsset(
-        asset: NotificationAsset,
-        account: Account
+        account: Account,
+        assetID: AssetID
     ) {
-        guard let assetID = asset.id else {
-            return
-        }
-
         if let asset = sharedDataController.assetDetailCollection[assetID] {
             openOptInAsset(
-                asset: asset,
-                account: account
+                account: account,
+                asset: asset
             )
             return
         }
@@ -331,8 +277,8 @@ extension NotificationsViewController {
 
                 if let asset = assetResponse.results.first {
                     self.openOptInAsset(
-                        asset: asset,
-                        account: account
+                        account: account,
+                        asset: asset
                     )
                 }
             case .failure:
@@ -345,8 +291,8 @@ extension NotificationsViewController {
     }
 
     private func openOptInAsset(
-        asset: AssetDecoration,
-        account: Account
+        account: Account,
+        asset: AssetDecoration
     ) {
         let draft = OptInAssetDraft(
             account: account,
@@ -355,6 +301,7 @@ extension NotificationsViewController {
         let screen = Screen.optInAsset(draft: draft) {
             [weak self] event in
             guard let self = self else { return }
+
             switch event {
             case .performApprove:
                 self.continueToOptInAsset(
@@ -365,40 +312,10 @@ extension NotificationsViewController {
                 self.cancelOptInAsset()
             }
         }
+
         transitionToOptInAsset.perform(
             screen,
             by: .present
-        )
-    }
-    
-    private func openCollectible(
-        asset: CollectibleAsset,
-        with account: Account
-    ) {
-        let screen = Screen.collectibleDetail(
-            asset: asset,
-            account: account,
-            thumbnailImage: nil,
-            quickAction: nil
-        ) { [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didOptOutAssetFromAccount: self.popScreen()
-            case .didOptOutFromAssetWithQuickAction: break
-            case .didOptInToAsset: break
-            }
-        }
-        open(
-            screen,
-            by: .push
-        )
-    }
-    
-    private func presentAssetNotFoundError() {
-        bannerController?.presentErrorBanner(
-            title: "notifications-asset-not-found-title".localized,
-            message: "notifications-asset-not-found-description".localized
         )
     }
 
@@ -433,7 +350,71 @@ extension NotificationsViewController {
     private func cancelOptInAsset() {
         dismiss(animated: true)
     }
+}
 
+extension NotificationsViewController {
+    private func openASADetail(
+        account: Account,
+        asset: Asset
+    ) {
+        let screen = Screen.asaDetail(
+            account: account,
+            asset: asset
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didRemoveAccount:
+                self.dataController.reload()
+                self.navigationController?.popToViewController(
+                    self,
+                    animated: true
+                )
+            case .didRenameAccount:
+                self.dataController.reload()
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
+    }
+    
+    private func openCollectibleDetail(
+        account: Account,
+        asset: CollectibleAsset
+    ) {
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptOutFromAssetWithQuickAction: break
+            case .didOptInToAsset: break
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
+    }
+}
+
+extension NotificationsViewController {
+    private func presentAssetNotFoundError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-asset-not-found-title".localized,
+            message: "notifications-asset-not-found-description".localized
+        )
+    }
+}
+
+extension NotificationsViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
@@ -512,12 +493,15 @@ extension NotificationsViewController {
     ) {
         loadingController?.stopLoading()
 
-        guard let address = currentNotification?.receiverAddress,
-              let assetId = currentNotification?.asset?.id else {
+        let address = draft?.from.address
+        let assetID = transactionController.assetTransactionDraft?.assetIndex
+
+        guard let address = address,
+              let assetID = assetID else {
             return
         }
 
-        dataController.addOptedInAsset(address, assetId)
+        dataController.addOptedInAsset(address, assetID)
     }
 
     func transactionController(

@@ -27,7 +27,6 @@ final class NotificationsAPIDataController:
 
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
-    private var contacts = [Contact]()
     private(set) var notifications = [NotificationMessage]()
     private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
@@ -39,16 +38,12 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
-    private let currencyFormatter: CurrencyFormatter
-
     init(
         sharedDataController: SharedDataController,
-        api: ALGAPI,
-        currencyFormatter: CurrencyFormatter
+        api: ALGAPI
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
-        self.currencyFormatter = currencyFormatter
 
         startObserving()
     }
@@ -122,10 +117,6 @@ extension NotificationsAPIDataController {
     ) -> NotificationsViewModel {
         return NotificationsViewModel(
             notification: notification,
-            currencyFormatter: currencyFormatter,
-            senderAccount: getSenderAccountIfExists(for: notification),
-            receiverAccount: getReceiverAccountIfExists(for: notification),
-            contact: getContactIfExists(for: notification),
             latestReadTimestamp: latesTimestamp
         )
     }
@@ -243,21 +234,6 @@ extension NotificationsAPIDataController {
 }
 
 extension NotificationsAPIDataController {
-    private func fetchContacts() {
-        Contact.fetchAll(entity: Contact.entityName) { response in
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-
-                self.contacts = results
-            default:
-                break
-            }
-        }
-    }
-
     private func startObserving() {
         NotificationCenter.default.addObserver(
             self,
@@ -276,78 +252,6 @@ extension NotificationsAPIDataController {
 }
 
 extension NotificationsAPIDataController {
-    private func getSenderAccountIfExists(for notification: NotificationMessage) -> Account? {
-        let senderAddress = notification.detail?.senderAddress
-        return senderAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
-    }
-
-    private func getReceiverAccountIfExists(for notification: NotificationMessage) -> Account? {
-        let receiverAddress = notification.detail?.receiverAddress
-        return receiverAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
-    }
-
-    private func getContactIfExists(for notification: NotificationMessage) -> Contact? {
-        guard let details = notification.detail else {
-            return nil
-        }
-
-        return contacts.first { contact -> Bool in
-            if let contactAddress = contact.address {
-                return contactAddress == details.senderAddress || contactAddress == details.receiverAddress
-            }
-            return false
-        }
-    }
-
-    func getUserAccount(
-        from notificationDetail: NotificationDetail
-    ) -> (account: Account?, asset: TransactionMode?) {
-        let account: Account?
-        
-        if notificationDetail.type.isSent() {
-            account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
-        } else {
-            account = getAccount(from: notificationDetail.receiverAddress) ?? getAccount(from: notificationDetail.senderAddress)
-        }
-
-        guard let account = account  else {
-            return (nil, nil)
-        }
-
-        let asset = notificationDetail.asset?.id.unwrap { account[$0] }
-        
-        if notificationDetail.asset?.id != nil && asset == nil {
-            return (account: account, asset: nil)
-        }
-        
-        if let asset = asset {
-            return (account: account, asset: .asset(asset))
-        }
-        
-        return (account: account, asset: .algo)
-    }
-    
-    private func getAccount(from address: String?) -> Account? {
-        guard let address = address else {
-            return nil
-        }
-
-        return sharedDataController.accountCollection[address]?.value
-    }
-
-    func getReceiverAccount(
-        from notificationDetail: NotificationDetail?
-    ) -> Account? {
-        guard let detail = notificationDetail,
-              let address = detail.receiverAddress else {
-            return nil
-        }
-
-        let receiverAccount = getAccount(from: address)
-
-        return receiverAccount
-    }
-
     func canOptIn(
         to asset: AssetID,
         for account: Account

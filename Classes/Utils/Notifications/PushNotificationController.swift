@@ -190,27 +190,17 @@ extension PushNotificationController {
 
         switch notificationDetail.type {
         case .transactionSent,
-             .assetTransactionSent:
-            present(
-                notificationForSentTransactionsWith: notificationDetail,
-                failure: false,
-                action: handler
-            )
-        case .transactionReceived,
-             .assetTransactionReceived:
-            present(
-                notificationForReceivedTransactionWith: notificationDetail,
-                action: handler
-            )
-        case .transactionFailed,
+             .assetTransactionSent,
+             .transactionReceived,
+             .assetTransactionReceived,
+             .transactionFailed,
              .assetTransactionFailed:
-            present(
-                notificationForSentTransactionsWith: notificationDetail,
-                failure: true,
+            presentBanner(
+                for: notification,
                 action: handler
             )
         case .assetSupportSuccess:
-            present(notificationForSupportedAssetWith: notificationDetail)
+            presentBanner(for: notification)
         default:
             present(idleNotification: notification)
         }
@@ -223,190 +213,19 @@ extension PushNotificationController {
             bannerController?.presentNotification(alert)
         }
     }
-    
-    private func present(
-        notificationForSentTransactionsWith detail: NotificationDetail,
-        failure: Bool = false,
+
+    private func presentBanner(
+        for notification: AlgorandNotification,
         action handler: EmptyHandler? = nil
     ) {
-        guard
-            let authenticatedUser = session.authenticatedUser,
-            let receiverAddress = detail.receiverAddress,
-            let senderAddress = detail.senderAddress,
-            let senderName = authenticatedUser.account(address: senderAddress)?.name
-        else {
+        guard let message = notification.detail?.message else {
             return
         }
-        
-        Contact.fetchAll(
-            entity: Contact.entityName,
-            with: NSPredicate(format: "address = %@", receiverAddress)
-        ) { [weak self] response in
-            guard let self = self else { return }
-            
-            let receiverAccount = authenticatedUser.account(address: receiverAddress)
-            let defaultReceiverName = receiverAccount?.name ?? receiverAddress
-            let amount = detail.amount
-            
-            let receiverName: String
-            if case .results(let objects) = response {
-                receiverName = (objects as? [Contact])?.first?.name ?? defaultReceiverName
-            } else {
-                receiverName = defaultReceiverName
-            }
-            
-            let transactionAmountText: String
-            if let asset = detail.asset {
-                let assetFraction = asset.fractionDecimals.someInt
 
-                /// <todo>
-                /// Not sure we need this constraint, because the final number should be sent to the
-                /// formatter unless the number itself is modified.
-                var constraintRules = CurrencyFormattingContextRules()
-                constraintRules.maximumFractionDigits = assetFraction
-
-                self.currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
-                self.currencyFormatter.currency = nil
-
-                let assetName = asset.name.someString
-                let assetCode = asset.code.someString
-                let amount = amount.assetAmount(fromFraction: assetFraction)
-                let amountText = self.currencyFormatter.format(amount)
-
-                transactionAmountText = "\(amountText.someString) \(assetName) (\(assetCode))"
-            } else {
-                self.currencyFormatter.formattingContext = .standalone()
-                self.currencyFormatter.currency = AlgoLocalCurrency()
-
-                let text = self.currencyFormatter.format(amount.toAlgos)
-
-                transactionAmountText = text.someString
-            }
-            
-            let format = failure
-                ? "notification-sent-failed".localized
-                : "notification-sent-success".localized
-            let message = String(
-                format: format,
-                transactionAmountText,
-                senderName,
-                receiverName
-            )
-            
-            self.bannerController?.presentNotification(
-                message,
-                handler
-            )
-        }
-    }
-    
-    private func present(
-        notificationForReceivedTransactionWith detail: NotificationDetail,
-        action handler: EmptyHandler? = nil
-    ) {
-        guard
-            let authenticatedUser = session.authenticatedUser,
-            let senderAddress = detail.senderAddress,
-            let receiverAddress = detail.receiverAddress,
-            let receiverName = authenticatedUser.account(address: receiverAddress)?.name
-        else {
-            return
-        }
-        
-        Contact.fetchAll(
-            entity: Contact.entityName,
-            with: NSPredicate(format: "address = %@", senderAddress)
-        ) { [weak self] response in
-            guard let self = self else { return }
-            
-            let senderAccount = authenticatedUser.account(address: senderAddress)
-            let defaultSenderName = senderAccount?.name ?? senderAddress
-            let amount = detail.amount
-            
-            let senderName: String
-            if case .results(let objects) = response {
-                senderName = (objects as? [Contact])?.first?.name ?? defaultSenderName
-            } else {
-                senderName = defaultSenderName
-            }
-
-            let transactionAmountText: String
-            if let asset = detail.asset {
-                let assetFraction = asset.fractionDecimals.someInt
-
-                /// <todo>
-                /// Not sure we need this constraint, because the final number should be sent to the
-                /// formatter unless the number itself is modified.
-                var constraintRules = CurrencyFormattingContextRules()
-                constraintRules.maximumFractionDigits = assetFraction
-
-                self.currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
-                self.currencyFormatter.currency = nil
-
-                let assetName = asset.name.someString
-                let assetCode = asset.code.someString
-                let amount = amount.assetAmount(fromFraction: assetFraction)
-                let amountText = self.currencyFormatter.format(amount)
-
-                transactionAmountText = "\(amountText.someString) \(assetName) (\(assetCode))"
-            } else {
-                self.currencyFormatter.formattingContext = .standalone()
-                self.currencyFormatter.currency = AlgoLocalCurrency()
-
-                let text = self.currencyFormatter.format(amount.toAlgos)
-
-                transactionAmountText = text.someString
-            }
-            
-            let message = String(
-                format: "notification-received".localized,
-                transactionAmountText,
-                receiverName,
-                senderName
-            )
-
-            self.bannerController?.presentNotification(
-                message,
-                handler
-            )
-        }
-    }
-    
-    private func present(
-        notificationForSupportedAssetWith detail: NotificationDetail
-    ) {
-        guard
-            let senderAddress = detail.senderAddress,
-            let asset = detail.asset
-        else {
-            return
-        }
-        
-        Contact.fetchAll(
-            entity: Contact.entityName,
-            with: NSPredicate(format: "address = %@", senderAddress)
-        ) { [weak self] response in
-            guard let self = self else { return }
-            
-            let assetName = asset.name.someString
-            let assetCode = asset.code.someString
-            
-            let senderName: String
-            if case .results(let objects) = response {
-                senderName = (objects as? [Contact])?.first?.name ?? senderAddress
-            } else {
-                senderName = senderAddress
-            }
-            
-            let message = String(
-                format: "notification-support-success".localized(
-                    params: senderName,
-                    "\(assetName) (\(assetCode))"
-                )
-            )
-
-            self.bannerController?.presentNotification(message)
-        }
+        bannerController?.presentNotification(
+            message,
+            handler
+        )
     }
 }
 

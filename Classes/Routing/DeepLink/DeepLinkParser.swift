@@ -47,7 +47,97 @@ extension DeepLinkParser {
             return nil
         }
     }
-    
+
+    func discover(
+        notification: NotificationMessage
+    ) -> Result? {
+        let action = resolveNotificationMessageAction(for: notification)
+
+        switch action {
+        case .assetOptIn:
+            return makeAssetOptInScreen(for: notification)
+        case .assetTransactions:
+            return makeAssetTransactionDetailScreen(for: notification)
+        default:
+            return nil
+        }
+    }
+
+    private func resolveNotificationMessageAction(
+        for notificationMessage: NotificationMessage
+    ) -> NotificationMessageAction? {
+        guard let url = notificationMessage.url else {
+            return nil
+        }
+
+        guard let host = url.host else {
+            return nil
+        }
+
+        let path = url.path
+
+        let aRawValue = host + path
+
+        return NotificationMessageAction(rawValue: aRawValue)
+    }
+
+    private func makeAssetOptInScreen(for notificationMessage: NotificationMessage) -> Result? {
+        let url = notificationMessage.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+        let assetID = params?["asset"].unwrap { AssetID($0) }
+
+        guard
+            let accountAddress = accountAddress,
+            let assetID = assetID
+        else {
+            return nil
+        }
+
+        guard
+            let account = sharedDataController.accountCollection[accountAddress],
+            account.isAvailable,
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let rawAccount = account.value
+
+        let isWatchAccount = rawAccount.isWatchAccount()
+
+        if isWatchAccount {
+            return nil
+        }
+
+        return .success(.optInAsset(account: rawAccount, assetID: assetID))
+    }
+
+    private func makeAssetTransactionDetailScreen(for notificationMessage: NotificationMessage) -> Result? {
+        let url = notificationMessage.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+        let assetID = params?["asset"].unwrap { AssetID($0) }
+
+        guard
+            let accountAddress = accountAddress,
+            let assetID = assetID
+        else {
+            return nil
+        }
+
+        let isAlgo = assetID == 0
+
+        if isAlgo {
+            return makeTransactionDetailScreen(accountAddress: accountAddress)
+        }
+
+        return makeAssetTransactionDetailScreen(
+            accountAddress: accountAddress,
+            assetID: assetID
+        )
+    }
+
     private func makeTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
@@ -55,6 +145,12 @@ extension DeepLinkParser {
             return nil
         }
         
+        return makeTransactionDetailScreen(accountAddress: accountAddress)
+    }
+
+    private func makeTransactionDetailScreen(
+        accountAddress: PublicKey
+    ) -> Result? {
         guard
             let account = sharedDataController.accountCollection[accountAddress],
             account.isAvailable,
@@ -72,11 +168,21 @@ extension DeepLinkParser {
     ) -> Result? {
         guard
             let accountAddress = notification.accountAddress,
-            let assetId = notification.detail?.asset?.id
+            let assetID = notification.detail?.asset?.id
         else {
             return nil
         }
         
+        return makeAssetTransactionDetailScreen(
+            accountAddress: accountAddress,
+            assetID: assetID
+        )
+    }
+
+    private func makeAssetTransactionDetailScreen(
+        accountAddress: PublicKey,
+        assetID: AssetID
+    ) -> Result? {
         guard
             let account = sharedDataController.accountCollection[accountAddress],
             account.isAvailable,
@@ -84,14 +190,20 @@ extension DeepLinkParser {
         else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
-        
-        guard let asset = account.value[assetId] as? StandardAsset else {
-            return .failure(.waitingForAssetsToBeAvailable)
+
+        let rawAccount = account.value
+
+        if let asset = rawAccount[assetID] as? StandardAsset {
+            return .success(.asaDetail(account: rawAccount, asset: asset))
         }
 
-        return .success(.asaDetail(account: account.value, asset: asset))
+        if let collectibleAsset = rawAccount[assetID] as? CollectibleAsset {
+            return .success(.collectibleDetail(account: rawAccount, asset: collectibleAsset))
+        }
+
+        return .failure(.assetNotFound)
     }
-    
+
     private func makeAssetTransactionRequestScreen(
         for notification: AlgorandNotification
     ) -> Result? {
@@ -305,12 +417,26 @@ extension DeepLinkParser {
     typealias Result = Swift.Result<Screen, Error>
     
     enum Screen {
-        case actionSelection(address: String, label: String?)
+        case actionSelection(
+            address: String,
+            label: String?
+        )
         case assetActionConfirmation(
             draft: AssetAlertDraft,
             theme: AssetActionConfirmationViewControllerTheme = .init()
         )
-        case asaDetail(account: Account, asset: Asset)
+        case optInAsset(
+            account: Account,
+            assetID: AssetID
+        )
+        case asaDetail(
+            account: Account,
+            asset: Asset
+        )
+        case collectibleDetail(
+            account: Account,
+            asset: CollectibleAsset
+        )
         case sendTransaction(
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil
@@ -323,5 +449,13 @@ extension DeepLinkParser {
     enum Error: Swift.Error {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
+        case assetNotFound
+    }
+}
+
+extension DeepLinkParser {
+    enum NotificationMessageAction: String {
+        case assetOptIn = "asset/opt-in"
+        case assetTransactions = "asset/transactions"
     }
 }

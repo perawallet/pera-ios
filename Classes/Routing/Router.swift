@@ -189,6 +189,7 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
+        case .optInAsset: break
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
@@ -204,6 +205,21 @@ class Router:
                     break
                 }
             }
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
+        case .collectibleDetail(account: let account, asset: let asset):
+            /// <todo> Test 
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.collectibleDetail(
+                asset: asset,
+                account: account
+            )
 
             route(
                 to: screen,

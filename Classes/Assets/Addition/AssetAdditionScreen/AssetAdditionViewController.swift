@@ -323,7 +323,6 @@ extension AssetAdditionViewController {
         let screen = Screen.collectibleDetail(
             asset: collectibleAsset,
             account: account,
-            thumbnailImage: nil,
             quickAction: .optIn
         ) { event in
             switch event {

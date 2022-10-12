@@ -56,7 +56,9 @@ extension ALGAPIInterceptor {
             setAlgodHeaders(endpoint)
         case .indexer:
             setIndexerHeaders(endpoint)
-        case .mobile:
+        case .mobileV1:
+            setMobileHeaders(endpoint)
+        case .mobileV2:
             setMobileHeaders(endpoint)
         case .algoExplorer:
             break
@@ -76,6 +78,7 @@ extension ALGAPIInterceptor {
     }
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
+        endpoint.setAdditionalHeader(CustomHeader(key: "X-API-Key", value: apiBase.apiKey), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), policy: .setIfNotExists)
         endpoint.setAdditionalHeader(AppNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppPackageNameHeader(application), policy: .alwaysOverride)

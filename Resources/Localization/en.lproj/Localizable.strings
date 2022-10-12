@@ -499,13 +499,6 @@
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
 
-// MARK: Notifications
-"notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
-"notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
-"notification-received" = "%@ were sent to %@ by %@.";
-"notification-support-success" = "%@ has added %@ to their account. You can send them.";
-"notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
-
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does Asset Verification mean?";
