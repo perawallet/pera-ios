@@ -171,6 +171,13 @@ final class SendTransactionScreen: BaseViewController {
         noteButton.addTarget(self, action: #selector(didTapNote), for: .touchUpInside)
 
         transactionController.delegate = self
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didEditNote(notification:)),
+            name: .didEditNote,
+            object: nil
+        )
     }
 }
 
@@ -485,6 +492,17 @@ extension SendTransactionScreen: TransactionSignChecking {
             .editNote(note: editNote, isLocked: isLocked, delegate: self),
             by: .present
         )
+    }
+    
+    @objc
+    private func didEditNote(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: String],
+              let note = userInfo["note"] else {
+            return
+        }
+        
+        self.note = note
+        self.draft.updateNote(note)
     }
 
     private func redirectToPreview() {

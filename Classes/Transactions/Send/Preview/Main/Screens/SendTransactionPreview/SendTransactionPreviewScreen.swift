@@ -172,6 +172,12 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
       transactionDetailView.bindData(
          TransactionActionInformationViewModel(description: self.draft.note)
       )
+      
+      NotificationCenter.default.post(
+         name: .didEditNote,
+         object: self,
+         userInfo: ["note": note ?? ""]
+      )
    }
 }
 
