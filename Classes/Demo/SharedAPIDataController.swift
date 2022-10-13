@@ -24,6 +24,7 @@ import MagpieHipo
 final class SharedAPIDataController:
     SharedDataController,
     WeakPublisher {
+
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     var assetDetailCollection: AssetDetailCollection = []
@@ -78,6 +79,8 @@ final class SharedAPIDataController:
         DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
     
     private var nextAccountCollection: AccountCollection = []
+
+    private var transactionParams: TransactionParams?
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
@@ -115,9 +118,41 @@ final class SharedAPIDataController:
 }
 
 extension SharedAPIDataController {
+    private func fetchTransactionParams(_ handler: ((TransactionParams) -> Void)? = nil) {
+        api.getTransactionParams {
+            [weak self] response in
+            guard let self else {
+                return
+            }
+
+            switch response {
+            case .success(let transactionParams):
+                self.transactionParams = transactionParams
+                handler?(transactionParams)
+            case .failure:
+                self.fetchTransactionParams(handler)
+            }
+        }
+    }
+
+    func getTransactionParams(_ handler: @escaping (TransactionParams) -> Void) {
+        if let params = transactionParams {
+            handler(params)
+            return
+        }
+
+        fetchTransactionParams(handler)
+    }
+}
+
+extension SharedAPIDataController {
     func startPolling() {
         $status.mutate { $0 = .running }
         blockProcessor.start()
+        
+        fetchTransactionParams { [weak self] transactionParams in
+            self?.transactionParams = transactionParams
+        }
     }
     
     func stopPolling() {

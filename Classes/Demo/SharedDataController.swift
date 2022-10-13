@@ -70,6 +70,9 @@ protocol SharedDataController: AnyObject {
     func remove(
         _ observer: SharedDataControllerObserver
     )
+    func getTransactionParams(
+        _ handler: @escaping (TransactionParams) -> Void
+    )
 }
 
 extension SharedDataController {

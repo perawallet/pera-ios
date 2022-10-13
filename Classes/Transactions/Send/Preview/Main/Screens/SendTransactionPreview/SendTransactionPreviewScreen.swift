@@ -93,8 +93,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          currency: currency,
          currencyFormatter: currencyFormatter
       )
-
-      updateData()
    }
 
    override func linkInteractors() {
@@ -104,15 +102,11 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
    }
 
-   func updateData() {
-      api?.getTransactionParams { response in
-         switch response {
-         case .success(let params):
-            self.updateDataModels(with: params)
-            break
-         case .failure:
-            break
-         }
+   override func viewDidLoad() {
+      super.viewDidLoad()
+
+      sharedDataController.getTransactionParams { [weak self] params in
+         self?.updateDataModels(with: params)
       }
    }
 
