@@ -110,6 +110,9 @@
 		173DA1ED2255F96E00378A82 /* TransactionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EC2255F96E00378A82 /* TransactionParams.swift */; };
 		173DA2102256643A00378A82 /* TransactionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA20F2256643A00378A82 /* TransactionID.swift */; };
 		1746715D225B6C0400B78641 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746715C225B6C0400B78641 /* TypeAliases.swift */; };
+		174C69E528F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
+		174C69E628F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
+		174C69E728F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
 		1751261A223BE5930095AF4F /* APIParamKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* APIParamKey.swift */; };
 		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
@@ -5586,6 +5589,7 @@
 		173DA1EC2255F96E00378A82 /* TransactionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParams.swift; sourceTree = "<group>"; };
 		173DA20F2256643A00378A82 /* TransactionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionID.swift; sourceTree = "<group>"; };
 		1746715C225B6C0400B78641 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		174C69E428F579B8005BF080 /* SDKTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKTransaction.swift; sourceTree = "<group>"; };
 		17512619223BE5930095AF4F /* APIParamKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIParamKey.swift; sourceTree = "<group>"; };
 		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
@@ -9034,6 +9038,7 @@
 				2BB021DA224E46D60039D78A /* Transaction.swift */,
 				F098E29B28B8E06F0032887F /* TransactionType.swift */,
 				2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */,
+				174C69E428F579B8005BF080 /* SDKTransaction.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -18062,6 +18067,7 @@
 				D4092BBF276B5E690009722D /* WCSessionShortListLayout.swift in Sources */,
 				17BD4E792292F1260003E49A /* UICollectionView+Additions.swift in Sources */,
 				D459E29227DE547200F7FC33 /* CollectibleTransactionInfoViewTheme.swift in Sources */,
+				174C69E728F579B8005BF080 /* SDKTransaction.swift in Sources */,
 				1793FBCB289403A5009E6F90 /* BadgeButton.swift in Sources */,
 				2BF8120625E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
 				2BD4E50C2855EB77003D57A4 /* SortCollectibleListDataController.swift in Sources */,
@@ -19831,6 +19837,7 @@
 				1793FBCA289403A5009E6F90 /* BadgeButton.swift in Sources */,
 				D4C601DD2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */,
 				D4FC5F5027F507890017E81F /* ReceiveCollectibleAssetListInfoViewModel.swift in Sources */,
+				174C69E628F579B8005BF080 /* SDKTransaction.swift in Sources */,
 				2B0F624524EC129D00DA22A6 /* Session+Crypto.swift in Sources */,
 				2B968A8B2886A31D00184ED5 /* AsaVerificationInfoScreenTheme.swift in Sources */,
 				1736FB9428AD1EDB002BB713 /* MoonpayEvent.swift in Sources */,
@@ -21600,6 +21607,7 @@
 				F0DB414927936DF000EA437D /* AccountPreviewCell.swift in Sources */,
 				2BA4B3D12673F09A0041586B /* WCConnectionApprovalViewController.swift in Sources */,
 				F0DB418727948DC300EA437D /* ListItemButton.swift in Sources */,
+				174C69E528F579B8005BF080 /* SDKTransaction.swift in Sources */,
 				95AF1C7227B1307A001AB131 /* TransactionHistoryLoadingCell.swift in Sources */,
 				2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				2B7E586025866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
