@@ -875,10 +875,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case .sendTransactionPreview(let draft, let transactionController):
+        case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):

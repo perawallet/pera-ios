@@ -145,7 +145,7 @@ indirect enum Screen {
     )
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
-    case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
+    case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
     case transactionFloatingActionButton
     case wcSingleTransactionScreen(
