@@ -24,6 +24,14 @@ final class PasswordMigration {
     }
 
     func migratePasswordToKeychain() {
+        guard !session.hasPassword() else {
+            /// <note>
+            /// If password is exist on keychain, we shouldn't update/migrate the password
+            /// We should try to remove password on database if needed
+            session.deletePasswordFromDatabase()
+            return
+        }
+
         guard session.hasPasswordOnDatabase() else {
             /// <note>
             /// If password is not exist in database, no need to migrate
@@ -45,13 +53,14 @@ extension Session {
     }
 
     private func passwordOnDatabase() -> String? {
-        guard let config = applicationConfiguration else {
-            return nil
-        }
-        return config.password
+        applicationConfiguration?.password
     }
 
-    private func deletePasswordFromDatabase() {
+    fileprivate func deletePasswordFromDatabase() {
+        guard hasPasswordOnDatabase() else {
+            return
+        }
+        
         if let config = applicationConfiguration {
             config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
         }
