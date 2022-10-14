@@ -40,6 +40,7 @@ class Router:
 
     private lazy var transactionController = TransactionController(
         api: appConfiguration.api,
+        sharedDataController: appConfiguration.sharedDataController,
         bannerController: appConfiguration.bannerController,
         analytics: appConfiguration.analytics
     )

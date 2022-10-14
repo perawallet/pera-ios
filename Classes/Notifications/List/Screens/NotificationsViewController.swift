@@ -41,6 +41,7 @@ final class NotificationsViewController:
         }
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

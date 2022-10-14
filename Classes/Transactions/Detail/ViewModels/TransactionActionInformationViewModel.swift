@@ -12,26 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TransactionSendDraft.swift
+//   TransactionActionInformationViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-protocol TransactionSendDraft {
-    var from: Account { get set }
-    var toAccount: Account? { get set }
-    var amount: Decimal? { get set }
-    var fee: UInt64? { get set }
-    var isMaxTransaction: Bool { get set }
-    var identifier: String? { get set }
-    var note: String? { get set }
-    var lockedNote: String? { get set }
-    var toContact: Contact? { get set }
-    var nameService: NameService? { get set }
-}
-
-extension TransactionSendDraft {
-    mutating func updateNote(_ note: String?) {
-        self.note = note
+final class TransactionActionInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var description: String?
+    
+    init(description: String? = nil) {
+        self.title = "transaction-detail-note".localized
+        self.description = description
     }
 }

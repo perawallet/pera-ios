@@ -23,6 +23,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
    var eventHandler: EventHandler?
+   
+   private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
@@ -33,13 +35,14 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    private lazy var currencyFormatter = CurrencyFormatter()
 
-   private let draft: TransactionSendDraft
+   private var draft: TransactionSendDraft
    private lazy var transactionController = {
       guard let api = api else {
          fatalError("API should be set.")
       }
       return TransactionController(
          api: api,
+         sharedDataController: sharedDataController,
          bannerController: bannerController,
          analytics: analytics
       )
@@ -91,8 +94,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          currency: currency,
          currencyFormatter: currencyFormatter
       )
-
-      updateData()
    }
 
    override func linkInteractors() {
@@ -102,19 +103,25 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
    }
 
-   func updateData() {
-      api?.getTransactionParams { response in
-         switch response {
+   override func viewDidLoad() {
+      super.viewDidLoad()
+
+      sharedDataController.getTransactionParams { [weak self] paramsResult in
+         guard let self else {
+            return
+         }
+
+         switch paramsResult {
          case .success(let params):
-            self.updateDataModels(with: params)
-            break
-         case .failure:
-            break
+            self.bindTransaction(with: params)
+         case .failure(let error):
+            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
          }
       }
    }
 
-   func updateDataModels(with params: TransactionParams) {
+   /// <todo>: Add Unit Test for composing transaction and view model changes
+   func bindTransaction(with params: TransactionParams) {
       var transactionDraft = composeTransaction()
       let builder: TransactionDataBuildable
 
@@ -152,9 +159,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             currencyFormatter: self.currencyFormatter
          )
       } catch {
-         print(error)
+         self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
       }
-
    }
 
    private func composeTransaction() -> TransactionSendDraft {
@@ -234,6 +240,22 @@ extension SendTransactionPreviewScreen {
       transactionDetailView.snp.makeConstraints {
          $0.edges.equalToSuperview()
       }
+      
+      transactionDetailView.startObserving(event: .performEditNote) {
+         [weak self] in
+         guard let self = self else { return }
+         
+         let isLocked = self.draft.lockedNote != nil
+         let editNote = self.draft.lockedNote ?? self.draft.note
+         
+         self.modalTransition.perform(
+            .editNote(
+               note: editNote,
+               isLocked: isLocked,
+               delegate: self
+            ), by: .present
+         )
+      }
    }
 
    private func addNextButton() {
@@ -269,6 +291,30 @@ extension SendTransactionPreviewScreen {
 
       layer.colors = [color0, color1]
       nextButtonContainer.layer.insertSublayer(layer, at: 0)
+   }
+}
+
+extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
+   func editNoteScreen(
+      _ editNoteScreen: EditNoteScreen,
+      didUpdateNote note: String?
+   ) {
+      self.draft.updateNote(note)
+
+      sharedDataController.getTransactionParams { [weak self] paramsResult in
+         guard let self else {
+            return
+         }
+
+         switch paramsResult {
+         case .success(let params):
+            self.bindTransaction(with: params)
+         case .failure(let error):
+            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         }
+      }
+
+      eventHandler?(.didEditNote(note: note))
    }
 }
 
@@ -427,5 +473,6 @@ extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didEditNote(note: String?)
    }
 }

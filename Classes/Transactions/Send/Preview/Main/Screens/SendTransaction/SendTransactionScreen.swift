@@ -472,6 +472,11 @@ extension SendTransactionScreen: TransactionSignChecking {
         )
     }
 
+    private func didEditNote(note: String?) {
+        self.note = note
+        self.draft.updateNote(note)
+    }
+
     private func redirectToPreview() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -514,6 +519,8 @@ extension SendTransactionScreen {
             switch event {
             case .didCompleteTransaction:
                 self.eventHandler?(.didCompleteTransaction)
+            case .didEditNote(let note):
+                self.didEditNote(note: note)
             }
         }
     }
@@ -709,17 +716,13 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func getTransactionParams() {
-        api?.getTransactionParams { [weak self] response in
-            guard let self = self else {
-                return
-            }
-
-            switch response {
-            case let .success(params):
+        sharedDataController.getTransactionParams { result in
+            switch result {
+            case .success(let params):
                 self.transactionParams = params
                 self.amountValidator.setTransactionParams(params)
-            case .failure:
-                break
+            case .failure(let error):
+                self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
             }
         }
     }
@@ -756,6 +759,8 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                 switch event {
                 case .didCompleteTransaction:
                     self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.didEditNote(note: note)
                 }
             }
         }
