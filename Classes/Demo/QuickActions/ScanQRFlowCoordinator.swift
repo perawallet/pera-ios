@@ -540,6 +540,15 @@ extension ScanQRFlowCoordinator {
     }
 
     private func openAddWatchAccount(_ qr: QRText) {
+        if let authenticatedUser = session.authenticatedUser,
+           authenticatedUser.hasReachedTotalAccountLimit {
+            bannerController.presentErrorBanner(
+                title: "user-account-limit-error-title".localized,
+                message: "user-account-limit-error-message".localized
+            )
+            return
+        }
+
         guard let address = qr.address else {
             return
         }
@@ -658,6 +667,15 @@ extension ScanQRFlowCoordinator {
         _ qrScannerScreen: QRScannerViewController,
         accountMnemonicWasDetected qr: QRText
     ) {
+        if let authenticatedUser = session.authenticatedUser,
+           authenticatedUser.hasReachedTotalAccountLimit {
+            bannerController.presentErrorBanner(
+                title: "user-account-limit-error-title".localized,
+                message: "user-account-limit-error-message".localized
+            )
+            return
+        }
+
         guard let mnemonic = qr.mnemonic else {
             return
         }
