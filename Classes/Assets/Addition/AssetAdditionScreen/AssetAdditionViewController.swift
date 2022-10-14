@@ -160,6 +160,7 @@ extension AssetAdditionViewController {
     ) -> TransactionController {
         let transactionController = TransactionController(
             api: api!,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

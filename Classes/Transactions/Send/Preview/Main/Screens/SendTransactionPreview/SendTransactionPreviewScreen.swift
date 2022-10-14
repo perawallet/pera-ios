@@ -42,6 +42,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
       return TransactionController(
          api: api,
+         sharedDataController: sharedDataController,
          bannerController: bannerController,
          analytics: analytics
       )
@@ -105,8 +106,17 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
 
-      sharedDataController.getTransactionParams { [weak self] params in
-         self?.bindTransaction(with: params)
+      sharedDataController.getTransactionParams { [weak self] paramsResult in
+         guard let self else {
+            return
+         }
+
+         switch paramsResult {
+         case .success(let params):
+            self.bindTransaction(with: params)
+         case .failure(let error):
+            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         }
       }
    }
 
@@ -292,8 +302,17 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
    ) {
       self.draft.updateNote(note)
 
-      sharedDataController.getTransactionParams { [weak self] params in
-         self?.bindTransaction(with: params)
+      sharedDataController.getTransactionParams { [weak self] paramsResult in
+         guard let self else {
+            return
+         }
+
+         switch paramsResult {
+         case .success(let params):
+            self.bindTransaction(with: params)
+         case .failure(let error):
+            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         }
       }
       
       NotificationCenter.default.post(

@@ -80,7 +80,7 @@ final class SharedAPIDataController:
     
     private var nextAccountCollection: AccountCollection = []
 
-    private var transactionParams: TransactionParams?
+    private var transactionParamsResult: Result<TransactionParams, HIPNetworkError<NoAPIModel>>?
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
@@ -118,7 +118,9 @@ final class SharedAPIDataController:
 }
 
 extension SharedAPIDataController {
-    private func fetchTransactionParams(_ handler: ((TransactionParams) -> Void)? = nil) {
+    private func fetchTransactionParams(
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    ) {
         api.getTransactionParams {
             [weak self] response in
             guard let self else {
@@ -127,17 +129,27 @@ extension SharedAPIDataController {
 
             switch response {
             case .success(let transactionParams):
-                self.transactionParams = transactionParams
-                handler?(transactionParams)
-            case .failure:
-                self.fetchTransactionParams(handler)
+                self.transactionParamsResult = .success(transactionParams)
+                handler(.success(transactionParams))
+            case .failure(let apiError, let apiErrorDetail):
+                let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                self.transactionParamsResult = .failure(error)
+                handler(.failure(error))
             }
         }
     }
 
-    func getTransactionParams(_ handler: @escaping (TransactionParams) -> Void) {
-        if let params = transactionParams {
-            handler(params)
+    func getTransactionParams(
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    ) {
+        if let transactionParamsResult = transactionParamsResult {
+            switch transactionParamsResult {
+            case .success:
+                handler(transactionParamsResult)
+            case .failure:
+                fetchTransactionParams(handler)
+            }
+
             return
         }
 
@@ -149,9 +161,14 @@ extension SharedAPIDataController {
     func startPolling() {
         $status.mutate { $0 = .running }
         blockProcessor.start()
-        
-        fetchTransactionParams { [weak self] transactionParams in
-            self?.transactionParams = transactionParams
+
+        fetchTransactionParams { result in
+            switch result {
+            case .success(let params):
+                self.transactionParamsResult = .success(params)
+            case .failure(let error):
+                self.transactionParamsResult = .failure(error)
+            }
         }
     }
     
