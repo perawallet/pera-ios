@@ -114,6 +114,10 @@ final class NotificationsViewController:
                 }
             case .failure(let error):
                 switch error {
+                case .tryingToActForWatchAccount:
+                    self.presentTryingToActForWatchAccountError()
+                case .accountNotFound:
+                    self.presentAccountNotFoundError()
                 case .assetNotFound:
                     self.presentAssetNotFoundError()
                 default:
@@ -406,6 +410,20 @@ extension NotificationsViewController {
 }
 
 extension NotificationsViewController {
+    private func presentTryingToActForWatchAccountError() {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "notifications-trying-to-act-for-watch-account-description".localized
+        )
+    }
+
+    private func presentAccountNotFoundError() {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "notifications-account-not-found-description".localized
+        )
+    }
+
     private func presentAssetNotFoundError() {
         bannerController?.presentErrorBanner(
             title: "notifications-asset-not-found-title".localized,

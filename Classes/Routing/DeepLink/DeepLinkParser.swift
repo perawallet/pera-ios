@@ -94,11 +94,17 @@ extension DeepLinkParser {
             return nil
         }
 
-        guard
-            let account = sharedDataController.accountCollection[accountAddress],
-            account.isAvailable,
-            sharedDataController.isAvailable
-        else {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
 
@@ -107,7 +113,7 @@ extension DeepLinkParser {
         let isWatchAccount = rawAccount.isWatchAccount()
 
         if isWatchAccount {
-            return nil
+            return .failure(.tryingToActForWatchAccount)
         }
 
         return .success(.optInAsset(account: rawAccount, assetID: assetID))
@@ -151,11 +157,17 @@ extension DeepLinkParser {
     private func makeTransactionDetailScreen(
         accountAddress: PublicKey
     ) -> Result? {
-        guard
-            let account = sharedDataController.accountCollection[accountAddress],
-            account.isAvailable,
-            sharedDataController.isAvailable
-        else {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
 
@@ -183,11 +195,17 @@ extension DeepLinkParser {
         accountAddress: PublicKey,
         assetID: AssetID
     ) -> Result? {
-        guard
-            let account = sharedDataController.accountCollection[accountAddress],
-            account.isAvailable,
-            sharedDataController.isAvailable
-        else {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
 
@@ -449,6 +467,8 @@ extension DeepLinkParser {
     enum Error: Swift.Error {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
+        case tryingToActForWatchAccount
+        case accountNotFound
         case assetNotFound
     }
 }

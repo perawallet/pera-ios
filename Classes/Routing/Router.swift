@@ -212,7 +212,6 @@ class Router:
                 by: .present
             )
         case .collectibleDetail(account: let account, asset: let asset):
-            /// <todo> Test 
             launch(tab: .home)
 
             let visibleScreen = findVisibleScreen(over: rootViewController)

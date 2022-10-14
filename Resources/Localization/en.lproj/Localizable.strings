@@ -582,7 +582,8 @@
 "notifications-title" = "Notifications";
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
-
+"notifications-trying-to-act-for-watch-account-description" = "Since this is a watch account you can not act on its behalf.";
+"notifications-account-not-found-description" = "This account has been removed.";
 "notifications-asset-not-found-title" = "Asset history not available";
 "notifications-asset-not-found-description" = "The history for this specific asset is not available.";
 
