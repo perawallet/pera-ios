@@ -21,7 +21,6 @@ import MacaroonUtils
 
 final class NotificationDetail: ALGAPIModel {
     var type: NotificationType
-    let message: String?
     let senderAddress: String?
     let receiverAddress: String?
     let asset: NotificationAsset?
@@ -29,7 +28,6 @@ final class NotificationDetail: ALGAPIModel {
     
     init() {
         self.type = .broadcast
-        self.message = nil
         self.senderAddress = nil
         self.receiverAddress = nil
         self.asset = nil
@@ -54,7 +52,6 @@ final class NotificationDetail: ALGAPIModel {
         }
         
         self.type = type ?? .broadcast
-        self.message = try container.decodeIfPresent(String.self, forKey: .message)
         self.senderAddress = try container.decodeIfPresent(String.self, forKey: .senderAddress)
         self.receiverAddress = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
         self.asset = try container.decodeIfPresent(NotificationAsset.self, forKey: .asset)
@@ -66,7 +63,6 @@ final class NotificationDetail: ALGAPIModel {
     ) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .notificationType)
-        try container.encode(message, forKey: .message)
         try container.encodeIfPresent(senderAddress, forKey: .senderAddress)
         try container.encodeIfPresent(receiverAddress, forKey: .receiverAddress)
         try container.encodeIfPresent(asset, forKey: .asset)
@@ -77,7 +73,6 @@ final class NotificationDetail: ALGAPIModel {
         String,
         CodingKey {
         case notificationType = "notification_type"
-        case message
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
         case asset

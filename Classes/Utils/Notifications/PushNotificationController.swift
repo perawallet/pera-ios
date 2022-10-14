@@ -183,47 +183,34 @@ extension PushNotificationController {
         notification: AlgorandNotification,
         action handler: EmptyHandler? = nil
     ) {
-        guard let notificationDetail = notification.detail else {
-            present(idleNotification: notification)
-            return
-        }
+        let type = notification.detail?.type
 
-        switch notificationDetail.type {
+        switch type {
         case .transactionSent,
              .assetTransactionSent,
              .transactionReceived,
              .assetTransactionReceived,
              .transactionFailed,
              .assetTransactionFailed:
-            presentBanner(
-                for: notification,
+            presentNotification(
+                notification,
                 action: handler
             )
-        case .assetSupportSuccess:
-            presentBanner(for: notification)
         default:
-            present(idleNotification: notification)
-        }
-    }
-    
-    private func present(
-        idleNotification notification: AlgorandNotification
-    ) {
-        if let alert = notification.alert {
-            bannerController?.presentNotification(alert)
+            presentNotification(notification)
         }
     }
 
-    private func presentBanner(
-        for notification: AlgorandNotification,
+    private func presentNotification(
+        _ notification: AlgorandNotification,
         action handler: EmptyHandler? = nil
     ) {
-        guard let message = notification.detail?.message else {
+        guard let alert = notification.alert else {
             return
         }
 
         bannerController?.presentNotification(
-            message,
+            alert,
             handler
         )
     }
