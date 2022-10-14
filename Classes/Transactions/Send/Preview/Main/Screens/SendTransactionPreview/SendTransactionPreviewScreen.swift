@@ -106,11 +106,12 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       super.viewDidLoad()
 
       sharedDataController.getTransactionParams { [weak self] params in
-         self?.updateDataModels(with: params)
+         self?.bindTransaction(with: params)
       }
    }
 
-   func updateDataModels(with params: TransactionParams) {
+   /// <todo>: Add Unit Test for composing transaction and view model changes
+   func bindTransaction(with params: TransactionParams) {
       var transactionDraft = composeTransaction()
       let builder: TransactionDataBuildable
 
@@ -290,10 +291,10 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
       didUpdateNote note: String?
    ) {
       self.draft.updateNote(note)
-      
-      transactionDetailView.bindData(
-         TransactionActionInformationViewModel(description: self.draft.note)
-      )
+
+      sharedDataController.getTransactionParams { [weak self] params in
+         self?.bindTransaction(with: params)
+      }
       
       NotificationCenter.default.post(
          name: .didEditNote,
