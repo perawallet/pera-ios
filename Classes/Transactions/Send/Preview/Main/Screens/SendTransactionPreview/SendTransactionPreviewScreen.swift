@@ -159,9 +159,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             currencyFormatter: self.currencyFormatter
          )
       } catch {
-         print(error)
+         self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
       }
-
    }
 
    private func composeTransaction() -> TransactionSendDraft {
