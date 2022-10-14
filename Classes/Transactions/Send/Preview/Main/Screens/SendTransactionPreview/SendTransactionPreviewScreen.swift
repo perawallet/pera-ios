@@ -313,12 +313,8 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
             self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
          }
       }
-      
-      NotificationCenter.default.post(
-         name: .didEditNote,
-         object: self,
-         userInfo: ["note": note ?? ""]
-      )
+
+      eventHandler?(.didEditNote(note: note))
    }
 }
 
@@ -477,5 +473,6 @@ extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didEditNote(note: String?)
    }
 }

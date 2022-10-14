@@ -295,6 +295,8 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                 switch event {
                 case .didCompleteTransaction:
                     self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.eventHandler?(.didEditNote(note: note))
                 }
             }
         }
@@ -379,5 +381,6 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
 extension AccountSelectScreen {
     enum Event {
         case didCompleteTransaction
+        case didEditNote(note: String?)
     }
 }

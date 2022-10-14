@@ -156,13 +156,6 @@ final class SendTransactionScreen: BaseViewController {
         maxButton.addTarget(self, action: #selector(didTapMax), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         noteButton.addTarget(self, action: #selector(didTapNote), for: .touchUpInside)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didEditNote(notification:)),
-            name: .didEditNote,
-            object: nil
-        )
     }
 }
 
@@ -478,14 +471,8 @@ extension SendTransactionScreen: TransactionSignChecking {
             by: .present
         )
     }
-    
-    @objc
-    private func didEditNote(notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String: String],
-              let note = userInfo["note"] else {
-            return
-        }
-        
+
+    private func didEditNote(note: String?) {
         self.note = note
         self.draft.updateNote(note)
     }
@@ -532,6 +519,8 @@ extension SendTransactionScreen {
             switch event {
             case .didCompleteTransaction:
                 self.eventHandler?(.didCompleteTransaction)
+            case .didEditNote(let note):
+                self.didEditNote(note: note)
             }
         }
     }
@@ -770,6 +759,8 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                 switch event {
                 case .didCompleteTransaction:
                     self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.didEditNote(note: note)
                 }
             }
         }
