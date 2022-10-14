@@ -232,18 +232,24 @@ extension DeepLinkParser {
             return nil
         }
         
-        guard
-            let account = sharedDataController.accountCollection[accountAddress],
-            account.isAvailable,
-            sharedDataController.isAvailable
-        else {
+        guard sharedDataController.isAvailable else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        let account = sharedDataController.accountCollection[accountAddress]
+
+        guard let account = account else {
+            return .failure(.accountNotFound)
+        }
+
+        guard account.isAvailable else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
 
         let isWatchAccount = account.value.isWatchAccount()
 
         if isWatchAccount {
-            return nil
+            return .failure(.tryingToActForWatchAccount)
         }
         
         let accountName = account.value.name ?? accountAddress

@@ -344,6 +344,11 @@ extension AppDelegate {
                     WalletConnector.sessionRequestUserInfoKey: key
                 ]
             )
+        case .localError(let title, let message):
+            bannerController.presentErrorBanner(
+                title: title,
+                message: message
+            )
         }
     }
 }

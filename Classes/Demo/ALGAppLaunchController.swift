@@ -287,9 +287,52 @@ extension ALGAppLaunchController {
         case .success(let uiState):
             uiHandler.launchUI(uiState)
             completePendingDeeplink()
-        case .failure:
-            suspend(deeplinkWithSource: src)
+        case .failure(let error):
+            if shouldSuspendDeeplink(error) {
+                suspend(deeplinkWithSource: src)
+                return
+            }
+
+            launchFailureUIState(error)
+            completePendingDeeplink()
         }
+    }
+
+    private func shouldSuspendDeeplink(_ error: DeepLinkParser.Error) -> Bool {
+        switch error {
+        case .tryingToActForWatchAccount,
+             .accountNotFound,
+             .assetNotFound:
+            return false
+        default:
+            return true
+        }
+    }
+
+    private func launchFailureUIState(_ error: DeepLinkParser.Error) {
+        let title: String
+        let message: String
+
+        switch error {
+        case .tryingToActForWatchAccount:
+            title = "title-error".localized
+            message = "notifications-trying-to-act-for-watch-account-description".localized
+        case .accountNotFound:
+            title = "title-error".localized
+            message = "notifications-account-not-found-description".localized
+        case .assetNotFound:
+            title = "notifications-asset-not-found-title".localized
+            message = "notifications-asset-not-found-description".localized
+        default:
+            return
+        }
+
+        let uiState = AppLaunchUIState.localError(
+            title: title,
+            message: message
+        )
+
+        uiHandler.launchUI(uiState)
     }
     
     private func determineUIStateIfPossible(

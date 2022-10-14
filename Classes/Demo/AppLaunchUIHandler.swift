@@ -40,4 +40,8 @@ enum AppLaunchUIState {
     )
     case deeplink(DeepLinkParser.Screen)
     case walletConnectSessionRequest(String)
+    case localError(
+        title: String,
+        message: String
+    )
 }
