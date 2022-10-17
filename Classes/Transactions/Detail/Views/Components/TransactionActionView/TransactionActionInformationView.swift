@@ -98,17 +98,25 @@ extension TransactionActionInformationView {
 
 extension TransactionActionInformationView: ViewModelBindable {
     func bindData(_ viewModel: TransactionActionInformationViewModel?) {
-        if let title = viewModel?.title {
+        guard let viewModel = viewModel else { return }
+        
+        actionView.isHidden = !viewModel.hasAction
+        
+        if let title = viewModel.title {
             title.load(in: titleLabel)
         }
         
-        if let description = viewModel?.description,
+        if let description = viewModel.description,
            !description.isEmptyOrBlank {
+            
             description.load(in: descriptionLabel)
             
-            actionView.recustomizeAppearance(theme.actionWithData)
-            actionPrimaryTopConstraint?.deactivate()
-            actionSecondaryTopConstraint?.activate()
+            if viewModel.hasAction {
+                actionView.recustomizeAppearance(theme.actionWithData)
+                actionPrimaryTopConstraint?.deactivate()
+                actionSecondaryTopConstraint?.activate()
+            }
+            
             return
         }
         

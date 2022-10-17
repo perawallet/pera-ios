@@ -206,6 +206,12 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private func setNote(
         for draft: TransactionSendDraft
     ) {
-        noteView = TransactionActionInformationViewModel(description: draft.note)
+        let isLocked = draft.lockedNote != nil
+        let editNote = draft.lockedNote ?? draft.note
+        
+        noteView = TransactionActionInformationViewModel(
+            description: editNote,
+            hasAction: !isLocked
+        )
     }
 }

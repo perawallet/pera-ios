@@ -187,7 +187,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             fee: nil,
             isMaxTransaction: draft.isMaxTransaction,
             identifier: nil,
-            note: draft.note
+            note: draft.note,
+            lockedNote: draft.lockedNote
          )
          transactionDraft.toContact = draft.toContact
          transactionDraft.nameService = draft.nameService
@@ -200,7 +201,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             assetIndex: asset.id,
             assetDecimalFraction: asset.decimals,
             isVerifiedAsset: asset.verificationTier.isVerified,
-            note: draft.note
+            note: draft.note,
+            lockedNote: draft.lockedNote
          )
          assetTransactionDraft.toContact = draft.toContact
          assetTransactionDraft.asset = asset

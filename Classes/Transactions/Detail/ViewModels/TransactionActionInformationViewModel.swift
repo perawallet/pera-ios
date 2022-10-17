@@ -20,9 +20,14 @@ import MacaroonUIKit
 final class TransactionActionInformationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var description: String?
+    private(set) var hasAction: Bool = true
     
-    init(description: String? = nil) {
+    init(
+        description: String? = nil,
+        hasAction: Bool = true
+    ) {
         self.title = "transaction-detail-note".localized
         self.description = description
+        self.hasAction = hasAction
     }
 }
