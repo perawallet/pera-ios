@@ -106,10 +106,18 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
 
+      fetchTransactionParams()
+   }
+
+   private func fetchTransactionParams() {
+      loadingController?.startLoadingWithMessage("title-loading".localized)
+
       sharedDataController.getTransactionParams { [weak self] paramsResult in
          guard let self else {
             return
          }
+
+         self.loadingController?.stopLoading()
 
          switch paramsResult {
          case .success(let params):
@@ -121,7 +129,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    }
 
    /// <todo>: Add Unit Test for composing transaction and view model changes
-   func bindTransaction(with params: TransactionParams) {
+   private func bindTransaction(with params: TransactionParams) {
       var transactionDraft = composeTransaction()
       let builder: TransactionDataBuildable
 
