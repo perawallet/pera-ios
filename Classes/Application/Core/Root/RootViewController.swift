@@ -101,7 +101,8 @@ extension RootViewController {
 
         let homeViewController = HomeViewController(
             dataController: HomeAPIDataController(
-                appConfiguration.sharedDataController,
+                sharedDataController: appConfiguration.sharedDataController,
+                session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController
             ),
             copyToClipboardController: ALGCopyToClipboardController(

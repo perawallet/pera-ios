@@ -25,6 +25,7 @@ final class HomeAPIDataController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
     
@@ -35,10 +36,12 @@ final class HomeAPIDataController:
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
     init(
-        _ sharedDataController: SharedDataController,
+        sharedDataController: SharedDataController,
+        session: Session,
         announcementDataController: AnnouncementAPIDataController
     ) {
         self.sharedDataController = sharedDataController
+        self.session = session
         self.announcementDataController = announcementDataController
     }
     
@@ -249,7 +252,14 @@ extension HomeAPIDataController {
 }
 
 extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
-    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement) {
-        self.visibleAnnouncement = announcement
+    func announcementAPIDataController(
+        _ dataController: AnnouncementAPIDataController,
+        didFetch announcements: [Announcement]
+    ) {
+        let announcementToDisplay = announcements.first { announcement in
+            return !session.isAnnouncementHidden(announcement)
+        }
+
+        self.visibleAnnouncement = announcementToDisplay
     }
 }
