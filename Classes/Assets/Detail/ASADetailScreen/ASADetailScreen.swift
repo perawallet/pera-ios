@@ -517,6 +517,14 @@ extension ASADetailScreen {
             $0.centerX == 0
         }
 
+        let asset = dataController.asset
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        var viewModel = ASADetailQuickActionsViewModel(
+            asset: asset,
+            isSwapBadgeVisible: !isOnboardedToSwap
+        )
+
         quickActionsView.startObserving(event: .layoutChanged) {
             [unowned self] in
 
@@ -528,7 +536,12 @@ extension ASADetailScreen {
             self.navigateToBuyAlgo()
         }
         quickActionsView.startObserving(event: .swap) {
-            [unowned self] in
+            [unowned self, unowned quickActionsView] in
+
+            if !isOnboardedToSwap {
+                viewModel.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
+                quickActionsView.bindData(viewModel)
+            }
 
             self.navigateToSwapAsset()
         }
@@ -543,8 +556,6 @@ extension ASADetailScreen {
             self.navigateToReceiveTransaction()
         }
 
-        let asset = dataController.asset
-        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
         quickActionsView.bindData(viewModel)
     }
 

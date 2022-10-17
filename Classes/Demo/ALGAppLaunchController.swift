@@ -389,7 +389,15 @@ extension ALGAppLaunchController {
 
 struct ALGAppLaunchStore: Storable {
     typealias Object = Any
-    
+
+    var hasLaunchedBefore: Bool {
+        get { userDefaults.bool(forKey: hasLaunchedBeforeKey) }
+        set {
+            userDefaults.set(newValue, forKey: hasLaunchedBeforeKey)
+            userDefaults.synchronize()
+        }
+    }
+
     var isOnboarding: Bool {
         get { userDefaults.bool(forKey: isOnboardingKey) }
         set {
@@ -398,5 +406,6 @@ struct ALGAppLaunchStore: Storable {
         }
     }
 
+    private let hasLaunchedBeforeKey = "com.algorand.store.app.hasLaunchedBefore"
     private let isOnboardingKey = "com.algorand.store.app.isOnboarding"
 }

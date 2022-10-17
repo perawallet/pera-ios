@@ -30,7 +30,7 @@ extension ListItemButtonViewModel {
     var isBadgeVisible: Bool {
         return false
     }
-
+    
     var accessory: Image? {
         return nil
     }

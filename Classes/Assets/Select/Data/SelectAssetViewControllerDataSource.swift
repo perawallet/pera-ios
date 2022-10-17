@@ -124,12 +124,28 @@ extension SelectAssetViewControllerDataSource {
     }
 }
 
-struct SelectAssetListItem {
+struct SelectAssetListItem: Hashable {
     let model: Asset
     let viewModel: AssetListItemViewModel
 
     init(item: AssetItem) {
         self.model = item.asset
         self.viewModel = AssetListItemViewModel(item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(model.id)
+        hasher.combine(model.naming.name)
+        hasher.combine(model.naming.unitName)
+    }
+
+    static func == (
+        lhs: SelectAssetListItem,
+        rhs: SelectAssetListItem
+    ) -> Bool {
+        return
+            lhs.model.id == rhs.model.id &&
+            lhs.model.naming.name == rhs.model.naming.name &&
+            lhs.model.naming.unitName == rhs.model.naming.unitName
     }
 }

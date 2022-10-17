@@ -20,7 +20,12 @@ import MacaroonUIKit
 
 final class SwapAssetAmountView:
     View,
-    AssetAmountInputViewDelegate {
+    AssetAmountInputViewDelegate,
+    UIInteractable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .didSelectAsset: GestureInteraction()
+    ]
+    
     weak var delegate: SwapAssetAmountViewDelegate?
 
     private lazy var leftTitleView = Label()
@@ -127,6 +132,11 @@ extension SwapAssetAmountView {
             $0.trailing == 0
             $0.bottom <= 0
         }
+
+        startPublishing(
+            event: .didSelectAsset,
+            for: assetSelectionView
+        )
     }
 
     private func addAmountInput(
@@ -193,6 +203,12 @@ extension SwapAssetAmountView {
             with: range,
             replacementString: string
         )
+    }
+}
+
+extension SwapAssetAmountView {
+    enum Event {
+        case didSelectAsset
     }
 }
 

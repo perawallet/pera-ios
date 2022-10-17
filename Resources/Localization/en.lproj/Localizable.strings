@@ -85,6 +85,8 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-to" = "To";
+"title-try-again" = "Try Again";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1124,7 +1126,7 @@
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
-"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+"transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
@@ -1195,6 +1197,9 @@
 /// MARK: Swap Asset
 "swap-asset-choose-title" = "Choose an asset";
 "swap-asset-amount-title-balance" = "Balance: %@";
+"swap-asset-pool-search-error" = "We can't show assets right now. Please try again.";
+"swap-asset-from" = "Swap From";
+"swap-asset-to" = "Swap To";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
@@ -1203,6 +1208,46 @@
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
 "swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
+/// MARK: Swap Slippage
+"swap-slippage-title" = "Slippage Tolerance";
+"swap-slippage-placeholder" = "Set custom slippage";
+"swap-slippage-percentage-auto" = "Auto";
+"swap-slippage-error-value" = "Slippage tolerance must be between 0.1% and 1%";
+"swap-slippage-error-required" = "Please enter or select a value";
+
+/// MARK: Swap Confirm Asset
+"swap-confirm-title" = "Confirm Swap";
+"swap-price-impact-title" = "Price Impact";
+"swap-confirm-minimum-received-title" = "Minimum Received";
+"swap-confirm-total-fee-title" = "Total Swap Fee";
+"swap-confirm-view-summary-title" = "View Swap Summary";
+"swap-confirm-exchange-fee-title" = "Exchange Fee";
+"swap-confirm-pera-fee-title" = "Pera Fee";
+"swap-confirm-total-fee-detail" = "Amount displayed in the Total Swap Fee will be included in the swap. Algorand Network fees will be added as extra.";
+"swap-confirm-summary-title" = "Swap Summary";
+
+// MARK: Swap Loading
+"swap-loading-title" = "Sending the transaction";
+"swap-loading-detail" = "You will receive at least %@ or the transaction will revert.";
+
+// MARK: Swap Success
+"swap-success-title" = "%@ swap completed";
+"swap-success-detail" = "You received %@ in exchange for %@";
+"swap-success-view-explorer" = "View Transaction detail in AlgoExplorer";
+"swap-success-view-summary" = "View Swap Summary";
+
+// MARK: Swap Summary
+"swap-summary-received-title" = "Received";
+"swap-summary-paid-title" = "Paid";
+"swap-summary-algorand-fees-title" = "Algorand Fees";
+"swap-summary-opt-in-fees-title" = "Opt-in Fees";
+"swap-confirm-exchange-fees-title" = "Exchange Fees";
+"swap-confirm-pera-fees-title" = "Pera Fees";
+
+// MARK: Swap Error
+"swap-error-failed" = "%@ swap has failed";
+"swao-error-go-home" = "Go to Homepage";
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";

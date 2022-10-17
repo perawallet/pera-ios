@@ -30,11 +30,9 @@ protocol SwapAssetDataController: AnyObject {
     var eventHandler: EventHandler? { get set }
 
     func loadData(swapAmount: Decimal)
-    func toggleSwapType()
     func updateUserAsset(_ asset: Asset)
     func updatePoolAsset(_ asset: Asset)
     func updateSlippage(_ slippage: Decimal)
-    func getUserAssetItem() -> AssetItem
 }
 
 enum SwapAssetDataControllerEvent {

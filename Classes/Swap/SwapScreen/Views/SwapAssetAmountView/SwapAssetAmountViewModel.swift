@@ -24,9 +24,13 @@ struct SwapAssetAmountViewModel: ViewModel {
     private(set) var assetAmountValue: AssetAmountInputViewModel?
     private(set) var assetSelectionValue: SwapAssetSelectionViewModel?
 
+    private var draft: SwapAssetAmountViewModelDraft
+
     init(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
+        self.draft = draft
+
         bindLeftTitle(draft)
         bindRightTitle(draft)
         bindAssetAmountValue(draft)
@@ -51,10 +55,10 @@ extension SwapAssetAmountViewModel {
     mutating func bindRightTitle(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
-        let asset = draft.assetItem.asset
+        let asset = draft.asset
 
-        let formatter = draft.assetItem.currencyFormatter
-        formatter.formattingContext = draft.assetItem.currencyFormattingContext ?? .standalone()
+        let formatter = draft.currencyFormatter
+        formatter.formattingContext = .standalone()
 
         if asset.isAlgo {
             formatter.currency = AlgoLocalCurrency()
@@ -80,7 +84,7 @@ extension SwapAssetAmountViewModel {
         _ draft: SwapAssetAmountViewModelDraft
     ) {
         assetAmountValue = AssetAmountInputViewModel(
-            asset: draft.assetItem.asset,
+            asset: draft.asset,
             isInputEditable: draft.isInputEditable
         )
     }
@@ -88,6 +92,6 @@ extension SwapAssetAmountViewModel {
     mutating func bindAssetSelectionValue(
         _ draft: SwapAssetAmountViewModelDraft
     ) {
-        assetSelectionValue = SwapAssetSelectionViewModel(draft.assetItem.asset)
+        assetSelectionValue = SwapAssetSelectionViewModel(draft.asset)
     }
 }

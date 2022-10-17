@@ -204,8 +204,7 @@ indirect enum Screen {
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
     case alert(
-        alert: Alert,
-        theme: AlertScreenTheme = AlertScreenCommonTheme()
+        alert: Alert
     )
     case swapIntroduction(
         draft: SwapIntroductionDraft,
@@ -229,6 +228,10 @@ indirect enum Screen {
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
+    case setSlippage(
+        theme: SetSlippageToleranceScreenTheme = .init(),
+        eventHandler: SetSlippageToleranceScreen.EventHandler
+    )
     case exportAccountList(
         eventHandler: ExportAccountListScreen.EventHandler
     )
@@ -241,6 +244,16 @@ indirect enum Screen {
     )
     case exportAccountsResult(
         eventHandler: ExportsAccountsResultScreen.EventHandler
+    )
+    case selectAsset(
+        dataController: SelectAssetDataController,
+        title: String,
+        theme: SelectAssetScreenTheme = .init()
+    )
+    case confirmSwap(
+        dataController: ConfirmSwapDataController,
+        eventHandler: EventHandler<ConfirmSwapScreen.Event>,
+        theme: ConfirmSwapScreenTheme = .init()
     )
 }
 

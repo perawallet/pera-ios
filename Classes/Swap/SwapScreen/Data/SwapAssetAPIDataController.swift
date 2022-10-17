@@ -25,11 +25,9 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
     private(set) var userAsset: Asset
     private(set) var poolAsset: Asset?
     private(set) var slippage: Decimal = 0.5 /// <note> Default value is 0.5
-    private(set) var swapType: SwapType = .fixedInput /// <note> Default type is fixed input.
+    private let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
 
     private let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
-
-    private lazy var currencyFormatter = CurrencyFormatter()
 
     private var currentSwapQuote: SwapQuote?
 
@@ -105,10 +103,6 @@ extension SwapAssetAPIDataController {
 }
 
 extension SwapAssetAPIDataController {
-    func toggleSwapType() {
-        swapType.toggle()
-    }
-    
     func updateUserAsset(
         _ asset: Asset
     ) {
@@ -125,13 +119,5 @@ extension SwapAssetAPIDataController {
         _ slippage: Decimal
     ) {
         self.slippage = slippage
-    }
-
-    func getUserAssetItem() -> AssetItem {
-        return AssetItem(
-            asset: self.userAsset,
-            currency: self.sharedDataController.currency,
-            currencyFormatter: self.currencyFormatter
-        )
     }
 }

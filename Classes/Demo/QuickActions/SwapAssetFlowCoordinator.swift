@@ -19,10 +19,13 @@ import UIKit
 
 /// <todo>
 /// This should be removed after the routing refactor.
-final class SwapAssetFlowCoordinator {
-    private lazy var swapAssetFlowStorage = OneTimeDisplayStorage()
+final class SwapAssetFlowCoordinator:
+    SwapIntroductionAlertItemDelegate {
+    private lazy var displayStore = SwapDisplayStore()
 
-    private lazy var alertTransition = AlertUITransition(presentingViewController: presentingScreen)
+    private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
+    private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: presentingScreen)
+    
     private lazy var transitionToSignWithLedger = BottomSheetTransition(presentingViewController: presentingScreen)
     private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: presentingScreen)
     private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: presentingScreen)
@@ -47,12 +50,19 @@ final class SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     func launch() {
-        if !swapAssetFlowStorage.isDisplayedOnce(for: .swapAlert) {
-            openSwapAlert()
+        if !displayStore.isOnboardedToSwap {
+            displayStore.isOnboardedToSwap = true
+
+            notifyIsOnboardedToSwapObservers()
+        }
+
+
+        if swapIntroductionAlertItem.canBeDisplayed() {
+            openSwapIntroductionAlert()
             return
         }
 
-        if !swapAssetFlowStorage.isDisplayedOnce(for: .swapUserAgreement) {
+        if !displayStore.isConfirmedSwapUserAgreement {
             openSwapIntroduction()
             return
         }
@@ -62,60 +72,20 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSwapAlert() {
-        let title = "swap-alert-title"
-            .localized
-            .bodyLargeMedium(
-                alignment: .center,
-                lineBreakMode: .byTruncatingTail
-            )
-        let body = "swap-alert-body"
-            .localized
-            .footnoteRegular(
-                alignment: .center,
-                lineBreakMode: .byTruncatingTail
-            )
-        let alert = Alert(
-            image: "swap-alert-illustration",
-            isNewBadgeVisible: true,
-            title: title,
-            body: body
-        )
-
-        let trySwapAction = AlertAction(
-            title: "swap-alert-primary-action".localized,
-            style: .primary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.swapAssetFlowStorage.setDisplayedOnce(for: .swapAlert)
-            self.dismissSwapAlert()
-            self.openSwapIntroduction()
-        }
-        alert.addAction(trySwapAction)
-
-        let laterAction = AlertAction(
-            title: "title-later".localized,
-            style: .secondary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.swapAssetFlowStorage.setDisplayedOnce(for: .swapAlert)
-            self.dismissSwapAlert()
-        }
-        alert.addAction(laterAction)
-
-        swapAlertScreen = alertTransition.perform(
-            .alert(
-                alert: alert,
-                theme: AlertScreenWithFillingImageTheme()
-            ),
-            by: .presentWithoutNavigationController
+    private func notifyIsOnboardedToSwapObservers() {
+        NotificationCenter.default.post(
+            name: SwapDisplayStore.isOnboardedToSwapNotification,
+            object: nil
         )
     }
+}
 
-    private func dismissSwapAlert() {
-        swapAlertScreen?.dismissScreen()
+extension SwapAssetFlowCoordinator {
+    private func openSwapIntroductionAlert() {
+        alertTransitionToSwapIntroduction.perform(
+            .alert(alert: swapIntroductionAlertItem.makeAlert()),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -129,7 +99,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .performPrimaryAction:
-                self.swapAssetFlowStorage.setDisplayedOnce(for: .swapUserAgreement)
+                self.displayStore.isConfirmedSwapUserAgreement = true
 
                 self.dismissSwapIntroduction()
                 self.startSwapFlow()
@@ -138,14 +108,14 @@ extension SwapAssetFlowCoordinator {
             }
         }
 
-        swapIntroductionScreen = presentingScreen.open(
+        presentingScreen.open(
             screen,
             by: .present
         )
     }
 
     private func dismissSwapIntroduction() {
-        swapIntroductionScreen?.dismissScreen()
+        presentingScreen.dismiss(animated: true)
     }
 }
 
@@ -221,6 +191,33 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
+    func openAssetSelection(
+        dataController: SelectAssetDataController,
+        title: String,
+        _ completion: @escaping (Asset) -> Void
+    ) {
+        let selectAssetScreen = presentingScreen.open(
+            .selectAsset(
+                dataController: dataController,
+                title: title
+            ),
+            by: .push
+        ) as? SelectAssetScreen
+
+        selectAssetScreen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectAsset(let asset):
+                self.presentingScreen.popScreen()
+                completion(asset)
+            }
+        }
+    }
+}
+
+extension SwapAssetFlowCoordinator {
     private func openSlippageToleranceInfo() {
         let uiSheet = UISheet(
             title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
@@ -262,4 +259,48 @@ extension SwapAssetFlowCoordinator {
             by: .presentWithoutNavigationController
         )
     }
+}
+
+extension SwapAssetFlowCoordinator {
+    func swapIntroductionAlertItemDidPerformTrySwap(_ item: SwapIntroductionAlertItem) {
+        item.isDisplayed = true
+
+        presentingScreen.dismiss(animated: true) {
+            [unowned self] in
+            self.openSwapIntroduction()
+        }
+    }
+
+    func swapIntroductionAlertItemDidPerformLaterAction(_ item: SwapIntroductionAlertItem) {
+        item.isDisplayed = true
+
+        presentingScreen.dismiss(animated: true)
+    }
+}
+
+final class SwapDisplayStore: Storable {
+    typealias Object = Any
+
+    static var isOnboardedToSwapNotification: Notification.Name {
+        .init(rawValue: "isOnboardedToSwap")
+    }
+
+    var isOnboardedToSwap: Bool {
+        get { userDefaults.bool(forKey: isOnboardedToSwapKey) }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardedToSwapKey)
+            userDefaults.synchronize()
+        }
+    }
+
+    var isConfirmedSwapUserAgreement: Bool {
+        get { userDefaults.bool(forKey: isConfirmedSwapUserAgreementKey) }
+        set {
+            userDefaults.set(newValue, forKey: isConfirmedSwapUserAgreementKey)
+            userDefaults.synchronize()
+        }
+    }
+
+    private let isOnboardedToSwapKey = "cache.key.swap.isOnboarded"
+    private let isConfirmedSwapUserAgreementKey = "cache.key.swap.isConfirmedUserAgreement"
 }
