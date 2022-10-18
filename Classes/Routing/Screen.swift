@@ -196,12 +196,33 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
-        draft: SwapAssetScreenDraft,
+        swapController: SwapController,
+        coordinator: SwapAssetFlowCoordinator,
         theme: SwapAssetScreenTheme = .init()
     )
     case swapSignWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
+    )
+    case swapConfirmSummary(
+        swapController: SwapController,
+        theme: ConfirmSwapSummaryScreenTheme = .init()
+    )
+    case loading(
+        viewModel: LoadingScreenViewModel,
+        theme: LoadingScreenTheme = .init()
+    )
+    case error(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme = .init()
+    )
+    case swapSuccess(
+        swapController: SwapController,
+        theme: SwapAssetSuccessScreenTheme = .init()
+    )
+    case swapSummary(
+        swapController: SwapController,
+        theme: SwapSummaryScreenTheme = .init()
     )
     case alert(
         alert: Alert

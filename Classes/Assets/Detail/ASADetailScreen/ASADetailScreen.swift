@@ -55,6 +55,9 @@ final class ASADetailScreen:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
         presentingScreen: self,
         account: dataController.account,
         asset: dataController.asset
