@@ -16,18 +16,34 @@
 
 import Foundation
 
-final class SwapTransactionPreparation: ALGAPIModel {
-    let transactionGroups: [SwapTransactionGroup.APIModel]
+final class SwapTransactionPreparation: ALGEntityModel {
+    let transactionGroups: [SwapTransactionGroup]
 
-    init() {
-        transactionGroups = []
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.transactionGroups = apiModel.transactionGroups.unwrapMap(SwapTransactionGroup.init)
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.transactionGroups = transactionGroups.map { $0.encode() }
+        return apiModel
     }
 }
 
 extension SwapTransactionPreparation {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case transactionGroups =  "transaction_groups"
+    struct APIModel: ALGAPIModel {
+        var transactionGroups: [SwapTransactionGroup.APIModel]?
+
+        init() {
+            self.transactionGroups = []
+        }
+
+        private enum CodingKeys:
+            String,
+            CodingKey {
+            case transactionGroups =  "transaction_groups"
+        }
     }
 }

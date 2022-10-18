@@ -67,7 +67,7 @@ extension ALGAPI {
     @discardableResult
     func getSwapQuote(
         _ draft: SwapQuoteDraft,
-        onCompleted handler: @escaping (Response.Result<SwapQuote, HIPAPIError>) -> Void
+        onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

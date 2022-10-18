@@ -17,16 +17,18 @@
 import Foundation
 
 final class SwapQuote: ALGEntityModel {
-    let id: Int
+    let id: Int64
     let provider: SwapProvider?
     let type: SwapType?
     let swapperAddress: PublicKey?
-    let deviceID: Int?
+    let deviceID: Int64?
     let assetIn: AssetDecoration?
     let assetOut: AssetDecoration?
     let amountIn: Decimal?
+    let amountInWithSlippage: Decimal?
     let amountInUSDValue: Decimal?
     let amountOut: Decimal?
+    let amountOutWithSlippage: Decimal?
     let amountOutUSDValue: Decimal?
     let slippage: Decimal?
     let price: Decimal?
@@ -45,8 +47,10 @@ final class SwapQuote: ALGEntityModel {
         self.assetIn = apiModel.assetIn.unwrap(AssetDecoration.init)
         self.assetOut = apiModel.assetOut.unwrap(AssetDecoration.init)
         self.amountIn = apiModel.amountIn.unwrap { Decimal(string: $0) }
+        self.amountInWithSlippage = apiModel.amountInWithSlippage.unwrap { Decimal(string: $0) }
         self.amountInUSDValue = apiModel.amountInUSDValue.unwrap { Decimal(string: $0) }
         self.amountOut = apiModel.amountOut.unwrap { Decimal(string: $0) }
+        self.amountOutWithSlippage = apiModel.amountOutWithSlippage.unwrap { Decimal(string: $0) }
         self.amountOutUSDValue = apiModel.amountOutUSDValue.unwrap { Decimal(string: $0) }
         self.slippage = apiModel.slippage.unwrap { Decimal(string: $0) }
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
@@ -65,8 +69,10 @@ final class SwapQuote: ALGEntityModel {
         apiModel.assetIn = assetIn?.encode()
         apiModel.assetOut = assetOut?.encode()
         apiModel.amountIn = amountIn.unwrap { String(describing: $0) }
+        apiModel.amountInWithSlippage = amountInWithSlippage.unwrap { String(describing: $0) }
         apiModel.amountInUSDValue = amountInUSDValue.unwrap { String(describing: $0) }
         apiModel.amountOut = amountOut.unwrap { String(describing: $0) }
+        apiModel.amountOutWithSlippage = amountOutWithSlippage.unwrap { String(describing: $0) }
         apiModel.amountOutUSDValue = amountOutUSDValue.unwrap { String(describing: $0) }
         apiModel.slippage = slippage.unwrap { String(describing: $0) }
         apiModel.price = price.unwrap { String(describing: $0) }
@@ -79,16 +85,18 @@ final class SwapQuote: ALGEntityModel {
 
 extension SwapQuote {
     struct APIModel: ALGAPIModel {
-        var id: Int
+        var id: Int64
         var provider: SwapProvider?
         var swapType: SwapType?
         var swapperAddress: PublicKey?
-        var device: Int?
+        var device: Int64?
         var assetIn: AssetDecoration.APIModel?
         var assetOut: AssetDecoration.APIModel?
         var amountIn: String?
+        var amountInWithSlippage: String?
         var amountInUSDValue: String?
         var amountOut: String?
+        var amountOutWithSlippage: String?
         var amountOutUSDValue: String?
         var slippage: String?
         var price: String?
@@ -111,14 +119,48 @@ extension SwapQuote {
             case assetIn = "asset_in"
             case assetOut = "asset_out"
             case amountIn = "amount_in"
+            case amountInWithSlippage = "amount_in_with_slippage"
             case amountInUSDValue = "amount_in_usd_value"
             case amountOut = "amount_out"
+            case amountOutWithSlippage = "amount_out_with_slippage"
             case amountOutUSDValue = "amount_out_usd_value"
             case slippage
             case price
             case priceImpact = "price_impact"
             case peraFee = "pera_fee_amount"
             case exchangeFee = "exchange_fee_amount"
+        }
+    }
+}
+
+final class SwapQuoteList: ALGEntityModel {
+    let results: [SwapQuote]
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.results =  apiModel.results.unwrapMap(SwapQuote.init)
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.results = results.map { $0.encode() }
+        return apiModel
+    }
+}
+
+extension SwapQuoteList {
+    struct APIModel: ALGAPIModel {
+        var results: [SwapQuote.APIModel]?
+
+        init() {
+            self.results = []
+        }
+
+        private enum CodingKeys:
+            String,
+            CodingKey {
+            case results
         }
     }
 }

@@ -51,6 +51,6 @@ extension SwapQuoteDraft {
 extension SwapQuoteDraft {
     enum ValidationResult {
         case validated
-        case failed
+        case failed(SwapAssetValidationError)
     }
 }
