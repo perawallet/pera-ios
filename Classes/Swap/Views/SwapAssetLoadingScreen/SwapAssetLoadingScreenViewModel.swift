@@ -39,15 +39,17 @@ extension SwapAssetLoadingScreenViewModel {
     mutating func bindTitle() {
         title = "swap-loading-title"
             .localized
-            .bodyLargeMedium()
+            .bodyLargeMedium(alignment: .center)
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        let receivedAmount = "" /// <todo> This will be handled when the flow is completed.
+        guard let amountOut = quote.amountOutWithSlippage else { return }
+
+        let amountOutDisplay = "\(amountOut)"
         detail = "swap-loading-detail"
-            .localized(params: receivedAmount)
-            .bodyRegular()
+            .localized(params: amountOutDisplay)
+            .bodyRegular(alignment: .center)
     }
 }

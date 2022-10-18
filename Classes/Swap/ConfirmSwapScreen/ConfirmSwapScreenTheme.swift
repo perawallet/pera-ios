@@ -21,6 +21,8 @@ import UIKit
 struct ConfirmSwapScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
+    let navigationBarEdgeInset: LayoutMargins
     let userAsset: SwapAssetAmountViewTheme
     let assetHorizontalInset: LayoutMetric
     let userAssetTopInset: LayoutMetric
@@ -34,6 +36,7 @@ struct ConfirmSwapScreenTheme:
     let infoItem: SwapInfoItemViewTheme
     let infoSectionPaddings: LayoutPaddings
     let infoSectionItemSpacing: LayoutMetric
+    let viewSummary: ButtonStyle
     let confirmAction: ButtonStyle
     let confirmActionContentEdgeInsets: UIEdgeInsets
     let confirmActionEdgeInsets: LayoutPaddings
@@ -41,9 +44,13 @@ struct ConfirmSwapScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.navigationBarEdgeInset = (12, 24, .noMetric, 24)
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.assetHorizontalInset = 24
-        self.userAssetTopInset = 72
+        self.userAssetTopInset = 120
         self.toSeparator = TitleSeparatorViewTheme()
         self.toSeparatorTopInset = 20
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
@@ -57,6 +64,13 @@ struct ConfirmSwapScreenTheme:
         self.infoActionItem = SwapInfoActionItemViewTheme()
         self.infoItem = SwapInfoItemViewTheme()
         self.infoSectionItemSpacing = 16
+        self.viewSummary = [
+            .title("swap-confirm-view-summary-title".localized),
+            .titleColor([
+                .normal(Colors.Helpers.positive)
+            ]),
+            .font(Typography.footnoteMedium()),
+        ]
         self.confirmAction = [
             .title("swap-confirm-title".localized),
             .titleColor(

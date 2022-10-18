@@ -21,12 +21,11 @@ struct SwapSummaryAccountViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let horizontalInset: LayoutMetric
     let iconSize: LayoutSize
     let minimumSpacingBetweenTitleAndIcon: LayoutMetric
-    let iconLayoutOffset: LayoutOffset
     let iconLeadingInset: LayoutMetric
     let detail: TextStyle
+    let detailLeadingInset: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -38,15 +37,14 @@ struct SwapSummaryAccountViewTheme:
             .text("title-account".localized),
             .font(Typography.bodyRegular())
         ]
-        self.horizontalInset = 24
         self.iconSize = (24, 24)
         self.minimumSpacingBetweenTitleAndIcon = 4
-        self.iconLayoutOffset = (12, 0)
-        self.iconLeadingInset = 146
+        self.iconLeadingInset = 124
         self.detail = [
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
+        self.detailLeadingInset = 12
     }
 }

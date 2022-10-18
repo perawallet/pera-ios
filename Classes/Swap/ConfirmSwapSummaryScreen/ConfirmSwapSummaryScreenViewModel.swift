@@ -87,6 +87,6 @@ extension ConfirmSwapSummaryScreenViewModel {
     mutating func bindTotalSwapFeeInfo(
         _ quote: SwapQuote
     ) {
-        totalSwapFeeInfo = SwapConfirmTotalFeeInfoViewModel(quote)
+        totalSwapFeeInfo = SwapConfirmSummaryTotalSwapFeeInfoViewModel(quote)
     }
 }

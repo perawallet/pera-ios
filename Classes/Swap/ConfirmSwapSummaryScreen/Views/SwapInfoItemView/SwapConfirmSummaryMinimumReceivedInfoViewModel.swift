@@ -46,7 +46,9 @@ extension SwapConfirmSummaryMinimumReceivedInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        /// <todo> Will be implemented after the main structure is completed.
+        guard let amountOutWithSlippage = quote.amountOutWithSlippage else { return }
+
+        detail = "\(amountOutWithSlippage)".bodyRegular()
     }
 
     mutating func bindAction() {

@@ -15,33 +15,49 @@
 //   SwapAssetAPIDataController.swift
 
 import Foundation
+import MacaroonUtils
+import MagpieCore
 import MagpieHipo
 
 final class SwapAssetAPIDataController: SwapAssetDataController {
     var eventHandler: EventHandler?
 
-    let account: Account
+    var account: Account {
+        return swapController.account
+    }
+    var userAsset: Asset {
+        return swapController.userAsset
+    }
+    var poolAsset: Asset? {
+        return swapController.poolAsset
+    }
+    var slippage: SwapSlippage {
+        return swapController.slippage
+    }
 
-    private(set) var userAsset: Asset
-    private(set) var poolAsset: Asset?
-    private(set) var slippage: Decimal = 0.5 /// <note> Default value is 0.5
-    private let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
+    private var quote: SwapQuote? {
+        return swapController.quote
+    }
+    private var provider: SwapProvider {
+        return swapController.provider
+    }
+    private var swapType: SwapType {
+        return swapController.swapType
+    }
 
-    private let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
+    private var currentQuoteEndpoint: EndpointOperatable?
+    private lazy var quoteThrottler = Throttler(intervalInSeconds: 0.8)
 
-    private var currentSwapQuote: SwapQuote?
-
+    private let swapController: SwapController
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
     init(
-        account: Account,
-        userAsset: Asset,
+        swapController: SwapController,
         api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
-        self.account = account
-        self.userAsset = userAsset
+        self.swapController = swapController
         self.api = api
         self.sharedDataController = sharedDataController
     }
@@ -71,25 +87,38 @@ extension SwapAssetAPIDataController {
 
         switch validationResult {
         case .validated:
-            loadData(draft)
-        case .failed:
-            /// <todo> Handle validation failure
-            break
+            quoteThrottler.performNext {
+                [weak self] in
+                guard let self = self else { return }
+
+                self.loadData(draft)
+            }
+        case .failed(let reason):
+            eventHandler?(.didFailValidation(reason))
         }
     }
 
     private func loadData(
         _ draft: SwapQuoteDraft
     ) {
+        if currentQuoteEndpoint != nil {
+            currentQuoteEndpoint = nil
+            currentQuoteEndpoint?.cancel()
+        }
+
         eventHandler?(.willLoadData)
 
-        api.getSwapQuote(draft) {
+        currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
             guard let self = self else { return }
 
+            self.currentQuoteEndpoint = nil
+
             switch response {
-            case .success(let quote):
-                self.currentSwapQuote = quote
+            case .success(let quoteList):
+                guard let quote = quoteList.results[safe: 0] else { return }
+
+                self.swapController.updateQuote(quote)
                 self.eventHandler?(.didLoadData(quote))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
@@ -106,18 +135,18 @@ extension SwapAssetAPIDataController {
     func updateUserAsset(
         _ asset: Asset
     ) {
-        self.userAsset = asset
+        swapController.updateUserAsset(asset)
     }
 
     func updatePoolAsset(
         _ asset: Asset
     ) {
-        self.poolAsset = asset
+        swapController.updatePoolAsset(asset)
     }
 
     func updateSlippage(
-        _ slippage: Decimal
+        _ slippage: SwapSlippage
     ) {
-        self.slippage = slippage
+        swapController.updateSlippage(slippage)
     }
 }

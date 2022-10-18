@@ -21,6 +21,7 @@ final class SwapAssetSuccessScreen: BaseViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private lazy var successIconBackgroundView = UIView()
     private lazy var successIconView = UIImageView()
     private lazy var titleView = UILabel()
     private lazy var detailView = UILabel()
@@ -28,22 +29,33 @@ final class SwapAssetSuccessScreen: BaseViewController {
     private lazy var summaryActionView = UIButton()
     private lazy var doneActionView = MacaroonUIKit.Button()
 
-    private let swapAssetController: SwapAssetController
+    private let swapController: SwapController
     private let theme: SwapAssetSuccessScreenTheme
 
     init(
-        swapAssetController: SwapAssetController,
+        swapController: SwapController,
         theme: SwapAssetSuccessScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.swapAssetController = swapAssetController
+        self.swapController = swapController
         self.theme = theme
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        hidesCloseBarButtonItem = true
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         addTitle()
+        addSuccessIconBackground()
         addSuccessIcon()
         addDetail()
         addDoneAction()
@@ -51,18 +63,18 @@ final class SwapAssetSuccessScreen: BaseViewController {
         addViewDetailAction()
     }
 
-    override func setListeners() {
-        super.setListeners()
-    }
-
     override func bindData() {
         super.bindData()
 
-        guard let quote = swapAssetController.quote else { return }
+        guard let quote = swapController.quote else { return }
 
         let viewModel = SwapAssetSuccessScreenViewModel(quote)
         viewModel.title?.load(in: titleView)
         viewModel.detail?.load(in: detailView)
+    }
+
+    override func didTapBackBarButton() -> Bool {
+        return false
     }
 }
 
@@ -79,15 +91,26 @@ extension SwapAssetSuccessScreen {
         }
     }
 
+    private func addSuccessIconBackground() {
+        successIconBackgroundView.customizeAppearance(theme.successIconBackground)
+        successIconBackgroundView.layer.draw(corner: theme.successIconBackgroundCorner)
+
+        view.addSubview(successIconBackgroundView)
+        successIconBackgroundView.fitToIntrinsicSize()
+        successIconBackgroundView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
+            $0.centerX == 0
+            $0.bottom == titleView.snp.top - theme.spacingBetweenIconAndTitle
+        }
+    }
+
     private func addSuccessIcon() {
         successIconView.customizeAppearance(theme.icon)
 
-        view.addSubview(successIconView)
+        successIconBackgroundView.addSubview(successIconView)
         successIconView.fitToIntrinsicSize()
         successIconView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
-            $0.centerX == 0
-            $0.bottom == titleView.snp.top + theme.spacingBetweenIconAndTitle
+            $0.center == 0
         }
     }
 
@@ -112,7 +135,12 @@ extension SwapAssetSuccessScreen {
         doneActionView.snp.makeConstraints {
             $0.leading == theme.doneActionEdgeInsets.leading
             $0.trailing == theme.doneActionEdgeInsets.trailing
-            $0.bottom == theme.doneActionEdgeInsets.bottom
+
+            let bottomInset =
+                view.compactSafeAreaInsets.bottom +
+                (navigationController ?? self).additionalSafeAreaInsets.bottom
+                + theme.doneActionEdgeInsets.bottom
+            $0.bottom == bottomInset
         }
 
         doneActionView.addTouch(
@@ -129,27 +157,37 @@ extension SwapAssetSuccessScreen {
         summaryActionView.snp.makeConstraints {
             $0.leading == theme.summaryActionHorizontalInset
             $0.bottom == doneActionView.snp.top - theme.spacingBetweenSummaryActionAndDoneAction
-            $0.trailing == theme.summaryActionHorizontalInset
+            $0.trailing <= theme.summaryActionHorizontalInset
         }
 
-        view.attachSeparator(
-            theme.separator,
-            to: summaryActionView,
-            margin: theme.spacingBetweenSeparatorAndSummaryAction
+        summaryActionView.addTouch(
+            target: self,
+            action: #selector(didTapSummaryAction)
         )
     }
 
     private func addViewDetailAction() {
         viewDetailActionView.customizeAppearance(theme.viewDetailAction)
 
+        let bottomSeparator = view.attachSeparator(
+            theme.separator,
+            to: summaryActionView,
+            margin: theme.spacingBetweenSeparatorAndSummaryAction
+        )
+
         view.addSubview(viewDetailActionView)
         viewDetailActionView.fitToIntrinsicSize()
         viewDetailActionView.snp.makeConstraints {
             $0.top >= detailView.snp.bottom + theme.minimumSpacingBetweenViewDetailActionAndDetail
             $0.leading == theme.viewDetailActionHorizontalInset
-            $0.bottom == summaryActionView.snp.top - theme.spacingBetweenViewDetailActionAndSummaryAction
-            $0.trailing == theme.viewDetailActionHorizontalInset
+            $0.bottom == bottomSeparator.snp.top - theme.spacingBetweenViewDetailActionAndSummaryAction
+            $0.trailing <= theme.viewDetailActionHorizontalInset
         }
+
+        viewDetailActionView.addTouch(
+            target: self,
+            action: #selector(didTapViewDetailAction)
+        )
     }
 }
 

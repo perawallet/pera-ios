@@ -1020,16 +1020,16 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .swapAsset(let draft, let theme):
+        case .swapAsset(let swapController, let coordinator, let theme):
             let dataController = SwapAssetAPIDataController(
-                account: draft.account,
-                userAsset: draft.asset ?? draft.account.algo,
+                swapController: swapController,
                 api: appConfiguration.api,
                 sharedDataController: appConfiguration.sharedDataController
             )
 
             viewController = SwapAssetScreen(
                 dataController: dataController,
+                coordinator: coordinator,
                 configuration: configuration,
                 theme: theme
             )
@@ -1037,6 +1037,36 @@ class Router:
             viewController = SignWithLedgerProcessScreen(
                 draft: draft,
                 eventHandler: eventHandler
+            )
+        case .swapConfirmSummary(let swapController, let theme):
+            viewController = ConfirmSwapSummaryScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .loading(let viewModel, let theme):
+            viewController = LoadingScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .error(let viewModel, let theme):
+            viewController = ErrorScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSuccess(let swapController, let theme):
+            viewController = SwapAssetSuccessScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSummary(let swapController, let theme):
+            viewController = SwapSummaryScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
             )
         case .alert(let alert):
             viewController = AlertScreen(alert: alert)

@@ -72,9 +72,10 @@ extension TitleSeparatorView {
         leadingLineView.customizeAppearance(theme.lineStyle)
 
         addSubview(leadingLineView)
+        leadingLineView.fitToIntrinsicSize()
         leadingLineView.snp.makeConstraints {
             $0.centerY == titleView
-            $0.height == theme.lineHeight
+            $0.fitToHeight(theme.lineHeight)
             $0.leading == 0
             $0.trailing == titleView.snp.leading - theme.linePaddings.leading
         }
@@ -86,9 +87,10 @@ extension TitleSeparatorView {
         trailingLineView.customizeAppearance(theme.lineStyle)
 
         addSubview(trailingLineView)
+        trailingLineView.fitToIntrinsicSize()
         trailingLineView.snp.makeConstraints {
             $0.centerY == titleView
-            $0.height == theme.lineHeight
+            $0.fitToHeight(theme.lineHeight)
             $0.leading == titleView.snp.trailing + theme.linePaddings.leading
             $0.trailing == 0
         }

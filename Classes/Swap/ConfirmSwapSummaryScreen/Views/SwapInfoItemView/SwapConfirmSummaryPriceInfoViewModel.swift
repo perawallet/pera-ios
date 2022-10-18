@@ -34,7 +34,7 @@ struct SwapConfirmSummaryPriceInfoViewModel: SwapInfoItemViewModel {
 
 extension SwapConfirmSummaryPriceInfoViewModel {
     mutating func bindTitle() {
-        title = "swap-confirm-minimum-received-title"
+        title = "title-price"
             .localized
             .bodyRegular()
     }

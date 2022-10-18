@@ -38,18 +38,15 @@ final class ConfirmSwapSummaryScreen:
     private lazy var totalSwapFeeInfoView = SwapInfoItemView()
     private lazy var totalSwapFeeDetailView = UILabel()
 
-    private let account: Account
-    private let quote: SwapQuote
+    private let swapController: SwapController
     private let theme: ConfirmSwapSummaryScreenTheme
 
     init(
-        account: Account,
-        quote: SwapQuote,
+        swapController: SwapController,
         theme: ConfirmSwapSummaryScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
-        self.quote = quote
+        self.swapController = swapController
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -76,8 +73,8 @@ final class ConfirmSwapSummaryScreen:
         super.bindData()
 
         let viewModel = ConfirmSwapSummaryScreenViewModel(
-            account: account,
-            quote: quote
+            account: swapController.account,
+            quote: swapController.quote!
         )
 
         accountInfoView.bindData(viewModel.accountInfo)
@@ -107,7 +104,11 @@ extension ConfirmSwapSummaryScreen {
     private func addPriceInfo() {
         priceInfoView.customize(theme.infoActionItem)
 
-        let topSeparator = addSeparator(to: accountInfoView)
+        let topSeparator = contentView.attachSeparator(
+            theme.separator,
+            to: accountInfoView,
+            margin: theme.accountSeparatorSpacing
+        )
 
         contentView.addSubview(priceInfoView)
         priceInfoView.fitToIntrinsicSize()
@@ -164,7 +165,11 @@ extension ConfirmSwapSummaryScreen {
     private func addExchangeFeeInfo() {
         exchangeFeeInfoView.customize(theme.infoItem)
 
-        let topSeparator = addSeparator(to: minimumReceivedInfoView)
+        let topSeparator = contentView.attachSeparator(
+            theme.separator,
+            to: minimumReceivedInfoView,
+            margin: theme.spacingBetweenSeparatorAndInfo
+        )
 
         contentView.addSubview(exchangeFeeInfoView)
         exchangeFeeInfoView.fitToIntrinsicSize()
@@ -207,19 +212,14 @@ extension ConfirmSwapSummaryScreen {
         totalSwapFeeDetailView.snp.makeConstraints {
             $0.top == totalSwapFeeInfoView.snp.bottom + theme.totalSwapFeeTopInset
             $0.leading == theme.horizontalInset
-            $0.bottom == theme.itemVerticalInset
             $0.trailing == theme.horizontalInset
-        }
-    }
 
-    private func addSeparator(
-        to view: UIView
-    ) -> UIView {
-        return contentView.attachSeparator(
-            theme.separator,
-            to: view,
-            margin: theme.spacingBetweenSeparatorAndInfo
-        )
+            let bottomInset =
+                view.compactSafeAreaInsets.bottom +
+                (navigationController ?? self).additionalSafeAreaInsets.bottom
+                + theme.itemVerticalInset
+            $0.bottom == bottomInset
+        }
     }
 }
 

@@ -54,7 +54,6 @@ extension SwapSummaryAccountView {
     ) {
         addSubview(iconView)
 
-        iconView.contentEdgeInsets = theme.iconLayoutOffset
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
@@ -72,9 +71,9 @@ extension SwapSummaryAccountView {
         detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == iconView.snp.trailing
+            $0.leading == iconView.snp.trailing + theme.detailLeadingInset
             $0.bottom == 0
-            $0.trailing <= theme.horizontalInset
+            $0.trailing <= 0
         }
     }
 
@@ -87,8 +86,8 @@ extension SwapSummaryAccountView {
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.centerY == 0
-            $0.leading == theme.horizontalInset
-            $0.trailing <= iconView.snp.leading - theme.minimumSpacingBetweenTitleAndIcon
+            $0.leading == 0
+            $0.trailing == iconView.snp.leading - theme.minimumSpacingBetweenTitleAndIcon
         }
     }
 }

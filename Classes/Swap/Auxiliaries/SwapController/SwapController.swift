@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetAmountViewModelDraft.swift
+//   SwapController.swift
 
 import Foundation
 
-struct SwapAssetAmountViewModelDraft {
-    let leftTitle: String?
-    let asset: Asset
-    let currencyFormatter: CurrencyFormatter
-    let isInputEditable: Bool
+protocol SwapController {
+    var account: Account { get }
+    var userAsset: Asset { get }
+    var quote: SwapQuote? { get }
+    var poolAsset: Asset? { get }
+    var slippage: SwapSlippage { get }
+    var swapType: SwapType { get }
+    var provider: SwapProvider { get }
+
+    func updateQuote(_ quote: SwapQuote)
+    func updateUserAsset(_ asset: Asset)
+    func updatePoolAsset(_ asset: Asset)
+    func updateSlippage(_ slippage: SwapSlippage)
+    func calculateFee()
+    func prepareTransactions(_ transactions: [SwapTransactionGroup])
+    func signTransactions()
 }

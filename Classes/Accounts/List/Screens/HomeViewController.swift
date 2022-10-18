@@ -53,7 +53,12 @@ final class HomeViewController:
         session: session!
     )
 
-    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(presentingScreen: self)
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        presentingScreen: self
+    )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController

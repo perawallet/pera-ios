@@ -36,15 +36,9 @@ final class ConfirmSwapScreen:
 
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
-    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        presentingScreen: self,
-        account: dataController.account
-    )
-
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
-    private lazy var infoContextView = MacaroonUIKit.VStackView()
     private lazy var priceInfoView = SwapInfoActionItemView()
     private lazy var slippageInfoView = SwapInfoActionItemView()
     private lazy var priceImpactInfoView = SwapInfoItemView()
@@ -77,12 +71,22 @@ final class ConfirmSwapScreen:
         navigationBarLargeTitleController.title = "swap-confirm-title".localized
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
+        addNavigationBarLargeTitle()
         addUserAsset()
         addToSeparator()
         addPoolAsset()
-        addInfoContex()
+        addPriceInfo()
+        addSlippageInfo()
+        addPriceImpactInfo()
+        addMinimumReceivedInfo()
+        addTotalSwapFeeInfo()
         addViewSummaryAction()
         addConfirmAction()
     }
@@ -99,6 +103,15 @@ final class ConfirmSwapScreen:
 }
 
 extension ConfirmSwapScreen {
+    private func addNavigationBarLargeTitle() {
+        view.addSubview(navigationBarLargeTitleView)
+        navigationBarLargeTitleView.snp.makeConstraints {
+            $0.setPaddings(
+                theme.navigationBarEdgeInset
+            )
+        }
+    }
+    
 	private func addUserAsset() {
         userAssetView.customize(theme.userAsset)
 
@@ -126,52 +139,49 @@ extension ConfirmSwapScreen {
 	private func addPoolAsset() {
         poolAssetView.customize(theme.poolAsset)
 
-        contentView.addSubview(userAssetView)
+        contentView.addSubview(poolAssetView)
         poolAssetView.fitToIntrinsicSize()
         poolAssetView.snp.makeConstraints {
             $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }
+	}
 
-        contentView.attachSeparator(
+    private func addPriceInfo() {
+        priceInfoView.customize(theme.infoActionItem)
+
+        let topSeparator = contentView.attachSeparator(
             theme.assetSeparator,
             to: poolAssetView,
             margin: theme.assetSeparatorPadding
         )
-	}
 
-    private func addInfoContex() {
-        contentView.addSubview(infoContextView)
-        infoContextView.spacing = theme.infoSectionItemSpacing
-        infoContextView.snp.makeConstraints {
-            $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
+        contentView.addSubview(priceInfoView)
+        priceInfoView.fitToIntrinsicSize()
+        priceInfoView.snp.makeConstraints {
+            $0.top == topSeparator.snp.bottom + theme.infoSectionPaddings.top
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
         }
-
-        addPriceInfo()
-        addSlippageInfo()
-        addPriceImpactInfo()
-        addMinimumReceivedInfo()
-        addTotalSwapFeeInfo()
-    }
-
-    private func addPriceInfo() {
-        infoContextView.addArrangedSubview(priceInfoView)
-        priceInfoView.customize(theme.infoActionItem)
 
         priceInfoView.startObserving(event: .didTapAction) {
             [weak self] in
             guard let self = self else { return }
 
-            self.eventHandler?(.didTapPriceAction)
         }
     }
 
     private func addSlippageInfo() {
-        infoContextView.addArrangedSubview(slippageInfoView)
         slippageInfoView.customize(theme.infoActionItem)
+
+        contentView.addSubview(slippageInfoView)
+        slippageInfoView.fitToIntrinsicSize()
+        slippageInfoView.snp.makeConstraints {
+            $0.top == priceInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
 
         slippageInfoView.startObserving(event: .didTapInfo) {
             [weak self] in
@@ -189,8 +199,15 @@ extension ConfirmSwapScreen {
     }
 
     private func addPriceImpactInfo() {
-        infoContextView.addArrangedSubview(priceImpactInfoView)
         priceImpactInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(priceImpactInfoView)
+        priceImpactInfoView.fitToIntrinsicSize()
+        priceImpactInfoView.snp.makeConstraints {
+            $0.top == slippageInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
 
         priceImpactInfoView.startObserving(event: .didTapInfo) {
             [weak self] in
@@ -201,22 +218,38 @@ extension ConfirmSwapScreen {
     }
 
     private func addMinimumReceivedInfo() {
-        infoContextView.addArrangedSubview(minimumReceivedInfoView)
         minimumReceivedInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(minimumReceivedInfoView)
+        minimumReceivedInfoView.fitToIntrinsicSize()
+        minimumReceivedInfoView.snp.makeConstraints {
+            $0.top == priceImpactInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
     }
 
     private func addTotalSwapFeeInfo() {
-        infoContextView.addArrangedSubview(totalSwapFeeInfoView)
         totalSwapFeeInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(totalSwapFeeInfoView)
+        totalSwapFeeInfoView.fitToIntrinsicSize()
+        totalSwapFeeInfoView.snp.makeConstraints {
+            $0.top == minimumReceivedInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
     }
 
     private func addViewSummaryAction() {
+        viewSummaryActionView.customizeAppearance(theme.viewSummary)
+
         contentView.addSubview(viewSummaryActionView)
         viewSummaryActionView.fitToIntrinsicSize()
         viewSummaryActionView.snp.makeConstraints {
-            $0.top == infoContextView.snp.bottom + theme.infoSectionItemSpacing
+            $0.top == totalSwapFeeInfoView.snp.bottom + theme.infoSectionItemSpacing
             $0.leading == theme.infoSectionPaddings.leading
-            $0.trailing == theme.infoSectionPaddings.trailing
+            $0.trailing <= theme.infoSectionPaddings.trailing
         }
 
         viewSummaryActionView.addTouch(
@@ -254,7 +287,10 @@ extension ConfirmSwapScreen {
     func bindData(
         _ quote: SwapQuote
     ) {
-        let viewModel = ConfirmSwapScreenViewModel(quote)
+        let viewModel = ConfirmSwapScreenViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         userAssetView.bindData(viewModel.userAsset)
         toSeparatorView.bindData(viewModel.toSeparator)
         poolAssetView.bindData(viewModel.poolAsset)
@@ -269,7 +305,8 @@ extension ConfirmSwapScreen {
 extension ConfirmSwapScreen {
     @objc
     private func confirmSwap() {
-        eventHandler?(.didTapConfirm)
+        dataController.confirmSwap()
+        eventHandler?(.didTapConfirm(swapQuote: dataController.quote))
     }
 
     @objc
@@ -280,9 +317,8 @@ extension ConfirmSwapScreen {
 
 extension ConfirmSwapScreen {
     enum Event {
-        case didTapConfirm
+        case didTapConfirm(swapQuote: SwapQuote)
         case didTapViewSummary
-        case didTapPriceAction
         case didTapSlippageInfo
         case didTapSlippageAction
         case didTapPriceImpactInfo

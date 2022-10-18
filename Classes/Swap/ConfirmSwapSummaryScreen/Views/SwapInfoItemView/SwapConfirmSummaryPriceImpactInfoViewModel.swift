@@ -14,6 +14,7 @@
 
 //   SwapConfirmSummaryPriceImpactInfoViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 struct SwapConfirmSummaryPriceImpactInfoViewModel: SwapInfoItemViewModel {

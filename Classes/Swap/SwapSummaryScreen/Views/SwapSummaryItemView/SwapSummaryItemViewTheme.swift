@@ -21,7 +21,6 @@ struct SwapSummaryItemViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let horizontalInset: LayoutMetric
     let detail: TextStyle
     let detailLeadingInset: LayoutMetric
     let minimumSpacingBetweenTitleAndDetail: LayoutMetric
@@ -34,13 +33,12 @@ struct SwapSummaryItemViewTheme:
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
-        self.horizontalInset = 24
         self.detail = [
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
-        self.detailLeadingInset = 146
+        self.detailLeadingInset = 124
         self.minimumSpacingBetweenTitleAndDetail = 4
     }
 }

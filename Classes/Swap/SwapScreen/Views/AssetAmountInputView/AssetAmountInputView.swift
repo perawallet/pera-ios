@@ -28,6 +28,11 @@ final class AssetAmountInputView:
     private lazy var amountInputView = TextField()
     private lazy var detailView = UILabel()
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setListeners()
+    }
+
     func customize(
         _ theme: AssetAmountInputViewTheme
     ) {
@@ -57,8 +62,8 @@ final class AssetAmountInputView:
 
         iconView.load(from: viewModel.imageSource)
 
-        if let inputValue = viewModel.inputValue {
-            inputValue.load(in: amountInputView)
+        if let primaryValue = viewModel.primaryValue {
+            primaryValue.load(in: amountInputView)
         }
 
         amountInputView.isUserInteractionEnabled = viewModel.isInputEditable

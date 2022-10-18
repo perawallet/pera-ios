@@ -27,25 +27,34 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var minimumReceivedInfo: SwapInfoItemViewModel?
     private(set) var totalSwapFeeInfo: SwapInfoItemViewModel?
 
-    private lazy var currencyFormatter = CurrencyFormatter()
-
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        bindUserAsset(quote)
+        bindUserAsset(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindToSeparator()
-        bindPoolAsset(quote)
+        bindPoolAsset(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindPriceInfo(quote)
         bindSlippageInfo(quote)
         bindPriceImpactInfo(quote)
         bindMinimumReceivedInfo(quote)
-        bindTotalSwapFeeInfo(quote)
+        bindTotalSwapFeeInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension ConfirmSwapScreenViewModel {
     mutating func bindUserAsset(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let assetIn = quote.assetIn else { return }
 
@@ -56,26 +65,24 @@ extension ConfirmSwapScreenViewModel {
             asset = StandardAsset(decoration: assetIn)
         }
 
-        let draft = SwapAssetAmountViewModelDraft(
-            leftTitle: nil,
+        userAsset = ConfirmSwapAmountInViewModel(
             asset: asset,
-            currencyFormatter: currencyFormatter,
-            isInputEditable: false
+            quote: quote,
+            currencyFormatter: currencyFormatter
         )
-
-        userAsset = SwapAssetAmountViewModel(draft)
     }
 
     mutating func bindToSeparator() {
         toSeparator = TitleSeparatorViewModel(
             "title-to"
-                .uppercased()
                 .localized
+                .uppercased()
         )
     }
 
     mutating func bindPoolAsset(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let assetOut = quote.assetOut else { return }
 
@@ -86,14 +93,11 @@ extension ConfirmSwapScreenViewModel {
             asset = StandardAsset(decoration: assetOut)
         }
 
-        let draft = SwapAssetAmountViewModelDraft(
-            leftTitle: nil,
+        poolAsset = ConfirmSwapAmountOutViewModel(
             asset: asset,
-            currencyFormatter: currencyFormatter,
-            isInputEditable: false
+            quote: quote,
+            currencyFormatter: currencyFormatter
         )
-
-        poolAsset = SwapAssetAmountViewModel(draft)
     }
 
     mutating func bindPriceInfo(
@@ -122,8 +126,12 @@ extension ConfirmSwapScreenViewModel {
     }
 
     mutating func bindTotalSwapFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        totalSwapFeeInfo = SwapConfirmTotalFeeInfoViewModel(quote)
+        totalSwapFeeInfo = SwapConfirmTotalFeeInfoViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }

@@ -45,7 +45,8 @@ struct SwapSummaryScreenTheme:
         self.summaryAccount = SwapSummaryAccountViewTheme()
         self.separator = Separator(
             color: Colors.Layer.grayLighter,
-            size: 1
+            size: 1,
+            position: .bottom((horizontalInset, horizontalInset))
         )
         self.separatorSpacing = 28
         self.minimumBottomSpacing = 16
