@@ -39,14 +39,14 @@ struct WCConnectionAccountSelectionViewTheme: StyleSheet, LayoutSheet {
             .isInteractable(false),
             .text("wallet-connect-session-select-account".localized),
             .textAlignment(.left),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.main)
         ]
         self.secondaryTitle = [
             .isInteractable(false),
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
