@@ -50,7 +50,8 @@ extension SwapConfirmPriceImpactInfoViewModel {
     ) {
         guard let priceImpact = quote.priceImpact else { return }
 
-        detail = priceImpact
+        let priceImpactPercentage = priceImpact / 100
+        detail = priceImpactPercentage
             .doubleValue
             .toPercentage?
             .footnoteRegular()

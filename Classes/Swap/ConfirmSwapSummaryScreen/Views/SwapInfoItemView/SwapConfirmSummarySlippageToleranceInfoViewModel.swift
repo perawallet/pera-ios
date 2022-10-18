@@ -14,6 +14,7 @@
 
 //   SwapConfirmSummarySlippageToleranceInfoViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 struct SwapConfirmSummarySlippageToleranceInfoViewModel: SwapInfoItemViewModel {
@@ -48,7 +49,8 @@ extension SwapConfirmSummarySlippageToleranceInfoViewModel {
     ) {
         guard let slippage = quote.slippage else { return }
 
-        detail = slippage
+        let slippagePercentage = slippage.rawValue
+        detail = slippagePercentage
             .doubleValue
             .toPercentage?
             .bodyRegular()

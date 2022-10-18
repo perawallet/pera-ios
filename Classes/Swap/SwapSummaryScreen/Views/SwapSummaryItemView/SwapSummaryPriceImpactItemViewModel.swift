@@ -14,6 +14,7 @@
 
 //   SwapSummaryPriceImpactItemViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -41,7 +42,8 @@ extension SwapSummaryPriceImpactItemViewModel {
     ) {
         guard let priceImpact = quote.priceImpact else { return }
 
-        value = priceImpact
+        let priceImpactPercentage = priceImpact / 100
+        value = priceImpactPercentage
             .doubleValue
             .toPercentage?
             .bodyRegular()

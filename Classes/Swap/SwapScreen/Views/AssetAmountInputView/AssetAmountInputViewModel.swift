@@ -20,32 +20,19 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct AssetAmountInputViewModel: ViewModel {
-    private(set) var imageSource: ImageSource?
-    private(set) var inputValue: TextProvider?
-    private(set) var isInputEditable = true
-    private(set) var detail: TextProvider?
-
-    init(
-        asset: Asset,
-        isInputEditable: Bool
-    ) {
-        bindIcon(asset)
-        bindInputValue(asset)
-        bindInputEditable(isInputEditable)
-        bindDetail(asset)
-    }
+protocol AssetAmountInputViewModel: ViewModel {
+    var imageSource: ImageSource? { get }
+    var primaryValue: TextProvider? { get }
+    var isInputEditable: Bool { get }
+    var detail: TextProvider? { get }
 }
 
 extension AssetAmountInputViewModel {
-    mutating func bindIcon(
-        _ asset: Asset
-    ) {
+    func getImageSource(_ asset: Asset) -> ImageSource {
         if asset.isAlgo {
-            imageSource = AssetImageSource(
+            return AssetImageSource(
                 asset: "icon-algo-circle-green".uiImage
             )
-            return
         }
 
         let imageSize = CGSize(width: 40, height: 40)
@@ -63,29 +50,10 @@ extension AssetAmountInputViewModel {
             text: .string(placeholderText)
         )
 
-        imageSource = PNGImageSource(
+        return PNGImageSource(
             url: prismURL,
             shape: .circle,
             placeholder: placeholder
         )
-    }
-
-    mutating func bindInputValue(
-        _ asset: Asset
-    ) {
-        /// <todo> This will be implemented while constructing the screen.
-    }
-
-    mutating func bindInputEditable(
-        _ isInputEditable: Bool
-    ) {
-        self.isInputEditable = isInputEditable
-    }
-
-    mutating func bindDetail(
-        _ asset: Asset
-    ) {
-        /// <todo> This will be implemented while constructing the screen.
-        detail = "0.00".footnoteRegular()
     }
 }

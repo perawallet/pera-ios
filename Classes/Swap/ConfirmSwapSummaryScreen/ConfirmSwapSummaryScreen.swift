@@ -38,15 +38,15 @@ final class ConfirmSwapSummaryScreen:
     private lazy var totalSwapFeeInfoView = SwapInfoItemView()
     private lazy var totalSwapFeeDetailView = UILabel()
 
-    private let swapAssetController: SwapAssetController
+    private let swapController: SwapController
     private let theme: ConfirmSwapSummaryScreenTheme
 
     init(
-        swapAssetController: SwapAssetController,
+        swapController: SwapController,
         theme: ConfirmSwapSummaryScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.swapAssetController = swapAssetController
+        self.swapController = swapController
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -73,8 +73,8 @@ final class ConfirmSwapSummaryScreen:
         super.bindData()
 
         let viewModel = ConfirmSwapSummaryScreenViewModel(
-            account: swapAssetController.account,
-            quote: swapAssetController.quote!
+            account: swapController.account,
+            quote: swapController.quote!
         )
 
         accountInfoView.bindData(viewModel.accountInfo)
