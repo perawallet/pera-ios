@@ -32,11 +32,16 @@ protocol SwapAssetDataController: AnyObject {
     func loadData(swapAmount: Decimal)
     func updateUserAsset(_ asset: Asset)
     func updatePoolAsset(_ asset: Asset)
-    func updateSlippage(_ slippage: Decimal)
+    func updateSlippage(_ slippage: SwapSlippage)
 }
 
 enum SwapAssetDataControllerEvent {
     case willLoadData
     case didLoadData(SwapQuote)
     case didFailToLoadData(SwapAssetDataController.Error)
+    case didFailValidation(SwapAssetValidationError)
+}
+
+enum SwapAssetValidationError: Error {
+    case minBalance
 }
