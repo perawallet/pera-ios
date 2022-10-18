@@ -52,9 +52,10 @@ extension ConfirmSwapAmountInViewModel {
         asset: Asset,
         quote: SwapQuote
     ) {
-        assetAmountValue = AssetAmountOutViewModel(
+        assetAmountValue = AssetAmountInViewModel(
             asset: asset,
-            swapQuote: quote
+            swapQuote: quote,
+            isEditable: false
         )
     }
 

@@ -49,8 +49,7 @@ extension SwapConfirmSummaryPriceImpactInfoViewModel {
     ) {
         guard let priceImpact = quote.priceImpact else { return }
 
-        let priceImpactPercentage = priceImpact / 100
-        detail = priceImpactPercentage
+        detail = priceImpact
             .doubleValue
             .toPercentage?
             .bodyRegular()

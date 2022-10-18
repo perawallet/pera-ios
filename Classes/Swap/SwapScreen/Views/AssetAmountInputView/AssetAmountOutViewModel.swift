@@ -38,7 +38,9 @@ struct AssetAmountOutViewModel: AssetAmountInputViewModel {
             swapQuote: swapQuote
         )
     }
+}
 
+extension AssetAmountOutViewModel {
     mutating func bindIcon(
         _ asset: Asset
     ) {

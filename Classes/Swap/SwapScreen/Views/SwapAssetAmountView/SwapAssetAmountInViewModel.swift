@@ -85,7 +85,8 @@ extension SwapAssetAmountInViewModel {
     ) {
         assetAmountValue = AssetAmountInViewModel(
             asset: asset,
-            swapQuote: quote
+            swapQuote: quote,
+            isEditable: true
         )
     }
 

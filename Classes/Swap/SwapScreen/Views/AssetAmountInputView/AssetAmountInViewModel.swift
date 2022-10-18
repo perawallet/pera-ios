@@ -26,7 +26,8 @@ struct AssetAmountInViewModel: AssetAmountInputViewModel {
 
     init(
         asset: Asset,
-        swapQuote: SwapQuote?
+        swapQuote: SwapQuote?,
+        isEditable: Bool
     ) {
         bindIcon(asset)
         bindPrimaryValue(
@@ -37,8 +38,11 @@ struct AssetAmountInViewModel: AssetAmountInputViewModel {
             asset: asset,
             swapQuote: swapQuote
         )
+        bindEditable(isEditable)
     }
+}
 
+extension AssetAmountInViewModel {
     mutating func bindIcon(
         _ asset: Asset
     ) {
@@ -70,6 +74,12 @@ struct AssetAmountInViewModel: AssetAmountInputViewModel {
         detail = amountInUSDValue
             .toNumberStringWithSeparatorForLabel?
             .footnoteRegular()
+    }
+
+    mutating func bindEditable(
+        _ isEditable: Bool
+    ) {
+        self.isInputEditable = isEditable
     }
 }
 
