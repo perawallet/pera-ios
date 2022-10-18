@@ -22,6 +22,7 @@ struct ConfirmSwapSummaryScreenTheme:
     LayoutSheet {
     let accountInfo: SecondaryListItemViewTheme
     let accountInfoTopInset: LayoutMetric
+    let accountSeparatorSpacing: LayoutMetric
     let horizontalInset: LayoutMetric
     let separator: Separator
     let spacingBetweenSeparatorAndInfo: LayoutMetric
@@ -35,7 +36,8 @@ struct ConfirmSwapSummaryScreenTheme:
         _ family: LayoutFamily
     ) {
         self.accountInfo = SecondaryListItemCommonViewTheme()
-        self.accountInfoTopInset = 28
+        self.accountInfoTopInset = 18
+        self.accountSeparatorSpacing = 18
         self.horizontalInset = 24
         self.separator = Separator(
             color: Colors.Layer.grayLighter,

@@ -17,9 +17,11 @@
 import MacaroonUIKit
 import UIKit
 
-final class ErrorScreen: ScrollScreen {
+final class ErrorScreen: BaseScrollViewController {
     typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
+    private lazy var iconBackgroundView = UIView()
     private lazy var iconView = UIImageView()
     private lazy var titleView = UILabel()
     private lazy var detailView = UILabel()
@@ -28,22 +30,31 @@ final class ErrorScreen: ScrollScreen {
 
     private let viewModel: ErrorScreenViewModel
     private let theme: ErrorScreenTheme
-    private let eventHandler: EventHandler
 
     init(
         viewModel: ErrorScreenViewModel,
         theme: ErrorScreenTheme,
-        eventHandler: @escaping EventHandler
+        configuration: ViewControllerConfiguration
     ) {
         self.viewModel = viewModel
         self.theme = theme
-        self.eventHandler = eventHandler
-        super.init()
+        super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        hidesCloseBarButtonItem = true
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         addTitle()
+        addIconBackground()
         addIcon()
         addDetail()
         addSecondaryAction()
@@ -57,6 +68,10 @@ final class ErrorScreen: ScrollScreen {
         viewModel.primaryAction?.load(in: primaryActionView)
         viewModel.secondaryAction?.load(in: secondaryActionView)
     }
+
+    override func didTapBackBarButton() -> Bool {
+        return false
+    }
 }
 
 extension ErrorScreen {
@@ -64,20 +79,32 @@ extension ErrorScreen {
         titleView.customizeAppearance(theme.title)
 
         contentView.addSubview(titleView)
+        titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.center == 0
             $0.leading == theme.titleHorizontalInset
             $0.trailing == theme.titleHorizontalInset
         }
+    }
 
+    private func addIconBackground() {
+        iconBackgroundView.customizeAppearance(theme.iconBackground)
+        iconBackgroundView.layer.draw(corner: theme.iconBackgroundCorner)
+
+        contentView.addSubview(iconBackgroundView)
+        iconBackgroundView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
+            $0.centerX == 0
+            $0.bottom == titleView.snp.top - theme.spacingBetweenIconAndTitle
+        }
     }
 
     private func addIcon() {
-        contentView.addSubview(iconView)
+        iconView.customizeAppearance(theme.icon)
+
+        iconBackgroundView.addSubview(iconView)
         iconView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
-            $0.centerX == 0
-            $0.bottom == titleView.snp.top + theme.spacingBetweenIconAndTitle
+            $0.center == 0
         }
     }
 
@@ -85,6 +112,7 @@ extension ErrorScreen {
         detailView.customizeAppearance(theme.detail)
 
         contentView.addSubview(detailView)
+        detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndDetail
             $0.leading == theme.detailHorizontalInset
@@ -92,14 +120,37 @@ extension ErrorScreen {
         }
     }
 
+    private func addSecondaryAction() {
+        secondaryActionView.customizeAppearance(theme.secondaryAction)
+        secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+
+        contentView.addSubview(secondaryActionView)
+        secondaryActionView.snp.makeConstraints {
+            $0.leading == theme.actionEdgeInsets.leading
+            $0.trailing == theme.actionEdgeInsets.trailing
+
+            let bottomInset =
+                view.compactSafeAreaInsets.bottom +
+                (navigationController ?? self).additionalSafeAreaInsets.bottom
+                + theme.actionEdgeInsets.bottom
+            $0.bottom == bottomInset
+        }
+
+        secondaryActionView.addTouch(
+            target: self,
+            action: #selector(didTapSecondaryAction)
+        )
+    }
+
     private func addPrimaryAction() {
         primaryActionView.customizeAppearance(theme.primaryAction)
         primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
 
-        footerView.addSubview(primaryActionView)
+        contentView.addSubview(primaryActionView)
         primaryActionView.snp.makeConstraints {
-            $0.top ==  theme.actionEdgeInsets.top
+            $0.top >= detailView.snp.bottom + theme.actionEdgeInsets.top
             $0.leading == theme.actionEdgeInsets.leading
+            $0.bottom == secondaryActionView.snp.top - theme.spacingBetweenActions
             $0.trailing == theme.actionEdgeInsets.trailing
         }
 
@@ -108,35 +159,17 @@ extension ErrorScreen {
             action: #selector(didTapPrimaryAction)
         )
     }
-
-    private func addSecondaryAction() {
-        secondaryActionView.customizeAppearance(theme.secondaryAction)
-        secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
-
-        footerView.addSubview(secondaryActionView)
-        secondaryActionView.snp.makeConstraints {
-            $0.top == primaryActionView.snp.bottom + theme.spacingBetweenActions
-            $0.leading == theme.actionEdgeInsets.leading
-            $0.trailing == theme.actionEdgeInsets.trailing
-            $0.bottom == theme.actionEdgeInsets.bottom
-        }
-
-        secondaryActionView.addTouch(
-            target: self,
-            action: #selector(didTapSecondaryAction)
-        )
-    }
 }
 
 extension ErrorScreen {
     @objc
     private func didTapPrimaryAction() {
-        eventHandler(.didTapPrimaryAction)
+        eventHandler?(.didTapPrimaryAction)
     }
 
     @objc
     private func didTapSecondaryAction() {
-        eventHandler(.didTapSecondaryAction)
+        eventHandler?(.didTapSecondaryAction)
     }
 }
 

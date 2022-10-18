@@ -20,6 +20,9 @@ import UIKit
 struct SwapAssetSuccessScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
+    let successIconBackground: ViewStyle
+    let successIconBackgroundCorner: Corner
     let icon: ImageStyle
     let iconSize: LayoutSize
     let spacingBetweenIconAndTitle: LayoutMetric
@@ -44,8 +47,15 @@ struct SwapAssetSuccessScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.successIconBackground = [
+            .backgroundColor(Colors.Helpers.success)
+        ]
+        self.successIconBackgroundCorner = Corner(radius: 30)
         self.icon = [
-            .image("")
+            .image("icon-success-36")
         ]
         self.iconSize = (60, 60)
         self.spacingBetweenIconAndTitle = 24
@@ -63,7 +73,7 @@ struct SwapAssetSuccessScreenTheme:
         self.detailHorizontalInset = 40
         self.spacingBetweenTitleAndDetail = 12
         self.doneAction = [
-            .title("swap-confirm-title".localized),
+            .title("title-done".localized),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

@@ -20,7 +20,10 @@ import UIKit
 struct LoadingScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
+    let imageBackground: ViewStyle
     let imageSize: LayoutSize
+    let imageBackgroundCorner: Corner
     let spacingBetweenImageAndTitle: LayoutMetric
     let title: TextStyle
     let titleHorizontalInset: LayoutMetric
@@ -31,7 +34,14 @@ struct LoadingScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.imageBackground = [
+            .backgroundColor(Colors.Button.Helper.background)
+        ]
         self.imageSize = (60, 60)
+        self.imageBackgroundCorner = Corner(radius: imageSize.h / 2)
         self.spacingBetweenImageAndTitle = 24
         self.title = [
             .textColor(Colors.Text.main),
