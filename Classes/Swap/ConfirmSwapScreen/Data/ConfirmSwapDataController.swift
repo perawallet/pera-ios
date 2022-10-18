@@ -28,7 +28,7 @@ protocol ConfirmSwapDataController: AnyObject {
 
     var eventHandler: EventHandler? { get set }
 
-    func updateSlippage(_ slippage: Decimal)
+    func updateSlippage(_ slippage: SwapSlippage)
     func confirmSwap()
 }
 
