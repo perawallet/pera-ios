@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioViewTheme.swift
+//   WatchAccountPortfolioViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPortfolioViewTheme:
+struct WatchAccountPortfolioViewTheme:
     StyleSheet,
     LayoutSheet {
     let contentHorizontalPaddings: LayoutHorizontalPaddings
@@ -28,10 +27,6 @@ struct AccountPortfolioViewTheme:
     let value: TextStyle
     let secondaryValue: TextStyle
     let spacingBetweenTitleAndValue: LayoutMetric
-    let spacingBetweenSecondaryValueAndInfo: LayoutMetric
-    let infoTitle: TextStyle
-    let spacingBetweenInfoTitleAndInfoAction: LayoutMetric
-    let infoAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
@@ -52,14 +47,5 @@ struct AccountPortfolioViewTheme:
             .textAlignment(.center)
         ]
         self.spacingBetweenTitleAndValue = 8
-        self.spacingBetweenSecondaryValueAndInfo = 12
-        self.infoTitle = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText())
-        ]
-        self.spacingBetweenInfoTitleAndInfoAction = 8
-        self.infoAction = [
-            .icon([ .normal("icon-info-20") ])
-        ]
     }
 }

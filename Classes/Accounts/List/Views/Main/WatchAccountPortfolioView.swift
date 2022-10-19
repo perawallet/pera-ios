@@ -12,48 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioView.swift
+//   WatchAccountPortfolioView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountPortfolioView:
+final class WatchAccountPortfolioView:
     View,
     ViewModelBindable,
-    UIInteractable,
     ListReusable {
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: TargetActionInteraction()
-    ]
-
     private lazy var titleView = Label()
     private lazy var valueView = Label()
     private lazy var secondaryValueView = Label()
-    private lazy var infoContentView = UIView()
-    private lazy var infoTitleView = Label()
-    private lazy var infoActionView = MacaroonUIKit.Button()
-    
+
     func customize(
-        _ theme: AccountPortfolioViewTheme
+        _ theme: WatchAccountPortfolioViewTheme
     ) {
         addTitle(theme)
         addValue(theme)
         addSecondaryValue(theme)
-        addInfoContent(theme)
     }
 
     func customizeAppearance(
         _ styleSheet: NoStyleSheet
     ) {}
-    
+
     func prepareLayout(
         _ layoutSheet: LayoutSheet
     ) {}
-    
+
     func bindData(
-        _ viewModel: AccountPortfolioViewModel?
+        _ viewModel: WatchAccountPortfolioViewModel?
     ) {
         if let title = viewModel?.title {
             title.load(in: titleView)
@@ -75,18 +65,11 @@ final class AccountPortfolioView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
-
-        if let infoTitle = viewModel?.infoTitle {
-            infoTitle.load(in: infoTitleView)
-        } else {
-            infoTitleView.text = nil
-            infoTitleView.attributedText = nil
-        }
     }
-    
+
     class func calculatePreferredSize(
-        _ viewModel: AccountPortfolioViewModel?,
-        for theme: AccountPortfolioViewTheme,
+        _ viewModel: WatchAccountPortfolioViewModel?,
+        for theme: WatchAccountPortfolioViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -106,32 +89,23 @@ final class AccountPortfolioView:
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
         ) ?? .zero
-        let infoTitleSize = viewModel.infoTitle?.boundingSize(
-            multiline: false,
-            fittingSize: .greatestFiniteMagnitude
-        ) ?? .zero
-        let infoActionIcon = theme.infoAction.icon?[.normal]
-        let infoActionSize = infoActionIcon?.size ?? .zero
-        let infoContentHeight = max(infoTitleSize.height, infoActionSize.height)
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +
             theme.spacingBetweenTitleAndValue +
             valueSize.height +
             theme.spacingBetweenTitleAndValue +
-            secondaryValueSize.height +
-            theme.spacingBetweenSecondaryValueAndInfo +
-            infoContentHeight
+            secondaryValueSize.height
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
-extension AccountPortfolioView {
+extension WatchAccountPortfolioView {
     private func addTitle(
-        _ theme: AccountPortfolioViewTheme
+        _ theme: WatchAccountPortfolioViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
-        
+
         addSubview(titleView)
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
@@ -140,12 +114,12 @@ extension AccountPortfolioView {
             $0.trailing == theme.contentHorizontalPaddings.trailing
         }
     }
-    
+
     private func addValue(
-        _ theme: AccountPortfolioViewTheme
+        _ theme: WatchAccountPortfolioViewTheme
     ) {
         valueView.customizeAppearance(theme.value)
-        
+
         addSubview(valueView)
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
@@ -156,7 +130,7 @@ extension AccountPortfolioView {
     }
 
     private func addSecondaryValue(
-        _ theme: AccountPortfolioViewTheme
+        _ theme: WatchAccountPortfolioViewTheme
     ) {
         secondaryValueView.customizeAppearance(theme.secondaryValue)
 
@@ -165,63 +139,8 @@ extension AccountPortfolioView {
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == theme.contentHorizontalPaddings.leading
+            $0.bottom == 0
             $0.trailing == theme.contentHorizontalPaddings.trailing
         }
-    }
-
-    private func addInfoContent(
-        _ theme: AccountPortfolioViewTheme
-    ) {
-        addSubview(infoContentView)
-        infoContentView.snp.makeConstraints {
-            $0.centerX == 0
-            $0.top == secondaryValueView.snp.bottom + theme.spacingBetweenSecondaryValueAndInfo
-            $0.leading >= theme.contentHorizontalPaddings.leading
-            $0.trailing <= theme.contentHorizontalPaddings.trailing
-        }
-
-        addInfoTitle(theme)
-        addInfoAction(theme)
-    }
-
-    private func addInfoTitle(
-        _ theme: AccountPortfolioViewTheme
-    ) {
-        infoTitleView.customizeAppearance(theme.infoTitle)
-
-        infoContentView.addSubview(infoTitleView)
-        infoTitleView.snp.makeConstraints {
-            let iconHeight = theme.infoAction.icon?[.normal]?.height ?? .zero
-            $0.greaterThanHeight(iconHeight)
-
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-        }
-    }
-
-    private func addInfoAction(
-        _ theme: AccountPortfolioViewTheme
-    ) {
-        infoActionView.customizeAppearance(theme.infoAction)
-
-        infoContentView.addSubview(infoActionView)
-        infoActionView.fitToHorizontalIntrinsicSize()
-        infoActionView.snp.makeConstraints {
-            $0.centerY == 0
-            $0.leading == infoTitleView.snp.trailing + theme.spacingBetweenInfoTitleAndInfoAction
-            $0.trailing == 0
-        }
-
-        startPublishing(
-            event: .showInfo,
-            for: infoActionView
-        )
-    }
-}
-
-extension AccountPortfolioView {
-    enum Event {
-        case showInfo
     }
 }

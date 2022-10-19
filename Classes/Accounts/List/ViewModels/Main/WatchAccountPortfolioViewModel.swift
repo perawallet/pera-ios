@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioViewModel.swift
+//   WatchAccountPortfolioViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AccountPortfolioViewModel:
+struct WatchAccountPortfolioViewModel:
     PortfolioViewModel,
     PairedViewModel,
     Hashable {
     private(set) var title: TextProvider?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
-    private(set) var infoTitle: TextProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
@@ -36,7 +34,7 @@ struct AccountPortfolioViewModel:
     }
 }
 
-extension AccountPortfolioViewModel {
+extension WatchAccountPortfolioViewModel {
     mutating func bind(
         _ portfolioItem: AccountPortfolioItem
     ) {
@@ -45,9 +43,8 @@ extension AccountPortfolioViewModel {
         bindTitle(portfolioItem)
         bindPrimaryValue(portfolioItem)
         bindSecondaryValue(portfolioItem)
-        bindInfoTitle(portfolioItem)
     }
-    
+
     mutating func bindTitle(
         _ portfolioItem: AccountPortfolioItem
     ) {
@@ -58,7 +55,7 @@ extension AccountPortfolioViewModel {
                 lineBreakMode: .byTruncatingTail
             )
     }
-    
+
     mutating func bindPrimaryValue(
         _ portfolioItem: AccountPortfolioItem
     ) {
@@ -86,38 +83,19 @@ extension AccountPortfolioViewModel {
             lineBreakMode: .byTruncatingTail
         )
     }
-
-    mutating func bindInfoTitle(
-        _ portfolioItem: AccountPortfolioItem
-    ) {
-        guard let requiredMinimumBalance = portfolioItem.requiredMinimumBalance else {
-            assertionFailure("requiredMinimumBalance should be set.")
-            return
-        }
-
-        let formatter = portfolioItem.currencyFormatter
-        formatter.formattingContext = .standalone()
-        formatter.currency = AlgoLocalCurrency()
-        let unformattedRequiredMinBalance = requiredMinimumBalance.toAlgos
-        let formattedRequiredMinBalance = formatter.format(unformattedRequiredMinBalance)
-
-        let text = "required-minimum-balance".localized(params: "\(formattedRequiredMinBalance ?? "-")")
-
-        infoTitle = text.footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
 }
 
-extension AccountPortfolioViewModel {
+extension WatchAccountPortfolioViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
         hasher.combine(primaryValue?.string)
         hasher.combine(secondaryValue?.string)
     }
-    
+
     static func == (
-        lhs: AccountPortfolioViewModel,
-        rhs: AccountPortfolioViewModel
+        lhs: WatchAccountPortfolioViewModel,
+        rhs: WatchAccountPortfolioViewModel
     ) -> Bool {
         return
             lhs.primaryValue?.string == rhs.primaryValue?.string &&

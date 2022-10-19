@@ -39,6 +39,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRequiredMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -332,6 +333,21 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch listSection {
+        case .portfolio:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+
+            switch itemIdentifier {
+            case .portfolio:
+                let cell = cell as! AccountPortfolioCell
+                cell.startObserving(event: .showInfo) {
+                    [unowned self] in
+                    openRequiredMinimumBalanceInfo()
+                }
+            default:
+                break
+            }
         case .assets:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return
@@ -550,6 +566,28 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         return UITargetedPreview(
             view: cell,
             backgroundColor: Colors.Defaults.background.uiColor
+        )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func openRequiredMinimumBalanceInfo() {
+        let uiSheet = UISheet(
+            title: "minimum-balance-title".localized.bodyLargeMedium(),
+            body: "minimum-balance-description".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToRequiredMinimumBalanceInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
         )
     }
 }

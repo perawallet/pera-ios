@@ -12,23 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioCell.swift
+//   WatchAccountPortfolioCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-class AccountPortfolioCell:
-    CollectionCell<AccountPortfolioView>,
-    UIInteractable,
+final class WatchAccountPortfolioCell:
+    CollectionCell<WatchAccountPortfolioView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (45, 24, 8, 24)
+        return (16, 24, 36, 24)
     }
-    
-    static let theme = AccountPortfolioViewTheme()
-    
+
+    static let theme = WatchAccountPortfolioViewTheme()
+
     override init(
         frame: CGRect
     ) {
