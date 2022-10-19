@@ -119,15 +119,6 @@ extension AccountAssetListAPIDataController {
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
 
-            let calculatedRequiredMinimumBalance =
-                self.requiredMinimumBalanceCalculator
-                    .calculateMinimumAmount(
-                        for: self.accountHandle.value,
-                        with: .algosTransaction,
-                        calculatedFee: .zero,
-                        isAfterTransaction: false
-                    )
-
             snapshot.appendSections([.portfolio])
 
             let isWatchAccount = self.accountHandle.value.isWatchAccount()
@@ -145,6 +136,14 @@ extension AccountAssetListAPIDataController {
                     toSection: .portfolio
                 )
             } else {
+                let calculatedRequiredMinimumBalance =
+                    self.requiredMinimumBalanceCalculator
+                        .calculateMinimumAmount(
+                            for: self.accountHandle.value,
+                            with: .algosTransaction,
+                            calculatedFee: .zero,
+                            isAfterTransaction: false
+                        )
                 let portfolio = AccountPortfolioItem(
                     accountValue: self.accountHandle,
                     currency: currency,
