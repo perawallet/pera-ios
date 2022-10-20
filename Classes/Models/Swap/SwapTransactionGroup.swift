@@ -17,16 +17,16 @@
 import Foundation
 
 final class SwapTransactionGroup: ALGEntityModel {
-    let purpose: SwapTransactionPurpose?
-    let groupID: Int
+    let purpose: SwapTransactionPurpose
+    let groupID: Int?
     let transactions: [Data]?
     let signedTransactions: [Data?]?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.purpose = apiModel.purpose
-        self.groupID = Int(apiModel.transactionGroupID).unwrap(or: -1)
+        self.purpose = apiModel.purpose ?? .init()
+        self.groupID = apiModel.transactionGroupID.unwrap { Int($0) }
         self.transactions = apiModel.transactions
         self.signedTransactions = apiModel.signedTransactions
     }
@@ -34,7 +34,7 @@ final class SwapTransactionGroup: ALGEntityModel {
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.purpose = purpose
-        apiModel.transactionGroupID = String(describing: groupID)
+        apiModel.transactionGroupID = groupID.unwrap { String(describing: $0) }
         apiModel.transactions = transactions
         apiModel.signedTransactions = signedTransactions
         return apiModel
@@ -44,13 +44,9 @@ final class SwapTransactionGroup: ALGEntityModel {
 extension SwapTransactionGroup {
     struct APIModel: ALGAPIModel {
         var purpose: SwapTransactionPurpose?
-        var transactionGroupID: String
+        var transactionGroupID: String?
         var transactions: [Data]?
         var signedTransactions: [Data?]?
-
-        init() {
-            self.transactionGroupID = "-1"
-        }
 
         private enum CodingKeys:
             String,
