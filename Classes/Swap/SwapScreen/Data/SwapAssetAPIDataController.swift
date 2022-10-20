@@ -64,8 +64,8 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
 }
 
 extension SwapAssetAPIDataController {
-    func loadData(
-        swapAmount: Decimal
+    func loadQuote(
+        swapAmount: UInt64
     ) {
         guard let deviceID = api.session.authenticatedUser?.getDeviceId(on: api.network),
               let poolAssetID = poolAsset?.id else {
@@ -83,18 +83,11 @@ extension SwapAssetAPIDataController {
             slippage: slippage
         )
 
-        let validationResult = draft.validate()
+        quoteThrottler.performNext {
+            [weak self] in
+            guard let self = self else { return }
 
-        switch validationResult {
-        case .validated:
-            quoteThrottler.performNext {
-                [weak self] in
-                guard let self = self else { return }
-
-                self.loadData(draft)
-            }
-        case .failed(let reason):
-            eventHandler?(.didFailValidation(reason))
+            self.loadData(draft)
         }
     }
 
@@ -106,7 +99,7 @@ extension SwapAssetAPIDataController {
             currentQuoteEndpoint?.cancel()
         }
 
-        eventHandler?(.willLoadData)
+        eventHandler?(.willLoadQuote)
 
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
@@ -119,13 +112,42 @@ extension SwapAssetAPIDataController {
                 guard let quote = quoteList.results[safe: 0] else { return }
 
                 self.swapController.updateQuote(quote)
-                self.eventHandler?(.didLoadData(quote))
+                self.eventHandler?(.didLoadQuote(quote))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
                     apiErrorDetail: hipApiError
                 )
-                self.eventHandler?(.didFailToLoadData(error))
+                self.eventHandler?(.didFailToLoadQuote(error))
+            }
+        }
+    }
+}
+
+extension SwapAssetAPIDataController {
+    func calculatePeraSwapFee(
+        balance: UInt64
+    ) {
+        let draft = PeraSwapFeeDraft(
+            assetID: userAsset.id,
+            amount: balance
+        )
+
+        eventHandler?(.willLoadPeraFee)
+
+        api.calculatePeraSwapFee(draft) {
+            [weak self] response in
+            guard let self = self else { return }
+
+            switch response {
+            case .success(let feeResult):
+                self.eventHandler?(.didLoadPeraFee(feeResult))
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                self.eventHandler?(.didFailToLoadPeraFee(error))
             }
         }
     }

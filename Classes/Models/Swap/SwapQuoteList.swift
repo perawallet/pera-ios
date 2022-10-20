@@ -12,39 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PeraSwapFee.swift
+//   SwapQuoteList.swift
 
 import Foundation
-import MagpieCore
 
-final class PeraSwapFee: ALGEntityModel {
-    let fee: UInt64?
+final class SwapQuoteList: ALGEntityModel {
+    let results: [SwapQuote]
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.fee = apiModel.peraFeeAmount.unwrap { UInt64($0) }
+        self.results =  apiModel.results.unwrapMap(SwapQuote.init)
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.peraFeeAmount = fee.unwrap { String(describing: $0) } 
+        apiModel.results = results.map { $0.encode() }
         return apiModel
     }
 }
 
-extension PeraSwapFee {
+extension SwapQuoteList {
     struct APIModel: ALGAPIModel {
-        var peraFeeAmount: String?
+        var results: [SwapQuote.APIModel]?
 
         init() {
-            self.peraFeeAmount = nil
+            self.results = []
         }
 
         private enum CodingKeys:
             String,
             CodingKey {
-            case peraFeeAmount = "pera_fee_amount"
+            case results
         }
     }
 }

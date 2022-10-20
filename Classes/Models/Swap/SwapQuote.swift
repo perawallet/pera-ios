@@ -17,6 +17,8 @@
 import Foundation
 
 final class SwapQuote: ALGEntityModel {
+    static let feePadding: UInt64 = 1000000 /// 1 Algo
+
     let id: Int64
     let provider: SwapProvider?
     let type: SwapType?
@@ -24,11 +26,11 @@ final class SwapQuote: ALGEntityModel {
     let deviceID: Int64?
     let assetIn: AssetDecoration?
     let assetOut: AssetDecoration?
-    let amountIn: Decimal?
-    let amountInWithSlippage: Decimal?
+    let amountIn: UInt64?
+    let amountInWithSlippage: UInt64?
     let amountInUSDValue: Decimal?
-    let amountOut: Decimal?
-    let amountOutWithSlippage: Decimal?
+    let amountOut: UInt64?
+    let amountOutWithSlippage: UInt64?
     let amountOutUSDValue: Decimal?
     let slippage: SwapSlippage?
     let price: Decimal?
@@ -46,11 +48,11 @@ final class SwapQuote: ALGEntityModel {
         self.deviceID = apiModel.device
         self.assetIn = apiModel.assetIn.unwrap(AssetDecoration.init)
         self.assetOut = apiModel.assetOut.unwrap(AssetDecoration.init)
-        self.amountIn = apiModel.amountIn.unwrap { Decimal(string: $0) }
-        self.amountInWithSlippage = apiModel.amountInWithSlippage.unwrap { Decimal(string: $0) }
+        self.amountIn = apiModel.amountIn.unwrap { UInt64($0) }
+        self.amountInWithSlippage = apiModel.amountInWithSlippage.unwrap { UInt64($0) }
         self.amountInUSDValue = apiModel.amountInUSDValue.unwrap { Decimal(string: $0) }
-        self.amountOut = apiModel.amountOut.unwrap { Decimal(string: $0) }
-        self.amountOutWithSlippage = apiModel.amountOutWithSlippage.unwrap { Decimal(string: $0) }
+        self.amountOut = apiModel.amountOut.unwrap { UInt64($0)  }
+        self.amountOutWithSlippage = apiModel.amountOutWithSlippage.unwrap { UInt64($0) }
         self.amountOutUSDValue = apiModel.amountOutUSDValue.unwrap { Decimal(string: $0) }
         self.slippage = apiModel.slippage.unwrap { SwapSlippage(rawValue: Decimal(string: $0) ?? SwapSlippage.fivePerThousand.rawValue) }
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
@@ -129,38 +131,6 @@ extension SwapQuote {
             case priceImpact = "price_impact"
             case peraFee = "pera_fee_amount"
             case exchangeFee = "exchange_fee_amount"
-        }
-    }
-}
-
-final class SwapQuoteList: ALGEntityModel {
-    let results: [SwapQuote]
-
-    init(
-        _ apiModel: APIModel = APIModel()
-    ) {
-        self.results =  apiModel.results.unwrapMap(SwapQuote.init)
-    }
-
-    func encode() -> APIModel {
-        var apiModel = APIModel()
-        apiModel.results = results.map { $0.encode() }
-        return apiModel
-    }
-}
-
-extension SwapQuoteList {
-    struct APIModel: ALGAPIModel {
-        var results: [SwapQuote.APIModel]?
-
-        init() {
-            self.results = []
-        }
-
-        private enum CodingKeys:
-            String,
-            CodingKey {
-            case results
         }
     }
 }
