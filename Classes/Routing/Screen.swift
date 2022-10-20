@@ -204,10 +204,6 @@ indirect enum Screen {
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
-    case swapConfirmSummary(
-        swapController: SwapController,
-        theme: ConfirmSwapSummaryScreenTheme = .init()
-    )
     case loading(
         viewModel: LoadingScreenViewModel,
         theme: LoadingScreenTheme = .init()

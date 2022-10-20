@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmSummaryPeraFeeInfoViewModel.swift
+//   SwapConfirmPeraFeeInfoViewModel.swift
 
 import MacaroonUIKit
 
-struct SwapConfirmSummaryPeraFeeInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmPeraFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -32,22 +32,22 @@ struct SwapConfirmSummaryPeraFeeInfoViewModel: SwapInfoItemViewModel {
     }
 }
 
-extension SwapConfirmSummaryPeraFeeInfoViewModel {
+extension SwapConfirmPeraFeeInfoViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-pera-fee-title"
             .localized
-            .bodyRegular()
+            .footnoteRegular()
     }
 
     mutating func bindIcon() {
-        icon = nil
+        icon = "icon-info-20"
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
         guard let peraFee = quote.peraFee?.toAlgos else { return }
-        detail = "\(peraFee)".bodyRegular() /// <todo> Will handle formatting when the flow is completed.
+        detail = "\(peraFee)".footnoteRegular() /// <todo> Will handle formatting when the flow is completed.
     }
 
     mutating func bindAction() {

@@ -22,7 +22,6 @@ struct ConfirmSwapScreenTheme:
     StyleSheet,
     LayoutSheet {
     let background: ViewStyle
-    let navigationBarEdgeInset: LayoutMargins
     let userAsset: SwapAssetAmountViewTheme
     let assetHorizontalInset: LayoutMetric
     let userAssetTopInset: LayoutMetric
@@ -47,10 +46,9 @@ struct ConfirmSwapScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.navigationBarEdgeInset = (12, 24, .noMetric, 24)
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.assetHorizontalInset = 24
-        self.userAssetTopInset = 120
+        self.userAssetTopInset = 96
         self.toSeparator = TitleSeparatorViewTheme()
         self.toSeparatorTopInset = 20
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
@@ -59,7 +57,7 @@ struct ConfirmSwapScreenTheme:
             color: Colors.Layer.grayLighter,
             size: 1
         )
-        self.assetSeparatorPadding = 72
+        self.assetSeparatorPadding = 88
         self.infoSectionPaddings = (28, 24, .noMetric, 24)
         self.infoActionItem = SwapInfoActionItemViewTheme()
         self.infoItem = SwapInfoItemViewTheme()
