@@ -1222,6 +1222,19 @@ extension Router {
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
             !$0.value.isWatchAccount()
         }
+
+        let api = appConfiguration.api
+        let sessionChainId = session.chainId(for: api.network)
+
+        if !api.network.allowedChainIDs.contains(sessionChainId) {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-transaction-error-node".localized
+                )
+            }
+            return
+        }
         
         if !hasNonWatchAccount {
             asyncMain { [weak bannerController] in
