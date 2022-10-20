@@ -58,6 +58,7 @@ final class SwapAssetScreen:
         self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: nil,
+            currency: configuration.sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
         super.init(configuration: configuration)
@@ -267,21 +268,23 @@ extension SwapAssetScreen {
 
 extension SwapAssetScreen {
     private func getSwapQuote(
-        for amount: Decimal
+        for amount: UInt64
     ) {
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
             switch event {
-            case .willLoadData: self.updateUIWhenDataWillLoad()
-            case .didLoadData(let quote): self.updateUIWhenDataDidLoad(quote)
-            case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
-            case .didFailValidation(_): break
+            case .willLoadQuote: self.updateUIWhenDataWillLoad()
+            case .didLoadQuote(let quote): self.updateUIWhenDataDidLoad(quote)
+            case .didFailToLoadQuote(let error): self.updateUIWhenDataDidFailToLoad(error)
+            case .willLoadPeraFee: break
+            case .didLoadPeraFee: break
+            case .didFailToLoadPeraFee: break
             }
         }
 
-        dataController.loadData(swapAmount: amount)
+        dataController.loadQuote(swapAmount: amount)
     }
 
     private func updateUIWhenDataWillLoad() {
@@ -342,6 +345,7 @@ extension SwapAssetScreen {
         userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: quote,
+            currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
     }
@@ -371,6 +375,7 @@ extension SwapAssetScreen {
         poolAssetViewModel = SwapAssetAmountOutViewModel(
             asset: poolAsset,
             quote: quote,
+            currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
     }
@@ -534,16 +539,20 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
+    /// <note>
+    /// Request the new quote whent the user types an amount.
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         didChangeTextIn textField: TextField
     ) {
         guard let input = textField.text,
-              let inputAsDecimal = Decimal(string: input) else {
-                  return
-              }
+              let inputAsDecimal = input.decimalAmount,
+              !isTheInputDecimalSeparator(input) else {
+            return
+        }
 
-        getSwapQuote(for: inputAsDecimal)
+        let inputAsFractionUnit = inputAsDecimal.toFraction(of: dataController.userAsset.decimals)
+        getSwapQuote(for: inputAsFractionUnit)
     }
 
     func swapAssetAmountView(
@@ -560,13 +569,50 @@ extension SwapAssetScreen {
 
     }
 
+    /// <note>
+    /// Check whether the input is a numeric value.
+    /// Limit number of decimal separator to 1.
+    /// Limit number of decimals with respect to the current asset.
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         shouldChangeCharactersIn textField: TextField,
         with range: NSRange,
         replacementString string: String
     ) -> Bool {
-        return true
+        guard let currentText = textField.text,
+              let currentTextRange = Range(range, in: currentText) else {
+            return true
+        }
+
+        let newText = currentText.replacingCharacters(in: currentTextRange, with: string)
+        let isNumeric = newText.isEmpty || (Double(newText) != nil)
+        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+        let numberOfDecimalSeparators = newText.components(separatedBy: decimalSeparator).count - 1
+
+        let numberOfDecimals: Int
+        if let dotIndex = newText.firstIndex(of: ".") {
+            numberOfDecimals = newText.distance(
+                from: dotIndex,
+                to: newText.endIndex
+            ) - 1
+        } else {
+            numberOfDecimals = 0
+        }
+
+        return
+            isNumeric &&
+            numberOfDecimalSeparators <= 1 &&
+            numberOfDecimals <= dataController.userAsset.decimals
+    }
+
+    private func isTheInputDecimalSeparator(
+        _ input: String
+    ) -> Bool {
+        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+
+        guard let lastCharacter = input.last else { return false }
+
+        return String(lastCharacter) == decimalSeparator
     }
 }
 

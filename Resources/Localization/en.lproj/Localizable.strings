@@ -1224,7 +1224,7 @@
 "swap-confirm-view-summary-title" = "View Swap Summary";
 "swap-confirm-exchange-fee-title" = "Exchange Fee";
 "swap-confirm-pera-fee-title" = "Pera Fee";
-"swap-confirm-total-fee-detail" = "Amount displayed in the Total Swap Fee will be included in the swap. Algorand Network fees will be added as extra.";
+"swap-confirm-exchange-fee-detail" = "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top.";
 "swap-confirm-summary-title" = "Swap Summary";
 
 // MARK: Swap Loading

@@ -1038,12 +1038,6 @@ class Router:
                 draft: draft,
                 eventHandler: eventHandler
             )
-        case .swapConfirmSummary(let swapController, let theme):
-            viewController = ConfirmSwapSummaryScreen(
-                swapController: swapController,
-                theme: theme,
-                configuration: configuration
-            )
         case .loading(let viewModel, let theme):
             viewController = LoadingScreen(
                 viewModel: viewModel,

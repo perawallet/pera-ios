@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapConfirmSummaryTotalSwapFeeInfoViewModel.swift
+//   SwapConfirmExchangeFeeInfoViewModel.swift
 
 import MacaroonUIKit
 
-struct SwapConfirmSummaryTotalSwapFeeInfoViewModel: SwapInfoItemViewModel {
+struct SwapConfirmExchangeFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
     private(set) var detail: TextProvider?
@@ -32,13 +32,11 @@ struct SwapConfirmSummaryTotalSwapFeeInfoViewModel: SwapInfoItemViewModel {
     }
 }
 
-extension SwapConfirmSummaryTotalSwapFeeInfoViewModel {
+extension SwapConfirmExchangeFeeInfoViewModel {
     mutating func bindTitle() {
-        let aTitle = "swap-confirm-total-fee-title".localized + "*"
-
-        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
-        attributes.insert(.textColor(Colors.Text.main))
-        title = aTitle.attributed(attributes)
+        title = "swap-confirm-exchange-fee-title"
+            .localized
+            .footnoteRegular()
     }
 
     mutating func bindIcon() {
@@ -48,12 +46,8 @@ extension SwapConfirmSummaryTotalSwapFeeInfoViewModel {
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        guard let peraFee = quote.peraFee?.toAlgos,
-              let exchangeFee = quote.peraFee?.toAlgos else {
-            return
-        }
-
-        detail = "\(peraFee + exchangeFee)".bodyMedium() /// <todo> Will handle formatting when the flow is completed.
+        guard let exchangeFee = quote.exchangeFee?.toAlgos else { return }
+        detail = "\(exchangeFee)".footnoteRegular() /// <todo> Will handle formatting when the flow is completed.
     }
 
     mutating func bindAction() {

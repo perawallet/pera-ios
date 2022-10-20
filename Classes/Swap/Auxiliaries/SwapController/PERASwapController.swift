@@ -17,6 +17,9 @@
 import Foundation
 
 final class PERASwapController: SwapController {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+
     let account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
     let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
@@ -45,6 +48,112 @@ final class PERASwapController: SwapController {
 }
 
 extension PERASwapController {
+    func signTransactions(
+        _ transactionGroups: [SwapTransactionGroup]
+    ) {
+        for transactionGroup in transactionGroups where transactionGroup.purpose.isSupported {
+            guard let unsignedTransactions = transactionGroup.transactions,
+                  let signedTransactions = transactionGroup.signedTransactions else {
+                return
+            }
+
+            let transactionIndexesToSign = signedTransactions.findIndexes(of: nil) /// Find transactions that needs to be signed
+            sign(
+                unsignedTransactions,
+                at: transactionIndexesToSign
+            )
+        }
+    }
+
+    private func sign(
+        _ unsignedTransactions: [Data],
+        at indexes: [Int]
+    ) {
+        for (unsignedTransactionIndex, unsignedTransaction) in unsignedTransactions.enumerated() {
+            for index in indexes {
+                if unsignedTransactionIndex == index {
+
+                    transactionSigner.eventHandler = {
+                        [weak self] event in
+                        guard let self = self else { return }
+
+                        switch event {
+                        case .didSignedTransaction(let signedTransaction):
+                            break
+                        case .didFailedSigning(let error):
+                            break
+                        case .didLedgerRequestUserApproval(let ledger):
+                            break
+                        case .didFinishTiming:
+                            break
+                        case .didLedgerReset:
+                            break
+                        case .didLedgerRejectedSigning:
+                            break
+                        }
+                    }
+
+                    transactionSigner.signTransaction(
+                        unsignedTransaction,
+                        for: account
+                    )
+                }
+            }
+        }
+    }
+}
+
+extension PERASwapController {
+
+}
+
+extension PERASwapController {
+
+}
+
+extension PERASwapController {
+    private func uploadTransaction(
+        _ transaction: Data
+    ) {
+        api.sendTransaction(transaction) {
+            [weak self] response in
+            guard let self = self else { return }
+            switch response {
+            case .success(let signedTransaction):
+                self.monitorTransaction(signedTransaction.identifier)
+            case .failure:
+                break
+            }
+        }
+    }
+}
+
+extension PERASwapController {
+    private func monitorTransaction(
+        _ transactionID: TxnID
+    ) {
+        transactionMonitor.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .willStart:
+                break
+            case .didCompleted:
+                /// wait for 1 second
+                break
+            case .didFailedTransaction:
+                break
+            case .didFailedNetwork:
+                break
+            }
+        }
+
+        transactionMonitor.monitor(transactionID)
+    }
+}
+
+extension PERASwapController {
     func updateQuote(
         _ quote: SwapQuote
     ) {
@@ -68,58 +177,10 @@ extension PERASwapController {
     ) {
         self.poolAsset = asset
     }
-
-    func calculateFee() {
-        let draft = PeraSwapFeeDraft(assetID: 1, amount: 1)
-        api.calculatePeraSwapFee(draft) { response in
-            switch response {
-            case .success(let feeResult):
-                break
-            case .failure(let error):
-                break
-            }
-        }
-    }
-
-    func prepareTransactions(
-        _ transactions: [SwapTransactionGroup]
-    ) {
-        guard let quote = quote else { return }
-
-        for transaction in transactions {
-
-        }
-    }
-
-    func signTransactions() {
-
-    }
-
-    func uploadTransactions() {
-
-    }
 }
 
 extension PERASwapController {
-    private func monitorTransaction(
-        _ transactionID: TxnID
-    ) {
-        transactionMonitor.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
+    enum Event {
 
-            switch event {
-            case .willStart:
-                break
-            case .didCompleted:
-                break
-            case .didFailedTransaction:
-                break
-            case .didFailedNetwork:
-                break
-            }
-        }
-
-        transactionMonitor.monitor(transactionID)
     }
 }

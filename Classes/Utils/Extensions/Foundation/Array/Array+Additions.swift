@@ -96,3 +96,15 @@ extension Array {
             }
         }
 }
+
+extension Array where Element: Equatable {
+    func findIndexes(of element: Element?) -> [Index] {
+        var indexes = [Index]()
+
+        for (index, item) in enumerated() where item == element {
+            indexes.append(index)
+        }
+
+        return indexes
+    }
+}

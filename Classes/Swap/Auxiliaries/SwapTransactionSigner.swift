@@ -19,6 +19,8 @@ import Foundation
 final class SwapTransactionSigner:
     LedgerTransactionOperationDelegate,
     TransactionSignerDelegate {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
     weak var delegate: WCTransactionSignerDelegate?
 
@@ -33,6 +35,7 @@ final class SwapTransactionSigner:
     private let analytics: ALGAnalytics
 
     private var account: Account?
+    private var unsignedTransaction: Data?
 
     init(
         api: ALGAPI,
@@ -42,11 +45,20 @@ final class SwapTransactionSigner:
         self.analytics = analytics
     }
 
-    func signTransaction(for account: Account) {
+    func signTransaction(
+        _ unsignedTransaction: Data,
+        for account: Account
+    ) {
         if account.requiresLedgerConnection() {
-            signLedgerTransaction(for: account)
+            signLedgerTransaction(
+                unsignedTransaction,
+                for: account
+            )
         } else {
-            signStandardTransaction(for: account)
+            signStandardTransaction(
+                unsignedTransaction,
+                for: account
+            )
         }
     }
 
@@ -59,14 +71,16 @@ final class SwapTransactionSigner:
 
 extension SwapTransactionSigner {
     private func signLedgerTransaction(
+        _ unsignedTransaction: Data,
         for account: Account
     ) {
+        self.unsignedTransaction = unsignedTransaction
         self.account = account
 
         ledgerTransactionOperation.setTransactionAccount(account)
         ledgerTransactionOperation.delegate = self
         startTimer()
-        // ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
+        ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
 
         // Needs a bit delay since the bluetooth scanning for the first time is working initially
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -82,7 +96,7 @@ extension SwapTransactionSigner {
             }
 
             self.ledgerTransactionOperation.bleConnectionManager.stopScan()
-            /// Return event error
+            self.eventHandler?(.didFailedSigning(error: .ledger(error: .ledgerConnectionWarning)))
             self.stopTimer()
         }
     }
@@ -93,19 +107,35 @@ extension SwapTransactionSigner {
     }
 
     private func signStandardTransaction(
+        _ unsignedTransaction: Data,
         for account: Account
     ) {
+        self.unsignedTransaction = unsignedTransaction
+        self.account = account
 
+        guard let signature = api.session.privateData(for: account.address) else {
+            return
+        }
+
+        sign(
+            signature: signature,
+            signer: SDKTransactionSigner(),
+            unsignedTransaction: Data()
+        )
     }
 
     private func sign(
-        signer: TransactionSigner
+        signature: Data?,
+        signer: TransactionSigner,
+        unsignedTransaction: Data
     ) {
         signer.delegate = self
 
-        /// Get unsigned transaction
-        /// Sign transaction
-        /// Return event
+        guard let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
+            return
+        }
+
+        eventHandler?(.didSignedTransaction(signedTransaction: signedTransaction))
     }
 }
 
@@ -114,44 +144,46 @@ extension SwapTransactionSigner {
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didReceiveSignature data: Data
     ) {
-        guard let account = account else {
-            return
+        if let account {
+            sign(
+                signature: data,
+                signer: LedgerTransactionSigner(account: account),
+                unsignedTransaction: Data()
+            )
         }
-
-        sign(signer: LedgerTransactionSigner(account: account))
     }
 
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didFailed error: LedgerOperationError
     ) {
-        /// Return error
+        eventHandler?(.didFailedSigning(error: .ledger(error: error)))
     }
 
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didRequestUserApprovalFor ledger: String
     ) {
-        /// Return approval
+        eventHandler?(.didLedgerRequestUserApproval(ledger: ledger))
     }
 
     func ledgerTransactionOperationDidFinishTimingOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
         stopTimer()
-        /// Return error
+        eventHandler?(.didFinishTiming)
     }
 
     func ledgerTransactionOperationDidResetOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
-        /// Return error
+        eventHandler?(.didLedgerReset)
     }
 
     func ledgerTransactionOperationDidRejected(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
-        /// Return error
+        eventHandler?(.didLedgerRejectedSigning)
     }
 }
 
@@ -160,7 +192,7 @@ extension SwapTransactionSigner {
         _ transactionSigner: TransactionSigner,
         didFailedSigning error: HIPTransactionError
     ) {
-        /// Return error
+        eventHandler?(.didFailedSigning(error: .api(error: error)))
     }
 }
 
@@ -173,6 +205,11 @@ extension SwapTransactionSigner {
 
 extension SwapTransactionSigner {
     enum Event {
-
+        case didSignedTransaction(signedTransaction: Data)
+        case didFailedSigning(error: SignError)
+        case didLedgerRequestUserApproval(ledger: String)
+        case didFinishTiming
+        case didLedgerReset
+        case didLedgerRejectedSigning
     }
 }

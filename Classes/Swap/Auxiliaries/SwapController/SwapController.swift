@@ -15,8 +15,14 @@
 //   SwapController.swift
 
 import Foundation
+import MagpieCore
+import MagpieExceptions
+import MagpieHipo
 
 protocol SwapController {
+    typealias EventHandler = (SwapControllerEvent) -> Void
+    typealias Error = HIPNetworkError<HIPAPIError>
+    
     var account: Account { get }
     var userAsset: Asset { get }
     var quote: SwapQuote? { get }
@@ -29,7 +35,12 @@ protocol SwapController {
     func updateUserAsset(_ asset: Asset)
     func updatePoolAsset(_ asset: Asset)
     func updateSlippage(_ slippage: SwapSlippage)
-    func calculateFee()
-    func prepareTransactions(_ transactions: [SwapTransactionGroup])
-    func signTransactions()
+    func signTransactions(_ transactions: [SwapTransactionGroup])
+}
+
+enum SwapControllerEvent {
+    case willLoadData
+    case didLoadData(SwapQuote)
+    case didFailToLoadData(SwapAssetDataController.Error)
+    case didFailValidation(SwapAssetValidationError)
 }

@@ -25,35 +25,38 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var slippageInfo: SwapInfoItemViewModel?
     private(set) var priceImpactInfo: SwapInfoItemViewModel?
     private(set) var minimumReceivedInfo: SwapInfoItemViewModel?
-    private(set) var totalSwapFeeInfo: SwapInfoItemViewModel?
+    private(set) var exchangeFeeInfo: SwapInfoItemViewModel?
+    private(set) var peraFeeInfo: SwapInfoItemViewModel?
 
     init(
         quote: SwapQuote,
+        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         bindUserAsset(
             quote: quote,
+            currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindToSeparator()
         bindPoolAsset(
             quote: quote,
+            currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindPriceInfo(quote)
         bindSlippageInfo(quote)
         bindPriceImpactInfo(quote)
         bindMinimumReceivedInfo(quote)
-        bindTotalSwapFeeInfo(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
+        bindExchangeFeeInfo(quote)
+        bindPeraFeeInfo(quote)
     }
 }
 
 extension ConfirmSwapScreenViewModel {
     mutating func bindUserAsset(
         quote: SwapQuote,
+        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         guard let assetIn = quote.assetIn else { return }
@@ -68,6 +71,7 @@ extension ConfirmSwapScreenViewModel {
         userAsset = ConfirmSwapAmountInViewModel(
             asset: asset,
             quote: quote,
+            currency: currency,
             currencyFormatter: currencyFormatter
         )
     }
@@ -82,6 +86,7 @@ extension ConfirmSwapScreenViewModel {
 
     mutating func bindPoolAsset(
         quote: SwapQuote,
+        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         guard let assetOut = quote.assetOut else { return }
@@ -96,6 +101,7 @@ extension ConfirmSwapScreenViewModel {
         poolAsset = ConfirmSwapAmountOutViewModel(
             asset: asset,
             quote: quote,
+            currency: currency,
             currencyFormatter: currencyFormatter
         )
     }
@@ -125,13 +131,15 @@ extension ConfirmSwapScreenViewModel {
         minimumReceivedInfo = SwapConfirmMinimumReceivedInfoViewModel(quote)
     }
 
-    mutating func bindTotalSwapFeeInfo(
-        quote: SwapQuote,
-        currencyFormatter: CurrencyFormatter
+    mutating func bindExchangeFeeInfo(
+        _ quote: SwapQuote
     ) {
-        totalSwapFeeInfo = SwapConfirmTotalFeeInfoViewModel(
-            quote: quote,
-            currencyFormatter: currencyFormatter
-        )
+        exchangeFeeInfo = SwapConfirmExchangeFeeInfoViewModel(quote)
+    }
+
+    mutating func bindPeraFeeInfo(
+        _ quote: SwapQuote
+    ) {
+        peraFeeInfo = SwapConfirmPeraFeeInfoViewModel(quote)
     }
 }

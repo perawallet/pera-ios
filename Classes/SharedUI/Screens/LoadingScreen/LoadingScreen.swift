@@ -46,23 +46,19 @@ final class LoadingScreen: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        eventHandler?(.willStartLoading)
         imageView.play(with: LottieImageView.Configuration())
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        /// <todo> Will be changed after the swap signing is completed.
-        asyncMain(afterDuration: 5.0) {
-            [weak self] in
-            guard let self = self else { return }
-            self.eventHandler?(.didFinishLoading)
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        eventHandler?(.didStartLoading)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         imageView.stop()
+        eventHandler?(.didStopLoading)
     }
 
     override func configureAppearance() {
@@ -144,7 +140,8 @@ extension LoadingScreen {
 
 extension LoadingScreen {
     enum Event {
+        case willStartLoading
         case didStartLoading
-        case didFinishLoading
+        case didStopLoading
     }
 }

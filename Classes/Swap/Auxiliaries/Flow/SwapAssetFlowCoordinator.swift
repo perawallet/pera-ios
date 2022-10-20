@@ -31,7 +31,6 @@ final class SwapAssetFlowCoordinator:
     private lazy var transitionToSignWithLedger = BottomSheetTransition(presentingViewController: visibleScreen)
     private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: visibleScreen)
     private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: visibleScreen)
-    private lazy var transitionToConfirmSwapSummary = BottomSheetTransition(presentingViewController: visibleScreen)
 
     private var visibleScreen: UIViewController {
         return presentingScreen.findVisibleScreen()
@@ -206,11 +205,8 @@ extension SwapAssetFlowCoordinator {
                 self.openSlippageToleranceInfo()
             case .didTapSlippageAction:
                 break
-            case .didTapViewSummary:
-                self.transitionToConfirmSwapSummary.perform(
-                    .swapConfirmSummary(swapController: swapController),
-                    by: .present
-                )
+            case .didTapExchangeFeeInfo:
+                self.openExchangeFeeInfo()
             }
         }
 
@@ -234,10 +230,17 @@ extension SwapAssetFlowCoordinator {
             guard let self = self else { return }
 
             switch event {
-            case .didStartLoading:
+            case .willStartLoading:
                 break
-            case .didFinishLoading:
-                self.openSwapSuccessScreen(swapController)
+            case .didStartLoading:
+                /// <todo> Will be changed after the swap signing is completed.
+                asyncMain(afterDuration: 5.0) {
+                    [weak self] in
+                    guard let self = self else { return }
+                    self.openSwapSuccessScreen(swapController)
+                }
+            case .didStopLoading:
+                break
             }
         }
     }
@@ -361,13 +364,31 @@ extension SwapAssetFlowCoordinator {
             by: .presentWithoutNavigationController
         )
     }
-}
 
-extension SwapAssetFlowCoordinator {
     private func openPriceImpactInfo() {
         let uiSheet = UISheet(
             title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
             body:"swap-price-impact-info-body".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.visibleScreen.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToPriceImpactInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openExchangeFeeInfo() {
+        let uiSheet = UISheet(
+            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            body: "swap-confirm-exchange-fee-detail".localized.bodyRegular()
         )
 
         let closeAction = UISheetAction(
