@@ -40,6 +40,8 @@ final class SwapAssetSuccessScreen: BaseViewController {
         self.swapController = swapController
         self.theme = theme
         super.init(configuration: configuration)
+
+        isModalInPresentation = true
     }
 
     override func configureNavigationBarAppearance() {

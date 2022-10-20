@@ -26,6 +26,10 @@ final class SignWithLedgerProcessScreen:
         return .compressed
     }
 
+    var isProgressFinished: Bool {
+        return progress.isFinished
+    }
+
     private lazy var progressView = UIProgressView()
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = LottieImageView()

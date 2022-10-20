@@ -89,19 +89,19 @@ struct SwapAssetSuccessScreenTheme:
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.summaryActionHorizontalInset = 24
-        self.spacingBetweenSummaryActionAndDoneAction = 28
+        self.spacingBetweenSummaryActionAndDoneAction = 22
         self.separator = Separator(
             color: Colors.Layer.grayLighter,
             position: .top((24, 24))
         )
-        self.spacingBetweenSeparatorAndSummaryAction = 16
+        self.spacingBetweenSeparatorAndSummaryAction = 10
         self.viewDetailAction = [
             .font(Typography.bodyMedium()),
             .title("swap-success-view-explorer".localized),
             .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.viewDetailActionHorizontalInset = 24
-        self.spacingBetweenViewDetailActionAndSummaryAction = 16
+        self.spacingBetweenViewDetailActionAndSummaryAction = 10
         self.minimumSpacingBetweenViewDetailActionAndDetail = 12
     }
 }
