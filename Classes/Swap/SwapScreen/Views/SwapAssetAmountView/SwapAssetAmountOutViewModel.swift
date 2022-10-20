@@ -27,6 +27,7 @@ struct SwapAssetAmountOutViewModel: SwapAssetAmountViewModel {
     init(
         asset: Asset,
         quote: SwapQuote?,
+        currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         bindLeftTitle()
@@ -36,7 +37,9 @@ struct SwapAssetAmountOutViewModel: SwapAssetAmountViewModel {
         )
         bindAssetAmountValue(
             asset: asset,
-            quote: quote
+            quote: quote,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
         bindAssetSelectionValue(asset)
     }
@@ -80,11 +83,15 @@ extension SwapAssetAmountOutViewModel {
 
     mutating func bindAssetAmountValue(
         asset: Asset,
-        quote: SwapQuote?
+        quote: SwapQuote?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        assetAmountValue = AssetAmountOutViewModel(
+        assetAmountValue = SwapAssetAmountOutInputViewModel(
             asset: asset,
-            swapQuote: quote
+            swapQuote: quote,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
     }
 

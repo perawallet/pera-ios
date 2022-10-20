@@ -56,4 +56,65 @@ extension AssetAmountInputViewModel {
             placeholder: placeholder
         )
     }
+
+    func getDetailValueForAlgo(
+        value: Decimal?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) -> TextProvider? {
+        guard let amountUSDValue = value,
+              let fiatCurrencyValue = currency.fiatValue else {
+            return getDetailValue(text: "0.00")
+        }
+
+        do {
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchange(amount: amountUSDValue)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = fiatRawCurrency
+
+            let text = currencyFormatter.format(amount)
+            return getDetailValue(text: text)
+        } catch {
+            return nil
+        }
+    }
+
+    func getDetailValueForAsset(
+        _ asset: Asset,
+        value: Decimal?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) -> TextProvider? {
+        guard let amountUSDValue = value,
+              let currencyValue = currency.primaryValue else {
+            return getDetailValue(text: "0.00")
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(amount: amountUSDValue)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let text = currencyFormatter.format(amount)
+            return getDetailValue(text: text)
+        } catch {
+            return nil
+        }
+    }
+
+    func getDetailValue(text: String?) -> TextProvider?  {
+        if let text = text.unwrapNonEmptyString() {
+            return "≈\(text)".footnoteRegular()
+        } else {
+            return nil
+        }
+    }
 }
