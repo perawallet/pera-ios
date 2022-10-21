@@ -1207,4 +1207,4 @@
 // MARK: Minimum Balance
 "minimum-balance-title" = "Minimum balance";
 "minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
-"required-minimum-balance" = "Required min balance %@";
+"min-balance-title" = "Min Balance";

@@ -28,10 +28,13 @@ struct AccountPortfolioViewTheme:
     let value: TextStyle
     let secondaryValue: TextStyle
     let spacingBetweenTitleAndValue: LayoutMetric
-    let spacingBetweenSecondaryValueAndInfo: LayoutMetric
-    let infoTitle: TextStyle
-    let spacingBetweenInfoTitleAndInfoAction: LayoutMetric
-    let infoAction: ButtonStyle
+    let spacingBetweenSecondaryValueAndMinimumBalanceContent: LayoutMetric
+    let minimumBalanceTitle: TextStyle
+    let minimumBalanceTitleMinWidthRatio: LayoutMetric
+    let spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue: LayoutMetric
+    let minimumBalanceValue: TextStyle
+    let spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction: LayoutMetric
+    let minimumBalanceInfoAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
@@ -52,13 +55,19 @@ struct AccountPortfolioViewTheme:
             .textAlignment(.center)
         ]
         self.spacingBetweenTitleAndValue = 8
-        self.spacingBetweenSecondaryValueAndInfo = 12
-        self.infoTitle = [
+        self.spacingBetweenSecondaryValueAndMinimumBalanceContent = 12
+        self.minimumBalanceTitle = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineText())
         ]
-        self.spacingBetweenInfoTitleAndInfoAction = 8
-        self.infoAction = [
+        self.minimumBalanceTitleMinWidthRatio = 0.1
+        self.spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue = 4
+        self.minimumBalanceValue = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
+        self.spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction = 8
+        self.minimumBalanceInfoAction = [
             .icon([ .normal("icon-info-20") ])
         ]
     }

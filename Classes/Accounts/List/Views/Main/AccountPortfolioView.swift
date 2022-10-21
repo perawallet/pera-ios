@@ -25,15 +25,16 @@ final class AccountPortfolioView:
     UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: TargetActionInteraction()
+        .showMinimumBalanceInfo: TargetActionInteraction()
     ]
 
-    private lazy var titleView = Label()
-    private lazy var valueView = Label()
-    private lazy var secondaryValueView = Label()
-    private lazy var infoContentView = UIView()
-    private lazy var infoTitleView = Label()
-    private lazy var infoActionView = MacaroonUIKit.Button()
+    private lazy var titleView = UILabel()
+    private lazy var valueView = UILabel()
+    private lazy var secondaryValueView = UILabel()
+    private lazy var minimumBalanceContentView = UIView()
+    private lazy var minimumBalanceTitleView = UILabel()
+    private lazy var minimumBalanceValueView = UILabel()
+    private lazy var minimumBalanceInfoActionView = MacaroonUIKit.Button()
     
     func customize(
         _ theme: AccountPortfolioViewTheme
@@ -41,7 +42,7 @@ final class AccountPortfolioView:
         addTitle(theme)
         addValue(theme)
         addSecondaryValue(theme)
-        addInfoContent(theme)
+        addMinimumBalanceContent(theme)
     }
 
     func customizeAppearance(
@@ -76,11 +77,18 @@ final class AccountPortfolioView:
             secondaryValueView.attributedText = nil
         }
 
-        if let infoTitle = viewModel?.infoTitle {
-            infoTitle.load(in: infoTitleView)
+        if let minimumBalanceTitle = viewModel?.minimumBalanceTitle {
+            minimumBalanceTitle.load(in: minimumBalanceTitleView)
         } else {
-            infoTitleView.text = nil
-            infoTitleView.attributedText = nil
+            minimumBalanceTitleView.text = nil
+            minimumBalanceTitleView.attributedText = nil
+        }
+
+        if let minimumBalanceValue = viewModel?.minimumBalanceValue {
+            minimumBalanceValue.load(in: minimumBalanceValueView)
+        } else {
+            minimumBalanceValueView.text = nil
+            minimumBalanceValueView.attributedText = nil
         }
     }
     
@@ -106,13 +114,13 @@ final class AccountPortfolioView:
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
         ) ?? .zero
-        let infoTitleSize = viewModel.infoTitle?.boundingSize(
+        let minimumBalanceTitle = viewModel.minimumBalanceTitle?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
         ) ?? .zero
-        let infoActionIcon = theme.infoAction.icon?[.normal]
-        let infoActionSize = infoActionIcon?.size ?? .zero
-        let infoContentHeight = max(infoTitleSize.height, infoActionSize.height)
+        let minimumBalanceInfoActionIcon = theme.minimumBalanceInfoAction.icon?[.normal]
+        let minimumBalanceInfoActionSize = minimumBalanceInfoActionIcon?.size ?? .zero
+        let minimumBalanceContentHeight = max(minimumBalanceTitle.height, minimumBalanceInfoActionSize.height)
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +
@@ -120,8 +128,8 @@ final class AccountPortfolioView:
             valueSize.height +
             theme.spacingBetweenTitleAndValue +
             secondaryValueSize.height +
-            theme.spacingBetweenSecondaryValueAndInfo +
-            infoContentHeight
+            theme.spacingBetweenSecondaryValueAndMinimumBalanceContent +
+            minimumBalanceContentHeight
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -169,29 +177,33 @@ extension AccountPortfolioView {
         }
     }
 
-    private func addInfoContent(
+    private func addMinimumBalanceContent(
         _ theme: AccountPortfolioViewTheme
     ) {
-        addSubview(infoContentView)
-        infoContentView.snp.makeConstraints {
+        addSubview(minimumBalanceContentView)
+        minimumBalanceContentView.snp.makeConstraints {
             $0.centerX == 0
-            $0.top == secondaryValueView.snp.bottom + theme.spacingBetweenSecondaryValueAndInfo
+            $0.top == secondaryValueView.snp.bottom + theme.spacingBetweenSecondaryValueAndMinimumBalanceContent
             $0.leading >= theme.contentHorizontalPaddings.leading
             $0.trailing <= theme.contentHorizontalPaddings.trailing
         }
 
-        addInfoTitle(theme)
-        addInfoAction(theme)
+        addMinimumBalanceTitle(theme)
+        addMinimumBalanceValue(theme)
+        addMinimumBalanceInfoAction(theme)
     }
 
-    private func addInfoTitle(
+    private func addMinimumBalanceTitle(
         _ theme: AccountPortfolioViewTheme
     ) {
-        infoTitleView.customizeAppearance(theme.infoTitle)
+        minimumBalanceTitleView.customizeAppearance(theme.minimumBalanceTitle)
 
-        infoContentView.addSubview(infoTitleView)
-        infoTitleView.snp.makeConstraints {
-            let iconHeight = theme.infoAction.icon?[.normal]?.height ?? .zero
+        minimumBalanceContentView.addSubview(minimumBalanceTitleView)
+        minimumBalanceTitleView.fitToHorizontalIntrinsicSize(compression: .defaultLow)
+        minimumBalanceTitleView.snp.makeConstraints {
+            $0.width >= self * theme.minimumBalanceTitleMinWidthRatio
+
+            let iconHeight = theme.minimumBalanceInfoAction.icon?[.normal]?.height ?? .zero
             $0.greaterThanHeight(iconHeight)
 
             $0.top == 0
@@ -200,28 +212,43 @@ extension AccountPortfolioView {
         }
     }
 
-    private func addInfoAction(
+    private func addMinimumBalanceValue(
         _ theme: AccountPortfolioViewTheme
     ) {
-        infoActionView.customizeAppearance(theme.infoAction)
+        minimumBalanceValueView.customizeAppearance(theme.minimumBalanceValue)
 
-        infoContentView.addSubview(infoActionView)
-        infoActionView.fitToHorizontalIntrinsicSize()
-        infoActionView.snp.makeConstraints {
+        minimumBalanceContentView.addSubview(minimumBalanceValueView)
+        minimumBalanceValueView.fitToHorizontalIntrinsicSize(compression: .defaultHigh)
+        minimumBalanceValueView.snp.makeConstraints {
+            $0.height == minimumBalanceTitleView
+            $0.top == 0
+            $0.leading == minimumBalanceTitleView.snp.trailing + theme.spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue
+            $0.bottom == 0
+        }
+    }
+
+    private func addMinimumBalanceInfoAction(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        minimumBalanceInfoActionView.customizeAppearance(theme.minimumBalanceInfoAction)
+
+        minimumBalanceContentView.addSubview(minimumBalanceInfoActionView)
+        minimumBalanceInfoActionView.fitToHorizontalIntrinsicSize()
+        minimumBalanceInfoActionView.snp.makeConstraints {
             $0.centerY == 0
-            $0.leading == infoTitleView.snp.trailing + theme.spacingBetweenInfoTitleAndInfoAction
+            $0.leading == minimumBalanceValueView.snp.trailing + theme.spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction
             $0.trailing == 0
         }
 
         startPublishing(
-            event: .showInfo,
-            for: infoActionView
+            event: .showMinimumBalanceInfo,
+            for: minimumBalanceInfoActionView
         )
     }
 }
 
 extension AccountPortfolioView {
     enum Event {
-        case showInfo
+        case showMinimumBalanceInfo
     }
 }

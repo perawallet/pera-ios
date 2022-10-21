@@ -39,7 +39,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToRequiredMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -341,9 +341,9 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             switch itemIdentifier {
             case .portfolio:
                 let cell = cell as! AccountPortfolioCell
-                cell.startObserving(event: .showInfo) {
+                cell.startObserving(event: .showMinimumBalanceInfo) {
                     [unowned self] in
-                    openRequiredMinimumBalanceInfo()
+                    openMinimumBalanceInfo()
                 }
             default:
                 break
@@ -571,7 +571,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AccountAssetListViewController {
-    private func openRequiredMinimumBalanceInfo() {
+    private func openMinimumBalanceInfo() {
         let uiSheet = UISheet(
             title: "minimum-balance-title".localized.bodyLargeMedium(),
             body: "minimum-balance-description".localized.bodyRegular()
@@ -585,7 +585,7 @@ extension AccountAssetListViewController {
         }
         uiSheet.addAction(closeAction)
 
-        transitionToRequiredMinimumBalanceInfo.perform(
+        transitionToMinimumBalanceInfo.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )

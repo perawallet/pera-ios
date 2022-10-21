@@ -24,7 +24,7 @@ final class AccountAssetListAPIDataController:
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
-    private lazy var requiredMinimumBalanceCalculator = TransactionFeeCalculator(
+    private lazy var minimumBalanceCalculator = TransactionFeeCalculator(
         transactionDraft: nil,
         transactionData: nil,
         params: nil
@@ -136,8 +136,8 @@ extension AccountAssetListAPIDataController {
                     toSection: .portfolio
                 )
             } else {
-                let calculatedRequiredMinimumBalance =
-                    self.requiredMinimumBalanceCalculator
+                let calculatedMinimumBalance =
+                    self.minimumBalanceCalculator
                         .calculateMinimumAmount(
                             for: self.accountHandle.value,
                             with: .algosTransaction,
@@ -148,7 +148,7 @@ extension AccountAssetListAPIDataController {
                     accountValue: self.accountHandle,
                     currency: currency,
                     currencyFormatter: currencyFormatter,
-                    requiredMinimumBalance: calculatedRequiredMinimumBalance
+                    minimumBalance: calculatedMinimumBalance
                 )
                 let portfolioItem = AccountPortfolioViewModel(portfolio)
                 snapshot.appendItems(
