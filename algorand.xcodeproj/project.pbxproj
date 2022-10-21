@@ -2749,6 +2749,9 @@
 		2BE176602902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
 		2BE176612902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
 		2BE176622902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
+		2BE176642902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE176632902F56B008E95D9 /* WCConnectionAccountListDataSource.swift */; };
+		2BE176652902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE176632902F56B008E95D9 /* WCConnectionAccountListDataSource.swift */; };
+		2BE176662902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE176632902F56B008E95D9 /* WCConnectionAccountListDataSource.swift */; };
 		2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
 		2BE4D04A25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
 		2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
@@ -6499,6 +6502,7 @@
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
 		2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountListDataController.swift; sourceTree = "<group>"; };
 		2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountListLocalDataController.swift; sourceTree = "<group>"; };
+		2BE176632902F56B008E95D9 /* WCConnectionAccountListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountListDataSource.swift; sourceTree = "<group>"; };
 		2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2BE4D053259371CC005F5764 /* ShowAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAssetDetailEvent.swift; sourceTree = "<group>"; };
 		2BE4D06D2593845F005F5764 /* FirebaseAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsProvider.swift; sourceTree = "<group>"; };
@@ -13089,6 +13093,7 @@
 			children = (
 				2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */,
 				2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */,
+				2BE176632902F56B008E95D9 /* WCConnectionAccountListDataSource.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -18236,6 +18241,7 @@
 				D46AC87726E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */,
 				D4194311273541170055EC70 /* PageContainer.swift in Sources */,
 				2B69824E278C90DF008EC669 /* PendingAssetPreviewViewModel.swift in Sources */,
+				2BE176662902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */,
 				D46432D628B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift in Sources */,
 				17BD4E882292F1260003E49A /* ALGAPI+Account.swift in Sources */,
 				1736FB9D28AD2562002BB713 /* RecordAccountDetailScreenEvent.swift in Sources */,
@@ -20011,6 +20017,7 @@
 				2B0F625A24EC129D00DA22A6 /* ContactCell.swift in Sources */,
 				2B0F625B24EC129D00DA22A6 /* CSVExportable.swift in Sources */,
 				D49D31DC2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
+				2BE176652902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */,
 				D4389356280428460038F7AD /* URLImageViewNoStyleLayoutSheet.swift in Sources */,
 				2B68A24326A872540076BD82 /* WCTransactionSigner.swift in Sources */,
 				D4312D6C27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
@@ -21786,6 +21793,7 @@
 				2BD063E425CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
 				2BB350EC258A64D400A03BAC /* LedgerMessage.swift in Sources */,
 				D41F93492723038F00E9F2E7 /* RekeyInstructionsViewModel.swift in Sources */,
+				2BE176642902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */,
 				D4999DF828916DD100C7E05C /* OptInAssetViewModel.swift in Sources */,
 				D46432D428B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift in Sources */,
 				2BA63F7C26C1D551008E2B3C /* WCSessionHistory.swift in Sources */,
