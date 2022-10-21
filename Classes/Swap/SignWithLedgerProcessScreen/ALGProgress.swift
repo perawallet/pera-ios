@@ -18,22 +18,22 @@ import Foundation
 
 final class ALGProgress {
     let totalUnitCount: Int
-    private(set) var completedUnitCount: Int
+    private(set) var currentUnitCount: Int
 
     init(
         totalUnitCount: Int,
-        completedUnitCount: Int = .zero
+        currentUnitCount: Int = 1
     ) {
         self.totalUnitCount = totalUnitCount
-        self.completedUnitCount = completedUnitCount
+        self.currentUnitCount = currentUnitCount
     }
 
     var fractionCompleted: Float {
-        return Float(completedUnitCount) / Float(totalUnitCount)
+        return Float(currentUnitCount) / Float(totalUnitCount)
     }
 
     var isFinished: Bool {
-        return completedUnitCount == totalUnitCount
+        return currentUnitCount == totalUnitCount + 1
     }
 
     func callAsFunction() {
@@ -42,6 +42,6 @@ final class ALGProgress {
             return
         }
 
-        completedUnitCount += 1
+        currentUnitCount += 1
     }
 }

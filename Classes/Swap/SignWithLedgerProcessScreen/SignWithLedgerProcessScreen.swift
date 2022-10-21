@@ -226,7 +226,7 @@ extension SignWithLedgerProcessScreen {
     private func bindProgress(animated: Bool) {
         title =
             "swap-sign-with-ledger-process-title"
-                .localized(params: "\(progress.completedUnitCount)", "\(progress.totalUnitCount)")
+                .localized(params: "\(progress.currentUnitCount)", "\(progress.totalUnitCount)")
 
         progressView.setProgress(
             progress.fractionCompleted,
