@@ -22,7 +22,6 @@ import MagpieCore
 import MagpieHipo
 
 final class ALGBlockCycle: BlockCycle {
-    private var lastRound: BlockRound?
     private var notificationQueue: DispatchQueue?
     private var notificationHandler: NotificationHandler?
 
@@ -48,11 +47,7 @@ extension ALGBlockCycle {
     
     func startListening() {
         sendNotification()
-        if let lastRound = lastRound {
-            watchNextBlock(after: lastRound)
-        } else {
-            watchNextBlock()
-        }
+        watchNextBlock(notifyForUpdate: false)
     }
 
     func stopListening() {
@@ -62,34 +57,40 @@ extension ALGBlockCycle {
     
     func cancelListening() {
         stopListening()
-        lastRound = nil
     }
 }
 
 extension ALGBlockCycle {
-    private func watchNextBlock() {
-        self.watchNextBlock(after: 0)
+    private func watchNextBlock(
+        notifyForUpdate: Bool
+    ) {
+        watchNextBlock(
+            after: 0,
+            notifyForUpdate: notifyForUpdate
+        )
     }
     
     private func watchNextBlock(
-        after round: BlockRound
+        after round: BlockRound,
+        notifyForUpdate: Bool
     ) {
         waitForNextBlock(after: round) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let roundDetail):
-                let lastRound = roundDetail.lastRound
-                
-                self.lastRound = lastRound
+                if notifyForUpdate {
+                    self.sendNotification()
+                }
 
-                self.sendNotification()
-                
-                self.watchNextBlock(after: lastRound)
+                self.watchNextBlock(
+                    after: roundDetail.lastRound,
+                    notifyForUpdate: true
+                )
             case .failure:
                 /// <todo>
                 /// How to handle network/server errors?
-                self.watchNextBlock()
+                self.watchNextBlock(notifyForUpdate: true)
             }
         }
     }
