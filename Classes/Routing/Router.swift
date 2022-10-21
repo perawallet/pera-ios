@@ -25,8 +25,7 @@ class Router:
     NotificationObserver,
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate,
-    WalletConnectorDelegate,
-    WCConnectionApprovalViewControllerDelegate
+    WalletConnectorDelegate
     {
     var notificationObservations: [NSObjectProtocol] = []
     
@@ -742,14 +741,6 @@ class Router:
                 configuration: configuration
             )
             viewController = screen
-        case let .wcConnectionApproval(walletConnectSession, delegate, completion):
-            let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
-                walletConnectSession: walletConnectSession,
-                walletConnectSessionConnectionCompletionHandler: completion,
-                configuration: configuration
-            )
-            wcConnectionApprovalViewController.delegate = delegate
-            viewController = wcConnectionApprovalViewController
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
                 analytics: configuration.analytics,
@@ -1279,7 +1270,9 @@ extension Router {
                     }
                 }
             }
+            
 
+            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1293,25 +1286,6 @@ extension Router {
 }
 
 extension Router {
-    func wcConnectionApprovalViewControllerDidApproveConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
-        
-        wcConnectionApprovalViewController.dismissScreen {
-            [weak self] in
-            guard let self = self else { return }
-            
-            self.presentWCSessionsApprovedModal(dAppName: dAppName)
-        }
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        wcConnectionApprovalViewController.dismissScreen()
-    }
-    
     private func presentWCSessionsApprovedModal(
         dAppName: String
     ) {
