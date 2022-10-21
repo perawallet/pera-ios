@@ -311,6 +311,13 @@ extension WCConnectionScreen {
         let selectedAccountAddresses = dataController
             .getSelectedAccounts()
             .map { $0.address }
+        
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(
+                self.walletConnectSession.getApprovedWalletConnectionInfo(for: selectedAccountAddresses)
+            )
+            self.eventHandler?(.performConnect)
+        }
     }
 }
 

@@ -35,10 +35,10 @@ extension WalletConnectSession {
         )
     }
 
-    func getApprovedWalletConnectionInfo(for account: String) -> WalletInfo {
+    func getApprovedWalletConnectionInfo(for accounts: [String]) -> WalletInfo {
         return WalletInfo(
             approved: true,
-            accounts: [account],
+            accounts: accounts,
             chainId: algorandWalletConnectChainID,
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
