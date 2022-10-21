@@ -50,6 +50,12 @@ extension WCConnectionAccountListLocalDataController {
         return selectedAccounts.values.elements
     }
     
+    func getSelectedAccountsAddresses() -> [String] {
+        return getSelectedAccounts().map {
+            $0.address
+        }
+    }
+    
     func selectAccountItem(at index: Index) {
         guard let selectedAccount = accounts[index] else {
             return

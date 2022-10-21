@@ -27,6 +27,7 @@ protocol WCConnectionAccountListDataController: AnyObject {
     func load()
     
     func getSelectedAccounts() -> [Account]
+    func getSelectedAccountsAddresses() -> [String]
     
     typealias Index = Int
     func selectAccountItem(at index: Index)

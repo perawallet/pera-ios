@@ -41,6 +41,7 @@ enum ALGAnalyticsMetadataKey:
     case senderAccountAddress = "sender"
     case signedTransaction = "signed_transaction"
     case wcSessionTopic = "topic"
+    case totalAccount = "total_account"
     case transactionCount = "transaction_count"
     case transactionID = "tx_id"
     case accountCreationType = "type"

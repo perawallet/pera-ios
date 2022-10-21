@@ -298,19 +298,17 @@ extension WCConnectionScreen {
     
     @objc
     private func performConnect() {
-        // address ???
+        let selectedAccountAddresses = dataController.getSelectedAccountsAddresses()
+                
         analytics.track(
             .wcSessionApproved(
                 topic: walletConnectSession.url.topic,
                 dappName: walletConnectSession.dAppInfo.peerMeta.name,
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
-                address: "???"
+                address: selectedAccountAddresses.joined(separator: ","),
+                totalAccount: selectedAccountAddresses.count
             )
         )
-        
-        let selectedAccountAddresses = dataController
-            .getSelectedAccounts()
-            .map { $0.address }
         
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(
