@@ -93,7 +93,6 @@ extension ConfirmSwapAPIDataController {
             switch response {
             case .success(let transactionPreparation):
                 self.eventHandler?(.didPrepareTransactions(transactionPreparation))
-                self.swapController.signTransactions(transactionPreparation.transactionGroups)
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
