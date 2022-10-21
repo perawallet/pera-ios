@@ -194,6 +194,7 @@ extension WCConnectionScreen {
             bottom: self.bottomContainerView.bounds.height
         )
         
+        modalHeight = self.theme.calculateModalHeightAsBottomSheet(self)
         performLayoutUpdates(animated: self.isViewAppeared)
     }
     

@@ -66,3 +66,65 @@ struct WCConnectionScreenTheme: StyleSheet, LayoutSheet {
         ]
     }
 }
+
+extension WCConnectionScreenTheme {
+    func calculateModalHeightAsBottomSheet(
+        _ viewController: WCConnectionScreen
+    ) -> ModalHeight {
+        return .preferred(calculateHeightAsBottomSheet(viewController))
+    }
+    
+    private func calculateHeightAsBottomSheet(
+        _ viewController: WCConnectionScreen
+    ) -> LayoutMetric {
+        let listHeight = calculateListHeight(viewController)
+        let topViewHeight = calculateTopViewHeight(viewController)
+        let fullHeight = listHeight + topViewHeight
+        
+        return fullHeight
+    }
+    
+    private func calculateListHeight(_ viewController: WCConnectionScreen) -> LayoutMetric {
+        let cellHeight = calculateAccountCellHeight(viewController)
+        let numberOfItems = viewController.dataController.numberOfAccounts()
+        let listHeight = (CGFloat(numberOfItems) * cellHeight)
+            + viewController.contextView.accountListView.contentInset.top
+            + viewController.bottomContainerView.bounds.height
+            + viewController.view.safeAreaBottom
+        
+        return listHeight
+    }
+    
+    private func calculateAccountCellHeight(_ viewController: WCConnectionScreen) -> LayoutMetric {
+        let exampleAccountListItem = CustomAccountPreview(
+            address: "someAlgorandAddress",
+            icon: "icon-standard-account".uiImage,
+            title: "title-unknown".localized,
+            subtitle: "title-plus-asset-singular-count".localized(params: "1")
+        )
+        let exampleAccountItem = AccountPreviewViewModel(exampleAccountListItem)
+        let cellSize = ExportAccountListAccountCell.calculatePreferredSize(
+            exampleAccountItem,
+            for: ExportAccountListAccountCell.theme,
+            fittingIn: CGSize((
+                viewController.contextView.accountListView.bounds.width,
+                .greatestFiniteMagnitude
+            ))
+        )
+        
+        return cellSize.height
+    }
+    
+
+    private func calculateTopViewHeight(_ viewController: WCConnectionScreen) -> LayoutMetric{
+        let topViewHeight = viewController.contextView.calculateTopViewHeight(
+            WCConnectionViewModel(
+                session: viewController.walletConnectSession,
+                hasSingleAccount: viewController.dataController.hasSingleAccount
+            ),
+            for: WCConnectionViewTheme()
+        )
+        
+        return topViewHeight
+    }
+}

@@ -166,6 +166,37 @@ extension WCConnectionView: ViewModelBindable {
             subtitle.load(in: subtitleView)
         }
     }
+    
+    func calculateTopViewHeight(
+        _ viewModel: WCConnectionViewModel,
+        for theme: WCConnectionViewTheme
+    ) -> LayoutMetric {
+        let dappImageSize = theme.dappImageSize
+        
+        let titleSize = viewModel.title?.boundingSize(
+            multiline: true,
+            fittingSize: CGSize((self.bounds.width, .greatestFiniteMagnitude))
+        ) ?? .zero
+        
+        let actionHeight = theme.urlActionHeight
+        
+        let subtitleSize = viewModel.subtitle?.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((self.bounds.width, .greatestFiniteMagnitude))
+        ) ?? .zero
+        
+        let totalItemHeight = dappImageSize.h
+            + titleSize.height
+            + actionHeight
+            + subtitleSize.height
+        
+        let totalVerticalSpacing = theme.dappImageTopPadding
+            + theme.titleTopPadding
+            + theme.urlActionTopPadding
+            + theme.subtitleContainerTopPadding
+
+        return totalItemHeight + totalVerticalSpacing
+    }
 }
 
 extension WCConnectionView {
