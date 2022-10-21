@@ -200,6 +200,7 @@ indirect enum Screen {
         coordinator: SwapAssetFlowCoordinator,
         theme: SwapAssetScreenTheme = .init()
     )
+    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
     case swapSignWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
@@ -220,9 +221,7 @@ indirect enum Screen {
         swapController: SwapController,
         theme: SwapSummaryScreenTheme = .init()
     )
-    case alert(
-        alert: Alert
-    )
+    case alert(alert: Alert)
     case swapIntroduction(
         draft: SwapIntroductionDraft,
         eventHandler: EventHandler<SwapIntroductionEvent>
