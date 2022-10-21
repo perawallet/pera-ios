@@ -2746,6 +2746,9 @@
 		2BE1765C2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */; };
 		2BE1765D2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */; };
 		2BE1765E2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */; };
+		2BE176602902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
+		2BE176612902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
+		2BE176622902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */; };
 		2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
 		2BE4D04A25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
 		2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
@@ -6495,6 +6498,7 @@
 		2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
 		2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountListDataController.swift; sourceTree = "<group>"; };
+		2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountListLocalDataController.swift; sourceTree = "<group>"; };
 		2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2BE4D053259371CC005F5764 /* ShowAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAssetDetailEvent.swift; sourceTree = "<group>"; };
 		2BE4D06D2593845F005F5764 /* FirebaseAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsProvider.swift; sourceTree = "<group>"; };
@@ -13084,6 +13088,7 @@
 			isa = PBXGroup;
 			children = (
 				2BE1765B2902F3F8008E95D9 /* WCConnectionAccountListDataController.swift */,
+				2BE1765F2902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -17385,6 +17390,7 @@
 				F0E7446027B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
 				D495FB642834F61500BD273C /* FullScreenContentViewController.swift in Sources */,
 				2B6B3EFC2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
+				2BE176622902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */,
 				2B262724284E3AA900ADE371 /* AssetTransactionItemViewModel.swift in Sources */,
 				F010639E28AD5CA100AB6873 /* ASADetailQuickActionsViewModel.swift in Sources */,
 				17BD4DFD2292F1260003E49A /* UIApplication+Additions.swift in Sources */,
@@ -19159,6 +19165,7 @@
 				D495FB632834F61500BD273C /* FullScreenContentViewController.swift in Sources */,
 				F087090E2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */,
 				D4979457287D6FEA004FBF8E /* AppCallTransactionAssetInformationView.swift in Sources */,
+				2BE176612902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */,
 				2B262723284E3AA900ADE371 /* AssetTransactionItemViewModel.swift in Sources */,
 				2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
@@ -20933,6 +20940,7 @@
 				D411B37426EA1043004FF980 /* AccountPreviewView.swift in Sources */,
 				D495FB622834F61500BD273C /* FullScreenContentViewController.swift in Sources */,
 				2B4FD1F627C63F580097AB65 /* BuyAlgoTransactionViewController.swift in Sources */,
+				2BE176602902F4DE008E95D9 /* WCConnectionAccountListLocalDataController.swift in Sources */,
 				2B262722284E3AA900ADE371 /* AssetTransactionItemViewModel.swift in Sources */,
 				2B7E3043267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */,
 				D4979456287D6FE9004FBF8E /* AppCallTransactionAssetInformationView.swift in Sources */,
