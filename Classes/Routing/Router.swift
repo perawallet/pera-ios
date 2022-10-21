@@ -731,6 +731,17 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
+        case let .wcConnection(walletConnectSession, completion):
+            let dataController = WCConnectionAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = WCConnectionScreen(
+                walletConnectSession: walletConnectSession,
+                walletConnectSessionConnectionCompletionHandler: completion,
+                dataController: dataController,
+                configuration: configuration
+            )
+            viewController = screen
         case let .wcConnectionApproval(walletConnectSession, delegate, completion):
             let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
                 walletConnectSession: walletConnectSession,
@@ -1238,16 +1249,37 @@ extension Router {
             
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-            transition.perform(
-                .wcConnectionApproval(
+            
+            let screen = transition.perform(
+                .wcConnection(
                     walletConnectSession: session,
-                    delegate: self,
                     completion: completion
                 ),
                 by: .present
-            )
+            ) as? WCConnectionScreen
             
+            screen?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .performCancel:
+                    screen?.dismissScreen()
+                case .performConnect:
+                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
+                        screen?.dismissScreen()
+                        return
+                    }
+                    
+                    screen?.dismissScreen {
+                        [weak self] in
+                        guard let self = self else { return }
+                        
+                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                    }
+                }
+            }
+
             self.ongoingTransitions.append(transition)
         }
     }

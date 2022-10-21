@@ -113,7 +113,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(
                 self.walletConnectSession.getApprovedWalletConnectionInfo(
-                    for: account.address
+                    for: [account.address]
                 )
             )
             self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(self)
