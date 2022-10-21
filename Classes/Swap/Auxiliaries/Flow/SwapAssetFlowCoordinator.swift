@@ -142,7 +142,10 @@ extension SwapAssetFlowCoordinator {
 extension SwapAssetFlowCoordinator {
     private func startSwapFlow() {
         if let account = account {
-            openSwapAsset(from: account)
+            openSwapAsset(
+                from: account,
+                by: .present
+            )
             return
         }
 
@@ -152,13 +155,28 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSelectAccount() {
-        /// <todo> Update after implementing new account selection structure
+        let screen = Screen.swapAccountSelection {
+             [unowned self] event, screen in
+             switch event {
+             case .didSelect(let accountHandle):
+                 openSwapAsset(
+                    from: accountHandle.value,
+                    by: .push
+                 )
+             }
+         }
+
+         visibleScreen.open(
+             screen,
+             by: .present
+         )
     }
 }
 
 extension SwapAssetFlowCoordinator {
     private func openSwapAsset(
-        from account: Account
+        from account: Account,
+        by style: Screen.Transition.Open
     ) {
         let transactionSigner = SwapTransactionSigner(
             api: api,
@@ -222,7 +240,7 @@ extension SwapAssetFlowCoordinator {
                 swapController: swapController,
                 coordinator: self
             ),
-            by: .present
+            by: style
         ) as? SwapAssetScreen
 
         swapAssetScreen?.eventHandler = {
