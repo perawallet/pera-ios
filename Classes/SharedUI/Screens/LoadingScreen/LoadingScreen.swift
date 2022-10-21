@@ -37,6 +37,8 @@ final class LoadingScreen: BaseViewController {
         self.viewModel = viewModel
         self.theme = theme
         super.init(configuration: configuration)
+
+        isModalInPresentation = true
     }
 
     override func configureNavigationBarAppearance() {

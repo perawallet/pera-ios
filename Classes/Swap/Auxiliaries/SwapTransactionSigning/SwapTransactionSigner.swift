@@ -20,9 +20,8 @@ final class SwapTransactionSigner:
     LedgerTransactionOperationDelegate,
     TransactionSignerDelegate {
     typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
 
-    weak var delegate: WCTransactionSignerDelegate?
+    var eventHandler: EventHandler?
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
         api: api,
@@ -96,7 +95,7 @@ extension SwapTransactionSigner {
             }
 
             self.ledgerTransactionOperation.bleConnectionManager.stopScan()
-            self.eventHandler?(.didFailedSigning(error: .ledger(error: .ledgerConnectionWarning)))
+            self.eventHandler?(.didFailSigning(error: .ledger(error: .ledgerConnectionWarning)))
             self.stopTimer()
         }
     }
@@ -120,7 +119,7 @@ extension SwapTransactionSigner {
         sign(
             signature: signature,
             signer: SDKTransactionSigner(),
-            unsignedTransaction: Data()
+            unsignedTransaction: unsignedTransaction
         )
     }
 
@@ -135,7 +134,7 @@ extension SwapTransactionSigner {
             return
         }
 
-        eventHandler?(.didSignedTransaction(signedTransaction: signedTransaction))
+        eventHandler?(.didSignTransaction(signedTransaction: signedTransaction))
     }
 }
 
@@ -148,7 +147,7 @@ extension SwapTransactionSigner {
             sign(
                 signature: data,
                 signer: LedgerTransactionSigner(account: account),
-                unsignedTransaction: Data()
+                unsignedTransaction: unsignedTransaction!
             )
         }
     }
@@ -157,7 +156,7 @@ extension SwapTransactionSigner {
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didFailed error: LedgerOperationError
     ) {
-        eventHandler?(.didFailedSigning(error: .ledger(error: error)))
+        eventHandler?(.didFailSigning(error: .ledger(error: error)))
     }
 
     func ledgerTransactionOperation(
@@ -183,7 +182,7 @@ extension SwapTransactionSigner {
     func ledgerTransactionOperationDidRejected(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
-        eventHandler?(.didLedgerRejectedSigning)
+        eventHandler?(.didLedgerRejectSigning)
     }
 }
 
@@ -192,7 +191,7 @@ extension SwapTransactionSigner {
         _ transactionSigner: TransactionSigner,
         didFailedSigning error: HIPTransactionError
     ) {
-        eventHandler?(.didFailedSigning(error: .api(error: error)))
+        eventHandler?(.didFailSigning(error: .api(error: error)))
     }
 }
 
@@ -205,11 +204,11 @@ extension SwapTransactionSigner {
 
 extension SwapTransactionSigner {
     enum Event {
-        case didSignedTransaction(signedTransaction: Data)
-        case didFailedSigning(error: SignError)
+        case didSignTransaction(signedTransaction: Data)
+        case didFailSigning(error: SignError)
         case didLedgerRequestUserApproval(ledger: String)
         case didFinishTiming
         case didLedgerReset
-        case didLedgerRejectedSigning
+        case didLedgerRejectSigning
     }
 }

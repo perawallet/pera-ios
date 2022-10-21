@@ -28,9 +28,19 @@ final class SwapAssetFlowCoordinator:
 
     private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
     private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: visibleScreen)
-    private lazy var transitionToSignWithLedger = BottomSheetTransition(presentingViewController: visibleScreen)
+    private lazy var transitionToSignWithLedger = BottomSheetTransition(
+        presentingViewController: visibleScreen,
+        interactable: false
+    )
+    private lazy var transitionToLedgerSigningProcess = BottomSheetTransition(
+        presentingViewController: visibleScreen,
+        interactable: false
+    )
     private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: visibleScreen)
     private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: visibleScreen)
+    private lazy var transitionToExchangeFeeInfo = BottomSheetTransition(presentingViewController: visibleScreen)
+
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private var visibleScreen: UIViewController {
         return presentingScreen.findVisibleScreen()
@@ -161,6 +171,52 @@ extension SwapAssetFlowCoordinator {
             transactionSigner: transactionSigner
         )
 
+        swapController.eventHandler = {
+            [weak self, weak swapController] event in
+            guard let self = self,
+                  let swapController = swapController else {
+                return
+            }
+
+            switch event {
+            case .didSignTransaction:
+                if account.requiresLedgerConnection(),
+                   let signWithLedgerProcessScreen = self.signWithLedgerProcessScreen {
+                    signWithLedgerProcessScreen.increaseProgress()
+
+                    if signWithLedgerProcessScreen.isProgressFinished {
+                        self.visibleScreen.dismissScreen {
+                            [weak self] in
+                            guard let self = self else { return }
+
+                            self.openSwapLoading(swapController)
+                        }
+                    }
+                }
+            case .didCompleteSwap:
+                self.openSwapSuccess(swapController)
+            case .didFailTransaction(let id):
+                break
+            case .didFailNetwork(let error):
+                break
+            case .didCancelTransaction:
+                break
+            case .didFailSigning(let error):
+                break
+            case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
+                self.openSignWithLedgerProcess(
+                    ledger,
+                    transactionGroups: transactionGroups
+                )
+            case .didFinishTiming:
+                break
+            case .didLedgerReset:
+                break
+            case .didLedgerRejectSigning:
+                break
+            }
+        }
+
         let swapAssetScreen = visibleScreen.open(
             .swapAsset(
                 swapController: swapController,
@@ -197,8 +253,18 @@ extension SwapAssetFlowCoordinator {
             guard let self = self else { return }
 
             switch event {
-            case .didTapConfirm:
-                self.openSwapLoadingScren(swapController)
+            case .didTapConfirm(let swapTransactionPreparation):
+                let transactionGroups = swapTransactionPreparation.transactionGroups
+                if swapController.account.requiresLedgerConnection() {
+                    self.openSignWithLedgerConfirmation(
+                        swapController: swapController,
+                        transactionGroups: transactionGroups
+                    )
+                    return
+                }
+
+                swapController.signTransactions(transactionGroups)
+                self.openSwapLoading(swapController)
             case .didTapPriceImpactInfo:
                 self.openPriceImpactInfo()
             case .didTapSlippageInfo:
@@ -216,36 +282,19 @@ extension SwapAssetFlowCoordinator {
         )
     }
 
-    private func openSwapLoadingScren(
+    private func openSwapLoading(
         _ swapController: SwapController
     ) {
-        let viewModel = SwapAssetLoadingScreenViewModel(swapController.quote!)
-        let swapLoadingScreen = visibleScreen.open(
+        guard let quote = swapController.quote else { return }
+
+        let viewModel = SwapAssetLoadingScreenViewModel(quote)
+        visibleScreen.open(
             .loading(viewModel: viewModel),
             by: .push
-        ) as? LoadingScreen
-
-        swapLoadingScreen?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .willStartLoading:
-                break
-            case .didStartLoading:
-                /// <todo> Will be changed after the swap signing is completed.
-                asyncMain(afterDuration: 5.0) {
-                    [weak self] in
-                    guard let self = self else { return }
-                    self.openSwapSuccessScreen(swapController)
-                }
-            case .didStopLoading:
-                break
-            }
-        }
+        )
     }
 
-    private func openSwapSuccessScreen(
+    private func openSwapSuccess(
         _ swapController: SwapController
     ) {
         let swapSuccessScreen = visibleScreen.open(
@@ -263,12 +312,12 @@ extension SwapAssetFlowCoordinator {
             case .didTapDoneAction:
                 self.visibleScreen.dismissScreen()
             case .didTapSummaryAction:
-                self.openSwapSummaryScreen(swapController)
+                self.openSwapSummary(swapController)
             }
         }
     }
 
-    private func openSwapSummaryScreen(
+    private func openSwapSummary(
         _ swapController: SwapController
     ) {
         visibleScreen.open(
@@ -277,10 +326,10 @@ extension SwapAssetFlowCoordinator {
         )
     }
 
-    private func openErrorScreen(
-        _ swapController: SwapController
+    private func openError(
+        _ swapController: SwapController,
+        viewModel: ErrorScreenViewModel
     ) {
-        let viewModel = SwapUnexpectedErrorViewModel(swapController.quote!)
         let errorScreen = visibleScreen.open(
             .error(viewModel: viewModel),
             by: .present
@@ -302,8 +351,11 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
      private func openSignWithLedgerConfirmation(
-        totalTransactionCountToSign: Int
+        swapController: SwapController,
+        transactionGroups: [SwapTransactionGroup]
      ) {
+        let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
+
         let title =
             "swap-sign-with-ledger-title"
                 .localized
@@ -329,8 +381,11 @@ extension SwapAssetFlowCoordinator {
         let signTransactionsAction = UISheetAction(
             title: "swap-sign-with-ledger-action-title".localized,
             style: .default
-        ) {
-            // <todo> Sign transactions
+        ) { [weak self] in
+            guard let self = self else { return }
+
+            self.visibleScreen.dismissScreen()
+            swapController.signTransactions(transactionGroups)
         }
         uiSheet.addAction(signTransactionsAction)
 
@@ -341,6 +396,40 @@ extension SwapAssetFlowCoordinator {
             ),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func openSignWithLedgerProcess(
+        _ ledger: String,
+        transactionGroups: [SwapTransactionGroup]
+    ) {
+        if signWithLedgerProcessScreen != nil {
+            return
+        }
+
+        let totalTransactionCount = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledger,
+            totalTransactionCount: totalTransactionCount
+        )
+
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancelApproval:
+                self.visibleScreen.dismissScreen()
+            }
+        }
+
+        signWithLedgerProcessScreen = transitionToLedgerSigningProcess.perform(
+            .swapSignWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }
 
@@ -399,7 +488,7 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(closeAction)
 
-        transitionToPriceImpactInfo.perform(
+        transitionToExchangeFeeInfo.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )

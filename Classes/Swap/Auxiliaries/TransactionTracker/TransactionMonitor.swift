@@ -15,9 +15,12 @@
 //   TransactionMonitor.swift
 
 import Foundation
+import MagpieCore
+import MagpieHipo
 
 protocol TransactionMonitor: AnyObject {
     typealias EventHandler = (TransactionMonitorEvent) -> Void
+    
     var eventHandler: EventHandler? { get set }
 
     func monitor(_ transaction: TxnID)
@@ -25,10 +28,9 @@ protocol TransactionMonitor: AnyObject {
 }
 
 enum TransactionMonitorEvent {
-    case willStart
     case didCompleted(TxnID)
     case didFailedTransaction(TxnID)
-    case didFailedNetwork
+    case didFailedNetwork(APIError, NoAPIModel?)
 }
 
 typealias TxnID = String

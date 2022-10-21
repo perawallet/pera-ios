@@ -58,13 +58,25 @@ extension SwapAssetSuccessScreenViewModel {
         _ quote: SwapQuote
     ) {
         guard let amountIn = quote.amountIn,
-              let amountOut = quote.amountOutWithSlippage else {
+              let amountOut = quote.amountOutWithSlippage,
+              let assetIn = quote.assetIn,
+              let assetOut = quote.assetOut else {
             return
         }
 
+        let assetInDisplayName =
+            assetIn.unitName ??
+            assetIn.name ??
+            "\(assetIn.id)"
+
+        let assetOutDisplayName =
+            assetOut.unitName ??
+            assetOut.name ??
+            "\(assetOut.id)"
+
         /// <todo> Update display formatting when the flow is completed.
-        let amountInDisplay = "\(amountIn)"
-        let amountOutDisplay = "\(amountOut)"
+        let amountInDisplay = "\(amountIn) \(assetInDisplayName)"
+        let amountOutDisplay = "\(amountOut) \(assetOutDisplayName)"
 
         detail = "swap-success-detail"
             .localized(params: amountInDisplay, amountOutDisplay)

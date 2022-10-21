@@ -30,7 +30,11 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
     private lazy var exchangeFeeInfoView = SwapInfoItemView()
     private lazy var peraFeeInfoView = SwapInfoItemView()
-    private lazy var confirmActionView = MacaroonUIKit.Button()
+    private lazy var confirmActionView: LoadingButton = {
+        let loadingIndicator = ViewLoadingIndicator()
+        loadingIndicator.applyStyle(theme.confirmActionIndicator)
+        return LoadingButton(loadingIndicator: loadingIndicator)
+    }()
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: ConfirmSwapDataController
@@ -55,6 +59,29 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeAppearance(theme.background)
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .willUpdateSlippage: break
+            case .didUpdateSlippage(let quote):
+                self.confirmActionView.stopLoading()
+            case .didFailToUpdateSlippage(let error):
+                self.confirmActionView.stopLoading()
+            case .willPrepareTransactions: break
+            case .didPrepareTransactions(let swapTransactionPreparation):
+                self.confirmActionView.stopLoading()
+                self.eventHandler?(.didTapConfirm(swapTransactionPreparation))
+            case .didFailToPrepareTransactions(let error):
+                self.confirmActionView.stopLoading()
+            }
+        }
     }
 
     override func prepareLayout() {
@@ -233,6 +260,7 @@ extension ConfirmSwapScreen {
         confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
         confirmActionView.fitToIntrinsicSize()
         confirmActionView.snp.makeConstraints {
+            $0.fitToHeight(theme.confirmActionHeight)
             $0.top >= peraFeeInfoView.snp.bottom + theme.confirmActionEdgeInsets.top
             $0.leading == theme.confirmActionEdgeInsets.leading
             $0.trailing == theme.confirmActionEdgeInsets.trailing
@@ -276,13 +304,13 @@ extension ConfirmSwapScreen {
     @objc
     private func confirmSwap() {
         dataController.confirmSwap()
-        eventHandler?(.didTapConfirm(swapQuote: dataController.quote))
+        confirmActionView.startLoading()
     }
 }
 
 extension ConfirmSwapScreen {
     enum Event {
-        case didTapConfirm(swapQuote: SwapQuote)
+        case didTapConfirm(SwapTransactionPreparation)
         case didTapSlippageInfo
         case didTapSlippageAction
         case didTapPriceImpactInfo
