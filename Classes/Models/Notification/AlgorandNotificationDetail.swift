@@ -13,36 +13,16 @@
 // limitations under the License.
 
 //
-//  NotificationAsset.swift
+//  AlgorandNotificationDetail.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class NotificationAsset: ALGAPIModel {
-    let id: Int64?
-    let name: String?
-    let code: String?
-    let url: String?
-    let fractionDecimals: Int?
-
+final class AlgorandNotificationDetail: ALGAPIModel {
+    let url: URL?
+    
     init() {
-        self.id = nil
-        self.name = nil
-        self.code = nil
-        self.url = nil
-        self.fractionDecimals = nil
-    }
-}
-
-extension NotificationAsset {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case id = "asset_id"
-        case name = "asset_name"
-        case code = "unit_name"
-        case url
-        case fractionDecimals = "fraction_decimals"
+        url = nil
     }
 }

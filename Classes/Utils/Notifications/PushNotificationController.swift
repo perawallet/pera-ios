@@ -183,28 +183,6 @@ extension PushNotificationController {
         notification: AlgorandNotification,
         action handler: EmptyHandler? = nil
     ) {
-        let type = notification.detail?.type
-
-        switch type {
-        case .transactionSent,
-             .assetTransactionSent,
-             .transactionReceived,
-             .assetTransactionReceived,
-             .transactionFailed,
-             .assetTransactionFailed:
-            presentNotification(
-                notification,
-                action: handler
-            )
-        default:
-            presentNotification(notification)
-        }
-    }
-
-    private func presentNotification(
-        _ notification: AlgorandNotification,
-        action handler: EmptyHandler? = nil
-    ) {
         guard let alert = notification.alert else {
             return
         }

@@ -349,7 +349,9 @@ extension ALGAppLaunchController {
         case .none:
             return .success(.remoteNotification(notification))
         case .success(let screen):
-            if notification.detail?.type == .assetSupportRequest {
+            let action = deeplinkParser.resolveNotificationAction(for: notification)
+
+            if action == .assetOptIn {
                 return .success(.deeplink(screen))
             }
 

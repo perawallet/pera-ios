@@ -33,25 +33,32 @@ extension DeepLinkParser {
     func discover(
         notification: AlgorandNotification
     ) -> Result? {
-        switch notification.detail?.type {
-        case .transactionSent,
-             .transactionReceived:
-            return makeTransactionDetailScreen(for: notification)
-        case .assetTransactionSent,
-             .assetTransactionReceived,
-             .assetSupportSuccess:
-            return makeAssetTransactionDetailScreen(for: notification)
-        case .assetSupportRequest:
+        let action = resolveNotificationAction(for: notification)
+
+        switch action {
+        case .assetOptIn:
             return makeAssetTransactionRequestScreen(for: notification)
+        case .assetTransactions:
+            return makeAssetTransactionDetailScreen(for: notification)
         default:
             return nil
         }
     }
 
+    func resolveNotificationAction(
+        for notification: AlgorandNotification
+    ) -> NotificationAction? {
+        guard let url = notification.detail?.url else {
+            return nil
+        }
+
+        return resolveNotificationAction(for: url)
+    }
+
     func discover(
         notification: NotificationMessage
     ) -> Result? {
-        let action = resolveNotificationMessageAction(for: notification)
+        let action = resolveNotificationAction(for: notification)
 
         switch action {
         case .assetOptIn:
@@ -63,10 +70,20 @@ extension DeepLinkParser {
         }
     }
 
-    private func resolveNotificationMessageAction(
+    private func resolveNotificationAction(
         for notificationMessage: NotificationMessage
-    ) -> NotificationMessageAction? {
+    ) -> NotificationAction? {
         guard let url = notificationMessage.url else {
+            return nil
+        }
+
+        return resolveNotificationAction(for: url)
+    }
+
+    private func resolveNotificationAction(
+        for url: URL?
+    ) -> NotificationAction? {
+        guard let url = url else {
             return nil
         }
 
@@ -78,7 +95,7 @@ extension DeepLinkParser {
 
         let aRawValue = host + path
 
-        return NotificationMessageAction(rawValue: aRawValue)
+        return NotificationAction(rawValue: aRawValue)
     }
 
     private func makeAssetOptInScreen(for notificationMessage: NotificationMessage) -> Result? {
@@ -147,7 +164,11 @@ extension DeepLinkParser {
     private func makeTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
-        guard let accountAddress = notification.accountAddress else {
+        let url = notification.detail?.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+
+        guard let accountAddress = accountAddress else {
             return nil
         }
         
@@ -178,9 +199,14 @@ extension DeepLinkParser {
     private func makeAssetTransactionDetailScreen(
         for notification: AlgorandNotification
     ) -> Result? {
+        let url = notification.detail?.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+        let assetID = params?["asset"].unwrap { AssetID($0) }
+
         guard
-            let accountAddress = notification.accountAddress,
-            let assetID = notification.detail?.asset?.id
+            let accountAddress = accountAddress,
+            let assetID = assetID
         else {
             return nil
         }
@@ -225,9 +251,14 @@ extension DeepLinkParser {
     private func makeAssetTransactionRequestScreen(
         for notification: AlgorandNotification
     ) -> Result? {
+        let url = notification.detail?.url
+        let params = url?.queryParameters
+        let accountAddress = params?["account"]
+        let assetID = params?["asset"].unwrap { AssetID($0) }
+
         guard
-            let accountAddress = notification.accountAddress,
-            let assetId = notification.detail?.asset?.id
+            let accountAddress = accountAddress,
+            let assetID = assetID
         else {
             return nil
         }
@@ -255,7 +286,7 @@ extension DeepLinkParser {
         let accountName = account.value.name ?? accountAddress
         let draft = AssetAlertDraft(
             account: account.value,
-            assetId: assetId,
+            assetId: assetID,
             asset: nil,
             title: "asset-support-add-title".localized,
             detail: String(format: "asset-support-add-message".localized, "\(accountName)"),
@@ -480,7 +511,7 @@ extension DeepLinkParser {
 }
 
 extension DeepLinkParser {
-    enum NotificationMessageAction: String {
+    enum NotificationAction: String {
         case assetOptIn = "asset/opt-in"
         case assetTransactions = "asset/transactions"
     }

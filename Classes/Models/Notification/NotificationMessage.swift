@@ -21,7 +21,6 @@ import MacaroonUtils
 
 final class NotificationMessage: ALGEntityModel {
     let id: Int
-    let accountAddress: String?
     let url: URL?
     let date: Date?
     let message: String?
@@ -30,7 +29,6 @@ final class NotificationMessage: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.id ?? 0
-        self.accountAddress = apiModel.accountAddress
         self.url = apiModel.url
         /// <todo>
         /// Without format string ???
@@ -41,7 +39,6 @@ final class NotificationMessage: ALGEntityModel {
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
-        apiModel.accountAddress = accountAddress
         apiModel.url = url
         apiModel.creationDatetime = date?.toString(.standard)
         apiModel.message = message
@@ -52,14 +49,12 @@ final class NotificationMessage: ALGEntityModel {
 extension NotificationMessage {
     struct APIModel: ALGAPIModel {
         var id: Int?
-        var accountAddress: String?
         var url: URL?
         var creationDatetime: String?
         var message: String?
 
         init() {
             self.id = nil
-            self.accountAddress = nil
             self.url = nil
             self.creationDatetime = nil
             self.message = nil
@@ -67,7 +62,6 @@ extension NotificationMessage {
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
-            case accountAddress = "account_address"
             case url = "url"
             case creationDatetime = "creation_datetime"
             case message = "message"
