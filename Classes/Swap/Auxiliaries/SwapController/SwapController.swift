@@ -39,8 +39,14 @@ protocol SwapController {
 }
 
 enum SwapControllerEvent {
-    case willLoadData
-    case didLoadData(SwapQuote)
-    case didFailToLoadData(SwapAssetDataController.Error)
-    case didFailValidation(SwapAssetValidationError)
+    case didSignTransaction
+    case didCompleteSwap
+    case didFailTransaction(TxnID)
+    case didFailNetwork(Error)
+    case didCancelTransaction
+    case didFailSigning(error: SwapTransactionSigner.SignError)
+    case didLedgerRequestUserApproval(ledger: String, transactionGroups: [SwapTransactionGroup])
+    case didFinishTiming
+    case didLedgerReset
+    case didLedgerRejectSigning
 }
