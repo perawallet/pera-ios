@@ -112,7 +112,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private func fetchTransactionParams() {
       loadingController?.startLoadingWithMessage("title-loading".localized)
 
-      sharedDataController.getTransactionParams { [weak self] paramsResult in
+      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] paramsResult in
          guard let self else {
             return
          }
@@ -309,7 +309,7 @@ extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
    ) {
       self.draft.updateNote(note)
 
-      sharedDataController.getTransactionParams { [weak self] paramsResult in
+      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] paramsResult in
          guard let self else {
             return
          }

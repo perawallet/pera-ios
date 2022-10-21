@@ -119,7 +119,7 @@ final class SharedAPIDataController:
 
 extension SharedAPIDataController {
     private func fetchTransactionParams(
-        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+        _ handler: ((Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void)? = nil
     ) {
         api.getTransactionParams {
             [weak self] response in
@@ -130,22 +130,24 @@ extension SharedAPIDataController {
             switch response {
             case .success(let transactionParams):
                 self.transactionParamsResult = .success(transactionParams)
-                handler(.success(transactionParams))
+                handler?(.success(transactionParams))
             case .failure(let apiError, let apiErrorDetail):
                 let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
                 self.transactionParamsResult = .failure(error)
-                handler(.failure(error))
+                handler?(.failure(error))
             }
         }
     }
 
     func getTransactionParams(
+        isCacheEnabled: Bool,
         _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
     ) {
-        if let transactionParamsResult = transactionParamsResult {
+        if isCacheEnabled, let transactionParamsResult = transactionParamsResult {
             switch transactionParamsResult {
             case .success:
                 handler(transactionParamsResult)
+                fetchTransactionParams()
             case .failure:
                 fetchTransactionParams(handler)
             }
@@ -154,6 +156,10 @@ extension SharedAPIDataController {
         }
 
         fetchTransactionParams(handler)
+    }
+
+    func getTransactionParams(_ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void) {
+        getTransactionParams(isCacheEnabled: false, handler)
     }
 }
 

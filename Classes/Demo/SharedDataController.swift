@@ -74,6 +74,10 @@ protocol SharedDataController: AnyObject {
         _ observer: SharedDataControllerObserver
     )
     func getTransactionParams(
+        isCacheEnabled: Bool,
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    )
+    func getTransactionParams(
         _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
     )
 }
