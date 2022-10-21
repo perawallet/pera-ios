@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import MagpieHipo
 
 final class TransactionPoolMonitor: TransactionMonitor {
     typealias Seconds = TimeInterval
@@ -49,8 +50,6 @@ extension TransactionPoolMonitor {
     func monitor(
         _ transaction: TxnID
     ) {
-        eventHandler?(.willStart)
-
         transactionMonitorRepeater = Repeater(intervalInSeconds: monitorInterval) {
             [weak self] in
             guard let self = self else { return }
@@ -91,11 +90,17 @@ extension TransactionPoolMonitor {
                     self.completeTransaction(transaction)
                 case .inProgress:
                     break
+                    
                 case .failed:
                     self.failTransaction(transaction)
                 }
-            case .failure:
-                self.eventHandler?(.didFailedNetwork)
+            case .failure(let apiError, let noApiModel):
+                self.eventHandler?(
+                    .didFailedNetwork(
+                        apiError,
+                        noApiModel
+                    )
+                )
             }
         }
     }
