@@ -37,6 +37,8 @@ struct ConfirmSwapScreenTheme:
     let infoSectionItemSpacing: LayoutMetric
     let viewSummary: ButtonStyle
     let confirmAction: ButtonStyle
+    let confirmActionIndicator: ImageStyle
+    let confirmActionHeight: LayoutMetric
     let confirmActionContentEdgeInsets: UIEdgeInsets
     let confirmActionEdgeInsets: LayoutPaddings
 
@@ -81,9 +83,15 @@ struct ConfirmSwapScreenTheme:
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),
                 .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
+        self.confirmActionIndicator = [
+            .image("button-loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.confirmActionHeight = 52
         self.confirmActionContentEdgeInsets = .init(
             (
                 top: 16,
