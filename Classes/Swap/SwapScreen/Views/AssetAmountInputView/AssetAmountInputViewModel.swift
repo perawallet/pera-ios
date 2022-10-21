@@ -20,32 +20,19 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct AssetAmountInputViewModel: ViewModel {
-    private(set) var imageSource: ImageSource?
-    private(set) var inputValue: TextProvider?
-    private(set) var isInputEditable = true
-    private(set) var detail: TextProvider?
-
-    init(
-        asset: Asset,
-        isInputEditable: Bool
-    ) {
-        bindIcon(asset)
-        bindInputValue(asset)
-        bindInputEditable(isInputEditable)
-        bindDetail(asset)
-    }
+protocol AssetAmountInputViewModel: ViewModel {
+    var imageSource: ImageSource? { get }
+    var primaryValue: TextProvider? { get }
+    var isInputEditable: Bool { get }
+    var detail: TextProvider? { get }
 }
 
 extension AssetAmountInputViewModel {
-    mutating func bindIcon(
-        _ asset: Asset
-    ) {
+    func getImageSource(_ asset: Asset) -> ImageSource {
         if asset.isAlgo {
-            imageSource = AssetImageSource(
+            return AssetImageSource(
                 asset: "icon-algo-circle-green".uiImage
             )
-            return
         }
 
         let imageSize = CGSize(width: 40, height: 40)
@@ -63,29 +50,71 @@ extension AssetAmountInputViewModel {
             text: .string(placeholderText)
         )
 
-        imageSource = PNGImageSource(
+        return PNGImageSource(
             url: prismURL,
             shape: .circle,
             placeholder: placeholder
         )
     }
 
-    mutating func bindInputValue(
-        _ asset: Asset
-    ) {
-        /// <todo> This will be implemented while constructing the screen.
+    func getDetailValueForAlgo(
+        value: Decimal?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) -> TextProvider? {
+        guard let amountUSDValue = value,
+              let fiatCurrencyValue = currency.fiatValue else {
+            return getDetailValue(text: "0.00")
+        }
+
+        do {
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchange(amount: amountUSDValue)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = fiatRawCurrency
+
+            let text = currencyFormatter.format(amount)
+            return getDetailValue(text: text)
+        } catch {
+            return nil
+        }
     }
 
-    mutating func bindInputEditable(
-        _ isInputEditable: Bool
-    ) {
-        self.isInputEditable = isInputEditable
+    func getDetailValueForAsset(
+        _ asset: Asset,
+        value: Decimal?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) -> TextProvider? {
+        guard let amountUSDValue = value,
+              let currencyValue = currency.primaryValue else {
+            return getDetailValue(text: "0.00")
+        }
+
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(amount: amountUSDValue)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let text = currencyFormatter.format(amount)
+            return getDetailValue(text: text)
+        } catch {
+            return nil
+        }
     }
 
-    mutating func bindDetail(
-        _ asset: Asset
-    ) {
-        /// <todo> This will be implemented while constructing the screen.
-        detail = "0.00".footnoteRegular()
+    func getDetailValue(text: String?) -> TextProvider?  {
+        if let text = text.unwrapNonEmptyString() {
+            return "≈\(text)".footnoteRegular()
+        } else {
+            return nil
+        }
     }
 }

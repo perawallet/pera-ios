@@ -18,12 +18,12 @@ import Foundation
 import MagpieCore
 
 final class PeraSwapFee: ALGEntityModel {
-    let fee: Decimal?
+    let fee: UInt64?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.fee = apiModel.peraFeeAmount.unwrap { Decimal(string: $0) }
+        self.fee = apiModel.peraFeeAmount.unwrap { UInt64($0) }
     }
 
     func encode() -> APIModel {

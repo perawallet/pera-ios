@@ -29,15 +29,18 @@ protocol SwapAssetDataController: AnyObject {
 
     var eventHandler: EventHandler? { get set }
 
-    func loadData(swapAmount: Decimal)
-    func toggleSwapType()
+    func loadQuote(swapAmount: UInt64)
+    func calculatePeraSwapFee(balance: UInt64)
     func updateUserAsset(_ asset: Asset)
     func updatePoolAsset(_ asset: Asset)
-    func updateSlippage(_ slippage: Decimal)
+    func updateSlippage(_ slippage: SwapSlippage)
 }
 
 enum SwapAssetDataControllerEvent {
-    case willLoadData
-    case didLoadData(SwapQuote)
-    case didFailToLoadData(SwapAssetDataController.Error)
+    case willLoadQuote
+    case didLoadQuote(SwapQuote)
+    case didFailToLoadQuote(SwapAssetDataController.Error)
+    case willLoadPeraFee
+    case didLoadPeraFee(PeraSwapFee)
+    case didFailToLoadPeraFee(SwapAssetDataController.Error)
 }

@@ -18,8 +18,8 @@ import Foundation
 import MagpieCore
 
 struct PeraSwapFeeDraft: JSONObjectBody {
-    let assetID: Int
-    let amount: Decimal
+    let assetID: Int64
+    let amount: UInt64
 
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []

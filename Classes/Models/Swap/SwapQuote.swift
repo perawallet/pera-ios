@@ -17,22 +17,26 @@
 import Foundation
 
 final class SwapQuote: ALGEntityModel {
-    let id: Int
+    static let feePadding: UInt64 = 1000000 /// 1 Algo
+
+    let id: Int64
     let provider: SwapProvider?
     let type: SwapType?
     let swapperAddress: PublicKey?
-    let deviceID: Int?
+    let deviceID: Int64?
     let assetIn: AssetDecoration?
     let assetOut: AssetDecoration?
-    let amountIn: Decimal?
+    let amountIn: UInt64?
+    let amountInWithSlippage: UInt64?
     let amountInUSDValue: Decimal?
-    let amountOut: Decimal?
+    let amountOut: UInt64?
+    let amountOutWithSlippage: UInt64?
     let amountOutUSDValue: Decimal?
-    let slippage: Decimal?
+    let slippage: SwapSlippage?
     let price: Decimal?
     let priceImpact: Decimal?
-    let peraFee: Decimal?
-    let exchangeFee: Decimal?
+    let peraFee: UInt64?
+    let exchangeFee: UInt64?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -44,15 +48,17 @@ final class SwapQuote: ALGEntityModel {
         self.deviceID = apiModel.device
         self.assetIn = apiModel.assetIn.unwrap(AssetDecoration.init)
         self.assetOut = apiModel.assetOut.unwrap(AssetDecoration.init)
-        self.amountIn = apiModel.amountIn.unwrap { Decimal(string: $0) }
+        self.amountIn = apiModel.amountIn.unwrap { UInt64($0) }
+        self.amountInWithSlippage = apiModel.amountInWithSlippage.unwrap { UInt64($0) }
         self.amountInUSDValue = apiModel.amountInUSDValue.unwrap { Decimal(string: $0) }
-        self.amountOut = apiModel.amountOut.unwrap { Decimal(string: $0) }
+        self.amountOut = apiModel.amountOut.unwrap { UInt64($0)  }
+        self.amountOutWithSlippage = apiModel.amountOutWithSlippage.unwrap { UInt64($0) }
         self.amountOutUSDValue = apiModel.amountOutUSDValue.unwrap { Decimal(string: $0) }
-        self.slippage = apiModel.slippage.unwrap { Decimal(string: $0) }
+        self.slippage = apiModel.slippage.unwrap { SwapSlippage(rawValue: Decimal(string: $0) ?? SwapSlippage.fivePerThousand.rawValue) }
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
         self.priceImpact = apiModel.priceImpact.unwrap { Decimal(string: $0) }
-        self.peraFee = apiModel.peraFee.unwrap { Decimal(string: $0) }
-        self.exchangeFee = apiModel.exchangeFee.unwrap { Decimal(string: $0) }
+        self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))
+        self.exchangeFee = UInt64(apiModel.exchangeFee.unwrap(or: "0"))
     }
 
     func encode() -> APIModel {
@@ -65,8 +71,10 @@ final class SwapQuote: ALGEntityModel {
         apiModel.assetIn = assetIn?.encode()
         apiModel.assetOut = assetOut?.encode()
         apiModel.amountIn = amountIn.unwrap { String(describing: $0) }
+        apiModel.amountInWithSlippage = amountInWithSlippage.unwrap { String(describing: $0) }
         apiModel.amountInUSDValue = amountInUSDValue.unwrap { String(describing: $0) }
         apiModel.amountOut = amountOut.unwrap { String(describing: $0) }
+        apiModel.amountOutWithSlippage = amountOutWithSlippage.unwrap { String(describing: $0) }
         apiModel.amountOutUSDValue = amountOutUSDValue.unwrap { String(describing: $0) }
         apiModel.slippage = slippage.unwrap { String(describing: $0) }
         apiModel.price = price.unwrap { String(describing: $0) }
@@ -79,16 +87,18 @@ final class SwapQuote: ALGEntityModel {
 
 extension SwapQuote {
     struct APIModel: ALGAPIModel {
-        var id: Int
+        var id: Int64
         var provider: SwapProvider?
         var swapType: SwapType?
         var swapperAddress: PublicKey?
-        var device: Int?
+        var device: Int64?
         var assetIn: AssetDecoration.APIModel?
         var assetOut: AssetDecoration.APIModel?
         var amountIn: String?
+        var amountInWithSlippage: String?
         var amountInUSDValue: String?
         var amountOut: String?
+        var amountOutWithSlippage: String?
         var amountOutUSDValue: String?
         var slippage: String?
         var price: String?
@@ -111,8 +121,10 @@ extension SwapQuote {
             case assetIn = "asset_in"
             case assetOut = "asset_out"
             case amountIn = "amount_in"
+            case amountInWithSlippage = "amount_in_with_slippage"
             case amountInUSDValue = "amount_in_usd_value"
             case amountOut = "amount_out"
+            case amountOutWithSlippage = "amount_out_with_slippage"
             case amountOutUSDValue = "amount_out_usd_value"
             case slippage
             case price

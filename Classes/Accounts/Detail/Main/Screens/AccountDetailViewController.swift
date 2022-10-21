@@ -47,6 +47,9 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
         presentingScreen: self,
         account: accountHandle.value
     )

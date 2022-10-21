@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAssetAmountViewModelDraft.swift
+//   ErrorScreenViewModel.swift
 
-import Foundation
+import MacaroonUIKit
+import UIKit
 
-struct SwapAssetAmountViewModelDraft {
-    let leftTitle: String?
-    let rightTitle: String?
-    let asset: Asset
-    let isInputEditable: Bool
+protocol ErrorScreenViewModel {
+    var title: TextProvider? { get }
+    var detail: TextProvider? { get }
+    var primaryAction: TextProvider? { get }
+    var secondaryAction: TextProvider? { get }
 }

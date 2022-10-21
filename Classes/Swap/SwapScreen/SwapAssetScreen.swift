@@ -38,25 +38,29 @@ final class SwapAssetScreen:
 
     private var currentlyDisplayedPoolView: UIView?
 
+    private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
+    private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
     private let theme: SwapAssetScreenTheme
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
 
     init(
         dataController: SwapAssetDataController,
+        coordinator: SwapAssetFlowCoordinator,
         configuration: ViewControllerConfiguration,
         theme: SwapAssetScreenTheme = .init()
     ) {
+        self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
+        self.swapAssetFlowCoordinator = coordinator
         self.theme = theme
-        let userAssetViewModelDraft = SwapAssetAmountViewModelDraft(
-            leftTitle: "transaction-detail-from".localized,
-            rightTitle: "title-account-balance".localized,
+        self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
-            isInputEditable: true
+            quote: nil,
+            currency: configuration.sharedDataController.currency,
+            currencyFormatter: currencyFormatter
         )
-        self.userAssetViewModel = SwapAssetAmountViewModel(userAssetViewModelDraft)
         super.init(configuration: configuration)
 
         keyboardController.activate()
@@ -69,6 +73,11 @@ final class SwapAssetScreen:
     override func configureNavigationBarAppearance() {
         addBarButtons()
         bindNavigationItemTitle()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
     }
 
     override func prepareLayout() {
@@ -84,6 +93,7 @@ final class SwapAssetScreen:
         userAssetView.delegate = self
         poolAssetView.delegate = self
         performKeyboardActions()
+        performSwapFlowCoordinatorActions()
     }
 
     override func bindData() {
@@ -132,12 +142,23 @@ extension SwapAssetScreen {
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }
+
+        userAssetView.startObserving(event: .didSelectAsset) {
+            [weak self] in
+            guard let self = self else { return }
+            self.didTapUserAsset()
+        }
     }
 
     private func addPoolAssetIfNeeded() {
         if poolAssetViewModel == nil {
             addEmptyPoolAsset()
         } else {
+            if emptyPoolAssetView.isDescendant(of: contentView) {
+                emptyPoolAssetView.removeFromSuperview()
+            }
+
+            if poolAssetView.isDescendant(of: contentView) { return }
             addPoolAsset()
         }
     }
@@ -157,7 +178,7 @@ extension SwapAssetScreen {
             [weak self] in
             guard let self = self else { return }
 
-            self.openPoolAssetSelection()
+            self.didTapPoolAsset()
         }
 
         currentlyDisplayedPoolView = emptyPoolAssetView
@@ -175,6 +196,12 @@ extension SwapAssetScreen {
         }
 
         currentlyDisplayedPoolView = poolAssetView
+
+        poolAssetView.startObserving(event: .didSelectAsset) {
+            [weak self] in
+            guard let self = self else { return }
+            self.didTapPoolAsset()
+        }
     }
 
     private func addSwapAction() {
@@ -210,6 +237,20 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
+    private func performSwapFlowCoordinatorActions() {
+        swapAssetFlowCoordinator?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectUserAsset(let asset):
+                self.updateUserAsset(asset)
+            case .didSelectPoolAsset(let asset):
+                self.updatePoolAsset(asset)
+            }
+        }
+    }
+
     private func performKeyboardActions() {
         keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
             [weak self] keyboard in
@@ -224,32 +265,31 @@ extension SwapAssetScreen {
         }
     }
 
-    private func openPoolAssetSelection() {
-
-    }
-
     @objc
     private func swap() {
-        eventHandler?(.swap)
+        eventHandler?(.didTapSwap)
     }
 }
 
 extension SwapAssetScreen {
     private func getSwapQuote(
-        for amount: Decimal
+        for amount: UInt64
     ) {
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
             switch event {
-            case .willLoadData: self.updateUIWhenDataWillLoad()
-            case .didLoadData(let quote): self.updateUIWhenDataDidLoad(quote)
-            case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
+            case .willLoadQuote: self.updateUIWhenDataWillLoad()
+            case .didLoadQuote(let quote): self.updateUIWhenDataDidLoad(quote)
+            case .didFailToLoadQuote(let error): self.updateUIWhenDataDidFailToLoad(error)
+            case .willLoadPeraFee: break
+            case .didLoadPeraFee: break
+            case .didFailToLoadPeraFee: break
             }
         }
 
-        dataController.loadData(swapAmount: amount)
+        dataController.loadQuote(swapAmount: amount)
     }
 
     private func updateUIWhenDataWillLoad() {
@@ -259,7 +299,11 @@ extension SwapAssetScreen {
     private func updateUIWhenDataDidLoad(
         _ swapQuote: SwapQuote
     ) {
-        bindUIData(swapQuote)
+        updateSwapActionUIWhenDataDidLoad(quote: swapQuote)
+        updateUserAssetViewModel(quote: swapQuote)
+        updateUserAssetSelectionUI()
+        updatePoolAssetViewModel(quote: swapQuote)
+        updatePoolAssetSelectionUI()
         /// <todo> Remove error if needed
     }
 
@@ -268,11 +312,82 @@ extension SwapAssetScreen {
     ) {
         /// <todo> Handle error cases
     }
+}
 
-    private func bindUIData(
-        _ swapQuote: SwapQuote
+extension SwapAssetScreen {
+    private func updateSwapActionUIWhenDataDidLoad(
+        quote: SwapQuote?
     ) {
+        guard let quote else {
+            swapActionView.isEnabled = false
+            return
+        }
 
+        swapActionView.isEnabled =
+            quote.amountIn != nil &&
+            quote.assetOut != nil &&
+            quote.assetOut != nil
+    }
+}
+
+extension SwapAssetScreen {
+    private func didTapUserAsset() {
+        eventHandler?(.didTapUserAsset)
+    }
+
+    private func updateUserAsset(
+        _ asset: Asset,
+        for quote: SwapQuote? = nil
+    ) {
+        dataController.updateUserAsset(asset)
+        updateUserAssetViewModel(quote: quote)
+        updateUserAssetSelectionUI()
+    }
+
+    private func updateUserAssetViewModel(
+        quote: SwapQuote? = nil
+    ) {
+        userAssetViewModel = SwapAssetAmountInViewModel(
+            asset: dataController.userAsset,
+            quote: quote,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+    }
+
+    private func updateUserAssetSelectionUI() {
+        userAssetView.bindData(userAssetViewModel)
+    }
+
+    private func didTapPoolAsset() {
+        eventHandler?(.didTapPoolAsset)
+    }
+
+    private func updatePoolAsset(
+        _ asset: Asset,
+        for quote: SwapQuote? = nil
+    ) {
+        dataController.updatePoolAsset(asset)
+        updatePoolAssetViewModel(quote: quote)
+        updatePoolAssetSelectionUI()
+    }
+
+    private func updatePoolAssetViewModel(
+        quote: SwapQuote? = nil
+    ) {
+        guard let poolAsset = dataController.poolAsset else { return }
+
+        poolAssetViewModel = SwapAssetAmountOutViewModel(
+            asset: poolAsset,
+            quote: quote,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+    }
+
+    private func updatePoolAssetSelectionUI() {
+        addPoolAssetIfNeeded()
+        poolAssetView.bindData(poolAssetViewModel)
     }
 }
 
@@ -429,16 +544,20 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
+    /// <note>
+    /// Request the new quote whent the user types an amount.
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         didChangeTextIn textField: TextField
     ) {
         guard let input = textField.text,
-              let inputAsDecimal = Decimal(string: input) else {
-                  return
-              }
+              let inputAsDecimal = input.decimalAmount,
+              !isTheInputDecimalSeparator(input) else {
+            return
+        }
 
-        getSwapQuote(for: inputAsDecimal)
+        let inputAsFractionUnit = inputAsDecimal.toFraction(of: dataController.userAsset.decimals)
+        getSwapQuote(for: inputAsFractionUnit)
     }
 
     func swapAssetAmountView(
@@ -455,18 +574,57 @@ extension SwapAssetScreen {
 
     }
 
+    /// <note>
+    /// Check whether the input is a numeric value.
+    /// Limit number of decimal separator to 1.
+    /// Limit number of decimals with respect to the current asset.
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         shouldChangeCharactersIn textField: TextField,
         with range: NSRange,
         replacementString string: String
     ) -> Bool {
-        return true
+        guard let currentText = textField.text,
+              let currentTextRange = Range(range, in: currentText) else {
+            return true
+        }
+
+        let newText = currentText.replacingCharacters(in: currentTextRange, with: string)
+        let isNumeric = newText.isEmpty || (Double(newText) != nil)
+        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+        let numberOfDecimalSeparators = newText.components(separatedBy: decimalSeparator).count - 1
+
+        let numberOfDecimals: Int
+        if let dotIndex = newText.firstIndex(of: ".") {
+            numberOfDecimals = newText.distance(
+                from: dotIndex,
+                to: newText.endIndex
+            ) - 1
+        } else {
+            numberOfDecimals = 0
+        }
+
+        return
+            isNumeric &&
+            numberOfDecimalSeparators <= 1 &&
+            numberOfDecimals <= dataController.userAsset.decimals
+    }
+
+    private func isTheInputDecimalSeparator(
+        _ input: String
+    ) -> Bool {
+        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+
+        guard let lastCharacter = input.last else { return false }
+
+        return String(lastCharacter) == decimalSeparator
     }
 }
 
 extension SwapAssetScreen {
     enum Event {
-        case swap
+        case didTapUserAsset
+        case didTapPoolAsset
+        case didTapSwap
     }
 }

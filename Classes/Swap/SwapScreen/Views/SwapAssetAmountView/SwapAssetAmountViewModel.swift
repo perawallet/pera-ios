@@ -18,61 +18,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapAssetAmountViewModel: ViewModel {
-    private(set) var leftTitle: TextProvider?
-    private(set) var rightTitle: TextProvider?
-    private(set) var assetAmountValue: AssetAmountInputViewModel?
-    private(set) var assetSelectionValue: SwapAssetSelectionViewModel?
-
-    init(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        bindLeftTitle(draft)
-        bindRightTitle(draft)
-        bindAssetAmountValue(draft)
-        bindAssetSelectionValue(draft)
-    }
-}
-
-extension SwapAssetAmountViewModel {
-    mutating func bindLeftTitle(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        if let title = draft.leftTitle {
-            leftTitle = title.footnoteRegular(
-                alignment: .left,
-                lineBreakMode: .byTruncatingTail
-            )
-        } else {
-            leftTitle = nil
-        }
-    }
-
-    mutating func bindRightTitle(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        if let title = draft.rightTitle {
-            rightTitle = title.footnoteRegular(
-                alignment: .right,
-                lineBreakMode: .byTruncatingTail
-            )
-        } else {
-            rightTitle = nil
-        }
-    }
-
-    mutating func bindAssetAmountValue(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        assetAmountValue = AssetAmountInputViewModel(
-            asset: draft.asset,
-            isInputEditable: draft.isInputEditable
-        )
-    }
-
-    mutating func bindAssetSelectionValue(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        assetSelectionValue = SwapAssetSelectionViewModel(draft.asset)
-    }
+protocol SwapAssetAmountViewModel: ViewModel {
+    var leftTitle: TextProvider? { get }
+    var rightTitle: TextProvider? { get }
+    var assetAmountValue: AssetAmountInputViewModel? { get }
+    var assetSelectionValue: SwapAssetSelectionViewModel? { get }
 }

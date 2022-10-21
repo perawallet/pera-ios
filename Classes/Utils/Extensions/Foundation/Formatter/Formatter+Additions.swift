@@ -29,6 +29,15 @@ extension Formatter {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    static func percentageWith(fraction value: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred
+        formatter.numberStyle = .percent
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = value
+        return formatter
+    }
     
     static func separatorWith(fraction value: Int, suffix: String? = nil) -> NumberFormatter {
         let formatter = NumberFormatter()

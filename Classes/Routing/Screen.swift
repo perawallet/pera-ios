@@ -196,14 +196,32 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
-        draft: SwapAssetScreenDraft,
+        swapController: SwapController,
+        coordinator: SwapAssetFlowCoordinator,
         theme: SwapAssetScreenTheme = .init()
     )
     case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
-    case alert(
-        alert: Alert,
-        theme: AlertScreenTheme = AlertScreenCommonTheme()
+    case swapSignWithLedgerProcess(
+        draft: SignWithLedgerProcessDraft,
+        eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
+    case loading(
+        viewModel: LoadingScreenViewModel,
+        theme: LoadingScreenTheme = .init()
+    )
+    case error(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme = .init()
+    )
+    case swapSuccess(
+        swapController: SwapController,
+        theme: SwapAssetSuccessScreenTheme = .init()
+    )
+    case swapSummary(
+        swapController: SwapController,
+        theme: SwapSummaryScreenTheme = .init()
+    )
+    case alert(alert: Alert)
     case swapIntroduction(
         draft: SwapIntroductionDraft,
         eventHandler: EventHandler<SwapIntroductionEvent>
@@ -226,6 +244,10 @@ indirect enum Screen {
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
+    case setSlippage(
+        theme: SetSlippageToleranceScreenTheme = .init(),
+        eventHandler: SetSlippageToleranceScreen.EventHandler
+    )
     case exportAccountList(
         eventHandler: ExportAccountListScreen.EventHandler
     )
@@ -238,6 +260,16 @@ indirect enum Screen {
     )
     case exportAccountsResult(
         eventHandler: ExportsAccountsResultScreen.EventHandler
+    )
+    case selectAsset(
+        dataController: SelectAssetDataController,
+        title: String,
+        theme: SelectAssetScreenTheme = .init()
+    )
+    case confirmSwap(
+        dataController: ConfirmSwapDataController,
+        eventHandler: EventHandler<ConfirmSwapScreen.Event>,
+        theme: ConfirmSwapScreenTheme = .init()
     )
 }
 

@@ -46,8 +46,7 @@ struct SwapAssetSelectionViewTheme:
         ]
         self.verificationTierContentEdgeInsets = (6, 0)
         self.accessory = [
-            .image("icon-arrow"),
-            .contentMode(.right),
+            .contentMode(.right)
         ]
         self.accessoryContentEdgeInsets = (8, 0)
     }

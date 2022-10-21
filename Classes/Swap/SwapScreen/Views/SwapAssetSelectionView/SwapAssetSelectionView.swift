@@ -52,6 +52,7 @@ final class SwapAssetSelectionView:
         }
 
         verificationTierView.image = viewModel?.verificationTier?.uiImage
+        accessoryView.image = viewModel?.accessory?.uiImage
     }
 }
 

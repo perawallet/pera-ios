@@ -22,6 +22,7 @@ extension ALGAPI {
     @discardableResult
     func getAvailablePoolAssets(
         _ draft: AvailablePoolAssetsQuery,
+        ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.Result<AssetDecorationList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
@@ -29,6 +30,7 @@ extension ALGAPI {
             .path(.availableSwapPoolAssets)
             .method(.get)
             .query(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .execute()
     }
@@ -65,7 +67,7 @@ extension ALGAPI {
     @discardableResult
     func getSwapQuote(
         _ draft: SwapQuoteDraft,
-        onCompleted handler: @escaping (Response.Result<SwapQuote, HIPAPIError>) -> Void
+        onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

@@ -1020,16 +1020,16 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .swapAsset(let draft, let theme):
+        case .swapAsset(let swapController, let coordinator, let theme):
             let dataController = SwapAssetAPIDataController(
-                account: draft.account,
-                userAsset: draft.asset ?? draft.account.algo,
+                swapController: swapController,
                 api: appConfiguration.api,
                 sharedDataController: appConfiguration.sharedDataController
             )
 
             viewController = SwapAssetScreen(
                 dataController: dataController,
+                coordinator: coordinator,
                 configuration: configuration,
                 theme: theme
             )
@@ -1074,11 +1074,37 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .alert(let alert, let theme):
-            viewController = AlertScreen(
-                alert: alert,
-                theme: theme
+        case .swapSignWithLedgerProcess(let draft, let eventHandler):
+            viewController = SignWithLedgerProcessScreen(
+                draft: draft,
+                eventHandler: eventHandler
             )
+        case .loading(let viewModel, let theme):
+            viewController = LoadingScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .error(let viewModel, let theme):
+            viewController = ErrorScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSuccess(let swapController, let theme):
+            viewController = SwapAssetSuccessScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSummary(let swapController, let theme):
+            viewController = SwapSummaryScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .alert(let alert):
+            viewController = AlertScreen(alert: alert)
         case .swapIntroduction(let draft, let eventHandler):
             let aViewController = SwapIntroductionScreen(draft: draft)
             aViewController.eventHandler = eventHandler
@@ -1115,6 +1141,12 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
+        case .setSlippage(let theme, let eventHandler):
+            viewController = SetSlippageToleranceScreen(
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController
@@ -1141,6 +1173,23 @@ class Router:
             viewController = screen
         case .exportAccountsResult(let eventHandler):
             let screen = ExportsAccountsResultScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .selectAsset(let dataController, let title, let theme):
+            let aViewController = SelectAssetScreen(
+                dataController: dataController,
+                theme: theme,
+                configuration: configuration
+            )
+
+            aViewController.title = title
+            viewController = aViewController
+        case .confirmSwap(let dataController, let eventHandler, let theme):
+            let screen = ConfirmSwapScreen(
+                dataController: dataController,
+                theme: theme,
+                configuration: configuration
+            )
             screen.eventHandler = eventHandler
             viewController = screen
         }
