@@ -25,6 +25,7 @@ final class SwapAssetFlowCoordinator:
     var eventHandler: EventHandler?
 
     private lazy var displayStore = SwapDisplayStore()
+    private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
     private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: visibleScreen)
@@ -39,6 +40,7 @@ final class SwapAssetFlowCoordinator:
     private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: visibleScreen)
     private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: visibleScreen)
     private lazy var transitionToExchangeFeeInfo = BottomSheetTransition(presentingViewController: visibleScreen)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: visibleScreen)
 
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
@@ -49,6 +51,7 @@ final class SwapAssetFlowCoordinator:
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let bannerController: BannerController
     private unowned let presentingScreen: UIViewController
     private let account: Account?
     private let asset: Asset?
@@ -57,6 +60,7 @@ final class SwapAssetFlowCoordinator:
         analytics: ALGAnalytics,
         api: ALGAPI,
         sharedDataController: SharedDataController,
+        bannerController: BannerController,
         presentingScreen: UIViewController,
         account: Account? = nil,
         asset: Asset? = nil
@@ -64,6 +68,7 @@ final class SwapAssetFlowCoordinator:
         self.analytics = analytics
         self.api = api
         self.sharedDataController = sharedDataController
+        self.bannerController = bannerController
         self.presentingScreen = presentingScreen
         self.account = account
         self.asset = asset
@@ -159,6 +164,18 @@ extension SwapAssetFlowCoordinator {
              [unowned self] event, screen in
              switch event {
              case .didSelect(let accountHandle):
+                 let account = accountHandle.value
+                 let accountBalance = account.algo.amount
+                 let minBalance = account.calculateMinBalance()
+
+                 if accountBalance < minBalance {
+                     self.openAccountMinBalanceError(
+                        for: account,
+                        minBalance: minBalance
+                     )
+                     return
+                 }
+
                  openSwapAsset(
                     from: accountHandle.value,
                     by: .push
@@ -171,6 +188,18 @@ extension SwapAssetFlowCoordinator {
              by: .present
          )
     }
+
+    private func openAccountMinBalanceError(
+        for account: Account,
+        minBalance: UInt64
+    ) {
+        bannerController.presentErrorBanner(
+            title: "swap-flow-start-min-balance-error-title".localized,
+            message: "swap-flow-start-min-balance-error-detail".localized(
+               params: minBalance.toAlgos.toFractionStringForLabel(fraction: account.algo.decimals) ?? ""
+            )
+        )
+    }
 }
 
 extension SwapAssetFlowCoordinator {
@@ -182,7 +211,7 @@ extension SwapAssetFlowCoordinator {
             api: api,
             analytics: analytics
         )
-        let swapController = PERASwapController(
+        let swapController = ALGSwapController(
             account: account,
             userAsset: asset ?? account.algo,
             api: api,
@@ -305,7 +334,11 @@ extension SwapAssetFlowCoordinator {
     ) {
         guard let quote = swapController.quote else { return }
 
-        let viewModel = SwapAssetLoadingScreenViewModel(quote)
+        let viewModel = SwapAssetLoadingScreenViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
+
         visibleScreen.open(
             .loading(viewModel: viewModel),
             by: .push
@@ -519,6 +552,7 @@ extension SwapAssetFlowCoordinator {
     ) {
         let dataController = SelectLocalAssetDataController(
             account: swapController.account,
+            filter: AssetZeroBalanceFilterAlgorithm(),
             api: api,
             sharedDataController: sharedDataController
         )
@@ -568,10 +602,47 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didSelectAsset(let asset):
-                self.visibleScreen.popScreen()
-                self.eventHandler?(.didSelectPoolAsset(asset))
+                if swapController.account.isOptedIn(to: asset.id) {
+                    self.visibleScreen.popScreen()
+                    self.eventHandler?(.didSelectPoolAsset(asset))
+                    return
+                }
+
+                let assetDecoration = AssetDecoration(asset: asset)
+                self.openOptInAsset(
+                    assetDecoration,
+                    swapController: swapController
+                )
             }
         }
+    }
+
+    private func openOptInAsset(
+        _ asset: AssetDecoration,
+        swapController: SwapController
+    ) {
+        let account = swapController.account
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: asset
+        )
+
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                self.visibleScreen.dismissScreen()
+            case .performClose:
+                self.visibleScreen.dismissScreen()
+            }
+        }
+
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
+        )
     }
 }
 

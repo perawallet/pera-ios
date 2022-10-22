@@ -50,6 +50,7 @@ final class AccountDetailViewController: PageContainer {
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
+        bannerController: bannerController!,
         presentingScreen: self,
         account: accountHandle.value
     )
