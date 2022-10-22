@@ -230,6 +230,10 @@ extension Account {
         return "icon-standard-account".uiImage
     }
 
+    func isOptedIn(to asset: AssetID) -> Bool {
+        return self[asset] != nil
+    }
+
     func isOwner(of asset: AssetID) -> Bool {
         if let ownedAsset = self[asset] {
             return ownedAsset.amount > 0

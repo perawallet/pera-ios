@@ -64,6 +64,16 @@ final class SelectSwapPoolAssetDataController:
 
         return StandardAsset(decoration: assetDecoration)
     }
+
+    subscript(id: AssetID) -> Asset? {
+        guard let assetDecoration = assets.first(where: { $0.id == id }) else { return nil }
+
+        if assetDecoration.isCollectible {
+            return CollectibleAsset(decoration: assetDecoration)
+        }
+
+        return StandardAsset(decoration: assetDecoration)
+    }
 }
 
 extension SelectSwapPoolAssetDataController {
@@ -217,7 +227,7 @@ extension SelectSwapPoolAssetDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let listItem = SelectAssetListItem(item: assetItem)
+                let listItem = SelectAssetListItem(item: assetItem, account: self.account)
                 return SelectAssetItem.asset(listItem)
             }
             snapshot.appendItems(

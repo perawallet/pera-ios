@@ -33,15 +33,18 @@ final class SelectLocalAssetDataController:
     private var searchResults: [Asset] = []
 
     private var account: Account
+    private let filter: AssetFilterAlgorithm?
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
     init(
         account: Account,
+        filter: AssetFilterAlgorithm? = nil,
         api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
         self.account = account
+        self.filter = filter
         self.api = api
         self.sharedDataController = sharedDataController
     }
@@ -49,11 +52,20 @@ final class SelectLocalAssetDataController:
     subscript(indexPath: IndexPath) -> Asset? {
         return assets[safe: indexPath.item]
     }
+
+    subscript(id: AssetID) -> Asset? {
+        return assets.first { $0.id == id }
+    }
 }
 
 extension SelectLocalAssetDataController {
     func load() {
-        assets = [account.algo] + account.allAssets.unwrap(or: [])
+        assets = ([account.algo] + account.allAssets.unwrap(or: []))
+
+        if let filter {
+            assets = assets.filter { filter.getFormula(asset: $0) }
+        }
+
         searchResults = assets
 
         deliverContentSnapshot()
@@ -148,7 +160,7 @@ extension SelectLocalAssetDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let listItem = SelectAssetListItem(item: assetItem)
+                let listItem = SelectAssetListItem(item: assetItem, account: self.account)
                 return SelectAssetItem.asset(listItem)
             }
             snapshot.appendItems(
