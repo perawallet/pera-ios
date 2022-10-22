@@ -585,6 +585,7 @@
 "ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
+"ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
@@ -1188,6 +1189,8 @@
 
 /// MARK: Swap Account Selection
 "swap-account-selection-header-description" = "Select an account to make the swap";
+"swap-flow-start-min-balance-error-title" = "Minimum Balance";
+"swap-flow-start-min-balance-error-detail" = "This account doesn't have the required minimum balance of %@ for a swap operation.";
 
 /// MARK: Swap Sign With Ledger
 "swap-sign-with-ledger-title" = "Sign with Ledger";

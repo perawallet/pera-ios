@@ -78,6 +78,9 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
 
             switch event {
             case .didCompleted:
+                /// <note>
+                /// When a transaction is confirmed, we are waiting for some amount time to make sure that nodes are synced.
+                /// Default waiting time is 1 second.
                 asyncMain(afterDuration: self.waitingTimeAfterTransactionConfirmed) {
                     self.finish()
                 }

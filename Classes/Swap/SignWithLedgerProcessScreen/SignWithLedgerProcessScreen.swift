@@ -251,7 +251,7 @@ extension SignWithLedgerProcessScreen {
 
     private func bindBody() {
         bodyView.attributedText =
-            "ledger-approval-message"
+            "ledger-approval-sign-message"
                 .localized(params: "\(draft.ledgerDeviceName)")
                 .bodyRegular(alignment: .center)
     }

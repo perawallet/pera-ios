@@ -90,7 +90,6 @@ extension TransactionPoolMonitor {
                     self.completeTransaction(transaction)
                 case .inProgress:
                     break
-                    
                 case .failed:
                     self.failTransaction(transaction)
                 }

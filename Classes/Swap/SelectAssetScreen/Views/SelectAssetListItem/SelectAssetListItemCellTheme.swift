@@ -42,4 +42,3 @@ struct SelectAssetListItemCellTheme:
         self.separator = Separator(color: Colors.Layer.grayLighter, position: .bottom((80, 24)))
     }
 }
-

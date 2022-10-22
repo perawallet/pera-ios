@@ -117,6 +117,7 @@ extension SwapAssetScreen {
             [weak self] in
             guard let self = self else { return }
 
+            self.open(AlgorandWeb.tinymanSwap.link)
         }
 
         rightBarButtonItems = [infoBarButtonItem]
@@ -339,7 +340,7 @@ extension SwapAssetScreen {
         _ asset: Asset,
         for quote: SwapQuote? = nil
     ) {
-        dataController.updateUserAsset(asset)
+        dataController.userAsset = asset
         updateUserAssetViewModel(quote: quote)
         updateUserAssetSelectionUI()
     }
@@ -367,7 +368,7 @@ extension SwapAssetScreen {
         _ asset: Asset,
         for quote: SwapQuote? = nil
     ) {
-        dataController.updatePoolAsset(asset)
+        dataController.poolAsset = asset
         updatePoolAssetViewModel(quote: quote)
         updatePoolAssetSelectionUI()
     }
