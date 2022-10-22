@@ -29,6 +29,7 @@ protocol SelectAssetDataController: AnyObject {
     var eventHandler: EventHandler? { get set }
 
     subscript(indexPath: IndexPath) -> Asset? { get }
+    subscript(id: AssetID) -> Asset? { get }
 
     func load()
     func search(for query: String?)

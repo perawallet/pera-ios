@@ -28,3 +28,15 @@ protocol AccountSortingAlgorithm {
         otherAccount: AccountHandle
     ) -> Bool
 }
+
+protocol AssetFilterAlgorithm {
+    func getFormula(asset: Asset) -> Bool
+}
+
+struct AssetZeroBalanceFilterAlgorithm: AssetFilterAlgorithm {
+    func getFormula(
+        asset: Asset
+    ) -> Bool {
+        return asset.amount > 0
+    }
+}

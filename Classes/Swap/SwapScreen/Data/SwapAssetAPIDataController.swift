@@ -26,13 +26,21 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
         return swapController.account
     }
     var userAsset: Asset {
-        return swapController.userAsset
+        get {
+            return swapController.userAsset
+        }
+        set {
+            swapController.userAsset = newValue
+        }
     }
     var poolAsset: Asset? {
-        return swapController.poolAsset
-    }
-    var slippage: SwapSlippage {
-        return swapController.slippage
+        get {
+            return swapController.poolAsset
+        }
+
+        set {
+            swapController.poolAsset = newValue
+        }
     }
 
     private var quote: SwapQuote? {
@@ -48,7 +56,7 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
     private var currentQuoteEndpoint: EndpointOperatable?
     private lazy var quoteThrottler = Throttler(intervalInSeconds: 0.8)
 
-    private let swapController: SwapController
+    private var swapController: SwapController
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
@@ -80,7 +88,7 @@ extension SwapAssetAPIDataController {
             assetInID: userAsset.id,
             assetOutID: poolAssetID,
             amount: swapAmount,
-            slippage: slippage
+            slippage: swapController.slippage
         )
 
         quoteThrottler.performNext {
@@ -111,7 +119,7 @@ extension SwapAssetAPIDataController {
             case .success(let quoteList):
                 guard let quote = quoteList.results[safe: 0] else { return }
 
-                self.swapController.updateQuote(quote)
+                self.swapController.quote = quote
                 self.eventHandler?(.didLoadQuote(quote))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
@@ -150,25 +158,5 @@ extension SwapAssetAPIDataController {
                 self.eventHandler?(.didFailToLoadPeraFee(error))
             }
         }
-    }
-}
-
-extension SwapAssetAPIDataController {
-    func updateUserAsset(
-        _ asset: Asset
-    ) {
-        swapController.updateUserAsset(asset)
-    }
-
-    func updatePoolAsset(
-        _ asset: Asset
-    ) {
-        swapController.updatePoolAsset(asset)
-    }
-
-    func updateSlippage(
-        _ slippage: SwapSlippage
-    ) {
-        swapController.updateSlippage(slippage)
     }
 }

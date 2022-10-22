@@ -58,6 +58,7 @@ final class ASADetailScreen:
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
+        bannerController: bannerController!,
         presentingScreen: self,
         account: dataController.account,
         asset: dataController.asset

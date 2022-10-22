@@ -88,7 +88,7 @@ extension SelectAssetViewControllerDataSource {
             currencyFormatter: currencyFormatter,
             currencyFormattingContext: .listItem
         )
-        return SelectAssetListItem(item: item)
+        return SelectAssetListItem(item: item, account: account)
     }
 }
 
@@ -126,11 +126,17 @@ extension SelectAssetViewControllerDataSource {
 
 struct SelectAssetListItem: Hashable {
     let model: Asset
-    let viewModel: AssetListItemViewModel
+    let viewModel: SelectAssetListItemViewModel
 
-    init(item: AssetItem) {
+    init(
+        item: AssetItem,
+        account: Account
+    ) {
         self.model = item.asset
-        self.viewModel = AssetListItemViewModel(item)
+        self.viewModel = SelectAssetListItemViewModel(
+            item: item,
+            account: account
+        )
     }
 
     func hash(into hasher: inout Hasher) {

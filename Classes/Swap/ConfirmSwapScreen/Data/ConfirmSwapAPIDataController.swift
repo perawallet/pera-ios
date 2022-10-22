@@ -27,7 +27,7 @@ final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
         return swapController.quote!
     }
 
-    private let swapController: SwapController
+    private var swapController: SwapController
     private let api: ALGAPI
 
     init(
@@ -70,7 +70,7 @@ extension ConfirmSwapAPIDataController {
             case .success(let quoteList):
                 guard let quote = quoteList.results[safe: 0] else { return }
 
-                self.swapController.updateQuote(quote)
+                self.swapController.quote = quote
                 self.eventHandler?(.didUpdateSlippage(quote))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(

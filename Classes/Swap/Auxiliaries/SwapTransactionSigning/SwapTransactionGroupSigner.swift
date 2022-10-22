@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapTransactionSigningManager.swift
+//   SwapTransactionGroupSigner.swift
 
 import Foundation
 
-final class SwapTransactionSigningManager {
+final class SwapTransactionGroupSigner {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
@@ -65,7 +65,7 @@ final class SwapTransactionSigningManager {
     }
 }
 
-extension SwapTransactionSigningManager {
+extension SwapTransactionGroupSigner {
     private func sign(
         _ unsignedTransaction: Data,
         at index: Int,
@@ -148,7 +148,7 @@ extension SwapTransactionSigningManager {
     }
 }
 
-extension SwapTransactionSigningManager {
+extension SwapTransactionGroupSigner {
     enum Event {
         case didSignTransaction
         case didCompleteSigningTransactions([Data])

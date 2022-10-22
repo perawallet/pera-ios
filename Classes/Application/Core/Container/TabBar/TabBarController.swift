@@ -40,6 +40,7 @@ final class TabBarController: TabBarContainer {
         analytics: analytics,
         api: api,
         sharedDataController: sharedDataController,
+        bannerController: bannerController,
         presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(

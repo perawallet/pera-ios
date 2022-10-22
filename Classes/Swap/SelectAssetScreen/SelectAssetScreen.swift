@@ -143,7 +143,10 @@ extension SelectAssetScreen {
         )
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: indexPath.section] else {

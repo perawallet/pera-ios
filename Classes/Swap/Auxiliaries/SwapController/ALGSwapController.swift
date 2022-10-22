@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   PERASwapController.swift
+//   ALGSwapController.swift
 
 import Foundation
 import MacaroonUtils
 
-final class PERASwapController: SwapController {
+final class ALGSwapController: SwapController {
     var eventHandler: EventHandler?
 
     let account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
     let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
 
-    private(set) var userAsset: Asset
-    private(set) var quote: SwapQuote?
-    private(set) var poolAsset: Asset?
-    private(set) var slippage: SwapSlippage = .fivePerThousand /// <note> Default value is 0.005
+    var userAsset: Asset
+    var quote: SwapQuote?
+    var poolAsset: Asset?
+    var slippage: SwapSlippage = .fivePerThousand /// <note> Default value is 0.005
 
     private lazy var uploadAndMonitorOperationQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -43,7 +43,7 @@ final class PERASwapController: SwapController {
 
     private var signedTransactions = [Data]()
 
-    private lazy var swapTransactionSigningManager = SwapTransactionSigningManager(
+    private lazy var swapTransactionGroupSigner = SwapTransactionGroupSigner(
         account: account,
         transactionSigner: transactionSigner
     )
@@ -61,11 +61,11 @@ final class PERASwapController: SwapController {
     }
 }
 
-extension PERASwapController {
+extension ALGSwapController {
     func signTransactions(
         _ transactionGroups: [SwapTransactionGroup]
     ) {
-        swapTransactionSigningManager.eventHandler = {
+        swapTransactionGroupSigner.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
@@ -92,11 +92,11 @@ extension PERASwapController {
             }
         }
 
-        swapTransactionSigningManager.signTransactions(transactionGroups)
+        swapTransactionGroupSigner.signTransactions(transactionGroups)
     }
 }
 
-extension PERASwapController {
+extension ALGSwapController {
     private func uploadTransactionsAndWaitForConfirmation(
         _ transactions: [Data]
     ) {
@@ -157,33 +157,7 @@ extension PERASwapController {
     }
 }
 
-extension PERASwapController {
-    func updateQuote(
-        _ quote: SwapQuote
-    ) {
-        self.quote = quote
-    }
-
-    func updateSlippage(
-        _ slippage: SwapSlippage
-    ) {
-        self.slippage = slippage
-    }
-
-    func updateUserAsset(
-        _ asset: Asset
-    ) {
-        self.userAsset = asset
-    }
-
-    func updatePoolAsset(
-        _ asset: Asset
-    ) {
-        self.poolAsset = asset
-    }
-}
-
-extension PERASwapController {
+extension ALGSwapController {
     private func publishEvent(
         _ event: SwapControllerEvent
     ) {

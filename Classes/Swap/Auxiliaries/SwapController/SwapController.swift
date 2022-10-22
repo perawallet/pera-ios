@@ -22,19 +22,15 @@ import MagpieHipo
 protocol SwapController {
     typealias EventHandler = (SwapControllerEvent) -> Void
     typealias Error = HIPNetworkError<HIPAPIError>
-    
+
+    var userAsset: Asset { get set }
+    var quote: SwapQuote? { get set }
+    var poolAsset: Asset? { get set }
+    var slippage: SwapSlippage { get set }
     var account: Account { get }
-    var userAsset: Asset { get }
-    var quote: SwapQuote? { get }
-    var poolAsset: Asset? { get }
-    var slippage: SwapSlippage { get }
     var swapType: SwapType { get }
     var provider: SwapProvider { get }
 
-    func updateQuote(_ quote: SwapQuote)
-    func updateUserAsset(_ asset: Asset)
-    func updatePoolAsset(_ asset: Asset)
-    func updateSlippage(_ slippage: SwapSlippage)
     func signTransactions(_ transactions: [SwapTransactionGroup])
 }
 
