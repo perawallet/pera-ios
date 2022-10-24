@@ -15,14 +15,16 @@
 //   SwapAssetFlowCoordinator.swift
 
 import Foundation
+import MacaroonUtils
 import UIKit
 
 /// <todo>
 /// This should be removed after the routing refactor.
 final class SwapAssetFlowCoordinator:
-    SwapIntroductionAlertItemDelegate {
-    typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
+    SwapIntroductionAlertItemDelegate,
+    SharedDataControllerObserver,
+    WeakPublisher {
+    var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     private lazy var displayStore = SwapDisplayStore()
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -53,7 +55,7 @@ final class SwapAssetFlowCoordinator:
     private let sharedDataController: SharedDataController
     private let bannerController: BannerController
     private unowned let presentingScreen: UIViewController
-    private let account: Account?
+    private var account: Account?
     private let asset: Asset?
 
     init(
@@ -73,10 +75,16 @@ final class SwapAssetFlowCoordinator:
         self.account = account
         self.asset = asset
     }
+
+    deinit {
+        sharedDataController.remove(self)
+    }
 }
 
 extension SwapAssetFlowCoordinator {
     func launch() {
+        sharedDataController.add(self)
+
         if !displayStore.isOnboardedToSwap {
             displayStore.isOnboardedToSwap = true
 
@@ -560,6 +568,7 @@ extension SwapAssetFlowCoordinator {
         let selectAssetScreen = visibleScreen.open(
             .selectAsset(
                 dataController: dataController,
+                coordinator: self,
                 title: "swap-asset-from".localized
             ),
             by: .push
@@ -572,7 +581,8 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .didSelectAsset(let asset):
                 self.visibleScreen.popScreen()
-                self.eventHandler?(.didSelectUserAsset(asset))
+                self.publish(.didSelectUserAsset(asset))
+            case .didOptInToAsset: break
             }
         }
     }
@@ -591,6 +601,7 @@ extension SwapAssetFlowCoordinator {
         let selectAssetScreen = visibleScreen.open(
             .selectAsset(
                 dataController: dataController,
+                coordinator: self,
                 title: "swap-asset-to".localized
             ),
             by: .push
@@ -604,7 +615,7 @@ extension SwapAssetFlowCoordinator {
             case .didSelectAsset(let asset):
                 if swapController.account.isOptedIn(to: asset.id) {
                     self.visibleScreen.popScreen()
-                    self.eventHandler?(.didSelectPoolAsset(asset))
+                    self.publish(.didSelectPoolAsset(asset))
                     return
                 }
 
@@ -613,6 +624,9 @@ extension SwapAssetFlowCoordinator {
                     assetDecoration,
                     swapController: swapController
                 )
+            case .didOptInToAsset(let asset):
+                self.visibleScreen.popScreen()
+                self.publish(.didSelectPoolAsset(asset))
             }
         }
     }
@@ -634,6 +648,7 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .performApprove:
                 self.visibleScreen.dismissScreen()
+                self.publish(.didApproveOptInToAsset(asset))
             case .performClose:
                 self.visibleScreen.dismissScreen()
             }
@@ -668,8 +683,72 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    enum Event {
-        case didSelectUserAsset(Asset)
-        case didSelectPoolAsset(Asset)
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+        }
     }
+
+    private func updateAccountIfNeeded() {
+        guard let account else { return }
+
+        guard let updatedAccount = sharedDataController.accountCollection[account.address] else { return }
+
+        if !updatedAccount.isAvailable { return }
+
+        self.account = updatedAccount.value
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    func add(
+        _ observer: SwapAssetFlowCoordinatorObserver
+    ) {
+        let id = ObjectIdentifier(observer as AnyObject)
+        observations[id] = WeakObservation(observer)
+    }
+
+    private func publish(
+        _ event: SwapAssetFlowCoordinatorEvent
+    ) {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.notifyObservers {
+                $0.swapAssetFlowCoordinator(
+                    self,
+                    didPublish: event
+                )
+            }
+        }
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    final class WeakObservation: WeakObservable {
+        weak var observer: SwapAssetFlowCoordinatorObserver?
+
+        init(
+            _ observer: SwapAssetFlowCoordinatorObserver
+        ) {
+            self.observer = observer
+        }
+    }
+}
+
+protocol SwapAssetFlowCoordinatorObserver: AnyObject {
+    func swapAssetFlowCoordinator(
+        _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
+        didPublish event: SwapAssetFlowCoordinatorEvent
+    )
+}
+
+enum SwapAssetFlowCoordinatorEvent {
+    case didSelectUserAsset(Asset)
+    case didSelectPoolAsset(Asset)
+    case didApproveOptInToAsset(AssetDecoration)
 }

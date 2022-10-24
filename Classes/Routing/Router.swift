@@ -1175,9 +1175,10 @@ class Router:
             let screen = ExportsAccountsResultScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case .selectAsset(let dataController, let title, let theme):
+        case .selectAsset(let dataController, let coordinator, let title, let theme):
             let aViewController = SelectAssetScreen(
                 dataController: dataController,
+                coordinator: coordinator,
                 theme: theme,
                 configuration: configuration
             )

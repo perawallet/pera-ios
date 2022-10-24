@@ -27,7 +27,7 @@ protocol SwapController {
     var quote: SwapQuote? { get set }
     var poolAsset: Asset? { get set }
     var slippage: SwapSlippage { get set }
-    var account: Account { get }
+    var account: Account { get set }
     var swapType: SwapType { get }
     var provider: SwapProvider { get }
 
