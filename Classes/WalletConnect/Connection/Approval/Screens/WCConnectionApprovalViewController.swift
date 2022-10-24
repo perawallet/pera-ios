@@ -101,6 +101,8 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
+        sendWalletConnectSubscription()
+
         analytics.track(
             .wcSessionApproved(
                 topic: walletConnectSession.url.topic,
@@ -118,6 +120,28 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             )
             self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(self)
         }
+    }
+
+    private func sendWalletConnectSubscription() {
+        let user = api!.session.authenticatedUser
+        let deviceID = user?.getDeviceId(on: api!.network)
+
+        let pushNotificationController = PushNotificationController(
+            target: target,
+            session: session!,
+            api: api!,
+            bannerController: bannerController
+        )
+        let pushToken = pushNotificationController.token
+
+        let draft = WalletConnectSubscriptionDraft(
+            deviceID: deviceID,
+            bridgeURL: walletConnectSession.url.bridgeURL,
+            topicID: walletConnectSession.url.topic,
+            dAppName: walletConnectSession.dAppInfo.peerMeta.name,
+            pushToken: pushToken
+        )
+        api!.sendWalletConnectSubscription(draft)
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {

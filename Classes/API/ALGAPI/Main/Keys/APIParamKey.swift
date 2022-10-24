@@ -79,4 +79,8 @@ enum APIParamKey: String, CodingKey {
     case deviceId = "device_id"
     case privateKey = "private_key"
     case encryptedContent = "encrypted_content"
+    case device = "device"
+    case bridgeURL = "bridge_url"
+    case topicID = "topic_id"
+    case dAppName = "dapp_name"
 }

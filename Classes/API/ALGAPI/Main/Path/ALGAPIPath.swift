@@ -46,6 +46,7 @@ enum ALGAPIPath: String {
     case announcements = "/devices/%@/banners/"
     case nameServicesSearch = "/name-services/search/"
     case backups = "/backups/%@"
+    case walletConnectSubscriptions = "/devices/wallet-connect-subscriptions/"
 }
 
 extension EndpointBuilder {
