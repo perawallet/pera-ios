@@ -43,7 +43,6 @@ final class SwapAssetScreen:
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
-    private let theme: SwapAssetScreenTheme
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
 
@@ -52,13 +51,11 @@ final class SwapAssetScreen:
     init(
         dataController: SwapAssetDataController,
         coordinator: SwapAssetFlowCoordinator,
-        configuration: ViewControllerConfiguration,
-        theme: SwapAssetScreenTheme = .init()
+        configuration: ViewControllerConfiguration
     ) {
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
         self.swapAssetFlowCoordinator = coordinator
-        self.theme = theme
         self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: nil,
