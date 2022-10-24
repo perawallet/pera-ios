@@ -23,15 +23,15 @@ struct SwapAssetScreenTheme:
     LayoutSheet {
     let background: ViewStyle
     let userAsset: SwapAssetAmountViewTheme
-    let assetHorizontalInset: LayoutMetric
-    let userAssetTopInset: LayoutMetric
-    let spacingBetweenUserAssetAndQuickActions: CGFloat
+    let contextHorizontalInset: LayoutMetric
+    let contextTopInset: LayoutMetric
+    let contextSpacing: LayoutMetric
+    let error: SwapErrorViewTheme
     let quickActions: SwapQuickActionsViewTheme
     let quickActionsHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
     let quickActionsSeparator: Separator
     let emptyPoolAsset: SwapAssetSelectionEmptyViewTheme
     let poolAsset: SwapAssetAmountViewTheme
-    let poolAssetTopInset: LayoutMetric
     let swapAction: ButtonStyle
     let swapActionContentEdgeInsets: UIEdgeInsets
     let swapActionEdgeInsets: LayoutPaddings
@@ -43,9 +43,10 @@ struct SwapAssetScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
-        self.assetHorizontalInset = 24
-        self.userAssetTopInset = 24
-        self.spacingBetweenUserAssetAndQuickActions = 32
+        self.contextHorizontalInset = 24
+        self.contextTopInset = 24
+        self.contextSpacing = 32
+        self.error = SwapErrorViewTheme()
         self.quickActions = SwapQuickActionsViewTheme(family)
         self.quickActionsHorizontalEdgeInsets = .init(leading: 20, trailing: 20)
         self.quickActionsSeparator = Separator(
@@ -55,7 +56,6 @@ struct SwapAssetScreenTheme:
         )
         self.emptyPoolAsset = SwapAssetSelectionEmptyViewTheme()
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
-        self.poolAssetTopInset = 32
         self.swapAction = [
             .title("title-swap".localized),
             .titleColor(
