@@ -1020,7 +1020,7 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .swapAsset(let swapController, let coordinator, let theme):
+        case .swapAsset(let swapController, let coordinator):
             let dataController = SwapAssetAPIDataController(
                 swapController: swapController,
                 api: appConfiguration.api,
@@ -1030,8 +1030,7 @@ class Router:
             viewController = SwapAssetScreen(
                 dataController: dataController,
                 coordinator: coordinator,
-                configuration: configuration,
-                theme: theme
+                configuration: configuration
             )
         case .swapAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
@@ -1193,6 +1192,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .adjustSwapAmount:
+            viewController = AdjustSwapAmountScreen(configuration: configuration)
         }
 
         return viewController as? T

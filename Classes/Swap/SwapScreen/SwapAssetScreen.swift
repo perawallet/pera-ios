@@ -33,6 +33,7 @@ final class SwapAssetScreen:
     )
 
     private lazy var userAssetView = SwapAssetAmountView()
+    private lazy var quickActionsView = SwapQuickActionsView(theme.quickActions)
     private lazy var emptyPoolAssetView = SwapAssetSelectionEmptyView(theme: theme.emptyPoolAsset)
     private lazy var poolAssetView = SwapAssetAmountView()
     private lazy var swapActionView = MacaroonUIKit.Button()
@@ -42,20 +43,19 @@ final class SwapAssetScreen:
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
-    private let theme: SwapAssetScreenTheme
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
+
+    private let theme: SwapAssetScreenTheme = .init()
 
     init(
         dataController: SwapAssetDataController,
         coordinator: SwapAssetFlowCoordinator,
-        configuration: ViewControllerConfiguration,
-        theme: SwapAssetScreenTheme = .init()
+        configuration: ViewControllerConfiguration
     ) {
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
         self.swapAssetFlowCoordinator = coordinator
-        self.theme = theme
         self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: nil,
@@ -87,6 +87,7 @@ final class SwapAssetScreen:
         super.prepareLayout()
         addBackground()
         addUserAsset()
+        addQuickActions()
         addPoolAssetIfNeeded()
         addSwapAction()
     }
@@ -153,6 +154,36 @@ extension SwapAssetScreen {
         }
     }
 
+    private func addQuickActions() {
+        contentView.addSubview(quickActionsView)
+        quickActionsView.snp.makeConstraints {
+            $0.top == userAssetView.snp.bottom + theme.spacingBetweenUserAssetAndQuickActions
+            $0.leading == theme.quickActionsHorizontalEdgeInsets.leading
+            $0.trailing == theme.quickActionsHorizontalEdgeInsets.trailing
+        }
+
+        quickActionsView.bind(SwapQuickActionsViewModel())
+
+        quickActionsView.startObserving(event: .switchAssets) {
+            print("Switch assets")
+        }
+        quickActionsView.startObserving(event: .adjustAmount) {
+            [unowned self] in
+            self.open(
+                .adjustSwapAmount,
+                by: .present
+            )
+        }
+        quickActionsView.startObserving(event: .setMaxAmount) {
+            print("set max amount")
+        }
+
+        contentView.attachSeparator(
+            theme.quickActionsSeparator,
+            to: quickActionsView
+        )
+    }
+
     private func addPoolAssetIfNeeded() {
         if poolAssetViewModel == nil {
             addEmptyPoolAsset()
@@ -172,7 +203,7 @@ extension SwapAssetScreen {
         contentView.addSubview(emptyPoolAssetView)
         emptyPoolAssetView.fitToIntrinsicSize()
         emptyPoolAssetView.snp.makeConstraints {
-            $0.top == userAssetView.snp.bottom + theme.poolAssetTopInset
+            $0.top == quickActionsView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }
@@ -193,7 +224,7 @@ extension SwapAssetScreen {
         contentView.addSubview(poolAssetView)
         poolAssetView.fitToIntrinsicSize()
         poolAssetView.snp.makeConstraints {
-            $0.top == userAssetView.snp.bottom + theme.poolAssetTopInset
+            $0.top == quickActionsView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }

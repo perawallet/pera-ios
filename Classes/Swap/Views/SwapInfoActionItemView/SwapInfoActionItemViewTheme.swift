@@ -43,7 +43,7 @@ struct SwapInfoActionItemViewTheme:
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.right)
-        ]
+        ]
         self.minimumSpacingBetweenInfoActionAndDetail = 12
         self.detailActionSize = (32, 32)
         self.detailActionContentEdgeInsets = UIEdgeInsets((6, 12, 6, 0))

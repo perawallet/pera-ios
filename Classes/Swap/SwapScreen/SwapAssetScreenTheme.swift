@@ -25,6 +25,10 @@ struct SwapAssetScreenTheme:
     let userAsset: SwapAssetAmountViewTheme
     let assetHorizontalInset: LayoutMetric
     let userAssetTopInset: LayoutMetric
+    let spacingBetweenUserAssetAndQuickActions: CGFloat
+    let quickActions: SwapQuickActionsViewTheme
+    let quickActionsHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
+    let quickActionsSeparator: Separator
     let emptyPoolAsset: SwapAssetSelectionEmptyViewTheme
     let poolAsset: SwapAssetAmountViewTheme
     let poolAssetTopInset: LayoutMetric
@@ -41,6 +45,14 @@ struct SwapAssetScreenTheme:
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.assetHorizontalInset = 24
         self.userAssetTopInset = 24
+        self.spacingBetweenUserAssetAndQuickActions = 32
+        self.quickActions = SwapQuickActionsViewTheme(family)
+        self.quickActionsHorizontalEdgeInsets = .init(leading: 20, trailing: 20)
+        self.quickActionsSeparator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .centerY((0, 0))
+        )
         self.emptyPoolAsset = SwapAssetSelectionEmptyViewTheme()
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.poolAssetTopInset = 32

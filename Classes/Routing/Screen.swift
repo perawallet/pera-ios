@@ -197,8 +197,7 @@ indirect enum Screen {
     )
     case swapAsset(
         swapController: SwapController,
-        coordinator: SwapAssetFlowCoordinator,
-        theme: SwapAssetScreenTheme = .init()
+        coordinator: SwapAssetFlowCoordinator
     )
     case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
     case swapSignWithLedgerProcess(
@@ -272,6 +271,7 @@ indirect enum Screen {
         eventHandler: EventHandler<ConfirmSwapScreen.Event>,
         theme: ConfirmSwapScreenTheme = .init()
     )
+    case adjustSwapAmount
 }
 
 extension Screen {

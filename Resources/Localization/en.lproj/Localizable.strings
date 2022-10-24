@@ -1208,6 +1208,11 @@
 "swap-asset-from" = "Swap From";
 "swap-asset-to" = "Swap To";
 
+/// MARK: Swap Adjust Amount
+"swap-amount-balancePercentage-title" = "Balance Percentage";
+"swap-amount-balancePercentage-placeholder" = "Set custom percentage";
+"swap-amount-balancePercentage-max" = "MAX";
+
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
