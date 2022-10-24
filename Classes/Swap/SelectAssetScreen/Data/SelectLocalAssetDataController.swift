@@ -32,7 +32,7 @@ final class SelectLocalAssetDataController:
     private var assets: [Asset] = []
     private var searchResults: [Asset] = []
 
-    private var account: Account
+    private(set) var account: Account
     private let filter: AssetFilterAlgorithm?
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
@@ -124,13 +124,13 @@ extension SelectLocalAssetDataController {
     }
 
     private func updateAccountIfNeeded() {
-        let updatedAccount = sharedDataController.accountCollection[account.address]
+        guard let updatedAccount = sharedDataController.accountCollection[account.address] else {
+            return
+        }
 
-        guard let account = updatedAccount else { return }
+        if !updatedAccount.isAvailable { return }
 
-        if !account.isAvailable { return }
-
-        self.account = account.value
+        self.account = updatedAccount.value
     }
 }
 

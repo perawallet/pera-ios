@@ -263,6 +263,7 @@ indirect enum Screen {
     )
     case selectAsset(
         dataController: SelectAssetDataController,
+        coordinator: SwapAssetFlowCoordinator?,
         title: String,
         theme: SelectAssetScreenTheme = .init()
     )

@@ -21,7 +21,8 @@ import UIKit
 final class SwapAssetScreen:
     BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource,
-    SwapAssetAmountViewDelegate {
+    SwapAssetAmountViewDelegate,
+    SwapAssetFlowCoordinatorObserver {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -64,10 +65,12 @@ final class SwapAssetScreen:
         super.init(configuration: configuration)
 
         keyboardController.activate()
+        swapAssetFlowCoordinator?.add(self)
     }
 
     deinit {
         keyboardController.deactivate()
+        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func configureNavigationBarAppearance() {
@@ -93,7 +96,6 @@ final class SwapAssetScreen:
         userAssetView.delegate = self
         poolAssetView.delegate = self
         performKeyboardActions()
-        performSwapFlowCoordinatorActions()
     }
 
     override func bindData() {
@@ -238,17 +240,16 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
-    private func performSwapFlowCoordinatorActions() {
-        swapAssetFlowCoordinator?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didSelectUserAsset(let asset):
-                self.updateUserAsset(asset)
-            case .didSelectPoolAsset(let asset):
-                self.updatePoolAsset(asset)
-            }
+    func swapAssetFlowCoordinator(
+        _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
+        didPublish event: SwapAssetFlowCoordinatorEvent
+    ) {
+        switch event {
+        case .didSelectUserAsset(let asset):
+            updateUserAsset(asset)
+        case .didSelectPoolAsset(let asset):
+            updatePoolAsset(asset)
+        case .didApproveOptInToAsset: break
         }
     }
 

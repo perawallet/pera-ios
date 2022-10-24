@@ -23,7 +23,7 @@ protocol SwapAssetDataController: AnyObject {
     typealias EventHandler = (SwapAssetDataControllerEvent) -> Void
     typealias Error = HIPNetworkError<HIPAPIError>
 
-    var account: Account { get }
+    var account: Account { get set }
     var userAsset: Asset { get set }
     var poolAsset: Asset? { get set }
 

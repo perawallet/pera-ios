@@ -36,7 +36,7 @@ final class SelectSwapPoolAssetDataController:
 
     private var assets: [AssetDecoration] = []
 
-    private var account: Account
+    private(set) var account: Account
     private let userAsset: AssetID
     private let swapProvider: SwapProvider
     private let api: ALGAPI
@@ -54,6 +54,12 @@ final class SelectSwapPoolAssetDataController:
         self.swapProvider = swapProvider
         self.api = api
         self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
 
     subscript(indexPath: IndexPath) -> Asset? {

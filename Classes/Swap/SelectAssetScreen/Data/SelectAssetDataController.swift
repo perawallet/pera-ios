@@ -27,6 +27,7 @@ protocol SelectAssetDataController: AnyObject {
     typealias Updates = (snapshot: Snapshot, error: Error?)
 
     var eventHandler: EventHandler? { get set }
+    var account: Account { get }
 
     subscript(indexPath: IndexPath) -> Asset? { get }
     subscript(id: AssetID) -> Asset? { get }

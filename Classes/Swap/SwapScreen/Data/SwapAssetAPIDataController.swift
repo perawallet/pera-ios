@@ -19,11 +19,18 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class SwapAssetAPIDataController: SwapAssetDataController {
+final class SwapAssetAPIDataController:
+    SwapAssetDataController,
+    SharedDataControllerObserver {
     var eventHandler: EventHandler?
 
     var account: Account {
-        return swapController.account
+        get {
+            return swapController.account
+        }
+        set {
+            swapController.account = newValue
+        }
     }
     var userAsset: Asset {
         get {
@@ -68,6 +75,12 @@ final class SwapAssetAPIDataController: SwapAssetDataController {
         self.swapController = swapController
         self.api = api
         self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
+    }
+
+    deinit {
+        sharedDataController.remove(self)
     }
 }
 
@@ -158,5 +171,26 @@ extension SwapAssetAPIDataController {
                 self.eventHandler?(.didFailToLoadPeraFee(error))
             }
         }
+    }
+}
+
+extension SwapAssetAPIDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+        }
+    }
+
+    private func updateAccountIfNeeded() {
+        guard let updatedAccount = sharedDataController.accountCollection[account.address] else {
+            return
+        }
+
+        if !updatedAccount.isAvailable { return }
+
+        self.account = updatedAccount.value
     }
 }

@@ -20,7 +20,7 @@ import MacaroonUtils
 final class ALGSwapController: SwapController {
     var eventHandler: EventHandler?
 
-    let account: Account
+    var account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
     let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
 
