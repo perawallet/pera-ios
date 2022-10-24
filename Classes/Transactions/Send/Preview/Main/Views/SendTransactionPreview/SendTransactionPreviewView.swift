@@ -228,13 +228,11 @@ extension SendTransactionPreviewView {
             lockedNoteView.bindData(lockedNote)
             lockedNoteView.isHidden = false
             noteView.isHidden = true
-            
-            return
+        } else {
+            noteView.bindData(viewModel?.noteView)
+            noteView.isHidden = false
+            lockedNoteView.isHidden = true
         }
-        
-        noteView.bindData(viewModel?.noteView)
-        noteView.isHidden = false
-        lockedNoteView.isHidden = true
     }
 }
 
