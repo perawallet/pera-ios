@@ -16,13 +16,19 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class SelectAssetScreen:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    SearchInputViewDelegate {
+    SearchInputViewDelegate,
+    SwapAssetFlowCoordinatorObserver,
+    TransactionControllerDelegate,
+    TransactionSignChecking {
     var eventHandler: Screen.EventHandler<SelectAssetScreenEvent>?
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private lazy var searchInputView = SearchInputView()
 
@@ -43,17 +49,29 @@ final class SelectAssetScreen:
     private lazy var listDataSource = SelectAssetDataSource(listView)
     private lazy var listLayout = SelectAssetListLayout(listDataSource: listDataSource)
 
+    private lazy var transactionController = createTransactionController()
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
     private let dataController: SelectAssetDataController
     private let theme: SelectAssetScreenTheme
 
     init(
         dataController: SelectAssetDataController,
+        coordinator: SwapAssetFlowCoordinator?,
         theme: SelectAssetScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.swapAssetFlowCoordinator = coordinator
         self.theme = theme
         super.init(configuration: configuration)
+
+        swapAssetFlowCoordinator?.add(self)
+    }
+
+    deinit {
+        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func viewDidLoad() {
@@ -75,6 +93,13 @@ final class SelectAssetScreen:
         }
 
         dataController.load()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        transactionController.stopBLEScan()
+        transactionController.stopTimer()
     }
 
     override func configureAppearance() {
@@ -143,7 +168,10 @@ extension SelectAssetScreen {
         )
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
@@ -225,6 +253,221 @@ extension SelectAssetScreen {
     }
 }
 
+extension SelectAssetScreen {
+    func swapAssetFlowCoordinator(
+        _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
+        didPublish event: SwapAssetFlowCoordinatorEvent
+    ) {
+
+        switch event {
+        case .didApproveOptInToAsset(let asset):
+            self.continueToOptInAsset(asset: asset)
+        default: break
+        }
+    }
+}
+
+extension SelectAssetScreen {
+    private func continueToOptInAsset(
+        asset: AssetDecoration
+    ) {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        var account = dataController.account
+
+        if !canSignTransaction(for: &account) { return }
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(
+            account: account,
+            asset: asset
+        )
+        monitor.startMonitoringOptInUpdates(request)
+
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: asset.id
+        )
+
+        transactionController.delegate = self
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+    }
+}
+
+
+extension SelectAssetScreen {
+    private func createTransactionController() -> TransactionController {
+        return TransactionController(
+            api: api!,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: dataController.account
+            )
+        }
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: dataController.account
+            )
+        }
+
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: apiError.debugDescription
+            )
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        guard let assetID = getAssetID(from: transactionController),
+              let asset = dataController[assetID] else {
+            return
+        }
+
+        asyncMain(afterDuration: 3.0) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.loadingController?.stopLoading()
+            self.eventHandler?(.didOptInToAsset(asset))
+        }
+    }
+
+    private func displayTransactionError(
+        from transactionError: TransactionError
+    ) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+            }
+        }
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+        ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {}
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+}
+
 enum SelectAssetScreenEvent {
     case didSelectAsset(Asset)
+    case didOptInToAsset(Asset)
 }

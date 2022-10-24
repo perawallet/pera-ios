@@ -21,6 +21,7 @@ final class LoadingScreen: BaseViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private lazy var imageBackgroundView = UIView()
     private lazy var imageView = LottieImageView()
     private lazy var titleView = UILabel()
     private lazy var detailView = UILabel()
@@ -36,21 +37,41 @@ final class LoadingScreen: BaseViewController {
         self.viewModel = viewModel
         self.theme = theme
         super.init(configuration: configuration)
+
+        isModalInPresentation = true
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        hidesCloseBarButtonItem = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        imageView.play()
+        eventHandler?(.willStartLoading)
+        imageView.play(with: LottieImageView.Configuration())
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        eventHandler?(.didStartLoading)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         imageView.stop()
+        eventHandler?(.didStopLoading)
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         addTitle()
+        addImageBackground()
         addImage()
         addDetail()
     }
@@ -64,6 +85,10 @@ final class LoadingScreen: BaseViewController {
 
         viewModel.title?.load(in: titleView)
         viewModel.detail?.load(in: detailView)
+    }
+
+    override func didTapBackBarButton() -> Bool {
+        return false
     }
 }
 
@@ -80,14 +105,24 @@ extension LoadingScreen {
         }
     }
 
+    private func addImageBackground() {
+        imageBackgroundView.customizeAppearance(theme.imageBackground)
+        imageBackgroundView.layer.draw(corner: theme.imageBackgroundCorner)
 
-    private func addImage() {
-        view.addSubview(imageView)
-        imageView.fitToIntrinsicSize()
-        imageView.snp.makeConstraints {
+        view.addSubview(imageBackgroundView)
+        imageBackgroundView.fitToIntrinsicSize()
+        imageBackgroundView.snp.makeConstraints {
             $0.fitToSize(theme.imageSize)
             $0.centerX == 0
-            $0.bottom == titleView.snp.top + theme.spacingBetweenImageAndTitle
+            $0.bottom == titleView.snp.top - theme.spacingBetweenImageAndTitle
+        }
+    }
+
+    private func addImage() {
+        imageBackgroundView.addSubview(imageView)
+        imageView.fitToIntrinsicSize()
+        imageView.snp.makeConstraints {
+            $0.setPaddings()
         }
     }
 
@@ -99,15 +134,16 @@ extension LoadingScreen {
         detailView.snp.makeConstraints {
             $0.centerX == 0
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndDetail
-            $0.leading == theme.spacingBetweenTitleAndDetail
-            $0.trailing == theme.spacingBetweenTitleAndDetail
+            $0.leading == theme.detailHorizontalInset
+            $0.trailing == theme.detailHorizontalInset
         }
     }
 }
 
 extension LoadingScreen {
     enum Event {
+        case willStartLoading
         case didStartLoading
-        case didFinishLoading
+        case didStopLoading
     }
 }

@@ -17,39 +17,21 @@
 import Foundation
 import MacaroonUIKit
 
-struct SwapAssetSelectionViewModel: ViewModel {
-    private(set) var title: TextProvider?
-    private(set) var verificationTier: Image?
-
-    init(
-        _ asset: Asset
-    ) {
-        bindTitle(asset)
-        bindVerificationTier(asset)
-    }
+protocol SwapAssetSelectionViewModel: ViewModel {
+    var title: TextProvider?  { get }
+    var verificationTier: Image?  { get }
+    var accessory: Image? { get }
 }
 
 extension SwapAssetSelectionViewModel {
-    mutating func bindTitle(
+    func getVerificationTier(
         _ asset: Asset
-    ) {
-        guard let unitName = asset.naming.unitName else {
-            ///  <todo> How should we represent unknown here?
-            return
-        }
-
-        title = unitName.bodyRegular(lineBreakMode: .byTruncatingTail)
-    }
-
-    mutating func bindVerificationTier(
-        _ asset: Asset
-    ) {
-        ///  <todo> Check verification tier icon setting after ASA Detail is merged.
+    ) -> Image? {
         switch asset.verificationTier {
-        case .trusted: verificationTier = "icon-trusted"
-        case .verified: verificationTier = "icon-verified"
-        case .unverified: verificationTier = nil
-        case .suspicious: verificationTier = "icon-suspicious"
+        case .trusted: return "icon-trusted"
+        case .verified: return "icon-verified"
+        case .unverified: return nil
+        case .suspicious: return "icon-suspicious"
         }
     }
 }

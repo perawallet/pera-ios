@@ -21,7 +21,6 @@ struct SwapSummaryStatusViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let horizontalInset: LayoutMetric
     let status: TransactionStatusViewTheme
     let statusLeadingInset: LayoutMetric
     let minimumSpacingBetweenTitleAndStatus: LayoutMetric
@@ -36,9 +35,8 @@ struct SwapSummaryStatusViewTheme:
             .text("transaction-detail-status".localized),
             .font(Typography.bodyRegular())
         ]
-        self.horizontalInset = 24
         self.status = TransactionStatusViewTheme()
-        self.statusLeadingInset = 146
+        self.statusLeadingInset = 124
         self.minimumSpacingBetweenTitleAndStatus = 4
     }
 }

@@ -51,23 +51,35 @@ extension SwapAssetSuccessScreenViewModel {
         let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
         title = "swap-success-title"
             .localized(params: swapAssets)
-            .bodyLargeMedium()
+            .bodyLargeMedium(alignment: .center)
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
         guard let amountIn = quote.amountIn,
-              let amountOut = quote.amountOut else {
+              let amountOut = quote.amountOutWithSlippage,
+              let assetIn = quote.assetIn,
+              let assetOut = quote.assetOut else {
             return
         }
 
-        /// <todo> Update display formatting when the flow is completed.
-        let amountInDisplay = "\(amountIn)"
-        let amountOutDisplay = "\(amountOut)"
+        let assetInDisplayName =
+            assetIn.unitName ??
+            assetIn.name ??
+            "\(assetIn.id)"
 
-        title = "swap-success-detail"
+        let assetOutDisplayName =
+            assetOut.unitName ??
+            assetOut.name ??
+            "\(assetOut.id)"
+
+        /// <todo> Update display formatting when the flow is completed.
+        let amountInDisplay = "\(amountIn) \(assetInDisplayName)"
+        let amountOutDisplay = "\(amountOut) \(assetOutDisplayName)"
+
+        detail = "swap-success-detail"
             .localized(params: amountInDisplay, amountOutDisplay)
-            .bodyRegular()
+            .bodyRegular(alignment: .center)
     }
 }

@@ -20,6 +20,9 @@ import UIKit
 struct ErrorScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
+    let iconBackground: ViewStyle
+    let iconBackgroundCorner: Corner
     let icon: ImageStyle
     let spacingBetweenIconAndTitle: LayoutMetric
     let iconSize: LayoutSize
@@ -38,8 +41,15 @@ struct ErrorScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.iconBackground = [
+            .backgroundColor(Colors.Helpers.negative)
+        ]
+        self.iconBackgroundCorner = Corner(radius: 30)
         self.icon = [
-            .image("img-nc-failed")
+            .image("icon-close-36")
         ]
         self.spacingBetweenIconAndTitle = 24
         self.iconSize = (60, 60)

@@ -50,7 +50,8 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
     ) {
         guard let slippage = quote.slippage else { return }
 
-        detail = slippage
+        let slippagePercentage = slippage.rawValue
+        detail = slippagePercentage
             .doubleValue
             .toPercentage?
             .footnoteRegular()

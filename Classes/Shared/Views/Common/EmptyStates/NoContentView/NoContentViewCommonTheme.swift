@@ -20,17 +20,17 @@ import MacaroonUIKit
 import UIKit
 
 struct NoContentViewCommonTheme: NoContentViewTheme {
-    let icon: ImageStyle
-    let iconAlignment: ResultView.IconViewAlignment
-    let spacingBetweenIconAndTitle: LayoutMetric
-    let title: TextStyle
-    let titleHorizontalMargins: LayoutHorizontalMargins
-    let spacingBetweenTitleAndBody: LayoutMetric
-    let body: TextStyle
-    let bodyHorizontalMargins: LayoutHorizontalMargins
+    var icon: ImageStyle
+    var iconAlignment: ResultView.IconViewAlignment
+    var spacingBetweenIconAndTitle: LayoutMetric
+    var title: TextStyle
+    var titleHorizontalMargins: LayoutHorizontalMargins
+    var spacingBetweenTitleAndBody: LayoutMetric
+    var body: TextStyle
+    var bodyHorizontalMargins: LayoutHorizontalMargins
     var contentHorizontalPaddings: LayoutHorizontalPaddings
     var contentVerticalPaddings: LayoutVerticalPaddings
-    let resultAlignment: NoContentView.ResultViewAlignment
+    var resultAlignment: NoContentView.ResultViewAlignment
 
     init(
         _ family: LayoutFamily

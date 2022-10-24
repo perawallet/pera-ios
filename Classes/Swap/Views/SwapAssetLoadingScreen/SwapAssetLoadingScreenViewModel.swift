@@ -23,11 +23,15 @@ struct SwapAssetLoadingScreenViewModel: LoadingScreenViewModel {
     private(set) var detail: TextProvider?
 
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindImageName()
         bindTitle()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -39,15 +43,35 @@ extension SwapAssetLoadingScreenViewModel {
     mutating func bindTitle() {
         title = "swap-loading-title"
             .localized
-            .bodyLargeMedium()
+            .bodyLargeMedium(alignment: .center)
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        let receivedAmount = "" /// <todo> This will be handled when the flow is completed.
+        guard let amountOut = quote.amountOutWithSlippage,
+              let assetOut = quote.assetOut else {
+            return
+        }
+
+        let assetOutDisplayName =
+            assetOut.unitName ??
+            assetOut.name ??
+            "\(assetOut.id)"
+
+        var constraintRules = CurrencyFormattingContextRules()
+        constraintRules.maximumFractionDigits = assetOut.decimals
+        currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+        currencyFormatter.currency = nil
+
+        let decimalAmount = amountOut.assetAmount(fromFraction: assetOut.decimals)
+        guard let amountText = currencyFormatter.format(decimalAmount) else { return }
+
+        let assetText = "\(amountText) \(assetOutDisplayName)"
+
         detail = "swap-loading-detail"
-            .localized(params: receivedAmount)
-            .bodyRegular()
+            .localized(params: assetText)
+            .bodyRegular(alignment: .center)
     }
 }

@@ -18,80 +18,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapAssetAmountViewModel: ViewModel {
-    private(set) var leftTitle: TextProvider?
-    private(set) var rightTitle: TextProvider?
-    private(set) var assetAmountValue: AssetAmountInputViewModel?
-    private(set) var assetSelectionValue: SwapAssetSelectionViewModel?
-
-    private var draft: SwapAssetAmountViewModelDraft
-
-    init(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        self.draft = draft
-
-        bindLeftTitle(draft)
-        bindRightTitle(draft)
-        bindAssetAmountValue(draft)
-        bindAssetSelectionValue(draft)
-    }
-}
-
-extension SwapAssetAmountViewModel {
-    mutating func bindLeftTitle(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        if let title = draft.leftTitle {
-            leftTitle = title.footnoteRegular(
-                alignment: .left,
-                lineBreakMode: .byTruncatingTail
-            )
-        } else {
-            leftTitle = nil
-        }
-    }
-
-    mutating func bindRightTitle(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        let asset = draft.asset
-
-        let formatter = draft.currencyFormatter
-        formatter.formattingContext = .standalone()
-
-        if asset.isAlgo {
-            formatter.currency = AlgoLocalCurrency()
-        } else {
-            formatter.currency = nil
-        }
-
-        var text = formatter.format(asset.decimalAmount)
-
-        if !asset.isAlgo {
-            text = [text, asset.naming.unitName].compound(" ")
-        }
-
-        rightTitle = "swap-asset-amount-title-balance"
-            .localized(params: text ?? "")
-            .footnoteRegular(
-                alignment: .right,
-                lineBreakMode: .byTruncatingTail
-            )
-    }
-
-    mutating func bindAssetAmountValue(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        assetAmountValue = AssetAmountInputViewModel(
-            asset: draft.asset,
-            isInputEditable: draft.isInputEditable
-        )
-    }
-
-    mutating func bindAssetSelectionValue(
-        _ draft: SwapAssetAmountViewModelDraft
-    ) {
-        assetSelectionValue = SwapAssetSelectionViewModel(draft.asset)
-    }
+protocol SwapAssetAmountViewModel: ViewModel {
+    var leftTitle: TextProvider? { get }
+    var rightTitle: TextProvider? { get }
+    var assetAmountValue: AssetAmountInputViewModel? { get }
+    var assetSelectionValue: SwapAssetSelectionViewModel? { get }
 }

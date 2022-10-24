@@ -23,20 +23,21 @@ protocol SwapAssetDataController: AnyObject {
     typealias EventHandler = (SwapAssetDataControllerEvent) -> Void
     typealias Error = HIPNetworkError<HIPAPIError>
 
-    var account: Account { get }
-    var userAsset: Asset { get }
-    var poolAsset: Asset? { get }
+    var account: Account { get set }
+    var userAsset: Asset { get set }
+    var poolAsset: Asset? { get set }
 
     var eventHandler: EventHandler? { get set }
 
-    func loadData(swapAmount: Decimal)
-    func updateUserAsset(_ asset: Asset)
-    func updatePoolAsset(_ asset: Asset)
-    func updateSlippage(_ slippage: Decimal)
+    func loadQuote(swapAmount: UInt64)
+    func calculatePeraSwapFee(balance: UInt64)
 }
 
 enum SwapAssetDataControllerEvent {
-    case willLoadData
-    case didLoadData(SwapQuote)
-    case didFailToLoadData(SwapAssetDataController.Error)
+    case willLoadQuote
+    case didLoadQuote(SwapQuote)
+    case didFailToLoadQuote(SwapAssetDataController.Error)
+    case willLoadPeraFee
+    case didLoadPeraFee(PeraSwapFee)
+    case didFailToLoadPeraFee(SwapAssetDataController.Error)
 }

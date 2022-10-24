@@ -49,4 +49,12 @@ enum SwapTransactionPurpose:
         let foundCase = Self.allCases.first { $0.rawValue == rawValue }
         self = foundCase ?? .unknown(rawValue)
     }
+
+    var isSupported: Bool {
+        if case .unknown = self {
+            return false
+        }
+
+        return true
+    }
 }

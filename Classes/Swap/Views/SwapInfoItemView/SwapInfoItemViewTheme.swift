@@ -31,7 +31,7 @@ struct SwapInfoItemViewTheme:
         _ family: LayoutFamily
     ) {
         self.title = [
-            .textColor(Colors.Text.grayLighter),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]

@@ -15,18 +15,29 @@
 //   SwapTransactionGroup.swift
 
 import Foundation
+import MacaroonUtils
 
-final class SwapTransactionGroup: ALGEntityModel {
-    let purpose: SwapTransactionPurpose?
-    let groupID: Int
+final class SwapTransactionGroup:
+    ALGEntityModel,
+    Equatable {
+    let purpose: SwapTransactionPurpose
+    let groupID: String
     let transactions: [Data]?
-    let signedTransactions: [Data?]?
+    var signedTransactions: [Data?]?
+
+    var transactionsToSign: [Data?] {
+        guard let signedTransactions else {
+            return []
+        }
+
+        return signedTransactions.filter { $0.isNilOrEmpty }
+    }
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.purpose = apiModel.purpose
-        self.groupID = Int(apiModel.transactionGroupID).unwrap(or: -1)
+        self.purpose = apiModel.purpose ?? .init()
+        self.groupID = apiModel.transactionGroupID ?? ""
         self.transactions = apiModel.transactions
         self.signedTransactions = apiModel.signedTransactions
     }
@@ -34,23 +45,30 @@ final class SwapTransactionGroup: ALGEntityModel {
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.purpose = purpose
-        apiModel.transactionGroupID = String(describing: groupID)
+        apiModel.transactionGroupID = groupID
         apiModel.transactions = transactions
         apiModel.signedTransactions = signedTransactions
         return apiModel
+    }
+
+    static func == (
+        lhs: SwapTransactionGroup,
+        rhs: SwapTransactionGroup
+    ) -> Bool {
+        return
+            lhs.purpose == rhs.purpose &&
+            lhs.groupID == rhs.groupID &&
+            lhs.transactions == rhs.transactions &&
+            lhs.signedTransactions == rhs.signedTransactions
     }
 }
 
 extension SwapTransactionGroup {
     struct APIModel: ALGAPIModel {
         var purpose: SwapTransactionPurpose?
-        var transactionGroupID: String
+        var transactionGroupID: String?
         var transactions: [Data]?
         var signedTransactions: [Data?]?
-
-        init() {
-            self.transactionGroupID = "-1"
-        }
 
         private enum CodingKeys:
             String,

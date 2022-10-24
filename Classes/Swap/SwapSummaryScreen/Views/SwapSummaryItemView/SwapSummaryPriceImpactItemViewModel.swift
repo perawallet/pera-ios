@@ -14,6 +14,7 @@
 
 //   SwapSummaryPriceImpactItemViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 

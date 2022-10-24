@@ -26,6 +26,10 @@ final class SignWithLedgerProcessScreen:
         return .compressed
     }
 
+    var isProgressFinished: Bool {
+        return progress.isFinished
+    }
+
     private lazy var progressView = UIProgressView()
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = LottieImageView()
@@ -222,7 +226,7 @@ extension SignWithLedgerProcessScreen {
     private func bindProgress(animated: Bool) {
         title =
             "swap-sign-with-ledger-process-title"
-                .localized(params: "\(progress.completedUnitCount)", "\(progress.totalUnitCount)")
+                .localized(params: "\(progress.currentUnitCount)", "\(progress.totalUnitCount)")
 
         progressView.setProgress(
             progress.fractionCompleted,
@@ -247,7 +251,7 @@ extension SignWithLedgerProcessScreen {
 
     private func bindBody() {
         bodyView.attributedText =
-            "ledger-approval-message"
+            "ledger-approval-sign-message"
                 .localized(params: "\(draft.ledgerDeviceName)")
                 .bodyRegular(alignment: .center)
     }

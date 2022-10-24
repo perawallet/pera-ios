@@ -43,7 +43,7 @@ struct AssetAmountInputViewTheme:
             .placeholderColor(Colors.Text.grayLighter),
             .clearButtonMode(.never),
             .returnKeyType(.done),
-            .keyboardType(.numberPad),
+            .keyboardType(.decimalPad),
             .autocapitalizationType(.none),
             .autocorrectionType(.no)
         ]

@@ -21,6 +21,7 @@ import UIKit
 struct ConfirmSwapScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
     let userAsset: SwapAssetAmountViewTheme
     let assetHorizontalInset: LayoutMetric
     let userAssetTopInset: LayoutMetric
@@ -34,16 +35,22 @@ struct ConfirmSwapScreenTheme:
     let infoItem: SwapInfoItemViewTheme
     let infoSectionPaddings: LayoutPaddings
     let infoSectionItemSpacing: LayoutMetric
+    let viewSummary: ButtonStyle
     let confirmAction: ButtonStyle
+    let confirmActionIndicator: ImageStyle
+    let confirmActionHeight: LayoutMetric
     let confirmActionContentEdgeInsets: UIEdgeInsets
     let confirmActionEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.assetHorizontalInset = 24
-        self.userAssetTopInset = 72
+        self.userAssetTopInset = 96
         self.toSeparator = TitleSeparatorViewTheme()
         self.toSeparatorTopInset = 20
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
@@ -52,11 +59,18 @@ struct ConfirmSwapScreenTheme:
             color: Colors.Layer.grayLighter,
             size: 1
         )
-        self.assetSeparatorPadding = 72
+        self.assetSeparatorPadding = 88
         self.infoSectionPaddings = (28, 24, .noMetric, 24)
         self.infoActionItem = SwapInfoActionItemViewTheme()
         self.infoItem = SwapInfoItemViewTheme()
         self.infoSectionItemSpacing = 16
+        self.viewSummary = [
+            .title("swap-confirm-view-summary-title".localized),
+            .titleColor([
+                .normal(Colors.Helpers.positive)
+            ]),
+            .font(Typography.footnoteMedium()),
+        ]
         self.confirmAction = [
             .title("swap-confirm-title".localized),
             .titleColor(
@@ -69,9 +83,15 @@ struct ConfirmSwapScreenTheme:
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),
                 .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
+        self.confirmActionIndicator = [
+            .image("button-loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.confirmActionHeight = 52
         self.confirmActionContentEdgeInsets = .init(
             (
                 top: 16,

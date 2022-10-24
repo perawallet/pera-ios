@@ -49,7 +49,7 @@ final class SelectAssetListItemCell:
     }
 
     static func calculatePreferredSize(
-        _ viewModel: AssetListItemViewModel?,
+        _ viewModel: SelectAssetListItemViewModel?,
         for theme: SelectAssetListItemCellTheme,
         fittingIn size: CGSize
     ) -> CGSize {

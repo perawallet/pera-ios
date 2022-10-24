@@ -85,6 +85,7 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-select-account" = "Select Account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
 
@@ -584,6 +585,7 @@
 "ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
+"ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
@@ -970,7 +972,7 @@
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";
-"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
 
@@ -1185,6 +1187,11 @@
 "swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
 "swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
 
+/// MARK: Swap Account Selection
+"swap-account-selection-header-description" = "Select an account to make the swap";
+"swap-flow-start-min-balance-error-title" = "Minimum Balance";
+"swap-flow-start-min-balance-error-detail" = "This account doesn't have the required minimum balance of %@ for a swap operation.";
+
 /// MARK: Swap Sign With Ledger
 "swap-sign-with-ledger-title" = "Sign with Ledger";
 "swap-sign-with-ledger-body" = "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token.";
@@ -1229,7 +1236,7 @@
 "swap-confirm-view-summary-title" = "View Swap Summary";
 "swap-confirm-exchange-fee-title" = "Exchange Fee";
 "swap-confirm-pera-fee-title" = "Pera Fee";
-"swap-confirm-total-fee-detail" = "Amount displayed in the Total Swap Fee will be included in the swap. Algorand Network fees will be added as extra.";
+"swap-confirm-exchange-fee-detail" = "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top.";
 "swap-confirm-summary-title" = "Swap Summary";
 
 // MARK: Swap Loading
@@ -1247,12 +1254,13 @@
 "swap-summary-paid-title" = "Paid";
 "swap-summary-algorand-fees-title" = "Algorand Fees";
 "swap-summary-opt-in-fees-title" = "Opt-in Fees";
-"swap-confirm-exchange-fees-title" = "Exchange Fees";
-"swap-confirm-pera-fees-title" = "Pera Fees";
+"swap-summary-exchange-fees-title" = "Exchange Fees";
+"swap-summary-pera-fees-title" = "Pera Fees";
 
 // MARK: Swap Error
-"swap-error-failed" = "%@ swap has failed";
-"swao-error-go-home" = "Go to Homepage";
+"swap-error-failed-title" = "%@ swap has failed";
+"swap-error-go-home" = "Go to Homepage";
+"swap-error-unexpected-detail" = "We encountered an unexpected error, try again later.";
 
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";

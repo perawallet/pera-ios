@@ -17,41 +17,24 @@
 import MacaroonUIKit
 import UIKit
 
-final class ConfirmSwapScreen:
-    BaseScrollViewController,
-    NavigationBarLargeTitleConfigurable {
+final class ConfirmSwapScreen: BaseScrollViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
-
-    var navigationBarScrollView: UIScrollView {
-        return scrollView
-    }
-
-    var isNavigationBarAppeared: Bool {
-        return isViewAppeared
-    }
-
-    private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
-    private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
-
-    private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
-
-    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
-        presentingScreen: self,
-        account: dataController.account
-    )
 
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
-    private lazy var infoContextView = MacaroonUIKit.VStackView()
     private lazy var priceInfoView = SwapInfoActionItemView()
     private lazy var slippageInfoView = SwapInfoActionItemView()
     private lazy var priceImpactInfoView = SwapInfoItemView()
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
-    private lazy var totalSwapFeeInfoView = SwapInfoItemView()
-    private lazy var viewSummaryActionView = MacaroonUIKit.Button()
-    private lazy var confirmActionView = MacaroonUIKit.Button()
+    private lazy var exchangeFeeInfoView = SwapInfoItemView()
+    private lazy var peraFeeInfoView = SwapInfoItemView()
+    private lazy var confirmActionView: LoadingButton = {
+        let loadingIndicator = ViewLoadingIndicator()
+        loadingIndicator.applyStyle(theme.confirmActionIndicator)
+        return LoadingButton(loadingIndicator: loadingIndicator)
+    }()
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: ConfirmSwapDataController
@@ -68,13 +51,37 @@ final class ConfirmSwapScreen:
         super.init(configuration: configuration)
     }
 
-    deinit {
-        navigationBarLargeTitleController.deactivate()
-    }
-
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        navigationBarLargeTitleController.title = "swap-confirm-title".localized
+        title = "swap-confirm-title".localized
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeAppearance(theme.background)
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .willUpdateSlippage: break
+            case .didUpdateSlippage(let quote):
+                self.confirmActionView.stopLoading()
+            case .didFailToUpdateSlippage(let error):
+                self.confirmActionView.stopLoading()
+            case .willPrepareTransactions: break
+            case .didPrepareTransactions(let swapTransactionPreparation):
+                self.confirmActionView.stopLoading()
+                self.eventHandler?(.didTapConfirm(swapTransactionPreparation))
+            case .didFailToPrepareTransactions(let error):
+                self.confirmActionView.stopLoading()
+            }
+        }
     }
 
     override func prepareLayout() {
@@ -82,14 +89,13 @@ final class ConfirmSwapScreen:
         addUserAsset()
         addToSeparator()
         addPoolAsset()
-        addInfoContex()
-        addViewSummaryAction()
+        addPriceInfo()
+        addSlippageInfo()
+        addPriceImpactInfo()
+        addMinimumReceivedInfo()
+        addExchangeFeeInfo()
+        addPeraFeeInfo()
         addConfirmAction()
-    }
-
-    override func setListeners() {
-        super.setListeners()
-        navigationBarLargeTitleController.activate()
     }
 
     override func bindData() {
@@ -126,52 +132,49 @@ extension ConfirmSwapScreen {
 	private func addPoolAsset() {
         poolAssetView.customize(theme.poolAsset)
 
-        contentView.addSubview(userAssetView)
+        contentView.addSubview(poolAssetView)
         poolAssetView.fitToIntrinsicSize()
         poolAssetView.snp.makeConstraints {
             $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }
+	}
 
-        contentView.attachSeparator(
+    private func addPriceInfo() {
+        priceInfoView.customize(theme.infoActionItem)
+
+        let topSeparator = contentView.attachSeparator(
             theme.assetSeparator,
             to: poolAssetView,
             margin: theme.assetSeparatorPadding
         )
-	}
 
-    private func addInfoContex() {
-        contentView.addSubview(infoContextView)
-        infoContextView.spacing = theme.infoSectionItemSpacing
-        infoContextView.snp.makeConstraints {
-            $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
+        contentView.addSubview(priceInfoView)
+        priceInfoView.fitToIntrinsicSize()
+        priceInfoView.snp.makeConstraints {
+            $0.top == topSeparator.snp.bottom + theme.infoSectionPaddings.top
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
         }
-
-        addPriceInfo()
-        addSlippageInfo()
-        addPriceImpactInfo()
-        addMinimumReceivedInfo()
-        addTotalSwapFeeInfo()
-    }
-
-    private func addPriceInfo() {
-        infoContextView.addArrangedSubview(priceInfoView)
-        priceInfoView.customize(theme.infoActionItem)
 
         priceInfoView.startObserving(event: .didTapAction) {
             [weak self] in
             guard let self = self else { return }
 
-            self.eventHandler?(.didTapPriceAction)
         }
     }
 
     private func addSlippageInfo() {
-        infoContextView.addArrangedSubview(slippageInfoView)
         slippageInfoView.customize(theme.infoActionItem)
+
+        contentView.addSubview(slippageInfoView)
+        slippageInfoView.fitToIntrinsicSize()
+        slippageInfoView.snp.makeConstraints {
+            $0.top == priceInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
 
         slippageInfoView.startObserving(event: .didTapInfo) {
             [weak self] in
@@ -189,8 +192,15 @@ extension ConfirmSwapScreen {
     }
 
     private func addPriceImpactInfo() {
-        infoContextView.addArrangedSubview(priceImpactInfoView)
         priceImpactInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(priceImpactInfoView)
+        priceImpactInfoView.fitToIntrinsicSize()
+        priceImpactInfoView.snp.makeConstraints {
+            $0.top == slippageInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
 
         priceImpactInfoView.startObserving(event: .didTapInfo) {
             [weak self] in
@@ -201,28 +211,46 @@ extension ConfirmSwapScreen {
     }
 
     private func addMinimumReceivedInfo() {
-        infoContextView.addArrangedSubview(minimumReceivedInfoView)
         minimumReceivedInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(minimumReceivedInfoView)
+        minimumReceivedInfoView.fitToIntrinsicSize()
+        minimumReceivedInfoView.snp.makeConstraints {
+            $0.top == priceImpactInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
     }
 
-    private func addTotalSwapFeeInfo() {
-        infoContextView.addArrangedSubview(totalSwapFeeInfoView)
-        totalSwapFeeInfoView.customize(theme.infoItem)
-    }
+    private func addExchangeFeeInfo() {
+        exchangeFeeInfoView.customize(theme.infoItem)
 
-    private func addViewSummaryAction() {
-        contentView.addSubview(viewSummaryActionView)
-        viewSummaryActionView.fitToIntrinsicSize()
-        viewSummaryActionView.snp.makeConstraints {
-            $0.top == infoContextView.snp.bottom + theme.infoSectionItemSpacing
+        contentView.addSubview(exchangeFeeInfoView)
+        exchangeFeeInfoView.fitToIntrinsicSize()
+        exchangeFeeInfoView.snp.makeConstraints {
+            $0.top == minimumReceivedInfoView.snp.bottom + theme.infoSectionItemSpacing
             $0.leading == theme.infoSectionPaddings.leading
             $0.trailing == theme.infoSectionPaddings.trailing
         }
 
-        viewSummaryActionView.addTouch(
-            target: self,
-            action: #selector(viewSummary)
-        )
+        exchangeFeeInfoView.startObserving(event: .didTapInfo) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.eventHandler?(.didTapExchangeFeeInfo)
+        }
+    }
+
+    private func addPeraFeeInfo() {
+        peraFeeInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(peraFeeInfoView)
+        peraFeeInfoView.fitToIntrinsicSize()
+        peraFeeInfoView.snp.makeConstraints {
+            $0.top == exchangeFeeInfoView.snp.bottom + theme.infoSectionItemSpacing
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
     }
 
 	private func addConfirmAction() {
@@ -232,7 +260,8 @@ extension ConfirmSwapScreen {
         confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
         confirmActionView.fitToIntrinsicSize()
         confirmActionView.snp.makeConstraints {
-            $0.top >= viewSummaryActionView.snp.bottom + theme.confirmActionEdgeInsets.top
+            $0.fitToHeight(theme.confirmActionHeight)
+            $0.top >= peraFeeInfoView.snp.bottom + theme.confirmActionEdgeInsets.top
             $0.leading == theme.confirmActionEdgeInsets.leading
             $0.trailing == theme.confirmActionEdgeInsets.trailing
 
@@ -254,7 +283,11 @@ extension ConfirmSwapScreen {
     func bindData(
         _ quote: SwapQuote
     ) {
-        let viewModel = ConfirmSwapScreenViewModel(quote)
+        let viewModel = ConfirmSwapScreenViewModel(
+            quote: quote,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
         userAssetView.bindData(viewModel.userAsset)
         toSeparatorView.bindData(viewModel.toSeparator)
         poolAssetView.bindData(viewModel.poolAsset)
@@ -262,29 +295,25 @@ extension ConfirmSwapScreen {
         slippageInfoView.bindData(viewModel.slippageInfo)
         priceImpactInfoView.bindData(viewModel.priceImpactInfo)
         minimumReceivedInfoView.bindData(viewModel.minimumReceivedInfo)
-        totalSwapFeeInfoView.bindData(viewModel.totalSwapFeeInfo)
+        exchangeFeeInfoView.bindData(viewModel.exchangeFeeInfo)
+        peraFeeInfoView.bindData(viewModel.peraFeeInfo)
     }
 }
 
 extension ConfirmSwapScreen {
     @objc
     private func confirmSwap() {
-        eventHandler?(.didTapConfirm)
-    }
-
-    @objc
-    private func viewSummary() {
-        eventHandler?(.didTapViewSummary)
+        dataController.confirmSwap()
+        confirmActionView.startLoading()
     }
 }
 
 extension ConfirmSwapScreen {
     enum Event {
-        case didTapConfirm
-        case didTapViewSummary
-        case didTapPriceAction
+        case didTapConfirm(SwapTransactionPreparation)
         case didTapSlippageInfo
         case didTapSlippageAction
         case didTapPriceImpactInfo
+        case didTapExchangeFeeInfo
     }
 }

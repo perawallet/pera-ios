@@ -18,7 +18,7 @@ import Foundation
 import MagpieCore
 
 struct SwapTransactionPreparationDraft: JSONObjectBody {
-    let quoteID: Int
+    let quoteID: Int64
 
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []

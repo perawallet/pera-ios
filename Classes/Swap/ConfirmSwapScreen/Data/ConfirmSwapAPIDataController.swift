@@ -20,40 +20,85 @@ import MagpieHipo
 final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
     var eventHandler: EventHandler?
 
-    let account: Account
-    private(set) var quote: SwapQuote
+    var account: Account {
+        return swapController.account
+    }
+    var quote: SwapQuote {
+        return swapController.quote!
+    }
+
+    private var swapController: SwapController
     private let api: ALGAPI
 
     init(
-        account: Account,
-        quote: SwapQuote,
+        swapController: SwapController,
         api: ALGAPI
     ) {
-        self.account = account
-        self.quote = quote
+        self.swapController = swapController
         self.api = api
     }
 }
 
 extension ConfirmSwapAPIDataController {
     func updateSlippage(
-        _ slippage: Decimal
+        _ slippage: SwapSlippage
     ) {
-        /// <todo> Will be implemented with the main structure.
+        guard let deviceID = api.session.authenticatedUser?.getDeviceId(on: api.network),
+              let poolAssetID = swapController.poolAsset?.id,
+              let swapAmount = swapController.quote?.amountIn else {
+            return
+        }
+
+        let draft = SwapQuoteDraft(
+            providers: [swapController.provider],
+            swapperAddress: account.address,
+            type: swapController.swapType,
+            deviceID: deviceID,
+            assetInID: swapController.userAsset.id,
+            assetOutID: poolAssetID,
+            amount: swapAmount,
+            slippage: slippage
+        )
+
+        eventHandler?(.willUpdateSlippage)
+
+        api.getSwapQuote(draft) {
+            [weak self] response in
+            guard let self = self else { return }
+
+            switch response {
+            case .success(let quoteList):
+                guard let quote = quoteList.results[safe: 0] else { return }
+
+                self.swapController.quote = quote
+                self.eventHandler?(.didUpdateSlippage(quote))
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                self.eventHandler?(.didFailToUpdateSlippage(error))
+            }
+        }
     }
 
     func confirmSwap() {
-        /// <todo> Will be implemented with the main structure.
+        eventHandler?(.willPrepareTransactions)
+
         let draft = SwapTransactionPreparationDraft(quoteID: quote.id)
         api.prepareSwapTransactions(draft) {
             [weak self] response in
             guard let self = self else { return }
 
             switch response {
-            case .success(let swapTransaction):
-                break
-            case .failure(let error):
-                break
+            case .success(let transactionPreparation):
+                self.eventHandler?(.didPrepareTransactions(transactionPreparation))
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
+                self.eventHandler?(.didFailToPrepareTransactions(error))
             }
         }
     }

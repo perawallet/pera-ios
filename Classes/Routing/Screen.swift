@@ -195,14 +195,33 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
-    case swapAsset(draft: SwapAssetScreenDraft)
+    case swapAsset(
+        swapController: SwapController,
+        coordinator: SwapAssetFlowCoordinator,
+        theme: SwapAssetScreenTheme = .init()
+    )
+    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
     case swapSignWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )
-    case alert(
-        alert: Alert
+    case loading(
+        viewModel: LoadingScreenViewModel,
+        theme: LoadingScreenTheme = .init()
     )
+    case error(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme = .init()
+    )
+    case swapSuccess(
+        swapController: SwapController,
+        theme: SwapAssetSuccessScreenTheme = .init()
+    )
+    case swapSummary(
+        swapController: SwapController,
+        theme: SwapSummaryScreenTheme = .init()
+    )
+    case alert(alert: Alert)
     case swapIntroduction(
         draft: SwapIntroductionDraft,
         eventHandler: EventHandler<SwapIntroductionEvent>
@@ -244,6 +263,7 @@ indirect enum Screen {
     )
     case selectAsset(
         dataController: SelectAssetDataController,
+        coordinator: SwapAssetFlowCoordinator?,
         title: String,
         theme: SelectAssetScreenTheme = .init()
     )

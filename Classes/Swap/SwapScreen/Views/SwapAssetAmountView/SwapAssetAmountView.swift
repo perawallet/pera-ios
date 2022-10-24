@@ -33,6 +33,11 @@ final class SwapAssetAmountView:
     private lazy var amountInputView = AssetAmountInputView()
     private lazy var assetSelectionView = SwapAssetSelectionView()
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setListeners()
+    }
+
     func customize(
         _ theme: SwapAssetAmountViewTheme
     ) {

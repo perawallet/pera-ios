@@ -67,7 +67,7 @@ final class SwapInfoActionItemView:
             detailView.clearText()
         }
 
-        detailActionView.setImage(viewModel?.icon?.uiImage , for: .normal)
+        detailActionView.setImage(viewModel?.action?.uiImage , for: .normal)
     }
 }
 
@@ -89,10 +89,10 @@ extension SwapInfoActionItemView {
     private func addInfoAction(
         _ theme: SwapInfoActionItemViewTheme
     ) {
-        addSubview(detailActionView)
-        detailActionView.fitToIntrinsicSize()
-        detailActionView.contentEdgeInsets = theme.infoActionContentEdgeInsets
-        detailActionView.snp.makeConstraints {
+        addSubview(infoActionView)
+        infoActionView.fitToIntrinsicSize()
+        infoActionView.contentEdgeInsets = theme.infoActionContentEdgeInsets
+        infoActionView.snp.makeConstraints {
             $0.fitToSize(theme.infoActionSize)
             $0.centerY == 0
             $0.leading == titleView.snp.trailing
@@ -100,20 +100,20 @@ extension SwapInfoActionItemView {
 
         startPublishing(
             event: .didTapInfo,
-            for: detailActionView
+            for: infoActionView
         )
     }
 
     private func addDetailAction(
         _ theme: SwapInfoActionItemViewTheme
     ) {
-        addSubview(infoActionView)
-        infoActionView.fitToIntrinsicSize()
-        infoActionView.contentEdgeInsets = theme.detailActionContentEdgeInsets
-        infoActionView.snp.makeConstraints {
-            $0.fitToSize(theme.infoActionSize)
+        addSubview(detailActionView)
+        detailActionView.fitToIntrinsicSize()
+        detailActionView.contentEdgeInsets = theme.detailActionContentEdgeInsets
+        detailActionView.snp.makeConstraints {
+            $0.fitToSize(theme.detailActionSize)
             $0.centerY == 0
-            $0.trailing == titleView.snp.trailing
+            $0.trailing == 0
         }
 
         startPublishing(
@@ -131,10 +131,10 @@ extension SwapInfoActionItemView {
         detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
             $0.centerY == 0
-            $0.top >= 0
+            $0.top == 0
             $0.leading >= infoActionView.snp.trailing + theme.minimumSpacingBetweenInfoActionAndDetail
-            $0.bottom <= 0
-            $0.trailing == infoActionView.snp.leading
+            $0.bottom == 0
+            $0.trailing == detailActionView.snp.leading
         }
     }
 }

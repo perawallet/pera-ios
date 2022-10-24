@@ -29,18 +29,15 @@ final class SwapSummaryScreen: ScrollScreen {
     private lazy var peraFeeInfoView = SwapSummaryItemView()
     private lazy var priceImpactInfoView = SwapSummaryItemView()
 
-    private let account: Account
-    private let quote: SwapQuote
+    private let swapController: SwapController
     private let theme: SwapSummaryScreenTheme
 
     init(
-        account: Account,
-        quote: SwapQuote,
+        swapController: SwapController,
         theme: SwapSummaryScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
-        self.quote = quote
+        self.swapController = swapController
         self.theme = theme
         super.init()
     }
@@ -67,8 +64,8 @@ final class SwapSummaryScreen: ScrollScreen {
         title = "swap-confirm-summary-title".localized
 
         let viewModel = SwapSummaryScreenViewModel(
-            account: account,
-            quote: quote
+            account: swapController.account,
+            quote: swapController.quote!
         )
 
         receivedInfoView.bindData(viewModel.receivedInfo)

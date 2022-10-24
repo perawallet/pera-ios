@@ -24,14 +24,16 @@ struct SwapConfirmTotalFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 
-    private lazy var currencyFormatter = CurrencyFormatter()
-
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindIcon()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         action = nil
     }
 }
@@ -48,7 +50,8 @@ extension SwapConfirmTotalFeeInfoViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         let totalFee = quote.peraFee.unwrap(or: 0) + quote.exchangeFee.unwrap(or: 0)
         currencyFormatter.formattingContext = .standalone()

@@ -21,6 +21,7 @@ import UIKit
 struct SwapAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ViewStyle
     let userAsset: SwapAssetAmountViewTheme
     let assetHorizontalInset: LayoutMetric
     let userAssetTopInset: LayoutMetric
@@ -38,6 +39,9 @@ struct SwapAssetScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.assetHorizontalInset = 24
         self.userAssetTopInset = 24
