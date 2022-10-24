@@ -32,7 +32,9 @@ final class SwapAssetScreen:
         screen: self
     )
 
+    private lazy var contextView = VStackView()
     private lazy var userAssetView = SwapAssetAmountView()
+    private lazy var errorView = SwapErrorView()
     private lazy var quickActionsView = SwapQuickActionsView(theme.quickActions)
     private lazy var emptyPoolAssetView = SwapAssetSelectionEmptyView(theme: theme.emptyPoolAsset)
     private lazy var poolAssetView = SwapAssetAmountView()
@@ -86,9 +88,7 @@ final class SwapAssetScreen:
     override func prepareLayout() {
         super.prepareLayout()
         addBackground()
-        addUserAsset()
-        addQuickActions()
-        addPoolAssetIfNeeded()
+        addContext()
         addSwapAction()
     }
 
@@ -136,16 +136,26 @@ extension SwapAssetScreen {
         view.customizeAppearance(theme.background)
     }
 
+    private func addContext() {
+        contentView.addSubview(contextView)
+
+        contextView.spacing = theme.contextSpacing
+        contextView.snp.makeConstraints {
+            $0.top == theme.contextTopInset
+            $0.leading == theme.contextHorizontalInset
+            $0.trailing == theme.contextHorizontalInset
+        }
+
+        addUserAsset()
+        addError()
+        addQuickActions()
+        addEmptyPoolAsset()
+        addPoolAsset()
+    }
+
     private func addUserAsset() {
         userAssetView.customize(theme.userAsset)
-        
-        contentView.addSubview(userAssetView)
-        userAssetView.fitToIntrinsicSize()
-        userAssetView.snp.makeConstraints {
-            $0.top == theme.userAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
-        }
+        contextView.addArrangedSubview(userAssetView)
 
         userAssetView.startObserving(event: .didSelectAsset) {
             [weak self] in
@@ -154,13 +164,15 @@ extension SwapAssetScreen {
         }
     }
 
+    private func addError() {
+        errorView.customize(theme.error)
+        
+        contextView.addArrangedSubview(errorView)
+        errorView.isHidden = true
+    }
+
     private func addQuickActions() {
-        contentView.addSubview(quickActionsView)
-        quickActionsView.snp.makeConstraints {
-            $0.top == userAssetView.snp.bottom + theme.spacingBetweenUserAssetAndQuickActions
-            $0.leading == theme.quickActionsHorizontalEdgeInsets.leading
-            $0.trailing == theme.quickActionsHorizontalEdgeInsets.trailing
-        }
+        contextView.addArrangedSubview(quickActionsView)
 
         quickActionsView.bind(SwapQuickActionsViewModel())
 
@@ -184,29 +196,10 @@ extension SwapAssetScreen {
         )
     }
 
-    private func addPoolAssetIfNeeded() {
-        if poolAssetViewModel == nil {
-            addEmptyPoolAsset()
-        } else {
-            if emptyPoolAssetView.isDescendant(of: contentView) {
-                emptyPoolAssetView.removeFromSuperview()
-            }
-
-            if poolAssetView.isDescendant(of: contentView) { return }
-            addPoolAsset()
-        }
-    }
-
     private func addEmptyPoolAsset() {
         emptyPoolAssetView.customize()
 
-        contentView.addSubview(emptyPoolAssetView)
-        emptyPoolAssetView.fitToIntrinsicSize()
-        emptyPoolAssetView.snp.makeConstraints {
-            $0.top == quickActionsView.snp.bottom + theme.poolAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
-        }
+        contextView.addArrangedSubview(emptyPoolAssetView)
 
         emptyPoolAssetView.startObserving(event: .didSelectAsset) {
             [weak self] in
@@ -221,13 +214,8 @@ extension SwapAssetScreen {
     private func addPoolAsset() {
         poolAssetView.customize(theme.poolAsset)
 
-        contentView.addSubview(poolAssetView)
-        poolAssetView.fitToIntrinsicSize()
-        poolAssetView.snp.makeConstraints {
-            $0.top == quickActionsView.snp.bottom + theme.poolAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
-        }
+        poolAssetView.isHidden = true
+        contextView.addArrangedSubview(poolAssetView)
 
         currentlyDisplayedPoolView = poolAssetView
 
@@ -239,14 +227,14 @@ extension SwapAssetScreen {
     }
 
     private func addSwapAction() {
-        guard let currentlyDisplayedPoolView = currentlyDisplayedPoolView else { return }
-
         swapActionView.customizeAppearance(theme.swapAction)
+
+        contextView.addArrangedSubview(swapActionView)
 
         contentView.addSubview(swapActionView)
         swapActionView.contentEdgeInsets = theme.swapActionContentEdgeInsets
         swapActionView.snp.makeConstraints {
-            $0.top >= currentlyDisplayedPoolView.snp.bottom + theme.swapActionEdgeInsets.top
+            $0.top >= contextView.snp.bottom + theme.swapActionEdgeInsets.top
             $0.leading == theme.swapActionEdgeInsets.leading
             $0.trailing == theme.swapActionEdgeInsets.trailing
 
@@ -337,13 +325,13 @@ extension SwapAssetScreen {
         updateUserAssetSelectionUI()
         updatePoolAssetViewModel(quote: swapQuote)
         updatePoolAssetSelectionUI()
-        /// <todo> Remove error if needed
+        hideError()
     }
 
     private func updateUIWhenDataDidFailToLoad(
         _ error: SwapAssetDataController.Error
     ) {
-        /// <todo> Handle error cases
+        showError(error.prettyDescription)
     }
 }
 
@@ -360,6 +348,19 @@ extension SwapAssetScreen {
             quote.amountIn != nil &&
             quote.assetOut != nil &&
             quote.assetOut != nil
+    }
+
+    private func hideError() {
+        errorView.isHidden = true
+    }
+
+    private func showError(
+        _ message: String
+    ) {
+        errorView.isHidden = false
+
+        let viewModel = SwapAssetErrorViewModel(message)
+        errorView.bindData(viewModel)
     }
 }
 
@@ -419,7 +420,8 @@ extension SwapAssetScreen {
     }
 
     private func updatePoolAssetSelectionUI() {
-        addPoolAssetIfNeeded()
+        emptyPoolAssetView.isHidden = true
+        poolAssetView.isHidden = false
         poolAssetView.bindData(poolAssetViewModel)
     }
 }
