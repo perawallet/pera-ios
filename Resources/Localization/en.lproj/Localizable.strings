@@ -812,8 +812,8 @@
 "wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 "wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
-"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
-"wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Read More";
@@ -922,8 +922,6 @@
 "wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
 "wallet-connect-group-transaction-header-title" = "GroupID: %@";
 
-"transaction-request-signing-alert-title" = "Are you sure?";
-
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
 "single-transaction-request-network-fee-title" = "Network Fee";
@@ -976,8 +974,6 @@
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
 "send-transaction-preview-current-balance" = "Current\nBalance";
-
-"transaction-request-signing-alert-title" = "Are you sure?";
 
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
