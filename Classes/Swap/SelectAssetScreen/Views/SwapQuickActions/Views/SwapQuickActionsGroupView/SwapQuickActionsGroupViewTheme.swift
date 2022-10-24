@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapQuickActionsViewModel.swift
+//   SwapQuickActionsGroupViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct SwapQuickActionsViewModel: ViewModel {
-    let amountAdjustTitle: String?
+struct SwapQuickActionsGroupViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ImageStyle
+    var divider: ImageStyle
 
-    init(
-        amountAdjustTitle: String? = nil
-    ) {
-        self.amountAdjustTitle = amountAdjustTitle
+    init(_ family: LayoutFamily) {
+        self.background = [
+            .image("swap-divider-segment-bg")
+        ]
+        self.divider = [
+            .image("swap-divider-separator")
+        ]
     }
 }

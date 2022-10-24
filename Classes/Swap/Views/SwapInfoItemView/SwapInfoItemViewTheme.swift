@@ -41,7 +41,7 @@ struct SwapInfoItemViewTheme:
             .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.right)
-        ]
+        ]
         self.minimumSpacingBetweenInfoActionAndDetail = 12
     }
 }

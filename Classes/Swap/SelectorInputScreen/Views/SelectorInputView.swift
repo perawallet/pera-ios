@@ -22,7 +22,7 @@ final class SelectorInputView:
     View,
     ViewModelBindable {
     private(set) lazy var textInputView = FloatingTextInputFieldView()
-    private lazy var selectorOptionsView = SegmentedControl()
+//    private lazy var selectorOptionsView = SegmentedControl()
 
     func customize(_ theme: SelectorInputViewTheme) {
         addTextInput(theme)
@@ -34,14 +34,14 @@ final class SelectorInputView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: SelectorInputViewModel?) {
-        selectorOptionsView.removeAllSegments()
+//        selectorOptionsView.removeAllSegments()
 
         if let options = viewModel?.selectorOptions {
-            selectorOptionsView.add(segments: options)
+//            selectorOptionsView.add(segments: options)
         }
 
         if let selectedIndex = viewModel?.defaultSelectedIndex {
-            selectorOptionsView.selectedSegmentIndex = selectedIndex
+//            selectorOptionsView.selectedSegmentIndex = selectedIndex
         }
     }
 }
@@ -59,24 +59,25 @@ extension SelectorInputView {
     }
 
     private func addSelectorOptions(_ theme: SelectorInputViewTheme) {
-        selectorOptionsView.spacingBetweenSegments = theme.selectorOptionsSpacing
-
-        addSubview(selectorOptionsView)
-        selectorOptionsView.snp.makeConstraints {
-            $0.top == textInputView.snp.bottom + theme.selectorOptionsTopPadding
-            $0.leading == theme.horizontalPadding
-            $0.trailing >= theme.selectorOptionsTrailingPadding
-            $0.bottom == theme.selectorOptionsBottomPadding
-        }
+//        selectorOptionsView.spacingBetweenSegments = theme.selectorOptionsSpacing
+//
+//        addSubview(selectorOptionsView)
+//        selectorOptionsView.snp.makeConstraints {
+//            $0.top == textInputView.snp.bottom + theme.selectorOptionsTopPadding
+//            $0.leading == theme.horizontalPadding
+//            $0.trailing >= theme.selectorOptionsTrailingPadding
+//            $0.bottom == theme.selectorOptionsBottomPadding
+//        }
     }
 }
 
 extension SelectorInputView {
     func resetSelectedOption() {
-        selectorOptionsView.selectedSegmentIndex = -1
+//        selectorOptionsView.selectedSegmentIndex = -1
     }
 
     func getSelectedIndex() -> Int {
-        return selectorOptionsView.selectedSegmentIndex
+        return -1
+//        return selectorOptionsView.selectedSegmentIndex
     }
 }

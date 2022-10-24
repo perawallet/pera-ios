@@ -1020,7 +1020,7 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .swapAsset(let draft, let theme):
+        case .swapAsset(let draft):
             let dataController = SwapAssetAPIDataController(
                 account: draft.account,
                 userAsset: draft.asset ?? draft.account.algo,
@@ -1030,8 +1030,7 @@ class Router:
 
             viewController = SwapAssetScreen(
                 dataController: dataController,
-                configuration: configuration,
-                theme: theme
+                configuration: configuration
             )
         case .swapSignWithLedgerProcess(let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
@@ -1127,6 +1126,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .adjustSwapAmount:
+            viewController = AdjustSwapAmountScreen(configuration: configuration)
         }
 
         return viewController as? T

@@ -12,23 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwitchSegment.swift
+//   AdjustableSingleSelectionInputViewModel.swift
 
-import UIKit
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct SwitchSegment: Segment {
-    let layout: Button.Layout
-    let style: ButtonStyle
-    let contentEdgeInsets: UIEdgeInsets?
-
-    init() {
-        self.layout = .none
-        self.style = [
-            .icon([
-                .normal("swap-switch-icon")
-            ])
-        ]
-        self.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-    }
+protocol AdjustableSingleSelectionInputViewModel: ViewModel {
+    var selectableInputs: [Segment] { get }
 }

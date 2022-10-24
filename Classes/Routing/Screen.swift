@@ -195,10 +195,7 @@ indirect enum Screen {
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
     )
-    case swapAsset(
-        draft: SwapAssetScreenDraft,
-        theme: SwapAssetScreenTheme = .init()
-    )
+    case swapAsset(draft: SwapAssetScreenDraft)
     case swapSignWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
@@ -255,6 +252,7 @@ indirect enum Screen {
         eventHandler: EventHandler<ConfirmSwapScreen.Event>,
         theme: ConfirmSwapScreenTheme = .init()
     )
+    case adjustSwapAmount
 }
 
 extension Screen {

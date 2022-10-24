@@ -16,13 +16,17 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 struct SelectorOption: Segment {
-    let style: ButtonStyle
+    let layout: Self.Layout
+    let style: Self.Style
+    let contentEdgeInsets: UIEdgeInsets
 
     init(
         title: String
     ) {
+        self.layout = .none
         self.style = [
             .title(title.localized),
             .titleColor([
@@ -37,5 +41,6 @@ struct SelectorOption: Segment {
                 .selected("swap-selector-background-selected")
             ])
         ]
+        self.contentEdgeInsets = .zero
     }
 }

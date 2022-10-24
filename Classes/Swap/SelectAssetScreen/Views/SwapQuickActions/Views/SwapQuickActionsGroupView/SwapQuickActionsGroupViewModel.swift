@@ -12,26 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapQuickActionsViewTheme.swift
+//   SwapQuickActionsGroupViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapQuickActionsViewTheme: StyleSheet, LayoutSheet {
-    let backgroundImage: UIImage
-    let horizontalSeparator: Separator
-    let horizontalPadding: LayoutMetric
-    let verticalSeparatorImage: UIImage
+protocol SwapQuickActionsGroupViewModel: ViewModel {
+    var actionItems: [SwapQuickActionItem] { get }
+}
 
-    init(_ family: LayoutFamily) {
-        self.backgroundImage = "swap-divider-segment-bg".uiImage
-        self.horizontalSeparator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .centerY((0, 0))
-        )
-        self.horizontalPadding = 24
-        self.verticalSeparatorImage = "swap-divider-separator".uiImage
+protocol SwapQuickActionItem {
+    typealias Layout = MacaroonUIKit.Button.Layout
+    typealias Style = ButtonStyle
+
+    var layout: Layout { get }
+    var style: Style { get }
+    var contentEdgeInsets: UIEdgeInsets { get }
+}
+
+extension Array: ViewModel where Element == any SwapQuickActionItem {}
+
+extension Array: SwapQuickActionsGroupViewModel where Element == any SwapQuickActionItem {
+    var actionItems: [SwapQuickActionItem] {
+        return self
     }
 }
