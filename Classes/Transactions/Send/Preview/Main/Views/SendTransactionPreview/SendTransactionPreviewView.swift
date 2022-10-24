@@ -35,6 +35,7 @@ final class SendTransactionPreviewView:
     private(set) lazy var feeView = TransactionAmountInformationView()
     private(set) lazy var balanceView = TransactionMultipleAmountInformationView()
     private(set) lazy var noteView = TransactionActionInformationView()
+    private(set) lazy var lockedNoteView = TransactionTextInformationView()
 
     init() {
         super.init(frame: .zero)
@@ -52,6 +53,7 @@ final class SendTransactionPreviewView:
         addFeeView(theme)
         addBalanceView(theme)
         addNoteView(theme)
+        addLockedNoteView(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -159,6 +161,17 @@ extension SendTransactionPreviewView {
 
         verticalStackView.addArrangedSubview(noteView)
     }
+    
+    private func addLockedNoteView(_ theme: SendTransactionPreviewViewTheme) {
+        lockedNoteView.customize(theme.transactionTextInformationViewTheme)
+        lockedNoteView.bindData(
+            TransactionTextInformationViewModel(
+                title: "transaction-detail-note".localized
+            )
+        )
+        
+        verticalStackView.addArrangedSubview(lockedNoteView)
+    }
 }
 
 extension SendTransactionPreviewView {
@@ -211,11 +224,15 @@ extension SendTransactionPreviewView {
             )
         }
 
-        noteView.bindData(viewModel?.noteView)
-    }
-    
-    func bindData(_ viewModel: TransactionActionInformationViewModel?) {
-        noteView.bindData(viewModel)
+        if let lockedNote = viewModel?.lockedNoteView {
+            lockedNoteView.bindData(lockedNote)
+            lockedNoteView.isHidden = false
+            noteView.isHidden = true
+        } else {
+            noteView.bindData(viewModel?.noteView)
+            noteView.isHidden = false
+            lockedNoteView.isHidden = true
+        }
     }
 }
 

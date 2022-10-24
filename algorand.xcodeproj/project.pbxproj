@@ -110,13 +110,13 @@
 		173DA1ED2255F96E00378A82 /* TransactionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EC2255F96E00378A82 /* TransactionParams.swift */; };
 		173DA2102256643A00378A82 /* TransactionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA20F2256643A00378A82 /* TransactionID.swift */; };
 		1746715D225B6C0400B78641 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746715C225B6C0400B78641 /* TypeAliases.swift */; };
-		174C69E528F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
-		174C69E628F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
-		174C69E728F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
 		174A0F3328EF163D00D44019 /* PasswordMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174A0F3228EF163D00D44019 /* PasswordMigration.swift */; };
 		174A0F3428EF163D00D44019 /* PasswordMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174A0F3228EF163D00D44019 /* PasswordMigration.swift */; };
 		174A0F3528EF163D00D44019 /* PasswordMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174A0F3228EF163D00D44019 /* PasswordMigration.swift */; };
 		174A0F3C28EF17FD00D44019 /* PasswordMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174A0F3B28EF17FD00D44019 /* PasswordMigrationTests.swift */; };
+		174C69E528F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
+		174C69E628F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
+		174C69E728F579B8005BF080 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
 		1751261A223BE5930095AF4F /* APIParamKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* APIParamKey.swift */; };
 		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
@@ -5602,9 +5602,9 @@
 		173DA1EC2255F96E00378A82 /* TransactionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParams.swift; sourceTree = "<group>"; };
 		173DA20F2256643A00378A82 /* TransactionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionID.swift; sourceTree = "<group>"; };
 		1746715C225B6C0400B78641 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
-		174C69E428F579B8005BF080 /* SDKTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKTransaction.swift; sourceTree = "<group>"; };
 		174A0F3228EF163D00D44019 /* PasswordMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordMigration.swift; sourceTree = "<group>"; };
 		174A0F3B28EF17FD00D44019 /* PasswordMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordMigrationTests.swift; sourceTree = "<group>"; };
+		174C69E428F579B8005BF080 /* SDKTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKTransaction.swift; sourceTree = "<group>"; };
 		17512619223BE5930095AF4F /* APIParamKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIParamKey.swift; sourceTree = "<group>"; };
 		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
