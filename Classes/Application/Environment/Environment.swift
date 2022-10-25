@@ -132,6 +132,7 @@ enum AlgorandWeb: String {
     enum AlgoExplorer {
         case address(isMainnet: Bool, param: String)
         case asset(isMainnet: Bool, param: String)
+        case group(isMainnet: Bool, param: String)
         
         var link: URL? {
             switch self {
@@ -143,6 +144,10 @@ enum AlgorandWeb: String {
                 return isMainnet
                     ? URL(string: "https://algoexplorer.io/asset/\(param)")
                     : URL(string: "https://testnet.algoexplorer.io/asset/\(param)")
+            case .group(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/tx/group/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/tx/group/\(param)")
             }
         }
     }
