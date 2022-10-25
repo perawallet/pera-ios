@@ -1238,6 +1238,8 @@
 "swap-confirm-pera-fee-title" = "Pera Fee";
 "swap-confirm-exchange-fee-detail" = "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top.";
 "swap-confirm-summary-title" = "Swap Summary";
+"swap-confirm-failed-title" = "Swap Has Failed";
+"swap-confirm-price-info" = "%@ per %@";
 
 // MARK: Swap Loading
 "swap-loading-title" = "Sending the transaction";
@@ -1252,10 +1254,8 @@
 // MARK: Swap Summary
 "swap-summary-received-title" = "Received";
 "swap-summary-paid-title" = "Paid";
-"swap-summary-algorand-fees-title" = "Algorand Fees";
-"swap-summary-opt-in-fees-title" = "Opt-in Fees";
-"swap-summary-exchange-fees-title" = "Exchange Fees";
-"swap-summary-pera-fees-title" = "Pera Fees";
+"swap-summary-network-fee-title" = "Network Fee";
+"swap-summary-opt-in-fee-title" = "Opt-in Fee";
 
 // MARK: Swap Error
 "swap-error-failed-title" = "%@ swap has failed";
