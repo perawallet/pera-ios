@@ -748,7 +748,7 @@ extension CollectibleDetailViewController {
         }
 
         bannerController?.presentSuccessBanner(
-            title: "collectible-detail-opt-out-success".localized(
+            title: "asset-opt-out-successful-message".localized(
                 params: asset.title ?? asset.name ?? .empty
             )
         )

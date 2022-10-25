@@ -4045,9 +4045,6 @@
 		D48FDFE727CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */; };
 		D48FDFE827CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */; };
 		D48FDFE927CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */; };
-		D48FDFEB27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */; };
-		D48FDFEC27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */; };
-		D48FDFED27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */; };
 		D48FDFEF27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */; };
 		D48FDFF027CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */; };
 		D48FDFF127CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */; };
@@ -6771,7 +6768,6 @@
 		D48FDFDE27CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListViewControllerTheme.swift; sourceTree = "<group>"; };
 		D48FDFE227CF54D100C39FC7 /* ReceiveCollectibleAssetListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListLayout.swift; sourceTree = "<group>"; };
 		D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListDataSource.swift; sourceTree = "<group>"; };
-		D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListHeaderViewModel.swift; sourceTree = "<group>"; };
 		D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListDataController.swift; sourceTree = "<group>"; };
 		D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCollectibleAssetListAPIDataController.swift; sourceTree = "<group>"; };
 		D48FDFF627CF725D00C39FC7 /* CollectibleReceiveSearchInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleReceiveSearchInputCell.swift; sourceTree = "<group>"; };
@@ -9284,7 +9280,6 @@
 		2B7A1F0B27DB7C5D0010F52E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */,
 				D4C51B4127CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift */,
 				D4FC5F4E27F507890017E81F /* ReceiveCollectibleAssetListInfoViewModel.swift */,
 			);
@@ -17207,7 +17202,6 @@
 				D4018CF627E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				17CADC77285312FB001D19A8 /* AccountQuickActionsCell.swift in Sources */,
 				D411B37A26EA1070004FF980 /* AccountPreviewViewModel.swift in Sources */,
-				D48FDFED27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */,
 				2B26272C284EBC5200ADE371 /* AssetConfigTransactionItemViewModel.swift in Sources */,
 				F07C3C2028B44D65003D55BC /* ASAAboutLoadingViewTheme.swift in Sources */,
 				F0DB41A92794B62800EA437D /* HomeLoadingCell.swift in Sources */,
@@ -18915,7 +18909,6 @@
 				D4018CF527E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift in Sources */,
 				D419005C273FBA0E00F7829D /* ManageAssetsViewTheme.swift in Sources */,
 				2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */,
-				D48FDFEC27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */,
 				D419431A2735415C0055EC70 /* PageBar.swift in Sources */,
 				17CADC76285312FB001D19A8 /* AccountQuickActionsCell.swift in Sources */,
 				D472B324271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
@@ -21148,7 +21141,6 @@
 				2B723AAC289950AE0046EE42 /* Algo.swift in Sources */,
 				D4F068B526EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
 				2B57BC4E280EE26B00F958C4 /* CurrencySelectionViewTheme.swift in Sources */,
-				D48FDFEB27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* ALGAPI+Account.swift in Sources */,
 				D4A70AFE2878364D00FB52B0 /* AppCallInnerTransactionPreviewViewModel.swift in Sources */,
 				2B4334B027C5293300A3D9D6 /* Collectible.swift in Sources */,

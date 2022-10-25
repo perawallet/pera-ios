@@ -91,7 +91,7 @@ extension OptOutAssetViewModel {
         if draft.isOptingOutCollectibleAsset {
             aDescription =
             "collectible-detail-opt-out-alert-message"
-                .localized(params: accountName)
+                .localized(params: assetName, accountName)
         } else {
             aDescription =
             "asset-remove-transaction-warning"
