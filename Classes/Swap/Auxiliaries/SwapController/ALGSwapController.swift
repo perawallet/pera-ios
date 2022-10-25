@@ -41,7 +41,7 @@ final class ALGSwapController: SwapController {
     private let api: ALGAPI
     private let transactionSigner: SwapTransactionSigner
 
-    private var signedTransactions = [Data]()
+    private(set) var parsedTransactions: [ParsedSwapTransaction] = []
 
     private lazy var swapTransactionGroupSigner = SwapTransactionGroupSigner(
         account: account,
@@ -92,7 +92,50 @@ extension ALGSwapController {
             }
         }
 
+        parseTransactions(transactionGroups)
         swapTransactionGroupSigner.signTransactions(transactionGroups)
+    }
+
+    private func parseTransactions(
+        _ transactionGroups: [SwapTransactionGroup]
+    ) {
+        let sdk = AlgorandSDK()
+
+        var parsedSwapTransactions = [ParsedSwapTransaction]()
+
+        for transactionGroup in transactionGroups where transactionGroup.transactions != nil {
+            var paidTransactions = [SDKTransaction]()
+            var receivedTransactions = [SDKTransaction]()
+            var otherTransactions = [SDKTransaction]()
+
+            for transaction in transactionGroup.transactions! {
+                var error: NSError?
+                guard let transactionData = sdk.msgpackToJSON(transaction, error: &error).data(using: .utf8),
+                      let sdkTransaction = try? JSONDecoder().decode(SDKTransaction.self, from: transactionData) else {
+                    continue
+                }
+
+                if sdkTransaction.sender == account.address {
+                    paidTransactions.append(sdkTransaction)
+                } else if sdkTransaction.receiver == account.address {
+                    receivedTransactions.append(sdkTransaction)
+                } else {
+                    otherTransactions.append(sdkTransaction)
+                }
+            }
+
+            let parsedSwapTransaction = ParsedSwapTransaction(
+                purpose: transactionGroup.purpose,
+                groupID: transactionGroup.groupID,
+                paidTransactions: paidTransactions,
+                receivedTransactions: receivedTransactions,
+                otherTransactions: otherTransactions
+            )
+
+            parsedSwapTransactions.append(parsedSwapTransaction)
+        }
+
+        self.parsedTransactions = parsedSwapTransactions
     }
 }
 

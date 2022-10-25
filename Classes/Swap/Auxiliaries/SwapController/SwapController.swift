@@ -30,6 +30,7 @@ protocol SwapController {
     var account: Account { get set }
     var swapType: SwapType { get }
     var provider: SwapProvider { get }
+    var parsedTransactions: [ParsedSwapTransaction] { get }
 
     func signTransactions(_ transactions: [SwapTransactionGroup])
 }
