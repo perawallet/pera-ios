@@ -28,6 +28,7 @@ final class ALGAPIBase {
     private(set) var network: ALGAPI.Network = .mainnet
 
     func setupNetworkBase(_ network: ALGAPI.Network) -> String {
+        self.network = network
         let node = network == .mainnet ? mainNetNode : testNetNode
         algodToken = node.algodToken
         indexerToken = node.indexerToken
