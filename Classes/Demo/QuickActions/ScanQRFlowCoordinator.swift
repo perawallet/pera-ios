@@ -337,6 +337,10 @@ extension ScanQRFlowCoordinator {
                 return
             }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id

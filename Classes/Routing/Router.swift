@@ -1209,6 +1209,10 @@ extension Router {
             return
         }
 
+        let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(account: account, asset: asset)
+        monitor.startMonitoringOptInUpdates(request)
+
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
             assetIndex: Int64(draft.assetId)
@@ -1527,6 +1531,10 @@ extension Router {
             guard !account.isWatchAccount() else {
                 return
             }
+
+            let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,

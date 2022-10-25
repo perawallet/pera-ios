@@ -133,6 +133,20 @@ extension DeepLinkParser {
             return .failure(.tryingToActForWatchAccount)
         }
 
+        if rawAccount.containsAsset(assetID) {
+            return .failure(.tryingToOptInForAlreadyOptedInAsset)
+        }
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+
+        if hasPendingOptInRequest {
+            return .failure(.tryingToOptInForPendingOptInRequest)
+        }
+
         return .success(.optInAsset(account: rawAccount, assetID: assetID))
     }
 
@@ -283,15 +297,31 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
 
-        let isWatchAccount = account.value.isWatchAccount()
+        let rawAccount = account.value
+
+        let isWatchAccount = rawAccount.isWatchAccount()
 
         if isWatchAccount {
             return .failure(.tryingToActForWatchAccount)
         }
+
+        if rawAccount.containsAsset(assetID) {
+            return .failure(.tryingToOptInForAlreadyOptedInAsset)
+        }
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+
+        if hasPendingOptInRequest {
+            return .failure(.tryingToOptInForPendingOptInRequest)
+        }
         
-        let accountName = account.value.name ?? accountAddress
+        let accountName = rawAccount.name ?? accountAddress
         let draft = AssetAlertDraft(
-            account: account.value,
+            account: rawAccount,
             assetId: assetID,
             asset: nil,
             title: "asset-support-add-title".localized,
@@ -511,6 +541,8 @@ extension DeepLinkParser {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
         case tryingToActForWatchAccount
+        case tryingToOptInForAlreadyOptedInAsset
+        case tryingToOptInForPendingOptInRequest
         case accountNotFound
         case assetNotFound
     }

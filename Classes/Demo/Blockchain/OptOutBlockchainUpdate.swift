@@ -35,7 +35,12 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
         self.isCollectibleAsset = request.isCollectibleAsset
         self.status = .pending
 
-        let name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
+        let name: String
+        if request.isCollectibleAsset {
+            name = request.assetTitle ?? request.assetName ?? String(request.assetID)
+        } else {
+            name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
+        }
         self.notificationMessage = "asset-opt-out-successful-message".localized(name)
     }
 

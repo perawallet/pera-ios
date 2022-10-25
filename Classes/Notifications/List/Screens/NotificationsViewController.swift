@@ -23,15 +23,11 @@ final class NotificationsViewController:
     TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
-    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
 
     private lazy var notificationsView = NotificationsView()
 
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
-    private lazy var dataController = NotificationsAPIDataController(
-        sharedDataController: sharedDataController,
-        api: api!
-    )
+    private lazy var dataController = NotificationsAPIDataController(api: api!)
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
     private lazy var transactionController: TransactionController = {
@@ -95,7 +91,7 @@ final class NotificationsViewController:
             case .success(let screen):
                 switch screen {
                 case let .optInAsset(account, assetID):
-                    self.openOptInAssetIfCan(
+                    self.openOptInAsset(
                         account: account,
                         assetID: assetID
                     )
@@ -116,6 +112,10 @@ final class NotificationsViewController:
                 switch error {
                 case .tryingToActForWatchAccount:
                     self.presentTryingToActForWatchAccountError()
+                case .tryingToOptInForAlreadyOptedInAsset:
+                    self.presentTryingToOptInForAlreadyOptedInAssetError()
+                case .tryingToOptInForPendingOptInRequest:
+                    self.presentTryingToOptInForPendingOptInRequestError()
                 case .accountNotFound:
                     self.presentAccountNotFoundError()
                 case .assetNotFound:
@@ -226,24 +226,6 @@ extension NotificationsViewController {
 }
 
 extension NotificationsViewController {
-    private func openOptInAssetIfCan(
-        account: Account,
-        assetID: AssetID
-    ) {
-        if dataController.canOptIn(
-            to: assetID,
-            for: account
-        ) {
-            openOptInAsset(
-                account: account,
-                assetID: assetID
-            )
-            return
-        }
-
-        displaySimpleAlertWith(title: "asset-you-already-own-message".localized)
-    }
-
     private func openOptInAsset(
         account: Account,
         assetID: AssetID
@@ -335,6 +317,10 @@ extension NotificationsViewController {
 
             if !self.canSignTransaction(for: &account) { return }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -414,6 +400,20 @@ extension NotificationsViewController {
         bannerController?.presentErrorBanner(
             title: "title-error".localized,
             message: "notifications-trying-to-act-for-watch-account-description".localized
+        )
+    }
+
+    private func presentTryingToOptInForAlreadyOptedInAssetError() {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "asset-you-already-own-message".localized
+        )
+    }
+
+    private func presentTryingToOptInForPendingOptInRequestError() {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "tryingToOptInForPendingOptInRequestError".localized // <todo> Change text
         )
     }
 
@@ -510,16 +510,6 @@ extension NotificationsViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
-
-        let address = draft?.from.address
-        let assetID = transactionController.assetTransactionDraft?.assetIndex
-
-        guard let address = address,
-              let assetID = assetID else {
-            return
-        }
-
-        dataController.addOptedInAsset(address, assetID)
     }
 
     func transactionController(

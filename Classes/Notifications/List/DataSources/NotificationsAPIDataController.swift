@@ -18,17 +18,13 @@ import Foundation
 import MacaroonUtils
 
 final class NotificationsAPIDataController:
-    NotificationsDataController,
-    SharedDataControllerObserver {
-
+    NotificationsDataController {
     var eventHandler: ((NotificationsDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
 
     private let api: ALGAPI
-    private let sharedDataController: SharedDataController
     private(set) var notifications = [NotificationMessage]()
-    private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -38,18 +34,10 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
-    init(
-        sharedDataController: SharedDataController,
-        api: ALGAPI
-    ) {
-        self.sharedDataController = sharedDataController
+    init(api: ALGAPI) {
         self.api = api
 
         startObserving()
-    }
-
-    deinit {
-        sharedDataController.remove(self)
     }
 }
 
@@ -62,8 +50,6 @@ extension NotificationsAPIDataController {
     }
 
     func load(isPaginated: Bool = false) {
-        sharedDataController.add(self)
-
         if !isPaginated {
             deliverLoadingSnapshot()
         }
@@ -119,31 +105,6 @@ extension NotificationsAPIDataController {
             notification: notification,
             latestReadTimestamp: latesTimestamp
         )
-    }
-}
-
-extension NotificationsAPIDataController {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        switch event {
-        case .didFinishRunning:
-            clearAddedAssetDetailsIfNeeded()
-            return
-        default:
-            break
-        }
-    }
-
-    private func clearAddedAssetDetailsIfNeeded() {
-        for (address, addedAssets) in addedAssetsWithAccounts {
-            if let account = sharedDataController.accountCollection[address] {
-                addedAssetsWithAccounts[address] = addedAssets.filter {
-                    !account.value.containsAsset($0)
-                }.uniqueElements()
-            }
-        }
     }
 }
 
@@ -248,40 +209,5 @@ extension NotificationsAPIDataController {
         if lastSnapshot == nil {
             load()
         }
-    }
-}
-
-extension NotificationsAPIDataController {
-    func canOptIn(
-        to asset: AssetID,
-        for account: Account
-    ) -> Bool {
-        guard let receiverAccount = sharedDataController.accountCollection[account.address]?.value else {
-            return false
-        }
-
-        if receiverAccount.isWatchAccount() ||
-            receiverAccount.containsAsset(asset) {
-            return false
-        }
-
-        if let addedAssets = addedAssetsWithAccounts[receiverAccount.address] {
-            for addedAsset in addedAssets {
-                if addedAsset == asset {
-                    return false
-                }
-            }
-        }
-
-        return true
-    }
-
-    func addOptedInAsset(
-        _ address: PublicKey,
-        _ assetId: AssetID
-    ) {
-        var addedAssets = addedAssetsWithAccounts[address] ?? []
-        addedAssets.append(assetId)
-        addedAssetsWithAccounts[address] = addedAssets
     }
 }

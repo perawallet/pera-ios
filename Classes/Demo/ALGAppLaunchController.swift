@@ -301,6 +301,8 @@ extension ALGAppLaunchController {
     private func shouldSuspendDeeplink(_ error: DeepLinkParser.Error) -> Bool {
         switch error {
         case .tryingToActForWatchAccount,
+             .tryingToOptInForAlreadyOptedInAsset,
+             .tryingToOptInForPendingOptInRequest,
              .accountNotFound,
              .assetNotFound:
             return false
@@ -317,6 +319,12 @@ extension ALGAppLaunchController {
         case .tryingToActForWatchAccount:
             title = "title-error".localized
             message = "notifications-trying-to-act-for-watch-account-description".localized
+        case .tryingToOptInForAlreadyOptedInAsset:
+            title = "title-error".localized
+            message = "asset-you-already-own-message".localized
+        case .tryingToOptInForPendingOptInRequest:
+            title = "title-error".localized
+            message = "tryingToOptInForPendingOptInRequestError".localized /// <todo> Change text
         case .accountNotFound:
             title = "title-error".localized
             message = "notifications-account-not-found-description".localized
