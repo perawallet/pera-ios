@@ -210,6 +210,12 @@ extension DeepLinkParser {
         else {
             return nil
         }
+
+        let isAlgo = assetID == 0
+
+        if isAlgo {
+            return makeTransactionDetailScreen(accountAddress: accountAddress)
+        }
         
         return makeAssetTransactionDetailScreen(
             accountAddress: accountAddress,
