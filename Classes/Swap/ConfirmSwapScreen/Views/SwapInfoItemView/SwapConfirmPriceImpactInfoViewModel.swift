@@ -52,7 +52,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
 
         detail = priceImpact
             .doubleValue
-            .toPercentage?
+            .toPercentageWith(fractions: 3)?
             .footnoteRegular()
     }
 }

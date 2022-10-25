@@ -29,6 +29,8 @@ final class SwapSummaryScreen: ScrollScreen {
     private lazy var peraFeeInfoView = SwapSummaryItemView()
     private lazy var priceImpactInfoView = SwapSummaryItemView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let swapController: SwapController
     private let theme: SwapSummaryScreenTheme
 
@@ -65,7 +67,9 @@ final class SwapSummaryScreen: ScrollScreen {
 
         let viewModel = SwapSummaryScreenViewModel(
             account: swapController.account,
-            quote: swapController.quote!
+            quote: swapController.quote!,
+            parsedTransactions: swapController.parsedTransactions,
+            currencyFormatter: currencyFormatter
         )
 
         receivedInfoView.bindData(viewModel.receivedInfo)
