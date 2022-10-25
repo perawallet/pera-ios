@@ -19,11 +19,11 @@ import Foundation
 struct OptOutBlockchainRequest: BlockchainRequest {
     let accountAddress: String
     let assetID: AssetID
-    let assetTitle: String?
     let assetName: String?
     let assetUnitName: String?
     let assetVerificationTier: AssetVerificationTier
     let isCollectibleAsset: Bool
+    let collectibleAssetTitle: String?
 
     init(
         account: Account,
@@ -31,25 +31,24 @@ struct OptOutBlockchainRequest: BlockchainRequest {
     ) {
         self.accountAddress = account.address
         self.assetID = asset.id
-        self.assetTitle = asset.collectible?.title
         self.assetName = asset.name
         self.assetUnitName = asset.unitName
         self.assetVerificationTier = asset.verificationTier
         self.isCollectibleAsset = asset.collectible != nil
+        self.collectibleAssetTitle = asset.collectible?.title
     }
 
     init(
         account: Account,
         asset: Asset
     ) {
-        let collectibleAsset = asset as? CollectibleAsset
-
         self.accountAddress = account.address
         self.assetID = asset.id
-        self.assetTitle = collectibleAsset?.title
         self.assetName = asset.naming.name
         self.assetUnitName = asset.naming.unitName
         self.assetVerificationTier = asset.verificationTier
+        let collectibleAsset = asset as? CollectibleAsset
         self.isCollectibleAsset = collectibleAsset != nil
+        self.collectibleAssetTitle = collectibleAsset?.title
     }
 }
