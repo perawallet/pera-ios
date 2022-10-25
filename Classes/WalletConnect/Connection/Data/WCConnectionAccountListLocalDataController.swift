@@ -94,7 +94,7 @@ extension WCConnectionAccountListLocalDataController {
         let accounts: [Account] = self.sharedDataController
             .sortedAccounts()
             .filter {
-                return !$0.value.isWatchAccount() && $0.isAvailable
+                return !$0.value.isWatchAccount()
             }.map {
                 $0.value
             }
