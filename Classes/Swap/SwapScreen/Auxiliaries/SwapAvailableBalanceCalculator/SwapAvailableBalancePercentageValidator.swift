@@ -19,14 +19,11 @@ import Foundation
 struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?
 
-    private let account: Account
     private weak var dataController: SwapAssetDataController?
 
     init(
-        account: Account,
         dataController: SwapAssetDataController
     ) {
-        self.account = account
         self.dataController = dataController
     }
 
@@ -86,7 +83,7 @@ extension SwapAvailableBalancePercentageValidator {
         _ asset: Asset
     ) {
         guard let dataController = dataController,
-              let assetBalance = account[asset.id]?.amount,
+              let assetBalance = dataController.account[asset.id]?.amount,
               assetBalance > 0 else {
             publishEvent(.failure(.insufficientAssetBalance))
             return
@@ -126,6 +123,8 @@ extension SwapAvailableBalancePercentageValidator {
 
 extension SwapAvailableBalancePercentageValidator {
     private func getAlgoBalanceAfterMinBalanceAndPadding() -> UInt64? {
+        guard let account = dataController?.account else { return nil }
+
         let algoBalance = account.algo.amount
         let minBalance = account.calculateMinBalance()
         let algoBalanceAfterMinBalanceResult = algoBalance.subtractingReportingOverflow(minBalance)

@@ -16,6 +16,7 @@
 
 import MacaroonForm
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class SwapAssetScreen:
@@ -38,9 +39,14 @@ final class SwapAssetScreen:
     private lazy var quickActionsView = SwapQuickActionsView(theme.quickActions)
     private lazy var emptyPoolAssetView = SwapAssetSelectionEmptyView(theme: theme.emptyPoolAsset)
     private lazy var poolAssetView = SwapAssetAmountView()
-    private lazy var swapActionView = MacaroonUIKit.Button()
+    private lazy var swapActionView: LoadingButton = {
+        let loadingIndicator = ViewLoadingIndicator()
+        loadingIndicator.applyStyle(theme.swapActionIndicator)
+        return LoadingButton(loadingIndicator: loadingIndicator)
+    }()
 
-    private var currentlyDisplayedPoolView: UIView?
+    private lazy var balancePercentageValidator = SwapAvailableBalancePercentageValidator(dataController: dataController)
+    private lazy var quoteValidator =  SwapAvailableBalanceQuoteValidator(account: dataController.account)
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
@@ -111,6 +117,74 @@ final class SwapAssetScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
+    }
+
+    private func validateFromQuote(
+        _ quote: SwapQuote
+    ) {
+        quoteValidator.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .validated(let availableBalance):
+                break
+            case .failure(let error):
+                switch error {
+                case .assetInNotAvailable:
+                    break
+                case .assetOutNotAvailable:
+                    break
+                case .amountInNotAvailable:
+                    break
+                case .insufficientAlgoBalance:
+                    break
+                case .insufficientAssetBalance:
+                    break
+                case .unavailablePeraFee(let feeError):
+                    break
+                }
+            }
+        }
+
+        quoteValidator.validateAvailableSwapBalance(
+            quote,
+            for: dataController.userAsset
+        )
+    }
+
+    private func validateFromBalancePercentage(
+        _ quote: SwapQuote
+    ) {
+        balancePercentageValidator.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .validated(let availableBalance):
+                break
+            case .failure(let error):
+                switch error {
+                case .assetInNotAvailable:
+                    break
+                case .assetOutNotAvailable:
+                    break
+                case .amountInNotAvailable:
+                    break
+                case .insufficientAlgoBalance:
+                    break
+                case .insufficientAssetBalance:
+                    break
+                case .unavailablePeraFee(let feeError):
+                    break
+                }
+            }
+        }
+
+        balancePercentageValidator.validateAvailableSwapBalance(
+            quote,
+            for: dataController.userAsset
+        )
     }
 }
 
@@ -207,8 +281,6 @@ extension SwapAssetScreen {
 
             self.didTapPoolAsset()
         }
-
-        currentlyDisplayedPoolView = emptyPoolAssetView
     }
 
     private func addPoolAsset() {
@@ -216,8 +288,6 @@ extension SwapAssetScreen {
 
         poolAssetView.isHidden = true
         contextView.addArrangedSubview(poolAssetView)
-
-        currentlyDisplayedPoolView = poolAssetView
 
         poolAssetView.startObserving(event: .didSelectAsset) {
             [weak self] in
@@ -234,6 +304,7 @@ extension SwapAssetScreen {
         contentView.addSubview(swapActionView)
         swapActionView.contentEdgeInsets = theme.swapActionContentEdgeInsets
         swapActionView.snp.makeConstraints {
+            $0.fitToHeight(theme.swapActionHeight)
             $0.top >= contextView.snp.bottom + theme.swapActionEdgeInsets.top
             $0.leading == theme.swapActionEdgeInsets.leading
             $0.trailing == theme.swapActionEdgeInsets.trailing
@@ -310,6 +381,7 @@ extension SwapAssetScreen {
             }
         }
 
+        swapActionView.startLoading()
         dataController.loadQuote(swapAmount: amount)
     }
 
@@ -320,6 +392,7 @@ extension SwapAssetScreen {
     private func updateUIWhenDataDidLoad(
         _ swapQuote: SwapQuote
     ) {
+        swapActionView.stopLoading()
         updateSwapActionUIWhenDataDidLoad(quote: swapQuote)
         updateUserAssetViewModel(quote: swapQuote)
         updateUserAssetSelectionUI()
@@ -331,6 +404,7 @@ extension SwapAssetScreen {
     private func updateUIWhenDataDidFailToLoad(
         _ error: SwapAssetDataController.Error
     ) {
+        swapActionView.stopLoading()
         showError(error.prettyDescription)
     }
 }

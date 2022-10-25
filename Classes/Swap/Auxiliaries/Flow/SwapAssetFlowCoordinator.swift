@@ -251,13 +251,42 @@ extension SwapAssetFlowCoordinator {
             case .didCompleteSwap:
                 self.openSwapSuccess(swapController)
             case .didFailTransaction(let id):
-                break
+                guard let quote = swapController.quote else { return }
+
+                let viewModel = SwapUnexpectedErrorViewModel(quote)
+                self.openError(
+                    swapController,
+                    viewModel: viewModel
+                )
             case .didFailNetwork(let error):
-                break
+                guard let quote = swapController.quote else { return }
+
+                let viewModel = SwapAPIErrorViewModel(
+                    quote: quote,
+                    message: error.localizedDescription
+                )
+                self.openError(
+                    swapController,
+                    viewModel: viewModel
+                )
             case .didCancelTransaction:
                 break
             case .didFailSigning(let error):
-                break
+                guard let quote = swapController.quote else { return }
+
+                switch error {
+                case .api(let apiError):
+                    let viewModel = SwapAPIErrorViewModel(
+                        quote: quote,
+                        message: error.localizedDescription
+                    )
+                    self.openError(
+                        swapController,
+                        viewModel: viewModel
+                    )
+                case .ledger(let ledgerError):
+                    break
+                }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
                 self.openSignWithLedgerProcess(
                     ledger,
@@ -367,7 +396,16 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didTapViewDetailAction:
-                break
+                let transactionGroupID = swapController.parsedTransactions.first { !$0.groupID.isEmpty }?.groupID
+                guard let formattedGroupID = transactionGroupID?.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+                      let url = AlgorandWeb.AlgoExplorer.group(
+                        isMainnet: self.api.network == .mainnet,
+                        param: formattedGroupID
+                      ).link else {
+                    return
+                }
+
+                self.visibleScreen.open(url)
             case .didTapDoneAction:
                 self.visibleScreen.dismissScreen()
             case .didTapSummaryAction:
