@@ -34,7 +34,9 @@ struct SwapAssetScreenTheme:
     let poolAsset: SwapAssetAmountViewTheme
     let swapAction: ButtonStyle
     let swapActionContentEdgeInsets: UIEdgeInsets
+    let swapActionHeight: LayoutMetric
     let swapActionEdgeInsets: LayoutPaddings
+    let swapActionIndicator: ImageStyle
 
     init(
         _ family: LayoutFamily
@@ -79,6 +81,11 @@ struct SwapAssetScreenTheme:
                 trailing: 0
             )
         )
+        self.swapActionHeight = 52
         self.swapActionEdgeInsets = (24, 24, 16, 24)
+        self.swapActionIndicator = [
+            .image("button-loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
     }
 }

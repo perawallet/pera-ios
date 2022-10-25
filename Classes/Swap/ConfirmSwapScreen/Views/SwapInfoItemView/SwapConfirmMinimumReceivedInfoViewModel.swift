@@ -24,12 +24,18 @@ struct SwapConfirmMinimumReceivedInfoViewModel: SwapInfoItemViewModel {
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindIcon()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         action = nil
     }
 }
@@ -46,10 +52,37 @@ extension SwapConfirmMinimumReceivedInfoViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let amountOutWithSlippage = quote.amountOutWithSlippage else { return }
+        guard let assetOut = quote.assetOut,
+              let amountOutWithSlippage = quote.amountOutWithSlippage else {
+            return
+        }
 
-        detail = "\(amountOutWithSlippage)".footnoteRegular()
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
+            of: amountOutWithSlippage,
+            for: assetOut
+        )
+
+        if assetOut.isAlgo {
+            detail = swapAssetValueFormatter.getFormattedAlgoAmount(
+               decimalAmount: decimalAmount,
+               currencyFormatter: currencyFormatter
+            )?.footnoteRegular()
+            return
+        }
+
+        let assetOutDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
+
+        guard let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
+            decimalAmount: decimalAmount,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: assetOut.decimals
+        ) else {
+            return
+        }
+
+        detail = "\(amountText) \(assetOutDisplayName)".footnoteRegular()
     }
 }

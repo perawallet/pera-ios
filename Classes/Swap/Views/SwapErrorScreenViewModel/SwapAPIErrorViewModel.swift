@@ -12,38 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapUnexpectedErrorViewModel.swift
+//   SwapAPIErrorViewModel.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct SwapUnexpectedErrorViewModel: ErrorScreenViewModel {
+struct SwapAPIErrorViewModel: ErrorScreenViewModel {
     private(set) var title: TextProvider?
     private(set) var detail: TextProvider?
     private(set) var primaryAction: TextProvider?
     private(set) var secondaryAction: TextProvider?
 
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        message: String
     ) {
         bindTitle(quote)
-        bindDetail()
+        bindDetail(message)
         bindPrimaryAction()
         bindSecondaryAction()
     }
 }
 
-extension SwapUnexpectedErrorViewModel {
+extension SwapAPIErrorViewModel {
     mutating func bindTitle(
         _ quote: SwapQuote
     ) {
-        title = getTitle(from: quote)?.bodyLargeMedium(alignment: .center)
+        title = getTitle(from: quote)?
+            .bodyLargeMedium(alignment: .center)
     }
 
-    mutating func bindDetail() {
-        detail = "swap-error-unexpected-detail"
-            .localized
-            .bodyRegular(alignment: .center)
+    mutating func bindDetail(
+        _ message: String
+    ) {
+        detail = message.bodyRegular(alignment: .center)
     }
 
     mutating func bindPrimaryAction() {

@@ -21,25 +21,38 @@ struct SwapSummaryPeraFeeItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension SwapSummaryPeraFeeItemViewModel {
     mutating func bindTitle() {
-        title = "swap-summary-pera-fees-title"
+        title = "swap-confirm-pera-fee-title"
             .localized
             .bodyRegular()
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let peraFee = quote.peraFee?.toAlgos else { return }
-        value = "\(peraFee)".bodyRegular() /// <todo> Will handle formatting when the flow is completed.
+
+        value = swapAssetValueFormatter
+            .getFormattedAlgoAmount(
+                decimalAmount: peraFee,
+                currencyFormatter: currencyFormatter
+            )?
+            .bodyRegular()
     }
 }

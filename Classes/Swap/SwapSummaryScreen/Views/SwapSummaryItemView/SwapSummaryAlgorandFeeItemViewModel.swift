@@ -21,24 +21,40 @@ struct SwapSummaryAlgorandFeeItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension SwapSummaryAlgorandFeeItemViewModel {
     mutating func bindTitle() {
-        title = "swap-summary-algorand-fees-title"
+        title = "swap-summary-network-fee-title"
             .localized
             .bodyRegular()
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        /// <todo> Will be set when the sign & send is completed.
+        let swapTransactins = parsedTransactions.filter { $0.purpose != .optIn }
+        let swapFees = swapTransactins.reduce(0, { $0 + $1.allFees }).toAlgos
+
+        value = swapAssetValueFormatter.getFormattedAlgoAmount(
+            decimalAmount: swapFees,
+            currencyFormatter: currencyFormatter
+        )?.bodyRegular()
     }
 }

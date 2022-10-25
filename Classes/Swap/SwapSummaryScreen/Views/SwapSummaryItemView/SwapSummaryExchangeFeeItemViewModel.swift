@@ -21,25 +21,60 @@ struct SwapSummaryExchangeFeeItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension SwapSummaryExchangeFeeItemViewModel {
     mutating func bindTitle() {
-        title = "swap-summary-exchange-fees-title"
+        title = "swap-confirm-exchange-fee-title"
             .localized
             .bodyRegular()
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let exchangeFee = quote.exchangeFee?.toAlgos else { return }
-        value = "\(exchangeFee)".bodyRegular() /// <todo> Will handle formatting when the flow is completed.
+        guard let assetIn = quote.assetIn,
+              let exchangeFee = quote.exchangeFee else {
+            return
+        }
+
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
+            of: exchangeFee,
+            for: assetIn
+        )
+
+        if assetIn.isAlgo {
+            value =
+                swapAssetValueFormatter.getFormattedAlgoAmount(
+                    decimalAmount: decimalAmount,
+                    currencyFormatter: currencyFormatter
+                )?
+                .bodyRegular()
+            return
+        }
+
+        let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        guard let formattedAmount = swapAssetValueFormatter.getFormattedAssetAmount(
+            decimalAmount: decimalAmount,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: assetIn.decimals
+        ) else {
+            return
+        }
+
+        value = "~\(formattedAmount) \(assetInDisplayName)".bodyRegular()
     }
 }

@@ -44,12 +44,24 @@ struct ConfirmSwapScreenViewModel: ViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        bindPriceInfo(quote)
+        bindPriceInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindSlippageInfo(quote)
         bindPriceImpactInfo(quote)
-        bindMinimumReceivedInfo(quote)
-        bindExchangeFeeInfo(quote)
-        bindPeraFeeInfo(quote)
+        bindMinimumReceivedInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
+        bindExchangeFeeInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
+        bindPeraFeeInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -107,9 +119,13 @@ extension ConfirmSwapScreenViewModel {
     }
 
     mutating func bindPriceInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        priceInfo = SwapConfirmPriceInfoViewModel(quote)
+        priceInfo = SwapConfirmPriceInfoViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindSlippageInfo(
@@ -118,7 +134,6 @@ extension ConfirmSwapScreenViewModel {
         slippageInfo = SwapConfirmSlippageToleranceInfoViewModel(quote)
     }
 
-
     mutating func bindPriceImpactInfo(
         _ quote: SwapQuote
     ) {
@@ -126,20 +141,32 @@ extension ConfirmSwapScreenViewModel {
     }
 
     mutating func bindMinimumReceivedInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        minimumReceivedInfo = SwapConfirmMinimumReceivedInfoViewModel(quote)
+        minimumReceivedInfo = SwapConfirmMinimumReceivedInfoViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindExchangeFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        exchangeFeeInfo = SwapConfirmExchangeFeeInfoViewModel(quote)
+        exchangeFeeInfo = SwapConfirmExchangeFeeInfoViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindPeraFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        peraFeeInfo = SwapConfirmPeraFeeInfoViewModel(quote)
+        peraFeeInfo = SwapConfirmPeraFeeInfoViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 }

@@ -21,6 +21,8 @@ final class SwapAssetSuccessScreen: BaseViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private lazy var successIconBackgroundView = UIView()
     private lazy var successIconView = UIImageView()
     private lazy var titleView = UILabel()
@@ -70,7 +72,11 @@ final class SwapAssetSuccessScreen: BaseViewController {
 
         guard let quote = swapController.quote else { return }
 
-        let viewModel = SwapAssetSuccessScreenViewModel(quote)
+        let viewModel = SwapAssetSuccessScreenViewModel(
+            quote: quote,
+            parsedSwapTransactions: swapController.parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
         viewModel.title?.load(in: titleView)
         viewModel.detail?.load(in: detailView)
     }

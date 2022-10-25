@@ -23,3 +23,21 @@ protocol ErrorScreenViewModel {
     var primaryAction: TextProvider? { get }
     var secondaryAction: TextProvider? { get }
 }
+
+extension ErrorScreenViewModel {
+    func getTitle(
+        from quote: SwapQuote
+    ) -> String? {
+        guard let assetIn = quote.assetIn,
+              let assetOut = quote.assetOut else {
+            return nil
+        }
+
+        let formatter = SwapAssetValueFormatter()
+
+        let assetInDisplayName = formatter.getAssetDisplayName(assetIn)
+        let assetOutDisplayName = formatter.getAssetDisplayName(assetOut)
+        let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
+        return "swap-error-failed-title".localized(swapAssets)
+    }
+}
