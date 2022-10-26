@@ -200,7 +200,11 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-            self?.buyAlgoFlowCoordinator.launch()
+
+            let buyAlgoDraft = BuyAlgoDraft()
+            buyAlgoDraft.address = self?.accountHandle.value.address
+            
+            self?.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
         }
     }
 
@@ -331,6 +335,23 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
+    }
+
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        let account = accountHandle.value
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: accountName
+        )
+        let qrGeneratorScreen: Screen = .qrGenerator(
+            title: accountName,
+            draft: draft,
+            isTrackable: true
+        )
+
+        open(qrGeneratorScreen, by: .present)
     }
 
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
