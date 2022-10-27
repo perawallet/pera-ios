@@ -29,6 +29,7 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     private lazy var poolAssetView = SwapAssetAmountView()
     private lazy var priceInfoView = SwapInfoActionItemView()
     private lazy var slippageInfoView = SwapInfoActionItemView()
+    private var poolAssetBottomSeparator: UIView?
     private lazy var priceImpactInfoView = SwapInfoItemView()
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
     private lazy var exchangeFeeInfoView = SwapInfoItemView()
@@ -79,14 +80,14 @@ final class ConfirmSwapScreen: BaseScrollViewController {
         super.prepareLayout()
         addUserAsset()
         addToSeparator()
-        addPoolAsset()
-        addPriceInfo()
-        addSlippageInfo()
-        addPriceImpactInfo()
-        addMinimumReceivedInfo()
-        addExchangeFeeInfo()
-        addPeraFeeInfo()
         addConfirmAction()
+        addPeraFeeInfo()
+        addExchangeFeeInfo()
+        addMinimumReceivedInfo()
+        addPriceImpactInfo()
+        addSlippageInfo()
+        addPriceInfo()
+        addPoolAsset()
     }
 
     override func bindData() {
@@ -146,19 +147,20 @@ extension ConfirmSwapScreen {
 }
 
 extension ConfirmSwapScreen {
-	private func addUserAsset() {
+    private func addUserAsset() {
         userAssetView.customize(theme.userAsset)
 
         contentView.addSubview(userAssetView)
         userAssetView.fitToIntrinsicSize()
         userAssetView.snp.makeConstraints {
-            $0.top == theme.userAssetTopInset
+            $0.top <= theme.userAssetTopInset
+            $0.top >= theme.minimumUserAssetTopInset
             $0.leading == theme.assetHorizontalInset
             $0.trailing == theme.assetHorizontalInset
         }
-	}
+    }
 
-	private func addToSeparator() {
+    private func addToSeparator() {
         toSeparatorView.customize(theme.toSeparator)
 
         contentView.addSubview(toSeparatorView)
@@ -168,42 +170,91 @@ extension ConfirmSwapScreen {
             $0.leading == 0
             $0.trailing == 0
         }
-	}
+    }
 
-	private func addPoolAsset() {
-        poolAssetView.customize(theme.poolAsset)
+    private func addConfirmAction() {
+        confirmActionView.customizeAppearance(theme.confirmAction)
 
-        contentView.addSubview(poolAssetView)
-        poolAssetView.fitToIntrinsicSize()
-        poolAssetView.snp.makeConstraints {
-            $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
-            $0.leading == theme.assetHorizontalInset
-            $0.trailing == theme.assetHorizontalInset
-        }
-	}
+        contentView.addSubview(confirmActionView)
+        confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
+        confirmActionView.fitToIntrinsicSize()
+        confirmActionView.snp.makeConstraints {
+            $0.fitToHeight(theme.confirmActionHeight)
+            $0.leading == theme.confirmActionEdgeInsets.leading
+            $0.trailing == theme.confirmActionEdgeInsets.trailing
 
-    private func addPriceInfo() {
-        priceInfoView.customize(theme.infoActionItem)
+            let bottomInset =
+                view.compactSafeAreaInsets.bottom +
+                (navigationController ?? self).additionalSafeAreaInsets.bottom
+                + theme.confirmActionContentEdgeInsets.bottom
+            $0.bottom == bottomInset
+         }
 
-        let topSeparator = contentView.attachSeparator(
-            theme.assetSeparator,
-            to: poolAssetView,
-            margin: theme.assetSeparatorPadding
+        confirmActionView.addTouch(
+            target: self,
+            action: #selector(confirmSwap)
         )
+    }
 
-        contentView.addSubview(priceInfoView)
-        priceInfoView.fitToIntrinsicSize()
-        priceInfoView.snp.makeConstraints {
-            $0.top == topSeparator.snp.bottom + theme.infoSectionPaddings.top
+    private func addPeraFeeInfo() {
+        peraFeeInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(peraFeeInfoView)
+        peraFeeInfoView.fitToIntrinsicSize()
+        peraFeeInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == confirmActionView.snp.top - theme.confirmActionEdgeInsets.top
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
+    }
+
+    private func addExchangeFeeInfo() {
+        exchangeFeeInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(exchangeFeeInfoView)
+        exchangeFeeInfoView.fitToIntrinsicSize()
+        exchangeFeeInfoView.snp.makeConstraints {
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == peraFeeInfoView.snp.top - theme.infoSectionItemSpacing
             $0.trailing == theme.infoSectionPaddings.trailing
         }
 
-        priceInfoView.startObserving(event: .didTapAction) {
+        exchangeFeeInfoView.startObserving(event: .didTapInfo) {
             [weak self] in
             guard let self = self else { return }
 
-            self.switchPriceValuePresentation()
+            self.eventHandler?(.didTapExchangeFeeInfo)
+        }
+    }
+
+    private func addMinimumReceivedInfo() {
+        minimumReceivedInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(minimumReceivedInfoView)
+        minimumReceivedInfoView.fitToIntrinsicSize()
+        minimumReceivedInfoView.snp.makeConstraints {
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == exchangeFeeInfoView.snp.top - theme.infoSectionItemSpacing
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
+    }
+
+    private func addPriceImpactInfo() {
+        priceImpactInfoView.customize(theme.infoItem)
+
+        contentView.addSubview(priceImpactInfoView)
+        priceImpactInfoView.fitToIntrinsicSize()
+        priceImpactInfoView.snp.makeConstraints {
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == minimumReceivedInfoView.snp.top - theme.infoSectionItemSpacing
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
+
+        priceImpactInfoView.startObserving(event: .didTapInfo) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.eventHandler?(.didTapPriceImpactInfo)
         }
     }
 
@@ -213,8 +264,8 @@ extension ConfirmSwapScreen {
         contentView.addSubview(slippageInfoView)
         slippageInfoView.fitToIntrinsicSize()
         slippageInfoView.snp.makeConstraints {
-            $0.top == priceInfoView.snp.bottom + theme.infoSectionItemSpacing
             $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == priceImpactInfoView.snp.top - theme.infoSectionItemSpacing
             $0.trailing == theme.infoSectionPaddings.trailing
         }
 
@@ -233,91 +284,44 @@ extension ConfirmSwapScreen {
         }
     }
 
-    private func addPriceImpactInfo() {
-        priceImpactInfoView.customize(theme.infoItem)
+    private func addPriceInfo() {
+        priceInfoView.customize(theme.infoActionItem)
 
-        contentView.addSubview(priceImpactInfoView)
-        priceImpactInfoView.fitToIntrinsicSize()
-        priceImpactInfoView.snp.makeConstraints {
-            $0.top == slippageInfoView.snp.bottom + theme.infoSectionItemSpacing
+        contentView.addSubview(priceInfoView)
+        priceInfoView.fitToIntrinsicSize()
+        priceInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == slippageInfoView.snp.top - theme.infoSectionItemSpacing
             $0.trailing == theme.infoSectionPaddings.trailing
         }
 
-        priceImpactInfoView.startObserving(event: .didTapInfo) {
+        priceInfoView.startObserving(event: .didTapAction) {
             [weak self] in
             guard let self = self else { return }
 
-            self.eventHandler?(.didTapPriceImpactInfo)
-        }
-    }
-
-    private func addMinimumReceivedInfo() {
-        minimumReceivedInfoView.customize(theme.infoItem)
-
-        contentView.addSubview(minimumReceivedInfoView)
-        minimumReceivedInfoView.fitToIntrinsicSize()
-        minimumReceivedInfoView.snp.makeConstraints {
-            $0.top == priceImpactInfoView.snp.bottom + theme.infoSectionItemSpacing
-            $0.leading == theme.infoSectionPaddings.leading
-            $0.trailing == theme.infoSectionPaddings.trailing
-        }
-    }
-
-    private func addExchangeFeeInfo() {
-        exchangeFeeInfoView.customize(theme.infoItem)
-
-        contentView.addSubview(exchangeFeeInfoView)
-        exchangeFeeInfoView.fitToIntrinsicSize()
-        exchangeFeeInfoView.snp.makeConstraints {
-            $0.top == minimumReceivedInfoView.snp.bottom + theme.infoSectionItemSpacing
-            $0.leading == theme.infoSectionPaddings.leading
-            $0.trailing == theme.infoSectionPaddings.trailing
+            self.switchPriceValuePresentation()
         }
 
-        exchangeFeeInfoView.startObserving(event: .didTapInfo) {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.eventHandler?(.didTapExchangeFeeInfo)
-        }
-    }
-
-    private func addPeraFeeInfo() {
-        peraFeeInfoView.customize(theme.infoItem)
-
-        contentView.addSubview(peraFeeInfoView)
-        peraFeeInfoView.fitToIntrinsicSize()
-        peraFeeInfoView.snp.makeConstraints {
-            $0.top == exchangeFeeInfoView.snp.bottom + theme.infoSectionItemSpacing
-            $0.leading == theme.infoSectionPaddings.leading
-            $0.trailing == theme.infoSectionPaddings.trailing
-        }
-    }
-
-	private func addConfirmAction() {
-        confirmActionView.customizeAppearance(theme.confirmAction)
-
-        contentView.addSubview(confirmActionView)
-        confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
-        confirmActionView.fitToIntrinsicSize()
-        confirmActionView.snp.makeConstraints {
-            $0.fitToHeight(theme.confirmActionHeight)
-            $0.top >= peraFeeInfoView.snp.bottom + theme.confirmActionEdgeInsets.top
-            $0.leading == theme.confirmActionEdgeInsets.leading
-            $0.trailing == theme.confirmActionEdgeInsets.trailing
-
-            let bottomInset =
-                view.compactSafeAreaInsets.bottom +
-                (navigationController ?? self).additionalSafeAreaInsets.bottom
-                + theme.confirmActionContentEdgeInsets.bottom
-            $0.bottom == bottomInset
-         }
-
-        confirmActionView.addTouch(
-            target: self,
-            action: #selector(confirmSwap)
+        poolAssetBottomSeparator = contentView.attachSeparator(
+            theme.assetSeparator,
+            to: priceInfoView,
+            margin: theme.infoSectionPaddings.top
         )
+    }
+
+	private func addPoolAsset() {
+        guard let poolAssetBottomSeparator else { return }
+        poolAssetView.customize(theme.poolAsset)
+
+        contentView.addSubview(poolAssetView)
+        poolAssetView.fitToIntrinsicSize()
+        poolAssetView.snp.makeConstraints {
+            $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
+            $0.leading == theme.assetHorizontalInset
+            $0.bottom >= poolAssetBottomSeparator.snp.top - theme.assetSeparatorPadding
+            $0.bottom <= poolAssetBottomSeparator.snp.top - theme.minimumPoolAssetPadding
+            $0.trailing == theme.assetHorizontalInset
+        }
 	}
 }
 

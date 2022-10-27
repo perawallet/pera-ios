@@ -130,8 +130,8 @@ extension SwapAssetSuccessScreen {
         detailView.snp.makeConstraints {
             $0.centerX == 0
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndDetail
-            $0.leading == theme.spacingBetweenTitleAndDetail
-            $0.trailing == theme.spacingBetweenTitleAndDetail
+            $0.leading == theme.detailHorizontalInset
+            $0.trailing == theme.detailHorizontalInset
         }
     }
 
