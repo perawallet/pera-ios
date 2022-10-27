@@ -27,6 +27,9 @@ struct SwapAvailableBalanceQuoteValidator: SwapAvailableBalanceValidator {
         self.account = account
     }
 
+    /// <note>
+    /// Returns the remaining balance after min balance for the success case.
+    /// Returns the min balance for failure cases.
     func validateAvailableSwapBalance(
         _ quote: SwapQuote,
         for asset: Asset
@@ -54,7 +57,7 @@ extension SwapAvailableBalanceQuoteValidator {
         addPeraFee(quote, to: &amountIn)
 
         guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountIn) else {
-            publishEvent(.failure(.insufficientAlgoBalance))
+            publishEvent(.failure(.insufficientAlgoBalance(amountIn)))
             return
         }
 
@@ -70,8 +73,8 @@ extension SwapAvailableBalanceQuoteValidator {
         addPaddingForFee(to: &algoAmountToValidate)
         addPeraFee(quote, to: &algoAmountToValidate)
 
-        if getRemainingAlgoBalance(from: algoAmountToValidate) != nil {
-            publishEvent(.failure(.insufficientAlgoBalance))
+        if getRemainingAlgoBalance(from: algoAmountToValidate) == nil {
+            publishEvent(.failure(.insufficientAlgoBalance(algoAmountToValidate)))
             return
         }
 
@@ -79,7 +82,7 @@ extension SwapAvailableBalanceQuoteValidator {
             quote,
             from: algoAmountToValidate
         ) else {
-            publishEvent(.failure(.insufficientAssetBalance))
+            publishEvent(.failure(.insufficientAssetBalance(quote.amountIn!)))
             return
         }
 

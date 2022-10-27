@@ -24,6 +24,7 @@ protocol ExportAccountListDataController: AnyObject {
     var eventHandler: ((ExportAccountListDataControllerEvent) -> Void)? { get set }
 
     var hasAccounts: Bool { get }
+    var hasSingleAccount: Bool { get }
     var isContinueActionEnabled: Bool { get }
 
     func load()

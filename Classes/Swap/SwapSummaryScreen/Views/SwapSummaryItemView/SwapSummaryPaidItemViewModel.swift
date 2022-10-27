@@ -21,11 +21,19 @@ struct SwapSummaryPaidItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -37,8 +45,46 @@ extension SwapSummaryPaidItemViewModel {
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        /// <todo> Will be set when the sign & send is completed.
+        guard let assetIn = quote.assetIn else { return }
+
+        let totalPaidAmount = parsedTransactions.reduce(0, { $0 + $1.paidAmount })
+
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
+            of: totalPaidAmount,
+            for: assetIn
+        )
+
+        if assetIn.isAlgo {
+            guard let amountText = swapAssetValueFormatter.getFormattedAlgoAmount(
+                decimalAmount: decimalAmount,
+                currencyFormatter: currencyFormatter
+            ) else {
+                return
+            }
+
+            var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byWordWrapping)
+            attributes.insert(.textColor(Colors.Helpers.negative))
+
+            value = "-\(amountText)".attributed(attributes)
+            return
+        }
+
+        let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        guard let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
+            decimalAmount: decimalAmount,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: assetIn.decimals
+        ) else {
+            return
+        }
+
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byWordWrapping)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+
+        value = "-\(amountText) \(assetInDisplayName)".attributed(attributes)
     }
 }

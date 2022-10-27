@@ -23,6 +23,7 @@ import UIKit
 extension SendTransactionScreen {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: UIColor
+        let navigationTitle: AccountNameTitleViewTheme
         let nextButtonStyle: ButtonTheme
         let disabledValueLabelStyle: TextStyle
         let valueLabelStyle: TextStyle
@@ -46,6 +47,7 @@ extension SendTransactionScreen {
 
         init(_ family: LayoutFamily) {
             backgroundColor = Colors.Defaults.background.uiColor
+            navigationTitle = AccountNameTitleViewTheme(family)
             nextButtonStyle = ButtonPrimaryTheme(family)
             valueLabelStyle = [
                 .textColor(Colors.Text.main),

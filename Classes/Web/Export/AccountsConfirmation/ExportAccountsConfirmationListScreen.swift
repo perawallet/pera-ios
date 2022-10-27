@@ -57,8 +57,8 @@ final class ExportAccountsConfirmationListScreen:
 
     private lazy var cancelActionView = MacaroonUIKit.Button()
 
-    private lazy var listLayout = ExportAccountsConfirmationListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = ExportAccountsConfirmationListDataSource(listView)
+    private lazy var listLayout = ExportAccountsConfirmationListLayout(listDataSource: listDataSource, hasSingularAccount: dataController.hasSingularAccount)
+    private lazy var listDataSource = ExportAccountsConfirmationListDataSource(listView, hasSingularAccount: dataController.hasSingularAccount)
 
     private lazy var navigationBarLargeTitleController =
         NavigationBarLargeTitleController(screen: self)
@@ -86,7 +86,10 @@ final class ExportAccountsConfirmationListScreen:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = "web-export-accounts-confirmation-list-title".localized
+        let title = dataController.hasSingularAccount ? "web-export-accounts-confirmation-list-title-singular".localized : "web-export-accounts-confirmation-list-title".localized
+
+        navigationBarLargeTitleController.title = title
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
     }
 
     override func viewDidLoad() {
@@ -181,6 +184,7 @@ extension ExportAccountsConfirmationListScreen {
         cancelActionView.frame.height +
         theme.actionMargins.bottom
 
+        additionalSafeAreaInsets.top = theme.navigationBarEdgeInset.top
         additionalSafeAreaInsets.bottom = inset
         listView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.listContentTopInset
     }

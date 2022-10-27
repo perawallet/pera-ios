@@ -44,7 +44,7 @@ extension SwapSummaryPriceImpactItemViewModel {
 
         value = priceImpact
             .doubleValue
-            .toPercentage?
+            .toPercentageWith(fractions: 3)?
             .bodyRegular()
     }
 }

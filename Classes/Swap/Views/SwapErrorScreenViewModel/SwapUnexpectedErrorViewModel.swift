@@ -37,25 +37,7 @@ extension SwapUnexpectedErrorViewModel {
     mutating func bindTitle(
         _ quote: SwapQuote
     ) {
-        guard let assetIn = quote.assetIn,
-              let assetOut = quote.assetOut else {
-            return
-        }
-
-        let assetInDisplayName =
-            assetIn.unitName ??
-            assetIn.name ??
-            "\(assetIn.id)"
-
-        let assetOutDisplayName =
-            assetOut.unitName ??
-            assetOut.name ??
-            "\(assetOut.id)"
-
-        let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
-        title = "swap-error-failed-title"
-            .localized(swapAssets)
-            .bodyLargeMedium(alignment: .center)
+        title = getTitle(from: quote)?.bodyLargeMedium(alignment: .center)
     }
 
     mutating func bindDetail() {

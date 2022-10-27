@@ -67,6 +67,8 @@ extension SwapAssetAmountOutInputViewModel {
             primaryValue = currencyFormatter
                 .format(amountOut.assetAmount(fromFraction: asset.decimals))?
                 .bodyLargeMedium()
+        } else {
+            primaryValue = "0.00".bodyLargeMedium()
         }
     }
 

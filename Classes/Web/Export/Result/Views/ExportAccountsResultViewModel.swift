@@ -22,10 +22,11 @@ struct ExportAccountsResultViewModel: ResultViewModel {
     private(set) var title: EditText?
     private(set) var body: EditText?
 
-    init() {
+    init(accounts: [Account]) {
+        let hasSingularAccount = accounts.isSingular
         bindIcon()
-        bindTitle()
-        bindBody()
+        bindTitle(hasSingularAccount: hasSingularAccount)
+        bindBody(hasSingularAccount: hasSingularAccount)
     }
 }
 
@@ -34,21 +35,13 @@ extension ExportAccountsResultViewModel {
         icon = "check"
     }
 
-    private mutating func bindTitle() {
-        title =
-            .attributedString(
-                "web-export-result-title"
-                    .localized
-                    .titleMedium()
-            )
+    private mutating func bindTitle(hasSingularAccount: Bool) {
+        let resultTitle = hasSingularAccount ? "web-export-result-title-singular".localized : "web-export-result-title".localized
+        title = .attributedString(resultTitle.titleMedium())
     }
 
-    private mutating func bindBody() {
-        body =
-            .attributedString(
-                "web-export-result-body"
-                    .localized
-                    .bodyRegular()
-            )
+    private mutating func bindBody(hasSingularAccount: Bool) {
+        let resultBody = hasSingularAccount ? "web-export-result-body-singular".localized : "web-export-result-body".localized
+        body = .attributedString(resultBody.bodyRegular())
     }
 }

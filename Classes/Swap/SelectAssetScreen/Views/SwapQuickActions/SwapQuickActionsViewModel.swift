@@ -54,13 +54,11 @@ struct SwapAdjustAmountQuickActionItem: SwapQuickActionItem {
         self.style = [
             .font(Typography.captionBold()),
             .icon([
-                .normal("swap-divider-customize-deactive-icon"),
-                .selected("swap-divider-customize-active-icon")
+                .normal("swap-divider-customize-active-icon")
             ]),
             .title(title.someString),
             .titleColor([
-                .normal(Colors.Text.gray),
-                .selected(Colors.Helpers.positive)
+                .normal(Colors.Helpers.positive)
             ])
         ]
         self.contentEdgeInsets = .init(top: 11, left: 16, bottom: 13, right: 12)
@@ -78,8 +76,7 @@ struct SwapSetMaxAmountQuickActionItem: SwapQuickActionItem {
             .title("send-transaction-max-button-title".localized),
             .font(Typography.captionBold()),
             .titleColor([
-                .normal(Colors.Text.gray),
-                .selected(Colors.Helpers.positive)
+                .normal(Colors.Helpers.positive)
             ])
         ]
         self.contentEdgeInsets = .init(top: 11, left: 12, bottom: 13, right: 16)

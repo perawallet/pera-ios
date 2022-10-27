@@ -85,6 +85,8 @@ final class ExportAccountsDomainConfirmationScreen:
         super.configureNavigationBar()
 
         navigationBarLargeTitleController.title = "web-export-accounts-domain-confirmation-title".localized
+        let offset = theme.contextEdgeInsets.top - theme.navigationBarEdgeInset.top
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = offset
     }
 
     override func prepareLayout() {
@@ -112,6 +114,12 @@ final class ExportAccountsDomainConfirmationScreen:
         addContext()
         addContinueAction()
     }
+
+    /// <note>
+    /// This function updates content inset when footer view is not empty
+    /// It keeps updating the content inset and it makes conflict between keyboard controller & footer view
+    /// It's empty because we are handling content inset with keyboard controller
+    override func updateScrollLayoutWhenViewDidLayoutSubviews() {}
 }
 
 extension ExportAccountsDomainConfirmationScreen {

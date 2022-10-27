@@ -39,18 +39,17 @@ final class ExportAccountDraft: JSONObjectBody {
     }
 
     func populate(accounts: [Account], with session: Session?) {
-        var tempAccounts: [[String: String]] = []
-
-        for account in accounts {
+        let tempAccounts: [[String: String]] = accounts.compactMap { account in
             guard let privateKey = session?.privateData(for: account.address) else {
-                continue
+                return nil
             }
 
             let bytes = privateKey.toBytes().map({ String($0) }).joined(separator: ",")
-            tempAccounts.append([
+
+            return [
                 APIParamKey.name.rawValue: account.name ?? "",
                 APIParamKey.privateKey.rawValue: bytes
-            ])
+            ]
         }
 
         self.accounts = tempAccounts
@@ -61,17 +60,26 @@ final class EncryptedExportAccountDraft: JSONObjectBody {
     let draft: ExportAccountDraft
     let qrExportInformations: QRExportInformations
 
-    private lazy var encryptedContent: String? = {
-        if let encodedContent = try? draft.encoded() {
-            let cryptor = Cryptor(key: qrExportInformations.encryptionKey)
+    private(set) var encryptionError: EncryptionError?
 
-            if let encryptedContent = cryptor.encrypt(data: encodedContent) {
-                let content = encryptedContent.toBytes().map({ String($0) }).joined(separator: ",")
+    private(set) lazy var encryptedContent: String? = {
+        do {
+            let encodedContent = try draft.encoded()
+            let cryptor = Cryptor(key: qrExportInformations.encryptionKey)
+            let encryptedContent = cryptor.encrypt(data: encodedContent)
+
+            if let data = encryptedContent.data {
+                let content = data.toBytes().map({ String($0) }).joined(separator: ",")
+                self.encryptionError = .noError
                 return content
             }
-        }
 
-        return nil
+            self.encryptionError = encryptedContent.error
+            return nil
+        } catch {
+            self.encryptionError = .unknown
+            return nil
+        }
     }()
 
     var bodyParams: [APIBodyParam] {

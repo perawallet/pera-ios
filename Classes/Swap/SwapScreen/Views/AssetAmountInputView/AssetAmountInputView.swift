@@ -24,6 +24,10 @@ final class AssetAmountInputView:
     UITextFieldDelegate {
     weak var delegate: AssetAmountInputViewDelegate?
 
+    var currentAmount: String? {
+        return amountInputView.text
+    }
+
     private lazy var iconView = URLImageView()
     private lazy var amountInputView = TextField()
     private lazy var detailView = UILabel()
@@ -81,6 +85,12 @@ final class AssetAmountInputView:
 
     func endEditing() {
         amountInputView.resignFirstResponder()
+    }
+
+    func updateInput(
+        _ input: String?
+    ) {
+        amountInputView.text = input
     }
 }
 

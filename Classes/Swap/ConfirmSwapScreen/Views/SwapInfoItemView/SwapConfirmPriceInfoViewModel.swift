@@ -24,12 +24,19 @@ struct SwapConfirmPriceInfoViewModel: SwapInfoItemViewModel {
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindIcon()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            isPriceReversed: false,
+            currencyFormatter: currencyFormatter
+        )
         bindAction()
     }
 }
@@ -46,11 +53,44 @@ extension SwapConfirmPriceInfoViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        isPriceReversed: Bool,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let price = quote.price else { return }
+        guard let amountIn = quote.amountIn,
+              let amountOut = quote.amountOut,
+              let assetIn = quote.assetIn,
+              let assetOut = quote.assetOut else {
+            return
+        }
 
-        detail = "\(price)".footnoteRegular()
+        let amountInDecimal = swapAssetValueFormatter.getDecimalAmount(
+            of: amountIn,
+            for: assetIn
+        )
+        let amountOutDecimal = swapAssetValueFormatter.getDecimalAmount(
+            of: amountOut,
+            for: assetOut
+        )
+        let priceValue = isPriceReversed ? amountInDecimal / amountOutDecimal : amountOutDecimal / amountInDecimal
+        let firstAsset = !isPriceReversed ? assetOut: assetIn
+        let secondAsset = !isPriceReversed ? assetIn: assetOut
+        let firstAssetDisplayName = swapAssetValueFormatter.getAssetDisplayName(firstAsset)
+        let secondAssetDisplayName = swapAssetValueFormatter.getAssetDisplayName(secondAsset)
+
+        guard let formattedAmount = swapAssetValueFormatter.getFormattedAssetAmount(
+            decimalAmount: priceValue,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: firstAsset.decimals
+        ) else {
+            return
+        }
+
+        let assetText = "\(formattedAmount) \(firstAssetDisplayName)"
+        detail = "swap-confirm-price-info"
+            .localized(
+                params: assetText, secondAssetDisplayName
+            ).footnoteRegular()
     }
 
     mutating func bindAction() {

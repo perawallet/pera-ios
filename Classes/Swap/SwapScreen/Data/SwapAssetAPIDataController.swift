@@ -53,8 +53,8 @@ final class SwapAssetAPIDataController:
     private var quote: SwapQuote? {
         return swapController.quote
     }
-    private var provider: SwapProvider {
-        return swapController.provider
+    private var providers: [SwapProvider] {
+        return swapController.providers
     }
     private var swapType: SwapType {
         return swapController.swapType
@@ -94,7 +94,7 @@ extension SwapAssetAPIDataController {
         }
 
         let draft = SwapQuoteDraft(
-            providers: [provider],
+            providers: providers,
             swapperAddress: account.address,
             type: swapType,
             deviceID: deviceID,
@@ -104,6 +104,8 @@ extension SwapAssetAPIDataController {
             slippage: swapController.slippage
         )
 
+        eventHandler?(.willLoadQuote)
+        
         quoteThrottler.performNext {
             [weak self] in
             guard let self = self else { return }
@@ -119,8 +121,6 @@ extension SwapAssetAPIDataController {
             currentQuoteEndpoint = nil
             currentQuoteEndpoint?.cancel()
         }
-
-        eventHandler?(.willLoadQuote)
 
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
@@ -140,35 +140,6 @@ extension SwapAssetAPIDataController {
                     apiErrorDetail: hipApiError
                 )
                 self.eventHandler?(.didFailToLoadQuote(error))
-            }
-        }
-    }
-}
-
-extension SwapAssetAPIDataController {
-    func calculatePeraSwapFee(
-        balance: UInt64
-    ) {
-        let draft = PeraSwapFeeDraft(
-            assetID: userAsset.id,
-            amount: balance
-        )
-
-        eventHandler?(.willLoadPeraFee)
-
-        api.calculatePeraSwapFee(draft) {
-            [weak self] response in
-            guard let self = self else { return }
-
-            switch response {
-            case .success(let feeResult):
-                self.eventHandler?(.didLoadPeraFee(feeResult))
-            case .failure(let apiError, let hipApiError):
-                let error = HIPNetworkError(
-                    apiError: apiError,
-                    apiErrorDetail: hipApiError
-                )
-                self.eventHandler?(.didFailToLoadPeraFee(error))
             }
         }
     }

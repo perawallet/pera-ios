@@ -23,11 +23,15 @@ struct SwapConfirmPeraFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var action: Image?
 
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindIcon()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindAction()
     }
 }
@@ -44,10 +48,16 @@ extension SwapConfirmPeraFeeInfoViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let peraFee = quote.peraFee?.toAlgos else { return }
-        detail = "\(peraFee)".footnoteRegular() /// <todo> Will handle formatting when the flow is completed.
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+        detail = currencyFormatter
+            .format(peraFee)?
+            .footnoteRegular()
     }
 
     mutating func bindAction() {

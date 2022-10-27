@@ -38,20 +38,20 @@ final class SelectSwapPoolAssetDataController:
 
     private(set) var account: Account
     private let userAsset: AssetID
-    private let swapProvider: SwapProvider
+    private let swapProviders: [SwapProvider]
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
     init(
         account: Account,
         userAsset: AssetID,
-        swapProvider: SwapProvider,
+        swapProviders: [SwapProvider],
         api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
         self.account = account
         self.userAsset = userAsset
-        self.swapProvider = swapProvider
+        self.swapProviders = swapProviders
         self.api = api
         self.sharedDataController = sharedDataController
 
@@ -113,7 +113,7 @@ extension SelectSwapPoolAssetDataController {
 
         let draft = AvailablePoolAssetsQuery(
             assetID: userAsset,
-            providers: [swapProvider],
+            providers: swapProviders,
             query: query
         )
 

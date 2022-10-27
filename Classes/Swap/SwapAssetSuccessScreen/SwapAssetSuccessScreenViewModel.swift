@@ -21,11 +21,19 @@ struct SwapAssetSuccessScreenViewModel {
     private(set) var title: TextProvider?
     private(set) var detail: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedSwapTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(quote)
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            parsedSwapTransactions: parsedSwapTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -38,16 +46,8 @@ extension SwapAssetSuccessScreenViewModel {
             return
         }
 
-        let assetInDisplayName =
-            assetIn.unitName ??
-            assetIn.name ??
-            "\(assetIn.id)"
-
-        let assetOutDisplayName =
-            assetOut.unitName ??
-            assetOut.name ??
-            "\(assetOut.id)"
-
+        let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        let assetOutDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
         let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
         title = "swap-success-title"
             .localized(params: swapAssets)
@@ -55,31 +55,59 @@ extension SwapAssetSuccessScreenViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedSwapTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let amountIn = quote.amountIn,
-              let amountOut = quote.amountOutWithSlippage,
               let assetIn = quote.assetIn,
               let assetOut = quote.assetOut else {
             return
         }
 
-        let assetInDisplayName =
-            assetIn.unitName ??
-            assetIn.name ??
-            "\(assetIn.id)"
+        let swapTransaction = parsedSwapTransactions.first { $0.purpose == .swap }
+        guard let amountOut = swapTransaction?.receivedAmount else { return }
 
-        let assetOutDisplayName =
-            assetOut.unitName ??
-            assetOut.name ??
-            "\(assetOut.id)"
+        var constraintRules = CurrencyFormattingContextRules()
+        constraintRules.maximumFractionDigits = assetOut.decimals
+        currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+        currencyFormatter.currency = nil
+        let amountOutDecimalAmount = amountOut.assetAmount(fromFraction: assetOut.decimals)
+        guard let amountOutText = currencyFormatter.format(amountOutDecimalAmount) else { return }
 
-        /// <todo> Update display formatting when the flow is completed.
-        let amountInDisplay = "\(amountIn) \(assetInDisplayName)"
-        let amountOutDisplay = "\(amountOut) \(assetOutDisplayName)"
+        constraintRules.maximumFractionDigits = assetIn.decimals
+        currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+        currencyFormatter.currency = nil
+        let amountInDecimalAmount = amountIn.assetAmount(fromFraction: assetIn.decimals)
+        guard let amountInText = currencyFormatter.format(amountInDecimalAmount) else { return }
 
-        detail = "swap-success-detail"
-            .localized(params: amountInDisplay, amountOutDisplay)
-            .bodyRegular(alignment: .center)
+        let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        let assetOutDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
+
+        let amountOutDisplay = "\(amountOutText) \(assetOutDisplayName)"
+        let amountInDisplay = "\(amountInText) \(assetInDisplayName)"
+        let fullText = "swap-success-detail".localized(params: amountOutDisplay, amountInDisplay)
+
+        let textAttributes = NSMutableAttributedString(
+            attributedString: fullText.bodyRegular(alignment: .center, lineBreakMode: .byWordWrapping)
+        )
+
+        var highlightedTextAttributes = Typography.bodyRegularAttributes(lineBreakMode: .byWordWrapping)
+        highlightedTextAttributes.insert(.textColor(Colors.Text.main))
+
+        let amountInDisplayRange = (textAttributes.string as NSString).range(of: amountInDisplay)
+        let amountOutDisplayRange = (textAttributes.string as NSString).range(of: amountOutDisplay)
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: amountInDisplayRange
+        )
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: amountOutDisplayRange
+        )
+
+        detail = textAttributes
     }
 }

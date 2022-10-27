@@ -21,11 +21,19 @@ struct SwapSummaryReceivedItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var formatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -37,8 +45,46 @@ extension SwapSummaryReceivedItemViewModel {
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        /// <todo> Will be set when the sign & send is completed.
+        guard let assetOut = quote.assetOut else { return }
+
+        let totalReceivedAmount = parsedTransactions.reduce(0, { $0 + $1.receivedAmount })
+
+        let decimalAmount = formatter.getDecimalAmount(
+            of: totalReceivedAmount,
+            for: assetOut
+        )
+
+        if assetOut.isAlgo {
+            guard let amountText = formatter.getFormattedAlgoAmount(
+                decimalAmount: decimalAmount,
+                currencyFormatter: currencyFormatter
+            ) else {
+                return
+            }
+
+            var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byWordWrapping)
+            attributes.insert(.textColor(Colors.Helpers.positive))
+
+            value = "~+\(amountText)".attributed(attributes)
+            return
+        }
+
+        let assetOutDisplayName = formatter.getAssetDisplayName(assetOut)
+        guard let amountText = formatter.getFormattedAssetAmount(
+            decimalAmount: decimalAmount,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: assetOut.decimals
+        ) else {
+            return
+        }
+
+        var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byWordWrapping)
+        attributes.insert(.textColor(Colors.Helpers.positive))
+
+        value = "~+\(amountText) \(assetOutDisplayName)".attributed(attributes)
     }
 }

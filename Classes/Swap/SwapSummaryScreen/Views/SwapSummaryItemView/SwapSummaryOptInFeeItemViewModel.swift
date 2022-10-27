@@ -21,11 +21,19 @@ struct SwapSummaryOptInFeeItemViewModel: SwapSummaryItemViewModel {
     private(set) var title: TextProvider?
     private(set) var value: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
-        bindValue(quote)
+        bindValue(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -37,8 +45,16 @@ extension SwapSummaryOptInFeeItemViewModel {
     }
 
     mutating func bindValue(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        /// <todo> Will be set when the sign & send is completed.
+        let optInTransactins = parsedTransactions.filter { $0.purpose == .optIn }
+        let totalOptInFees = optInTransactins.reduce(0, { $0 + $1.allFees }).toAlgos
+
+        value = swapAssetValueFormatter.getFormattedAlgoAmount(
+            decimalAmount: totalOptInFees,
+            currencyFormatter: currencyFormatter
+        )?.bodyRegular()
     }
 }

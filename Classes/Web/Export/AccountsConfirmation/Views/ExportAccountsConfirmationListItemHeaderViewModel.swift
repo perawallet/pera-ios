@@ -23,8 +23,10 @@ struct ExportAccountsConfirmationListItemHeaderViewModel:
     Hashable {
     private(set) var title: EditText?
     private(set) var titleStyle: TextStyle?
+    private let hasSingularAccount: Bool
 
-    init() {
+    init(hasSingularAccount: Bool) {
+        self.hasSingularAccount = hasSingularAccount
         bindTitle()
         bindTitleStyle()
     }
@@ -32,12 +34,9 @@ struct ExportAccountsConfirmationListItemHeaderViewModel:
 
 extension ExportAccountsConfirmationListItemHeaderViewModel {
     mutating func bindTitle() {
-        self.title =
-            .attributedString(
-                "web-export-account-confirmation-list-description"
-                    .localized
-                    .bodyRegular()
-        )
+        let listTitle = hasSingularAccount ? "web-export-account-confirmation-list-description-singular".localized : "web-export-account-confirmation-list-description".localized
+
+        self.title = .attributedString(listTitle.localized.bodyRegular())
     }
 
     mutating func bindTitleStyle() {

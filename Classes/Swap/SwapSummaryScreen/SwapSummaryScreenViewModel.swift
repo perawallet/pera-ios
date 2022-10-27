@@ -30,31 +30,67 @@ struct SwapSummaryScreenViewModel: ViewModel {
 
     init(
         account: Account,
-        quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        bindReceivedInfo(quote)
-        bindPaidInfo(quote)
+        bindReceivedInfo(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
+        bindPaidInfo(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
         bindStatusInfo()
         bindAccountInfo(account)
-        bindAlgorandFeeInfo(quote)
-        bindOptInFeeInfo(quote)
-        bindExchangeFeeInfo(quote)
-        bindPeraFeeInfo(quote)
+        bindAlgorandFeeInfo(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
+        bindOptInFeeInfo(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
+        bindExchangeFeeInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
+        bindPeraFeeInfo(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindPriceImpactInfo(quote)
     }
 }
 
 extension SwapSummaryScreenViewModel {
     mutating func bindReceivedInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        receivedInfo = SwapSummaryReceivedItemViewModel(quote)
+        receivedInfo = SwapSummaryReceivedItemViewModel(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindPaidInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        paidInfo = SwapSummaryPaidItemViewModel(quote)
+        paidInfo = SwapSummaryPaidItemViewModel(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindStatusInfo() {
@@ -68,28 +104,52 @@ extension SwapSummaryScreenViewModel {
     }
 
     mutating func bindAlgorandFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        exchangeFeeInfo = SwapSummaryAlgorandFeeItemViewModel(quote)
+        algorandFeeInfo = SwapSummaryAlgorandFeeItemViewModel(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindOptInFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
+        currencyFormatter: CurrencyFormatter
     ) {
-        /// <todo> Will be set nil if needed when the flow is completed.
-        exchangeFeeInfo = SwapSummaryOptInFeeItemViewModel(quote)
+        let containsOptInTransaction = parsedTransactions.contains { $0.purpose == .optIn }
+        if !containsOptInTransaction {
+            return
+        }
+
+        optInFeeInfo = SwapSummaryOptInFeeItemViewModel(
+            quote: quote,
+            parsedTransactions: parsedTransactions,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindExchangeFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        exchangeFeeInfo = SwapSummaryExchangeFeeItemViewModel(quote)
+        exchangeFeeInfo = SwapSummaryExchangeFeeItemViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindPeraFeeInfo(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        peraFeeInfo = SwapSummaryPeraFeeItemViewModel(quote)
+        peraFeeInfo = SwapSummaryPeraFeeItemViewModel(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     mutating func bindPriceImpactInfo(

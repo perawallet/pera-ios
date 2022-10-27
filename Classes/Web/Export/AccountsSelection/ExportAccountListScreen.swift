@@ -82,6 +82,7 @@ final class ExportAccountListScreen:
         super.configureNavigationBarAppearance()
 
         navigationBarLargeTitleController.title = "web-export-account-list-title".localized
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
     }
 
     override func viewDidLoad() {
@@ -100,6 +101,7 @@ final class ExportAccountListScreen:
                     animatingDifferences: false
                 )
                 self.updateActionButton()
+                self.selectAllAccountsIfNeeded()
             }
         }
 
@@ -175,6 +177,7 @@ extension ExportAccountListScreen {
             theme.continueActionContentEdgeInsets.bottom
 
         additionalSafeAreaInsets.bottom = inset
+        additionalSafeAreaInsets.top = theme.navigationBarEdgeInset.top
 
         listView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.listContentTopInset
     }
@@ -373,8 +376,14 @@ extension ExportAccountListScreen {
         willDisplay cell: ExportAccountListAccountCell,
         forItemAt indexPath: IndexPath
     ) {
+        guard !dataController.hasSingleAccount else {
+            cell.accessory = .none
+            return
+        }
+
         let index = indexPath.row.advanced(by: -1)
         let isSelected = dataController.isAccountSelected(at: index)
+
         cell.accessory = isSelected ? .selected : .unselected
     }
 }
@@ -396,6 +405,13 @@ extension ExportAccountListScreen {
 }
 
 extension ExportAccountListScreen {
+    private func selectAllAccountsIfNeeded() {
+        if dataController.hasSingleAccount {
+            dataController.selectAllAccountsItems()
+            toggleContinueActionStateIfNeeded()
+        }
+    }
+
     private func selectAllAccounts() {
         listView.indexPathsForVisibleItems.forEach { indexPath in
             let item = listDataSource.itemIdentifier(for: indexPath)
@@ -437,6 +453,10 @@ extension ExportAccountListScreen {
     private func toggleAccountSelection(
         at indexPath: IndexPath
     ) {
+        guard !dataController.hasSingleAccount else {
+            return
+        }
+
         let cell = listView.cellForItem(at: indexPath) as! ExportAccountListAccountCell
         let index = indexPath.row.advanced(by: -1)
         let isSelected = cell.accessory == .selected

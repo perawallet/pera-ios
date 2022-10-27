@@ -20,25 +20,61 @@ import CryptoSwift
 import AlgoSDK
 
 final class Cryptor {
+    typealias EncryptionData = (data: Data?, error: EncryptionError?)
     let key: String
 
     init(key: String) {
         self.key = key
     }
 
-    func encrypt(data: Data) -> Data? {
+    func encrypt(data: Data) -> EncryptionData {
         let encryptedContent = AlgoMobileEncrypt(data, generateKeyData())
-        return encryptedContent?.encryptedData
+        let error = EncryptionError(rawValue: encryptedContent?.errorCode ?? EncryptionError.unknown.rawValue)
+        return (encryptedContent?.encryptedData, error)
     }
 
-    func decrypt(data: Data) -> Data? {
+    func decrypt(data: Data) -> EncryptionData? {
         let decryptedContent = AlgoMobileDecrypt(data, generateKeyData())
-        return decryptedContent?.decryptedData
+        let error = EncryptionError(rawValue: decryptedContent?.errorCode ?? EncryptionError.unknown.rawValue)
+        return (decryptedContent?.decryptedData, error)
     }
 
     private func generateKeyData() -> Data {
         let data = key.convertToByteArray(using: ",")
 
         return Data(bytes: data)
+    }
+}
+
+enum EncryptionError: Int {
+    // ErrorCode Descriptions
+    // 0 => No Error
+    // 1 => Invalid SecretKey
+    // 2 => Random Generator Error
+    // 3 => Invalid encrypted data length
+    // 4 => Decryption error
+
+    case noError = 0
+    case invalidSecretKey = 1
+    case invalidRandomGenerator = 2
+    case invalidEncryptedData = 3
+    case decryptionError = 4
+    case unknown
+
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 0:
+            self = .noError
+        case 1:
+            self = .invalidSecretKey
+        case 2:
+            self = .invalidRandomGenerator
+        case 3:
+            self = .invalidEncryptedData
+        case 4:
+            self = .decryptionError
+        default:
+            self = .unknown
+        }
     }
 }

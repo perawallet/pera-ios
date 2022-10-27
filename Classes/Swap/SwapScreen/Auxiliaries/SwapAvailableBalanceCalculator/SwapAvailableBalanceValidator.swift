@@ -42,10 +42,10 @@ enum SwapAvailableBalanceValidatorEvent {
 }
 
 enum SwapAssetValidationError: Error {
-    case assetInNotAvailable
-    case assetOutNotAvailable
+    typealias Balance = UInt64
+
     case amountInNotAvailable
-    case insufficientAlgoBalance
-    case insufficientAssetBalance
+    case insufficientAlgoBalance(Balance)
+    case insufficientAssetBalance(Balance)
     case unavailablePeraFee(SwapAssetDataController.Error?)
 }

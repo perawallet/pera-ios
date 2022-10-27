@@ -30,14 +30,10 @@ protocol SwapAssetDataController: AnyObject {
     var eventHandler: EventHandler? { get set }
 
     func loadQuote(swapAmount: UInt64)
-    func calculatePeraSwapFee(balance: UInt64)
 }
 
 enum SwapAssetDataControllerEvent {
     case willLoadQuote
     case didLoadQuote(SwapQuote)
     case didFailToLoadQuote(SwapAssetDataController.Error)
-    case willLoadPeraFee
-    case didLoadPeraFee(PeraSwapFee)
-    case didFailToLoadPeraFee(SwapAssetDataController.Error)
 }

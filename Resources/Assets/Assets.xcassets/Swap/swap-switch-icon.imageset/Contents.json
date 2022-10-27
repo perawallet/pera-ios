@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "repeat.pdf",
+      "filename" : "swap-switch-icon.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "repeat-1.pdf",
+      "filename" : "swap-switch-icon 1.pdf",
       "idiom" : "universal"
     }
   ],

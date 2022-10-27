@@ -53,6 +53,10 @@ extension ExportAccountListLocalDataController {
         return !accounts.isEmpty
     }
 
+    var hasSingleAccount: Bool {
+        return accounts.isSingular
+    }
+
     func getSelectedAccounts() -> [Account] {
         return selectedAccounts.values.elements
     }
@@ -118,8 +122,8 @@ extension ExportAccountListLocalDataController {
                 .sortedAccounts()
                 .filter {
                     let isWatchAccount = $0.value.isWatchAccount()
-                    let isRekeyedAccount = $0.value.isRekeyed()
-                    return !isWatchAccount && !isRekeyedAccount
+                    let requiresLedgerConnection = $0.value.requiresLedgerConnection()
+                    return !isWatchAccount && !requiresLedgerConnection
                 }.map {
                     $0.value
                 }

@@ -27,6 +27,12 @@ protocol ExportAccountsConfirmationListDataController: AnyObject {
     func load()
 }
 
+extension ExportAccountsConfirmationListDataController {
+    var hasSingularAccount: Bool {
+        selectedAccounts.isSingular
+    }
+}
+
 enum ExportAccountsConfirmationListSectionIdentifier:
     Hashable {
     case accounts

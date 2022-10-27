@@ -50,6 +50,7 @@ struct ExportAccountListItemCellTheme:
         switch accessory {
         case .selected: return selectedAccessory
         case .unselected: return unselectedAccessory
+        case .none: return []
         }
     }
 }

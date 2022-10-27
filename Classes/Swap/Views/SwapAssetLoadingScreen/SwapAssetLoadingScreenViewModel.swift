@@ -22,6 +22,8 @@ struct SwapAssetLoadingScreenViewModel: LoadingScreenViewModel {
     private(set) var title: TextProvider?
     private(set) var detail: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
         quote: SwapQuote,
         currencyFormatter: CurrencyFormatter
@@ -55,23 +57,36 @@ extension SwapAssetLoadingScreenViewModel {
             return
         }
 
-        let assetOutDisplayName =
-            assetOut.unitName ??
-            assetOut.name ??
-            "\(assetOut.id)"
+        let assetOutDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
+            of: amountOut,
+            for: assetOut
+        )
 
         var constraintRules = CurrencyFormattingContextRules()
         constraintRules.maximumFractionDigits = assetOut.decimals
         currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
         currencyFormatter.currency = nil
 
-        let decimalAmount = amountOut.assetAmount(fromFraction: assetOut.decimals)
         guard let amountText = currencyFormatter.format(decimalAmount) else { return }
 
         let assetText = "\(amountText) \(assetOutDisplayName)"
 
-        detail = "swap-loading-detail"
-            .localized(params: assetText)
-            .bodyRegular(alignment: .center)
+        let fullText = "swap-loading-detail".localized(params: assetText).localized
+        let textAttributes = NSMutableAttributedString(
+            attributedString: fullText.bodyRegular(alignment: .center, lineBreakMode: .byWordWrapping)
+        )
+
+        var highlightedTextAttributes = Typography.bodyRegularAttributes(lineBreakMode: .byWordWrapping)
+        highlightedTextAttributes.insert(.textColor(Colors.Text.main))
+
+        let highlightedTextRange = (textAttributes.string as NSString).range(of: assetText)
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: highlightedTextRange
+        )
+
+        detail = textAttributes
     }
 }

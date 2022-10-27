@@ -15,12 +15,15 @@
 //   ConfirmSwapScreen.swift
 
 import MacaroonUIKit
+import MagpieExceptions
+import MagpieHipo
 import UIKit
 
 final class ConfirmSwapScreen: BaseScrollViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
@@ -36,24 +39,30 @@ final class ConfirmSwapScreen: BaseScrollViewController {
         return LoadingButton(loadingIndicator: loadingIndicator)
     }()
 
+    private var viewModel: ConfirmSwapScreenViewModel?
+    private var isPriceReversed = false
+
     private let currencyFormatter: CurrencyFormatter
     private let dataController: ConfirmSwapDataController
+    private let copyToClipboardController: CopyToClipboardController
     private let theme: ConfirmSwapScreenTheme
 
     init(
         dataController: ConfirmSwapDataController,
+        copyToClipboardController: CopyToClipboardController,
         theme: ConfirmSwapScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
         self.theme = theme
         super.init(configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        title = "swap-confirm-title".localized
+        addNavigationTitle()
     }
 
     override func configureAppearance() {
@@ -63,25 +72,7 @@ final class ConfirmSwapScreen: BaseScrollViewController {
 
     override func setListeners() {
         super.setListeners()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .willUpdateSlippage: break
-            case .didUpdateSlippage(let quote):
-                self.confirmActionView.stopLoading()
-            case .didFailToUpdateSlippage(let error):
-                self.confirmActionView.stopLoading()
-            case .willPrepareTransactions: break
-            case .didPrepareTransactions(let swapTransactionPreparation):
-                self.confirmActionView.stopLoading()
-                self.eventHandler?(.didTapConfirm(swapTransactionPreparation))
-            case .didFailToPrepareTransactions(let error):
-                self.confirmActionView.stopLoading()
-            }
-        }
+        registerDataControllerEvents()
     }
 
     override func prepareLayout() {
@@ -101,6 +92,56 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     override func bindData() {
         super.bindData()
         bindData(dataController.quote)
+    }
+}
+
+extension ConfirmSwapScreen {
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        let draft = AccountNameTitleDraft(
+            title: "swap-confirm-title".localized,
+            account: dataController.account
+        )
+
+        let viewModel = AccountNameTitleViewModel(draft)
+        navigationTitleView.bindData(viewModel)
+    }
+}
+
+extension ConfirmSwapScreen {
+    private func registerDataControllerEvents() {
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .willUpdateSlippage:
+                self.updateUIWhenWillUpdateSlippage()
+            case .didUpdateSlippage(let quote):
+                self.updateUIWhenDidUpdateSlippage(quote)
+            case .didFailToUpdateSlippage(let error):
+                self.updateUIWhenDidFailToUpdateSlippage(error)
+            case .willPrepareTransactions:
+                self.updateUIWhenWillPrepareTransactions()
+            case .didPrepareTransactions(let swapTransactionPreparation):
+                self.updateUIWhenDidPrepareTransactions(swapTransactionPreparation)
+            case .didFailToPrepareTransactions(let error):
+                self.updateUIWhenDidFailToPrepareTransactions(error)
+            }
+        }
     }
 }
 
@@ -162,6 +203,7 @@ extension ConfirmSwapScreen {
             [weak self] in
             guard let self = self else { return }
 
+            self.switchPriceValuePresentation()
         }
     }
 
@@ -280,31 +322,100 @@ extension ConfirmSwapScreen {
 }
 
 extension ConfirmSwapScreen {
+    private func updateUIWhenWillUpdateSlippage() {
+        confirmActionView.startLoading()
+    }
+
+    private func updateUIWhenDidUpdateSlippage(
+        _ quote: SwapQuote
+    ) {
+        confirmActionView.stopLoading()
+        bannerController?.presentSuccessBanner(title: "swap-confirm-slippage-updated-title".localized)
+        bindData(quote)
+    }
+
+    private func updateUIWhenDidFailToUpdateSlippage(
+        _ error: HIPNetworkError<HIPAPIError>
+    ) {
+        confirmActionView.stopLoading()
+        displayError(error.prettyDescription)
+    }
+
+    private func updateUIWhenWillPrepareTransactions() {
+        confirmActionView.startLoading()
+    }
+
+    private func updateUIWhenDidPrepareTransactions(
+        _ swapTransactionPreparation: SwapTransactionPreparation
+    ) {
+        confirmActionView.stopLoading()
+        eventHandler?(.didTapConfirm(swapTransactionPreparation))
+    }
+
+    private func updateUIWhenDidFailToPrepareTransactions(
+        _ error: HIPNetworkError<HIPAPIError>
+    ) {
+        confirmActionView.stopLoading()
+        displayError(error.prettyDescription)
+    }
+}
+
+extension ConfirmSwapScreen {
     func bindData(
         _ quote: SwapQuote
     ) {
-        let viewModel = ConfirmSwapScreenViewModel(
+        viewModel = ConfirmSwapScreenViewModel(
             quote: quote,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
         )
-        userAssetView.bindData(viewModel.userAsset)
-        toSeparatorView.bindData(viewModel.toSeparator)
-        poolAssetView.bindData(viewModel.poolAsset)
-        priceInfoView.bindData(viewModel.priceInfo)
-        slippageInfoView.bindData(viewModel.slippageInfo)
-        priceImpactInfoView.bindData(viewModel.priceImpactInfo)
-        minimumReceivedInfoView.bindData(viewModel.minimumReceivedInfo)
-        exchangeFeeInfoView.bindData(viewModel.exchangeFeeInfo)
-        peraFeeInfoView.bindData(viewModel.peraFeeInfo)
+        userAssetView.bindData(viewModel?.userAsset)
+        toSeparatorView.bindData(viewModel?.toSeparator)
+        poolAssetView.bindData(viewModel?.poolAsset)
+        priceInfoView.bindData(viewModel?.priceInfo)
+        slippageInfoView.bindData(viewModel?.slippageInfo)
+        priceImpactInfoView.bindData(viewModel?.priceImpactInfo)
+        minimumReceivedInfoView.bindData(viewModel?.minimumReceivedInfo)
+        exchangeFeeInfoView.bindData(viewModel?.exchangeFeeInfo)
+        peraFeeInfoView.bindData(viewModel?.peraFeeInfo)
+    }
+
+    private func switchPriceValuePresentation() {
+        guard var priceInfoViewModel = viewModel?.priceInfo as? SwapConfirmPriceInfoViewModel else { return }
+
+        isPriceReversed.toggle()
+
+        priceInfoViewModel.bindDetail(
+            quote: dataController.quote,
+            isPriceReversed: isPriceReversed,
+            currencyFormatter: currencyFormatter
+        )
+        priceInfoView.bindData(priceInfoViewModel)
+    }
+
+    private func displayError(
+        _ message: String
+    ) {
+        bannerController?.presentErrorBanner(
+            title: "swap-confirm-failed-title".localized,
+            message: message
+        )
     }
 }
 
 extension ConfirmSwapScreen {
     @objc
+    private func copyAccountAddress(
+        _ recognizer: UILongPressGestureRecognizer
+    ) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(dataController.account)
+        }
+    }
+
+    @objc
     private func confirmSwap() {
         dataController.confirmSwap()
-        confirmActionView.startLoading()
     }
 }
 

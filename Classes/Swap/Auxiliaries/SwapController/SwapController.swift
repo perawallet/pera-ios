@@ -29,13 +29,15 @@ protocol SwapController {
     var slippage: SwapSlippage { get set }
     var account: Account { get set }
     var swapType: SwapType { get }
-    var provider: SwapProvider { get }
+    var providers: [SwapProvider] { get }
+    var parsedTransactions: [ParsedSwapTransaction] { get }
 
     func signTransactions(_ transactions: [SwapTransactionGroup])
 }
 
 enum SwapControllerEvent {
     case didSignTransaction
+    case didSignAllTransactions
     case didCompleteSwap
     case didFailTransaction(TxnID)
     case didFailNetwork(Error)

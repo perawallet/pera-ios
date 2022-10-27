@@ -14,6 +14,7 @@
 
 //   SwapConfirmExchangeFeeInfoViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 struct SwapConfirmExchangeFeeInfoViewModel: SwapInfoItemViewModel {
@@ -22,12 +23,18 @@ struct SwapConfirmExchangeFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindTitle()
         bindIcon()
-        bindDetail(quote)
+        bindDetail(
+            quote: quote,
+            currencyFormatter: currencyFormatter
+        )
         bindAction()
     }
 }
@@ -44,10 +51,39 @@ extension SwapConfirmExchangeFeeInfoViewModel {
     }
 
     mutating func bindDetail(
-        _ quote: SwapQuote
+        quote: SwapQuote,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let exchangeFee = quote.exchangeFee?.toAlgos else { return }
-        detail = "\(exchangeFee)".footnoteRegular() /// <todo> Will handle formatting when the flow is completed.
+        guard let assetIn = quote.assetIn,
+              let exchangeFee = quote.exchangeFee else {
+            return
+        }
+
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
+            of: exchangeFee,
+            for: assetIn
+        )
+
+        if assetIn.isAlgo {
+            detail =
+                swapAssetValueFormatter.getFormattedAlgoAmount(
+                    decimalAmount: decimalAmount,
+                    currencyFormatter: currencyFormatter
+                )?
+                .footnoteRegular()
+            return
+        }
+
+        let assetInDisplayName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        guard let formattedAmount = swapAssetValueFormatter.getFormattedAssetAmount(
+            decimalAmount: decimalAmount,
+            currencyFormatter: currencyFormatter,
+            maximumFractionDigits: assetIn.decimals
+        ) else {
+            return
+        }
+
+        detail = "~\(formattedAmount) \(assetInDisplayName)".footnoteRegular()
     }
 
     mutating func bindAction() {

@@ -96,12 +96,19 @@ extension ExportAccountListAccountCell {
     private func updateAccessoryIfNeeded(old: ExportAccountListItemAccessory) {
         if accessory != old {
             updateAccessory()
+            hideSeparatorIfNeeded()
         }
     }
 
     private func updateAccessory() {
         let style = Self.theme[accessory]
         accessoryView.customizeAppearance(style)
+    }
+
+    private func hideSeparatorIfNeeded() {
+        if accessory == .none {
+            separatorStyle = .none
+        }
     }
 
     private func addSeparator() {

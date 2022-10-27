@@ -22,17 +22,20 @@ enum SwapProvider:
     Codable,
     Equatable {
     case tinyman
+    case tinymanV2
     case unknown(String)
 
     var rawValue: String {
         switch self {
         case .tinyman: return "tinyman"
+        case .tinymanV2: return "tinyman-v2"
+
         case .unknown(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .tinyman
+        .tinyman, .tinymanV2
     ]
 
     init() {
