@@ -45,14 +45,37 @@ final class SwapAssetScreen:
         return LoadingButton(loadingIndicator: loadingIndicator)
     }()
 
-    private lazy var balancePercentageValidator = SwapAvailableBalancePercentageValidator(dataController: dataController)
+    private lazy var balancePercentageValidator = SwapAvailableBalancePercentageValidator(
+        account: dataController.account,
+        api: api!
+    )
     private lazy var quoteValidator =  SwapAvailableBalanceQuoteValidator(account: dataController.account)
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
+
+    private var currentInputAsInt: UInt64? {
+        if let userAmountString = userAssetView.currentAmount,
+           let amountInDecimal = Decimal(string: userAmountString) {
+            return amountInDecimal.toFraction(of: dataController.userAsset.decimals)
+        }
+
+        return nil
+    }
+
+    private var currentOutputAsInt: UInt64? {
+        if let poolAsset = dataController.poolAsset,
+           let poolAmountString = poolAssetView.currentAmount,
+           let amountOutDecimal = Decimal(string: poolAmountString) {
+            return amountOutDecimal.toFraction(of: poolAsset.decimals)
+        }
+
+        return nil
+    }
 
     private let theme: SwapAssetScreenTheme = .init()
 
@@ -118,74 +141,6 @@ final class SwapAssetScreen:
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
     }
-
-    private func validateFromQuote(
-        _ quote: SwapQuote
-    ) {
-        quoteValidator.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .validated(let availableBalance):
-                break
-            case .failure(let error):
-                switch error {
-                case .assetInNotAvailable:
-                    break
-                case .assetOutNotAvailable:
-                    break
-                case .amountInNotAvailable:
-                    break
-                case .insufficientAlgoBalance:
-                    break
-                case .insufficientAssetBalance:
-                    break
-                case .unavailablePeraFee(let feeError):
-                    break
-                }
-            }
-        }
-
-        quoteValidator.validateAvailableSwapBalance(
-            quote,
-            for: dataController.userAsset
-        )
-    }
-
-    private func validateFromBalancePercentage(
-        _ quote: SwapQuote
-    ) {
-        balancePercentageValidator.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .validated(let availableBalance):
-                break
-            case .failure(let error):
-                switch error {
-                case .assetInNotAvailable:
-                    break
-                case .assetOutNotAvailable:
-                    break
-                case .amountInNotAvailable:
-                    break
-                case .insufficientAlgoBalance:
-                    break
-                case .insufficientAssetBalance:
-                    break
-                case .unavailablePeraFee(let feeError):
-                    break
-                }
-            }
-        }
-
-        balancePercentageValidator.validateAvailableSwapBalance(
-            quote,
-            for: dataController.userAsset
-        )
-    }
 }
 
 extension SwapAssetScreen {
@@ -249,9 +204,12 @@ extension SwapAssetScreen {
         contextView.addArrangedSubview(quickActionsView)
 
         quickActionsView.bind(SwapQuickActionsViewModel())
+        quickActionsView.setLeftQuickActionsHidden(true)
+        quickActionsView.setRightQuickActionsHidden(true)
 
         quickActionsView.startObserving(event: .switchAssets) {
-            print("Switch assets")
+            [unowned self] in
+            self.switchAssets()
         }
         quickActionsView.startObserving(event: .adjustAmount) {
             [unowned self] in
@@ -373,22 +331,58 @@ extension SwapAssetScreen {
 
             switch event {
             case .willLoadQuote: self.updateUIWhenDataWillLoad()
-            case .didLoadQuote(let quote): self.updateUIWhenDataDidLoad(quote)
+            case .didLoadQuote(let quote): self.validateFromQuote(quote)
             case .didFailToLoadQuote(let error): self.updateUIWhenDataDidFailToLoad(error)
-            case .willLoadPeraFee: break
-            case .didLoadPeraFee: break
-            case .didFailToLoadPeraFee: break
             }
         }
 
-        swapActionView.startLoading()
         dataController.loadQuote(swapAmount: amount)
     }
 
     private func updateUIWhenDataWillLoad() {
-        
+        swapActionView.startLoading()
     }
 
+    private func validateFromQuote(
+        _ quote: SwapQuote
+    ) {
+        quoteValidator.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .validated:
+                self.updateUIWhenDataDidLoad(quote)
+            case .failure(let error):
+                switch error {
+                case .amountInNotAvailable:
+                    self.showError("swap-asset-not-available".localized)
+                case .insufficientAlgoBalance(let minBalance):
+                    self.showInsufficientAlgoBalanceErrorForQuoteValidation(minBalance)
+                case .insufficientAssetBalance(let minBalance):
+                    self.showInsufficientAssetBalanceErrorForQuoteValidation(
+                        quote: quote,
+                        minBalance: minBalance
+                    )
+                case .unavailablePeraFee: break
+                }
+            }
+        }
+
+        quoteValidator.validateAvailableSwapBalance(
+            quote,
+            for: dataController.userAsset
+        )
+    }
+
+    private func updateUIWhenDataDidFailToLoad(
+        _ error: SwapAssetDataController.Error
+    ) {
+        showError(error.prettyDescription)
+    }
+}
+
+extension SwapAssetScreen {
     private func updateUIWhenDataDidLoad(
         _ swapQuote: SwapQuote
     ) {
@@ -401,55 +395,13 @@ extension SwapAssetScreen {
         hideError()
     }
 
-    private func updateUIWhenDataDidFailToLoad(
-        _ error: SwapAssetDataController.Error
-    ) {
-        swapActionView.stopLoading()
-        showError(error.prettyDescription)
-    }
-}
-
-extension SwapAssetScreen {
     private func updateSwapActionUIWhenDataDidLoad(
-        quote: SwapQuote?
+        quote: SwapQuote
     ) {
-        guard let quote else {
-            swapActionView.isEnabled = false
-            return
-        }
-
         swapActionView.isEnabled =
             quote.amountIn != nil &&
             quote.assetOut != nil &&
             quote.assetOut != nil
-    }
-
-    private func hideError() {
-        errorView.isHidden = true
-    }
-
-    private func showError(
-        _ message: String
-    ) {
-        errorView.isHidden = false
-
-        let viewModel = SwapAssetErrorViewModel(message)
-        errorView.bindData(viewModel)
-    }
-}
-
-extension SwapAssetScreen {
-    private func didTapUserAsset() {
-        eventHandler?(.didTapUserAsset)
-    }
-
-    private func updateUserAsset(
-        _ asset: Asset,
-        for quote: SwapQuote? = nil
-    ) {
-        dataController.userAsset = asset
-        updateUserAssetViewModel(quote: quote)
-        updateUserAssetSelectionUI()
     }
 
     private func updateUserAssetViewModel(
@@ -465,19 +417,6 @@ extension SwapAssetScreen {
 
     private func updateUserAssetSelectionUI() {
         userAssetView.bindData(userAssetViewModel)
-    }
-
-    private func didTapPoolAsset() {
-        eventHandler?(.didTapPoolAsset)
-    }
-
-    private func updatePoolAsset(
-        _ asset: Asset,
-        for quote: SwapQuote? = nil
-    ) {
-        dataController.poolAsset = asset
-        updatePoolAssetViewModel(quote: quote)
-        updatePoolAssetSelectionUI()
     }
 
     private func updatePoolAssetViewModel(
@@ -497,6 +436,193 @@ extension SwapAssetScreen {
         emptyPoolAssetView.isHidden = true
         poolAssetView.isHidden = false
         poolAssetView.bindData(poolAssetViewModel)
+    }
+
+    private func updateQuickActions() {
+        if let poolAsset = dataController.poolAsset {
+            if let poolAssetInAccount = dataController.account[poolAsset.id],
+               poolAssetInAccount.amount > 0 {
+                quickActionsView.setLeftQuickActionsHidden(false)
+            } else {
+                quickActionsView.setLeftQuickActionsHidden(true)
+            }
+
+            quickActionsView.setRightQuickActionsHidden(false)
+        }
+    }
+
+    private func showInsufficientAlgoBalanceErrorForQuoteValidation(
+        _ minBalance: UInt64
+    ) {
+        guard let amountText = swapAssetValueFormatter.getFormattedAlgoAmount(
+            decimalAmount: minBalance.toAlgos,
+            currencyFormatter: currencyFormatter
+        ) else {
+            swapActionView.stopLoading()
+            return
+        }
+
+        showError("swap-asset-algo-min-balance-error".localized(params: amountText))
+    }
+
+    private func showInsufficientAssetBalanceErrorForQuoteValidation(
+        quote: SwapQuote,
+        minBalance: UInt64
+    ) {
+        guard let assetIn = quote.assetIn,
+              let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
+                decimalAmount: swapAssetValueFormatter.getDecimalAmount(of: minBalance, for: assetIn),
+                currencyFormatter: currencyFormatter,
+                maximumFractionDigits: assetIn.decimals
+              ) else {
+            swapActionView.stopLoading()
+            return
+        }
+
+        let assetDisplayValue = swapAssetValueFormatter.getAssetDisplayName(assetIn)
+        showError("swap-asset-min-balance-error".localized(params: assetDisplayValue, amountText))
+    }
+
+    private func showError(
+        _ message: String
+    ) {
+        swapActionView.stopLoading()
+        swapActionView.isEnabled = false
+
+        errorView.isHidden = false
+        let viewModel = SwapAssetErrorViewModel(message)
+        errorView.bindData(viewModel)
+    }
+
+    private func hideError() {
+        errorView.isHidden = true
+    }
+}
+
+extension SwapAssetScreen {
+    private func switchAssets() {
+        guard let poolAsset = dataController.poolAsset else { return }
+
+        dataController.poolAsset = dataController.userAsset
+        dataController.userAsset = poolAsset
+
+        if let currentOutputAsInt {
+            if currentOutputAsInt == 0 {
+                updateInput(nil)
+            }
+
+            getSwapQuote(for: currentOutputAsInt)
+        }
+
+        updateUserAssetViewModel()
+        updateUserAssetSelectionUI()
+        updatePoolAssetViewModel()
+        updatePoolAssetSelectionUI()
+    }
+
+    private func didTapUserAsset() {
+        eventHandler?(.didTapUserAsset)
+    }
+
+    private func updateUserAsset(
+        _ asset: Asset,
+        for quote: SwapQuote? = nil
+    ) {
+        dataController.userAsset = asset
+        updateUserAssetViewModel(quote: quote)
+        updateUserAssetSelectionUI()
+        updateQuickActions()
+        getNewSwapQuoteAfterAssetUpdateIfNeeded()
+    }
+
+    private func didTapPoolAsset() {
+        eventHandler?(.didTapPoolAsset)
+    }
+
+    private func updatePoolAsset(
+        _ asset: Asset,
+        for quote: SwapQuote? = nil
+    ) {
+        dataController.poolAsset = asset
+        updatePoolAssetViewModel(quote: quote)
+        updatePoolAssetSelectionUI()
+        updateQuickActions()
+        getNewSwapQuoteAfterAssetUpdateIfNeeded()
+    }
+
+    private func getNewSwapQuoteAfterAssetUpdateIfNeeded() {
+        if let currentInputAsInt,
+           currentInputAsInt > 0 {
+            getSwapQuote(for: currentInputAsInt)
+        }
+    }
+}
+
+extension SwapAssetScreen {
+    private func validateFromBalancePercentage(
+        _ quote: SwapQuote
+    ) {
+        balancePercentageValidator.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .validated(let availableBalance):
+                self.getSwapQuote(for: availableBalance)
+            case .failure(let error):
+                switch error {
+                case .amountInNotAvailable: break
+                case .insufficientAlgoBalance(let minBalance):
+                    self.updateInput(minBalance)
+                    self.showError("swap-asset-min-balance-error-without-amount".localized)
+                case .insufficientAssetBalance(let minBalance):
+                    self.updateInput(minBalance)
+                    self.showError("swap-asset-min-balance-error-fee".localized)
+                case .unavailablePeraFee(let feeError):
+                    self.showError(feeError?.localizedDescription ?? "swap-asset-fee-unavailable-error".localized)
+                }
+            }
+        }
+
+        balancePercentageValidator.validateAvailableSwapBalance(
+            quote,
+            for: dataController.userAsset
+        )
+    }
+
+    private func updateInput(
+        _ input: UInt64?
+    ) {
+        guard let input else {
+            userAssetView.updateInput(nil)
+            return
+        }
+
+        let assetDecoration = AssetDecoration(asset: dataController.userAsset)
+
+        if assetDecoration.isAlgo {
+            guard let amountText = swapAssetValueFormatter.getFormattedAlgoAmount(
+                    decimalAmount: swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration),
+                    currencyFormatter: currencyFormatter
+                  ) else {
+                swapActionView.stopLoading()
+                return
+            }
+
+            userAssetView.updateInput(amountText)
+            return
+        }
+
+        guard let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
+                decimalAmount: swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration),
+                currencyFormatter: currencyFormatter,
+                maximumFractionDigits: assetDecoration.decimals
+              ) else {
+            swapActionView.stopLoading()
+            return
+        }
+
+        userAssetView.updateInput(amountText)
     }
 }
 

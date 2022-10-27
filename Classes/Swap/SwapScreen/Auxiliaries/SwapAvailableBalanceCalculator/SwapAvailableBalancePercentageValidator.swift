@@ -15,24 +15,31 @@
 //   SwapAvailableBalancePercentageCalculator.swift
 
 import Foundation
+import MagpieCore
+import MagpieHipo
 
 struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?
 
-    private weak var dataController: SwapAssetDataController?
+    private let account: Account
+    private let api: ALGAPI
 
     init(
-        dataController: SwapAssetDataController
+        account: Account,
+        api: ALGAPI
     ) {
-        self.dataController = dataController
+        self.account = account
+        self.api = api
     }
 
+    /// <note>
+    /// Returns the amount that needs to be set on the field for both success and failure cases.
     func validateAvailableSwapBalance(
         _ quote: SwapQuote,
         for asset: Asset
     ) {
         if asset.isAlgo {
-            validateAvailableBalanceForAlgo()
+            validateAvailableBalanceForAlgo(asset)
             return
         }
 
@@ -41,10 +48,11 @@ struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
 }
 
 extension SwapAvailableBalancePercentageValidator {
-    private func validateAvailableBalanceForAlgo() {
-        guard let dataController = dataController,
-              let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding() else {
-            publishEvent(.failure(.insufficientAlgoBalance))
+    private func validateAvailableBalanceForAlgo(
+        _ asset: Asset
+    ) {
+        guard let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding() else {
+            publishEvent(.failure(.insufficientAlgoBalance(0)))
             return
         }
 
@@ -53,17 +61,20 @@ extension SwapAvailableBalancePercentageValidator {
             return
         }
 
-        dataController.calculatePeraSwapFee(balance: algoBalanceAfterMinBalanceAndPadding)
+        let draft = PeraSwapFeeDraft(
+            assetID: asset.id,
+            amount: algoBalanceAfterMinBalanceAndPadding
+        )
 
-        dataController.eventHandler = {
-            event in
-            switch event {
-            case .didLoadPeraFee(let result):
-                if let peraFee = result.fee {
+        api.calculatePeraSwapFee(draft) {
+            response in
+            switch response {
+            case .success(let feeResult):
+                if let peraFee = feeResult.fee {
                     let algoBalanceAfterPeraFeeResult = algoBalanceAfterMinBalanceAndPadding.subtractingReportingOverflow(peraFee)
 
                     if algoBalanceAfterPeraFeeResult.overflow {
-                        self.publishEvent(.failure(.insufficientAlgoBalance))
+                        self.publishEvent(.failure(.insufficientAlgoBalance(0)))
                         return
                     }
 
@@ -72,9 +83,12 @@ extension SwapAvailableBalancePercentageValidator {
                 }
 
                 self.publishEvent(.failure(.unavailablePeraFee(nil)))
-            case .didFailToLoadPeraFee(let error):
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
                 self.publishEvent(.failure(.unavailablePeraFee(error)))
-            default: break
             }
         }
     }
@@ -82,29 +96,32 @@ extension SwapAvailableBalancePercentageValidator {
     private func validateAvailableBalanceForAsset(
         _ asset: Asset
     ) {
-        guard let dataController = dataController,
-              let assetBalance = dataController.account[asset.id]?.amount,
+        guard let assetBalance = account[asset.id]?.amount,
               assetBalance > 0 else {
-            publishEvent(.failure(.insufficientAssetBalance))
+            publishEvent(.failure(.insufficientAssetBalance(0)))
             return
         }
 
-        dataController.calculatePeraSwapFee(balance: assetBalance)
+        let draft = PeraSwapFeeDraft(
+            assetID: asset.id,
+            amount: assetBalance
+        )
 
-        dataController.eventHandler = {
-            event in
-            switch event {
-            case .didLoadPeraFee(let result):
-                if let peraFee = result.fee {
+        api.calculatePeraSwapFee(draft) {
+            response in
+
+            switch response {
+            case .success(let feeResult):
+                if let peraFee = feeResult.fee {
                     guard let algoBalanceAfterMinBalanceAndPadding = self.getAlgoBalanceAfterMinBalanceAndPadding() else {
-                        self.publishEvent(.failure(.insufficientAlgoBalance))
+                        self.publishEvent(.failure(.insufficientAlgoBalance(0)))
                         return
                     }
 
                     let algoBalanceAfterPeraFeeResult = algoBalanceAfterMinBalanceAndPadding.subtractingReportingOverflow(peraFee)
 
                     if algoBalanceAfterPeraFeeResult.overflow {
-                        self.publishEvent(.failure(.insufficientAlgoBalance))
+                        self.publishEvent(.failure(.insufficientAlgoBalance(assetBalance)))
                         return
                     }
 
@@ -113,9 +130,12 @@ extension SwapAvailableBalancePercentageValidator {
                 }
 
                 self.publishEvent(.failure(.unavailablePeraFee(nil)))
-            case .didFailToLoadPeraFee(let error):
+            case .failure(let apiError, let hipApiError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: hipApiError
+                )
                 self.publishEvent(.failure(.unavailablePeraFee(error)))
-            default: break
             }
         }
     }
@@ -123,8 +143,6 @@ extension SwapAvailableBalancePercentageValidator {
 
 extension SwapAvailableBalancePercentageValidator {
     private func getAlgoBalanceAfterMinBalanceAndPadding() -> UInt64? {
-        guard let account = dataController?.account else { return nil }
-
         let algoBalance = account.algo.amount
         let minBalance = account.calculateMinBalance()
         let algoBalanceAfterMinBalanceResult = algoBalance.subtractingReportingOverflow(minBalance)

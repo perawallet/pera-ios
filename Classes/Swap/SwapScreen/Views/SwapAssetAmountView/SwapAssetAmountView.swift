@@ -28,6 +28,10 @@ final class SwapAssetAmountView:
     
     weak var delegate: SwapAssetAmountViewDelegate?
 
+    var currentAmount: String? {
+        return amountInputView.currentAmount
+    }
+
     private lazy var leftTitleView = Label()
     private lazy var rightTitleView = Label()
     private lazy var amountInputView = AssetAmountInputView()
@@ -88,6 +92,12 @@ final class SwapAssetAmountView:
 
     func endEditing() {
         amountInputView.endEditing()
+    }
+
+    func updateInput(
+        _ input: String?
+    ) {
+        amountInputView.updateInput(input)
     }
 }
 
