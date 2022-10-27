@@ -50,7 +50,7 @@ extension ConfirmSwapAPIDataController {
         }
 
         let draft = SwapQuoteDraft(
-            providers: [swapController.provider],
+            providers: swapController.providers,
             swapperAddress: account.address,
             type: swapController.swapType,
             deviceID: deviceID,
@@ -70,6 +70,7 @@ extension ConfirmSwapAPIDataController {
             case .success(let quoteList):
                 guard let quote = quoteList.results[safe: 0] else { return }
 
+                self.swapController.slippage = slippage
                 self.swapController.quote = quote
                 self.eventHandler?(.didUpdateSlippage(quote))
             case .failure(let apiError, let hipApiError):
