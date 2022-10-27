@@ -22,7 +22,7 @@ final class ALGSwapController: SwapController {
 
     var account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
-    let provider: SwapProvider = .tinyman /// <note> Only provider is Tinyman for now.
+    let providers: [SwapProvider] = [.tinyman, .tinymanV2] /// <note> Only provider is Tinyman for now.
 
     var userAsset: Asset
     var quote: SwapQuote?
@@ -73,6 +73,7 @@ extension ALGSwapController {
             case .didSignTransaction:
                 self.publishEvent(.didSignTransaction)
             case .didCompleteSigningTransactions(let transactions):
+                self.publishEvent(.didSignAllTransactions)
                 self.uploadTransactionsAndWaitForConfirmation(transactions)
             case .didFailSigning(error: let error):
                 self.publishEvent(.didFailSigning(error: error))

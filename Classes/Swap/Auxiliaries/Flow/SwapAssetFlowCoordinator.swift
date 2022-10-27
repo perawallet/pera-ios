@@ -248,9 +248,15 @@ extension SwapAssetFlowCoordinator {
                         }
                     }
                 }
+            case .didSignAllTransactions:
+                if account.requiresLedgerConnection() {
+                    return
+                }
+
+                self.openSwapLoading(swapController)
             case .didCompleteSwap:
                 self.openSwapSuccess(swapController)
-            case .didFailTransaction(let id):
+            case .didFailTransaction:
                 guard let quote = swapController.quote else { return }
 
                 let viewModel = SwapUnexpectedErrorViewModel(quote)
@@ -272,20 +278,11 @@ extension SwapAssetFlowCoordinator {
             case .didCancelTransaction:
                 break
             case .didFailSigning(let error):
-                guard let quote = swapController.quote else { return }
-
                 switch error {
                 case .api(let apiError):
-                    let viewModel = SwapAPIErrorViewModel(
-                        quote: quote,
-                        message: error.localizedDescription
-                    )
-                    self.openError(
-                        swapController,
-                        viewModel: viewModel
-                    )
+                    self.displaySigningError(apiError)
                 case .ledger(let ledgerError):
-                    break
+                    self.displayLedgerError(ledgerError)
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
                 self.openSignWithLedgerProcess(
@@ -348,7 +345,6 @@ extension SwapAssetFlowCoordinator {
                 }
 
                 swapController.signTransactions(transactionGroups)
-                self.openSwapLoading(swapController)
             case .didTapPriceImpactInfo:
                 self.openPriceImpactInfo()
             case .didTapSlippageInfo:
@@ -396,16 +392,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didTapViewDetailAction:
-                let transactionGroupID = swapController.parsedTransactions.first { !$0.groupID.isEmpty }?.groupID
-                guard let formattedGroupID = transactionGroupID?.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
-                      let url = AlgorandWeb.AlgoExplorer.group(
-                        isMainnet: self.api.network == .mainnet,
-                        param: formattedGroupID
-                      ).link else {
-                    return
-                }
-
-                self.visibleScreen.open(url)
+                self.openAlgoExplorerForSwapTransaction(swapController)
             case .didTapDoneAction:
                 self.visibleScreen.dismissScreen()
             case .didTapSummaryAction:
@@ -528,6 +515,49 @@ extension SwapAssetFlowCoordinator {
             by: .present
         ) as? SignWithLedgerProcessScreen
     }
+
+    private func displaySigningError(
+        _ error: HIPTransactionError
+    ) {
+        bannerController.presentErrorBanner(
+            title: "title-error".localized,
+            message: error.localizedDescription
+        )
+    }
+
+    private func displayLedgerError(
+        _ ledgerError: LedgerOperationError
+    ) {
+        switch ledgerError {
+        case .cancelled:
+            bannerController.presentErrorBanner(
+                title: "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
+            )
+        case .closedApp:
+            bannerController.presentErrorBanner(
+                title: "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        case .failedToFetchAddress:
+            bannerController.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+        case .failedToFetchAccountFromIndexer:
+            bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "ledger-account-fetct-error".localized
+            )
+        case .custom(let title, let message):
+            bannerController.presentErrorBanner(
+                title: title,
+                message: message
+            )
+        default:
+            break
+        }
+    }
 }
 
 extension SwapAssetFlowCoordinator {
@@ -590,6 +620,21 @@ extension SwapAssetFlowCoordinator {
             by: .presentWithoutNavigationController
         )
     }
+
+    private func openAlgoExplorerForSwapTransaction(
+        _ swapController: SwapController
+    ) {
+        let transactionGroupID = swapController.parsedTransactions.first { !$0.groupID.isEmpty }?.groupID
+        guard let formattedGroupID = transactionGroupID?.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+              let url = AlgorandWeb.AlgoExplorer.group(
+                isMainnet: api.network == .mainnet,
+                param: formattedGroupID
+              ).link else {
+            return
+        }
+
+        visibleScreen.open(url)
+    }
 }
 
 extension SwapAssetFlowCoordinator {
@@ -631,7 +676,7 @@ extension SwapAssetFlowCoordinator {
         let dataController = SelectSwapPoolAssetDataController(
             account: swapController.account,
             userAsset: swapController.userAsset.id,
-            swapProvider: swapController.provider,
+            swapProviders: swapController.providers,
             api: api,
             sharedDataController: sharedDataController
         )

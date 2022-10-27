@@ -1207,6 +1207,12 @@
 "swap-asset-pool-search-error" = "We can't show assets right now. Please try again.";
 "swap-asset-from" = "Swap From";
 "swap-asset-to" = "Swap To";
+"swap-asset-not-available" = "Asset is not available.";
+"swap-asset-algo-min-balance-error" = "Algo balance is too low. The minimum balance should be %@.";
+"swap-asset-min-balance-error" = "%@ balance is too low. The minimum balance should be %@.";
+"swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
+"swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
+"swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";
 
 /// MARK: Swap Adjust Amount
 "swap-amount-balancePercentage-title" = "Balance Percentage";
@@ -1240,6 +1246,7 @@
 "swap-confirm-summary-title" = "Swap Summary";
 "swap-confirm-failed-title" = "Swap Has Failed";
 "swap-confirm-price-info" = "%@ per %@";
+"swap-confirm-slippage-updated-title" = "Slippage Tolerance value updated!";
 
 // MARK: Swap Loading
 "swap-loading-title" = "Sending the transaction";

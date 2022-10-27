@@ -57,25 +57,26 @@ extension SwapConfirmPriceInfoViewModel {
         isPriceReversed: Bool,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let price = quote.price,
+        guard let amountIn = quote.amountIn,
+              let amountOut = quote.amountOut,
               let assetIn = quote.assetIn,
               let assetOut = quote.assetOut else {
             return
         }
 
-        let firstAsset: AssetDecoration
-        let secondAsset: AssetDecoration
-        if !isPriceReversed {
-            firstAsset = assetOut
-            secondAsset = assetIn
-        } else {
-            firstAsset = assetIn
-            secondAsset = assetOut
-        }
-
+        let amountInDecimal = swapAssetValueFormatter.getDecimalAmount(
+            of: amountIn,
+            for: assetIn
+        )
+        let amountOutDecimal = swapAssetValueFormatter.getDecimalAmount(
+            of: amountOut,
+            for: assetOut
+        )
+        let priceValue = isPriceReversed ? amountInDecimal / amountOutDecimal : amountOutDecimal / amountInDecimal
+        let firstAsset = !isPriceReversed ? assetOut: assetIn
+        let secondAsset = !isPriceReversed ? assetIn: assetOut
         let firstAssetDisplayName = swapAssetValueFormatter.getAssetDisplayName(firstAsset)
         let secondAssetDisplayName = swapAssetValueFormatter.getAssetDisplayName(secondAsset)
-        let priceValue = !isPriceReversed ? price : 1 / price
 
         guard let formattedAmount = swapAssetValueFormatter.getFormattedAssetAmount(
             decimalAmount: priceValue,
