@@ -1044,6 +1044,9 @@ class Router:
             viewController = SwapAssetScreen(
                 dataController: dataController,
                 coordinator: coordinator,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 configuration: configuration
             )
         case .swapAccountSelection(let eventHandler):
@@ -1204,6 +1207,9 @@ class Router:
         case .confirmSwap(let dataController, let eventHandler, let theme):
             let screen = ConfirmSwapScreen(
                 dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
                 theme: theme,
                 configuration: configuration
             )

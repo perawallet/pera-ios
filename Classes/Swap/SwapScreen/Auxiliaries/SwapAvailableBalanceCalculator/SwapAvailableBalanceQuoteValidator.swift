@@ -73,7 +73,7 @@ extension SwapAvailableBalanceQuoteValidator {
         addPaddingForFee(to: &algoAmountToValidate)
         addPeraFee(quote, to: &algoAmountToValidate)
 
-        if getRemainingAlgoBalance(from: algoAmountToValidate) != nil {
+        if getRemainingAlgoBalance(from: algoAmountToValidate) == nil {
             publishEvent(.failure(.insufficientAlgoBalance(algoAmountToValidate)))
             return
         }

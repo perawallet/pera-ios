@@ -21,6 +21,7 @@ import UIKit
 struct SwapAssetScreenTheme:
     StyleSheet,
     LayoutSheet {
+    let navigationTitle: AccountNameTitleViewTheme
     let background: ViewStyle
     let userAsset: SwapAssetAmountViewTheme
     let contextHorizontalInset: LayoutMetric
@@ -41,6 +42,7 @@ struct SwapAssetScreenTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.navigationTitle = AccountNameTitleViewTheme(family)
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]

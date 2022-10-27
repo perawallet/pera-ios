@@ -33,6 +33,7 @@ final class SwapAssetScreen:
         screen: self
     )
 
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var contextView = VStackView()
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var errorView = SwapErrorView()
@@ -55,6 +56,7 @@ final class SwapAssetScreen:
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
+    private let copyToClipboardController: CopyToClipboardController
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
 
@@ -82,11 +84,13 @@ final class SwapAssetScreen:
     init(
         dataController: SwapAssetDataController,
         coordinator: SwapAssetFlowCoordinator,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
         self.swapAssetFlowCoordinator = coordinator
+        self.copyToClipboardController = copyToClipboardController
         self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: nil,
@@ -106,7 +110,7 @@ final class SwapAssetScreen:
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
-        bindNavigationItemTitle()
+        addNavigationTitle()
     }
 
     override func configureAppearance() {
@@ -144,6 +148,30 @@ final class SwapAssetScreen:
 }
 
 extension SwapAssetScreen {
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        let draft = AccountNameTitleDraft(
+            title: "title-swap".localized,
+            account: dataController.account
+        )
+
+        let viewModel = AccountNameTitleViewModel(draft)
+        navigationTitleView.bindData(viewModel)
+    }
+
     private func addBarButtons() {
         let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
             [weak self] in
@@ -153,10 +181,6 @@ extension SwapAssetScreen {
         }
 
         rightBarButtonItems = [infoBarButtonItem]
-    }
-
-    private func bindNavigationItemTitle() {
-        title = "title-swap".localized
     }
 }
 
@@ -500,6 +524,15 @@ extension SwapAssetScreen {
 }
 
 extension SwapAssetScreen {
+    @objc
+    private func copyAccountAddress(
+        _ recognizer: UILongPressGestureRecognizer
+    ) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(dataController.account)
+        }
+    }
+
     private func switchAssets() {
         guard let poolAsset = dataController.poolAsset else { return }
 
@@ -785,11 +818,18 @@ extension SwapAssetScreen {
         _ swapAssetAmountView: SwapAssetAmountView,
         didChangeTextIn textField: TextField
     ) {
-        guard let input = textField.text,
-              let inputAsDecimal = input.decimalAmount,
-              !isTheInputDecimalSeparator(input) else {
+        guard let input = textField.text else { return }
+
+        if input.isEmpty {
+            getSwapQuote(for: 0)
             return
         }
+
+        if isTheInputDecimalSeparator(input) {
+            return
+        }
+
+        guard let inputAsDecimal = input.decimalAmount else { return }
 
         let inputAsFractionUnit = inputAsDecimal.toFraction(of: dataController.userAsset.decimals)
         getSwapQuote(for: inputAsFractionUnit)

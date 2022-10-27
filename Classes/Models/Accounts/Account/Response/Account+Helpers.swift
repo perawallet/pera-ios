@@ -231,7 +231,7 @@ extension Account {
     }
 
     func isOptedIn(to asset: AssetID) -> Bool {
-        return self[asset] != nil && asset != algo.id
+        return self[asset] != nil || asset == algo.id
     }
 
     func isOwner(of asset: AssetID) -> Bool {

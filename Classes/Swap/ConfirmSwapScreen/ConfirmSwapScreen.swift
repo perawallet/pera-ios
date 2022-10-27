@@ -23,6 +23,7 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
@@ -43,22 +44,25 @@ final class ConfirmSwapScreen: BaseScrollViewController {
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: ConfirmSwapDataController
+    private let copyToClipboardController: CopyToClipboardController
     private let theme: ConfirmSwapScreenTheme
 
     init(
         dataController: ConfirmSwapDataController,
+        copyToClipboardController: CopyToClipboardController,
         theme: ConfirmSwapScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
         self.theme = theme
         super.init(configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        title = "swap-confirm-title".localized
+        addNavigationTitle()
     }
 
     override func configureAppearance() {
@@ -88,6 +92,32 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     override func bindData() {
         super.bindData()
         bindData(dataController.quote)
+    }
+}
+
+extension ConfirmSwapScreen {
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        let draft = AccountNameTitleDraft(
+            title: "swap-confirm-title".localized,
+            account: dataController.account
+        )
+
+        let viewModel = AccountNameTitleViewModel(draft)
+        navigationTitleView.bindData(viewModel)
     }
 }
 
@@ -374,6 +404,15 @@ extension ConfirmSwapScreen {
 }
 
 extension ConfirmSwapScreen {
+    @objc
+    private func copyAccountAddress(
+        _ recognizer: UILongPressGestureRecognizer
+    ) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(dataController.account)
+        }
+    }
+
     @objc
     private func confirmSwap() {
         dataController.confirmSwap()
