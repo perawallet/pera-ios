@@ -22,11 +22,14 @@ final class ExportAccountsConfirmationListLayout: NSObject {
     private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: ExportAccountsConfirmationListDataSource
+    private let hasSingularAccount: Bool
 
     init(
-        listDataSource: ExportAccountsConfirmationListDataSource
+        listDataSource: ExportAccountsConfirmationListDataSource,
+        hasSingularAccount: Bool
     ) {
         self.listDataSource = listDataSource
+        self.hasSingularAccount = hasSingularAccount
         super.init()
     }
 
@@ -74,7 +77,7 @@ extension ExportAccountsConfirmationListLayout {
 
         let size = listView(
             collectionView,
-            sizeForHeaderItem: ExportAccountsConfirmationListItemHeaderViewModel(),
+            sizeForHeaderItem: ExportAccountsConfirmationListItemHeaderViewModel(hasSingularAccount: hasSingularAccount),
             atSection: section
         )
         return size

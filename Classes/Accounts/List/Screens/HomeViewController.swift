@@ -913,6 +913,17 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             self.copyToClipboardController.copyAddress(account)
         }
 
+        uiInteractions.didTapRemoveAccount = {
+            [weak self] in
+            
+            guard let self = self else {
+                return
+            }
+
+            let account = accountHandle.value
+            self.presentRemoveAccountAlert(account)
+        }
+
         return uiInteractions
     }
 
@@ -935,6 +946,28 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         modalTransition.perform(
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
+        )
+    }
+
+    private func presentRemoveAccountAlert(_ account: Account) {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-trash-red".uiImage,
+            title: "options-remove-account".localized,
+            description: .plain(
+                account.isWatchAccount()
+                ? "options-remove-watch-account-explanation".localized
+                : "options-remove-main-account-explanation".localized
+            ),
+            primaryActionButtonTitle: "title-remove".localized,
+            secondaryActionButtonTitle: "title-keep".localized,
+            primaryAction: { [weak self] in
+                self?.dataController.removeAccount(account)
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
         )
     }
 }

@@ -454,12 +454,13 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
-        case .asaDetail(let account, let asset, let eventHandler):
+        case .asaDetail(let account, let asset, let screenConfiguration, let eventHandler):
             let dataController = ASADetailScreenAPIDataController(
                 account: account,
                 asset: asset,
                 api: appConfiguration.api,
-                sharedDataController: appConfiguration.sharedDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                configuration: screenConfiguration
             )
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -739,7 +740,14 @@ class Router:
             wcConnectionApprovalViewController.delegate = delegate
             viewController = wcConnectionApprovalViewController
         case .walletConnectSessionList:
-            viewController = WCSessionListViewController(configuration: configuration)
+            let dataController = WCSessionListLocalDataController(
+                analytics: configuration.analytics,
+                walletConnector: configuration.walletConnector
+            )
+            viewController = WCSessionListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case .walletConnectSessionShortList:
             viewController = WCSessionShortListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(viewModel):
@@ -832,7 +840,13 @@ class Router:
                 configuration: configuration
             )
         case .sendTransaction(let draft):
-            let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
+            let sendScreen = SendTransactionScreen(
+                draft: draft,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
             sendScreen.isModalInPresentation = true
             viewController = sendScreen
         case .editNote(let note, let isLocked, let delegate):
@@ -1146,6 +1160,11 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .insufficientAlgoBalance(let draft, let eventHandler):
+            viewController = InsufficientAlgoBalanceScreen(
+                draft: draft,
+                eventHandler: eventHandler
+            )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController
@@ -1156,8 +1175,10 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .exportAccountsDomainConfirmation(let eventHandler):
-            let screen = ExportAccountsDomainConfirmationScreen()
+        case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
+            let screen = ExportAccountsDomainConfirmationScreen(
+                theme: .init(hasSingularAccount: hasSingularAccount, .current)
+            )
             screen.eventHandler = eventHandler
             viewController = screen
         case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
@@ -1168,10 +1189,6 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case .exportAccountsResult(let eventHandler):
-            let screen = ExportsAccountsResultScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .selectAsset(let dataController, let coordinator, let title, let theme):
@@ -1194,6 +1211,10 @@ class Router:
             viewController = screen
         case .adjustSwapAmount:
             viewController = AdjustSwapAmountScreen(configuration: configuration)
+        case .exportAccountsResult(let accounts, let eventHandler):
+            let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

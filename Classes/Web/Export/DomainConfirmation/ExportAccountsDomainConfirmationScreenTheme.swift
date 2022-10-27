@@ -21,7 +21,7 @@ struct ExportAccountsDomainConfirmationScreenTheme:
     LayoutSheet,
     StyleSheet {
     let background: ViewStyle
-    let body: TextStyle
+    var body: TextStyle
     let spacingBetweenBodyAndDomainInput: LayoutMetric
     let domainInput: FloatingTextInputFieldViewTheme
     let domainInputMinHeight: LayoutMetric
@@ -32,7 +32,7 @@ struct ExportAccountsDomainConfirmationScreenTheme:
     let spacingBetweenDislaimerIconAndDisclaimerTitle: LayoutMetric
     let disclaimerTitle: TextStyle
     let spacingBetweenDisclaimerBodyAndIcon: LayoutMetric
-    let disclaimerBody: TextStyle
+    var disclaimerBody: TextStyle
     let spacingBetweenDisclaimerBodyAndPeraWebURL: LayoutMetric
     let contextEdgeInsets: LayoutPaddings
     let peraWebURLContentFirstShadow: MacaroonUIKit.Shadow
@@ -155,6 +155,22 @@ struct ExportAccountsDomainConfirmationScreenTheme:
         ]
         self.continueActionEdgeInsets = (16, 8, 16, 8)
         self.continueActionContentEdgeInsets = (8, 24, 12, 24)
-        self.navigationBarEdgeInset = (0, 24, .noMetric, 24) // It's different from other navigation bar insets because content has already top inset
+        self.navigationBarEdgeInset = (8, 24, .noMetric, 24) // It's different from other navigation bar insets because content has already top inset
+    }
+
+    init(hasSingularAccount: Bool, _ family: LayoutFamily) {
+        self.init(family)
+        let bodyText = hasSingularAccount ? "web-export-accounts-domain-confirmation-body-singular".localized : "web-export-accounts-domain-confirmation-body".localized
+        self.body = [
+            .text(bodyText.bodyRegular()),
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText())
+        ]
+        let disclamerText = hasSingularAccount ? "web-export-accoounts-domain-confirmation-disclaimer-body-singular".localized : "web-export-accoounts-domain-confirmation-disclaimer-body".localized
+        self.disclaimerBody = [
+            .text(disclamerText.footnoteRegular()),
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText())
+        ]
     }
 }

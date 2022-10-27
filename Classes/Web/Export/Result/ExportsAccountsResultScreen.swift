@@ -27,12 +27,15 @@ final class ExportsAccountsResultScreen: BaseScrollViewController  {
     private lazy var closeActionView = MacaroonUIKit.Button()
     
     private let theme: ExportAccountsResultScreenTheme
+    private let accounts: [Account]
 
     init(
         configuration: ViewControllerConfiguration,
-        theme: ExportAccountsResultScreenTheme = .init()
+        theme: ExportAccountsResultScreenTheme = .init(),
+        accounts: [Account]
     ) {
         self.theme = theme
+        self.accounts = accounts
         super.init(configuration: configuration)
     }
 
@@ -78,7 +81,7 @@ extension ExportsAccountsResultScreen {
             $0.bottom == theme.contextEdgeInsets.bottom
         }
 
-        contextView.bindData(ExportAccountsResultViewModel())
+        contextView.bindData(ExportAccountsResultViewModel(accounts: accounts))
     }
 
     private func addCloseAction() {

@@ -58,7 +58,7 @@ extension AccountExportFlowCoordinator {
             switch event {
             case .performContinue(let accounts):
                 self.accounts = accounts
-                self.navigateToConfirmDomain(on: exportAccountListScreen)
+                self.navigateToConfirmDomain(with: accounts, on: exportAccountListScreen)
             case .performClose:
                 exportAccountListScreen.dismissScreen()
             }
@@ -70,8 +70,9 @@ extension AccountExportFlowCoordinator {
         )
     }
 
-    private func navigateToConfirmDomain(on viewController: UIViewController) {
-        let screen = Screen.exportAccountsDomainConfirmation {
+    private func navigateToConfirmDomain(with accounts: [Account], on viewController: UIViewController) {
+        let hasSingularAccount = accounts.isSingular
+        let screen = Screen.exportAccountsDomainConfirmation(hasSingularAccount: hasSingularAccount) {
             [weak self] event, domainConfirmationScreen in
             guard let self = self else {
                 return
@@ -176,6 +177,8 @@ extension AccountExportFlowCoordinator {
         on screen: ExportAccountsConfirmationListScreen,
         didSelectAccounts accounts: [Account]
     ) {
+        /// TODO:
+        /// These logics should be located in necessary screens not coordinator
         guard let qrExportInformations = self.qrExportInformations else {
             return
         }
@@ -193,6 +196,25 @@ extension AccountExportFlowCoordinator {
             draft: exportAccountDraft,
             qrExportInformations: qrExportInformations
         )
+
+        let encryptedContent = encryptedAccountDraft.encryptedContent
+
+        /// <note>
+        /// Encrypted content may be nil on SDK side and we are checking it first
+        /// Then, if encryption error is not noError that means there is an error, we are showing banner error
+        /// Dismiss screen after 3 seconds because we should show the message
+        if encryptedContent.isNilOrEmpty || encryptedAccountDraft.encryptionError != .noError {
+            screen.stopLoading()
+            screen.bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "web-export-encryption-error-message".localized
+            )
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                screen.dismissScreen()
+            }
+            return
+        }
+
         api.exportAccounts(encryptedAccountDraft) { [weak self] result in
             guard let self = self else {
                 return
@@ -202,7 +224,7 @@ extension AccountExportFlowCoordinator {
 
             switch result {
             case .success:
-                self.navigateToSuccessScreen(on: screen)
+                self.navigateToSuccessScreen(with: accounts, on: screen)
             case let .failure(apiError, errorModel):
                 screen.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
@@ -212,8 +234,8 @@ extension AccountExportFlowCoordinator {
         }
     }
 
-    private func navigateToSuccessScreen(on viewController: UIViewController) {
-        let screen = Screen.exportAccountsResult { event, screen in
+    private func navigateToSuccessScreen(with accounts: [Account], on viewController: UIViewController) {
+        let screen = Screen.exportAccountsResult(accounts: accounts) { event, screen in
             switch event {
             case .performClose:
                 screen.dismissScreen()

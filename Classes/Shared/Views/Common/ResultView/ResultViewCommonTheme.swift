@@ -33,7 +33,8 @@ struct ResultViewCommonTheme: ResultViewTheme {
         _ family: LayoutFamily
     ) {
         self.icon = [
-            .adjustsImageForContentSizeCategory(true)
+            .adjustsImageForContentSizeCategory(true),
+            .contentMode(.center)
         ]
         self.iconAlignment = .centered
         self.spacingBetweenIconAndTitle = 32
