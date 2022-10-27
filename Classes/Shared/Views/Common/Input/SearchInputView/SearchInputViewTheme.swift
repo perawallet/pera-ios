@@ -30,6 +30,7 @@ protocol SearchInputViewTheme: LayoutSheet, StyleSheet {
     var textInputContentEdgeInsets: LayoutPaddings { get }
     var textInputPaddings: LayoutPaddings { get }
     var textInputAccessorySize: LayoutSize { get }
+    var textInputBackgroundRadius: Corner { get }
     var textRightInputAccessoryViewPaddings: LayoutPaddings { get }
     var textRightInputAccessoryViewMode: UITextField.ViewMode { get }
     var placeholder: String { get }
@@ -46,6 +47,7 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
     let textInputContentEdgeInsets: LayoutPaddings
     let textInputPaddings: LayoutPaddings
     let textInputAccessorySize: LayoutSize
+    let textInputBackgroundRadius: Corner
     let textRightInputAccessoryViewPaddings: LayoutPaddings
     let textRightInputAccessoryViewMode: UITextField.ViewMode
     let placeholder: String
@@ -75,6 +77,7 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
         self.textInputContentEdgeInsets = (0, 12, 0, 12)
         self.textInputPaddings = (0, 0, 0, 0)
         self.textInputAccessorySize = (24, 24)
+        self.textInputBackgroundRadius = Corner(radius: 4)
         self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
         self.textRightInputAccessoryViewMode = .whileEditing
         self.textClearInputAccessory = [
@@ -98,6 +101,7 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
     let textInputContentEdgeInsets: LayoutPaddings
     let textInputPaddings: LayoutPaddings
     let textInputAccessorySize: LayoutSize
+    let textInputBackgroundRadius: Corner
     let textRightInputAccessoryViewPaddings: LayoutPaddings
     let textRightInputAccessoryViewMode: UITextField.ViewMode
     let placeholder: String
@@ -130,6 +134,61 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
         self.textInputContentEdgeInsets = (0, 12, 0, 12)
         self.textInputPaddings = (0, 0, 0, 0)
         self.textInputAccessorySize = (24, 24)
+        self.textInputBackgroundRadius = Corner(radius: 4)
+        self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
+        self.textRightInputAccessoryViewMode = .whileEditing
+        self.textClearInputAccessory = [
+            .icon([.normal("icon-field-close")])
+        ]
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(placeholder: .empty, family: family)
+    }
+}
+
+struct DiscoverSearchInputViewTheme: SearchInputViewTheme {
+    let textInput: TextInputStyle
+    let textInputBackground: ViewStyle
+    let textLeftInputAccessory: ImageStyle
+    let textRightInputAccessory: ButtonStyle?
+    let textClearInputAccessory: ButtonStyle
+
+    let intrinsicHeight: LayoutMetric
+    let textInputContentEdgeInsets: LayoutPaddings
+    let textInputPaddings: LayoutPaddings
+    let textInputAccessorySize: LayoutSize
+    let textInputBackgroundRadius: Corner
+    let textRightInputAccessoryViewPaddings: LayoutPaddings
+    let textRightInputAccessoryViewMode: UITextField.ViewMode
+    let placeholder: String
+
+    init(placeholder: String, family: LayoutFamily) {
+        self.placeholder = placeholder
+
+        self.textInput = [
+            .tintColor(Colors.Text.main),
+            .font(Fonts.DMSans.regular.make(13)),
+            .textColor(Colors.Text.main),
+            .placeholder(placeholder),
+            .placeholderColor(Colors.Text.gray),
+            .returnKeyType(.search),
+            .autocorrectionType(.no),
+            .autocapitalizationType(.none)
+        ]
+        self.textInputBackground = [
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
+        self.textLeftInputAccessory = [
+            .image("icon-field-search")
+        ]
+        self.textRightInputAccessory = nil
+
+        self.intrinsicHeight = 40
+        self.textInputContentEdgeInsets = (0, 12, 0, 12)
+        self.textInputPaddings = (0, 0, 0, 0)
+        self.textInputAccessorySize = (16, 16)
+        self.textInputBackgroundRadius = Corner(radius: 16)
         self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
         self.textRightInputAccessoryViewMode = .whileEditing
         self.textClearInputAccessory = [
