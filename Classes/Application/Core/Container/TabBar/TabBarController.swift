@@ -37,6 +37,7 @@ final class TabBarController: TabBarContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
         analytics: analytics,
         api: api,
         sharedDataController: sharedDataController,
@@ -63,6 +64,10 @@ final class TabBarController: TabBarContainer {
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController
@@ -71,6 +76,7 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
 
     init(
+        swapDataStore: SwapDataStore,
         analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
@@ -78,6 +84,7 @@ final class TabBarController: TabBarContainer {
         session: Session,
         sharedDataController: SharedDataController
     ) {
+        self.swapDataStore = swapDataStore
         self.analytics = analytics
         self.api = api
         self.bannerController = bannerController

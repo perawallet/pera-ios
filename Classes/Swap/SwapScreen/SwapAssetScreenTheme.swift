@@ -24,9 +24,9 @@ struct SwapAssetScreenTheme:
     let navigationTitle: AccountNameTitleViewTheme
     let background: ViewStyle
     let userAsset: SwapAssetAmountViewTheme
-    let contextHorizontalInset: LayoutMetric
     let contextTopInset: LayoutMetric
     let contextSpacing: LayoutMetric
+    let contextContentEdgeInsets: NSDirectionalEdgeInsets
     let error: SwapErrorViewTheme
     let quickActions: SwapQuickActionsViewTheme
     let quickActionsHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
@@ -47,9 +47,9 @@ struct SwapAssetScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
-        self.contextHorizontalInset = 24
         self.contextTopInset = 24
         self.contextSpacing = 32
+        self.contextContentEdgeInsets = .init(top: 0, leading: 24, bottom: 0, trailing: 24)
         self.error = SwapErrorViewTheme()
         self.quickActions = SwapQuickActionsViewTheme(family)
         self.quickActionsHorizontalEdgeInsets = .init(leading: 20, trailing: 20)

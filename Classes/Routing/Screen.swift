@@ -201,6 +201,7 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
+        dataStore: SwapAssetDataStore,
         swapController: SwapController,
         coordinator: SwapAssetFlowCoordinator
     )
@@ -278,7 +279,13 @@ indirect enum Screen {
         eventHandler: EventHandler<ConfirmSwapScreen.Event>,
         theme: ConfirmSwapScreenTheme = .init()
     )
-    case adjustSwapAmount
+    /// <todo>
+    /// We should find a way to define the EventHandler decoupled to the actual screen when we
+    /// refactor the routing mechanism.
+    case adjustSwapAmount(
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
+        eventHandler: AdjustSwapAmountScreen.EventHandler
+    )
     case exportAccountsResult(
         accounts: [Account],
         eventHandler: ExportsAccountsResultScreen.EventHandler

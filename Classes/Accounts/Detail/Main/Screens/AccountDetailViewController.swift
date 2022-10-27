@@ -47,6 +47,7 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
@@ -70,14 +71,20 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         accountHandle: AccountHandle,
+        swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)

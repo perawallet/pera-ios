@@ -15,10 +15,20 @@
 //   AdjustableSingleSelectionInputView.swift
 
 import Foundation
+import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
-final class AdjustableSingleSelectionInputView: MacaroonUIKit.BaseView {
+final class AdjustableSingleSelectionInputView:
+    MacaroonUIKit.BaseControl,
+    FormInputFieldViewEditingDelegate {
+    var textInputFormatter: MacaroonForm.TextInputFormatter? {
+        get { textInputView.formatter }
+        set { textInputView.formatter = newValue }
+    }
+
+    private(set) var value: Value?
+
     private let selectionInputView: SegmentedControl
     private let textInputView: FloatingTextInputFieldView = .init()
     private let selectionInputScrollView: UIScrollView = .init()
@@ -31,9 +41,34 @@ final class AdjustableSingleSelectionInputView: MacaroonUIKit.BaseView {
     }
 
     func bind(_ viewModel: AdjustableSingleSelectionInputViewModel?) {
-        let inputs = viewModel?.selectableInputs ?? []
-        selectionInputView.add(segments: inputs)
+        textInputView.text = viewModel?.customText
+
+        let options = viewModel?.options ?? []
+        selectionInputView.add(segments: options)
+        selectionInputView.selectedSegmentIndex = viewModel?.selectedOptionIndex ?? -1
     }
+}
+
+extension AdjustableSingleSelectionInputView {
+    func beginEditing() {
+        textInputView.beginEditing()
+    }
+
+    func endEditing() {
+        textInputView.endEditing()
+    }
+}
+
+/// <mark>
+/// FormInputFieldViewEditingDelegate
+extension AdjustableSingleSelectionInputView {
+    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {}
+
+    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
+        notifyForTextInputChanges()
+    }
+
+    func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
 }
 
 extension AdjustableSingleSelectionInputView {
@@ -52,6 +87,8 @@ extension AdjustableSingleSelectionInputView {
             $0.leading == 0
             $0.trailing == 0
         }
+
+        textInputView.editingDelegate = self
     }
 
     private func addSelectionInput(_ theme: AdjustableSingleSelectionInputViewTheme) {
@@ -76,11 +113,48 @@ extension AdjustableSingleSelectionInputView {
             $0.top == 0
             $0.top == textInputView.snp.bottom +
                 theme.spacingBetweenTextInputAndSelectionInput +
-                theme.selectionInputContentInset.top
+                theme.selectionInputContentInset.top ~ .defaultHigh
             $0.leading == 0
             $0.bottom == 0
-            $0.bottom == self - theme.selectionInputContentInset.bottom
+            $0.bottom == self - theme.selectionInputContentInset.bottom ~ .defaultHigh
             $0.trailing == 0
         }
+
+        selectionInputView.addTarget(
+            self,
+            action: #selector(notifyForSelectionInputChanges),
+            for: .valueChanged
+        )
+    }
+}
+
+extension AdjustableSingleSelectionInputView {
+    @objc
+    private func notifyForTextInputChanges() {
+        value = textInputView.text
+            .unwrapNonEmptyString()
+            .unwrap { .custom($0) }
+        selectionInputView.selectedSegmentIndex = -1
+
+        notifyForValueChanges()
+    }
+
+    @objc
+    private func notifyForSelectionInputChanges() {
+        value = .option(selectionInputView.selectedSegmentIndex)
+        textInputView.text = nil
+
+        notifyForValueChanges()
+    }
+
+    private func notifyForValueChanges() {
+        sendActions(for: .valueChanged)
+    }
+}
+
+extension AdjustableSingleSelectionInputView {
+    enum Value {
+        case custom(String)
+        case option(Int)
     }
 }
