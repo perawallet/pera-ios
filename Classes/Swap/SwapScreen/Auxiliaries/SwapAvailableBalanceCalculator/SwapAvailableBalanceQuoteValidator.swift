@@ -20,33 +20,33 @@ struct SwapAvailableBalanceQuoteValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?
 
     private let account: Account
+    private let quote: SwapQuote
 
     init(
-        account: Account
+        account: Account,
+        quote: SwapQuote
     ) {
         self.account = account
+        self.quote = quote
     }
 
     /// <note>
     /// Returns the remaining balance after min balance for the success case.
     /// Returns the min balance for failure cases.
-    func validateAvailableSwapBalance(
-        _ quote: SwapQuote,
-        for asset: Asset
-    ) {
-        if asset.isAlgo {
-            validateAvailableBalanceForAlgo(for: quote)
+    func validateAvailableSwapBalance() {
+        guard let assetIn = quote.assetIn else { return }
+
+        if assetIn.isAlgo {
+            validateAvailableBalanceForAlgo()
             return
         }
 
-        validateAvailableBalanceForAsset(for: quote)
+        validateAvailableBalanceForAsset()
     }
 }
 
 extension SwapAvailableBalanceQuoteValidator {
-    private func validateAvailableBalanceForAlgo(
-        for quote: SwapQuote
-    ) {
+    private func validateAvailableBalanceForAlgo() {
         guard var amountIn = quote.amountIn else {
             publishEvent(.failure(.amountInNotAvailable))
             return
@@ -54,7 +54,7 @@ extension SwapAvailableBalanceQuoteValidator {
 
         addMinBalance(to: &amountIn)
         addPaddingForFee(to: &amountIn)
-        addPeraFee(quote, to: &amountIn)
+        addPeraFee(to: &amountIn)
 
         guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountIn) else {
             publishEvent(.failure(.insufficientAlgoBalance(amountIn)))
@@ -64,24 +64,19 @@ extension SwapAvailableBalanceQuoteValidator {
         publishEvent(.validated(remainingAlgoBalance))
     }
 
-    private func validateAvailableBalanceForAsset(
-        for quote: SwapQuote
-    ) {
+    private func validateAvailableBalanceForAsset() {
         var algoAmountToValidate: UInt64 = 0
 
         addMinBalance(to: &algoAmountToValidate)
         addPaddingForFee(to: &algoAmountToValidate)
-        addPeraFee(quote, to: &algoAmountToValidate)
+        addPeraFee(to: &algoAmountToValidate)
 
         if getRemainingAlgoBalance(from: algoAmountToValidate) == nil {
             publishEvent(.failure(.insufficientAlgoBalance(algoAmountToValidate)))
             return
         }
 
-        guard let remainingAssetBalance = getRemainingAssetBalance(
-            quote,
-            from: algoAmountToValidate
-        ) else {
+        guard let remainingAssetBalance = getRemainingAssetBalance(from: algoAmountToValidate) else {
             publishEvent(.failure(.insufficientAssetBalance(quote.amountIn!)))
             return
         }
@@ -105,7 +100,6 @@ extension SwapAvailableBalanceQuoteValidator {
     }
 
     private func addPeraFee(
-        _ quote: SwapQuote,
         to amount: inout UInt64
     ) {
         if let peraFee = quote.peraFee {
@@ -126,7 +120,6 @@ extension SwapAvailableBalanceQuoteValidator {
     }
 
     private func getRemainingAssetBalance(
-        _ quote: SwapQuote,
         from amount: UInt64
     ) -> UInt64? {
         guard let amountIn = quote.amountIn,

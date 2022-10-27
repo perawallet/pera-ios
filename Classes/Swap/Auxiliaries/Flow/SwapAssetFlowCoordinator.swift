@@ -30,7 +30,7 @@ final class SwapAssetFlowCoordinator:
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
-    private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: visibleScreen)
+    private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: presentingScreen)
     private lazy var transitionToSignWithLedger = BottomSheetTransition(
         presentingViewController: visibleScreen,
         interactable: false
@@ -182,6 +182,7 @@ extension SwapAssetFlowCoordinator {
                  let account = accountHandle.value
                  let accountBalance = account.algo.amount
                  let minBalance = account.calculateMinBalance()
+                 self.account = account
 
                  if accountBalance < minBalance {
                      self.openAccountMinBalanceError(
@@ -198,7 +199,7 @@ extension SwapAssetFlowCoordinator {
              }
          }
 
-         visibleScreen.open(
+         presentingScreen.open(
              screen,
              by: .present
          )
@@ -270,7 +271,9 @@ extension SwapAssetFlowCoordinator {
                 self.openError(
                     swapController,
                     viewModel: viewModel
-                )
+                ) {
+                    swapController.uploadTransactions()
+                }
             case .didFailNetwork(let error):
                 guard let quote = swapController.quote else { return }
 
@@ -281,7 +284,9 @@ extension SwapAssetFlowCoordinator {
                 self.openError(
                     swapController,
                     viewModel: viewModel
-                )
+                ) {
+                    swapController.uploadTransactions()
+                }
             case .didCancelTransaction:
                 break
             case .didFailSigning(let error):
@@ -393,7 +398,8 @@ extension SwapAssetFlowCoordinator {
     ) {
         let swapSuccessScreen = visibleScreen.open(
             .swapSuccess(swapController: swapController),
-            by: .push
+            by: .push,
+            animated: false
         ) as? SwapAssetSuccessScreen
 
         swapSuccessScreen?.eventHandler = {
@@ -422,11 +428,13 @@ extension SwapAssetFlowCoordinator {
 
     private func openError(
         _ swapController: SwapController,
-        viewModel: ErrorScreenViewModel
+        viewModel: ErrorScreenViewModel,
+        primaryaction: @escaping EmptyHandler
     ) {
         let errorScreen = visibleScreen.open(
             .error(viewModel: viewModel),
-            by: .present
+            by: .push,
+            animated: false
         ) as? ErrorScreen
 
         errorScreen?.eventHandler = {
@@ -435,9 +443,9 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didTapPrimaryAction:
-                break
+                primaryaction()
             case .didTapSecondaryAction:
-                self.presentingScreen.dismissScreen()
+                self.visibleScreen.dismissScreen()
             }
         }
     }

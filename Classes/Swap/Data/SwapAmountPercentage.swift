@@ -18,17 +18,17 @@ import Foundation
 
 protocol SwapAmountPercentage {
     var title: String { get }
-    var value: Float { get }
+    var value: Decimal { get }
     var isPreset: Bool { get }
 }
 
 struct CustomSwapAmountPercentage: SwapAmountPercentage {
     let title: String
-    let value: Float
+    let value: Decimal
     let isPreset: Bool
 
-    init(value: Float) {
-        self.title = String(value)
+    init(value: Decimal) {
+        self.title = value.number.stringValue
         self.value = value
         self.isPreset = false
     }
@@ -36,17 +36,17 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
 
 struct PresetSwapAmountPercentage: SwapAmountPercentage {
     let title: String
-    let value: Float
+    let value: Decimal
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         customTitle: String? = nil
     ) {
         if let customTitle = customTitle {
             self.title = customTitle
         } else {
-            self.title = Double(value).toPercentageWith(fractions: 2) ?? String(value)
+            self.title = value.doubleValue.toPercentageWith(fractions: 2) ?? value.number.stringValue
         }
 
         self.value = value

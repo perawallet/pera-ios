@@ -137,7 +137,7 @@ extension SelectAssetListLayout {
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
-        return size
+        return CGSize(width: width, height: size.height)
     }
 
     private func collectionView(
@@ -146,19 +146,20 @@ extension SelectAssetListLayout {
         sizeForNoContent item: NoContentViewModel,
         atSection section: Int
     ) -> CGSize {
-
         let width = calculateContentWidth(
             view,
             forSectionAt: section
         )
-
-        let size = NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        let sectionInset = collectionView(
+            view,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
         )
-
-        return size
+        let height =
+            view.bounds.height -
+            sectionInset.vertical -
+            view.adjustedContentInset.bottom
+        return CGSize((width, height))
     }
 }
 

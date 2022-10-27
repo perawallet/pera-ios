@@ -33,6 +33,7 @@ protocol SwapController {
     var parsedTransactions: [ParsedSwapTransaction] { get }
 
     func signTransactions(_ transactions: [SwapTransactionGroup])
+    func uploadTransactions()
 }
 
 enum SwapControllerEvent {
