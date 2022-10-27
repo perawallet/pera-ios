@@ -122,6 +122,20 @@ extension SwapQuickActionsView {
 }
 
 extension SwapQuickActionsView {
+    func setLeftQuickActionsHidden(
+        _ isHidden: Bool
+    ) {
+        leftQuickActionsView.isHidden = isHidden
+    }
+
+    func setRightQuickActionsHidden(
+        _ isHidden: Bool
+    ) {
+        rightQuickActionsView.isHidden = isHidden
+    }
+}
+
+extension SwapQuickActionsView {
     enum Event {
         case switchAssets
         case adjustAmount

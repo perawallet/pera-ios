@@ -65,6 +65,8 @@ extension SwapAssetAmountInInputViewModel {
                 .number
                 .stringValue
                 .bodyLargeMedium()
+        } else {
+            primaryValue = nil
         }
     }
 
