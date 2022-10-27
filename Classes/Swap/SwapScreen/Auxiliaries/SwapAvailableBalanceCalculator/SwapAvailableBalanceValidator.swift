@@ -20,10 +20,7 @@ protocol SwapAvailableBalanceValidator {
     typealias EventHandler = (SwapAvailableBalanceValidatorEvent) -> Void
     var eventHandler: EventHandler? { get set }
 
-    func validateAvailableSwapBalance(
-        _ quote: SwapQuote,
-        for asset: Asset
-    )
+    func validateAvailableSwapBalance()
 }
 
 extension SwapAvailableBalanceValidator {
