@@ -19,5 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 protocol AdjustableSingleSelectionInputViewModel: ViewModel {
-    var selectableInputs: [Segment] { get }
+    var customText: String? { get }
+    var options: [Segment] { get }
+    var selectedOptionIndex: Int? { get }
 }

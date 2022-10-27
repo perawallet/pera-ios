@@ -12,23 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AdjustSwapAmountScreenTheme.swift
+//   SwapDataStore.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AdjustSwapAmountScreenTheme:
-    StyleSheet,
-    LayoutSheet {
-    var amountPercentageInputEdgeInsets: NSDirectionalEdgeInsets
-    var amountPercentageInput: AdjustableSingleSelectionInputViewTheme
-
-    init(_ family: LayoutFamily) {
-        self.amountPercentageInputEdgeInsets = .init(top: 40, leading: 24, bottom: 40, trailing: 24)
-        self.amountPercentageInput = .init(
-            textInputPlaceholder: "swap-amount-percentage-placeholder".localized,
-            family: family
-        )
-    }
+protocol SwapDataStore:
+    AnyObject,
+    SwapAmountPercentageStore,
+    SwapMutableAmountPercentageStore,
+    SwapDataStorePublisher {
+    func reset()
 }
+
+protocol SwapDataStorePublisher {
+    func add(_ observer: SwapDataStoreObserver)
+    func remove(_ observer: SwapDataStoreObserver)
+}
+
+protocol SwapDataStoreObserver: AnyObject {}

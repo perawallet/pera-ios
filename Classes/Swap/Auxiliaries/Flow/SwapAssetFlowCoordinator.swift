@@ -50,6 +50,9 @@ final class SwapAssetFlowCoordinator:
         return presentingScreen.findVisibleScreen()
     }
 
+    private var transitionToAdjustAmount: BottomSheetTransition?
+
+    private let dataStore: SwapDataStore
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
@@ -59,6 +62,7 @@ final class SwapAssetFlowCoordinator:
     private let asset: Asset?
 
     init(
+        dataStore: SwapDataStore,
         analytics: ALGAnalytics,
         api: ALGAPI,
         sharedDataController: SharedDataController,
@@ -67,6 +71,7 @@ final class SwapAssetFlowCoordinator:
         account: Account? = nil,
         asset: Asset? = nil
     ) {
+        self.dataStore = dataStore
         self.analytics = analytics
         self.api = api
         self.sharedDataController = sharedDataController
@@ -83,6 +88,8 @@ final class SwapAssetFlowCoordinator:
 
 extension SwapAssetFlowCoordinator {
     func launch() {
+        dataStore.reset()
+
         sharedDataController.add(self)
 
         if !displayStore.isOnboardedToSwap {
@@ -274,6 +281,7 @@ extension SwapAssetFlowCoordinator {
 
         let swapAssetScreen = visibleScreen.open(
             .swapAsset(
+                dataStore: dataStore,
                 swapController: swapController,
                 coordinator: self
             ),
@@ -289,6 +297,8 @@ extension SwapAssetFlowCoordinator {
                 self.openConfirmAsset(swapController)
             case .didTapUserAsset:
                 self.openUserAssetSelection(swapController)
+            case .adjustAmount:
+                self.openAdjustAmount()
             case .didTapPoolAsset:
                 self.openPoolAssetSelection(swapController)
             }
@@ -585,6 +595,28 @@ extension SwapAssetFlowCoordinator {
             case .didOptInToAsset: break
             }
         }
+    }
+
+    private func openAdjustAmount() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let screen: Screen = .adjustSwapAmount(dataStore: dataStore) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didComplete:
+                /// <todo>
+                /// How can we be sure which screen we should return when the event occurs?
+                self.visibleScreen.dismissScreen()
+            }
+        }
+
+        transition.perform(
+            screen,
+            by: .present
+        )
+
+        transitionToAdjustAmount = transition
     }
 
     private func openPoolAssetSelection(

@@ -16,43 +16,154 @@
 
 import Foundation
 import MacaroonBottomSheet
+import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
 final class AdjustSwapAmountScreen:
-    BaseViewController,
-    BottomSheetPresentable {
+    BaseScrollViewController,
+    BottomSheetScrollPresentable,
+    MacaroonForm.KeyboardControllerDataSource {
+    /// <todo>
+    /// EventHandler???
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
+    var modalBottomPadding: LayoutMetric {
+        return bottomInsetUnderKeyboardWhenKeyboardDidShow(keyboardController)
+    }
+
     let modalHeight: MacaroonUIKit.ModalHeight = .compressed
 
-    private lazy var balancePercentageInputView =
-        AdjustableSingleSelectionInputView(theme.balancePercentageInput)
+    private lazy var amountPercentageInputView =
+        AdjustableSingleSelectionInputView(theme.amountPercentageInput)
+
+    private lazy var amountPercentageInputViewModel =
+        SwapAmountPercentageInputViewModel(percentage: dataStore.amountPercentage)
+
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: scrollView,
+        screen: self
+    )
+
+    private let dataStore: SwapAmountPercentageStore
+    private let dataProvider: AdjustSwapAmountDataProvider
 
     private let theme: AdjustSwapAmountScreenTheme = .init()
 
+    init(
+        dataStore: SwapAmountPercentageStore,
+        dataProvider: AdjustSwapAmountDataProvider,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataStore = dataStore
+        self.dataProvider = dataProvider
+        super.init(configuration: configuration)
+
+        keyboardController.activate()
+    }
+
+    deinit {
+        keyboardController.deactivate()
+    }
+
     override func configureNavigationBarAppearance() {
-        navigationItem.title = "swap-amount-balancePercentage-title".localized
+        navigationItem.title = "swap-amount-percentage-title".localized
+
+        let doneItem = ALGBarButtonItem(kind: .doneGreen) {
+            [unowned self] in
+            self.commitPreferredAmountPercentage()
+        }
+        rightBarButtonItems = [ doneItem ]
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureKeyboardController()
         addUI()
+    }
+}
+
+/// <mark>
+/// MacaroonForm.KeyboardControllerDataSource
+extension AdjustSwapAmountScreen {
+    func bottomInsetUnderKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return keyboardController.keyboard?.height ?? 0
+    }
+}
+
+extension AdjustSwapAmountScreen {
+    private func configureKeyboardController() {
+        keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
+            [unowned self] _ in
+            self.performLayoutUpdates(animated: false)
+        }
     }
 }
 
 extension AdjustSwapAmountScreen {
     private func addUI() {
-        addBalancePercentageInput()
+        addAmountPercentageInput()
     }
 
-    private func addBalancePercentageInput() {
-        view.addSubview(balancePercentageInputView)
-        balancePercentageInputView.snp.makeConstraints {
-            $0.top == 50
-            $0.leading == 24
-            $0.bottom <= 50
-            $0.trailing == 24
+    private func addAmountPercentageInput() {
+        contentView.addSubview(amountPercentageInputView)
+        amountPercentageInputView.snp.makeConstraints {
+            $0.top == theme.amountPercentageInputEdgeInsets.top
+            $0.leading == theme.amountPercentageInputEdgeInsets.leading
+            $0.bottom <= theme.amountPercentageInputEdgeInsets.bottom
+            $0.trailing == theme.amountPercentageInputEdgeInsets.trailing
         }
 
-        balancePercentageInputView.bind(BalancePercentageInputViewModel())
+        amountPercentageInputView.textInputFormatter = PercentageInputFormatter()
+        amountPercentageInputView.bind(amountPercentageInputViewModel)
+
+        amountPercentageInputView.addTarget(
+            self,
+            action: #selector(determineActionForPreferredAmountPercentage),
+            for: .valueChanged
+        )
+    }
+}
+
+extension AdjustSwapAmountScreen {
+    @objc
+    private func determineActionForPreferredAmountPercentage() {
+        switch amountPercentageInputView.value {
+        case .option(let index):
+            commitAmountPercentage(optionAt: index)
+            eventHandler?(.didComplete)
+        default:
+            break
+        }
+    }
+
+    private func commitPreferredAmountPercentage() {
+        switch amountPercentageInputView.value {
+        case .none: dataProvider.saveAmountPercentage(nil)
+        case .custom(let text): commitAmountPercentage(customText: text)
+        case .option(let index): commitAmountPercentage(optionAt: index)
+        }
+
+        eventHandler?(.didComplete)
+    }
+
+    private func commitAmountPercentage(customText: String) {
+        let percentage = Float(customText).unwrap { CustomSwapAmountPercentage(value: $0) }
+        dataProvider.saveAmountPercentage(percentage)
+    }
+
+    private func commitAmountPercentage(optionAt index: Int) {
+        let percentage = amountPercentageInputViewModel.percentagesPreset[safe: index]
+        dataProvider.saveAmountPercentage(percentage)
+    }
+}
+
+extension AdjustSwapAmountScreen {
+    enum Event {
+        case didComplete
     }
 }

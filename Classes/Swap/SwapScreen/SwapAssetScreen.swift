@@ -18,10 +18,13 @@ import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
+typealias SwapAssetDataStore = SwapAmountPercentageStore
+
 final class SwapAssetScreen:
     BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource,
     SwapAssetAmountViewDelegate,
+    SwapAmountPercentageStoreObserver,
     SwapAssetFlowCoordinatorObserver {
     typealias EventHandler = (Event) -> Void
 
@@ -48,16 +51,20 @@ final class SwapAssetScreen:
     private var userAssetViewModel: SwapAssetAmountViewModel
     private var poolAssetViewModel: SwapAssetAmountViewModel?
 
+    private let dataStore: SwapAssetDataStore
+
     private let theme: SwapAssetScreenTheme = .init()
 
     init(
+        dataStore: SwapAssetDataStore,
         dataController: SwapAssetDataController,
         coordinator: SwapAssetFlowCoordinator,
         configuration: ViewControllerConfiguration
     ) {
-        self.currencyFormatter = CurrencyFormatter()
+        self.dataStore = dataStore
         self.dataController = dataController
         self.swapAssetFlowCoordinator = coordinator
+        self.currencyFormatter = CurrencyFormatter()
         self.userAssetViewModel = SwapAssetAmountInViewModel(
             asset: dataController.userAsset,
             quote: nil,
@@ -66,13 +73,17 @@ final class SwapAssetScreen:
         )
         super.init(configuration: configuration)
 
-        keyboardController.activate()
+        dataStore.add(self)
         swapAssetFlowCoordinator?.add(self)
+
+        keyboardController.activate()
     }
 
     deinit {
-        keyboardController.deactivate()
+        dataStore.remove(self)
         swapAssetFlowCoordinator?.remove(self)
+
+        keyboardController.deactivate()
     }
 
     override func configureNavigationBarAppearance() {
@@ -138,12 +149,13 @@ extension SwapAssetScreen {
 
     private func addContext() {
         contentView.addSubview(contextView)
-
         contextView.spacing = theme.contextSpacing
+        contextView.directionalLayoutMargins = theme.contextContentEdgeInsets
+        contextView.isLayoutMarginsRelativeArrangement = true
         contextView.snp.makeConstraints {
             $0.top == theme.contextTopInset
-            $0.leading == theme.contextHorizontalInset
-            $0.trailing == theme.contextHorizontalInset
+            $0.leading == 0
+            $0.trailing == 0
         }
 
         addUserAsset()
@@ -181,16 +193,13 @@ extension SwapAssetScreen {
         }
         quickActionsView.startObserving(event: .adjustAmount) {
             [unowned self] in
-            self.open(
-                .adjustSwapAmount,
-                by: .present
-            )
+            self.eventHandler?(.adjustAmount)
         }
         quickActionsView.startObserving(event: .setMaxAmount) {
             print("set max amount")
         }
 
-        contentView.attachSeparator(
+        contextView.attachSeparator(
             theme.quickActionsSeparator,
             to: quickActionsView
         )
@@ -656,9 +665,17 @@ extension SwapAssetScreen {
     }
 }
 
+/// <mark>
+/// SwapAmountPercentageStoreObserver
+extension SwapAssetScreen {
+    func swapAmountPercentageDidChange() {
+    }
+}
+
 extension SwapAssetScreen {
     enum Event {
         case didTapUserAsset
+        case adjustAmount
         case didTapPoolAsset
         case didTapSwap
     }

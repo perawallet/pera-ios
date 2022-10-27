@@ -465,6 +465,7 @@ class Router:
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADetailScreen(
+                swapDataStore: SwapDataLocalStore(),
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
@@ -594,6 +595,7 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
@@ -1020,7 +1022,7 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case .swapAsset(let swapController, let coordinator):
+        case .swapAsset(let dataStore, let swapController, let coordinator):
             let dataController = SwapAssetAPIDataController(
                 swapController: swapController,
                 api: appConfiguration.api,
@@ -1028,6 +1030,7 @@ class Router:
             )
 
             viewController = SwapAssetScreen(
+                dataStore: dataStore,
                 dataController: dataController,
                 coordinator: coordinator,
                 configuration: configuration
@@ -1192,8 +1195,15 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .adjustSwapAmount:
-            viewController = AdjustSwapAmountScreen(configuration: configuration)
+        case .adjustSwapAmount(let dataStore, let eventHandler):
+            let aViewController = AdjustSwapAmountScreen(
+                dataStore: dataStore,
+                dataProvider: AdjustSwapAmountLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         }
 
         return viewController as? T

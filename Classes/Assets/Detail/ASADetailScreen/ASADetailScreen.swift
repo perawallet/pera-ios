@@ -55,6 +55,7 @@ final class ASADetailScreen:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
@@ -95,16 +96,22 @@ final class ASADetailScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let dataController: ASADetailScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
 
     init(
+        swapDataStore: SwapDataStore,
         dataController: ASADetailScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.swapDataStore = swapDataStore
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 

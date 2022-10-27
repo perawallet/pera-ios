@@ -30,6 +30,15 @@ extension Formatter {
         return formatter
     }()
 
+    static let percentageInputFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
+
     static func percentageWith(fraction value: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred

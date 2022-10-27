@@ -1209,9 +1209,9 @@
 "swap-asset-to" = "Swap To";
 
 /// MARK: Swap Adjust Amount
-"swap-amount-balancePercentage-title" = "Balance Percentage";
-"swap-amount-balancePercentage-placeholder" = "Set custom percentage";
-"swap-amount-balancePercentage-max" = "MAX";
+"swap-amount-percentage-title" = "Balance Percentage";
+"swap-amount-percentage-placeholder" = "Set custom percentage";
+"swap-amount-percentage-max" = "MAX";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";

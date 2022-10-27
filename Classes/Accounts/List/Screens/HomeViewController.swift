@@ -54,6 +54,7 @@ final class HomeViewController:
     )
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
@@ -97,13 +98,19 @@ final class HomeViewController:
     
     private var totalPortfolioValue: PortfolioValue?
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
     init(
+        swapDataStore: SwapDataStore,
         dataController: HomeDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.swapDataStore = swapDataStore
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
