@@ -51,7 +51,7 @@ struct AssetAmountInputViewTheme:
         self.amountTextEdgeInsets = (0, 0, 0, 0)
         self.detail = [
             .textColor(Colors.Text.grayLighter),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineText())
         ]
     }
 
