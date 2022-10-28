@@ -642,7 +642,7 @@ extension SwapAssetFlowCoordinator {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
             body: "swap-confirm-exchange-fee-detail".localized.bodyRegular()
         )
 
