@@ -935,10 +935,12 @@ extension SwapAssetScreen {
     }
 
     private func getAmountFromPercentage(
-        _ percentage: Decimal
+        _ percentage: Float
     ) -> Decimal {
+        let decimalPercentage = Decimal(Double(percentage))
+
         if dataController.userAsset.isAlgo {
-            return dataController.account.algo.amount.toAlgos * percentage
+            return dataController.account.algo.amount.toAlgos * decimalPercentage
         }
 
         let userAsset = AssetDecoration(asset: dataController.userAsset)
@@ -951,8 +953,7 @@ extension SwapAssetScreen {
             for: userAsset
         )
 
-        return decimalValue * percentage
->>>>>>> swap
+        return decimalValue * decimalPercentage
     }
 }
 
