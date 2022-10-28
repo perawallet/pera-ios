@@ -17,7 +17,7 @@
 import Foundation
 
 protocol SwapAmountPercentage {
-    var value: Float { get }
+    var value: Decimal { get }
     var title: String { get }
     var isPreset: Bool { get }
 }
@@ -32,12 +32,12 @@ extension SwapAmountPercentage where Self == PresetSwapAmountPercentage {
 }
 
 struct CustomSwapAmountPercentage: SwapAmountPercentage {
-    let value: Float
+    let value: Decimal
     let title: String
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         title: String? = nil
     ) {
         let percentValue = value / 100
@@ -47,7 +47,7 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
         if let title = title.unwrapNonEmptyString() {
             self.title = title
         } else {
-            self.title = String(value)
+            self.title = value.number.stringValue
         }
 
         self.isPreset = false
@@ -55,12 +55,12 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
 }
 
 struct PresetSwapAmountPercentage: SwapAmountPercentage {
-    let value: Float
+    let value: Decimal
     let title: String
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         customTitle: String? = nil
     ) {
         let percentValue = value / 100
@@ -70,8 +70,8 @@ struct PresetSwapAmountPercentage: SwapAmountPercentage {
         if let customTitle = customTitle.unwrapNonEmptyString() {
             self.title = customTitle
         } else {
-            let localizedTitle = Double(percentValue).toPercentageWith(fractions: 2)
-            self.title = localizedTitle ?? String(value)
+            let localizedTitle = percentValue.number.doubleValue.toPercentageWith(fractions: 2)
+            self.title = localizedTitle ?? percentValue.number.stringValue
         }
 
         self.isPreset = true

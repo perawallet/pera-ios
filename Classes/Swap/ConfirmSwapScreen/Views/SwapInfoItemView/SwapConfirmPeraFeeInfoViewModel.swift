@@ -44,7 +44,7 @@ extension SwapConfirmPeraFeeInfoViewModel {
     }
 
     mutating func bindIcon() {
-        icon = "icon-info-20"
+        icon = nil
     }
 
     mutating func bindDetail(

@@ -65,6 +65,7 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
                 )
 
                 self.publishEvent(.didFailNetwork(error))
+                self.finish()
             }
         }
     }
