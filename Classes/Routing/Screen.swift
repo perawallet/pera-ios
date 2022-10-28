@@ -201,7 +201,7 @@ indirect enum Screen {
         eventHandler: InnerTransactionListViewController.EventHandler
     )
     case swapAsset(
-        dataStore: SwapAssetDataStore,
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
         swapController: SwapController,
         coordinator: SwapAssetFlowCoordinator
     )

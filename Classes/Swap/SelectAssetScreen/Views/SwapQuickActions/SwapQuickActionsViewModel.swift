@@ -23,10 +23,28 @@ struct SwapQuickActionsViewModel: ViewModel {
     private(set) var adjustAmountQuickActionItem: SwapQuickActionItem
     private(set) var setMaxAmountQuickActionItem: SwapQuickActionItem
 
-    init() {
+    init(amountPercentage: SwapAmountPercentage? = nil) {
         self.switchAssetsQuickActionItem = SwapSwitchAssetsQuickActionItem()
-        self.adjustAmountQuickActionItem = SwapAdjustAmountQuickActionItem()
+        self.adjustAmountQuickActionItem =
+            Self.makeAdjustAmountQuickActionItem(percentage: amountPercentage)
         self.setMaxAmountQuickActionItem = SwapSetMaxAmountQuickActionItem()
+    }
+}
+
+extension SwapQuickActionsViewModel {
+    mutating func bind(amountPercentage: SwapAmountPercentage?) {
+        bindAdjustAmountQuickActionItem(amountPercentage: amountPercentage)
+    }
+
+    mutating func bindAdjustAmountQuickActionItem(amountPercentage: SwapAmountPercentage?) {
+        adjustAmountQuickActionItem = Self.makeAdjustAmountQuickActionItem(percentage: amountPercentage)
+    }
+}
+
+extension SwapQuickActionsViewModel {
+    private static func makeAdjustAmountQuickActionItem(percentage: SwapAmountPercentage?) -> SwapAdjustAmountQuickActionItem {
+        let title = percentage.unwrap { Double($0.value).toPercentageWith(fractions: 2) }
+        return SwapAdjustAmountQuickActionItem(title: title)
     }
 }
 

@@ -19,14 +19,13 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-typealias SwapAssetDataStore = SwapAmountPercentageStore
-
 final class SwapAssetScreen:
     BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource,
     SwapAssetAmountViewDelegate,
     SwapAmountPercentageStoreObserver,
     SwapAssetFlowCoordinatorObserver {
+    typealias DataStore = SwapAmountPercentageStore
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -77,12 +76,12 @@ final class SwapAssetScreen:
         return nil
     }
 
-    private let dataStore: SwapAssetDataStore
+    private let dataStore: DataStore
 
     private let theme: SwapAssetScreenTheme = .init()
 
     init(
-        dataStore: SwapAssetDataStore,
+        dataStore: DataStore,
         dataController: SwapAssetDataController,
         coordinator: SwapAssetFlowCoordinator,
         copyToClipboardController: CopyToClipboardController,
@@ -234,7 +233,6 @@ extension SwapAssetScreen {
     private func addQuickActions() {
         contextView.addArrangedSubview(quickActionsView)
 
-        quickActionsView.bind(SwapQuickActionsViewModel())
         quickActionsView.setLeftQuickActionsHidden(true)
         quickActionsView.setRightQuickActionsHidden(true)
 
@@ -247,13 +245,16 @@ extension SwapAssetScreen {
             self.eventHandler?(.adjustAmount)
         }
         quickActionsView.startObserving(event: .setMaxAmount) {
-            print("set max amount")
+            [unowned self] in
+            self.dataController.saveAmountPercentage(.max())
         }
 
         contextView.attachSeparator(
             theme.quickActionsSeparator,
             to: quickActionsView
         )
+
+        bindQuickActions()
     }
 
     private func addEmptyPoolAsset() {
@@ -312,6 +313,19 @@ extension SwapAssetScreen {
 
     private func updateUIWhenViewDidLayoutSubviews() {
         updateScreenWhenViewDidLayoutSubviews()
+    }
+}
+
+extension SwapAssetScreen {
+    /// <todo>
+    /// Maybe, we can set `AmountPercentageDidChange` kind of things as enum cases???
+    private func bindDataWhenAmountPercentageDidChange() {
+        bindQuickActions()
+    }
+
+    private func bindQuickActions() {
+        let percentage = dataStore.amountPercentage
+        quickActionsView.bind(SwapQuickActionsViewModel(amountPercentage: percentage))
     }
 }
 
@@ -903,6 +917,11 @@ extension SwapAssetScreen {
 /// SwapAmountPercentageStoreObserver
 extension SwapAssetScreen {
     func swapAmountPercentageDidChange() {
+        bindDataWhenAmountPercentageDidChange()
+
+        /// <todo>
+        /// We should handle the nil case properly because the user can discard the last change to
+        /// the amount percentage
         guard let amountPercentage = dataStore.amountPercentage else { return }
 
         let amount = getAmountFromPercentage(amountPercentage.value).toFraction(of: dataController.userAsset.decimals)
@@ -916,10 +935,12 @@ extension SwapAssetScreen {
     }
 
     private func getAmountFromPercentage(
-        _ percentage: Decimal
+        _ percentage: Float
     ) -> Decimal {
+        let decimalPercentage = Decimal(Double(percentage))
+
         if dataController.userAsset.isAlgo {
-            return dataController.account.algo.amount.toAlgos * percentage
+            return dataController.account.algo.amount.toAlgos * decimalPercentage
         }
 
         let userAsset = AssetDecoration(asset: dataController.userAsset)
@@ -932,7 +953,7 @@ extension SwapAssetScreen {
             for: userAsset
         )
 
-        return decimalValue * percentage
+        return decimalValue * decimalPercentage
     }
 }
 

@@ -1038,6 +1038,7 @@ class Router:
             viewController = aViewController
         case .swapAsset(let dataStore, let swapController, let coordinator):
             let dataController = SwapAssetAPIDataController(
+                dataStore: dataStore,
                 swapController: swapController,
                 api: appConfiguration.api,
                 sharedDataController: appConfiguration.sharedDataController

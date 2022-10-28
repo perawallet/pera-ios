@@ -47,6 +47,8 @@ final class AdjustSwapAmountScreen:
         screen: self
     )
 
+    private var isValid = true
+
     private let dataStore: SwapAmountPercentageStore
     private let dataProvider: AdjustSwapAmountDataProvider
 
@@ -73,7 +75,9 @@ final class AdjustSwapAmountScreen:
 
         let doneItem = ALGBarButtonItem(kind: .doneGreen) {
             [unowned self] in
-            self.commitPreferredAmountPercentage()
+            if self.isValid {
+                self.commitPreferredAmountPercentage()
+            }
         }
         rightBarButtonItems = [ doneItem ]
     }
@@ -109,6 +113,12 @@ extension AdjustSwapAmountScreen {
         addAmountPercentageInput()
     }
 
+    private func updateUIForAmountPercentage(customText: String?) {
+        if isValid != amountPercentageInputView.isValid {
+            performLayoutUpdates(animated: isViewAppeared)
+        }
+    }
+
     private func addAmountPercentageInput() {
         contentView.addSubview(amountPercentageInputView)
         amountPercentageInputView.snp.makeConstraints {
@@ -119,6 +129,7 @@ extension AdjustSwapAmountScreen {
         }
 
         amountPercentageInputView.textInputFormatter = PercentageInputFormatter()
+        amountPercentageInputView.textInputValidator = SwapAmountPercentageValidator()
         amountPercentageInputView.bind(amountPercentageInputViewModel)
 
         amountPercentageInputView.addTarget(
@@ -133,30 +144,41 @@ extension AdjustSwapAmountScreen {
     @objc
     private func determineActionForPreferredAmountPercentage() {
         switch amountPercentageInputView.value {
-        case .option(let index):
-            commitAmountPercentage(optionAt: index)
-            eventHandler?(.didComplete)
-        default:
-            break
+        case .none: applyUpdatesForAmountPercentage(customText: nil)
+        case .custom(let text): applyUpdatesForAmountPercentage(customText: text)
+        case .option(let index): commitAmountPercentage(optionAt: index)
         }
     }
 
     private func commitPreferredAmountPercentage() {
         switch amountPercentageInputView.value {
         case .none: dataProvider.saveAmountPercentage(nil)
-        case .custom(let text): commitAmountPercentage(customText: text)
-        case .option(let index): commitAmountPercentage(optionAt: index)
+        case .custom(let text): saveAmountPercentage(customText: text)
+        case .option(let index): saveAmountPercentage(optionAt: index)
         }
 
         eventHandler?(.didComplete)
     }
 
-    private func commitAmountPercentage(customText: String) {
-        let percentage = Decimal(string: customText).unwrap { CustomSwapAmountPercentage(value: $0 / 100) }
+    private func applyUpdatesForAmountPercentage(customText: String?) {
+        updateUIForAmountPercentage(customText: customText)
+        isValid = amountPercentageInputView.isValid
+    }
+
+    private func saveAmountPercentage(customText: String) {
+        let percentage = Float(customText)
+            .unwrap { CustomSwapAmountPercentage(value: $0, title: customText) }
         dataProvider.saveAmountPercentage(percentage)
     }
 
     private func commitAmountPercentage(optionAt index: Int) {
+        isValid = true
+        saveAmountPercentage(optionAt: index)
+
+        eventHandler?(.didComplete)
+    }
+
+    private func saveAmountPercentage(optionAt index: Int) {
         let percentage = amountPercentageInputViewModel.percentagesPreset[safe: index]
         dataProvider.saveAmountPercentage(percentage)
     }
