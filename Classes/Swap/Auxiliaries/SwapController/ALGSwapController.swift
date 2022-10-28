@@ -29,6 +29,8 @@ final class ALGSwapController: SwapController {
     var poolAsset: Asset?
     var slippage: SwapSlippage = .fivePerThousand /// <note> Default value is 0.005
 
+    private(set) var parsedTransactions: [ParsedSwapTransaction] = []
+    
     private lazy var uploadAndMonitorOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "com.algorad.swapTransactionUploadAndMonitorQueue"
@@ -41,7 +43,7 @@ final class ALGSwapController: SwapController {
     private let api: ALGAPI
     private let transactionSigner: SwapTransactionSigner
 
-    private(set) var parsedTransactions: [ParsedSwapTransaction] = []
+    private var signedTransactions: [Data] = []
 
     private lazy var swapTransactionGroupSigner = SwapTransactionGroupSigner(
         account: account,
@@ -73,8 +75,9 @@ extension ALGSwapController {
             case .didSignTransaction:
                 self.publishEvent(.didSignTransaction)
             case .didCompleteSigningTransactions(let transactions):
+                self.signedTransactions = transactions
                 self.publishEvent(.didSignAllTransactions)
-                self.uploadTransactionsAndWaitForConfirmation(transactions)
+                self.uploadTransactions()
             case .didFailSigning(error: let error):
                 self.publishEvent(.didFailSigning(error: error))
             case .didLedgerRequestUserApproval(let ledger):
@@ -141,13 +144,15 @@ extension ALGSwapController {
 }
 
 extension ALGSwapController {
-    private func uploadTransactionsAndWaitForConfirmation(
-        _ transactions: [Data]
-    ) {
+    func uploadTransactions() {
+        uploadTransactionsAndWaitForConfirmation()
+    }
+
+    private func uploadTransactionsAndWaitForConfirmation() {
         var operations: [Operation] = []
 
-        for transaction in transactions {
-            let isLastTransaction = transactions.last == transaction
+        for transaction in signedTransactions {
+            let isLastTransaction = signedTransactions.last == transaction
             let transactionUploadAndWaitOperation = TransactionUploadAndWaitOperation(
                 signedTransaction: transaction,
                 waitingTimeAfterTransactionConfirmed: isLastTransaction ? 0.0 : 1.0,

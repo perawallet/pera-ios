@@ -63,8 +63,7 @@ final class PreviewLoadingView:
         let width = size.width
         let titleHeight =
             theme.titleViewSize.h +
-            theme.titleMargin.top +
-            theme.titleMargin.bottom
+            theme.titleMargin.top
         let subtitleHeight =
             theme.subtitleViewSize.h +
             theme.subtitleMargin.top +

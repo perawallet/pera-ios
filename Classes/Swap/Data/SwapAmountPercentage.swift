@@ -60,7 +60,7 @@ struct PresetSwapAmountPercentage: SwapAmountPercentage {
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         customTitle: String? = nil
     ) {
         let percentValue = value / 100

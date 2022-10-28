@@ -48,11 +48,6 @@ final class SwapAssetScreen:
         return LoadingButton(loadingIndicator: loadingIndicator)
     }()
 
-    private lazy var balancePercentageValidator = SwapAvailableBalancePercentageValidator(
-        account: dataController.account,
-        api: api!
-    )
-    private lazy var quoteValidator =  SwapAvailableBalanceQuoteValidator(account: dataController.account)
     private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
 
     private let currencyFormatter: CurrencyFormatter
@@ -393,6 +388,11 @@ extension SwapAssetScreen {
     private func validateFromQuote(
         _ quote: SwapQuote
     ) {
+        var quoteValidator = SwapAvailableBalanceQuoteValidator(
+            account: dataController.account,
+            quote: quote
+        )
+
         quoteValidator.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -416,10 +416,7 @@ extension SwapAssetScreen {
             }
         }
 
-        quoteValidator.validateAvailableSwapBalance(
-            quote,
-            for: dataController.userAsset
-        )
+        quoteValidator.validateAvailableSwapBalance()
     }
 
     private func updateUIWhenDataDidFailToLoad(
@@ -616,8 +613,15 @@ extension SwapAssetScreen {
 
 extension SwapAssetScreen {
     private func validateFromBalancePercentage(
-        _ quote: SwapQuote
+        _ amount: UInt64
     ) {
+        var balancePercentageValidator = SwapAvailableBalancePercentageValidator(
+            account: dataController.account,
+            asset: dataController.userAsset,
+            amount: amount,
+            api: api!
+        )
+
         balancePercentageValidator.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -640,10 +644,7 @@ extension SwapAssetScreen {
             }
         }
 
-        balancePercentageValidator.validateAvailableSwapBalance(
-            quote,
-            for: dataController.userAsset
-        )
+        balancePercentageValidator.validateAvailableSwapBalance()
     }
 
     private func updateInput(
@@ -655,22 +656,15 @@ extension SwapAssetScreen {
         }
 
         let assetDecoration = AssetDecoration(asset: dataController.userAsset)
+        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration)
 
-        if assetDecoration.isAlgo {
-            guard let amountText = swapAssetValueFormatter.getFormattedAlgoAmount(
-                    decimalAmount: swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration),
-                    currencyFormatter: currencyFormatter
-                  ) else {
-                swapActionView.stopLoading()
-                return
-            }
-
-            userAssetView.updateInput(amountText)
+        if decimalAmount == 0 {
+            userAssetView.updateInput(nil)
             return
         }
 
         guard let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
-                decimalAmount: swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration),
+                decimalAmount: decimalAmount,
                 currencyFormatter: currencyFormatter,
                 maximumFractionDigits: assetDecoration.decimals
               ) else {
@@ -924,6 +918,41 @@ extension SwapAssetScreen {
 extension SwapAssetScreen {
     func swapAmountPercentageDidChange() {
         bindDataWhenAmountPercentageDidChange()
+
+        /// <todo>
+        /// We should handle the nil case properly because the user can discard the last change to
+        /// the amount percentage
+        guard let amountPercentage = dataStore.amountPercentage else { return }
+
+        let amount = getAmountFromPercentage(amountPercentage.value).toFraction(of: dataController.userAsset.decimals)
+
+        if dataController.poolAsset == nil {
+            updateInput(amount)
+            return
+        }
+
+        validateFromBalancePercentage(amount)
+    }
+
+    private func getAmountFromPercentage(
+        _ percentage: Decimal
+    ) -> Decimal {
+        if dataController.userAsset.isAlgo {
+            return dataController.account.algo.amount.toAlgos * percentage
+        }
+
+        let userAsset = AssetDecoration(asset: dataController.userAsset)
+        guard let assetBalance = dataController.account[userAsset.id]?.amount else {
+            return 0
+        }
+
+        let decimalValue = swapAssetValueFormatter.getDecimalAmount(
+            of: assetBalance,
+            for: userAsset
+        )
+
+        return decimalValue * percentage
+>>>>>>> swap
     }
 }
 

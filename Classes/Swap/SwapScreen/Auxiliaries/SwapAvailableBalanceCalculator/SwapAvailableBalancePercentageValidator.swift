@@ -22,35 +22,36 @@ struct SwapAvailableBalancePercentageValidator: SwapAvailableBalanceValidator {
     var eventHandler: EventHandler?
 
     private let account: Account
+    private let asset: Asset
+    private let amount: UInt64
     private let api: ALGAPI
 
     init(
         account: Account,
+        asset: Asset,
+        amount: UInt64,
         api: ALGAPI
     ) {
         self.account = account
+        self.asset = asset
+        self.amount = amount
         self.api = api
     }
 
     /// <note>
     /// Returns the amount that needs to be set on the field for both success and failure cases.
-    func validateAvailableSwapBalance(
-        _ quote: SwapQuote,
-        for asset: Asset
-    ) {
+    func validateAvailableSwapBalance() {
         if asset.isAlgo {
-            validateAvailableBalanceForAlgo(asset)
+            validateAvailableBalanceForAlgo()
             return
         }
 
-        validateAvailableBalanceForAsset(asset)
+        validateAvailableBalanceForAsset()
     }
 }
 
 extension SwapAvailableBalancePercentageValidator {
-    private func validateAvailableBalanceForAlgo(
-        _ asset: Asset
-    ) {
+    private func validateAvailableBalanceForAlgo() {
         guard let algoBalanceAfterMinBalanceAndPadding = getAlgoBalanceAfterMinBalanceAndPadding() else {
             publishEvent(.failure(.insufficientAlgoBalance(0)))
             return
@@ -93,18 +94,15 @@ extension SwapAvailableBalancePercentageValidator {
         }
     }
 
-    private func validateAvailableBalanceForAsset(
-        _ asset: Asset
-    ) {
-        guard let assetBalance = account[asset.id]?.amount,
-              assetBalance > 0 else {
+    private func validateAvailableBalanceForAsset() {
+        if amount == 0 {
             publishEvent(.failure(.insufficientAssetBalance(0)))
             return
         }
 
         let draft = PeraSwapFeeDraft(
             assetID: asset.id,
-            amount: assetBalance
+            amount: amount
         )
 
         api.calculatePeraSwapFee(draft) {
@@ -121,11 +119,11 @@ extension SwapAvailableBalancePercentageValidator {
                     let algoBalanceAfterPeraFeeResult = algoBalanceAfterMinBalanceAndPadding.subtractingReportingOverflow(peraFee)
 
                     if algoBalanceAfterPeraFeeResult.overflow {
-                        self.publishEvent(.failure(.insufficientAlgoBalance(assetBalance)))
+                        self.publishEvent(.failure(.insufficientAlgoBalance(amount)))
                         return
                     }
 
-                    self.publishEvent(.validated(assetBalance))
+                    self.publishEvent(.validated(amount))
                     return
                 }
 
@@ -143,7 +141,7 @@ extension SwapAvailableBalancePercentageValidator {
 
 extension SwapAvailableBalancePercentageValidator {
     private func getAlgoBalanceAfterMinBalanceAndPadding() -> UInt64? {
-        let algoBalance = account.algo.amount
+        let algoBalance = amount
         let minBalance = account.calculateMinBalance()
         let algoBalanceAfterMinBalanceResult = algoBalance.subtractingReportingOverflow(minBalance)
 
