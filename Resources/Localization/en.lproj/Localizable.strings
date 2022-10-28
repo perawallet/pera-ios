@@ -1224,6 +1224,7 @@
 "swap-amount-percentage-title" = "Balance Percentage";
 "swap-amount-percentage-placeholder" = "Set custom percentage";
 "swap-amount-percentage-max" = "MAX";
+"swap-amount-percentage-validation-error-limitExceeded" = "Percentage must be between 0 and 100.";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";

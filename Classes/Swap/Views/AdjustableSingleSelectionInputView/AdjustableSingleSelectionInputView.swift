@@ -26,8 +26,19 @@ final class AdjustableSingleSelectionInputView:
         get { textInputView.formatter }
         set { textInputView.formatter = newValue }
     }
+    var textInputValidator: MacaroonForm.Validator? {
+        get { textInputView.validator }
+        set { textInputView.validator = newValue }
+    }
 
     private(set) var value: Value?
+
+    var isValid: Bool {
+        switch textInputView.inputState {
+        case .none, .focus: return true
+        case .invalid, .incorrect: return false
+        }
+    }
 
     private let selectionInputView: SegmentedControl
     private let textInputView: FloatingTextInputFieldView = .init()
@@ -41,11 +52,24 @@ final class AdjustableSingleSelectionInputView:
     }
 
     func bind(_ viewModel: AdjustableSingleSelectionInputViewModel?) {
-        textInputView.text = viewModel?.customText
+        let customText = viewModel?.customText
+        textInputView.text = customText
 
         let options = viewModel?.options ?? []
         selectionInputView.add(segments: options)
-        selectionInputView.selectedSegmentIndex = viewModel?.selectedOptionIndex ?? -1
+
+        let optionIndex = (viewModel?.selectedOptionIndex).unwrap(where: { $0 < options.count })
+        let invalidOptionIndex = -1
+        let selectedOptionIndex = optionIndex ?? invalidOptionIndex
+        selectionInputView.selectedSegmentIndex = selectedOptionIndex
+
+        if let text = customText.unwrapNonEmptyString() {
+            value = .custom(text)
+        } else if selectedOptionIndex != invalidOptionIndex {
+            value = .option(selectedOptionIndex)
+        } else {
+            value = nil
+        }
     }
 }
 
@@ -65,7 +89,7 @@ extension AdjustableSingleSelectionInputView {
     func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {}
 
     func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
-        notifyForTextInputChanges()
+        notifyForTextInputChange()
     }
 
     func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
@@ -122,7 +146,7 @@ extension AdjustableSingleSelectionInputView {
 
         selectionInputView.addTarget(
             self,
-            action: #selector(notifyForSelectionInputChanges),
+            action: #selector(notifyForSelectionInputChange),
             for: .valueChanged
         )
     }
@@ -130,25 +154,40 @@ extension AdjustableSingleSelectionInputView {
 
 extension AdjustableSingleSelectionInputView {
     @objc
-    private func notifyForTextInputChanges() {
+    private func notifyForTextInputChange() {
         value = textInputView.text
             .unwrapNonEmptyString()
             .unwrap { .custom($0) }
+
         selectionInputView.selectedSegmentIndex = -1
 
-        notifyForValueChanges()
+        validateTextInputChange()
+        notifyForValueChange()
     }
 
     @objc
-    private func notifyForSelectionInputChanges() {
+    private func notifyForSelectionInputChange() {
         value = .option(selectionInputView.selectedSegmentIndex)
-        textInputView.text = nil
 
-        notifyForValueChanges()
+        textInputView.text = nil
+        textInputView.inputState = .none
+
+        notifyForValueChange()
     }
 
-    private func notifyForValueChanges() {
+    private func notifyForValueChange() {
         sendActions(for: .valueChanged)
+    }
+}
+
+extension AdjustableSingleSelectionInputView {
+    private func validateTextInputChange() {
+        let validation = textInputValidator?.validate(textInputView)
+        switch validation {
+        case .none: textInputView.inputState = .none
+        case .success: textInputView.inputState = .none
+        case .failure(let error): textInputView.inputState = .invalid(error)
+        }
     }
 }
 

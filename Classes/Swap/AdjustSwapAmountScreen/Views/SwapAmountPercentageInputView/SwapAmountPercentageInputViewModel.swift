@@ -24,13 +24,10 @@ struct SwapAmountPercentageInputViewModel: AdjustableSingleSelectionInputViewMod
     private(set) var selectedOptionIndex: Int?
 
     let percentagesPreset: [SwapAmountPercentage] = [
-        PresetSwapAmountPercentage(value: 0.25),
-        PresetSwapAmountPercentage(value: 0.5),
-        PresetSwapAmountPercentage(value: 0.75),
-        PresetSwapAmountPercentage(
-            value: 1,
-            customTitle: "swap-amount-percentage-max".localized
-        )
+        PresetSwapAmountPercentage(value: 25),
+        PresetSwapAmountPercentage(value: 50),
+        PresetSwapAmountPercentage(value: 75),
+        PresetSwapAmountPercentage.max()
     ]
 
     init(percentage: SwapAmountPercentage?) {

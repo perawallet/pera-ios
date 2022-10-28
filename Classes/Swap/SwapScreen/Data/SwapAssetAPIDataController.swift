@@ -22,6 +22,8 @@ import MagpieHipo
 final class SwapAssetAPIDataController:
     SwapAssetDataController,
     SharedDataControllerObserver {
+    typealias DataStore = SwapMutableAmountPercentageStore
+
     var eventHandler: EventHandler?
 
     var account: Account {
@@ -64,14 +66,18 @@ final class SwapAssetAPIDataController:
     private lazy var quoteThrottler = Throttler(intervalInSeconds: 0.8)
 
     private var swapController: SwapController
+
+    private let dataStore: DataStore
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
     init(
+        dataStore: DataStore,
         swapController: SwapController,
         api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
+        self.dataStore = dataStore
         self.swapController = swapController
         self.api = api
         self.sharedDataController = sharedDataController
@@ -142,6 +148,12 @@ extension SwapAssetAPIDataController {
                 self.eventHandler?(.didFailToLoadQuote(error))
             }
         }
+    }
+}
+
+extension SwapAssetAPIDataController {
+    func saveAmountPercentage(_ percentage: SwapAmountPercentage?) {
+        dataStore.amountPercentage = percentage
     }
 }
 

@@ -30,6 +30,8 @@ protocol SwapAssetDataController: AnyObject {
     var eventHandler: EventHandler? { get set }
 
     func loadQuote(swapAmount: UInt64)
+
+    func saveAmountPercentage(_ percentage: SwapAmountPercentage?)
 }
 
 enum SwapAssetDataControllerEvent {
