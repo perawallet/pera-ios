@@ -43,7 +43,7 @@ extension SwapQuickActionsViewModel {
 
 extension SwapQuickActionsViewModel {
     private static func makeAdjustAmountQuickActionItem(percentage: SwapAmountPercentage?) -> SwapAdjustAmountQuickActionItem {
-        let title = percentage.unwrap { Double($0.value).toPercentageWith(fractions: 2) }
+        let title = percentage.unwrap { $0.value.doubleValue.toPercentageWith(fractions: 2) }
         return SwapAdjustAmountQuickActionItem(title: title)
     }
 }
