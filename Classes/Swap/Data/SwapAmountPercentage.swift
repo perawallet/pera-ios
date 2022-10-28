@@ -47,7 +47,7 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
         if let title = title.unwrapNonEmptyString() {
             self.title = title
         } else {
-            self.title = value.number.stringValue
+            self.title = NSDecimalNumber(decimal: value).stringValue
         }
 
         self.isPreset = false
@@ -70,8 +70,9 @@ struct PresetSwapAmountPercentage: SwapAmountPercentage {
         if let customTitle = customTitle.unwrapNonEmptyString() {
             self.title = customTitle
         } else {
-            let localizedTitle = percentValue.number.doubleValue.toPercentageWith(fractions: 2)
-            self.title = localizedTitle ?? percentValue.number.stringValue
+            let localizedTitle = percentValue.toPercentageWith(fractions: 2)
+            let fallbackTitle = NSDecimalNumber(decimal: value).stringValue
+            self.title = localizedTitle ?? fallbackTitle
         }
 
         self.isPreset = true
