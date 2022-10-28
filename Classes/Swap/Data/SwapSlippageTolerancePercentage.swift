@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAmountPercentage.swift
+//   SwapSlippageTolerancePercentage.swift
 
 import Foundation
 
-protocol SwapAmountPercentage {
-    var value: Float { get }
+protocol SwapSlippageTolerancePercentage {
+    var value: Decimal { get }
     var title: String { get }
     var isPreset: Bool { get }
 }
 
-extension SwapAmountPercentage where Self == PresetSwapAmountPercentage {
-    static func maxPercentage() -> SwapAmountPercentage {
-        return PresetSwapAmountPercentage(
-            value: 100,
-            customTitle: "swap-amount-percentage-max".localized
-        )
+extension SwapSlippageTolerancePercentage where Self == PresetSwapSlippageTolerancePercentage {
+    static func defaultPercentage() -> SwapSlippageTolerancePercentage {
+        return PresetSwapSlippageTolerancePercentage(value: 0.5)
     }
 }
 
-struct CustomSwapAmountPercentage: SwapAmountPercentage {
-    let value: Float
+struct CustomSwapSlippageTolerancePercentage: SwapSlippageTolerancePercentage {
+    let value: Decimal
     let title: String
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         title: String? = nil
     ) {
         let percentValue = value / 100
@@ -47,20 +44,20 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
         if let title = title.unwrapNonEmptyString() {
             self.title = title
         } else {
-            self.title = String(value)
+            self.title = NSDecimalNumber(decimal: value).stringValue
         }
 
         self.isPreset = false
     }
 }
 
-struct PresetSwapAmountPercentage: SwapAmountPercentage {
-    let value: Float
+struct PresetSwapSlippageTolerancePercentage: SwapSlippageTolerancePercentage {
+    let value: Decimal
     let title: String
     let isPreset: Bool
 
     init(
-        value: Float,
+        value: Decimal,
         customTitle: String? = nil
     ) {
         let percentValue = value / 100
@@ -70,8 +67,9 @@ struct PresetSwapAmountPercentage: SwapAmountPercentage {
         if let customTitle = customTitle.unwrapNonEmptyString() {
             self.title = customTitle
         } else {
-            let localizedTitle = Double(percentValue).toPercentageWith(fractions: 2)
-            self.title = localizedTitle ?? String(value)
+            let localizedTitle = percentValue.toPercentageWith(fractions: 2)
+            let fallbackTitle = NSDecimalNumber(decimal: value).stringValue
+            self.title = localizedTitle ?? fallbackTitle
         }
 
         self.isPreset = true

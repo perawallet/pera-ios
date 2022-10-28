@@ -1161,12 +1161,6 @@ class Router:
                 sheet: sheet,
                 theme: theme
             )
-        case .setSlippage(let theme, let eventHandler):
-            viewController = SetSlippageToleranceScreen(
-                theme: theme,
-                eventHandler: eventHandler,
-                configuration: configuration
-            )
         case .insufficientAlgoBalance(let draft, let eventHandler):
             viewController = InsufficientAlgoBalanceScreen(
                 draft: draft,
@@ -1208,8 +1202,9 @@ class Router:
 
             aViewController.title = title
             viewController = aViewController
-        case .confirmSwap(let dataController, let eventHandler, let theme):
+        case .confirmSwap(let dataStore, let dataController, let eventHandler, let theme):
             let screen = ConfirmSwapScreen(
+                dataStore: dataStore,
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
@@ -1219,10 +1214,19 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .adjustSwapAmount(let dataStore, let eventHandler):
-            let aViewController = AdjustSwapAmountScreen(
+        case .editSwapAmount(let dataStore, let eventHandler):
+            let aViewController = EditSwapAmountScreen(
                 dataStore: dataStore,
-                dataProvider: AdjustSwapAmountLocalDataProvider(dataStore: dataStore),
+                dataProvider: EditSwapAmountLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
+        case .editSwapSlippage(let dataStore, let eventHandler):
+            let aViewController = EditSwapSlippageScreen(
+                dataStore: dataStore,
+                dataProvider: EditSwapSlippageToleranceLocalDataProvider(dataStore: dataStore),
                 configuration: configuration
             )
             aViewController.eventHandler = eventHandler

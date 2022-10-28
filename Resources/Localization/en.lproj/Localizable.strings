@@ -1224,7 +1224,7 @@
 "swap-amount-percentage-title" = "Balance Percentage";
 "swap-amount-percentage-placeholder" = "Set custom percentage";
 "swap-amount-percentage-max" = "MAX";
-"swap-amount-percentage-validation-error-limitExceeded" = "Percentage must be between 0 and 100.";
+"swap-amount-percentage-validation-error-limitExceeded" = "Percentage must be between %f and %f.";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
@@ -1237,9 +1237,8 @@
 /// MARK: Swap Slippage
 "swap-slippage-title" = "Slippage Tolerance";
 "swap-slippage-placeholder" = "Set custom slippage";
-"swap-slippage-percentage-auto" = "Auto";
-"swap-slippage-error-value" = "Slippage tolerance must be between 0.1% and 1%";
-"swap-slippage-error-required" = "Please enter or select a value";
+"swap-slippage-percentage-custom" = "Custom";
+"swap-slippage-percentage-validation-error-limitExceeded" = "Percentage must be between %f and %f.";
 
 /// MARK: Swap Confirm Asset
 "swap-confirm-title" = "Confirm Swap";

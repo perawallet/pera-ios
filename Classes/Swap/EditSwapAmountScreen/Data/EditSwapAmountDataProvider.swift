@@ -12,15 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AdjustableSingleSelectionInputViewModel.swift
+//   EditSwapAmountDataProvider.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-protocol AdjustableSingleSelectionInputViewModel: ViewModel {
-    var customText: String? { get }
-    var options: [Segment] { get }
-    var customTextOptionIndex: Int? { get }
-    var selectedOptionIndex: Int? { get }
+protocol EditSwapAmountDataProvider: AnyObject {
+    func saveAmountPercentage(_ percentage: SwapAmountPercentage?)
 }

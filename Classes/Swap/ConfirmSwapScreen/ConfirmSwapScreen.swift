@@ -19,8 +19,12 @@ import MagpieExceptions
 import MagpieHipo
 import UIKit
 
-final class ConfirmSwapScreen: BaseScrollViewController {
+final class ConfirmSwapScreen:
+    BaseScrollViewController,
+    SwapSlippageTolerancePercentageStoreObserver {
+    typealias DataStore = SwapSlippageTolerancePercentageStore
     typealias EventHandler = (Event) -> Void
+
     var eventHandler: EventHandler?
 
     private lazy var navigationTitleView = AccountNameTitleView()
@@ -43,22 +47,31 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     private var viewModel: ConfirmSwapScreenViewModel?
     private var isPriceReversed = false
 
+    private let dataStore: DataStore
     private let currencyFormatter: CurrencyFormatter
     private let dataController: ConfirmSwapDataController
     private let copyToClipboardController: CopyToClipboardController
     private let theme: ConfirmSwapScreenTheme
 
     init(
+        dataStore: DataStore,
         dataController: ConfirmSwapDataController,
         copyToClipboardController: CopyToClipboardController,
         theme: ConfirmSwapScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
+        self.dataStore = dataStore
         self.currencyFormatter = CurrencyFormatter()
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
         self.theme = theme
         super.init(configuration: configuration)
+
+        dataStore.add(self)
+    }
+
+    deinit {
+        dataStore.remove(self)
     }
 
     override func configureNavigationBarAppearance() {
@@ -93,6 +106,14 @@ final class ConfirmSwapScreen: BaseScrollViewController {
     override func bindData() {
         super.bindData()
         bindData(dataController.quote)
+    }
+}
+
+/// <mark>
+/// SwapSlippageTolerancePercentageStoreObserver
+extension ConfirmSwapScreen {
+    func swapSlippageTolerancePercentageDidChange() {
+        dataController.updateSlippageTolerancePercentage(percentage: dataStore.slippageTolerancePercentage)
     }
 }
 

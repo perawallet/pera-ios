@@ -12,19 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SetSlippageToleranceScreenTheme.swift
+//   SwapSlippageStore.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct SetSlippageToleranceScreenTheme:
-    StyleSheet,
-    LayoutSheet {
-    let backgroundColor: Color
-    let contextView: SelectorInputViewTheme
+protocol SwapSlippageTolerancePercentageStore: SwapDataStorePublisher {
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage { get }
+}
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.contextView = SelectorInputViewTheme()
-    }
+protocol SwapMutableSlippageTolerancePercentageStore: AnyObject {
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage { get set }
+}
+
+protocol SwapSlippageTolerancePercentageStoreObserver: SwapDataStoreObserver {
+    func swapSlippageTolerancePercentageDidChange()
 }

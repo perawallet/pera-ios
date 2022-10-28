@@ -50,7 +50,8 @@ final class SwapAssetFlowCoordinator:
         return presentingScreen.findVisibleScreen()
     }
 
-    private var transitionToAdjustAmount: BottomSheetTransition?
+    private var transitionToEditAmount: BottomSheetTransition?
+    private var transitionToEditSlippage: BottomSheetTransition?
 
     private let dataStore: SwapDataStore
     private let analytics: ALGAnalytics
@@ -328,8 +329,8 @@ extension SwapAssetFlowCoordinator {
                 self.openConfirmAsset(swapController)
             case .didTapUserAsset:
                 self.openUserAssetSelection(swapController)
-            case .adjustAmount:
-                self.openAdjustAmount()
+            case .editAmount:
+                self.openEditAmount()
             case .didTapPoolAsset:
                 self.openPoolAssetSelection(swapController)
             }
@@ -365,14 +366,19 @@ extension SwapAssetFlowCoordinator {
             case .didTapSlippageInfo:
                 self.openSlippageToleranceInfo()
             case .didTapSlippageAction:
-                break
+                self.openEditSlippage()
             case .didTapExchangeFeeInfo:
                 self.openExchangeFeeInfo()
             }
         }
+        let screen: Screen = .confirmSwap(
+            dataStore: dataStore,
+            dataController: dataController,
+            eventHandler: eventHandler
+        )
 
         visibleScreen.open(
-            .confirmSwap(dataController: dataController, eventHandler: eventHandler),
+            screen,
             by: .push
         )
     }
@@ -599,6 +605,28 @@ extension SwapAssetFlowCoordinator {
         )
     }
 
+    private func openEditSlippage() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let screen: Screen = .editSwapSlippage(dataStore: dataStore) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didComplete:
+                /// <todo>
+                /// How can we be sure which screen we should return when the event occurs?
+                self.visibleScreen.dismissScreen()
+            }
+        }
+
+        transition.perform(
+            screen,
+            by: .present
+        )
+
+        transitionToEditSlippage = transition
+    }
+
     private func openPriceImpactInfo() {
         let uiSheet = UISheet(
             title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
@@ -688,9 +716,9 @@ extension SwapAssetFlowCoordinator {
         }
     }
 
-    private func openAdjustAmount() {
+    private func openEditAmount() {
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-        let screen: Screen = .adjustSwapAmount(dataStore: dataStore) {
+        let screen: Screen = .editSwapAmount(dataStore: dataStore) {
             [weak self] event in
             guard let self = self else { return }
 
@@ -707,7 +735,7 @@ extension SwapAssetFlowCoordinator {
             by: .present
         )
 
-        transitionToAdjustAmount = transition
+        transitionToEditAmount = transition
     }
 
     private func openPoolAssetSelection(

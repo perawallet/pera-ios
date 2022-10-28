@@ -249,10 +249,6 @@ indirect enum Screen {
         sheet: UISheet,
         theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
     )
-    case setSlippage(
-        theme: SetSlippageToleranceScreenTheme = .init(),
-        eventHandler: SetSlippageToleranceScreen.EventHandler
-    )
     case insufficientAlgoBalance(
         draft: InsufficientAlgoBalanceDraft,
         eventHandler: InsufficientAlgoBalanceScreen.EventHandler
@@ -275,6 +271,7 @@ indirect enum Screen {
         theme: SelectAssetScreenTheme = .init()
     )
     case confirmSwap(
+        dataStore: SwapSlippageTolerancePercentageStore,
         dataController: ConfirmSwapDataController,
         eventHandler: EventHandler<ConfirmSwapScreen.Event>,
         theme: ConfirmSwapScreenTheme = .init()
@@ -282,9 +279,13 @@ indirect enum Screen {
     /// <todo>
     /// We should find a way to define the EventHandler decoupled to the actual screen when we
     /// refactor the routing mechanism.
-    case adjustSwapAmount(
+    case editSwapAmount(
         dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
-        eventHandler: AdjustSwapAmountScreen.EventHandler
+        eventHandler: EditSwapAmountScreen.EventHandler
+    )
+    case editSwapSlippage(
+        dataStore: SwapSlippageTolerancePercentageStore & SwapMutableSlippageTolerancePercentageStore,
+        eventHandler: EditSwapSlippageScreen.EventHandler
     )
     case exportAccountsResult(
         accounts: [Account],

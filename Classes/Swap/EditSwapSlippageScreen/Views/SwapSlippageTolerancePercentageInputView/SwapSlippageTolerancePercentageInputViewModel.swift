@@ -18,54 +18,64 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SwapAmountPercentageInputViewModel: AdjustableSingleSelectionInputViewModel {
+struct SwapSlippageTolerancePercentageInputViewModel: AdjustableSingleSelectionInputViewModel {
     private(set) var customText: String?
+    private(set) var customTextOptionIndex: Int?
     private(set) var options: [Segment] = []
     private(set) var selectedOptionIndex: Int?
 
-    let percentagesPreset: [SwapAmountPercentage] = [
-        PresetSwapAmountPercentage(value: 25),
-        PresetSwapAmountPercentage(value: 50),
-        PresetSwapAmountPercentage(value: 75),
-        PresetSwapAmountPercentage.max()
+    let percentagesPreset: [SwapSlippageTolerancePercentage] = [
+        PresetSwapSlippageTolerancePercentage(
+            value: 0,
+            customTitle: "swap-slippage-percentage-custom".localized
+        ),
+        PresetSwapSlippageTolerancePercentage(value: 0.1),
+        .defaultPercentage(),
+        PresetSwapSlippageTolerancePercentage(value: 1)
     ]
 
-    init(percentage: SwapAmountPercentage?) {
+    init(percentage: SwapSlippageTolerancePercentage?) {
         bindCustomText(percentage: percentage)
         bindOptions(percentage: percentage)
     }
 }
 
-extension SwapAmountPercentageInputViewModel {
-    mutating func bindCustomText(percentage: SwapAmountPercentage?) {
+extension SwapSlippageTolerancePercentageInputViewModel {
+    mutating func bindCustomText(percentage: SwapSlippageTolerancePercentage?) {
         let selectedPercentage = percentage.unwrap(where: { !$0.isPreset })
-        customText = selectedPercentage?.title
+        let newCustomText = selectedPercentage?.title
+        customText = newCustomText
+
+        /// <note>
+        /// if percentagesPreset[0] == 'custom'
+        customTextOptionIndex = 0
+        selectedOptionIndex =  newCustomText.isNilOrEmpty ? nil : 0
     }
 
-    mutating func bindOptions(percentage: SwapAmountPercentage?) {
+    mutating func bindOptions(percentage: SwapSlippageTolerancePercentage?) {
         let selectedPercentage = percentage.unwrap(where: \.isPreset)
 
-        var options: [SwapAmountPercentageOption] = []
+        var newOptions: [SwapSlippageTolerancePercentageOption] = []
         percentagesPreset.enumerated().forEach {
             index, percentage in
 
-            let option = SwapAmountPercentageOption(percentage)
-            options.append(option)
+            let option = SwapSlippageTolerancePercentageOption(percentage)
+            newOptions.append(option)
 
             if percentage.title == selectedPercentage?.title {
                 selectedOptionIndex = index
             }
         }
-        self.options = options
+        options = newOptions
     }
 }
 
-struct SwapAmountPercentageOption: Segment {
+struct SwapSlippageTolerancePercentageOption: Segment {
     let layout: Segment.Layout
     let style: Segment.Style
     let contentEdgeInsets: UIEdgeInsets
-    
-    init(_ percentage: SwapAmountPercentage) {
+
+    init(_ percentage: SwapSlippageTolerancePercentage) {
         self.layout = .none
         self.style = [
             .backgroundImage([

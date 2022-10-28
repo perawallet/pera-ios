@@ -42,11 +42,11 @@ struct SwapAmountPercentageValidator: MacaroonForm.Validator {
             return .failure(Error.corrupted)
         }
 
-        if percentage <= 0 {
+        if percentage <= Error.minLimit {
             return .failure(Error.minLimitExceeded)
         }
 
-        if percentage > 100 {
+        if percentage > Error.maxLimit {
             return .failure(Error.maxLimitExceeded)
         }
 
@@ -60,17 +60,22 @@ struct SwapAmountPercentageValidator: MacaroonForm.Validator {
 }
 
 protocol SwapAmountPercentageValidationMessageResolver {
-    subscript (error: SwapAmountPercentageValidationError) -> String? { get }
+    typealias Error = SwapAmountPercentageValidationError
+
+    subscript (error: Error) -> String? { get }
 }
 
 struct SwapAmountPercentageValidationMessageGenericResolver: SwapAmountPercentageValidationMessageResolver {
-    private var errorMessages: [SwapAmountPercentageValidationError : String] = [
-        .corrupted: "swap-amount-percentage-validation-error-limitExceeded".localized,
-        .minLimitExceeded: "swap-amount-percentage-validation-error-limitExceeded".localized,
-        .maxLimitExceeded: "swap-amount-percentage-validation-error-limitExceeded".localized
+    private var errorMessages: [Self.Error : String] = [
+        .corrupted: "swap-amount-percentage-validation-error-limitExceeded"
+            .localized(Self.Error.minLimit, Self.Error.maxLimit),
+        .minLimitExceeded: "swap-amount-percentage-validation-error-limitExceeded"
+            .localized(Self.Error.minLimit, Self.Error.maxLimit),
+        .maxLimitExceeded: "swap-amount-percentage-validation-error-limitExceeded"
+            .localized(Self.Error.minLimit, Self.Error.maxLimit)
     ]
 
-    subscript(error: SwapAmountPercentageValidationError) -> String? {
+    subscript(error: Self.Error) -> String? {
         get { errorMessages[error] }
         set { errorMessages[error] = newValue }
     }
@@ -80,4 +85,7 @@ enum SwapAmountPercentageValidationError: ValidationError {
     case corrupted
     case minLimitExceeded
     case maxLimitExceeded
+
+    fileprivate static let minLimit: Float = 0
+    fileprivate static let maxLimit: Float = 100
 }

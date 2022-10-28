@@ -240,13 +240,13 @@ extension SwapAssetScreen {
             [unowned self] in
             self.switchAssets()
         }
-        quickActionsView.startObserving(event: .adjustAmount) {
+        quickActionsView.startObserving(event: .editAmount) {
             [unowned self] in
-            self.eventHandler?(.adjustAmount)
+            self.eventHandler?(.editAmount)
         }
         quickActionsView.startObserving(event: .setMaxAmount) {
             [unowned self] in
-            self.dataController.saveAmountPercentage(.max())
+            self.dataController.saveAmountPercentage(.maxPercentage())
         }
 
         contextView.attachSeparator(
@@ -960,7 +960,7 @@ extension SwapAssetScreen {
 extension SwapAssetScreen {
     enum Event {
         case didTapUserAsset
-        case adjustAmount
+        case editAmount
         case didTapPoolAsset
         case didTapSwap
     }

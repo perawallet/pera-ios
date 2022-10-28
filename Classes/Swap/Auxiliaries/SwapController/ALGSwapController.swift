@@ -27,7 +27,7 @@ final class ALGSwapController: SwapController {
     var userAsset: Asset
     var quote: SwapQuote?
     var poolAsset: Asset?
-    var slippage: SwapSlippage = .fivePerThousand /// <note> Default value is 0.005
+    var slippage: Decimal = PresetSwapSlippageTolerancePercentage.defaultPercentage().value
 
     private(set) var parsedTransactions: [ParsedSwapTransaction] = []
     

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AdjustSwapAmountScreen.swift
+//   EditSwapAmountScreen.swift
 
 import Foundation
 import MacaroonBottomSheet
@@ -20,7 +20,7 @@ import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
-final class AdjustSwapAmountScreen:
+final class EditSwapAmountScreen:
     BaseScrollViewController,
     BottomSheetScrollPresentable,
     MacaroonForm.KeyboardControllerDataSource {
@@ -50,13 +50,13 @@ final class AdjustSwapAmountScreen:
     private var isValid = true
 
     private let dataStore: SwapAmountPercentageStore
-    private let dataProvider: AdjustSwapAmountDataProvider
+    private let dataProvider: EditSwapAmountDataProvider
 
-    private let theme: AdjustSwapAmountScreenTheme = .init()
+    private let theme: EditSwapAmountScreenTheme = .init()
 
     init(
         dataStore: SwapAmountPercentageStore,
-        dataProvider: AdjustSwapAmountDataProvider,
+        dataProvider: EditSwapAmountDataProvider,
         configuration: ViewControllerConfiguration
     ) {
         self.dataStore = dataStore
@@ -91,7 +91,7 @@ final class AdjustSwapAmountScreen:
 
 /// <mark>
 /// MacaroonForm.KeyboardControllerDataSource
-extension AdjustSwapAmountScreen {
+extension EditSwapAmountScreen {
     func bottomInsetUnderKeyboardWhenKeyboardDidShow(
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
@@ -99,7 +99,7 @@ extension AdjustSwapAmountScreen {
     }
 }
 
-extension AdjustSwapAmountScreen {
+extension EditSwapAmountScreen {
     private func configureKeyboardController() {
         keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
             [unowned self] _ in
@@ -108,7 +108,7 @@ extension AdjustSwapAmountScreen {
     }
 }
 
-extension AdjustSwapAmountScreen {
+extension EditSwapAmountScreen {
     private func addUI() {
         addAmountPercentageInput()
     }
@@ -140,7 +140,7 @@ extension AdjustSwapAmountScreen {
     }
 }
 
-extension AdjustSwapAmountScreen {
+extension EditSwapAmountScreen {
     @objc
     private func determineActionForPreferredAmountPercentage() {
         switch amountPercentageInputView.value {
@@ -184,7 +184,7 @@ extension AdjustSwapAmountScreen {
     }
 }
 
-extension AdjustSwapAmountScreen {
+extension EditSwapAmountScreen {
     enum Event {
         case didComplete
     }
