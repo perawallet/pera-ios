@@ -30,27 +30,20 @@ final class SwapAssetFlowCoordinator:
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
-    private lazy var alertTransitionToSwapIntroduction = AlertUITransition(presentingViewController: presentingScreen)
-    private lazy var transitionToSignWithLedger = BottomSheetTransition(
-        presentingViewController: visibleScreen,
-        interactable: false
-    )
-    private lazy var transitionToLedgerSigningProcess = BottomSheetTransition(
-        presentingViewController: visibleScreen,
-        interactable: false
-    )
-    private lazy var transitionToSlippageToleranceInfo = BottomSheetTransition(presentingViewController: visibleScreen)
-    private lazy var transitionToPriceImpactInfo = BottomSheetTransition(presentingViewController: visibleScreen)
-    private lazy var transitionToExchangeFeeInfo = BottomSheetTransition(presentingViewController: visibleScreen)
-    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: visibleScreen)
-
-    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private var visibleScreen: UIViewController {
         return presentingScreen.findVisibleScreen()
     }
 
+    private var alertTransitionToSwapIntroduction: AlertUITransition?
+    private var transitionToSignWithLedger: BottomSheetTransition?
+    private var transitionToLedgerSigningProcess: BottomSheetTransition?
+    private var transitionToSlippageToleranceInfo: BottomSheetTransition?
+    private var transitionToPriceImpactInfo: BottomSheetTransition?
+    private var transitionToExchangeFeeInfo: BottomSheetTransition?
+    private var transitionToOptInAsset: BottomSheetTransition?
     private var transitionToAdjustAmount: BottomSheetTransition?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private let dataStore: SwapDataStore
     private let analytics: ALGAnalytics
@@ -124,10 +117,14 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSwapIntroductionAlert() {
-        alertTransitionToSwapIntroduction.perform(
+        let transition = AlertUITransition(presentingViewController: visibleScreen)
+
+        transition.perform(
             .alert(alert: swapIntroductionAlertItem.makeAlert()),
             by: .presentWithoutNavigationController
         )
+
+        alertTransitionToSwapIntroduction = transition
     }
 
     private func openSwapIntroduction() {
@@ -456,6 +453,11 @@ extension SwapAssetFlowCoordinator {
         swapController: SwapController,
         transactionGroups: [SwapTransactionGroup]
      ) {
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
         let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
         let title =
@@ -491,13 +493,15 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(signTransactionsAction)
 
-        transitionToSignWithLedger.perform(
+         transition.perform(
             .sheetAction(
                 sheet: uiSheet,
                 theme: UISheetActionScreenImageTheme()
             ),
             by: .presentWithoutNavigationController
         )
+
+        transitionToSignWithLedger = transition
     }
 
     private func openSignWithLedgerProcess(
@@ -507,6 +511,11 @@ extension SwapAssetFlowCoordinator {
         if signWithLedgerProcessScreen != nil {
             return
         }
+
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         let totalTransactionCount = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
@@ -525,13 +534,15 @@ extension SwapAssetFlowCoordinator {
             }
         }
 
-        signWithLedgerProcessScreen = transitionToLedgerSigningProcess.perform(
+        signWithLedgerProcessScreen = transition.perform(
             .swapSignWithLedgerProcess(
                 draft: draft,
                 eventHandler: eventHandler
             ),
             by: .present
         ) as? SignWithLedgerProcessScreen
+
+        transitionToLedgerSigningProcess = transition
     }
 
     private func displaySigningError(
@@ -580,6 +591,8 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSlippageToleranceInfo() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
         let uiSheet = UISheet(
             title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
             body:"swap-slippage-tolerance-info-body".localized.bodyRegular()
@@ -593,13 +606,17 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(closeAction)
 
-        transitionToSlippageToleranceInfo.perform(
+        transition.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
+
+        transitionToSlippageToleranceInfo = transition
     }
 
     private func openPriceImpactInfo() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
         let uiSheet = UISheet(
             title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
             body:"swap-price-impact-info-body".localized.bodyRegular()
@@ -613,15 +630,19 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(closeAction)
 
-        transitionToPriceImpactInfo.perform(
+        transition.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
+
+        transitionToPriceImpactInfo = transition
     }
 
     private func openExchangeFeeInfo() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
         let uiSheet = UISheet(
-            title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
+            title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
             body: "swap-confirm-exchange-fee-detail".localized.bodyRegular()
         )
 
@@ -633,10 +654,12 @@ extension SwapAssetFlowCoordinator {
         }
         uiSheet.addAction(closeAction)
 
-        transitionToExchangeFeeInfo.perform(
+        transition.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
+
+        transitionToExchangeFeeInfo = transition
     }
 
     private func openAlgoExplorerForSwapTransaction(
@@ -758,6 +781,8 @@ extension SwapAssetFlowCoordinator {
         _ asset: AssetDecoration,
         swapController: SwapController
     ) {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
         let account = swapController.account
         let draft = OptInAssetDraft(
             account: account,
@@ -777,10 +802,12 @@ extension SwapAssetFlowCoordinator {
             }
         }
 
-        transitionToOptInAsset.perform(
+        transition.perform(
             screen,
             by: .present
         )
+
+        transitionToOptInAsset = transition
     }
 }
 
