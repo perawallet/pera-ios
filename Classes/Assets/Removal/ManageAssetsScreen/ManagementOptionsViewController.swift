@@ -86,10 +86,11 @@ extension ManagementOptionsViewController {
         switch managementType {
         case .assets:
             addSortButton()
+            addFilterAssetsButton()
             addRemoveButton()
         case .collectibles:
             addSortButton()
-            addFilterButton()
+            addFilterCollectiblesButton()
         case .watchAccountAssets:
             addSortButton()
         }
@@ -109,10 +110,17 @@ extension ManagementOptionsViewController {
         )
     }
 
-    private func addFilterButton() {
+    private func addFilterCollectiblesButton() {
         addButton(
             FilterCollectiblesItemButtonViewModel(),
             #selector(filterCollectibles)
+        )
+    }
+    
+    private func addFilterAssetsButton() {
+        addButton(
+            FilterAssetsListItemButtonViewModel(),
+            #selector(filterAssets)
         )
     }
     
@@ -163,6 +171,9 @@ extension ManagementOptionsViewController {
             self.delegate?.managementOptionsViewControllerDidTapFilter(self)
         }
     }
+    
+    @objc
+    private func filterAssets() {}
 }
 
 extension ManagementOptionsViewController {
