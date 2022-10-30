@@ -12,26 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapAmountPercentage.swift
+//   SwapSlippageTolerancePercentage.swift
 
 import Foundation
 
-protocol SwapAmountPercentage {
+protocol SwapSlippageTolerancePercentage {
     var value: Decimal { get }
     var title: String { get }
     var isPreset: Bool { get }
 }
 
-extension SwapAmountPercentage where Self == PresetSwapAmountPercentage {
-    static func maxPercentage() -> SwapAmountPercentage {
-        return PresetSwapAmountPercentage(
-            value: 100,
-            customTitle: "swap-amount-percentage-max".localized
-        )
+extension SwapSlippageTolerancePercentage where Self == PresetSwapSlippageTolerancePercentage {
+    static func defaultPercentage() -> SwapSlippageTolerancePercentage {
+        return PresetSwapSlippageTolerancePercentage(value: 0.5)
     }
 }
 
-struct CustomSwapAmountPercentage: SwapAmountPercentage {
+struct CustomSwapSlippageTolerancePercentage: SwapSlippageTolerancePercentage {
     let value: Decimal
     let title: String
     let isPreset: Bool
@@ -54,7 +51,7 @@ struct CustomSwapAmountPercentage: SwapAmountPercentage {
     }
 }
 
-struct PresetSwapAmountPercentage: SwapAmountPercentage {
+struct PresetSwapSlippageTolerancePercentage: SwapSlippageTolerancePercentage {
     let value: Decimal
     let title: String
     let isPreset: Bool

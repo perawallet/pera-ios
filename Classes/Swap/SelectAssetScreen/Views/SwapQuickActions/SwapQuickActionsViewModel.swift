@@ -20,31 +20,31 @@ import UIKit
 
 struct SwapQuickActionsViewModel: ViewModel {
     private(set) var switchAssetsQuickActionItem: SwapQuickActionItem
-    private(set) var adjustAmountQuickActionItem: SwapQuickActionItem
+    private(set) var editAmountQuickActionItem: SwapQuickActionItem
     private(set) var setMaxAmountQuickActionItem: SwapQuickActionItem
 
     init(amountPercentage: SwapAmountPercentage? = nil) {
         self.switchAssetsQuickActionItem = SwapSwitchAssetsQuickActionItem()
-        self.adjustAmountQuickActionItem =
-            Self.makeAdjustAmountQuickActionItem(percentage: amountPercentage)
+        self.editAmountQuickActionItem =
+            Self.makeEditAmountQuickActionItem(percentage: amountPercentage)
         self.setMaxAmountQuickActionItem = SwapSetMaxAmountQuickActionItem()
     }
 }
 
 extension SwapQuickActionsViewModel {
     mutating func bind(amountPercentage: SwapAmountPercentage?) {
-        bindAdjustAmountQuickActionItem(amountPercentage: amountPercentage)
+        bindEditAmountQuickActionItem(amountPercentage: amountPercentage)
     }
 
-    mutating func bindAdjustAmountQuickActionItem(amountPercentage: SwapAmountPercentage?) {
-        adjustAmountQuickActionItem = Self.makeAdjustAmountQuickActionItem(percentage: amountPercentage)
+    mutating func bindEditAmountQuickActionItem(amountPercentage: SwapAmountPercentage?) {
+        editAmountQuickActionItem = Self.makeEditAmountQuickActionItem(percentage: amountPercentage)
     }
 }
 
 extension SwapQuickActionsViewModel {
-    private static func makeAdjustAmountQuickActionItem(percentage: SwapAmountPercentage?) -> SwapAdjustAmountQuickActionItem {
+    private static func makeEditAmountQuickActionItem(percentage: SwapAmountPercentage?) -> SwapEditAmountQuickActionItem {
         let title = percentage.unwrap { $0.value.doubleValue.toPercentageWith(fractions: 2) }
-        return SwapAdjustAmountQuickActionItem(title: title)
+        return SwapEditAmountQuickActionItem(title: title)
     }
 }
 
@@ -62,7 +62,7 @@ struct SwapSwitchAssetsQuickActionItem: SwapQuickActionItem {
     }
 }
 
-struct SwapAdjustAmountQuickActionItem: SwapQuickActionItem {
+struct SwapEditAmountQuickActionItem: SwapQuickActionItem {
     let layout: Self.Layout
     let style: Self.Style
     let contentEdgeInsets: UIEdgeInsets

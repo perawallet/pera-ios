@@ -40,15 +40,14 @@ final class ConfirmSwapAPIDataController: ConfirmSwapDataController {
 }
 
 extension ConfirmSwapAPIDataController {
-    func updateSlippage(
-        _ slippage: SwapSlippage
-    ) {
+    func updateSlippageTolerancePercentage(percentage: SwapSlippageTolerancePercentage) {
         guard let deviceID = api.session.authenticatedUser?.getDeviceId(on: api.network),
               let poolAssetID = swapController.poolAsset?.id,
               let swapAmount = swapController.quote?.amountIn else {
             return
         }
 
+        let slippage = percentage.value
         let draft = SwapQuoteDraft(
             providers: swapController.providers,
             swapperAddress: account.address,

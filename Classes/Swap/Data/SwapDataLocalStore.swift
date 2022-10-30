@@ -23,14 +23,23 @@ final class SwapDataLocalStore:
     var amountPercentage: SwapAmountPercentage? {
         didSet { notifyForAmountPercentageChanges() }
     }
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage {
+        didSet { notifyForSlippageTolerancePercentageChanges() }
+    }
 
     var observations: [ObjectIdentifier : SwapDataStoreObservation] = [:]
+
+    init() {
+        self.slippageTolerancePercentage = .defaultPercentage()
+    }
 }
 
 extension SwapDataLocalStore {
     func reset() {
         invalidateObservers()
+
         amountPercentage = nil
+        slippageTolerancePercentage = .defaultPercentage()
     }
 }
 
@@ -39,6 +48,13 @@ extension SwapDataLocalStore {
         notifyObservers {
             let observer = $0 as? SwapAmountPercentageStoreObserver
             observer?.swapAmountPercentageDidChange()
+        }
+    }
+
+    private func notifyForSlippageTolerancePercentageChanges() {
+        notifyObservers {
+            let observer = $0 as? SwapSlippageTolerancePercentageStoreObserver
+            observer?.swapSlippageTolerancePercentageDidChange()
         }
     }
 }

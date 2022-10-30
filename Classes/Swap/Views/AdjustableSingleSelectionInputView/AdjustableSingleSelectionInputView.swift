@@ -40,6 +40,8 @@ final class AdjustableSingleSelectionInputView:
         }
     }
 
+    private var textInputOptionIndex: Int?
+
     private let selectionInputView: SegmentedControl
     private let textInputView: FloatingTextInputFieldView = .init()
     private let selectionInputScrollView: UIScrollView = .init()
@@ -52,6 +54,8 @@ final class AdjustableSingleSelectionInputView:
     }
 
     func bind(_ viewModel: AdjustableSingleSelectionInputViewModel?) {
+        textInputOptionIndex = viewModel?.customTextOptionIndex
+
         let customText = viewModel?.customText
         textInputView.text = customText
 
@@ -86,7 +90,9 @@ extension AdjustableSingleSelectionInputView {
 /// <mark>
 /// FormInputFieldViewEditingDelegate
 extension AdjustableSingleSelectionInputView {
-    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {}
+    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {
+        selectionInputView.selectedSegmentIndex = textInputOptionIndex ?? -1
+    }
 
     func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
         notifyForTextInputChange()
@@ -159,15 +165,22 @@ extension AdjustableSingleSelectionInputView {
             .unwrapNonEmptyString()
             .unwrap { .custom($0) }
 
-        selectionInputView.selectedSegmentIndex = -1
-
         validateTextInputChange()
         notifyForValueChange()
     }
 
     @objc
     private func notifyForSelectionInputChange() {
-        value = .option(selectionInputView.selectedSegmentIndex)
+        let selectedOptionIndex = selectionInputView.selectedSegmentIndex
+
+        if selectedOptionIndex == textInputOptionIndex {
+            notifyForTextInputChange()
+            beginEditing()
+
+            return
+        }
+
+        value = .option(selectedOptionIndex)
 
         textInputView.text = nil
         textInputView.inputState = .none

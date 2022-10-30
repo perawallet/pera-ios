@@ -32,7 +32,7 @@ final class SwapQuote: ALGEntityModel {
     let amountOut: UInt64?
     let amountOutWithSlippage: UInt64?
     let amountOutUSDValue: Decimal?
-    let slippage: SwapSlippage?
+    let slippage: Decimal?
     let price: Decimal?
     let priceImpact: Decimal?
     let peraFee: UInt64?
@@ -54,7 +54,11 @@ final class SwapQuote: ALGEntityModel {
         self.amountOut = apiModel.amountOut.unwrap { UInt64($0)  }
         self.amountOutWithSlippage = apiModel.amountOutWithSlippage.unwrap { UInt64($0) }
         self.amountOutUSDValue = apiModel.amountOutUSDValue.unwrap { Decimal(string: $0) }
-        self.slippage = apiModel.slippage.unwrap { SwapSlippage(rawValue: Decimal(string: $0) ?? SwapSlippage.fivePerThousand.rawValue) }
+
+        let slippage = apiModel.slippage.unwrap { Decimal(string: $0) }
+        let defaultSlippage = PresetSwapSlippageTolerancePercentage.defaultPercentage().value
+        self.slippage = slippage ?? defaultSlippage
+
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
         self.priceImpact = apiModel.priceImpact.unwrap { Decimal(string: $0) }
         self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))

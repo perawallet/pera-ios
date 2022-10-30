@@ -20,6 +20,8 @@ protocol SwapDataStore:
     AnyObject,
     SwapAmountPercentageStore,
     SwapMutableAmountPercentageStore,
+    SwapSlippageTolerancePercentageStore,
+    SwapMutableSlippageTolerancePercentageStore,
     SwapDataStorePublisher {
     func reset()
 }

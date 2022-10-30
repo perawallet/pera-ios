@@ -12,20 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AdjustSwapAmountLocalDataProvider.swift
+//   EditSwapAmountScreenTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-final class AdjustSwapAmountLocalDataProvider: AdjustSwapAmountDataProvider {
-    private let dataStore: SwapMutableAmountPercentageStore
+struct EditSwapAmountScreenTheme:
+    StyleSheet,
+    LayoutSheet {
+    var amountPercentageInputEdgeInsets: NSDirectionalEdgeInsets
+    var amountPercentageInput: AdjustableSingleSelectionInputViewTheme
 
-    init(dataStore: SwapMutableAmountPercentageStore) {
-        self.dataStore = dataStore
-    }
-}
-
-extension AdjustSwapAmountLocalDataProvider {
-    func saveAmountPercentage(_ percentage: SwapAmountPercentage?) {
-        dataStore.amountPercentage = percentage
+    init(_ family: LayoutFamily) {
+        self.amountPercentageInputEdgeInsets = .init(top: 40, leading: 24, bottom: 40, trailing: 24)
+        self.amountPercentageInput = .init(
+            textInputPlaceholder: "swap-amount-percentage-placeholder".localized,
+            family: family
+        )
     }
 }

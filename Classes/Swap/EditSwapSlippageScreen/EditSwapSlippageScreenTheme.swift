@@ -12,12 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SelectorInputViewModel.swift
+//   EditSlippageToleranceScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-protocol SelectorInputViewModel: ViewModel {
-    var selectorOptions: [SelectorOption]? { get }
-    var defaultSelectedIndex: Int? { get }
+struct EditSwapSlippageScreenTheme:
+    StyleSheet,
+    LayoutSheet {
+    var slippageTolerancePercentageInputEdgeInsets: NSDirectionalEdgeInsets
+    var slippageTolerancePercentageInput: AdjustableSingleSelectionInputViewTheme
+
+    init(_ family: LayoutFamily) {
+        self.slippageTolerancePercentageInputEdgeInsets = .init(top: 40, leading: 24, bottom: 40, trailing: 24)
+        self.slippageTolerancePercentageInput = .init(
+            textInputPlaceholder: "swap-slippage-placeholder".localized,
+            family: family
+        )
+    }
 }

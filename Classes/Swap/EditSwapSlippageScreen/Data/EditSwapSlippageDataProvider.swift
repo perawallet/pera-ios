@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AdjustSwapAmountDataProvider.swift
+//   EditSwapSlippageDataProvider.swift
 
 import Foundation
 
-protocol AdjustSwapAmountDataProvider: AnyObject {
-    func saveAmountPercentage(_ percentage: SwapAmountPercentage?)
+protocol EditSwapSlippageDataProvider: AnyObject {
+    func saveSlippageTolerancePercentage(_ percentage: SwapSlippageTolerancePercentage?)
 }

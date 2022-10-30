@@ -23,7 +23,7 @@ final class SwapQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .switchAssets: UIBlockInteraction(),
-        .adjustAmount: UIBlockInteraction(),
+        .editAmount: UIBlockInteraction(),
         .setMaxAmount: UIBlockInteraction()
     ]
 
@@ -100,7 +100,7 @@ extension SwapQuickActionsView {
         }
 
         let rightQuickActionItems: [any SwapQuickActionItem] = [
-            viewModel.adjustAmountQuickActionItem,
+            viewModel.editAmountQuickActionItem,
             viewModel.setMaxAmountQuickActionItem
         ]
         rightQuickActionsView.bind(rightQuickActionItems)
@@ -110,7 +110,7 @@ extension SwapQuickActionsView {
 
             let event: Event?
             switch index {
-            case 0: event = .adjustAmount
+            case 0: event = .editAmount
             case 1: event = .setMaxAmount
             default: event = nil
             }
@@ -138,7 +138,7 @@ extension SwapQuickActionsView {
 extension SwapQuickActionsView {
     enum Event {
         case switchAssets
-        case adjustAmount
+        case editAmount
         case setMaxAmount
     }
 }
