@@ -168,12 +168,19 @@ extension ManagementOptionsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.delegate?.managementOptionsViewControllerDidTapFilter(self)
+            self.delegate?.managementOptionsViewControllerDidTapFilterCollectibles(self)
         }
     }
     
     @objc
-    private func filterAssets() {}
+    private func filterAssets() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.managementOptionsViewControllerDidTapFilterAssets(self)
+        }
+    }
 }
 
 extension ManagementOptionsViewController {
@@ -191,7 +198,10 @@ protocol ManagementOptionsViewControllerDelegate: AnyObject {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     )
-    func managementOptionsViewControllerDidTapFilter(
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    )
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     )
 }

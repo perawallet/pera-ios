@@ -478,8 +478,8 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             by: .present
         )
     }
-
-    func managementOptionsViewControllerDidTapFilter(
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {}
 
@@ -497,6 +497,10 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         ) as? ManageAssetsViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
+    
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension AccountDetailViewController {
