@@ -239,6 +239,8 @@
 "asset-algos-title" = "Algo";
 "asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
 "asset-filter-title" = "Filter Assets";
+"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";

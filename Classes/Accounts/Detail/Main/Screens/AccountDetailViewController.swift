@@ -481,7 +481,30 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     
     func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
-    ) {}
+    ) {
+        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return}
+                
+                switch event {
+                case .didChangeFilter(let filter):
+                    break
+                }
+            }
+        }
+        
+        open(
+            .assetsFilterSelection(
+                filter: .all,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
 
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController

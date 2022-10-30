@@ -194,6 +194,10 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
+    case assetsFilterSelection(
+        filter: AssetsFilterSelectionViewController.Filter,
+        eventHandler: AssetsFilterSelectionViewController.EventHandler
+    )
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler

@@ -2863,6 +2863,12 @@
 		2BF65832290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65831290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift */; };
 		2BF65833290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65831290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift */; };
 		2BF65834290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65831290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift */; };
+		2BF65837290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65836290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift */; };
+		2BF65838290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65836290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift */; };
+		2BF65839290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF65836290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift */; };
+		2BF6583B290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF6583A290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift */; };
+		2BF6583C290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF6583A290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift */; };
+		2BF6583D290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF6583A290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift */; };
 		2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190B224ECF30001E8420 /* AddContactView.swift */; };
 		2BF7190E224ECF4A001E8420 /* ContactDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190D224ECF4A001E8420 /* ContactDetailView.swift */; };
 		2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71911224ECFEC001E8420 /* ContactsView.swift */; };
@@ -6550,6 +6556,8 @@
 		2BF5317B224AA89B00A7455F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2BF5317D224AA8B700A7455F /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		2BF65831290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterAssetsListItemButtonViewModel.swift; sourceTree = "<group>"; };
+		2BF65836290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsFilterSelectionViewController.swift; sourceTree = "<group>"; };
+		2BF6583A290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsFilterSelectionViewControllerTheme.swift; sourceTree = "<group>"; };
 		2BF7190B224ECF30001E8420 /* AddContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactView.swift; sourceTree = "<group>"; };
 		2BF7190D224ECF4A001E8420 /* ContactDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailView.swift; sourceTree = "<group>"; };
 		2BF71911224ECFEC001E8420 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
@@ -8651,6 +8659,7 @@
 		2B4486F4237958AD00C19FDE /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2BF65835290EF98400B28D1C /* Filter */,
 				2B44871E2379648200C19FDE /* Addition */,
 				2B4487252379651900C19FDE /* Common */,
 				2B56F7D1225B3AFB00E58737 /* Detail */,
@@ -13382,6 +13391,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		2BF65835290EF98400B28D1C /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				2BF65836290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift */,
+				2BF6583A290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		2BF727B127459BAA00CCAC30 /* Warning */ = {
 			isa = PBXGroup;
 			children = (
@@ -18040,6 +18058,7 @@
 				D478CDD6282C33DC0090032D /* CollectibleMediaPreviewViewController+ImageTransition.swift in Sources */,
 				D4979484287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
 				D4C601D228436F8800CDF6CB /* SortAccountListDataController.swift in Sources */,
+				2BF65839290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
 				17BD4E722292F1260003E49A /* BaseViewController.swift in Sources */,
 				D4979488287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
 				F07C3C5728B562FB003D55BC /* BlockchainBatchUpdates.swift in Sources */,
@@ -18148,6 +18167,7 @@
 				D48281BA279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				D4BCAD4228B50EE30052DD74 /* OptOutAssetNameViewTheme.swift in Sources */,
 				2BF811DA25E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift in Sources */,
+				2BF6583D290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */,
 				2BC6360E28899F9E00507AEA /* AssetNameViewTheme.swift in Sources */,
 				D4F068B726EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
 				2B28DB5E276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */,
@@ -19811,6 +19831,7 @@
 				2B0F623224EC129D00DA22A6 /* AlgorandNotification.swift in Sources */,
 				2B0F623324EC129D00DA22A6 /* BaseControl.swift in Sources */,
 				D4979487287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
+				2BF65838290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
 				F040FE0C285778DD00A74993 /* ALGCopyToClipboardController.swift in Sources */,
 				2B0F623424EC129D00DA22A6 /* SettingsFooterSupplementaryView.swift in Sources */,
 				F01264342835A46F00380C4E /* DeeplinkConfig.swift in Sources */,
@@ -19919,6 +19940,7 @@
 				2BC6360D28899F9E00507AEA /* AssetNameViewTheme.swift in Sources */,
 				D4A241E327D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift in Sources */,
 				95CA71FD27CD5D7800424626 /* BuyAlgoSignDraft.swift in Sources */,
+				2BF6583C290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */,
 				2B0F624F24EC129D00DA22A6 /* QRScannerOverlayView.swift in Sources */,
 				D4B33AB927F2229A00523CEA /* AssetType.swift in Sources */,
 				D48A5F83284115FE0009E6DB /* AssetPreviewWithActionViewModel.swift in Sources */,
@@ -21582,6 +21604,7 @@
 				D400858F271DC05D007C0C97 /* AlgoStatisticsFooterViewModel.swift in Sources */,
 				955B617527848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
 				D4979482287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
+				2BF65837290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
 				D4FC5F5D27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
 				9511C297242E2B3C003211ED /* BaseControl.swift in Sources */,
 				D4979486287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
@@ -21690,6 +21713,7 @@
 				2B4334A827C44C9100A3D9D6 /* StandardAsset.swift in Sources */,
 				F03451DD28B27B8C009467A0 /* OptInAssetListItemViewTheme.swift in Sources */,
 				D4BCAD4028B50EE30052DD74 /* OptOutAssetNameViewTheme.swift in Sources */,
+				2BF6583B290EF9AF00B28D1C /* AssetsFilterSelectionViewControllerTheme.swift in Sources */,
 				D459E27A27DCADF100F7FC33 /* FetchErrorActionableBannerViewModel.swift in Sources */,
 				2BF0FB3E253D15EE00D704D5 /* TransactionViewModelDraft.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
