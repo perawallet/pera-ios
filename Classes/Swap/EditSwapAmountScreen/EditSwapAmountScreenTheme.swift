@@ -25,10 +25,14 @@ struct EditSwapAmountScreenTheme:
     var amountPercentageInput: AdjustableSingleSelectionInputViewTheme
 
     init(_ family: LayoutFamily) {
-        self.amountPercentageInputEdgeInsets = .init(top: 40, leading: 24, bottom: 40, trailing: 24)
+        self.amountPercentageInputEdgeInsets =
+            .init(top: 40, leading: 0, bottom: 40, trailing: 0)
+
         self.amountPercentageInput = .init(
             textInputPlaceholder: "swap-amount-percentage-placeholder".localized,
             family: family
         )
+        self.amountPercentageInput.contentEdgeInsets =
+            .init(top: 0, leading: 24, bottom: 0, trailing: 24)
     }
 }

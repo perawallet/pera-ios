@@ -21,6 +21,7 @@ import UIKit
 struct AdjustableSingleSelectionInputViewTheme:
     StyleSheet,
     LayoutSheet {
+    var contentEdgeInsets: NSDirectionalEdgeInsets
     var textInput: FloatingTextInputFieldViewTheme
     var textInputMinHeight: CGFloat
     var selectionInput: SegmentedControlTheme
@@ -32,6 +33,7 @@ struct AdjustableSingleSelectionInputViewTheme:
         textInputFloatingPlaceholder: String? = nil,
         family: LayoutFamily = .current
     ) {
+        self.contentEdgeInsets = .zero
         self.textInput = FloatingTextInputFieldViewCommonTheme(
             textInput: [
                 .autocorrectionType(.no),
