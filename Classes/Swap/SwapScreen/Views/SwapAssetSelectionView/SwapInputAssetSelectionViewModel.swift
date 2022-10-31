@@ -50,6 +50,6 @@ extension SwapInputAssetSelectionViewModel {
     }
 
     mutating func bindAccessory() {
-        accessory = "icon-arrow"
+        accessory = "icon-arrow-24"
     }
 }

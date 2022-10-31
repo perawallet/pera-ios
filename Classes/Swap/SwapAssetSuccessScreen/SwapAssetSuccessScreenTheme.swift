@@ -27,6 +27,7 @@ struct SwapAssetSuccessScreenTheme:
     let iconSize: LayoutSize
     let spacingBetweenIconAndTitle: LayoutMetric
     let title: TextStyle
+    let titleCenterOffset: LayoutMetric
     let titleHorizontalInset: LayoutMetric
     let detail: TextStyle
     let detailHorizontalInset: LayoutMetric
@@ -64,6 +65,7 @@ struct SwapAssetSuccessScreenTheme:
             .textOverflow(FittingText()),
             .textAlignment(.center)
         ]
+        self.titleCenterOffset = -40
         self.titleHorizontalInset = 40
         self.detail = [
             .textColor(Colors.Text.gray),

@@ -48,6 +48,16 @@ final class ErrorScreen: BaseScrollViewController {
         hidesCloseBarButtonItem = true
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setPopGestureEnabled(false)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setPopGestureEnabled(true)
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeAppearance(theme.background)
@@ -83,7 +93,8 @@ extension ErrorScreen {
         contentView.addSubview(titleView)
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.center == 0
+            $0.centerX == 0
+            $0.centerY.equalToSuperview().offset(theme.titleCenterOffset)
             $0.leading == theme.titleHorizontalInset
             $0.trailing == theme.titleHorizontalInset
         }
@@ -172,6 +183,12 @@ extension ErrorScreen {
     @objc
     private func didTapSecondaryAction() {
         eventHandler?(.didTapSecondaryAction)
+    }
+}
+
+extension ErrorScreen {
+    private func setPopGestureEnabled(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
 }
 

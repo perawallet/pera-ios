@@ -39,7 +39,8 @@ struct SwapAssetSelectionViewTheme:
         self.corner = Corner(radius: 16)
         self.contentPaddings = (12, 12, 12, 12)
         self.title = [
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .textOverflow(SingleLineText())
         ]
         self.verificationTier = [
             .contentMode(.right),

@@ -27,11 +27,8 @@ final class SelectAssetListItemCell:
 
     static let theme = SelectAssetListItemCellTheme()
 
-    private lazy var accessoryView = UIImageView()
-
     override func prepareLayout() {
         addContext()
-        addAccessory()
         addSeparator()
     }
 
@@ -45,6 +42,7 @@ final class SelectAssetListItemCell:
             $0.top == theme.contextEdgeInsets.top
             $0.leading == theme.contextEdgeInsets.leading
             $0.bottom == theme.contextEdgeInsets.bottom
+            $0.trailing == theme.contextEdgeInsets.trailing
         }
     }
 
@@ -57,8 +55,6 @@ final class SelectAssetListItemCell:
         let contextWidth =
             width -
             theme.contextEdgeInsets.leading -
-            theme.spacingBetweenContextAndAccessory -
-            theme.accessorySize.w -
             theme.contextEdgeInsets.trailing
         let maxContextSize = CGSize(width: contextWidth, height: .greatestFiniteMagnitude)
         let contextSize = ContextView.calculatePreferredSize(
@@ -75,18 +71,6 @@ final class SelectAssetListItemCell:
 }
 
 extension SelectAssetListItemCell {
-    private func addAccessory() {
-        let theme = Self.theme
-
-        contentView.addSubview(accessoryView)
-        accessoryView.snp.makeConstraints {
-            $0.fitToSize(theme.accessorySize)
-            $0.leading == contextView.snp.trailing + theme.spacingBetweenContextAndAccessory
-            $0.trailing == theme.contextEdgeInsets.trailing
-            $0.centerY == 0
-        }
-    }
-
     private func addSeparator() {
         separatorStyle = .single(Self.theme.separator)
     }

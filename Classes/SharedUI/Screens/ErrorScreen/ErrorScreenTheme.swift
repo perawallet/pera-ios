@@ -27,6 +27,7 @@ struct ErrorScreenTheme:
     let spacingBetweenIconAndTitle: LayoutMetric
     let iconSize: LayoutSize
     let title: TextStyle
+    let titleCenterOffset: LayoutMetric
     let titleHorizontalInset: LayoutMetric
     let detail: TextStyle
     let detailHorizontalInset: LayoutMetric
@@ -58,6 +59,7 @@ struct ErrorScreenTheme:
             .textAlignment(.center),
             .textOverflow(FittingText())
         ]
+        self.titleCenterOffset = -40
         self.titleHorizontalInset = 80
         self.detail = [
             .textColor(Colors.Text.gray),

@@ -21,12 +21,15 @@ struct SwapAssetAmountViewTheme:
     StyleSheet,
     LayoutSheet {
     let leftTitle: TextStyle
+    let leftTitleWidthMultiplier: LayoutMetric
     let spacingBetweenLeftTitleAndAmountInput: LayoutMetric
     let rightTitle: TextStyle
     let spacingBetweenRightTitleAndAssetSelection: LayoutMetric
     let minimumSpacingBetweenTitles: LayoutMetric
     let assetAmountInput: AssetAmountInputViewTheme
+    let assetAmountInputWidthMultiplier: LayoutMetric
     let assetSelection: SwapAssetSelectionViewTheme
+    let assetSelectionWidthMultiplier: LayoutMetric
     let minimumSpacingBetweenInputAndSelection: LayoutMetric
     
     init(
@@ -35,13 +38,14 @@ struct SwapAssetAmountViewTheme:
     ) {
         self.leftTitle = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.right)
+            .textOverflow(SingleLineText()),
+            .textAlignment(.left)
         ]
+        self.leftTitleWidthMultiplier = 0.2
         self.spacingBetweenLeftTitleAndAmountInput = 12
         self.rightTitle = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.right)
         ]
         self.spacingBetweenRightTitleAndAssetSelection = 12
@@ -50,8 +54,10 @@ struct SwapAssetAmountViewTheme:
             placeholder: placeholder,
             family: family
         )
+        self.assetAmountInputWidthMultiplier = 0.53
         self.assetSelection = SwapAssetSelectionViewTheme()
-        self.minimumSpacingBetweenInputAndSelection = 4
+        self.assetSelectionWidthMultiplier = 0.47
+        self.minimumSpacingBetweenInputAndSelection = 8
     }
 
     init(
