@@ -61,7 +61,6 @@ final class ASADetailScreen:
         sharedDataController: sharedDataController,
         bannerController: bannerController!,
         presentingScreen: self,
-        account: dataController.account,
         asset: dataController.asset
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
@@ -976,7 +975,7 @@ extension ASADetailScreen {
     }
 
     private func navigateToSwapAsset() {
-        swapAssetFlowCoordinator.launch()
+        swapAssetFlowCoordinator.launch(account: dataController.account)
     }
 
     private func navigateToSendTransaction() {

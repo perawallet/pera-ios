@@ -24,7 +24,6 @@ struct SelectAssetScreenTheme:
     let listBackgroundColor: Color
     let searchInputView: SearchInputViewTheme
     let searchInsets: NSDirectionalEdgeInsets
-    let listTopInset: LayoutMetric
     let emptySectionInsets: UIEdgeInsets
     let assetSectionInsets: UIEdgeInsets
 
@@ -37,8 +36,7 @@ struct SelectAssetScreenTheme:
             family: family
         )
         self.searchInsets = NSDirectionalEdgeInsets((8, 24, .noMetric, 24))
-        self.listTopInset = 24
-        self.emptySectionInsets = UIEdgeInsets((24, 24, 0, 24))
-        self.assetSectionInsets = UIEdgeInsets((0, 0, 0, 0))
+        self.emptySectionInsets = UIEdgeInsets((20, 24, 0, 24))
+        self.assetSectionInsets = UIEdgeInsets((16, 0, 0, 0))
     }
 }

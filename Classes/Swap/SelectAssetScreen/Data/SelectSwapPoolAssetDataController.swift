@@ -64,6 +64,15 @@ final class SelectSwapPoolAssetDataController:
 
     subscript(indexPath: IndexPath) -> Asset? {
         guard let assetDecoration = assets[safe: indexPath.item] else { return nil }
+
+        if assetDecoration.isAlgo {
+            return account.algo
+        }
+
+        if let assetInAccount = account[assetDecoration.id] {
+            return assetInAccount
+        }
+
         if assetDecoration.isCollectible {
             return CollectibleAsset(decoration: assetDecoration)
         }
@@ -73,6 +82,14 @@ final class SelectSwapPoolAssetDataController:
 
     subscript(id: AssetID) -> Asset? {
         guard let assetDecoration = assets.first(where: { $0.id == id }) else { return nil }
+
+        if assetDecoration.isAlgo {
+            return account.algo
+        }
+
+        if let assetInAccount = account[assetDecoration.id] {
+            return assetInAccount
+        }
 
         if assetDecoration.isCollectible {
             return CollectibleAsset(decoration: assetDecoration)

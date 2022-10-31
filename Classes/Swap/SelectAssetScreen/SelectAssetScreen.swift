@@ -102,6 +102,15 @@ final class SelectAssetScreen:
         transactionController.stopTimer()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        listView.visibleCells.forEach {
+            let loadingCell = $0 as? PreviewLoadingCell
+            loadingCell?.stopAnimating()
+        }
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = theme.listBackgroundColor.uiColor
@@ -135,7 +144,7 @@ extension SelectAssetScreen {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.top == searchInputView.snp.bottom + theme.listTopInset
+            $0.top == searchInputView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
@@ -208,7 +217,7 @@ extension SelectAssetScreen {
         case .empty(let item):
             if case .loading = item {
                 let loadingCell = cell as? PreviewLoadingCell
-                loadingCell?.stopAnimating()
+                loadingCell?.startAnimating()
             }
         default:
             break
@@ -240,8 +249,12 @@ extension SelectAssetScreen {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text else { return }
 
-        if query.isEmpty {
+        if query.count == 0 {
             dataController.resetSearch()
+            return
+        }
+
+        if query.isEmptyOrBlank {
             return
         }
 

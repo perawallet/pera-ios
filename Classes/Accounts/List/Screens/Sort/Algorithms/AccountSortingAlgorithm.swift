@@ -40,3 +40,17 @@ struct AssetZeroBalanceFilterAlgorithm: AssetFilterAlgorithm {
         return asset.amount > 0
     }
 }
+
+struct AssetExcludeFilterAlgorithm: AssetFilterAlgorithm {
+    private let excludedList: [Asset]
+
+    init(excludedList: [Asset]) {
+        self.excludedList = excludedList
+    }
+
+    func getFormula(
+        asset: Asset
+    ) -> Bool {
+        return excludedList.contains { $0.id != asset.id }
+    }
+}

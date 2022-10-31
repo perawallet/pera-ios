@@ -42,7 +42,7 @@ struct SwapAssetSelectionEmptyViewTheme:
             .font(Typography.bodyMedium()),
             .titleColor([.normal(Colors.Text.main)]),
             .title("swap-asset-choose-title".localized),
-            .icon([.normal("icon-arrow")])
+            .icon([.normal("icon-arrow-24")])
         ]
         self.emptyAssetLeadingInset = 16
         self.buttonIconSpacing = 8

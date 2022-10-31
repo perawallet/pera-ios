@@ -24,21 +24,14 @@ struct SelectAssetListItemCellTheme:
     var context: AssetListItemTheme
     var contextEdgeInsets: LayoutPaddings
     var spacingBetweenContextAndAccessory: LayoutMetric
-    var accessorySize: LayoutSize
-    var accessory: ImageStyle
     var separator: Separator
 
     init(
         _ family: LayoutFamily
     ) {
         self.context = AssetListItemTheme(family)
-        self.contextEdgeInsets = (20, 24, 20, 20)
+        self.contextEdgeInsets = (20, 24, 20, 24)
         self.spacingBetweenContextAndAccessory = 12
-        self.accessorySize = (20, 20)
-        self.accessory = [
-            .image("icon-list-arrow"),
-            .contentMode(.center)
-        ]
         self.separator = Separator(color: Colors.Layer.grayLighter, position: .bottom((80, 24)))
     }
 }

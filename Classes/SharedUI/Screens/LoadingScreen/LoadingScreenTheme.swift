@@ -23,9 +23,11 @@ struct LoadingScreenTheme:
     let background: ViewStyle
     let imageBackground: ViewStyle
     let imageSize: LayoutSize
+    let imagePaddings: LayoutPaddings
     let imageBackgroundCorner: Corner
     let spacingBetweenImageAndTitle: LayoutMetric
     let title: TextStyle
+    let titleCenterOffset: LayoutMetric
     let titleHorizontalInset: LayoutMetric
     let detail: TextStyle
     let detailHorizontalInset: LayoutMetric
@@ -41,6 +43,7 @@ struct LoadingScreenTheme:
             .backgroundColor(Colors.Button.Helper.background)
         ]
         self.imageSize = (60, 60)
+        self.imagePaddings = (1,1,1,1)
         self.imageBackgroundCorner = Corner(radius: imageSize.h / 2)
         self.spacingBetweenImageAndTitle = 24
         self.title = [
@@ -48,6 +51,7 @@ struct LoadingScreenTheme:
             .textOverflow(FittingText()),
             .textAlignment(.center)
         ]
+        self.titleCenterOffset = -40
         self.titleHorizontalInset = 60
         self.detail = [
             .textColor(Colors.Text.gray),

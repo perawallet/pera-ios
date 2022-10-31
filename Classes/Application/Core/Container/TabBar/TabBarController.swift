@@ -352,7 +352,7 @@ extension TabBarController {
 extension TabBarController {
     private func navigateToSwapAssetFlow() {
         toggleTransactionOptions()
-        swapAssetFlowCoordinator.launch()
+        swapAssetFlowCoordinator.launch(account: nil)
     }
 
     private func navigateToSendTransaction() {

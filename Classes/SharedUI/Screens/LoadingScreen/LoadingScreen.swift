@@ -55,12 +55,14 @@ final class LoadingScreen: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         eventHandler?(.didStartLoading)
+        setPopGestureEnabled(false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         imageView.stop()
         eventHandler?(.didStopLoading)
+        setPopGestureEnabled(true)
     }
 
     override func configureAppearance() {
@@ -99,7 +101,8 @@ extension LoadingScreen {
         view.addSubview(titleView)
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.center == 0
+            $0.centerX == 0
+            $0.centerY.equalToSuperview().offset(theme.titleCenterOffset)
             $0.leading == theme.titleHorizontalInset
             $0.trailing == theme.titleHorizontalInset
         }
@@ -122,7 +125,7 @@ extension LoadingScreen {
         imageBackgroundView.addSubview(imageView)
         imageView.fitToIntrinsicSize()
         imageView.snp.makeConstraints {
-            $0.setPaddings()
+            $0.setPaddings(theme.imagePaddings)
         }
     }
 
@@ -137,6 +140,12 @@ extension LoadingScreen {
             $0.leading == theme.detailHorizontalInset
             $0.trailing == theme.detailHorizontalInset
         }
+    }
+}
+
+extension LoadingScreen {
+    private func setPopGestureEnabled(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
 }
 

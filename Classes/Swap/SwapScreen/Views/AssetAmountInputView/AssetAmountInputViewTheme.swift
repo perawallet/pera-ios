@@ -24,9 +24,12 @@ struct AssetAmountInputViewTheme:
     let iconSize: LayoutSize
     let contentHorizontalOffset: LayoutMetric
     let amountInput: TextInputStyle
+    let shimmerCorner: Corner
+    let amountInputShimmerSize: LayoutSize
     let amountContentEdgeInsets: LayoutPaddings
     let amountTextEdgeInsets: LayoutPaddings
     let detail: TextStyle
+    let detailShimmerSize: LayoutSize
 
     init(
         placeholder: String,
@@ -47,12 +50,15 @@ struct AssetAmountInputViewTheme:
             .autocapitalizationType(.none),
             .autocorrectionType(.no)
         ]
+        self.shimmerCorner = Corner(radius: 4)
+        self.amountInputShimmerSize = (68, 26)
         self.amountContentEdgeInsets = (0, 0, 0, 0)
         self.amountTextEdgeInsets = (0, 0, 0, 0)
         self.detail = [
             .textColor(Colors.Text.grayLighter),
             .textOverflow(SingleLineText())
         ]
+        self.detailShimmerSize = (56, 20)
     }
 
     init(

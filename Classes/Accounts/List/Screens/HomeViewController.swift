@@ -401,7 +401,7 @@ extension HomeViewController {
         cell.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
-            self.swapAssetFlowCoordinator.launch()
+            self.swapAssetFlowCoordinator.launch(account: nil)
         }
 
         cell.startObserving(event: .send) {

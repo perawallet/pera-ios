@@ -1129,7 +1129,7 @@
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
-"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
+"transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
 "transaction-option-list-more-subtitle" = "Show more actions";
@@ -1222,13 +1222,13 @@
 
 /// MARK: Swap Adjust Amount
 "swap-amount-percentage-title" = "Balance Percentage";
-"swap-amount-percentage-placeholder" = "Set custom percentage";
+"swap-amount-percentage-placeholder" = "Set Custom Percentage";
 "swap-amount-percentage-max" = "MAX";
 "swap-amount-percentage-validation-error-limitExceeded" = "Percentage must be between %f and %f.";
 
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
-"swap-price-impact-info-body" = "Price impact is the influence of your  trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
+"swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
@@ -1236,7 +1236,7 @@
 
 /// MARK: Swap Slippage
 "swap-slippage-title" = "Slippage Tolerance";
-"swap-slippage-placeholder" = "Set custom slippage";
+"swap-slippage-placeholder" = "Set Custom Slippage";
 "swap-slippage-percentage-custom" = "Custom";
 "swap-slippage-percentage-validation-error-limitExceeded" = "Percentage must be between %f and %f.";
 
@@ -1261,7 +1261,7 @@
 // MARK: Swap Success
 "swap-success-title" = "%@ swap completed";
 "swap-success-detail" = "You received %@ in exchange for %@";
-"swap-success-view-explorer" = "View Transaction detail in AlgoExplorer";
+"swap-success-view-explorer" = "View Transaction Detail in AlgoExplorer";
 "swap-success-view-summary" = "View Swap Summary";
 
 // MARK: Swap Summary

@@ -73,7 +73,7 @@ final class EditSwapSlippageScreen:
     override func configureNavigationBarAppearance() {
         navigationItem.title = "swap-slippage-title".localized
 
-        let doneItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneItem = ALGBarButtonItem(kind: .done(Colors.Helpers.positive.uiColor)) {
             [unowned self] in
             if self.isValid {
                 self.commitPreferredSlippageTolerancePercentage()
