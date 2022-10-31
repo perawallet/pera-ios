@@ -114,8 +114,10 @@ final class NotificationsViewController:
                     self.presentTryingToActForWatchAccountError()
                 case .tryingToOptInForAlreadyOptedInAsset:
                     self.presentTryingToOptInForAlreadyOptedInAssetError()
-                case .tryingToOptInForPendingOptInRequest:
-                    self.presentTryingToOptInForPendingOptInRequestError()
+                case .tryingToActForAssetWithPendingOptInRequest(let accountName):
+                    self.presentTryingToActForAssetWithPendingOptInRequestError(accountName: accountName)
+                case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
+                    self.presentTryingToActForAssetWithPendingOptOutRequestError(accountName: accountName)
                 case .accountNotFound:
                     self.presentAccountNotFoundError()
                 case .assetNotFound:
@@ -410,10 +412,17 @@ extension NotificationsViewController {
         )
     }
 
-    private func presentTryingToOptInForPendingOptInRequestError() {
+    private func presentTryingToActForAssetWithPendingOptInRequestError(accountName: String) {
         bannerController?.presentErrorBanner(
             title: "title-error".localized,
-            message: "tryingToOptInForPendingOptInRequestError".localized // <todo> Change text
+            message: "ongoing-opt-in-request-description".localized(params: accountName)
+        )
+    }
+
+    private func presentTryingToActForAssetWithPendingOptOutRequestError(accountName: String) {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "ongoing-opt-out-request-description".localized(params: accountName)
         )
     }
 
@@ -439,6 +448,15 @@ extension NotificationsViewController {
     ) {
         loadingController?.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -452,6 +470,15 @@ extension NotificationsViewController {
         didFailedTransaction error: HIPTransactionError
     ) {
         loadingController?.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

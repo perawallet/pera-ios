@@ -1594,6 +1594,15 @@ extension Router {
     ) {
         appConfiguration.loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1607,6 +1616,15 @@ extension Router {
         didFailedTransaction error: HIPTransactionError
     ) {
         appConfiguration.loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

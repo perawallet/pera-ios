@@ -142,9 +142,9 @@ extension DeepLinkParser {
             assetID: assetID,
             for: rawAccount
         )
-
         if hasPendingOptInRequest {
-            return .failure(.tryingToOptInForPendingOptInRequest)
+            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
         return .success(.optInAsset(account: rawAccount, assetID: assetID))
@@ -257,6 +257,26 @@ extension DeepLinkParser {
 
         let rawAccount = account.value
 
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+        if hasPendingOptInRequest {
+            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
+        }
+
+        let hasPendingOptOutRequest = monitor.hasPendingOptOutRequest(
+            assetID: assetID,
+            for: rawAccount
+        )
+        if hasPendingOptOutRequest {
+            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            return .failure(.tryingToActForAssetWithPendingOptOutRequest(accountName: accountName))
+        }
+
         if let asset = rawAccount[assetID] as? StandardAsset {
             return .success(.asaDetail(account: rawAccount, asset: asset))
         }
@@ -314,9 +334,9 @@ extension DeepLinkParser {
             assetID: assetID,
             for: rawAccount
         )
-
         if hasPendingOptInRequest {
-            return .failure(.tryingToOptInForPendingOptInRequest)
+            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
         
         let accountName = rawAccount.name ?? accountAddress
@@ -542,7 +562,8 @@ extension DeepLinkParser {
         case waitingForAssetsToBeAvailable
         case tryingToActForWatchAccount
         case tryingToOptInForAlreadyOptedInAsset
-        case tryingToOptInForPendingOptInRequest
+        case tryingToActForAssetWithPendingOptInRequest(accountName: String)
+        case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
         case assetNotFound
     }

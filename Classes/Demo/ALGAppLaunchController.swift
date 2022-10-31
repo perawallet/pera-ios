@@ -302,7 +302,8 @@ extension ALGAppLaunchController {
         switch error {
         case .tryingToActForWatchAccount,
              .tryingToOptInForAlreadyOptedInAsset,
-             .tryingToOptInForPendingOptInRequest,
+             .tryingToActForAssetWithPendingOptInRequest,
+             .tryingToActForAssetWithPendingOptOutRequest,
              .accountNotFound,
              .assetNotFound:
             return false
@@ -322,9 +323,12 @@ extension ALGAppLaunchController {
         case .tryingToOptInForAlreadyOptedInAsset:
             title = "title-error".localized
             message = "asset-you-already-own-message".localized
-        case .tryingToOptInForPendingOptInRequest:
+        case .tryingToActForAssetWithPendingOptInRequest(let accountName):
             title = "title-error".localized
-            message = "tryingToOptInForPendingOptInRequestError".localized /// <todo> Change text
+            message = "ongoing-opt-in-request-description".localized(params: accountName)
+        case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
+            title = "title-error".localized
+            message = "ongoing-opt-out-request-description".localized(params: accountName)
         case .accountNotFound:
             title = "title-error".localized
             message = "notifications-account-not-found-description".localized
