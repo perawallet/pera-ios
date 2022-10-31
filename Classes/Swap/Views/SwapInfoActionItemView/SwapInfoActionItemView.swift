@@ -38,8 +38,8 @@ final class SwapInfoActionItemView:
     ) {
         addTitle(theme)
         addInfoAction(theme)
-        addDetailAction(theme)
         addDetail(theme)
+        addDetailAction(theme)
     }
 
     func customizeAppearance(
@@ -78,7 +78,7 @@ extension SwapInfoActionItemView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
-        titleView.fitToIntrinsicSize()
+        titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -93,7 +93,6 @@ extension SwapInfoActionItemView {
         infoActionView.fitToIntrinsicSize()
         infoActionView.contentEdgeInsets = theme.infoActionContentEdgeInsets
         infoActionView.snp.makeConstraints {
-            $0.fitToSize(theme.infoActionSize)
             $0.centerY == 0
             $0.leading == titleView.snp.trailing
         }
@@ -101,24 +100,6 @@ extension SwapInfoActionItemView {
         startPublishing(
             event: .didTapInfo,
             for: infoActionView
-        )
-    }
-
-    private func addDetailAction(
-        _ theme: SwapInfoActionItemViewTheme
-    ) {
-        addSubview(detailActionView)
-        detailActionView.fitToIntrinsicSize()
-        detailActionView.contentEdgeInsets = theme.detailActionContentEdgeInsets
-        detailActionView.snp.makeConstraints {
-            $0.fitToSize(theme.detailActionSize)
-            $0.centerY == 0
-            $0.trailing == 0
-        }
-
-        startPublishing(
-            event: .didTapAction,
-            for: detailActionView
         )
     }
 
@@ -130,12 +111,31 @@ extension SwapInfoActionItemView {
         addSubview(detailView)
         detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
+            $0.width <= self * theme.detailMaxWidthRatio
             $0.centerY == 0
-            $0.top == 0
+            $0.top >= 0
             $0.leading >= infoActionView.snp.trailing + theme.minimumSpacingBetweenInfoActionAndDetail
-            $0.bottom == 0
-            $0.trailing == detailActionView.snp.leading
+            $0.bottom <= 0
         }
+    }
+
+    private func addDetailAction(
+        _ theme: SwapInfoActionItemViewTheme
+    ) {
+        addSubview(detailActionView)
+        detailActionView.fitToIntrinsicSize()
+        detailActionView.contentEdgeInsets = theme.detailActionContentEdgeInsets
+        detailActionView.snp.makeConstraints {
+            $0.fitToSize(theme.detailActionSize)
+            $0.centerY == 0
+            $0.leading == detailView.snp.trailing
+            $0.trailing == 0
+        }
+
+        startPublishing(
+            event: .didTapAction,
+            for: detailActionView
+        )
     }
 }
 

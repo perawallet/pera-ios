@@ -45,7 +45,7 @@ extension SwapConfirmPriceInfoViewModel {
     mutating func bindTitle() {
         title = "title-price"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -90,7 +90,7 @@ extension SwapConfirmPriceInfoViewModel {
         detail = "swap-confirm-price-info"
             .localized(
                 params: assetText, secondAssetDisplayName
-            ).footnoteRegular()
+            ).footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

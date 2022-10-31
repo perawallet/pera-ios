@@ -43,7 +43,7 @@ extension SwapConfirmExchangeFeeInfoViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-exchange-fee-title"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -65,12 +65,11 @@ extension SwapConfirmExchangeFeeInfoViewModel {
         )
 
         if assetIn.isAlgo {
-            detail =
-                swapAssetValueFormatter.getFormattedAlgoAmount(
-                    decimalAmount: decimalAmount,
-                    currencyFormatter: currencyFormatter
-                )?
-                .footnoteRegular()
+            let text = swapAssetValueFormatter.getFormattedAlgoAmount(
+                decimalAmount: decimalAmount,
+                currencyFormatter: currencyFormatter
+            )
+            bindDetail(text: text)
             return
         }
 
@@ -83,7 +82,11 @@ extension SwapConfirmExchangeFeeInfoViewModel {
             return
         }
 
-        detail = "~\(formattedAmount) \(assetInDisplayName)".footnoteRegular()
+        bindDetail(text: "~\(formattedAmount) \(assetInDisplayName)")
+    }
+
+    mutating func bindDetail(text: String?) {
+        detail = text?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

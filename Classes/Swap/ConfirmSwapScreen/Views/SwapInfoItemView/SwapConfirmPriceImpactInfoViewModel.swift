@@ -38,7 +38,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
     mutating func bindTitle() {
         title = "swap-price-impact-title"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -53,6 +53,6 @@ extension SwapConfirmPriceImpactInfoViewModel {
         detail = priceImpact
             .doubleValue
             .toPercentageWith(fractions: 3)?
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
