@@ -268,6 +268,9 @@ extension SwapAssetScreen {
 
             self.didTapPoolAsset()
         }
+
+        let draft = SwapAssetSelectionEmptyViewDraft(title: "title-to".localized)
+        emptyPoolAssetView.bindData(SwapAssetSelectionEmptyViewModel(draft))
     }
 
     private func addPoolAsset() {
@@ -382,7 +385,15 @@ extension SwapAssetScreen {
     }
 
     private func updateUIWhenDataWillLoad() {
+        swapActionView.isEnabled = false
         swapActionView.startLoading()
+        poolAssetView.startAnimatingAmountView()
+        hideError()
+
+        updatePoolAssetAmount(
+            with: nil,
+            quote: nil
+        )
     }
 
     private func validateFromQuote(
@@ -430,7 +441,7 @@ extension SwapAssetScreen {
     private func updateUIWhenDataDidLoad(
         _ swapQuote: SwapQuote
     ) {
-        swapActionView.stopLoading()
+        stopLoading()
         updateSwapActionUIWhenDataDidLoad(quote: swapQuote)
         updateUserAssetViewModel(quote: swapQuote)
         updateUserAssetSelectionUI()
@@ -502,7 +513,7 @@ extension SwapAssetScreen {
             decimalAmount: minBalance.toAlgos,
             currencyFormatter: currencyFormatter
         ) else {
-            swapActionView.stopLoading()
+            stopLoading()
             return
         }
 
@@ -519,7 +530,7 @@ extension SwapAssetScreen {
                 currencyFormatter: currencyFormatter,
                 maximumFractionDigits: assetIn.decimals
               ) else {
-            swapActionView.stopLoading()
+            stopLoading()
             return
         }
 
@@ -530,7 +541,7 @@ extension SwapAssetScreen {
     private func showError(
         _ message: String
     ) {
-        swapActionView.stopLoading()
+        stopLoading()
         swapActionView.isEnabled = false
 
         errorView.isHidden = false
@@ -540,6 +551,11 @@ extension SwapAssetScreen {
 
     private func hideError() {
         errorView.isHidden = true
+    }
+
+    private func stopLoading() {
+        swapActionView.stopLoading()
+        poolAssetView.stopAnimatingAmountView()
     }
 }
 
@@ -561,7 +577,7 @@ extension SwapAssetScreen {
 
         if let currentOutputAsInt {
             if currentOutputAsInt == 0 {
-                updateInput(nil)
+                resetUserAndPoolAssetAmounts()
             }
 
             getSwapQuote(for: currentOutputAsInt)
@@ -633,10 +649,16 @@ extension SwapAssetScreen {
                 switch error {
                 case .amountInNotAvailable: break
                 case .insufficientAlgoBalance(let minBalance):
-                    self.updateInput(minBalance)
+                    self.updateUserAssetAmount(
+                        with: minBalance,
+                        quote: nil
+                    )
                     self.showError("swap-asset-min-balance-error-without-amount".localized)
                 case .insufficientAssetBalance(let minBalance):
-                    self.updateInput(minBalance)
+                    self.updateUserAssetAmount(
+                        with: minBalance,
+                        quote: nil
+                    )
                     self.showError("swap-asset-min-balance-error-fee".localized)
                 case .unavailablePeraFee(let feeError):
                     self.showError(feeError?.localizedDescription ?? "swap-asset-fee-unavailable-error".localized)
@@ -647,32 +669,49 @@ extension SwapAssetScreen {
         balancePercentageValidator.validateAvailableSwapBalance()
     }
 
-    private func updateInput(
-        _ input: UInt64?
+    private func resetUserAndPoolAssetAmounts() {
+        updateUserAssetAmount(
+            with: nil,
+            quote: nil
+        )
+        updatePoolAssetAmount(
+            with: nil,
+            quote: nil
+        )
+    }
+
+    private func updateUserAssetAmount(
+        with amount: UInt64?,
+        quote: SwapQuote?
     ) {
-        guard let input else {
-            userAssetView.updateInput(nil)
-            return
+        if var viewModel = userAssetViewModel as? SwapAssetAmountInViewModel {
+            viewModel.bindAssetAmountValue(
+                asset: dataController.userAsset,
+                quote: quote,
+                currency: configuration.sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+
+            userAssetView.bindData(viewModel)
         }
+    }
 
-        let assetDecoration = AssetDecoration(asset: dataController.userAsset)
-        let decimalAmount = swapAssetValueFormatter.getDecimalAmount(of: input, for: assetDecoration)
+    private func updatePoolAssetAmount(
+        with amount: UInt64?,
+        quote: SwapQuote?
+    ) {
+        guard let selectedPoolAsset = dataController.poolAsset else { return }
 
-        if decimalAmount == 0 {
-            userAssetView.updateInput(nil)
-            return
+        if var viewModel = poolAssetViewModel as? SwapAssetAmountOutViewModel {
+            viewModel.bindAssetAmountValue(
+                asset: selectedPoolAsset,
+                quote: quote,
+                currency: configuration.sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+
+            poolAssetView.bindData(viewModel)
         }
-
-        guard let amountText = swapAssetValueFormatter.getFormattedAssetAmount(
-                decimalAmount: decimalAmount,
-                currencyFormatter: currencyFormatter,
-                maximumFractionDigits: assetDecoration.decimals
-              ) else {
-            swapActionView.stopLoading()
-            return
-        }
-
-        userAssetView.updateInput(amountText)
     }
 }
 
@@ -838,7 +877,8 @@ extension SwapAssetScreen {
         guard let input = textField.text else { return }
 
         if input.isEmpty {
-            getSwapQuote(for: 0)
+            dataController.cancelLoadingQuote()
+            resetUserAndPoolAssetAmounts()
             return
         }
 
@@ -927,7 +967,10 @@ extension SwapAssetScreen {
         let amount = getAmountFromPercentage(amountPercentage.value).toFraction(of: dataController.userAsset.decimals)
 
         if dataController.poolAsset == nil {
-            updateInput(amount)
+            updateUserAssetAmount(
+                with: amount,
+                quote: nil
+            )
             return
         }
 

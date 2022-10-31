@@ -124,8 +124,7 @@ extension SwapAssetAPIDataController {
         _ draft: SwapQuoteDraft
     ) {
         if currentQuoteEndpoint != nil {
-            currentQuoteEndpoint = nil
-            currentQuoteEndpoint?.cancel()
+            cancelOngoingRequest()
         }
 
         currentQuoteEndpoint = api.getSwapQuote(draft) {
@@ -148,6 +147,15 @@ extension SwapAssetAPIDataController {
                 self.eventHandler?(.didFailToLoadQuote(error))
             }
         }
+    }
+
+    func cancelLoadingQuote() {
+        cancelOngoingRequest()
+    }
+
+    private func cancelOngoingRequest() {
+        currentQuoteEndpoint?.cancel()
+        currentQuoteEndpoint = nil
     }
 }
 
