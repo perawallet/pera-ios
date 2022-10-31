@@ -36,16 +36,10 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
-        case .done:
+        case .done(let color):
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: Colors.Text.main.uiColor,
-                font: Fonts.DMSans.medium.make(15).uiFont
-            )
-        case .doneGreen:
-            return BarButtonItemTitleContent(
-                text: "title-done".localized,
-                textColor: Colors.Link.primary.uiColor,
+                textColor: color,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
@@ -113,8 +107,6 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .done:
-            return nil
-        case .doneGreen:
             return nil
         case .edit:
             if let icon = img("icon-edit") {
@@ -199,14 +191,6 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
-        case .doneGreen:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
-                    contentInsets: (left: 0.0, right: 0.0),
-                    titleInsets: (left: 4.0, right: -4.0))
-                ),
-                height: .equal(44.0)
-            )
         case .edit:
             return .explicit(CGSize(width: 40, height: 40))
         case .paste:
@@ -277,8 +261,7 @@ extension ALGBarButtonItem {
         case closeTitle
         case save
         case qr
-        case done
-        case doneGreen
+        case done(UIColor)
         case edit
         case info
         case paste

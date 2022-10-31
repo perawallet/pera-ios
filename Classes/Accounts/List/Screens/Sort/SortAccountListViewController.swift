@@ -98,7 +98,7 @@ final class SortAccountListViewController:
 
 extension SortAccountListViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [weak self] in
             guard let self = self else {
                 return

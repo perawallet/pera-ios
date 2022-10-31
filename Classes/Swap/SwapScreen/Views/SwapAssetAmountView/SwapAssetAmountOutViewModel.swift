@@ -54,6 +54,7 @@ extension SwapAssetAmountOutViewModel {
                 lineBreakMode: .byTruncatingTail
             )
     }
+    
     mutating func bindRightTitle(
         asset: Asset,
         currencyFormatter: CurrencyFormatter
