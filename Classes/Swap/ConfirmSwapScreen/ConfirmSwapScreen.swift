@@ -76,7 +76,11 @@ final class ConfirmSwapScreen:
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
+
         addNavigationTitle()
+
+        let flexibleSpaceItem = ALGBarButtonItem.flexibleSpace()
+        self.rightBarButtonItems = [ flexibleSpaceItem ]
     }
 
     override func configureAppearance() {
