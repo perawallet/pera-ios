@@ -12,22 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NotificationFilterViewTheme.swift
+//   TitledToggleLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct NotificationFilterViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
+struct TitledToggleLoadingViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let horizontalPadding: LayoutMetric
+    let corner: Corner
+    let titleSize: LayoutSize
+    let toggleSize: LayoutSize
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-
-        self.cellSpacing = 0
-        self.contentInset = (20, 0, 0, 0)
+    init(
+        _ family: LayoutFamily
+    )  {
+        self.corner = 4
+        self.horizontalPadding = 24
+        self.titleSize = (124, 20)
+        self.toggleSize = (51, 31)
     }
 }
