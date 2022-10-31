@@ -30,9 +30,7 @@ struct ExportAccountsResultViewTheme: ResultViewTheme {
     init(
         _ family: LayoutFamily
     ) {
-        self.icon = [
-            .adjustsImageForContentSizeCategory(true)
-        ]
+        self.icon = [ .contentMode(.left) ]
         self.iconAlignment = .leading(margin: 10)
         self.title = [
             .textOverflow(FittingText()),
