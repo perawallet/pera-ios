@@ -34,6 +34,7 @@ final class SwapAssetAmountView:
 
     private lazy var leftTitleView = Label()
     private lazy var rightTitleView = Label()
+    private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var amountInputView = AssetAmountInputView()
     private lazy var assetSelectionView = SwapAssetSelectionView()
 
@@ -47,6 +48,7 @@ final class SwapAssetAmountView:
     ) {
         addLeftTitle(theme)
         addRightTitle(theme)
+        addContent(theme)
         addAssetSelection(theme)
         addAmountInput(theme)
     }
@@ -93,12 +95,6 @@ final class SwapAssetAmountView:
     func endEditing() {
         amountInputView.endEditing()
     }
-
-    func updateInput(
-        _ input: String?
-    ) {
-        amountInputView.updateInput(input)
-    }
 }
 
 extension SwapAssetAmountView {
@@ -111,6 +107,7 @@ extension SwapAssetAmountView {
         leftTitleView.fitToIntrinsicSize()
         leftTitleView.contentEdgeInsets.bottom = theme.spacingBetweenLeftTitleAndAmountInput
         leftTitleView.snp.makeConstraints {
+            $0.width <= self.snp.width * theme.leftTitleWidthMultiplier
             $0.top == 0
             $0.leading == 0
         }
@@ -131,19 +128,32 @@ extension SwapAssetAmountView {
         }
     }
 
+    private func addContent(
+        _ theme: SwapAssetAmountViewTheme
+    ) {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.top == rightTitleView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
+            $0.bottom == 0
+        }
+    }
+
     private func addAssetSelection(
         _ theme: SwapAssetAmountViewTheme
     ) {
         assetSelectionView.customize(theme.assetSelection)
 
-        addSubview(assetSelectionView)
+        contentView.addSubview(assetSelectionView)
         assetSelectionView.fitToHorizontalIntrinsicSize()
         assetSelectionView.fitToVerticalIntrinsicSize(
              hugging: .defaultLow,
              compression: .required
         )
         assetSelectionView.snp.makeConstraints {
-            $0.top == rightTitleView.snp.bottom
+            $0.width <= contentView.snp.width * theme.assetSelectionWidthMultiplier
+            $0.top == 0
             $0.trailing == 0
             $0.bottom <= 0
         }
@@ -159,18 +169,30 @@ extension SwapAssetAmountView {
     ) {
         amountInputView.customize(theme.assetAmountInput)
 
-        addSubview(amountInputView)
+        contentView.addSubview(amountInputView)
         amountInputView.fitToHorizontalIntrinsicSize()
         amountInputView.fitToVerticalIntrinsicSize(
              hugging: .defaultLow,
              compression: .required
          )
+
         amountInputView.snp.makeConstraints {
-            $0.top == leftTitleView.snp.bottom
+            $0.width >= contentView.snp.width * theme.assetAmountInputWidthMultiplier
+            $0.top == 0
             $0.leading == 0
             $0.bottom == 0
             $0.trailing <= assetSelectionView.snp.leading - theme.minimumSpacingBetweenInputAndSelection
         }
+    }
+}
+
+extension SwapAssetAmountView {
+    func startAnimatingAmountView() {
+        amountInputView.startAnimating()
+    }
+
+    func stopAnimatingAmountView() {
+        amountInputView.stopAnimating()
     }
 }
 

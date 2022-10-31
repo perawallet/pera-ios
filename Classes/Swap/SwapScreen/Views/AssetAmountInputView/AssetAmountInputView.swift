@@ -30,7 +30,9 @@ final class AssetAmountInputView:
 
     private lazy var iconView = URLImageView()
     private lazy var amountInputView = TextField()
+    private lazy var amountAnimatedView = ShimmerView()
     private lazy var detailView = UILabel()
+    private lazy var detailAnimatedView = ShimmerView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +43,9 @@ final class AssetAmountInputView:
         _ theme: AssetAmountInputViewTheme
     ) {
         addIcon(theme)
+        addAmountAnimated(theme)
         addAmountInput(theme)
+        addDetailAnimated(theme)
         addDetail(theme)
     }
 
@@ -87,10 +91,22 @@ final class AssetAmountInputView:
         amountInputView.resignFirstResponder()
     }
 
-    func updateInput(
-        _ input: String?
-    ) {
-        amountInputView.text = input
+    func startAnimating() {
+        amountInputView.isHidden = true
+        detailView.isHidden = true
+        amountAnimatedView.isHidden = false
+        detailAnimatedView.isHidden = false
+        amountAnimatedView.startAnimating()
+        detailAnimatedView.startAnimating()
+    }
+
+    func stopAnimating() {
+        amountAnimatedView.stopAnimating()
+        detailAnimatedView.stopAnimating()
+        amountInputView.isHidden = false
+        detailView.isHidden = false
+        amountAnimatedView.isHidden = true
+        detailAnimatedView.isHidden = true
     }
 }
 
@@ -108,6 +124,21 @@ extension AssetAmountInputView {
             $0.centerY == 0
             $0.leading == 0
         }
+    }
+
+    private func addAmountAnimated(
+        _ theme: AssetAmountInputViewTheme
+    ) {
+        amountAnimatedView.draw(corner: theme.shimmerCorner)
+
+        addSubview(amountAnimatedView)
+        amountAnimatedView.snp.makeConstraints {
+            $0.fitToSize(theme.amountInputShimmerSize)
+            $0.top == 0
+            $0.leading == iconView.snp.trailing + theme.contentHorizontalOffset
+        }
+
+        amountAnimatedView.isHidden = true
     }
 
     private func addAmountInput(
@@ -145,6 +176,21 @@ extension AssetAmountInputView {
             $0.bottom == 0
             $0.trailing <= 0
         }
+    }
+
+    private func addDetailAnimated(
+        _ theme: AssetAmountInputViewTheme
+    ) {
+        detailAnimatedView.draw(corner: theme.shimmerCorner)
+
+        addSubview(detailAnimatedView)
+        detailAnimatedView.snp.makeConstraints {
+            $0.fitToSize(theme.detailShimmerSize)
+            $0.top == amountInputView.snp.bottom
+            $0.leading == amountInputView
+        }
+
+        detailAnimatedView.isHidden = true
     }
 }
 

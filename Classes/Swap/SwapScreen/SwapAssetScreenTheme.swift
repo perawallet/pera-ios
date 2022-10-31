@@ -86,7 +86,7 @@ struct SwapAssetScreenTheme:
         self.swapActionHeight = 52
         self.swapActionEdgeInsets = (24, 24, 16, 24)
         self.swapActionIndicator = [
-            .image("button-loading-indicator"),
+            .image("button-loading-indicator-disabled"),
             .contentMode(.scaleAspectFit)
         ]
     }
