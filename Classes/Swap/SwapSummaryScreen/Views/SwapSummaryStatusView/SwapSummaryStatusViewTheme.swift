@@ -30,7 +30,7 @@ struct SwapSummaryStatusViewTheme:
     ) {
         self.title = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .text("transaction-detail-status".localized),
             .font(Typography.bodyRegular())

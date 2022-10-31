@@ -32,8 +32,7 @@ struct SwapSummaryAccountViewTheme:
     ) {
         self.title = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
+            .textOverflow(SingleLineText()),
             .text("title-account".localized),
             .font(Typography.bodyRegular())
         ]
@@ -42,8 +41,7 @@ struct SwapSummaryAccountViewTheme:
         self.iconLeadingInset = 124
         self.detail = [
             .textColor(Colors.Text.main),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left)
+            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingMiddle)),
         ]
         self.detailLeadingInset = 12
     }

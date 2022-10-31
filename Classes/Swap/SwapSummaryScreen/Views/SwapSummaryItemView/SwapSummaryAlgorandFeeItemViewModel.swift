@@ -41,7 +41,7 @@ extension SwapSummaryAlgorandFeeItemViewModel {
     mutating func bindTitle() {
         title = "swap-summary-network-fee-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -55,6 +55,6 @@ extension SwapSummaryAlgorandFeeItemViewModel {
         value = swapAssetValueFormatter.getFormattedAlgoAmount(
             decimalAmount: swapFees,
             currencyFormatter: currencyFormatter
-        )?.bodyRegular()
+        )?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

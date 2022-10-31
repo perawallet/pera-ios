@@ -39,7 +39,7 @@ extension SwapSummaryExchangeFeeItemViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-exchange-fee-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -57,12 +57,11 @@ extension SwapSummaryExchangeFeeItemViewModel {
         )
 
         if assetIn.isAlgo {
-            value =
-                swapAssetValueFormatter.getFormattedAlgoAmount(
-                    decimalAmount: decimalAmount,
-                    currencyFormatter: currencyFormatter
-                )?
-                .bodyRegular()
+            let text = swapAssetValueFormatter.getFormattedAlgoAmount(
+                decimalAmount: decimalAmount,
+                currencyFormatter: currencyFormatter
+            )
+            bindValue(text: text)
             return
         }
 
@@ -75,6 +74,10 @@ extension SwapSummaryExchangeFeeItemViewModel {
             return
         }
 
-        value = "~\(formattedAmount) \(assetInDisplayName)".bodyRegular()
+        bindValue(text: "~\(formattedAmount) \(assetInDisplayName)")
+    }
+
+    mutating func bindValue(text: String?) {
+        value = text?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

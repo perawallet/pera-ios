@@ -41,7 +41,7 @@ extension SwapSummaryPaidItemViewModel {
     mutating func bindTitle() {
         title = "swap-summary-paid-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -66,10 +66,11 @@ extension SwapSummaryPaidItemViewModel {
                 return
             }
 
-            var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byWordWrapping)
-            attributes.insert(.textColor(Colors.Helpers.negative))
+            bindDetail(
+                text: "-\(amountText)",
+                textColor: Colors.Helpers.negative
+            )
 
-            value = "-\(amountText)".attributed(attributes)
             return
         }
 
@@ -82,9 +83,18 @@ extension SwapSummaryPaidItemViewModel {
             return
         }
 
-        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byWordWrapping)
-        attributes.insert(.textColor(Colors.Helpers.negative))
+        bindDetail(
+            text: "-\(amountText) \(assetInDisplayName)",
+            textColor: Colors.Helpers.negative
+        )
+    }
 
-        value = "-\(amountText) \(assetInDisplayName)".attributed(attributes)
+    mutating func bindDetail(
+        text: String?,
+        textColor: Color
+    ) {
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(textColor))
+        value = text?.attributed(attributes)
     }
 }

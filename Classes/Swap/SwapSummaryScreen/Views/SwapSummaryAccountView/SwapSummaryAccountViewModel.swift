@@ -42,6 +42,6 @@ extension SwapSummaryAccountViewModel {
         accountName = account
             .name
             .unwrap(or: account.address.shortAddressDisplay)
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingMiddle)
     }
 }

@@ -41,7 +41,7 @@ extension SwapSummaryOptInFeeItemViewModel {
     mutating func bindTitle() {
         title = "swap-summary-opt-in-fees-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -55,6 +55,6 @@ extension SwapSummaryOptInFeeItemViewModel {
         value = swapAssetValueFormatter.getFormattedAlgoAmount(
             decimalAmount: totalOptInFees,
             currencyFormatter: currencyFormatter
-        )?.bodyRegular()
+        )?.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

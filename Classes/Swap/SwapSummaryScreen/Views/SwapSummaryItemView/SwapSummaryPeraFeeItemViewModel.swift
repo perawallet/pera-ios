@@ -39,7 +39,7 @@ extension SwapSummaryPeraFeeItemViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-pera-fee-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -53,6 +53,6 @@ extension SwapSummaryPeraFeeItemViewModel {
                 decimalAmount: peraFee,
                 currencyFormatter: currencyFormatter
             )?
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

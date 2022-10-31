@@ -41,8 +41,17 @@ final class SwapSummaryItemView:
     func bindData(
         _ viewModel: SwapSummaryItemViewModel?
     ) {
-        viewModel?.title?.load(in: titleView)
-        viewModel?.value?.load(in: detailView)
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.clearText()
+        }
+
+        if let value = viewModel?.value {
+            value.load(in: detailView)
+        } else {
+            detailView.clearText()
+        }
     }
 }
 
