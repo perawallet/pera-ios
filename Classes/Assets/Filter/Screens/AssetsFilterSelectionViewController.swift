@@ -29,14 +29,14 @@ final class AssetsFilterSelectionViewController: BaseScrollViewController {
     private lazy var toggleView = Toggle()
     
     private let theme: AssetsFilterSelectionViewControllerTheme
-    private var filter: Filter
+    private var filter: AssetsFilteringOption
     
     init(
-        filter: Filter,
+        filter: AssetsFilteringOption?,
         theme: AssetsFilterSelectionViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.filter = filter
+        self.filter = filter ?? .all
         self.theme = theme
         
         super.init(configuration: configuration)
@@ -63,7 +63,7 @@ final class AssetsFilterSelectionViewController: BaseScrollViewController {
     
     @objc
     private func didChangeToggle(_ toggle: Toggle) {
-        filter = toggleView.isOn ? .all : .nonZero
+        filter = toggleView.isOn ? .hideZeroBalance : .all
     }
 }
 
@@ -116,6 +116,8 @@ extension AssetsFilterSelectionViewController {
             $0.trailing == 0
             $0.centerY == toggleTitleView
         }
+        
+        toggleView.isOn = filter == .hideZeroBalance
     }
     
     private func addToggleDescription() {
@@ -133,13 +135,6 @@ extension AssetsFilterSelectionViewController {
 
 extension AssetsFilterSelectionViewController {
     enum Event {
-        case didChangeFilter(Filter)
-    }
-}
-
-extension AssetsFilterSelectionViewController {
-    enum Filter: Int {
-        case all = 1
-        case nonZero
+        case didChangeFilter(AssetsFilteringOption)
     }
 }

@@ -492,14 +492,14 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
                 
                 switch event {
                 case .didChangeFilter(let filter):
-                    break
+                    self.assetListScreen.changeFilterSelection(filter)
                 }
             }
         }
         
         open(
             .assetsFilterSelection(
-                filter: .all,
+                filter: sharedDataController.selectedAssetsFilteringOption,
                 eventHandler: eventHandler
             ),
             by: .present

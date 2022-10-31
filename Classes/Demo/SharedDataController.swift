@@ -30,6 +30,7 @@ protocol SharedDataController: AnyObject {
     var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] { get }
     var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? { get set }
     var collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] { get }
+    var selectedAssetsFilteringOption: AssetsFilteringOption? { get set }
 
     var accountCollection: AccountCollection { get }
 

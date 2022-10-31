@@ -195,7 +195,7 @@ indirect enum Screen {
         eventHandler: QRScanOptionsViewController.EventHandler
     )
     case assetsFilterSelection(
-        filter: AssetsFilterSelectionViewController.Filter,
+        filter: AssetsFilteringOption?,
         eventHandler: AssetsFilterSelectionViewController.EventHandler
     )
     case sortAccountAsset(
