@@ -63,7 +63,6 @@ final class SwapAssetFlowCoordinator:
         sharedDataController: SharedDataController,
         bannerController: BannerController,
         presentingScreen: UIViewController,
-        account: Account? = nil,
         asset: Asset? = nil
     ) {
         self.dataStore = dataStore
@@ -72,7 +71,6 @@ final class SwapAssetFlowCoordinator:
         self.sharedDataController = sharedDataController
         self.bannerController = bannerController
         self.presentingScreen = presentingScreen
-        self.account = account
         self.asset = asset
     }
 
@@ -82,8 +80,10 @@ final class SwapAssetFlowCoordinator:
 }
 
 extension SwapAssetFlowCoordinator {
-    func launch() {
+    func launch(account: Account?) {
         dataStore.reset()
+
+        self.account = account
 
         sharedDataController.add(self)
 
@@ -460,10 +460,7 @@ extension SwapAssetFlowCoordinator {
         swapController: SwapController,
         transactionGroups: [SwapTransactionGroup]
      ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
-        )
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let totalTransactionCountToSign = transactionGroups.reduce(0, { $0 + $1.transactionsToSign.count })
 
@@ -711,9 +708,15 @@ extension SwapAssetFlowCoordinator {
     private func openUserAssetSelection(
         _ swapController: SwapController
     ) {
+        var filters: [AssetFilterAlgorithm] = [AssetZeroBalanceFilterAlgorithm()]
+
+        if let poolAsset = swapController.poolAsset {
+            filters.append(AssetExcludeFilterAlgorithm(excludedList: [poolAsset]))
+        }
+
         let dataController = SelectLocalAssetDataController(
             account: swapController.account,
-            filter: AssetZeroBalanceFilterAlgorithm(),
+            filters: filters,
             api: api,
             sharedDataController: sharedDataController
         )

@@ -52,8 +52,7 @@ final class AccountDetailViewController: PageContainer {
         api: api!,
         sharedDataController: sharedDataController,
         bannerController: bannerController!,
-        presentingScreen: self,
-        account: accountHandle.value
+        presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
@@ -185,7 +184,7 @@ extension AccountDetailViewController {
             case .swap:
                 self.assetListScreen.endEditing()
 
-                self.swapAssetFlowCoordinator.launch()
+                self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
             case .send:
                 self.assetListScreen.endEditing()
 
@@ -227,7 +226,9 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
     func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-            self?.swapAssetFlowCoordinator.launch()
+            guard let self = self else { return }
+            
+            self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
         }
     }
 
