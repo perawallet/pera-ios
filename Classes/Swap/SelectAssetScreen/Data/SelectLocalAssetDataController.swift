@@ -33,18 +33,18 @@ final class SelectLocalAssetDataController:
     private var searchResults: [Asset] = []
 
     private(set) var account: Account
-    private let filter: AssetFilterAlgorithm?
+    private let filters: [AssetFilterAlgorithm]?
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
     init(
         account: Account,
-        filter: AssetFilterAlgorithm? = nil,
+        filters: [AssetFilterAlgorithm],
         api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
         self.account = account
-        self.filter = filter
+        self.filters = filters
         self.api = api
         self.sharedDataController = sharedDataController
     }
@@ -62,7 +62,7 @@ extension SelectLocalAssetDataController {
     func load() {
         assets = ([account.algo] + account.allAssets.unwrap(or: []))
 
-        if let filter {
+        filters?.forEach { filter in
             assets = assets.filter { filter.getFormula(asset: $0) }
         }
 
