@@ -64,9 +64,8 @@ extension ConfirmSwapAmountOutInputViewModel {
             currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
             currencyFormatter.currency = nil
 
-            primaryValue = currencyFormatter
-                .format(amountOut.assetAmount(fromFraction: asset.decimals))?
-                .bodyLargeMedium()
+            let amount = amountOut.assetAmount(fromFraction: asset.decimals)
+            primaryValue = currencyFormatter.format(amount)
         }
     }
 

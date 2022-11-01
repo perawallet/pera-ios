@@ -28,7 +28,7 @@ final class SwapAssetSelectionView:
     func customize(
         _ theme: SwapAssetSelectionViewTheme
     ) {
-        customizeView(theme)
+        addBackground(theme)
         addTitle(theme)
         addVerificationTier(theme)
         addAccessory(theme)
@@ -57,7 +57,7 @@ final class SwapAssetSelectionView:
 }
 
 extension SwapAssetSelectionView {
-    private func customizeView(
+    private func addBackground(
         _ theme: SwapAssetSelectionViewTheme
     ) {
         customizeAppearance(theme.background)

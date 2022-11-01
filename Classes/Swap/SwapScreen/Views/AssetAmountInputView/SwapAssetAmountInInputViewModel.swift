@@ -64,7 +64,6 @@ extension SwapAssetAmountInInputViewModel {
                 .assetAmount(fromFraction: asset.decimals)
                 .number
                 .stringValue
-                .bodyLargeMedium()
         } else {
             primaryValue = nil
         }

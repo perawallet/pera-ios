@@ -21,29 +21,29 @@ import UIKit
 struct ConfirmSwapScreenTheme:
     StyleSheet,
     LayoutSheet {
-    let navigationTitle: AccountNameTitleViewTheme
-    let background: ViewStyle
-    let userAsset: SwapAssetAmountViewTheme
-    let assetHorizontalInset: LayoutMetric
-    let userAssetTopInset: LayoutMetric
-    let minimumUserAssetTopInset: LayoutMetric
-    let toSeparator: TitleSeparatorViewTheme
-    let toSeparatorTopInset: LayoutMetric
-    let poolAsset: SwapAssetAmountViewTheme
-    let poolAssetTopInset: LayoutMetric
-    let minimumPoolAssetPadding: LayoutMetric
-    let assetSeparator: Separator
-    let assetSeparatorPadding: LayoutMetric
-    let infoActionItem: SwapInfoActionItemViewTheme
-    let infoItem: SwapInfoItemViewTheme
-    let infoSectionPaddings: LayoutPaddings
-    let infoSectionItemSpacing: LayoutMetric
-    let viewSummary: ButtonStyle
-    let confirmAction: ButtonStyle
-    let confirmActionIndicator: ImageStyle
-    let confirmActionHeight: LayoutMetric
-    let confirmActionContentEdgeInsets: UIEdgeInsets
-    let confirmActionEdgeInsets: LayoutPaddings
+    var navigationTitle: AccountNameTitleViewTheme
+    var background: ViewStyle
+    var userAsset: SwapAssetAmountViewTheme
+    var assetHorizontalInset: LayoutMetric
+    var userAssetTopInset: LayoutMetric
+    var minimumUserAssetTopInset: LayoutMetric
+    var toSeparator: TitleSeparatorViewTheme
+    var toSeparatorTopInset: LayoutMetric
+    var poolAsset: SwapAssetAmountViewTheme
+    var poolAssetTopInset: LayoutMetric
+    var minimumPoolAssetPadding: LayoutMetric
+    var assetSeparator: Separator
+    var assetSeparatorPadding: LayoutMetric
+    var infoActionItem: SwapInfoActionItemViewTheme
+    var infoItem: SwapInfoItemViewTheme
+    var infoSectionPaddings: LayoutPaddings
+    var infoSectionItemSpacing: LayoutMetric
+    var viewSummary: ButtonStyle
+    var confirmAction: ButtonStyle
+    var confirmActionIndicator: ImageStyle
+    var confirmActionHeight: LayoutMetric
+    var confirmActionContentEdgeInsets: UIEdgeInsets
+    var confirmActionEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
@@ -52,13 +52,20 @@ struct ConfirmSwapScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
+
         self.userAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
+        self.userAsset.spacingBetweenLeftTitleAndInputs = 0
+
         self.assetHorizontalInset = 24
         self.userAssetTopInset = 88
         self.minimumUserAssetTopInset = 28
         self.toSeparator = TitleSeparatorViewTheme()
         self.toSeparatorTopInset = 20
+
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
+        self.poolAsset.spacingBetweenLeftTitleAndInputs = 0
+
+
         self.poolAssetTopInset = 20
         self.minimumPoolAssetPadding = 28
         self.assetSeparator = Separator(
