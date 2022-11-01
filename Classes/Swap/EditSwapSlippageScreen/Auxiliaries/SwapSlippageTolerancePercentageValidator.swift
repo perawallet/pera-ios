@@ -38,7 +38,7 @@ struct SwapSlippageTolerancePercentageValidator: MacaroonForm.Validator {
             return .success
         }
 
-        guard let percentage = Float(text) else {
+        guard let percentage = Double(text) else {
             return .failure(Error.corrupted)
         }
 
@@ -66,14 +66,19 @@ protocol SwapSlippageTolerancePercentageValidationMessageResolver {
 }
 
 struct SwapSlippageTolerancePercentageValidationMessageGenericResolver: SwapSlippageTolerancePercentageValidationMessageResolver {
-    private var errorMessages: [Self.Error : String] = [
-        .corrupted: "swap-slippage-percentage-validation-error-limitExceeded"
-            .localized(Self.Error.minLimit, Self.Error.maxLimit),
-        .minLimitExceeded: "swap-slippage-percentage-validation-error-limitExceeded"
-            .localized(Self.Error.minLimit, Self.Error.maxLimit),
-        .maxLimitExceeded: "swap-slippage-percentage-validation-error-limitExceeded"
-            .localized(Self.Error.minLimit, Self.Error.maxLimit)
-    ]
+    private var errorMessages: [Self.Error : String] = {
+        var map: [Self.Error : String] = [:]
+        Self.Error.allCases.forEach { error in
+            switch error {
+            default:
+                map[error] = "swap-slippage-percentage-validation-error-limitExceeded".localized(
+                    (Self.Error.minLimit / 100).toPercentageWith(fractions: 2).someString,
+                    (Self.Error.maxLimit / 100).toPercentageWith(fractions: 2).someString
+                )
+            }
+        }
+        return map
+    }()
 
     subscript(error: Self.Error) -> String? {
         get { errorMessages[error] }
@@ -81,11 +86,13 @@ struct SwapSlippageTolerancePercentageValidationMessageGenericResolver: SwapSlip
     }
 }
 
-enum SwapSlippageTolerancePercentageValidationError: ValidationError {
+enum SwapSlippageTolerancePercentageValidationError:
+    CaseIterable,
+    ValidationError {
     case corrupted
     case minLimitExceeded
     case maxLimitExceeded
 
-    fileprivate static let minLimit: Float = 0
-    fileprivate static let maxLimit: Float = 10
+    fileprivate static let minLimit: Double = 0
+    fileprivate static let maxLimit: Double = 10
 }
