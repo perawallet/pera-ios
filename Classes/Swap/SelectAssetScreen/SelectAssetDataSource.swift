@@ -19,6 +19,12 @@ import MacaroonUIKit
 import UIKit
 
 final class SelectAssetDataSource: UICollectionViewDiffableDataSource<SelectAssetSection, SelectAssetItem> {
+    var isEmpty: Bool {
+        return snapshot().sectionIdentifiers.contains {
+            $0 == .empty || $0 == .error
+        }
+    }
+
     init(
         _ collectionView: UICollectionView
     ) {
