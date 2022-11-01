@@ -64,7 +64,6 @@ extension ConfirmSwapAmountInInputViewModel {
                 .assetAmount(fromFraction: asset.decimals)
                 .number
                 .stringValue
-                .bodyLargeMedium()
         }
     }
 

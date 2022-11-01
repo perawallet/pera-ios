@@ -35,11 +35,7 @@ extension SwapInputAssetSelectionViewModel {
     mutating func bindTitle(
         _ asset: Asset
     ) {
-        guard let unitName = asset.naming.unitName else {
-            ///  <todo> How should we represent unknown here?
-            return
-        }
-
+        let unitName = asset.naming.unitName ?? "title-unknown".localized
         title = unitName.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 

@@ -49,8 +49,6 @@ final class SwapAssetAmountView:
         addLeftTitle(theme)
         addRightTitle(theme)
         addContent(theme)
-        addAssetSelection(theme)
-        addAmountInput(theme)
     }
 
     func customizeAppearance(
@@ -68,24 +66,20 @@ final class SwapAssetAmountView:
     func bindData(
         _ viewModel: SwapAssetAmountViewModel?
     ) {
-        guard let viewModel = viewModel else {
-            return
-        }
-
-        if let leftTitle = viewModel.leftTitle {
+        if let leftTitle = viewModel?.leftTitle {
             leftTitle.load(in: leftTitleView)
         } else {
             leftTitleView.clearText()
         }
 
-        if let rightTitle = viewModel.rightTitle {
+        if let rightTitle = viewModel?.rightTitle {
             rightTitle.load(in: rightTitleView)
         } else {
             rightTitleView.clearText()
         }
 
-        amountInputView.bindData(viewModel.assetAmountValue)
-        assetSelectionView.bindData(viewModel.assetSelectionValue)
+        amountInputView.bindData(viewModel?.assetAmountValue)
+        assetSelectionView.bindData(viewModel?.assetSelectionValue)
     }
 
     func beginEditing() {
@@ -104,10 +98,9 @@ extension SwapAssetAmountView {
         leftTitleView.customizeAppearance(theme.leftTitle)
 
         addSubview(leftTitleView)
-        leftTitleView.fitToIntrinsicSize()
-        leftTitleView.contentEdgeInsets.bottom = theme.spacingBetweenLeftTitleAndAmountInput
+        leftTitleView.fitToVerticalIntrinsicSize()
         leftTitleView.snp.makeConstraints {
-            $0.width <= self.snp.width * theme.leftTitleWidthMultiplier
+            $0.width <= self * theme.leftTitleMaxWidthRatio
             $0.top == 0
             $0.leading == 0
         }
@@ -120,11 +113,12 @@ extension SwapAssetAmountView {
 
         addSubview(rightTitleView)
         rightTitleView.fitToIntrinsicSize()
-        rightTitleView.contentEdgeInsets.bottom = theme.spacingBetweenRightTitleAndAssetSelection
         rightTitleView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading >= leftTitleView.snp.trailing + theme.minimumSpacingBetweenTitles
+            $0.top >= 0
+            $0.leading >= leftTitleView.snp.trailing + theme.spacingBetweenLeftAndRightTitles
+            $0.bottom <= 0
             $0.trailing == 0
+            $0.firstBaseline == leftTitleView
         }
     }
 
@@ -133,9 +127,26 @@ extension SwapAssetAmountView {
     ) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.top == rightTitleView.snp.bottom
+            $0.top == leftTitleView.snp.bottom + theme.spacingBetweenLeftTitleAndInputs
             $0.leading == 0
+            $0.bottom == 0
             $0.trailing == 0
+        }
+
+        addAmountInput(theme)
+        addAssetSelection(theme)
+    }
+
+    private func addAmountInput(
+        _ theme: SwapAssetAmountViewTheme
+    ) {
+        amountInputView.customize(theme.assetAmountInput)
+
+        contentView.addSubview(amountInputView)
+        amountInputView.snp.makeConstraints {
+            $0.width >= contentView * theme.assetAmountInputMinWidthRatio
+            $0.top == 0
+            $0.leading == 0
             $0.bottom == 0
         }
     }
@@ -146,43 +157,18 @@ extension SwapAssetAmountView {
         assetSelectionView.customize(theme.assetSelection)
 
         contentView.addSubview(assetSelectionView)
-        assetSelectionView.fitToHorizontalIntrinsicSize()
-        assetSelectionView.fitToVerticalIntrinsicSize(
-             hugging: .defaultLow,
-             compression: .required
-        )
         assetSelectionView.snp.makeConstraints {
-            $0.width <= contentView.snp.width * theme.assetSelectionWidthMultiplier
-            $0.top == 0
-            $0.trailing == 0
+            $0.centerY == 0
+            $0.top >= 0
+            $0.leading == amountInputView.snp.trailing + theme.spacingBetweenAmountInputAndAssetSelection
             $0.bottom <= 0
+            $0.trailing == 0
         }
 
         startPublishing(
             event: .didSelectAsset,
             for: assetSelectionView
         )
-    }
-
-    private func addAmountInput(
-        _ theme: SwapAssetAmountViewTheme
-    ) {
-        amountInputView.customize(theme.assetAmountInput)
-
-        contentView.addSubview(amountInputView)
-        amountInputView.fitToHorizontalIntrinsicSize()
-        amountInputView.fitToVerticalIntrinsicSize(
-             hugging: .defaultLow,
-             compression: .required
-         )
-
-        amountInputView.snp.makeConstraints {
-            $0.width >= contentView.snp.width * theme.assetAmountInputWidthMultiplier
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing <= assetSelectionView.snp.leading - theme.minimumSpacingBetweenInputAndSelection
-        }
     }
 }
 

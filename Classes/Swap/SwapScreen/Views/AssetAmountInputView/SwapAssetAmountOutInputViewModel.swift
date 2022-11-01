@@ -64,11 +64,10 @@ extension SwapAssetAmountOutInputViewModel {
             currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
             currencyFormatter.currency = nil
 
-            primaryValue = currencyFormatter
-                .format(amountOut.assetAmount(fromFraction: asset.decimals))?
-                .bodyLargeMedium()
+            let amount = amountOut.assetAmount(fromFraction: asset.decimals)
+            primaryValue = currencyFormatter.format(amount)
         } else {
-            primaryValue = "0.00".bodyLargeMedium()
+            primaryValue = "0.00"
         }
     }
 
