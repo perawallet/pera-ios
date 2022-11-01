@@ -146,6 +146,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .account(let image):
             return ImageContent(normal: image)
+        case .flexibleSpace:
+            return nil
         }
     }
     
@@ -229,6 +231,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .account:
             return .explicit(CGSize(width: 28, height: 28))
+        case .flexibleSpace:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -246,6 +250,10 @@ struct ALGBarButtonItem: BarButtonItem {
 
     static func dismiss() -> ALGBarButtonItem? {
         return ALGBarButtonItem(kind: .close)
+    }
+
+    static func flexibleSpace() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .flexibleSpace)
     }
 }
 
@@ -272,6 +280,7 @@ extension ALGBarButtonItem {
         case filter
         case troubleshoot
         case account(UIImage)
+        case flexibleSpace
     }
 }
 

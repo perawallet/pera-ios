@@ -106,7 +106,7 @@ extension SwapQuickActionsGroupView {
     }
 
     private func removeAllActions() {
-        contentView.deleteAllArrangedSubviews()
+        contentView.deleteAllSubviews()
     }
 }
 

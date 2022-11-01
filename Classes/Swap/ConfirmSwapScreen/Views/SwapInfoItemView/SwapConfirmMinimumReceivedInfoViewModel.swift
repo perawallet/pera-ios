@@ -44,7 +44,7 @@ extension SwapConfirmMinimumReceivedInfoViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-minimum-received-title"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -66,10 +66,11 @@ extension SwapConfirmMinimumReceivedInfoViewModel {
         )
 
         if assetOut.isAlgo {
-            detail = swapAssetValueFormatter.getFormattedAlgoAmount(
-               decimalAmount: decimalAmount,
-               currencyFormatter: currencyFormatter
-            )?.footnoteRegular()
+            let text = swapAssetValueFormatter.getFormattedAlgoAmount(
+                decimalAmount: decimalAmount,
+                currencyFormatter: currencyFormatter
+             )
+            bindDetail(text: text)
             return
         }
 
@@ -83,6 +84,10 @@ extension SwapConfirmMinimumReceivedInfoViewModel {
             return
         }
 
-        detail = "\(amountText) \(assetOutDisplayName)".footnoteRegular()
+        bindDetail(text: "\(amountText) \(assetOutDisplayName)")
+    }
+
+    mutating func bindDetail(text: String?) {
+        detail = text?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

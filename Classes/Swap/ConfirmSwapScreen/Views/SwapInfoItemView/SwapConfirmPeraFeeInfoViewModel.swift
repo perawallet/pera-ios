@@ -40,7 +40,7 @@ extension SwapConfirmPeraFeeInfoViewModel {
     mutating func bindTitle() {
         title = "swap-confirm-pera-fee-title"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -57,7 +57,7 @@ extension SwapConfirmPeraFeeInfoViewModel {
         currencyFormatter.currency = AlgoLocalCurrency()
         detail = currencyFormatter
             .format(peraFee)?
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

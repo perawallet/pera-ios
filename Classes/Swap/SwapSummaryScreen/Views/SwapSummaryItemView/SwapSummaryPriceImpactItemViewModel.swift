@@ -34,7 +34,7 @@ extension SwapSummaryPriceImpactItemViewModel {
     mutating func bindTitle() {
         title = "swap-price-impact-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -45,6 +45,6 @@ extension SwapSummaryPriceImpactItemViewModel {
         value = priceImpact
             .doubleValue
             .toPercentageWith(fractions: 3)?
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 }

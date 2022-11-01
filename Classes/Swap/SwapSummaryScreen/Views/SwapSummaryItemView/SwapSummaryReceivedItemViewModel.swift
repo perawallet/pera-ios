@@ -41,7 +41,7 @@ extension SwapSummaryReceivedItemViewModel {
     mutating func bindTitle() {
         title = "swap-summary-received-title"
             .localized
-            .bodyRegular()
+            .bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindValue(
@@ -66,10 +66,11 @@ extension SwapSummaryReceivedItemViewModel {
                 return
             }
 
-            var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byWordWrapping)
-            attributes.insert(.textColor(Colors.Helpers.positive))
+            bindDetail(
+                text: "~+\(amountText)",
+                textColor: Colors.Helpers.positive
+            )
 
-            value = "~+\(amountText)".attributed(attributes)
             return
         }
 
@@ -82,9 +83,18 @@ extension SwapSummaryReceivedItemViewModel {
             return
         }
 
-        var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byWordWrapping)
-        attributes.insert(.textColor(Colors.Helpers.positive))
+        bindDetail(
+            text: "~+\(amountText) \(assetOutDisplayName)",
+            textColor: Colors.Helpers.positive
+        )
+    }
 
-        value = "~+\(amountText) \(assetOutDisplayName)".attributed(attributes)
+    mutating func bindDetail(
+        text: String?,
+        textColor: Color
+    ) {
+        var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(textColor))
+        value = text?.attributed(attributes)
     }
 }

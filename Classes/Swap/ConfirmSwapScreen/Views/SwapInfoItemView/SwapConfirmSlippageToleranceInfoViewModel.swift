@@ -38,7 +38,7 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
     mutating func bindTitle() {
         title = "swap-slippage-tolerance-info-title"
             .localized
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindIcon() {
@@ -53,7 +53,7 @@ extension SwapConfirmSlippageToleranceInfoViewModel {
         detail = slippage
             .doubleValue
             .toPercentageWith(fractions: 2)?
-            .footnoteRegular()
+            .footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 
     mutating func bindAction() {

@@ -22,9 +22,9 @@ struct SwapInfoItemViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let infoActionSize: LayoutSize
     let infoActionContentEdgeInsets: UIEdgeInsets
     let detail: TextStyle
+    let detailMaxWidthRatio: CGFloat
     let minimumSpacingBetweenInfoActionAndDetail: LayoutMetric
 
     init(
@@ -32,16 +32,14 @@ struct SwapInfoItemViewTheme:
     ) {
         self.title = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left)
+            .textOverflow(SingleLineText())
         ]
-        self.infoActionSize = (32, 32)
         self.infoActionContentEdgeInsets = UIEdgeInsets((0, 6, 0, 6))
         self.detail = [
             .textColor(Colors.Text.main),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.right)
+            .textOverflow(SingleLineText())
         ]
+        self.detailMaxWidthRatio = 0.75
         self.minimumSpacingBetweenInfoActionAndDetail = 12
     }
 }

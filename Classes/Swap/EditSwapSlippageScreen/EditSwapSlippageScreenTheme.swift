@@ -25,10 +25,14 @@ struct EditSwapSlippageScreenTheme:
     var slippageTolerancePercentageInput: AdjustableSingleSelectionInputViewTheme
 
     init(_ family: LayoutFamily) {
-        self.slippageTolerancePercentageInputEdgeInsets = .init(top: 40, leading: 24, bottom: 40, trailing: 24)
+        self.slippageTolerancePercentageInputEdgeInsets =
+            .init(top: 40, leading: 0, bottom: 40, trailing: 0)
+
         self.slippageTolerancePercentageInput = .init(
             textInputPlaceholder: "swap-slippage-placeholder".localized,
             family: family
         )
+        self.slippageTolerancePercentageInput.contentEdgeInsets =
+            .init(top: 0, leading: 24, bottom: 0, trailing: 24)
     }
 }

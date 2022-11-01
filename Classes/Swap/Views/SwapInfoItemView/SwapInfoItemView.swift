@@ -73,7 +73,7 @@ extension SwapInfoItemView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
-        titleView.fitToIntrinsicSize()
+        titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -88,7 +88,6 @@ extension SwapInfoItemView {
         infoActionView.fitToIntrinsicSize()
         infoActionView.contentEdgeInsets = theme.infoActionContentEdgeInsets
         infoActionView.snp.makeConstraints {
-            $0.fitToSize(theme.infoActionSize)
             $0.centerY == 0
             $0.leading == titleView.snp.trailing
         }
@@ -107,6 +106,7 @@ extension SwapInfoItemView {
         addSubview(detailView)
         detailView.fitToIntrinsicSize()
         detailView.snp.makeConstraints {
+            $0.width <= self * theme.detailMaxWidthRatio
             $0.centerY == 0
             $0.top >= 0
             $0.leading >= infoActionView.snp.trailing + theme.minimumSpacingBetweenInfoActionAndDetail

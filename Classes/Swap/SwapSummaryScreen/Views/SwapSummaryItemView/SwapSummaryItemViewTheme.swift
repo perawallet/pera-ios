@@ -30,13 +30,11 @@ struct SwapSummaryItemViewTheme:
     ) {
         self.title = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left)
+            .textOverflow(SingleLineText())
         ]
         self.detail = [
             .textColor(Colors.Text.main),
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left)
+            .textOverflow(SingleLineText())
         ]
         self.detailLeadingInset = 124
         self.minimumSpacingBetweenTitleAndDetail = 4

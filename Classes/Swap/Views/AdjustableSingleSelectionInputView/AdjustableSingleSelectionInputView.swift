@@ -113,24 +113,28 @@ extension AdjustableSingleSelectionInputView {
         addSubview(textInputView)
         textInputView.snp.makeConstraints {
             $0.greaterThanHeight(theme.textInputMinHeight)
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
         }
 
         textInputView.editingDelegate = self
     }
 
     private func addSelectionInput(_ theme: AdjustableSingleSelectionInputViewTheme) {
+        var contentInset = theme.selectionInputContentInset
+        contentInset.left += theme.contentEdgeInsets.leading
+        contentInset.right += theme.contentEdgeInsets.trailing
+
         addSubview(selectionInputScrollView)
         selectionInputScrollView.showsHorizontalScrollIndicator = false
         selectionInputScrollView.showsVerticalScrollIndicator = false
         selectionInputScrollView.alwaysBounceVertical = false
-        selectionInputScrollView.contentInset = theme.selectionInputContentInset
+        selectionInputScrollView.contentInset = contentInset
         selectionInputScrollView.snp.makeConstraints {
             $0.top == textInputView.snp.bottom + theme.spacingBetweenTextInputAndSelectionInput
             $0.leading == 0
-            $0.bottom == 0
+            $0.bottom == theme.contentEdgeInsets.bottom
             $0.trailing == 0
         }
 
