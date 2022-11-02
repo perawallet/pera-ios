@@ -111,4 +111,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+
+    @discardableResult
+    func searchDiscoverAssets(
+        _ draft: AssetSearchQuery,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<DiscoveryASAPaginatedList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.assetSearch)
+            .method(.get)
+            .query(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .execute()
+    }
 }

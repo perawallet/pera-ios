@@ -127,8 +127,6 @@ extension DiscoverWebScreen {
     }
 
     private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
-        additionalSafeAreaInsets.top = theme.navigationBarEdgeInset.top
-
         webView.scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.webContentTopInset
     }
 }
