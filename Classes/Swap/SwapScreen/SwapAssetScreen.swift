@@ -60,7 +60,7 @@ final class SwapAssetScreen:
 
     private var currentInputAsInt: UInt64? {
         if let userAmountString = userAssetView.currentAmount,
-           let amountInDecimal = Decimal(string: userAmountString) {
+           let amountInDecimal = Formatter.decimalFormatter(maximumFractionDigits: dataController.userAsset.decimals).number(from: userAmountString)?.decimalValue {
             return amountInDecimal.toFraction(of: dataController.userAsset.decimals)
         }
 
@@ -70,7 +70,7 @@ final class SwapAssetScreen:
     private var currentOutputAsInt: UInt64? {
         if let poolAsset = dataController.poolAsset,
            let poolAmountString = poolAssetView.currentAmount,
-           let amountOutDecimal = Decimal(string: poolAmountString) {
+           let amountOutDecimal = Formatter.decimalFormatter(maximumFractionDigits: poolAsset.decimals).number(from: poolAmountString)?.decimalValue {
             return amountOutDecimal.toFraction(of: poolAsset.decimals)
         }
 
