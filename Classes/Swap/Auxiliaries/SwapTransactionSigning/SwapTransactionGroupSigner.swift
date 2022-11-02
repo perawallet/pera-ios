@@ -63,6 +63,10 @@ final class SwapTransactionGroupSigner {
             }
         }
     }
+
+    func clearTransactions()  {
+        transactionGroups = []
+    }
 }
 
 extension SwapTransactionGroupSigner {
@@ -97,6 +101,10 @@ extension SwapTransactionGroupSigner {
             case .didLedgerReset:
                 self.publishEvent(.didLedgerReset)
             case .didLedgerRejectSigning:
+                if self.account.requiresLedgerConnection() {
+                    self.transactionSigner.disonnectFromLedger()
+                }
+
                 self.publishEvent(.didLedgerRejectSigning)
             }
         }

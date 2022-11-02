@@ -141,6 +141,12 @@ extension ALGSwapController {
 
         self.parsedTransactions = parsedSwapTransactions
     }
+
+    func clearTransactions() {
+        signedTransactions = []
+        parsedTransactions = []
+        swapTransactionGroupSigner.clearTransactions()
+    }
 }
 
 extension ALGSwapController {
@@ -157,7 +163,8 @@ extension ALGSwapController {
                 signedTransaction: transaction,
                 waitingTimeAfterTransactionConfirmed: isLastTransaction ? 0.0 : 1.0,
                 transactionMonitor: transactionMonitor,
-                api: api
+                api: api,
+                shouldReturnSuccessWhenCompleted: isLastTransaction
             )
 
             transactionUploadAndWaitOperation.eventHandler = {
@@ -165,26 +172,23 @@ extension ALGSwapController {
                 guard let self = self else { return }
 
                 switch event {
+                case .didCompleteSwap:
+                    self.publishEvent(.didCompleteSwap)
                 case .didFailTransaction(let id):
+                    self.cancelAllOperations()
                     self.publishEvent(.didFailTransaction(id))
                 case .didFailNetwork(let error):
+                    self.cancelAllOperations()
                     self.publishEvent(.didFailNetwork(error))
                 case .didCancelTransaction:
+                    self.cancelAllOperations()
                     self.publishEvent(.didCancelTransaction)
                 }
             }
 
             operations.append(transactionUploadAndWaitOperation)
         }
-
-        let completionOperation = BlockOperation {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.publishEvent(.didCompleteSwap)
-        }
-
-        operations.append(completionOperation)
+        
         addOperationDependencies(&operations)
         uploadAndMonitorOperationQueue.addOperations(
             operations,
@@ -203,6 +207,10 @@ extension ALGSwapController {
 
             previousOperation = operation
         }
+    }
+
+    private func cancelAllOperations() {
+        uploadAndMonitorOperationQueue.cancelAllOperations()
     }
 }
 

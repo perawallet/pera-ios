@@ -3205,6 +3205,9 @@
 		2BF0FB39253D156300D704D5 /* AssetDetailTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */; };
 		2BF0FB3E253D15EE00D704D5 /* TransactionViewModelDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */; };
 		2BF0FB40253D15EE00D704D5 /* TransactionViewModelDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */; };
+		2BF305C229118E970050B2FB /* SwapAssetInputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */; };
+		2BF305C329118E970050B2FB /* SwapAssetInputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */; };
+		2BF305C429118E970050B2FB /* SwapAssetInputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -7189,6 +7192,7 @@
 		2BEE062023E8572E004EBD6F /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
 		2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewModel.swift; sourceTree = "<group>"; };
 		2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModelDraft.swift; sourceTree = "<group>"; };
+		2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAssetInputValidator.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -11329,6 +11333,7 @@
 		2B8CD59B2908186B004A81B9 /* Formatter */ = {
 			isa = PBXGroup;
 			children = (
+				2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */,
 				2B8CD59C2908187B004A81B9 /* SwapAssetValueFormatter.swift */,
 			);
 			path = Formatter;
@@ -18795,6 +18800,7 @@
 				D4710B1A276A529D00F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
 				D411B37E26EA126D004FF980 /* AccountListItemViewTheme.swift in Sources */,
 				95C95914278A12A9003D0D78 /* WCSingleTransactionRequestBottomViewModel.swift in Sources */,
+				2BF305C429118E970050B2FB /* SwapAssetInputValidator.swift in Sources */,
 				2B95415425AD04690098805B /* Once.swift in Sources */,
 				2B69AB2A28BFA17B00A8D65D /* SwapTransactionGroup.swift in Sources */,
 				F010636F28AC339900AB6873 /* RekeyAccountListItemButtonViewModel.swift in Sources */,
@@ -21970,6 +21976,7 @@
 				2B5739F226F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
 				D42E074B27BD7EA300F5E41E /* AddAccountViewModel.swift in Sources */,
 				D4092BAD276B522C0009722D /* WCSessionShortListViewTheme.swift in Sources */,
+				2BF305C329118E970050B2FB /* SwapAssetInputValidator.swift in Sources */,
 				2BC7DC35286F3F9000110A92 /* RewardDetailViewModel.swift in Sources */,
 				9501BBD82757BD7100E2C3A7 /* SelectAssetViewControllerDataSource.swift in Sources */,
 				D45E191826E91FA500A32744 /* AccountNameSetupViewController+Theme.swift in Sources */,
@@ -24249,6 +24256,7 @@
 				2BAAF4A428E49C5100FC59AF /* SelectSwapPoolAssetDataController.swift in Sources */,
 				955B618B27858E1B005A5C7E /* WCSingleTransactionRequestViewTheme.swift in Sources */,
 				D4CF67F428C75C7B0007A727 /* AccountSelectionListDataController.swift in Sources */,
+				2BF305C229118E970050B2FB /* SwapAssetInputValidator.swift in Sources */,
 				D4592903276B933700862B21 /* WCSessionShortListDataSource.swift in Sources */,
 				95189D8D277A0C8700094107 /* SendTransactionPreviewViewModel.swift in Sources */,
 				2B69AB4228C01D5600A8D65D /* SwapAssetFlowCoordinator.swift in Sources */,

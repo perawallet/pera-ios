@@ -29,17 +29,20 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var peraFeeInfo: SwapInfoItemViewModel?
 
     init(
+        account: Account,
         quote: SwapQuote,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
         bindUserAsset(
+            account: account,
             quote: quote,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
         bindToSeparator()
         bindPoolAsset(
+            account: account,
             quote: quote,
             currency: currency,
             currencyFormatter: currencyFormatter
@@ -67,6 +70,7 @@ struct ConfirmSwapScreenViewModel: ViewModel {
 
 extension ConfirmSwapScreenViewModel {
     mutating func bindUserAsset(
+        account: Account,
         quote: SwapQuote,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
@@ -74,7 +78,10 @@ extension ConfirmSwapScreenViewModel {
         guard let assetIn = quote.assetIn else { return }
 
         let asset: Asset
-        if assetIn.isCollectible {
+
+        if assetIn.isAlgo {
+            asset = account.algo
+        } else if assetIn.isCollectible {
             asset = CollectibleAsset(decoration: assetIn)
         } else {
             asset = StandardAsset(decoration: assetIn)
@@ -97,6 +104,7 @@ extension ConfirmSwapScreenViewModel {
     }
 
     mutating func bindPoolAsset(
+        account: Account,
         quote: SwapQuote,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
@@ -104,7 +112,9 @@ extension ConfirmSwapScreenViewModel {
         guard let assetOut = quote.assetOut else { return }
 
         let asset: Asset
-        if assetOut.isCollectible {
+        if assetOut.isAlgo {
+            asset = account.algo
+        } else if assetOut.isCollectible {
             asset = CollectibleAsset(decoration: assetOut)
         } else {
             asset = StandardAsset(decoration: assetOut)

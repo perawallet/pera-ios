@@ -123,9 +123,7 @@ extension SwapAssetAPIDataController {
     private func loadData(
         _ draft: SwapQuoteDraft
     ) {
-        if currentQuoteEndpoint != nil {
-            cancelOngoingRequest()
-        }
+        cancelLoadingQuote()
 
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
@@ -151,6 +149,7 @@ extension SwapAssetAPIDataController {
 
     func cancelLoadingQuote() {
         cancelOngoingRequest()
+        quoteThrottler.cancelAll()
     }
 
     private func cancelOngoingRequest() {

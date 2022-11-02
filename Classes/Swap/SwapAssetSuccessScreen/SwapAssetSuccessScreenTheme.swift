@@ -84,7 +84,7 @@ struct SwapAssetSuccessScreenTheme:
             ])
         ]
         self.doneActionContentEdgeInsets = (16, 0, 16, 0)
-        self.doneActionEdgeInsets = (12, 24, 32, 24)
+        self.doneActionEdgeInsets = (12, 24, 16, 24)
         self.summaryAction = [
             .font(Typography.bodyMedium()),
             .title("swap-success-view-summary".localized),

@@ -93,7 +93,6 @@ extension SwapAssetFlowCoordinator {
             notifyIsOnboardedToSwapObservers()
         }
 
-
         if swapIntroductionAlertItem.canBeDisplayed() {
             openSwapIntroductionAlert()
             return
@@ -139,11 +138,14 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .performPrimaryAction:
                 self.displayStore.isConfirmedSwapUserAgreement = true
+                self.visibleScreen.dismissScreen {
+                    [weak self] in
+                    guard let self = self else { return }
 
-                self.dismissSwapIntroduction()
-                self.startSwapFlow()
+                    self.startSwapFlow()
+                }
             case .performCloseAction:
-                self.dismissSwapIntroduction()
+                self.visibleScreen.dismissScreen()
             }
         }
 
@@ -151,10 +153,6 @@ extension SwapAssetFlowCoordinator {
             screen,
             by: .present
         )
-    }
-
-    private func dismissSwapIntroduction() {
-        visibleScreen.dismiss(animated: true)
     }
 }
 
@@ -271,6 +269,10 @@ extension SwapAssetFlowCoordinator {
                     swapController,
                     viewModel: viewModel
                 ) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    self.visibleScreen.popScreen(animated: false)
                     swapController.uploadTransactions()
                 }
             case .didFailNetwork(let error):
@@ -284,6 +286,10 @@ extension SwapAssetFlowCoordinator {
                     swapController,
                     viewModel: viewModel
                 ) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    self.visibleScreen.popScreen(animated: false)
                     swapController.uploadTransactions()
                 }
             case .didCancelTransaction:
@@ -292,12 +298,14 @@ extension SwapAssetFlowCoordinator {
                 switch error {
                 case .api(let apiError):
                     self.displaySigningError(apiError)
-                case .ledger(let ledgerError):
+                case .ledger(let ledgerError):                    
                     self.displayLedgerError(ledgerError)
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
                 self.openSignWithLedgerProcess(
-                    ledger,
+                    transactionSigner: transactionSigner,
+                    swapController: swapController,
+                    ledger: ledger,
                     transactionGroups: transactionGroups
                 )
             case .didFinishTiming:
@@ -305,7 +313,10 @@ extension SwapAssetFlowCoordinator {
             case .didLedgerReset:
                 break
             case .didLedgerRejectSigning:
-                break
+                if self.visibleScreen is SignWithLedgerProcessScreen {
+                    self.signWithLedgerProcessScreen?.dismissScreen()
+                    self.signWithLedgerProcessScreen = nil
+                }
             }
         }
 
@@ -509,10 +520,12 @@ extension SwapAssetFlowCoordinator {
     }
 
     private func openSignWithLedgerProcess(
-        _ ledger: String,
+        transactionSigner: SwapTransactionSigner,
+        swapController: SwapController,
+        ledger: String,
         transactionGroups: [SwapTransactionGroup]
     ) {
-        if signWithLedgerProcessScreen != nil {
+        if visibleScreen is SignWithLedgerProcessScreen {
             return
         }
 
@@ -534,12 +547,14 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .performCancelApproval:
+                swapController.clearTransactions()
                 self.visibleScreen.dismissScreen()
             }
         }
 
         signWithLedgerProcessScreen = transition.perform(
             .swapSignWithLedgerProcess(
+                transactionSigner: transactionSigner,
                 draft: draft,
                 eventHandler: eventHandler
             ),

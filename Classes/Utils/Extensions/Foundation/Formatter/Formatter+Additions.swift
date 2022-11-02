@@ -85,4 +85,13 @@ extension Formatter {
         formatter.maximumFractionDigits = value
         return formatter
     }
+
+    static func decimalFormatter(maximumFractionDigits: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = maximumFractionDigits
+        return formatter
+    }
 }

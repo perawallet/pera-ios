@@ -118,6 +118,7 @@ extension SelectSwapPoolAssetDataController {
 
     func resetSearch() {
         lastQuery = nil
+        searchThrottler.cancelAll()
         load()
     }
 }
@@ -136,7 +137,7 @@ extension SelectSwapPoolAssetDataController {
 
         ongoingEndpoint = api.getAvailablePoolAssets(
             draft,
-            ignoreResponseOnCancelled: false
+            ignoreResponseOnCancelled: true
         ) { [weak self] response in
             guard let self = self else { return }
 

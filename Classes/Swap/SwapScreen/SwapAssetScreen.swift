@@ -42,13 +42,14 @@ final class SwapAssetScreen:
     private lazy var quickActionsView = SwapQuickActionsView(theme.quickActions)
     private lazy var emptyPoolAssetView = SwapAssetSelectionEmptyView(theme: theme.emptyPoolAsset)
     private lazy var poolAssetView = SwapAssetAmountView()
-    private lazy var swapActionView: LoadingButton = {
+    private lazy var swapActionView: MacaroonUIKit.LoadingButton = {
         let loadingIndicator = ViewLoadingIndicator()
         loadingIndicator.applyStyle(theme.swapActionIndicator)
-        return LoadingButton(loadingIndicator: loadingIndicator)
+        return MacaroonUIKit.LoadingButton(loadingIndicator: loadingIndicator)
     }()
 
     private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+    private lazy var swapAssetInputValidator = SwapAssetInputValidator()
 
     private let currencyFormatter: CurrencyFormatter
     private let dataController: SwapAssetDataController
@@ -118,6 +119,11 @@ final class SwapAssetScreen:
         addNavigationTitle()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        userAssetView.endEditing()
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeAppearance(theme.background)
@@ -128,6 +134,19 @@ final class SwapAssetScreen:
         addBackground()
         addContext()
         addSwapAction()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     override func setListeners() {
@@ -289,21 +308,14 @@ extension SwapAssetScreen {
     private func addSwapAction() {
         swapActionView.customizeAppearance(theme.swapAction)
 
-        contextView.addArrangedSubview(swapActionView)
-
-        contentView.addSubview(swapActionView)
+        footerView.addSubview(swapActionView)
         swapActionView.contentEdgeInsets = theme.swapActionContentEdgeInsets
         swapActionView.snp.makeConstraints {
             $0.fitToHeight(theme.swapActionHeight)
-            $0.top >= contextView.snp.bottom + theme.swapActionEdgeInsets.top
+            $0.top ==  theme.swapActionEdgeInsets.top
             $0.leading == theme.swapActionEdgeInsets.leading
+            $0.bottom == theme.swapActionEdgeInsets.bottom
             $0.trailing == theme.swapActionEdgeInsets.trailing
-
-            let bottomInset =
-                view.compactSafeAreaInsets.bottom +
-                (navigationController ?? self).additionalSafeAreaInsets.bottom
-                + theme.swapActionContentEdgeInsets.bottom
-            $0.bottom == bottomInset
          }
 
         swapActionView.addTouch(
@@ -638,6 +650,8 @@ extension SwapAssetScreen {
             api: api!
         )
 
+        swapActionView.startLoading()
+
         balancePercentageValidator.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
@@ -678,6 +692,9 @@ extension SwapAssetScreen {
             with: nil,
             quote: nil
         )
+
+        swapActionView.isEnabled = false
+        stopLoading()
     }
 
     private func updateUserAssetAmount(
@@ -726,7 +743,7 @@ extension SwapAssetScreen {
     func bottomInsetOverKeyboardWhenKeyboardDidShow(
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
-        return theme.swapActionContentEdgeInsets.bottom
+        return theme.swapActionEdgeInsets.bottom
     }
 
     func additionalBottomInsetOverKeyboardWhenKeyboardDidShow(
@@ -751,7 +768,7 @@ extension SwapAssetScreen {
             return scrollView.contentInset.bottom
         }
 
-        return theme.swapActionContentEdgeInsets.bottom
+        return theme.swapActionEdgeInsets.bottom
     }
 
     func spacingBetweenEditingRectAndKeyboard(
@@ -807,10 +824,6 @@ extension SwapAssetScreen {
             return userAssetView.frame
         }
 
-        if poolAssetView.isFirstResponder {
-            return poolAssetView.frame
-        }
-
         return nil
     }
 
@@ -818,7 +831,7 @@ extension SwapAssetScreen {
         _ keyboard: MacaroonForm.Keyboard
     ) {
         swapActionView.snp.updateConstraints {
-            var padding = keyboard.height + theme.swapActionContentEdgeInsets.bottom
+            var padding = keyboard.height
             let bottomInsetUnderKeyboard =
                 bottomInsetUnderKeyboardWhenKeyboardDidShow(
                     keyboardController
@@ -849,11 +862,7 @@ extension SwapAssetScreen {
         }
 
         swapActionView.snp.updateConstraints {
-            let bottomInset =
-                view.compactSafeAreaInsets.bottom +
-                (navigationController ?? self).additionalSafeAreaInsets.bottom
-                + theme.swapActionContentEdgeInsets.bottom
-            $0.bottom == bottomInset
+            $0.bottom == theme.swapActionEdgeInsets.bottom
         }
     }
 
@@ -882,11 +891,12 @@ extension SwapAssetScreen {
             return
         }
 
-        if isTheInputDecimalSeparator(input) {
+        if swapAssetInputValidator.isTheInputDecimalSeparator(input) {
             return
         }
 
-        guard let inputAsDecimal = input.decimalAmount else { return }
+        let formatter = Formatter.decimalFormatter(maximumFractionDigits: dataController.userAsset.decimals)
+        guard let inputAsDecimal = formatter.number(from: input)?.decimalValue else { return }
 
         let inputAsFractionUnit = inputAsDecimal.toFraction(of: dataController.userAsset.decimals)
         getSwapQuote(for: inputAsFractionUnit)
@@ -895,61 +905,25 @@ extension SwapAssetScreen {
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         didBeginEditingIn textField: TextField
-    ) {
-
-    }
+    ) {  }
 
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         didEndEditingIn textField: TextField
-    ) {
+    ) { }
 
-    }
-
-    /// <note>
-    /// Check whether the input is a numeric value.
-    /// Limit number of decimal separator to 1.
-    /// Limit number of decimals with respect to the current asset.
     func swapAssetAmountView(
         _ swapAssetAmountView: SwapAssetAmountView,
         shouldChangeCharactersIn textField: TextField,
         with range: NSRange,
         replacementString string: String
     ) -> Bool {
-        guard let currentText = textField.text,
-              let currentTextRange = Range(range, in: currentText) else {
-            return true
-        }
-
-        let newText = currentText.replacingCharacters(in: currentTextRange, with: string)
-        let isNumeric = newText.isEmpty || (Double(newText) != nil)
-        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
-        let numberOfDecimalSeparators = newText.components(separatedBy: decimalSeparator).count - 1
-
-        let numberOfDecimals: Int
-        if let dotIndex = newText.firstIndex(of: ".") {
-            numberOfDecimals = newText.distance(
-                from: dotIndex,
-                to: newText.endIndex
-            ) - 1
-        } else {
-            numberOfDecimals = 0
-        }
-
-        return
-            isNumeric &&
-            numberOfDecimalSeparators <= 1 &&
-            numberOfDecimals <= dataController.userAsset.decimals
-    }
-
-    private func isTheInputDecimalSeparator(
-        _ input: String
-    ) -> Bool {
-        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
-
-        guard let lastCharacter = input.last else { return false }
-
-        return String(lastCharacter) == decimalSeparator
+        return swapAssetInputValidator.validateInput(
+            shouldChangeCharactersIn: textField,
+            with: range,
+            replacementString: string,
+            for: dataController.userAsset
+        )
     }
 }
 
