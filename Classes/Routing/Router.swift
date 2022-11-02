@@ -1094,8 +1094,9 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .swapSignWithLedgerProcess(let draft, let eventHandler):
+        case .swapSignWithLedgerProcess(let transactionSigner, let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
+                transactionSigner: transactionSigner,
                 draft: draft,
                 eventHandler: eventHandler
             )
