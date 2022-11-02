@@ -57,13 +57,11 @@ extension SwapAssetAmountInInputViewModel {
         swapQuote: SwapQuote?,
         currencyFormatter: CurrencyFormatter
     ) {
+        let formatter = SwapAssetValueFormatter()
         if let swapQuote,
            let amountIn = swapQuote.amountIn {
-            primaryValue =
-                amountIn
-                .assetAmount(fromFraction: asset.decimals)
-                .number
-                .stringValue
+            let amount = formatter.getDecimalAmount(of: amountIn, for: AssetDecoration(asset: asset))
+            primaryValue = Formatter.decimalFormatter(maximumFractionDigits: asset.decimals).string(from: NSDecimalNumber(decimal: amount))
         } else {
             primaryValue = nil
         }
