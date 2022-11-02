@@ -42,7 +42,7 @@ struct SwapAssetInputValidator {
             return false
         }
 
-        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
         let numberOfDecimalSeparators = newText.components(separatedBy: decimalSeparator).count - 1
 
         if numberOfDecimalSeparators > 1 {
@@ -69,7 +69,7 @@ struct SwapAssetInputValidator {
     func isTheInputDecimalSeparator(
         _ input: String
     ) -> Bool {
-        let decimalSeparator = Locale.preferred.decimalSeparator ?? "."
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
 
         guard let lastCharacter = input.last else { return false }
 

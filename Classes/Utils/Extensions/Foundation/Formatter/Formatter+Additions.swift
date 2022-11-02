@@ -88,7 +88,7 @@ extension Formatter {
 
     static func decimalFormatter(maximumFractionDigits: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = maximumFractionDigits
