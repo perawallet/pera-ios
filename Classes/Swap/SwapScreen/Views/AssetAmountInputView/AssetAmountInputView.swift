@@ -66,6 +66,7 @@ final class AssetAmountInputView:
             return
         }
 
+        iconView.prepareForReuse()
         iconView.load(from: viewModel.imageSource)
 
         if let primaryValue = viewModel.primaryValue {

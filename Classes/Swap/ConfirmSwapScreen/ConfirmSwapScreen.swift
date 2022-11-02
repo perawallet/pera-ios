@@ -97,7 +97,6 @@ final class ConfirmSwapScreen:
         super.prepareLayout()
         addUserAsset()
         addToSeparator()
-        addConfirmAction()
         addPeraFeeInfo()
         addExchangeFeeInfo()
         addMinimumReceivedInfo()
@@ -105,6 +104,20 @@ final class ConfirmSwapScreen:
         addSlippageInfo()
         addPriceInfo()
         addPoolAsset()
+        addConfirmAction()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     override func bindData() {
@@ -200,19 +213,15 @@ extension ConfirmSwapScreen {
     private func addConfirmAction() {
         confirmActionView.customizeAppearance(theme.confirmAction)
 
-        contentView.addSubview(confirmActionView)
+        footerView.addSubview(confirmActionView)
         confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
         confirmActionView.fitToIntrinsicSize()
         confirmActionView.snp.makeConstraints {
             $0.fitToHeight(theme.confirmActionHeight)
+            $0.top ==  theme.confirmActionEdgeInsets.top
             $0.leading == theme.confirmActionEdgeInsets.leading
+            $0.bottom == theme.confirmActionEdgeInsets.bottom
             $0.trailing == theme.confirmActionEdgeInsets.trailing
-
-            let bottomInset =
-                view.compactSafeAreaInsets.bottom +
-                (navigationController ?? self).additionalSafeAreaInsets.bottom
-                + theme.confirmActionContentEdgeInsets.bottom
-            $0.bottom == bottomInset
          }
 
         confirmActionView.addTouch(
@@ -228,7 +237,7 @@ extension ConfirmSwapScreen {
         peraFeeInfoView.fitToIntrinsicSize()
         peraFeeInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == confirmActionView.snp.top - theme.confirmActionEdgeInsets.top
+            $0.bottom == theme.confirmActionEdgeInsets.top
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -334,7 +343,7 @@ extension ConfirmSwapScreen {
         )
     }
 
-	private func addPoolAsset() {
+    private func addPoolAsset() {
         guard let poolAssetBottomSeparator else { return }
         poolAssetView.customize(theme.poolAsset)
 
@@ -347,7 +356,7 @@ extension ConfirmSwapScreen {
             $0.bottom <= poolAssetBottomSeparator.snp.top - theme.minimumPoolAssetPadding
             $0.trailing == theme.assetHorizontalInset
         }
-	}
+    }
 }
 
 extension ConfirmSwapScreen {
@@ -394,6 +403,7 @@ extension ConfirmSwapScreen {
         _ quote: SwapQuote
     ) {
         viewModel = ConfirmSwapScreenViewModel(
+            account: dataController.account,
             quote: quote,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
