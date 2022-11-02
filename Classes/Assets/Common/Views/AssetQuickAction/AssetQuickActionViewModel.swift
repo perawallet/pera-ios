@@ -121,7 +121,7 @@ extension AssetQuickActionViewModel {
 
     private func bindAccountName(_ account: Account) {
         self.accountName = .attributedString(
-            (account.name ?? account.address.shortAddressDisplay).footnoteRegular()
+            account.primaryDisplayName.footnoteRegular()
         )
     }
 
