@@ -156,6 +156,7 @@ extension SwapAssetAPIDataController {
     private func cancelOngoingRequest() {
         currentQuoteEndpoint?.cancel()
         currentQuoteEndpoint = nil
+        quoteThrottler.cancelAll()
     }
 }
 

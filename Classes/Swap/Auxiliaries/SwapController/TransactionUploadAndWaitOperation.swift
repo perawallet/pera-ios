@@ -31,17 +31,20 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
     private let waitingTimeAfterTransactionConfirmed: TimeInterval
     private let transactionMonitor: TransactionMonitor
     private let api: ALGAPI
+    private let shouldReturnSuccessWhenCompleted: Bool
 
     init(
         signedTransaction: Data,
         waitingTimeAfterTransactionConfirmed: TimeInterval = 1.0,
         transactionMonitor: TransactionMonitor,
-        api: ALGAPI
+        api: ALGAPI,
+        shouldReturnSuccessWhenCompleted: Bool
     ) {
         self.signedTransaction = signedTransaction
         self.waitingTimeAfterTransactionConfirmed = waitingTimeAfterTransactionConfirmed
         self.transactionMonitor = transactionMonitor
         self.api = api
+        self.shouldReturnSuccessWhenCompleted = shouldReturnSuccessWhenCompleted
     }
 
     override func main() {
@@ -83,6 +86,13 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
                 /// When a transaction is confirmed, we are waiting for some amount time to make sure that nodes are synced.
                 /// Default waiting time is 1 second.
                 asyncMain(afterDuration: self.waitingTimeAfterTransactionConfirmed) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    if self.shouldReturnSuccessWhenCompleted {
+                        self.publishEvent(.didCompleteSwap)
+                    }
+                    
                     self.finish()
                 }
             case .didFailedTransaction(let txnID):
@@ -129,11 +139,13 @@ extension TransactionUploadAndWaitOperation {
     private func cancelOngoingEndpoint() {
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
+        transactionMonitor.stop()
     }
 }
 
 extension TransactionUploadAndWaitOperation {
     enum Event {
+        case didCompleteSwap
         case didFailTransaction(TxnID)
         case didFailNetwork(Error)
         case didCancelTransaction
