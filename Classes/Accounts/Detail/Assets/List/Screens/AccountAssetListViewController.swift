@@ -263,6 +263,10 @@ extension AccountAssetListViewController {
     }
 
     private func updateSafeAreaWhenViewDidLayoutSubviews() {
+        if keyboardController.isKeyboardVisible {
+            return
+        }
+
         if !canAccessAccountActionsMenu() {
             additionalSafeAreaInsets.bottom = 0
             return
@@ -304,7 +308,7 @@ extension AccountAssetListViewController {
     }
 
     private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
+        accountActionsMenuActionView.isHidden = keyboardController.isKeyboardVisible || !canAccessAccountActionsMenu()
     }
 
     @objc
