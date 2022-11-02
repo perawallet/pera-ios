@@ -36,6 +36,7 @@ extension Formatter {
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 2
+        formatter.notANumberSymbol = ""
         return formatter
     }()
 

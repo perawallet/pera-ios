@@ -15,6 +15,7 @@
 //   SelectAssetScreen.swift
 
 import Foundation
+import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
@@ -25,7 +26,8 @@ final class SelectAssetScreen:
     SearchInputViewDelegate,
     SwapAssetFlowCoordinatorObserver,
     TransactionControllerDelegate,
-    TransactionSignChecking {
+    TransactionSignChecking,
+    MacaroonForm.KeyboardControllerDataSource {
     var eventHandler: Screen.EventHandler<SelectAssetScreenEvent>?
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -52,6 +54,11 @@ final class SelectAssetScreen:
     private lazy var transactionController = createTransactionController()
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: listView,
+        screen: self
+    )
+
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
     private let dataController: SelectAssetDataController
     private let theme: SelectAssetScreenTheme
@@ -68,14 +75,17 @@ final class SelectAssetScreen:
         super.init(configuration: configuration)
 
         swapAssetFlowCoordinator?.add(self)
+        keyboardController.activate()
     }
 
     deinit {
+        keyboardController.deactivate()
         swapAssetFlowCoordinator?.remove(self)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateUIWhenKeyboardDidToggle()
 
         dataController.eventHandler = {
             [weak self] event in
@@ -130,6 +140,23 @@ final class SelectAssetScreen:
 }
 
 extension SelectAssetScreen {
+    private func updateUIWhenKeyboardDidToggle() {
+        keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
+            [unowned self] _ in
+            if self.listDataSource.isEmpty {
+                self.listView.collectionViewLayout.invalidateLayout()
+                self.listView.layoutIfNeeded()
+            }
+        }
+        keyboardController.performAlongsideWhenKeyboardIsHiding(animated: true) {
+            [unowned self] _ in
+            if self.listDataSource.isEmpty {
+                self.listView.collectionViewLayout.invalidateLayout()
+                self.listView.layoutIfNeeded()
+            }
+        }
+    }
+
     private func addSearchInput() {
         searchInputView.customize(theme.searchInputView)
 
