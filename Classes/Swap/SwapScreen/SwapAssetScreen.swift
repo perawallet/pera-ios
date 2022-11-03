@@ -587,6 +587,8 @@ extension SwapAssetScreen {
         dataController.poolAsset = dataController.userAsset
         dataController.userAsset = poolAsset
 
+        clearAmountPercentageIfNeeded()
+
         if let currentOutputAsInt {
             if currentOutputAsInt == 0 {
                 resetUserAndPoolAssetAmounts()
@@ -876,13 +878,15 @@ extension SwapAssetScreen {
     ) {
         guard let input = textField.text else { return }
 
-        if input.isEmpty {
-            dataController.cancelLoadingQuote()
-            resetUserAndPoolAssetAmounts()
+        if swapAssetInputValidator.isTheInputDecimalSeparator(input) {
             return
         }
 
-        if swapAssetInputValidator.isTheInputDecimalSeparator(input) {
+        clearAmountPercentageIfNeeded()
+
+        if input.isEmpty {
+            dataController.cancelLoadingQuote()
+            resetUserAndPoolAssetAmounts()
             return
         }
 
@@ -891,6 +895,12 @@ extension SwapAssetScreen {
 
         let inputAsFractionUnit = inputAsDecimal.toFraction(of: dataController.userAsset.decimals)
         getSwapQuote(for: inputAsFractionUnit)
+    }
+
+    private func clearAmountPercentageIfNeeded() {
+        if dataStore.amountPercentage != nil {
+            dataController.saveAmountPercentage(nil)
+        }
     }
 
     func swapAssetAmountView(
