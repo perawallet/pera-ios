@@ -166,7 +166,7 @@ extension EditSwapSlippageScreen {
     }
 
     private func saveSlippageTolerancePercentage(customText: String) {
-        let percentage = Decimal(string: customText)
+        let percentage = Decimal(string: customText, locale: Locale.current)
             .unwrap { CustomSwapSlippageTolerancePercentage(value: $0, title: customText) }
         dataProvider.saveSlippageTolerancePercentage(percentage)
     }
