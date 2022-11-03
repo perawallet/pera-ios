@@ -63,6 +63,10 @@ struct SwapAssetInputValidator {
             return false
         }
 
+        if currentText == "0" && string != decimalSeparator {
+            return false
+        }
+
         return numberOfDecimals <= asset.decimals
     }
 

@@ -17,6 +17,8 @@
 import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
+import MagpieExceptions
+import MagpieHipo
 import UIKit
 
 final class SwapAssetScreen:
@@ -117,11 +119,6 @@ final class SwapAssetScreen:
     override func configureNavigationBarAppearance() {
         addBarButtons()
         addNavigationTitle()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        userAssetView.endEditing()
     }
 
     override func configureAppearance() {
@@ -566,7 +563,10 @@ extension SwapAssetScreen {
     }
 
     private func stopLoading() {
-        swapActionView.stopLoading()
+        if swapActionView.isLoading {
+            swapActionView.stopLoading()
+        }
+
         poolAssetView.stopAnimatingAmountView()
     }
 }
@@ -592,6 +592,7 @@ extension SwapAssetScreen {
                 resetUserAndPoolAssetAmounts()
             }
 
+            hideError()
             getSwapQuote(for: currentOutputAsInt)
         }
 
@@ -675,7 +676,7 @@ extension SwapAssetScreen {
                     )
                     self.showError("swap-asset-min-balance-error-fee".localized)
                 case .unavailablePeraFee(let feeError):
-                    self.showError(feeError?.localizedDescription ?? "swap-asset-fee-unavailable-error".localized)
+                    self.showError(feeError?.prettyDescription ?? "swap-asset-fee-unavailable-error".localized)
                 }
             }
         }
@@ -693,6 +694,7 @@ extension SwapAssetScreen {
             quote: nil
         )
 
+        hideError()
         swapActionView.isEnabled = false
         stopLoading()
     }
@@ -755,7 +757,7 @@ extension SwapAssetScreen {
     func bottomInsetUnderKeyboardWhenKeyboardDidShow(
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
-        return 0
+        return keyboardController.keyboard?.height ?? 0
     }
 
     func bottomInsetWhenKeyboardDidHide(
@@ -807,7 +809,7 @@ extension SwapAssetScreen {
 
     private func calculateSpacingToScrollCurrentAmountInputFieldToTop() -> CGFloat {
         guard let editingRectOfCurrentAmountInputField = getEditingRectOfCurrentAmountInputField() else {
-            return 8 // minSpacingBetweenSearchInputFieldAndKeyboard
+            return 8
         }
 
         let visibleHeight = view.bounds.height
@@ -831,19 +833,8 @@ extension SwapAssetScreen {
         _ keyboard: MacaroonForm.Keyboard
     ) {
         swapActionView.snp.updateConstraints {
-            var padding = keyboard.height
-            let bottomInsetUnderKeyboard =
-                bottomInsetUnderKeyboardWhenKeyboardDidShow(
-                    keyboardController
-                )
-
-            if bottomInsetUnderKeyboard > 0 {
-                /// <note>
-                /// Assume that the safe area bottom is added to `bottomInsetUnderKeyboard`.
-                padding -= bottomInsetUnderKeyboard
-            }
-
-            $0.bottom == padding
+            let bottomInsetUnderKeyboard = bottomInsetUnderKeyboardWhenKeyboardDidShow(keyboardController)
+            $0.bottom == bottomInsetUnderKeyboard
         }
     }
 
