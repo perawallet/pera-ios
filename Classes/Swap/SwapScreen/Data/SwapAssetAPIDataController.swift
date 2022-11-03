@@ -111,6 +111,10 @@ extension SwapAssetAPIDataController {
         )
 
         eventHandler?(.willLoadQuote)
+
+        if currentQuoteEndpoint != nil {
+            cancelLoadingQuote()
+        }
         
         quoteThrottler.performNext {
             [weak self] in
@@ -123,8 +127,6 @@ extension SwapAssetAPIDataController {
     private func loadData(
         _ draft: SwapQuoteDraft
     ) {
-        cancelLoadingQuote()
-
         currentQuoteEndpoint = api.getSwapQuote(draft) {
             [weak self] response in
             guard let self = self else { return }
