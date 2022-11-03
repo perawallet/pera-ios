@@ -79,10 +79,16 @@ extension SwapAvailableBalancePercentageValidator {
                         return
                     }
 
-                    self.publishEvent(.validated(algoBalanceAfterPeraFeeResult.partialValue))
+                    let algoBalanceAfterPeraFeeValue = algoBalanceAfterPeraFeeResult.partialValue
+
+                    if algoBalanceAfterPeraFeeValue >= amount {
+                        self.publishEvent(.validated(self.amount))
+                    } else {
+                        self.publishEvent(.validated(algoBalanceAfterPeraFeeValue))
+                    }
+
                     return
                 }
-
                 self.publishEvent(.failure(.unavailablePeraFee(nil)))
             case .failure(let apiError, let hipApiError):
                 let error = HIPNetworkError(
@@ -141,7 +147,7 @@ extension SwapAvailableBalancePercentageValidator {
 
 extension SwapAvailableBalancePercentageValidator {
     private func getAlgoBalanceAfterMinBalanceAndPadding() -> UInt64? {
-        let algoBalance = amount
+        let algoBalance = account.algo.amount
         let minBalance = account.calculateMinBalance()
         let algoBalanceAfterMinBalanceResult = algoBalance.subtractingReportingOverflow(minBalance)
 

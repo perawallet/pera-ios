@@ -176,18 +176,7 @@ extension SwapAssetFlowCoordinator {
              [unowned self] event, screen in
              switch event {
              case .didSelect(let accountHandle):
-                 let account = accountHandle.value
-                 let accountBalance = account.algo.amount
-                 let minBalance = account.calculateMinBalance()
-                 self.account = account
-
-                 if accountBalance < minBalance {
-                     self.openAccountMinBalanceError(
-                        for: account,
-                        minBalance: minBalance
-                     )
-                     return
-                 }
+                 self.account = accountHandle.value
 
                  openSwapAsset(
                     from: accountHandle.value,
@@ -200,18 +189,6 @@ extension SwapAssetFlowCoordinator {
              screen,
              by: .present
          )
-    }
-
-    private func openAccountMinBalanceError(
-        for account: Account,
-        minBalance: UInt64
-    ) {
-        bannerController.presentErrorBanner(
-            title: "swap-flow-start-min-balance-error-title".localized,
-            message: "swap-flow-start-min-balance-error-detail".localized(
-               params: minBalance.toAlgos.toFractionStringForLabel(fraction: account.algo.decimals) ?? ""
-            )
-        )
     }
 }
 

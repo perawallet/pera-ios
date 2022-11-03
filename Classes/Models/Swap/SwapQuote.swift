@@ -17,7 +17,7 @@
 import Foundation
 
 final class SwapQuote: ALGEntityModel {
-    static let feePadding: UInt64 = 1000000 /// 1 Algo
+    static let feePadding: UInt64 = 200000 /// 0.2 Algo
 
     let id: Int64
     let provider: SwapProvider?
