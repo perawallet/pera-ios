@@ -63,7 +63,7 @@ struct SwapAssetInputValidator {
             return false
         }
 
-        if currentText == "0" && string != decimalSeparator {
+        if currentText == "0" && string != decimalSeparator && !string.isEmpty {
             return false
         }
 
