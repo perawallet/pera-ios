@@ -387,6 +387,7 @@ extension ConfirmSwapScreen {
         _ swapTransactionPreparation: SwapTransactionPreparation
     ) {
         confirmActionView.stopLoading()
+        analytics.track(.tapConfirmSwap())
         eventHandler?(.didTapConfirm(swapTransactionPreparation))
     }
 
