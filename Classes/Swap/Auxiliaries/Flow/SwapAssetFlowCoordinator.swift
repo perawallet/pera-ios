@@ -237,9 +237,25 @@ extension SwapAssetFlowCoordinator {
 
                 self.openSwapLoading(swapController)
             case .didCompleteSwap:
+                if let quote = swapController.quote {
+                    self.analytics.track(
+                        .swapCompleted(
+                            quote: quote,
+                            currency: self.sharedDataController.currency
+                        )
+                    )
+                }
+
                 self.openSwapSuccess(swapController)
             case .didFailTransaction:
                 guard let quote = swapController.quote else { return }
+
+                self.analytics.track(
+                    .swapFailed(
+                        quote: quote,
+                        currency: self.sharedDataController.currency
+                    )
+                )
 
                 let viewModel = SwapUnexpectedErrorViewModel(quote)
                 self.openError(
@@ -254,6 +270,13 @@ extension SwapAssetFlowCoordinator {
                 }
             case .didFailNetwork(let error):
                 guard let quote = swapController.quote else { return }
+
+                self.analytics.track(
+                    .swapFailed(
+                        quote: quote,
+                        currency: self.sharedDataController.currency
+                    )
+                )
 
                 let viewModel = SwapAPIErrorViewModel(
                     quote: quote,
@@ -843,6 +866,7 @@ extension SwapAssetFlowCoordinator {
 
         visibleScreen.dismiss(animated: true) {
             [unowned self] in
+            self.analytics.track(.swapBannerTry())
             self.openSwapIntroduction()
         }
     }
@@ -851,6 +875,7 @@ extension SwapAssetFlowCoordinator {
         _ item: SwapIntroductionAlertItem
     ) {
         item.isDisplayed = true
+        analytics.track(.swapBannerLater())
 
         visibleScreen.dismiss(animated: true)
     }

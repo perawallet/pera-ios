@@ -371,6 +371,7 @@ extension SwapAssetScreen {
 
     @objc
     private func swap() {
+        analytics.track(.tapSwapAsset())
         eventHandler?(.didTapSwap)
     }
 }

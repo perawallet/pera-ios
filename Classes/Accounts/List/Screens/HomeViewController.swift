@@ -401,6 +401,7 @@ extension HomeViewController {
         cell.startObserving(event: .swap) {
             [weak self] in
             guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .swap))
             self.swapAssetFlowCoordinator.launch(account: nil)
         }
 

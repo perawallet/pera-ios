@@ -183,6 +183,7 @@ extension AccountDetailViewController {
                 self.buyAlgoFlowCoordinator.launch(draft: draft)
             case .swap:
                 self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .swap))
 
                 self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
             case .send:
@@ -228,6 +229,7 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             [weak self] in
             guard let self = self else { return }
             
+            self.analytics.track(.recordAccountDetailScreen(type: .swap))
             self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
         }
     }
