@@ -21,4 +21,3 @@ struct DiscoverDappDetail: JSONModel {
     let name: String
     let url: String
 }
-

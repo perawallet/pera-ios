@@ -26,6 +26,5 @@ struct DiscoverNavigationBarViewTheme:
     init(_ family: LayoutFamily) {
         titleInset = (0, 0, 0, 60)
         searchButtonSize = (40, 40)
-
     }
 }

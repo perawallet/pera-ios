@@ -19,12 +19,15 @@ import WebKit
 import MacaroonUtils
 
 final class DappDetailScreen: WebScreen {
-    private lazy var theme = ExportAccountListScreenTheme()
     private lazy var navigationTitleView = DappDetailNavigationView()
-    private let dappModel: DiscoverDappDetail
 
-    init(configuration: ViewControllerConfiguration, dappModel: DiscoverDappDetail) {
-        self.dappModel = dappModel
+    private let dappDetail: DiscoverDappDetail
+
+    init(
+        configuration: ViewControllerConfiguration,
+        dappDetail: DiscoverDappDetail
+    ) {
+        self.dappDetail = dappDetail
         super.init(configuration: configuration)
     }
 
@@ -33,7 +36,7 @@ final class DappDetailScreen: WebScreen {
 
         webView.navigationDelegate = self
 
-        load(url: URL(string: dappModel.url))
+        load(url: URL(string: dappDetail.url))
     }
 
     override func customizeTabBarAppearence() {
@@ -43,11 +46,21 @@ final class DappDetailScreen: WebScreen {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
+        addNavigationTitle()
+    }
+}
+
+extension DappDetailScreen {
+    private func addNavigationTitle() {
         navigationTitleView.customize(DappDetailNavigationViewTheme())
 
         navigationItem.titleView = navigationTitleView
 
-        navigationTitleView.bindData(DappDetailNavigationViewModel(dappModel))
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        navigationTitleView.bindData(DappDetailNavigationViewModel(dappDetail))
     }
 }
 

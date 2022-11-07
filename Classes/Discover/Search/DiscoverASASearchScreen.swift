@@ -217,7 +217,6 @@ extension DiscoverASASearchScreen {
     }
 }
 
-
 extension DiscoverASASearchScreen: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         let query = view.text
