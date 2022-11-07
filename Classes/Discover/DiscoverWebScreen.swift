@@ -82,7 +82,7 @@ final class DiscoverWebScreen: WebScreen, NavigationBarLargeTitleConfigurable {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        navigationBarLargeTitleController.title = "discover-screen-title".localized
+        navigationBarLargeTitleController.title = "title-discover".localized
 
         navigationBarLargeTitleView.searchAction = { [weak self] in
             guard let self else {
