@@ -123,6 +123,8 @@ final class TabBarController: TabBarContainer {
         super.setListeners()
 
         self.sharedDataController.add(self)
+
+        self.observeNetworkChanges()
     }
 }
 
@@ -234,6 +236,10 @@ extension TabBarController {
         toggleTransactionOptionsActionView.isSelected.toggle()
         setTabBarItemsEnabled(!toggleTransactionOptionsActionView.isSelected)
 
+        if !toggleTransactionOptionsActionView.isSelected {
+            setNeedsDiscoverTabBarItemUpdateIfNeeded()
+        }
+
         if let currentTransactionOptionsAnimator = currentTransactionOptionsAnimator,
            currentTransactionOptionsAnimator.isRunning {
             currentTransactionOptionsAnimator.isReversed.toggle()
@@ -328,6 +334,24 @@ extension TabBarController {
     }
 }
 
+extension TabBarController {
+    private func observeNetworkChanges() {
+        observe(notification: NodeSettingsViewController.didUpdateNetwork) {
+            [unowned self] _ in
+            setNeedsDiscoverTabBarItemUpdateIfNeeded()
+        }
+    }
+
+    func setNeedsDiscoverTabBarItemUpdateIfNeeded() {
+        let isTestnet = api.isTestNet
+
+        setTabBarItemEnabled(
+            !isTestnet,
+            forItemID: .discover
+        )
+    }
+}
+
 extension Array where Element == TabBarItem {
     func index(
         of itemId: TabBarItemID
@@ -336,17 +360,22 @@ extension Array where Element == TabBarItem {
     }
 }
 
-/// <todo>
-/// Move it to 'Macaroon' later.
 extension TabBarContainer {
-    func setTabBarItemsEnabled(
-        _ isEnabled: Bool
+    func setTabBarItemEnabled(
+        _ isEnabled: Bool,
+        forItemID itemID: TabBarItemID
     ) {
-        items.enumerated().forEach {
-            if $1.isSelectable {
-                tabBar.barButtons[$0].isEnabled = isEnabled
-            }
+        guard let index = items.index(of: itemID) else {
+            return
         }
+
+        let barButton = tabBar.barButtons[index]
+
+        if barButton.isEnabled == isEnabled {
+            return
+        }
+
+        barButton.isEnabled = isEnabled
     }
 }
 

@@ -137,7 +137,7 @@ class AppDelegate:
     ) {
         setNeedsUserInterfaceStyleUpdateIfNeeded()
         setNeedsNetworkBannerUpdateIfNeeded()
-        
+
         appLaunchController.becomeActive()
     }
     
