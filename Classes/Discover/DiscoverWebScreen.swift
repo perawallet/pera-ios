@@ -19,30 +19,27 @@ import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class DiscoverWebScreen: WebScreen, NavigationBarLargeTitleConfigurable {
-    private lazy var theme = DiscoverWebScreenTheme()
-    private var events: [Event] = [.tokenDetail, .dAppViewer]
-
+final class DiscoverWebScreen:
+    WebScreen,
+    NavigationBarLargeTitleConfigurable {
     var navigationBarScrollView: UIScrollView {
-        webView.scrollView
+        return webView.scrollView
     }
 
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
     }
 
+    private lazy var theme = DiscoverWebScreenTheme()
+
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = DiscoverNavigationBarView()
 
-    private lazy var navigationBarLargeTitleController =
-    NavigationBarLargeTitleController(screen: self)
+    private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
     private var isLayoutFinalized = false
-    private lazy var interfaceTheme: Theme = isDarkMode ? .dark : .light {
-        didSet {
-            // send js event to adopt theme change
-        }
-    }
+
+    private var events: [Event] = [.tokenDetail, .dAppViewer]
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -61,20 +58,6 @@ final class DiscoverWebScreen: WebScreen, NavigationBarLargeTitleConfigurable {
         load(url: URL(string: "https://discover-mobile-staging.perawallet.app/?theme=\(interfaceTheme.rawValue)"))
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard traitCollection != previousTraitCollection else {
-            return
-        }
-
-        if traitCollection.userInterfaceStyle == .dark {
-            self.interfaceTheme = .dark
-        } else {
-            self.interfaceTheme = .light
-        }
-    }
-
     override func customizeTabBarAppearence() {
         tabBarHidden = false
     }
@@ -84,13 +67,13 @@ final class DiscoverWebScreen: WebScreen, NavigationBarLargeTitleConfigurable {
 
         navigationBarLargeTitleController.title = "title-discover".localized
 
-        navigationBarLargeTitleView.searchAction = { [weak self] in
-            guard let self else {
-                return
-            }
-
-            print("search")
-        }
+//        navigationBarLargeTitleView.searchAction = { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//
+//            print("search")
+//        }
     }
 
     override func prepareLayout() {
@@ -110,7 +93,9 @@ final class DiscoverWebScreen: WebScreen, NavigationBarLargeTitleConfigurable {
 
         isLayoutFinalized = true
     }
+}
 
+extension DiscoverWebScreen {
     private func addNavigationBarLargeTitle() {
         view.addSubview(navigationBarLargeTitleView)
         navigationBarLargeTitleView.snp.makeConstraints {
@@ -130,30 +115,8 @@ extension DiscoverWebScreen {
         webView.scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.webContentTopInset
     }
 }
+
 extension DiscoverWebScreen: WKNavigationDelegate {
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        preferences: WKWebpagePreferences,
-        decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
-    ) {
-        if let requestUrl = navigationAction.request.url {
-            let deeplinkQR = DeeplinkQR(url: requestUrl)
-
-            if let walletConnectURL = deeplinkQR.walletConnectUrl() {
-                AppDelegate.shared!.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
-                decisionHandler(.cancel, preferences)
-                return
-            }
-
-            decisionHandler(.allow, preferences)
-
-            return
-        }
-
-        decisionHandler(.allow, preferences)
-    }
-
     func webView(
         _ webView: WKWebView,
         didReceive challenge: URLAuthenticationChallenge,
@@ -177,22 +140,48 @@ extension DiscoverWebScreen: WKNavigationDelegate {
 }
 
 extension DiscoverWebScreen: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let jsonString = message.body as? String, let jsonData = jsonString.data(using: .utf8) else {
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        guard let jsonString = message.body as? String,
+              let jsonData = jsonString.data(using: .utf8) else {
             return
         }
 
         let jsonDecoder = JSONDecoder()
 
         if let tokenDetail = try? jsonDecoder.decode(DiscoverTokenDetail.self, from: jsonData) {
-            print(tokenDetail.tokenId)
-        } else if let dappDetail = try? jsonDecoder.decode(DiscoverDappDetail.self, from: jsonData) {
-            routeDappDetail(dappDetail)
+            openTokenDetail(tokenDetail)
+            return
+        }
+
+        if let dappDetail = try? jsonDecoder.decode(DiscoverDappDetail.self, from: jsonData) {
+            openDappDetail(dappDetail)
+            return
         }
     }
 
-    private func routeDappDetail(_ dappDetail: DiscoverDappDetail) {
-        self.navigationController?.pushViewController(DappDetailScreen(configuration: configuration, dappModel: dappDetail), animated: true)
+    private func openDappDetail(_ dappDetail: DiscoverDappDetail) {
+        let screen = DappDetailScreen(
+            configuration: configuration,
+            dappDetail: dappDetail
+        )
+        navigationController?.pushViewController(
+            screen,
+            animated: true
+        )
+    }
+
+    private func openTokenDetail(_ tokenDetail: DiscoverTokenDetail) {
+        let screen = DiscoverTokenDetailScreen(
+            configuration: configuration,
+            tokenDetail: tokenDetail
+        )
+        navigationController?.pushViewController(
+            screen,
+            animated: true
+        )
     }
 }
 
@@ -200,10 +189,5 @@ extension DiscoverWebScreen {
     enum Event: String {
         case tokenDetail = "pushTokenDetailScreen"
         case dAppViewer = "pushDappViewerScreen"
-    }
-
-    enum Theme: String {
-        case dark = "dark-theme"
-        case light = "light-theme"
     }
 }

@@ -32,8 +32,8 @@ final class DiscoverNavigationBarView:
 
     var searchAction: EmptyHandler?
 
-    private lazy var titleView = Label()
-    private lazy var searchButton = Button()
+    private lazy var titleView = UILabel()
+    private lazy var searchButton = MacaroonUIKit.Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +46,6 @@ final class DiscoverNavigationBarView:
         addSearchButton(theme)
     }
 }
-
 
 extension DiscoverNavigationBarView {
     private func addTitle(_ theme: DiscoverNavigationBarViewTheme) {

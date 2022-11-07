@@ -3888,6 +3888,9 @@
 		D450DE6B2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
 		D450DE6C2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
 		D450DE6D2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
+		D45808312917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45808302917BFF30031AF5B /* DiscoverTokenDetailScreen.swift */; };
+		D45808322917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45808302917BFF30031AF5B /* DiscoverTokenDetailScreen.swift */; };
+		D45808332917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45808302917BFF30031AF5B /* DiscoverTokenDetailScreen.swift */; };
 		D45867D4276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
 		D45867D5276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
 		D45867D6276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
@@ -6950,6 +6953,7 @@
 		D45038E22842C81C009EDE44 /* String+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Typography.swift"; sourceTree = "<group>"; };
 		D450DE662701C131008CC094 /* LedgerAccountVerificationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationViewTheme.swift; sourceTree = "<group>"; };
 		D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountVerificationViewController+Theme.swift"; sourceTree = "<group>"; };
+		D45808302917BFF30031AF5B /* DiscoverTokenDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTokenDetailScreen.swift; sourceTree = "<group>"; };
 		D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4592902276B933700862B21 /* WCSessionShortListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListDataSource.swift; sourceTree = "<group>"; };
 		D4592906276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WCSessionShortListViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -7751,6 +7755,7 @@
 				1770728C290A8DD9009E02AE /* Search */,
 				17A7667C2909624700A8746C /* Models */,
 				17A7667B2909587000A8746C /* DappDetail */,
+				D458082F2917BFD80031AF5B /* DiscoverTokenDetailScreen */,
 				1710831D29066E7000A80CC0 /* WebScreen.swift */,
 				171083252906720800A80CC0 /* WebScreenTheme.swift */,
 				171083212906706D00A80CC0 /* DiscoverWebScreen.swift */,
@@ -15442,6 +15447,14 @@
 			path = Transition;
 			sourceTree = "<group>";
 		};
+		D458082F2917BFD80031AF5B /* DiscoverTokenDetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				D45808302917BFF30031AF5B /* DiscoverTokenDetailScreen.swift */,
+			);
+			path = DiscoverTokenDetailScreen;
+			sourceTree = "<group>";
+		};
 		D459E27D27DD331A00F7FC33 /* ApproveTransaction */ = {
 			isa = PBXGroup;
 			children = (
@@ -17796,6 +17809,7 @@
 				2BB64BE12402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				17BD4E2A2292F1260003E49A /* RootViewController.swift in Sources */,
 				2B65602725CE1DDD0028FE12 /* PassphraseCellViewModel.swift in Sources */,
+				D45808332917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */,
 				D4AC1FBC272D406C0027353F /* AccountListViewModel.swift in Sources */,
 				D4B6EA54276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */,
 				D432865926DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */,
@@ -19590,6 +19604,7 @@
 				95BB6C2927A51B3C00F2A2F1 /* TransactionCurrencyAmountInformationViewModel.swift in Sources */,
 				2B0F61C224EC129D00DA22A6 /* Shadow.swift in Sources */,
 				2B0F61C324EC129D00DA22A6 /* TransactionsViewController.swift in Sources */,
+				D45808322917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */,
 				2B8E5F1725471F7D001D8E30 /* ShowQRShareCompleteEvent.swift in Sources */,
 				2B0F61C524EC129D00DA22A6 /* TransactionsQuery.swift in Sources */,
 				D4710B1E276A6C2700F35F74 /* QRScannerOverlayViewModel.swift in Sources */,
@@ -21384,6 +21399,7 @@
 				D419433927356FEB0055EC70 /* AssetListViewLayout.swift in Sources */,
 				F08708C8278C21D900BEE5C2 /* SharedDataController.swift in Sources */,
 				2B2362D524CF8BF6007ECEBE /* IndexerError.swift in Sources */,
+				D45808312917BFF30031AF5B /* DiscoverTokenDetailScreen.swift in Sources */,
 				D479B21D276C7A55006402B6 /* WCSessionShortListItemViewModel.swift in Sources */,
 				2B71EBB9246C4F0F002ACB63 /* TransactionHistoryFilterView.swift in Sources */,
 				F022D1D92760AAFC00D786CD /* BlockCycle.swift in Sources */,
