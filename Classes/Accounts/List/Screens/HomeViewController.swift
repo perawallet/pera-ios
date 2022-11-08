@@ -157,7 +157,9 @@ final class HomeViewController:
                     animatingDifferences: true
                 )
 
-                self.alertPresenter.presentIfNeeded()
+                if totalPortfolioItem != nil {
+                    self.alertPresenter.presentIfNeeded()
+                }
             }
         }
         dataController.load()
@@ -1045,8 +1047,6 @@ extension HomeViewController {
 
 extension HomeViewController: CopyAddressIntroductionAlertItemDelegate {
     func copyAddressIntroductionAlertItemDidPerformGotIt(_ item: CopyAddressIntroductionAlertItem) {
-        item.isDisplayed = true
-
         dismiss(animated: true)
     }
 }

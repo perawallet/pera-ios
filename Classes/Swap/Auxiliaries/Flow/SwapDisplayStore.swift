@@ -25,18 +25,12 @@ final class SwapDisplayStore: Storable {
 
     var isOnboardedToSwap: Bool {
         get { userDefaults.bool(forKey: isOnboardedToSwapKey) }
-        set {
-            userDefaults.set(newValue, forKey: isOnboardedToSwapKey)
-            userDefaults.synchronize()
-        }
+        set { userDefaults.set(newValue, forKey: isOnboardedToSwapKey) }
     }
 
     var isConfirmedSwapUserAgreement: Bool {
         get { userDefaults.bool(forKey: isConfirmedSwapUserAgreementKey) }
-        set {
-            userDefaults.set(newValue, forKey: isConfirmedSwapUserAgreementKey)
-            userDefaults.synchronize()
-        }
+        set { userDefaults.set(newValue, forKey: isConfirmedSwapUserAgreementKey) }
     }
 
     private let isOnboardedToSwapKey = "cache.key.swap.isOnboarded"

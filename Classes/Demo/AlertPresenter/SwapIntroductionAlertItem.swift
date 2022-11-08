@@ -21,9 +21,16 @@ final class SwapIntroductionAlertItem:
     Storable {
     typealias Object = Any
 
-    private(set) var storeKey: String = "swapIntroduction"
+    var isAvailable: Bool { checkAvailability() }
 
     unowned let delegate: SwapIntroductionAlertItemDelegate
+
+    private lazy var isSeen: Bool = userDefaults.bool(forKey: isSeenKey) {
+        didSet {
+            saveIsSeen()
+        }
+    }
+    private let isSeenKey: String = "promotion.dialog.swap"
 
     init(delegate: SwapIntroductionAlertItemDelegate) {
         self.delegate = delegate
@@ -32,6 +39,8 @@ final class SwapIntroductionAlertItem:
 
 extension SwapIntroductionAlertItem {
     func makeAlert() -> Alert {
+        isSeen = true
+
         let title = "swap-alert-title"
             .localized
             .bodyLargeMedium(
@@ -72,6 +81,23 @@ extension SwapIntroductionAlertItem {
         }
         alert.addAction(laterAction)
         return alert
+    }
+
+    func cancel() {}
+}
+
+extension SwapIntroductionAlertItem {
+    private func checkAvailability() -> Bool {
+        return !isSeen
+    }
+}
+
+extension SwapIntroductionAlertItem {
+    private func saveIsSeen() {
+        userDefaults.set(
+            isSeen,
+            forKey: isSeenKey
+        )
     }
 }
 

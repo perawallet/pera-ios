@@ -20,6 +20,7 @@ import UIKit
 final class AlertPresenter {
     private lazy var alertTransition = AlertUITransition(presentingViewController: presentingScreen)
 
+    private var isCancelled = false
     private var isPresented = false
 
     private unowned let presentingScreen: UIViewController
@@ -56,16 +57,23 @@ final class AlertPresenter {
             ),
             by: .presentWithoutNavigationController
         )
+
+        
     }
 
     private func canDisplayItem() -> Bool {
+        if isCancelled {
+            return false
+        }
+
         if isPresented {
             return false
         }
 
         let appLaunchStore = ALGAppLaunchStore()
 
-        if !appLaunchStore.hasLaunchedBefore {
+        if !appLaunchStore.hasLaunchedOnce {
+            cancel()
             return false
         }
 
@@ -107,10 +115,18 @@ final class AlertPresenter {
 
         return true
     }
+
+    private func cancel() {
+        items.forEach {
+            $0.cancel()
+        }
+
+        isCancelled = true
+    }
 }
 
 private extension Array where Element == any AlertItem {
     func getFirstDisplayableItem() -> Element? {
-        return first { $0.canBeDisplayed() }
+        return first { $0.isAvailable }
     }
 }

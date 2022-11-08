@@ -21,9 +21,14 @@ final class CopyAddressIntroductionAlertItem:
     Storable {
     typealias Object = Any
 
-    private(set) var storeKey: String = "copyAddressIntroduction"
+    var isAvailable: Bool { checkAvailability() }
 
     unowned let delegate: CopyAddressIntroductionAlertItemDelegate
+
+    private lazy var isSeen: Bool? = userDefaults.object(forKey: isSeenKey) as? Bool {
+        didSet { saveIsSeen() }
+    }
+    private let isSeenKey: String = "promotion.dialog.copyAddress"
 
     init(delegate: CopyAddressIntroductionAlertItemDelegate) {
         self.delegate = delegate
@@ -31,26 +36,9 @@ final class CopyAddressIntroductionAlertItem:
 }
 
 extension CopyAddressIntroductionAlertItem {
-    func canBeDisplayed() -> Bool {
-        if isDisplayed {
-            return false
-        }
-
-        let resolveLegacyShouldDisplayCopyAddress = {
-            let legacyCopyAddressAppOpenCountKey = "com.algorand.algorand.copy.address.count.key"
-            let legacyCopyAddressAppOpenCountValue = userDefaults.integer(forKey: legacyCopyAddressAppOpenCountKey)
-
-            return legacyCopyAddressAppOpenCountValue < 2
-        }()
-
-        if !resolveLegacyShouldDisplayCopyAddress {
-            isDisplayed = true
-        }
-
-        return !isDisplayed
-    }
-
     func makeAlert() -> Alert {
+        isSeen = true
+
         let title = "story-copy-address-title"
             .localized
             .bodyLargeMedium(
@@ -80,6 +68,35 @@ extension CopyAddressIntroductionAlertItem {
         alert.addAction(gotItAction)
 
         return alert
+    }
+
+    func cancel() {
+        isSeen = isSeen ?? false
+    }
+}
+
+extension CopyAddressIntroductionAlertItem {
+    private func checkAvailability() -> Bool {
+        if isSeen == nil {
+            /// <note>
+            /// According to the handling the underlying value in the previous versions, if the
+            /// `appOpenCount` is more than 1 in the first launch, fresh or update, it means the
+            /// dialog had already been seen by the user.
+            let appLaunchStore = ALGAppLaunchStore()
+            let isAlreadySeenInPreviousReleases = appLaunchStore.appOpenCount > 1
+            isSeen = isAlreadySeenInPreviousReleases
+        }
+
+        return !(isSeen!)
+    }
+}
+
+extension CopyAddressIntroductionAlertItem {
+    private func saveIsSeen() {
+        userDefaults.set(
+            isSeen,
+            forKey: isSeenKey
+        )
     }
 }
 
