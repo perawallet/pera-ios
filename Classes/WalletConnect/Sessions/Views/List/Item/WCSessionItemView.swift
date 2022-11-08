@@ -33,7 +33,7 @@ final class WCSessionItemView:
     private lazy var optionsActionView = MacaroonUIKit.Button()
     private lazy var descriptionView = Label()
     private lazy var dateView = UILabel()
-    private lazy var statusView = Label()
+    private lazy var accountStatusStackView = VStackView()
 
     private var isLayoutFinalized = false
 
@@ -45,7 +45,7 @@ final class WCSessionItemView:
         addOptionsAction(theme)
         addDescription(theme)
         addDate(theme)
-        addStatus(theme)
+        addAccounts(theme)
     }
 
     func bindData(
@@ -55,7 +55,16 @@ final class WCSessionItemView:
         nameView.editText = viewModel?.name
         descriptionView.editText = viewModel?.description
         dateView.editText = viewModel?.date
-        statusView.editText = viewModel?.status
+        
+        if let sessionAccounts = viewModel?.accounts {
+            sessionAccounts.forEach {
+                let accountStatusView = WCSessionAccountStatusView()
+                accountStatusView.customize(WCSessionAccountStatusViewTheme())
+                accountStatusView.bindData($0)
+                
+                accountStatusStackView.addArrangedSubview(accountStatusView)
+            }
+        }
     }
 
     func prepareForReuse() {
@@ -63,7 +72,7 @@ final class WCSessionItemView:
         nameView.editText = nil
         descriptionView.editText = nil
         dateView.editText = nil
-        statusView.editText = nil
+        accountStatusStackView.removeAllSubviews()
     }
 
     static func calculatePreferredSize(
@@ -85,13 +94,13 @@ final class WCSessionItemView:
         )
 
         preferredHeight += nameSize.height
+        
+        let fittingWidth =
+        width -
+        theme.imageSize.w -
+        2 * theme.horizontalPadding
 
         if viewModel.description != nil {
-            let fittingWidth =
-            width -
-            theme.imageSize.w -
-            2 * theme.horizontalPadding
-
             let descriptionSize = viewModel.description.boundingSize(
                 multiline: true,
                 fittingSize: CGSize((fittingWidth, .greatestFiniteMagnitude))
@@ -105,17 +114,24 @@ final class WCSessionItemView:
         )
 
         preferredHeight += dateSize.height + theme.dateTopPadding
-
-        let statusSize = viewModel.status.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+        
+        if let accountStatuses = viewModel.accounts {
+            accountStatuses.forEach {
+                let statusSize = WCSessionAccountStatusView.calculatePreferredSize(
+                    $0,
+                    for: WCSessionAccountStatusViewTheme(),
+                    fittingIn: CGSize((fittingWidth, .greatestFiniteMagnitude))
+                )
+                
+                preferredHeight += statusSize.height
+            }
+            
+            let totalSpacingBetweenAccounts = CGFloat(accountStatuses.count - 1) * theme.spacingBetweenAccounts
+            preferredHeight += totalSpacingBetweenAccounts
+        }
 
         preferredHeight +=
-        theme.statusTopPadding +
-        theme.statusContentEdgeInsets.top +
-        statusSize.height +
-        theme.statusContentEdgeInsets.bottom
+        theme.accountStatusTopPadding
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
@@ -127,21 +143,6 @@ final class WCSessionItemView:
     func prepareLayout(
         _ layoutSheet: LayoutSheet
     ) {}
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if isLayoutFinalized ||
-           statusView.bounds.isEmpty {
-            return
-        }
-
-        statusView.draw(
-            corner: Corner(radius: statusView.bounds.height / 2)
-        )
-
-        isLayoutFinalized = true
-    }
 }
 
 extension WCSessionItemView {
@@ -211,17 +212,16 @@ extension WCSessionItemView {
         }
     }
 
-    private func addStatus(_ theme: WCSessionItemViewTheme) {
-        statusView.customizeAppearance(theme.status)
-
-        addSubview(statusView)
-        statusView.contentEdgeInsets = theme.statusContentEdgeInsets
-        statusView.fitToIntrinsicSize()
-        statusView.snp.makeConstraints {
-            $0.top == dateView.snp.bottom + theme.statusTopPadding
+    private func addAccounts(_ theme: WCSessionItemViewTheme) {
+        accountStatusStackView.distribution = .fill
+        accountStatusStackView.alignment = .leading
+        accountStatusStackView.spacing = theme.spacingBetweenAccounts
+        addSubview(accountStatusStackView)
+        accountStatusStackView.snp.makeConstraints {
+            $0.top == dateView.snp.bottom + theme.accountStatusTopPadding
             $0.leading == nameView
             $0.bottom == 0
-            $0.trailing <= 0
+            $0.trailing == 0
         }
     }
 }
