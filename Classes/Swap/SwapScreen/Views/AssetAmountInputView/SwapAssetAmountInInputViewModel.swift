@@ -30,13 +30,14 @@ struct SwapAssetAmountInInputViewModel: AssetAmountInputViewModel {
         asset: Asset,
         swapQuote: SwapQuote?,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        customAmount: UInt64?
     ) {
         bindIcon(asset)
         bindPrimaryValue(
             asset: asset,
             swapQuote: swapQuote,
-            currencyFormatter: currencyFormatter
+            customAmount: customAmount
         )
         bindDetail(
             asset: asset,
@@ -57,13 +58,21 @@ extension SwapAssetAmountInInputViewModel {
     mutating func bindPrimaryValue(
         asset: Asset,
         swapQuote: SwapQuote?,
-        currencyFormatter: CurrencyFormatter
+        customAmount: UInt64?
     ) {
-        if let swapQuote,
-           let amountIn = swapQuote.amountIn {
-            let amount = swapAssetValueFormatter.getDecimalAmount(of: amountIn, for: AssetDecoration(asset: asset))
-            primaryValue = Formatter.decimalFormatter(maximumFractionDigits: asset.decimals).string(from: NSDecimalNumber(decimal: amount))
-        } else {
+        if let customAmount {
+            let amount = swapAssetValueFormatter.getDecimalAmount(of: customAmount, for: AssetDecoration(asset: asset))
+            primaryValue =
+                Formatter.decimalFormatter(
+                    maximumFractionDigits: asset.decimals,
+                    groupingSeparator: ""
+                ).string(
+                    from: NSDecimalNumber(decimal: amount)
+                )
+            return
+        }
+
+        if swapQuote == nil {
             primaryValue = nil
         }
     }

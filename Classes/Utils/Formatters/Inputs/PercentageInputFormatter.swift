@@ -22,7 +22,7 @@ struct PercentageInputFormatter: MacaroonForm.NumberInputFormatter {
     private let base: SumTextInputFormatter
 
     init() {
-        let formatter = NumberFormatter.percentageInputFormatter(locale: Locale.current)
+        let formatter = NumberFormatter.percentageInputFormatter
         self.base = SumTextInputFormatter(numberFormatter: formatter)
     }
 

@@ -97,7 +97,7 @@ extension CurrencyFormatter {
 
 extension CurrencyFormatter {
     private func applyCommonRules() {
-        numberFormatter.locale = Locale.preferred
+        numberFormatter.locale = Locale.current
         numberFormatter.nilSymbol = ""
         numberFormatter.notANumberSymbol = CurrencyConstanst.unavailable
     }
