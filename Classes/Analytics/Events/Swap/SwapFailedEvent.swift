@@ -51,6 +51,12 @@ extension AnalyticsEvent where Self == SwapFailedEvent {
         quote: SwapQuote,
         currency: CurrencyProvider
     ) -> Self {
-        return SwapFailedEvent(mapper: SwapStatusEventMapper(quote: quote, currency: currency))
+        return SwapFailedEvent(
+            mapper: SwapStatusEventMapper(
+                quote: quote,
+                parsedTransactions: [],
+                currency: currency
+            )
+        )
     }
 }

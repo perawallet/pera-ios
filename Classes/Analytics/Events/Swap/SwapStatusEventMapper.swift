@@ -22,13 +22,16 @@ struct SwapStatusEventMapper {
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let quote: SwapQuote
+    private let parsedTransactions: [ParsedSwapTransaction]
     private let currency: CurrencyProvider
 
     init(
         quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
         currency: CurrencyProvider
     ) {
         self.quote = quote
+        self.parsedTransactions = parsedTransactions
         self.currency = currency
     }
 
@@ -41,108 +44,90 @@ struct SwapStatusEventMapper {
         }
 
         let decimalAmountIn = swapAssetValueFormatter.getDecimalAmount(of: amountIn, for: assetIn)
-        let amountInValue = swapAssetValueFormatter.getFormattedAssetAmount(
-            decimalAmount: decimalAmountIn,
-            currencyFormatter: currencyFormatter,
-            maximumFractionDigits: assetIn.decimals
-        )
-        let amountInUSDValue = swapAssetValueFormatter.getFormattedAssetAmount(
-            decimalAmount: (quote.amountInUSDValue ?? 0),
-            currencyFormatter: currencyFormatter,
-            maximumFractionDigits: assetIn.decimals
-        )
-        let amountInAlgoValue = ""
+        let decimalAmountInUSDValue = quote.amountInUSDValue ?? 0
+        let amountInAlgoValue = getAlgoValue(of: decimalAmountInUSDValue) ?? 0
 
         let decimalAmountOut = swapAssetValueFormatter.getDecimalAmount(of: amountOut, for: assetOut)
-        let amountOutValue = swapAssetValueFormatter.getFormattedAssetAmount(
-            decimalAmount: decimalAmountOut,
-            currencyFormatter: currencyFormatter,
-            maximumFractionDigits: assetOut.decimals
+        let decimalAmountOutUSDValue = quote.amountOutUSDValue ?? 0
+        let amountOutAlgoValue = getAlgoValue(of: decimalAmountOutUSDValue) ?? 0
+
+        let peraFeeAsAlgo = Decimal(
+            sign: .plus,
+            exponent: -6,
+            significand: Decimal(quote.peraFee ?? 0)
         )
-        let amountOutUSDValue = swapAssetValueFormatter.getFormattedAssetAmount(
-            decimalAmount: (quote.amountOutUSDValue ?? 0),
-            currencyFormatter: currencyFormatter,
-            maximumFractionDigits: assetIn.decimals
-        )
-        let amountOutAlgoValue = ""
+        let peraFeeAsUSD = getUSDValue(of: peraFeeAsAlgo) ?? 0
 
-        var peraFeeAsUSD = ""
-        var peraFeeAsAlgo = ""
-        if let peraFee = quote.peraFee {
-            let decimalPeraFee = Decimal(
-                sign: .plus,
-                exponent: -6,
-                significand: Decimal(peraFee)
-            )
-            peraFeeAsAlgo = swapAssetValueFormatter.getFormattedAssetAmount(
-                decimalAmount: decimalPeraFee,
-                currencyFormatter: currencyFormatter,
-                maximumFractionDigits: 6
-            ) ?? ""
-        }
+        let decimalExchangeFee = swapAssetValueFormatter.getDecimalAmount(of: quote.exchangeFee ?? 0, for: assetIn)
+        let usdValueOfExchangeFee = (decimalAmountInUSDValue / decimalAmountIn) * decimalExchangeFee
+        let exchangeFeeAsAlgo = getAlgoValue(of: usdValueOfExchangeFee) ?? 0
 
-        var exchangeFeeAsAlgo = ""
-        if let exchangeFee = quote.exchangeFee {
-            let decimalExchangeFee = swapAssetValueFormatter.getDecimalAmount(of: exchangeFee, for: assetIn)
-
-        }
-
-        var networkFeeAsAlgo = ""
-
-        let inputASAID = "\(assetIn.id)"
-        let inputASAName = swapAssetValueFormatter.getAssetDisplayName(assetIn)
-        let inputASAAmount = amountInValue ?? ""
-        let inputUSDAmount = amountInUSDValue ?? ""
-        let inputAlgoAmount = amountInAlgoValue
-        let outputASAID = "\(assetOut.id)"
-        let outputASAName = swapAssetValueFormatter.getAssetDisplayName(assetOut)
-        let outputASAAmount = amountOutValue ?? ""
-        let outputUSDAmount = amountOutUSDValue ?? ""
-        let outputAlgoAmount = amountOutAlgoValue
-        let swapDate = Date().toFormat("MMMM dd, yyyy - HH:mm")
-        let swapDateTimestamp = Date().timeIntervalSince1970
-        let swapperAddress = quote.swapperAddress ?? ""
+        let swapTransactins = parsedTransactions.filter { $0.purpose != .optIn }
+        let networkFeeAsAlgo = swapTransactins.reduce(0, { $0 + $1.allFees }).toAlgos
 
         return SwapStatusEventParams(
-            inputASAID: inputASAID,
-            inputASAName: inputASAName,
-            inputAmountAsASA: inputASAAmount,
-            inputAmountAsUSD: inputUSDAmount,
-            inputAmountAsAlgo: inputAlgoAmount,
-            outputASAID: outputASAID,
-            outputASAName: outputASAName,
-            outputAmountAsASA: outputASAAmount,
-            outputAmountAsUSD: outputUSDAmount,
-            outputAmountAsAlgo: outputAlgoAmount,
-            swapDate: swapDate,
-            swapDateTimestamp: swapDateTimestamp,
+            inputASAID: "\(assetIn.id)",
+            inputASAName: swapAssetValueFormatter.getAssetDisplayName(assetIn),
+            inputAmountAsASA: decimalAmountIn,
+            inputAmountAsUSD: decimalAmountInUSDValue,
+            inputAmountAsAlgo: amountInAlgoValue,
+            outputASAID: "\(assetOut.id)",
+            outputASAName: swapAssetValueFormatter.getAssetDisplayName(assetOut),
+            outputAmountAsASA: decimalAmountOut,
+            outputAmountAsUSD: decimalAmountOutUSDValue,
+            outputAmountAsAlgo: amountOutAlgoValue,
+            swapDate: Date().toFormat("MMMM dd, yyyy - HH:mm"),
+            swapDateTimestamp: Date().timeIntervalSince1970,
             peraFeeAsUSD: peraFeeAsUSD,
             peraFeeAsAlgo: peraFeeAsAlgo,
             exchangeFeeAsAlgo: exchangeFeeAsAlgo,
             networkFeeAsAlgo: networkFeeAsAlgo,
-            swapperAddress: swapperAddress
+            swapperAddress: quote.swapperAddress ?? ""
         )
     }
+}
+
+extension SwapStatusEventMapper {
+    private func getAlgoValue(of usdValue: Decimal) -> Decimal? {
+        guard let currencyValue = currency.primaryValue,
+              let rawCurrency = try? currencyValue.unwrap(),
+              let usdToAlgoValue = rawCurrency.usdToAlgoValue else {
+            return nil
+        }
+
+        return usdToAlgoValue * usdValue
+    }
+
+    private func getUSDValue(of algoValue: Decimal) -> Decimal? {
+        guard let currencyValue = currency.primaryValue,
+              let rawCurrency = try? currencyValue.unwrap(),
+              let algoToUSDValue = rawCurrency.algoToUSDValue else {
+            return nil
+        }
+
+        return algoToUSDValue * algoValue
+    }
+
 }
 
 extension SwapStatusEventMapper {
     struct SwapStatusEventParams {
         let inputASAID: String
         let inputASAName: String
-        let inputAmountAsASA: String
-        let inputAmountAsUSD: String
-        let inputAmountAsAlgo: String
+        let inputAmountAsASA: Decimal
+        let inputAmountAsUSD: Decimal
+        let inputAmountAsAlgo: Decimal
         let outputASAID: String
         let outputASAName: String
-        let outputAmountAsASA: String
-        let outputAmountAsUSD: String
-        let outputAmountAsAlgo: String
+        let outputAmountAsASA: Decimal
+        let outputAmountAsUSD: Decimal
+        let outputAmountAsAlgo: Decimal
         let swapDate: String
         let swapDateTimestamp: Double
-        let peraFeeAsUSD: String
-        let peraFeeAsAlgo: String
-        let exchangeFeeAsAlgo: String
-        let networkFeeAsAlgo: String
+        let peraFeeAsUSD: Decimal
+        let peraFeeAsAlgo: Decimal
+        let exchangeFeeAsAlgo: Decimal
+        let networkFeeAsAlgo: Decimal
         let swapperAddress: String
     }
 }

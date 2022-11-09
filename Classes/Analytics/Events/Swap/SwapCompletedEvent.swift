@@ -31,17 +31,22 @@ struct SwapCompletedEvent: ALGAnalyticsEvent {
         }
 
         self.metadata = [
-            .inputASAID: params.swapperAddress,
+            .inputASAID: params.inputASAID,
             .inputASAName: params.inputASAName,
             .inputAmountAsASA: params.inputAmountAsASA,
             .inputAmountAsUSD: params.inputAmountAsUSD,
+            .inputAmountAsAlgo: params.inputAmountAsAlgo,
             .outputASAID: params.outputASAID,
             .outputASAName: params.outputASAName,
             .outputAmountAsASA: params.outputAmountAsASA,
             .outputAmountAsUSD: params.outputAmountAsUSD,
+            .outputAmountAsAlgo: params.outputAmountAsAlgo,
             .swapDate: params.swapDate,
             .swapDateTimestamp: params.swapDateTimestamp,
             .peraFeeAsAlgo: params.peraFeeAsAlgo,
+            .peraFeeAsUSD: params.peraFeeAsUSD,
+            .exchangeFeeAsAlgo: params.exchangeFeeAsAlgo,
+            .networkFeeAsAlgo: params.networkFeeAsAlgo,
             .swapAddress: params.swapperAddress
         ]
     }
@@ -50,8 +55,15 @@ struct SwapCompletedEvent: ALGAnalyticsEvent {
 extension AnalyticsEvent where Self == SwapCompletedEvent {
     static func swapCompleted(
         quote: SwapQuote,
+        parsedTransactions: [ParsedSwapTransaction],
         currency: CurrencyProvider
     ) -> Self {
-        return SwapCompletedEvent(mapper: SwapStatusEventMapper(quote: quote, currency: currency))
+        return SwapCompletedEvent(
+            mapper: SwapStatusEventMapper(
+                quote: quote,
+                parsedTransactions: parsedTransactions,
+                currency: currency
+            )
+        )
     }
 }
