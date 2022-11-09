@@ -1215,7 +1215,7 @@
 "swap-asset-to" = "Swap To";
 "swap-asset-not-available" = "Asset is not available.";
 "swap-asset-algo-min-balance-error" = "Algo balance is too low. The minimum balance should be %@.";
-"swap-asset-min-balance-error" = "%@ balance is too low. The minimum balance should be %@.";
+"swap-asset-min-balance-error" = "%@ balance is not sufficient.";
 "swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
 "swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
 "swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";

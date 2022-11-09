@@ -64,7 +64,7 @@ extension SwapAvailableBalancePercentageValidator {
 
         let draft = PeraSwapFeeDraft(
             assetID: asset.id,
-            amount: algoBalanceAfterMinBalanceAndPadding
+            amount: amount
         )
 
         api.calculatePeraSwapFee(draft) {
