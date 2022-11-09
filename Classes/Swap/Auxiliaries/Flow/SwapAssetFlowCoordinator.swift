@@ -241,6 +241,7 @@ extension SwapAssetFlowCoordinator {
                     self.analytics.track(
                         .swapCompleted(
                             quote: quote,
+                            parsedTransactions: swapController.parsedTransactions,
                             currency: self.sharedDataController.currency
                         )
                     )
@@ -249,6 +250,10 @@ extension SwapAssetFlowCoordinator {
                 self.openSwapSuccess(swapController)
             case .didFailTransaction:
                 guard let quote = swapController.quote else { return }
+
+                if !(self.visibleScreen is LoadingScreen) {
+                    return
+                }
 
                 self.analytics.track(
                     .swapFailed(
@@ -264,12 +269,15 @@ extension SwapAssetFlowCoordinator {
                 ) {
                     [weak self] in
                     guard let self = self else { return }
-
-                    self.visibleScreen.popScreen(animated: false)
-                    swapController.uploadTransactions()
+                    
+                    self.goBackToScreen(SwapAssetScreen.self)
                 }
             case .didFailNetwork(let error):
                 guard let quote = swapController.quote else { return }
+
+                if !(self.visibleScreen is LoadingScreen) {
+                    return
+                }
 
                 self.analytics.track(
                     .swapFailed(
@@ -289,8 +297,7 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self = self else { return }
 
-                    self.visibleScreen.popScreen(animated: false)
-                    swapController.uploadTransactions()
+                    self.goBackToScreen(SwapAssetScreen.self)
                 }
             case .didCancelTransaction:
                 break
@@ -462,6 +469,16 @@ extension SwapAssetFlowCoordinator {
             case .didTapSecondaryAction:
                 self.visibleScreen.dismissScreen()
             }
+        }
+    }
+
+    private func goBackToScreen<T: UIViewController>(_ screen: T.Type) {
+        guard var viewControllers = visibleScreen.navigationController?.viewControllers else { return }
+        let lastVC = viewControllers.removeLast()
+
+        if !lastVC.isKind(of: screen) {
+            visibleScreen.navigationController?.viewControllers = viewControllers
+            goBackToScreen(screen)
         }
     }
 }
