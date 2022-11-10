@@ -93,13 +93,13 @@ extension TransactionPoolMonitor {
                 case .failed:
                     self.failTransaction(transaction)
                 }
-            case .failure(let apiError, let noApiModel):
-                self.eventHandler?(
-                    .didFailedNetwork(
-                        apiError,
-                        noApiModel
-                    )
+            case .failure(let apiError, let apiModelError):
+                let error = HIPNetworkError(
+                    apiError: apiError,
+                    apiErrorDetail: apiModelError
                 )
+
+                self.eventHandler?(.didFailedNetwork(error))
             }
         }
     }

@@ -376,7 +376,7 @@ extension ConfirmSwapScreen {
         _ error: HIPNetworkError<HIPAPIError>
     ) {
         confirmActionView.stopLoading()
-        displayError(error.prettyDescription)
+        displayError(error)
     }
 
     private func updateUIWhenWillPrepareTransactions() {
@@ -395,7 +395,7 @@ extension ConfirmSwapScreen {
         _ error: HIPNetworkError<HIPAPIError>
     ) {
         confirmActionView.stopLoading()
-        displayError(error.prettyDescription)
+        displayError(error)
     }
 }
 
@@ -434,11 +434,39 @@ extension ConfirmSwapScreen {
     }
 
     private func displayError(
-        _ message: String
+        _ error: HIPNetworkError<HIPAPIError>
+    ) {
+        switch error {
+        case .client(_, let apiError):
+            if apiError?.type == APIErrorType.tinymanExcessAmount.rawValue {
+                displayError(apiError?.fallbackMessage ?? error.prettyDescription) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    guard let tinymanURL = AlgorandWeb.tinymanSwapMain.link else { return }
+                    self.openInBrowser(tinymanURL)
+                }
+                return
+            }
+
+            displayError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .server(_, let apiError):
+            displayError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .connection:
+            displayError("title-internet-connection".localized)
+        case .unexpected:
+            displayError("title-generic-api-error".localized)
+        }
+    }
+
+    private func displayError(
+        _ message: String,
+        _ completion: (() -> Void)? = nil
     ) {
         bannerController?.presentErrorBanner(
             title: "swap-confirm-failed-title".localized,
-            message: message
+            message: message,
+            completion
         )
     }
 }

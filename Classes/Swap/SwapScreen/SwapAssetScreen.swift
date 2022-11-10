@@ -433,7 +433,16 @@ extension SwapAssetScreen {
     private func updateUIWhenDataDidFailToLoad(
         _ error: SwapAssetDataController.Error
     ) {
-        showError(error.prettyDescription)
+        switch error {
+        case .client(_, let apiError):
+            showError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .server(_, let apiError):
+            showError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .connection:
+            showError("title-internet-connection".localized)
+        case .unexpected:
+            showError("title-generic-api-error".localized)
+        }
     }
 }
 
