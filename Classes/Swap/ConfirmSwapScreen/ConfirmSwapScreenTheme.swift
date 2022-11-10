@@ -33,7 +33,9 @@ struct ConfirmSwapScreenTheme:
     var poolAssetTopInset: LayoutMetric
     var minimumPoolAssetPadding: LayoutMetric
     var assetSeparator: Separator
-    var assetSeparatorPadding: LayoutMetric
+    var assetWarningPadding: LayoutMetric
+    var warning: SwapErrorViewTheme
+    var warningSeparatorPadding: LayoutMetric
     var infoActionItem: SwapInfoActionItemViewTheme
     var infoItem: SwapInfoItemViewTheme
     var infoSectionPaddings: LayoutPaddings
@@ -73,7 +75,9 @@ struct ConfirmSwapScreenTheme:
             size: 1,
             position: .top((0, 0))
         )
-        self.assetSeparatorPadding = 88
+        self.assetWarningPadding = 32
+        self.warningSeparatorPadding = 56
+        self.warning = SwapErrorViewTheme()
         self.infoSectionPaddings = (28, 24, .noMetric, 24)
         self.infoActionItem = SwapInfoActionItemViewTheme()
         self.infoItem = SwapInfoItemViewTheme()

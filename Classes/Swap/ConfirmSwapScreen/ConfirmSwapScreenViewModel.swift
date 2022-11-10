@@ -21,6 +21,7 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var userAsset: SwapAssetAmountViewModel?
     private(set) var toSeparator: TitleSeparatorViewModel?
     private(set) var poolAsset: SwapAssetAmountViewModel?
+    private(set) var warning: ErrorViewModel?
     private(set) var priceInfo: SwapInfoItemViewModel?
     private(set) var slippageInfo: SwapInfoItemViewModel?
     private(set) var priceImpactInfo: SwapInfoItemViewModel?
@@ -47,6 +48,7 @@ struct ConfirmSwapScreenViewModel: ViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
+        bindWarning(quote)
         bindPriceInfo(
             quote: quote,
             currencyFormatter: currencyFormatter
@@ -126,6 +128,20 @@ extension ConfirmSwapScreenViewModel {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
+    }
+
+    mutating func bindWarning(
+        _ quote: SwapQuote
+    ) {
+        let priceImpactWarningLimit: Decimal = 0.05
+        
+        guard let priceImpact = quote.priceImpact,
+              priceImpact > priceImpactWarningLimit else {
+            warning = nil
+            return
+        }
+
+        warning = SwapAssetErrorViewModel("swap-price-impact-warning-message".localized)
     }
 
     mutating func bindPriceInfo(
