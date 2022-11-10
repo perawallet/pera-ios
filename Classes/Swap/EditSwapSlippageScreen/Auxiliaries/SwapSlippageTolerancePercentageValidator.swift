@@ -42,7 +42,7 @@ struct SwapSlippageTolerancePercentageValidator: MacaroonForm.Validator {
             return .failure(Error.corrupted)
         }
 
-        if percentage < Error.minLimit {
+        if percentage <= Error.minLimit {
             return .failure(Error.minLimitExceeded)
         }
 
