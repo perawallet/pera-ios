@@ -60,7 +60,7 @@ final class SelectLocalAssetDataController:
 
 extension SelectLocalAssetDataController {
     func load() {
-        assets = ([account.algo] + account.allAssets.unwrap(or: []))
+        assets = ([account.algo] + account.standardAssets.unwrap(or: []))
 
         filters?.forEach { filter in
             assets = assets.filter { filter.getFormula(asset: $0) }
