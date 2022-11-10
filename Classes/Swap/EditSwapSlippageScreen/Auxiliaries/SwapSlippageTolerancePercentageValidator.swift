@@ -38,11 +38,11 @@ struct SwapSlippageTolerancePercentageValidator: MacaroonForm.Validator {
             return .success
         }
 
-        guard let percentage = Double(text) else {
+        guard let percentage = Decimal(string: text, locale: Locale.current) else {
             return .failure(Error.corrupted)
         }
 
-        if percentage < Error.minLimit {
+        if percentage <= Error.minLimit {
             return .failure(Error.minLimitExceeded)
         }
 
@@ -93,6 +93,6 @@ enum SwapSlippageTolerancePercentageValidationError:
     case minLimitExceeded
     case maxLimitExceeded
 
-    fileprivate static let minLimit: Double = 0
-    fileprivate static let maxLimit: Double = 10
+    fileprivate static let minLimit: Decimal = 0
+    fileprivate static let maxLimit: Decimal = 10
 }

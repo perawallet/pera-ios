@@ -1215,7 +1215,7 @@
 "swap-asset-to" = "Swap To";
 "swap-asset-not-available" = "Asset is not available.";
 "swap-asset-algo-min-balance-error" = "Algo balance is too low. The minimum balance should be %@.";
-"swap-asset-min-balance-error" = "%@ balance is too low. The minimum balance should be %@.";
+"swap-asset-min-balance-error" = "%@ balance is not sufficient.";
 "swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
 "swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
 "swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";
@@ -1229,6 +1229,7 @@
 /// MARK: Swap Price Impact Info
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
+"swap-price-impact-warning-message" = "Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";

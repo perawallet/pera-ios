@@ -60,10 +60,6 @@ extension Double {
         return Formatter.percentageFormatter.string(from: NSNumber(value: self))
     }
 
-    var toPercentageInput: String? {
-        return Formatter.percentageInputFormatter.string(from: NSNumber(value: self))
-    }
-
     func toPercentageWith(fractions value: Int) -> String? {
         return Formatter.percentageWith(fraction: value).string(from: NSNumber(value: self))
     }

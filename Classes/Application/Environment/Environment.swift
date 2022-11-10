@@ -116,6 +116,7 @@ enum AlgorandWeb: String {
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
     case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
+    case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
     case tinymanSwap = "http://perawallet.app/support/swap/"
 
     var presentation: String {

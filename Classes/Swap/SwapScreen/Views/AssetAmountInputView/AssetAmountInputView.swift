@@ -29,6 +29,7 @@ final class AssetAmountInputView:
     }
 
     private lazy var iconView = URLImageView()
+    private lazy var inputContainerView = UIView()
     private lazy var amountInputView = TextField()
     private lazy var amountAnimatedView = ShimmerView()
     private lazy var detailView = UILabel()
@@ -43,10 +44,7 @@ final class AssetAmountInputView:
         _ theme: AssetAmountInputViewTheme
     ) {
         addIcon(theme)
-        addAmountAnimated(theme)
-        addAmountInput(theme)
-        addDetailAnimated(theme)
-        addDetail(theme)
+        addInputContainer(theme)
     }
 
     func customizeAppearance(
@@ -68,6 +66,7 @@ final class AssetAmountInputView:
             return
         }
 
+        iconView.prepareForReuse()
         iconView.load(from: viewModel.imageSource)
 
         if let primaryValue = viewModel.primaryValue {
@@ -118,7 +117,6 @@ extension AssetAmountInputView {
         iconView.customizeAppearance(theme.icon)
         
         addSubview(iconView)
-        iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
             $0.centerY == 0
@@ -126,16 +124,34 @@ extension AssetAmountInputView {
         }
     }
 
+    private func addInputContainer(
+        _ theme: AssetAmountInputViewTheme
+    ) {
+        addSubview(inputContainerView)
+        inputContainerView.snp.makeConstraints {
+            $0.height >= iconView
+            $0.top == 0
+            $0.leading == iconView.snp.trailing + theme.contentHorizontalOffset
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        addAmountAnimated(theme)
+        addAmountInput(theme)
+        addDetailAnimated(theme)
+        addDetail(theme)
+    }
+
     private func addAmountAnimated(
         _ theme: AssetAmountInputViewTheme
     ) {
         amountAnimatedView.draw(corner: theme.shimmerCorner)
 
-        addSubview(amountAnimatedView)
+        inputContainerView.addSubview(amountAnimatedView)
         amountAnimatedView.snp.makeConstraints {
             $0.fitToSize(theme.amountInputShimmerSize)
             $0.top == 0
-            $0.leading == iconView.snp.trailing + theme.contentHorizontalOffset
+            $0.leading == 0
         }
 
         amountAnimatedView.isHidden = true
@@ -146,8 +162,7 @@ extension AssetAmountInputView {
     ) {
         amountInputView.customizeAppearance(theme.amountInput)
         
-        addSubview(amountInputView)
-        amountInputView.fitToIntrinsicSize()
+        inputContainerView.addSubview(amountInputView)
         amountInputView.contentEdgeInsets = theme.amountContentEdgeInsets
         amountInputView.textEdgeInsets = theme.amountTextEdgeInsets
         amountInputView.snp.makeConstraints {
@@ -168,13 +183,13 @@ extension AssetAmountInputView {
     ) {
         detailView.customizeAppearance(theme.detail)
 
-        addSubview(detailView)
-        detailView.fitToIntrinsicSize()
+        inputContainerView.addSubview(detailView)
+        detailView.fitToVerticalIntrinsicSize()
         detailView.snp.makeConstraints {
             $0.top == amountInputView.snp.bottom
             $0.leading == amountInputView
             $0.bottom == 0
-            $0.trailing <= 0
+            $0.trailing == 0
         }
     }
 
@@ -183,7 +198,7 @@ extension AssetAmountInputView {
     ) {
         detailAnimatedView.draw(corner: theme.shimmerCorner)
 
-        addSubview(detailAnimatedView)
+        inputContainerView.addSubview(detailAnimatedView)
         detailAnimatedView.snp.makeConstraints {
             $0.fitToSize(theme.detailShimmerSize)
             $0.top == amountInputView.snp.bottom

@@ -166,7 +166,7 @@ extension EditSwapAmountScreen {
     }
 
     private func saveAmountPercentage(customText: String) {
-        let percentage = Decimal(string: customText)
+        let percentage = Decimal(string: customText, locale: Locale.current)
             .unwrap { CustomSwapAmountPercentage(value: $0, title: customText) }
         dataProvider.saveAmountPercentage(percentage)
     }

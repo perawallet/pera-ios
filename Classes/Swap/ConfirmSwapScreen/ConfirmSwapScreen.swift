@@ -31,6 +31,7 @@ final class ConfirmSwapScreen:
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
+    private lazy var warningView = SwapErrorView()
     private lazy var priceInfoView = SwapInfoActionItemView()
     private lazy var slippageInfoView = SwapInfoActionItemView()
     private var poolAssetBottomSeparator: UIView?
@@ -97,14 +98,28 @@ final class ConfirmSwapScreen:
         super.prepareLayout()
         addUserAsset()
         addToSeparator()
-        addConfirmAction()
         addPeraFeeInfo()
         addExchangeFeeInfo()
         addMinimumReceivedInfo()
         addPriceImpactInfo()
         addSlippageInfo()
         addPriceInfo()
+        addWarning()
         addPoolAsset()
+        addConfirmAction()
+    }
+
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        backgroundGradient.colors = [
+            Colors.Defaults.background.uiColor.withAlphaComponent(0),
+            Colors.Defaults.background.uiColor
+        ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 
     override func bindData() {
@@ -200,19 +215,15 @@ extension ConfirmSwapScreen {
     private func addConfirmAction() {
         confirmActionView.customizeAppearance(theme.confirmAction)
 
-        contentView.addSubview(confirmActionView)
+        footerView.addSubview(confirmActionView)
         confirmActionView.contentEdgeInsets = theme.confirmActionContentEdgeInsets
         confirmActionView.fitToIntrinsicSize()
         confirmActionView.snp.makeConstraints {
             $0.fitToHeight(theme.confirmActionHeight)
+            $0.top ==  theme.confirmActionEdgeInsets.top
             $0.leading == theme.confirmActionEdgeInsets.leading
+            $0.bottom == theme.confirmActionEdgeInsets.bottom
             $0.trailing == theme.confirmActionEdgeInsets.trailing
-
-            let bottomInset =
-                view.compactSafeAreaInsets.bottom +
-                (navigationController ?? self).additionalSafeAreaInsets.bottom
-                + theme.confirmActionContentEdgeInsets.bottom
-            $0.bottom == bottomInset
          }
 
         confirmActionView.addTouch(
@@ -228,7 +239,7 @@ extension ConfirmSwapScreen {
         peraFeeInfoView.fitToIntrinsicSize()
         peraFeeInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == confirmActionView.snp.top - theme.confirmActionEdgeInsets.top
+            $0.bottom == theme.confirmActionEdgeInsets.top
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -334,8 +345,21 @@ extension ConfirmSwapScreen {
         )
     }
 
-	private func addPoolAsset() {
+    private func addWarning() {
         guard let poolAssetBottomSeparator else { return }
+        warningView.customize(theme.warning)
+
+        contentView.addSubview(warningView)
+        warningView.fitToIntrinsicSize()
+        warningView.snp.makeConstraints {
+            $0.leading == theme.assetHorizontalInset
+            $0.bottom >= poolAssetBottomSeparator.snp.top - theme.warningSeparatorPadding
+            $0.bottom <= poolAssetBottomSeparator.snp.top - theme.minimumPoolAssetPadding
+            $0.trailing == theme.assetHorizontalInset
+        }
+    }
+
+    private func addPoolAsset() {
         poolAssetView.customize(theme.poolAsset)
 
         contentView.addSubview(poolAssetView)
@@ -343,11 +367,10 @@ extension ConfirmSwapScreen {
         poolAssetView.snp.makeConstraints {
             $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
-            $0.bottom >= poolAssetBottomSeparator.snp.top - theme.assetSeparatorPadding
-            $0.bottom <= poolAssetBottomSeparator.snp.top - theme.minimumPoolAssetPadding
+            $0.bottom == warningView.snp.top - theme.assetWarningPadding
             $0.trailing == theme.assetHorizontalInset
         }
-	}
+    }
 }
 
 extension ConfirmSwapScreen {
@@ -367,7 +390,7 @@ extension ConfirmSwapScreen {
         _ error: HIPNetworkError<HIPAPIError>
     ) {
         confirmActionView.stopLoading()
-        displayError(error.prettyDescription)
+        displayError(error)
     }
 
     private func updateUIWhenWillPrepareTransactions() {
@@ -378,6 +401,7 @@ extension ConfirmSwapScreen {
         _ swapTransactionPreparation: SwapTransactionPreparation
     ) {
         confirmActionView.stopLoading()
+        analytics.track(.tapConfirmSwap())
         eventHandler?(.didTapConfirm(swapTransactionPreparation))
     }
 
@@ -385,7 +409,7 @@ extension ConfirmSwapScreen {
         _ error: HIPNetworkError<HIPAPIError>
     ) {
         confirmActionView.stopLoading()
-        displayError(error.prettyDescription)
+        displayError(error)
     }
 }
 
@@ -394,6 +418,7 @@ extension ConfirmSwapScreen {
         _ quote: SwapQuote
     ) {
         viewModel = ConfirmSwapScreenViewModel(
+            account: dataController.account,
             quote: quote,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter
@@ -401,6 +426,7 @@ extension ConfirmSwapScreen {
         userAssetView.bindData(viewModel?.userAsset)
         toSeparatorView.bindData(viewModel?.toSeparator)
         poolAssetView.bindData(viewModel?.poolAsset)
+        warningView.bindData(viewModel?.warning)
         priceInfoView.bindData(viewModel?.priceInfo)
         slippageInfoView.bindData(viewModel?.slippageInfo)
         priceImpactInfoView.bindData(viewModel?.priceImpactInfo)
@@ -423,11 +449,39 @@ extension ConfirmSwapScreen {
     }
 
     private func displayError(
-        _ message: String
+        _ error: HIPNetworkError<HIPAPIError>
+    ) {
+        switch error {
+        case .client(_, let apiError):
+            if apiError?.type == APIErrorType.tinymanExcessAmount.rawValue {
+                displayError(apiError?.fallbackMessage ?? error.prettyDescription) {
+                    [weak self] in
+                    guard let self = self else { return }
+
+                    guard let tinymanURL = AlgorandWeb.tinymanSwapMain.link else { return }
+                    self.openInBrowser(tinymanURL)
+                }
+                return
+            }
+
+            displayError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .server(_, let apiError):
+            displayError(apiError?.fallbackMessage ?? error.prettyDescription)
+        case .connection:
+            displayError("title-internet-connection".localized)
+        case .unexpected:
+            displayError("title-generic-api-error".localized)
+        }
+    }
+
+    private func displayError(
+        _ message: String,
+        _ completion: (() -> Void)? = nil
     ) {
         bannerController?.presentErrorBanner(
             title: "swap-confirm-failed-title".localized,
-            message: message
+            message: message,
+            completion
         )
     }
 }

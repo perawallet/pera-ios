@@ -97,7 +97,7 @@ extension PushNotificationController {
                 handler?(nil)
             case let .failure(apiError, apiErrorDetail):
                 if let errorType = apiErrorDetail?.type,
-                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                   errorType == APIErrorType.deviceAlreadyExists.rawValue {
                     self.registerDevice(for: user, completion: handler)
                 } else {
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)

@@ -353,6 +353,8 @@ extension TabBarController {
     private func navigateToSwapAssetFlow() {
         toggleTransactionOptions()
         swapAssetFlowCoordinator.launch(account: nil)
+
+        analytics.track(.tapSwapInQuickAction())
     }
 
     private func navigateToSendTransaction() {

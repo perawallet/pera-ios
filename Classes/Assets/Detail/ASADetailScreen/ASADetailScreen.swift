@@ -975,6 +975,7 @@ extension ASADetailScreen {
     }
 
     private func navigateToSwapAsset() {
+        analytics.track(.tapSwapInAlgoDetail())
         swapAssetFlowCoordinator.launch(account: dataController.account)
     }
 

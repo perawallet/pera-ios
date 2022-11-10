@@ -18,6 +18,8 @@ import Foundation
 import MacaroonForm
 import MacaroonUIKit
 import MacaroonUtils
+import MagpieExceptions
+import MagpieHipo
 import UIKit
 
 final class SelectAssetScreen:
@@ -44,7 +46,7 @@ final class SelectAssetScreen:
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
-        collectionView.keyboardDismissMode = .interactive
+        collectionView.keyboardDismissMode = .onDrag
         return collectionView
     }()
 
@@ -370,7 +372,7 @@ extension SelectAssetScreen {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
-                message: apiError.debugDescription
+                message: apiError.prettyDescription
             )
         }
     }
@@ -393,12 +395,12 @@ extension SelectAssetScreen {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
-                message: apiError.debugDescription
+                message: apiError.prettyDescription
             )
         default:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
-                message: error.localizedDescription
+                message: error.debugDescription
             )
         }
     }

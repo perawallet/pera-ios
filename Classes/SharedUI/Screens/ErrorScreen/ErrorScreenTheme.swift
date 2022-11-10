@@ -89,6 +89,6 @@ struct ErrorScreenTheme:
         ]
         self.spacingBetweenActions = 12
         self.actionContentEdgeInsets = (16, 0, 16, 0)
-        self.actionEdgeInsets = (12, 24, 32, 24)
+        self.actionEdgeInsets = (12, 24, 16, 24)
     }
 }

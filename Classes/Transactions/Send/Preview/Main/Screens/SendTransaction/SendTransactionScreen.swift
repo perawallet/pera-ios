@@ -662,7 +662,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
                 return
             }
 
-            let decimalSeparator = Locale.preferred.decimalSeparator?.first ?? "."
+            let decimalSeparator = Locale.current.decimalSeparator?.first ?? "."
 
             if amount.contains(decimalSeparator) {
                 return

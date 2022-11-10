@@ -24,6 +24,8 @@ struct ConfirmSwapAmountInInputViewModel: AssetAmountInputViewModel {
     let isInputEditable = false
     private(set) var detail: TextProvider?
 
+    private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
+
     init(
         asset: Asset,
         swapQuote: SwapQuote?,
@@ -59,12 +61,8 @@ extension ConfirmSwapAmountInInputViewModel {
     ) {
         if let swapQuote,
            let amountIn = swapQuote.amountIn {
-            primaryValue =
-                amountIn
-                .assetAmount(fromFraction: asset.decimals)
-                .number
-                .stringValue
-                .bodyLargeMedium()
+            let amount = swapAssetValueFormatter.getDecimalAmount(of: amountIn, for: AssetDecoration(asset: asset))
+            primaryValue = Formatter.decimalFormatter(maximumFractionDigits: asset.decimals).string(from: NSDecimalNumber(decimal: amount))
         }
     }
 

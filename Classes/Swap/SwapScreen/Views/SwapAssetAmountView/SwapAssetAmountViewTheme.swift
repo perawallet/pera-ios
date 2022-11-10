@@ -20,17 +20,15 @@ import UIKit
 struct SwapAssetAmountViewTheme:
     StyleSheet,
     LayoutSheet {
-    let leftTitle: TextStyle
-    let leftTitleWidthMultiplier: LayoutMetric
-    let spacingBetweenLeftTitleAndAmountInput: LayoutMetric
-    let rightTitle: TextStyle
-    let spacingBetweenRightTitleAndAssetSelection: LayoutMetric
-    let minimumSpacingBetweenTitles: LayoutMetric
-    let assetAmountInput: AssetAmountInputViewTheme
-    let assetAmountInputWidthMultiplier: LayoutMetric
-    let assetSelection: SwapAssetSelectionViewTheme
-    let assetSelectionWidthMultiplier: LayoutMetric
-    let minimumSpacingBetweenInputAndSelection: LayoutMetric
+    var leftTitle: TextStyle
+    var leftTitleMaxWidthRatio: CGFloat
+    var rightTitle: TextStyle
+    var spacingBetweenLeftAndRightTitles: LayoutMetric
+    var spacingBetweenLeftTitleAndInputs: LayoutMetric
+    var assetAmountInput: AssetAmountInputViewTheme
+    var assetAmountInputMinWidthRatio: CGFloat
+    var spacingBetweenAmountInputAndAssetSelection: LayoutMetric
+    var assetSelection: SwapAssetSelectionViewTheme
     
     init(
         placeholder: String,
@@ -38,26 +36,22 @@ struct SwapAssetAmountViewTheme:
     ) {
         self.leftTitle = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineText()),
-            .textAlignment(.left)
+            .textOverflow(SingleLineText())
         ]
-        self.leftTitleWidthMultiplier = 0.2
-        self.spacingBetweenLeftTitleAndAmountInput = 12
         self.rightTitle = [
             .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineText()),
-            .textAlignment(.right)
+            .textOverflow(SingleLineText())
         ]
-        self.spacingBetweenRightTitleAndAssetSelection = 12
-        self.minimumSpacingBetweenTitles = 4
+        self.spacingBetweenLeftAndRightTitles = 4
+        self.leftTitleMaxWidthRatio = 0.2
+        self.spacingBetweenLeftTitleAndInputs = 12
         self.assetAmountInput = AssetAmountInputViewTheme(
             placeholder: placeholder,
             family: family
         )
-        self.assetAmountInputWidthMultiplier = 0.53
+        self.assetAmountInputMinWidthRatio = 0.55
+        self.spacingBetweenAmountInputAndAssetSelection = 8
         self.assetSelection = SwapAssetSelectionViewTheme()
-        self.assetSelectionWidthMultiplier = 0.47
-        self.minimumSpacingBetweenInputAndSelection = 8
     }
 
     init(
