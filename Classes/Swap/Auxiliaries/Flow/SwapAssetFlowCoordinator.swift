@@ -47,6 +47,8 @@ final class SwapAssetFlowCoordinator:
     private var transitionToEditAmount: BottomSheetTransition?
     private var transitionToEditSlippage: BottomSheetTransition?
 
+    private var loadingScreen: LoadingScreen?
+
     private let dataStore: SwapDataStore
     private let analytics: ALGAnalytics
     private let api: ALGAPI
@@ -286,9 +288,21 @@ extension SwapAssetFlowCoordinator {
                     )
                 )
 
+                let message: String
+                switch error {
+                case .client(_, let apiError):
+                    message = apiError?.message ?? apiError.debugDescription
+                case .server(_, let apiError):
+                    message = apiError?.message ?? apiError.debugDescription
+                case .connection:
+                    message = "title-internet-connection".localized
+                case .unexpected:
+                    message = "title-generic-api-error".localized
+                }
+
                 let viewModel = SwapAPIErrorViewModel(
                     quote: quote,
-                    message: error.localizedDescription
+                    message: message
                 )
                 self.openError(
                     swapController,
@@ -409,16 +423,16 @@ extension SwapAssetFlowCoordinator {
             currencyFormatter: currencyFormatter
         )
 
-        visibleScreen.open(
+        loadingScreen = visibleScreen.open(
             .loading(viewModel: viewModel),
             by: .push
-        )
+        ) as? LoadingScreen
     }
 
     private func openSwapSuccess(
         _ swapController: SwapController
     ) {
-        let swapSuccessScreen = visibleScreen.open(
+        let swapSuccessScreen = loadingScreen?.open(
             .swapSuccess(swapController: swapController),
             by: .push,
             animated: false

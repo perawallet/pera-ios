@@ -21,7 +21,7 @@ import MagpieHipo
 
 protocol SwapController {
     typealias EventHandler = (SwapControllerEvent) -> Void
-    typealias Error = HIPNetworkError<HIPAPIError>
+    typealias Error = HIPNetworkError<IndexerError>
 
     var userAsset: Asset { get set }
     var quote: SwapQuote? { get set }
@@ -42,7 +42,7 @@ enum SwapControllerEvent {
     case didSignAllTransactions
     case didCompleteSwap
     case didFailTransaction(TxnID)
-    case didFailNetwork(Error)
+    case didFailNetwork(SwapController.Error)
     case didCancelTransaction
     case didFailSigning(error: SwapTransactionSigner.SignError)
     case didLedgerRequestUserApproval(ledger: String, transactionGroups: [SwapTransactionGroup])

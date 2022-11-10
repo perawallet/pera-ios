@@ -21,7 +21,7 @@ import MagpieHipo
 
 final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
     typealias EventHandler = (Event) -> Void
-    typealias Error = HIPNetworkError<NoAPIModel>
+    typealias Error = HIPNetworkError<IndexerError>
 
     var eventHandler: EventHandler?
 
@@ -61,10 +61,10 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
             switch response {
             case .success(let signedTransaction):
                 self.monitorTransaction(signedTransaction.identifier)
-            case .failure(let apiError, let noApiModel):
+            case .failure(let apiError, let apiModelError):
                 let error = HIPNetworkError(
                     apiError: apiError,
-                    apiErrorDetail: noApiModel
+                    apiErrorDetail: apiModelError
                 )
 
                 self.publishEvent(.didFailNetwork(error))
@@ -98,12 +98,7 @@ final class TransactionUploadAndWaitOperation: MacaroonUtils.AsyncOperation {
             case .didFailedTransaction(let txnID):
                 self.publishEvent(.didFailTransaction(txnID))
                 self.finish()
-            case .didFailedNetwork(let apiError, let noApiModel):
-                let error = HIPNetworkError(
-                    apiError: apiError,
-                    apiErrorDetail: noApiModel
-                )
-
+            case .didFailedNetwork(let error):
                 self.publishEvent(.didFailNetwork(error))
                 self.finish()
             }

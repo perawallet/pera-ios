@@ -20,6 +20,7 @@ import MagpieHipo
 
 protocol TransactionMonitor: AnyObject {
     typealias EventHandler = (TransactionMonitorEvent) -> Void
+    typealias Error = HIPNetworkError<IndexerError>
     
     var eventHandler: EventHandler? { get set }
 
@@ -30,7 +31,7 @@ protocol TransactionMonitor: AnyObject {
 enum TransactionMonitorEvent {
     case didCompleted(TxnID)
     case didFailedTransaction(TxnID)
-    case didFailedNetwork(APIError, NoAPIModel?)
+    case didFailedNetwork(TransactionMonitor.Error)
 }
 
 typealias TxnID = String
