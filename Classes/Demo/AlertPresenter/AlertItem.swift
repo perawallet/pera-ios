@@ -16,31 +16,10 @@
 
 import Foundation
 
-protocol AlertItem:
-    AnyObject,
-    Storable {
-    var storeKey: String { get }
+protocol AlertItem: AnyObject {
+    var isAvailable: Bool { get }
 
-    func canBeDisplayed() -> Bool
     func makeAlert() -> Alert
-}
 
-extension AlertItem {
-    func canBeDisplayed() -> Bool {
-        return !isDisplayed
-    }
-}
-
-extension AlertItem {
-    private var underlyingStoreKey: String {
-        return "cache.key.alertItem." + storeKey
-    }
-
-    var isDisplayed: Bool {
-        get { userDefaults.bool(forKey: underlyingStoreKey) }
-        set {
-            userDefaults.set(newValue, forKey: underlyingStoreKey)
-            userDefaults.synchronize()
-        }
-    }
+    func cancel()
 }

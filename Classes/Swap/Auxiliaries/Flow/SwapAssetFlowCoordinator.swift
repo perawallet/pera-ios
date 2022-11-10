@@ -29,8 +29,6 @@ final class SwapAssetFlowCoordinator:
     private lazy var displayStore = SwapDisplayStore()
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private lazy var swapIntroductionAlertItem = SwapIntroductionAlertItem(delegate: self)
-
     private var visibleScreen: UIViewController {
         return presentingScreen.findVisibleScreen()
     }
@@ -95,11 +93,6 @@ extension SwapAssetFlowCoordinator {
             notifyIsOnboardedToSwapObservers()
         }
 
-        if swapIntroductionAlertItem.canBeDisplayed() {
-            openSwapIntroductionAlert()
-            return
-        }
-
         if !displayStore.isConfirmedSwapUserAgreement {
             openSwapIntroduction()
             return
@@ -119,17 +112,6 @@ extension SwapAssetFlowCoordinator {
 }
 
 extension SwapAssetFlowCoordinator {
-    private func openSwapIntroductionAlert() {
-        let transition = AlertUITransition(presentingViewController: visibleScreen)
-
-        transition.perform(
-            .alert(alert: swapIntroductionAlertItem.makeAlert()),
-            by: .presentWithoutNavigationController
-        )
-
-        alertTransitionToSwapIntroduction = transition
-    }
-
     private func openSwapIntroduction() {
         let draft = SwapIntroductionDraft(provider: .tinyman)
 
@@ -893,8 +875,6 @@ extension SwapAssetFlowCoordinator {
     func swapIntroductionAlertItemDidPerformTrySwap(
         _ item: SwapIntroductionAlertItem
     ) {
-        item.isDisplayed = true
-
         visibleScreen.dismiss(animated: true) {
             [unowned self] in
             self.analytics.track(.swapBannerTry())
@@ -905,9 +885,7 @@ extension SwapAssetFlowCoordinator {
     func swapIntroductionAlertItemDidPerformLaterAction(
         _ item: SwapIntroductionAlertItem
     ) {
-        item.isDisplayed = true
         analytics.track(.swapBannerLater())
-
         visibleScreen.dismiss(animated: true)
     }
 }
