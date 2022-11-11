@@ -156,7 +156,6 @@ extension WatchAccountAdditionViewController {
     }
 }
 
-
 extension WatchAccountAdditionViewController {
     private func addUI() {
         addBackground()
@@ -323,10 +322,7 @@ extension WatchAccountAdditionViewController {
     }
 
     private func addNameServiceItems(_ nameServices: [NameService]) {
-        let x = nameServices + nameServices + nameServices
-        let y = x + x + x + x + x + x
-        let z = y + y + y + y
-        z.forEach { nameService in
+        nameServices.forEach { nameService in
             let aView = makeNameServiceView(nameService)
 
             let interaction = GestureInteraction()
