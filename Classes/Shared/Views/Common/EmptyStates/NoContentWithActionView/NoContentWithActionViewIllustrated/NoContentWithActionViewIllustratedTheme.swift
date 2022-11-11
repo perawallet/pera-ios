@@ -15,9 +15,11 @@
 //   NoContentWithActionViewIllustratedTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
 struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
+    let iconSize: CGSize?
     let title: TextStyle
     let titleTopMargin: LayoutMetric
     let body: TextStyle
@@ -38,6 +40,7 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         let resultTheme = ResultViewIllustratedTheme()
 
         icon = resultTheme.icon
+        iconSize = nil
         title = resultTheme.title
         titleTopMargin = resultTheme.titleTopMargin
         body = resultTheme.body

@@ -22,8 +22,8 @@ final class DiscoverTokenDetailScreen: WebScreen {
     private let tokenDetail: DiscoverTokenDetail
 
     init(
-        configuration: ViewControllerConfiguration,
-        tokenDetail: DiscoverTokenDetail
+        tokenDetail: DiscoverTokenDetail,
+        configuration: ViewControllerConfiguration
     ) {
         self.tokenDetail = tokenDetail
         super.init(configuration: configuration)
@@ -36,6 +36,6 @@ final class DiscoverTokenDetailScreen: WebScreen {
     }
 
     override func customizeTabBarAppearence() {
-        tabBarHidden = false
+        tabBarHidden = true
     }
 }

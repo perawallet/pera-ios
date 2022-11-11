@@ -23,6 +23,7 @@ protocol ResultViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: ImageStyle { get }
+    var iconSize: CGSize? { get }
     var title: TextStyle { get }
     var titleTopMargin: LayoutMetric { get }
     var body: TextStyle { get }

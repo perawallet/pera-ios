@@ -67,13 +67,17 @@ final class DiscoverWebScreen:
 
         navigationBarLargeTitleController.title = "title-discover".localized
 
-//        navigationBarLargeTitleView.searchAction = { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//
-//            print("search")
-//        }
+        navigationBarLargeTitleView.searchAction = {
+            [unowned self] in
+            self.open(
+                .discoverSearch,
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+        }
     }
 
     override func prepareLayout() {
@@ -163,24 +167,16 @@ extension DiscoverWebScreen: WKScriptMessageHandler {
     }
 
     private func openDappDetail(_ dappDetail: DiscoverDappDetail) {
-        let screen = DappDetailScreen(
-            configuration: configuration,
-            dappDetail: dappDetail
-        )
-        navigationController?.pushViewController(
-            screen,
-            animated: true
+        open(
+            .discoverDappDetail(dappDetail),
+            by: .push
         )
     }
 
     private func openTokenDetail(_ tokenDetail: DiscoverTokenDetail) {
-        let screen = DiscoverTokenDetailScreen(
-            configuration: configuration,
-            tokenDetail: tokenDetail
-        )
-        navigationController?.pushViewController(
-            screen,
-            animated: true
+        open(
+            .discoverAssetDetail(tokenDetail),
+            by: .push
         )
     }
 }

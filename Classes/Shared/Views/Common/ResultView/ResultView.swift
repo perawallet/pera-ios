@@ -64,7 +64,7 @@ final class ResultView:
             return CGSize((size.width, 0))
         }
 
-        let iconSize = viewModel.icon?.uiImage.size ?? .zero
+        let iconSize = theme.iconSize ?? (viewModel.icon?.uiImage.size ?? .zero)
         let titleSize =
             viewModel.title.boundingSize(
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
@@ -102,6 +102,10 @@ extension ResultView {
             $0.top == 0
             $0.leading == 0
             $0.trailing == 0
+
+            if let iconSize = theme.iconSize {
+                $0.fitToSize((iconSize.width, iconSize.height))
+            }
         }
     }
 

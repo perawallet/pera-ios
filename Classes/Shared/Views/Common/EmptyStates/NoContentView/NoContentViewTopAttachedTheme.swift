@@ -20,6 +20,7 @@ import UIKit
 
 struct NoContentViewTopAttachedTheme: NoContentViewTheme {
     let icon: ImageStyle
+    let iconSize: CGSize?
     let title: TextStyle
     let titleTopMargin: LayoutMetric
     let body: TextStyle
@@ -34,6 +35,7 @@ struct NoContentViewTopAttachedTheme: NoContentViewTheme {
         let resultTheme = ResultViewCommonTheme()
 
         self.icon = resultTheme.icon
+        self.iconSize = nil
         self.title = resultTheme.title
         self.body = resultTheme.body
         self.titleTopMargin = resultTheme.titleTopMargin

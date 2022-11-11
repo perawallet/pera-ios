@@ -12,6 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchCell.swift
+//   DiscoverSearchListEmptyCell.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
+
+final class DiscoverSearchListNotFoundCell:
+    CollectionCell<DiscoverSearchListNotFoundView>,
+    ViewModelBindable {
+    static let theme = DiscoverSearchListNotFoundViewTheme()
+
+    override func getContextView() -> DiscoverSearchListNotFoundView {
+        return DiscoverSearchListNotFoundView(Self.theme)
+    }
+}

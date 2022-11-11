@@ -24,8 +24,8 @@ final class DappDetailScreen: WebScreen {
     private let dappDetail: DiscoverDappDetail
 
     init(
-        configuration: ViewControllerConfiguration,
-        dappDetail: DiscoverDappDetail
+        dappDetail: DiscoverDappDetail,
+        configuration: ViewControllerConfiguration
     ) {
         self.dappDetail = dappDetail
         super.init(configuration: configuration)
@@ -40,7 +40,7 @@ final class DappDetailScreen: WebScreen {
     }
 
     override func customizeTabBarAppearence() {
-        tabBarHidden = false
+        tabBarHidden = true
     }
 
     override func configureNavigationBarAppearance() {

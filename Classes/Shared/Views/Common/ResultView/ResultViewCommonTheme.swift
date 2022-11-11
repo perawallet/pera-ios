@@ -20,11 +20,12 @@ import MacaroonUIKit
 import UIKit
 
 struct ResultViewCommonTheme: ResultViewTheme {
-    let icon: ImageStyle
-    let title: TextStyle
-    let titleTopMargin: LayoutMetric
-    let body: TextStyle
-    let bodyTopMargin: LayoutMetric
+    var icon: ImageStyle
+    var iconSize: CGSize?
+    var title: TextStyle
+    var titleTopMargin: LayoutMetric
+    var body: TextStyle
+    var bodyTopMargin: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -33,6 +34,7 @@ struct ResultViewCommonTheme: ResultViewTheme {
             .adjustsImageForContentSizeCategory(true),
             .contentMode(.center)
         ]
+        self.iconSize = nil
         self.title = [
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),

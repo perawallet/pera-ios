@@ -26,7 +26,7 @@ final class DiscoveryASA: ALGEntityModel {
     let verificationTier: AssetVerificationTier
     let unitName: String?
     let collectible: DiscoveryASACollectible?
-    let usdValue: String?
+    let usdValue: Decimal?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -38,7 +38,7 @@ final class DiscoveryASA: ALGEntityModel {
         self.verificationTier = apiModel.verificationTier
         self.unitName = apiModel.unitName
         self.collectible = apiModel.collectible.unwrap({DiscoveryASACollectible($0)})
-        self.usdValue = apiModel.usdValue
+        self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
     }
 
     init() {

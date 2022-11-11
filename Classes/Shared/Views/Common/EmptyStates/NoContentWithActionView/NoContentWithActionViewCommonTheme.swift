@@ -21,6 +21,7 @@ import UIKit
 
 struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
+    let iconSize: CGSize?
     let title: TextStyle
     let titleTopMargin: LayoutMetric
     let body: TextStyle
@@ -41,6 +42,7 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
         let resultTheme = ResultViewCommonTheme()
 
         self.icon = resultTheme.icon
+        self.iconSize = nil
         self.title = resultTheme.title
         self.titleTopMargin = resultTheme.titleTopMargin
         self.body = resultTheme.body

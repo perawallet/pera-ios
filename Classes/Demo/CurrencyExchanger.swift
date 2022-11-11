@@ -63,6 +63,17 @@ extension CurrencyExchanger {
         return totalUSDValue * usdValue
     }
 
+    func exchange(
+        _ asset: AssetDecoration
+    ) throws -> Decimal {
+        guard let usdValue = currency.usdValue else {
+            throw CurrencyExchangeError.currencyFailed()
+        }
+
+        let usdValueOfAsset = asset.usdValue ?? 0
+        return usdValueOfAsset * usdValue
+    }
+
     func exchangeAlgo(
         amount: Decimal
     ) throws -> Decimal {

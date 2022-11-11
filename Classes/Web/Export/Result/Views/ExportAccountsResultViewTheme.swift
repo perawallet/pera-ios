@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 struct ExportAccountsResultViewTheme: ResultViewTheme {
     let icon: ImageStyle
+    let iconSize: CGSize?
     let iconLeadingMargin: LayoutMetric
     let title: TextStyle
     var titleTopMargin: MacaroonUIKit.LayoutMetric
@@ -32,6 +33,7 @@ struct ExportAccountsResultViewTheme: ResultViewTheme {
             .adjustsImageForContentSizeCategory(false),
             .contentMode(.left)
         ]
+        self.iconSize = nil
         self.iconLeadingMargin = 10
         self.title = [
             .textOverflow(FittingText()),

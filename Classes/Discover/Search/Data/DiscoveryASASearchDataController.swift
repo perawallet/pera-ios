@@ -15,32 +15,53 @@
 //   DiscoveryASASearchDataController.swift
 
 import Foundation
+import MagpieCore
+import MagpieHipo
 import UIKit
 
 protocol DiscoveryASASearchDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<DiscoveryASASearchSection, DiscoveryASASearchListItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<DiscoverSearchListSection, DiscoverSearchListItem>
+    typealias EventHandler = (DiscoveryASASearchDataControllerEvent) -> Void
 
-    var eventHandler: ((DiscoveryASASearchDataControllerEvent) -> Void)? { get set }
+    var eventHandler: EventHandler? { get set }
 
-    func load()
-    func loadNextPageIfNeeded(for indexPath: IndexPath)
-    func search(for query: String?)
+    subscript (assetID: AssetID) -> AssetDecoration? { get }
+    subscript (assetID: AssetID) -> DiscoverSearchAssetListItemViewModel? { get }
+
+    func loadListData(query: DiscoverSearchQuery?)
+    func loadNextListData()
+    func cancelLoadingListData()
 }
 
-enum DiscoveryASASearchSection:
-    Int,
-    Hashable {
-    case assets
+struct DiscoverSearchQuery {
+    var keyword: String?
+}
+
+enum DiscoverSearchListSection: Hashable {
     case empty
+    case list
+    case nextList
 }
 
-enum DiscoveryASASearchListItem: Hashable {
-    case asset(DiscoveryASAItem)
-    case loading(String)
-    case noContent
+enum DiscoverSearchListItem: Hashable {
+    case loading
+    case notFound
+    case error(DiscoverSearchErrorItem)
+    case asset(DiscoverSearchAssetListItem)
+    case nextLoading
+    case nextError(DiscoverSearchErrorItem)
+}
+
+struct DiscoverSearchErrorItem: Hashable {
+    let title: String?
+    let body: String?
+}
+
+struct DiscoverSearchAssetListItem: Hashable {
+    let assetID: AssetID
 }
 
 enum DiscoveryASASearchDataControllerEvent {
+    case didReload(DiscoveryASASearchDataController.Snapshot)
     case didUpdate(DiscoveryASASearchDataController.Snapshot)
-    case didUpdateNext(DiscoveryASASearchDataController.Snapshot)
 }

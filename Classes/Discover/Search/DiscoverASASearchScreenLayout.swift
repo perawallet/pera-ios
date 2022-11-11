@@ -19,138 +19,254 @@ import MacaroonUIKit
 import UIKit
 
 final class DiscoverASASearchScreenLayout: NSObject {
-    private lazy var theme = AssetAdditionViewController.Theme()
+    typealias AssetListItemViewModelProvider = (AssetID) -> DiscoverSearchAssetListItemViewModel?
 
     private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: DiscoveryASASearchDataSource
+    private let assetListItemViewModelProvider: AssetListItemViewModelProvider
 
     init(
-        listDataSource: DiscoveryASASearchDataSource
+        listDataSource: DiscoveryASASearchDataSource,
+        assetListItemViewModelProvider: @escaping AssetListItemViewModelProvider
     ) {
         self.listDataSource = listDataSource
-
+        self.assetListItemViewModelProvider = assetListItemViewModelProvider
         super.init()
+    }
+
+    static func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }
 
 extension DiscoverASASearchScreenLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
+    func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
-        guard let listSection = sectionIdentifiers[safe: section] else {
+        guard let sectionIdentifier = sectionIdentifiers[safe: section] else {
             return .zero
         }
 
-        switch listSection {
-        case .empty:
-            return UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        case .assets:
-            return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
+        switch sectionIdentifier {
+        case .empty: return .init(top: 20, left: 24, bottom: 0, right: 24)
+        case .list: return .init(top: 20, left: 0, bottom: 0, right: 0)
+        case .nextList: return .init(top: 0, left: 24, bottom: 0, right: 24)
         }
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
+    func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
-            return CGSize((collectionView.bounds.width, 0))
+            return CGSize((listView.bounds.width, 0))
         }
 
         switch itemIdentifier {
         case .loading:
-            return CGSize(theme.cellSize)
-        case .asset(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForAssetCellItem: item,
-                forSectionAt: indexPath.section
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForLoadingItemAt: indexPath
             )
-        case .noContent:
-            return sizeForSearchNoContent(
-                collectionView,
-                forSectionAt: indexPath.section
+        case .notFound:
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForNotFoundItemAt: indexPath
+            )
+        case .error(let errorItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForErrorItem: errorItem,
+                at: indexPath
+            )
+        case .asset(let assetItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForAssetItem: assetItem,
+                at: indexPath
+            )
+        case .nextLoading:
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForNextLoadingItemAt: indexPath
+            )
+        case .nextError(let errorItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForNextErrorItem: errorItem,
+                at: indexPath
             )
         }
     }
 }
 
 extension DiscoverASASearchScreenLayout {
-    private func calculateContentWidth(
-        _ collectionView: UICollectionView,
-        forSectionAt section: Int
-    ) -> LayoutMetric {
-        let sectionInset = self.collectionView(
-            collectionView,
-            layout: collectionView.collectionViewLayout,
-            insetForSectionAt: section
-        )
-        return
-            collectionView.bounds.width -
-            collectionView.contentInset.horizontal -
-            sectionInset.left -
-            sectionInset.right
-    }
-
-    private func sizeForSearchNoContent(
+    private func listView(
         _ listView: UICollectionView,
-        forSectionAt section: Int
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingItemAt indexPath: IndexPath
     ) -> CGSize {
-        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
         let width = calculateContentWidth(
             listView,
-            forSectionAt: section
+            forSectionAt: indexPath.section
         )
-        let item = AssetAdditionNoContentViewModel()
-        let newSize = NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
-            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        return DiscoverSearchListLoadingCell.calculatePreferredSize(
+            for: DiscoverSearchListLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
         )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
     }
 
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: DiscoveryASAItem,
-        forSectionAt section: Int
+        sizeForNotFoundItemAt indexPath: IndexPath
     ) -> CGSize {
-        return .zero
-//        let sizeCacheIdentifier = OptInAssetListItemCell.reuseIdentifier
-//
-//        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-//            return cachedSize
-//        }
-//
-//        let width = calculateContentWidth(
-//            listView,
-//            forSectionAt: section
-//        )
-//        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
-//        let newSize = OptInAssetListItemCell.calculatePreferredSize(
-//            item.viewModel,
-//            for: OptInAssetListItemCell.theme,
-//            fittingIn:maxSize
-//        )
-//
-//        sizeCache[sizeCacheIdentifier] = newSize
-//
-//        return newSize
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        let minSize = self.listView(
+            listView,
+            layout: listViewLayout,
+            minSizeForEmptyItemAt: indexPath
+        )
+        let preferredSize = DiscoverSearchListNotFoundCell.calculatePreferredSize(
+            DiscoverSearchListNotFoundViewModel(),
+            for: DiscoverSearchListNotFoundCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+        return .init(width: width, height: max(minSize.height, preferredSize.height))
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForErrorItem item: DiscoverSearchErrorItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        let minSize = self.listView(
+            listView,
+            layout: listViewLayout,
+            minSizeForEmptyItemAt: indexPath
+        )
+        let preferredSize = DiscoverSearchListErrorCell.calculatePreferredSize(
+            DiscoverSearchListErrorViewModel(error: item),
+            for: DiscoverSearchListErrorCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+        return .init(width: width, height: max(minSize.height, preferredSize.height))
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        minSizeForEmptyItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        let sectionInset = self.listView(
+            listView,
+            layout: listViewLayout,
+            insetForSectionAt: indexPath.section
+        )
+        let height =
+            listView.bounds.height -
+            sectionInset.vertical -
+            listView.adjustedContentInset.vertical
+        return .init(width: width, height: height)
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetItem item: DiscoverSearchAssetListItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let cacheIdentifier = HomeQuickActionsCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[cacheIdentifier] {
+            return cachedSize
+        }
+
+        let viewModel = assetListItemViewModelProvider(item.assetID)
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        let size = DiscoverSearchAssetCell.calculatePreferredSize(
+            viewModel,
+            for: DiscoverSearchAssetCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+
+        sizeCache[cacheIdentifier] = size
+
+        return size
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNextLoadingItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return .init(width: width, height: 120)
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNextErrorItem item: DiscoverSearchErrorItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return DiscoverSearchNextListErrorCell.calculatePreferredSize(
+            DiscoverSearchNextListErrorViewModel(error: item),
+            for: DiscoverSearchNextListErrorCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+}
+
+extension DiscoverASASearchScreenLayout {
+    private func calculateContentWidth(
+        _ listView: UICollectionView,
+        forSectionAt section: Int
+    ) -> LayoutMetric {
+        let sectionInset = self.listView(
+            listView,
+            layout: listView.collectionViewLayout,
+            insetForSectionAt: section
+        )
+        return
+            listView.bounds.width -
+            listView.adjustedContentInset.horizontal -
+            sectionInset.horizontal
     }
 }

@@ -17,190 +17,411 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import MagpieHipo
 
 final class DiscoveryASASearchAPIDataController:
     DiscoveryASASearchDataController {
-    var eventHandler: ((DiscoveryASASearchDataControllerEvent) -> Void)?
+    var eventHandler: EventHandler?
 
-    private var assets: [DiscoveryASA] = []
+    private lazy var apiThrottler = Throttler(intervalInSeconds: 0.4)
+    private lazy var currencyFormatter = CurrencyFormatter()
 
-    private var lastSnapshot: Snapshot?
+    private var draft: AssetSearchQuery?
+    private var assetModelsCache: [AssetID: AssetDecoration] = [:]
+    private var assetViewModelsCache: [AssetID: DiscoverSearchAssetListItemViewModel] = [:]
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private var trendingAssets: [AssetDecoration.APIModel]?
 
-    private var draft = AssetSearchQuery()
+    private var snapshot: Snapshot?
 
-    private var ongoingEndpoint: EndpointOperatable?
-    private var ongoingEndpointToLoadNextPage: EndpointOperatable?
-
-    private var hasNextPage: Bool {
-        return draft.cursor != nil
-    }
+    private var ongoingEndpointToGetAssets: EndpointOperatable?
 
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.discoveryASASearchDataController")
+    private let updatesQueue = DispatchQueue(label: "queue.discover.search.updates")
+
+    subscript(assetID: AssetID) -> AssetDecoration? {
+        findModel(forID: assetID)
+    }
+
+    subscript(assetID: AssetID) -> DiscoverSearchAssetListItemViewModel? {
+        findViewModel(forID: assetID)
+    }
 
     init(
-        api: ALGAPI
+        api: ALGAPI,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
+        self.sharedDataController = sharedDataController
+    }
+
+    deinit {
+        apiThrottler.cancelAll()
     }
 }
 
 extension DiscoveryASASearchAPIDataController {
-    func load() {
-        deliverLoadingSnapshot()
-        loadData()
+    func loadListData(query: DiscoverSearchQuery?) {
+        cancelLoadingListData()
+        clearCache()
+        deliverUpdatesForLoading()
+        apply(query: query)
+
+        if let draft = draft {
+            loadListData(draft: draft)
+        } else {
+            loadInitialData()
+        }
     }
 
-    func search(for query: String?) {
-        searchThrottler.performNext {
+    private func loadListData(draft: AssetSearchQuery) {
+        apiThrottler.performNext {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
-            self.draft.query = query
-            self.draft.cursor = nil
+            self.getAssets(draft: draft) {
+                [weak self] result in
+                guard let self else { return }
 
-            self.loadData()
-        }
-    }
-
-    func loadNextPageIfNeeded(for indexPath: IndexPath) {
-        if ongoingEndpointToLoadNextPage != nil { return }
-
-        if !hasNextPage { return }
-
-        if indexPath.item < assets.count - 3 { return }
-
-        ongoingEndpointToLoadNextPage = api.searchDiscoverAssets(
-            draft,
-            ignoreResponseOnCancelled: false
-        ) { [weak self] response in
-            guard let self = self else { return }
-
-            self.ongoingEndpointToLoadNextPage = nil
-
-            switch response {
-            case let .success(searchResults):
-                let results = self.assets + searchResults.results
-                self.assets = results
-                self.draft.cursor = searchResults.nextCursor
-
-                self.deliverContentSnapshot(next: true)
-            case .failure:
-                /// <todo>
-                /// Handle error properly.
-                break
+                switch result {
+                case .success(let changes):
+                    self.deliverUpdatesForAssets(changes)
+                case .failure(let error):
+                    self.deliverUpdatesForError(error)
+                }
             }
         }
     }
 
-    private func loadData() {
-        cancelOngoingEndpoint()
+    private func loadInitialData() {
+        apiThrottler.cancelAll()
 
-        ongoingEndpoint = api.searchDiscoverAssets(
-            draft,
-            ignoreResponseOnCancelled: false
-        ) { [weak self] response in
-            guard let self = self else { return }
+        getTrendingAssets {
+            [weak self] result in
+            guard let self else { return }
 
-            self.ongoingEndpoint = nil
-
-            switch response {
-            case let .success(searchResults):
-                self.assets = searchResults.results
-                self.draft.cursor = searchResults.nextCursor
-
-                self.deliverContentSnapshot(next: false)
-            case .failure:
-                /// <todo>
-                /// Handle error properly.
-                break
+            switch result {
+            case .success(let trendingAssets):
+                self.deliverUpdatesForTrendingAssets(trendingAssets)
+            case .failure(let error):
+                self.deliverUpdatesForError(error)
             }
         }
     }
 
-    private func cancelOngoingEndpoint() {
-        ongoingEndpointToLoadNextPage?.cancel()
-        ongoingEndpointToLoadNextPage = nil
+    func loadNextListData() {
+        if hasListDataBeingLoaded() { return }
+        if !hasNextListDataToBeLoaded() { return }
 
-        ongoingEndpoint?.cancel()
-        ongoingEndpoint = nil
+        if let snapshot = snapshot,
+           snapshot.sectionIdentifiers.last == .nextList,
+           snapshot.itemIdentifiers(inSection: .nextList).first != .nextLoading {
+            deliverUpdatesForNextLoading()
+        }
+
+        getAssets(draft: draft ?? .init()) {
+            [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(let changes):
+                self.deliverUpdatesForNextAssets(changes)
+            case .failure(let error):
+                self.deliverUpdatesForNextError(error)
+            }
+        }
+    }
+
+    func hasListDataBeingLoaded() -> Bool {
+        return !ongoingEndpointToGetAssets.isNilOrFinished
+    }
+
+    func hasNextListDataToBeLoaded() -> Bool {
+        return draft?.cursor != nil
+    }
+
+    func cancelLoadingListData() {
+        cancelGettingAssets()
     }
 }
 
 extension DiscoveryASASearchAPIDataController {
-    private func deliverLoadingSnapshot() {
-        deliverSnapshot(next: false) {
-            var snapshot = Snapshot()
-            snapshot.appendSections([.assets])
-            snapshot.appendItems([.loading("1"), .loading("2")], toSection: .assets)
-            return snapshot
-        }
-    }
-
-    private func deliverContentSnapshot(next: Bool) {
-        guard !self.assets.isEmpty else {
-            deliverNoContentSnapshot()
+    private func apply(query: DiscoverSearchQuery?) {
+        guard let keyword = (query?.keyword).unwrapNonEmptyString() else {
+            draft = nil
             return
         }
 
-        deliverSnapshot(next: next) {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
+        var newDraft = AssetSearchQuery()
+        newDraft.query = keyword
+        newDraft.cursor = nil
+        newDraft.type = .standard
+        draft = newDraft
+    }
+}
+
+extension DiscoveryASASearchAPIDataController {
+    private typealias GetAssetsChanges = (assets: [AssetDecoration], hasNextAssets: Bool)
+    private typealias GetAssetsError = HIPNetworkError<NoAPIModel>
+    private typealias GetAssetsCompletion = (Result<GetAssetsChanges, GetAssetsError>) -> Void
+    private func getAssets(
+        draft: AssetSearchQuery,
+        completion: @escaping GetAssetsCompletion
+    ) {
+        ongoingEndpointToGetAssets = api.searchAssets(
+            draft,
+            ignoreResponseOnCancelled: true
+        ) { [weak self] result in
+            guard let self else { return  }
+
+            self.ongoingEndpointToGetAssets = nil
+
+            switch result {
+            case .success(let list):
+                self.draft?.cursor = list.nextCursor
+
+                let changes = (list.results, !list.nextCursor.isNilOrEmpty)
+                completion(.success(changes))
+            case .failure(let apiError, let apiErrorDetail):
+                let error = GetAssetsError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                completion(.failure(error))
             }
-
-            var snapshot = Snapshot()
-
-            snapshot.appendSections([ .assets ])
-
-            let assetItems: [DiscoveryASASearchListItem] = self.assets.map {
-                let item = DiscoveryASAItem(asset: $0)
-                return DiscoveryASASearchListItem.asset(item)
-            }
-            snapshot.appendItems(
-                assetItems,
-                toSection: .assets
-            )
-
-            return snapshot
         }
     }
 
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot(next: false) {
+    private typealias GetTrendingAssetsCompletion = (Result<[AssetDecoration.APIModel], GetAssetsError>) -> Void
+    private func getTrendingAssets(completion: @escaping GetTrendingAssetsCompletion) {
+        if !trendingAssets.isNilOrEmpty {
+            completion(.success(trendingAssets.someArray))
+            return
+        }
+
+        ongoingEndpointToGetAssets = api.getTrendingAssets {
+            [weak self] result in
+            guard let self else { return  }
+
+            self.ongoingEndpointToGetAssets = nil
+
+            switch result {
+            case .success(let results):
+                self.trendingAssets = results
+                completion(.success(results))
+            case .failure(let apiError, let apiErrorDetail):
+                let error = GetAssetsError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                completion(.failure(error))
+            }
+        }
+    }
+
+    private func cancelGettingAssets() {
+        ongoingEndpointToGetAssets?.cancel()
+        ongoingEndpointToGetAssets = nil
+    }
+}
+
+extension DiscoveryASASearchAPIDataController {
+    private func findModel(forID id: AssetID) -> AssetDecoration? {
+        return assetModelsCache[id]
+    }
+
+    private func findViewModel(forID id: AssetID) -> DiscoverSearchAssetListItemViewModel? {
+        if let cachedViewModel = assetViewModelsCache[id] {
+            return cachedViewModel
+        } else {
+            let asset = findModel(forID: id)
+            return asset.unwrap {
+                return DiscoverSearchAssetListItemViewModel(
+                    asset: $0,
+                    currency: sharedDataController.currency,
+                    currencyFormatter: currencyFormatter
+                )
+            }
+        }
+    }
+
+    private func saveToCache(_ asset: AssetDecoration) {
+        assetModelsCache[asset.id] = asset
+        assetViewModelsCache[asset.id] = DiscoverSearchAssetListItemViewModel(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+    }
+
+    private func clearCache() {
+        assetModelsCache = [:]
+        assetViewModelsCache = [:]
+    }
+}
+
+extension DiscoveryASASearchAPIDataController {
+    private func deliverUpdatesForLoading() {
+        if let snapshot = snapshot,
+           snapshot.sectionIdentifiers.first == .empty,
+           snapshot.itemIdentifiers(inSection: .empty).first == .loading {
+            return
+        }
+
+        deliverUpdatesByReloading() {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.noContent],
+                [.loading],
                 toSection: .empty
             )
             return snapshot
         }
     }
 
-    private func deliverSnapshot(
-        next: Bool,
-        _ snapshot: @escaping () -> Snapshot
-    ) {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
+    private func deliverUpdatesForNotFound() {
+        deliverUpdatesByReloading() {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.notFound],
+                toSection: .empty
+            )
+            return snapshot
+        }
+    }
 
-            let newSnapshot = snapshot()
+    private func deliverUpdatesForError(_ error: GetAssetsError) {
+        deliverUpdatesByReloading() { [weak self] in
+            guard let self else { return nil }
 
-            self.lastSnapshot = newSnapshot
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                self.createErrorListItems(error: error),
+                toSection: .empty
+            )
+            return snapshot
+        }
+    }
 
-            let event: DiscoveryASASearchDataControllerEvent
-            if next {
-                event = .didUpdateNext(newSnapshot)
-            } else {
-                event = .didUpdate(newSnapshot)
+    private func deliverUpdatesForAssets(_ changes: GetAssetsChanges) {
+        if changes.assets.isEmpty {
+            deliverUpdatesForNotFound()
+            return
+        }
+
+        deliverUpdatesByReloading() { [weak self] in
+            guard let self else { return nil }
+
+            var snapshot = Snapshot()
+
+            snapshot.appendSections([ .list ])
+            snapshot.appendItems(
+                self.createAssetListItems(assets: changes.assets),
+                toSection: .list
+            )
+
+            if changes.hasNextAssets {
+                snapshot.appendSections([ .nextList ])
+                snapshot.appendItems(
+                    [ .nextLoading ],
+                    toSection: .nextList
+                )
             }
 
-            self.publish(event)
+            return snapshot
+        }
+    }
+
+    private func deliverUpdatesForNextAssets(_ changes: GetAssetsChanges) {
+        deliverUpdates() { [weak self] in
+            guard let self else { return nil }
+            guard var snapshot = self.snapshot else { return nil }
+
+            snapshot.appendItems(
+                self.createAssetListItems(assets: changes.assets),
+                toSection: .list
+            )
+
+            if !changes.hasNextAssets {
+                snapshot.deleteSections([ .nextList ])
+            }
+
+            return snapshot
+        }
+    }
+
+    private func deliverUpdatesForNextLoading() {
+        deliverUpdates() { [weak self] in
+            guard let self else { return nil }
+            guard var snapshot = self.snapshot else { return nil }
+
+            snapshot.deleteSections([ .nextList ])
+
+            snapshot.appendSections([ .nextList ])
+            snapshot.appendItems(
+                [ .nextLoading ],
+                toSection: .nextList
+            )
+
+            return snapshot
+        }
+    }
+
+    private func deliverUpdatesForNextError(_ error: GetAssetsError) {
+        deliverUpdates() { [weak self] in
+            guard let self else { return nil }
+            guard var snapshot = self.snapshot else { return nil }
+
+            snapshot.deleteSections([ .nextList ])
+
+            snapshot.appendSections([ .nextList ])
+            snapshot.appendItems(
+                self.createNextErrorListItems(error: error),
+                toSection: .nextList
+            )
+
+            return snapshot
+        }
+    }
+
+    private func deliverUpdatesForTrendingAssets(_ assets: [AssetDecoration.APIModel]) {
+        deliverUpdatesByReloading() { [weak self] in
+            guard let self else { return nil }
+
+            var listItems: [DiscoverSearchListItem] = []
+            assets.forEach { asset in
+                let theAsset = AssetDecoration(asset)
+                let item = self.createAssetListItem(asset: theAsset)
+                listItems.append(item)
+            }
+
+            var snapshot = Snapshot()
+            snapshot.appendSections([ .list ])
+            snapshot.appendItems(
+                listItems,
+                toSection: .list
+            )
+            return snapshot
+        }
+    }
+
+    private func deliverUpdates(_ snapshot: @escaping () -> Snapshot?) {
+        updatesQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+            guard let newSnapshot = snapshot() else { return }
+
+            self.snapshot = newSnapshot
+            self.publish(.didUpdate(newSnapshot))
+        }
+    }
+
+    private func deliverUpdatesByReloading(_ snapshot: @escaping () -> Snapshot?) {
+        updatesQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+            guard let newSnapshot = snapshot() else { return }
+
+            self.snapshot = newSnapshot
+            self.publish(.didReload(newSnapshot))
         }
     }
 }
@@ -210,11 +431,68 @@ extension DiscoveryASASearchAPIDataController {
         _ event: DiscoveryASASearchDataControllerEvent
     ) {
         asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
+            guard let self = self else { return }
             self.eventHandler?(event)
         }
+    }
+}
+
+extension DiscoveryASASearchAPIDataController {
+    private func createAssetListItems(
+        assets: [AssetDecoration],
+        saveToCache: Bool = true
+    ) -> [DiscoverSearchListItem] {
+        var listItems: [DiscoverSearchListItem] = []
+        assets.forEach { asset in
+            let item = createAssetListItem(
+                asset: asset,
+                saveToCache: saveToCache
+            )
+            listItems.append(item)
+        }
+        return listItems
+    }
+
+    private func createAssetListItem(
+        asset: AssetDecoration,
+        saveToCache: Bool = true
+    ) -> DiscoverSearchListItem {
+        if saveToCache {
+            self.saveToCache(asset)
+        }
+
+        let assetItem = DiscoverSearchAssetListItem(assetID: asset.id)
+        return .asset(assetItem)
+    }
+
+    private func createErrorListItems(error: GetAssetsError) -> [DiscoverSearchListItem] {
+        let errorItem = createErrorItem(error: error)
+        return [ .error(errorItem) ]
+    }
+
+    private func createNextErrorListItems(error: GetAssetsError) -> [DiscoverSearchListItem] {
+        let errorItem = createErrorItem(error: error)
+        return [ .nextError(errorItem) ]
+    }
+
+    private func createErrorItem(error: GetAssetsError) -> DiscoverSearchErrorItem {
+        let defaultBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
+
+        let body: String
+        switch error {
+        case .connection(let connectionError):
+            if connectionError.isNotConnectedToInternet {
+                body = "internet-connection-error-detail".localized
+            } else {
+                body = defaultBody
+            }
+        default:
+            body = defaultBody
+        }
+
+        return DiscoverSearchErrorItem(
+            title: "title-generic-api-error".localized,
+            body: body
+        )
     }
 }

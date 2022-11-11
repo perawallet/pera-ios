@@ -48,6 +48,8 @@ class Environment {
         }
         return token
     }()
+
+    lazy var apiKey: String? = Bundle.main["API_KEY"]
     
     lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
     lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"

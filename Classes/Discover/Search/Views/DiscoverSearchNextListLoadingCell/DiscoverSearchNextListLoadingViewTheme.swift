@@ -12,6 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchView.swift
+//   DiscoverSearchNextListLoadingViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
+
+struct DiscoverSearchNextListLoadingViewTheme: LoadingViewTheme {
+    var loadingIndicator: ImageStyle
+
+    init(_ family: LayoutFamily) {
+        self.loadingIndicator = [
+            .image("List/Accessories/loading".templateImage),
+            .tintColor(Colors.Discover.main)
+        ]
+    }
+}

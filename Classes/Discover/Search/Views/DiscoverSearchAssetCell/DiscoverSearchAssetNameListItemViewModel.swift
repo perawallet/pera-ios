@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchNameListViewModel.swift
+//   DiscoverSearchAssetNameListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-struct DiscoveryASASearchNameListViewModel: PrimaryTitleViewModel {
+/// <todo>
+/// Maybe, we should only one view model for this transformation.
+struct DiscoverSearchAssetNameListItemViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitle: TextProvider?
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
-    private(set) var accessoryText: TextProvider?
 
-    init(asset: DiscoveryASA) {
+    init(asset: AssetDecoration) {
         bindPrimaryTitle(asset: asset)
         bindPrimaryTitleAccessory(asset: asset)
         bindSecondaryTitle(asset: asset)
-        bindAccessoryText(asset: asset)
     }
 }
 
-extension DiscoveryASASearchNameListViewModel {
-    mutating func bindPrimaryTitle(asset: DiscoveryASA) {
-        let title = asset.name
+extension DiscoverSearchAssetNameListItemViewModel {
+    mutating func bindPrimaryTitle(asset: AssetDecoration) {
+        let title = asset.name.unwrapNonEmptyString() ?? "title-unknown".localized
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         if asset.verificationTier.isSuspicious {
@@ -47,7 +47,7 @@ extension DiscoveryASASearchNameListViewModel {
         primaryTitle = title.attributed(attributes)
     }
 
-    mutating func bindPrimaryTitleAccessory(asset: DiscoveryASA) {
+    mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {
         switch asset.verificationTier {
         case .trusted: primaryTitleAccessory = "icon-trusted"
         case .verified: primaryTitleAccessory = "icon-verified"
@@ -56,15 +56,11 @@ extension DiscoveryASASearchNameListViewModel {
         }
     }
 
-    mutating func bindSecondaryTitle(asset: DiscoveryASA) {
+    mutating func bindSecondaryTitle(asset: AssetDecoration) {
         let title = [
             asset.unitName,
             String(asset.id)
         ].compound(" • ")
         secondaryTitle = title.footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
-
-    mutating func bindAccessoryText(asset: DiscoveryASA) {
-        accessoryText = asset.usdValue?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
