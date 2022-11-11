@@ -69,8 +69,8 @@ struct WatchAccountAdditionViewControllerTheme:
         ]
         self.addressInput = MultilineTextInputFieldViewCommonTheme(
             textInput: textInputBaseStyle,
-            placeholder: "watch-account-input-explanation".localized,
-            floatingPlaceholder:"watch-account-input-explanation".localized
+            placeholder: "watch-account-input-placeholder".localized,
+            floatingPlaceholder:"watch-account-input-placeholder".localized
         )
         self.addressInputMinHeight = 48
         self.pasteFromClipboardAction = [

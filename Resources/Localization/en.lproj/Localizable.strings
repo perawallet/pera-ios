@@ -666,9 +666,8 @@
 "watch-account-create" = "Create a watch\naccount";
 "watch-account-button" = "Create a Watch Account";
 "watch-account-paste" = "Paste";
-"watch-account-input-explanation" = "Account Address";
 "watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
-"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-input-placeholder" = "Account address or short name";
 "watch-account-error-address" = "Please enter a valid address.";
 
 "settings-theme-set" = "Theme";
