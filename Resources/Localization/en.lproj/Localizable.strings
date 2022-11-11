@@ -83,6 +83,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"account-not-found" = "Account not found";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";

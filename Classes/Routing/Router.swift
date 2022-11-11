@@ -509,8 +509,14 @@ class Router:
             viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
         case let .passphraseVerify(flow):
             viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
-        case let .accountNameSetup(flow, mode, accountAddress):
-            viewController = AccountNameSetupViewController(flow: flow, mode: mode, accountAddress: accountAddress, configuration: configuration)
+        case let .accountNameSetup(flow, mode, nameServiceName, accountAddress):
+            viewController = AccountNameSetupViewController(
+                flow: flow,
+                mode: mode,
+                nameServiceName: nameServiceName,
+                accountAddress: accountAddress,
+                configuration: configuration
+            )
         case let .accountRecover(flow, initialMnemonic):
             viewController = AccountRecoverViewController(
                 accountSetupFlow: flow,

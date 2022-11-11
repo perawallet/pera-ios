@@ -26,16 +26,19 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 
     private let flow: AccountSetupFlow
     private let mode: AccountSetupMode
+    private let nameServiceName: String?
     private let accountAddress: PublicKey
 
     init(
         flow: AccountSetupFlow,
         mode: AccountSetupMode,
+        nameServiceName: String?,
         accountAddress: PublicKey,
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
         self.mode = mode
+        self.nameServiceName = nameServiceName
         self.accountAddress = accountAddress
         super.init(configuration: configuration)
     }
@@ -60,7 +63,9 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        accountNameSetupView.bindData(accountAddress.shortAddressDisplay)
+
+        let name = nameServiceName.unwrap(or: accountAddress.shortAddressDisplay)
+        accountNameSetupView.bindData(name)
     }
 
     override func configureAppearance() {
@@ -107,7 +112,8 @@ extension AccountNameSetupViewController {
            !nameInput.isEmpty {
             accountName = nameInput
         } else {
-            accountName = accountAddress.shortAddressDisplay
+            let name = nameServiceName.unwrap(or: accountAddress.shortAddressDisplay)
+            accountName = name
         }
 
         session?.updateName(accountName, for: accountAddress)

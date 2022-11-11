@@ -36,7 +36,7 @@ indirect enum Screen {
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
-    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
+    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
     case accountRecover(
         flow: AccountSetupFlow,
         initialMnemonic: String? = nil
