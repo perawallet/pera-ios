@@ -76,6 +76,8 @@ final class WatchAccountAdditionViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        addressInputView.beginEditing()
+        
         displayPasteFromClipboardActionIfNeeded()
     }
 
