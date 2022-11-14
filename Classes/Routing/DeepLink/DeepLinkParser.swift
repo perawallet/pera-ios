@@ -560,12 +560,48 @@ extension DeepLinkParser {
     enum Error: Swift.Error {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
+
         case tryingToActForWatchAccount
         case tryingToOptInForAlreadyOptedInAsset
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
         case assetNotFound
+
+        typealias UIRepresentation = (title: String, description: String)
+
+        var uiRepresentation: UIRepresentation {
+            let title: String
+            let description: String
+
+            switch self {
+            case .tryingToActForWatchAccount:
+                title = "notifications-trying-to-act-for-watch-account-title".localized
+                description = "notifications-trying-to-act-for-watch-account-description".localized
+            case .tryingToOptInForAlreadyOptedInAsset:
+                title = "title-error".localized
+                description = "asset-you-already-own-message".localized
+            case .tryingToActForAssetWithPendingOptInRequest(let accountName):
+                title = "title-error".localized
+                description = "ongoing-opt-in-request-description".localized(params: accountName)
+            case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
+                title = "title-error".localized
+                description = "ongoing-opt-out-request-description".localized(params: accountName)
+            case .accountNotFound:
+                title = "notifications-account-not-found-title".localized
+                description = "notifications-account-not-found-description".localized
+            case .assetNotFound:
+                title = "notifications-asset-not-found-title".localized
+                description = "notifications-asset-not-found-description".localized
+            default:
+                preconditionFailure("Error mapping must be done properly.")
+            }
+
+            return UIRepresentation(
+                title: title,
+                description: description
+            )
+        }
     }
 }
 

@@ -582,8 +582,10 @@
 "notifications-title" = "Notifications";
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
-"notifications-trying-to-act-for-watch-account-description" = "Since this is a watch account you can not act on its behalf.";
-"notifications-account-not-found-description" = "This account has been removed.";
+"notifications-trying-to-act-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-act-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
 "notifications-asset-not-found-title" = "Asset history not available";
 "notifications-asset-not-found-description" = "The history for this specific asset is not available.";
 

@@ -287,64 +287,9 @@ extension ALGAppLaunchController {
         case .success(let uiState):
             uiHandler.launchUI(uiState)
             completePendingDeeplink()
-        case .failure(let error):
-            if shouldSuspendDeeplink(error) {
-                suspend(deeplinkWithSource: src)
-                return
-            }
-
-            launchFailureUIState(error)
-            completePendingDeeplink()
+        case .failure:
+            suspend(deeplinkWithSource: src)
         }
-    }
-
-    private func shouldSuspendDeeplink(_ error: DeepLinkParser.Error) -> Bool {
-        switch error {
-        case .tryingToActForWatchAccount,
-             .tryingToOptInForAlreadyOptedInAsset,
-             .tryingToActForAssetWithPendingOptInRequest,
-             .tryingToActForAssetWithPendingOptOutRequest,
-             .accountNotFound,
-             .assetNotFound:
-            return false
-        default:
-            return true
-        }
-    }
-
-    private func launchFailureUIState(_ error: DeepLinkParser.Error) {
-        let title: String
-        let message: String
-
-        switch error {
-        case .tryingToActForWatchAccount:
-            title = "title-error".localized
-            message = "notifications-trying-to-act-for-watch-account-description".localized
-        case .tryingToOptInForAlreadyOptedInAsset:
-            title = "title-error".localized
-            message = "asset-you-already-own-message".localized
-        case .tryingToActForAssetWithPendingOptInRequest(let accountName):
-            title = "title-error".localized
-            message = "ongoing-opt-in-request-description".localized(params: accountName)
-        case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
-            title = "title-error".localized
-            message = "ongoing-opt-out-request-description".localized(params: accountName)
-        case .accountNotFound:
-            title = "title-error".localized
-            message = "notifications-account-not-found-description".localized
-        case .assetNotFound:
-            title = "notifications-asset-not-found-title".localized
-            message = "notifications-asset-not-found-description".localized
-        default:
-            return
-        }
-
-        let uiState = AppLaunchUIState.localError(
-            title: title,
-            message: message
-        )
-
-        uiHandler.launchUI(uiState)
     }
     
     private func determineUIStateIfPossible(
@@ -359,7 +304,7 @@ extension ALGAppLaunchController {
 
         switch parserResult {
         case .none:
-            return .success(.remoteNotification(notification))
+            return .success(.remoteNotification(notification: notification))
         case .success(let screen):
             let action = deeplinkParser.resolveNotificationAction(for: notification)
 
@@ -369,11 +314,36 @@ extension ALGAppLaunchController {
 
             return .success(
                 waitForUserConfirmation
-                    ? .remoteNotification(notification, screen)
-                    : .deeplink(screen)
+                ? .remoteNotification(
+                    notification: notification,
+                    screen: screen
+                )
+                : .deeplink(screen)
             )
         case .failure(let error):
+            if shouldPresentNotificationForFailure(error) {
+                let uiState: AppLaunchUIState = .remoteNotification(
+                    notification: notification,
+                    error: error
+                )
+                return .success(uiState)
+            }
+
             return .failure(error)
+        }
+    }
+
+    private func shouldPresentNotificationForFailure(_ error: DeepLinkParser.Error) -> Bool {
+        switch error {
+        case .tryingToActForWatchAccount,
+             .tryingToOptInForAlreadyOptedInAsset,
+             .tryingToActForAssetWithPendingOptInRequest,
+             .tryingToActForAssetWithPendingOptOutRequest,
+             .accountNotFound,
+             .assetNotFound:
+            return true
+        default:
+            return false
         }
     }
 

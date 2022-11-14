@@ -35,13 +35,10 @@ enum AppLaunchUIState {
         completion: () -> Void
     )
     case remoteNotification(
-        AlgorandNotification,
-        DeepLinkParser.Screen? = nil
+        notification: AlgorandNotification,
+        screen: DeepLinkParser.Screen? = nil,
+        error: DeepLinkParser.Error? = nil
     )
     case deeplink(DeepLinkParser.Screen)
     case walletConnectSessionRequest(String)
-    case localError(
-        title: String,
-        message: String
-    )
 }

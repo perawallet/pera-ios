@@ -400,7 +400,7 @@ extension NotificationsViewController {
 extension NotificationsViewController {
     private func presentTryingToActForWatchAccountError() {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: "notifications-trying-to-act-for-watch-account-title".localized,
             message: "notifications-trying-to-act-for-watch-account-description".localized
         )
     }
@@ -428,7 +428,7 @@ extension NotificationsViewController {
 
     private func presentAccountNotFoundError() {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized,
+            title: "notifications-account-not-found-title".localized,
             message: "notifications-account-not-found-description".localized
         )
     }
