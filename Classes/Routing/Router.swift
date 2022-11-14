@@ -703,9 +703,23 @@ class Router:
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow, address):
+            let pushNotificationController = PushNotificationController(
+                target: ALGAppTarget.current,
+                session: appConfiguration.session,
+                api: appConfiguration.api,
+                bannerController: appConfiguration.bannerController
+            )
+            let dataController = WatchAccountAdditionAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                session: appConfiguration.session,
+                pushNotificationController: pushNotificationController,
+                analytics: appConfiguration.analytics
+            )
             viewController = WatchAccountAdditionViewController(
                 accountSetupFlow: flow,
                 address: address,
+                dataController:dataController,
                 configuration: configuration
             )
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):

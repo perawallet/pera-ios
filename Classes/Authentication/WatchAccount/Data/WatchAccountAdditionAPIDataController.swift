@@ -18,18 +18,31 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 
-final class WatchAccountAdditionAPIDataController {
-    typealias EventHandler = (Event) -> Void
+final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataController {
     var eventHandler: EventHandler?
 
-    private lazy var nameServiceSearchThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var apiThrottler = Throttler(intervalInSeconds: 0.3)
 
-    private var ongoingNameServicesEndpoint: EndpointOperatable?
+    private var ongoingEndpointToLoadNameServices: EndpointOperatable?
 
+    private let sharedDataController: SharedDataController
     private let api: ALGAPI
+    private let session: Session
+    private let pushNotificationController: PushNotificationController
+    private let analytics: ALGAnalytics
 
-    init(api: ALGAPI) {
+    init(
+        sharedDataController: SharedDataController,
+        api: ALGAPI,
+        session: Session,
+        pushNotificationController: PushNotificationController,
+        analytics: ALGAnalytics
+    ) {
+        self.sharedDataController = sharedDataController
         self.api = api
+        self.session = session
+        self.pushNotificationController = pushNotificationController
+        self.analytics = analytics
     }
 
     deinit {
@@ -50,11 +63,11 @@ extension WatchAccountAdditionAPIDataController {
             self.publish(.willLoadNameServices)
 
             let query = NameServiceQuery(name: query)
-            self.ongoingNameServicesEndpoint = self.api.fetchNameServices(query) {
+            self.ongoingEndpointToLoadNameServices = self.api.fetchNameServices(query) {
                 [weak self] result in
                 guard let self = self else { return }
 
-                self.ongoingNameServicesEndpoint = nil
+                self.ongoingEndpointToLoadNameServices = nil
 
                 switch result {
                 case .success(let nameServiceList):
@@ -66,27 +79,9 @@ extension WatchAccountAdditionAPIDataController {
             }
         }
 
-        nameServiceSearchThrottler.performNext(task)
+        apiThrottler.performNext(task)
     }
 
-    func cancelNameServiceSearchingIfNeeded() {
-        let isNotSearching = ongoingNameServicesEndpoint.isNilOrFinished
-
-        if isNotSearching {
-            return
-        }
-
-        nameServiceSearchThrottler.cancelAll()
-        cancelOngoingNameServicesEndpoint()
-    }
-
-    private func cancelOngoingNameServicesEndpoint() {
-        ongoingNameServicesEndpoint?.cancel()
-        ongoingNameServicesEndpoint = nil
-    }
-}
-
-extension WatchAccountAdditionAPIDataController {
     func shouldSearchNameServices(for query: String?) -> Bool {
         if let query = query,
            !query.isEmptyOrBlank,
@@ -96,10 +91,76 @@ extension WatchAccountAdditionAPIDataController {
 
         return false
     }
+
+    func cancelNameServiceSearchingIfNeeded() {
+        let isNotSearching = ongoingEndpointToLoadNameServices.isNilOrFinished
+
+        if isNotSearching {
+            return
+        }
+
+        apiThrottler.cancelAll()
+        cancelOngoingNameServicesEndpoint()
+    }
+
+    private func cancelOngoingNameServicesEndpoint() {
+        ongoingEndpointToLoadNameServices?.cancel()
+        ongoingEndpointToLoadNameServices = nil
+    }
+}
+
+extension WatchAccountAdditionAPIDataController {
+    func shouldEnableAddAction(_ input: String?) -> Bool {
+        if let input = input,
+           input.hasValidAddressLength &&
+            input.isValidatedAddress {
+            return true
+        }
+
+        return false
+    }
+}
+
+extension WatchAccountAdditionAPIDataController {
+    func createAccount(
+        from address: String,
+        with name: String
+    ) -> AccountInformation {
+        let account = AccountInformation(
+            address: address,
+            name: name,
+            type: .watch,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+        )
+        let user: User
+
+        if let authenticatedUser = session.authenticatedUser {
+            user = authenticatedUser
+            if authenticatedUser.account(address: address) != nil {
+                user.updateAccount(account)
+            } else {
+                user.addAccount(account)
+            }
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            user = User(accounts: [account])
+        }
+
+        NotificationCenter.default.post(
+            name: .didAddAccount,
+            object: self
+        )
+
+        session.authenticatedUser = user
+
+        analytics.track(.registerAccount(registrationType: .watch))
+
+        return account
+    }
 }
 
  extension WatchAccountAdditionAPIDataController {
-     private func publish(_ event: Event) {
+     private func publish(_ event: WatchAccountAdditionDataControllerEvent) {
          asyncMain {
              [weak self] in
              guard let self = self else { return }
@@ -108,11 +169,3 @@ extension WatchAccountAdditionAPIDataController {
          }
      }
  }
-
-extension WatchAccountAdditionAPIDataController {
-    enum Event {
-        case willLoadNameServices
-        case didLoadNameServices([NameService])
-        case didFailLoadingNameServices
-    }
-}

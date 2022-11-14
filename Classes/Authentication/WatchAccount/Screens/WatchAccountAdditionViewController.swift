@@ -42,31 +42,27 @@ final class WatchAccountAdditionViewController:
         screen: self
     )
 
-    private lazy var dataController = WatchAccountAdditionAPIDataController(api: api!)
-
-    private lazy var pushNotificationController = PushNotificationController(
-        target: target,
-        session: session!,
-        api: api!,
-        bannerController: bannerController
-    )
-
     private var pasteFromClipboardActionStartLayout: [Constraint] = []
     private var pasteFromClipboardActionEndLayout: [Constraint] = []
+
+    private var isLayoutFinalized = false
 
     private var nameServiceItemsUIInteractions: [GestureInteraction] = []
     private var selectedNameService: NameService?
 
     private let accountSetupFlow: AccountSetupFlow
     private var address: PublicKey?
+    private let dataController: WatchAccountAdditionDataController
 
     init(
         accountSetupFlow: AccountSetupFlow,
         address: PublicKey?,
+        dataController: WatchAccountAdditionDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountSetupFlow = accountSetupFlow
         self.address = address
+        self.dataController = dataController
 
         super.init(configuration: configuration)
 
@@ -100,24 +96,9 @@ final class WatchAccountAdditionViewController:
             [weak self] event in
             guard let self = self else { return }
             switch event {
-            case .willLoadNameServices:
-                self.resetNameServiceItemsContent()
-
-                self.addNameServiceLoadingView()
-            case .didLoadNameServices(let nameServices):
-                self.resetNameServiceItemsContent()
-
-                if nameServices.isEmpty {
-                    self.updateAddressInputViewInputStateForNameServicesNoContentState()
-                    return
-                }
-
-                self.addNameServiceItems(nameServices)
-                self.animateNameServiceItems()
-            case .didFailLoadingNameServices:
-                self.resetNameServiceItemsContent()
-
-                self.updateAddressInputViewInputStateForNameServicesLoadingFailureState()
+            case .willLoadNameServices: self.willLoadNameServices()
+            case .didLoadNameServices(let nameServices): self.didLoadNameServices(nameServices)
+            case .didFailLoadingNameServices: self.didFailLoadingNameServices()
             }
         }
     }
@@ -150,9 +131,16 @@ extension WatchAccountAdditionViewController {
     }
 
     private func updatePasteFromClipboardActionWhenViewDidLayoutSubviews() {
+        if isLayoutFinalized ||
+           pasteFromClipboardActionView.bounds.isEmpty {
+            return
+        }
+
         let pasteFromClipboardActionViewRadius = pasteFromClipboardActionView.frame.height / 2
         let pasteFromClipboardActionViewCorner = Corner(radius: pasteFromClipboardActionViewRadius.ceil())
         pasteFromClipboardActionView.draw(corner: pasteFromClipboardActionViewCorner)
+
+        isLayoutFinalized = true
     }
 }
 
@@ -303,8 +291,32 @@ extension WatchAccountAdditionViewController {
             target: self,
             action: #selector(performAddAccount)
         )
+    }
+}
 
-        addAccountActionView.isEnabled = false
+extension WatchAccountAdditionViewController {
+    private func willLoadNameServices() {
+        reset()
+
+        addNameServiceLoadingView()
+    }
+
+    private func didLoadNameServices(_ nameServices: [NameService]) {
+        reset()
+
+        if nameServices.isEmpty {
+            updateAddressInputViewInputStateForNameServicesNoContentState()
+            return
+        }
+
+        addNameServiceViews(nameServices)
+        animateNameServiceViews()
+    }
+
+    private func didFailLoadingNameServices() {
+        reset()
+
+        updateAddressInputViewInputStateForNameServicesLoadingFailureState()
     }
 }
 
@@ -321,21 +333,23 @@ extension WatchAccountAdditionViewController {
         aView.startAnimating()
     }
 
-    private func addNameServiceItems(_ nameServices: [NameService]) {
+    private func addNameServiceViews(_ nameServices: [NameService]) {
         nameServices.forEach { nameService in
             let aView = makeNameServiceView(nameService)
 
-            let interaction = GestureInteraction()
-            interaction.setSelector {
+            let selectionHandler = {
                 [weak self] in
                 guard let self = self else { return }
                 self.selectedNameService = nameService
 
-                self.addAccountActionView.isEnabled = true
                 self.addressInputView.text = nameService.address
+                self.addAccountActionView.isEnabled = self.dataController.shouldEnableAddAction(self.addressInputView.text)
 
                 self.scrollView.scrollToTop()
             }
+
+            let interaction = GestureInteraction()
+            interaction.setSelector(selectionHandler)
             interaction.attach(to: aView)
             nameServiceItemsUIInteractions.append(interaction)
 
@@ -343,7 +357,7 @@ extension WatchAccountAdditionViewController {
         }
     }
 
-    private func animateNameServiceItems() {
+    private func animateNameServiceViews() {
         let animation = UIViewPropertyAnimator(
             duration: 0.25,
             curve: .easeInOut
@@ -386,6 +400,15 @@ extension WatchAccountAdditionViewController {
             $0.setPaddings(theme.nameServiceEdgeInsets)
         }
 
+        let viewModel = makeNameServiceViewModel(nameService)
+        previewView.bindData(viewModel)
+
+        aCanvasView.alpha = 0
+
+        return aCanvasView
+    }
+
+    private func makeNameServiceViewModel(_ nameService: NameService) -> AccountPreviewViewModel {
         let nameServiceAccount = nameService.account.value
         let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
         let preview = NameServiceAccountPreview(
@@ -394,11 +417,8 @@ extension WatchAccountAdditionViewController {
             title: nameServiceAccount.address.shortAddressDisplay,
             subtitle: nameService.name
         )
-        previewView.bindData(AccountPreviewViewModel(preview))
-
-        aCanvasView.alpha = 0
-
-        return aCanvasView
+        let viewModel = AccountPreviewViewModel(preview)
+        return viewModel
     }
 }
 
@@ -459,20 +479,19 @@ extension WatchAccountAdditionViewController {
     @objc
     private func didTapPasteFromClipboardAction() {
         if let address = UIPasteboard.general.validAddress {
-            resetNameServiceItemsContent()
+            reset()
 
-            addAccountActionView.isEnabled = true
             addressInputView.text = address
+            addAccountActionView.isEnabled = dataController.shouldEnableAddAction(addressInputView.text)
         }
     }
 }
 
 extension WatchAccountAdditionViewController: FormInputFieldViewEditingDelegate {
     func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
-        addAccountActionView.isEnabled = isAddAccountActionEnabled
+        addAccountActionView.isEnabled = dataController.shouldEnableAddAction(addressInputView.text)
 
-        resetNameServiceItemsContent()
-        resetAddressInputViewInputStateIfNeeded()
+        reset()
 
         if let address = addressInputView.text,
            dataController.shouldSearchNameServices(for: address) {
@@ -512,18 +531,6 @@ extension WatchAccountAdditionViewController: MultilineTextInputFieldViewDelegat
 }
 
 extension WatchAccountAdditionViewController {
-    private var isAddAccountActionEnabled: Bool {
-        if let input = addressInputView.text,
-           input.hasValidAddressLength &&
-            input.isValidatedAddress {
-            return true
-        }
-
-        return false
-    }
-}
-
-extension WatchAccountAdditionViewController {
     func updateAddressInputViewInputStateForNameServicesNoContentState() {
         let text: EditText = .attributedString(
             "account-not-found"
@@ -544,22 +551,29 @@ extension WatchAccountAdditionViewController {
 }
 
 extension WatchAccountAdditionViewController {
-    private func resetAddressInputViewInputStateIfNeeded() {
-        if case .incorrect = addressInputView.inputState {
-            addressInputView.inputState = .focus
-        }
-    }
+    private func reset() {
+        func resetNameServiceItemsContent() {
+            nameServiceItemsUIInteractions = []
+            selectedNameService = nil
 
-    private func resetNameServiceItemsContent() {
-        nameServiceItemsUIInteractions = []
-        selectedNameService = nil
-        nameServiceItemsContentView.deleteAllSubviews()
+            nameServiceItemsContentView.deleteAllSubviews()
+        }
+
+        func resetAddressInputViewInputStateIfNeeded() {
+            if case .incorrect = addressInputView.inputState {
+                addressInputView.inputState = .focus
+            }
+        }
+
+        resetNameServiceItemsContent()
+        resetAddressInputViewInputStateIfNeeded()
     }
 }
 
 extension WatchAccountAdditionViewController {
     private func bindAddressInput() {
         addressInputView.text = address
+        addAccountActionView.isEnabled = dataController.shouldEnableAddAction(addressInputView.text)
     }
 
     private func bindPasteFromClipboardAction(_ address: String) {
@@ -588,6 +602,8 @@ extension WatchAccountAdditionViewController {
     private func performAddAccount() {
         addressInputView.endEditing()
 
+        /// <todo> Refactor error handling? Move to data controller?
+
         guard let address = addressInputView.text,
             !address.isEmpty,
             address.isValidatedAddress else {
@@ -606,12 +622,10 @@ extension WatchAccountAdditionViewController {
             return
         }
 
-        let account = createAccount(
+        let account = dataController.createAccount(
             from: address,
             with: address.shortAddressDisplay
         )
-
-        analytics.track(.registerAccount(registrationType: .watch))
 
         open(
             .accountNameSetup(
@@ -622,39 +636,6 @@ extension WatchAccountAdditionViewController {
             ),
             by: .push
         )
-    }
-
-    private func createAccount(
-        from address: String,
-        with name: String
-    ) -> AccountInformation {
-        let account = AccountInformation(
-            address: address,
-            name: name,
-            type: .watch,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
-        )
-        let user: User
-
-        if let authenticatedUser = session?.authenticatedUser {
-            user = authenticatedUser
-            if session?.authenticatedUser?.account(address: address) != nil {
-                user.updateAccount(account)
-            } else {
-                user.addAccount(account)
-            }
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            user = User(accounts: [account])
-        }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
-        session?.authenticatedUser = user
-        return account
     }
 }
 
@@ -695,10 +676,10 @@ extension WatchAccountAdditionViewController: QRScannerViewControllerDelegate {
             return
         }
 
-        resetNameServiceItemsContent()
+        reset()
 
-        addAccountActionView.isEnabled = true
         addressInputView.text = qrText.qrText()
+        addAccountActionView.isEnabled = dataController.shouldEnableAddAction(addressInputView.text)
     }
     
     func qrScannerViewController(
