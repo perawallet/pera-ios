@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "Takas Kaynağı";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "%@ bakiyesi yeterli değil.";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "Hesapta bu işlem ücretini karşılamak için yeterli bakiye bulunmuyor.";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "Fiyat Etkisi";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Dikkat! Fiyat etkisi %5'in üzerinde. Bu durum, bu havuzdaki likiditenin düşük olabileceği anlamına geliyor. Takas işlemine devam etmeden önce lütfen işlemin neden olabileceği sonuçları anladığınızdan emin olun.";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "İşlemleri İmzalayın";

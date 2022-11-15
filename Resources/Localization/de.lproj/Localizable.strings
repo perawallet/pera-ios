@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "Tauschen von";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "%@ -Guthaben ist nicht ausreichend.";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "Das Konto verfügt nicht über genügend Algo-Guthaben, um die Transaktionsgebühren zu decken.";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "Preisauswirkung";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Vorsicht! Die Kursauswirkung ist größer als 5%, was bedeutet, dass die Liquidität dieses Pools gering sein könnte. Bitte vergewissern Sie sich, dass Sie die Konsequenzen verstehen, bevor Sie den Tausch bestätigen.";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "Transaktionen signieren";

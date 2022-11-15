@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "Swap da";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "Il saldo in %@ non è sufficiente.";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "Il conto non ha un saldo Algo sufficiente a coprire le spese di transazione.";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "Impatto sui prezzi";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Attenzione! L'impatto sui prezzi è maggiore del 5%, il che significa che potrebbe esserci una bassa liquidità con questo pool. Assicurati di aver compreso le conseguenze prima di confermare lo swap.";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "Firma le transazioni";

@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "Trocar De";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "%@ saldo insuficiente.";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "Conta não possui saldo de Algos suficiente para cobrir as tarifas de transação.";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "Impacto de Preço";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Cuidado! O impacto de preço é maior que 5%. Isso significa que pode haver baixa liquidez nesta piscina. Antes de confirmar o swap, certifique-se de que compreender as consequências.";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "Assinar Transações";

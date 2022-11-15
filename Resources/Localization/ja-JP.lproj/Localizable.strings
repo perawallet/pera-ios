@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "スワップ元";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "%@の残高が不足しています。";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "トランザクション手数料をカバーするために十分なAlgo残高がアカウントにありません。";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "価格への影響";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "注意！価格への影響が5％以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "トランザクションに署名する";

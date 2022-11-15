@@ -1958,6 +1958,9 @@
 "swap-asset-from" = "交换自";
 
 /* (No Comment) */
+"swap-asset-min-balance-error" = "%@余额不足。";
+
+/* (No Comment) */
 "swap-asset-min-balance-error-fee" = "账户余额不足以支付交易费用。";
 
 /* (No Comment) */
@@ -2052,6 +2055,9 @@
 
 /* (No Comment) */
 "swap-price-impact-title" = "价格影响";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "警告！价格影响高于5%，也就是说该池的流动性低。在确认交换前，请确保您了解交换的后果。";
 
 /* (No Comment) */
 "swap-sign-with-ledger-action-title" = "签署交易";
