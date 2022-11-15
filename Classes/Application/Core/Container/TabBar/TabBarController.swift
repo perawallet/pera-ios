@@ -33,6 +33,42 @@ final class TabBarController: TabBarContainer {
     }
 
     private lazy var toggleTransactionOptionsActionView = Button()
+
+    private lazy var buyAlgoAction = TransactionOptionListAction(
+        viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToBuyAlgo()
+    }
+
+    private lazy var swapActionViewModel = createSwapActionViewModel()
+    private lazy var swapAction = createSwapListAction()
+
+    private lazy var sendAction = TransactionOptionListAction(
+        viewModel: SendTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToSendTransaction()
+    }
+
+    private lazy var receiveAction = TransactionOptionListAction(
+        viewModel: ReceiveTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToReceiveTransaction()
+    }
+
+    private lazy var scanQRCodeAction = TransactionOptionListAction(
+        viewModel: ScanQRCodeTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToQRScanner()
+    }
+
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
@@ -134,6 +170,7 @@ final class TabBarController: TabBarContainer {
         super.setListeners()
 
         self.sharedDataController.add(self)
+        observeWhenUserIsOnboardedToSwap()
     }
 }
 
@@ -185,56 +222,6 @@ extension TabBarController {
     private func createTransactionOptions() -> TransactionOptionsView {
         var theme = TransactionOptionsViewTheme()
         theme.contentSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBar.bounds.height, right: 0)
-
-        let buyAlgoAction = TransactionOptionListAction(
-            viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.navigateToBuyAlgo()
-        }
-
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-
-        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
-        let swapAction = TransactionOptionListAction(
-            viewModel: swapActionViewModel
-        ) {
-            [weak self] actionView in
-            guard let self = self else { return }
-
-            if !isOnboardedToSwap {
-                swapActionViewModel.bindIsBadgeVisible(false)
-                actionView.bindData(swapActionViewModel)
-            }
-
-            self.navigateToSwapAssetFlow()
-        }
-
-        let sendAction = TransactionOptionListAction(
-            viewModel: SendTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.navigateToSendTransaction()
-        }
-
-        let receiveAction = TransactionOptionListAction(
-            viewModel: ReceiveTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.navigateToReceiveTransaction()
-        }
-
-        let scanQRCodeAction = TransactionOptionListAction(
-            viewModel: ScanQRCodeTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.navigateToQRScanner()
-        }
 
         let aView = TransactionOptionsView(
             actions: [
@@ -381,6 +368,46 @@ extension TabBarController {
     private func navigateToQRScanner() {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
+    }
+}
+
+extension TabBarController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.updateSwapAction()
+        }
+    }
+
+    private func updateSwapAction() {
+        swapActionViewModel = createSwapActionViewModel()
+        swapAction = createSwapListAction()
+        transactionOptionsView = createTransactionOptions()
+    }
+
+    private func createSwapActionViewModel() -> SwapTransactionOptionListItemButtonViewModel {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
+    }
+
+    private func createSwapListAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: swapActionViewModel
+        ) {
+            [weak self] actionView in
+            guard let self = self else { return }
+
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+
+            self.swapActionViewModel.bindIsBadgeVisible(!isOnboardedToSwap)
+            actionView.bindData(self.swapActionViewModel)
+
+            self.navigateToSwapAssetFlow()
+        }
     }
 }
 
