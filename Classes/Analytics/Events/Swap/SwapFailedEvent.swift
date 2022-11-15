@@ -31,14 +31,16 @@ struct SwapFailedEvent: ALGAnalyticsEvent {
         }
 
         self.metadata = [
-            .inputASAID: params.swapperAddress,
+            .inputASAID: params.inputASAID,
             .inputASAName: params.inputASAName,
             .inputAmountAsASA: params.inputAmountAsASA,
             .inputAmountAsUSD: params.inputAmountAsUSD,
+            .inputAmountAsAlgo: params.inputAmountAsAlgo,
             .outputASAID: params.outputASAID,
             .outputASAName: params.outputASAName,
             .outputAmountAsASA: params.outputAmountAsASA,
             .outputAmountAsUSD: params.outputAmountAsUSD,
+            .outputAmountAsAlgo: params.outputAmountAsAlgo,
             .swapDate: params.swapDate,
             .swapDateTimestamp: params.swapDateTimestamp,
             .swapAddress: params.swapperAddress
