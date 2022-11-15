@@ -26,6 +26,9 @@ final class EditSwapSlippageToleranceLocalDataProvider: EditSwapSlippageDataProv
 
 extension EditSwapSlippageToleranceLocalDataProvider {
     func saveSlippageTolerancePercentage(_ percentage: SwapSlippageTolerancePercentage?) {
-        dataStore.slippageTolerancePercentage = percentage ?? .defaultPercentage()
+        let store = SlippageToleranceStore()
+        let defaultPercentage = PresetSwapSlippageTolerancePercentage.defaultPercentage()
+        store.slippageTolerance = percentage ?? defaultPercentage
+        dataStore.slippageTolerancePercentage = percentage ?? defaultPercentage
     }
 }

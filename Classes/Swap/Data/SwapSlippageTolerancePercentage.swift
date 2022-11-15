@@ -24,7 +24,8 @@ protocol SwapSlippageTolerancePercentage {
 
 extension SwapSlippageTolerancePercentage where Self == PresetSwapSlippageTolerancePercentage {
     static func defaultPercentage() -> SwapSlippageTolerancePercentage {
-        return PresetSwapSlippageTolerancePercentage(value: 0.5)
+        let store = SlippageToleranceStore()
+        return store.slippageTolerance
     }
 }
 
