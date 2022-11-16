@@ -19,4 +19,10 @@ import MacaroonUtils
 
 struct DiscoverTokenDetail: JSONModel {
     let tokenId: String
+    let poolId: String?
+
+    init(tokenId: String) {
+        self.tokenId = tokenId
+        self.poolId = nil
+    }
 }

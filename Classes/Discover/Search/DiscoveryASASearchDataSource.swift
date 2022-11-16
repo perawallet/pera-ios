@@ -71,7 +71,7 @@ final class DiscoveryASASearchDataSource: UICollectionViewDiffableDataSource<Dis
 
 extension DiscoveryASASearchDataSource {
     func isEmpty() -> Bool {
-        return snapshot().sectionIdentifiers.contains(.empty)
+        return snapshot().sectionIdentifiers.contains(.noContent)
     }
 }
 
@@ -80,7 +80,7 @@ extension DiscoveryASASearchDataSource {
         let cells = [
             DiscoverSearchListLoadingCell.self,
             DiscoverSearchListNotFoundCell.self,
-            DiscoverSearchListErrorCell.self,
+            DiscoverErrorCell.self,
             DiscoverSearchAssetCell.self,
             DiscoverSearchNextListLoadingCell.self,
             DiscoverSearchNextListErrorCell.self
@@ -124,7 +124,7 @@ extension DiscoveryASASearchDataSource {
         let viewModel = DiscoverSearchListErrorViewModel(error: item)
 
         let cell = listView.dequeue(
-            DiscoverSearchListErrorCell.self,
+            DiscoverErrorCell.self,
             at: indexPath
         )
         cell.bindData(viewModel)

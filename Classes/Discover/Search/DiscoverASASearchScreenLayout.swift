@@ -55,7 +55,7 @@ extension DiscoverASASearchScreenLayout {
         }
 
         switch sectionIdentifier {
-        case .empty: return .init(top: 20, left: 24, bottom: 0, right: 24)
+        case .noContent: return .init(top: 20, left: 24, bottom: 0, right: 24)
         case .list: return .init(top: 20, left: 0, bottom: 0, right: 0)
         case .nextList: return .init(top: 0, left: 24, bottom: 0, right: 24)
         }
@@ -142,7 +142,7 @@ extension DiscoverASASearchScreenLayout {
         let minSize = self.listView(
             listView,
             layout: listViewLayout,
-            minSizeForEmptyItemAt: indexPath
+            minSizeForNoContentItemAt: indexPath
         )
         let preferredSize = DiscoverSearchListNotFoundCell.calculatePreferredSize(
             DiscoverSearchListNotFoundViewModel(),
@@ -165,11 +165,11 @@ extension DiscoverASASearchScreenLayout {
         let minSize = self.listView(
             listView,
             layout: listViewLayout,
-            minSizeForEmptyItemAt: indexPath
+            minSizeForNoContentItemAt: indexPath
         )
-        let preferredSize = DiscoverSearchListErrorCell.calculatePreferredSize(
+        let preferredSize = DiscoverErrorCell.calculatePreferredSize(
             DiscoverSearchListErrorViewModel(error: item),
-            for: DiscoverSearchListErrorCell.theme,
+            for: DiscoverErrorCell.theme,
             fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
         )
         return .init(width: width, height: max(minSize.height, preferredSize.height))
@@ -178,7 +178,7 @@ extension DiscoverASASearchScreenLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        minSizeForEmptyItemAt indexPath: IndexPath
+        minSizeForNoContentItemAt indexPath: IndexPath
     ) -> CGSize {
         let width = calculateContentWidth(
             listView,

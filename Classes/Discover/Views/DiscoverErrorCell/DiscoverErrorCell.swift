@@ -18,13 +18,13 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class DiscoverSearchListErrorCell:
-    CollectionCell<DiscoverSearchListErrorView>,
+final class DiscoverErrorCell:
+    CollectionCell<DiscoverErrorView>,
     ViewModelBindable,
     UIInteractable {
-    static let theme = DiscoverSearchListErrorViewTheme()
+    static let theme = DiscoverErrorViewTheme()
 
-    override func getContextView() -> DiscoverSearchListErrorView {
-        return DiscoverSearchListErrorView(Self.theme)
+    override func getContextView() -> DiscoverErrorView {
+        return DiscoverErrorView(Self.theme)
     }
 }

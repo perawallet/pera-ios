@@ -45,23 +45,6 @@ final class DiscoverWebScreen:
         navigationBarLargeTitleController.deactivate()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        navigationBarLargeTitleController.activate()
-        webView.navigationDelegate = self
-
-        events.forEach { event in
-            contentController.add(self, name: event.rawValue)
-        }
-
-        load(url: URL(string: "https://discover-mobile-staging.perawallet.app/?theme=\(interfaceTheme.rawValue)"))
-    }
-
-    override func customizeTabBarAppearence() {
-        tabBarHidden = false
-    }
-
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
@@ -80,10 +63,23 @@ final class DiscoverWebScreen:
         }
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func customizeTabBarAppearence() {
+        tabBarHidden = false
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         addNavigationBarLargeTitle()
+
+        navigationBarLargeTitleController.activate()
+        webView.navigationDelegate = self
+
+        events.forEach { event in
+            contentController.add(self, name: event.rawValue)
+        }
+
+        load(url: URL(string: "https://discover-mobile-staging.perawallet.app/?theme=\(interfaceTheme.rawValue)"))
     }
 
     override func viewDidLayoutSubviews() {
@@ -120,13 +116,14 @@ extension DiscoverWebScreen {
     }
 }
 
-extension DiscoverWebScreen: WKNavigationDelegate {
+extension DiscoverWebScreen {
     func webView(
         _ webView: WKWebView,
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
         guard (webView.url?.host) != nil else {
+            completionHandler(.performDefaultHandling, nil)
             return
         }
 

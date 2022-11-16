@@ -259,17 +259,17 @@ extension DiscoveryASASearchAPIDataController {
 extension DiscoveryASASearchAPIDataController {
     private func deliverUpdatesForLoading() {
         if let snapshot = snapshot,
-           snapshot.sectionIdentifiers.first == .empty,
-           snapshot.itemIdentifiers(inSection: .empty).first == .loading {
+           snapshot.sectionIdentifiers.first == .noContent,
+           snapshot.itemIdentifiers(inSection: .noContent).first == .loading {
             return
         }
 
         deliverUpdatesByReloading() {
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.noContent])
             snapshot.appendItems(
                 [.loading],
-                toSection: .empty
+                toSection: .noContent
             )
             return snapshot
         }
@@ -278,10 +278,10 @@ extension DiscoveryASASearchAPIDataController {
     private func deliverUpdatesForNotFound() {
         deliverUpdatesByReloading() {
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.noContent])
             snapshot.appendItems(
                 [.notFound],
-                toSection: .empty
+                toSection: .noContent
             )
             return snapshot
         }
@@ -292,10 +292,10 @@ extension DiscoveryASASearchAPIDataController {
             guard let self else { return nil }
 
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.noContent])
             snapshot.appendItems(
                 self.createErrorListItems(error: error),
-                toSection: .empty
+                toSection: .noContent
             )
             return snapshot
         }
@@ -476,23 +476,25 @@ extension DiscoveryASASearchAPIDataController {
     }
 
     private func createErrorItem(error: GetAssetsError) -> DiscoverSearchErrorItem {
-        let defaultBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
+        let fallbackTitle = "title-generic-api-error".localized
+        let fallbackBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
 
+        let title: String
         let body: String
         switch error {
         case .connection(let connectionError):
             if connectionError.isNotConnectedToInternet {
-                body = "internet-connection-error-detail".localized
+                title = "discover-error-connection-title".localized
+                body = "discover-error-connection-body".localized
             } else {
-                body = defaultBody
+                title = fallbackTitle
+                body = fallbackBody
             }
         default:
-            body = defaultBody
+            title = fallbackTitle
+            body = fallbackBody
         }
 
-        return DiscoverSearchErrorItem(
-            title: "title-generic-api-error".localized,
-            body: body
-        )
+        return DiscoverSearchErrorItem(title: title, body: body)
     }
 }

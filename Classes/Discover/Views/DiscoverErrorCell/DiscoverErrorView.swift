@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverSearchListErrorView.swift
+//   DiscoverErrorView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class DiscoverSearchListErrorView:
+class DiscoverErrorView:
     View,
     ViewModelBindable,
     UIInteractable,
@@ -33,7 +33,7 @@ final class DiscoverSearchListErrorView:
     private lazy var bodyView = Label()
     private lazy var retryActionView = UIButton()
 
-    init(_ theme: DiscoverSearchListErrorViewTheme = .init()) {
+    init(_ theme: DiscoverErrorViewTheme = .init()) {
         super.init(frame: .zero)
         addUI(theme)
     }
@@ -43,8 +43,8 @@ final class DiscoverSearchListErrorView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
-extension DiscoverSearchListErrorView {
-    func bindData(_ viewModel: DiscoverSearchListErrorViewModel?) {
+extension DiscoverErrorView {
+    func bindData(_ viewModel: DiscoverErrorViewModel?) {
         iconView.image = viewModel?.icon?.uiImage
 
         if let title = viewModel?.title {
@@ -63,8 +63,8 @@ extension DiscoverSearchListErrorView {
     }
 
     static func calculatePreferredSize(
-        _ viewModel: DiscoverSearchListErrorViewModel?,
-        for theme: DiscoverSearchListErrorViewTheme,
+        _ viewModel: DiscoverErrorViewModel?,
+        for theme: DiscoverErrorViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
@@ -95,12 +95,12 @@ extension DiscoverSearchListErrorView {
     }
 }
 
-extension DiscoverSearchListErrorView {
-    private func addUI(_ theme: DiscoverSearchListErrorViewTheme) {
+extension DiscoverErrorView {
+    private func addUI(_ theme: DiscoverErrorViewTheme) {
         addConten(theme)
     }
 
-    private func addConten(_ theme: DiscoverSearchListErrorViewTheme) {
+    private func addConten(_ theme: DiscoverErrorViewTheme) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.centerY == 0
@@ -116,7 +116,7 @@ extension DiscoverSearchListErrorView {
         addRetryAction(theme)
     }
 
-    private func addIcon(_ theme: DiscoverSearchListErrorViewTheme) {
+    private func addIcon(_ theme: DiscoverErrorViewTheme) {
         iconView.customizeAppearance(theme.icon)
         iconView.layer.draw(corner: theme.iconCorner)
 
@@ -128,7 +128,7 @@ extension DiscoverSearchListErrorView {
         }
     }
 
-    private func addTitle(_ theme: DiscoverSearchListErrorViewTheme) {
+    private func addTitle(_ theme: DiscoverErrorViewTheme) {
         titleView.customizeAppearance(theme.title)
 
         contentView.addSubview(titleView)
@@ -140,7 +140,7 @@ extension DiscoverSearchListErrorView {
         }
     }
 
-    private func addBody(_ theme: DiscoverSearchListErrorViewTheme) {
+    private func addBody(_ theme: DiscoverErrorViewTheme) {
         bodyView.customizeAppearance(theme.body)
 
         contentView.addSubview(bodyView)
@@ -153,7 +153,7 @@ extension DiscoverSearchListErrorView {
         }
     }
 
-    private func addRetryAction(_ theme: DiscoverSearchListErrorViewTheme) {
+    private func addRetryAction(_ theme: DiscoverErrorViewTheme) {
         retryActionView.customizeAppearance(theme.retryAction)
 
         contentView.addSubview(retryActionView)
@@ -174,7 +174,7 @@ extension DiscoverSearchListErrorView {
     }
 }
 
-extension DiscoverSearchListErrorView {
+extension DiscoverErrorView {
     enum Event {
         case retry
     }

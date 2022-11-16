@@ -12,25 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebScreenTheme.swift
+//   DiscoverErrorViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct WebScreenTheme:
-    LayoutSheet,
-    StyleSheet {
-    var background: ViewStyle
-    var noContent: WebNoContentViewTheme
-    var loading: WebLoadingViewTheme
-    var error: DiscoverErrorViewTheme
-
-    init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.noContent = .init(family)
-        self.loading = .init(family)
-        self.error = .init(family)
-    }
+protocol DiscoverErrorViewModel: ViewModel {
+    var icon: Image? { get }
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }

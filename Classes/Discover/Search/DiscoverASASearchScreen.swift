@@ -23,9 +23,7 @@ final class DiscoverASASearchScreen:
     BaseViewController,
     MacaroonForm.KeyboardControllerDataSource,
     UICollectionViewDelegateFlowLayout {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
+    override var shouldShowNavigationBar: Bool { false }
 
     private lazy var searchInputView: SearchInputView = .init()
     private lazy var searchInputBackgroundView: EffectView = .init()
@@ -78,9 +76,7 @@ final class DiscoverASASearchScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if view.bounds.isEmpty {
-            return
-        }
+        if view.bounds.isEmpty { return }
 
         if !isViewLayoutLoaded {
             loadInitialData()
@@ -308,7 +304,7 @@ extension DiscoverASASearchScreen {
 
 extension DiscoverASASearchScreen {
     private func startObservingListErrorEvents(_ cell: UICollectionViewCell) {
-        let errorCell = cell as? DiscoverSearchListErrorCell
+        let errorCell = cell as? DiscoverErrorCell
         errorCell?.startObserving(event: .retry) {
             [unowned self] in
             self.loadRequestedData()
@@ -434,5 +430,11 @@ extension DiscoverASASearchScreen {
 extension DiscoverASASearchScreen {
     private func findAssetListItemViewModel(forID assetID: AssetID) -> DiscoverSearchAssetListItemViewModel? {
         return dataController[assetID]
+    }
+}
+
+extension DiscoverASASearchScreen {
+    enum Event {
+        case selectAsset(DiscoverTokenDetail)
     }
 }

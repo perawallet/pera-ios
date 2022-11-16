@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct DiscoverSearchListErrorViewModel: ViewModel {
+struct DiscoverSearchListErrorViewModel: DiscoverErrorViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
     private(set) var body: TextProvider?

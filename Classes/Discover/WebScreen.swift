@@ -19,9 +19,9 @@ import UIKit
 import MacaroonUIKit
 import WebKit
 
-class WebScreen: BaseViewController {
-    private lazy var theme = WebScreenTheme()
-
+class WebScreen:
+    BaseViewController,
+    WKNavigationDelegate {
     private(set) lazy var interfaceTheme: InterfaceTheme = isDarkMode ? .dark : .light {
         didSet { updateInterfaceTheme() }
     }
@@ -53,23 +53,70 @@ class WebScreen: BaseViewController {
             forMainFrameOnly: false
         )
         webView.configuration.userContentController.addUserScript(selectionScript)
+        webView.navigationDelegate = self
         return webView
     }()
+    private(set) lazy var noContentView = WebNoContentView(theme.noContent)
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    private var sourceURL: URL?
 
+    private var isViewLayoutLoaded = false
+
+    private var lastURL: URL? { webView.url ?? sourceURL }
+
+    private let theme = WebScreenTheme()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         addUI()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if !isViewLayoutLoaded {
+            updateUIForLoading()
+            isViewLayoutLoaded = true
+        }
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
         super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
-        
-        if userInterfaceStyle == .dark {
-            interfaceTheme = .dark
-        } else {
-            interfaceTheme = .light
-        }
+        interfaceTheme = userInterfaceStyle == .dark ? .dark : .light
+    }
+
+    /// <mark>
+    /// WKNavigationDelegate
+    func webView(
+        _ webView: WKWebView,
+        didStartProvisionalNavigation navigation: WKNavigation!
+    ) {
+        updateUIForLoading()
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFailProvisionalNavigation navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        updateUIForError(error)
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFinish navigation: WKNavigation!
+    ) {
+        updateUIForURL()
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFail navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        updateUIForError(error)
     }
 }
 
@@ -79,8 +126,11 @@ extension WebScreen {
             return
         }
 
-        let request = URLRequest(url: url)
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 30
         webView.load(request)
+
+        sourceURL = url
     }
 }
 
@@ -96,6 +146,77 @@ extension WebScreen {
     private func addUI() {
         addBackground()
         addWebView()
+        addNoContent()
+    }
+
+    private func updateUIForLoading() {
+        let state = WebNoContentView.State.loading(theme.loading)
+        updateUI(for: state)
+    }
+
+    private func updateUIForError(_ error: Error) {
+        let viewModel = WebErrorViewModel(error: error)
+        let state = WebNoContentView.State.error(theme.error, viewModel)
+        updateUI(for: state)
+    }
+
+    private func updateUI(for state: WebNoContentView.State) {
+        let isNoContentVisible = !noContentView.isHidden
+
+        noContentView.setState(
+            state,
+            animated: isViewAppeared && isNoContentVisible
+        )
+
+        if isNoContentVisible { return }
+
+        updateUI(
+            from: webView,
+            to: noContentView,
+            animated: isViewAppeared
+        )
+    }
+
+    private func updateUIForURL() {
+        let clearNoContent = {
+            [weak self] in
+            guard let self else { return }
+
+            self.noContentView.setState(
+                nil,
+                animated: false
+            )
+        }
+
+        if !webView.isHidden {
+            clearNoContent()
+            return
+        }
+
+        updateUI(
+            from: noContentView,
+            to: webView,
+            animated: isViewAppeared
+        ) { isCompleted in
+            if !isCompleted { return }
+            clearNoContent()
+        }
+    }
+
+    private typealias UpdateUICompletion = (Bool) -> Void
+    private func updateUI(
+        from fromView: UIView,
+        to toView: UIView,
+        animated: Bool,
+        completion: UpdateUICompletion? = nil
+    ) {
+        UIView.transition(
+            from: fromView,
+            to: toView,
+            duration: animated ? 0.3 : 0,
+            options: [.transitionCrossDissolve, .showHideTransitionViews],
+            completion: completion
+        )
     }
 
     private func addBackground() {
@@ -105,10 +226,33 @@ extension WebScreen {
     private func addWebView() {
         webView.isOpaque = false
         webView.backgroundColor = .clear
+        /// <note>
+        /// The transition state should be maintained manually at the beginning because both views
+        /// are being added so it won't be detected that which view is actually visible. It seems
+        /// like `isHidden` property is the only way to prevent unnecessary transition.
+        webView.isHidden = true
 
         view.addSubview(webView)
         webView.snp.makeConstraints {
-            $0.edges == 0
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+
+    private func addNoContent() {
+        view.addSubview(noContentView)
+        noContentView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        noContentView.startObserving(event: .retry) {
+            [unowned self] in
+            self.load(url: self.lastURL)
         }
     }
 }

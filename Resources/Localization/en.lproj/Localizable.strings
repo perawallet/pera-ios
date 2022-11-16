@@ -1210,3 +1210,6 @@
 
 // MARK: Discover
 "discover-search-input-placeholder" = "Search for any ASA";
+"discover-error-fallback-body" = "We can't get that information right now.";
+"discover-error-connection-title" = "No Internet Connection";
+"discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";

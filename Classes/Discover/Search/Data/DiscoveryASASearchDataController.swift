@@ -38,7 +38,7 @@ struct DiscoverSearchQuery {
 }
 
 enum DiscoverSearchListSection: Hashable {
-    case empty
+    case noContent
     case list
     case nextList
 }

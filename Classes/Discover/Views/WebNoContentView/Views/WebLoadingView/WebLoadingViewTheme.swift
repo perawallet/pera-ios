@@ -12,25 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebScreenTheme.swift
+//   WebLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct WebScreenTheme:
-    LayoutSheet,
-    StyleSheet {
-    var background: ViewStyle
-    var noContent: WebNoContentViewTheme
-    var loading: WebLoadingViewTheme
-    var error: DiscoverErrorViewTheme
+struct WebLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var logoStyle: LogoLoadingView.Style
+    var logoSize: CGSize
 
     init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.noContent = .init(family)
-        self.loading = .init(family)
-        self.error = .init(family)
+        self.logoStyle = .purple
+        self.logoSize = .init(width: 44, height: 44)
     }
 }

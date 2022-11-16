@@ -12,25 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebScreenTheme.swift
+//   WebNoContentViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct WebScreenTheme:
-    LayoutSheet,
-    StyleSheet {
+struct WebNoContentViewTheme:
+    StyleSheet,
+    LayoutSheet {
     var background: ViewStyle
-    var noContent: WebNoContentViewTheme
-    var loading: WebLoadingViewTheme
-    var error: DiscoverErrorViewTheme
+    var contentEdgeInsets: NSDirectionalEdgeInsets
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.noContent = .init(family)
-        self.loading = .init(family)
-        self.error = .init(family)
+        self.contentEdgeInsets = .init(top: 0, leading: 24, bottom: 0, trailing: 24)
     }
 }

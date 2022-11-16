@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverSearchListErrorViewTheme.swift
+//   DiscoverErrorViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct DiscoverSearchListErrorViewTheme:
+struct DiscoverErrorViewTheme:
     StyleSheet,
     LayoutSheet {
     var contentVerticalEdgeInsets: LayoutVerticalPaddings

@@ -64,7 +64,7 @@ extension DappDetailScreen {
     }
 }
 
-extension DappDetailScreen: WKNavigationDelegate {
+extension DappDetailScreen {
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,

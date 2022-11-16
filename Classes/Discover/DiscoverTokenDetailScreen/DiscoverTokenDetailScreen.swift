@@ -32,7 +32,14 @@ final class DiscoverTokenDetailScreen: WebScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        load(url: URL(string: "https://discover-mobile-staging.perawallet.app/token-detail/\(tokenDetail.tokenId)?theme=\(interfaceTheme.rawValue)"))
+        var queryItems: [URLQueryItem] = []
+        queryItems.append(.init(name: "poolId", value: tokenDetail.poolId))
+        queryItems.append(.init(name: "theme", value: interfaceTheme.rawValue))
+
+        var components = URLComponents(string: "https://discover-mobile-staging.perawallet.app/token-detail/\(tokenDetail.tokenId)/")
+        components?.queryItems = queryItems
+
+        load(url: components?.url)
     }
 
     override func customizeTabBarAppearence() {
