@@ -46,7 +46,7 @@ indirect enum Screen {
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
-    case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
+    case renameAccount(account: Account, delegate: RenameAccountScreenDelegate)
     case contacts
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
