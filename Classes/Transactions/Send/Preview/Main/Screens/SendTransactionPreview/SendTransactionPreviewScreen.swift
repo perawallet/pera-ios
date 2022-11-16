@@ -24,7 +24,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    var eventHandler: EventHandler?
    
-   private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+   private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
 
    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
@@ -253,17 +253,22 @@ extension SendTransactionPreviewScreen {
       
       transactionDetailView.startObserving(event: .performEditNote) {
          [weak self] in
-         guard let self = self else { return }
+         guard let self = self else {
+            return
+         }
          
          let isLocked = self.draft.lockedNote != nil
          let editNote = self.draft.lockedNote ?? self.draft.note
-         
-         self.modalTransition.perform(
-            .editNote(
-               note: editNote,
-               isLocked: isLocked,
-               delegate: self
-            ), by: .present
+
+         let screen: Screen = .editNote(
+             note: editNote,
+             isLocked: isLocked,
+             delegate: self
+         )
+
+         self.transitionToEditNote.perform(
+             screen,
+             by: .present
          )
       }
    }
@@ -306,25 +311,33 @@ extension SendTransactionPreviewScreen {
 
 extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
    func editNoteScreen(
-      _ editNoteScreen: EditNoteScreen,
+      _ screen: EditNoteScreen,
       didUpdateNote note: String?
    ) {
-      self.draft.updateNote(note)
+      screen.closeScreen(by: .dismiss) {
+          [weak self] in
+          guard let self = self else {
+              return
+          }
 
-      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] paramsResult in
-         guard let self else {
-            return
+         self.draft.updateNote(note)
+
+         self.sharedDataController.getTransactionParams(isCacheEnabled: true) {
+            [weak self] paramsResult in
+            guard let self else {
+               return
+            }
+
+            switch paramsResult {
+            case .success(let params):
+               self.bindTransaction(with: params)
+            case .failure(let error):
+               self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            }
          }
 
-         switch paramsResult {
-         case .success(let params):
-            self.bindTransaction(with: params)
-         case .failure(let error):
-            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
-         }
+         self.eventHandler?(.didEditNote(note: note))
       }
-
-      eventHandler?(.didEditNote(note: note))
    }
 }
 

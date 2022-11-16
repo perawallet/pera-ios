@@ -17,64 +17,62 @@
 
 import Foundation
 import UIKit
-import MacaroonUIKit
 import MacaroonBottomSheet
+import MacaroonForm
+import MacaroonUIKit
 
-final class EditNoteScreen: BaseViewController {
+final class EditNoteScreen:
+    BaseScrollViewController,
+    BottomSheetScrollPresentable,
+    MacaroonForm.KeyboardControllerDataSource {
     weak var delegate: EditNoteScreenDelegate?
 
-    private lazy var theme = Theme()
-    private lazy var editNoteView = EditNoteView()
+    var modalBottomPadding: LayoutMetric {
+        return bottomInsetUnderKeyboardWhenKeyboardDidShow(keyboardController)
+    }
+
+    let modalHeight: MacaroonUIKit.ModalHeight = .compressed
+
+    private lazy var theme = EditNoteScreenTheme()
+
+    private lazy var noteInputView = MultilineTextInputFieldView()
+
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: scrollView,
+        screen: self
+    )
 
     private var note: String?
     private let isLocked: Bool
 
-    init(note: String?, isLocked: Bool, configuration: ViewControllerConfiguration) {
+    init(
+        note: String?,
+        isLocked: Bool,
+        configuration: ViewControllerConfiguration
+    ) {
         self.note = note
         self.isLocked = isLocked
         super.init(configuration: configuration)
+
+        keyboardController.activate()
+    }
+
+    deinit {
+        keyboardController.deactivate()
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-    override func setListeners() {
-        editNoteView.delegate = self
-    }
-    
-    override func linkInteractors() {
-        editNoteView.doneButton.addTarget(
-            self,
-            action: #selector(didTapDoneButton),
-            for: .touchUpInside
-        )
+
+        bindNavigationTitle()
+        addNavigationActions()
     }
 
-    override func prepareLayout() {
-        editNoteView.customize(theme.editNoteViewTheme)
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        view.addSubview(editNoteView)
-        editNoteView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
-    override func bindData() {
-        editNoteView.bindData(note)
-
-        if isLocked {
-            title = "send-transaction-show-note-title".localized
-
-            editNoteView.noteInputView.isUserInteractionEnabled = false
-            return
-        }
-
-        if note.isNilOrEmpty {
-            title = "edit-note-title".localized
-        } else {
-            title = "send-transaction-edit-note-title".localized
-        }
+        configureKeyboardController()
+        addUI()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -84,49 +82,115 @@ final class EditNoteScreen: BaseViewController {
             return
         }
 
-        editNoteView.beginEditing()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        editNoteView.endEditing()
-    }
-
-    private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) {
-            [weak self] in
-
-            guard let self = self else {
-                return
-            }
-
-            self.didTapDoneButton()
-        }
-
-        rightBarButtonItems = [doneBarButtonItem]
+        noteInputView.beginEditing()
     }
 }
 
 extension EditNoteScreen {
-    @objc
-    private func didTapDoneButton() {
-        delegate?.editNoteScreen(self, didUpdateNote: editNoteView.noteInputView.text)
-        dismissScreen()
+    private func addUI() {
+        addBackground()
+        addNoteInput()
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addNoteInput() {
+        noteInputView.customize(theme.noteInput)
+
+        contentView.addSubview(noteInputView)
+        noteInputView.snp.makeConstraints {
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.bottom == theme.contentEdgeInsets.bottom
+            $0.trailing == theme.contentEdgeInsets.trailing
+            $0.greaterThanHeight(theme.noteInputMinHeight)
+        }
+
+        noteInputView.delegate = self
+        noteInputView.editingDelegate = self
+
+        bindNoteInput()
     }
 }
 
-extension EditNoteScreen: EditNoteViewDelegate {
-    func editNoteViewDidReturn(_ editNoteView: EditNoteView) {
+extension EditNoteScreen {
+    private func bindNavigationTitle() {
+        if isLocked {
+            navigationItem.title = "send-transaction-show-note-title".localized
+            return
+        }
+
+        if note.isNilOrEmpty {
+            navigationItem.title = "edit-note-title".localized
+        } else {
+            navigationItem.title = "send-transaction-edit-note-title".localized
+        }
+    }
+
+    private func addNavigationActions() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+            [unowned self] in
+            self.didTapDoneButton()
+        }
+
+        rightBarButtonItems = [ doneBarButtonItem ]
+    }
+}
+
+extension EditNoteScreen {
+    private func bindNoteInput() {
+        noteInputView.text = note
+
+        if isLocked {
+            noteInputView.isUserInteractionEnabled = false
+        }
+    }
+}
+
+extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
+    func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
         didTapDoneButton()
     }
 }
 
-extension EditNoteScreen: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+extension EditNoteScreen: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
+        /// <todo>: How to prevent layout update on every editing of input?
+        performLayoutUpdates(animated: isViewAppeared)
+    }
+
+    func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) { }
+
+    func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) { }
+}
+
+extension EditNoteScreen {
+    private func didTapDoneButton() {
+        delegate?.editNoteScreen(self, didUpdateNote: noteInputView.text)
+    }
+}
+
+/// <mark>
+/// MacaroonForm.KeyboardControllerDataSource
+extension EditNoteScreen {
+    func bottomInsetUnderKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return keyboardController.keyboard?.height ?? 0
+    }
+}
+
+extension EditNoteScreen {
+    private func configureKeyboardController() {
+        keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
+            [unowned self] _ in
+            self.performLayoutUpdates(animated: false)
+        }
     }
 }
 
 protocol EditNoteScreenDelegate: AnyObject {
-    func editNoteScreen(_ editNoteScreen: EditNoteScreen, didUpdateNote note: String?)
+    func editNoteScreen(_ screen: EditNoteScreen, didUpdateNote note: String?)
 }
