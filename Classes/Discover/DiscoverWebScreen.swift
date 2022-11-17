@@ -21,7 +21,8 @@ import MacaroonUIKit
 
 final class DiscoverWebScreen:
     WebScreen,
-    NavigationBarLargeTitleConfigurable {
+    NavigationBarLargeTitleConfigurable,
+    UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
         return webView.scrollView
     }
@@ -37,6 +38,7 @@ final class DiscoverWebScreen:
 
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
+    private var isNavigationTitleHidden = true
     private var isLayoutFinalized = false
 
     private var events: [Event] = [.tokenDetail, .dAppViewer]
@@ -49,18 +51,14 @@ final class DiscoverWebScreen:
         super.configureNavigationBarAppearance()
 
         navigationBarLargeTitleController.title = "title-discover".localized
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.webContentTopInset
 
         navigationBarLargeTitleView.searchAction = {
             [unowned self] in
-            self.open(
-                .discoverSearch,
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
+            self.navigateToSearch()
         }
+
+        updateRightBarButtonsWhenNavigationTitleBecomeHidden(true)
     }
 
     override func customizeTabBarAppearence() {
@@ -73,7 +71,9 @@ final class DiscoverWebScreen:
         addNavigationBarLargeTitle()
 
         navigationBarLargeTitleController.activate()
+
         webView.navigationDelegate = self
+        webView.scrollView.delegate = self
 
         events.forEach { event in
             contentController.add(self, name: event.rawValue)
@@ -95,6 +95,26 @@ final class DiscoverWebScreen:
     }
 }
 
+/// <mark>
+/// UIScrollViewDelegate
+extension DiscoverWebScreen {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateUIWhenWebContentDidScroll()
+    }
+
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        navigationBarLargeTitleController.scrollViewWillEndDragging(
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset,
+            contentOffsetDeltaYBelowLargeTitle: 0
+        )
+    }
+}
+
 extension DiscoverWebScreen {
     private func addNavigationBarLargeTitle() {
         view.addSubview(navigationBarLargeTitleView)
@@ -102,6 +122,36 @@ extension DiscoverWebScreen {
             $0.setPaddings(
                 theme.navigationBarEdgeInset
             )
+        }
+    }
+
+    private func updateUIWhenWebContentDidScroll() {
+        updateNavigationRightBarButtonsWhenWebContentDidScroll()
+    }
+
+    private func updateNavigationRightBarButtonsWhenWebContentDidScroll() {
+        let isHidden = navigationBarLargeTitleView.frame.maxY >= 0
+        updateRightBarButtonsWhenNavigationTitleBecomeHidden(isHidden)
+    }
+
+    private func updateRightBarButtonsWhenNavigationTitleBecomeHidden(_ hidden: Bool) {
+        if isNavigationTitleHidden == hidden { return }
+
+        if hidden {
+            rightBarButtonItems = []
+        } else {
+            rightBarButtonItems = [ makeSearchBarButtonItem() ]
+        }
+
+        setNeedsRightBarButtonItemsUpdate()
+
+        isNavigationTitleHidden = hidden
+    }
+
+    private func makeSearchBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .search) {
+            [unowned self] in
+            self.navigateToSearch()
         }
     }
 }
@@ -174,6 +224,19 @@ extension DiscoverWebScreen: WKScriptMessageHandler {
         open(
             .discoverAssetDetail(tokenDetail),
             by: .push
+        )
+    }
+}
+
+extension DiscoverWebScreen {
+    private func navigateToSearch() {
+        open(
+            .discoverSearch,
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
         )
     }
 }
