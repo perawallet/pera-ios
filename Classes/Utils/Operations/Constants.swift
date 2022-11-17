@@ -17,12 +17,6 @@
 import Foundation
 
 enum Constants {
-    enum DispatchQueues {
-        static let collectibleDetailSnapshot = "collectibleDetailSnapshot"
-        static let manageAssetListSnapshot = "manageAssetListSnapshot"
-        static let collectibleListSnapshot = "collectibleListSnapshot"
-    }
-
     enum Notification {
         enum InfoKey {
             static let collectibleListAccountAssetPair = "collectibleListAccountAssetPair"

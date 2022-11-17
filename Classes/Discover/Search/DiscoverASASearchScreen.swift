@@ -265,6 +265,7 @@ extension DiscoverASASearchScreen {
 
         view.addSubview(cancelActionView)
         cancelActionView.contentEdgeInsets = theme.cancelActionContentEdgeInsets
+        cancelActionView.fitToHorizontalIntrinsicSize()
         cancelActionView.snp.makeConstraints {
             $0.height == searchInputView
             $0.centerY == searchInputView

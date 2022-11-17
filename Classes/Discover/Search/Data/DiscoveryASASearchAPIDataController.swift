@@ -39,7 +39,10 @@ final class DiscoveryASASearchAPIDataController:
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
-    private let updatesQueue = DispatchQueue(label: "queue.discover.search.updates")
+    private let updatesQueue = DispatchQueue(
+        label: "pera.queue.discover.search.updates",
+        qos: .userInitiated
+    )
 
     subscript(assetID: AssetID) -> AssetDecoration? {
         findModel(forID: assetID)
@@ -84,6 +87,8 @@ extension DiscoveryASASearchAPIDataController {
             self.getAssets(draft: draft) {
                 [weak self] result in
                 guard let self else { return }
+
+                print("Data")
 
                 switch result {
                 case .success(let changes):
@@ -420,7 +425,9 @@ extension DiscoveryASASearchAPIDataController {
             guard let self = self else { return }
             guard let newSnapshot = snapshot() else { return }
 
+            print("Start snapshot")
             self.snapshot = newSnapshot
+            print("Finish snapshot")
             self.publish(.didReload(newSnapshot))
         }
     }
@@ -432,6 +439,7 @@ extension DiscoveryASASearchAPIDataController {
     ) {
         asyncMain { [weak self] in
             guard let self = self else { return }
+            print("Publish")
             self.eventHandler?(event)
         }
     }
