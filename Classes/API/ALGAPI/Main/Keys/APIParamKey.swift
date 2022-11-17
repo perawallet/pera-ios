@@ -23,6 +23,7 @@ typealias APIBodyParam = JSONObjectBodyParam<APIParamKey>
 enum APIParamKey: String, CodingKey {
     case address = "address"
     case app = "application"
+    case availableOnDiscover = "available_on_discover"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
     case accessToken = "access_token"

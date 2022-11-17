@@ -5087,6 +5087,9 @@
 		F012643D2836FAD400380C4E /* ALGWalletConnectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F012643C2836FAD400380C4E /* ALGWalletConnectConfig.swift */; };
 		F012643E2836FAD400380C4E /* ALGWalletConnectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F012643C2836FAD400380C4E /* ALGWalletConnectConfig.swift */; };
 		F012643F2836FAD400380C4E /* ALGWalletConnectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F012643C2836FAD400380C4E /* ALGWalletConnectConfig.swift */; };
+		F01509D72926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01509D62926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift */; };
+		F01509D82926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01509D62926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift */; };
+		F01509D92926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01509D62926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift */; };
 		F022D1D92760AAFC00D786CD /* BlockCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022D1D82760AAFC00D786CD /* BlockCycle.swift */; };
 		F022D1DA2760AAFC00D786CD /* BlockCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022D1D82760AAFC00D786CD /* BlockCycle.swift */; };
 		F022D1DB2760AAFC00D786CD /* BlockCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022D1D82760AAFC00D786CD /* BlockCycle.swift */; };
@@ -7416,6 +7419,7 @@
 		F01264322835A46F00380C4E /* DeeplinkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkConfig.swift; sourceTree = "<group>"; };
 		F01264382836FACE00380C4E /* WalletConnectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectConfig.swift; sourceTree = "<group>"; };
 		F012643C2836FAD400380C4E /* ALGWalletConnectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGWalletConnectConfig.swift; sourceTree = "<group>"; };
+		F01509D62926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAssetsForDiscoverDraft.swift; sourceTree = "<group>"; };
 		F022D1D82760AAFC00D786CD /* BlockCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCycle.swift; sourceTree = "<group>"; };
 		F022D1DC276365DE00D786CD /* BlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockProcessor.swift; sourceTree = "<group>"; };
 		F0261A9727C4E28D009D8BF4 /* AppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthChecker.swift; sourceTree = "<group>"; };
@@ -8022,6 +8026,7 @@
 		17B7D8A92240E18800A6FF9E /* Drafts */ = {
 			isa = PBXGroup;
 			children = (
+				F01509D42926FB4C00988355 /* Discover */,
 				2B4DF42C236C772300FF9551 /* Account */,
 				17A011CC27EB6D4F008C147D /* Announcement */,
 				95CA71FA27CD5D6700424626 /* BuyAlgo */,
@@ -16441,6 +16446,14 @@
 			path = WalletConnectConfig;
 			sourceTree = "<group>";
 		};
+		F01509D42926FB4C00988355 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				F01509D62926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
 		F02FA9A9292474DB00E4633A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -18043,6 +18056,7 @@
 				2B7747A926026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
 				D4155E93276CDB1500BCBFA4 /* AccountSelectionViewCell.swift in Sources */,
 				D44EB6B126DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
+				F01509D92926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */,
 				2BD0E7E32789BFA2001145E6 /* AccountListOptionsViewControllerTheme.swift in Sources */,
 				953DEE25279EF63700D76957 /* WCAlgosTransactionViewTheme.swift in Sources */,
 				D46C648B26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
@@ -19860,6 +19874,7 @@
 				D4AC1FBB272D406C0027353F /* AccountListViewModel.swift in Sources */,
 				D432865826DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */,
 				D419433A27356FEB0055EC70 /* AssetListViewLayout.swift in Sources */,
+				F01509D82926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */,
 				95D11D062771CC0F001B2C37 /* TitleHeaderView.swift in Sources */,
 				2B0F61BA24EC129D00DA22A6 /* UIImage+Size.swift in Sources */,
 				2B77474B25FFE97E0083EFFA /* InputSuggestionViewModel.swift in Sources */,
@@ -21677,6 +21692,7 @@
 				D4CC46F026DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B7E580C257E56BE00731C97 /* Int+Byte.swift in Sources */,
+				F01509D72926FB8D00988355 /* SearchAssetsForDiscoverDraft.swift in Sources */,
 				2B7A1F9127DE64C80010F52E /* CollectibleDescriptionViewTheme.swift in Sources */,
 				D48FDF9927CD765300C39FC7 /* ReceiveCollectibleAccountListViewController.swift in Sources */,
 				9568ADE027C7827300668053 /* BuyAlgoDraft.swift in Sources */,

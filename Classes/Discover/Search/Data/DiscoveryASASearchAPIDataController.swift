@@ -26,7 +26,7 @@ final class DiscoveryASASearchAPIDataController:
     private lazy var apiThrottler = Throttler(intervalInSeconds: 0.4)
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private var draft: AssetSearchQuery?
+    private var draft: SearchAssetsForDiscoverDraft?
     private var assetModelsCache: [AssetID: AssetDecoration] = [:]
     private var assetViewModelsCache: [AssetID: DiscoverSearchAssetListItemViewModel] = [:]
 
@@ -79,7 +79,7 @@ extension DiscoveryASASearchAPIDataController {
         }
     }
 
-    private func loadListData(draft: AssetSearchQuery) {
+    private func loadListData(draft: SearchAssetsForDiscoverDraft) {
         apiThrottler.performNext {
             [weak self] in
             guard let self else { return }
@@ -159,10 +159,9 @@ extension DiscoveryASASearchAPIDataController {
             return
         }
 
-        var newDraft = AssetSearchQuery()
+        var newDraft = SearchAssetsForDiscoverDraft()
         newDraft.query = keyword
         newDraft.cursor = nil
-        newDraft.type = .standard
         draft = newDraft
     }
 }
@@ -172,13 +171,11 @@ extension DiscoveryASASearchAPIDataController {
     private typealias GetAssetsError = HIPNetworkError<NoAPIModel>
     private typealias GetAssetsCompletion = (Result<GetAssetsChanges, GetAssetsError>) -> Void
     private func getAssets(
-        draft: AssetSearchQuery,
+        draft: SearchAssetsForDiscoverDraft,
         completion: @escaping GetAssetsCompletion
     ) {
-        ongoingEndpointToGetAssets = api.searchAssets(
-            draft,
-            ignoreResponseOnCancelled: true
-        ) { [weak self] result in
+        ongoingEndpointToGetAssets = api.searchAssetsForDiscover(draft: draft) {
+            [weak self] result in
             guard let self else { return  }
 
             self.ongoingEndpointToGetAssets = nil
