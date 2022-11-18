@@ -343,10 +343,13 @@ extension TabBarController {
     }
 
     func setNeedsDiscoverTabBarItemUpdateIfNeeded() {
-        let isTestnet = api.isTestNet
+        /// <note>
+        /// In staging app, the discover tab is always enabled, but in store app, it is enabled only
+        /// on mainnet.
+        let isEnabled = !ALGAppTarget.current.isProduction || !api.isTestNet
 
         setTabBarItemEnabled(
-            !isTestnet,
+            isEnabled,
             forItemID: .discover
         )
     }
