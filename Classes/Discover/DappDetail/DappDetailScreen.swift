@@ -34,9 +34,17 @@ final class DappDetailScreen: WebScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        webView.navigationDelegate = self
+        guard let url = URL(string: dappDetail.url) else {
+            return
+        }
 
-        load(url: URL(string: dappDetail.url))
+        let generatedUrl = DiscoverURLGenerator.generateUrl(
+            from: .other(url: url),
+            on: interfaceTheme,
+            with: session
+        )
+
+        load(url: generatedUrl)
     }
 
     override func customizeTabBarAppearence() {
@@ -61,30 +69,5 @@ extension DappDetailScreen {
 
     private func bindNavigationTitle() {
         navigationTitleView.bindData(DappDetailNavigationViewModel(dappDetail))
-    }
-}
-
-extension DappDetailScreen {
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        preferences: WKWebpagePreferences,
-        decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
-    ) {
-        if let requestUrl = navigationAction.request.url {
-            let deeplinkQR = DeeplinkQR(url: requestUrl)
-
-            if let walletConnectURL = deeplinkQR.walletConnectUrl() {
-                AppDelegate.shared!.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
-                decisionHandler(.cancel, preferences)
-                return
-            }
-
-            decisionHandler(.allow, preferences)
-
-            return
-        }
-
-        decisionHandler(.allow, preferences)
     }
 }

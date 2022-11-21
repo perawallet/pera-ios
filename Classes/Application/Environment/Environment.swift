@@ -89,6 +89,15 @@ class Environment {
     }()
 
     lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
+
+    lazy var discoverBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://discover-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://discover-mobile.perawallet.app/"
+        }
+    }()
     
     private let target: AppTarget
     

@@ -407,6 +407,9 @@
 		17C9325C291000AC000EE03D /* DiscoverASASearchScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325B291000AC000EE03D /* DiscoverASASearchScreenTheme.swift */; };
 		17C9325D291000AC000EE03D /* DiscoverASASearchScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325B291000AC000EE03D /* DiscoverASASearchScreenTheme.swift */; };
 		17C9325E291000AC000EE03D /* DiscoverASASearchScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325B291000AC000EE03D /* DiscoverASASearchScreenTheme.swift */; };
+		17C93260292B942D000EE03D /* DiscoverURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */; };
+		17C93261292B942E000EE03D /* DiscoverURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */; };
+		17C93262292B942E000EE03D /* DiscoverURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */; };
 		17CADC5E283BF4A8001D19A8 /* CopyAddressStoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC5D283BF4A8001D19A8 /* CopyAddressStoryScreen.swift */; };
 		17CADC5F283C179C001D19A8 /* CopyAddressStoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC5D283BF4A8001D19A8 /* CopyAddressStoryScreen.swift */; };
 		17CADC60283C179D001D19A8 /* CopyAddressStoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC5D283BF4A8001D19A8 /* CopyAddressStoryScreen.swift */; };
@@ -5808,6 +5811,7 @@
 		17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyView.swift; sourceTree = "<group>"; };
 		17C93247290CF841000EE03D /* DiscoverSearchAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchAssetCell.swift; sourceTree = "<group>"; };
 		17C9325B291000AC000EE03D /* DiscoverASASearchScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverASASearchScreenTheme.swift; sourceTree = "<group>"; };
+		17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverURLGenerator.swift; sourceTree = "<group>"; };
 		17CADC5D283BF4A8001D19A8 /* CopyAddressStoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyAddressStoryScreen.swift; sourceTree = "<group>"; };
 		17CADC61283CBC6C001D19A8 /* CopyAddressStoryScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyAddressStoryScreenTheme.swift; sourceTree = "<group>"; };
 		17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioNavigationView.swift; sourceTree = "<group>"; };
@@ -7862,6 +7866,7 @@
 				17A766772909586600A8746C /* DiscoverWebScreenTheme.swift */,
 				17A766852909872D00A8746C /* DiscoverNavigationBarView.swift */,
 				17A76689290999E900A8746C /* DiscoverNavigationBarViewTheme.swift */,
+				17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */,
 				F0C54304291E172800596A0A /* Views */,
 			);
 			path = Discover;
@@ -18792,6 +18797,7 @@
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
 				95B388B127F17C6800A500B3 /* HomeQuickActionsCell.swift in Sources */,
 				2B2626F6284CEF8300ADE371 /* TranactionListGrouping.swift in Sources */,
+				17C93262292B942E000EE03D /* DiscoverURLGenerator.swift in Sources */,
 				F03451DB28B27B87009467A0 /* OptInAssetListItemViewModel.swift in Sources */,
 				2BB68F54261261250070FFE9 /* HomeNoContentViewModel.swift in Sources */,
 				2B262728284EB5EE00ADE371 /* PendingTransactionItemViewModel.swift in Sources */,
@@ -20610,6 +20616,7 @@
 				2B0F628024EC129D00DA22A6 /* AddContactViewController.swift in Sources */,
 				D48933BD27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */,
 				2B0F628124EC129D00DA22A6 /* ChoosePasswordViewController.swift in Sources */,
+				17C93261292B942E000EE03D /* DiscoverURLGenerator.swift in Sources */,
 				2B0E00B2278818C000D6B2E2 /* SecuritySettingsView.swift in Sources */,
 				95B388B027F17C6800A500B3 /* HomeQuickActionsCell.swift in Sources */,
 				2B0F628224EC129D00DA22A6 /* ImagePicker.swift in Sources */,
@@ -22428,6 +22435,7 @@
 				2B2626F4284CEF8300ADE371 /* TranactionListGrouping.swift in Sources */,
 				2B2AACAE250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B262726284EB5EE00ADE371 /* PendingTransactionItemViewModel.swift in Sources */,
+				17C93260292B942D000EE03D /* DiscoverURLGenerator.swift in Sources */,
 				F010637028AC33BA00AB6873 /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				D43A0C2C2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
 				F034523B28B39474009467A0 /* ASADiscoveryScreenAPIDataController.swift in Sources */,

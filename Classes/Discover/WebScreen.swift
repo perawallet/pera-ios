@@ -54,6 +54,7 @@ class WebScreen:
         )
         webView.configuration.userContentController.addUserScript(selectionScript)
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         return webView
     }()
     private(set) lazy var noContentView = WebNoContentView(theme.noContent)
@@ -65,6 +66,10 @@ class WebScreen:
     private var lastURL: URL? { webView.url ?? sourceURL }
 
     private let theme = WebScreenTheme()
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +85,22 @@ class WebScreen:
             updateUIForLoading()
             isViewLayoutLoaded = true
         }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(checkThemeWhenBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    @objc
+    private func checkThemeWhenBecomeActive() {
+        interfaceTheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
@@ -117,6 +138,29 @@ class WebScreen:
         withError error: Error
     ) {
         updateUIForError(error)
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        preferences: WKWebpagePreferences,
+        decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
+    ) {
+        if let requestUrl = navigationAction.request.url {
+            let deeplinkQR = DeeplinkQR(url: requestUrl)
+
+            if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+                AppDelegate.shared!.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+                decisionHandler(.cancel, preferences)
+                return
+            }
+
+            decisionHandler(.allow, preferences)
+
+            return
+        }
+
+        decisionHandler(.allow, preferences)
     }
 }
 
@@ -254,6 +298,20 @@ extension WebScreen {
             [unowned self] in
             self.load(url: self.lastURL)
         }
+    }
+}
+
+extension WebScreen: WKUIDelegate {
+    func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+    ) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
     }
 }
 

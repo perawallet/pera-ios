@@ -79,7 +79,12 @@ final class DiscoverWebScreen:
             contentController.add(self, name: event.rawValue)
         }
 
-        load(url: URL(string: "https://discover-mobile-staging.perawallet.app/?theme=\(interfaceTheme.rawValue)"))
+        let generatedUrl = DiscoverURLGenerator.generateUrl(
+            from: .home,
+            on: interfaceTheme,
+            with: session
+        )
+        load(url: generatedUrl)
     }
 
     override func viewDidLayoutSubviews() {
@@ -163,30 +168,6 @@ extension DiscoverWebScreen {
 
     private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
         webView.scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height + theme.webContentTopInset
-    }
-}
-
-extension DiscoverWebScreen {
-    func webView(
-        _ webView: WKWebView,
-        didReceive challenge: URLAuthenticationChallenge,
-        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    ) {
-        guard (webView.url?.host) != nil else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-
-        let authenticationMethod = challenge.protectionSpace.authenticationMethod
-
-        if authenticationMethod == NSURLAuthenticationMethodDefault || authenticationMethod == NSURLAuthenticationMethodHTTPBasic || authenticationMethod == NSURLAuthenticationMethodHTTPDigest {
-            let credential = URLCredential(user: "pera-discover-web", password: "AJWYX*Z9$mK49Td9", persistence: .forSession)
-            completionHandler(.useCredential, credential)
-        } else if authenticationMethod == NSURLAuthenticationMethodServerTrust {
-            completionHandler(.performDefaultHandling, nil)
-        } else {
-            completionHandler(.performDefaultHandling, nil)
-        }
     }
 }
 
