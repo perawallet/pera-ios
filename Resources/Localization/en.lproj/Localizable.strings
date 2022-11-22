@@ -246,8 +246,6 @@
 "asset-transfer-balance" = "Transfer Balance";
 "title-add-asset" = "Add New Asset";
 "asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
-"asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
-"asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-removing-status" = "Removing Asset";
 "asset-confirmation-not-found" = "Asset could not be found.";
@@ -261,7 +259,6 @@
 "asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
 "asset-you-already-own-message" = "You already own this asset";
 "asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
-"asset-support-not-same-title" = "Account does not accept this asset";
 "asset-support-add-title" = "You are about to receive an asset!";
 "asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
