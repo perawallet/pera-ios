@@ -239,7 +239,7 @@ indirect enum Screen {
         accounts: [Account],
         eventHandler: ExportsAccountsResultScreen.EventHandler
     )
-    case discoverSearch
+    case discoverSearch(DiscoverASASearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverTokenDetail)
     case discoverDappDetail(DiscoverDappDetail)
 }

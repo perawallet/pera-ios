@@ -1107,14 +1107,16 @@ class Router:
             let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
             screen.eventHandler = eventHandler
             viewController = screen
-        case .discoverSearch:
-            viewController = DiscoverASASearchScreen(
+        case .discoverSearch(let eventHandler):
+            let screen = DiscoverASASearchScreen(
                 dataController: DiscoveryASASearchAPIDataController(
                     api: appConfiguration.api,
                     sharedDataController: appConfiguration.sharedDataController
                 ),
                 configuration: configuration
             )
+            screen.eventHandler = eventHandler
+            viewController = screen
         case .discoverAssetDetail(let tokenDetail):
             viewController = DiscoverTokenDetailScreen(
                 tokenDetail: tokenDetail,

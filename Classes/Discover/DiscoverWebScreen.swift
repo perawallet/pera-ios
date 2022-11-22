@@ -211,8 +211,21 @@ extension DiscoverWebScreen: WKScriptMessageHandler {
 
 extension DiscoverWebScreen {
     private func navigateToSearch() {
+        let screen = Screen.discoverSearch { [weak self] event, screen in
+            guard let self else {
+                return
+            }
+
+            switch event {
+            case .selectAsset(let tokenDetail):
+                screen.dismissScreen(animated: true) {
+                    self.openTokenDetail(tokenDetail)
+                }
+            }
+        }
+
         open(
-            .discoverSearch,
+            screen,
             by: .customPresent(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,

@@ -23,6 +23,11 @@ final class DiscoverASASearchScreen:
     BaseViewController,
     MacaroonForm.KeyboardControllerDataSource,
     UICollectionViewDelegateFlowLayout {
+
+    typealias EventHandler = (Event, DiscoverASASearchScreen) -> Void
+    
+    var eventHandler: EventHandler?
+
     override var shouldShowNavigationBar: Bool { false }
 
     private lazy var searchInputView: SearchInputView = .init()
@@ -421,10 +426,8 @@ extension DiscoverASASearchScreen {
 extension DiscoverASASearchScreen {
     private func handleSelectionOfCellForAssetItem(_ item: DiscoverSearchAssetListItem) {
         let tokenDetail = DiscoverTokenDetail(tokenId: String(item.assetID))
-        open(
-            .discoverAssetDetail(tokenDetail),
-            by: .push
-        )
+
+        eventHandler?(.selectAsset(tokenDetail), self)
     }
 }
 
