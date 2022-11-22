@@ -90,10 +90,15 @@ final class NotificationsViewController:
             switch parserResult {
             case .success(let screen):
                 switch screen {
-                case let .optInAsset(account, assetID):
-                    self.openOptInAsset(
+                case let .asaDiscoveryWithOptInAction(account, assetID):
+                    self.openASADiscoveryWithOptInAction(
                         account: account,
                         assetID: assetID
+                    )
+                case let .asaDiscoveryWithOptOutAction(account, asset):
+                    self.openASADiscoveryWithOptOutAction(
+                        account: account,
+                        asset: asset
                     )
                 case let .asaDetail(account, asset):
                     self.openASADetail(
@@ -110,10 +115,8 @@ final class NotificationsViewController:
                 }
             case .failure(let error):
                 switch error {
-                case .tryingToActForWatchAccount:
+                case .tryingToOptInForWatchAccount:
                     self.presentTryingToActForWatchAccountError()
-                case .tryingToOptInForAlreadyOptedInAsset:
-                    self.presentTryingToOptInForAlreadyOptedInAssetError()
                 case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                     self.presentTryingToActForAssetWithPendingOptInRequestError(accountName: accountName)
                 case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
@@ -228,12 +231,12 @@ extension NotificationsViewController {
 }
 
 extension NotificationsViewController {
-    private func openOptInAsset(
+    private func openASADiscoveryWithOptInAction(
         account: Account,
         assetID: AssetID
     ) {
         if let asset = sharedDataController.assetDetailCollection[assetID] {
-            openOptInAsset(
+            openASADiscoveryWithOptInAction(
                 account: account,
                 asset: asset
             )
@@ -264,7 +267,7 @@ extension NotificationsViewController {
                 }
 
                 if let asset = assetResponse.results.first {
-                    self.openOptInAsset(
+                    self.openASADiscoveryWithOptInAction(
                         account: account,
                         asset: asset
                     )
@@ -278,69 +281,38 @@ extension NotificationsViewController {
         }
     }
 
-    private func openOptInAsset(
+    private func openASADiscoveryWithOptInAction(
         account: Account,
         asset: AssetDecoration
     ) {
-        let draft = OptInAssetDraft(
+        let screen = Screen.asaDiscovery(
             account: account,
+            quickAction: .optIn,
             asset: asset
         )
-        let screen = Screen.optInAsset(draft: draft) {
-            [weak self] event in
-            guard let self = self else { return }
 
-            switch event {
-            case .performApprove:
-                self.continueToOptInAsset(
-                    asset: asset,
-                    account: account
-                )
-            case .performClose:
-                self.cancelOptInAsset()
-            }
-        }
-
-        transitionToOptInAsset.perform(
+        open(
             screen,
             by: .present
         )
     }
+}
 
-    private func continueToOptInAsset(
-        asset: AssetDecoration,
-        account: Account
+extension NotificationsViewController {
+    private func openASADiscoveryWithOptOutAction(
+        account: Account,
+        asset: AssetDecoration
     ) {
-        dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else { return }
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: .optOut,
+            asset: asset
+        )
 
-            var account = account
-
-            if !self.canSignTransaction(for: &account) { return }
-
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(account: account, asset: asset)
-            monitor.startMonitoringOptInUpdates(request)
-
-            let assetTransactionDraft = AssetTransactionSendDraft(
-                from: account,
-                assetIndex: asset.id
-            )
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            if account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
-            }
-        }
-    }
-
-    private func cancelOptInAsset() {
-        dismiss(animated: true)
+        open(
+            screen,
+            by: .present
+        )
     }
 }
 
@@ -400,15 +372,8 @@ extension NotificationsViewController {
 extension NotificationsViewController {
     private func presentTryingToActForWatchAccountError() {
         bannerController?.presentErrorBanner(
-            title: "notifications-trying-to-act-for-watch-account-title".localized,
-            message: "notifications-trying-to-act-for-watch-account-description".localized
-        )
-    }
-
-    private func presentTryingToOptInForAlreadyOptedInAssetError() {
-        bannerController?.presentErrorBanner(
-            title: "title-error".localized,
-            message: "asset-you-already-own-message".localized
+            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
+            message: "notifications-trying-to-opt-in-for-watch-account-description".localized
         )
     }
 

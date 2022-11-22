@@ -28,7 +28,7 @@ indirect enum Screen {
         account: Account?,
         quickAction: AssetQuickAction?,
         asset: AssetDecoration,
-        eventHandler: ASADiscoveryScreen.EventHandler
+        eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)

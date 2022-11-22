@@ -189,7 +189,22 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .optInAsset: break
+        case .asaDiscoveryWithOptInAction: break /// <note> .assetActionConfirmation is used instead.
+        case .asaDiscoveryWithOptOutAction(let account, let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDiscovery(
+                account: account,
+                quickAction: .optOut,
+                asset: asset
+            )
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 

@@ -22,7 +22,6 @@ import MagpieAlamofire
 import MagpieCore
 
 final class ALGAPIBase {
-    private(set) var apiKey: String = Environment.current.apiKey
     private(set) var algodToken: String?
     private(set) var indexerToken: String?
     private(set) var network: ALGAPI.Network = .mainnet

@@ -335,8 +335,7 @@ extension ALGAppLaunchController {
 
     private func shouldPresentNotificationForFailure(_ error: DeepLinkParser.Error) -> Bool {
         switch error {
-        case .tryingToActForWatchAccount,
-             .tryingToOptInForAlreadyOptedInAsset,
+        case .tryingToOptInForWatchAccount,
              .tryingToActForAssetWithPendingOptInRequest,
              .tryingToActForAssetWithPendingOptOutRequest,
              .accountNotFound,

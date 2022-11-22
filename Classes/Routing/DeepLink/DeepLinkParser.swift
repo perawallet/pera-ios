@@ -130,11 +130,12 @@ extension DeepLinkParser {
         let isWatchAccount = rawAccount.isWatchAccount()
 
         if isWatchAccount {
-            return .failure(.tryingToActForWatchAccount)
+            return .failure(.tryingToOptInForWatchAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
-            return .failure(.tryingToOptInForAlreadyOptedInAsset)
+            let asset = sharedDataController.assetDetailCollection[assetID]!
+            return .success(.asaDiscoveryWithOptOutAction(account: rawAccount, asset: asset))
         }
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
@@ -147,7 +148,7 @@ extension DeepLinkParser {
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
-        return .success(.optInAsset(account: rawAccount, assetID: assetID))
+        return .success(.asaDiscoveryWithOptInAction(account: rawAccount, assetID: assetID))
     }
 
     private func makeAssetTransactionDetailScreen(for notificationMessage: NotificationMessage) -> Result? {
@@ -322,11 +323,12 @@ extension DeepLinkParser {
         let isWatchAccount = rawAccount.isWatchAccount()
 
         if isWatchAccount {
-            return .failure(.tryingToActForWatchAccount)
+            return .failure(.tryingToOptInForWatchAccount)
         }
 
         if rawAccount.containsAsset(assetID) {
-            return .failure(.tryingToOptInForAlreadyOptedInAsset)
+            let asset = sharedDataController.assetDetailCollection[assetID]!
+            return .success(.asaDiscoveryWithOptOutAction(account: rawAccount, asset: asset))
         }
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
@@ -536,9 +538,13 @@ extension DeepLinkParser {
             draft: AssetAlertDraft,
             theme: AssetActionConfirmationViewControllerTheme = .init()
         )
-        case optInAsset(
+        case asaDiscoveryWithOptInAction(
             account: Account,
             assetID: AssetID
+        )
+        case asaDiscoveryWithOptOutAction(
+            account: Account,
+            asset: AssetDecoration
         )
         case asaDetail(
             account: Account,
@@ -561,8 +567,7 @@ extension DeepLinkParser {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
 
-        case tryingToActForWatchAccount
-        case tryingToOptInForAlreadyOptedInAsset
+        case tryingToOptInForWatchAccount
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
         case accountNotFound
@@ -575,12 +580,9 @@ extension DeepLinkParser {
             let description: String
 
             switch self {
-            case .tryingToActForWatchAccount:
-                title = "notifications-trying-to-act-for-watch-account-title".localized
-                description = "notifications-trying-to-act-for-watch-account-description".localized
-            case .tryingToOptInForAlreadyOptedInAsset:
-                title = "title-error".localized
-                description = "asset-you-already-own-message".localized
+            case .tryingToOptInForWatchAccount:
+                title = "notifications-trying-to-opt-in-for-watch-account-title".localized
+                description = "notifications-trying-to-opt-in-for-watch-account-description".localized
             case .tryingToActForAssetWithPendingOptInRequest(let accountName):
                 title = "title-error".localized
                 description = "ongoing-opt-in-request-description".localized(params: accountName)
