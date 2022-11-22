@@ -426,6 +426,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(accountHandle.value)
+        walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
         eventHandler?(.didRemove)
     }
 }

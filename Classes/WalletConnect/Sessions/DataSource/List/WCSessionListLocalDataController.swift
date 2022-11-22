@@ -287,12 +287,8 @@ extension WCSessionListLocalDataController {
         publish(.didStartDisconnectingFromSessions)
 
         lastSnapshot = snapshot
-
-        let allSessions = walletConnector.allWalletConnectSessions
-
-        disconnectedSessions = Set(allSessions)
-
-        allSessions.forEach(walletConnector.disconnectFromSession)
+        
+        walletConnector.disconnectFromAllSessions()
     }
 
     func disconnectSession(
