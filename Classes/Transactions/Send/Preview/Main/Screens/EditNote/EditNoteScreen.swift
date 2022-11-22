@@ -42,6 +42,8 @@ final class EditNoteScreen:
         screen: self
     )
 
+    private var contentSizeObservation: NSKeyValueObservation?
+
     private var note: String?
     private let isLocked: Bool
 
@@ -73,6 +75,7 @@ final class EditNoteScreen:
 
         configureKeyboardController()
         addUI()
+        startObservingContentSizeChanges()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -109,7 +112,6 @@ extension EditNoteScreen {
         }
 
         noteInputView.delegate = self
-        noteInputView.editingDelegate = self
 
         bindNoteInput()
     }
@@ -155,17 +157,6 @@ extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
     }
 }
 
-extension EditNoteScreen: FormInputFieldViewEditingDelegate {
-    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
-        /// <todo>: How to prevent layout update on every editing of input?
-        performLayoutUpdates(animated: isViewAppeared)
-    }
-
-    func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) { }
-
-    func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) { }
-}
-
 extension EditNoteScreen {
     private func didTapDoneButton() {
         delegate?.editNoteScreen(self, didUpdateNote: noteInputView.text)
@@ -187,6 +178,26 @@ extension EditNoteScreen {
         keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
             [unowned self] _ in
             self.performLayoutUpdates(animated: false)
+        }
+    }
+}
+
+extension EditNoteScreen {
+    private func startObservingContentSizeChanges() {
+        contentSizeObservation = scrollView.observe(
+            \.contentSize,
+             options: .new
+        ) {
+            [weak self] _, _ in
+            guard let self = self else {
+                return
+            }
+
+            if !self.isViewAppeared {
+                return
+            }
+
+            self.performLayoutUpdates(animated: true)
         }
     }
 }
