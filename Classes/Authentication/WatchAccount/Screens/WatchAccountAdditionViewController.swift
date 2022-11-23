@@ -436,14 +436,13 @@ extension WatchAccountAdditionViewController {
 
     private func updateLayoutWhenPasteFromClipboardActionDisplayingStatusDidChange(isDisplaying: Bool) {
         updatePasteFromClipboardActionLayoutBeforeAnimations(isDisplaying: isDisplaying)
+        updateNameServiceItemsContentLayoutWhenPasteFromClipboardActionDisplayingStatusDidChange(isDisplaying: isDisplaying)
 
         let animator = UIViewPropertyAnimator(
             duration: 0.25,
             curve: .easeOut
         ) { [unowned self] in
             updatePasteFromClipboardActionAlongsideAnimations(isDisplaying: isDisplaying)
-            updateNameServiceItemsContentLayoutWhenPasteFromClipboardActionDisplayingStatusDidChange(isDisplaying: isDisplaying)
-
             view.layoutIfNeeded()
         }
         animator.startAnimation()
