@@ -107,6 +107,26 @@ class Router:
         viewController.dismissScreen(completion: completion)
     }
     
+    func launchWithBottomWarning(configurator: BottomWarningViewConfigurator) {
+        func launch(
+            tab: TabBarItemID
+        ) {
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: tab)
+            }
+        }
+        
+        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        
+        transition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+        
+        ongoingTransitions.append(transition)
+    }
+    
     func launch(
         deeplink screen: DeepLinkParser.Screen
     ) {

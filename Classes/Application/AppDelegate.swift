@@ -345,6 +345,8 @@ extension AppDelegate {
                     WalletConnector.sessionRequestUserInfoKey: key
                 ]
             )
+        case .bottomWarning(let configurator):
+            router.launchWithBottomWarning(configurator: configurator)
         }
     }
 }

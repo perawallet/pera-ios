@@ -815,6 +815,7 @@
 "wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Read More";

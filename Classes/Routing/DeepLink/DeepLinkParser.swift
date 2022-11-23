@@ -283,11 +283,30 @@ extension DeepLinkParser {
     func discover(
         walletConnectRequest draft: WalletConnectRequestDraft
     ) -> Result? {
+        if !hasTransactionAccount(draft.transactions) {
+            return .failure(.accountDoesNotExist)
+        }
+        
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
         return .success(.wcMainTransactionScreen(draft: draft))
+    }
+    
+    func hasTransactionAccount(_ transactions: [WCTransaction]) -> Bool {
+        guard let senderAddress = transactions.first?.transactionDetail?.sender,
+              let receiverAddress = transactions.last?.transactionDetail?.receiver,
+              senderAddress == receiverAddress else {
+            return false
+        }
+        
+        guard let account = sharedDataController.accountCollection.account(for: senderAddress),
+              !account.isWatchAccount() else {
+            return false
+        }
+        
+        return true
     }
     
     func discoverBuyAlgo(
@@ -323,5 +342,6 @@ extension DeepLinkParser {
     enum Error: Swift.Error {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
+        case accountDoesNotExist
     }
 }
