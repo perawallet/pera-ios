@@ -54,12 +54,11 @@ extension HomePortfolioViewModel {
             .localized
             .bodyRegular(
                 alignment: .center,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
         titleColor = portfolioItem.portfolioValue.isAvailable
-            ? AppColors.Components.Text.gray.uiColor
-            : AppColors.Shared.Helpers.negative.uiColor
+            ? Colors.Text.gray.uiColor
+            : Colors.Helpers.negative.uiColor
     }
     
     mutating func bindPrimaryValue(
@@ -72,8 +71,7 @@ extension HomePortfolioViewModel {
         ) ?? CurrencyConstanst.unavailable
         primaryValue = text.largeTitleMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
     
@@ -87,8 +85,7 @@ extension HomePortfolioViewModel {
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = "≈ \(text)".bodyMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
 }
@@ -99,6 +96,7 @@ extension HomePortfolioViewModel {
     ) {
         hasher.combine(primaryValue?.string)
         hasher.combine(secondaryValue?.string)
+        hasher.combine(titleColor?.hex)
     }
     
     static func == (
@@ -107,6 +105,7 @@ extension HomePortfolioViewModel {
     ) -> Bool {
         return
             lhs.primaryValue?.string == rhs.primaryValue?.string &&
-            lhs.secondaryValue?.string == rhs.secondaryValue?.string
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
+            lhs.titleColor?.hex == rhs.titleColor?.hex
     }
 }

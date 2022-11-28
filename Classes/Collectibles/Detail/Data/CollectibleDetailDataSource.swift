@@ -89,6 +89,13 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 let viewModel = CollectibleTransactionInfoViewModel(info)
                 cell.bindData(viewModel)
                 return cell
+            case .assetID(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailAssetIDItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
             case .properties(let viewModel):
                 let cell = collectionView.dequeue(
                     CollectiblePropertyCell.self,
@@ -106,9 +113,9 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             }
         }
 
-        supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = CollectibleDetailSection(rawValue: indexPath.section),
-                  kind == UICollectionView.elementKindSectionHeader else {
+        supplementaryViewProvider = {
+            [weak self] collectionView, kind, indexPath in
+            guard let section = self?.snapshot().sectionIdentifiers[safe: indexPath.section] else {
                 return nil
             }
 
@@ -164,6 +171,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleDetailCreatorAccountActionCell.self,
             CollectibleDescriptionCell.self,
             CollectibleExternalSourceCell.self,
+            CollectibleDetailAssetIDItemCell.self,
             CollectibleDetailInformationCell.self,
             CollectibleMediaPreviewCell.self,
             CollectiblePropertyCell.self

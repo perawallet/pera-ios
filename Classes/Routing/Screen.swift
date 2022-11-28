@@ -13,11 +13,23 @@
 // limitations under the License.
 
 //
-//  Screen.swift
+//  Screen.swifta
 
 import UIKit
 
 indirect enum Screen {
+    case asaDetail(
+        account: Account,
+        asset: Asset,
+        configuration: ASADetailScreenConfiguration? = nil,
+        eventHandler: ASADetailScreen.EventHandler
+    )
+    case asaDiscovery(
+        account: Account?,
+        quickAction: AssetQuickAction?,
+        asset: AssetDecoration,
+        eventHandler: ASADiscoveryScreen.EventHandler
+    )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
@@ -32,15 +44,6 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetSearch(accountHandle: AccountHandle, dataController: AssetSearchDataController)
-    case assetDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
-    case algosDetail(
-        draft: TransactionListing,
-        preferences: BaseAssetDetailViewController.Preferences = .init()
-    )
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
@@ -53,18 +56,16 @@ indirect enum Screen {
     case transactionDetail(
         account: Account,
         transaction: Transaction,
-        assetDetail: StandardAsset?
+        assetDetail: Asset?
     )
     case appCallTransactionDetail(
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assets: [StandardAsset]?,
-        eventHandler: AppCallTransactionDetailViewController.EventHandler
+        assets: [Asset]?
     )
     case appCallAssetList(
-        dataController: AppCallAssetListDataController,
-        eventHandler: AppCallAssetListViewController.EventHandler
+        dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetsListDataController)
@@ -78,7 +79,6 @@ indirect enum Screen {
         theme: AssetActionConfirmationViewControllerTheme = .init()
     )
     case rewardDetail(account: Account)
-    case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
@@ -101,7 +101,7 @@ indirect enum Screen {
         address: String? = nil
     )
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
-    case notificationFilter(flow: NotificationFilterViewController.Flow)
+    case notificationFilter
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
@@ -133,7 +133,6 @@ indirect enum Screen {
         shouldFilterAccount: ((Account) -> Bool)? = nil
     )
     case assetSelection(
-        filter: AssetType?,
         account: Account,
         receiver: String? = nil
     )
@@ -154,7 +153,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
     )
-    case peraIntroduction
+    case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
@@ -163,14 +162,13 @@ indirect enum Screen {
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
-    case receiveCollectibleAssetList(
-        account: AccountHandle,
-        dataController: ReceiveCollectibleAssetListDataController
-    )
+    case receiveCollectibleAssetList(account: AccountHandle)
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?
+        thumbnailImage: UIImage?,
+        quickAction: AssetQuickAction?,
+        eventHandler: CollectibleDetailViewController.EventHandler
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
@@ -203,6 +201,43 @@ indirect enum Screen {
     case innerTransactionList(
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
+    )
+    case optInAsset(
+        draft: OptInAssetDraft,
+        eventHandler: OptInAssetScreen.EventHandler
+    )
+    case optOutAsset(
+        draft: OptOutAssetDraft,
+        theme: OptOutAssetScreenTheme = .init(),
+        eventHandler: OptOutAssetScreen.EventHandler
+    )
+    case transferAssetBalance(
+        draft: TransferAssetBalanceDraft,
+        theme: TransferAssetBalanceScreenTheme = .init(),
+        eventHandler: TransferAssetBalanceScreen.EventHandler
+    )
+    case sheetAction(
+        sheet: UISheet,
+        theme: UISheetActionScreenTheme = UISheetActionScreenCommonTheme()
+    )
+    case insufficientAlgoBalance(
+        draft: InsufficientAlgoBalanceDraft,
+        eventHandler: InsufficientAlgoBalanceScreen.EventHandler
+    )
+    case exportAccountList(
+        eventHandler: ExportAccountListScreen.EventHandler
+    )
+    case exportAccountsDomainConfirmation(
+        hasSingularAccount: Bool,
+        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
+    )
+    case exportAccountsConfirmationList(
+        selectedAccounts: [Account],
+        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case exportAccountsResult(
+        accounts: [Account],
+        eventHandler: ExportsAccountsResultScreen.EventHandler
     )
 }
 
@@ -254,4 +289,8 @@ extension Screen.Transition {
         case pop
         case dismiss
     }
+}
+
+extension Screen {
+    typealias EventHandler<Event> = (Event) -> Void
 }

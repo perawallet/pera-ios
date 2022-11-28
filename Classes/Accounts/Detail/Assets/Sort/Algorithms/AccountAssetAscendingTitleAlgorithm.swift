@@ -15,6 +15,7 @@
 //   AccountAssetAscendingTitleAlgorithm.swift
 
 import Foundation
+import MacaroonUtils
 
 struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
     let id: String
@@ -28,27 +29,27 @@ struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetAscendingTitleAlgorithm {
     func getFormula(
-        assetPreview: AssetPreviewModel,
-        otherAssetPreview: AssetPreviewModel
+        viewModel: AssetListItemViewModel,
+        otherViewModel: AssetListItemViewModel
     ) -> Bool {
+        let assetTitle =
+            viewModel.title?.primaryTitle?.string ??
+            viewModel.title?.secondaryTitle?.string ??
+            viewModel.asset.unwrap { String($0.id) }
+        let otherAssetTitle =
+            otherViewModel.title?.primaryTitle?.string ??
+            otherViewModel.title?.secondaryTitle?.string ??
+            viewModel.asset.unwrap { String($0.id) }
 
-        let firstAssetTitle =
-        assetPreview.title ??
-        assetPreview.subtitle
-
-        let secondAssetTitle =
-        otherAssetPreview.title ??
-        otherAssetPreview.subtitle
-
-        guard let assetTitle = firstAssetTitle, !assetTitle.isEmptyOrBlank else {
+        guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
             return false
         }
 
-        guard let otherAssetTitle = secondAssetTitle, !otherAssetTitle.isEmptyOrBlank else {
+        guard let anOtherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
             return true
         }
 
-        let comparison = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
-        return comparison == .orderedAscending
+        let result = anAssetTitle.localizedCaseInsensitiveCompare(anOtherAssetTitle)
+        return result == .orderedAscending
     }
 }

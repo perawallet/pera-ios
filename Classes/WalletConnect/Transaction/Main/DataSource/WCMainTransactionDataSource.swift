@@ -18,8 +18,11 @@
 import UIKit
 
 class WCMainTransactionDataSource: NSObject {
-
     weak var delegate: WCMainTransactionDataSourceDelegate?
+
+    var hasValidGroupTransaction: Bool {
+        groupedTransactions.count == transactions.count
+    }
 
     private let walletConnector: WalletConnector
     private(set) var transactionRequest: WalletConnectRequest
@@ -27,6 +30,7 @@ class WCMainTransactionDataSource: NSObject {
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
     private let sharedDataController: SharedDataController
     private let currencyFormatter: CurrencyFormatter
+    private let transactions: [WCTransaction]
 
     init(
         sharedDataController: SharedDataController,
@@ -41,9 +45,12 @@ class WCMainTransactionDataSource: NSObject {
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
         self.currencyFormatter = currencyFormatter
+        self.transactions = transactions
 
         super.init()
+    }
 
+    func load() {
         groupTransactions(transactions)
     }
 

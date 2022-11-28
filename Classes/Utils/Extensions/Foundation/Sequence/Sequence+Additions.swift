@@ -18,8 +18,14 @@
 import Foundation
 
 extension Sequence where Element: Hashable {
-    func uniqued() -> [Element] {
+    func filterDuplicates() -> [Element] {
         var set = Set<Element>()
         return filter { set.insert($0).inserted }
+    }
+}
+
+extension Sequence {
+    var isSingular: Bool {
+        underestimatedCount == 1
     }
 }

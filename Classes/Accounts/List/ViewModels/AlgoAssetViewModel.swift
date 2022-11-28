@@ -77,7 +77,7 @@ extension AlgoAssetViewModel {
 
             valueInCurrency = formatter.format(amount)
 
-            let amountInUSD = try? exchanger.exchangeAlgoToUSD(amount: amount)
+            let amountInUSD = try? exchanger.exchangeAlgoToUSD(amount: algoAmount)
             valueInUSD = amountInUSD ?? 0
         } catch {
             valueInCurrency = nil

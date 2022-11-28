@@ -23,7 +23,7 @@ import UIKit
 
 final class OptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: OptionsViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -33,7 +33,7 @@ final class OptionsViewController:
     private lazy var primaryContextView = VStackView()
     private lazy var secondaryContextView = VStackView()
     
-    private var muteNotificationsView: ListActionView?
+    private var muteNotificationsView: ListItemButton?
 
     private let account: Account
     private let optionGroup: OptionGroup
@@ -60,7 +60,7 @@ final class OptionsViewController:
     private func build() {
         addBackground()
         addContext()
-        addActions()
+        addButtons()
     }
 }
 
@@ -74,12 +74,12 @@ extension OptionsViewController {
         addSecondaryContext()
     }
 
-    private func addActions() {
-        addActions(
+    private func addButtons() {
+        addButtons(
             optionGroup.primaryOptions,
             to: primaryContextView
         )
-        addActions(
+        addButtons(
             optionGroup.secondaryOptions,
             to: secondaryContextView
         )
@@ -124,51 +124,57 @@ extension OptionsViewController {
         }
     }
     
-    private func addActions(
+    private func addButtons(
         _ options: [Option],
         to stackView: UIStackView
     ) {
         options.forEach {
             switch $0 {
             case .copyAddress:
-                addAction(
-                    CopyAddressListActionViewModel(account),
+                addButton(
+                    CopyAddressListItemButtonViewModel(account),
                     #selector(copyAddress),
                     to: stackView
                 )
+            case .showAddress:
+                addButton(
+                    ShowQrCodeListItemButtonViewModel(),
+                    #selector(showQRCode),
+                    to: stackView
+                )
             case .rekey:
-                addAction(
-                    RekeyAccountListActionViewModel(),
+                addButton(
+                    RekeyAccountListItemButtonViewModel(),
                     #selector(rekeyAccount),
                     to: stackView
                 )
             case .rekeyInformation:
-                addAction(
-                    ShowQrCodeListActionViewModel(),
-                    #selector(showQRCode),
+                addButton(
+                    RekeyAccountInformationListActionViewModel(),
+                    #selector(showRekeyInformation),
                     to: stackView
                 )
             case .viewPassphrase:
-                addAction(
-                    ViewPassphraseListActionViewModel(),
+                addButton(
+                    ViewPassphraseListItemButtonViewModel(),
                     #selector(viewPassphrase),
                     to: stackView
                 )
             case .muteNotifications:
-                muteNotificationsView = addAction(
-                    MuteNotificationsListActionViewModel(account),
+                muteNotificationsView = addButton(
+                    MuteNotificationsListItemButtonViewModel(account),
                     #selector(muteNotifications),
                     to: stackView
                 )
             case .renameAccount:
-                addAction(
-                    RenameAccountListActionViewModel(),
+                addButton(
+                    RenameAccountListItemButtonViewModel(),
                     #selector(renameAccount),
                     to: stackView
                 )
             case .removeAccount:
-                addAction(
-                    RemoveAccountListActionViewModel(),
+                addButton(
+                    RemoveAccountListItemButtonViewModel(),
                     #selector(removeAccount),
                     to: stackView
                 )
@@ -177,24 +183,24 @@ extension OptionsViewController {
     }
     
     @discardableResult
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector,
         to stackView: UIStackView
-    ) -> ListActionView {
-        let actionView = ListActionView()
+    ) -> ListItemButton {
+        let button = ListItemButton()
         
-        actionView.customize(theme.action)
-        actionView.bindData(viewModel)
+        button.customize(theme.button)
+        button.bindData(viewModel)
         
-        stackView.addArrangedSubview(actionView)
+        stackView.addArrangedSubview(button)
         
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )
         
-        return actionView
+        return button
     }
 }
 
@@ -221,6 +227,16 @@ extension OptionsViewController {
             [weak self] in
             guard let self = self else { return }
             
+            self.delegate?.optionsViewControllerDidShowQR(self)
+        }
+    }
+
+    @objc
+    private func showRekeyInformation() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
             self.delegate?.optionsViewControllerDidViewRekeyInformation(self)
         }
     }
@@ -303,7 +319,7 @@ extension OptionsViewController {
             session?.authenticatedUser?.updateAccount(localAccount)
         }
 
-        muteNotificationsView?.bindData(MuteNotificationsListActionViewModel(account))
+        muteNotificationsView?.bindData(MuteNotificationsListItemButtonViewModel(account))
     }
 
     private func didFailToUpdateNotificationStatus(
@@ -333,7 +349,8 @@ extension OptionsViewController {
             forWatchAccount account: Account
         ) -> OptionGroup {
             let primaryOptions: [Option] = [
-                .copyAddress
+                .copyAddress,
+                .showAddress
             ]
 
             let secondaryOptions: [Option] = [
@@ -353,6 +370,7 @@ extension OptionsViewController {
             var primaryOptions: [Option] = []
 
             primaryOptions.append(.copyAddress)
+            primaryOptions.append(.showAddress)
 
             if account.isRekeyed() {
                 primaryOptions.append(.rekeyInformation)
@@ -365,8 +383,8 @@ extension OptionsViewController {
             primaryOptions.append(.rekey)
 
             let secondaryOptions: [Option] = [
-                .muteNotifications,
                 .renameAccount,
+                .muteNotifications,
                 .removeAccount
             ]
 
@@ -379,6 +397,7 @@ extension OptionsViewController {
 
     enum Option {
         case copyAddress
+        case showAddress
         case rekey
         case rekeyInformation
         case viewPassphrase
@@ -390,6 +409,9 @@ extension OptionsViewController {
 
 protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidCopyAddress(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidShowQR(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeying(

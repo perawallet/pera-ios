@@ -19,11 +19,11 @@ import MacaroonUIKit
 
 struct AppCallAssetPreviewWithImageViewModel:
     ViewModel {
-    private(set) var icon: AssetImageViewModel?
+    private(set) var icon: PrimaryImageViewModel?
     private(set) var content: AppCallAssetPreviewViewModel?
 
     init(
-        asset: StandardAsset
+        asset: Asset
     ) {
         bindIcon(asset)
         bindContent(asset)
@@ -32,11 +32,11 @@ struct AppCallAssetPreviewWithImageViewModel:
 
 extension AppCallAssetPreviewWithImageViewModel {
     mutating func bindIcon(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
-        let title = asset.presentation.name.isNilOrEmpty ?
+        let title = asset.naming.name.isNilOrEmpty ?
         "title-unknown".localized
-        : asset.presentation.name
+        : asset.naming.name
 
         icon = AssetImageLargeViewModel(
             image: .url(
@@ -47,7 +47,7 @@ extension AppCallAssetPreviewWithImageViewModel {
     }
 
     mutating func bindContent(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         content = AppCallAssetPreviewViewModel(
             asset: asset

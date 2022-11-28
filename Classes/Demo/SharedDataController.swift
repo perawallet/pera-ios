@@ -21,8 +21,8 @@ import MacaroonUtils
 
 protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
-    /// <note>
-    /// If it is nil, it means the app has just been updated from a very old version.
+    /// <todo>
+    /// There is no need to define selected sorting algorithms as optional because they are not.
     var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? { get set }
     var accountSortingAlgorithms: [AccountSortingAlgorithm] { get }
 
@@ -35,7 +35,7 @@ protocol SharedDataController: AnyObject {
 
     var currency: CurrencyProvider { get }
 
-    var lastRound: BlockRound? { get }
+    var blockchainUpdatesMonitor: BlockchainUpdatesMonitor { get }
     
     /// <note>
     /// Returns true if the shared data is ready to use.
@@ -54,6 +54,15 @@ protocol SharedDataController: AnyObject {
     func resetPollingAfterPreferredCurrencyWasChanged()
 
     func getPreferredOrderForNewAccount() -> Int
+
+    func hasOptedIn(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptInStatus
+    func hasOptedOut(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptOutStatus
     
     func add(
         _ observer: SharedDataControllerObserver
@@ -77,18 +86,6 @@ extension SharedDataController {
     }
 }
 
-extension Account {
-    func sortedCollectibleAssets(
-        _ algorithm: CollectibleSortingAlgorithm?
-    ) -> [CollectibleAsset] {
-        if let algorithm = algorithm {
-            return collectibleAssets.someArray.sorted(algorithm)
-        }
-
-        return collectibleAssets.someArray
-    }
-}
-
 /// <todo>
 /// Can this approach move to 'Macaroon' library???
 ///
@@ -105,4 +102,16 @@ enum SharedDataControllerEvent {
     case didBecomeIdle
     case didStartRunning(first: Bool)
     case didFinishRunning
+}
+
+enum OptInStatus {
+    case pending
+    case optedIn
+    case rejected
+}
+
+enum OptOutStatus {
+    case pending
+    case optedOut
+    case rejected
 }

@@ -22,6 +22,11 @@ import MacaroonUIKit
 import UIKit
 
 class BaseScrollViewController: BaseViewController {
+    var footerBackgroundEffect: Effect? {
+        get { footerBackgroundView.effect }
+        set { footerBackgroundView.effect = newValue }
+    }
+
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
@@ -35,6 +40,9 @@ class BaseScrollViewController: BaseViewController {
         contentView.backgroundColor = .clear
         return contentView
     }()
+
+    private(set) lazy var footerView: UIView = .init()
+    private(set) lazy var footerBackgroundView = EffectView()
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -45,55 +53,90 @@ class BaseScrollViewController: BaseViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupScrollViewLayout()
-        setupContentViewLayout()
+        addScroll()
+        addFooter()
     }
-}
 
-extension BaseScrollViewController {
-    private func setupScrollViewLayout() {
+    private func addScroll() {
         view.addSubview(scrollView)
-        
-        scrollView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+        scrollView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
+
+        addContent()
     }
-    
-    private func setupContentViewLayout() {
+
+    private func addContent() {
         scrollView.addSubview(contentView)
-        
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.leading.trailing.equalTo(view)
-            make.height.equalToSuperview().priority(.low)
+        contentView.snp.makeConstraints {
+            $0.width == view
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+            $0.height.equalToSuperview().priority(.low)
+        }
+    }
+
+    func addFooter() {
+        view.addSubview(footerBackgroundView)
+        footerBackgroundView.snp.makeConstraints {
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        footerBackgroundView.addSubview(footerView)
+        footerView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == footerBackgroundView.safeAreaLayoutGuide.snp.bottom
+            $0.trailing == 0
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if contentView.bounds.isEmpty {
+            return
+        }
+
+        updateScrollLayoutWhenViewDidLayoutSubviews()
+        updateLayoutOnScroll()
+    }
+
+    private func updateLayoutOnScroll() {
+        if footerView.bounds.isEmpty {
+            return
+        }
+
+        let endOfContent = contentView.frame.maxY - scrollView.contentOffset.y
+        let hidesFooterBackgroundEffect = endOfContent <= footerBackgroundView.frame.minY
+        footerBackgroundView.setEffectHidden(hidesFooterBackgroundEffect)
+    }
+
+    private func updateScrollLayoutWhenViewDidLayoutSubviews() {
+        if !footerView.bounds.isEmpty {
+            scrollView.setContentInset(bottom: footerView.bounds.height)
         }
     }
 }
 
-extension BottomSheetPresentable where Self: BaseScrollViewController {
+extension BottomSheetScrollPresentable where Self: BaseScrollViewController {
     var modalHeight: ModalHeight {
         return .compressed
     }
 
-    var presentedScrollView: UIScrollView? {
-        return scrollView
-    }
-    var presentedScrollContentView: UIView? {
-        return contentView
-    }
-}
-
-extension StorySheetPresentable where Self: BaseScrollViewController {
-    var modalHeight: ModalHeight {
-        return .compressed
-    }
-
-    var presentedScrollView: UIScrollView? {
-        return scrollView
-    }
-    var presentedScrollContentView: UIView? {
-        return contentView
+    func calculateContentAreaHeightFitting(_ targetSize: CGSize) -> CGFloat {
+        let contentSize = contentView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .defaultLow
+        )
+        return contentSize.height
     }
 }

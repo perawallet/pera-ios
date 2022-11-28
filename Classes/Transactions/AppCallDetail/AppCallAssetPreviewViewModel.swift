@@ -24,7 +24,7 @@ struct AppCallAssetPreviewViewModel:
     private(set) var subtitle: EditText?
 
     init(
-        asset: StandardAsset
+        asset: Asset
     ) {
         bindTitle(asset)
         bindAccessoryIcon(asset)
@@ -34,29 +34,38 @@ struct AppCallAssetPreviewViewModel:
 
 extension AppCallAssetPreviewViewModel {
     mutating func bindTitle(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
-        let name = asset.presentation.name
+        let name = asset.naming.name
 
-        title =  .attributedString(
-            (name.isNilOrEmpty ? "title-unknown".localized : name!)
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        let aTitle = name.isNilOrEmpty ? "title-unknown".localized : name!
+
+        title = .attributedString(
+            aTitle.attributed(attributes)
         )
     }
 
     mutating func bindAccessoryIcon(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
-        if asset.presentation.isVerified {
-            accessoryIcon = "icon-verified-shield"
-            return
+        switch asset.verificationTier {
+        case .trusted: accessoryIcon = "icon-trusted"
+        case .verified: accessoryIcon = "icon-verified"
+        case .unverified: accessoryIcon = nil
+        case .suspicious: accessoryIcon = "icon-suspicious"
         }
     }
 
     mutating func bindSubtitle(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         subtitle = .attributedString(
             String(asset.id)

@@ -36,14 +36,21 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     private var ledgerAccountIndex = 0
     
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
     
     private var account: Account?
     private var unsignedTransactionData: Data?
     
-    private lazy var accountFetchOperation = LedgerAccountFetchOperation(api: api)
+    private lazy var accountFetchOperation =
+        LedgerAccountFetchOperation(api: api, analytics: analytics)
     
-    init(api: ALGAPI) {
+    init(
+        api: ALGAPI,
+        analytics: ALGAnalytics
+    ) {
         self.api = api
+        self.analytics = analytics
+
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
         accountFetchOperation.delegate = self
@@ -74,6 +81,7 @@ extension LedgerTransactionOperation {
             }
 
             if data.isLedgerTransactionCancelledError {
+                delegate?.ledgerTransactionOperationDidRejected(self)
                 delegate?.ledgerTransactionOperation(self, didFailed: .cancelled)
             } else {
                 delegate?.ledgerTransactionOperation(self, didFailed: .closedApp)
@@ -215,6 +223,7 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
 protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
+    func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didRequestUserApprovalFor ledger: String)
     func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
     func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)

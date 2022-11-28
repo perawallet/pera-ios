@@ -22,20 +22,11 @@ import UIKit
 extension AccountDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        let accountActionsMenuActionIcon: UIImage
-        let accountActionsMenuActionSize: LayoutSize
-        let accountActionsMenuActionTrailingPadding: LayoutMetric
-        let accountActionsMenuActionBottomPadding: LayoutMetric
-        let spacingBetweenListAndAccountActionsMenuAction: LayoutMetric
+        let navigationTitle: AccountNameTitleViewTheme
 
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-
-            self.accountActionsMenuActionIcon = "fab-swap".uiImage
-            self.accountActionsMenuActionSize = (64, 64)
-            self.accountActionsMenuActionTrailingPadding = 24
-            self.accountActionsMenuActionBottomPadding = 8
-            self.spacingBetweenListAndAccountActionsMenuAction = 4
+            self.backgroundColor = Colors.Defaults.background
+            self.navigationTitle = AccountNameTitleViewTheme(family)
         }
     }
 }

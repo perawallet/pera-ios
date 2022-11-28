@@ -29,7 +29,8 @@ import UserNotifications
 class AppDelegate:
     UIResponder,
     UIApplicationDelegate,
-    AppLaunchUIHandler ,
+    AppLaunchUIHandler,
+    SharedDataControllerObserver,
     NotificationObserver {
     static var shared: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
@@ -68,20 +69,20 @@ class AppDelegate:
         loadingController: loadingController,
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
-        lastSeenNotificationController: lastSeenNotificationController
+        lastSeenNotificationController: lastSeenNotificationController,
+        analytics: analytics
     )
-    
-    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
-    
+
     private lazy var appLaunchController = createAppLaunchController()
 
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnector()
+    private lazy var walletConnector = WalletConnector(analytics: analytics)
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
+    private lazy var analytics = createAnalytics()
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
@@ -111,7 +112,8 @@ class AppDelegate:
     ) -> Bool {
         setupAppTarget()
         setupAppLibs()
-        
+        runMigrations()
+
         prepareForLaunch()
 
         makeWindow()
@@ -248,7 +250,6 @@ class AppDelegate:
         }
 
         return false
-        
     }
 }
 
@@ -362,6 +363,35 @@ extension AppDelegate {
     ) {
         appLaunchController.receive(deeplinkWithSource: src)
     }
+
+    func authStatus() -> AppAuthStatus {
+        return appLaunchController.authStatus()
+    }
+}
+
+/// <mark>
+/// SharedDataControllerObserver
+extension AppDelegate {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+
+            let optedInUpdates = monitor.filterOptedInAssetUpdates()
+            for update in optedInUpdates {
+                bannerController.presentSuccessBanner(title: update.notificationMessage)
+                monitor.finishMonitoringOptInUpdates(associatedWith: update)
+            }
+
+            let optedOutUpdates = monitor.filterOptedOutAssetUpdates()
+            for update in optedOutUpdates {
+                bannerController.presentSuccessBanner(title: update.notificationMessage)
+                monitor.finishMonitoringOptOutUpdates(associatedWith: update)
+            }
+        }
+    }
 }
 
 extension AppDelegate {
@@ -371,8 +401,8 @@ extension AppDelegate {
     
     private func setupAppLibs() {
         /// <mark>
-        /// Firebase
-        firebaseAnalytics.initialize()
+        /// Analytics
+        analytics.setup()
         
         /// <mark>
         /// SwiftDate
@@ -381,6 +411,14 @@ extension AppDelegate {
             zone: TimeZone.autoupdatingCurrent,
             locale: Locales.autoUpdating
         )
+    }
+
+    private func runMigrations() {
+        /// <todo> To run all migrations, `Migrator` class should be implemented
+        /// All migrations should conform `Migration` protocol
+
+        let passwordMigration = PasswordMigration(session: session)
+        passwordMigration.migratePasswordToKeychain()
     }
 }
 
@@ -420,7 +458,7 @@ extension AppDelegate {
         
         switch api.network {
         case .mainnet: networkBannerView.backgroundColor = .clear
-        case .testnet: networkBannerView.backgroundColor = AppColors.Shared.Helpers.testnet.uiColor
+        case .testnet: networkBannerView.backgroundColor = Colors.Testnet.background.uiColor
         }
 
         rootViewController.setNeedsStatusBarAppearanceUpdate()
@@ -486,7 +524,21 @@ extension AppDelegate {
 
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
-        return SharedAPIDataController(currency: currency, session: session, api: api)
+        let sharedDataController = SharedAPIDataController(
+            currency: currency,
+            session: session,
+            api: api
+        )
+
+        sharedDataController.add(self)
+
+        return sharedDataController
+    }
+
+    private func createAnalytics() -> ALGAnalytics {
+        return ALGAnalyticsCoordinator(providers: [
+            FirebaseAnalyticsProvider()
+        ])
     }
 }
 

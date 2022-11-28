@@ -26,6 +26,7 @@ final class ViewControllerConfiguration {
     let bannerController: BannerController?
     let toastPresentationController: ToastPresentationController?
     let lastSeenNotificationController: LastSeenNotificationController?
+    let analytics: ALGAnalytics
     
     init(
         api: ALGAPI?,
@@ -35,7 +36,8 @@ final class ViewControllerConfiguration {
         loadingControlller: LoadingController?,
         bannerController: BannerController?,
         toastPresentationController: ToastPresentationController?,
-        lastSeenNotificationController: LastSeenNotificationController?
+        lastSeenNotificationController: LastSeenNotificationController?,
+        analytics: ALGAnalytics
     ) {
         self.api = api
         self.session = session
@@ -45,5 +47,6 @@ final class ViewControllerConfiguration {
         self.bannerController = bannerController
         self.toastPresentationController = toastPresentationController
         self.lastSeenNotificationController = lastSeenNotificationController
+        self.analytics = analytics
     }
 }

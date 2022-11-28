@@ -50,7 +50,7 @@ extension WCConnectionApprovalViewModel {
             string: fullText,
             attributes: [
                 .font: UIFont.font(withWeight: .regular(size: 18)),
-                .foregroundColor: AppColors.Components.Text.main.uiColor
+                .foregroundColor: Colors.Text.main.uiColor
             ]
         )
 
@@ -60,6 +60,6 @@ extension WCConnectionApprovalViewModel {
     }
 
     private func bindUrlString(_ session: WalletConnectSession) {
-        urlString = session.dAppInfo.peerMeta.url.absoluteString
+        urlString = session.dAppInfo.peerMeta.url.presentationString
     }
 }

@@ -21,12 +21,22 @@ import MagpieCore
 import MagpieHipo
 
 enum BlockEvent {
-    case willStart(BlockRound?)
+    case willStart
     case willFetchAccount(AccountInformation)
     case didFetchAccount(Account)
-    case didFailToFetchAccount(localAccount: AccountInformation, error: HIPNetworkError<NoAPIModel>)
+    case didFailToFetchAccount(
+        localAccount: AccountInformation,
+        error: HIPNetworkError<NoAPIModel>
+    )
     case willFetchAssetDetails(Account)
-    case didFetchAssetDetails(account: Account, assetDetails: [AssetID: AssetDecoration])
-    case didFailToFetchAssetDetails(account: Account, error: HIPNetworkError<NoAPIModel>)
-    case didFinish(BlockRound?)
+    case didFetchAssetDetails(
+        account: Account,
+        assetDetails: [AssetID: AssetDecoration],
+        blockchainUpdates: BlockchainAccountBatchUpdates
+    )
+    case didFailToFetchAssetDetails(
+        account: Account,
+        error: HIPNetworkError<NoAPIModel>
+    )
+    case didFinish
 }

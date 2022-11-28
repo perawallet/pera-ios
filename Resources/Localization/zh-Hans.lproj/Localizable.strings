@@ -1,5 +1,8 @@
 /* (No Comment) */
-"account-detail-assets-search" = "Search assets";
+"about" = "关于";
+
+/* (No Comment) */
+"account-detail-assets-search" = "搜索资产";
 
 /* (No Comment) */
 "account-detail-portfolio-title" = "账户价值";
@@ -9,6 +12,9 @@
 
 /* (No Comment) */
 "account-listing-error-message" = "很抱歉，我们无法显示该投资组合的细节信息。我们似乎出现了一些计算方面的问题。\n\n请注意，一些资产价值可能不可用，因此，投资组合的总价值应被视为一种估计。";
+
+/* (No Comment) */
+"account-listing-partial-error-message" = "抱歉，在提取您的某些帐户时出错。投资组合价值仅基于成功获取的价值来计算的。";
 
 /* (No Comment) */
 "account-name-setup-description" = "在使用Pera钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。";
@@ -38,7 +44,7 @@
 "account-select-header-contacts-title" = "联系人";
 
 /* MARK: AccountSelect */
-"account-select-header-matched-accounts-title" = "Matched Accounts";
+"account-select-header-matched-accounts-title" = "匹配账户";
 
 /* (No Comment) */
 "account-select-header-search-title" = "搜索或输入钱包地址";
@@ -65,7 +71,7 @@
 "account-type-selection-ledger" = "配对Ledger账户";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "我想创建由我的Ledger硬件钱包支持的Algorand账户";
+"account-type-selection-ledger-detail" = "我想要恢复由我的Ledger硬件钱包所支持的Algorand账户。";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "恢复Algorand账户";
@@ -107,28 +113,31 @@
 "accounts-title" = "账户";
 
 /* (No Comment) */
-"accounts-title-assets" = "资产";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "收藏品";
 
 /* (No Comment) */
 "accounts-title-history" = "历史";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "没有发起与该资产相关的交易";
-
-/* MARK: Accounts */
-"accounts-tranaction-empty-text" = "尚未有交易";
+"accounts-title-overview" = "概述";
 
 /* (No Comment) */
-"accounts-transaction-history-title" = "交易记录";
+"accounts-tranaction-empty-detail" = "所选期间没有可显示的交易";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "无交易";
 
 /* (No Comment) */
 "accounts-transaction-value" = "价值";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "余额";
+
+/* (No Comment) */
+"accounts-transactions-title" = "交易";
+
+/* (No Comment) */
+"activity" = "活动";
 
 /* (No Comment) */
 "add-node-title" = "添加备注";
@@ -152,10 +161,64 @@
 "algo-statistics-title" = "数据";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "创作者";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "项目网站";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "显示在";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera浏览器";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "我们收到了有关该ASA涉及诈骗企图的举报。在与其交互时，请保持警惕。";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "诈骗企图";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "这是Algorand生态系统中的一个知名且成熟完善的项目。";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "知名";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "该ASA已通过Pera的ASA验证计划进行自动验证。";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "已自动验证";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "了解更多关于ASA验证的信息";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "报告%@";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "可疑的";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "可信赖的ASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "已验证的ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "添加资产";
 
 /* (No Comment) */
 "asset-add-warning" = "添加资产前，需要发送一笔产生最低交易费用的交易。交易记录中将会显示该笔交易。";
+
+/* (No Comment) */
+"asset-algos-description" = "ALGO是Algorand区块链的官方代币。Algorand区块链创建的目标是建立无国界的开放经济，让人人都能参与其中。这种新型的数字经济只能在真正数字化货币上运行。ALGO是即时生效，为所有人服务的数字货币。";
 
 /* (No Comment) */
 "asset-algos-title" = "ALGO";
@@ -164,10 +227,10 @@
 "asset-all-title" = "全部";
 
 /* (No Comment) */
-"asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
+"asset-confirmation-not-fetched" = "无法获取资产。请稍后重试。";
 
 /* (No Comment) */
-"asset-confirmation-not-found" = "Asset could not be found.";
+"asset-confirmation-not-found" = "无法找到资产。";
 
 /* (No Comment) */
 "asset-copy-id" = "复制ID";
@@ -200,13 +263,37 @@
 "asset-not-found-title" = "未找到资产";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "Remove Asset";
+"asset-opt-in-successful-message" = "%@已成功添加到您的账户中。";
 
 /* (No Comment) */
-"asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
+"asset-opt-out-successful-message" = "%@已成功从您的账户中移除。";
 
 /* (No Comment) */
-"asset-remove-title" = "Remove Assets";
+"asset-quick-action-button-add" = "添加资产";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "您可以将此资产添加到";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "您可以从您的一个帐户中选择加入该资产。";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "您可以从您的一个帐户中选择加入此NFT。";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "您可以将此NFT添加到";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "选择加入至";
+
+/* (No Comment) */
+"asset-remove-confirmation-title" = "移除资产";
+
+/* (No Comment) */
+"asset-remove-subtitle" = "您必须先将所有资产余额转移到另一个账户，才能移除该项资产";
+
+/* (No Comment) */
+"asset-remove-title" = "移除资产";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "您将要从%@ 移除 %@。 除非重新添加该资产，您无法使用本账号与该资产进行交易。";
@@ -239,13 +326,16 @@
 "asset-support-title" = "账户不接受这项资产";
 
 /* (No Comment) */
-"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
+"asset-support-your-add-message" = "您的账户不包含此项资产，请添加该资产后再重试。";
 
 /* (No Comment) */
-"asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-title" = "您的账户不包含该项资产";
 
 /* MARK: Asset */
 "asset-title" = "资产";
+
+/* MARK: Total Supply */
+"asset-total-supply-body" = "一项资产的总供应量是在创建时设定的，它与该资产的总创建单位相对应。";
 
 /* (No Comment) */
 "asset-transfer-balance" = "余额转账";
@@ -257,7 +347,7 @@
 "asset-you-already-own-message" = "您已拥有该资产";
 
 /* (No Comment) */
-"assets-title" = "Assets";
+"assets-title" = "资产";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "显示二维码";
@@ -434,7 +524,7 @@
 "collectible-detail-show-on" = "显示在";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D card mode";
+"collectible-detail-tap-3D" = "3D卡模式";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "查看交易";
@@ -464,10 +554,10 @@
 "collectible-opt-out-info-title" = "选择退出NFT ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
+"collectible-receive-account-list-info" = "您需要选择加入NFT ASA ID才能转移到您的钱包里。";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.";
+"collectible-receive-asset-list-info" = "您需要选择加入NFT ASA ID才能转移到您的钱包里。在搜索栏粘贴ASA ID。";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "已选账户";
@@ -524,7 +614,7 @@
 "collectibles-empty-title" = "收藏品";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "Search NFTs";
+"collectibles-list-input-placeholder" = "搜索NFT";
 
 /* (No Comment) */
 "collectibles-receive-account-list-header-description" = "选择您希望用来接收的钱包帐户：";
@@ -698,19 +788,19 @@
 "governance-banner-title" = "Algorand治理计划已经启动了！";
 
 /* (No Comment) */
-"inner-transaction-plural-count" = "%@ Inner Transactions";
+"inner-transaction-plural-count" = "%@内部交易";
 
 /* (No Comment) */
-"inner-transaction-singular-count" = "1 Inner Transaction";
+"inner-transaction-singular-count" = "1笔内部交易";
 
 /* MARK: Inner Transactions */
-"inner-transactions-title" = "Inner Transactions";
+"inner-transactions-title" = "内部交易";
 
 /* (No Comment) */
-"inner-txns-plural-count" = "%@ inner txns";
+"inner-txns-plural-count" = "%@笔内部交易";
 
 /* (No Comment) */
-"inner-txns-singular-count" = "1 inner txn";
+"inner-txns-singular-count" = "1笔内部交易";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "无法连接到服务器，请确认已连接到网络";
@@ -725,7 +815,7 @@
 "introduction-recover-account-text" = "我已有一个账户了";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "创建账户表明您同意Pera钱包的条款与条件及隐私政策<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "创建账户代表您同意Pera钱包的<br><a href=\"%@\">条款与条件</a>与<a href=\"%@\">隐私政策</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "资产";
@@ -875,22 +965,22 @@
 "ledger-troubleshooting-app-support" = "在设备上安装Algorand Ledger应用时，若需要任何帮助，请访问 %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启iOS设备上的蓝牙。\n<br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启苹果手机上的蓝牙。 <br /> <br />\n<ul>\n<li>点击 <b>设置</b></li>\n<li>选择 <b>“通用”</b></li>\n<li>点击 <b>“蓝牙”</b></li>\n<li>翻转 <b>开启/关闭 按钮</b> 来切换</li>\n<li>蓝牙 <b>开启或关闭</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "关闭其他应用（Ledger、加密钱包或其他尝试与Ledger配对的应用。）";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger的完整教程<a href=\"https://www.ledger.com/start\">Getting Started</a>";
+"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger完整的<a href=\"https://www.ledger.com/start\">开始使用</a>教程。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b> 并进行安装。";
+"ledger-troubleshooting-install-app-second-html" = "当教程指导您“选择想在设备上安装的APP”，请在搜索栏输入<b>Algorand</b>并进行安装。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "关于更多高级故障排除功能，请查阅Ledger的官方的蓝牙故障排除指南<a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "关于更多高级故障排除功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">蓝牙故障排除指南</a>。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "关于Ledger的蓝牙功能的一般使用方法，请参考Ledger的官方蓝牙连接指南<a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>。";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">蓝牙连接指南</a>，了解如何使用Ledger的蓝牙功能。";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "更多关于Ledger设备的故障排除，请访问";
@@ -899,10 +989,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledger支持";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "继续查看Ledger的完整教程<a href=\"https://www.ledger.com/start\">Getting Started</a>开始使用将指导您在账户设备上安装和打开应用。";
+"ledger-troubleshooting-open-app-first-html" = "Ledger的完整<a href=\"https://www.ledger.com/start\">开始使用</a>教程将继续指导您在账户设备上安装和打开APP。";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "若您尚未在Ledger设备上安装 <b>Algorand</b> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b>并进行安装。";
+"ledger-troubleshooting-open-app-second-html" = "若您尚未在Ledger设备上安装 <b>Algorand</b> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b> 并进行安装。";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "重启Algorand钱包以及/或您的设备。";
@@ -965,10 +1055,16 @@
 "local-authentication-reason-touch-id-title" = "使用触控解锁";
 
 /* (No Comment) */
-"login-subtitle" = "请输入您的\n6位数PIN码";
+"login-subtitle" = "输入PIN码";
 
 /* MARK: Login */
 "login-title" = "解锁";
+
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASA报告: %d";
 
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "基于您的账户设置，您的最低余额为%@\n\n点击继续，您的交易金河将会自动更新，以维持Algorand区块链所要求的的最低余额值。您将可以在下一步中预览此变化。";
@@ -1145,7 +1241,13 @@
 "number-abbreviation-trillion" = "T";
 
 /* (No Comment) */
-"opitons-collectibles-filter" = "Filter NFTs";
+"opitons-collectibles-filter" = "筛选NFT";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "若选择加入NFT，您需要发送一笔有最低交易费的交易。这笔交易将出现在交易历史记录中。";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "选择加入NFT";
 
 /* (No Comment) */
 "options-auth-account" = "授权账户地址";
@@ -1160,7 +1262,7 @@
 "options-manage-assets" = "管理资产";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage Collectibles";
+"options-manage-collectibles" = "管理收藏品";
 
 /* (No Comment) */
 "options-mute-notification" = "通知免打扰";
@@ -1181,10 +1283,10 @@
 "options-remove-watch-account-explanation" = "您将移除watch账户。您确定要这样做吗？";
 
 /* (No Comment) */
-"options-show-qr" = "Show Address";
+"options-show-qr" = "显示地址";
 
 /* (No Comment) */
-"options-sort-title" = "Sort";
+"options-sort-title" = "分类";
 
 /* MARK: Options */
 "options-title" = "账户设置";
@@ -1319,7 +1421,7 @@
 "portfolio-asset-holdings-title" = "资产控股";
 
 /* (No Comment) */
-"portfolio-calculation-description" = "The Total Portfolio Value is calculated by adding up all asset values and Algo available in your accounts, excluding Watch Accounts.\n\nAsset values are calculated based on daily values fetched from several ecosystem partners. Since some asset values are not available, the Total Portfolio Value should be considered an estimation.";
+"portfolio-calculation-description" = "投资组合的总价值是指您账户中的所有的资产与ALGO相加的总和，不包括Watch账户。\n\n资产价值是根据从多个生态系统合作伙伴中获取的每日价值计算的。由于无法获得部分资产的价值，投资组合的总价值应被视为一个估值。";
 
 /* MARK: PortfolioDescription */
 "portfolio-calculation-title" = "我们计算投资组合价值的方法";
@@ -1376,22 +1478,22 @@
 "qr-scan-message-text" = "您只能在本页扫描二维码，如需查看二维码，请选择账户上的图标。";
 
 /* (No Comment) */
-"qr-scan-option-add-contact" = "Add new contact";
+"qr-scan-option-add-contact" = "添加新的联系人";
 
 /* (No Comment) */
-"qr-scan-option-add-watch" = "Add Watch account";
+"qr-scan-option-add-watch" = "添加Watch账户";
 
 /* (No Comment) */
-"qr-scan-option-scanned-title" = "Scanned account address";
+"qr-scan-option-scanned-title" = "已扫描的账户地址";
 
 /* (No Comment) */
-"qr-scan-option-send-transaction" = "Send transaction";
+"qr-scan-option-send-transaction" = "发送交易";
 
 /* (No Comment) */
-"qr-scan-option-title" = "Address scanned!";
+"qr-scan-option-title" = "地址已扫描！";
 
 /* MARK: QR Scanning */
-"qr-scan-overlay-title" = "Scan a QR code";
+"qr-scan-overlay-title" = "扫描二维码";
 
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "您应该扫描有效的账户地址";
@@ -1406,22 +1508,22 @@
 "qr-scan-title" = "扫描二维码";
 
 /* (No Comment) */
-"quick-actions-address-title" = "Address";
+"quick-actions-address-title" = "地址";
 
 /* MARK: QuickActions */
-"quick-actions-buy-algo-title" = "Buy ALGO";
+"quick-actions-buy-algo-title" = "购买ALGO";
 
 /* (No Comment) */
-"quick-actions-more-title" = "More";
+"quick-actions-more-title" = "更多";
 
 /* (No Comment) */
-"quick-actions-receive-title" = "Receive";
+"quick-actions-receive-title" = "接收";
 
 /* (No Comment) */
-"quick-actions-scan-qr-title" = "Scan QR";
+"quick-actions-scan-qr-title" = "扫描二维码";
 
 /* (No Comment) */
-"quick-actions-send-title" = "Send";
+"quick-actions-send-title" = "发送";
 
 /* (No Comment) */
 "recover-copy-error" = "最后复制的文字不是25字节的有效助记词。复制完有效的助记词后，请再试一次。";
@@ -1445,19 +1547,19 @@
 "recover-from-seed-verify-exist-error" = "该账户已存在";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-add" = "The Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "成功添加watch账户。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nThe Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "欢迎来到Pera钱包！成功添加watch账户。";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "欢迎来到Pera钱包！\n您的账户已准备就绪。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "恭喜您，您的账户已准备就绪。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "Account is Verified!";
+"recover-from-seed-verify-pop-up-title" = "账户已验证！";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title-watch-account" = "成功添加watch账户";
@@ -1502,10 +1604,10 @@
 "request-title" = "请求";
 
 /* (No Comment) */
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+"required-min-balance-description" = "该账户ALGO余额未达到能够支持此项交易的最低额度。请充值更多ALGO之后再继续。\n\n每当您选择加入一项资产、NFT和智能合约时，最低ALGO余额要求会增加0.1ALGO。您可以选择退出资产、智能合约来降低最低ALGO余额。";
 
 /* (No Comment) */
-"required-min-balance-title" = "Low Balance";
+"required-min-balance-title" = "ALGO余额不足";
 
 /* (No Comment) */
 "reward-list-title" = "奖励";
@@ -1673,22 +1775,22 @@
 "settings-currency" = "币种";
 
 /* (No Comment) */
-"settings-currency-description" = "Your main currency is %@, and secondary currency is %@";
+"settings-currency-description" = "您 主要货币为%@，次要货币为%@";
 
 /* (No Comment) */
 "settings-currency-header-title" = "货币偏好";
 
 /* (No Comment) */
-"settings-currency-not-found-detail" = "Try different currency";
+"settings-currency-not-found-detail" = "尝试不同的货币";
 
 /* (No Comment) */
-"settings-currency-not-found-title" = "No currency found";
+"settings-currency-not-found-title" = "未找到货币";
 
 /* (No Comment) */
-"settings-currency-search" = "Search";
+"settings-currency-search" = "搜索";
 
 /* (No Comment) */
-"settings-currency-title" = "Main Currency";
+"settings-currency-title" = "主要的货币";
 
 /* (No Comment) */
 "settings-delete-data-title" = "删除所有数据";
@@ -1789,17 +1891,32 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "显示交易细节";
 
-/* MARK: Sort Account List */
-"sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
+/* (No Comment) */
+"social-media-platform-discord" = "Discord";
 
 /* (No Comment) */
-"story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
+"social-media-platform-telegram" = "Telegram";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "社会媒体";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "推特";
+
+/* MARK: Sort Account List */
+"sort-account-list-manually-header-title" = "手动重新整理帐户";
+
+/* (No Comment) */
+"story-copy-address-description" = "您可以长按账户按钮以快速复制账户地址";
 
 /* MARK: Story */
-"story-copy-address-title" = "Press and hold to “Copy Address”";
+"story-copy-address-title" = "长按以“复制地址”";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "服务条款";
+
+/* (No Comment) */
+"title-about-with-param" = "关于%@";
 
 /* (No Comment) */
 "title-accept" = "接受";
@@ -1823,13 +1940,13 @@
 "title-algorand-value" = "价值";
 
 /* (No Comment) */
-"title-alphabetically-a-to-z" = "Alphabetically A to Z";
+"title-alphabetically-a-to-z" = "按A到Z的字母顺序";
 
 /* (No Comment) */
-"title-alphabetically-z-to-a" = "Alphabetically Z to A";
+"title-alphabetically-z-to-a" = "按Z到A的字母顺序";
 
 /* (No Comment) */
-"title-app-call" = "App Call";
+"title-app-call" = "应用程序调用";
 
 /* (No Comment) */
 "title-approve" = "同意";
@@ -1838,7 +1955,7 @@
 "title-asset-id" = "资产ID";
 
 /* (No Comment) */
-"title-buy-algo" = "Buy ALGO";
+"title-buy-algo" = "购买ALGO";
 
 /* (No Comment) */
 "title-cancel" = "取消";
@@ -1865,10 +1982,16 @@
 "title-copy" = "复制";
 
 /* (No Comment) */
+"title-csv" = "CSV";
+
+/* (No Comment) */
 "title-decline" = "拒绝";
 
 /* (No Comment) */
 "title-decline-all" = "全部拒绝";
+
+/* (No Comment) */
+"title-disclaimer" = "免责声明";
 
 /* (No Comment) */
 "title-disconnect" = "断开连接";
@@ -1916,10 +2039,10 @@
 "title-got-it" = "明白！";
 
 /* (No Comment) */
-"title-highest-value-to-lowest" = "Highest Value to Lowest";
+"title-highest-value-to-lowest" = "价值从最高到最低";
 
 /* (No Comment) */
-"title-home" = "Home";
+"title-home" = "主页";
 
 /* (No Comment) */
 "title-i-understand" = "我明白";
@@ -1937,25 +2060,25 @@
 "title-learn-more" = "了解更多";
 
 /* (No Comment) */
-"title-ledger-account" = "Ledger Account";
+"title-ledger-account" = "Ledger账户";
 
 /* (No Comment) */
 "title-loading" = "加载中";
 
 /* (No Comment) */
-"title-lowest-value-to-highest" = "Lowest Value to Highest";
+"title-lowest-value-to-highest" = "价值从最低到最高";
 
 /* (No Comment) */
-"title-manually" = "Manually";
+"title-manually" = "手动";
 
 /* (No Comment) */
-"title-more" = "More";
+"title-more" = "更多";
 
 /* (No Comment) */
 "title-new-uppercased" = "全新";
 
 /* (No Comment) */
-"title-newest-to-oldest" = "Newest to Oldest";
+"title-newest-to-oldest" = "从最新到最旧";
 
 /* (No Comment) */
 "title-next" = "下一步";
@@ -1973,13 +2096,19 @@
 "title-ok" = "好的";
 
 /* (No Comment) */
-"title-oldest-to-newest" = "Oldest to Newest";
+"title-oldest-to-newest" = "从最旧到最新";
 
 /* (No Comment) */
 "title-on" = "启用";
 
 /* (No Comment) */
 "title-paste-passphrase" = "粘贴完整的助记词";
+
+/* (No Comment) */
+"title-plus-account-count" = "%@账户";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "账户";
 
 /* (No Comment) */
 "title-plus-asset-count" = "%@资产";
@@ -1994,7 +2123,7 @@
 "title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
-"title-press-hold-copy-address" = "Press and hold to copy address";
+"title-press-hold-copy-address" = "长按以复制地址";
 
 /* (No Comment) */
 "title-preview" = "预览";
@@ -2003,7 +2132,7 @@
 "title-preview-and-sign-with-ledger-title" = "预览并通过Ledger签署";
 
 /* (No Comment) */
-"title-price" = "Price";
+"title-price" = "价格";
 
 /* (No Comment) */
 "title-proceed" = "继续";
@@ -2012,7 +2141,7 @@
 "title-receive" = "接受";
 
 /* (No Comment) */
-"title-rekeyed-account" = "Rekeyed Account";
+"title-rekeyed-account" = "密钥重置的账户";
 
 /* (No Comment) */
 "title-remove" = "移除";
@@ -2022,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "保存";
+
+/* (No Comment) */
+"title-select-all" = "全选";
 
 /* (No Comment) */
 "title-select-asset" = "选择资产";
@@ -2036,7 +2168,13 @@
 "title-show-all-detail" = "显示全部细节";
 
 /* (No Comment) */
-"title-show-more-assets" = "Show +%@ more assets";
+"title-show-less" = "隐藏部分";
+
+/* (No Comment) */
+"title-show-more" = "显示更多";
+
+/* (No Comment) */
+"title-show-more-assets" = "显示+%@ 更多的资产";
 
 /* (No Comment) */
 "title-show-transaction-detail" = "显示交易细节";
@@ -2045,7 +2183,7 @@
 "title-skip" = "跳过";
 
 /* (No Comment) */
-"title-sort" = "Sort";
+"title-sort" = "分类";
 
 /* (No Comment) */
 "title-start-using-pera-wallet" = "开始使用Pera钱包";
@@ -2066,7 +2204,13 @@
 "title-testnet" = "测试网";
 
 /* (No Comment) */
+"title-total-supply" = "总供应量";
+
+/* (No Comment) */
 "title-unknown" = "未命名";
+
+/* (No Comment) */
+"title-unselect-all" = "取消全选";
 
 /* (No Comment) */
 "title-verify" = "验证";
@@ -2126,16 +2270,16 @@
 "transaction-detail-id-copied-title" = "ID已复制到剪贴板";
 
 /* (No Comment) */
-"transaction-detail-inner-transaction-title" = "Inner Transactions";
+"transaction-detail-inner-transaction-title" = "内部交易";
 
 /* (No Comment) */
 "transaction-detail-note" = "备注";
 
 /* (No Comment) */
-"transaction-detail-note-copied" = "Note copied to clipboard";
+"transaction-detail-note-copied" = "备注已复制到粘贴板";
 
 /* (No Comment) */
-"transaction-detail-parent-id" = "Parent Transaction ID";
+"transaction-detail-parent-id" = "母交易ID";
 
 /* (No Comment) */
 "transaction-detail-pending" = "待定";
@@ -2144,7 +2288,7 @@
 "transaction-detail-pending-transactions" = "待交易";
 
 /* (No Comment) */
-"transaction-detail-plural-inner-transaction-detail" = "Show %@ TXNS";
+"transaction-detail-plural-inner-transaction-detail" = "显示%@笔交易";
 
 /* (No Comment) */
 "transaction-detail-receive" = "接收";
@@ -2162,7 +2306,7 @@
 "transaction-detail-sender" = "发送人";
 
 /* (No Comment) */
-"transaction-detail-singular-inner-transaction-detail" = "Show 1 TXN";
+"transaction-detail-singular-inner-transaction-detail" = "显示1笔交易";
 
 /* (No Comment) */
 "transaction-detail-status" = "状态";
@@ -2222,40 +2366,46 @@
 "transaction-id-open-goalseeker" = "在GoalSeeker中打开";
 
 /* (No Comment) */
-"transaction-item-app-id-title" = "Application ID: %d";
+"transaction-item-app-id-title" = "应用ID：%d";
 
 /* (No Comment) */
-"transaction-item-opt-in" = "Opt-In / Self Transfer";
+"transaction-item-opt-in" = "选择加入/自行转移";
 
 /* (No Comment) */
-"transaction-item-opt-out" = "Opt-Out";
+"transaction-item-opt-out" = "选择退出";
 
 /* (No Comment) */
-"transaction-item-receive-opt-out" = "Receive (Opt-out)";
+"transaction-item-receive-opt-out" = "接收（选择退出）";
 
 /* (No Comment) */
-"transaction-item-self-transfer" = "Self Transfer";
+"transaction-item-self-transfer" = "自行转移";
 
 /* (No Comment) */
-"transaction-menu-copy-id" = "Copy ID";
+"transaction-menu-copy-id" = "复制ID";
 
 /* (No Comment) */
-"transaction-menu-copy-note" = "Copy Note";
+"transaction-menu-copy-note" = "复制备注";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "选择加入ASA或NFT";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "添加资产";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-buy-algo-subtitle" = "用信用卡或银行转账方式购买加密货币";
 
 /* (No Comment) */
-"transaction-option-list-more-subtitle" = "Show more actions";
+"transaction-option-list-more-subtitle" = "展示更多操作";
 
 /* (No Comment) */
-"transaction-option-list-receive-subtitle" = "View or copy your account address";
+"transaction-option-list-receive-subtitle" = "显示或复制您的账户地址";
 
 /* (No Comment) */
-"transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
+"transaction-option-list-scan-qr-code-subtitle" = "使用WalletConnect或扫描账户地址";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
+"transaction-option-list-send-subtitle" = "ALGO或任意ASA转到另一个账户";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "确定吗？";
@@ -2366,6 +2516,24 @@
 "tutorial-title-write" = "请准备写下您的恢复助记词";
 
 /* (No Comment) */
+"url-copied" = "URL已复制到剪贴板";
+
+/* (No Comment) */
+"verification-info-body" = "Pera钱包的Algorand标准资产（ASA）验证计划让ASA创建者证明他们是该资产的持有者后得到自动验证。\nASA验证的主要目的是防止ASA假装附属于一个与之无关的项目并充当其代币。\nASA验证并不代表对项目的背书。Algorand和Pera都不会使用验证过程来背书项目。";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "自动";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "为防止ASA假装与一个与之无关的项目有关联，并充当其代币。";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "ASA验证并不代表对项目的背书。";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA验证";
+
+/* (No Comment) */
 "verified-asset-double-check" = "请再次确认";
 
 /* (No Comment) */
@@ -2433,6 +2601,12 @@
 
 /* MARK: Wallet Connect Session */
 "wallet-connect-session-connection-description" = "%@想要连接您的账户";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "断开所有会话";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "您想要断开所有会话吗？";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "与会话%@断开连接失败。";
@@ -2507,6 +2681,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "无效输入：资产无效";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "该交易似乎组包含一笔或多笔丢失的交易。为保障您的安全，Pera钱包不允许您签署细节模糊的交易组。请联系发送此交易的DApp，让他们纠正该问题。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "无效输入：公钥无效";
 
 /* (No Comment) */
@@ -2529,6 +2706,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "我们无法获取资产详细信息，因此交易被取消。请您在检查网络连接后再重试。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "无效输入：无法签署";
@@ -2618,7 +2798,7 @@
 "wallet-connect-transaction-title-asset" = "转移资产请求";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-asset-config" = "Asset Configuration";
+"wallet-connect-transaction-title-asset-config" = "资产配置";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-asset-url" = "网址URL";
@@ -2712,3 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "您的交易正在处理中！";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "为确保您能将账户导出到安全的位置上，请始终确认您是在Pera官网URL上：";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "为确保您能将账户导出到安全的位置上，请始终确认您是在Pera官网URL上：";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "您即将把这些账户安全导出到Pera网络上：";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "您即将把该账户安全导出到Pera网络上：";
+
+/* (No Comment) */
+"web-export-account-list-description" = "您即将分享并导入您的密码到Pera网络钱包上！\n请勿接受未受到您邀请的请求。";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "您即将分享并导入您的密码到Pera网络钱包上！";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "我们无法找到任何符合导出条件的账户。";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "导出至Pera网络";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "确认账户";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "确认账户";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "为了您的安全，请确认您是通过输入在您的电脑上看到的域名来把账户导出到Pera网络上的。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "为了您的安全，请确认您是通过输入在您的电脑上看到的域名来把账户导出到Pera网络上的。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "网络钱包的URL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "输入网络钱包的URL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "确认导出域名";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "解密传入数据时出错。请再次扫码重试。";
+
+/* (No Comment) */
+"web-export-result-body" = "您现在可以在 Pera网络钱包上使用这些账户了。";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "您现在可以在Pera网络钱包上使用该账户了。";
+
+/* (No Comment) */
+"web-export-result-title" = "成功导出账户！";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "成功导出账户！";
+
