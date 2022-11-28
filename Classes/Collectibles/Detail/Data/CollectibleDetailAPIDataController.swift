@@ -313,20 +313,6 @@ extension CollectibleDetailAPIDataController {
             )
         )
 
-        if let collectionName = asset.collectionName,
-           !collectionName.isEmpty {
-            descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: nil,
-                        title: "collectible-detail-collection-name".localized,
-                        value: collectionName,
-                        isCollectibleSpecificValue: true
-                    )
-                )
-            )
-        }
-
         if let creator = asset.creator?.address {
             let source = AlgoExplorerExternalSource(address: creator, network: api.network)
 

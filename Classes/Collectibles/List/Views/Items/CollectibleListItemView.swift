@@ -28,6 +28,7 @@ final class CollectibleListItemView:
     private lazy var title = Label()
     private lazy var subtitle = Label()
     private lazy var topLeftBadge = ImageView()
+    private lazy var amount = Label()
     private lazy var bottomLeftBadge = ImageView()
 
     private lazy var pendingOverlayView = MacaroonUIKit.BaseView()
@@ -58,6 +59,7 @@ final class CollectibleListItemView:
         _ viewModel: CollectibleListItemViewModel?
     ) {
         image.load(from: viewModel?.image)
+        amount.editText = viewModel?.amount
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
         topLeftBadge.image = viewModel?.topLeftBadge
@@ -67,6 +69,7 @@ final class CollectibleListItemView:
 
     func prepareForReuse() {
         image.prepareForReuse()
+        amount.editText = nil
         title.editText = nil
         subtitle.editText = nil
         topLeftBadge.image = nil
@@ -83,21 +86,33 @@ final class CollectibleListItemView:
         guard let viewModel = viewModel else {
             return CGSize((size.width, 0))
         }
+        let width = size.width
 
-        let iconHeight = size.width
+        let iconHeight = width
         let titleSize =
             viewModel.title.boundingSize(
+                multiline: false,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
             )
-        let bodySize =
+
+        let subtitleSingilineSize =
             viewModel.subtitle.boundingSize(
-                fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
+                multiline: false,
+                fittingSize: CGSize((.greatestFiniteMagnitude, .greatestFiniteMagnitude))
             )
+        let subtitleHeight: CGFloat
+
+        if subtitleSingilineSize.width.ceil() > width {
+            subtitleHeight = subtitleSingilineSize.height * 2
+        } else {
+            subtitleHeight = subtitleSingilineSize.height
+        }
+
         let preferredHeight =
         iconHeight +
         theme.titleAndSubtitleContentTopPadding +
         titleSize.height +
-        bodySize.height
+        subtitleHeight
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
@@ -124,6 +139,7 @@ extension CollectibleListItemView {
         addPendingOverlayView(theme)
         addBottomLeftBadge(theme)
         addTopLeftBadge(theme)
+        addAmount(theme)
     }
 
     private func addOverlay(
@@ -181,12 +197,6 @@ extension CollectibleListItemView {
     ) {
         bottomLeftBadge.customizeAppearance(theme.bottomLeftBadge)
         bottomLeftBadge.layer.draw(corner: theme.corner)
-        bottomLeftBadge.layer.draw(
-            border: Border(
-                color: Colors.Shadows.Cards.shadow1.uiColor,
-                width: 1
-            )
-        ) /// <todo> Add proper shadow when shadow & borders are refactored.
 
         bottomLeftBadge.contentEdgeInsets = theme.bottomLeftBadgeContentEdgeInsets
         addSubview(bottomLeftBadge)
@@ -216,12 +226,6 @@ extension CollectibleListItemView {
     ) {
         pendingContentView.customizeAppearance(theme.pendingContent)
         pendingContentView.layer.draw(corner: theme.corner)
-        pendingContentView.layer.draw(
-            border: Border(
-                color: Colors.Shadows.Cards.shadow1.uiColor,
-                width: 1
-            )
-        ) /// <todo> Add proper shadow when shadow & borders are refactored.
 
         pendingOverlayView.addSubview(pendingContentView)
         pendingContentView.snp.makeConstraints {
@@ -269,10 +273,26 @@ extension CollectibleListItemView {
         topLeftBadge.layer.draw(corner: theme.corner)
 
         topLeftBadge.contentEdgeInsets = theme.topLeftBadgeContentEdgeInsets
+        topLeftBadge.fitToHorizontalIntrinsicSize()
         addSubview(topLeftBadge)
         topLeftBadge.snp.makeConstraints {
             $0.leading == theme.topLeftBadgePaddings.leading
             $0.top == theme.topLeftBadgePaddings.top
+        }
+    }
+
+    private func addAmount(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        amount.customizeAppearance(theme.amount)
+        amount.draw(corner: theme.corner)
+
+        amount.contentEdgeInsets = theme.amountContentEdgeInsets
+        addSubview(amount)
+        amount.snp.makeConstraints {
+            $0.top == theme.amountPaddings.top
+            $0.leading >= topLeftBadge.snp.trailing + theme.minimumSpacingBetweeenTopLeftBadgeAndAmount
+            $0.trailing == theme.amountPaddings.trailing
         }
     }
 }

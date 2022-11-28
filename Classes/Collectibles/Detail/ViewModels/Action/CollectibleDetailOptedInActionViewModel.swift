@@ -38,7 +38,7 @@ extension CollectibleDetailOptedInActionViewModel {
     private mutating func bindTitle(
         _ asset: CollectibleAsset
     ) {
-        guard let collectionName = asset.collectionName,
+        guard let collectionName = asset.collection?.name,
               !collectionName.isEmptyOrBlank else {
                   return
               }

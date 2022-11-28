@@ -39,6 +39,11 @@ struct CollectibleListItemViewTheme:
     let topLeftBadgeContentEdgeInsets: LayoutOffset
     let topLeftBadgePaddings: LayoutPaddings
 
+    let amount: TextStyle
+    let amountContentEdgeInsets: LayoutPaddings
+    let amountPaddings: LayoutPaddings
+    let minimumSpacingBetweeenTopLeftBadgeAndAmount: LayoutMetric
+
     let pendingContent: ViewStyle
     let pendingContentPaddings: LayoutPaddings
 
@@ -74,9 +79,9 @@ struct CollectibleListItemViewTheme:
         ]
 
         bottomLeftBadge = [
-            .backgroundColor(Colors.Defaults.background),
+            .backgroundColor(Colors.NFTIcon.iconBackground),
             .contentMode(.center),
-            .tintColor(Colors.Text.gray)
+            .tintColor(Colors.Text.white)
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
@@ -89,25 +94,35 @@ struct CollectibleListItemViewTheme:
         topLeftBadgeContentEdgeInsets = (4, 4)
         topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
 
+        amount = [
+            .textColor(Colors.Text.white),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.NFTIcon.iconBackground),
+        ]
+        amountContentEdgeInsets = (4, 6, 4, 6)
+        amountPaddings = (8, .noMetric, .noMetric, 8)
+        minimumSpacingBetweeenTopLeftBadgeAndAmount = 8
+
         pendingContentPaddings = (.noMetric, 8, 8, .noMetric)
         pendingContent = [
-            .backgroundColor(Colors.Defaults.background)
+            .backgroundColor(Colors.NFTIcon.iconBackground)
         ]
         indicator = [
-            .image("loading-indicator"),
+            .image("loading-indicator".templateImage),
+            .tintColor(Colors.Text.white),
             .contentMode(.scaleAspectFit)
         ]
-        indicatorSize = (16, 16)
-        indicatorLeadingPadding = 8
+        indicatorSize = (15, 15)
+        indicatorLeadingPadding = 6
 
         pendingOverlay = [
             .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.4))
         ]
         pendingLabel = [
-            .textColor(Colors.Helpers.positive),
-            .textOverflow(SingleLineFittingText()),
+            .textColor(Colors.Text.white),
+            .textOverflow(SingleLineText()),
         ]
-        pendingLabelPaddings = (4, 8, 4, 8)
+        pendingLabelPaddings = (4, 6, 4, 6)
 
         corner = Corner(radius: 4)
     }

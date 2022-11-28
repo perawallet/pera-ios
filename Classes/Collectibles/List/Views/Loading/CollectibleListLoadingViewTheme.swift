@@ -48,8 +48,8 @@ struct CollectibleListLoadingViewTheme:
         searchInputPaddings = (16, 0, .noMetric, 0)
         searchInputHeight = 40
 
-        collectibleListItemsVerticalStackSpacing = 28
-        collectibleListItemsVerticalStackPaddings = (20, 0, 8, 0)
+        collectibleListItemsVerticalStackSpacing = 20
+        collectibleListItemsVerticalStackPaddings = (28, 0, 8, 0)
 
         collectibleListItemsHorizontalStackSpacing = 24
 

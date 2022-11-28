@@ -38,7 +38,7 @@ final class CollectibleAsset: Asset {
     let standard: CollectibleStandard?
     let mediaType: MediaType
     let title: String?
-    let collectionName: String?
+    let collection: CollectibleCollection?
     let url: String?
     let description: String?
     let properties: [CollectibleTrait]?
@@ -101,7 +101,7 @@ final class CollectibleAsset: Asset {
         self.standard = decoration.collectible?.standard ?? .unknown("")
         self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
-        self.collectionName = decoration.collectible?.collectionName
+        self.collection = decoration.collectible?.collection
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
@@ -141,7 +141,7 @@ final class CollectibleAsset: Asset {
         self.standard = decoration.collectible?.standard ?? .unknown("")
         self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
-        self.collectionName = decoration.collectible?.collectionName
+        self.collection = decoration.collectible?.collection
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
@@ -179,7 +179,7 @@ extension CollectibleAsset: Comparable {
             lhs.verificationTier == rhs.verificationTier &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
-            lhs.collectionName == rhs.collectionName &&
+            lhs.collection?.name == rhs.collection?.name &&
             lhs.optedInAtRound == rhs.optedInAtRound
     }
 
