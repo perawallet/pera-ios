@@ -1108,8 +1108,8 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .discoverSearch(let eventHandler):
-            let screen = DiscoverASASearchScreen(
-                dataController: DiscoveryASASearchAPIDataController(
+            let screen = DiscoverSearchScreen(
+                dataController: DiscoverSearchAPIDataController(
                     api: appConfiguration.api,
                     sharedDataController: appConfiguration.sharedDataController
                 ),
@@ -1117,14 +1117,14 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .discoverAssetDetail(let tokenDetail):
-            viewController = DiscoverTokenDetailScreen(
-                tokenDetail: tokenDetail,
+        case .discoverAssetDetail(let parameters):
+            viewController = DiscoverAssetDetailScreen(
+                assetParameters: parameters,
                 configuration: configuration
             )
-        case .discoverDappDetail(let dappDetail):
-            viewController = DappDetailScreen(
-                dappDetail: dappDetail,
+        case .discoverDappDetail(let dappParameters):
+            viewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
                 configuration: configuration
             )
         }

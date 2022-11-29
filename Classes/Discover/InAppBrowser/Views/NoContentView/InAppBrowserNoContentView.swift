@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebNoContentView.swift
+//   InAppBrowserNoContentView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class WebNoContentView:
+final class InAppBrowserNoContentView:
     MacaroonUIKit.BaseView,
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
@@ -30,13 +30,13 @@ final class WebNoContentView:
     private var state: State?
     private var contextView: UIView?
 
-    init(_ theme: WebNoContentViewTheme = .init()) {
+    init(_ theme: InAppBrowserNoContentViewTheme = .init()) {
         super.init(frame: .zero)
         addUI(theme)
     }
 }
 
-extension WebNoContentView {
+extension InAppBrowserNoContentView {
     func setState(
         _ state: State?,
         animated: Bool
@@ -54,8 +54,8 @@ extension WebNoContentView {
     }
 }
 
-extension WebNoContentView {
-    private func addUI(_ theme: WebNoContentViewTheme) {
+extension InAppBrowserNoContentView {
+    private func addUI(_ theme: InAppBrowserNoContentViewTheme) {
         addBackground(theme)
         addContent(theme)
     }
@@ -82,7 +82,7 @@ extension WebNoContentView {
 
         guard let contextView else { return }
 
-        if let loadingView = contextView as? WebLoadingView {
+        if let loadingView = contextView as? InAppBrowserLoadingView {
             loadingView.startAnimating()
         }
     }
@@ -121,11 +121,11 @@ extension WebNoContentView {
         }
     }
 
-    private func addBackground(_ theme: WebNoContentViewTheme) {
+    private func addBackground(_ theme: InAppBrowserNoContentViewTheme) {
         customizeAppearance(theme.background)
     }
 
-    private func addContent(_ theme: WebNoContentViewTheme) {
+    private func addContent(_ theme: InAppBrowserNoContentViewTheme) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.top == safeAreaInsets.top + theme.contentEdgeInsets.top
@@ -166,15 +166,15 @@ extension WebNoContentView {
         }
     }
 
-    private func createLoading(_ theme: WebLoadingViewTheme) -> WebLoadingView {
-        let view = WebLoadingView(theme)
+    private func createLoading(_ theme: InAppBrowserLoadingViewTheme) -> InAppBrowserLoadingView {
+        let view = InAppBrowserLoadingView(theme)
         view.startAnimating()
         return view
     }
 
     private func createError(
         _ theme: DiscoverErrorViewTheme,
-        _ viewModel: WebErrorViewModel
+        _ viewModel: InAppBrowserErrorViewModel
     ) -> DiscoverErrorView {
         let view = DiscoverErrorView(theme)
         view.bindData(viewModel)
@@ -187,10 +187,10 @@ extension WebNoContentView {
     }
 }
 
-extension WebNoContentView {
+extension InAppBrowserNoContentView {
     enum State: Equatable {
-        case loading(WebLoadingViewTheme)
-        case error(DiscoverErrorViewTheme, WebErrorViewModel)
+        case loading(InAppBrowserLoadingViewTheme)
+        case error(DiscoverErrorViewTheme, InAppBrowserErrorViewModel)
 
         static func == (
             lhs: State,
@@ -208,7 +208,7 @@ extension WebNoContentView {
     }
 }
 
-extension WebNoContentView {
+extension InAppBrowserNoContentView {
     enum Event {
         case retry
     }

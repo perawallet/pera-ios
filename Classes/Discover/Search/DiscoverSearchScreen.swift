@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverASASearchScreen.swift
+//   DiscoverSearchScreen.swift
 
 import Foundation
 import MacaroonForm
 import MacaroonUIKit
 import UIKit
 
-final class DiscoverASASearchScreen:
+final class DiscoverSearchScreen:
     BaseViewController,
     MacaroonForm.KeyboardControllerDataSource,
     UICollectionViewDelegateFlowLayout {
 
-    typealias EventHandler = (Event, DiscoverASASearchScreen) -> Void
+    typealias EventHandler = (Event, DiscoverSearchScreen) -> Void
     
     var eventHandler: EventHandler?
 
@@ -34,15 +34,15 @@ final class DiscoverASASearchScreen:
     private lazy var searchInputBackgroundView: EffectView = .init()
     private lazy var cancelActionView: UIButton = .init()
     private lazy var listView: UICollectionView =
-        .init(frame: .zero, collectionViewLayout: DiscoverASASearchScreenLayout.build())
+        .init(frame: .zero, collectionViewLayout: DiscoverSearchScreenLayout.build())
 
-    private lazy var dataSource = DiscoveryASASearchDataSource(
+    private lazy var dataSource = DiscoverSearchDataSource(
         collectionView: listView,
-        assetListItemViewModelProvider: findAssetListItemViewModel
+        dataController: dataController
     )
-    private lazy var listLayout = DiscoverASASearchScreenLayout(
+    private lazy var listLayout = DiscoverSearchScreenLayout(
         listDataSource: dataSource,
-        assetListItemViewModelProvider: findAssetListItemViewModel
+        dataController: dataController
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -52,12 +52,12 @@ final class DiscoverASASearchScreen:
 
     private var isViewLayoutLoaded = false
 
-    private let dataController: DiscoveryASASearchDataController
+    private let dataController: DiscoverSearchDataController
 
-    private let theme = DiscoverASASearchScreenTheme()
+    private let theme = DiscoverSearchScreenTheme()
 
     init(
-        dataController: DiscoveryASASearchDataController,
+        dataController: DiscoverSearchDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
@@ -69,6 +69,7 @@ final class DiscoverASASearchScreen:
     }
 
     deinit {
+        print("DEINIT")
         keyboardController.deactivate()
     }
 
@@ -102,7 +103,7 @@ final class DiscoverASASearchScreen:
 
 /// <mark>
 /// SearchInputViewDelegate
-extension DiscoverASASearchScreen: SearchInputViewDelegate {
+extension DiscoverSearchScreen: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         loadRequestedData()
     }
@@ -114,7 +115,7 @@ extension DiscoverASASearchScreen: SearchInputViewDelegate {
 
 /// <mark>
 /// UICollectionViewDelegateFlowLayout
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -142,7 +143,7 @@ extension DiscoverASASearchScreen {
 
 /// <mark>
 /// UICollectionViewDelegate
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -198,7 +199,7 @@ extension DiscoverASASearchScreen {
 
 /// <mark>
 /// UIScrollViewDelegate
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentHeight = scrollView.contentSize.height
         let scrollHeight = scrollView.bounds.height
@@ -210,7 +211,7 @@ extension DiscoverASASearchScreen {
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     private func addUI() {
         addBackground()
         addSearchInput()
@@ -308,7 +309,7 @@ extension DiscoverASASearchScreen {
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     private func startObservingListErrorEvents(_ cell: UICollectionViewCell) {
         let errorCell = cell as? DiscoverErrorCell
         errorCell?.startObserving(event: .retry) {
@@ -326,7 +327,7 @@ extension DiscoverASASearchScreen {
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     private func startAnimatingLoadingIfNeededWhenViewDidAppear() {
         if isViewFirstAppeared { return }
 
@@ -378,14 +379,14 @@ extension DiscoverASASearchScreen {
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     @objc
     private func cancel() {
         closeScreen(by: .dismiss)
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     private func startObservingDataChanges() {
         dataController.eventHandler = {
             [weak self] event in
@@ -423,22 +424,16 @@ extension DiscoverASASearchScreen {
     }
 }
 
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     private func handleSelectionOfCellForAssetItem(_ item: DiscoverSearchAssetListItem) {
-        let tokenDetail = DiscoverTokenDetail(tokenId: String(item.assetID))
+        let assetParameters = DiscoverAssetParameters(assetID: String(item.assetID))
 
-        eventHandler?(.selectAsset(tokenDetail), self)
+        eventHandler?(.selectAsset(assetParameters), self)
     }
 }
 
-extension DiscoverASASearchScreen {
-    private func findAssetListItemViewModel(forID assetID: AssetID) -> DiscoverSearchAssetListItemViewModel? {
-        return dataController[assetID]
-    }
-}
-
-extension DiscoverASASearchScreen {
+extension DiscoverSearchScreen {
     enum Event {
-        case selectAsset(DiscoverTokenDetail)
+        case selectAsset(DiscoverAssetParameters)
     }
 }

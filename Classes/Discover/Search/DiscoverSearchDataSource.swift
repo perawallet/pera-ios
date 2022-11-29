@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchDataSource.swift
+//   DiscoverSearchDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class DiscoveryASASearchDataSource: UICollectionViewDiffableDataSource<DiscoverSearchListSection, DiscoverSearchListItem> {
-    typealias AssetListItemViewModelProvider = (AssetID) -> DiscoverSearchAssetListItemViewModel?
+final class DiscoverSearchDataSource: UICollectionViewDiffableDataSource<DiscoverSearchListSection, DiscoverSearchListItem> {
 
     init(
         collectionView: UICollectionView,
-        assetListItemViewModelProvider: @escaping AssetListItemViewModelProvider
+        dataController: DiscoverSearchDataController?
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -45,7 +44,7 @@ final class DiscoveryASASearchDataSource: UICollectionViewDiffableDataSource<Dis
                     at: indexPath
                 )
             case .asset(let assetItem):
-                let viewModel = assetListItemViewModelProvider(assetItem.assetID)
+                let viewModel = dataController?.searchAssetListItemViewModel(for: assetItem.assetID)
                 return Self.listView(
                     collectionView,
                     cellForAssetItemWith: viewModel,
@@ -69,13 +68,13 @@ final class DiscoveryASASearchDataSource: UICollectionViewDiffableDataSource<Dis
     }
 }
 
-extension DiscoveryASASearchDataSource {
+extension DiscoverSearchDataSource {
     func isEmpty() -> Bool {
         return snapshot().sectionIdentifiers.contains(.noContent)
     }
 }
 
-extension DiscoveryASASearchDataSource {
+extension DiscoverSearchDataSource {
     private func prepareForUse(_ listView: UICollectionView) {
         let cells = [
             DiscoverSearchListLoadingCell.self,
@@ -91,7 +90,7 @@ extension DiscoveryASASearchDataSource {
     }
 }
 
-extension DiscoveryASASearchDataSource {
+extension DiscoverSearchDataSource {
     private static func listView(
         _ listView: UICollectionView,
         cellForLoadingItemAt indexPath: IndexPath

@@ -12,23 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverWebScreenTheme.swift
+//   DiscoverDappParamaters.swift
 
 import Foundation
-import MacaroonUIKit
+import MacaroonUtils
 
-struct DiscoverWebScreenTheme:
-    LayoutSheet,
-    StyleSheet {
-    let background: ViewStyle
-    let navigationBarEdgeInset: LayoutMargins
-    let webContentTopInset: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
-        self.webContentTopInset = 10
-    }
+struct DiscoverDappParamaters: JSONModel {
+    let name: String
+    let url: String
 }

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverASASearchScreen+Theme.swift
+//   DiscoverSearchScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct DiscoverASASearchScreenTheme:
+struct DiscoverSearchScreenTheme:
     LayoutSheet,
     StyleSheet {
     var background: ViewStyle

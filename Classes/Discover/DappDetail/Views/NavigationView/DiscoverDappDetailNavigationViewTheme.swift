@@ -12,12 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappDetail.swift
+//   DiscoverDappDetailNavigationViewTheme.swift
 
 import Foundation
-import MacaroonUtils
+import MacaroonUIKit
 
-struct DiscoverDappDetail: JSONModel {
-    let name: String
-    let url: String
+struct DiscoverDappDetailNavigationViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var title: TextStyle
+    var subtitle: TextStyle
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.title = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main)
+        ]
+        self.subtitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayLighter)
+        ]
+    }
 }

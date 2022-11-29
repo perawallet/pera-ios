@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebErrorViewMOdel.swift
+//   InAppBrowserErrorViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import MagpieCore
 
-struct WebErrorViewModel:
+struct InAppBrowserErrorViewModel:
     DiscoverErrorViewModel,
     Equatable {
     private(set) var icon: Image?
@@ -35,7 +35,7 @@ struct WebErrorViewModel:
     }
 }
 
-extension WebErrorViewModel {
+extension InAppBrowserErrorViewModel {
     mutating func bind(error: ConnectionError) {
         bindIcon()
         bindTitle(error: error)
@@ -51,7 +51,7 @@ extension WebErrorViewModel {
     }
 }
 
-extension WebErrorViewModel {
+extension InAppBrowserErrorViewModel {
     mutating func bind(error: UnexpectedError) {
         bindIcon()
         bindTitle(error: error)
@@ -67,7 +67,7 @@ extension WebErrorViewModel {
     }
 }
 
-extension WebErrorViewModel {
+extension InAppBrowserErrorViewModel {
     mutating func bindIcon() {
         icon = "icon-info-square".templateImage
     }
@@ -81,10 +81,10 @@ extension WebErrorViewModel {
     }
 }
 
-extension WebErrorViewModel {
+extension InAppBrowserErrorViewModel {
     static func == (
-        lhs: WebErrorViewModel,
-        rhs: WebErrorViewModel
+        lhs: InAppBrowserErrorViewModel,
+        rhs: InAppBrowserErrorViewModel
     ) -> Bool {
         return
             lhs.title?.string == rhs.title?.string &&

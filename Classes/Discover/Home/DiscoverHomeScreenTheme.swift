@@ -12,25 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebScreenTheme.swift
+//   DiscoverHomeScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct WebScreenTheme:
+struct DiscoverHomeScreenTheme:
     LayoutSheet,
     StyleSheet {
-    var background: ViewStyle
-    var noContent: WebNoContentViewTheme
-    var loading: WebLoadingViewTheme
-    var error: DiscoverErrorViewTheme
+    let background: ViewStyle
+    let navigationBarEdgeInset: LayoutMargins
+    let webContentTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.noContent = .init(family)
-        self.loading = .init(family)
-        self.error = .init(family)
+        self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
+        self.webContentTopInset = 10
     }
 }

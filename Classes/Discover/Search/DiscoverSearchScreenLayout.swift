@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverASASearchScreenLayout.swift
+//   DiscoverSearchScreenLayout.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class DiscoverASASearchScreenLayout: NSObject {
+final class DiscoverSearchScreenLayout: NSObject {
     typealias AssetListItemViewModelProvider = (AssetID) -> DiscoverSearchAssetListItemViewModel?
 
     private var sizeCache: [String: CGSize] = [:]
 
-    private let listDataSource: DiscoveryASASearchDataSource
-    private let assetListItemViewModelProvider: AssetListItemViewModelProvider
+    private let listDataSource: DiscoverSearchDataSource
+    private let dataController: DiscoverSearchDataController?
 
     init(
-        listDataSource: DiscoveryASASearchDataSource,
-        assetListItemViewModelProvider: @escaping AssetListItemViewModelProvider
+        listDataSource: DiscoverSearchDataSource,
+        dataController: DiscoverSearchDataController?
     ) {
         self.listDataSource = listDataSource
-        self.assetListItemViewModelProvider = assetListItemViewModelProvider
+        self.dataController = dataController
         super.init()
     }
 
@@ -42,7 +42,7 @@ final class DiscoverASASearchScreenLayout: NSObject {
     }
 }
 
-extension DiscoverASASearchScreenLayout {
+extension DiscoverSearchScreenLayout {
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
@@ -114,7 +114,7 @@ extension DiscoverASASearchScreenLayout {
     }
 }
 
-extension DiscoverASASearchScreenLayout {
+extension DiscoverSearchScreenLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
@@ -208,7 +208,7 @@ extension DiscoverASASearchScreenLayout {
             return cachedSize
         }
 
-        let viewModel = assetListItemViewModelProvider(item.assetID)
+        let viewModel = dataController?.searchAssetListItemViewModel(for: item.assetID)
         let width = calculateContentWidth(
             listView,
             forSectionAt: indexPath.section
@@ -254,7 +254,7 @@ extension DiscoverASASearchScreenLayout {
     }
 }
 
-extension DiscoverASASearchScreenLayout {
+extension DiscoverSearchScreenLayout {
     private func calculateContentWidth(
         _ listView: UICollectionView,
         forSectionAt section: Int

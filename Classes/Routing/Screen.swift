@@ -239,9 +239,9 @@ indirect enum Screen {
         accounts: [Account],
         eventHandler: ExportsAccountsResultScreen.EventHandler
     )
-    case discoverSearch(DiscoverASASearchScreen.EventHandler)
-    case discoverAssetDetail(DiscoverTokenDetail)
-    case discoverDappDetail(DiscoverDappDetail)
+    case discoverSearch(DiscoverSearchScreen.EventHandler)
+    case discoverAssetDetail(DiscoverAssetParameters)
+    case discoverDappDetail(DiscoverDappParamaters)
 }
 
 extension Screen {

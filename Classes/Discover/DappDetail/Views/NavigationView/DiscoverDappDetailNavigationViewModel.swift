@@ -12,34 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DappDetailNavigationViewModel.swift
+//   DiscoverDappDetailNavigationViewModel.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-struct DappDetailNavigationViewModel: BindableViewModel {
+struct DiscoverDappDetailNavigationViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var subtitle: TextProvider?
 
-    init<T>(_ model: T) {
+    init(_ model: DiscoverDappParamaters) {
         bind(model)
     }
 }
 
-extension DappDetailNavigationViewModel {
-    mutating func bind<T>(_ model: T) {
-        if let dappDetail = model as? DiscoverDappDetail {
-            bindTitle(dappDetail)
-            bindSubtitle(dappDetail)
-            return
-        }
+extension DiscoverDappDetailNavigationViewModel {
+    mutating func bind(_ model: DiscoverDappParamaters) {
+        bindTitle(model)
+        bindSubtitle(model)
     }
 }
 
-extension DappDetailNavigationViewModel {
-    mutating func bindTitle(_ dappDetail: DiscoverDappDetail) {
-        let title = dappDetail.name
+extension DiscoverDappDetailNavigationViewModel {
+    mutating func bindTitle(_ dappParameters: DiscoverDappParamaters) {
+        let title = dappParameters.name
 
         self.title = title.bodyMedium(
             alignment: .center,
@@ -47,8 +44,8 @@ extension DappDetailNavigationViewModel {
         )
     }
 
-    mutating func bindSubtitle(_ dappDetail: DiscoverDappDetail) {
-        let subtitle = URL(string: dappDetail.url)?.presentationString
+    mutating func bindSubtitle(_ dappParameters: DiscoverDappParamaters) {
+        let subtitle = URL(string: dappParameters.url)?.presentationString
 
         self.subtitle = subtitle?.captionMedium(
             alignment: .center,

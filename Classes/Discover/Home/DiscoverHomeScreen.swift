@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverWebScreen.swift
+//   DiscoverHomeScreen.swift
 
 import Foundation
 import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class DiscoverWebScreen:
-    WebScreen,
+final class DiscoverHomeScreen:
+    InAppBrowserScreen,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -31,7 +31,7 @@ final class DiscoverWebScreen:
         return isViewAppeared
     }
 
-    private lazy var theme = DiscoverWebScreenTheme()
+    private lazy var theme = DiscoverHomeScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = DiscoverNavigationBarView()
@@ -39,9 +39,9 @@ final class DiscoverWebScreen:
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
     private var isNavigationTitleHidden = true
-    private var isLayoutFinalized = false
+    private var isViewLayoutLoaded = false
 
-    private var events: [Event] = [.tokenDetail, .dAppViewer]
+    private var events: [Event] = [.assetDetail, .dAppViewer]
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -80,9 +80,9 @@ final class DiscoverWebScreen:
         }
 
         let generatedUrl = DiscoverURLGenerator.generateUrl(
-            from: .home,
-            on: interfaceTheme,
-            with: session
+            discoverUrl: .home,
+            theme: traitCollection.userInterfaceStyle,
+            session: session
         )
         load(url: generatedUrl)
     }
@@ -90,19 +90,19 @@ final class DiscoverWebScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if isLayoutFinalized {
+        if isViewLayoutLoaded {
             return
         }
 
         updateUIWhenViewDidLayout()
 
-        isLayoutFinalized = true
+        isViewLayoutLoaded = true
     }
 }
 
 /// <mark>
 /// UIScrollViewDelegate
-extension DiscoverWebScreen {
+extension DiscoverHomeScreen {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateUIWhenWebContentDidScroll()
     }
@@ -120,7 +120,7 @@ extension DiscoverWebScreen {
     }
 }
 
-extension DiscoverWebScreen {
+extension DiscoverHomeScreen {
     private func addNavigationBarLargeTitle() {
         view.addSubview(navigationBarLargeTitleView)
         navigationBarLargeTitleView.snp.makeConstraints {
@@ -161,7 +161,7 @@ extension DiscoverWebScreen {
     }
 }
 
-extension DiscoverWebScreen {
+extension DiscoverHomeScreen {
     private func updateUIWhenViewDidLayout() {
         updateAdditionalSafeAreaInetsWhenViewDidLayout()
     }
@@ -171,7 +171,7 @@ extension DiscoverWebScreen {
     }
 }
 
-extension DiscoverWebScreen: WKScriptMessageHandler {
+extension DiscoverHomeScreen: WKScriptMessageHandler {
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
@@ -183,33 +183,33 @@ extension DiscoverWebScreen: WKScriptMessageHandler {
 
         let jsonDecoder = JSONDecoder()
 
-        if let tokenDetail = try? jsonDecoder.decode(DiscoverTokenDetail.self, from: jsonData) {
-            openTokenDetail(tokenDetail)
+        if let assetParameters = try? jsonDecoder.decode(DiscoverAssetParameters.self, from: jsonData) {
+            openAssetDetail(assetParameters)
             return
         }
 
-        if let dappDetail = try? jsonDecoder.decode(DiscoverDappDetail.self, from: jsonData) {
-            openDappDetail(dappDetail)
+        if let dappParameters = try? jsonDecoder.decode(DiscoverDappParamaters.self, from: jsonData) {
+            openDappDetail(dappParameters)
             return
         }
     }
 
-    private func openDappDetail(_ dappDetail: DiscoverDappDetail) {
+    private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
         open(
             .discoverDappDetail(dappDetail),
             by: .push
         )
     }
 
-    private func openTokenDetail(_ tokenDetail: DiscoverTokenDetail) {
+    private func openAssetDetail(_ assetDetail: DiscoverAssetParameters) {
         open(
-            .discoverAssetDetail(tokenDetail),
+            .discoverAssetDetail(assetDetail),
             by: .push
         )
     }
 }
 
-extension DiscoverWebScreen {
+extension DiscoverHomeScreen {
     private func navigateToSearch() {
         let screen = Screen.discoverSearch { [weak self] event, screen in
             guard let self else {
@@ -217,9 +217,9 @@ extension DiscoverWebScreen {
             }
 
             switch event {
-            case .selectAsset(let tokenDetail):
+            case .selectAsset(let assetDetail):
                 screen.dismissScreen(animated: true) {
-                    self.openTokenDetail(tokenDetail)
+                    self.openAssetDetail(assetDetail)
                 }
             }
         }
@@ -235,9 +235,9 @@ extension DiscoverWebScreen {
     }
 }
 
-extension DiscoverWebScreen {
+extension DiscoverHomeScreen {
     enum Event: String {
-        case tokenDetail = "pushTokenDetailScreen"
+        case assetDetail = "pushTokenDetailScreen"
         case dAppViewer = "pushDappViewerScreen"
     }
 }

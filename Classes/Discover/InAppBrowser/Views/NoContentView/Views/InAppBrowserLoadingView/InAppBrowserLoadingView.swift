@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebLoadingView.swift
+//   InAppBrowserLoadingView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class WebLoadingView: MacaroonUIKit.BaseView {
+final class InAppBrowserLoadingView: MacaroonUIKit.BaseView {
     var isAnimating: Bool { logoView.isAnimating }
 
     private let logoView: LogoLoadingView
 
-    init(_ theme: WebLoadingViewTheme = .init()) {
+    init(_ theme: InAppBrowserLoadingViewTheme = .init()) {
         self.logoView = .init(theme.logoStyle)
         super.init(frame: .zero)
 
@@ -31,7 +31,7 @@ final class WebLoadingView: MacaroonUIKit.BaseView {
     }
 }
 
-extension WebLoadingView {
+extension InAppBrowserLoadingView {
     func startAnimating() {
         logoView.startAnimating()
     }
@@ -41,12 +41,12 @@ extension WebLoadingView {
     }
 }
 
-extension WebLoadingView {
-    private func addUI(_ theme: WebLoadingViewTheme) {
+extension InAppBrowserLoadingView {
+    private func addUI(_ theme: InAppBrowserLoadingViewTheme) {
         addLogo(theme)
     }
 
-    private func addLogo(_ theme: WebLoadingViewTheme) {
+    private func addLogo(_ theme: InAppBrowserLoadingViewTheme) {
         addSubview(logoView)
         logoView.snp.makeConstraints {
             $0.fitToSize((theme.logoSize.width, theme.logoSize.height))

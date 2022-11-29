@@ -12,62 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DappDetailScreen.swift
+//   DiscoverAssetDetailScreen.swift
 
 import Foundation
 import WebKit
 import MacaroonUtils
 
-final class DappDetailScreen: WebScreen {
-    private lazy var navigationTitleView = DappDetailNavigationView()
-
-    private let dappDetail: DiscoverDappDetail
+final class DiscoverAssetDetailScreen: InAppBrowserScreen {
+    private let assetParameters: DiscoverAssetParameters
 
     init(
-        dappDetail: DiscoverDappDetail,
+        assetParameters: DiscoverAssetParameters,
         configuration: ViewControllerConfiguration
     ) {
-        self.dappDetail = dappDetail
+        self.assetParameters = assetParameters
         super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let url = URL(string: dappDetail.url) else {
-            return
-        }
-
         let generatedUrl = DiscoverURLGenerator.generateUrl(
-            from: .other(url: url),
-            on: interfaceTheme,
-            with: session
+            discoverUrl: .assetDetail(parameters: assetParameters),
+            theme: traitCollection.userInterfaceStyle,
+            session: session
         )
-
         load(url: generatedUrl)
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
-    }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-
-        addNavigationTitle()
-    }
-}
-
-extension DappDetailScreen {
-    private func addNavigationTitle() {
-        navigationTitleView.customize(DappDetailNavigationViewTheme())
-
-        navigationItem.titleView = navigationTitleView
-
-        bindNavigationTitle()
-    }
-
-    private func bindNavigationTitle() {
-        navigationTitleView.bindData(DappDetailNavigationViewModel(dappDetail))
     }
 }

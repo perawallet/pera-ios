@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DappDetailNavigationViewTheme.swift
+//   InAppBrowserNoContentViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct DappDetailNavigationViewTheme:
-    LayoutSheet,
-    StyleSheet {
-    var title: TextStyle
-    var subtitle: TextStyle
+struct InAppBrowserNoContentViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ViewStyle
+    var contentEdgeInsets: NSDirectionalEdgeInsets
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.title = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.main)
+    init(_ family: LayoutFamily) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
         ]
-        self.subtitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayLighter)
-        ]
+        self.contentEdgeInsets = .init(top: 0, leading: 24, bottom: 0, trailing: 24)
     }
 }

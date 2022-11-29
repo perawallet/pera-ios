@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchDataController.swift
+//   DiscoverSearchDataController.swift
 
 import Foundation
 import MagpieCore
 import MagpieHipo
 import UIKit
 
-protocol DiscoveryASASearchDataController: AnyObject {
+protocol DiscoverSearchDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<DiscoverSearchListSection, DiscoverSearchListItem>
-    typealias EventHandler = (DiscoveryASASearchDataControllerEvent) -> Void
+    typealias EventHandler = (DiscoverSearchDataControllerEvent) -> Void
 
     var eventHandler: EventHandler? { get set }
 
@@ -31,6 +31,12 @@ protocol DiscoveryASASearchDataController: AnyObject {
     func loadListData(query: DiscoverSearchQuery?)
     func loadNextListData()
     func cancelLoadingListData()
+}
+
+extension DiscoverSearchDataController {
+    func searchAssetListItemViewModel(for assetID: AssetID) -> DiscoverSearchAssetListItemViewModel? {
+        return self[assetID]
+    }
 }
 
 struct DiscoverSearchQuery {
@@ -61,7 +67,7 @@ struct DiscoverSearchAssetListItem: Hashable {
     let assetID: AssetID
 }
 
-enum DiscoveryASASearchDataControllerEvent {
-    case didReload(DiscoveryASASearchDataController.Snapshot)
-    case didUpdate(DiscoveryASASearchDataController.Snapshot)
+enum DiscoverSearchDataControllerEvent {
+    case didReload(DiscoverSearchDataController.Snapshot)
+    case didUpdate(DiscoverSearchDataController.Snapshot)
 }

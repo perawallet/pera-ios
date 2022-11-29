@@ -12,17 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverTokenDetail.swift
+//   InAppBrowserScreenTheme.swift
 
 import Foundation
-import MacaroonUtils
+import MacaroonUIKit
 
-struct DiscoverTokenDetail: JSONModel {
-    let tokenId: String
-    let poolId: String?
+struct InAppBrowserScreenTheme:
+    LayoutSheet,
+    StyleSheet {
+    var background: ViewStyle
+    var noContent: InAppBrowserNoContentViewTheme
+    var loading: InAppBrowserLoadingViewTheme
+    var error: DiscoverErrorViewTheme
 
-    init(tokenId: String) {
-        self.tokenId = tokenId
-        self.poolId = nil
+    init(_ family: LayoutFamily) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.noContent = .init(family)
+        self.loading = .init(family)
+        self.error = .init(family)
     }
 }

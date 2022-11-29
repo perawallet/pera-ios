@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DappDetailNavigationView.swift
+//   DiscoverDappDetailNavigationView.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class DappDetailNavigationView:
+final class DiscoverDappDetailNavigationView:
     View,
     ViewModelBindable {
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
 
-    func customize(_ theme: DappDetailNavigationViewTheme) {
+    func customize(_ theme: DiscoverDappDetailNavigationViewTheme) {
         addTitle(theme)
         addSubtitle(theme)
     }
@@ -33,14 +33,14 @@ final class DappDetailNavigationView:
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func bindData(_ viewModel: DappDetailNavigationViewModel?) {
+    func bindData(_ viewModel: DiscoverDappDetailNavigationViewModel?) {
         viewModel?.title?.load(in: titleView)
         viewModel?.subtitle?.load(in: subtitleView)
     }
 }
 
-extension DappDetailNavigationView {
-    private func addTitle(_ theme: DappDetailNavigationViewTheme) {
+extension DiscoverDappDetailNavigationView {
+    private func addTitle(_ theme: DiscoverDappDetailNavigationViewTheme) {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
@@ -50,7 +50,7 @@ extension DappDetailNavigationView {
         }
     }
 
-    private func addSubtitle(_ theme: DappDetailNavigationViewTheme) {
+    private func addSubtitle(_ theme: DiscoverDappDetailNavigationViewTheme) {
         subtitleView.customizeAppearance(theme.subtitle)
 
         addSubview(subtitleView)

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoveryASASearchAPIDataController.swift
+//   DiscoverSearchAPIDataController.swift
 
 import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class DiscoveryASASearchAPIDataController:
-    DiscoveryASASearchDataController {
+final class DiscoverSearchAPIDataController:
+    DiscoverSearchDataController {
     var eventHandler: EventHandler?
 
     private lazy var apiThrottler = Throttler(intervalInSeconds: 0.4)
@@ -65,7 +65,7 @@ final class DiscoveryASASearchAPIDataController:
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     func loadListData(query: DiscoverSearchQuery?) {
         cancelLoadingListData()
         clearCache()
@@ -152,7 +152,7 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private func apply(query: DiscoverSearchQuery?) {
         guard let keyword = (query?.keyword).unwrapNonEmptyString() else {
             draft = nil
@@ -166,7 +166,7 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private typealias GetAssetsChanges = (assets: [AssetDecoration], hasNextAssets: Bool)
     private typealias GetAssetsError = HIPNetworkError<NoAPIModel>
     private typealias GetAssetsCompletion = (Result<GetAssetsChanges, GetAssetsError>) -> Void
@@ -223,7 +223,7 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private func findModel(forID id: AssetID) -> AssetDecoration? {
         return assetModelsCache[id]
     }
@@ -258,7 +258,7 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private func deliverUpdatesForLoading() {
         if let snapshot = snapshot,
            snapshot.sectionIdentifiers.first == .noContent,
@@ -430,9 +430,9 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private func publish(
-        _ event: DiscoveryASASearchDataControllerEvent
+        _ event: DiscoverSearchDataControllerEvent
     ) {
         asyncMain { [weak self] in
             guard let self = self else { return }
@@ -442,7 +442,7 @@ extension DiscoveryASASearchAPIDataController {
     }
 }
 
-extension DiscoveryASASearchAPIDataController {
+extension DiscoverSearchAPIDataController {
     private func createAssetListItems(
         assets: [AssetDecoration],
         saveToCache: Bool = true

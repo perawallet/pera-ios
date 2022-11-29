@@ -113,7 +113,7 @@ extension RootViewController {
             NavigationContainer(rootViewController: homeViewController)
         )
 
-        let discoverViewController = DiscoverWebScreen(configuration: configuration)
+        let discoverViewController = DiscoverHomeScreen(configuration: configuration)
         let discoverTab = DiscoverTabBarItem(
             NavigationContainer(rootViewController: discoverViewController)
         )

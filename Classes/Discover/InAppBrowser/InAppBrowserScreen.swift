@@ -12,23 +12,73 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebScreen.swift
+//   InAppBrowserScreen.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import WebKit
 
-class WebScreen:
+class InAppBrowserScreen:
     BaseViewController,
-    WKNavigationDelegate {
-    private(set) lazy var interfaceTheme: InterfaceTheme = isDarkMode ? .dark : .light {
-        didSet { updateInterfaceTheme() }
-    }
+    WKNavigationDelegate,
+    NotificationObserver,
+    WKUIDelegate {
+
+    var notificationObservations: [NSObjectProtocol] = []
 
     private(set) lazy var contentController = WKUserContentController()
     
-    private(set) lazy var webView: WKWebView = {
+    private(set) lazy var webView: WKWebView = createWebView()
+    private(set) lazy var noContentView = InAppBrowserNoContentView(theme.noContent)
+
+    private var sourceURL: URL?
+
+    private var isViewLayoutLoaded = false
+
+    private var lastURL: URL? { webView.url ?? sourceURL }
+
+    private let theme = InAppBrowserScreenTheme()
+
+    deinit {
+        stopObservingNotifications()
+    }
+
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+
+        startObservingNotifications()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if !isViewLayoutLoaded {
+            updateUIForLoading()
+            isViewLayoutLoaded = true
+        }
+    }
+
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
+        updateInterfaceTheme(userInterfaceStyle)
+    }
+
+    private func createWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = WKWebsiteDataStore.default()
         configuration.userContentController = contentController
@@ -56,56 +106,6 @@ class WebScreen:
         webView.navigationDelegate = self
         webView.uiDelegate = self
         return webView
-    }()
-    private(set) lazy var noContentView = WebNoContentView(theme.noContent)
-
-    private var sourceURL: URL?
-
-    private var isViewLayoutLoaded = false
-
-    private var lastURL: URL? { webView.url ?? sourceURL }
-
-    private let theme = WebScreenTheme()
-
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addUI()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        if view.bounds.isEmpty { return }
-
-        if !isViewLayoutLoaded {
-            updateUIForLoading()
-            isViewLayoutLoaded = true
-        }
-    }
-
-    override func setListeners() {
-        super.setListeners()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(checkThemeWhenBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
-    }
-
-    @objc
-    private func checkThemeWhenBecomeActive() {
-        interfaceTheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
-    }
-
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
-        interfaceTheme = userInterfaceStyle == .dark ? .dark : .light
     }
 
     /// <mark>
@@ -146,25 +146,31 @@ class WebScreen:
         preferences: WKWebpagePreferences,
         decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
     ) {
-        if let requestUrl = navigationAction.request.url {
-            let deeplinkQR = DeeplinkQR(url: requestUrl)
 
-            if let walletConnectURL = deeplinkQR.walletConnectUrl() {
-                AppDelegate.shared!.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
-                decisionHandler(.cancel, preferences)
-                return
-            }
-
+        guard let requestUrl = navigationAction.request.url else {
             decisionHandler(.allow, preferences)
-
             return
         }
 
-        decisionHandler(.allow, preferences)
+        if requestUrl.scheme?.lowercased() == "mailto" {
+            UIApplication.shared.open(requestUrl, options: [:], completionHandler: nil)
+            decisionHandler(.cancel, preferences)
+            return
+        }
+
+        let deeplinkQR = DeeplinkQR(url: requestUrl)
+
+        guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
+            decisionHandler(.allow, preferences)
+            return
+        }
+
+        AppDelegate.shared!.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+        decisionHandler(.cancel, preferences)
     }
 }
 
-extension WebScreen {
+extension InAppBrowserScreen {
     func load(url: URL?) {
         guard let url = url else {
             return
@@ -178,15 +184,15 @@ extension WebScreen {
     }
 }
 
-extension WebScreen {
-    private func updateInterfaceTheme() {
-        let theme = interfaceTheme.rawValue
+extension InAppBrowserScreen {
+    private func updateInterfaceTheme(_ style: UIUserInterfaceStyle) {
+        let theme = style.peraThemeValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
     }
 }
 
-extension WebScreen {
+extension InAppBrowserScreen {
     private func addUI() {
         addBackground()
         addWebView()
@@ -194,17 +200,17 @@ extension WebScreen {
     }
 
     private func updateUIForLoading() {
-        let state = WebNoContentView.State.loading(theme.loading)
+        let state = InAppBrowserNoContentView.State.loading(theme.loading)
         updateUI(for: state)
     }
 
     private func updateUIForError(_ error: Error) {
-        let viewModel = WebErrorViewModel(error: error)
-        let state = WebNoContentView.State.error(theme.error, viewModel)
+        let viewModel = InAppBrowserErrorViewModel(error: error)
+        let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
         updateUI(for: state)
     }
 
-    private func updateUI(for state: WebNoContentView.State) {
+    private func updateUI(for state: InAppBrowserNoContentView.State) {
         let isNoContentVisible = !noContentView.isHidden
 
         noContentView.setState(
@@ -301,7 +307,7 @@ extension WebScreen {
     }
 }
 
-extension WebScreen: WKUIDelegate {
+extension InAppBrowserScreen {
     func webView(
         _ webView: WKWebView,
         createWebViewWith configuration: WKWebViewConfiguration,
@@ -315,9 +321,28 @@ extension WebScreen: WKUIDelegate {
     }
 }
 
-extension WebScreen {
-    enum InterfaceTheme: String {
-        case dark = "dark-theme"
-        case light = "light-theme"
+extension InAppBrowserScreen {
+    private func startObservingNotifications() {
+        startObservingAppLifeCycleNotifications()
+    }
+
+    private func startObservingAppLifeCycleNotifications() {
+        observeWhenApplicationDidBecomeActive {
+            [weak self] _ in
+            guard let self else { return }
+            self.updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
+        }
+    }
+}
+
+
+extension UIUserInterfaceStyle {
+    var peraThemeValue: String {
+        switch self {
+        case .dark:
+            return "dark-theme"
+        default:
+            return "light-theme"
+        }
     }
 }

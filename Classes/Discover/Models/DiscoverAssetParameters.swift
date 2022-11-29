@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WebNoContentViewTheme.swift
+//   DiscoverAssetParameters.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
+import MacaroonUtils
 
-struct WebNoContentViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var background: ViewStyle
-    var contentEdgeInsets: NSDirectionalEdgeInsets
+struct DiscoverAssetParameters: JSONModel {
+    let assetID: String
+    let poolID: String?
 
-    init(_ family: LayoutFamily) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.contentEdgeInsets = .init(top: 0, leading: 24, bottom: 0, trailing: 24)
+    init(assetID: String) {
+        self.assetID = assetID
+        self.poolID = nil
+    }
+}
+
+extension DiscoverAssetParameters {
+    enum CodingKeys: String, CodingKey {
+        case assetID = "tokenId"
+        case poolID = "poolId"
     }
 }

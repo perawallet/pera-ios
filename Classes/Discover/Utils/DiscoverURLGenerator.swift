@@ -15,22 +15,23 @@
 //   DiscoverURLGenerator.swift
 
 import Foundation
+import UIKit
 
 final class DiscoverURLGenerator {
     static func generateUrl(
-        from discoverUrl: DiscoverURL,
-        on theme: WebScreen.InterfaceTheme,
-        with session: Session?
+        discoverUrl: DiscoverURL,
+        theme: UIUserInterfaceStyle,
+        session: Session?
     ) -> URL? {
         var queryItems: [URLQueryItem] = []
         queryItems.append(.init(name: "version", value: "1"))
-        queryItems.append(.init(name: "theme", value: theme.rawValue))
+        queryItems.append(.init(name: "theme", value: theme.peraThemeValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         if #available(iOS 16, *) {
-            queryItems.append(.init(name: "language", value: Locale.current.language.languageCode?.identifier))
+            queryItems.append(.init(name: "language", value: Locale.preferred.language.languageCode?.identifier))
         } else {
-            queryItems.append(.init(name: "language", value: Locale.current.languageCode))
+            queryItems.append(.init(name: "language", value: Locale.preferred.languageCode))
         }
         if #available(iOS 16, *) {
             queryItems.append(.init(name: "region", value: Locale.current.region?.identifier))
@@ -43,9 +44,9 @@ final class DiscoverURLGenerator {
         switch discoverUrl {
         case .other(let url):
             return url
-        case .tokenDetail(let tokenDetail):
-            queryItems.append(.init(name: "poolId", value: tokenDetail.poolId))
-            components?.path = "/token-detail/\(tokenDetail.tokenId)/"
+        case .assetDetail(let parameters):
+            queryItems.append(.init(name: "poolId", value: parameters.poolID))
+            components?.path = "/token-detail/\(parameters.assetID)/"
         case .home:
             break
         }
@@ -56,7 +57,7 @@ final class DiscoverURLGenerator {
 }
 
 enum DiscoverURL {
-    case tokenDetail(token: DiscoverTokenDetail)
+    case assetDetail(parameters: DiscoverAssetParameters)
     case other(url: URL)
     case home
 }
