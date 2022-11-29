@@ -116,7 +116,9 @@ class Router:
             }
         }
         
-        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+        launch(tab: .home)
+        
+        let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
         
         transition.perform(
