@@ -66,9 +66,9 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 )
                 cell.bindData(item)
                 return cell
-            case .search:
+            case .uiActions:
                 let cell = collectionView.dequeue(
-                    CollectibleListSearchInputCell.self,
+                    NFTsUIActionsCell.self,
                     at: indexPath
                 )
                 return cell
@@ -115,7 +115,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
             NoContentWithActionIllustratedCell.self,
-            CollectibleListSearchInputCell.self,
+            NFTsUIActionsCell.self,
             ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
             CollectibleListLoadingViewCell.self,

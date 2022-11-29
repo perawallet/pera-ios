@@ -46,7 +46,7 @@ enum CollectibleSection:
     case empty
     case loading
     case header
-    case search
+    case uiActions
     case collectibles
 }
 
@@ -54,7 +54,7 @@ enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
     case header(ManagementItemViewModel)
     case watchAccountHeader(ManagementItemViewModel)
-    case search
+    case uiActions
     case collectible(CollectibleItem)
 }
 

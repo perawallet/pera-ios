@@ -205,8 +205,8 @@ extension CollectibleListViewController {
             linkInteractors(cell as! ManagementItemWithSecondaryActionCell)
         case .watchAccountHeader:
             linkInteractors(cell as! ManagementItemCell)
-        case .search:
-            linkInteractors(cell as! CollectibleListSearchInputCell)
+        case .uiActions:
+            linkInteractors(cell as! NFTsUIActionsCell)
         case .empty(let item):
             switch item {
             case .loading:
@@ -449,9 +449,19 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleListSearchInputCell
+        _ cell: NFTsUIActionsCell
     ) {
-        cell.delegate = self
+        cell.searchInputDelegate = self
+
+        cell.layoutPreference = .grid /// <todo> Get the preference from saved preference.
+
+        cell.startObserving(event: .performLayoutPreferenceChange) {
+//            [weak cell] in
+//            guard let cell = cell else {
+//                return
+//            }
+            /// <todo> Perform layout changes & save the preference.
+        }
     }
 
     private func linkInteractors(

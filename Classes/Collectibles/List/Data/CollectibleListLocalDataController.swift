@@ -392,11 +392,11 @@ extension CollectibleListLocalDataController {
                 )
             }
 
-            snapshot.appendSections([.search, .collectibles])
+            snapshot.appendSections([.uiActions, .collectibles])
 
             snapshot.appendItems(
-                [.search],
-                toSection: .search
+                [.uiActions],
+                toSection: .uiActions
             )
 
             snapshot.appendItems(
@@ -456,11 +456,11 @@ extension CollectibleListLocalDataController {
                 )
             }
 
-            snapshot.appendSections([.search, .empty])
+            snapshot.appendSections([.uiActions, .empty])
 
             snapshot.appendItems(
-                [.search],
-                toSection: .search
+                [.uiActions],
+                toSection: .uiActions
             )
 
             snapshot.appendItems(
