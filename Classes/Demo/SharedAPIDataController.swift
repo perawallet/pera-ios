@@ -44,8 +44,6 @@ final class SharedAPIDataController:
 
     private(set) var blockchainUpdatesMonitor: BlockchainUpdatesMonitor = .init()
 
-    private(set) var lastRound: BlockRound?
-
     private(set) lazy var accountSortingAlgorithms: [AccountSortingAlgorithm] = [
         AccountAscendingTitleAlgorithm(),
         AccountDescendingTitleAlgorithm(),
@@ -257,8 +255,8 @@ extension SharedAPIDataController {
             guard let self = self else { return }
             
             switch event {
-            case .willStart(let round):
-                self.blockProcessorWillStart(for: round)
+            case .willStart:
+                self.blockProcessorWillStart()
             case .willFetchAccount(let localAccount):
                 self.blockProcessorWillFetchAccount(localAccount)
             case .didFetchAccount(let account):
@@ -281,20 +279,17 @@ extension SharedAPIDataController {
                     error,
                     for: account
                 )
-            case .didFinish(let round):
-                self.blockProcessorDidFinish(for: round)
+            case .didFinish:
+                self.blockProcessorDidFinish()
             }
         }
         
         return processor
     }
     
-    private func blockProcessorWillStart(
-        for round: BlockRound?
-    ) {
+    private func blockProcessorWillStart() {
         $status.mutate { $0 = .running }
-        
-        lastRound = round
+
         nextAccountCollection = []
         
         publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
@@ -380,10 +375,7 @@ extension SharedAPIDataController {
         nextAccountCollection[account.address] = updatedAccount
     }
     
-    private func blockProcessorDidFinish(
-        for round: BlockRound?
-    ) {
-        lastRound = round
+    private func blockProcessorDidFinish() {
         accountCollection = nextAccountCollection
         nextAccountCollection = []
         
@@ -399,8 +391,6 @@ extension SharedAPIDataController {
     }
     
     private func blockDidReset() {
-        lastRound = nil
-        
         $isFirstPollingRoundCompleted.mutate { $0 = false }
         $status.mutate { $0 = .idle }
         
@@ -453,26 +443,17 @@ extension SharedAPIDataController {
 
         var accountSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: accountSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey) }
         }
 
         var collectibleSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: collectibleSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey) }
         }
 
         var accountAssetSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: accountAssetSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey) }
         }
 
         private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"

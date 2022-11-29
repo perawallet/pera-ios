@@ -22,17 +22,16 @@ import UIKit
 import UserNotifications
 
 class PushNotificationController: NSObject {
+    var token: String? {
+        return deviceRegistrationController.token
+    }
+
     private lazy var deviceRegistrationController = DeviceRegistrationController(
         target: target,
         session: session,
         api: api
     )
-
     private lazy var currencyFormatter = CurrencyFormatter()
-
-    var token: String? {
-        return deviceRegistrationController.token
-    }
     
     private let target: ALGAppTarget
     private let session: Session
