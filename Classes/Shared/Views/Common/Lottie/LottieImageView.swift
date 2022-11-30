@@ -20,7 +20,7 @@ import Lottie
 import UIKit
 
 final class LottieImageView: View {
-    private lazy var animationView = AnimationView()
+    private lazy var animationView = LottieAnimationView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +36,7 @@ final class LottieImageView: View {
 extension LottieImageView {
     func addAnimationView() {
         animationView.contentMode = .scaleAspectFit
+        animationView.backgroundBehavior = .pauseAndRestore
 
         prepareWholeScreenLayoutFor(animationView)
     }
@@ -43,7 +44,7 @@ extension LottieImageView {
 
 extension LottieImageView {
     func setAnimation(_ jsonName: String) {
-        animationView.animation = Animation.named(jsonName)
+        animationView.animation = LottieAnimation.named(jsonName)
     }
 
     func play(with configuration: LottieImageView.Configuration) {

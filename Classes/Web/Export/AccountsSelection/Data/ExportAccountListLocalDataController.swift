@@ -122,8 +122,8 @@ extension ExportAccountListLocalDataController {
                 .sortedAccounts()
                 .filter {
                     let isWatchAccount = $0.value.isWatchAccount()
-                    let isRekeyedAccount = $0.value.isRekeyed()
-                    return !isWatchAccount && !isRekeyedAccount
+                    let requiresLedgerConnection = $0.value.requiresLedgerConnection()
+                    return !isWatchAccount && !requiresLedgerConnection
                 }.map {
                     $0.value
                 }
@@ -175,7 +175,7 @@ extension ExportAccountListLocalDataController {
             .map {
                 let account = $0.element
                 let draft = IconWithShortAddressDraft(account)
-                let viewModel = AccountPreviewViewModel(draft)
+                let viewModel = AccountListItemViewModel(draft)
 
                 let item = ExportAccountListAccountCellItemIdentifier(
                     model: account,
