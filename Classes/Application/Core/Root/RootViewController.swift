@@ -24,9 +24,9 @@ class RootViewController: UIViewController {
     var areTabsVisible: Bool {
         return !mainContainer.items.isEmpty
     }
-    
+
     private(set) var isDisplayingGovernanceBanner = true
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return determinePreferredStatusBarStyle(for: appConfiguration.api.network)
     }
@@ -39,15 +39,17 @@ class RootViewController: UIViewController {
     override var childForStatusBarHidden: UIViewController? {
         return areTabsVisible ? mainContainer : nil
     }
-    
+
     private lazy var mainContainer = TabBarController(
-        sharedDataController: appConfiguration.sharedDataController,
+        swapDataStore: SwapDataLocalStore(),
+        analytics: appConfiguration.analytics,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController,
         loadingController: appConfiguration.loadingController,
-        analytics: appConfiguration.analytics
+        session: appConfiguration.session,
+        sharedDataController: appConfiguration.sharedDataController
     )
-    
+
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: appConfiguration.session,
@@ -58,7 +60,7 @@ class RootViewController: UIViewController {
     private var currentWCTransactionRequest: WalletConnectRequest?
     private var wcRequestScreen: WCMainTransactionScreen?
     private var wcTransactionSuccessTransition: BottomSheetTransition?
-    
+
     let target: ALGAppTarget
     let appConfiguration: AppConfiguration
     let launchController: AppLaunchController
@@ -71,15 +73,15 @@ class RootViewController: UIViewController {
         self.target = target
         self.appConfiguration = appConfiguration
         self.launchController = launchController
-        
+
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
@@ -91,7 +93,7 @@ extension RootViewController {
         if areTabsVisible {
             return
         }
-        
+
         let configuration = appConfiguration.all()
         let announcementAPIDataController = AnnouncementAPIDataController(
             api: configuration.api!,
@@ -99,6 +101,7 @@ extension RootViewController {
         )
 
         let homeViewController = HomeViewController(
+            swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
                 appConfiguration.sharedDataController,
                 announcementDataController: announcementAPIDataController
@@ -111,7 +114,7 @@ extension RootViewController {
         let homeTab = HomeTabBarItem(
             NavigationContainer(rootViewController: homeViewController)
         )
-        
+
         let algoStatisticsViewController =
             AlgoStatisticsViewController(
                 dataController: AlgoStatisticsDataController(
@@ -123,7 +126,7 @@ extension RootViewController {
         let algoStatisticsTab = AlgoStatisticsTabBarItem(
             NavigationContainer(rootViewController: algoStatisticsViewController)
         )
-        
+
         let collectibleListViewController = CollectiblesViewController(
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -132,11 +135,11 @@ extension RootViewController {
         )
         let collectiblesTab =
             CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
-        
+
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
             SettingsTabBarItem(NavigationContainer(rootViewController: settingsViewController))
-        
+
         mainContainer.items = [
             homeTab,
             algoStatisticsTab,
@@ -145,7 +148,7 @@ extension RootViewController {
             settingsTab
         ]
     }
-    
+
     func launch(
         tab: TabBarItemID
     ) {
@@ -154,7 +157,7 @@ extension RootViewController {
         }
         mainContainer.selectedTab = tab
     }
-    
+
     func terminateTabs() {
         mainContainer.items = []
     }
@@ -212,7 +215,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         and transactionOption: WCTransactionOption?
     ) {
         currentWCTransactionRequest = request
-        
+
         let draft = WalletConnectRequestDraft(
             request: request,
             transactions: transactions,
@@ -245,7 +248,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         wcMainTransactionScreen.dismissScreen {
             [weak self] in
             guard let self = self else { return }
-            
+
             self.presentWCTransactionSuccessMessage(for: wcSession)
         }
     }
@@ -262,12 +265,12 @@ extension RootViewController: WCMainTransactionScreenDelegate {
             secondaryActionButtonTitle: "title-close".localized
         )
         let transition = BottomSheetTransition(presentingViewController: findVisibleScreen())
-        
+
         transition.perform(
             .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
-        
+
         self.wcTransactionSuccessTransition = transition
     }
 
@@ -302,7 +305,7 @@ extension RootViewController {
             } else {
                 self.appConfiguration.sharedDataController.startPolling()
             }
-            
+
              self.appConfiguration.loadingController.stopLoading()
              handler(isCompleted)
         }
@@ -314,11 +317,11 @@ extension RootViewController {
         addBackground()
         addMain()
     }
-    
+
     private func addBackground() {
         view.backgroundColor = Colors.Defaults.background.uiColor
     }
-    
+
     private func addMain() {
         addContent(mainContainer) {
             contentView in

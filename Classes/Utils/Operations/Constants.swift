@@ -21,15 +21,19 @@ enum Constants {
         static let collectibleDetailSnapshot = "collectibleDetailSnapshot"
         static let manageAssetListSnapshot = "manageAssetListSnapshot"
         static let collectibleListSnapshot = "collectibleListSnapshot"
+        static let swapPoolAssetSnapshot = "swapPoolAssetSnapshot"
+        static let swapLocalAssetSnapshot = "swapLocalAssetSnapshot"
     }
 
     enum Notification {
         enum InfoKey {
             static let collectibleListAccountAssetPair = "collectibleListAccountAssetPair"
+            static let collectibleListFilter = "collectibleListFilter"
         }
 
         static let collectibleListDidAddCollectible = "collectibleListDidAddCollectible"
         static let collectibleListDidRemoveCollectible = "collectibleListDidRemoveCollectible"
         static let collectibleListDidSendCollectible = "collectibleListDidSendCollectible"
+        static let collectibleListDidChangeFilter = "collectibleListDidChangeFilter"
     }
 }

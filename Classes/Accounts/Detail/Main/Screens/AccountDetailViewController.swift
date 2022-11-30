@@ -46,29 +46,44 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
         account: accountHandle.value
     )
-    private lazy var receiveTransactionFlowCoordinator =
-    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(
+        presentingScreen: self,
+        account: accountHandle.value
+    )
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
-    private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
+    private lazy var navigationTitleView = AccountNameTitleView()
 
     private var accountHandle: AccountHandle
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         accountHandle: AccountHandle,
+        swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -78,7 +93,6 @@ final class AccountDetailViewController: PageContainer {
         super.viewDidLoad()
 
         setPageBarItems()
-        addTitleView()
     }
 
     override func viewWillAppear(
@@ -99,7 +113,8 @@ final class AccountDetailViewController: PageContainer {
     }
 
     override func configureNavigationBarAppearance() {
-        addOptionsBarButton()
+        addNavigationTitle()
+        addNavigationActions()
     }
 
     override func customizePageBarAppearance() {
@@ -139,7 +154,7 @@ extension AccountDetailViewController {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
             case .didRenameAccount:
-                self.bindTitle()
+                self.bindNavigationTitle()
                 self.eventHandler?(.didEdit)
             case .didRemoveAccount:
                 self.eventHandler?(.didRemove)
@@ -166,14 +181,15 @@ extension AccountDetailViewController {
                 let draft = BuyAlgoDraft()
                 draft.address = self.accountHandle.value.address
                 self.buyAlgoFlowCoordinator.launch(draft: draft)
+            case .swap:
+                self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .swap))
+
+                self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
             case .send:
                 self.assetListScreen.endEditing()
 
                 self.sendTransactionFlowCoordinator.launch()
-            case .address:
-                self.assetListScreen.endEditing()
-
-                self.receiveTransactionFlowCoordinator.launch()
             case .more:
                 self.assetListScreen.endEditing()
 
@@ -208,6 +224,16 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
         }
     }
 
+    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.analytics.track(.recordAccountDetailScreen(type: .swap))
+            self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
+        }
+    }
+
     func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
@@ -231,18 +257,16 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
 }
 
 extension AccountDetailViewController {
-    private func addOptionsBarButton() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) { [weak self] in
-            guard let self = self else {
-                return
-            }
+    private func addNavigationActions() {
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) {
+            [unowned self] in
 
             self.endEditing()
 
             self.presentOptionsScreen()
         }
 
-        rightBarButtonItems = [optionsBarButtonItem]
+        rightBarButtonItems = [ optionsBarButtonItem ]
     }
 
     private func presentOptionsScreen() {
@@ -270,43 +294,37 @@ extension AccountDetailViewController {
         ]
     }
 
-    private func addTitleView() {
-        accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
 
-        accountNamePreviewTitleView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(didLongPressToAccountNamePreviewTitleView)
-            )
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
         )
+        navigationTitleView.addGestureRecognizer(recognizer)
 
-        navigationItem.titleView = accountNamePreviewTitleView
-
-        bindTitle()
+        bindNavigationTitle()
     }
 
-    private func bindTitle() {
-        accountNamePreviewTitleView.bindData(
-            AccountNamePreviewViewModel(
-                account: accountHandle.value,
-                with: .center
-            )
-        )
+    private func bindNavigationTitle() {
+        let account = accountHandle.value
+        let viewModel = AccountNameTitleViewModel(account)
+        navigationTitleView.bindData(viewModel)
     }
 }
 
 extension AccountDetailViewController {
     @objc
-    private func didLongPressToAccountNamePreviewTitleView(
-        _ gesture: UILongPressGestureRecognizer
-    ) {
-        guard gesture.state == .began else {
-            return
+    private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(accountHandle.value)
         }
-
-        copyToClipboardController.copyAddress(accountHandle.value)
     }
+}
 
+extension AccountDetailViewController {
     @objc
     private func openAccountActionsMenu() {
         view.endEditing(true)
@@ -343,6 +361,23 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         let draft = QRCreationDraft(address: authAddress, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
+    }
+
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
+        let account = accountHandle.value
+        let accountName = account.name ?? account.address.shortAddressDisplay
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: accountName
+        )
+        let qrGeneratorScreen: Screen = .qrGenerator(
+            title: accountName,
+            draft: draft,
+            isTrackable: true
+        )
+
+        open(qrGeneratorScreen, by: .present)
     }
 
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
@@ -435,7 +470,7 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        bindTitle()
+        bindNavigationTitle()
         eventHandler?(.didEdit)
     }
 }

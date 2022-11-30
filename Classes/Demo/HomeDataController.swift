@@ -30,6 +30,8 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func hideAnnouncement()
+
+    func removeAccount(_ account: Account)
 }
 
 enum HomeSectionIdentifier:
@@ -60,7 +62,7 @@ enum HomePortfolioItemIdentifier: Hashable {
 
 enum HomeAccountItemIdentifier: Hashable {
     case header(ManagementItemViewModel)
-    case cell(AccountPreviewViewModel)
+    case cell(AccountListItemViewModel)
 }
 
 enum HomeDataControllerEvent {
