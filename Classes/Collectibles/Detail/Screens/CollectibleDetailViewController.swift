@@ -668,7 +668,7 @@ extension CollectibleDetailViewController {
                 shouldDisplayAccountActionsBarButtonItem: false,
                 shouldDisplayQuickActions: false
             )
-        ) { [weak self] event in
+        ) { event in
             switch event {
             case .didRemoveAccount: break
             case .didRenameAccount: break
