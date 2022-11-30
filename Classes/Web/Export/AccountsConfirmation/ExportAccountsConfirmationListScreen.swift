@@ -21,7 +21,6 @@ final class ExportAccountsConfirmationListScreen:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     NavigationBarLargeTitleConfigurable {
-
     typealias EventHandler = (Event, ExportAccountsConfirmationListScreen) -> Void
 
     var eventHandler: EventHandler?
@@ -90,6 +89,7 @@ final class ExportAccountsConfirmationListScreen:
         let title = dataController.hasSingularAccount ? "web-export-accounts-confirmation-list-title-singular".localized : "web-export-accounts-confirmation-list-title".localized
 
         navigationBarLargeTitleController.title = title
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
     }
 
     override func viewDidLoad() {
