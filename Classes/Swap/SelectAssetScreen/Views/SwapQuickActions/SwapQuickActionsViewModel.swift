@@ -24,7 +24,7 @@ struct SwapQuickActionsViewModel: ViewModel {
     private(set) var setMaxAmountQuickActionItem: SwapQuickActionItem
 
     init(amountPercentage: SwapAmountPercentage? = nil) {
-        self.switchAssetsQuickActionItem = SwapSwitchAssetsQuickActionItem()
+        self.switchAssetsQuickActionItem = SwapSwitchAssetsQuickActionItem(isEnabled: true)
         self.editAmountQuickActionItem =
             Self.makeEditAmountQuickActionItem(percentage: amountPercentage)
         self.setMaxAmountQuickActionItem = SwapSetMaxAmountQuickActionItem()
@@ -39,6 +39,10 @@ extension SwapQuickActionsViewModel {
     mutating func bindEditAmountQuickActionItem(amountPercentage: SwapAmountPercentage?) {
         editAmountQuickActionItem = Self.makeEditAmountQuickActionItem(percentage: amountPercentage)
     }
+
+    mutating func bindSwitchAssetsQuickActionItemEnabled(_ isEnabled: Bool) {
+        switchAssetsQuickActionItem = SwapSwitchAssetsQuickActionItem(isEnabled: isEnabled)
+    }
 }
 
 extension SwapQuickActionsViewModel {
@@ -52,13 +56,18 @@ struct SwapSwitchAssetsQuickActionItem: SwapQuickActionItem {
     let layout: Self.Layout
     let style: Self.Style
     let contentEdgeInsets: UIEdgeInsets
+    let isEnabled: Bool
 
-    init() {
+    init(isEnabled: Bool) {
         self.layout = .none
         self.style = [
-            .icon([ .normal("swap-switch-icon") ])
+            .icon([
+                .normal("swap-switch-icon"),
+                .disabled("swap-switch-icon-disabled")
+            ])
         ]
         self.contentEdgeInsets = .init(top: 11, left: 16, bottom: 13, right: 16)
+        self.isEnabled = isEnabled
     }
 }
 
@@ -66,6 +75,7 @@ struct SwapEditAmountQuickActionItem: SwapQuickActionItem {
     let layout: Self.Layout
     let style: Self.Style
     let contentEdgeInsets: UIEdgeInsets
+    let isEnabled: Bool
 
     init(title: String? = nil) {
         self.layout = title.isNilOrEmpty ? .none : .imageAtRight(spacing: 4)
@@ -80,6 +90,7 @@ struct SwapEditAmountQuickActionItem: SwapQuickActionItem {
             ])
         ]
         self.contentEdgeInsets = .init(top: 11, left: 16, bottom: 13, right: 12)
+        self.isEnabled = true
     }
 }
 
@@ -87,6 +98,7 @@ struct SwapSetMaxAmountQuickActionItem: SwapQuickActionItem {
     let layout: Self.Layout
     let style: Self.Style
     let contentEdgeInsets: UIEdgeInsets
+    let isEnabled: Bool
 
     init() {
         self.layout = .none
@@ -98,5 +110,6 @@ struct SwapSetMaxAmountQuickActionItem: SwapQuickActionItem {
             ])
         ]
         self.contentEdgeInsets = .init(top: 11, left: 12, bottom: 13, right: 16)
+        self.isEnabled = true
     }
 }

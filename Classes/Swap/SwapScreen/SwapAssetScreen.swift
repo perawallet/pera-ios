@@ -50,6 +50,8 @@ final class SwapAssetScreen:
         return MacaroonUIKit.LoadingButton(loadingIndicator: loadingIndicator)
     }()
 
+    private var swapQuickActionsViewModel: SwapQuickActionsViewModel?
+
     private lazy var swapAssetValueFormatter = SwapAssetValueFormatter()
     private lazy var swapAssetInputValidator = SwapAssetInputValidator()
 
@@ -328,7 +330,8 @@ extension SwapAssetScreen {
 
     private func bindQuickActions() {
         let percentage = dataStore.amountPercentage
-        quickActionsView.bind(SwapQuickActionsViewModel(amountPercentage: percentage))
+        self.swapQuickActionsViewModel = SwapQuickActionsViewModel(amountPercentage: percentage)
+        quickActionsView.bind(swapQuickActionsViewModel)
     }
 }
 
@@ -387,7 +390,7 @@ extension SwapAssetScreen {
 
     private func updateUIWhenDataWillLoad() {
         swapActionView.isEnabled = false
-        swapActionView.startLoading()
+        startLoading()
         poolAssetView.startAnimatingAmountView()
         hideError()
 
@@ -557,11 +560,19 @@ extension SwapAssetScreen {
         errorView.isHidden = true
     }
 
+    private func startLoading() {
+        swapActionView.startLoading()
+        swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(false)
+        quickActionsView.bind(swapQuickActionsViewModel)
+    }
+
     private func stopLoading() {
         if swapActionView.isLoading {
             swapActionView.stopLoading()
         }
 
+        swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(true)
+        quickActionsView.bind(swapQuickActionsViewModel)
         poolAssetView.stopAnimatingAmountView()
     }
 }
@@ -675,7 +686,7 @@ extension SwapAssetScreen {
             api: api!
         )
 
-        swapActionView.startLoading()
+        startLoading()
 
         balancePercentageValidator.eventHandler = {
             [weak self] event in

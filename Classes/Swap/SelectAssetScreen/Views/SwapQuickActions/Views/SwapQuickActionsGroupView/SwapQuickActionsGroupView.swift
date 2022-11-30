@@ -84,6 +84,8 @@ extension SwapQuickActionsGroupView {
         contentView.addArrangedSubview(view)
         view.contentEdgeInsets = item.contentEdgeInsets
 
+        view.isEnabled = item.isEnabled
+
         view.addTouch(
             target: self,
             action: #selector(notifySelectorForSelectedAction)
