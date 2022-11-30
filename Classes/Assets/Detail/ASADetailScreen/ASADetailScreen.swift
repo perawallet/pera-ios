@@ -55,6 +55,15 @@ final class ASADetailScreen:
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self,
+        asset: dataController.asset
+    )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -87,16 +96,22 @@ final class ASADetailScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let dataController: ASADetailScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
 
     init(
+        swapDataStore: SwapDataStore,
         dataController: ASADetailScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.swapDataStore = swapDataStore
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -549,6 +564,14 @@ extension ASADetailScreen {
             $0.centerX == 0
         }
 
+        let asset = dataController.asset
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        var viewModel = ASADetailQuickActionsViewModel(
+            asset: asset,
+            isSwapBadgeVisible: !isOnboardedToSwap
+        )
+
         quickActionsView.startObserving(event: .layoutChanged) {
             [unowned self] in
 
@@ -558,6 +581,16 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.navigateToBuyAlgo()
+        }
+        quickActionsView.startObserving(event: .swap) {
+            [unowned self, unowned quickActionsView] in
+
+            if !isOnboardedToSwap {
+                viewModel.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
+                quickActionsView.bindData(viewModel)
+            }
+
+            self.navigateToSwapAsset()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
@@ -570,8 +603,6 @@ extension ASADetailScreen {
             self.navigateToReceiveTransaction()
         }
 
-        let asset = dataController.asset
-        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
         quickActionsView.bindData(viewModel)
     }
 
@@ -954,6 +985,11 @@ extension ASADetailScreen {
         let draft = BuyAlgoDraft()
         draft.address = dataController.account.address
         buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func navigateToSwapAsset() {
+        analytics.track(.tapSwapInAlgoDetail())
+        swapAssetFlowCoordinator.launch(account: dataController.account)
     }
 
     private func navigateToSendTransaction() {

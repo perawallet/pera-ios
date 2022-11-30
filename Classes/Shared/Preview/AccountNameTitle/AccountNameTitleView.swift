@@ -76,10 +76,11 @@ extension AccountNameTitleView {
     private func addIconAndSubtitleContent(_ theme: AccountNameTitleViewTheme) {
         addSubview(iconAndSubtitleContentView)
         iconAndSubtitleContentView.snp.makeConstraints {
+            $0.centerX == 0
             $0.top == titleView.snp.bottom
-            $0.leading == 0
+            $0.leading >= 0
             $0.bottom == 0
-            $0.trailing == 0
+            $0.trailing <= 0
         }
 
         addIcon(theme)

@@ -113,7 +113,7 @@ extension RenameAccountScreen {
     }
 
     private func addNavigationActions() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [unowned self] in
             self.didTapDoneButton()
         }
