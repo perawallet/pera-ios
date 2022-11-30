@@ -132,7 +132,7 @@ extension EditNoteScreen {
     }
 
     private func addNavigationActions() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Text.main.uiColor)) {
             [unowned self] in
             self.didTapDoneButton()
         }

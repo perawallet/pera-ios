@@ -14,7 +14,7 @@
 "account-listing-error-message" = "Não podemos exibir os detalhes deste portfolio. Parece que estamos tendo problemas para calcular.\n\nNote que alguns valores de ativos podem não estar disponíveis. Assim, o valor total do portfolio deve ser considerado apenas como estimativa.";
 
 /* (No Comment) */
-"account-listing-partial-error-message" = "Sorry, there was an error fetching some of your accounts. The portfolio value is calculated based only on successfully fetched ones.";
+"account-listing-partial-error-message" = "Houve um erro ao buscar algumas de suas contas. O valor do portfolio é calculado com base apenas nos valores obtidos com sucesso.";
 
 /* (No Comment) */
 "account-name-setup-description" = "Nomeie sua conta para identificá-la facilmente enquanto utiliza Pera Wallet. Esses nomes são armazenados localmente e podem ser vistos apenas por você.";
@@ -53,7 +53,7 @@
 "account-select-search-empty-detail" = "Tente um nome diferente de conta";
 
 /* (No Comment) */
-"account-select-search-empty-title" = "Nenhuma conta encontrada";
+"account-select-search-empty-title" = "Nenhuma Conta Encontrada";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Quero criar uma conta";
@@ -71,7 +71,7 @@
 "account-type-selection-ledger" = "Parear Dispositivo Ledger";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Quero criar uma conta Algorand apoiada por minha carteira Ledger hardware";
+"account-type-selection-ledger-detail" = "Quero recuperar minha conta Algorand que é bancada por minha carteira hardware Ledger";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "Recuperar uma conta";
@@ -165,6 +165,9 @@
 
 /* MARK: ASA About */
 "asa-about-asa-id" = "ID do ASA";
+
+/* (No Comment) */
+"asa-about-asa-open-with-browser" = "Abrir com Navegador";
 
 /* (No Comment) */
 "asa-about-asa-project-website" = "Site do projeto";
@@ -815,7 +818,7 @@
 "introduction-recover-account-text" = "Já possuo uma conta";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "Ao criar uma conta, você concorda com os<br><a href=\"%@\">Termos e Condições</a> e <a href=\"%@\">Política de Privacidade</a>de Pera Wallet.";
+"introduction-title-terms-and-services" = "Ao criar uma conta, você concorda com os<br><a href=\"%@\">Termos e Condições</a> e <a href=\"%@\">Política de Privacidade</a> da Pera Wallet";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Ativos";
@@ -876,6 +879,9 @@
 
 /* (No Comment) */
 "ledger-approval-message" = "Confirme o endereço de conta em seu dispositivo Ledger (%@)";
+
+/* (No Comment) */
+"ledger-approval-sign-message" = "Confira e assine a transação em seu dispositivo ledger %@.";
 
 /* MARK: Ledger Approval */
 "ledger-approval-title" = "Aprovação do Ledger";
@@ -965,22 +971,22 @@
 "ledger-troubleshooting-app-support" = "Para ajuda na instalação do aplicativo Algorand Ledger em seu dispositivo, visite %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "Habilitar ou desabilitar o Bluetooth para dispositivos iOS. <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Habilitar ou desabilitar Bluetooth para dispositivo iOS. <br /> <br />\n<ul>\n<li>Toque em <b>Configurações</b></li>\n<li>Selecione <b>“Geral”</b></li>\n<li>Toque em <b>“Bluetooth”</b></li>\n<li>Acione o <b>botão On/Off</b> para alternar</li>\n<li>Bluetooth <b>On ou Off</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "Feche outros aplicativos (Ledger, carteiras cripto ou qualquer outra coisa que tente parear com o Ledger).";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Comece pelo abrangente tutorial do Ledger <a href=\"https://www.ledger.com/start\">Getting Started</a>.";
+"ledger-troubleshooting-install-app-first-html" = "Inicie com o abrangente guia Ledger <a href=\"https://www.ledger.com/start\">Como Começar</a> como tutorial.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "Quando o tutorial direcioná-lo a \"Selecione os aplicativos que deseja instalar em seu dispositivo\", digite <b>Algorand</b> na barra de busca e instale.";
+"ledger-troubleshooting-install-app-second-html" = "Quando o tutorial direcioná-lo a “Selecione os aplicativos que deseja instalar em seu dispositivo”, digite <b>Algorand</b> na barra de busca e instale.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Para soluções mais avançadas, visite o guia oficial do Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Para soluções mais avançadas, confira o suporte oficial Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Guia para Soluções Bluetooth</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Para uso geral do recurso Bluetooth em seu Ledger, visite o guia oficial do Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Para uso geral do Bluetooth do seu Ledger, confira o suporte oficial Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Guia para Conexão Bluetooth</a>.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Para soluções gerais para o dispositivo Ledger, visite";
@@ -989,10 +995,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Suporte Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Prosseguir com o abrangente tutorial do Ledger <a href=\"https://www.ledger.com/start\">Getting Started</a>, que vai ensiná-lo como instalar e abrir aplicativos no seu dispositivo ledger.";
+"ledger-troubleshooting-open-app-first-html" = "Continuar com o abrangente tutorial do Ledger <a href=\"https://www.ledger.com/start\">Como Começar</a> , que vai ensinar como instalar e abrir aplicativos em seu dispositivo ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "Caso ainda não tenha instalado o aplicativo <b>Algorand</b> em seu dispositivo Ledger, quando o tutorial indicar \"Selecione os aplicativos que deseja instalar em seu dispositivo\", digite <b>Algorand</b> na caixa de busca e instale.";
+"ledger-troubleshooting-open-app-second-html" = "Caso ainda não tenha instalado o aplicativo <b>Algorand</b> em seu dispositivo Ledger, quando o tutorial direcioná-lo a “Selecione os aplicativos que deseja instalar em seu dispositivo”, digite <b>Algorand</b> na barra de busca e instale.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "Reinicie a Carteira Algorand e/ou seu dispositivo.";
@@ -1055,7 +1061,7 @@
 "local-authentication-reason-touch-id-title" = "Utilizar ID Toque para desbloquear";
 
 /* (No Comment) */
-"login-subtitle" = "Enter your PIN";
+"login-subtitle" = "Insira sua Senha";
 
 /* MARK: Login */
 "login-title" = "Desbloquear";
@@ -1604,10 +1610,10 @@
 "request-title" = "Solicitar";
 
 /* (No Comment) */
-"required-min-balance-description" = "Você não tem saldo suficiente para as tarifas de transação. A blockchain da Algorand requer 0,001 Algos para uma transação. Você pode aumentar seu saldo de Algos para pagar esta tarifa de transação. \n\nCaso tenha optado por dApps e contratos inteligentes associados à sua conta (de diferentes aplicativos do ecossistema), cada ativo aumentará o saldo mínimo exigido em 0,1 Algos. Para reduzir o saldo mínimo exigido para esta conta, é preciso excluir a opção pelos ativos ou dApps que causem este aumento no saldo mínimo.";
+"required-min-balance-description" = "Esta conta não possui o saldo mínimo de Algos exigido para suportar esta transação. Adicione mais Algos à conta antes de prosseguir.\n\nO saldo mínimo exigido aumenta em 0,1 Algo para cada ativo, NFT e contrato inteligente optado. A fim de diminuir o saldo mínimo de Algos exigido, você pode excluir ativos e contratos inteligentes.";
 
 /* (No Comment) */
-"required-min-balance-title" = "Saldo Baixo";
+"required-min-balance-title" = "Saldo de Algos Insuficiente";
 
 /* (No Comment) */
 "reward-list-title" = "Recompensa";
@@ -1912,6 +1918,204 @@
 /* MARK: Story */
 "story-copy-address-title" = "Pressione e segure para “Copiar Endereço”";
 
+/* / MARK: Swap Account Selection */
+"swap-account-selection-header-description" = "Selecione uma conta para fazer o swap";
+
+/* (No Comment) */
+"swap-alert-body" = "A Pera Wallet agora oferece um modo fácil e rápido para a troca de ativos.";
+
+/* (No Comment) */
+"swap-alert-primary-action" = "Tentar Swap";
+
+/* MARK: - Swap Alert */
+"swap-alert-title" = "Swap em Pera";
+
+/* (No Comment) */
+"swap-amount-percentage-max" = "MÁX.";
+
+/* (No Comment) */
+"swap-amount-percentage-placeholder" = "Personalizar Porcentagem";
+
+/* / MARK: Swap Adjust Amount */
+"swap-amount-percentage-title" = "Porcentagem do Saldo";
+
+/* (No Comment) */
+"swap-amount-percentage-validation-error-limitExceeded" = "Porcentagem deve estar entre %@ e %@.";
+
+/* (No Comment) */
+"swap-asset-algo-min-balance-error" = "Saldo de Algos é muito baixo. O saldo mínimo deve ser de %@.";
+
+/* (No Comment) */
+"swap-asset-amount-title-balance" = "Saldo: %@";
+
+/* / MARK: Swap Asset */
+"swap-asset-choose-title" = "Selecionar um ativo";
+
+/* (No Comment) */
+"swap-asset-fee-unavailable-error" = "Tarifa de swap não pode ser recuperada neste momento.";
+
+/* (No Comment) */
+"swap-asset-from" = "Trocar De";
+
+/* (No Comment) */
+"swap-asset-min-balance-error" = "%@ saldo insuficiente.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-fee" = "Conta não possui saldo de Algos suficiente para cobrir as tarifas de transação.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-without-amount" = "Conta não possui saldo suficiente para esta transação.";
+
+/* (No Comment) */
+"swap-asset-not-available" = "Ativo não disponível.";
+
+/* (No Comment) */
+"swap-asset-pool-search-error" = "Não podemos exibir ativos neste momento. Tente novamente.";
+
+/* (No Comment) */
+"swap-asset-to" = "Trocar Para";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-detail" = "Esta é a tarifa cobrada pela corretora descentralizada. Ela é automaticamente deduzida do valor enviado e incluída no valor mínimo recebido. Não constitui custo adicional.";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-title" = "Tarifa da Corretora";
+
+/* (No Comment) */
+"swap-confirm-failed-title" = "Swap Não Concluído";
+
+/* (No Comment) */
+"swap-confirm-minimum-received-title" = "Mínimo Recebido";
+
+/* (No Comment) */
+"swap-confirm-pera-fee-title" = "Tarifa Pera";
+
+/* (No Comment) */
+"swap-confirm-price-info" = "%@ por %@";
+
+/* (No Comment) */
+"swap-confirm-slippage-updated-title" = "Valor para Tolerância de Derrapagem atualizado!";
+
+/* (No Comment) */
+"swap-confirm-summary-title" = "Resumo de Swap";
+
+/* / MARK: Swap Confirm Asset */
+"swap-confirm-title" = "Confirmar Swap";
+
+/* (No Comment) */
+"swap-confirm-total-fee-title" = "Tarifa Total de Swap";
+
+/* (No Comment) */
+"swap-confirm-view-summary-title" = "Ver Resumo de Swap";
+
+/* MARK: Swap Error */
+"swap-error-failed-title" = "%@ swap não concluído";
+
+/* (No Comment) */
+"swap-error-go-home" = "Ir à Página Inicial";
+
+/* (No Comment) */
+"swap-error-unexpected-detail" = "Erro inesperado. Tente novamente mais tarde.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-detail" = "Esta conta não possui o saldo mínimo exigido de %@ para uma operação de swap.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-title" = "Saldo Mínimo";
+
+/* (No Comment) */
+"swap-introduction-body" = "A Pera Wallet oferece um modo fácil e rápido para a troca de ativos. O swap permite que um ASA seja trocado por outro utilizando-se de um contrato inteligente a tarifas de mercado.";
+
+/* (No Comment) */
+"swap-introduction-powered-by-title" = "Impulsionado por";
+
+/* (No Comment) */
+"swap-introduction-primary-action-title" = "Iniciar Swap";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service" = "Ao continuar, você concorda com os Termos de Serviço do nosso parceiro de swap";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service-hyperlink" = "Termos de Serviço";
+
+/* / MARK: Swap Introduction */
+"swap-introduction-title" = "Swap em Pera";
+
+/* (No Comment) */
+"swap-loading-detail" = "Você vai receber ao menos %@ ou a transação será revertida.";
+
+/* MARK: Swap Loading */
+"swap-loading-title" = "Enviando a transação";
+
+/* (No Comment) */
+"swap-price-impact-info-body" = "Impacto de Preço é a influência da sua negociação sobre o preço de mercado do par de ativos. Está diretamente relacionado à liquidez da piscina.";
+
+/* / MARK: Swap Price Impact Info */
+"swap-price-impact-info-title" = "Impacto de Preço";
+
+/* (No Comment) */
+"swap-price-impact-title" = "Impacto de Preço";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Cuidado! O impacto de preço é maior que 5%. Isso significa que pode haver baixa liquidez nesta piscina. Antes de confirmar o swap, certifique-se de que compreender as consequências.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-action-title" = "Assinar Transações";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body" = "Detectamos que você usa um dispositivo Ledger com esta conta. Você precisa assinar %@ transações uma por uma utilizando seu token hardaware.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body-highlighted" = "Você precisa assinar %@ transações uma por uma";
+
+/* / MARK: Swap Sign With Ledger Process */
+"swap-sign-with-ledger-process-title" = "Assinando %@ de %@...";
+
+/* / MARK: Swap Sign With Ledger */
+"swap-sign-with-ledger-title" = "Assinar com Ledger";
+
+/* (No Comment) */
+"swap-slippage-percentage-custom" = "Personalizar";
+
+/* (No Comment) */
+"swap-slippage-percentage-validation-error-limitExceeded" = "Porcentagem deve estar entre %@ e %@.";
+
+/* (No Comment) */
+"swap-slippage-placeholder" = "Personalizar Derrapagem";
+
+/* / MARK: Swap Slippage */
+"swap-slippage-title" = "Tolerância de Derrapagem";
+
+/* (No Comment) */
+"swap-slippage-tolerance-info-body" = "Derrapagem é a diferença de preço entre o momento de envio da transação e o momento em que a transação é confirmada na blockchain. Caso a taxa de derrapagem vá acima da tolerância configurada por você, a transação será automaticamente cancelada para protegê-lo de perdas.";
+
+/* / MARK: Swap Slippage Tolerance Info */
+"swap-slippage-tolerance-info-title" = "Tolerância de Derrapagem";
+
+/* (No Comment) */
+"swap-success-detail" = "Você recebeu %@ em troca de %@";
+
+/* MARK: Swap Success */
+"swap-success-title" = "%@ swap concluído";
+
+/* (No Comment) */
+"swap-success-view-explorer" = "Visualizar Detalhes da Transação no AlgoExplorer";
+
+/* (No Comment) */
+"swap-success-view-summary" = "Ver Resumo de Swap";
+
+/* (No Comment) */
+"swap-summary-network-fee-title" = "Tarifa de Rede";
+
+/* (No Comment) */
+"swap-summary-opt-in-fee-title" = "Tarifa para Optar";
+
+/* (No Comment) */
+"swap-summary-paid-title" = "Pago";
+
+/* MARK: Swap Summary */
+"swap-summary-received-title" = "Recebido";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Termos e Serviços";
 
@@ -1991,7 +2195,7 @@
 "title-decline-all" = "Recusar Todos";
 
 /* (No Comment) */
-"title-disclaimer" = "DISCLAIMER";
+"title-disclaimer" = "AVISO LEGAL";
 
 /* (No Comment) */
 "title-disconnect" = "Desconectar";
@@ -2057,6 +2261,9 @@
 "title-keep" = "Manter";
 
 /* (No Comment) */
+"title-later" = "Mais tarde";
+
+/* (No Comment) */
 "title-learn-more" = "Saiba Mais";
 
 /* (No Comment) */
@@ -2105,10 +2312,10 @@
 "title-paste-passphrase" = "Colar Frase de Senha Completa";
 
 /* (No Comment) */
-"title-plus-account-count" = "%@ Accounts";
+"title-plus-account-count" = "%@ Contas";
 
 /* (No Comment) */
-"title-plus-account-singular-count" = "Account";
+"title-plus-account-singular-count" = "Conta";
 
 /* (No Comment) */
 "title-plus-asset-count" = "%@ Ativos";
@@ -2153,7 +2360,10 @@
 "title-save" = "Salvar";
 
 /* (No Comment) */
-"title-select-all" = "Select all";
+"title-select-account" = "Selecionar Conta";
+
+/* (No Comment) */
+"title-select-all" = "Selecionar todos";
 
 /* (No Comment) */
 "title-select-asset" = "Selecionar Ativo";
@@ -2201,16 +2411,25 @@
 "title-step-4" = "Passo 4";
 
 /* (No Comment) */
+"title-swap" = "Swap";
+
+/* (No Comment) */
 "title-testnet" = "TESTNET";
+
+/* (No Comment) */
+"title-to" = "Para";
 
 /* (No Comment) */
 "title-total-supply" = "Suprimento Total";
 
 /* (No Comment) */
+"title-try-again" = "Tente novamente";
+
+/* (No Comment) */
 "title-unknown" = "Sem nome";
 
 /* (No Comment) */
-"title-unselect-all" = "Unselect all";
+"title-unselect-all" = "Desmarcar todos";
 
 /* (No Comment) */
 "title-verify" = "Confirmar";
@@ -2387,7 +2606,7 @@
 "transaction-menu-copy-note" = "Copiar Nota";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "Optar por um ASA ou NFT";
+"transaction-option-list-add-asset-subtitle" = "Optar por um ASA ou NFT desta conta";
 
 /* (No Comment) */
 "transaction-option-list-add-asset-title" = "Adicionar Ativo";
@@ -2405,7 +2624,10 @@
 "transaction-option-list-scan-qr-code-subtitle" = "Utilize WallConnect ou escaneie um endereço de conta";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Algo ou qualquer ASA a uma outra conta";
+"transaction-option-list-send-subtitle" = "Transferir Algo ou qualquer ASA a uma outra conta";
+
+/* (No Comment) */
+"transaction-option-list-swap-subtitle" = "Converter entre pares populares de ASA";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "Tem certeza?";
@@ -2603,10 +2825,10 @@
 "wallet-connect-session-connection-description" = "%@ deseja conectar-se à sua conta";
 
 /* (No Comment) */
-"wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
+"wallet-connect-session-disconnect-all-action" = "Desconectar Todas as Sessões";
 
 /* (No Comment) */
-"wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
+"wallet-connect-session-disconnect-all-message" = "Gostaria de desconectar todas as sessões?";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "Falha ao desconectar-se da Sessão %@.";
@@ -2894,62 +3116,62 @@
 "wc-transaction-request-signed-warning-title" = "Sua transação está sendo processada!";
 
 /* (No Comment) */
-"web-export-accoounts-domain-confirmation-disclaimer-body" = "To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:";
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "Para ter certeza de que está exportando suas contas para um local seguro, verifique sempre se está na URL oficial da Pera Web:";
 
 /* (No Comment) */
-"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "To make sure that you are exporting your account to a safe location, always verify you are on the official Pera Web URL:";
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "Para ter certeza de que está exportando sua conta para um local seguro, verifique sempre se está na URL oficial da Pera Web:";
 
 /* (No Comment) */
-"web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
+"web-export-account-confirmation-list-description" = "Você está prestes a exportar estas contas à Pera Web de forma segura:";
 
 /* (No Comment) */
-"web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
+"web-export-account-confirmation-list-description-singular" = "Você está prestes a exportar esta conta à Pera Web de forma segura:";
 
 /* (No Comment) */
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description" = "Você está prestes a compartilhar e importar sua frase senha à Pera Web Wallet!\nJamais aceite uma solicitação que não tenha sido feita por você.";
 
 /* (No Comment) */
-"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-description-highlighted" = "Você está prestes a compartilhar e importar sua frase senha à Pera Web Wallet!";
 
 /* (No Comment) */
-"web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
+"web-export-account-list-no-content-body" = "Não encontramos contas elegíveis para exportar.";
 
 /* MARK: Web Export */
-"web-export-account-list-title" = "Export to Pera Web";
+"web-export-account-list-title" = "Exportar à Pera Web";
 
 /* (No Comment) */
-"web-export-accounts-confirmation-list-title" = "Confirm Accounts";
+"web-export-accounts-confirmation-list-title" = "Confirmar Contas";
 
 /* (No Comment) */
-"web-export-accounts-confirmation-list-title-singular" = "Confirm Account";
+"web-export-accounts-confirmation-list-title-singular" = "Confirmar Conta";
 
 /* (No Comment) */
-"web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-body" = "Para sua segurança, confirme que você está exportando suas contas para a Pera Web inserindo o nome de domínio que você vê em seu computador.";
 
 /* (No Comment) */
-"web-export-accounts-domain-confirmation-body-singular" = "For your security, please confirm that you are exporting your account to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-body-singular" = "Para sua segurança, confirme que está exportando sua conta para a Pera Web inserindo o nome de domínio que você vê em seu computador.";
 
 /* (No Comment) */
-"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL of the Web Wallet";
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL da Web Wallet";
 
 /* (No Comment) */
-"web-export-accounts-domain-confirmation-input-placeholder" = "Enter URL of the Web Wallet";
+"web-export-accounts-domain-confirmation-input-placeholder" = "Insira URL da Web Wallet";
 
 /* (No Comment) */
-"web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
+"web-export-accounts-domain-confirmation-title" = "Confirmar Domínio de Exportação";
 
 /* (No Comment) */
-"web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+"web-export-encryption-error-message" = "Um erro ocorreu durante a decriptação de dados entrantes. Tente novamente escaneando o código QR outra vez.";
 
 /* (No Comment) */
-"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
+"web-export-result-body" = "Você já pode utilizar estas contas na Pera Web Wallet.";
 
 /* (No Comment) */
-"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+"web-export-result-body-singular" = "Você já pode utilizar esta conta na Pera Web Wallet.";
 
 /* (No Comment) */
-"web-export-result-title" = "Accounts exported successfully!";
+"web-export-result-title" = "Contas exportadas com sucesso!";
 
 /* (No Comment) */
-"web-export-result-title-singular" = "Account exported successfully!";
+"web-export-result-title-singular" = "Conta exportada com sucesso!";
 
