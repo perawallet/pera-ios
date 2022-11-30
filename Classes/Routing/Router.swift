@@ -1053,7 +1053,7 @@ class Router:
                 ),
                 configuration: configuration
             )
-        case .swapAccountSelection(let eventHandler):
+        case .swapAccountSelection(let swapAssetFlowCoordinator, let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
 
@@ -1090,6 +1090,7 @@ class Router:
                     itemDataSource: dataController
                 ),
                 listDataSource: diffableDataSource,
+                swapAssetFlowCoordinator: swapAssetFlowCoordinator,
                 theme: theme,
                 eventHandler: eventHandler,
                 configuration: configuration
