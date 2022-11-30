@@ -139,9 +139,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ draft: AccountNameTitleDraft) {
-        let subtitle = AccountNaming.getPrimaryName(for: draft.account)
-
-        self.subtitle = subtitle.footnoteRegular(
+        subtitle = draft.account.primaryDisplayName.footnoteRegular(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
