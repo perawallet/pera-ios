@@ -66,6 +66,12 @@ final class SharedAPIDataController:
         AccountAssetDescendingAmountAlgorithm(),
         AccountAssetAscendingAmountAlgorithm()
     ]
+
+    private lazy var deviceRegistrationController = DeviceRegistrationController(
+        target: target,
+        session: session,
+        api: api
+    )
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -87,17 +93,20 @@ final class SharedAPIDataController:
     @Atomic(identifier: "sharedAPIDataController.isFirstPollingRoundCompleted")
     private var isFirstPollingRoundCompleted = false
     
+    private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
     private let cache: Cache
 
     init(
+        target: ALGAppTarget,
         currency: CurrencyProvider,
         session: Session,
         api: ALGAPI
     ) {
         let cache = Cache()
 
+        self.target = target
         self.currency = currency
         self.session = session
         self.api = api
@@ -207,7 +216,9 @@ extension SharedAPIDataController {
         session.removePrivateData(for: address)
 
         accountCollection[address] = nil
-        
+
+        deviceRegistrationController.sendDeviceDetails()
+
         startPolling()
     }
 

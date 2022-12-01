@@ -337,6 +337,10 @@ extension ScanQRFlowCoordinator {
                 return
             }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -371,6 +375,15 @@ extension ScanQRFlowCoordinator {
     ) {
         loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -384,6 +397,15 @@ extension ScanQRFlowCoordinator {
         didFailedTransaction error: HIPTransactionError
     ) {
         loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

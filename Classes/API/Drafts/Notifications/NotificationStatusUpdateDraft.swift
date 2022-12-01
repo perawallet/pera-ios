@@ -12,23 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGAPI+NameService.swift
+//   NotificationStatusUpdateDraft.swift
 
 import Foundation
 import MagpieCore
 
-extension ALGAPI {
-    @discardableResult
-    func fetchNameServices(
-        _ query: NameServiceQuery,
-        onCompleted handler: @escaping (Response.ModelResult<NameServiceList>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobileV1)
-            .path(.nameServicesSearch)
-            .query(query)
-            .method(.get)
-            .completionHandler(handler)
-            .execute()
+struct NotificationStatusUpdateDraft: JSONObjectBody {
+    let notificationId: Int
+    let deviceId: String
+
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
+        params.append(.init(.lastSeenNotificationId, notificationId))
+        return params
     }
 }

@@ -65,4 +65,8 @@ extension Notification.Name {
     static var didEditNote: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.note.edit")
     }
+
+    static var newNotificationReceieved: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.status.receieved")
+    }
 }

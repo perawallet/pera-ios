@@ -87,6 +87,7 @@ final class SendTransactionScreen: BaseViewController {
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
+        self.note = draft.lockedNote ?? draft.note
         super.init(configuration: configuration)
 
         guard let amount = draft.amount else {
@@ -736,8 +737,10 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
                 return
             }
 
-            self.note = note
-            self.draft.note = note
+            if self.draft.lockedNote == nil {
+                self.note = note
+                self.draft.note = note
+            }
         }
     }
 }
@@ -851,12 +854,14 @@ extension SendTransactionScreen {
             return
         }
 
+        let assetName = asset.naming.unitName ?? "title-unknown".localized
+
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
             assetId: asset.id,
             asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
-            detail: "asset-support-error".localized,
+            detail: "asset-support-error".localized(params: assetName),
             actionTitle: "title-ok".localized
         )
 

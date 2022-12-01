@@ -471,8 +471,7 @@ extension CollectibleListViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: thumbnailImage,
-            quickAction: nil
+            thumbnailImage: thumbnailImage
         ) { [weak self] event in
             guard let self = self else { return }
 
