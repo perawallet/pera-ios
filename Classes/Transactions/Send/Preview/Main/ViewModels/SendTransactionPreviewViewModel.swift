@@ -26,7 +26,8 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var opponentView: TitledTransactionAccountNameViewModel?
     private(set) var feeViewMode: TransactionAmountView.Mode?
     private(set) var balanceViewMode: TransactionAmountView.Mode?
-    private(set) var noteViewDetail: String?
+    private(set) var noteView: TransactionActionInformationViewModel?
+    private(set) var lockedNoteView: TransactionTextInformationViewModel?
 
     init(
         _ model: TransactionSendDraft,
@@ -206,6 +207,20 @@ final class SendTransactionPreviewViewModel: ViewModel {
     private func setNote(
         for draft: TransactionSendDraft
     ) {
-        noteViewDetail = draft.lockedNote ?? draft.note
+        let isLocked = draft.lockedNote != nil
+        let editNote = draft.lockedNote ?? draft.note
+        
+        if isLocked {
+            lockedNoteView = TransactionTextInformationViewModel(
+                title: "transaction-detail-note".localized,
+                detail: editNote
+            )
+            
+            return
+        }
+        
+        noteView = TransactionActionInformationViewModel(
+            description: editNote
+        )
     }
 }

@@ -32,6 +32,7 @@ final class ScanQRFlowCoordinator:
 
     private lazy var transactionController = TransactionController(
         api: api,
+        sharedDataController: sharedDataController,
         bannerController: bannerController,
         analytics: analytics
     )

@@ -40,6 +40,7 @@ class Router:
 
     private lazy var transactionController = TransactionController(
         api: appConfiguration.api,
+        sharedDataController: appConfiguration.sharedDataController,
         bannerController: appConfiguration.bannerController,
         analytics: appConfiguration.analytics
     )
@@ -907,10 +908,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case .sendTransactionPreview(let draft, let transactionController):
+        case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):

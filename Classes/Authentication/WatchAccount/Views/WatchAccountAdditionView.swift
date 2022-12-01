@@ -182,7 +182,7 @@ extension WatchAccountAdditionView {
     ) -> MultilineTextInputFieldView {
         let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .tintColor(Colors.Text.main),
             .textColor(Colors.Text.main),
             .returnKeyType(.done)

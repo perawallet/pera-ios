@@ -24,6 +24,7 @@ import MagpieHipo
 final class SharedAPIDataController:
     SharedDataController,
     WeakPublisher {
+
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     var assetDetailCollection: AssetDetailCollection = []
@@ -84,6 +85,8 @@ final class SharedAPIDataController:
         DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
     
     private var nextAccountCollection: AccountCollection = []
+
+    private var transactionParamsResult: Result<TransactionParams, HIPNetworkError<NoAPIModel>>?
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
@@ -124,9 +127,64 @@ final class SharedAPIDataController:
 }
 
 extension SharedAPIDataController {
+    private func fetchTransactionParams(
+        _ handler: ((Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void)? = nil
+    ) {
+        api.getTransactionParams {
+            [weak self] response in
+            guard let self else {
+                return
+            }
+
+            switch response {
+            case .success(let transactionParams):
+                self.transactionParamsResult = .success(transactionParams)
+                handler?(.success(transactionParams))
+            case .failure(let apiError, let apiErrorDetail):
+                let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                self.transactionParamsResult = .failure(error)
+                handler?(.failure(error))
+            }
+        }
+    }
+
+    func getTransactionParams(
+        isCacheEnabled: Bool,
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    ) {
+        if isCacheEnabled, let transactionParamsResult = transactionParamsResult {
+            switch transactionParamsResult {
+            case .success:
+                handler(transactionParamsResult)
+                fetchTransactionParams()
+            case .failure:
+                fetchTransactionParams(handler)
+            }
+
+            return
+        }
+
+        fetchTransactionParams(handler)
+    }
+
+    func getTransactionParams(_ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void) {
+        getTransactionParams(isCacheEnabled: false, handler)
+    }
+}
+
+extension SharedAPIDataController {
     func startPolling() {
         $status.mutate { $0 = .running }
         blockProcessor.start()
+
+        fetchTransactionParams { result in
+            switch result {
+            case .success(let params):
+                self.transactionParamsResult = .success(params)
+            case .failure(let error):
+                self.transactionParamsResult = .failure(error)
+            }
+        }
     }
     
     func stopPolling() {
