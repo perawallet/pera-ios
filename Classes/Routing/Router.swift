@@ -160,6 +160,19 @@ class Router:
                 case .watchAccount:
                     launch(tab: .home)
 
+                    let session = self.appConfiguration.session
+
+                    if let authenticatedUser = session.authenticatedUser,
+                       authenticatedUser.hasReachedTotalAccountLimit {
+
+                        let bannerController = self.appConfiguration.bannerController
+                        bannerController.presentErrorBanner(
+                            title: "user-account-limit-error-title".localized,
+                            message: "user-account-limit-error-message".localized
+                        )
+                        return
+                    }
+
                     self.route(
                         to: .watchAccountAddition(
                             flow: .addNewAccount(

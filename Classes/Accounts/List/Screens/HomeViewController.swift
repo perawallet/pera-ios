@@ -525,6 +525,17 @@ extension HomeViewController {
             )
         }
         cell.startObserving(event: .secondaryAction) {
+            [unowned self] in
+
+            if let authenticatedUser = self.session?.authenticatedUser,
+               authenticatedUser.hasReachedTotalAccountLimit {
+                self.bannerController?.presentErrorBanner(
+                    title: "user-account-limit-error-title".localized,
+                    message: "user-account-limit-error-message".localized
+                )
+                return
+            }
+
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
                 .welcome(flow: .addNewAccount(mode: .none)),

@@ -1305,6 +1305,10 @@
 "web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
 
+// MARK: User Account Limit Error
+"user-account-limit-error-title" = "Too Many Accounts!";
+"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+
 // MARK: Ongoing opt-in/opt-out Alert
 "ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
