@@ -334,7 +334,19 @@ extension AppDelegate {
                 presented: presentedViewController,
                 completion: completion
             )
-        case .remoteNotification(let notification, let screen):
+        case .remoteNotification(let notification, let screen, let error):
+            if let error = error {
+                pushNotificationController.present(notification: notification) {
+                    [unowned self] in
+                    let uiRepresentation = error.uiRepresentation
+                    bannerController.presentErrorBanner(
+                        title: uiRepresentation.title,
+                        message: uiRepresentation.description
+                    )
+                }
+                return
+            }
+
             guard let someScreen = screen else {
                 pushNotificationController.present(notification: notification)
                 return

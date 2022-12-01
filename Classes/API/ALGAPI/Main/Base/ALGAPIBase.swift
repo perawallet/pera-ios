@@ -39,7 +39,8 @@ extension ALGAPIBase {
     enum Base {
         case algod(ALGAPI.Network)
         case indexer(ALGAPI.Network)
-        case mobile
+        case mobileV1
+        case mobileV2
         case algoExplorer
 
         init?(_ base: String, network: ALGAPI.Network) {
@@ -47,10 +48,12 @@ extension ALGAPIBase {
                 self = .algod(network)
             } else if base.isIndexerApiBase {
                 self = .indexer(network)
-            } else if base.isMobileApiBase {
-                self = .mobile
+            } else if base.isMobileApiV1Base {
+                self = .mobileV1
             } else if base.isAlgoExplorerApiBase {
                 self = .algoExplorer
+            } else if base.isMobileApiV2Base {
+                self = .mobileV2
             } else {
                 return nil
             }
@@ -70,8 +73,10 @@ extension ALGAPIBase {
                 } else {
                     return Environment.current.mainNetIndexerApi
                 }
-            case .mobile:
-                return Environment.current.mobileApi
+            case .mobileV1:
+                return Environment.current.mobileApiV1
+            case .mobileV2:
+                return Environment.current.mobileApiV2
             case .algoExplorer:
                 return Environment.current.algoExplorerApi
             }
@@ -88,8 +93,12 @@ fileprivate extension String {
         return self == Environment.current.testNetIndexerApi || self == Environment.current.mainNetIndexerApi
     }
 
-    var isMobileApiBase: Bool {
-        return self == Environment.current.mobileApi
+    var isMobileApiV1Base: Bool {
+        return self == Environment.current.mobileApiV1
+    }
+
+    var isMobileApiV2Base: Bool {
+        return self == Environment.current.mobileApiV2
     }
 
     var isAlgoExplorerApiBase: Bool {

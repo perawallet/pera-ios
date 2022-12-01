@@ -506,13 +506,6 @@
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
 
-// MARK: Notifications
-"notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
-"notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
-"notification-received" = "%@ were sent to %@ by %@.";
-"notification-support-success" = "%@ has added %@ to their account. You can send them.";
-"notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
-
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does Asset Verification mean?";
@@ -597,7 +590,10 @@
 "notifications-title" = "Notifications";
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
-
+"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
 "notifications-asset-not-found-title" = "Asset history not available";
 "notifications-asset-not-found-description" = "The history for this specific asset is not available.";
 
@@ -1308,3 +1304,7 @@
 "web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
 "web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+// MARK: Ongoing opt-in/opt-out Alert
+"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";

@@ -189,6 +189,22 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
+        case .asaDiscoveryWithOptInAction: break /// <note> .assetActionConfirmation is used instead.
+        case .asaDiscoveryWithOptOutAction(let account, let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDiscovery(
+                account: account,
+                quickAction: .optOut,
+                asset: asset
+            )
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
@@ -204,6 +220,20 @@ class Router:
                     break
                 }
             }
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
+        case .collectibleDetail(account: let account, asset: let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.collectibleDetail(
+                asset: asset,
+                account: account
+            )
 
             route(
                 to: screen,
@@ -1324,6 +1354,10 @@ extension Router {
             return
         }
 
+        let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(account: account, asset: asset)
+        monitor.startMonitoringOptInUpdates(request)
+
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
             assetIndex: Int64(draft.assetId)
@@ -1643,6 +1677,10 @@ extension Router {
                 return
             }
 
+            let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -1701,6 +1739,15 @@ extension Router {
     ) {
         appConfiguration.loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1714,6 +1761,15 @@ extension Router {
         didFailedTransaction error: HIPTransactionError
     ) {
         appConfiguration.loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

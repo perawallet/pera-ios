@@ -28,7 +28,7 @@ indirect enum Screen {
         account: Account?,
         quickAction: AssetQuickAction?,
         asset: AssetDecoration,
-        eventHandler: ASADiscoveryScreen.EventHandler
+        eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
@@ -165,9 +165,9 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?,
-        quickAction: AssetQuickAction?,
-        eventHandler: CollectibleDetailViewController.EventHandler
+        thumbnailImage: UIImage? = nil,
+        quickAction: AssetQuickAction? = nil,
+        eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(

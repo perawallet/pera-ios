@@ -18,19 +18,15 @@ import Foundation
 import MacaroonUtils
 
 final class NotificationsAPIDataController:
-    NotificationsDataController,
-    SharedDataControllerObserver {
-
+    NotificationsDataController {
     var eventHandler: ((NotificationsDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
 
     private let api: ALGAPI
-    private let sharedDataController: SharedDataController
     private let lastSeenNotificationController: LastSeenNotificationController?
-    private var contacts = [Contact]()
+
     private(set) var notifications = [NotificationMessage]()
-    private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -40,24 +36,14 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
-    private let currencyFormatter: CurrencyFormatter
-
     init(
-        sharedDataController: SharedDataController,
         api: ALGAPI,
-        currencyFormatter: CurrencyFormatter,
         lastSeenNotificationController: LastSeenNotificationController?
     ) {
-        self.sharedDataController = sharedDataController
         self.api = api
-        self.currencyFormatter = currencyFormatter
         self.lastSeenNotificationController = lastSeenNotificationController
 
         startObserving()
-    }
-
-    deinit {
-        sharedDataController.remove(self)
     }
 }
 
@@ -70,8 +56,6 @@ extension NotificationsAPIDataController {
     }
 
     func load(isPaginated: Bool = false) {
-        sharedDataController.add(self)
-
         if !isPaginated {
             deliverLoadingSnapshot()
         }
@@ -126,10 +110,6 @@ extension NotificationsAPIDataController {
     ) -> NotificationsViewModel {
         return NotificationsViewModel(
             notification: notification,
-            currencyFormatter: currencyFormatter,
-            senderAccount: getSenderAccountIfExists(for: notification),
-            receiverAccount: getReceiverAccountIfExists(for: notification),
-            contact: getContactIfExists(for: notification),
             latestReadTimestamp: latesTimestamp
         )
     }
@@ -140,31 +120,6 @@ extension NotificationsAPIDataController {
         }
 
         lastSeenNotificationController?.setLastSeenNotification(notification)
-    }
-}
-
-extension NotificationsAPIDataController {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        switch event {
-        case .didFinishRunning:
-            clearAddedAssetDetailsIfNeeded()
-            return
-        default:
-            break
-        }
-    }
-
-    private func clearAddedAssetDetailsIfNeeded() {
-        for (address, addedAssets) in addedAssetsWithAccounts {
-            if let account = sharedDataController.accountCollection[address] {
-                addedAssetsWithAccounts[address] = addedAssets.filter {
-                    !account.value.containsAsset($0)
-                }.uniqueElements()
-            }
-        }
     }
 }
 
@@ -255,21 +210,6 @@ extension NotificationsAPIDataController {
 }
 
 extension NotificationsAPIDataController {
-    private func fetchContacts() {
-        Contact.fetchAll(entity: Contact.entityName) { response in
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-
-                self.contacts = results
-            default:
-                break
-            }
-        }
-    }
-
     private func startObserving() {
         NotificationCenter.default.addObserver(
             self,
@@ -284,112 +224,5 @@ extension NotificationsAPIDataController {
         if lastSnapshot == nil {
             load()
         }
-    }
-}
-
-extension NotificationsAPIDataController {
-    private func getSenderAccountIfExists(for notification: NotificationMessage) -> Account? {
-        let senderAddress = notification.detail?.senderAddress
-        return senderAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
-    }
-
-    private func getReceiverAccountIfExists(for notification: NotificationMessage) -> Account? {
-        let receiverAddress = notification.detail?.receiverAddress
-        return receiverAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
-    }
-
-    private func getContactIfExists(for notification: NotificationMessage) -> Contact? {
-        guard let details = notification.detail else {
-            return nil
-        }
-
-        return contacts.first { contact -> Bool in
-            if let contactAddress = contact.address {
-                return contactAddress == details.senderAddress || contactAddress == details.receiverAddress
-            }
-            return false
-        }
-    }
-
-    func getUserAccount(
-        from notificationDetail: NotificationDetail
-    ) -> (account: Account?, asset: TransactionMode?) {
-        let account: Account?
-        
-        if notificationDetail.type.isSent() {
-            account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
-        } else {
-            account = getAccount(from: notificationDetail.receiverAddress) ?? getAccount(from: notificationDetail.senderAddress)
-        }
-
-        guard let account = account  else {
-            return (nil, nil)
-        }
-
-        let asset = notificationDetail.asset?.id.unwrap { account[$0] }
-        
-        if notificationDetail.asset?.id != nil && asset == nil {
-            return (account: account, asset: nil)
-        }
-        
-        if let asset = asset {
-            return (account: account, asset: .asset(asset))
-        }
-        
-        return (account: account, asset: .algo)
-    }
-    
-    private func getAccount(from address: String?) -> Account? {
-        guard let address = address else {
-            return nil
-        }
-
-        return sharedDataController.accountCollection[address]?.value
-    }
-
-    func getReceiverAccount(
-        from notificationDetail: NotificationDetail?
-    ) -> Account? {
-        guard let detail = notificationDetail,
-              let address = detail.receiverAddress else {
-            return nil
-        }
-
-        let receiverAccount = getAccount(from: address)
-
-        return receiverAccount
-    }
-
-    func canOptIn(
-        to asset: AssetID,
-        for account: Account
-    ) -> Bool {
-        guard let receiverAccount = sharedDataController.accountCollection[account.address]?.value else {
-            return false
-        }
-
-        if receiverAccount.isWatchAccount() ||
-            receiverAccount.containsAsset(asset) {
-            return false
-        }
-
-        if let addedAssets = addedAssetsWithAccounts[receiverAccount.address] {
-            for addedAsset in addedAssets {
-                if addedAsset == asset {
-                    return false
-                }
-            }
-        }
-
-        return true
-    }
-
-    func addOptedInAsset(
-        _ address: PublicKey,
-        _ assetId: AssetID
-    ) {
-        var addedAssets = addedAssetsWithAccounts[address] ?? []
-        addedAssets.append(assetId)
-        addedAssetsWithAccounts[address] = addedAssets
     }
 }
