@@ -58,6 +58,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         super.webView(webView, didFinish: navigation)
 
         updateButtonsStateIfNeeded()
+        updateTitle()
     }
 
     override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -95,10 +96,14 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         navigationItem.titleView = navigationTitleView
 
-        bindNavigationTitle()
+        bindNavigationTitle(with: dappParameters)
     }
 
-    private func bindNavigationTitle() {
+    private func bindNavigationTitle(with item: WKBackForwardListItem) {
+        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(item, title: webView.title))
+    }
+
+    private func bindNavigationTitle(with dappParameters: DiscoverDappParamaters) {
         navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
     }
 
@@ -125,6 +130,7 @@ extension DiscoverDappDetailScreen: WKScriptMessageHandler {
         didReceive message: WKScriptMessage
     ) {
         self.updateButtonsStateIfNeeded()
+        self.updateTitle()
     }
 }
 
@@ -193,5 +199,13 @@ extension DiscoverDappDetailScreen {
         homeButton.isEnabled = isHomeEnabled
         previousButton.isEnabled = canGoBack
         nextButton.isEnabled = canGoForward
+    }
+
+    private func updateTitle() {
+        guard let item = webView.backForwardList.currentItem else {
+            return
+        }
+
+        bindNavigationTitle(with: item)
     }
 }

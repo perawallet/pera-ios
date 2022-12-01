@@ -17,10 +17,15 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import WebKit
 
 struct DiscoverDappDetailNavigationViewModel: ViewModel {
     private(set) var title: TextProvider?
     private(set) var subtitle: TextProvider?
+
+    init(_ model: WKBackForwardListItem, title: String?) {
+        bind(model, title: title)
+    }
 
     init(_ model: DiscoverDappParamaters) {
         bind(model)
@@ -28,6 +33,11 @@ struct DiscoverDappDetailNavigationViewModel: ViewModel {
 }
 
 extension DiscoverDappDetailNavigationViewModel {
+    mutating func bind(_ model: WKBackForwardListItem, title: String?) {
+        bindTitle(model, title: title)
+        bindSubtitle(model)
+    }
+
     mutating func bind(_ model: DiscoverDappParamaters) {
         bindTitle(model)
         bindSubtitle(model)
@@ -35,8 +45,17 @@ extension DiscoverDappDetailNavigationViewModel {
 }
 
 extension DiscoverDappDetailNavigationViewModel {
-    mutating func bindTitle(_ dappParameters: DiscoverDappParamaters) {
-        let title = dappParameters.name
+    mutating func bindTitle(_ item: WKBackForwardListItem, title: String?) {
+        let title = title ?? item.title
+
+        self.title = title?.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating func bindTitle(_ item: DiscoverDappParamaters) {
+        let title = item.name
 
         self.title = title.bodyMedium(
             alignment: .center,
@@ -44,8 +63,17 @@ extension DiscoverDappDetailNavigationViewModel {
         )
     }
 
-    mutating func bindSubtitle(_ dappParameters: DiscoverDappParamaters) {
-        let subtitle = URL(string: dappParameters.url)?.presentationString
+    mutating func bindSubtitle(_ item: WKBackForwardListItem) {
+        let subtitle = item.url.presentationString
+
+        self.subtitle = subtitle?.captionMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating func bindSubtitle(_ item: DiscoverDappParamaters) {
+        let subtitle = URL(string: item.url)?.presentationString
 
         self.subtitle = subtitle?.captionMedium(
             alignment: .center,
