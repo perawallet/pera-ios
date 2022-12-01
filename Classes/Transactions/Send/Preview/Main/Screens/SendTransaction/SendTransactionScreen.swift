@@ -99,6 +99,7 @@ final class SendTransactionScreen: BaseViewController {
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
+        self.note = draft.lockedNote ?? draft.note
         super.init(configuration: configuration)
 
         guard let amount = draft.amount else {
@@ -734,8 +735,10 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
         _ editNoteScreen: EditNoteScreen,
         didUpdateNote note: String?
     ) {
-        self.note = note
-        self.draft.note = note
+        if self.draft.lockedNote == nil {
+            self.note = note
+            self.draft.note = note
+        }
     }
 }
 
@@ -963,7 +966,8 @@ extension SendTransactionScreen {
             fee: nil,
             isMaxTransaction: draft.isMaxTransaction,
             identifier: nil,
-            note: draft.note
+            note: draft.note,
+            lockedNote: draft.lockedNote
         )
         transactionDraft.toContact = draft.toContact
         transactionDraft.nameService = draft.nameService
@@ -990,7 +994,8 @@ extension SendTransactionScreen {
             assetIndex: asset.id,
             assetDecimalFraction: asset.decimals,
             isVerifiedAsset: asset.verificationTier.isVerified,
-            note: draft.note
+            note: draft.note,
+            lockedNote: draft.lockedNote
         )
         transactionDraft.toContact = draft.toContact
         transactionDraft.asset = asset
