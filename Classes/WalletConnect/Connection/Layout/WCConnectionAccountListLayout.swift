@@ -40,14 +40,14 @@ extension WCConnectionAccountListLayout {
         }
         
         let width = collectionView.bounds.width
-        let exampleAccountListItem = CustomAccountPreview(
+        let exampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
         
-        let exampleAccountItem = AccountPreviewViewModel(exampleAccountListItem)
+        let exampleAccountItem = AccountListItemViewModel(exampleAccountListItem)
         let newSize = ExportAccountListAccountCell.calculatePreferredSize(
             exampleAccountItem,
             for: ExportAccountListAccountCell.theme,
