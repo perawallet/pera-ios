@@ -23,7 +23,7 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
     let icon: ImageStyle
     let iconSize: CGSize?
     let title: TextStyle
-    let titleTopMargin: LayoutMetric
+    var titleTopMargin: LayoutMetric
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
     var contentHorizontalPaddings: LayoutHorizontalPaddings

@@ -169,7 +169,9 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon, disabled: disabledIcon)
             }
         case .flexibleSpace:
+            return nil
         }
+        return nil
     }
     
     var size: ALGBarButtonItem.Size {
