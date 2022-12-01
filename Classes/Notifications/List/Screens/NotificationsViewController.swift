@@ -31,7 +31,8 @@ final class NotificationsViewController:
     private lazy var dataController = NotificationsAPIDataController(
         sharedDataController: sharedDataController,
         api: api!,
-        currencyFormatter: currencyFormatter
+        currencyFormatter: currencyFormatter,
+        lastSeenNotificationController: lastSeenNotificationController
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 

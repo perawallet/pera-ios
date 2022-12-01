@@ -42,6 +42,7 @@ enum APIParamKey: String, CodingKey {
     case clientSecret = "client_secret"
     case code = "code"
     case cursor = "cursor"
+    case lastSeenNotificationId = "last_seen_notification_id"
     case device = "device"
     case deviceId = "device_id"
     case email = "email"

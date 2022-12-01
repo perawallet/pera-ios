@@ -107,4 +107,31 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+
+    @discardableResult
+    func fetchNotificationStatus(
+        _ draft: NotificationStatusFetchDraft,
+        onCompleted handler: @escaping (Response.Result<NotificationStatus, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.deviceNotificationStatus, args: draft.deviceId)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func updateNotificationStatus(
+        _ draft: NotificationStatusUpdateDraft,
+        onCompleted handler: @escaping (Response.Result<LastSeenNotificationStatus, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.lastSeenNotificationStatus, args: draft.deviceId)
+            .method(.put)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 }

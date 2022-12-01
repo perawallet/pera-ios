@@ -61,4 +61,8 @@ extension Notification.Name {
     static var didRedirectFromMoonPay: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.moonpay.redirect")
     }
+
+    static var newNotificationReceieved: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.status.receieved")
+    }
 }
