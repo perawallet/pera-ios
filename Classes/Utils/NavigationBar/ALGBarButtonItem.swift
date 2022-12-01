@@ -159,6 +159,24 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .account(let image):
             return ImageContent(normal: image)
+        case .discoverHome:
+            if let icon = img("icon-homepage") {
+                let disabledIcon = img("icon-homepage-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
+            return nil
+        case .discoverPrevious:
+            if let icon = img("icon-previous") {
+                let disabledIcon = img("icon-previous-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
+            return nil
+        case .discoverNext:
+            if let icon = img("icon-next") {
+                let disabledIcon = img("icon-next-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
+            return nil
         }
     }
     
@@ -252,6 +270,12 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .account:
             return .explicit(CGSize(width: 28, height: 28))
+        case .discoverHome:
+            return .explicit(CGSize(width: 40, height: 40))
+        case .discoverNext:
+            return .explicit(CGSize(width: 40, height: 40))
+        case .discoverPrevious:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -297,6 +321,10 @@ extension ALGBarButtonItem {
         case troubleshoot
         case search
         case account(UIImage)
+
+        case discoverNext
+        case discoverPrevious
+        case discoverHome
     }
 }
 

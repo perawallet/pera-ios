@@ -21,6 +21,10 @@ import MacaroonUtils
 final class DiscoverDappDetailScreen: InAppBrowserScreen {
     private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
 
+    private lazy var homeButton = makeHomeButton()
+    private lazy var previousButton = makePreviousButton()
+    private lazy var nextButton = makeNextButton()
+
     private let dappParameters: DiscoverDappParamaters
 
     init(
@@ -44,6 +48,31 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        initializeWebView()
+        addNavigationToolbar()
+        adjustBottomInset()
+        executeNavigationScript()
+    }
+
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        super.webView(webView, didFinish: navigation)
+
+        updateButtonsStateIfNeeded()
+    }
+
+    override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        super.webView(webView, didFail: navigation, withError: error)
+
+        updateButtonsStateIfNeeded()
+    }
+
+    override func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        super.webView(webView, didFailProvisionalNavigation: navigation, withError: error)
+
+        updateButtonsStateIfNeeded()
+    }
+
+    private func initializeWebView() {
         guard let url = URL(string: dappParameters.url) else {
             return
         }
@@ -57,6 +86,10 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         load(url: generatedUrl)
     }
 
+    private func adjustBottomInset() {
+        webView.scrollView.contentInset.bottom = view.safeAreaBottom
+    }
+
     private func addNavigationTitle() {
         navigationTitleView.customize(DiscoverDappDetailNavigationViewTheme())
 
@@ -67,5 +100,98 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     private func bindNavigationTitle() {
         navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
+    }
+
+    /// <note>
+    /// App listens this script in order to catch html5 navigation process
+    private func executeNavigationScript() {
+        let navigationScript = """
+!function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
+"""
+
+        let script = WKUserScript(
+            source: navigationScript,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false
+        )
+        contentController.addUserScript(script)
+        contentController.add(self, name: "navigation")
+    }
+}
+
+extension DiscoverDappDetailScreen: WKScriptMessageHandler {
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        self.updateButtonsStateIfNeeded()
+    }
+}
+
+extension DiscoverDappDetailScreen {
+    private func makeHomeButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverHome) {
+            [unowned self] in
+            guard let homePage = self.webView.backForwardList.backList.first else {
+                self.updateButtonsStateIfNeeded()
+                return
+            }
+
+            self.webView.go(to: homePage)
+            self.updateButtonsStateIfNeeded()
+        }
+        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+    }
+
+    private func makePreviousButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverPrevious) {
+            [unowned self] in
+            self.webView.goBack()
+            self.updateButtonsStateIfNeeded()
+        }
+        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+    }
+
+    private func makeNextButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverNext) {
+            [unowned self] in
+            self.webView.goForward()
+            self.updateButtonsStateIfNeeded()
+        }
+        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+    }
+
+    private func addNavigationToolbar() {
+        let toolbar = UIToolbar(frame: .zero)
+        webView.addSubview(toolbar)
+        toolbar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
+        }
+
+        var items = [UIBarButtonItem]()
+
+        previousButton.isEnabled = false
+        nextButton.isEnabled = false
+
+        items.append( homeButton )
+        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        items.append( previousButton )
+        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        items.append( nextButton )
+        toolbar.items = items
+
+        self.setToolbarItems(items, animated: true)
+        updateButtonsStateIfNeeded()
+    }
+
+    private func updateButtonsStateIfNeeded() {
+        let canGoBack = webView.canGoBack
+        let canGoForward = webView.canGoForward
+        let isHomeEnabled = canGoBack
+
+        homeButton.isEnabled = isHomeEnabled
+        previousButton.isEnabled = canGoBack
+        nextButton.isEnabled = canGoForward
     }
 }

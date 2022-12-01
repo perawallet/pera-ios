@@ -122,6 +122,13 @@ class InAppBrowserScreen:
         didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
+        let systemError = error as NSError
+
+        if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
+            updateUIForURL()
+            return
+        }
+        
         updateUIForError(error)
     }
 
@@ -137,6 +144,13 @@ class InAppBrowserScreen:
         didFail navigation: WKNavigation!,
         withError error: Error
     ) {
+        let systemError = error as NSError
+
+        if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
+            updateUIForURL()
+            return
+        }
+
         updateUIForError(error)
     }
 
