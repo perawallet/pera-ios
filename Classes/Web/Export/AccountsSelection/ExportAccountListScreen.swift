@@ -82,6 +82,7 @@ final class ExportAccountListScreen:
         super.configureNavigationBarAppearance()
 
         navigationBarLargeTitleController.title = "web-export-account-list-title".localized
+        navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
     }
 
     override func viewDidLoad() {
@@ -382,7 +383,7 @@ extension ExportAccountListScreen {
 
         let index = indexPath.row.advanced(by: -1)
         let isSelected = dataController.isAccountSelected(at: index)
-        
+
         cell.accessory = isSelected ? .selected : .unselected
     }
 }
