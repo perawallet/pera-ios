@@ -20,23 +20,29 @@ import UIKit
 
 struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
     let horizontalPadding: LayoutMetric
+    
     let image: URLImageViewStyleLayoutSheet
     let imageSize: LayoutSize
     let imageBorder: Border
     let imageCorner: Corner
+    
     let name: TextStyle
     let nameHorizontalPadding: LayoutMetric
+    
     let optionsAction: ButtonStyle
+    
     let descriptionTopPadding: LayoutMetric
     let description: TextStyle
+    
     let dateTopPadding: LayoutMetric
     let date: TextStyle
-    let statusTopPadding: LayoutMetric
-    let status: TextStyle
-    let statusContentEdgeInsets: LayoutPaddings
+    
+    let accountStatusTopPadding: LayoutMetric
+    let spacingBetweenAccounts: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.horizontalPadding = 24
+        
         self.image = URLImageViewNoStyleLayoutSheet()
         self.imageSize = (40, 40)
         self.imageBorder = Border(
@@ -44,30 +50,30 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
             width: 1
         )
         self.imageCorner = Corner(radius: imageSize.h / 2)
+        
         self.name = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
         self.nameHorizontalPadding = 16
+        
         self.description = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
         ]
         self.descriptionTopPadding = 8
+        
         self.optionsAction = [
             .icon([ .normal("icon-options") ])
         ]
+        
         self.date = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter)
         ]
         self.dateTopPadding = 12
-        self.status = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Helpers.positive),
-            .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
-        ]
-        self.statusTopPadding = 10
-        self.statusContentEdgeInsets = (2, 8, 2, 8)
+        
+        self.accountStatusTopPadding = 8
+        self.spacingBetweenAccounts = 6
     }
 }

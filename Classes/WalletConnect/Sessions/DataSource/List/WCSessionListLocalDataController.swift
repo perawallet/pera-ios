@@ -21,7 +21,8 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
     typealias EventHandler = (WCSessionListDataControllerEvent) -> Void
 
     var eventHandler: EventHandler?
-
+    
+    private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.wcSessionListLocalDataController")
 
     private var lastSnapshot: Snapshot? = nil
@@ -39,9 +40,11 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
     private let walletConnector: WalletConnector
 
     init(
+        _ sharedDataController: SharedDataController,
         analytics: ALGAnalytics,
         walletConnector: WalletConnector
     ) {
+        self.sharedDataController = sharedDataController
         self.analytics = analytics
         self.walletConnector = walletConnector
     }
@@ -105,7 +108,11 @@ extension WCSessionListLocalDataController {
     }
 
     private func makeSessionItem(_ session: WCSession) -> WCSessionListItem {
-        let viewModel = WCSessionItemViewModel(session)
+        let viewModel = WCSessionItemViewModel(
+            peermeta: session.peerMeta,
+            sessionDate: session.date,
+            accountList: getSessionAccountsFromLocal(session)
+        )
 
         let item: WCSessionListItem = .session(
             WCSessionListItemContainer(
@@ -114,6 +121,20 @@ extension WCSessionListLocalDataController {
             )
         )
         return item
+    }
+    
+    func getSessionAccountsFromLocal(_ session: WCSession) -> [Account] {
+        var localSessionAccounts: [Account] = []
+        
+        session.walletMeta?.accounts?.forEach {
+            sessionAccountAddress in
+            
+            if let account = sharedDataController.accountCollection.account(for: sessionAccountAddress) {
+                localSessionAccounts.append(account)
+            }
+        }
+        
+        return localSessionAccounts
     }
 
     private func removeSessionItem(
@@ -158,7 +179,7 @@ extension WCSessionListLocalDataController {
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
-                return nil
+                return Snapshot()
             }
 
             var snapshot = snapshot
@@ -166,8 +187,12 @@ extension WCSessionListLocalDataController {
             if snapshot.sectionIdentifiers.contains(.empty) {
                 snapshot.deleteSections([ .empty ])
             }
-
-            let viewModel = WCSessionItemViewModel(session)
+            
+            let viewModel = WCSessionItemViewModel(
+                peermeta: session.peerMeta,
+                sessionDate: session.date,
+                accountList: self.getSessionAccountsFromLocal(session)
+            )
 
             let item: WCSessionListItem = .session(
                 WCSessionListItemContainer(

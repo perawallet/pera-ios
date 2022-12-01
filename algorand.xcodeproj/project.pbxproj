@@ -1734,6 +1734,15 @@
 		2B6ED962226105CD00787984 /* AlgosTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */; };
 		2B6ED964226105E100787984 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED963226105E100787984 /* Payment.swift */; };
 		2B6ED9662261063700787984 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9652261063700787984 /* TransactionList.swift */; };
+		2B71A68D29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A68C29190D640039EA99 /* WCSessionAccountStatusView.swift */; };
+		2B71A68E29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A68C29190D640039EA99 /* WCSessionAccountStatusView.swift */; };
+		2B71A68F29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A68C29190D640039EA99 /* WCSessionAccountStatusView.swift */; };
+		2B71A69129190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A69029190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift */; };
+		2B71A69229190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A69029190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift */; };
+		2B71A69329190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A69029190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift */; };
+		2B71A695291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A694291A3B860039EA99 /* WCSessionAccountStatusViewModel.swift */; };
+		2B71A696291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A694291A3B860039EA99 /* WCSessionAccountStatusViewModel.swift */; };
+		2B71A697291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71A694291A3B860039EA99 /* WCSessionAccountStatusViewModel.swift */; };
 		2B71CB6B28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71CB6A28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift */; };
 		2B71CB6C28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71CB6A28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift */; };
 		2B71CB6D28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B71CB6A28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift */; };
@@ -6670,6 +6679,9 @@
 		2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
+		2B71A68C29190D640039EA99 /* WCSessionAccountStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAccountStatusView.swift; sourceTree = "<group>"; };
+		2B71A69029190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAccountStatusViewTheme.swift; sourceTree = "<group>"; };
+		2B71A694291A3B860039EA99 /* WCSessionAccountStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAccountStatusViewModel.swift; sourceTree = "<group>"; };
 		2B71CB6A28FD9DF300B1E1A0 /* SwapUnexpectedErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapUnexpectedErrorViewModel.swift; sourceTree = "<group>"; };
 		2B71CB6E28FDD6EB00B1E1A0 /* SwapAssetAmountInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAssetAmountInViewModel.swift; sourceTree = "<group>"; };
 		2B71CB7228FDD70E00B1E1A0 /* SwapAssetAmountOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAssetAmountOutViewModel.swift; sourceTree = "<group>"; };
@@ -10426,6 +10438,16 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		2B71A68B29190D4F0039EA99 /* AccountStatus */ = {
+			isa = PBXGroup;
+			children = (
+				2B71A68C29190D640039EA99 /* WCSessionAccountStatusView.swift */,
+				2B71A69029190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift */,
+				2B71A694291A3B860039EA99 /* WCSessionAccountStatusViewModel.swift */,
+			);
+			path = AccountStatus;
+            sourceTree = "<group>";
+        };
 		2B71CB6928FD9DCA00B1E1A0 /* SwapErrorScreenViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -12215,6 +12237,7 @@
 		2BA4B3F7267819A00041586B /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				2B71A68B29190D4F0039EA99 /* AccountStatus */,
 				2BA4B3F8267819B20041586B /* WCSessionItemCell.swift */,
 				2BA4B3F32678199C0041586B /* WCSessionItemView.swift */,
 				D47956882769D536003766D2 /* WCSessionItemViewTheme.swift */,
@@ -18945,6 +18968,7 @@
 				D4979448287CC766004FBF8E /* AppCallAssetPreviewViewTheme.swift in Sources */,
 				2BCE8FA1284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
 				D4155E8F276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
+				2B71A68F29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */,
 				F034523028B392B2009467A0 /* ASADiscoveryLoadingView.swift in Sources */,
 				F08708F4278F622600BEE5C2 /* CurrencyRefreshOperation.swift in Sources */,
 				17BD4DFC2292F1260003E49A /* TabBarController.swift in Sources */,
@@ -19113,6 +19137,7 @@
 				F034521428B2CD9B009467A0 /* OptInAssetNameViewModel.swift in Sources */,
 				D43A0C542790DA4A007430B9 /* ResultViewCommonTheme.swift in Sources */,
 				D4979444287CC491004FBF8E /* AppCallAssetPreviewViewModel.swift in Sources */,
+				2B71A69329190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */,
 				D4BCAD4828B518720052DD74 /* TransferAssetBalanceNameViewTheme.swift in Sources */,
 				F010636D28AC337A00AB6873 /* FilterCollectiblesItemButtonViewModel.swift in Sources */,
 				D47C4AA62791B3680012D7A6 /* ContactsSearchNoContentViewModel.swift in Sources */,
@@ -20496,6 +20521,7 @@
 				F03451EC28B2822B009467A0 /* OptInAssetListItemCell.swift in Sources */,
 				2B288ACC268E377300BC6FB6 /* WCWalletMeta.swift in Sources */,
 				2BA015D42637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
+				2B71A697291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */,
 				D4A2E48928A11B120053B654 /* GradientView.swift in Sources */,
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				D443A07127E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,
@@ -20907,6 +20933,7 @@
 				2BCE8FA0284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
 				D4AAB8B627D238E70011B004 /* CollectibleListItemCell.swift in Sources */,
 				2B7E3044267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */,
+				2B71A68E29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */,
 				D411B37526EA1043004FF980 /* AccountListItemView.swift in Sources */,
 				2B0F615E24EC129D00DA22A6 /* AdaptiveLayout.swift in Sources */,
 				2BA172F22649F66A00A613C4 /* UIPanGestureRecognizer+Additions.swift in Sources */,
@@ -21087,6 +21114,7 @@
 				F063BE8C290C084200AEAEF7 /* SwapSlippageTolerancePercentageStore.swift in Sources */,
 				D48FDFE827CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */,
 				D4979443287CC491004FBF8E /* AppCallAssetPreviewViewModel.swift in Sources */,
+				2B71A69229190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */,
 				D459E28227DDF47B00F7FC33 /* ApproveCollectibleTransactionViewController.swift in Sources */,
 				2B9352BF27F2EEED000DA8DB /* CollectibleDetailOptedInActionViewTheme.swift in Sources */,
 				95BFE7932840BC9300A972A5 /* HomeQuickActionsViewTheme.swift in Sources */,
@@ -22472,6 +22500,7 @@
 				D4A2E48828A11B120053B654 /* GradientView.swift in Sources */,
 				95631BBA27608E74002FB831 /* TripleShadowView.swift in Sources */,
 				2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
+				2B71A696291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */,
 				2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				F040FE08285777D500A74993 /* CopyToClipboardController.swift in Sources */,
 				2BB0B120277DAC8300A16494 /* HomeViewController.swift in Sources */,
@@ -22879,6 +22908,7 @@
 				D4CC28BD2875A0CD0082E038 /* InnerTransactionListDataSource.swift in Sources */,
 				D4979446287CC766004FBF8E /* AppCallAssetPreviewViewTheme.swift in Sources */,
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
+				2B71A68D29190D640039EA99 /* WCSessionAccountStatusView.swift in Sources */,
 				2BE9374D2464C66800322C1E /* TransactionTextInformationView.swift in Sources */,
 				2BCE8F9F284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
 				2B0E7CC127E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */,
@@ -23052,6 +23082,7 @@
 				F010637728AC4AC800AB6873 /* ASADetailProfileViewModel.swift in Sources */,
 				046767872756A65F00C88F21 /* SingleSelectionViewTheme.swift in Sources */,
 				D4BCAD4628B518720052DD74 /* TransferAssetBalanceNameViewTheme.swift in Sources */,
+				2B71A69129190DD00039EA99 /* WCSessionAccountStatusViewTheme.swift in Sources */,
 				955B6179278483F5005A5C7E /* WCMainTransactionScreen+Theme.swift in Sources */,
 				95BFE7922840BC9300A972A5 /* HomeQuickActionsViewTheme.swift in Sources */,
 				D479D0F826D4FAD900110E04 /* BannerView.swift in Sources */,
@@ -24429,6 +24460,7 @@
 				0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				D4A2E48728A11B120053B654 /* GradientView.swift in Sources */,
 				2B571588263479BF002C876D /* AlgorandChartView.swift in Sources */,
+				2B71A695291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BAB8AA6275F733E006CBB15 /* AccountListOptionsViewController.swift in Sources */,
 				D443A06F27E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,

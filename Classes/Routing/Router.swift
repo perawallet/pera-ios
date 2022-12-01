@@ -745,6 +745,7 @@ class Router:
             viewController = screen
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
+                configuration.sharedDataController,
                 analytics: configuration.analytics,
                 walletConnector: configuration.walletConnector
             )
