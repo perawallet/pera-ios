@@ -92,6 +92,10 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         if let address = address {
             watchAccountAdditionView.addressInputView.text = address
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
         pasteFromClipboard()
     }

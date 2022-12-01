@@ -42,6 +42,7 @@ final class CollectibleDetailViewController:
 
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )
@@ -668,7 +669,7 @@ extension CollectibleDetailViewController {
                 shouldDisplayAccountActionsBarButtonItem: false,
                 shouldDisplayQuickActions: false
             )
-        ) { [weak self] event in
+        ) { event in
             switch event {
             case .didRemoveAccount: break
             case .didRenameAccount: break
@@ -809,12 +810,6 @@ extension CollectibleDetailViewController {
             }
             return
         }
-
-        bannerController?.presentSuccessBanner(
-            title: "collectible-detail-opt-out-success".localized(
-                params: asset.title ?? asset.name ?? .empty
-            )
-        )
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didRemoveCollectible,

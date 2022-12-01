@@ -19,10 +19,14 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 
-final class AccountSelectScreen: BaseViewController {
+final class AccountSelectScreen:
+    BaseViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     typealias EventHandler = (Event) -> Void
-
     var eventHandler: EventHandler?
 
     private lazy var assetDetailTitleView = AssetDetailTitleView()
@@ -41,20 +45,7 @@ final class AccountSelectScreen: BaseViewController {
 
     private var draft: SendTransactionDraft
 
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
-
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     override func customizeTabBarAppearence() {
         tabBarHidden = false
@@ -78,9 +69,25 @@ final class AccountSelectScreen: BaseViewController {
         accountView.listView.dataSource = listDataSource
 
         accountView.clipboardView.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapCopy))
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(didTapCopyAddress)
+            )
         )
-        transactionController.delegate = self
+
+        observe(notification: UIPasteboard.changedNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.displayClipboardIfNeeded()
+        }
+
+        observeWhenApplicationWillEnterForeground {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.displayClipboardIfNeeded()
+        }
     }
 
     override func prepareLayout() {
@@ -91,13 +98,7 @@ final class AccountSelectScreen: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        guard let address = UIPasteboard.general.validAddress else {
-            accountView.displayClipboard(isVisible: false)
-            return
-        }
-
-        accountView.displayClipboard(isVisible: true)
-        accountView.clipboardView.bindData(AccountClipboardViewModel(address))
+        displayClipboardIfNeeded()
     }
 
     override func viewDidLoad() {
@@ -133,12 +134,14 @@ final class AccountSelectScreen: BaseViewController {
             return
         }
 
+        let assetName = asset.naming.unitName ?? "title-unknown".localized
+
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
             assetId: asset.id,
             asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
-            detail: "asset-support-error".localized,
+            detail: "asset-support-error".localized(params: assetName),
             actionTitle: "title-ok".localized
         )
 
@@ -156,57 +159,6 @@ final class AccountSelectScreen: BaseViewController {
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func composeAlgosTransactionData() {
-        var transactionDraft = AlgosTransactionSendDraft(
-            from: draft.from,
-            toAccount: draft.toAccount,
-            amount: draft.amount,
-            fee: nil,
-            isMaxTransaction: draft.isMaxTransaction,
-            identifier: nil,
-            note: draft.note
-        )
-        transactionDraft.toContact = draft.toContact
-        transactionDraft.nameService = draft.nameService
-
-        transactionController.delegate = self
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
-
-        if draft.from.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-    }
-
-    private func composeAssetTransactionData() {
-        guard let asset = draft.asset else {
-            return
-        }
-
-        var transactionDraft = AssetTransactionSendDraft(
-            from: draft.from,
-            toAccount: draft.toAccount,
-            amount: draft.amount,
-            assetIndex: asset.id,
-            assetDecimalFraction: asset.decimals,
-            isVerifiedAsset: asset.verificationTier.isVerified,
-            note: draft.note
-        )
-        transactionDraft.toContact = draft.toContact
-        transactionDraft.asset = asset
-        transactionDraft.nameService = draft.nameService
-
-        transactionController.delegate = self
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
-
-        if draft.from.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
     }
 }
 
@@ -227,129 +179,22 @@ extension AccountSelectScreen {
     }
 }
 
-extension AccountSelectScreen: TransactionControllerDelegate {
-    func transactionController(
-        _ transactionController: TransactionController,
-        didFailedComposing error: HIPTransactionError
-    ) {
-        loadingController?.stopLoading()
-        
-        switch error {
-        case .network:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .inapp(transactionError):
-            displayTransactionError(from: transactionError)
-        }
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {
-        loadingController?.stopLoading()
-
-        guard let draft = draft else {
-            return
-        }
-
-        let controller = open(
-            .sendTransactionPreview(
-                draft: draft,
-                transactionController: transactionController
-            ),
-            by: .push
-        ) as? SendTransactionPreviewScreen
-        controller?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
-            }
-        }
-    }
-
-    private func displayTransactionError(from transactionError: TransactionError) {
-        switch transactionError {
-        case let .minimumAmount(amount):
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = AlgoLocalCurrency()
-
-            let amountText = currencyFormatter.format(amount.toAlgos)
-
-            bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
-            )
-        case .invalidAddress:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
-            )
-        case let .sdkError(error):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.debugDescription
-            )
-        case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
-        default:
-            displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "title-internet-connection".localized
-            )
-        }
-    }
-
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.loadingController?.stopLoading()
-            }
-        }
-    }
-
-    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-    }
-
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
-        loadingController?.stopLoading()
-    }
-}
-
 extension AccountSelectScreen {
+    private func displayClipboardIfNeeded() {
+        let address = UIPasteboard.general.validAddress
+        let isVisible = address != nil
+
+        if isVisible {
+            accountView.clipboardView.bindData(
+                AccountClipboardViewModel(address!)
+            )
+        }
+
+        accountView.displayClipboard(isVisible: isVisible)
+    }
+
     @objc
-    private func didTapCopy() {
+    private func didTapCopyAddress() {
         if let address = UIPasteboard.general.validAddress {
             accountView.searchInputView.setText(address)
         }
@@ -403,6 +248,14 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
             collectionView,
             layout: collectionViewLayout,
             sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
         )
     }
 
@@ -468,11 +321,21 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                 return
             }
 
-            switch self.draft.transactionMode {
-            case .algo:
-                self.composeAlgosTransactionData()
-            case .asset:
-                self.composeAssetTransactionData()
+            let controller = self.open(
+                .sendTransactionPreview(
+                    draft: self.draft
+                ),
+                by: .push
+            ) as? SendTransactionPreviewScreen
+            controller?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.eventHandler?(.didEditNote(note: note))
+                }
             }
         }
     }
@@ -556,5 +419,6 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
 extension AccountSelectScreen {
     enum Event {
         case didCompleteTransaction
+        case didEditNote(note: String?)
     }
 }

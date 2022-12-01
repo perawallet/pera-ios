@@ -36,16 +36,10 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
-        case .done:
+        case .done(let color):
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: Colors.Text.main.uiColor,
-                font: Fonts.DMSans.medium.make(15).uiFont
-            )
-        case .doneGreen:
-            return BarButtonItemTitleContent(
-                text: "title-done".localized,
-                textColor: Colors.Link.primary.uiColor,
+                textColor: color,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
@@ -114,8 +108,6 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .done:
             return nil
-        case .doneGreen:
-            return nil
         case .edit:
             if let icon = img("icon-edit") {
                 return ImageContent(normal: icon)
@@ -152,8 +144,15 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .newNotification:
+            if let icon = img("icon-bar-new-notification") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         case .account(let image):
             return ImageContent(normal: image)
+        case .flexibleSpace:
+            return nil
         }
     }
     
@@ -199,14 +198,6 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
-        case .doneGreen:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
-                    contentInsets: (left: 0.0, right: 0.0),
-                    titleInsets: (left: 4.0, right: -4.0))
-                ),
-                height: .equal(44.0)
-            )
         case .edit:
             return .explicit(CGSize(width: 40, height: 40))
         case .paste:
@@ -241,10 +232,12 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .troubleshoot:
             return .explicit(CGSize(width: 40, height: 40))
-        case .notification:
+        case .notification, .newNotification:
             return .explicit(CGSize(width: 40, height: 40))
         case .account:
             return .explicit(CGSize(width: 28, height: 28))
+        case .flexibleSpace:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -263,6 +256,10 @@ struct ALGBarButtonItem: BarButtonItem {
     static func dismiss() -> ALGBarButtonItem? {
         return ALGBarButtonItem(kind: .close)
     }
+
+    static func flexibleSpace() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .flexibleSpace)
+    }
 }
 
 extension ALGBarButtonItem {
@@ -273,12 +270,12 @@ extension ALGBarButtonItem {
         case circleAdd
         case add
         case notification
+        case newNotification
         case close
         case closeTitle
         case save
         case qr
-        case done
-        case doneGreen
+        case done(UIColor)
         case edit
         case info
         case paste
@@ -289,6 +286,7 @@ extension ALGBarButtonItem {
         case filter
         case troubleshoot
         case account(UIImage)
+        case flexibleSpace
     }
 }
 
