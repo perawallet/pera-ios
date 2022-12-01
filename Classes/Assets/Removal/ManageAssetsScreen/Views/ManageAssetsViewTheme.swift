@@ -51,7 +51,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
         var titleAttributes = Typography.titleMediumAttributes()
         titleAttributes.insert(.textColor(Colors.Text.main))
         self.titleText = .attributedString(
-            "asset-remove-title"
+            "asset-opt-out-title"
                 .localized
                 .attributed(
                     titleAttributes

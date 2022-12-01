@@ -24,6 +24,8 @@ final class NotificationsAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private let api: ALGAPI
+    private let lastSeenNotificationController: LastSeenNotificationController?
+
     private(set) var notifications = [NotificationMessage]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
@@ -34,8 +36,12 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
-    init(api: ALGAPI) {
+    init(
+        api: ALGAPI,
+        lastSeenNotificationController: LastSeenNotificationController?
+    ) {
         self.api = api
+        self.lastSeenNotificationController = lastSeenNotificationController
 
         startObserving()
     }
@@ -89,6 +95,7 @@ extension NotificationsAPIDataController {
                     self.notifications = newNotifications
                 }
 
+                self.setLastSeenNotification(self.notifications.first)
                 self.deliverContentSnapshot()
             case .failure:
                 ///TODO: Should Deliver error snapshot
@@ -105,6 +112,14 @@ extension NotificationsAPIDataController {
             notification: notification,
             latestReadTimestamp: latesTimestamp
         )
+    }
+
+    private func setLastSeenNotification(_ notification: NotificationMessage?) {
+        guard let notification = notification else {
+            return
+        }
+
+        lastSeenNotificationController?.setLastSeenNotification(notification)
     }
 }
 

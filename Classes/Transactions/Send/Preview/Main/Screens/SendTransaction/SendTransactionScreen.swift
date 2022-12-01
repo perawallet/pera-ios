@@ -1011,12 +1011,14 @@ extension SendTransactionScreen {
             return
         }
 
+        let assetName = asset.naming.unitName ?? "title-unknown".localized
+
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
             assetId: asset.id,
             asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
-            detail: "asset-support-error".localized,
+            detail: "asset-support-error".localized(params: assetName),
             actionTitle: "title-ok".localized
         )
 
