@@ -161,8 +161,7 @@
 
 // MARK: Account Name Setup
 "account-details-title" = "Name your account";
-"account-name-setup-explanation" = "Account Name";
-"account-name-setup-placeholder" = "Account Name";
+"account-name-setup-placeholder" = "Account name";
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
 
