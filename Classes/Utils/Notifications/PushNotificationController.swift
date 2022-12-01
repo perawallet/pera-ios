@@ -23,10 +23,14 @@ import UserNotifications
 
 class PushNotificationController: NSObject {
     var token: String? {
-        get { UserDefaults.standard.string(forKey: Persistence.DefaultsDeviceTokenKey) }
-        set { UserDefaults.standard.set(newValue, forKey: Persistence.DefaultsDeviceTokenKey) }
+        return deviceRegistrationController.token
     }
 
+    private lazy var deviceRegistrationController = DeviceRegistrationController(
+        target: target,
+        session: session,
+        api: api
+    )
     private lazy var currencyFormatter = CurrencyFormatter()
     
     private let target: ALGAppTarget
@@ -51,34 +55,17 @@ class PushNotificationController: NSObject {
 
 extension PushNotificationController {
     func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { isGranted, _ in
-            if !isGranted {
-                return
-            }
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
-            }
-        }
+        deviceRegistrationController.requestAuthorization()
     }
     
     func authorizeDevice(with pushToken: String) {
-        token = pushToken
-        sendDeviceDetails()
+        deviceRegistrationController.authorizeDevice(with: pushToken)
     }
     
     func sendDeviceDetails(
         completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
     ) {
-        guard let user = session.authenticatedUser else {
-            return
-        }
-        
-        if let deviceId = user.getDeviceId(on: api.network) {
-            updateDevice(with: deviceId, for: user, completion: handler)
-        } else {
-            registerDevice(for: user, completion: handler)
-        }
+        deviceRegistrationController.sendDeviceDetails(completion: handler)
     }
     
     private func updateDevice(
@@ -86,88 +73,33 @@ extension PushNotificationController {
         for user: User,
         completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
     ) {
-        let draft = DeviceUpdateDraft(id: id, pushToken: token, app: target.app, accounts: user.accounts.map(\.address))
-        api.updateDevice(draft) { response in
-            switch response {
-            case let .success(device):
-                self.session.authenticatedUser?.setDeviceID(
-                    device.id,
-                    on: self.api.network
-                )
-                handler?(nil)
-            case let .failure(apiError, apiErrorDetail):
-                if let errorType = apiErrorDetail?.type,
-                   errorType == APIErrorType.deviceAlreadyExists.rawValue {
-                    self.registerDevice(for: user, completion: handler)
-                } else {
-                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                    handler?(error)
-                }
-            }
-        }
+        deviceRegistrationController.updateDevice(
+            with: id,
+            for: user,
+            completion: handler
+        )
     }
     
     private func registerDevice(
         for user: User,
         completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
     ) {
-        let draft = DeviceRegistrationDraft(pushToken: token, app: target.app, accounts: user.accounts.map(\.address))
-        api.registerDevice(draft) { response in
-            switch response {
-            case let .success(device):
-                self.session.authenticatedUser?.setDeviceID(
-                    device.id,
-                    on: self.api.network
-                )
-                handler?(nil)
-            case let .failure(apiError, apiErrorDetail):
-                let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                handler?(error)
-            }
-        }
+        deviceRegistrationController.registerDevice(
+            for: user,
+            completion: handler
+        )
     }
     
     func unregisterDevice(
         from network: ALGAPI.Network
     ) {
-        guard
-            let user = session.authenticatedUser,
-            let id = user.getDeviceId(on: network)
-        else {
-            return
-        }
-        
-        let draft = DeviceUpdateDraft(
-            id: id,
-            pushToken: nil,
-            app: target.app,
-            accounts: user.accounts.map(\.address)
-        )
-        api.unregisterDevice(
-            draft,
-            from: network
-        ) { _ in }
+        deviceRegistrationController.unregisterDevice(from: network)
     }
     
     func revokeDevice(
         completion handler: @escaping BoolHandler
     ) {
-        UIApplication.shared.unregisterForRemoteNotifications()
-        if let token = token {
-            self.token = nil
-            let draft = DeviceDeletionDraft(pushToken: token)
-            api.revokeDevice(draft) { response in
-                switch response {
-                case .success:
-                    handler(true)
-                case .failure:
-                    handler(false)
-                }
-            }
-            return
-        }
-
-        handler(true)
+        deviceRegistrationController.revokeDevice(completion: handler)
     }
 }
 
@@ -402,13 +334,5 @@ extension PushNotificationController {
 
             self.bannerController?.presentNotification(message)
         }
-    }
-}
-
-// MARK: Storage
-
-extension PushNotificationController {
-    enum Persistence {
-        static let DefaultsDeviceTokenKey = "DefaultsDeviceTokenKey"
     }
 }

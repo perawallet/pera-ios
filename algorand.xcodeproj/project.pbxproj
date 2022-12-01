@@ -5386,6 +5386,9 @@
 		D4F681912897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681922897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
 		D4F681932897E20B005F9B26 /* AssetAboutSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */; };
+		D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
+		D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
+		D4F72B6C28E446D100907287 /* DeviceRegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */; };
 		D4F72B5D28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
 		D4F72B5E28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
 		D4F72B5F28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */; };
@@ -7969,6 +7972,7 @@
 		D4F681882897DEC5005F9B26 /* AssetAboutSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionItem.swift; sourceTree = "<group>"; };
 		D4F6818C2897E0FE005F9B26 /* AssetAboutSectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewTheme.swift; sourceTree = "<group>"; };
 		D4F681902897E20B005F9B26 /* AssetAboutSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAboutSectionViewModel.swift; sourceTree = "<group>"; };
+		D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationController.swift; sourceTree = "<group>"; };
 		D4F72B5C28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreen.swift; sourceTree = "<group>"; };
 		D4F72B6128E3935F00907287 /* InsufficientAlgoBalanceScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceScreenTheme.swift; sourceTree = "<group>"; };
 		D4F72B6528E3938600907287 /* InsufficientAlgoBalanceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsufficientAlgoBalanceDraft.swift; sourceTree = "<group>"; };
@@ -9641,6 +9645,7 @@
 		2B4DF407236C5EEB00FF9551 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D4F72B6928E446D100907287 /* DeviceRegistrationController.swift */,
 				2B191C81232150C900EAB1B8 /* PushNotificationController.swift */,
 			);
 			path = Notifications;
@@ -20711,6 +20716,7 @@
 				2B5F6F922768D8BB00C9B780 /* SettingsToggleView.swift in Sources */,
 				2BCBBAE324A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
 				D4FDC5CE289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */,
+				D4F72B6C28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				959672DF27BA455000BFDE5D /* NotificationLoadingView.swift in Sources */,
 				2BB8482A27E8EC99004F2E39 /* Media.swift in Sources */,
 				2BA4B3D72673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
@@ -22684,6 +22690,7 @@
 				2B99D42928E9DA6D00323C11 /* TitleSeparatorViewTheme.swift in Sources */,
 				D478AA9728AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
 				2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */,
+				D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				2BB8482927E8EC98004F2E39 /* Media.swift in Sources */,
 				D4FDC5CD289D45350069C038 /* WCSessionListViewControllerTheme.swift in Sources */,
 				2B0F630324EC129D00DA22A6 /* AssetPreviewActionCell.swift in Sources */,
@@ -24650,6 +24657,8 @@
 				2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */,
 				2B0322F2269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
 				D48FDFA527CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift in Sources */,
+				D49D77DA2789ED33001FD5F6 /* FloatingActionButtonViewController+Theme.swift in Sources */,
+				D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				D4155E95276CDB5400BCBFA4 /* AccountCheckmarkSelectionViewCell.swift in Sources */,
 				D478AA9628AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
 				953DEE1B279ED4CC00D76957 /* WCAssetInformationViewModel.swift in Sources */,
