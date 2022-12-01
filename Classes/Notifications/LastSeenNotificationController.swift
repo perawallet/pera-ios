@@ -32,15 +32,7 @@ final class LastSeenNotificationController {
         }
 
         let draft = NotificationStatusFetchDraft(deviceId: deviceId)
-
-        asyncBackground {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.fetchNotificationStatus(draft: draft)
-        }
+        fetchNotificationStatus(draft: draft)
     }
 
     func setLastSeenNotification(_ notification: NotificationMessage) {

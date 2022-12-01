@@ -166,6 +166,7 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         saveContext()
+        appLaunchController.terminate()
     }
 
     func application(
