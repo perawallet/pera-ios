@@ -182,7 +182,7 @@ extension SortAccountListLocalDataController {
             reorderedAccounts = sharedDataController.sortedAccounts()
             reorderedAccountItems = reorderedAccounts.map {
                 let draft = AccountOrderingDraft(account: $0.value)
-                let viewModel = AccountPreviewViewModel(draft)
+                let viewModel = AccountListItemViewModel(draft)
                 return .reordering(viewModel)
             }
         }

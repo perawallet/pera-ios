@@ -208,13 +208,13 @@ extension AccountSelectScreenListAPIDataController {
             var accountItems = self.matchedAccounts.map { nameService -> AccountSelectItem in
                 let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
                 let nameServiceAccount = nameService.account.value
-                let preview = NameServiceAccountPreview(
+                let preview = NameServiceAccountListItem(
                     address: nameServiceAccount.address,
                     icon: imageSource,
                     title: nameServiceAccount.address.shortAddressDisplay,
                     subtitle: nameService.name
                 )
-                return .account(.matchedAccountCell(AccountPreviewViewModel(preview)))
+                return .account(.matchedAccountCell(AccountListItemViewModel(preview)))
             }
 
             accountItems.insert(
@@ -241,11 +241,11 @@ extension AccountSelectScreenListAPIDataController {
             var accountItems = self.accounts.map { accountHandle -> AccountSelectItem in
                 let account = accountHandle.value
                 let accountNameViewModel = AuthAccountNameViewModel(account)
-                let preview = CustomAccountPreview(
+                let item = CustomAccountListItem(
                     accountNameViewModel,
                     address: account.address
                 )
-                return .account(.accountCell(AccountPreviewViewModel(preview)))
+                return .account(.accountCell(AccountListItemViewModel(item)))
             }
 
             let headerItem: AccountSelectAccountItem = .header(SelectAccountHeaderViewModel(.accounts))
@@ -301,11 +301,11 @@ extension AccountSelectScreenListAPIDataController {
             var accountItems = self.searchedAccounts.map { accountHandle -> AccountSelectItem in
                 let account = accountHandle.value
                 let accountNameViewModel = AuthAccountNameViewModel(accountHandle.value)
-                let preview = CustomAccountPreview(
+                let item = CustomAccountListItem(
                     accountNameViewModel,
                     address: account.address
                 )
-                return .account(.searchAccountCell(AccountPreviewViewModel(preview)))
+                return .account(.searchAccountCell(AccountListItemViewModel(item)))
             }
 
             let headerItem: AccountSelectAccountItem = .header(SelectAccountHeaderViewModel(.search))

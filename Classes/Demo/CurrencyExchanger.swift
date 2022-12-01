@@ -64,6 +64,16 @@ extension CurrencyExchanger {
     }
 
     func exchange(
+        amount: Decimal
+    ) throws -> Decimal {
+        guard let usdValue = currency.usdValue else {
+            throw CurrencyExchangeError.currencyFailed()
+        }
+
+        return amount * usdValue
+    }
+
+    func exchange(
         _ asset: AssetDecoration
     ) throws -> Decimal {
         guard let usdValue = currency.usdValue else {

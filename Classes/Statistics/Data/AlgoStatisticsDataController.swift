@@ -69,7 +69,7 @@ final class AlgoStatisticsDataController {
 extension AlgoStatisticsDataController {
     func load() {
         loadCurrency()
-        load(for: .lastDay)
+        load(for: .lastYear)
     }
     
     func load(

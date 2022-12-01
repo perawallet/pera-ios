@@ -20,23 +20,22 @@ import Foundation
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
-
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    
+
     private var visibleAnnouncement: Announcement?
 
     private var lastSnapshot: Snapshot?
-    
+
     private let snapshotQueue = DispatchQueue(
         label: "pera.queue.home.updates",
         qos: .userInitiated
     )
-    
+
     init(
         _ sharedDataController: SharedDataController,
         announcementDataController: AnnouncementAPIDataController
@@ -150,8 +149,8 @@ extension HomeAPIDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
-                let cellItem: HomeAccountItemIdentifier = .cell(accountPreviewViewModel)
+                let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
+                let cellItem: HomeAccountItemIdentifier = .cell(accountListItemViewModel)
                 let item: HomeItemIdentifier = .account(cellItem)
 
                 accounts.append($0)

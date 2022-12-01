@@ -132,7 +132,7 @@ extension SelectAccountAPIDataController {
                 
                 if self.transactionAction == .buyAlgo {
                     let account = accountHandle.value
-                    let algoAccount = CustomAccountPreview(
+                    let algoAccount = CustomAccountListItem(
                         AlgoAccountViewModel(
                             account,
                             currencyFormatter: currencyFormatter
@@ -140,16 +140,16 @@ extension SelectAccountAPIDataController {
                         address: account.address
                     )
                     
-                    cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
+                    cellItem = .account(AccountListItemViewModel(algoAccount), accountHandle)
                 } else {
                     let accountPortfolioItem = AccountPortfolioItem(
                         accountValue: accountHandle,
                         currency: currency,
                         currencyFormatter: currencyFormatter
                     )
-                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+                    let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
 
-                    cellItem = .account(accountPreviewViewModel, accountHandle)
+                    cellItem = .account(accountListItemViewModel, accountHandle)
                 }
                 
                 accounts.append(accountHandle)

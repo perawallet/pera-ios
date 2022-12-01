@@ -200,7 +200,7 @@ extension SendCollectibleAccountListAPIDataController {
             }
             .forEach { account in
                 let cellItem: SendCollectibleAccountListItem = .account(
-                    viewModel: AccountPreviewViewModel(
+                    viewModel: AccountListItemViewModel(
                         IconWithShortAddressDraft(
                             account.value
                         )
@@ -282,7 +282,7 @@ extension SendCollectibleAccountListAPIDataController {
         let accountGeneratedFromQuery = Account(address: query, type: .standard)
         self.accountGeneratedFromQuery = accountGeneratedFromQuery
         let cellItem: SendCollectibleAccountListItem = .account(
-            viewModel: AccountPreviewViewModel(
+            viewModel: AccountListItemViewModel(
                 IconWithShortAddressDraft(
                     accountGeneratedFromQuery
                 )

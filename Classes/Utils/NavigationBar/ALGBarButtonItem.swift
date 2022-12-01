@@ -36,16 +36,10 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
-        case .done:
+        case .done(let color):
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: Colors.Text.main.uiColor,
-                font: Fonts.DMSans.medium.make(15).uiFont
-            )
-        case .doneGreen:
-            return BarButtonItemTitleContent(
-                text: "title-done".localized,
-                textColor: Colors.Link.primary.uiColor,
+                textColor: color,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
@@ -114,8 +108,6 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .done:
             return nil
-        case .doneGreen:
-            return nil
         case .edit:
             if let icon = img("icon-edit") {
                 return ImageContent(normal: icon)
@@ -176,7 +168,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 let disabledIcon = img("icon-next-disabled")
                 return ImageContent(normal: icon, disabled: disabledIcon)
             }
-            return nil
+        case .flexibleSpace:
         }
     }
     
@@ -215,14 +207,6 @@ struct ALGBarButtonItem: BarButtonItem {
         case .info:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .done:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
-                    contentInsets: (left: 0.0, right: 0.0),
-                    titleInsets: (left: 4.0, right: -4.0))
-                ),
-                height: .equal(44.0)
-            )
-        case .doneGreen:
             return .expanded(
                 width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
                     contentInsets: (left: 0.0, right: 0.0),
@@ -276,6 +260,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .discoverPrevious:
             return .explicit(CGSize(width: 40, height: 40))
+        case .flexibleSpace:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -294,6 +280,10 @@ struct ALGBarButtonItem: BarButtonItem {
     static func dismiss() -> ALGBarButtonItem? {
         return ALGBarButtonItem(kind: .close)
     }
+
+    static func flexibleSpace() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .flexibleSpace)
+    }
 }
 
 extension ALGBarButtonItem {
@@ -308,8 +298,7 @@ extension ALGBarButtonItem {
         case closeTitle
         case save
         case qr
-        case done
-        case doneGreen
+        case done(UIColor)
         case edit
         case info
         case paste
@@ -321,10 +310,10 @@ extension ALGBarButtonItem {
         case troubleshoot
         case search
         case account(UIImage)
-
         case discoverNext
         case discoverPrevious
         case discoverHome
+        case flexibleSpace
     }
 }
 
