@@ -175,7 +175,7 @@ extension ASADetailScreen {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = dataController.account
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
         let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
         open(

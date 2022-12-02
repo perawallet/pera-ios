@@ -366,7 +366,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
             address: account.address,
             mode: .address,
@@ -517,10 +517,33 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             by: .present
         )
     }
-
-    func managementOptionsViewControllerDidTapFilter(
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
-    ) {}
+    ) {
+        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return}
+                
+                switch event {
+                case .didChangeFilter(let filter):
+                    self.assetListScreen.changeFilterSelection(filter)
+                }
+            }
+        }
+        
+        open(
+            .assetsFilterSelection(
+                filter: sharedDataController.selectedAssetsFilteringOption,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
 
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
@@ -536,6 +559,10 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         ) as? ManageAssetsViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
+    
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension AccountDetailViewController {

@@ -22,10 +22,11 @@ import MacaroonUtils
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout,
-    NotificationObserver {
+    NotificationObserver,
+    UICollectionViewDelegateFlowLayout {
     var notificationObservations: [NSObjectProtocol] = []
 
+    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
 
@@ -122,7 +123,7 @@ final class HomeViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
+        configureNotificationBarButton()
 
         navigationView.prepareLayout(NoLayoutSheet())
 
@@ -196,6 +197,8 @@ final class HomeViewController:
         }
         
         dataController.fetchAnnouncements()
+
+        lastSeenNotificationController?.checkStatus()
     }
 
     override func viewWillDisappear(
@@ -219,11 +222,20 @@ final class HomeViewController:
         super.linkInteractors()
 
         observeWhenUserIsOnboardedToSwap()
+
+        observe(notification: .newNotificationReceieved) {
+            [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.configureNewNotificationBarButton()
+        }
     }
 }
 
 extension HomeViewController {
-    private func addBarButtons() {
+    private func configureNotificationBarButton() {
         let notificationBarButtonItem = ALGBarButtonItem(kind: .notification) { [weak self] in
             guard let self = self else {
                 return
@@ -236,6 +248,20 @@ extension HomeViewController {
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
+    }
+
+    private func configureNewNotificationBarButton() {
+        let notificationBarButtonItem = ALGBarButtonItem(kind: .newNotification) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.configureNotificationBarButton()
+            self.open(.notifications, by: .push)
+        }
+
+        rightBarButtonItems = [notificationBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 
@@ -499,6 +525,17 @@ extension HomeViewController {
             )
         }
         cell.startObserving(event: .secondaryAction) {
+            [unowned self] in
+
+            if let authenticatedUser = self.session?.authenticatedUser,
+               authenticatedUser.hasReachedTotalAccountLimit {
+                self.bannerController?.presentErrorBanner(
+                    title: "user-account-limit-error-title".localized,
+                    message: "user-account-limit-error-message".localized
+                )
+                return
+            }
+
             self.analytics.track(.recordHomeScreen(type: .addAccount))
             self.open(
                 .welcome(flow: .addNewAccount(mode: .none)),
@@ -860,7 +897,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             )
             self.open(
                 .qrGenerator(
-                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay,
+                    title: accountHandle.value.primaryDisplayName,
                     draft: draft,
                     isTrackable: true
                 ),

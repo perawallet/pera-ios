@@ -22,6 +22,8 @@ enum ALGAPIPath: String {
     case accountDetail = "/accounts/%@"
     case accounts = "/accounts"
     case accountTransaction = "/accounts/%@/transactions"
+    case deviceNotificationStatus = "/devices/%@/notification-status/"
+    case lastSeenNotificationStatus = "/devices/%@/update-last-seen-notification/"
     case availableSwapPoolAssets = "/dex-swap/available-assets/"
     case algoUSDHistory = "/price/algo-usd/history"
     case announcements = "/devices/%@/banners/"
