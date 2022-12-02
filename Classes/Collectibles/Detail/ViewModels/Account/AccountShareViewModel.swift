@@ -46,7 +46,7 @@ extension AccountShareViewModel {
 
         name = .attributedString(
             nameValue
-                .bodyRegular()
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 }

@@ -39,7 +39,7 @@ struct WCSessionShortListItemViewTheme: LayoutSheet, StyleSheet {
             .isInteractable(false),
             .text("wallet-connect-session-select-account".localized),
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(Colors.Text.main)
         ]
