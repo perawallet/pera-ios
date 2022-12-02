@@ -86,10 +86,11 @@ extension ManagementOptionsViewController {
         switch managementType {
         case .assets:
             addSortButton()
+            addFilterAssetsButton()
             addRemoveButton()
         case .collectibles:
             addSortButton()
-            addFilterButton()
+            addFilterCollectiblesButton()
         case .watchAccountAssets:
             addSortButton()
         }
@@ -109,10 +110,17 @@ extension ManagementOptionsViewController {
         )
     }
 
-    private func addFilterButton() {
+    private func addFilterCollectiblesButton() {
         addButton(
             FilterCollectiblesItemButtonViewModel(),
             #selector(filterCollectibles)
+        )
+    }
+    
+    private func addFilterAssetsButton() {
+        addButton(
+            FilterAssetsListItemButtonViewModel(),
+            #selector(filterAssets)
         )
     }
     
@@ -160,7 +168,17 @@ extension ManagementOptionsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.delegate?.managementOptionsViewControllerDidTapFilter(self)
+            self.delegate?.managementOptionsViewControllerDidTapFilterCollectibles(self)
+        }
+    }
+    
+    @objc
+    private func filterAssets() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.managementOptionsViewControllerDidTapFilterAssets(self)
         }
     }
 }
@@ -180,7 +198,10 @@ protocol ManagementOptionsViewControllerDelegate: AnyObject {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     )
-    func managementOptionsViewControllerDidTapFilter(
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    )
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     )
 }

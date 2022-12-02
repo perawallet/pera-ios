@@ -26,7 +26,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.assetSearch)
             .method(.get)
             .query(draft)
@@ -43,7 +43,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.assets)
             .method(.get)
             .query(draft)
@@ -60,7 +60,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
@@ -94,7 +94,7 @@ extension ALGAPI {
     @discardableResult
     func sendAssetSupportRequest(_ draft: AssetSupportDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.assetRequest)
             .method(.post)
             .body(draft)
@@ -104,7 +104,7 @@ extension ALGAPI {
     @discardableResult
     func getVerifiedAssets(onCompleted handler: @escaping (Response.ModelResult<VerifiedAssetList>) -> Void) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.verifiedAssets)
             .method(.get)
             .query(LimitQuery())
