@@ -12,41 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountShareViewModel.swift
+//   WCConnectionAccountSelectionViewModel.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-struct AccountShareViewModel:
-    ViewModel,
-    Hashable {
-    private(set) var image: UIImage?
-    private(set) var name: EditText?
+struct WCConnectionAccountSelectionViewModel: ViewModel {
+    private(set) var icon: UIImage?
+    private(set) var title: String?
+    private(set) var subtitle: String?
 
     init(
         _ account: Account
     ) {
-        bindImage(account)
-        bindName(account)
+        bindIcon(account)
+        bindTitle(account)
+        bindSubtitle(account)
     }
 }
 
-extension AccountShareViewModel {
-    private mutating func bindImage(
+extension WCConnectionAccountSelectionViewModel {
+    private mutating func bindIcon(
         _ account: Account
     ) {
-        image = account.typeImage
+        icon = account.typeImage
     }
 
-    private mutating func bindName(
+    private mutating func bindTitle(
         _ account: Account
     ) {
-        let nameValue = account.primaryDisplayName
+        title = account.primaryDisplayName
+    }
 
-        name = .attributedString(
-            nameValue
-                .bodyRegular(lineBreakMode: .byTruncatingTail)
-        )
+    private mutating func bindSubtitle(
+        _ account: Account
+    ) {
+        subtitle = account.secondaryDisplayName
     }
 }

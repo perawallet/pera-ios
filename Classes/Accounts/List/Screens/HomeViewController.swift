@@ -897,7 +897,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             )
             self.open(
                 .qrGenerator(
-                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay,
+                    title: accountHandle.value.primaryDisplayName,
                     draft: draft,
                     isTrackable: true
                 ),

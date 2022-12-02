@@ -144,7 +144,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
@@ -265,7 +265,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
@@ -274,7 +274,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptOutRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptOutRequest(accountName: accountName))
         }
 
@@ -337,7 +337,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
         

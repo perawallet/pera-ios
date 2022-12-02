@@ -160,7 +160,7 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
+    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )

@@ -257,7 +257,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         open(
             .qrGenerator(
-                title: account.name ?? account.address.shortAddressDisplay,
+                title: account.primaryDisplayName,
                 draft: draft,
                 isTrackable: true
             ),

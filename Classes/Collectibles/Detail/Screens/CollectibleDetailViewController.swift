@@ -586,7 +586,7 @@ extension CollectibleDetailViewController {
                 return
             }
 
-            let accountName = self.account.name ?? self.account.address.shortAddressDisplay
+            let accountName = self.account.primaryDisplayName
 
             let draft = QRCreationDraft(
                 address: self.account.address,
@@ -648,12 +648,7 @@ extension CollectibleDetailViewController {
             account: account,
             quickAction: nil,
             asset: AssetDecoration(asset: asset)
-        ) { event in
-            switch event {
-            case .didOptInToAsset: break
-            case .didOptOutFromAsset: break
-            }
-        }
+        )
 
         open(
             screen,

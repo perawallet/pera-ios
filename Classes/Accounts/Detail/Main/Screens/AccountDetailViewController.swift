@@ -365,7 +365,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
             address: account.address,
             mode: .address,
