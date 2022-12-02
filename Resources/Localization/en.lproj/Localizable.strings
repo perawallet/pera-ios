@@ -13,6 +13,7 @@
 "title-start-using-pera-wallet" = "Start Using Pera Wallet";
 "title-share-qr" = "Share Address";
 "title-go-to-settings" = "Go To Settings";
+"title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
 "title-close" = "Close";
@@ -382,9 +383,10 @@
 "settings-server-node-settings" = "Node Settings";
 "settings-backup-title" = "Backup";
 "settings-language" = "Language";
-"settings-notification-go-settings-title" = "Notifications";
-"settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
-"settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
+"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
+"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+"settings-notification-disabled-go-settings-text" = "Push notifications are disabled in iOS Settings. To enable notifications, you must first allow push notifications for Pera Wallet by launching the Settings app.";
+"settings-notification-enabled-go-settings-text" = "Push notifications are enabled in iOS Settings. To disable notifications, you must first disallow push notifications for Pera Wallet by launching the Settings app.";
 "settings-delete-data-title" = "Delete All Data";
 "settings-logout-title" = "Remove All Accounts and Logout";
 "settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";

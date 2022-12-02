@@ -12,26 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TitledToggleViewModel.swift
+//   TitledToggleLoadingCell.swift
 
 import Foundation
-import UserNotifications
+import MacaroonUIKit
+import UIKit
 
-final class TitledToggleViewModel {
-    private(set) var isSelected: Bool = true
+final class TitledToggleLoadingCell:
+    CollectionCell<TitledToggleLoadingView> {
+    static let theme = TitledToggleLoadingViewTheme()
 
-    init() {
-        bindIsSelected()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        contextView.customize(Self.theme)
     }
 }
 
-extension TitledToggleViewModel {
-    private func bindIsSelected() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                self.isSelected = settings.authorizationStatus == .authorized
-            }
-        }
+extension TitledToggleLoadingCell {
+    func startAnimating() {
+        contextView.startAnimating()
+    }
+
+    func stopAnimating() {
+        contextView.stopAnimating()
     }
 }
