@@ -45,7 +45,7 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
         self.noContentViewTheme = NoContentViewCommonTheme()
 
         let titleText =
-            "asset-remove-title"
+            "asset-opt-out-title"
                 .localized
                 .titleMedium(lineBreakMode: .byTruncatingTail)
         self.title = [

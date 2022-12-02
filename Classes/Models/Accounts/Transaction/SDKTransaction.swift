@@ -15,8 +15,6 @@
 //   SDKTransaction.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
 
 final class SDKTransaction: Codable {
     let fee: UInt64?
