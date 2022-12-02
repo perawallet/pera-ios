@@ -1286,7 +1286,7 @@
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nDo not proceed if you did not initiate this request.";
 "web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
 "web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
 "web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
