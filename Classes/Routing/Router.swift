@@ -39,6 +39,7 @@ class Router:
 
     private lazy var transactionController = TransactionController(
         api: appConfiguration.api,
+        sharedDataController: appConfiguration.sharedDataController,
         bannerController: appConfiguration.bannerController,
         analytics: appConfiguration.analytics
     )
@@ -180,6 +181,19 @@ class Router:
                 case .watchAccount:
                     launch(tab: .home)
 
+                    let session = self.appConfiguration.session
+
+                    if let authenticatedUser = session.authenticatedUser,
+                       authenticatedUser.hasReachedTotalAccountLimit {
+
+                        let bannerController = self.appConfiguration.bannerController
+                        bannerController.presentErrorBanner(
+                            title: "user-account-limit-error-title".localized,
+                            message: "user-account-limit-error-message".localized
+                        )
+                        return
+                    }
+
                     self.route(
                         to: .watchAccountAddition(
                             flow: .addNewAccount(
@@ -210,6 +224,22 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
+        case .asaDiscoveryWithOptInAction: break /// <note> .assetActionConfirmation is used instead.
+        case .asaDiscoveryWithOptOutAction(let account, let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDiscovery(
+                account: account,
+                quickAction: .optOut,
+                asset: asset
+            )
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
@@ -225,6 +255,20 @@ class Router:
                     break
                 }
             }
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
+        case .collectibleDetail(account: let account, asset: let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.collectibleDetail(
+                asset: asset,
+                account: account
+            )
 
             route(
                 to: screen,
@@ -562,8 +606,8 @@ class Router:
             viewController = optionsViewController
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
-        case let .editAccount(account, delegate):
-            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .renameAccount(account, delegate):
+            let aViewController = RenameAccountScreen(account: account, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
         case let .addContact(address, name):
@@ -902,10 +946,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case .sendTransactionPreview(let draft, let transactionController):
+        case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):
@@ -1047,6 +1090,13 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .assetsFilterSelection(let filter, let eventHandler):
+            let aViewController = AssetsFilterSelectionViewController(
+                filter: filter,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(
                 dataController: dataController,
@@ -1349,6 +1399,10 @@ extension Router {
             return
         }
 
+        let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(account: account, asset: asset)
+        monitor.startMonitoringOptInUpdates(request)
+
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
             assetIndex: Int64(draft.assetId)
@@ -1376,6 +1430,19 @@ extension Router {
         
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
             !$0.value.isWatchAccount()
+        }
+
+        let api = appConfiguration.api
+        let sessionChainId = session.chainId(for: api.network)
+
+        if !api.network.allowedChainIDs.contains(sessionChainId) {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-transaction-error-node".localized
+                )
+            }
+            return
         }
         
         if !hasNonWatchAccount {
@@ -1672,6 +1739,10 @@ extension Router {
                 return
             }
 
+            let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -1730,6 +1801,15 @@ extension Router {
     ) {
         appConfiguration.loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1743,6 +1823,15 @@ extension Router {
         didFailedTransaction error: HIPTransactionError
     ) {
         appConfiguration.loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

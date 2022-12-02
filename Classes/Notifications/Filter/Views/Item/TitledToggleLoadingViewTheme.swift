@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  TitledToggleViewModel.swift
+//   TitledToggleLoadingViewTheme.swift
 
 import Foundation
-import UserNotifications
+import MacaroonUIKit
 
-final class TitledToggleViewModel {
-    private(set) var isSelected: Bool = true
+struct TitledToggleLoadingViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let horizontalPadding: LayoutMetric
+    let corner: Corner
+    let titleSize: LayoutSize
+    let toggleSize: LayoutSize
 
-    init() {
-        bindIsSelected()
-    }
-}
-
-extension TitledToggleViewModel {
-    private func bindIsSelected() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                self.isSelected = settings.authorizationStatus == .authorized
-            }
-        }
+    init(
+        _ family: LayoutFamily
+    )  {
+        self.corner = 4
+        self.horizontalPadding = 24
+        self.titleSize = (124, 20)
+        self.toggleSize = (51, 31)
     }
 }

@@ -12,22 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NotificationFilterViewTheme.swift
+//   FilterAssetsListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct NotificationFilterViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
-
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-
-        self.cellSpacing = 0
-        self.contentInset = (20, 0, 0, 0)
+struct FilterAssetsListItemButtonViewModel: ListItemButtonViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        self.icon = "icon-asset-filter"
+        self.title = Self.getTitle("asset-filter-title".localized)
+        self.subtitle = nil
     }
 }

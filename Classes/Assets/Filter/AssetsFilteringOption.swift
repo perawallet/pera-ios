@@ -12,19 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   EditAccountViewController+Theme.swift
+//   AssetsFilteringOption.swift
 
-import MacaroonUIKit
+import Foundation
 
-extension EditAccountViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let editAccountViewTheme: EditAccountViewTheme
-
-        init(_ family: LayoutFamily) {
-            backgroundColor = Colors.Defaults.background
-            editAccountViewTheme = EditAccountViewTheme()
-        }
-    }
+enum AssetsFilteringOption: Int {
+    case all = 0
+    case hideZeroBalance = 1
 }
