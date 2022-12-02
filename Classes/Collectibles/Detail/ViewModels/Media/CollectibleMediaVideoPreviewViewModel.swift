@@ -22,7 +22,6 @@ import MacaroonURLImage
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
-    private(set) var isOwned: Bool = true
     private(set) var isFullScreenBadgeHidden: Bool = false
 
     init(
@@ -31,7 +30,6 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindOwned(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -53,12 +51,6 @@ extension CollectibleMediaVideoPreviewViewModel {
         }
 
         url = media.downloadURL
-    }
-
-    private mutating func bindOwned(
-        _ asset: CollectibleAsset
-    ) {
-        isOwned = asset.isOwned
     }
 
     private mutating func bindIsFullScreenBadgeHidden(

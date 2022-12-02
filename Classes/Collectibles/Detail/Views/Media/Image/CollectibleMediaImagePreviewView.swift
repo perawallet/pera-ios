@@ -25,7 +25,6 @@ final class CollectibleMediaImagePreviewView:
     lazy var handlers = Handlers()
 
     private(set) lazy var imageView = URLImageView()
-    private lazy var overlayView = UIView()
     private lazy var fullScreenBadge = ImageView()
 
     var currentImage: UIImage? {
@@ -36,7 +35,6 @@ final class CollectibleMediaImagePreviewView:
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
         addImage(theme)
-        addOverlayView(theme)
         addFullScreenBadge(theme)
     }
 
@@ -60,20 +58,6 @@ extension CollectibleMediaImagePreviewView {
         addSubview(imageView)
         imageView.fitToIntrinsicSize()
         imageView.snp.makeConstraints {
-            $0.setPaddings()
-        }
-    }
-
-    private func addOverlayView(
-        _ theme: CollectibleMediaImagePreviewViewTheme
-    ) {
-        overlayView.customizeAppearance(theme.overlay)
-        overlayView.layer.draw(corner: theme.corner)
-        overlayView.clipsToBounds = true
-        overlayView.alpha = 0.0
-
-        addSubview(overlayView)
-        overlayView.snp.makeConstraints {
             $0.setPaddings()
         }
     }
@@ -111,12 +95,6 @@ extension CollectibleMediaImagePreviewView {
             return
         }
 
-        if !viewModel.isOwned {
-            overlayView.alpha = 0.4
-        } else {
-            overlayView.alpha = 0.0
-        }
-
         fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }
 
@@ -131,7 +109,6 @@ extension CollectibleMediaImagePreviewView {
 
 extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
-        overlayView.alpha = 0.0
         imageView.prepareForReuse()
         fullScreenBadge.isHidden = false
     }

@@ -36,7 +36,6 @@ struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePrevi
             media: media
         )
 
-        bindOwned(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

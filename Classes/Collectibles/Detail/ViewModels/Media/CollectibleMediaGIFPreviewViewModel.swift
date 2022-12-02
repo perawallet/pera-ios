@@ -36,7 +36,6 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             media: media
         )
 
-        bindOwned(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
