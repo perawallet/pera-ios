@@ -300,7 +300,18 @@ extension ALGAppLaunchController {
         case .success(let uiState):
             uiHandler.launchUI(uiState)
             completePendingDeeplink()
-        case .failure:
+        case .failure(let error):
+            if error == .accountDoesNotExist {
+                let configurator = BottomWarningViewConfigurator(
+                    image: "icon-moonpay-transaction-failed".uiImage,
+                    title: "moonpay-transaction-failed-title".localized,
+                    description: .plain("wallet-connect-no-account-for-transaction".localized(params: "wallet-connect-transaction-error-invalid-signer".localized)),
+                    secondaryActionButtonTitle: "title-close".localized
+                )
+                uiHandler.launchUI(.bottomWarning(configurator))
+                completePendingDeeplink()
+                break
+            }
             suspend(deeplinkWithSource: src)
         }
     }

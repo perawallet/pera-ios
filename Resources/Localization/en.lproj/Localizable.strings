@@ -822,6 +822,9 @@
 "wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 "wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
+"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
+"wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
 "wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
 "wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
