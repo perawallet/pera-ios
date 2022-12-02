@@ -46,6 +46,8 @@ final class AccountSelectScreen:
     private var draft: SendTransactionDraft
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInInformation = BottomSheetTransition(presentingViewController: self)
 
     override func customizeTabBarAppearence() {
         tabBarHidden = false
@@ -127,38 +129,6 @@ final class AccountSelectScreen:
 
         transactionSendController?.delegate = self
         transactionSendController?.validate()
-    }
-
-    private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        guard let asset = draft.asset else {
-            return
-        }
-
-        let assetName = asset.naming.unitName ?? "title-unknown".localized
-
-        let assetAlertDraft = AssetAlertDraft(
-            account: draft.from,
-            assetId: asset.id,
-            asset: AssetDecoration(asset: asset),
-            title: "asset-support-title".localized,
-            detail: "asset-support-error".localized(params: assetName),
-            actionTitle: "title-ok".localized
-        )
-
-        let senderAddress = draft.from.address
-        if let receiverAddress = receiverAddress {
-            let draft = AssetSupportDraft(
-                sender: senderAddress,
-                receiver: receiverAddress,
-                assetId: asset.id
-            )
-            api?.sendAssetSupportRequest(draft)
-        }
-
-        modalTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 
@@ -383,7 +353,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
             case .asset(let assetError):
                 switch assetError {
                 case .assetNotSupported(let address):
-                    self.presentAssetNotSupportedAlert(receiverAddress: address)
+                    self.presentAskReceiverToOptIn(receiverAddress: address)
                 case .minimumAmount:
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
@@ -413,6 +383,101 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
         loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
             execute()
         }
+    }
+}
+
+extension AccountSelectScreen {
+    private func presentAskReceiverToOptIn(receiverAddress: String) {
+        guard let asset = draft.asset else {
+            return
+        }
+
+        let title: String
+
+        if let asset = asset as? CollectibleAsset {
+            title =
+                asset.title.unwrapNonEmptyString() ??
+                asset.name.unwrapNonEmptyString() ??
+                "#\(String(asset.id))"
+        } else {
+            title =
+                asset.naming.unitName.unwrapNonEmptyString() ??
+                asset.naming.name.unwrapNonEmptyString() ??
+                "#\(String(asset.id))"
+        }
+
+        let description = "collectible-recipient-opt-in-description".localized(title, receiverAddress)
+
+        let configuratorDescription = BottomWarningViewConfigurator.BottomWarningDescription.custom(
+            description: (description, [title, receiverAddress]),
+            markedWordWithHandler: (
+                word: "collectible-recipient-opt-in-description-marked".localized,
+                handler: {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.dismiss(animated: true) {
+                        self.openOptInInformation()
+                    }
+                }
+            )
+        )
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "collectible-recipient-opt-in-title".localized,
+            description: configuratorDescription,
+            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.sendOptInRequestToReceiver(receiverAddress)
+            }
+        )
+
+        transitionToAskReceiverToOptIn.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func sendOptInRequestToReceiver(_ receiverAddress: String) {
+        let draft = AssetSupportDraft(
+            sender: draft.from.address,
+            receiver: receiverAddress,
+            assetId: draft.asset!.id
+        )
+        api?.sendAssetSupportRequest(
+            draft
+        )
+    }
+
+    private func openOptInInformation() {
+        let uiSheet = UISheet(
+            title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
+            body: "collectible-opt-in-info-description".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToOptInInformation.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
