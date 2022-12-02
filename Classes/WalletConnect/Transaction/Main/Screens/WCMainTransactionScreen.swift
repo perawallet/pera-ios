@@ -562,20 +562,20 @@ extension WCMainTransactionScreen: AssetCachable {
 
 extension WCMainTransactionScreen {
     private func getTransactionParams() {
-        api?.getTransactionParams { [weak self] response in
-             guard let self = self else {
-                 return
-             }
+        sharedDataController.getTransactionParams { [weak self] result in
+            guard let self else {
+                return
+            }
 
-             switch response {
-             case .failure:
-                 break
-             case let .success(params):
-                 self.transactionParams = params
-             }
+            switch result {
+            case .success(let params):
+                self.transactionParams = params
+            case .failure:
+                break
+            }
 
-             self.rejectIfTheNetworkIsInvalid()
-         }
+            self.rejectIfTheNetworkIsInvalid()
+        }
     }
 
     private func rejectIfTheNetworkIsInvalid() {

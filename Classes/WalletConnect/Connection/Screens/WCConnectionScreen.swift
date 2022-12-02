@@ -292,8 +292,13 @@ extension WCConnectionScreen {
                 dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString
             )
         )
-        
-        eventHandler?(.performCancel)
+
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(
+                self.walletConnectSession.getDeclinedWalletConnectionInfo(on: self.api!.network)
+            )
+            self.eventHandler?(.performCancel)
+        }
     }
     
     @objc
@@ -312,7 +317,10 @@ extension WCConnectionScreen {
         
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(
-                self.walletConnectSession.getApprovedWalletConnectionInfo(for: selectedAccountAddresses)
+                self.walletConnectSession.getApprovedWalletConnectionInfo(
+                    for: selectedAccountAddresses,
+                    on: self.api!.network
+                )
             )
             self.eventHandler?(.performConnect)
         }
