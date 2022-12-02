@@ -69,6 +69,7 @@ class AppDelegate:
         loadingController: loadingController,
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
+        lastSeenNotificationController: lastSeenNotificationController,
         analytics: analytics
     )
 
@@ -97,6 +98,9 @@ class AppDelegate:
         session: session,
         api: api,
         bannerController: bannerController
+    )
+    private lazy var lastSeenNotificationController = LastSeenNotificationController(
+        api: api
     )
     
     private lazy var networkBannerView = UIView()
@@ -130,6 +134,8 @@ class AppDelegate:
             object: self,
             userInfo: nil
         )
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationDidBecomeActive(
@@ -139,6 +145,8 @@ class AppDelegate:
         setNeedsNetworkBannerUpdateIfNeeded()
         
         appLaunchController.becomeActive()
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationWillResignActive(
@@ -326,7 +334,19 @@ extension AppDelegate {
                 presented: presentedViewController,
                 completion: completion
             )
-        case .remoteNotification(let notification, let screen):
+        case .remoteNotification(let notification, let screen, let error):
+            if let error = error {
+                pushNotificationController.present(notification: notification) {
+                    [unowned self] in
+                    let uiRepresentation = error.uiRepresentation
+                    bannerController.presentErrorBanner(
+                        title: uiRepresentation.title,
+                        message: uiRepresentation.description
+                    )
+                }
+                return
+            }
+
             guard let someScreen = screen else {
                 pushNotificationController.present(notification: notification)
                 return
@@ -518,6 +538,7 @@ extension AppDelegate {
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         let sharedDataController = SharedAPIDataController(
+            target: ALGAppTarget.current,
             currency: currency,
             session: session,
             api: api

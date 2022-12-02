@@ -12,37 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  NotificationAsset.swift
+//   LastSeenNotificationStatus.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
 
-final class NotificationAsset: ALGAPIModel {
-    let id: Int64?
-    let name: String?
-    let code: String?
-    let url: String?
-    let fractionDecimals: Int?
+final class LastSeenNotificationStatus: ALGAPIModel {
+    let id: Int
 
     init() {
-        self.id = nil
-        self.name = nil
-        self.code = nil
-        self.url = nil
-        self.fractionDecimals = nil
+        id = -1
     }
 }
 
-extension NotificationAsset {
+extension LastSeenNotificationStatus {
     private enum CodingKeys:
         String,
         CodingKey {
-        case id = "asset_id"
-        case name = "asset_name"
-        case code = "unit_name"
-        case url
-        case fractionDecimals = "fraction_decimals"
+        case id = "last_seen_notification_id"
     }
 }

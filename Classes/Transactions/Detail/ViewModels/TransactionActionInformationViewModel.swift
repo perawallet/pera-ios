@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   EditNoteScreen+Theme.swift
-
+//   TransactionActionInformationViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-extension EditNoteScreen {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let editNoteViewTheme: EditNoteViewTheme
-        let modalHeight: LayoutMetric
-
-        init(_ family: LayoutFamily) {
-            backgroundColor = Colors.Defaults.background
-            editNoteViewTheme = EditNoteViewTheme()
-            modalHeight = 462
-        }
+final class TransactionActionInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var description: String?
+    
+    init(
+        description: String? = nil
+    ) {
+        self.title = "transaction-detail-note".localized
+        self.description = description
     }
 }
