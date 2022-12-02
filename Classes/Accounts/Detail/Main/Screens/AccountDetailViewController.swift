@@ -26,6 +26,7 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
@@ -417,8 +418,13 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        open(
-            .editAccount(account: accountHandle.value, delegate: self),
+        let screen: Screen = .renameAccount(
+            account: accountHandle.value,
+            delegate: self
+        )
+
+        transitionToRenameAccount.perform(
+            screen,
             by: .present
         )
     }
@@ -468,10 +474,17 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension AccountDetailViewController: EditAccountViewControllerDelegate {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        bindNavigationTitle()
-        eventHandler?(.didEdit)
+extension AccountDetailViewController: RenameAccountScreenDelegate {
+    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.bindNavigationTitle()
+            self.eventHandler?(.didEdit)
+        }
     }
 }
 

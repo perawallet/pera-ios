@@ -584,8 +584,8 @@ class Router:
             viewController = optionsViewController
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
-        case let .editAccount(account, delegate):
-            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .renameAccount(account, delegate):
+            let aViewController = RenameAccountScreen(account: account, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
         case let .addContact(address, name):
