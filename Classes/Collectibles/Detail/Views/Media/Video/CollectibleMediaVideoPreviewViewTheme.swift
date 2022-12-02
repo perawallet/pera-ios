@@ -22,6 +22,7 @@ struct CollectibleMediaVideoPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
+    let overlay: ViewStyle
     let fullScreenBadge: ImageStyle
     let fullScreenBadgeContentEdgeInsets: LayoutOffset
     let fullScreenBadgePaddings: LayoutPaddings
@@ -31,6 +32,10 @@ struct CollectibleMediaVideoPreviewViewTheme:
         _ family: LayoutFamily
     ) {
         placeholder = PlaceholerViewTheme()
+
+        overlay = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
 
         fullScreenBadge = [
             .image("icon-full-screen"),

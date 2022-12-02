@@ -22,6 +22,7 @@ struct CollectibleMediaImagePreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let image: URLImageViewStyleLayoutSheet
+    let overlay: ViewStyle
     let fullScreenBadge: ImageStyle
     let fullScreenBadgeContentEdgeInsets: LayoutOffset
     let fullScreenBadgePaddings: LayoutPaddings
@@ -31,6 +32,9 @@ struct CollectibleMediaImagePreviewViewTheme:
         _ family: LayoutFamily
     ) {
         image = URLImageViewCollectibleMediaTheme()
+        overlay = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
 
         fullScreenBadge = [
             .image("icon-full-screen"),
