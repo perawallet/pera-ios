@@ -24,6 +24,11 @@ final class AccountAssetListAPIDataController:
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var minimumBalanceCalculator = TransactionFeeCalculator(
+        transactionDraft: nil,
+        transactionData: nil,
+        params: nil
+    )
 
     private var accountHandle: AccountHandle
     private var assets: [StandardAsset] = []
@@ -113,23 +118,39 @@ extension AccountAssetListAPIDataController {
 
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
-            let isWatchAccount = self.accountHandle.value.isWatchAccount()
-
-            let portfolio = AccountPortfolioItem(
-                accountValue: self.accountHandle,
-                currency: currency,
-                currencyFormatter: currencyFormatter
-            )
-            let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
 
+            let isWatchAccount = self.accountHandle.value.isWatchAccount()
+
             if isWatchAccount {
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let portfolioItem = WatchAccountPortfolioViewModel(portfolio)
+
                 snapshot.appendItems(
                     [.watchPortfolio(portfolioItem)],
                     toSection: .portfolio
                 )
             } else {
+                let calculatedMinimumBalance =
+                    self.minimumBalanceCalculator
+                        .calculateMinimumAmount(
+                            for: self.accountHandle.value,
+                            with: .algosTransaction,
+                            calculatedFee: .zero,
+                            isAfterTransaction: false
+                        )
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter,
+                    minimumBalance: calculatedMinimumBalance
+                )
+                let portfolioItem = AccountPortfolioViewModel(portfolio)
                 snapshot.appendItems(
                     [.portfolio(portfolioItem)],
                     toSection: .portfolio

@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountPortfolioViewTheme.swift
+//   WatchAccountPortfolioViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPortfolioViewTheme:
+struct WatchAccountPortfolioViewTheme:
     StyleSheet,
     LayoutSheet {
     let contentHorizontalPaddings: LayoutHorizontalPaddings
@@ -28,13 +27,6 @@ struct AccountPortfolioViewTheme:
     let value: TextStyle
     let secondaryValue: TextStyle
     let spacingBetweenTitleAndValue: LayoutMetric
-    let spacingBetweenSecondaryValueAndMinimumBalanceContent: LayoutMetric
-    let minimumBalanceTitle: TextStyle
-    let minimumBalanceTitleMinWidthRatio: LayoutMetric
-    let spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue: LayoutMetric
-    let minimumBalanceValue: TextStyle
-    let spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction: LayoutMetric
-    let minimumBalanceInfoAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
@@ -55,20 +47,5 @@ struct AccountPortfolioViewTheme:
             .textAlignment(.center)
         ]
         self.spacingBetweenTitleAndValue = 8
-        self.spacingBetweenSecondaryValueAndMinimumBalanceContent = 12
-        self.minimumBalanceTitle = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineText())
-        ]
-        self.minimumBalanceTitleMinWidthRatio = 0.1
-        self.spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue = 4
-        self.minimumBalanceValue = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineText())
-        ]
-        self.spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction = 8
-        self.minimumBalanceInfoAction = [
-            .icon([ .normal("icon-info-20") ])
-        ]
     }
 }
