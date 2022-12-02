@@ -552,7 +552,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
         )
     }
 
-    func managementOptionsViewControllerDidTapFilter(
+    func managementOptionsViewControllerDidTapFilterCollectibles(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
         let controller = open(
@@ -575,6 +575,10 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     }
 
     func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {}
 }

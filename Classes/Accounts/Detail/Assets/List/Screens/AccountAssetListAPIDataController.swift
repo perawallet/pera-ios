@@ -71,6 +71,10 @@ extension AccountAssetListAPIDataController {
     func reload() {
         deliverContentUpdates()
     }
+    
+    func updateFilterSelection(with newSelection: AssetsFilteringOption) {
+        sharedDataController.selectedAssetsFilteringOption = newSelection
+    }
 
     func reloadIfThereIsPendingUpdates() {
         let monitor = sharedDataController.blockchainUpdatesMonitor
@@ -216,6 +220,12 @@ extension AccountAssetListAPIDataController {
                 if hasPendingOptOut {
                     return
                 }
+                
+                if self.sharedDataController.selectedAssetsFilteringOption == .hideZeroBalance,
+                   !asset.isAlgo,
+                   asset.amount == 0 {
+                    return
+                }
 
                 let assetItem = AssetItem(
                     asset: asset,
@@ -231,19 +241,15 @@ extension AccountAssetListAPIDataController {
                 self.assetListItems = assetViewModels.sorted(
                     by: selectedAccountSortingAlgorithm.getFormula
                 )
-                assetItems.append(
-                    contentsOf: self.assetListItems.map({ viewModel in
-                        return .asset(viewModel)
-                    })
-                )
             } else {
                 self.assetListItems = assetViewModels
-                assetItems.append(
-                    contentsOf: self.assetListItems.map({ viewModel in
-                        return .asset(viewModel)
-                    })
-                )
             }
+
+            assetItems.append(
+                contentsOf: self.assetListItems.map({ viewModel in
+                    return .asset(viewModel)
+                })
+            )
 
             let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
             for pendingOptInAsset in pendingOptInAssets {
