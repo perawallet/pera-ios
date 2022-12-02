@@ -108,7 +108,10 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
+    case wcConnection(
+        walletConnectSession: WalletConnectSession,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)

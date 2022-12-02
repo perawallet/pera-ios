@@ -37,10 +37,10 @@ extension WalletConnectSession {
         )
     }
 
-    func getApprovedWalletConnectionInfo(for account: String, on network: ALGAPI.Network) -> WalletInfo {
+    func getApprovedWalletConnectionInfo(for accounts: [String], on network: ALGAPI.Network) -> WalletInfo {
         return WalletInfo(
             approved: true,
-            accounts: [account],
+            accounts: accounts,
             chainId: dAppInfo.chainId ?? chainId(for: network),
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()

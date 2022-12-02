@@ -12,54 +12,74 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCConnectionApprovalViewModel.swift
+//   WCConnectionViewModel.swift
 
-import UIKit
+import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class WCConnectionApprovalViewModel: PairedViewModel {
+final class WCConnectionViewModel: ViewModel {
     private(set) var image: ImageSource?
-    private(set) var description: NSAttributedString?
+    private(set) var title: NSAttributedString?
+    private(set) var actionIcon: Image?
     private(set) var urlString: String?
-
-    init(_ session: WalletConnectSession) {
+    private(set) var subtitle: String?
+    
+    init(
+        session: WalletConnectSession,
+        hasSingleAccount: Bool
+    ) {
         bindImage(session)
         bindDescription(session)
+        bindUrlState(session)
         bindUrlString(session)
+        bindListHeader(hasSingleAccount)
     }
 }
 
-extension WCConnectionApprovalViewModel {
+extension WCConnectionViewModel {
     private func bindImage(_ session: WalletConnectSession) {
-        image = PNGImageSource(
+        self.image = PNGImageSource(
             url: session.dAppInfo.peerMeta.icons.first,
             color: nil,
-            size: .resize(CGSize(width: 72, height: 72), .aspectFit),
+            size: .resize(
+                CGSize(width: 72, height: 72),
+                .aspectFit
+            ),
             shape: .circle,
             placeholder: nil,
             forceRefresh: false
         )
     }
-
+    
     private func bindDescription(_ session: WalletConnectSession) {
         let dappName = session.dAppInfo.peerMeta.name
         let fullText = "wallet-connect-session-connection-description".localized(dappName)
-        let attributedText = NSMutableAttributedString(
-            string: fullText,
-            attributes: [
-                .font: UIFont.font(withWeight: .regular(size: 18)),
-                .foregroundColor: Colors.Text.main.uiColor
-            ]
-        )
-
+        let attributedFullText = NSMutableAttributedString(string: fullText)
+        
         let range = (fullText as NSString).range(of: dappName)
-        attributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.font(withWeight: .semiBold(size: 18)), range: range)
-        description = attributedText
+        attributedFullText.addAttribute(
+            NSAttributedString.Key.font,
+            value: Typography.bodyLargeMedium(),
+            range: range
+        )
+        
+        self.title = attributedFullText
     }
-
+    
     private func bindUrlString(_ session: WalletConnectSession) {
-        urlString = session.dAppInfo.peerMeta.url.presentationString
+        self.urlString = session.dAppInfo.peerMeta.url.presentationString
+    }
+    
+    private func bindListHeader(_ hasSingleAccount: Bool) {
+        self.subtitle = hasSingleAccount
+            ? "send-algos-select".localized.uppercased()
+            : "wallet-connect-select-accounts".localized.uppercased()
+    }
+    
+    private func bindUrlState(_ session: WalletConnectSession) {
+        if session.dAppInfo.approved ?? false {
+            self.actionIcon = img("WalletConnect/dapp-approved")
+        }
     }
 }

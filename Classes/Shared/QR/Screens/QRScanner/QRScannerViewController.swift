@@ -389,11 +389,30 @@ extension QRScannerViewController: WalletConnectorDelegate {
             guard let self = self else {
                 return
             }
-
-            self.wcConnectionModalTransition.perform(
-                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            
+            let wcConnectionScreen = self.wcConnectionModalTransition.perform(
+                .wcConnection(
+                    walletConnectSession: session,
+                    completion: completion
+                ),
                 by: .present
-            )
+            ) as? WCConnectionScreen
+            
+            wcConnectionScreen?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .performCancel:
+                    wcConnectionScreen?.dismissScreen()
+                    self.resetUIForScanning()
+                case .performConnect:
+                    wcConnectionScreen?.dismiss(animated: true) {
+                        [weak self] in
+                        self?.presentWCSessionsApprovedModal()
+                    }
+                }
+            }
         }
     }
 
@@ -478,18 +497,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 }
 
-extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
-    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
-            self?.presentWCSessionsApprovedModal()
-        }
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
-        resetUIForScanning()
-    }
-
+extension QRScannerViewController {
     private func resetUIForScanning() {
         captureSessionQueue.async {
             self.captureSession?.startRunning()

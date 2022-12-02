@@ -25,8 +25,7 @@ class Router:
     NotificationObserver,
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate,
-    WalletConnectorDelegate,
-    WCConnectionApprovalViewControllerDelegate
+    WalletConnectorDelegate
     {
     var notificationObservations: [NSObjectProtocol] = []
     
@@ -777,16 +776,20 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnectionApproval(walletConnectSession, delegate, completion):
-            let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
+        case let .wcConnection(walletConnectSession, completion):
+            let dataController = WCConnectionAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = WCConnectionScreen(
                 walletConnectSession: walletConnectSession,
                 walletConnectSessionConnectionCompletionHandler: completion,
+                dataController: dataController,
                 configuration: configuration
             )
-            wcConnectionApprovalViewController.delegate = delegate
-            viewController = wcConnectionApprovalViewController
+            viewController = screen
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
+                configuration.sharedDataController,
                 analytics: configuration.analytics,
                 walletConnector: configuration.walletConnector
             )
@@ -1428,15 +1431,38 @@ extension Router {
             
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-            transition.perform(
-                .wcConnectionApproval(
+            
+            let screen = transition.perform(
+                .wcConnection(
                     walletConnectSession: session,
-                    delegate: self,
                     completion: completion
                 ),
                 by: .present
-            )
+            ) as? WCConnectionScreen
+            
+            screen?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .performCancel:
+                    screen?.dismissScreen()
+                case .performConnect:
+                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
+                        screen?.dismissScreen()
+                        return
+                    }
+                    
+                    screen?.dismissScreen {
+                        [weak self] in
+                        guard let self = self else { return }
+                        
+                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                    }
+                }
+            }
+            
+
             
             self.ongoingTransitions.append(transition)
         }
@@ -1451,25 +1477,6 @@ extension Router {
 }
 
 extension Router {
-    func wcConnectionApprovalViewControllerDidApproveConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
-        
-        wcConnectionApprovalViewController.dismissScreen {
-            [weak self] in
-            guard let self = self else { return }
-            
-            self.presentWCSessionsApprovedModal(dAppName: dAppName)
-        }
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        wcConnectionApprovalViewController.dismissScreen()
-    }
-    
     private func presentWCSessionsApprovedModal(
         dAppName: String
     ) {
