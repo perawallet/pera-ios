@@ -25,7 +25,7 @@ final class ASADetailScreen:
     Container,
     OptionsViewControllerDelegate,
     ChoosePasswordViewControllerDelegate,
-    EditAccountViewControllerDelegate {
+    RenameAccountScreenDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -52,8 +52,18 @@ final class ASADetailScreen:
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self,
+        asset: dataController.asset
+    )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -86,16 +96,22 @@ final class ASADetailScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let dataController: ASADetailScreenDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme = ASADetailScreenTheme()
 
     init(
+        swapDataStore: SwapDataStore,
         dataController: ASADetailScreenDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.swapDataStore = swapDataStore
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
@@ -159,7 +175,7 @@ extension ASADetailScreen {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = dataController.account
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
         let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
         open(
@@ -222,8 +238,13 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        open(
-            .editAccount(account: dataController.account, delegate: self),
+        let screen: Screen = .renameAccount(
+            account: dataController.account,
+            delegate: self
+        )
+
+        transitionToRenameAccount.perform(
+            screen,
             by: .present
         )
     }
@@ -279,11 +300,18 @@ extension ASADetailScreen {
 }
 
 /// <mark>
-/// EditAccountViewControllerDelegate
+/// RenameAccountScreenDelegate
 extension ASADetailScreen {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        updateUIWhenAccountDidRename()
-        eventHandler?(.didRenameAccount)
+    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.updateUIWhenAccountDidRename()
+            self.eventHandler?(.didRenameAccount)
+        }
     }
 }
 
@@ -536,6 +564,14 @@ extension ASADetailScreen {
             $0.centerX == 0
         }
 
+        let asset = dataController.asset
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        var viewModel = ASADetailQuickActionsViewModel(
+            asset: asset,
+            isSwapBadgeVisible: !isOnboardedToSwap
+        )
+
         quickActionsView.startObserving(event: .layoutChanged) {
             [unowned self] in
 
@@ -545,6 +581,16 @@ extension ASADetailScreen {
             [unowned self] in
 
             self.navigateToBuyAlgo()
+        }
+        quickActionsView.startObserving(event: .swap) {
+            [unowned self, unowned quickActionsView] in
+
+            if !isOnboardedToSwap {
+                viewModel.bindIsSwapBadgeVisible(isSwapBadgeVisible: false)
+                quickActionsView.bindData(viewModel)
+            }
+
+            self.navigateToSwapAsset()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
@@ -557,8 +603,6 @@ extension ASADetailScreen {
             self.navigateToReceiveTransaction()
         }
 
-        let asset = dataController.asset
-        let viewModel = ASADetailQuickActionsViewModel(asset: asset)
         quickActionsView.bindData(viewModel)
     }
 
@@ -941,6 +985,11 @@ extension ASADetailScreen {
         let draft = BuyAlgoDraft()
         draft.address = dataController.account.address
         buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func navigateToSwapAsset() {
+        analytics.track(.tapSwapInAlgoDetail())
+        swapAssetFlowCoordinator.launch(account: dataController.account)
     }
 
     private func navigateToSendTransaction() {

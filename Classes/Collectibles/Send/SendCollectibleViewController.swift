@@ -66,6 +66,7 @@ final class SendCollectibleViewController:
     private var draft: SendCollectibleDraft
     private lazy var transactionController = TransactionController(
         api: api!,
+        sharedDataController: sharedDataController,
         bannerController: bannerController,
         analytics: analytics
     )

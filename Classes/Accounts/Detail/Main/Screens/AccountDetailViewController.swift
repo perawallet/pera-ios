@@ -26,6 +26,7 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
@@ -46,14 +47,23 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
         account: accountHandle.value
     )
-    private lazy var receiveTransactionFlowCoordinator =
-    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(
+        presentingScreen: self,
+        account: accountHandle.value
+    )
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
@@ -61,14 +71,20 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         accountHandle: AccountHandle,
+        swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -166,14 +182,15 @@ extension AccountDetailViewController {
                 let draft = BuyAlgoDraft()
                 draft.address = self.accountHandle.value.address
                 self.buyAlgoFlowCoordinator.launch(draft: draft)
+            case .swap:
+                self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .swap))
+
+                self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
             case .send:
                 self.assetListScreen.endEditing()
 
                 self.sendTransactionFlowCoordinator.launch()
-            case .address:
-                self.assetListScreen.endEditing()
-
-                self.receiveTransactionFlowCoordinator.launch()
             case .more:
                 self.assetListScreen.endEditing()
 
@@ -205,6 +222,16 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             buyAlgoDraft.address = self?.accountHandle.value.address
             
             self?.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
+        }
+    }
+
+    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.analytics.track(.recordAccountDetailScreen(type: .swap))
+            self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
         }
     }
 
@@ -339,7 +366,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
             address: account.address,
             mode: .address,
@@ -391,8 +418,13 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        open(
-            .editAccount(account: accountHandle.value, delegate: self),
+        let screen: Screen = .renameAccount(
+            account: accountHandle.value,
+            delegate: self
+        )
+
+        transitionToRenameAccount.perform(
+            screen,
             by: .present
         )
     }
@@ -442,10 +474,17 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension AccountDetailViewController: EditAccountViewControllerDelegate {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        bindNavigationTitle()
-        eventHandler?(.didEdit)
+extension AccountDetailViewController: RenameAccountScreenDelegate {
+    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.bindNavigationTitle()
+            self.eventHandler?(.didEdit)
+        }
     }
 }
 
@@ -478,10 +517,33 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             by: .present
         )
     }
-
-    func managementOptionsViewControllerDidTapFilter(
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
-    ) {}
+    ) {
+        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return}
+                
+                switch event {
+                case .didChangeFilter(let filter):
+                    self.assetListScreen.changeFilterSelection(filter)
+                }
+            }
+        }
+        
+        open(
+            .assetsFilterSelection(
+                filter: sharedDataController.selectedAssetsFilteringOption,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
 
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
@@ -497,6 +559,10 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         ) as? ManageAssetsViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
+    
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension AccountDetailViewController {

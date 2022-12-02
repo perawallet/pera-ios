@@ -42,6 +42,13 @@ extension AccountNameTitleViewModel {
             bindSubtitle(draft)
             return
         }
+
+        if let draft = model as? AccountNameTitleDraft {
+            bindTitle(draft)
+            bindIcon(draft)
+            bindSubtitle(draft)
+            return
+        }
     }
 }
 
@@ -49,7 +56,7 @@ extension AccountNameTitleViewModel {
 
 extension AccountNameTitleViewModel {
     mutating func bindTitle(_ account: Account) {
-        let title = AccountNaming.getPrimaryName(for: account)
+        let title = account.primaryDisplayName
 
         self.title = title.bodyRegular(
             alignment: .center,
@@ -58,7 +65,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ account: Account) {
-        let subtitle = AccountNaming.getSecondaryName(for: account)
+        let subtitle = account.secondaryDisplayName
 
         self.subtitle = subtitle?.footnoteRegular(
             alignment: .center,
@@ -100,7 +107,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ draft: SendTransactionAccountNameTitleDraft) {
-        let subtitle = AccountNaming.getPrimaryName(for: draft.account)
+        let subtitle = draft.account.primaryDisplayName
 
         self.subtitle = subtitle.footnoteRegular(
             alignment: .center,
@@ -109,7 +116,42 @@ extension AccountNameTitleViewModel {
     }
 }
 
+// MARK: - AccountNameTitleDraft
+extension AccountNameTitleViewModel {
+    mutating func bindTitle(_ draft: AccountNameTitleDraft) {
+        self.title = draft.title.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating func bindIcon(_ draft: AccountNameTitleDraft) {
+        let image = draft.account.typeImage
+        let resizedImage =
+            image
+                .convert(to: CGSize((16, 16)))
+                .unwrap(or: image)
+
+        icon = [
+            .image(resizedImage),
+            .contentMode(.left)
+        ]
+    }
+
+    mutating func bindSubtitle(_ draft: AccountNameTitleDraft) {
+        subtitle = draft.account.primaryDisplayName.footnoteRegular(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+}
+
 struct SendTransactionAccountNameTitleDraft {
     let transactionMode: TransactionMode
+    let account: Account
+}
+
+struct AccountNameTitleDraft {
+    let title: String
     let account: Account
 }
