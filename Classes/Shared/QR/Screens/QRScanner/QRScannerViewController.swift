@@ -353,6 +353,19 @@ extension QRScannerViewController: WalletConnectorDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         stopWCConnectionTimer()
+        let api = self.api!
+
+        let sessionChainId = session.chainId(for: api.network)
+
+        if !api.network.allowedChainIDs.contains(sessionChainId) {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-transaction-error-node".localized
+                )
+            }
+            return
+        }
 
         let accounts = self.sharedDataController.sortedAccounts()
 
