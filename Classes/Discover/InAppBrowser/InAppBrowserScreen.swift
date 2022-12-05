@@ -127,7 +127,6 @@ class InAppBrowserScreen:
         didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
-        bannerController?.presentErrorBanner(title: "Error", message: error.localizedDescription)
         let systemError = error as NSError
 
         if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
@@ -150,7 +149,6 @@ class InAppBrowserScreen:
         didFail navigation: WKNavigation!,
         withError error: Error
     ) {
-        bannerController?.presentErrorBanner(title: "Error", message: error.localizedDescription)
         let systemError = error as NSError
 
         if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
