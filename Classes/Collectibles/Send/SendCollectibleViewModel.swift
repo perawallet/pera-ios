@@ -110,7 +110,7 @@ extension SendCollectibleViewModel {
     func getTitle(
         _ asset: CollectibleAsset
     ) -> EditText? {
-        guard let collectionName = asset.collectionName,
+        guard let collectionName = asset.collection?.name,
               !collectionName.isEmptyOrBlank else {
             return nil
         }

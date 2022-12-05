@@ -25,6 +25,7 @@ struct CollectibleListItemViewModel:
     Hashable {
     private(set) var assetID: AssetID?
     private(set) var image: ImageSource?
+    private(set) var amount: EditText?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var mediaType: MediaType?
@@ -70,6 +71,7 @@ extension CollectibleListItemViewModel {
         if let asset = model as? CollectibleAsset {
             bindAssetID(asset)
             bindImage(imageSize: imageSize, asset: asset)
+            bindAmount(asset)
             bindTitle(asset)
             bindSubtitle(asset)
             bindMediaType(asset)
@@ -86,6 +88,12 @@ extension CollectibleListItemViewModel {
         _ asset: CollectibleAsset
     ) {
         assetID = getAssetID(asset)
+    }
+
+    private mutating func bindAmount(
+        _ asset: CollectibleAsset
+    ) {
+        amount = getAmount(asset)
     }
 
     private mutating func bindImage(
@@ -117,9 +125,13 @@ extension CollectibleListItemViewModel {
         _ asset: CollectibleAsset
     ) {
         if !asset.isOwned {
-            bottomLeftBadge = "badge-warning".uiImage.template
-        } else if !asset.mediaType.isSupported {
-            bottomLeftBadge = "badge-warning".uiImage.template
+            bottomLeftBadge = "badge-eye".templateImage
+            return
+        }
+
+        if !asset.mediaType.isSupported {
+            bottomLeftBadge = "badge-warning".templateImage
+            return
         }
     }
 
@@ -133,7 +145,7 @@ extension CollectibleListItemViewModel {
         pendingTitle = .attributedString(
             "collectible-list-item-pending-title"
                 .localized
-                .footnoteMedium(lineBreakMode: .byTruncatingTail)
+                .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
     }
 }
@@ -175,14 +187,14 @@ extension CollectibleListItemViewModel {
     func getTitle(
         _ asset: CollectibleAsset
     ) -> EditText? {
-        guard let collectionName = asset.collectionName,
+        guard let collectionName = asset.collection?.name,
               !collectionName.isEmptyOrBlank else {
                   return nil
               }
 
         return .attributedString(
             collectionName
-                .footnoteRegular()
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 
@@ -193,7 +205,7 @@ extension CollectibleListItemViewModel {
 
         return .attributedString(
             subtitle
-                .bodyRegular()
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 
@@ -231,6 +243,31 @@ extension CollectibleListItemViewModel {
         return ImagePlaceholder(
             image: nil,
             text: placeholderText
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    func getAmount(
+        _ asset: CollectibleAsset
+    ) -> EditText? {
+        let shouldShowAmount = !asset.isPure && asset.isOwned
+
+        if !shouldShowAmount {
+            return nil
+        }
+
+        let unformattedAmount = asset.decimalAmount
+
+        let formatter = CollectibleAmountFormatter.shared
+
+        guard let formattedAmount = formatter.format(unformattedAmount) else {
+            return nil
+        }
+
+        return .attributedString(
+            "x\(formattedAmount)"
+                .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
     }
 }

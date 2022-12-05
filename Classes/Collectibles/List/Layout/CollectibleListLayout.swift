@@ -34,7 +34,7 @@ final class CollectibleListLayout: NSObject {
 
     class func build() -> UICollectionViewLayout {
         let flowLayout = TopAlignedCollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 28
+        flowLayout.minimumLineSpacing = 20
         flowLayout.minimumInteritemSpacing = 24
         return flowLayout
     }
@@ -68,7 +68,7 @@ extension CollectibleListLayout {
             insets.top = 16
             return insets
         case .collectibles:
-            insets.top = 20
+            insets.top = 28
             insets.bottom = 8
             return insets
         }

@@ -38,6 +38,7 @@ extension CurrencyFormattingContextRules {
     typealias RoundingMode = NumberFormatter.RoundingMode
 }
 
+/// <todo> Rename to `NumberFormattingContextInput`, since it is also used for `CollectibleAmountFormatter`?
 protocol CurrencyFormattingContextInput {
     var number: NSDecimalNumber { get }
     var suffix: String? { get }

@@ -1031,7 +1031,6 @@
 "collectible-detail-share" = "Share";
 "collectible-detail-description" = "Description";
 "collectible-detail-owner" = "Owner";
-"collectible-detail-collection-name" = "Collection Name";
 "collectible-detail-creator-name" = "Creator Name";
 "collectible-detail-creator-address" = "Creator Wallet Address";
 "collectible-detail-properties" = "Properties";
@@ -1082,6 +1081,7 @@
 "collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
 // MARK: Number Abbreviation
+"number-abbreviation-thousand" = "K";
 "number-abbreviation-million" = "M";
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
