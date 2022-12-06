@@ -19,15 +19,36 @@ import WebKit
 import MacaroonUtils
 
 final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandler {
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        loadingController: loadingController!,
+        bannerController: bannerController!,
+        presentingScreen: self
+    )
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(
+        presentingScreen: self
+    )
+
     private let assetParameters: DiscoverAssetParameters
+
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
 
     private var events: [Event] = [.detailAction]
 
     init(
         assetParameters: DiscoverAssetParameters,
+        swapDataStore: SwapDataStore,
         configuration: ViewControllerConfiguration
     ) {
         self.assetParameters = assetParameters
+        self.swapDataStore = swapDataStore
         super.init(configuration: configuration)
     }
 
@@ -65,7 +86,6 @@ extension DiscoverAssetDetailScreen {
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        print(message.body)
         guard let jsonString = message.body as? String,
               let jsonData = jsonString.data(using: .utf8) else {
             return
@@ -73,9 +93,34 @@ extension DiscoverAssetDetailScreen {
 
         let jsonDecoder = JSONDecoder()
 
-        if let swapParameters = try? jsonDecoder.decode(DiscoverSwapParameters.self, from: jsonData) {
-            print(swapParameters)
+        guard let swapParameters = try? jsonDecoder.decode(DiscoverSwapParameters.self, from: jsonData) else {
             return
         }
+
+        switch swapParameters.action {
+        case .buyAlgo:
+            launchBuyAlgo()
+        default:
+            launchSwap(with: swapParameters)
+        }
+    }
+
+    private func launchBuyAlgo() {
+        buyAlgoFlowCoordinator.launch()
+    }
+
+    private func launchSwap(with parameters: DiscoverSwapParameters) {
+        let draft = SwapAssetFlowDraft()
+
+        if let assetInID = parameters.assetIn {
+            draft.assetInID = assetInID
+        }
+
+        if let assetOutID = parameters.assetOut {
+            draft.assetOutID = assetOutID
+        }
+
+        swapAssetFlowCoordinator.updateDraft(draft)
+        swapAssetFlowCoordinator.launch()
     }
 }

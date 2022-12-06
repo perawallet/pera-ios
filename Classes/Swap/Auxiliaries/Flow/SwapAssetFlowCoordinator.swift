@@ -89,6 +89,10 @@ final class SwapAssetFlowCoordinator:
     func resetDraft() {
         draft.reset()
     }
+
+    func updateDraft(_ draft: SwapAssetFlowDraft) {
+        self.draft = draft
+    }
 }
 
 extension SwapAssetFlowCoordinator {

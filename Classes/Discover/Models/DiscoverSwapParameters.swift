@@ -25,6 +25,7 @@ struct DiscoverSwapParameters: JSONModel {
 
 extension DiscoverSwapParameters {
     enum Action: String, Codable {
+        case buyAlgo = "buy-algo"
         case swapFromAlgo = "swap-from-algo"
         case swapToAsset = "swap-to-token"
         case swapFromAsset = "swap-from-token"
