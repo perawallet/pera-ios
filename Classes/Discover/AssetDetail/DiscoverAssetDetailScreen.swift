@@ -18,8 +18,10 @@ import Foundation
 import WebKit
 import MacaroonUtils
 
-final class DiscoverAssetDetailScreen: InAppBrowserScreen {
+final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandler {
     private let assetParameters: DiscoverAssetParameters
+
+    private var events: [Event] = [.detailAction]
 
     init(
         assetParameters: DiscoverAssetParameters,
@@ -38,9 +40,42 @@ final class DiscoverAssetDetailScreen: InAppBrowserScreen {
             session: session
         )
         load(url: generatedUrl)
+        listenEvents()
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
+    }
+
+
+}
+
+extension DiscoverAssetDetailScreen {
+    enum Event: String {
+        case detailAction = "handleTokenDetailActionButtonClick"
+    }
+
+    private func listenEvents() {
+        events.forEach { event in
+            contentController.add(self, name: event.rawValue)
+        }
+    }
+
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        print(message.body)
+        guard let jsonString = message.body as? String,
+              let jsonData = jsonString.data(using: .utf8) else {
+            return
+        }
+
+        let jsonDecoder = JSONDecoder()
+
+        if let swapParameters = try? jsonDecoder.decode(DiscoverSwapParameters.self, from: jsonData) {
+            print(swapParameters)
+            return
+        }
     }
 }
