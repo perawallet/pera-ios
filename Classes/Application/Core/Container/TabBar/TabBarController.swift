@@ -73,10 +73,12 @@ final class TabBarController: TabBarContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api,
         sharedDataController: sharedDataController,
+        loadingController: loadingController,
         bannerController: bannerController,
         presentingScreen: self
     )
@@ -345,7 +347,8 @@ extension TabBarController {
 extension TabBarController {
     private func navigateToSwapAssetFlow() {
         toggleTransactionOptions()
-        swapAssetFlowCoordinator.launch(account: nil)
+        swapAssetFlowCoordinator.resetDraft()
+        swapAssetFlowCoordinator.launch()
 
         analytics.track(.tapSwapInQuickAction())
     }

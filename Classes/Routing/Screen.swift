@@ -205,7 +205,10 @@ indirect enum Screen {
         swapController: SwapController,
         coordinator: SwapAssetFlowCoordinator
     )
-    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
+    case swapAccountSelection(
+        swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
+        eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler
+    )
     case swapSignWithLedgerProcess(
         transactionSigner: SwapTransactionSigner,
         draft: SignWithLedgerProcessDraft,
