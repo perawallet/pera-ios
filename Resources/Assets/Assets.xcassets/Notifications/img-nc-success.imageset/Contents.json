@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group 6133.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Group 6133-1.pdf",
+      "filename" : "algo.pdf",
       "idiom" : "universal"
     }
   ],

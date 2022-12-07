@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-algo-circle-green-swap.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "icon-algo-circle-green-swap 1.pdf",
+      "filename" : "algo.pdf",
       "idiom" : "universal"
     }
   ],
