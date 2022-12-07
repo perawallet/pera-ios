@@ -24,7 +24,7 @@ struct CollectibleAmountFormattingHandler {
         rules.locale = Locale.preferred
         rules.roundingMode = .down
         rules.minimumFractionDigits = 0
-        rules.maximumFractionDigits = 2
+        rules.maximumFractionDigits = Int(Int8.max)
         return rules
     }
 

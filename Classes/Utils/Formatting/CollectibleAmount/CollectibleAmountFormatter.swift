@@ -17,8 +17,6 @@
 import Foundation
 
 final class CollectibleAmountFormatter {
-    static let shared: CollectibleAmountFormatter = .init()
-
     private let numberFormatter = NumberFormatter()
 }
 

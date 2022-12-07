@@ -25,12 +25,14 @@ struct CollectibleListItemViewModel:
     Hashable {
     private(set) var assetID: AssetID?
     private(set) var image: ImageSource?
-    private(set) var amount: EditText?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
-    private(set) var mediaType: MediaType?
+    private(set) var topLeftBadgeCanvas: UIImage?
     private(set) var topLeftBadge: UIImage?
+    private(set) var bottomLeftBadgeCanvas: UIImage?
     private(set) var bottomLeftBadge: UIImage?
+    private(set) var amountCanvas: UIImage?
+    private(set) var amount: EditText?
     private(set) var pendingTitle: EditText?
 
     init<T>(
@@ -68,15 +70,14 @@ extension CollectibleListItemViewModel {
         imageSize: CGSize,
         model: T
     ) {
-        if let asset = model as? CollectibleAsset {
-            bindAssetID(asset)
-            bindImage(imageSize: imageSize, asset: asset)
-            bindAmount(asset)
-            bindTitle(asset)
-            bindSubtitle(asset)
-            bindMediaType(asset)
-            bindTopLeftBadge(asset)
-            bindBottomLeftBadge(asset)
+        if let item = model as? CollectibleAssetItem {
+            bindAssetID(item)
+            bindImage(imageSize: imageSize, item: item)
+            bindAmount(item)
+            bindTitle(item)
+            bindSubtitle(item)
+            bindTopLeftBadge(item)
+            bindBottomLeftBadge(item)
             bindPendingTitle()
             return
         }
@@ -85,60 +86,67 @@ extension CollectibleListItemViewModel {
 
 extension CollectibleListItemViewModel {
     private mutating func bindAssetID(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        assetID = getAssetID(asset)
+        assetID = getAssetID(item.asset)
     }
 
     private mutating func bindAmount(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        amount = getAmount(asset)
+        amount = getAmount(item)
+
+        if amount != nil {
+            amountCanvas = "badge-bg".uiImage
+        }
     }
 
     private mutating func bindImage(
         imageSize: CGSize,
-        asset: CollectibleAsset
+        item: CollectibleAssetItem
     ) {
-        image = getImage(imageSize: imageSize, asset: asset)
+        image = getImage(imageSize: imageSize, asset: item.asset)
     }
 
     private mutating func bindTitle(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        title = getTitle(asset)
+        title = getTitle(item.asset)
     }
 
     private mutating func bindSubtitle(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        subtitle = getSubtitle(asset)
+        subtitle = getSubtitle(item.asset)
     }
 
     private mutating func bindTopLeftBadge(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        topLeftBadge = getTopLeftBadge(asset)
+        topLeftBadge = getTopLeftBadge(item.asset)
+
+        if topLeftBadge != nil {
+            topLeftBadgeCanvas = "badge-bg".uiImage
+        }
     }
 
     private mutating func bindBottomLeftBadge(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) {
-        if !asset.isOwned {
-            bottomLeftBadge = "badge-eye".templateImage
+        let account = item.account
+        let asset = item.asset
+
+        if account.isWatchAccount() {
+            bottomLeftBadge = "badge-eye".uiImage
+            bottomLeftBadgeCanvas = "badge-bg".uiImage
             return
         }
 
-        if !asset.mediaType.isSupported {
+        if !asset.mediaType.isSupported || !asset.isOwned {
             bottomLeftBadge = "badge-warning".templateImage
+            bottomLeftBadgeCanvas = "badge-bg".uiImage
             return
         }
-    }
-
-    private mutating func bindMediaType(
-        _ asset: CollectibleAsset
-    ) {
-        mediaType = getMediaType(asset)
     }
 
     private mutating func bindPendingTitle() {
@@ -189,8 +197,8 @@ extension CollectibleListItemViewModel {
     ) -> EditText? {
         guard let collectionName = asset.collection?.name,
               !collectionName.isEmptyOrBlank else {
-                  return nil
-              }
+            return nil
+        }
 
         return .attributedString(
             collectionName
@@ -224,15 +232,10 @@ extension CollectibleListItemViewModel {
         }
     }
 
-    func getMediaType(
-        _ asset: CollectibleAsset
-    ) -> MediaType? {
-        return asset.mediaType
-    }
-
     private func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {
+        let placeholderImage = AssetImageSource(asset: "placeholder-bg".uiImage)
         let placeholderText: EditText = .attributedString(
             aPlaceholder
                 .footnoteRegular(
@@ -241,7 +244,7 @@ extension CollectibleListItemViewModel {
         )
 
         return ImagePlaceholder(
-            image: nil,
+            image: placeholderImage,
             text: placeholderText
         )
     }
@@ -249,8 +252,10 @@ extension CollectibleListItemViewModel {
 
 extension CollectibleListItemViewModel {
     func getAmount(
-        _ asset: CollectibleAsset
+        _ item: CollectibleAssetItem
     ) -> EditText? {
+        let asset = item.asset
+
         let shouldShowAmount = !asset.isPure && asset.isOwned
 
         if !shouldShowAmount {
@@ -259,7 +264,7 @@ extension CollectibleListItemViewModel {
 
         let unformattedAmount = asset.decimalAmount
 
-        let formatter = CollectibleAmountFormatter.shared
+        let formatter = item.amountFormatter
 
         guard let formattedAmount = formatter.format(unformattedAmount) else {
             return nil

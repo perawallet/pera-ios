@@ -593,7 +593,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
 extension CollectibleListViewController {
     private func getCollectibleItem(
         at indexPath: IndexPath
-    ) -> CollectibleCellItemContainer<CollectibleListItemViewModel>? {
+    ) -> CollectibleCellItemContainer? {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return nil
         }
