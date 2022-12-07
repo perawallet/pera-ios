@@ -83,6 +83,7 @@ final class CollectibleDetailViewController:
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
         asset: asset,
+        optInStatus: dataController.hasOptedIn(),
         thumbnailImage: thumbnailImage,
         configuration: configuration
     )

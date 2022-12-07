@@ -111,11 +111,9 @@ extension CollectibleMediaImagePreviewView {
             return
         }
 
-        if !viewModel.isOwned {
-            overlayView.alpha = 0.4
-        } else {
-            overlayView.alpha = 0.0
-        }
+        overlayView.alpha = viewModel.showHalfVisibleMedia
+            ? 0.4
+            : 0.0
 
         fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }

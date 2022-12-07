@@ -82,18 +82,22 @@ final class CollectibleMediaPreviewViewController:
 
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
         theme: Self.theme,
-        asset: asset
+        asset: asset,
+        optInStatus: optInStatus
     )
 
     private var asset: CollectibleAsset
+    private let optInStatus: OptInStatus
     private let thumbnailImage: UIImage?
 
     init(
         asset: CollectibleAsset,
+        optInStatus: OptInStatus,
         thumbnailImage: UIImage?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
+        self.optInStatus = optInStatus
         self.thumbnailImage = thumbnailImage
         super.init(configuration: configuration)
     }

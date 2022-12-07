@@ -22,12 +22,13 @@ import Prism
 
 struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var isOwned: Bool = true
+    var showHalfVisibleMedia: Bool = false
     var isFullScreenBadgeHidden: Bool = false
 
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
+        optInStatus: OptInStatus,
         media: Media?
     ) {
         bindImage(
@@ -35,8 +36,7 @@ struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePrevi
             asset: asset,
             media: media
         )
-
-        bindOwned(asset)
+        bindShowHalfVisibleMedia(asset, optInStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

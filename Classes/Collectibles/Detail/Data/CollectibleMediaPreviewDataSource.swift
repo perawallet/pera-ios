@@ -23,13 +23,16 @@ final class CollectibleMediaPreviewDataSource:
     UICollectionViewDataSource {
     private let theme: CollectibleMediaPreviewViewController.Theme
     private let asset: CollectibleAsset
+    private let optInStatus: OptInStatus
 
     init(
         theme: CollectibleMediaPreviewViewController.Theme,
-        asset: CollectibleAsset
+        asset: CollectibleAsset,
+        optInStatus: OptInStatus
     ) {
         self.theme = theme
         self.asset = asset
+        self.optInStatus = optInStatus
     }
 }
 
@@ -61,6 +64,7 @@ extension CollectibleMediaPreviewDataSource {
                 CollectibleMediaStandardImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
+                    optInStatus: optInStatus,
                     media: nil
                 )
             )
@@ -85,6 +89,7 @@ extension CollectibleMediaPreviewDataSource {
                     CollectibleMediaGIFPreviewViewModel(
                         imageSize: CGSize((width.float(), width.float())),
                         asset: asset,
+                        optInStatus: optInStatus,
                         media: media
                     )
                 )
@@ -93,6 +98,7 @@ extension CollectibleMediaPreviewDataSource {
                     CollectibleMediaWebPImagePreviewViewModel(
                         imageSize: CGSize((width.float(), width.float())),
                         asset: asset,
+                        optInStatus: optInStatus,
                         media: media
                     )
                 )
@@ -101,6 +107,7 @@ extension CollectibleMediaPreviewDataSource {
                     CollectibleMediaStandardImagePreviewViewModel(
                         imageSize: CGSize((width.float(), width.float())),
                         asset: asset,
+                        optInStatus: optInStatus,
                         media: media
                     )
                 )
@@ -116,6 +123,7 @@ extension CollectibleMediaPreviewDataSource {
             cell.bindData(
                 CollectibleMediaVideoPreviewViewModel(
                     asset: asset,
+                    optInStatus: optInStatus,
                     media: media
                 )
             )
@@ -131,6 +139,7 @@ extension CollectibleMediaPreviewDataSource {
                 CollectibleMediaStandardImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
+                    optInStatus: optInStatus,
                     media: nil
                 )
             )
