@@ -39,6 +39,8 @@ class InAppBrowserScreen:
 
     private var lastURL: URL? { webView.url ?? sourceURL }
 
+    private lazy var refreshControl = UIRefreshControl()
+
     private let theme = InAppBrowserScreenTheme()
 
     deinit {
@@ -73,6 +75,12 @@ class InAppBrowserScreen:
         }
     }
 
+    override func setListeners() {
+        super.setListeners()
+
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+    }
+
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
         super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
         updateInterfaceTheme(userInterfaceStyle)
@@ -95,6 +103,7 @@ class InAppBrowserScreen:
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.showsHorizontalScrollIndicator = false
         webView.allowsLinkPreview = false
+        webView.scrollView.refreshControl = refreshControl
 
         let selectionString  = """
         var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}textarea,input{user-select:text;-webkit-user-select:text;}';
@@ -127,6 +136,10 @@ class InAppBrowserScreen:
         didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
+        defer {
+            refreshControl.endRefreshing()
+        }
+
         let systemError = error as NSError
 
         if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
@@ -142,6 +155,7 @@ class InAppBrowserScreen:
         didFinish navigation: WKNavigation!
     ) {
         updateUIForURL()
+        refreshControl.endRefreshing()
     }
 
     func webView(
@@ -149,6 +163,10 @@ class InAppBrowserScreen:
         didFail navigation: WKNavigation!,
         withError error: Error
     ) {
+        defer {
+            refreshControl.endRefreshing()
+        }
+
         let systemError = error as NSError
 
         if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
@@ -165,7 +183,6 @@ class InAppBrowserScreen:
         preferences: WKWebpagePreferences,
         decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
     ) {
-
         guard let requestUrl = navigationAction.request.url else {
             decisionHandler(.allow, preferences)
             return
@@ -200,6 +217,11 @@ extension InAppBrowserScreen {
         webView.load(request)
 
         sourceURL = url
+    }
+
+    @objc
+    private func didRefreshList() {
+        webView.reload()
     }
 }
 
