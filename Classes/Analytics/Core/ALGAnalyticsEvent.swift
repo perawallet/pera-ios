@@ -39,6 +39,7 @@ enum ALGAnalyticsEventName:
     case changeNotificationFilter
     case completeTransaction
     case createAccountInHomeScreen
+    case discoverSearch
     case manageAsset
     case onboardCreateAccountNew
     case onboardCreateAccountSkip
@@ -169,6 +170,7 @@ extension ALGAnalyticsEventName {
         case .wcSessionRejected: rawName = "wc_session_rejected"
         case .wcTransactionConfirmed: rawName = "wc_transaction_confirmed"
         case .wcTransactionDeclined: rawName = "wc_transaction_declined"
+        case .discoverSearch: rawName = "discover_markets_search"
         }
 
         let isTestnet = UIApplication.shared.appConfiguration?.api.isTestNet ?? false
