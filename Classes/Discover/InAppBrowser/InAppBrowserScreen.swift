@@ -97,7 +97,12 @@ class InAppBrowserScreen:
         )
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            webView.customUserAgent = "pera_ios_\(version)"
+            let versionString = "pera_ios_\(version)"
+            if let userAgent = webView.value(forKey: "userAgent") as? String {
+                webView.customUserAgent = "\(userAgent) \(versionString)"
+            } else {
+                webView.customUserAgent = versionString
+            }
         }
 
         webView.scrollView.showsVerticalScrollIndicator = false
