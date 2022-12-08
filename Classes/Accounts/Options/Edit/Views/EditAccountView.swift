@@ -22,7 +22,7 @@ final class EditAccountView: View {
     weak var delegate: EditAccountViewDelegate?
 
     private(set) lazy var accountNameInputView = createAccountNameTextInput(
-        placeholder: "account-name-setup-explanation".localized,
+        placeholder: "account-name-setup-placeholder".localized,
         floatingPlaceholder: "account-name-setup-placeholder".localized
     )
 

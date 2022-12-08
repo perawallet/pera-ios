@@ -86,6 +86,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"account-not-found" = "Account not found";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
@@ -169,8 +170,7 @@
 
 // MARK: Account Name Setup
 "account-details-title" = "Name your account";
-"account-name-setup-explanation" = "Account Name";
-"account-name-setup-placeholder" = "Account Name";
+"account-name-setup-placeholder" = "Account name";
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
 
@@ -671,9 +671,8 @@
 "watch-account-create" = "Create a watch\naccount";
 "watch-account-button" = "Create a Watch Account";
 "watch-account-paste" = "Paste";
-"watch-account-input-explanation" = "Account Address";
 "watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
-"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-input-placeholder" = "Account address or short name";
 "watch-account-error-address" = "Please enter a valid address.";
 
 "settings-theme-set" = "Theme";

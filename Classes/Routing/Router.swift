@@ -575,8 +575,14 @@ class Router:
             viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
         case let .passphraseVerify(flow):
             viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
-        case let .accountNameSetup(flow, mode, accountAddress):
-            viewController = AccountNameSetupViewController(flow: flow, mode: mode, accountAddress: accountAddress, configuration: configuration)
+        case let .accountNameSetup(flow, mode, nameServiceName, accountAddress):
+            viewController = AccountNameSetupViewController(
+                flow: flow,
+                mode: mode,
+                nameServiceName: nameServiceName,
+                accountAddress: accountAddress,
+                configuration: configuration
+            )
         case let .accountRecover(flow, initialMnemonic):
             viewController = AccountRecoverViewController(
                 accountSetupFlow: flow,
@@ -764,9 +770,23 @@ class Router:
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow, address):
+            let pushNotificationController = PushNotificationController(
+                target: ALGAppTarget.current,
+                session: appConfiguration.session,
+                api: appConfiguration.api,
+                bannerController: appConfiguration.bannerController
+            )
+            let dataController = WatchAccountAdditionAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                session: appConfiguration.session,
+                pushNotificationController: pushNotificationController,
+                analytics: appConfiguration.analytics
+            )
             viewController = WatchAccountAdditionViewController(
                 accountSetupFlow: flow,
                 address: address,
+                dataController:dataController,
                 configuration: configuration
             )
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):
