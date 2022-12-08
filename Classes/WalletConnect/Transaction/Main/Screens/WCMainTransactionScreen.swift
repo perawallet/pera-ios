@@ -396,8 +396,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
-    private func presentSigningAlert() {
-
+    private func confirmTransaction() {
         let containsFutureTransaction = transactions.contains {
             guard let params = transactionParams else {
                 return false
@@ -405,14 +404,20 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
             return $0.isFutureTransaction(with: params)
         }
-        let description = containsFutureTransaction ?
-            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
-            "wallet-connect-transaction-warning-confirmation".localized
 
+        if containsFutureTransaction {
+            presentSigningFutureTransactionAlert()
+            return
+        }
+
+        confirmSigning()
+    }
+
+    private func presentSigningFutureTransactionAlert() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "transaction-request-signing-alert-title".localized,
-            description: .plain(description),
+            title: "wallet-connect-transaction-request-signing-future-transaction-alert-title".localized,
+            description: .plain("wallet-connect-transaction-request-signing-future-transaction-alert-description".localized),
             primaryActionButtonTitle: "title-accept".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in
@@ -456,7 +461,7 @@ extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
     }
 
     func wcSingleTransactionRequestScreenDidConfirm(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
-        presentSigningAlert()
+        confirmTransaction()
     }
 }
 
@@ -467,7 +472,7 @@ extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
     }
 
     func wcUnsignedRequestScreenDidConfirm(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
-        presentSigningAlert()
+        confirmTransaction()
     }
 }
 
@@ -562,20 +567,20 @@ extension WCMainTransactionScreen: AssetCachable {
 
 extension WCMainTransactionScreen {
     private func getTransactionParams() {
-        api?.getTransactionParams { [weak self] response in
-             guard let self = self else {
-                 return
-             }
+        sharedDataController.getTransactionParams { [weak self] result in
+            guard let self else {
+                return
+            }
 
-             switch response {
-             case .failure:
-                 break
-             case let .success(params):
-                 self.transactionParams = params
-             }
+            switch result {
+            case .success(let params):
+                self.transactionParams = params
+            case .failure:
+                break
+            }
 
-             self.rejectIfTheNetworkIsInvalid()
-         }
+            self.rejectIfTheNetworkIsInvalid()
+        }
     }
 
     private func rejectIfTheNetworkIsInvalid() {

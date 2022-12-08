@@ -193,6 +193,10 @@ extension WatchAccountAdditionViewController {
             $0.trailing == theme.contentEdgeInsets.trailing
             $0.greaterThanHeight(theme.addressInputMinHeight)
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
         addressInputView.delegate = self
         addressInputView.editingDelegate = self

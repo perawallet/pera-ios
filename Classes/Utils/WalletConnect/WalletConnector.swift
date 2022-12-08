@@ -71,6 +71,73 @@ extension WalletConnector {
             delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
+    
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        allWalletConnectSessions.forEach {
+            guard let sessionAccounts = $0.walletMeta?.accounts,
+                  sessionAccounts.contains(account.address) else {
+                return
+            }
+                                    
+            if sessionAccounts.count == 1 {
+                disconnectFromSession($0)
+                return
+            }
+            
+                        
+            guard let sessionWalletInfo = $0.sessionBridgeValue.walletInfo else {
+                return
+            }
+                        
+            let newAccountsForSession = sessionWalletInfo.accounts.filter { oldSessionAccount in
+                oldSessionAccount != account.address
+            }
+
+            let newSessionWaletInfo = createNewSessionWalletInfo(
+                from: sessionWalletInfo,
+                newAccounts: newAccountsForSession
+            )
+            
+            do {
+                try walletConnectBridge.update(session: $0.sessionBridgeValue, with: newSessionWaletInfo)
+                
+                let newSession = createNewSession(
+                    from: $0,
+                    newSessionWalletInfo: newSessionWaletInfo
+                )
+                
+                updateWalletConnectSession(newSession, with: $0.urlMeta)
+            } catch {}
+        }
+    }
+    
+    func createNewSessionWalletInfo(
+        from oldWalletInfo: WalletConnectSessionWalletInfo,
+        newAccounts: [String]
+    ) -> WalletConnectSessionWalletInfo {
+        return WalletConnectSessionWalletInfo(
+            approved: oldWalletInfo.approved,
+            accounts: newAccounts,
+            chainId: oldWalletInfo.chainId,
+            peerId: oldWalletInfo.peerId,
+            peerMeta: oldWalletInfo.peerMeta
+        )
+    }
+    
+    func createNewSession(
+        from oldSession: WCSession,
+        newSessionWalletInfo: WalletConnectSessionWalletInfo
+    ) -> WCSession {
+        return WCSession(
+            urlMeta: oldSession.urlMeta,
+            peerMeta: oldSession.peerMeta,
+            walletMeta: WCWalletMeta(
+                walletInfo: newSessionWalletInfo,
+                dappInfo: oldSession.peerMeta.dappInfo
+            ),
+            date: oldSession.date
+        )
+    }
 
     func disconnectFromSession(_ session: WCSession) {
         do {
@@ -121,6 +188,10 @@ extension WalletConnector {
 
     func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
         return sessionSource.getWalletConnectSession(with: url)
+    }
+    
+    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
+        sessionSource.updateWalletConnectSession(session, with: url)
     }
 
     func resetAllSessions() {

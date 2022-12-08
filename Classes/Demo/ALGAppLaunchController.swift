@@ -26,6 +26,10 @@ final class ALGAppLaunchController:
     unowned let uiHandler: AppLaunchUIHandler
     
     private var isFirstLaunch = true
+    /// <note>
+    /// It can be used to detect any interruption when the app is foreground during the first launch.
+    /// The first launch is finished when the app enters background for the first time.
+    private var isFirstLaunchInterrupted = false
     
     @Atomic(identifier: "appLaunchController.deeplinkSource")
     private var pendingDeeplinkSource: DeeplinkSource? = nil
@@ -69,29 +73,23 @@ final class ALGAppLaunchController:
     ) {
         authChecker.launch()
         
-        var appLaunchStore = ALGAppLaunchStore()
-        
         if authChecker.status == .requiresAuthentication {
             /// <note>
             /// App is deleted, but the keychain has the private keys.
             /// This should be the first operation since it cleans out the application data.
             session.reset(includingContacts: false)
 
-            appLaunchStore.isOnboarding = true
-
-            firstLaunchUI(.onboarding)
+            launchUIOnce(.onboarding)
 
             return
         }
-        
-        appLaunchStore.isOnboarding = false
-        
+
         if let deeplinkSource = src {
             suspend(deeplinkWithSource: deeplinkSource)
         }
         
         if authChecker.status == .requiresAuthorization {
-            firstLaunchUI(.authorization)
+            launchUIOnce(.authorization)
             return
         }
         
@@ -153,6 +151,12 @@ final class ALGAppLaunchController:
     /// twice when the `inactiveSessionExpirationDuration` is reduced.
     func becomeActive() {
         if isFirstLaunch {
+            if isFirstLaunchInterrupted {
+                isFirstLaunchInterrupted = false
+            } else {
+                becomeActiveOnce()
+            }
+
             return
         }
         
@@ -171,6 +175,7 @@ final class ALGAppLaunchController:
     
     func resignActive() {
         if isFirstLaunch {
+            isFirstLaunchInterrupted = true
             return
         }
 
@@ -187,7 +192,10 @@ final class ALGAppLaunchController:
         authChecker.resignActive()
         
         isFirstLaunch = false
+        isFirstLaunchInterrupted = false
     }
+
+    func terminate() {}
     
     func receive(
         deeplinkWithSource src: DeeplinkSource
@@ -220,7 +228,7 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func firstLaunchUI(
+    private func launchUIOnce(
         _ state: AppLaunchUIState
     ) {
         /// <note>
@@ -231,6 +239,11 @@ extension ALGAppLaunchController {
         ) { strongSelf in
             strongSelf.uiHandler.launchUI(state)
         }
+    }
+
+    private func becomeActiveOnce() {
+        var appLaunchStore = ALGAppLaunchStore()
+        appLaunchStore.appOpenCount += 1
     }
 }
 
@@ -287,7 +300,18 @@ extension ALGAppLaunchController {
         case .success(let uiState):
             uiHandler.launchUI(uiState)
             completePendingDeeplink()
-        case .failure:
+        case .failure(let error):
+            if error == .accountDoesNotExist {
+                let configurator = BottomWarningViewConfigurator(
+                    image: "icon-moonpay-transaction-failed".uiImage,
+                    title: "moonpay-transaction-failed-title".localized,
+                    description: .plain("wallet-connect-no-account-for-transaction".localized(params: "wallet-connect-transaction-error-invalid-signer".localized)),
+                    secondaryActionButtonTitle: "title-close".localized
+                )
+                uiHandler.launchUI(.bottomWarning(configurator))
+                completePendingDeeplink()
+                break
+            }
             suspend(deeplinkWithSource: src)
         }
     }
@@ -304,19 +328,45 @@ extension ALGAppLaunchController {
 
         switch parserResult {
         case .none:
-            return .success(.remoteNotification(notification))
+            return .success(.remoteNotification(notification: notification))
         case .success(let screen):
-            if notification.detail?.type == .assetSupportRequest {
+            let action = deeplinkParser.resolveNotificationAction(for: notification)
+
+            if action == .assetOptIn {
                 return .success(.deeplink(screen))
             }
 
             return .success(
                 waitForUserConfirmation
-                    ? .remoteNotification(notification, screen)
-                    : .deeplink(screen)
+                ? .remoteNotification(
+                    notification: notification,
+                    screen: screen
+                )
+                : .deeplink(screen)
             )
         case .failure(let error):
+            if shouldPresentNotificationForFailure(error) {
+                let uiState: AppLaunchUIState = .remoteNotification(
+                    notification: notification,
+                    error: error
+                )
+                return .success(uiState)
+            }
+
             return .failure(error)
+        }
+    }
+
+    private func shouldPresentNotificationForFailure(_ error: DeepLinkParser.Error) -> Bool {
+        switch error {
+        case .tryingToOptInForWatchAccount,
+             .tryingToActForAssetWithPendingOptInRequest,
+             .tryingToActForAssetWithPendingOptOutRequest,
+             .accountNotFound,
+             .assetNotFound:
+            return true
+        default:
+            return false
         }
     }
 
@@ -389,14 +439,47 @@ extension ALGAppLaunchController {
 
 struct ALGAppLaunchStore: Storable {
     typealias Object = Any
-    
-    var isOnboarding: Bool {
-        get { userDefaults.bool(forKey: isOnboardingKey) }
-        set {
-            userDefaults.set(newValue, forKey: isOnboardingKey)
-            userDefaults.synchronize()
-        }
+
+    var appOpenCount: Int = 0 {
+        didSet { saveAppOpenCount() }
     }
 
+    var hasLaunchedOnce: Bool {
+        return appOpenCount > 1
+    }
+
+    private let appOpenCountKey = "com.algorand.algorand.copy.address.count.key"
     private let isOnboardingKey = "com.algorand.store.app.isOnboarding"
+
+    init() {
+        refresh()
+    }
+}
+
+extension ALGAppLaunchStore {
+    mutating func refresh() {
+        refreshAppOpenCount()
+        refreshIsOnboarding()
+    }
+
+    mutating func refreshAppOpenCount() {
+        appOpenCount = userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func refreshIsOnboarding() {
+        userDefaults.removeObject(forKey: isOnboardingKey)
+    }
+}
+
+extension ALGAppLaunchStore {
+    func save() {
+        saveAppOpenCount()
+    }
+
+    func saveAppOpenCount() {
+        userDefaults.set(
+            appOpenCount,
+            forKey: appOpenCountKey
+        )
+    }
 }
