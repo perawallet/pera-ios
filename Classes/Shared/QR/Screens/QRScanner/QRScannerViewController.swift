@@ -334,6 +334,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession = nil
                 closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+            } else if let qrExportInformations = try? JSONDecoder().decode(QRExportInformations.self, from: qrStringData) {
+                captureSession = nil
+                closeScreen()
+                delegate?.qrScannerViewController(self, didRead: qrExportInformations, completionHandler: nil)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                 return
@@ -349,6 +353,19 @@ extension QRScannerViewController: WalletConnectorDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         stopWCConnectionTimer()
+        let api = self.api!
+
+        let sessionChainId = session.chainId(for: api.network)
+
+        if !api.network.allowedChainIDs.contains(sessionChainId) {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-transaction-error-node".localized
+                )
+            }
+            return
+        }
 
         let accounts = self.sharedDataController.sortedAccounts()
 
@@ -372,11 +389,30 @@ extension QRScannerViewController: WalletConnectorDelegate {
             guard let self = self else {
                 return
             }
-
-            self.wcConnectionModalTransition.perform(
-                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            
+            let wcConnectionScreen = self.wcConnectionModalTransition.perform(
+                .wcConnection(
+                    walletConnectSession: session,
+                    completion: completion
+                ),
                 by: .present
-            )
+            ) as? WCConnectionScreen
+            
+            wcConnectionScreen?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .performCancel:
+                    wcConnectionScreen?.dismissScreen()
+                    self.resetUIForScanning()
+                case .performConnect:
+                    wcConnectionScreen?.dismiss(animated: true) {
+                        [weak self] in
+                        self?.presentWCSessionsApprovedModal()
+                    }
+                }
+            }
         }
     }
 
@@ -461,18 +497,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 }
 
-extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
-    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
-            self?.presentWCSessionsApprovedModal()
-        }
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
-        resetUIForScanning()
-    }
-
+extension QRScannerViewController {
     private func resetUIForScanning() {
         captureSessionQueue.async {
             self.captureSession?.startRunning()

@@ -69,6 +69,7 @@ class AppDelegate:
         loadingController: loadingController,
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
+        lastSeenNotificationController: lastSeenNotificationController,
         analytics: analytics
     )
 
@@ -98,6 +99,9 @@ class AppDelegate:
         api: api,
         bannerController: bannerController
     )
+    private lazy var lastSeenNotificationController = LastSeenNotificationController(
+        api: api
+    )
     
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -108,7 +112,8 @@ class AppDelegate:
     ) -> Bool {
         setupAppTarget()
         setupAppLibs()
-        
+        runMigrations()
+
         prepareForLaunch()
 
         makeWindow()
@@ -129,6 +134,8 @@ class AppDelegate:
             object: self,
             userInfo: nil
         )
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationDidBecomeActive(
@@ -138,6 +145,8 @@ class AppDelegate:
         setNeedsNetworkBannerUpdateIfNeeded()
         
         appLaunchController.becomeActive()
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationWillResignActive(
@@ -157,6 +166,7 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         saveContext()
+        appLaunchController.terminate()
     }
 
     func application(
@@ -324,7 +334,19 @@ extension AppDelegate {
                 presented: presentedViewController,
                 completion: completion
             )
-        case .remoteNotification(let notification, let screen):
+        case .remoteNotification(let notification, let screen, let error):
+            if let error = error {
+                pushNotificationController.present(notification: notification) {
+                    [unowned self] in
+                    let uiRepresentation = error.uiRepresentation
+                    bannerController.presentErrorBanner(
+                        title: uiRepresentation.title,
+                        message: uiRepresentation.description
+                    )
+                }
+                return
+            }
+
             guard let someScreen = screen else {
                 pushNotificationController.present(notification: notification)
                 return
@@ -344,6 +366,8 @@ extension AppDelegate {
                     WalletConnector.sessionRequestUserInfoKey: key
                 ]
             )
+        case .bottomWarning(let configurator):
+            router.launchWithBottomWarning(configurator: configurator)
         }
     }
 }
@@ -402,6 +426,14 @@ extension AppDelegate {
             zone: TimeZone.autoupdatingCurrent,
             locale: Locales.autoUpdating
         )
+    }
+
+    private func runMigrations() {
+        /// <todo> To run all migrations, `Migrator` class should be implemented
+        /// All migrations should conform `Migration` protocol
+
+        let passwordMigration = PasswordMigration(session: session)
+        passwordMigration.migratePasswordToKeychain()
     }
 }
 
@@ -508,6 +540,7 @@ extension AppDelegate {
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         let sharedDataController = SharedAPIDataController(
+            target: ALGAppTarget.current,
             currency: currency,
             session: session,
             api: api

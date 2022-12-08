@@ -28,6 +28,7 @@ class Session: Storable {
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
+    private let passwordKey = "pera.pinCode"
     /// <todo> Remove this key in other releases later when the v2 is accepted.
     private let termsAndServicesKey = "com.algorand.algorand.terms.services"
     private let termsAndServicesKeyV2 = "com.algorand.algorand.terms.services.v2"
@@ -36,6 +37,7 @@ class Session: Storable {
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     private let announcementStateKey = "com.algorand.algorand.announcement.state"
+    private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
     
     let algorandSDK = AlgorandSDK()
     
@@ -173,6 +175,17 @@ class Session: Storable {
             }
         }
     }
+
+    var lastSeenNotificationID: Int? {
+        get {
+            return userDefaults.integer(forKey: lastSeenNotificationIDKey)
+        }
+        set {
+            if let notificationID = newValue {
+                userDefaults.set(notificationID, forKey: lastSeenNotificationIDKey)
+            }
+        }
+    }
     
     // isExpired is true when login needed. It will fault after 5 mins entering background
     var isValid = false
@@ -189,7 +202,7 @@ extension Session {
 }
 
 extension Session {
-    func savePassword(_ password: String) {
+    func savePasswordToDatabase(_ password: String) {
         if let config = applicationConfiguration {
             config.update(entity: ApplicationConfiguration.entityName, with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
         } else {
@@ -199,25 +212,13 @@ extension Session {
             )
         }
     }
-    
-    func deletePassword() {
-        if let config = applicationConfiguration {
-            config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
-        }
+
+    func isPasswordMatchingOnDatabase(with password: String) -> Bool {
+        applicationConfiguration?.password == password
     }
     
-    func isPasswordMatching(with password: String) -> Bool {
-        guard let config = applicationConfiguration else {
-            return false
-        }
-        return config.password == password
-    }
-    
-    func hasPassword() -> Bool {
-        guard let config = applicationConfiguration else {
-            return false
-        }
-        return config.password != nil
+    func hasPasswordOnDatabase() -> Bool {
+        applicationConfiguration?.password != nil
     }
     
     func isDefaultNodeActive() -> Bool {
@@ -271,6 +272,29 @@ extension Session {
     func removePrivateData(for account: String) {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
+    }
+}
+
+/// <mark> Password Management
+extension Session {
+    func savePassword(_ password: String) {
+        privateStorage.set(password, for: passwordKey)
+    }
+
+    func deletePassword() {
+        privateStorage.remove(for: passwordKey)
+    }
+
+    func isPasswordMatching(with password: String) -> Bool {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            return false
+        }
+
+        return password == passwordOnKeychain
+    }
+
+    func hasPassword() -> Bool {
+        return privateStorage.string(for: passwordKey) != nil
     }
 }
 

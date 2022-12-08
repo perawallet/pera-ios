@@ -32,6 +32,7 @@ final class ScanQRFlowCoordinator:
 
     private lazy var transactionController = TransactionController(
         api: api,
+        sharedDataController: sharedDataController,
         bannerController: bannerController,
         analytics: analytics
     )
@@ -43,7 +44,6 @@ final class ScanQRFlowCoordinator:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
-
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController
@@ -337,6 +337,10 @@ extension ScanQRFlowCoordinator {
                 return
             }
 
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -371,6 +375,15 @@ extension ScanQRFlowCoordinator {
     ) {
         loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -384,6 +397,15 @@ extension ScanQRFlowCoordinator {
         didFailedTransaction error: HIPTransactionError
     ) {
         loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):
@@ -540,6 +562,15 @@ extension ScanQRFlowCoordinator {
     }
 
     private func openAddWatchAccount(_ qr: QRText) {
+        if let authenticatedUser = session.authenticatedUser,
+           authenticatedUser.hasReachedTotalAccountLimit {
+            bannerController.presentErrorBanner(
+                title: "user-account-limit-error-title".localized,
+                message: "user-account-limit-error-message".localized
+            )
+            return
+        }
+
         guard let address = qr.address else {
             return
         }
@@ -658,6 +689,15 @@ extension ScanQRFlowCoordinator {
         _ qrScannerScreen: QRScannerViewController,
         accountMnemonicWasDetected qr: QRText
     ) {
+        if let authenticatedUser = session.authenticatedUser,
+           authenticatedUser.hasReachedTotalAccountLimit {
+            bannerController.presentErrorBanner(
+                title: "user-account-limit-error-title".localized,
+                message: "user-account-limit-error-message".localized
+            )
+            return
+        }
+
         guard let mnemonic = qr.mnemonic else {
             return
         }

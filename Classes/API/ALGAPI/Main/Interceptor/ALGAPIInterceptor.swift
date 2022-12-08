@@ -67,7 +67,9 @@ extension ALGAPIInterceptor {
             setAlgodHeaders(endpoint)
         case .indexer:
             setIndexerHeaders(endpoint)
-        case .mobile:
+        case .mobileV1:
+            setMobileHeaders(endpoint)
+        case .mobileV2:
             setMobileHeaders(endpoint)
         case .algoExplorer:
             break
@@ -87,6 +89,7 @@ extension ALGAPIInterceptor {
     }
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
+        endpoint.setAdditionalHeader(APIKeyHeader())
         endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), policy: .setIfNotExists)
         endpoint.setAdditionalHeader(AppNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppPackageNameHeader(application), policy: .alwaysOverride)
@@ -109,6 +112,16 @@ extension ALGAPIInterceptor {
 
     func setupNetworkBase(_ network: ALGAPI.Network) -> String {
         return apiBase.setupNetworkBase(network)
+    }
+}
+
+struct APIKeyHeader: Header {
+    let key: String
+    let value: String?
+
+    init() {
+        self.key = "X-API-Key"
+        self.value = Environment.current.apiKey
     }
 }
 

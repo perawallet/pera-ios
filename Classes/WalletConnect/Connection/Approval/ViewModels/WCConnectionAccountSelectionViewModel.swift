@@ -41,12 +41,12 @@ extension WCConnectionAccountSelectionViewModel {
     private mutating func bindTitle(
         _ account: Account
     ) {
-        title = AccountNaming.getPrimaryName(for: account)
+        title = account.primaryDisplayName
     }
 
     private mutating func bindSubtitle(
         _ account: Account
     ) {
-        subtitle = AccountNaming.getSecondaryName(for: account)
+        subtitle = account.secondaryDisplayName
     }
 }

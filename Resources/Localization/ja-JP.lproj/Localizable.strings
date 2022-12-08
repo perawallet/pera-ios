@@ -14,6 +14,9 @@
 "account-listing-error-message" = "申し訳ありませんが、このポートフォリオの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "一部のアカウントの取得に失敗しました。ポートフォリオ値は、正常に取得されたもののみに基づいて計算されます。";
+
+/* (No Comment) */
 "account-name-setup-description" = "Pera Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。";
 
 /* (No Comment) */
@@ -68,7 +71,7 @@
 "account-type-selection-ledger" = "Ledgerデバイスのペアリング";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットと紐づけされた\nAlgorandアカウントを作成したい";
+"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットと紐づけされた\nAlgorandアカウントを復元したい";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "アカウントを復元する";
@@ -162,6 +165,9 @@
 
 /* MARK: ASA About */
 "asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-open-with-browser" = "ブラウザで開く";
 
 /* (No Comment) */
 "asa-about-asa-project-website" = "プロジェクトウェブサイト";
@@ -803,7 +809,7 @@
 "introduction-recover-account-text" = "すでにアカウントを持っている";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "アカウントを作成することにより、お客様はPera Walletの<br><a href=\"%@\">Terms and Conditions</a>および<a href=\"%@\">Privacy Policy</a>に同意したとみなされます";
+"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はPera Walletの<br><a href=\"%@\">利用規約</a>と<a href=\"%@\">プライバシーポリシー</a>に同意したとみなされます";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "資産";
@@ -864,6 +870,9 @@
 
 /* (No Comment) */
 "ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
+
+/* (No Comment) */
+"ledger-approval-sign-message" = "Ledgerデバイス%@でトランザクションを確認して署名してください。";
 
 /* MARK: Ledger Approval */
 "ledger-approval-title" = "Ledgerの承認";
@@ -953,22 +962,22 @@
 "ledger-troubleshooting-app-support" = "Algorand Ledgerアプリをデバイスにインストールする方法については、%@ をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。 <br /> <br />\n<ul>\n<li>設定を<b>タップ</b></li>\n<li>「一般」を<b>選択</b></li>\n<li>「Bluetooth」を<b>タップ</b></li>\n<li>On/Offボタンを<b>切り替えて</b> Bluetoothの</li>\n<li>OnまたはOffを<b>切り替えます</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。<br /> <br />\n<ul>\n<li><b>設定</b>をタップします</li>\n<li><b>「一般」</b>を選択します</li>\n<li><b>「Bluetooth」</b>をタップします</li>\n<li><b>On/Offボタン</b>を切り替えて</li>\n<li>Bluetoothを<b>OnまたはOff</b>にします</li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "他のアプリケーション（Ledgerアプリ、暗号通貨ウォレット、Ledgerとペアリングしようとする可能性のあるもの）を閉じます。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルに従ってください。";
+"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な<a href=\"https://www.ledger.com/start\">Getting Started</a>チュートリアルに従ってください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに <b>Algorand</b> と入力してインストールしてください。";
+"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a> をご覧ください。";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式<a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a> をご覧ください。";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式<a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>をご覧ください。";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Ledgerデバイスの一般的なトラブルシューティングについては、次のWebサイトをご覧ください。";
@@ -977,7 +986,7 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledgerサポート";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルで、Ledgerデバイスにアプリをインストールし、開く方法を説明します。";
+"ledger-troubleshooting-open-app-first-html" = "Ledgerの包括的な<a href=\"https://www.ledger.com/start\">Getting Started</a>チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。";
 
 /* (No Comment) */
 "ledger-troubleshooting-open-app-second-html" = "まだLedgerデバイスに<b>Algorand</b>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
@@ -1043,7 +1052,7 @@
 "local-authentication-reason-touch-id-title" = "Touch IDによるロック解除";
 
 /* (No Comment) */
-"login-subtitle" = "6桁のPINを\n入力してください";
+"login-subtitle" = "PINを入力してください";
 
 /* MARK: Login */
 "login-title" = "ロック解除";
@@ -1592,10 +1601,10 @@
 "request-title" = "リクエスト";
 
 /* (No Comment) */
-"required-min-balance-description" = "トランザクション手数料をまかなうために十分な残高がありません。Algorandブロックチェーンでは、トランザクションをサポートするために0.001 Algosを必要とします。トランザクション手数料をサポートするために、Algo残高を増やしてください。\n\nアカウントに関連するdAppsとスマートコントラクト（別のエコシステムのアプリオプトインした場合、各資産によって必要な最低残高が0.1 Algo増加します。このアカウントに必要な最低残高を減らすには、最低残高を増加させている資産またはdAppsをオプトアウトする必要があります。";
+"required-min-balance-description" = "このアカウントには、このトランザクションをサポートするために最低限必要なAlgo残高がありません。続行する前に、アカウントにAlgoを追加してください。\n\n最低限必要なAlgo残高は、オプトインした資産、NFT、スマートコントラクトごとに0.1 Algo上昇します。資産やスマートコントラクトをオプトアウトすることで、最低限必要なAlgo残高を減らすことができます。";
 
 /* (No Comment) */
-"required-min-balance-title" = "残高が低いです";
+"required-min-balance-title" = "Algo残高が不足しています";
 
 /* (No Comment) */
 "reward-list-title" = "リワード";
@@ -1900,6 +1909,204 @@
 /* MARK: Story */
 "story-copy-address-title" = "長押しして“アドレスをコピー”";
 
+/* / MARK: Swap Account Selection */
+"swap-account-selection-header-description" = "スワップを行うアカウントを選択してください";
+
+/* (No Comment) */
+"swap-alert-body" = "Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。";
+
+/* (No Comment) */
+"swap-alert-primary-action" = "スワップを試す";
+
+/* MARK: - Swap Alert */
+"swap-alert-title" = "Peraでスワップする";
+
+/* (No Comment) */
+"swap-amount-percentage-max" = "最大";
+
+/* (No Comment) */
+"swap-amount-percentage-placeholder" = "カスタムパーセンテージを設定する";
+
+/* / MARK: Swap Adjust Amount */
+"swap-amount-percentage-title" = "残高パーセンテージ";
+
+/* (No Comment) */
+"swap-amount-percentage-validation-error-limitExceeded" = "パーセンテージは%@と%@の間でなければなりません。";
+
+/* (No Comment) */
+"swap-asset-algo-min-balance-error" = "Algo残高が低すぎます。最低でも%@残高が必要です。";
+
+/* (No Comment) */
+"swap-asset-amount-title-balance" = "残高: %@";
+
+/* / MARK: Swap Asset */
+"swap-asset-choose-title" = "資産を選択する";
+
+/* (No Comment) */
+"swap-asset-fee-unavailable-error" = "現在、スワップ手数料を取得できません。";
+
+/* (No Comment) */
+"swap-asset-from" = "スワップ元";
+
+/* (No Comment) */
+"swap-asset-min-balance-error" = "%@の残高が不足しています。";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-fee" = "トランザクション手数料をカバーするために十分なAlgo残高がアカウントにありません。";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-without-amount" = "このトランザクションに十分な残高がアカウントにありません。";
+
+/* (No Comment) */
+"swap-asset-not-available" = "資産を利用できません。";
+
+/* (No Comment) */
+"swap-asset-pool-search-error" = "現在資産を表示できません。もう一度お試しください。";
+
+/* (No Comment) */
+"swap-asset-to" = "スワップ先";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-detail" = "これは、分散型取引所によって請求される手数料です。送金金額から自動的に差し引かれ、最低受取金額に加算されます。それ以上の追加料金はかかりません。";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-title" = "取引所手数料";
+
+/* (No Comment) */
+"swap-confirm-failed-title" = "スワップに失敗しました";
+
+/* (No Comment) */
+"swap-confirm-minimum-received-title" = "最小受取額";
+
+/* (No Comment) */
+"swap-confirm-pera-fee-title" = "Pera手数料";
+
+/* (No Comment) */
+"swap-confirm-price-info" = "%@あたり%@";
+
+/* (No Comment) */
+"swap-confirm-slippage-updated-title" = "スリッページ許容額が更新されました！";
+
+/* (No Comment) */
+"swap-confirm-summary-title" = "スワップの概要";
+
+/* / MARK: Swap Confirm Asset */
+"swap-confirm-title" = "スワップの確認";
+
+/* (No Comment) */
+"swap-confirm-total-fee-title" = "合計スワップ手数料";
+
+/* (No Comment) */
+"swap-confirm-view-summary-title" = "スワップの概要を表示する";
+
+/* MARK: Swap Error */
+"swap-error-failed-title" = "%@スワップに失敗しました";
+
+/* (No Comment) */
+"swap-error-go-home" = "ホームページに移動";
+
+/* (No Comment) */
+"swap-error-unexpected-detail" = "予期しないエラーが発生しました。後でもう一度やり直してください。";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-detail" = "このアカウントには、スワップ操作に必要な最小残高%@がありません。";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-title" = "最小残高";
+
+/* (No Comment) */
+"swap-introduction-body" = "Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。スワップでは、スマートコントラクトを利用して、ASAを別のASAと市場価格で交換することができます。";
+
+/* (No Comment) */
+"swap-introduction-powered-by-title" = "Powered by";
+
+/* (No Comment) */
+"swap-introduction-primary-action-title" = "スワップ開始";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service" = "続行することで、あなたは当社スワップパートナーの利用規約に同意したとみなされます";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service-hyperlink" = "利用規約";
+
+/* / MARK: Swap Introduction */
+"swap-introduction-title" = "Peraでスワップする";
+
+/* (No Comment) */
+"swap-loading-detail" = "少なくとも%@を受け取れなければ、トランザクションは元に戻されます。";
+
+/* MARK: Swap Loading */
+"swap-loading-title" = "トランザクションの送信中";
+
+/* (No Comment) */
+"swap-price-impact-info-body" = "価格への影響とは、資産ペアの市場価格に対する取引の影響です。これは、プール内の流動性の量と直接相関しています。";
+
+/* / MARK: Swap Price Impact Info */
+"swap-price-impact-info-title" = "価格への影響";
+
+/* (No Comment) */
+"swap-price-impact-title" = "価格への影響";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "注意！価格への影響が5％以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。";
+
+/* (No Comment) */
+"swap-sign-with-ledger-action-title" = "トランザクションに署名する";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body" = "このアカウントでLedgerデバイスを使用していることが検出されました。ハードウェアトークンを使って%@トランザクションに１つずつ署名する必要があります。";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body-highlighted" = "%@トランザクションに 1 つずつ署名する必要があります";
+
+/* / MARK: Swap Sign With Ledger Process */
+"swap-sign-with-ledger-process-title" = "%@のうち%@に署名しています…";
+
+/* / MARK: Swap Sign With Ledger */
+"swap-sign-with-ledger-title" = "Ledgerで署名する";
+
+/* (No Comment) */
+"swap-slippage-percentage-custom" = "カスタム";
+
+/* (No Comment) */
+"swap-slippage-percentage-validation-error-limitExceeded" = "パーセンテージは%@と%@の間でなければなりません。";
+
+/* (No Comment) */
+"swap-slippage-placeholder" = "カスタムスリッページを設定する";
+
+/* / MARK: Swap Slippage */
+"swap-slippage-title" = "スリッページ許容額";
+
+/* (No Comment) */
+"swap-slippage-tolerance-info-body" = "スリッページとは、トランザクション送信時と、ブロックチェーンでトランザクションが確認された時の価格差のことです。スリッページ率がここで設定した許容率を超えると、価値の損失を防ぐために取引が自動的にキャンセルされます。";
+
+/* / MARK: Swap Slippage Tolerance Info */
+"swap-slippage-tolerance-info-title" = "スリッページ許容額";
+
+/* (No Comment) */
+"swap-success-detail" = "%@と引き換えに%@を受け取りました";
+
+/* MARK: Swap Success */
+"swap-success-title" = "%@のスワップが完了しました";
+
+/* (No Comment) */
+"swap-success-view-explorer" = "トランザクションの詳細をAlgoExplorerで見る";
+
+/* (No Comment) */
+"swap-success-view-summary" = "スワップの概要を表示する";
+
+/* (No Comment) */
+"swap-summary-network-fee-title" = "ネットワーク手数料";
+
+/* (No Comment) */
+"swap-summary-opt-in-fee-title" = "オプトイン手数料";
+
+/* (No Comment) */
+"swap-summary-paid-title" = "支払い済";
+
+/* MARK: Swap Summary */
+"swap-summary-received-title" = "受け取り済";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "利用規約とサービス";
 
@@ -1979,6 +2186,9 @@
 "title-decline-all" = "すべて拒否";
 
 /* (No Comment) */
+"title-disclaimer" = "免責事項";
+
+/* (No Comment) */
 "title-disconnect" = "接続解除";
 
 /* (No Comment) */
@@ -2042,6 +2252,9 @@
 "title-keep" = "維持する";
 
 /* (No Comment) */
+"title-later" = "後で";
+
+/* (No Comment) */
 "title-learn-more" = "さらに詳しく";
 
 /* (No Comment) */
@@ -2090,6 +2303,12 @@
 "title-paste-passphrase" = "パスフレーズ全体の貼り付け";
 
 /* (No Comment) */
+"title-plus-account-count" = "%@アカウント";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "アカウント";
+
+/* (No Comment) */
 "title-plus-asset-count" = "%@ 資産";
 
 /* (No Comment) */
@@ -2130,6 +2349,12 @@
 
 /* (No Comment) */
 "title-save" = "保存";
+
+/* (No Comment) */
+"title-select-account" = "アカウントの選択";
+
+/* (No Comment) */
+"title-select-all" = "すべて選択";
 
 /* (No Comment) */
 "title-select-asset" = "資産の選択";
@@ -2177,13 +2402,25 @@
 "title-step-4" = "ステップ4";
 
 /* (No Comment) */
+"title-swap" = "スワップ";
+
+/* (No Comment) */
 "title-testnet" = "テストネット";
+
+/* (No Comment) */
+"title-to" = "To";
 
 /* (No Comment) */
 "title-total-supply" = "総供給量";
 
 /* (No Comment) */
+"title-try-again" = "やり直す";
+
+/* (No Comment) */
 "title-unknown" = "無名";
+
+/* (No Comment) */
+"title-unselect-all" = "すべて選択解除";
 
 /* (No Comment) */
 "title-verify" = "検証";
@@ -2360,7 +2597,7 @@
 "transaction-menu-copy-note" = "備考をコピー";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "ASAまたはNFTをオプトインする";
+"transaction-option-list-add-asset-subtitle" = "このアカウントからASAまたはNFTにオプトインする";
 
 /* (No Comment) */
 "transaction-option-list-add-asset-title" = "資産の追加";
@@ -2378,7 +2615,10 @@
 "transaction-option-list-scan-qr-code-subtitle" = "WalletConnectを使うか、アカウントアドレスをスキャンする";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Algoまたは任意のASAを別のアカウントに";
+"transaction-option-list-send-subtitle" = "Algoまたは任意のASAを別のアカウントに転送する";
+
+/* (No Comment) */
+"transaction-option-list-swap-subtitle" = "人気のASAペア間で交換する";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "よろしいですか？";
@@ -2574,6 +2814,12 @@
 
 /* MARK: Wallet Connect Session */
 "wallet-connect-session-connection-description" = "%@ がお客様の\nアカウントへの接続を要求しています";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "すべてのセッションを切断する";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "すべてのセッションを切断しますか？";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "セッション%@からの切断に失敗しました。";
@@ -2859,4 +3105,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "トランザクションを処理しています！";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "これらのアカウントをPera Webに安全にエクスポートしようとしています:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "このアカウントをPera Webに安全にエクスポートしようとしています:";
+
+/* (No Comment) */
+"web-export-account-list-description" = "Pera Web Walletとパスフレーズを共有し、インポートしようとしています！ご自身のものでないリクエストは決して受け入れないでください。";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "Pera Web Walletとパスフレーズを共有し、インポートしようとしています！";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "エクスポートの対象となるアカウントが見つかりませんでした。";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "Pera Webにエクスポート";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "アカウントの確認";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "アカウントの確認";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "Web WalletのURL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "Web WalletのURLを入力してください";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "ドメインエクスポートの確認";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "受信データの復号化の際にエラーが発生しました。QRコードをもう一度スキャンしてください。";
+
+/* (No Comment) */
+"web-export-result-body" = "これらのアカウントは、Pera Web Walletで利用できるようになりました。";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "このアカウントは、Pera Web Walletで利用できるようになりました。";
+
+/* (No Comment) */
+"web-export-result-title" = "アカウントは正常にエクスポートされました！";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "アカウントは正常にエクスポートされました！";
 
