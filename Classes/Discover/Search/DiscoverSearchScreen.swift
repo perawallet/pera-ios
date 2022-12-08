@@ -69,7 +69,6 @@ final class DiscoverSearchScreen:
     }
 
     deinit {
-        print("DEINIT")
         keyboardController.deactivate()
     }
 

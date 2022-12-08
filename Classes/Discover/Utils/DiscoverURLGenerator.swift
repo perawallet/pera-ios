@@ -45,7 +45,9 @@ final class DiscoverURLGenerator {
         case .other(let url):
             return url
         case .assetDetail(let parameters):
-            queryItems.append(.init(name: "poolId", value: parameters.poolID))
+            if let poolID = parameters.poolID {
+                queryItems.append(.init(name: "poolId", value: poolID))
+            }
             components?.path = "/token-detail/\(parameters.assetID)/"
         case .home:
             break

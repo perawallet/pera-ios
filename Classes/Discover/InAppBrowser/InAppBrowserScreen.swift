@@ -236,6 +236,14 @@ extension InAppBrowserScreen {
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
     }
+
+    private func updateCurrency() {
+        guard let newCurrency = session?.preferredCurrencyID.localValue else {
+            return
+        }
+        let script = "updateCurrency('\(newCurrency)')"
+        webView.evaluateJavaScript(script)
+    }
 }
 
 extension InAppBrowserScreen {
@@ -370,6 +378,7 @@ extension InAppBrowserScreen {
 extension InAppBrowserScreen {
     private func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
+        startObservingCurrencyNotification()
     }
 
     private func startObservingAppLifeCycleNotifications() {
@@ -377,6 +386,14 @@ extension InAppBrowserScreen {
             [weak self] _ in
             guard let self else { return }
             self.updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
+        }
+    }
+
+    private func startObservingCurrencyNotification() {
+        observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
+            [weak self] _ in
+            guard let self else { return }
+            self.updateCurrency()
         }
     }
 }

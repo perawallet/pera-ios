@@ -88,8 +88,6 @@ extension DiscoverSearchAPIDataController {
                 [weak self] result in
                 guard let self else { return }
 
-                print("Data")
-
                 switch result {
                 case .success(let changes):
                     self.deliverUpdatesForAssets(changes)
@@ -422,9 +420,7 @@ extension DiscoverSearchAPIDataController {
             guard let self = self else { return }
             guard let newSnapshot = snapshot() else { return }
 
-            print("Start snapshot")
             self.snapshot = newSnapshot
-            print("Finish snapshot")
             self.publish(.didReload(newSnapshot))
         }
     }
@@ -436,7 +432,6 @@ extension DiscoverSearchAPIDataController {
     ) {
         asyncMain { [weak self] in
             guard let self = self else { return }
-            print("Publish")
             self.eventHandler?(event)
         }
     }
