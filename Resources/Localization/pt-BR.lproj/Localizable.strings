@@ -707,15 +707,6 @@
 "contacts-transactions-title" = "Histórico de Transações";
 
 /* (No Comment) */
-"csv-download-error" = "Não foi possível criar arquivo csv para o histórico de transações.";
-
-/* (No Comment) */
-"csv-download-title" = "Criando Arquivo CSV";
-
-/* (No Comment) */
-"csv-loading-message" = "Estamos buscando seus dados. Aguarde até que seu CSV esteja pronto.";
-
-/* (No Comment) */
 "default-error-message" = "Um erro ocorreu.";
 
 /* (No Comment) */

@@ -15,9 +15,10 @@
 //
 //  API+Transaction.swift
 
-import MagpieCore
-import SwiftDate
 import Foundation
+import MagpieCore
+import MagpieExceptions
+import SwiftDate
 
 extension ALGAPI {
     @discardableResult
@@ -103,6 +104,23 @@ extension ALGAPI {
             .base(.algod(network))
             .path(.pendingTransaction, args: id)
             .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+}
+
+extension ALGAPI {
+    @discardableResult
+    func exportTransactions(
+        draft: ExportTransactionsDraft,
+        onCompleted handler: @escaping (Response.DownloadResult<CSVFile, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .type(.download(.file(draft.fileURL)))
+            .base(.mobileV1)
+            .path(.exportTransactions, args: draft.account.address)
+            .method(.get)
+            .query(draft)
             .completionHandler(handler)
             .execute()
     }

@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  CSVConfig.swift
+//   CSVFile.swift
 
 import Foundation
+import MagpieCore
 
-struct CSVConfig {
-    var fileName: String
-    var keys: NSOrderedSet
+struct CSVFile: FileModel {
+    let url: URL
 }

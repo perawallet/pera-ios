@@ -707,15 +707,6 @@
 "contacts-transactions-title" = "트랜잭션 내역";
 
 /* (No Comment) */
-"csv-download-error" = "트랜잭션 내역 CSV 파일을 생성할 수 없습니다.";
-
-/* (No Comment) */
-"csv-download-title" = "CSV 파일 생성 중";
-
-/* (No Comment) */
-"csv-loading-message" = "데이터를 가져오는 중입니다. CSV가 준비될 때까지 기다려주세요.";
-
-/* (No Comment) */
 "default-error-message" = "오류가 발생했습니다.";
 
 /* (No Comment) */

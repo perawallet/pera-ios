@@ -40,6 +40,7 @@ enum ALGAPIPath: String {
     case deviceDetail = "/devices/%@/"
     case devices = "/devices/"
     case nameServicesSearch = "/name-services/search/"
+    case exportTransactions = "/accounts/%@/export-history/"
     case notifications = "/devices/%@/notifications/"
     case pendingAccountTransactions = "/accounts/%@/transactions/pending"
     case pendingTransaction = "/transactions/pending/%@"
