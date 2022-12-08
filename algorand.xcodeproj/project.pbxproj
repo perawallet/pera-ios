@@ -6047,15 +6047,15 @@
 		F0CF6B6F28517234007C30E4 /* AccountCustomReorderingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B6E28517234007C30E4 /* AccountCustomReorderingAlgorithm.swift */; };
 		F0CF6B7028517234007C30E4 /* AccountCustomReorderingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B6E28517234007C30E4 /* AccountCustomReorderingAlgorithm.swift */; };
 		F0CF6B7128517234007C30E4 /* AccountCustomReorderingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CF6B6E28517234007C30E4 /* AccountCustomReorderingAlgorithm.swift */; };
-		F0D3371228F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
-		F0D3371328F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
-		F0D3371428F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
 		F0D2C7E32935189900222A46 /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
 		F0D2C7E52935189B00222A46 /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
 		F0D2C7E62935189B00222A46 /* PrimaryImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C3BD46278CE75300E898FD /* PrimaryImageViewModel.swift */; };
 		F0D2C7EA293816A200222A46 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
 		F0D2C7EB293816A300222A46 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
 		F0D2C7EC293816A400222A46 /* SDKTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C69E428F579B8005BF080 /* SDKTransaction.swift */; };
+		F0D3371228F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
+		F0D3371328F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
+		F0D3371428F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3371128F626C1003D2E01 /* ExportTransactionsDraft.swift */; };
 		F0DB414A27936DF000EA437D /* AccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB414827936DF000EA437D /* AccountListItemCell.swift */; };
 		F0DB414B27936DF000EA437D /* AccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB414827936DF000EA437D /* AccountListItemCell.swift */; };
 		F0DB414D27936DFB00EA437D /* AccountListItemTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB414C27936DFB00EA437D /* AccountListItemTableCell.swift */; };
@@ -24712,7 +24712,6 @@
 				2B0322F2269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
 				D48FDFA527CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift in Sources */,
 				F08A81C5293E9EB600258184 /* CSVFile.swift in Sources */,
-				D49D77DA2789ED33001FD5F6 /* FloatingActionButtonViewController+Theme.swift in Sources */,
 				D4F72B6A28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				D4155E95276CDB5400BCBFA4 /* AccountCheckmarkSelectionViewCell.swift in Sources */,
 				D478AA9628AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
@@ -24954,7 +24953,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -24982,7 +24981,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -25010,7 +25009,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -25040,7 +25039,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25069,7 +25068,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25098,7 +25097,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25250,7 +25249,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25279,7 +25278,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25435,7 +25434,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.5.1;
+				MARKETING_VERSION = 5.5.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
