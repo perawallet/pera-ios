@@ -701,15 +701,6 @@
 "contacts-transactions-title" = "トランザクション履歴";
 
 /* (No Comment) */
-"csv-download-error" = "トランザクション履歴のcsvファイルを作成できませんでした。";
-
-/* (No Comment) */
-"csv-download-title" = "CSVファイルの作成";
-
-/* (No Comment) */
-"csv-loading-message" = "データを取得しています。CSVの準備が整うまでお待ちください。";
-
-/* (No Comment) */
 "default-error-message" = "エラーが発生しました。";
 
 /* (No Comment) */

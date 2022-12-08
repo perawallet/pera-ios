@@ -701,15 +701,6 @@
 "contacts-transactions-title" = "Transaktionsverlauf";
 
 /* (No Comment) */
-"csv-download-error" = "Es konnte keine CSV-Datei mit dem Transaktionsverlauf erstellt werden.";
-
-/* (No Comment) */
-"csv-download-title" = "CSV-Datei wird erstellt";
-
-/* (No Comment) */
-"csv-loading-message" = "Wir bereiten gerade Ihre Daten vor. Bitte warten Sie, bis Ihre CSV-Datei fertig ist.";
-
-/* (No Comment) */
 "default-error-message" = "Es ist ein Fehler aufgetreten.";
 
 /* (No Comment) */

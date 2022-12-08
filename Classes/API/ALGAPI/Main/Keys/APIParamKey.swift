@@ -79,4 +79,6 @@ enum APIParamKey: String, CodingKey {
     case deviceId = "device_id"
     case privateKey = "private_key"
     case encryptedContent = "encrypted_content"
+    case startDate = "start_date"
+    case endDate = "end_date"
 }

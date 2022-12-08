@@ -701,15 +701,6 @@
 "contacts-transactions-title" = "Cronologia delle transazioni";
 
 /* (No Comment) */
-"csv-download-error" = "Impossibile creare un file CSV per la cronologia delle transazioni.";
-
-/* (No Comment) */
-"csv-download-title" = "Creazione di file CSV";
-
-/* (No Comment) */
-"csv-loading-message" = "Stiamo recuperando i tuoi dati. Attendi che il tuo CSV sia pronto.";
-
-/* (No Comment) */
 "default-error-message" = "Si è verificato un errore.";
 
 /* (No Comment) */

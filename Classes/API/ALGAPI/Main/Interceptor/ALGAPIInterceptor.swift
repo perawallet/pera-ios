@@ -41,8 +41,19 @@ final class ALGAPIInterceptor: APIInterceptor {
 
 extension ALGAPIInterceptor {
     private func setCommonHeaders(_ endpoint: EndpointOperatable) {
-        for header in sharedHeaders {
-            endpoint.setAdditionalHeader(header, policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(AcceptGZIPEncodingHeader())
+
+        let rawPath = endpoint.request.path.decoded()
+        let apiPath = ALGAPIPath(rawValue: rawPath)
+
+        switch apiPath {
+        case .none:
+            break
+        case .exportTransactions:
+            break
+        default:
+            endpoint.setAdditionalHeader(AcceptJSONHeader())
+            endpoint.setAdditionalHeader(ContentTypeJSONHeader())
         }
     }
 

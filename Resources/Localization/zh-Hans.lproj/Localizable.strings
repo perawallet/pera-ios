@@ -701,15 +701,6 @@
 "contacts-transactions-title" = "交易记录";
 
 /* (No Comment) */
-"csv-download-error" = "无法为交易记录创建CSV文件。";
-
-/* (No Comment) */
-"csv-download-title" = "创建CSV文件";
-
-/* (No Comment) */
-"csv-loading-message" = "我们正在获取您的数据。请等待您的CSV准备就绪。";
-
-/* (No Comment) */
 "default-error-message" = "出现错误";
 
 /* (No Comment) */

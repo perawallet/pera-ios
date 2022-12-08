@@ -605,12 +605,9 @@
 "transaction-filter-try-again" = "Try Again";
 "transaction-filter-error-title" = "Something went wrong";
 "transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
-"csv-download-title" = "Creating CSV File";
-"csv-download-error" = "Could not create a csv file for the transaction history.";
 "transaction-download-from" = "From: Address";
 "transaction-download-to" = "To: Address";
 "transaction-download-close-to" = "Close To: Address";
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
 
 // MARK: Pin Limit
 "pin-limit-title" = "Pera Wallet app is locked";

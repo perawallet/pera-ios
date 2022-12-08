@@ -701,15 +701,6 @@
 "contacts-transactions-title" = "İşlem Geçmişi";
 
 /* (No Comment) */
-"csv-download-error" = "İşlem geçmişine ait csv dosyası oluşturulamadı.";
-
-/* (No Comment) */
-"csv-download-title" = "CSV Dosyası Oluşturuluyor";
-
-/* (No Comment) */
-"csv-loading-message" = "Verilerinizi alıyoruz. Lütfen CSV'niz hazır olana kadar bekleyin.";
-
-/* (No Comment) */
 "default-error-message" = "Bir hata meydana geldi.";
 
 /* (No Comment) */
