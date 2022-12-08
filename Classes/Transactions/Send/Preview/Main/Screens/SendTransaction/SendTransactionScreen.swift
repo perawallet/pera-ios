@@ -507,19 +507,39 @@ extension SendTransactionScreen {
             return
         }
 
-        let controller = open(
-            .transactionAccountSelect(draft: draft),
+        let screen = open(
+            .sendAssetReceiverAccountSelectionList(
+                asset: draft.asset,
+                addressInputViewText: nil
+            ),
             by: .push
-        ) as? AccountSelectScreen
-
-        controller?.eventHandler = {
+        ) as? ReceiverAccountSelectionListScreen
+        screen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
+
             switch event {
-            case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
-            case .didEditNote(let note):
-                self.didEditNote(note: note)
+            case .didSelectAccount(let account):
+                self.draft.resetReceiver()
+
+                self.draft.toAccount = account
+
+                self.redirectToPreview()
+            case .didSelectContact(let contact):
+                self.draft.resetReceiver()
+
+                self.draft.toContact = contact
+
+                self.redirectToPreview()
+            case .didSelectNameService(let nameService):
+                self.draft.resetReceiver()
+
+                self.draft.toAccount = nameService.account.value
+                self.draft.toNameService = nameService
+
+                self.redirectToPreview()
             }
         }
     }

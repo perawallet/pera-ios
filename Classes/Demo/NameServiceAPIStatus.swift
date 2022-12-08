@@ -12,29 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleDraft.swift
+//   NameServiceAPIStatus.swift
 
-import UIKit
+import Foundation
 
-struct SendCollectibleDraft {
-    let fromAccount: Account
-    let collectibleAsset: CollectibleAsset
-    let image: UIImage?
-
-    var toAccount: Account?
-    var toContact: Contact?
-    var toNameService: NameService?
-    var fee: UInt64?
-
-    var receiverAddress: String? {
-        toAccount?.address ??
-        toContact?.address ??
-        toNameService?.address
-    }
-
-    mutating func resetReceiver() {
-        toAccount = nil
-        toContact = nil
-        toNameService = nil
-    }
+enum NameServiceAPIStatus {
+    case idle
+    case searching
+    case finished
 }

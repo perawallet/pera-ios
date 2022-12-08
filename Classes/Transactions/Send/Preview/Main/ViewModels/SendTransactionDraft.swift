@@ -63,8 +63,16 @@ struct SendTransactionDraft: TransactionSendDraft {
     var hasReceiver: Bool {
         toAccount != nil || toContact != nil
     }
-    var nameService: NameService?
-}
+    var toNameService: NameService?
+ }
+
+ extension SendTransactionDraft {
+     mutating func resetReceiver() {
+         toAccount = nil
+         toContact = nil
+         toNameService = nil
+     }
+ }
 
 enum TransactionMode {
     case algo

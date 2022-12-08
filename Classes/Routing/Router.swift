@@ -956,16 +956,6 @@ class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = false
             viewController = resultScreen
-        case .transactionAccountSelect(let draft):
-            let dataController = AccountSelectScreenListAPIDataController(
-                configuration.sharedDataController,
-                api: configuration.api!
-            )
-            viewController = AccountSelectScreen(
-                draft: draft,
-                dataController: dataController,
-                configuration: configuration
-            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -1045,11 +1035,34 @@ class Router:
                 configuration: configuration
             )
             viewController = aViewController
-        case let .sendCollectibleAccountList(dataController):
-            viewController = SendCollectibleAccountListViewController(
+        case let .sendCollectibleReceiverAccountSelectionList(addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.navigationItem.title = "collectible-send-account-list-title".localized
+            viewController = aViewController
+        case let .sendAssetReceiverAccountSelectionList(asset, addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            let titleView = AssetDetailTitleView()
+            titleView.customize(AssetDetailTitleViewTheme())
+            titleView.bindData(AssetDetailTitleViewModel(asset))
+            aViewController.navigationItem.titleView = titleView
+
+            viewController = aViewController
         case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,

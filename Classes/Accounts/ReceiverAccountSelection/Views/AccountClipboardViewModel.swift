@@ -12,29 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleDraft.swift
+//
+//   AccountClipboardViewModel.swift
 
+import Foundation
 import UIKit
+import MacaroonUIKit
 
-struct SendCollectibleDraft {
-    let fromAccount: Account
-    let collectibleAsset: CollectibleAsset
-    let image: UIImage?
+final class AccountClipboardViewModel: PairedViewModel {
+    private(set) var title: String
 
-    var toAccount: Account?
-    var toContact: Contact?
-    var toNameService: NameService?
-    var fee: UInt64?
-
-    var receiverAddress: String? {
-        toAccount?.address ??
-        toContact?.address ??
-        toNameService?.address
-    }
-
-    mutating func resetReceiver() {
-        toAccount = nil
-        toContact = nil
-        toNameService = nil
+    init(_ model: String) {
+        self.title = model
     }
 }

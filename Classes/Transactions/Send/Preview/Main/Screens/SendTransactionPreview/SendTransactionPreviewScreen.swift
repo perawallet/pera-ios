@@ -191,7 +191,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             lockedNote: draft.lockedNote
          )
          transactionDraft.toContact = draft.toContact
-         transactionDraft.nameService = draft.nameService
+         transactionDraft.toNameService = draft.toNameService
 
       case .asset(let asset):
          var assetTransactionDraft = AssetTransactionSendDraft(
@@ -206,7 +206,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          )
          assetTransactionDraft.toContact = draft.toContact
          assetTransactionDraft.asset = asset
-         assetTransactionDraft.nameService = draft.nameService
+         assetTransactionDraft.toNameService = draft.toNameService
 
          transactionDraft = assetTransactionDraft
       }
