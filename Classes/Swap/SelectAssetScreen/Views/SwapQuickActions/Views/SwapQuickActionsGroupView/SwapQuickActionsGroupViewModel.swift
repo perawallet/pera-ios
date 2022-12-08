@@ -29,6 +29,7 @@ protocol SwapQuickActionItem {
     var layout: Layout { get }
     var style: Style { get }
     var contentEdgeInsets: UIEdgeInsets { get }
+    var isEnabled: Bool { get }
 }
 
 extension Array: ViewModel where Element == any SwapQuickActionItem {}
