@@ -117,7 +117,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .type(.download(.file(draft.fileURL)))
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.exportTransactions, args: draft.account.address)
             .method(.get)
             .query(draft)
