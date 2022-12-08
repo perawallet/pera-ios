@@ -35,7 +35,7 @@ struct WatchAccountAdditionViewControllerTheme:
     let spacingBetweenAddressInputAndNameServiceContent: LayoutMetric
     let nameServiceLoadingTheme: PreviewLoadingViewTheme
     let nameServiceLoadingHeight: LayoutMetric
-    let nameServiceTheme: AccountPreviewViewTheme
+    let nameServiceTheme: AccountListItemViewTheme
     let nameServiceEdgeInsets: LayoutPaddings
     let nameServiceItemSeparator: Separator
     let addAccountAction: ButtonStyle
@@ -85,7 +85,7 @@ struct WatchAccountAdditionViewControllerTheme:
         self.spacingBetweenAddressInputAndNameServiceContent = 16
         self.nameServiceLoadingTheme = PreviewLoadingViewCommonTheme()
         self.nameServiceLoadingHeight = 75
-        self.nameServiceTheme = AccountPreviewViewTheme()
+        self.nameServiceTheme = AccountListItemViewTheme(family)
         self.nameServiceEdgeInsets = (14, 0, 14, 0)
         self.nameServiceItemSeparator = Separator(
             color: Colors.Layer.grayLighter,

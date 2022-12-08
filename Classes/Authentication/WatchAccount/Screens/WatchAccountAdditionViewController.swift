@@ -193,10 +193,6 @@ extension WatchAccountAdditionViewController {
             $0.trailing == theme.contentEdgeInsets.trailing
             $0.greaterThanHeight(theme.addressInputMinHeight)
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
 
         addressInputView.delegate = self
         addressInputView.editingDelegate = self
@@ -398,7 +394,7 @@ extension WatchAccountAdditionViewController {
     private func makeNameServiceView(_ nameService: NameService) -> UIView {
         let aCanvasView = UIView()
 
-        let previewView = AccountPreviewView()
+        let previewView = AccountListItemView()
         previewView.customize(theme.nameServiceTheme)
 
         aCanvasView.addSubview(previewView)
@@ -414,16 +410,16 @@ extension WatchAccountAdditionViewController {
         return aCanvasView
     }
 
-    private func makeNameServiceViewModel(_ nameService: NameService) -> AccountPreviewViewModel {
+    private func makeNameServiceViewModel(_ nameService: NameService) -> AccountListItemViewModel {
         let nameServiceAccount = nameService.account.value
         let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
-        let preview = NameServiceAccountPreview(
+        let preview = NameServiceAccountListItem(
             address: nameServiceAccount.address,
             icon: imageSource,
             title: nameServiceAccount.address.shortAddressDisplay,
             subtitle: nameService.name
         )
-        let viewModel = AccountPreviewViewModel(preview)
+        let viewModel = AccountListItemViewModel(preview)
         return viewModel
     }
 }
