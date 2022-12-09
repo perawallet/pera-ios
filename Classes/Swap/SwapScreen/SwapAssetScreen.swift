@@ -325,6 +325,8 @@ extension SwapAssetScreen {
          )
 
         swapActionView.isEnabled = false
+
+        swapAssetFlowCoordinator?.checkAssetsLoaded()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {

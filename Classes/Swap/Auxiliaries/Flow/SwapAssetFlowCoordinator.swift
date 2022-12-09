@@ -93,6 +93,16 @@ final class SwapAssetFlowCoordinator:
     func updateDraft(_ draft: SwapAssetFlowDraft) {
         self.draft = draft
     }
+
+    func checkAssetsLoaded() {
+        if let userAsset = draft.assetIn {
+            self.publish(.didSelectUserAsset(userAsset))
+        }
+
+        if let poolAsset = draft.assetOut {
+            self.publish(.didSelectPoolAsset(poolAsset))
+        }
+    }
 }
 
 extension SwapAssetFlowCoordinator {
