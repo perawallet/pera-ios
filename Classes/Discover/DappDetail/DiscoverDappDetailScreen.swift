@@ -52,7 +52,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         addNavigationToolbar()
         adjustBottomInset()
         executeNavigationScript()
-        executePeraConnectScript()
+//        executePeraConnectScript()
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

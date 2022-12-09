@@ -21,14 +21,25 @@ struct DiscoverSearchEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
-    fileprivate init(assetID: AssetID) {
+    fileprivate init(assetID: AssetID, query: String?) {
         self.name = .discoverSearch
-        self.metadata = [.assetID: String(assetID)]
+
+        guard let query else {
+            self.metadata = [
+                .assetID: String(assetID)
+            ]
+            return
+        }
+
+        self.metadata = [
+            .assetID: String(assetID),
+            .query: query
+        ]
     }
 }
 
 extension AnalyticsEvent where Self == DiscoverSearchEvent {
-    static func searchDiscover(assetID: AssetID) -> Self {
-        return DiscoverSearchEvent(assetID: assetID)
+    static func searchDiscover(assetID: AssetID, query: String?) -> Self {
+        return DiscoverSearchEvent(assetID: assetID, query: query)
     }
 }

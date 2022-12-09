@@ -425,9 +425,10 @@ extension DiscoverSearchScreen {
 
 extension DiscoverSearchScreen {
     private func handleSelectionOfCellForAssetItem(_ item: DiscoverSearchAssetListItem) {
+        let query = searchInputView.text
         let assetID = item.assetID
         let assetParameters = DiscoverAssetParameters(assetID: String(assetID))
-        self.analytics.track(.searchDiscover(assetID: assetID))
+        self.analytics.track(.searchDiscover(assetID: assetID, query: query))
         eventHandler?(.selectAsset(assetParameters), self)
     }
 }
