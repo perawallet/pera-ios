@@ -64,7 +64,7 @@
 "title-show-all-detail" = "Show All Details";
 "title-home" = "Home";
 "title-price" = "Price";
-"title-collectibles" = "Collectibles";
+"title-collectibles" = "NFTs";
 "settings-title" = "Settings";
 "title-watch-account" = "Watch Account";
 "title-ledger-account" = "Ledger Account";
@@ -335,7 +335,7 @@
 "options-unmute-notification" = "Unmute Notifications";
 "options-copy-address" = "Copy Address";
 "options-manage-assets" = "Manage Assets";
-"options-manage-collectibles" = "Manage Collectibles";
+"options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
 "opitons-collectibles-filter" = "Filter NFTs";
 
@@ -360,7 +360,7 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-overview" = "Overview";
-"accounts-title-collectibles" = "Collectibles";
+"accounts-title-collectibles" = "NFTs";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
@@ -997,7 +997,7 @@
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
 // MARK: Collectible Common
-"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-title" = "NFTs";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
 
 // MARK: Collectible List

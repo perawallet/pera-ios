@@ -62,8 +62,8 @@ final class SharedAPIDataController:
     private(set) lazy var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
         AccountAssetAscendingTitleAlgorithm(),
         AccountAssetDescendingTitleAlgorithm(),
-        AccountAssetDescendingAmountAlgorithm(),
-        AccountAssetAscendingAmountAlgorithm()
+        AccountAssetDescendingAmountAlgorithm(currency: currency),
+        AccountAssetAscendingAmountAlgorithm(currency: currency)
     ]
     
     var isAvailable: Bool {

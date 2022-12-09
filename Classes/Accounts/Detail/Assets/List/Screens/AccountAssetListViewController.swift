@@ -125,6 +125,12 @@ final class AccountAssetListViewController:
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        restartLoadingOfVisibleCellsIfNeeded()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -314,6 +320,24 @@ extension AccountAssetListViewController {
 }
 
 extension AccountAssetListViewController {
+    private func restartLoadingOfVisibleCellsIfNeeded() {
+        for cell in listView.visibleCells {
+            if let pendingAssetCell = cell as? PendingAssetListItemCell,
+               pendingAssetCell.isLoading {
+                pendingAssetCell.isLoading = true
+                return
+            }
+
+            if let pendingCollectibleAssetCell = cell as? PendingCollectibleAssetListItemCell,
+               pendingCollectibleAssetCell.isLoading {
+                pendingCollectibleAssetCell.isLoading  = true
+                return
+            }
+        }
+    }
+}
+
+extension AccountAssetListViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateUIWhenListDidScroll()
     }
@@ -381,6 +405,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .search:
                 let itemCell = cell as? SearchBarItemCell
                 itemCell?.delegate = self
+            case .pendingAsset:
+                let cell = cell as? PendingAssetListItemCell
+                cell?.isLoading = true
+            case .pendingCollectibleAsset:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = true
             default:
                 return
             }
@@ -430,6 +460,38 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             return
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+
+            switch itemIdentifier {
+            case .pendingAsset:
+                let cell = cell as? PendingAssetListItemCell
+                cell?.isLoading = false
+            case .pendingCollectibleAsset:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = false
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -474,23 +536,40 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 /// Normally, we should handle account error or asset error here even if it is
                 /// impossible to have an error. Either we should refactor the flow, or we should
                 /// handle the errors.
-                if let asset = item.asset {
-                    let screen = Screen.asaDetail(
-                        account: accountHandle.value,
-                        asset: asset
-                    ) { [weak self] event in
-                        guard let self = self else { return }
+                let screen = Screen.asaDetail(
+                    account: accountHandle.value,
+                    asset: item.asset
+                ) { [weak self] event in
+                    guard let self = self else { return }
 
-                        switch event {
-                        case .didRenameAccount: self.eventHandler?(.didRenameAccount)
-                        case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
-                        }
+                    switch event {
+                    case .didRenameAccount: self.eventHandler?(.didRenameAccount)
+                    case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
                     }
-                    open(
-                        screen,
-                        by: .push
-                    )
                 }
+                open(
+                    screen,
+                    by: .push
+                )
+            case .collectibleAsset(let item):
+                let screen = Screen.collectibleDetail(
+                    asset: item.asset,
+                    account: accountHandle.value,
+                    thumbnailImage: nil,
+                    quickAction: nil
+                ) { [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .didOptOutAssetFromAccount: self.popScreen()
+                    case .didOptOutFromAssetWithQuickAction: break
+                    case .didOptInToAsset: break
+                    }
+                }
+                open(
+                    screen,
+                    by: .push
+                )
             default:
                 break
             }
@@ -600,16 +679,20 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     private func getAsset(
         at indexPath: IndexPath
-    ) -> StandardAsset? {
+    ) -> Asset? {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return nil
         }
 
-        guard case AccountAssetsItem.asset = itemIdentifier else {
-            return nil
+        if case AccountAssetsItem.asset(let item) = itemIdentifier {
+            return item.asset
         }
 
-        return dataController[indexPath.item]
+        if case AccountAssetsItem.collectibleAsset(let item) = itemIdentifier {
+            return item.asset
+        }
+
+        return nil
     }
 }
 

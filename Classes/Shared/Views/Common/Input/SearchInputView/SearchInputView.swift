@@ -149,7 +149,7 @@ extension SearchInputView {
     }
 
     private func recustomizeTextInputAppearanceWhenViewDidLayoutSubviews() {
-        textInputBackgroundView.layer.draw(corner: Corner(radius: 4))
+        textInputBackgroundView.layer.draw(corner: Corner(radius: 8))
     }
 
     private func customizeTextInputAppearance(_ theme: SearchInputViewTheme) {

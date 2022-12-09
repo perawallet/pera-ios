@@ -12,35 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListSearchInputCell.swift
+//   NFTListItemCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleListSearchInputCell:
-    CollectionCell<SearchInputView> {
-    weak var delegate: SearchInputViewDelegate? {
-        didSet {
-            contextView.delegate = delegate
-        }
+final class NFTListItemCell:
+    CollectionCell<NFTListItemView>,
+    ViewModelBindable {
+    override static var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
     }
+
+    static let theme = NFTListItemViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
+        contextView.customize(Self.theme)
 
-        contextView.customize(
-            SearchInputViewCommonTheme(
-                placeholder: "collectibles-list-input-placeholder".localized,
-                family: .current
-            )
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 24))
         )
-    }
-}
-
-extension CollectibleListSearchInputCell {
-    func beginEditing() {
-        contextView.beginEditing()
+        separatorStyle = .single(separator)
     }
 }

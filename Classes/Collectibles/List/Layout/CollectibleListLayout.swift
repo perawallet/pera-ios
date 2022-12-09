@@ -64,7 +64,7 @@ extension CollectibleListLayout {
         case .header:
             insets.top = 28
             return insets
-        case .search:
+        case .uiActions:
             insets.top = 16
             return insets
         case .collectibles:
@@ -114,8 +114,8 @@ extension CollectibleListLayout {
                 layout: collectionViewLayout,
                 sizeForHeaderItem: item
             )
-        case .search:
-            return sizeForSearch(
+        case .uiActions:
+            return sizeForUIActions(
                 collectionView,
                 layout: collectionViewLayout
             )
@@ -203,19 +203,21 @@ extension CollectibleListLayout {
         return CGSize((width, max(listFittingHeight, calculatedHeight)))
     }
 
-    private func sizeForSearch(
+    private func sizeForUIActions(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let sizeCacheIdentifier = CollectibleListSearchInputCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleGalleryUIActionsCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let height: LayoutMetric = 40
-        let newSize = CGSize((width, height))
+        let newSize = CollectibleGalleryUIActionsCell.calculatePreferredSize(
+            for: CollectibleGalleryUIActionsCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
 
         sizeCache[sizeCacheIdentifier] = newSize
 

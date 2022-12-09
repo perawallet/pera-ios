@@ -22,16 +22,12 @@ import MacaroonUtils
 final class SelectAssetViewControllerDataSource:
     NSObject,
     UICollectionViewDataSource {
-    var isEmpty: Bool {
-        return items.isEmpty
-    }
-
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
-    private var items: [SelectAssetListItem] = []
+    private var itemIdentifiers: [SelectAssetListItemIdentifier] = []
 
     private let account: Account
-
     private let sharedDataController: SharedDataController
 
     init(
@@ -43,10 +39,6 @@ final class SelectAssetViewControllerDataSource:
 
         super.init()
     }
-    
-    subscript(indexPath: IndexPath) -> SelectAssetListItem? {
-        return items[safe: indexPath.item]
-    }
 }
 
 extension SelectAssetViewControllerDataSource {
@@ -55,40 +47,61 @@ extension SelectAssetViewControllerDataSource {
             [weak self] in
             guard let self = self else { return }
 
-            var items: [SelectAssetListItem] = []
+            var itemIdentifiers: [SelectAssetListItemIdentifier] = []
 
-            let algoItem = self.makeAssetItem(self.account.algo)
-            items.append(algoItem)
+            let algoItemIdentifier = self.makeAssetListItemIdentifier(self.account.algo)
+            itemIdentifiers.append(algoItemIdentifier)
 
-            for blockchainAsset in self.account.assets.someArray {
+            for blockchainAsset in self.account.allAssets.someArray {
                 let asset = self.account[blockchainAsset.id]
 
                 switch asset {
                 case let standardAsset as StandardAsset:
-                    let assetItem = self.makeAssetItem(standardAsset)
-                    items.append(assetItem)
+                    let assetListItemIdentifier = self.makeAssetListItemIdentifier(standardAsset)
+                    itemIdentifiers.append(assetListItemIdentifier)
                 case let collectibleAsset as CollectibleAsset where collectibleAsset.isOwned:
-                    let assetItem = self.makeAssetItem(collectibleAsset)
-                    items.append(assetItem)
+                    let collectibleAssetListItemIdentifier = self.makeCollectibleAssetListItemIdentifier(collectibleAsset)
+                    itemIdentifiers.append(collectibleAssetListItemIdentifier)
                 default:
                     break
                 }
             }
 
-            self.items = items
+            self.itemIdentifiers = itemIdentifiers
 
             asyncMain(execute: completion)
         }
     }
 
-    private func makeAssetItem(_ asset: Asset) -> SelectAssetListItem {
+    private func makeAssetListItemIdentifier(_ asset: Asset) -> SelectAssetListItemIdentifier {
         let item = AssetItem(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter,
             currencyFormattingContext: .listItem
         )
-        return SelectAssetListItem(item: item)
+        let listItem = SelectAssetListItem(item: item)
+        return .asset(listItem)
+    }
+
+    private func makeCollectibleAssetListItemIdentifier(_ asset: CollectibleAsset) -> SelectAssetListItemIdentifier {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let listItem = SelectCollectibleAssetListItem(item: item)
+        return .collectibleAsset(listItem)
+    }
+}
+
+extension SelectAssetViewControllerDataSource {
+    func itemIdentifier(for indexPath: IndexPath) -> SelectAssetListItemIdentifier? {
+        return itemIdentifiers[safe: indexPath.item]
+    }
+
+    var isEmpty: Bool {
+        return itemIdentifiers.isEmpty
     }
 }
 
@@ -97,10 +110,10 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        if items.isEmpty {
+        if itemIdentifiers.isEmpty {
             return 2
         } else {
-            return items.count
+            return itemIdentifiers.count
         }
     }
 
@@ -108,28 +121,62 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        if let item = self[indexPath] {
+        let itemIdentifier = itemIdentifier(for: indexPath)
+
+        switch itemIdentifier {
+        case .asset(let item):
             let cell = collectionView.dequeue(
                 AssetListItemCell.self,
                 at: indexPath
             )
             cell.bindData(item.viewModel)
             return cell
-        } else {
-            return collectionView.dequeue(
-                PreviewLoadingCell.self,
+        case .collectibleAsset(let item):
+            let cell = collectionView.dequeue(
+                NFTListItemCell.self,
                 at: indexPath
             )
+            cell.bindData(item.viewModel)
+            return cell
+        default:
+            break
+        }
+
+        return collectionView.dequeue(
+            PreviewLoadingCell.self,
+            at: indexPath
+        )
+    }
+}
+
+enum SelectAssetListItemIdentifier {
+    case asset(SelectAssetListItem)
+    case collectibleAsset(SelectCollectibleAssetListItem)
+
+    var asset: Asset {
+        switch self {
+        case .collectibleAsset(let item): return item.asset
+        case .asset(let item): return item.asset
         }
     }
 }
 
 struct SelectAssetListItem {
-    let model: Asset
+    let asset: Asset
     let viewModel: AssetListItemViewModel
 
     init(item: AssetItem) {
-        self.model = item.asset
+        self.asset = item.asset
         self.viewModel = AssetListItemViewModel(item)
+    }
+}
+
+struct SelectCollectibleAssetListItem {
+    let asset: Asset
+    let viewModel: NFTListItemViewModel
+
+    init(item: CollectibleAssetItem) {
+        self.asset = item.asset
+        self.viewModel = NFTListItemViewModel(item: item)
     }
 }

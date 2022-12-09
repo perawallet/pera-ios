@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   PendingAssetImageViewTheme.swift
+//   CollectibleAssetItem.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct PendingAssetImageViewTheme: StyleSheet, LayoutSheet {
-    let indicator: ImageStyle
-    let indicatorSize: LayoutSize
-    let borderImage: ImageStyle
-    let corner: Corner
+final class CollectibleAssetItem {
+    let account: Account
+    let asset: CollectibleAsset
+    let amountFormatter: CollectibleAmountFormatter
 
-    init(_ family: LayoutFamily) {
-        self.indicator = [
-            .image("loading-indicator"),
-            .contentMode(.scaleAspectFit)
-        ]
-        self.indicatorSize = (16, 16)
-        self.borderImage = [ .image("asset-image-placeholder-border") ]
-        self.corner = Corner(radius: 20)
+    init(
+        account: Account,
+        asset: CollectibleAsset,
+        amountFormatter: CollectibleAmountFormatter
+    ) {
+        self.account = account
+        self.asset = asset
+        self.amountFormatter = amountFormatter
     }
 }
