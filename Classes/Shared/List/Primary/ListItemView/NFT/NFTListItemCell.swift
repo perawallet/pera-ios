@@ -12,26 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   PendingAssetImageViewTheme.swift
+//   NFTListItemCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-struct PendingAssetImageViewTheme: StyleSheet, LayoutSheet {
-    let indicator: ImageStyle
-    let indicatorSize: LayoutSize
-    let borderImage: ImageStyle
-    let corner: Corner
+final class NFTListItemCell:
+    CollectionCell<NFTListItemView>,
+    ViewModelBindable {
+    override static var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
 
-    init(_ family: LayoutFamily) {
-        self.indicator = [
-            .image("loading-indicator"),
-            .contentMode(.scaleAspectFit)
-        ]
-        self.indicatorSize = (16, 16)
-        self.borderImage = [ .image("asset-image-placeholder-border") ]
-        self.corner = Corner(radius: 20)
+    static let theme = NFTListItemViewTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 24))
+        )
+        separatorStyle = .single(separator)
     }
 }

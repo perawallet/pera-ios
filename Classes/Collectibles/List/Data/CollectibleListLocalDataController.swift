@@ -55,6 +55,8 @@ final class CollectibleListLocalDataController:
         label: Constants.DispatchQueues.collectibleListSnapshot
     )
 
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+
     let galleryAccount: CollectibleGalleryAccount
 
     private var accounts: AccountCollection = []
@@ -291,7 +293,11 @@ extension CollectibleListLocalDataController {
                             asset: collectibleAsset,
                             viewModel: CollectibleListItemViewModel(
                                 imageSize: imageSize,
-                                model: collectibleAsset
+                                model: CollectibleAssetItem(
+                                    account: account,
+                                    asset: collectibleAsset,
+                                    amountFormatter: collectibleAmountFormatter
+                                )
                             )
                         )
                     )
@@ -308,7 +314,11 @@ extension CollectibleListLocalDataController {
                             asset: collectibleAsset,
                             viewModel: CollectibleListItemViewModel(
                                 imageSize: imageSize,
-                                model: collectibleAsset
+                                model: CollectibleAssetItem(
+                                    account: account,
+                                    asset: collectibleAsset,
+                                    amountFormatter: collectibleAmountFormatter
+                                )
                             )
                         )
                     )
@@ -332,8 +342,8 @@ extension CollectibleListLocalDataController {
 
             let account = accounts.account(for: pendingCollectibleAccount.address)
 
-            if let account = account,
-               account.containsCollectibleAsset(pendingCollectibleAsset.id) {
+            guard let account = account,
+                  account.containsCollectibleAsset(pendingCollectibleAsset.id) else {
                 return
             }
 
@@ -353,7 +363,11 @@ extension CollectibleListLocalDataController {
                         asset: pendingCollectibleAsset,
                         viewModel: CollectibleListItemViewModel(
                             imageSize: imageSize,
-                            model: pendingCollectibleAsset
+                            model: CollectibleAssetItem(
+                                account: account,
+                                asset: pendingCollectibleAsset,
+                                amountFormatter: collectibleAmountFormatter
+                            )
                         )
                     )
                 )

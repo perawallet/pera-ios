@@ -206,7 +206,7 @@ extension CollectibleListViewController {
         case .watchAccountHeader:
             linkInteractors(cell as! ManagementItemCell)
         case .uiActions:
-            linkInteractors(cell as! NFTsUIActionsCell)
+            linkInteractors(cell as! CollectibleGalleryUIActionsCell)
         case .empty(let item):
             switch item {
             case .loading:
@@ -449,19 +449,11 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: NFTsUIActionsCell
+        _ cell: CollectibleGalleryUIActionsCell
     ) {
-        cell.searchInputDelegate = self
+        cell.delegate = self
 
-        cell.layoutPreference = .grid /// <todo> Get the preference from saved preference.
-
-        cell.startObserving(event: .performLayoutPreferenceChange) {
-//            [weak cell] in
-//            guard let cell = cell else {
-//                return
-//            }
-            /// <todo> Perform layout changes & save the preference.
-        }
+//        cell.setGridUIStyleSelected() /// <todo> Get the preference from saved preference.
     }
 
     private func linkInteractors(
@@ -514,9 +506,17 @@ extension CollectibleListViewController {
     }
 }
 
-extension CollectibleListViewController: SearchInputViewDelegate {
-    func searchInputViewDidEdit(_ view: SearchInputView) {
-        guard let query = view.text else {
+extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
+    func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
+        /// <todo> Perform layout changes & save the preference.
+    }
+
+    func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
+        /// <todo> Perform layout changes & save the preference.
+    }
+
+    func collectibleGalleryUIActionsViewDidEditSearchInput(_ cell: CollectibleGalleryUIActionsCell, input: String?) {
+        guard let query = input else {
             return
         }
 
@@ -528,8 +528,8 @@ extension CollectibleListViewController: SearchInputViewDelegate {
         dataController.search(for: query)
     }
 
-    func searchInputViewDidReturn(_ view: SearchInputView) {
-        view.endEditing()
+    func collectibleGalleryUIActionsViewDidReturnSearchInput(_ cell: CollectibleGalleryUIActionsCell) {
+        cell.endEditing()
     }
 }
 
@@ -593,7 +593,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
 extension CollectibleListViewController {
     private func getCollectibleItem(
         at indexPath: IndexPath
-    ) -> CollectibleCellItemContainer<CollectibleListItemViewModel>? {
+    ) -> CollectibleCellItemContainer? {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return nil
         }

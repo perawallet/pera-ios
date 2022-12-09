@@ -12,11 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTsScreenLayoutPreference.swift
+//   CollectibleAssetItem.swift
 
 import Foundation
 
-enum NFTsScreenLayoutPreference: Int {
-    case grid
-    case list
+final class CollectibleAssetItem {
+    let account: Account
+    let asset: CollectibleAsset
+    let amountFormatter: CollectibleAmountFormatter
+
+    init(
+        account: Account,
+        asset: CollectibleAsset,
+        amountFormatter: CollectibleAmountFormatter
+    ) {
+        self.account = account
+        self.asset = asset
+        self.amountFormatter = amountFormatter
+    }
 }

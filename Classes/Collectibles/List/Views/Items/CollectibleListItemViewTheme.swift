@@ -23,8 +23,7 @@ struct CollectibleListItemViewTheme:
     StyleSheet {
     let image: URLImageViewStyleLayoutSheet
 
-    var overlay: ViewStyle
-    var overlayAlpha: LayoutMetric
+    var overlay: ImageStyle
 
     let title: TextStyle
     let titleAndSubtitleContentTopPadding: LayoutMetric
@@ -32,11 +31,11 @@ struct CollectibleListItemViewTheme:
     let subtitle: TextStyle
 
     let bottomLeftBadge: ImageStyle
-    let bottomLeftBadgeContentEdgeInsets: LayoutOffset
+    let bottomLeftBadgeContentEdgeInsets: LayoutPaddings
     let bottomLeftBadgePaddings: LayoutPaddings
 
     let topLeftBadge: ImageStyle
-    let topLeftBadgeContentEdgeInsets: LayoutOffset
+    let topLeftBadgeContentEdgeInsets: LayoutPaddings
     let topLeftBadgePaddings: LayoutPaddings
 
     let amount: TextStyle
@@ -44,28 +43,23 @@ struct CollectibleListItemViewTheme:
     let amountPaddings: LayoutPaddings
     let minimumSpacingBetweeenTopLeftBadgeAndAmount: LayoutMetric
 
-    let pendingContent: ViewStyle
-    let pendingContentPaddings: LayoutPaddings
+    let pendingCanvasPaddings: LayoutPaddings
 
     let indicator: ImageStyle
     let indicatorSize: LayoutSize
     let indicatorLeadingPadding: LayoutMetric
 
-    let pendingOverlay: ViewStyle
-    let pendingLabel: TextStyle
-    let pendingLabelPaddings: LayoutPaddings
-
-    let corner: Corner
+    let pendingOverlay: ImageStyle
+    let pendingCanvas: ImageStyle
+    let pendingTitle: TextStyle
+    let pendingTitlePaddings: LayoutPaddings
 
     init(
         _ family: LayoutFamily
     ) {
         image = URLImageViewCollectibleListTheme()
 
-        overlay = [
-            .backgroundColor(UIColor.clear)
-        ]
-        overlayAlpha = 0
+        overlay = []
 
         title = [
             .textColor(Colors.Text.gray),
@@ -79,34 +73,29 @@ struct CollectibleListItemViewTheme:
         ]
 
         bottomLeftBadge = [
-            .backgroundColor(Colors.NFTIcon.iconBackground),
             .contentMode(.center),
             .tintColor(Colors.Text.white)
         ]
-        bottomLeftBadgeContentEdgeInsets = (8, 8)
+        bottomLeftBadgeContentEdgeInsets = (4, 4, 4, 4)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
 
         topLeftBadge = [
-            .backgroundColor(Colors.NFTIcon.iconBackground),
             .contentMode(.center)
         ]
 
-        topLeftBadgeContentEdgeInsets = (4, 4)
+        topLeftBadgeContentEdgeInsets = (2, 2, 2, 2)
         topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
 
         amount = [
             .textColor(Colors.Text.white),
             .textOverflow(SingleLineText()),
-            .backgroundColor(Colors.NFTIcon.iconBackground),
         ]
         amountContentEdgeInsets = (4, 6, 4, 6)
         amountPaddings = (8, .noMetric, .noMetric, 8)
         minimumSpacingBetweeenTopLeftBadgeAndAmount = 8
 
-        pendingContentPaddings = (.noMetric, 8, 8, .noMetric)
-        pendingContent = [
-            .backgroundColor(Colors.NFTIcon.iconBackground)
-        ]
+        pendingCanvasPaddings = (.noMetric, 8, 8, .noMetric)
+
         indicator = [
             .image("loading-indicator".templateImage),
             .tintColor(Colors.Text.white),
@@ -115,16 +104,13 @@ struct CollectibleListItemViewTheme:
         indicatorSize = (15, 15)
         indicatorLeadingPadding = 6
 
-        pendingOverlay = [
-            .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.4))
-        ]
-        pendingLabel = [
+        pendingOverlay = [ .image("overlay-bg") ]
+        pendingCanvas = [ .image("badge-bg") ]
+        pendingTitle = [
             .textColor(Colors.Text.white),
             .textOverflow(SingleLineText()),
         ]
-        pendingLabelPaddings = (4, 6, 4, 6)
-
-        corner = Corner(radius: 4)
+        pendingTitlePaddings = (4, 6, 4, 6)
     }
 }
 
@@ -145,9 +131,7 @@ struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
         let text: TextStyle
 
         init() {
-            background = [
-                .backgroundColor(Colors.Layer.grayLighter)
-            ]
+            background = []
             image = []
             text = [
                 .textColor(Colors.Text.gray),
@@ -173,7 +157,6 @@ struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
 
 extension CollectibleListItemViewTheme {
     mutating func configureOverlayForOptedInCell() {
-        overlay = overlay.modify([ .backgroundColor(Colors.Defaults.background) ])
-        overlayAlpha = 0.4
+        overlay = overlay.modify([ .image("overlay-bg") ])
     }
 }

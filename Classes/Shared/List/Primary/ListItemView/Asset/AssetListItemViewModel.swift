@@ -20,45 +20,29 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct AssetListItemViewModel:
-    PrimaryListItemViewModel,
-    Hashable {
-    var imageSource: ImageSource?
-    var title: PrimaryTitleViewModel?
-    var primaryValue: TextProvider?
-    var secondaryValue: TextProvider?
-    var asset: Asset?
-
-    private(set) var valueInUSD: Decimal?
+struct AssetListItemViewModel: PrimaryListItemViewModel {
+    private(set) var imageSource: ImageSource?
+    private(set) var title: PrimaryTitleViewModel?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
 
     init(_ item: AssetItem) {
         bindImageSource(item)
         bindTitle(item)
         bindPrimaryValue(item)
         bindSecondaryValue(item)
-
-        asset = item.asset
     }
 
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title?.primaryTitle?.string)
-        hasher.combine(title?.secondaryTitle?.string)
-        hasher.combine(primaryValue?.string)
-        hasher.combine(secondaryValue?.string)
-        hasher.combine(asset?.id)
+    init(update: OptInBlockchainUpdate) {
+        bindIcon(update)
+        bindTitle(update)
+        bindPrimaryValue(update)
     }
 
-    static func == (
-        lhs: Self,
-        rhs: Self
-    ) -> Bool {
-        return lhs.title?.primaryTitle?.string == rhs.title?.primaryTitle?.string &&
-            lhs.title?.secondaryTitle?.string == rhs.title?.secondaryTitle?.string &&
-            lhs.primaryValue?.string == rhs.primaryValue?.string &&
-            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
-            lhs.asset?.id == rhs.asset?.id
+    init(update: OptOutBlockchainUpdate) {
+        bindIcon(update)
+        bindTitle(update)
+        bindPrimaryValue(update)
     }
 }
 
@@ -90,18 +74,7 @@ extension AssetListItemViewModel {
             .setImageQuality(.normal)
             .build()
 
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-        : asset.naming.name
-
-        let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = Self.getPlaceholder(
-            placeholderText,
-            with: TextAttributes(
-                font: Fonts.DMSans.regular.make(13),
-                lineHeightMultiplier: 1.18
-            )
-        )
+        let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
             url: url,
@@ -140,7 +113,6 @@ extension AssetListItemViewModel {
         _ item: AssetItem
     ) {
         let asset = item.asset
-        valueInUSD = asset.totalUSDValue ?? 0
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
@@ -149,18 +121,15 @@ extension AssetListItemViewModel {
             if asset.isAlgo {
                 guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
                 exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
 
                 formatter.currency = fiatRawCurrency
             } else {
                 guard let currencyValue = item.currency.primaryValue else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
@@ -184,45 +153,74 @@ extension AssetListItemViewModel {
             )
         } catch {
             secondaryValue = nil
-            valueInUSD = 0
         }
     }
 }
 
 extension AssetListItemViewModel {
-    typealias TextAttributes = (
-        font: CustomFont,
-        lineHeightMultiplier: LayoutMetric
-    )
-
-    static func getPlaceholder(
-        _ aPlaceholder: String?,
-        with attributes: TextAttributes
+    func getPlaceholder(
+        _ asset: Asset
     ) -> ImagePlaceholder? {
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let aPlaceholder = TextFormatter.assetShortName.format(title)
+
         guard let aPlaceholder = aPlaceholder else {
             return nil
         }
 
-        let font = attributes.font
-        let lineHeightMultiplier = attributes.lineHeightMultiplier
-
+        let isCollectible = asset is CollectibleAsset
+        let placeholderImage =
+            isCollectible ?
+            "placeholder-bg".uiImage :
+            "asset-image-placeholder-border".uiImage
         let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aPlaceholder
+                .footnoteRegular(
+                    alignment: .center
+                )
         )
-
         return ImagePlaceholder(
-            image: AssetImageSource(
-                asset: "asset-image-placeholder-border".uiImage
-            ),
+            image: .init(asset: placeholderImage),
             text: placeholderText
+        )
+    }
+}
+
+extension AssetListItemViewModel {
+    mutating func bindIcon(_ update: OptInBlockchainUpdate) {
+        imageSource = AssetImageSource(asset: "asset-image-placeholder-border".uiImage)
+    }
+
+    mutating func bindTitle(_ update: OptInBlockchainUpdate) {
+        title = AssetNameViewModel(update: update)
+    }
+
+    mutating func bindPrimaryValue(_ update: OptInBlockchainUpdate) {
+        let statusText = "asset-add-confirmation-title".localized
+        primaryValue = statusText.bodyRegular(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+}
+
+extension AssetListItemViewModel {
+    mutating func bindIcon(_ update: OptOutBlockchainUpdate) {
+        imageSource = AssetImageSource(asset: "asset-image-placeholder-border".uiImage)
+    }
+
+    mutating func bindTitle(_ update: OptOutBlockchainUpdate) {
+        title = AssetNameViewModel(update: update)
+    }
+
+    mutating func bindPrimaryValue(_ update: OptOutBlockchainUpdate) {
+        let statusText = "asset-removing-status".localized
+        primaryValue = statusText.bodyRegular(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
         )
     }
 }

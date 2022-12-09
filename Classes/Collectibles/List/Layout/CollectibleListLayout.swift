@@ -207,15 +207,15 @@ extension CollectibleListLayout {
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let sizeCacheIdentifier = NFTsUIActionsCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleGalleryUIActionsCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = NFTsUIActionsCell.calculatePreferredSize(
-            for: NFTsUIActionsCell.theme,
+        let newSize = CollectibleGalleryUIActionsCell.calculatePreferredSize(
+            for: CollectibleGalleryUIActionsCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

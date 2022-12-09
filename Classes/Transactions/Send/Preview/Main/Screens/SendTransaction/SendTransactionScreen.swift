@@ -34,8 +34,9 @@ final class SendTransactionScreen: BaseViewController {
 
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var nextButton = Button()
-    private lazy var accountContainerView = TripleShadowView()
-    private lazy var accountView = PrimaryListItemView()
+    private lazy var assetItemCanvasView = TripleShadowView()
+    private lazy var assetItemView = PrimaryListItemView()
+    private lazy var collectibleAssetItemView = NFTListItemView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
@@ -145,7 +146,7 @@ final class SendTransactionScreen: BaseViewController {
         super.prepareLayout()
 
         addNextButton()
-        addAccountView()
+        addAssetItem()
         addNumpad()
         addButtons()
         addLabels()
@@ -154,7 +155,6 @@ final class SendTransactionScreen: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        bindAssetPreview()
         bindAmount()
 
         self.note = draft.lockedNote ?? draft.note
@@ -189,33 +189,6 @@ extension SendTransactionScreen {
 }
 
 extension SendTransactionScreen {
-    private func bindAssetPreview() {
-        let currency = sharedDataController.currency
-
-        let viewModel: PrimaryListItemViewModel
-
-        switch draft.transactionMode {
-        case .algo:
-            let algoAssetItem = AssetItem(
-                asset: draft.from.algo,
-                currency: sharedDataController.currency,
-                currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
-            )
-            viewModel = AssetListItemViewModel(algoAssetItem)
-        case .asset(let asset):
-            let assetItem = AssetItem(
-                asset: asset,
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
-            )
-            viewModel = AssetListItemViewModel(assetItem)
-        }
-
-        accountView.bindData(viewModel)
-    }
-
     private func bindAmount() {
         let amountValue = self.amount
         var showingValue = ""
@@ -360,26 +333,75 @@ extension SendTransactionScreen {
         }
     }
 
-    private func addAccountView() {
-        accountView.customize(AssetListItemTheme())
+    private func addAssetItem() {
+        let isCollectible = draft.asset is CollectibleAsset
+        let itemView = isCollectible ? makeCollectibleAssetItemView() : makeAssetItemView()
 
-        accountContainerView.draw(corner: theme.accountContainerCorner)
-        accountContainerView.drawAppearance(border: theme.accountContainerBorder)
+        assetItemCanvasView.draw(corner: theme.accountContainerCorner)
+        assetItemCanvasView.drawAppearance(border: theme.accountContainerBorder)
 
-        accountContainerView.drawAppearance(shadow: theme.accountContainerFirstShadow)
-        accountContainerView.drawAppearance(secondShadow: theme.accountContainerSecondShadow)
-        accountContainerView.drawAppearance(thirdShadow: theme.accountContainerThirdShadow)
+        assetItemCanvasView.drawAppearance(shadow: theme.accountContainerFirstShadow)
+        assetItemCanvasView.drawAppearance(secondShadow: theme.accountContainerSecondShadow)
+        assetItemCanvasView.drawAppearance(thirdShadow: theme.accountContainerThirdShadow)
 
-        view.addSubview(accountContainerView)
-        accountContainerView.snp.makeConstraints { make in
+        view.addSubview(assetItemCanvasView)
+        assetItemCanvasView.snp.makeConstraints { make in
             make.bottom.equalTo(nextButton.snp.top).offset(theme.defaultBottomInset)
             make.leading.trailing.equalToSuperview().inset(theme.defaultLeadingInset)
         }
 
-        accountContainerView.addSubview(accountView)
-        accountView.snp.makeConstraints { make in
+        assetItemCanvasView.addSubview(itemView)
+        itemView.snp.makeConstraints { make in
             make.setPaddings(theme.accountPaddings)
         }
+    }
+
+    private func makeAssetItemView() -> PrimaryListItemView {
+        let view = PrimaryListItemView()
+        view.customize(AssetListItemTheme())
+        let viewModel = makeAssetItemViewModel()
+        view.bindData(viewModel)
+        return view
+    }
+
+    private func makeAssetItemViewModel() -> PrimaryListItemViewModel {
+        let currency = sharedDataController.currency
+
+        let viewModel: PrimaryListItemViewModel
+
+        switch draft.transactionMode {
+        case .algo:
+            let algoAssetItem = AssetItem(
+                asset: draft.from.algo,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(algoAssetItem)
+        case .asset(let asset):
+            let assetItem = AssetItem(
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(assetItem)
+        }
+
+        return viewModel
+    }
+
+    private func makeCollectibleAssetItemView() -> NFTListItemView {
+        let view = NFTListItemView()
+        view.customize(NFTListItemViewTheme())
+        let item = CollectibleAssetItem(
+            account: draft.from,
+            asset: draft.asset as! CollectibleAsset,
+            amountFormatter: .init()
+        )
+        let viewModel = NFTListItemViewModel(item: item)
+        view.bindData(viewModel)
+        return view
     }
 
     private func addNumpad() {
@@ -388,7 +410,7 @@ extension SendTransactionScreen {
 
         view.addSubview(numpadView)
         numpadView.snp.makeConstraints { make in
-            make.bottom.equalTo(accountView.snp.top).offset(theme.numpadBottomInset)
+            make.bottom.equalTo(assetItemCanvasView.snp.top).offset(theme.numpadBottomInset)
             make.leading.trailing.equalToSuperview()
         }
     }

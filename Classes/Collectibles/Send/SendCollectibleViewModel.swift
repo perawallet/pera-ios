@@ -148,7 +148,7 @@ extension SendCollectibleViewModel {
         )
 
         return ImagePlaceholder(
-            image: nil,
+            image: AssetImageSource(asset: "placeholder-bg".uiImage),
             text: placeholderText
         )
     }
