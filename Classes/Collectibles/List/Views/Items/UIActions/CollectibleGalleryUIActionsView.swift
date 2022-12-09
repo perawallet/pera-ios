@@ -25,7 +25,11 @@ final class CollectibleGalleryUIActionsView:
     private lazy var searchInputView = SearchInputView()
     private lazy var galleryUIStyleInputView = SegmentedControl(theme.galleryUIStyleInput)
 
-    private var selectedGalleryUIStyleIndex = CollectibleGalleryUIActionsView.gridUIStyleIndex
+    private var selectedGalleryUIStyleIndex = CollectibleGalleryUIActionsView.gridUIStyleIndex {
+        didSet {
+            updateSelectedSegmentIndexIfNeeded(old: oldValue)
+        }
+    }
 
     static let gridUIStyleIndex = 0
     static let listUIStyleIndex = 1
@@ -96,32 +100,16 @@ extension CollectibleGalleryUIActionsView {
 extension CollectibleGalleryUIActionsView {
     @objc
     private func performGalleryUIStyleUpdateIfNeeded() {
-        let selectedIndex = galleryUIStyleInputView.selectedSegmentIndex
-
-        if !shouldUpdateGalleryUIStyle(new: selectedIndex) {
-            return
-        }
-
-        selectedGalleryUIStyleIndex = selectedIndex
-
-        publishGalleryUIStyleChange(for: selectedIndex)
+        selectedGalleryUIStyleIndex = galleryUIStyleInputView.selectedSegmentIndex
     }
 
-    private func shouldUpdateGalleryUIStyle(
-        new: Int
-    ) -> Bool {
-        let old = selectedGalleryUIStyleIndex
-        let shouldUpdate = old != new
-        return shouldUpdate
-    }
-
-    private func publishGalleryUIStyleChange(for selectedIndex: Int) {
-        if selectedIndex == Self.gridUIStyleIndex {
+    private func publishGalleryUIStyleChange() {
+        if selectedGalleryUIStyleIndex == Self.gridUIStyleIndex {
             delegate?.collectibleGalleryUIActionsViewDidSelectGridUIStyle(self)
             return
         }
 
-        if selectedIndex == Self.listUIStyleIndex {
+        if selectedGalleryUIStyleIndex == Self.listUIStyleIndex {
             delegate?.collectibleGalleryUIActionsViewDidSelectListUIStyle(self)
             return
         }
@@ -129,26 +117,24 @@ extension CollectibleGalleryUIActionsView {
 }
 
 extension CollectibleGalleryUIActionsView {
-    func setGridUIStyleSelected() {
-        selectGalleryUIStyleIfNeeded(new: Self.gridUIStyleIndex)
-    }
-
-    func setListUIStyleSelected() {
-        selectGalleryUIStyleIfNeeded(new: Self.listUIStyleIndex)
-    }
-
-    private func selectGalleryUIStyleIfNeeded(
-        new: Int
-    ) {
-        if !shouldUpdateGalleryUIStyle(
-            new: new
-        ) {
+    private func updateSelectedSegmentIndexIfNeeded(old: Int) {
+        if selectedGalleryUIStyleIndex == old {
             return
         }
 
-        galleryUIStyleInputView.selectedSegmentIndex = new
+        galleryUIStyleInputView.selectedSegmentIndex = selectedGalleryUIStyleIndex
 
-        selectedGalleryUIStyleIndex = new
+        publishGalleryUIStyleChange()
+    }
+}
+
+extension CollectibleGalleryUIActionsView {
+    func setGridUIStyleSelected() {
+        selectedGalleryUIStyleIndex = Self.gridUIStyleIndex
+    }
+
+    func setListUIStyleSelected() {
+        selectedGalleryUIStyleIndex = Self.listUIStyleIndex
     }
 }
 
