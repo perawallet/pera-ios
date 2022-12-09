@@ -68,7 +68,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 return cell
             case .uiActions:
                 let cell = collectionView.dequeue(
-                    NFTsUIActionsCell.self,
+                    CollectibleGalleryUIActionsCell.self,
                     at: indexPath
                 )
                 return cell
@@ -115,7 +115,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
             NoContentWithActionIllustratedCell.self,
-            NFTsUIActionsCell.self,
+            CollectibleGalleryUIActionsCell.self,
             ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
             CollectibleListLoadingViewCell.self,
