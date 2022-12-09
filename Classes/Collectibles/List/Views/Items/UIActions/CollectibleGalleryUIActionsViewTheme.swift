@@ -12,19 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTsUIActionsViewTheme.swift
+//   CollectibleGalleryUIActionsViewTheme.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-struct NFTsUIActionsViewTheme:
+struct CollectibleGalleryUIActionsViewTheme:
     StyleSheet,
     LayoutSheet {
     let background: ViewStyle
     let searchInput: SearchInputViewTheme
-    let spacingBetweenSearchInputAndLayoutPreferenceSegmentedControl: LayoutMetric
-    let layoutPreferenceSegmentedControl: SegmentedControlTheme
+    let spacingBetweenSearchInputAndGalleryUIStyleInput: LayoutMetric
+    let galleryUIStyleInput: SegmentedControlTheme
+    let gridUIStyleOption: Segment
+    let listUIStyleOption: Segment
 
     init( _ family: LayoutFamily) {
         self.background = [
@@ -34,20 +36,15 @@ struct NFTsUIActionsViewTheme:
             placeholder: "collectibles-list-input-placeholder".localized,
             family: family
         )
-        self.spacingBetweenSearchInputAndLayoutPreferenceSegmentedControl = 16
-        self.layoutPreferenceSegmentedControl = LayoutPreferenceSegmentedControlTheme(family)
-    }
-
-    var segments: [Segment] {
-        return [
-            GridLayoutPreferenceSegment(),
-            ListLayoutPreferenceSegment()
-        ]
+        self.spacingBetweenSearchInputAndGalleryUIStyleInput = 16
+        self.galleryUIStyleInput = GalleryUIStyleInputTheme(family)
+        self.gridUIStyleOption = GridUIStyleOptionTheme()
+        self.listUIStyleOption = ListUIStyleOptionTheme()
     }
 }
 
-extension NFTsUIActionsViewTheme {
-    struct LayoutPreferenceSegmentedControlTheme: SegmentedControlTheme {
+extension CollectibleGalleryUIActionsViewTheme {
+    struct GalleryUIStyleInputTheme: SegmentedControlTheme {
         var background: MacaroonUIKit.ImageStyle?
         var divider: MacaroonUIKit.ImageStyle?
         var spacingBetweenSegments: CGFloat
@@ -57,7 +54,7 @@ extension NFTsUIActionsViewTheme {
         }
     }
 
-    struct GridLayoutPreferenceSegment: Segment {
+    struct GridUIStyleOptionTheme: Segment {
         var layout: Button.Layout
         var style: ButtonStyle
         var contentEdgeInsets: UIEdgeInsets
@@ -74,7 +71,7 @@ extension NFTsUIActionsViewTheme {
         }
     }
 
-    struct ListLayoutPreferenceSegment: Segment {
+    struct ListUIStyleOptionTheme: Segment {
         var layout: Button.Layout
         var style: ButtonStyle
         var contentEdgeInsets: UIEdgeInsets
