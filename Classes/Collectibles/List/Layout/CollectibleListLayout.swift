@@ -229,7 +229,7 @@ extension CollectibleListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForHeaderItem item: ManagementItemViewModel
     )-> CGSize {
-        let sizeCacheIdentifier = CollectibleListInfoWithFilterCell.reuseIdentifier
+        let sizeCacheIdentifier = ManagementItemWithSecondaryActionCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize

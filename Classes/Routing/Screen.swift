@@ -28,7 +28,7 @@ indirect enum Screen {
         account: Account?,
         quickAction: AssetQuickAction?,
         asset: AssetDecoration,
-        eventHandler: ASADiscoveryScreen.EventHandler
+        eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
@@ -36,7 +36,7 @@ indirect enum Screen {
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
-    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
+    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
     case accountRecover(
         flow: AccountSetupFlow,
         initialMnemonic: String? = nil
@@ -46,7 +46,7 @@ indirect enum Screen {
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
-    case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
+    case renameAccount(account: Account, delegate: RenameAccountScreenDelegate)
     case contacts
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
@@ -108,7 +108,10 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
+    case wcConnection(
+        walletConnectSession: WalletConnectSession,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
@@ -145,9 +148,8 @@ indirect enum Screen {
     )
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
-    case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
+    case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
-    case transactionFloatingActionButton
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
@@ -158,7 +160,7 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
+    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
@@ -166,9 +168,9 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?,
-        quickAction: AssetQuickAction?,
-        eventHandler: CollectibleDetailViewController.EventHandler
+        thumbnailImage: UIImage? = nil,
+        quickAction: AssetQuickAction? = nil,
+        eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
@@ -188,11 +190,14 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
-    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
+    )
+    case assetsFilterSelection(
+        filter: AssetsFilteringOption?,
+        eventHandler: AssetsFilterSelectionViewController.EventHandler
     )
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
@@ -201,6 +206,38 @@ indirect enum Screen {
     case innerTransactionList(
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
+    )
+    case swapAsset(
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
+        swapController: SwapController,
+        coordinator: SwapAssetFlowCoordinator
+    )
+    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
+    case swapSignWithLedgerProcess(
+        transactionSigner: SwapTransactionSigner,
+        draft: SignWithLedgerProcessDraft,
+        eventHandler: SignWithLedgerProcessScreen.EventHandler
+    )
+    case loading(
+        viewModel: LoadingScreenViewModel,
+        theme: LoadingScreenTheme = .init()
+    )
+    case error(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme = .init()
+    )
+    case swapSuccess(
+        swapController: SwapController,
+        theme: SwapAssetSuccessScreenTheme = .init()
+    )
+    case swapSummary(
+        swapController: SwapController,
+        theme: SwapSummaryScreenTheme = .init()
+    )
+    case alert(alert: Alert)
+    case swapIntroduction(
+        draft: SwapIntroductionDraft,
+        eventHandler: EventHandler<SwapIntroductionEvent>
     )
     case optInAsset(
         draft: OptInAssetDraft,
@@ -234,6 +271,29 @@ indirect enum Screen {
     case exportAccountsConfirmationList(
         selectedAccounts: [Account],
         eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case selectAsset(
+        dataController: SelectAssetDataController,
+        coordinator: SwapAssetFlowCoordinator?,
+        title: String,
+        theme: SelectAssetScreenTheme = .init()
+    )
+    case confirmSwap(
+        dataStore: SwapSlippageTolerancePercentageStore,
+        dataController: ConfirmSwapDataController,
+        eventHandler: EventHandler<ConfirmSwapScreen.Event>,
+        theme: ConfirmSwapScreenTheme = .init()
+    )
+    /// <todo>
+    /// We should find a way to define the EventHandler decoupled to the actual screen when we
+    /// refactor the routing mechanism.
+    case editSwapAmount(
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
+        eventHandler: EditSwapAmountScreen.EventHandler
+    )
+    case editSwapSlippage(
+        dataStore: SwapSlippageTolerancePercentageStore & SwapMutableSlippageTolerancePercentageStore,
+        eventHandler: EditSwapSlippageScreen.EventHandler
     )
     case exportAccountsResult(
         accounts: [Account],

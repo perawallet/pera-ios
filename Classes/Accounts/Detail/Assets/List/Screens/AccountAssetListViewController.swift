@@ -18,12 +18,16 @@
 import Foundation
 import MacaroonForm
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class AccountAssetListViewController:
     BaseViewController,
     SearchBarItemCellDelegate,
-    MacaroonForm.KeyboardControllerDataSource {
+    MacaroonForm.KeyboardControllerDataSource,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -39,6 +43,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -82,6 +87,8 @@ final class AccountAssetListViewController:
 
     deinit {
         keyboardController.deactivate()
+
+        stopObservingNotifications()
     }
 
     override func viewDidLoad() {
@@ -153,7 +160,10 @@ final class AccountAssetListViewController:
 
     override func linkInteractors() {
         super.linkInteractors()
+
         listView.delegate = self
+
+        observeWhenUserIsOnboardedToSwap()
     }
 
     func reloadData() {
@@ -163,6 +173,11 @@ final class AccountAssetListViewController:
     func reloadDataIfThereIsPendingUpdates() {
         if isViewFirstAppeared { return }
         dataController.reloadIfThereIsPendingUpdates()
+    }
+    
+    func changeFilterSelection(_ filter: AssetsFilteringOption) {
+        dataController.updateFilterSelection(with: filter)
+        dataController.reload()
     }
 }
 
@@ -260,6 +275,10 @@ extension AccountAssetListViewController {
     }
 
     private func updateSafeAreaWhenViewDidLayoutSubviews() {
+        if keyboardController.isKeyboardVisible {
+            return
+        }
+
         if !canAccessAccountActionsMenu() {
             additionalSafeAreaInsets.bottom = 0
             return
@@ -301,7 +320,7 @@ extension AccountAssetListViewController {
     }
 
     private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
+        accountActionsMenuActionView.isHidden = keyboardController.isKeyboardVisible || !canAccessAccountActionsMenu()
     }
 
     @objc
@@ -356,6 +375,21 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch listSection {
+        case .portfolio:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+
+            switch itemIdentifier {
+            case .portfolio:
+                let cell = cell as! AccountPortfolioCell
+                cell.startObserving(event: .showMinimumBalanceInfo) {
+                    [unowned self] in
+                    openMinimumBalanceInfo()
+                }
+            default:
+                break
+            }
         case .assets:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return
@@ -419,6 +453,10 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+            item.isSwapBadgeVisible = !isOnboardedToSwap
+
             positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
@@ -430,6 +468,15 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.buyAlgo)
             }
 
+            item.startObserving(event: .swap) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.swap)
+            }
+
             item.startObserving(event: .send) {
                 [weak self] in
                 guard let self = self else {
@@ -437,15 +484,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 }
 
                 self.eventHandler?(.send)
-            }
-
-            item.startObserving(event: .address) {
-                [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.eventHandler?(.address)
             }
 
             item.startObserving(event: .more) {
@@ -633,6 +671,44 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension AccountAssetListViewController {
+    private func openMinimumBalanceInfo() {
+        let uiSheet = UISheet(
+            title: "minimum-balance-title".localized.bodyLargeMedium(),
+            body: "minimum-balance-description".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToMinimumBalanceInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            guard
+                let indexPath = self.listDataSource.indexPath(for: .quickActions),
+                let cell = self.listView.cellForItem(at: indexPath) as? AccountQuickActionsCell
+            else {
+                return
+            }
+
+            cell.isSwapBadgeVisible = false
+        }
+    }
+}
+
 /// <mark>
 /// SearchBarItemCellDelegate
 extension AccountAssetListViewController {
@@ -809,8 +885,8 @@ extension AccountAssetListViewController {
         case manageAssets(isWatchAccount: Bool)
         case addAsset
         case buyAlgo
+        case swap
         case send
-        case address
         case more
         case transactionOption
     }

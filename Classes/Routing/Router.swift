@@ -25,8 +25,7 @@ class Router:
     NotificationObserver,
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate,
-    WalletConnectorDelegate,
-    WCConnectionApprovalViewControllerDelegate
+    WalletConnectorDelegate
     {
     var notificationObservations: [NSObjectProtocol] = []
     
@@ -40,6 +39,7 @@ class Router:
 
     private lazy var transactionController = TransactionController(
         api: appConfiguration.api,
+        sharedDataController: appConfiguration.sharedDataController,
         bannerController: appConfiguration.bannerController,
         analytics: appConfiguration.analytics
     )
@@ -108,6 +108,28 @@ class Router:
         viewController.dismissScreen(completion: completion)
     }
     
+    func launchWithBottomWarning(configurator: BottomWarningViewConfigurator) {
+        func launch(
+            tab: TabBarItemID
+        ) {
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: tab)
+            }
+        }
+        
+        launch(tab: .home)
+        
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        
+        transition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+        
+        ongoingTransitions.append(transition)
+    }
+    
     func launch(
         deeplink screen: DeepLinkParser.Screen
     ) {
@@ -159,6 +181,19 @@ class Router:
                 case .watchAccount:
                     launch(tab: .home)
 
+                    let session = self.appConfiguration.session
+
+                    if let authenticatedUser = session.authenticatedUser,
+                       authenticatedUser.hasReachedTotalAccountLimit {
+
+                        let bannerController = self.appConfiguration.bannerController
+                        bannerController.presentErrorBanner(
+                            title: "user-account-limit-error-title".localized,
+                            message: "user-account-limit-error-message".localized
+                        )
+                        return
+                    }
+
                     self.route(
                         to: .watchAccountAddition(
                             flow: .addNewAccount(
@@ -189,6 +224,22 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
+        case .asaDiscoveryWithOptInAction: break /// <note> .assetActionConfirmation is used instead.
+        case .asaDiscoveryWithOptOutAction(let account, let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDiscovery(
+                account: account,
+                quickAction: .optOut,
+                asset: asset
+            )
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
         case .asaDetail(let account, let asset):
             launch(tab: .home)
 
@@ -204,6 +255,20 @@ class Router:
                     break
                 }
             }
+
+            route(
+                to: screen,
+                from: visibleScreen,
+                by: .present
+            )
+        case .collectibleDetail(account: let account, asset: let asset):
+            launch(tab: .home)
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.collectibleDetail(
+                asset: asset,
+                account: account
+            )
 
             route(
                 to: screen,
@@ -466,6 +531,7 @@ class Router:
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADetailScreen(
+                swapDataStore: SwapDataLocalStore(),
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
@@ -509,8 +575,14 @@ class Router:
             viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
         case let .passphraseVerify(flow):
             viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
-        case let .accountNameSetup(flow, mode, accountAddress):
-            viewController = AccountNameSetupViewController(flow: flow, mode: mode, accountAddress: accountAddress, configuration: configuration)
+        case let .accountNameSetup(flow, mode, nameServiceName, accountAddress):
+            viewController = AccountNameSetupViewController(
+                flow: flow,
+                mode: mode,
+                nameServiceName: nameServiceName,
+                accountAddress: accountAddress,
+                configuration: configuration
+            )
         case let .accountRecover(flow, initialMnemonic):
             viewController = AccountRecoverViewController(
                 accountSetupFlow: flow,
@@ -540,8 +612,8 @@ class Router:
             viewController = optionsViewController
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
-        case let .editAccount(account, delegate):
-            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .renameAccount(account, delegate):
+            let aViewController = RenameAccountScreen(account: account, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
         case let .addContact(address, name):
@@ -595,6 +667,7 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
@@ -697,9 +770,23 @@ class Router:
         case .appearanceSelection:
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow, address):
+            let pushNotificationController = PushNotificationController(
+                target: ALGAppTarget.current,
+                session: appConfiguration.session,
+                api: appConfiguration.api,
+                bannerController: appConfiguration.bannerController
+            )
+            let dataController = WatchAccountAdditionAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                session: appConfiguration.session,
+                pushNotificationController: pushNotificationController,
+                analytics: appConfiguration.analytics
+            )
             viewController = WatchAccountAdditionViewController(
                 accountSetupFlow: flow,
                 address: address,
+                dataController:dataController,
                 configuration: configuration
             )
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):
@@ -731,16 +818,20 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnectionApproval(walletConnectSession, delegate, completion):
-            let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
+        case let .wcConnection(walletConnectSession, completion):
+            let dataController = WCConnectionAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = WCConnectionScreen(
                 walletConnectSession: walletConnectSession,
                 walletConnectSessionConnectionCompletionHandler: completion,
+                dataController: dataController,
                 configuration: configuration
             )
-            wcConnectionApprovalViewController.delegate = delegate
-            viewController = wcConnectionApprovalViewController
+            viewController = screen
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
+                configuration.sharedDataController,
                 analytics: configuration.analytics,
                 walletConnector: configuration.walletConnector
             )
@@ -875,18 +966,15 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case .sendTransactionPreview(let draft, let transactionController):
+        case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):
             let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .transactionFloatingActionButton:
-            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
@@ -1008,10 +1096,6 @@ class Router:
             viewController = buyAlgoHomeScreen
         case let .buyAlgoTransaction(buyAlgoParams):
             viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
-        case .copyAddressStory(let eventHandler):
-            let screen = CopyAddressStoryScreen(configuration: configuration)
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -1026,6 +1110,13 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .assetsFilterSelection(let filter, let eventHandler):
+            let aViewController = AssetsFilterSelectionViewController(
+                filter: filter,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(
                 dataController: dataController,
@@ -1038,6 +1129,100 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case .swapAsset(let dataStore, let swapController, let coordinator):
+            let dataController = SwapAssetAPIDataController(
+                dataStore: dataStore,
+                swapController: swapController,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+
+            viewController = SwapAssetScreen(
+                dataStore: dataStore,
+                dataController: dataController,
+                coordinator: coordinator,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
+        case .swapAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = SwapAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = SwapAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = SwapAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<SwapAccountSelectionListSectionIdentifier, SwapAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: SwapAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .swapSignWithLedgerProcess(let transactionSigner, let draft, let eventHandler):
+            viewController = SignWithLedgerProcessScreen(
+                transactionSigner: transactionSigner,
+                draft: draft,
+                eventHandler: eventHandler
+            )
+        case .loading(let viewModel, let theme):
+            viewController = LoadingScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .error(let viewModel, let theme):
+            viewController = ErrorScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSuccess(let swapController, let theme):
+            viewController = SwapAssetSuccessScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSummary(let swapController, let theme):
+            viewController = SwapSummaryScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .alert(let alert):
+            viewController = AlertScreen(alert: alert)
+        case .swapIntroduction(let draft, let eventHandler):
+            let aViewController = SwapIntroductionScreen(draft: draft)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .optInAsset(let draft, let eventHandler):
@@ -1103,6 +1288,46 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .selectAsset(let dataController, let coordinator, let title, let theme):
+            let aViewController = SelectAssetScreen(
+                dataController: dataController,
+                coordinator: coordinator,
+                theme: theme,
+                configuration: configuration
+            )
+
+            aViewController.title = title
+            viewController = aViewController
+        case .confirmSwap(let dataStore, let dataController, let eventHandler, let theme):
+            let screen = ConfirmSwapScreen(
+                dataStore: dataStore,
+                dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                theme: theme,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .editSwapAmount(let dataStore, let eventHandler):
+            let aViewController = EditSwapAmountScreen(
+                dataStore: dataStore,
+                dataProvider: EditSwapAmountLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
+        case .editSwapSlippage(let dataStore, let eventHandler):
+            let aViewController = EditSwapSlippageScreen(
+                dataStore: dataStore,
+                dataProvider: EditSwapSlippageToleranceLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case .exportAccountsResult(let accounts, let eventHandler):
             let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
             screen.eventHandler = eventHandler
@@ -1194,6 +1419,10 @@ extension Router {
             return
         }
 
+        let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+        let request = OptInBlockchainRequest(account: account, asset: asset)
+        monitor.startMonitoringOptInUpdates(request)
+
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
             assetIndex: Int64(draft.assetId)
@@ -1222,6 +1451,19 @@ extension Router {
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
             !$0.value.isWatchAccount()
         }
+
+        let api = appConfiguration.api
+        let sessionChainId = session.chainId(for: api.network)
+
+        if !api.network.allowedChainIDs.contains(sessionChainId) {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-transaction-error-node".localized
+                )
+            }
+            return
+        }
         
         if !hasNonWatchAccount {
             asyncMain { [weak bannerController] in
@@ -1238,15 +1480,38 @@ extension Router {
             
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-
-            transition.perform(
-                .wcConnectionApproval(
+            
+            let screen = transition.perform(
+                .wcConnection(
                     walletConnectSession: session,
-                    delegate: self,
                     completion: completion
                 ),
                 by: .present
-            )
+            ) as? WCConnectionScreen
+            
+            screen?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                
+                switch event {
+                case .performCancel:
+                    screen?.dismissScreen()
+                case .performConnect:
+                    guard let dappName = screen?.walletConnectSession.dAppInfo.peerMeta.name else {
+                        screen?.dismissScreen()
+                        return
+                    }
+                    
+                    screen?.dismissScreen {
+                        [weak self] in
+                        guard let self = self else { return }
+                        
+                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                    }
+                }
+            }
+            
+
             
             self.ongoingTransitions.append(transition)
         }
@@ -1261,25 +1526,6 @@ extension Router {
 }
 
 extension Router {
-    func wcConnectionApprovalViewControllerDidApproveConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
-        
-        wcConnectionApprovalViewController.dismissScreen {
-            [weak self] in
-            guard let self = self else { return }
-            
-            self.presentWCSessionsApprovedModal(dAppName: dAppName)
-        }
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
-    ) {
-        wcConnectionApprovalViewController.dismissScreen()
-    }
-    
     private func presentWCSessionsApprovedModal(
         dAppName: String
     ) {
@@ -1513,6 +1759,10 @@ extension Router {
                 return
             }
 
+            let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            let request = OptInBlockchainRequest(account: account, asset: asset)
+            monitor.startMonitoringOptInUpdates(request)
+
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
@@ -1571,6 +1821,15 @@ extension Router {
     ) {
         appConfiguration.loadingController.stopLoading()
 
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1584,6 +1843,15 @@ extension Router {
         didFailedTransaction error: HIPTransactionError
     ) {
         appConfiguration.loadingController.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):

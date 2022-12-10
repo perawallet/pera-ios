@@ -24,7 +24,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AnnouncementList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1)
             .path(.announcements, args: draft.deviceId)
             .method(.get)
             .completionHandler(handler)

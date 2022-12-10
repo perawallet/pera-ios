@@ -300,7 +300,7 @@ extension CollectibleDetailAPIDataController {
                     CollectibleTransactionInformation(
                         icon: .account(account),
                         title: "collectible-detail-owner".localized,
-                        value: account.name.fallback(account.address.shortAddressDisplay),
+                        value: account.primaryDisplayName,
                         isCollectibleSpecificValue: false
                     )
                 )

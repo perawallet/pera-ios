@@ -105,7 +105,18 @@ extension AssetPreviewViewModel {
             .setImageQuality(.normal)
             .build()
 
-        let placeholder = getPlaceholder(asset)
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholder = AssetListItemViewModel.getPlaceholder(
+            placeholderText,
+            with: TextAttributes(
+                font: Fonts.DMSans.regular.make(13),
+                lineHeightMultiplier: 1.18
+            )
+        )
 
         imageSource = PNGImageSource(
             url: url,

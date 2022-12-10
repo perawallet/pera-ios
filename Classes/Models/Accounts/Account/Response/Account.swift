@@ -160,12 +160,43 @@ final class Account: ALGEntityModel {
     }
 
     subscript (assetId: AssetID) -> Asset? {
+        if assetId == algo.id {
+            return algo
+        }
+        
         if let index = standardAssetsIndexer[assetId] {
             return standardAssets?[safe: index]
         }
 
         let index = collectibleAssetsIndexer[assetId]
         return index.unwrap { collectibleAssets?[safe: $0] }
+    }
+}
+
+extension Account {
+    var primaryDisplayName: String {
+        return name.unwrap(or: address.shortAddressDisplay)
+    }
+
+    var secondaryDisplayName: String? {
+        let name = name
+        let address = address
+        let shortAddressDisplay = address.shortAddressDisplay
+
+        if type == .standard,
+           name == shortAddressDisplay {
+            return nil
+        }
+
+        let subtitle: String?
+
+        if (name != nil && name != shortAddressDisplay) {
+            subtitle = shortAddressDisplay
+        } else {
+            subtitle = typeTitle
+        }
+
+        return subtitle
     }
 }
 

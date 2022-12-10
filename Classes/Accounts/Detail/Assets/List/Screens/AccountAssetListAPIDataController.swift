@@ -25,6 +25,11 @@ final class AccountAssetListAPIDataController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+    private lazy var minimumBalanceCalculator = TransactionFeeCalculator(
+        transactionDraft: nil,
+        transactionData: nil,
+        params: nil
+    )
 
     private var accountHandle: AccountHandle
 
@@ -58,6 +63,10 @@ extension AccountAssetListAPIDataController {
 
     func reload() {
         deliverContentUpdates()
+    }
+    
+    func updateFilterSelection(with newSelection: AssetsFilteringOption) {
+        sharedDataController.selectedAssetsFilteringOption = newSelection
     }
 
     func reloadIfThereIsPendingUpdates() {
@@ -177,6 +186,12 @@ extension AccountAssetListAPIDataController {
                 if hasPendingOptOut {
                     return
                 }
+                
+                if self.sharedDataController.selectedAssetsFilteringOption == .hideZeroBalance,
+                   !asset.isAlgo,
+                   asset.amount == 0 {
+                    return
+                }
 
                 if let standardAsset = asset as? StandardAsset {
                     let assetItem = self.makeAssetListItem(standardAsset)
@@ -251,19 +266,35 @@ extension AccountAssetListAPIDataController {
 extension AccountAssetListAPIDataController {
     private func makePortfolioItem() -> AccountAssetsItem {
         let currency = sharedDataController.currency
-        let portfolio = AccountPortfolioItem(
-            accountValue: accountHandle,
-            currency: currency,
-            currencyFormatter: currencyFormatter
-        )
-        let viewModel = AccountPortfolioViewModel(portfolio)
 
         let isWatchAccount = accountHandle.value.isWatchAccount()
+
         if isWatchAccount {
-            return .watchPortfolio(viewModel)
-        } else {
-            return .portfolio(viewModel)
-        }
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let viewModel = WatchAccountPortfolioViewModel(portfolio)
+                return .watchPortfolio(viewModel)
+            } else {
+                let calculatedMinimumBalance =
+                    self.minimumBalanceCalculator
+                        .calculateMinimumAmount(
+                            for: self.accountHandle.value,
+                            with: .algosTransaction,
+                            calculatedFee: .zero,
+                            isAfterTransaction: false
+                        )
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter,
+                    minimumBalance: calculatedMinimumBalance
+                )
+                let viewModel = AccountPortfolioViewModel(portfolio)
+                 return .portfolio(viewModel)
+            }     
     }
 
     private func makeTitleItem() -> AccountAssetsItem {

@@ -188,7 +188,7 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForWatchPortfolioItem item: AccountPortfolioViewModel,
+        sizeForWatchPortfolioItem item: WatchAccountPortfolioViewModel,
         section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = WatchAccountPortfolioCell.reuseIdentifier

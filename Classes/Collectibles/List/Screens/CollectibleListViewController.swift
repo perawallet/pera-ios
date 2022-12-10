@@ -473,8 +473,7 @@ extension CollectibleListViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: thumbnailImage,
-            quickAction: nil
+            thumbnailImage: thumbnailImage
         ) { [weak self] event in
             guard let self = self else { return }
 
@@ -563,7 +562,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
         )
     }
 
-    func managementOptionsViewControllerDidTapFilter(
+    func managementOptionsViewControllerDidTapFilterCollectibles(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
         let controller = open(
@@ -586,6 +585,10 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     }
 
     func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {}
 }

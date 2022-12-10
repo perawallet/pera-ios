@@ -20,25 +20,27 @@ import Foundation
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
-
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    
+
     private var visibleAnnouncement: Announcement?
 
     private var lastSnapshot: Snapshot?
     
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
-    
+
     init(
-        _ sharedDataController: SharedDataController,
+        sharedDataController: SharedDataController,
+        session: Session,
         announcementDataController: AnnouncementAPIDataController
     ) {
         self.sharedDataController = sharedDataController
+        self.session = session
         self.announcementDataController = announcementDataController
     }
     
@@ -147,8 +149,8 @@ extension HomeAPIDataController {
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
-                let cellItem: HomeAccountItemIdentifier = .cell(accountPreviewViewModel)
+                let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
+                let cellItem: HomeAccountItemIdentifier = .cell(accountListItemViewModel)
                 let item: HomeItemIdentifier = .account(cellItem)
 
                 accounts.append($0)
@@ -249,7 +251,14 @@ extension HomeAPIDataController {
 }
 
 extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
-    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement) {
-        self.visibleAnnouncement = announcement
+    func announcementAPIDataController(
+        _ dataController: AnnouncementAPIDataController,
+        didFetch announcements: [Announcement]
+    ) {
+        let announcementToDisplay = announcements.first { announcement in
+            return !session.isAnnouncementHidden(announcement)
+        }
+
+        self.visibleAnnouncement = announcementToDisplay
     }
 }

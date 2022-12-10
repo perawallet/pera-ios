@@ -80,7 +80,7 @@ extension SelectAssetViewControllerDataSource {
             currencyFormatter: currencyFormatter,
             currencyFormattingContext: .listItem
         )
-        let listItem = SelectAssetListItem(item: item)
+        let listItem = SelectAssetListItem(item: item, account: account)
         return .asset(listItem)
     }
 
@@ -161,13 +161,35 @@ enum SelectAssetListItemIdentifier {
     }
 }
 
-struct SelectAssetListItem {
-    let asset: Asset
-    let viewModel: AssetListItemViewModel
+struct SelectAssetListItem: Hashable {
+    let model: Asset
+    let viewModel: SelectAssetListItemViewModel
 
-    init(item: AssetItem) {
-        self.asset = item.asset
-        self.viewModel = AssetListItemViewModel(item)
+    init(
+        item: AssetItem,
+        account: Account
+    ) {
+        self.model = item.asset
+        self.viewModel = SelectAssetListItemViewModel(
+            item: item,
+            account: account
+        )
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(model.id)
+        hasher.combine(model.naming.name)
+        hasher.combine(model.naming.unitName)
+    }
+
+    static func == (
+        lhs: SelectAssetListItem,
+        rhs: SelectAssetListItem
+    ) -> Bool {
+        return
+            lhs.model.id == rhs.model.id &&
+            lhs.model.naming.name == rhs.model.naming.name &&
+            lhs.model.naming.unitName == rhs.model.naming.unitName
     }
 }
 
