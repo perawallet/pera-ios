@@ -62,22 +62,21 @@ extension AccountAssetDescendingAmountAlgorithm {
     }
 
     private func getValueInUSD(for asset: Asset) -> Decimal {
-        var valueInUSD = asset.totalUSDValue ?? 0
+        var valueInUSD: Decimal = 0.0
 
-        do {
-            if asset.isAlgo {
-                guard let fiatRawCurrency = try currency.fiatValue?.unwrap() else {
-                    return 0
-                }
-
-                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
-            } else {
-                guard currency.primaryValue != nil else {
-                    return 0
-                }
+        if asset.isAlgo {
+            guard let fiatCurrencyValue = try? currency.fiatValue?.unwrap() else {
+                return valueInUSD
             }
-        } catch {
-            valueInUSD = 0
+
+            let exchanger = CurrencyExchanger(currency: fiatCurrencyValue)
+            valueInUSD = (try? exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)) ?? 0
+        } else {
+            guard currency.primaryValue != nil else {
+                return valueInUSD
+            }
+
+            valueInUSD = asset.totalUSDValue ?? 0
         }
 
         return valueInUSD

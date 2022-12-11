@@ -110,13 +110,7 @@ extension AssetPreviewViewModel {
         : asset.naming.name
 
         let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = AssetListItemViewModel.getPlaceholder(
-            placeholderText,
-            with: TextAttributes(
-                font: Fonts.DMSans.regular.make(13),
-                lineHeightMultiplier: 1.18
-            )
-        )
+        let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
             url: url,

@@ -162,14 +162,14 @@ enum SelectAssetListItemIdentifier {
 }
 
 struct SelectAssetListItem: Hashable {
-    let model: Asset
+    let asset: Asset
     let viewModel: SelectAssetListItemViewModel
 
     init(
         item: AssetItem,
         account: Account
     ) {
-        self.model = item.asset
+        self.asset = item.asset
         self.viewModel = SelectAssetListItemViewModel(
             item: item,
             account: account
@@ -177,9 +177,9 @@ struct SelectAssetListItem: Hashable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(model.id)
-        hasher.combine(model.naming.name)
-        hasher.combine(model.naming.unitName)
+        hasher.combine(asset.id)
+        hasher.combine(asset.naming.name)
+        hasher.combine(asset.naming.unitName)
     }
 
     static func == (
@@ -187,9 +187,9 @@ struct SelectAssetListItem: Hashable {
         rhs: SelectAssetListItem
     ) -> Bool {
         return
-            lhs.model.id == rhs.model.id &&
-            lhs.model.naming.name == rhs.model.naming.name &&
-            lhs.model.naming.unitName == rhs.model.naming.unitName
+            lhs.asset.id == rhs.asset.id &&
+            lhs.asset.naming.name == rhs.asset.naming.name &&
+            lhs.asset.naming.unitName == rhs.asset.naming.unitName
     }
 }
 

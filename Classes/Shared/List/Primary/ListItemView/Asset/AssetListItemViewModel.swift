@@ -119,8 +119,6 @@ extension AssetListItemViewModel {
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
-        valueInUSD = 0
-
         do {
             let exchanger: CurrencyExchanger
             if asset.isAlgo {
@@ -133,8 +131,6 @@ extension AssetListItemViewModel {
                 exchanger = CurrencyExchanger(currency: rawFiatCurrency)
                 amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
 
-                valueInUSD = try exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)
-
                 formatter.currency = rawFiatCurrency
             } else {
                 guard let currencyValue = item.currency.primaryValue else {
@@ -145,8 +141,6 @@ extension AssetListItemViewModel {
                 let rawCurrency = try currencyValue.unwrap()
                 exchanger = CurrencyExchanger(currency: rawCurrency)
                 amount = try exchanger.exchange(asset)
-
-                valueInUSD = asset.totalUSDValue ?? 0
 
                 formatter.currency = rawCurrency
             }
@@ -163,9 +157,8 @@ extension AssetListItemViewModel {
 }
 
 extension AssetListItemViewModel {
-    static func getPlaceholder(
-        _ aPlaceholder: String?,
-        with attributes: TextAttributes
+    func getPlaceholder(
+        _ asset: Asset
     ) -> ImagePlaceholder? {
         let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
@@ -230,7 +223,3 @@ extension AssetListItemViewModel {
         )
     }
 }
-typealias TextAttributes = (
-    font: CustomFont,
-    lineHeightMultiplier: LayoutMetric
-)
