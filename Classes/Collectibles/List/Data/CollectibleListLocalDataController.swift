@@ -18,6 +18,7 @@ import Foundation
 import CoreGraphics
 import MacaroonUtils
 
+/// <todo> Separate the data controllers (Account Detail Collectibles & Collectibles).
 final class CollectibleListLocalDataController:
     CollectibleListDataController,
     SharedDataControllerObserver,
@@ -33,15 +34,7 @@ final class CollectibleListLocalDataController:
     static var didSendCollectible: Notification.Name {
         return .init(rawValue: Constants.Notification.collectibleListDidSendCollectible)
     }
-
-    static var didChangeFilter: Notification.Name {
-        return .init(rawValue: Constants.Notification.collectibleListDidChangeFilter)
-    }
-
-    static var collectibleListFilterInfoKey: String {
-        return Constants.Notification.InfoKey.collectibleListFilter
-    }
-
+    
     static var accountAssetPairUserInfoKey: String {
         return Constants.Notification.InfoKey.collectibleListAccountAssetPair
     }
@@ -55,13 +48,13 @@ final class CollectibleListLocalDataController:
         label: Constants.DispatchQueues.collectibleListSnapshot
     )
 
-    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+    private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
+    private lazy var collectibleFilterStore: CollectibleFilterStore = .init()
 
     let galleryAccount: CollectibleGalleryAccount
 
     private var accounts: AccountCollection = []
     private let sharedDataController: SharedDataController
-    private let cache: Cache
 
     typealias AccountAssetPair = (account: Account, asset: CollectibleAsset)
     private var addedAccountAssetPairs: [AccountAssetPair] = []
@@ -74,10 +67,6 @@ final class CollectibleListLocalDataController:
 
     private var lastQuery: String?
 
-    private(set) var currentFilter: Filter {
-        didSet { cache.filter = currentFilter }
-    }
-
     private var hiddenCollectibleCount: Int = .zero
 
     init(
@@ -89,12 +78,7 @@ final class CollectibleListLocalDataController:
 
         self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
 
-        let cache = Cache()
-        self.cache = cache
-        self.currentFilter = cache.filter ?? .owned
-
         self.observePendingAccountAssetPairs()
-        self.observeDidChangeFilter()
     }
 
     deinit {
@@ -121,45 +105,6 @@ extension CollectibleListLocalDataController {
     func resetSearch() {
         lastQuery = nil
         deliverContentSnapshot()
-    }
-}
-
-extension CollectibleListLocalDataController {
-    func filter(
-        by filter: Filter
-    ) {
-        if filter == currentFilter {
-            return
-        }
-
-        notifyDidChangeFilterObservers(filter)
-    }
-
-    private func notifyDidChangeFilterObservers(_ filter: Filter) {
-        NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didChangeFilter,
-            object: nil,
-            userInfo: [
-                Self.collectibleListFilterInfoKey: filter
-            ]
-        )
-    }
-
-    private func observeDidChangeFilter() {
-        observe(notification: Self.didChangeFilter) {
-            [weak self] notification in
-            guard let self = self else { return }
-
-            if let filter =
-                notification.userInfo?[
-                    Self.collectibleListFilterInfoKey
-                ] as? Filter {
-
-                self.currentFilter = filter
-
-                self.deliverContentSnapshot(with: self.lastQuery)
-            }
-        }
     }
 }
 
@@ -268,7 +213,14 @@ extension CollectibleListLocalDataController {
                 return
             }
 
-            if currentFilter == .owned,
+            if case .all = galleryAccount,
+               !collectibleFilterStore.displayWatchAccountCollectibleAssets,
+               account.isWatchAccount() {
+                hiddenCollectibleCount += 1
+                return
+            }
+
+            if !collectibleFilterStore.displayOptedInCollectibleAssets,
                !collectibleAsset.isOwned {
                 hiddenCollectibleCount += 1
                 return
@@ -795,27 +747,5 @@ extension CollectibleListLocalDataController {
         query: String
     ) -> Bool {
         return asset.unitName.someString.localizedCaseInsensitiveContains(query)
-    }
-}
-
-extension CollectibleListLocalDataController {
-    private final class Cache: Storable {
-        typealias Object = Any
-
-        var filter: Filter? {
-            get {
-                let aRawValue = userDefaults.integer(forKey: filterKey)
-                return Filter(rawValue: aRawValue)
-            }
-            set {
-                if newValue == filter {
-                    return
-                }
-
-                userDefaults.set(newValue?.rawValue, forKey: filterKey)
-            }
-        }
-
-        private let filterKey = "cache.key.collectibleListFilter"
     }
 }

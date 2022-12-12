@@ -117,6 +117,8 @@ extension AccountCollectibleListViewController {
                 }
 
                 self.bottomBannerController.dismissError()
+            case .didTapFilter:
+                self.openFilterSelection()
             }
         }
     }
@@ -169,6 +171,28 @@ extension AccountCollectibleListViewController {
         ) as? ReceiveCollectibleAssetListViewController
 
         controller?.delegate = self
+    }
+}
+
+extension AccountCollectibleListViewController {
+    private func openFilterSelection() {
+        var uiInteractions = AccountCollectibleListFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [weak self] hasChanges in
+            guard let self = self else { return }
+
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                if hasChanges { self.collectibleListScreen.reload() }
+            }
+        }
+
+        open(
+            .accountCollectibleListFilterSelection(uiInteractions: uiInteractions),
+            by: .present
+        )
     }
 }
 

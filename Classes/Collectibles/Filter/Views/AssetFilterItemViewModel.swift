@@ -12,32 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  UserDefaults+Additions.swift
+//   AssetFilterItemViewModel.swift
 
-import Foundation
+import MacaroonUIKit
 
-extension UserDefaults {
-    
-    func set(_ object: Any, for key: String) {
-        set(object, forKey: key)
-    }
-    
-    func remove(for key: String) {
-        removeObject(forKey: key)
-    }
-    
-    func clear() {
-        let defaultsDictionary = dictionaryRepresentation()
-        
-        defaultsDictionary.keys.forEach { key in
-            removeObject(forKey: key)
-        }
-    }
+protocol AssetFilterItemViewModel: ViewModel {
+    var title: TextProvider? { get }
+    var description: TextProvider? { get }
 }
 
-extension UserDefaults {
-    func valueExists(forKey key: String) -> Bool {
-        return object(forKey: key) != nil
+extension AssetFilterItemViewModel {
+    static func getTitle(_ aTitle: String?) -> TextProvider? {
+        return aTitle?.bodyRegular()
+    }
+
+    static func getDescription(_ aDescription: String?) -> TextProvider? {
+        return aDescription?.footnoteRegular()
     }
 }

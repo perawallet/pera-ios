@@ -348,7 +348,7 @@
 "options-manage-assets" = "Manage Assets";
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
-"opitons-collectibles-filter" = "Filter NFTs";
+"opitons-collectibles-filter" = "Filter";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -1011,9 +1011,11 @@
 "collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
 // MARK: Collectible Filter Selection
-"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-title" = "Filter NFTs";
 "collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
 "collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter--selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
 
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";

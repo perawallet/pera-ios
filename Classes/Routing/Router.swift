@@ -1002,11 +1002,14 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .collectiblesFilterSelection(filter):
-            viewController = CollectiblesFilterSelectionViewController(
-                filter: filter,
-                configuration: configuration
-            )
+        case let .collectiblesFilterSelection(uiInteractions):
+            let aViewController = CollectiblesFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
+        case let .accountCollectibleListFilterSelection(uiInteractions):
+            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
             viewController = ReceiveCollectibleAccountListViewController(
                 dataController: dataController,

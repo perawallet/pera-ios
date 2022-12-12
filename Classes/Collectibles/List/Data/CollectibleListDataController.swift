@@ -31,13 +31,6 @@ protocol CollectibleListDataController: AnyObject {
     func reload()
     func search(for query: String)
     func resetSearch()
-
-    typealias Filter = CollectibleAssetFilter
-    var currentFilter: Filter { get }
-
-    func filter(
-        by filter: Filter
-    )
 }
 
 enum CollectibleSection:

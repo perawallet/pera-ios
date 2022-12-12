@@ -380,31 +380,33 @@ extension CollectibleListViewController {
             guard let self = self else {
                 return
             }
-
+            
             let isWatchAccount =
             self.dataController.galleryAccount.singleAccount?.value.isWatchAccount() ?? false
-
+            
             if isWatchAccount {
-                self.dataController.filter(
-                    by: .all
-                )
-
+                self.clearFiltersAndReload()
                 return
             }
-
+            
             self.openReceiveCollectibleAccountList()
         }
-
+        
         cell.startObserving(event: .performSecondaryAction) {
             [weak self] in
             guard let self = self else {
                 return
             }
-
-            self.dataController.filter(
-                by: .all
-            )
+            self.clearFiltersAndReload()
         }
+    }
+    
+    private func clearFiltersAndReload() {
+        var store = CollectibleFilterStore()
+        store.displayWatchAccountCollectibleAssets = true
+        store.displayOptedInCollectibleAssets = true
+
+        reload()
     }
 
     private func linkInteractors(
@@ -545,7 +547,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
                 guard let self = self else { return }
 
                 switch event {
-                case .didComplete: self.dataController.reload()
+                case .didComplete: self.reload()
                 }
             }
         }
@@ -565,23 +567,7 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
     func managementOptionsViewControllerDidTapFilterCollectibles(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let controller = open(
-            .collectiblesFilterSelection(
-                filter: dataController.currentFilter
-            ),
-            by: .present
-        ) as? CollectiblesFilterSelectionViewController
-
-        controller?.handlers.didChangeFilter = {
-            [weak self] filter in
-            guard let self = self else {
-                return
-            }
-
-            self.dataController.filter(
-                by: filter
-            )
-        }
+        eventHandler?(.didTapFilter)
     }
 
     func managementOptionsViewControllerDidTapRemove(
@@ -619,11 +605,18 @@ extension CollectibleListViewController {
 }
 
 extension CollectibleListViewController {
+    func reload() {
+        dataController.reload()
+    }
+}
+
+extension CollectibleListViewController {
     enum Event {
         case didUpdate([AccountHandle])
         case didTapReceive
         case willDisplayListHeader
         case didEndDisplayingListHeader
         case didFinishRunning(hasError: Bool)
+        case didTapFilter
     }
 }
