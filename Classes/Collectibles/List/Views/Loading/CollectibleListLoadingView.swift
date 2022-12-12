@@ -22,7 +22,7 @@ final class CollectibleListLoadingView:
     ListReusable,
     ShimmerAnimationDisplaying {
     private lazy var managementItemView = ManagementItemView()
-    private lazy var searchInput = SearchInputView()
+    private lazy var uiActionView = CollectibleGalleryUIActionsView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
 
     private static let managementItemViewModel = ManagementItemViewModel(
@@ -46,7 +46,7 @@ final class CollectibleListLoadingView:
         _ theme: CollectibleListLoadingViewTheme
     ) {
         addManagementItem(theme)
-        addSearchInput(theme)
+        addUIAction(theme)
         addCollectibleListItemsVerticalStack(theme)
         addCollectibleListItem(theme)
     }
@@ -91,8 +91,8 @@ final class CollectibleListLoadingView:
         let preferredHeight =
         theme.managementItemTopPadding +
         managementItemSize.height +
-        theme.searchInputHeight +
-        theme.searchInputPaddings.top +
+        theme.uiActionHeight +
+        theme.uiActionPaddings.top +
         theme.collectibleListItemsVerticalStackPaddings.top +
         theme.collectibleListItemsVerticalStackSpacing +
         collectibleListItemsVerticalStackItemsHeight +
@@ -117,19 +117,21 @@ extension CollectibleListLoadingView {
         }
     }
 
-    private func addSearchInput(
+    private func addUIAction(
         _ theme: CollectibleListLoadingViewTheme
     ) {
-        searchInput.customize(theme.searchInputTheme)
+        uiActionView.customize(theme.uiAction)
 
-        addSubview(searchInput)
-        searchInput.snp.makeConstraints {
-            $0.top == managementItemView.snp.bottom + theme.searchInputPaddings.top
-            $0.leading == theme.searchInputPaddings.leading
-            $0.trailing == theme.searchInputPaddings.trailing
+        addSubview(uiActionView)
+        uiActionView.snp.makeConstraints {
+            $0.top == managementItemView.snp.bottom + theme.uiActionPaddings.top
+            $0.leading == theme.uiActionPaddings.leading
+            $0.trailing == theme.uiActionPaddings.trailing
 
-            $0.fitToHeight(theme.searchInputHeight)
+            $0.fitToHeight(theme.uiActionHeight)
         }
+
+        uiActionView.deselectListUIStyle()
     }
 
     private func addCollectibleListItemsVerticalStack(
@@ -142,7 +144,7 @@ extension CollectibleListLoadingView {
         addSubview(collectibleListItemsVerticalStack)
 
         collectibleListItemsVerticalStack.snp.makeConstraints {
-            $0.top == searchInput.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
+            $0.top == uiActionView.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
             $0.leading == theme.collectibleListItemsVerticalStackPaddings.leading
             $0.trailing == theme.collectibleListItemsVerticalStackPaddings.trailing
             $0.bottom == theme.collectibleListItemsVerticalStackPaddings.bottom

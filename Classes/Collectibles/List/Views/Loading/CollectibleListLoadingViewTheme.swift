@@ -22,9 +22,9 @@ struct CollectibleListLoadingViewTheme:
     let managementItemTheme: ManagementItemViewTheme
     let managementItemTopPadding: LayoutMetric
 
-    let searchInputTheme: SearchInputViewTheme
-    let searchInputPaddings: LayoutPaddings
-    let searchInputHeight: LayoutMetric
+    let uiAction: CollectibleGalleryUIActionsViewTheme
+    let uiActionPaddings: LayoutPaddings
+    let uiActionHeight: LayoutMetric
 
     let collectibleListItemsVerticalStackSpacing: LayoutMetric
     let collectibleListItemsVerticalStackPaddings: LayoutPaddings
@@ -41,12 +41,9 @@ struct CollectibleListLoadingViewTheme:
         managementItemTheme = ManagementItemViewTheme()
         managementItemTopPadding = 28
 
-        searchInputTheme = SearchInputViewCommonTheme(
-            placeholder: "collectibles-list-input-placeholder".localized,
-            family: family
-        )
-        searchInputPaddings = (16, 0, .noMetric, 0)
-        searchInputHeight = 40
+        uiAction = CollectibleGalleryUIActionsViewTheme(family)
+        uiActionPaddings = (16, 0, .noMetric, 0)
+        uiActionHeight = 40
 
         collectibleListItemsVerticalStackSpacing = 20
         collectibleListItemsVerticalStackPaddings = (28, 0, 8, 0)

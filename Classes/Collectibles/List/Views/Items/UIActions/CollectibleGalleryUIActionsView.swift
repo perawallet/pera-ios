@@ -136,6 +136,10 @@ extension CollectibleGalleryUIActionsView {
     func setListUIStyleSelected() {
         selectedGalleryUIStyleIndex = Self.listUIStyleIndex
     }
+
+    func deselectListUIStyle() {
+        galleryUIStyleInputView.selectedSegmentIndex = -1
+    }
 }
 
 extension CollectibleGalleryUIActionsView {
