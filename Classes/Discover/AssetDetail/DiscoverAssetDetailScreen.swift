@@ -97,6 +97,7 @@ extension DiscoverAssetDetailScreen {
             return
         }
 
+        sendAnalyticsEvent(with: swapParameters)
         switch swapParameters.action {
         case .buyAlgo:
             launchBuyAlgo()
@@ -122,5 +123,25 @@ extension DiscoverAssetDetailScreen {
 
         swapAssetFlowCoordinator.updateDraft(draft)
         swapAssetFlowCoordinator.launch()
+    }
+
+    /// <note>
+    /// ID 0 is for algo, if it's updated we should update the reflects
+    /// Maybe it should be a constant within whole app
+    private func sendAnalyticsEvent(with parameters: DiscoverSwapParameters) {
+        let assetInID = parameters.assetIn
+        let assetOutID = parameters.assetOut
+
+        switch parameters.action {
+        case .buyAlgo:
+            self.analytics.track(.buyAssetFromDiscover(assetOutID: 0, assetInID: nil))
+        case .swapFromAlgo:
+            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: 0))
+        case .swapToAsset:
+            guard let assetOutID else { return }
+            self.analytics.track(.buyAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        case .swapFromAsset:
+            self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
+        }
     }
 }

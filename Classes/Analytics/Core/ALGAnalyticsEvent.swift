@@ -40,6 +40,9 @@ enum ALGAnalyticsEventName:
     case completeTransaction
     case createAccountInHomeScreen
     case discoverSearch
+    case discoverAssetBuy
+    case discoverAssetSell
+    case discoverDappDetail
     case manageAsset
     case onboardCreateAccountNew
     case onboardCreateAccountSkip
@@ -171,6 +174,9 @@ extension ALGAnalyticsEventName {
         case .wcTransactionConfirmed: rawName = "wc_transaction_confirmed"
         case .wcTransactionDeclined: rawName = "wc_transaction_declined"
         case .discoverSearch: rawName = "discover_markets_search"
+        case .discoverAssetBuy: rawName = "discover_token_detail_buy"
+        case .discoverAssetSell: rawName = "discover_token_detail_sell"
+        case .discoverDappDetail: rawName = "discover_dapps_visit_pages"
         }
 
         let isTestnet = UIApplication.shared.appConfiguration?.api.isTestNet ?? false

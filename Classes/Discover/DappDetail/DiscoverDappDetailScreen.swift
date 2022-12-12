@@ -27,6 +27,8 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     private let dappParameters: DiscoverDappParamaters
 
+    private static let peraConnectKey = "peraconnect"
+
     init(
         dappParameters: DiscoverDappParamaters,
         configuration: ViewControllerConfiguration
@@ -52,7 +54,8 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         addNavigationToolbar()
         adjustBottomInset()
         executeNavigationScript()
-//        executePeraConnectScript()
+        executePeraConnectScript()
+        recordAnalyticsEvent()
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -126,7 +129,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     private func executePeraConnectScript() {
         let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot)e=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button").getAttribute("href");else{const a=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");a&&(e=a[0].getAttribute("href"))}e&&window.open(e),t.remove()}});e.observe(document.getElementsByTagName("body")[0],{childList:!0,subtree:!0})}setupPeraConnectObserver();
+function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(Self.peraConnectKey).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
 """
 
         let script = WKUserScript(
@@ -135,7 +138,7 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
             forMainFrameOnly: false
         )
         contentController.addUserScript(script)
-        contentController.add(self, name: "peraconnect")
+        contentController.add(self, name: Self.peraConnectKey)
     }
 }
 
@@ -146,6 +149,7 @@ extension DiscoverDappDetailScreen: WKScriptMessageHandler {
     ) {
         self.updateButtonsStateIfNeeded()
         self.updateTitle()
+        self.routeWalletConnectIfNeeded(with: message)
     }
 }
 
@@ -223,4 +227,25 @@ extension DiscoverDappDetailScreen {
 
         bindNavigationTitle(with: item)
     }
+
+    private func routeWalletConnectIfNeeded(with message: WKScriptMessage) {
+        guard message.name == Self.peraConnectKey else { return }
+
+        guard let jsonString = message.body as? String, let url = URL(string: jsonString) else {
+            return
+        }
+
+        let deeplinkQR = DeeplinkQR(url: url)
+
+        guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
+            return
+        }
+
+        launchController.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+    }
+
+    private func recordAnalyticsEvent() {
+        self.analytics.track(.discoverDappDetail(dappParameters: dappParameters))
+    }
+    
 }
