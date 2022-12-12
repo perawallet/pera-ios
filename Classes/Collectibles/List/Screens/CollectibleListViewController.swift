@@ -403,8 +403,8 @@ extension CollectibleListViewController {
     
     private func clearFiltersAndReload() {
         var store = CollectibleFilterStore()
-        store.displayWatchAccountCollectibleAssets = true
-        store.displayOptedInCollectibleAssets = true
+        store.displayWatchAccountCollectibleAssetsInCollectibleList = true
+        store.displayOptedInCollectibleAssetsInCollectibleList = true
 
         reload()
     }

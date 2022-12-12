@@ -214,13 +214,13 @@ extension CollectibleListLocalDataController {
             }
 
             if case .all = galleryAccount,
-               !collectibleFilterStore.displayWatchAccountCollectibleAssets,
+               !collectibleFilterStore.displayWatchAccountCollectibleAssetsInCollectibleList,
                account.isWatchAccount() {
                 hiddenCollectibleCount += 1
                 return
             }
 
-            if !collectibleFilterStore.displayOptedInCollectibleAssets,
+            if !collectibleFilterStore.displayOptedInCollectibleAssetsInCollectibleList,
                !collectibleAsset.isOwned {
                 hiddenCollectibleCount += 1
                 return

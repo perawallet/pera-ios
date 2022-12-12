@@ -22,7 +22,7 @@ final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
     lazy var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
-    private lazy var displayOptedInCollectibleAssetsFilterItemView = AssetFilterItemView()
+    private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
 
     private lazy var store = CollectibleFilterStore()
 
@@ -94,16 +94,16 @@ extension AccountCollectibleListFilterSelectionViewController {
     }
 
     private func addFilterItems() {
-        addDisplayOptedInCollectibleAssetsFilterItem()
+        addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem()
     }
 
-    private func addDisplayOptedInCollectibleAssetsFilterItem() {
-        displayOptedInCollectibleAssetsFilterItemView.customize(theme.filterItem)
-        displayOptedInCollectibleAssetsFilterItemView.bindData(DisplayOptedInCollectibleAssetsFilterItemViewModel())
+    private func addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem() {
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.customize(theme.filterItem)
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.bindData(DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayOptedInCollectibleAssetsFilterItemView.isOn = store.displayOptedInCollectibleAssets
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = store.displayOptedInCollectibleAssetsInCollectibleList
 
-        contextView.addArrangedSubview(displayOptedInCollectibleAssetsFilterItemView)
+        contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
     }
 }
 
@@ -119,14 +119,11 @@ extension AccountCollectibleListFilterSelectionViewController {
     }
 
     private func saveFilters() {
-        var store = CollectibleFilterStore()
-        store.displayOptedInCollectibleAssets = displayOptedInCollectibleAssetsFilterItemView.isOn
+        store.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        let store = CollectibleFilterStore()
-
-        let hasChanges = store.displayOptedInCollectibleAssets != displayOptedInCollectibleAssetsFilterItemView.isOn
+        let hasChanges = store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
         return hasChanges
     }
 }

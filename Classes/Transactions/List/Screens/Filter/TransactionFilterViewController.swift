@@ -36,7 +36,7 @@ final class TransactionFilterViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "opitons-collectibles-filter".localized
+        title = "filter".localized
         hidesCloseBarButtonItem = true
     }
     
