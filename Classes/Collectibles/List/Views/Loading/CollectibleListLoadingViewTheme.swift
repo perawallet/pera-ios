@@ -22,9 +22,9 @@ struct CollectibleListLoadingViewTheme:
     let managementItemTheme: ManagementItemViewTheme
     let managementItemTopPadding: LayoutMetric
 
-    let uiAction: CollectibleGalleryUIActionsViewTheme
-    let uiActionPaddings: LayoutPaddings
-    let uiActionHeight: LayoutMetric
+    let uiActions: CollectibleGalleryUIActionsViewTheme
+    let uiActionsPaddings: LayoutPaddings
+    let uiActionsHeight: LayoutMetric
 
     let collectibleListItemsVerticalStackSpacing: LayoutMetric
     let collectibleListItemsVerticalStackPaddings: LayoutPaddings
@@ -41,9 +41,9 @@ struct CollectibleListLoadingViewTheme:
         managementItemTheme = ManagementItemViewTheme()
         managementItemTopPadding = 28
 
-        uiAction = CollectibleGalleryUIActionsViewTheme(family)
-        uiActionPaddings = (16, 0, .noMetric, 0)
-        uiActionHeight = 40
+        uiActions = CollectibleGalleryUIActionsViewTheme(family)
+        uiActionsPaddings = (16, 0, .noMetric, 0)
+        uiActionsHeight = 40
 
         collectibleListItemsVerticalStackSpacing = 20
         collectibleListItemsVerticalStackPaddings = (28, 0, 8, 0)
