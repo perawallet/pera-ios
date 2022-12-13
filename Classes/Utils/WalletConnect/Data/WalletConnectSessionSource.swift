@@ -92,6 +92,11 @@ extension WalletConnectSessionSource {
             sessions = [session.urlMeta.topic: session]
         }
     }
+    
+    func updateWalletConnectSession(_ session: WCSession) {
+        sessions?[session.urlMeta.topic] = session
+        syncSessions()
+    }
 
     var allWalletConnectSessions: [WCSession] {
         if let wcSessions = sessions {

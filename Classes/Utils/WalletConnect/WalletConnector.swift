@@ -126,6 +126,11 @@ extension WalletConnector {
     func resetAllSessions() {
         sessionSource.resetAllSessions()
     }
+    
+    func updateSessionForSubscription(_ session: WCSession) {
+        session.isSubscribed = true
+        sessionSource.updateWalletConnectSession(session)
+    }
 
     func saveConnectedWCSession(_ session: WCSession) {
         if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
@@ -160,6 +165,7 @@ extension WalletConnector: WalletConnectBridgeDelegate {
             }
 
             let wcSession = session.toWCSession()
+            wcSession.isSubscribed = true
             self.addToSavedSessions(wcSession)
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
