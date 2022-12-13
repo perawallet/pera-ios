@@ -982,6 +982,7 @@
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
+"send-transaction-preview-button" = "Confirm transfer";
 "send-transaction-preview-current-balance" = "Current\nBalance";
 
 // MARK: SingleTransactionRequest

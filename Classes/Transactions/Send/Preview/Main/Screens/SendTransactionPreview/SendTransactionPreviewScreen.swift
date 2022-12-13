@@ -281,7 +281,7 @@ extension SendTransactionPreviewScreen {
       }
 
       nextButton.customize(theme.nextButtonStyle)
-      nextButton.bindData(ButtonCommonViewModel(title: "title-send".localized))
+      nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
       nextButtonContainer.addSubview(nextButton)
       
       nextButton.snp.makeConstraints {
