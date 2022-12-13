@@ -411,7 +411,7 @@
 "settings-app-version" = "Pera Wallet Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
-"settings-support-title" = "Send Feedback";
+"settings-support-title" = "Get Help";
 "settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
