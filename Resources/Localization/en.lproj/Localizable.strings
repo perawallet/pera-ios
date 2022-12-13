@@ -1018,7 +1018,7 @@
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
 "collectibles-receive-account-list-header-description" = "Select a wallet account:";
-"collectible-receive-account-list-info" = "Your account needs to be opt-in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
+"collectible-receive-account-list-info" = "Your account needs to be opted-in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
 "collectibles-receive-asset-title" = "Opt-in to NFT";
 "collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
