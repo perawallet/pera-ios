@@ -22,7 +22,7 @@ import Prism
 
 struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var showHalfVisibleMedia: Bool = false
+    var displaysOffColorMedia: Bool = false
     var isFullScreenBadgeHidden: Bool = false
 
     init(
@@ -36,7 +36,7 @@ struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewVi
             asset: asset,
             media: media
         )
-        bindShowHalfVisibleMedia(asset, optInStatus)
+        bindDisplaysOffColorMedia(asset, optInStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

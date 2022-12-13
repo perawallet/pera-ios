@@ -22,7 +22,7 @@ import MacaroonURLImage
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
-    private(set) var showHalfVisibleMedia: Bool = false
+    private(set) var displaysOffColorMedia: Bool = false
     private(set) var isFullScreenBadgeHidden: Bool = false
 
     init(
@@ -32,7 +32,7 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindShowHalfVisibleMedia(asset, optInStatus)
+        bindDisplaysOffColorMedia(asset, optInStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -56,21 +56,21 @@ extension CollectibleMediaVideoPreviewViewModel {
         url = media.downloadURL
     }
     
-    private mutating func bindShowHalfVisibleMedia(
+    private mutating func bindDisplaysOffColorMedia(
         _ asset: CollectibleAsset,
         _ optInStatus: OptInStatus
     ) {
         if optInStatus == .rejected {
-            showHalfVisibleMedia = false
+            displaysOffColorMedia = false
             return
         }
         
-        if asset.isOwned || optInStatus == .rejected {
-            showHalfVisibleMedia = false
+        if asset.isOwned {
+            displaysOffColorMedia = false
             return
         }
         
-        showHalfVisibleMedia = true
+        displaysOffColorMedia = true
     }
 
     private mutating func bindIsFullScreenBadgeHidden(
