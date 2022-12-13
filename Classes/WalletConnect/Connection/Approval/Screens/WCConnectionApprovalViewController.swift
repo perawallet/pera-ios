@@ -137,7 +137,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
         let draft = WalletConnectSubscriptionDraft(
             deviceID: deviceID,
             bridgeURL: walletConnectSession.url.bridgeURL,
-            topicID: walletConnectSession.url.topic,
+            topicID: walletConnectSession.dAppInfo.peerId,
             dAppName: walletConnectSession.dAppInfo.peerMeta.name,
             pushToken: pushToken
         )
