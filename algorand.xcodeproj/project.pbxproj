@@ -3260,6 +3260,9 @@
 		2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061C23E856F7004EBD6F /* AccountInformation.swift */; };
 		2BEE062123E8572E004EBD6F /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE062023E8572E004EBD6F /* AccountStatus.swift */; };
 		2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE062023E8572E004EBD6F /* AccountStatus.swift */; };
+		2BEF0B44294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
+		2BEF0B45294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
+		2BEF0B46294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
 		2BF0FB37253D156300D704D5 /* AssetDetailTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */; };
 		2BF0FB38253D156300D704D5 /* AssetDetailTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */; };
 		2BF0FB39253D156300D704D5 /* AssetDetailTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */; };
@@ -7282,6 +7285,7 @@
 		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
 		2BEE062023E8572E004EBD6F /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
+		2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFilterViewControllerTheme.swift; sourceTree = "<group>"; };
 		2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewModel.swift; sourceTree = "<group>"; };
 		2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModelDraft.swift; sourceTree = "<group>"; };
 		2BF305C129118E970050B2FB /* SwapAssetInputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapAssetInputValidator.swift; sourceTree = "<group>"; };
@@ -14788,6 +14792,7 @@
 			isa = PBXGroup;
 			children = (
 				2B343D0A259D17B0001EA8C8 /* NotificationFilterViewController.swift */,
+				2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -19285,6 +19290,7 @@
 				D4A9954D290C255300E2D105 /* TitledToggleLoadingView.swift in Sources */,
 				95D11D2B2775BF67001B2C37 /* AccountSelectScreen+Theme.swift in Sources */,
 				D4F8F290273EA74D003DCE1D /* PassphraseViewTheme.swift in Sources */,
+				2BEF0B46294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				1736FB8528ACF22E002BB713 /* OnboardCreateAccountPassphraseEvent.swift in Sources */,
 				17BD4E242292F1260003E49A /* APIParamKey.swift in Sources */,
 				D41F4F1D2893FB0700B59559 /* AccountStandardAssetPreviewLoadingViewTheme.swift in Sources */,
@@ -20908,6 +20914,7 @@
 				2B56B8332505013600AC7B8D /* RekeyInstructionsViewController.swift in Sources */,
 				F05E6C4E28617580004E33D6 /* ToastViewTheme.swift in Sources */,
 				1736FB9028AD017A002BB713 /* RecordHomeScreenEvent.swift in Sources */,
+				2BEF0B45294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				2B7E3083267BC0A100E89EE3 /* WCSingleTransactionViewController.swift in Sources */,
 				95D11D0E2771D704001B2C37 /* TitleHeaderViewModel.swift in Sources */,
 				D4F72B7728E4A26700907287 /* AccountNameTitleViewModel.swift in Sources */,
@@ -24074,6 +24081,7 @@
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
 				F03451E528B2810D009467A0 /* OptInAssetNameListItemViewTheme.swift in Sources */,
 				2BB0B12327830DDF00A16494 /* AccountAssetListLayout.swift in Sources */,
+				2BEF0B44294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */,
 				2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */,
 				17D0FA6528EC28DE0061B55D /* ExportAccountListLayout.swift in Sources */,
 				2B7A1F4327DD24AD0010F52E /* CollectibleMediaPreviewDataSource.swift in Sources */,

@@ -48,6 +48,8 @@ final class NotificationFilterViewController:
         api: api!
     )
     private lazy var listLayout = NotificationFilterListLayout(dataSource: listDataSource)
+    
+    private let theme = NotificationFilterViewControllerTheme()
 
     deinit {
         stopObservingNotifications()
@@ -96,11 +98,20 @@ final class NotificationFilterViewController:
     override func prepareLayout() {
         super.prepareLayout()
 
+        addUI()
+    }
+    
+    private func addUI() {
+        addBackground()
         addList()
     }
 }
 
 extension NotificationFilterViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
     private func addList() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
