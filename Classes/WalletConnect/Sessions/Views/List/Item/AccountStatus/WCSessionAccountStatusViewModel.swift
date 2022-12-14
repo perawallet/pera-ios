@@ -19,18 +19,32 @@ import MacaroonUIKit
 struct WCSessionAccountStatusViewModel: ViewModel {
     private(set) var accountStatus: TextProvider?
     
-    init(accountName: String) {
-        bindAccountStatus(accountName)
+    init(account: Account) {
+        bindAccountStatus(account)
     }
 }
 
 extension WCSessionAccountStatusViewModel {
-    private mutating func bindAccountStatus(_ accountName: String) {
+    private mutating func bindAccountStatus(_ account: Account) {
+        let displayedAccountName = getAccountName(account)
+        
         let fullText = "wallet-connect-session-connected-with-account"
-            .localized(params: accountName)
+            .localized(params: displayedAccountName)
         
         accountStatus = fullText.footnoteMedium(
             alignment: .left
         )
+    }
+    
+    private func getAccountName(_ account: Account) -> String {
+        guard let accountName = account.name else {
+            return account.address.shortAddressDisplay
+        }
+        
+        if accountName.count <= 40 {
+            return accountName
+        }
+        
+        return String(accountName.prefix(40)) + "..."
     }
 }
