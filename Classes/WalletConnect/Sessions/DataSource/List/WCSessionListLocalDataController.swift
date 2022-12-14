@@ -288,6 +288,10 @@ extension WCSessionListLocalDataController {
 
         lastSnapshot = snapshot
         
+        let allSessions = walletConnector.allWalletConnectSessions
+        
+        disconnectedSessions = Set(allSessions)
+        
         walletConnector.disconnectFromAllSessions()
     }
 
