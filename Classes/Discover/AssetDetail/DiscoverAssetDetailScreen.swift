@@ -52,6 +52,14 @@ final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandle
         super.init(configuration: configuration)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        events.forEach { event in
+            contentController.removeScriptMessageHandler(forName: event.rawValue)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

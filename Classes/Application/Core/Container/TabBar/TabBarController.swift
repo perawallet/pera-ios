@@ -209,7 +209,7 @@ extension TabBarController {
         toggleTransactionOptionsActionView.fitToIntrinsicSize()
         toggleTransactionOptionsActionView.snp.makeConstraints {
             $0.centerX == 0
-            $0.top == 0
+            $0.top == 8
         }
 
         toggleTransactionOptionsActionView.addTouch(
