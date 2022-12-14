@@ -93,6 +93,7 @@ extension ManagementOptionsViewController {
             addFilterCollectiblesButton()
         case .watchAccountAssets:
             addSortButton()
+            addFilterAssetsButton()
         }
     }
     
