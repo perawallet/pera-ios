@@ -286,6 +286,8 @@ extension ALGAppLaunchController {
             )
         case .walletConnectSessionRequest(let url):
             result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
+        case .discoverWalletConnectSessionRequest(let url):
+            result = determineUIStateIfPossible(forDiscoverWalletConnectSessionRequest: url)
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         case .buyAlgo(let draft):
@@ -353,6 +355,18 @@ extension ALGAppLaunchController {
         switch parserResult {
         case .none: return nil
         case .success(let key): return .success(.walletConnectSessionRequest(key))
+        case .failure(let error): return .failure(error)
+        }
+    }
+
+    private func determineUIStateIfPossible(
+        forDiscoverWalletConnectSessionRequest request: URL
+    ) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discover(walletConnectSessionRequest: request)
+
+        switch parserResult {
+        case .none: return nil
+        case .success(let key): return .success(.walletConnectSessionRequest(key, false))
         case .failure(let error): return .failure(error)
         }
     }

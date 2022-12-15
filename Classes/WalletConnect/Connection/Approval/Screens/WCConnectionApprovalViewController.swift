@@ -35,16 +35,19 @@ final class WCConnectionApprovalViewController: BaseViewController {
 
     private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)
 
+    private let shouldShowInformationModal: Bool
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
 
     private var selectedAccount: AccountHandle?
 
     init(
         walletConnectSession: WalletConnectSession,
+        shouldShowInformationModal: Bool,
         walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
         configuration: ViewControllerConfiguration
     ) {
         self.walletConnectSession = walletConnectSession
+        self.shouldShowInformationModal = shouldShowInformationModal
         self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
         super.init(configuration: configuration)
 
@@ -116,7 +119,10 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
                     for: account.address
                 )
             )
-            self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(self)
+            self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(
+                self,
+                self.shouldShowInformationModal
+            )
         }
     }
 
@@ -158,6 +164,9 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
 }
 
 protocol WCConnectionApprovalViewControllerDelegate: AnyObject {
-    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
+    func wcConnectionApprovalViewControllerDidApproveConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
+        _ shouldShowInformation: Bool
+    )
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
 }

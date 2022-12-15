@@ -378,7 +378,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
             }
 
             self.wcConnectionModalTransition.perform(
-                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+                .wcConnectionApproval(walletConnectSession: session, delegate: self, shouldShowInformationModal: true, completion: completion),
                 by: .present
             )
         }
@@ -466,8 +466,12 @@ extension QRScannerViewController: WalletConnectorDelegate {
 }
 
 extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
-    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
+    func wcConnectionApprovalViewControllerDidApproveConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
+        _ shouldShowInformation: Bool
+    ) {
         wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
+            guard shouldShowInformation else { return }
             self?.presentWCSessionsApprovedModal()
         }
     }

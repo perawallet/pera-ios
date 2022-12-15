@@ -39,5 +39,5 @@ enum AppLaunchUIState {
         DeepLinkParser.Screen? = nil
     )
     case deeplink(DeepLinkParser.Screen)
-    case walletConnectSessionRequest(String)
+    case walletConnectSessionRequest(String, Bool = true) /// Bool value repsents showing approval information modal, by default is true
 }

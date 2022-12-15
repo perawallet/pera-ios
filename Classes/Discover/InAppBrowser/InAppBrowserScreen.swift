@@ -206,7 +206,7 @@ class InAppBrowserScreen:
             return
         }
 
-        launchController.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+        launchController.receive(deeplinkWithSource: .discoverWalletConnectSessionRequest(walletConnectURL))
         decisionHandler(.cancel, preferences)
     }
 }

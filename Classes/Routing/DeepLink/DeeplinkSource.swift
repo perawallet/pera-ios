@@ -26,6 +26,7 @@ enum DeeplinkSource {
     /// false => Take the action immediately.
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
     case walletConnectSessionRequest(URL)
+    case discoverWalletConnectSessionRequest(URL)
     case walletConnectRequest(WalletConnectRequestDraft)
     case buyAlgo(BuyAlgoDraft)
     case qrText(QRText)
