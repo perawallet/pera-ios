@@ -236,25 +236,17 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let creator = asset.creator?.address {
-            let source = AlgoExplorerExternalSource(address: creator, network: api.network)
-
+        if asset.creator?.address != nil {
             descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: nil,
-                        title: "collectible-detail-creator-address".localized,
-                        value: creator.shortAddressDisplay,
-                        isCollectibleSpecificValue: true,
-                        actionURL: source.url
-                    )
+                .creatorAccount(
+                    CollectibleDetailCreatorAccountItemIdentifier(asset)
                 )
             )
         }
 
         descriptionItems.append(
             .assetID(
-                CollectibleDetailAssetIDItemIdentifier(viewModel: CollectibleDetailAssetIDItemViewModel(asset: asset))
+                CollectibleDetailAssetIDItemIdentifier(asset)
             )
         )
 

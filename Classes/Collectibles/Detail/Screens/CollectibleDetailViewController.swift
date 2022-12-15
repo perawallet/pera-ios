@@ -407,6 +407,8 @@ extension CollectibleDetailViewController {
                     for: item
                 )
             }
+        case .creatorAccount:
+            linkInteractors(cell as! CollectibleDetailCreatorAccountItemCell)
         case .assetID:
             linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
         default:
@@ -558,6 +560,26 @@ extension CollectibleDetailViewController {
     }
 
     private func linkInteractors(
+        _ cell: CollectibleDetailCreatorAccountItemCell
+    ) {
+        cell.startObserving(event: .didTapAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            let source = AlgoExplorerExternalSource(
+                address: creator,
+                network: self.api!.network
+            )
+            self.open(source.url)
+        }
+
+        cell.startObserving(event: .didLongPressAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            self.copyToClipboardController.copyAddress(creator)
+        }
+    }
+
+    private func linkInteractors(
         _ cell: CollectibleDetailAssetIDItemCell
     ) {
         cell.startObserving(event: .didTapAccessory) {
@@ -576,7 +598,6 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didLongPressAccessory) {
             [unowned self] in
             self.copyToClipboardController.copyID(self.asset)
-            return
         }
     }
 

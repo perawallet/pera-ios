@@ -47,24 +47,51 @@ enum CollectibleDetailItem: Hashable {
     case sendAction
     case optOutAction
     case description(CollectibleDescriptionViewModel)
+    case creatorAccount(CollectibleDetailCreatorAccountItemIdentifier)
     case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
     case properties(CollectiblePropertyViewModel)
 }
 
 struct CollectibleDetailAssetIDItemIdentifier: Hashable {
-    private let id = UUID()
+    private let assetID: AssetID
     let viewModel: CollectibleDetailAssetIDItemViewModel
 
+    init(_ asset: CollectibleAsset) {
+        self.assetID = asset.id
+        self.viewModel = CollectibleDetailAssetIDItemViewModel(asset: asset)
+    }
+
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(assetID)
     }
 
     static func == (
         lhs: Self,
         rhs: Self
     ) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.assetID == rhs.assetID
+    }
+}
+
+struct CollectibleDetailCreatorAccountItemIdentifier: Hashable {
+    private let address: PublicKey
+    let viewModel: CollectibleDetailCreatorAccountItemViewModel
+
+    init(_ asset: CollectibleAsset) {
+        self.address = asset.creator!.address
+        self.viewModel = CollectibleDetailCreatorAccountItemViewModel(asset: asset)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.address == rhs.address
     }
 }
 

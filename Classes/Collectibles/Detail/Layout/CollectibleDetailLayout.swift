@@ -167,6 +167,12 @@ extension CollectibleDetailLayout {
                 layout: collectionViewLayout,
                 sizeForInformationItem: item
             )
+        case .creatorAccount(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCreatorAccountItem: item
+            )
         case .assetID(let item):
             return listView(
                 collectionView,
@@ -295,6 +301,19 @@ extension CollectibleDetailLayout {
             CollectibleTransactionInfoViewModel(item),
             for: CollectibleDetailInformationCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
+        )
+    }
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCreatorAccountItem item: CollectibleDetailCreatorAccountItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailCreatorAccountItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailCreatorAccountItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
     }
 

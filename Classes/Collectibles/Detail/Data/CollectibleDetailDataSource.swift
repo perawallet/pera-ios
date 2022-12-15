@@ -73,6 +73,13 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 let viewModel = CollectibleTransactionInfoViewModel(info)
                 cell.bindData(viewModel)
                 return cell
+            case .creatorAccount(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailCreatorAccountItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
             case .assetID(let item):
                 let cell = collectionView.dequeue(
                     CollectibleDetailAssetIDItemCell.self,
@@ -135,6 +142,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleDetailSendActionCell.self,
             CollectibleDetailOptOutActionCell.self,
             CollectibleDescriptionCell.self,
+            CollectibleDetailCreatorAccountItemCell.self,
             CollectibleDetailAssetIDItemCell.self,
             CollectibleDetailInformationCell.self,
             CollectibleMediaPreviewCell.self,
