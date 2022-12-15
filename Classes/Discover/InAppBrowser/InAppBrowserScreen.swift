@@ -41,6 +41,8 @@ class InAppBrowserScreen:
 
     private lazy var refreshControl = UIRefreshControl()
 
+    private lazy var socialMediaDeeplinkParser = DiscoverSocialMediaLinkParser()
+
     private let theme = InAppBrowserScreenTheme()
 
     deinit {
@@ -193,11 +195,22 @@ class InAppBrowserScreen:
             return
         }
 
+        let application = UIApplication.shared
         if requestUrl.scheme?.lowercased() == "mailto" {
-            UIApplication.shared.open(requestUrl, options: [:], completionHandler: nil)
+            application.open(requestUrl, options: [:], completionHandler: nil)
             decisionHandler(.cancel, preferences)
             return
         }
+
+        do {
+            let socialMediaUrl = try socialMediaDeeplinkParser.parse(url: requestUrl)
+
+            if application.canOpenURL(socialMediaUrl) {
+                application.open(socialMediaUrl)
+                decisionHandler(.cancel, preferences)
+                return
+            }
+        } catch {}
 
         let deeplinkQR = DeeplinkQR(url: requestUrl)
 
