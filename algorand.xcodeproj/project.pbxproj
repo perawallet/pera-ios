@@ -166,6 +166,7 @@
 		1793FBCD289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1793FBCF289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
+		1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaLinkParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaLinkParserTests.swift */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		17A011C527EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
 		17A011C627EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
@@ -434,6 +435,9 @@
 		17C9331629470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
 		17C9331729470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
 		17C9331829470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
+		17C9331F29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift */; };
+		17C9332029499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift */; };
+		17C9332129499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift */; };
 		17CADC67284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
 		17CADC68284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
 		17CADC69284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
@@ -6380,6 +6384,7 @@
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
 		1793FBC8289403A5009E6F90 /* BadgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButton.swift; sourceTree = "<group>"; };
 		1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButtonTheme.swift; sourceTree = "<group>"; };
+		1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaLinkParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaLinkParserTests.swift; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPIDataController.swift; sourceTree = "<group>"; };
 		17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Device.swift"; sourceTree = "<group>"; };
@@ -6433,6 +6438,8 @@
 		17C9330D2946FD56000EE03D /* DiscoverAssetBuyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetBuyEvent.swift; sourceTree = "<group>"; };
 		17C9331129470545000EE03D /* DiscoverAssetSellEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetSellEvent.swift; sourceTree = "<group>"; };
 		17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDappDetailEvent.swift; sourceTree = "<group>"; };
+		17C9331E29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaLinkParser.swift; sourceTree = "<group>"; };
+		17C9332C2949DC5E000EE03D /* macaroon */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = macaroon; path = ../macaroon; sourceTree = "<group>"; };
 		17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioNavigationView.swift; sourceTree = "<group>"; };
 		17CADC74285312FB001D19A8 /* AccountQuickActionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsCell.swift; sourceTree = "<group>"; };
 		17CADC7828531305001D19A8 /* AccountQuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsView.swift; sourceTree = "<group>"; };
@@ -8739,6 +8746,22 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		1798D9B4294B18C300A7B2AA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1798D9B5294B18CB00A7B2AA /* Discover */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1798D9B5294B18CB00A7B2AA /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaLinkParserTests.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
 		17A011CC27EB6D4F008C147D /* Announcement */ = {
 			isa = PBXGroup;
 			children = (
@@ -8912,6 +8935,7 @@
 		17C932692934CCD0000EE03D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				17C9332229499F3F000EE03D /* SocialMediaDeeplinkParser */,
 				17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */,
 			);
 			path = Utils;
@@ -8944,6 +8968,14 @@
 				17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */,
 			);
 			path = Discover;
+			sourceTree = "<group>";
+		};
+		17C9332229499F3F000EE03D /* SocialMediaDeeplinkParser */ = {
+			isa = PBXGroup;
+			children = (
+				17C9331E29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift */,
+			);
+			path = SocialMediaDeeplinkParser;
 			sourceTree = "<group>";
 		};
 		17CADC722853127D001D19A8 /* HomeQuickActions */ = {
@@ -11518,6 +11550,7 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
+				17C9332C2949DC5E000EE03D /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
@@ -11833,6 +11866,7 @@
 		2B95407825A75FB20098805B /* algorand-tests */ = {
 			isa = PBXGroup;
 			children = (
+				1798D9B4294B18C300A7B2AA /* Utils */,
 				174A0F3628EF167700D44019 /* Migration */,
 				2B95408C25A782D90098805B /* DB */,
 				2B95407B25A75FB20098805B /* Info.plist */,
@@ -19989,6 +20023,7 @@
 				D4B7655428B3E73200A70DC6 /* TapBuyAlgoTabEvent.swift in Sources */,
 				D4979478287D8C0F004FBF8E /* AppCallAssetListViewController.swift in Sources */,
 				D4FC5F5F27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
+				17C9332129499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */,
 				2B0E00B3278818C000D6B2E2 /* SecuritySettingsView.swift in Sources */,
 				2BCBF46527B557C9008814C7 /* MultilineTextInputFieldViewTheme.swift in Sources */,
 				D4979480287D8DAC004FBF8E /* AppCallAssetListDataController.swift in Sources */,
@@ -22055,6 +22090,7 @@
 				2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */,
 				17A76669290859C400A8746C /* DiscoverDappDetailScreen.swift in Sources */,
 				2BE8799028BD2CBD00A6C682 /* TransactionOptionListItemButtonViewModel.swift in Sources */,
+				17C9332029499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */,
 				D48D11D4274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				2B0F61F024EC129D00DA22A6 /* AssetViewModel.swift in Sources */,
 				2BD36DF326810E0600C57728 /* TitledInformation.swift in Sources */,
@@ -24077,6 +24113,7 @@
 				2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */,
 				2B26271E284E3A8700ADE371 /* AlgoTransactionItemViewModel.swift in Sources */,
 				D4150DDB27C53E350064F736 /* NoContentWithActionViewIllustratedTheme.swift in Sources */,
+				17C9331F29499C28000EE03D /* DiscoverSocialMediaLinkParser.swift in Sources */,
 				2BC1826723D882D500888476 /* AlgorandSDK.swift in Sources */,
 				17CADC902859C168001D19A8 /* SortAccountAssetListViewController.swift in Sources */,
 				2BECB4D425A1019F0081870A /* NotificationFilterDataSource.swift in Sources */,
@@ -25451,6 +25488,7 @@
 				2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */,
 				2B2EE8C225B6F639006A53C5 /* LedgerAccountDetailViewModelTests.swift in Sources */,
 				2B95419525AE632B0098805B /* QRTextTests.swift in Sources */,
+				1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaLinkParserTests.swift in Sources */,
 				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
 				2B2EE8B125B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardViewModelTests.swift in Sources */,
