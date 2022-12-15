@@ -46,33 +46,17 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 )
                 cell.contextView = mediaPreviewController.view
                 return cell
-            case .action(let viewModel):
+            case .sendAction:
                 let cell = collectionView.dequeue(
-                    CollectibleDetailActionCell.self,
+                    CollectibleDetailSendActionCell.self,
                     at: indexPath
                 )
-                cell.bindData(viewModel)
                 return cell
-            case .collectibleCreatorAccountAction(let viewModel):
+            case .optOutAction:
                 let cell = collectionView.dequeue(
-                    CollectibleDetailCreatorAccountActionCell.self,
+                    CollectibleDetailOptOutActionCell.self,
                     at: indexPath
                 )
-                cell.bindData(viewModel)
-                return cell
-            case .watchAccountAction(let viewModel):
-                let cell = collectionView.dequeue(
-                    CollectibleDetailWatchAccountActionCell.self,
-                    at: indexPath
-                )
-                cell.bindData(viewModel)
-                return cell
-            case .optedInAction(let viewModel):
-                let cell = collectionView.dequeue(
-                    CollectibleDetailOptedInActionCell.self,
-                    at: indexPath
-                )
-                cell.bindData(viewModel)
                 return cell
             case .description(let viewModel):
                 let cell = collectionView.dequeue(
@@ -103,13 +87,6 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 )
                 cell.bindData(viewModel)
                 return cell
-            case .external(let viewModel):
-                let cell = collectionView.dequeue(
-                    CollectibleExternalSourceCell.self,
-                    at: indexPath
-                )
-                cell.bindData(viewModel)
-                return cell
             }
         }
 
@@ -126,18 +103,8 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
 
             switch section {
             case .media,
-                    .action,
-                    .loading:
-                return header
-            case .description:
-                header.bindData(
-                    CollectibleDetailHeaderViewModel(
-                        SingleLineIconTitleItem(
-                            icon: nil,
-                            title: "collectible-detail-description".localized
-                        )
-                    )
-                )
+                 .action,
+                 .loading:
                 return header
             case .properties:
                 header.bindData(
@@ -149,12 +116,12 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                     )
                 )
                 return header
-            case .external:
+            case .description:
                 header.bindData(
                     CollectibleDetailHeaderViewModel(
                         SingleLineIconTitleItem(
                             icon: nil,
-                            title: "collectible-detail-view-transaction".localized
+                            title: "collectible-detail-description".localized
                         )
                     )
                 )
@@ -165,12 +132,9 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
         [
             CollectibleDetailLoadingCell.self,
             CollectibleMediaErrorCell.self,
-            CollectibleDetailActionCell.self,
-            CollectibleDetailOptedInActionCell.self,
-            CollectibleDetailWatchAccountActionCell.self,
-            CollectibleDetailCreatorAccountActionCell.self,
+            CollectibleDetailSendActionCell.self,
+            CollectibleDetailOptOutActionCell.self,
             CollectibleDescriptionCell.self,
-            CollectibleExternalSourceCell.self,
             CollectibleDetailAssetIDItemCell.self,
             CollectibleDetailInformationCell.self,
             CollectibleMediaPreviewCell.self,

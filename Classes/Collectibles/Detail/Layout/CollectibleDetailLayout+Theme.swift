@@ -25,15 +25,12 @@ extension CollectibleDetailLayout {
         let propertyHeight: LayoutMetric
         let propertiesCellSpacing: LayoutMetric
         let mediaTopPadding: LayoutMetric
+        let mediaBottomPadding: LayoutMetric
         let actionBottomPadding: LayoutMetric
         let descriptionTopPadding: LayoutMetric
         let descriptionBottomPadding: LayoutMetric
         let propertiesTopPadding: LayoutMetric
         let propertiesBottomPadding: LayoutMetric
-        let externalTopPadding: LayoutMetric
-        let externalBottomPadding: LayoutMetric
-        let mediaInset: LayoutMetric
-        let mediaLabelOffset: LayoutMetric
 
         init(
             _ family: LayoutFamily
@@ -41,17 +38,14 @@ extension CollectibleDetailLayout {
             self.sectionHorizontalInsets = (24, 24)
             self.headerHeight = 28
             self.propertyHeight = 60
-            self.propertiesCellSpacing = 12
+            self.propertiesCellSpacing = 16
             self.mediaTopPadding = 12
-            self.actionBottomPadding = 32
+            self.mediaBottomPadding = 24
+            self.actionBottomPadding = 24
             self.descriptionTopPadding = 20
             self.descriptionBottomPadding = 36
-            self.propertiesTopPadding = 20
-            self.propertiesBottomPadding = 52
-            self.externalTopPadding = 12
-            self.externalBottomPadding = 20
-            self.mediaInset = 24
-            self.mediaLabelOffset = 32
+            self.propertiesTopPadding = 24
+            self.propertiesBottomPadding = 40
         }
     }
 }

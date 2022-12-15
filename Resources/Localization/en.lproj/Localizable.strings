@@ -1032,7 +1032,6 @@
 "collectible-send-account-list-title" = "Select the receiver account";
 
 // MARK: Collectible Detail
-"collectible-detail-share" = "Share";
 "collectible-detail-description" = "Description";
 "collectible-detail-owner" = "Owner";
 "collectible-detail-creator-name" = "Creator Name";
@@ -1050,7 +1049,7 @@
 "collectible-detail-opt-out-alert-message" = "You're about to remove and opt-out from the %@ NFT with %@. You'll be unable to transact with this NFT from this account unless you opt-in to it again.";
 "collectible-detail-show-on" = "Show on";
 "collectible-detail-pera-explorer" = "Pera Explorer";
-"collectible-detail-tap-3D" = "3D card mode";
+"collectible-detail-tap-3D" = "3D mode";
 
 // MARK: Collectible Transfer
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";

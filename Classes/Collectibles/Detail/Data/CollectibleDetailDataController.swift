@@ -35,9 +35,8 @@ enum CollectibleDetailSection:
     Hashable {
     case media
     case action
-    case description
     case properties
-    case external
+    case description
     case loading
 }
 
@@ -45,15 +44,12 @@ enum CollectibleDetailItem: Hashable {
     case loading
     case error(CollectibleMediaErrorViewModel)
     case media(CollectibleAsset)
-    case action(CollectibleDetailActionViewModel)
-    case watchAccountAction(CollectibleDetailActionViewModel)
-    case collectibleCreatorAccountAction(CollectibleDetailActionViewModel)
-    case optedInAction(CollectibleDetailOptedInActionViewModel)
+    case sendAction
+    case optOutAction
     case description(CollectibleDescriptionViewModel)
     case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
     case properties(CollectiblePropertyViewModel)
-    case external(CollectibleExternalSourceViewModel)
 }
 
 struct CollectibleDetailAssetIDItemIdentifier: Hashable {

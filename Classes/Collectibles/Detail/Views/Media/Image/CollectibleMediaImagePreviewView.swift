@@ -26,7 +26,8 @@ final class CollectibleMediaImagePreviewView:
 
     private(set) lazy var imageView = URLImageView()
     private lazy var overlayView = UIView()
-    private lazy var fullScreenBadge = ImageView()
+    private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var fullScreenActionView = MacaroonUIKit.Button()
 
     var currentImage: UIImage? {
         return imageView.imageContainer.image
@@ -37,7 +38,8 @@ final class CollectibleMediaImagePreviewView:
     ) {
         addImage(theme)
         addOverlayView(theme)
-        addFullScreenBadge(theme)
+        add3DModeAction(theme)
+        addFullScreenAction(theme)
     }
 
     func customizeAppearance(
@@ -78,18 +80,51 @@ extension CollectibleMediaImagePreviewView {
         }
     }
 
-    private func addFullScreenBadge(
+    private func add3DModeAction(
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
-        fullScreenBadge.customizeAppearance(theme.fullScreenBadge)
-        fullScreenBadge.layer.draw(corner: theme.corner)
+        threeDModeActionView.customizeAppearance(theme.threeDAction)
 
-        fullScreenBadge.contentEdgeInsets = theme.fullScreenBadgeContentEdgeInsets
-        addSubview(fullScreenBadge)
-        fullScreenBadge.snp.makeConstraints {
+        addSubview(threeDModeActionView)
+        threeDModeActionView.contentEdgeInsets = UIEdgeInsets(theme.threeDActionContentEdgeInsets)
+        threeDModeActionView.snp.makeConstraints {
+            $0.leading == theme.threeDModeActionPaddings.leading
+            $0.bottom == theme.threeDModeActionPaddings.bottom
+        }
+
+        threeDModeActionView.addTouch(
+            target: self,
+            action: #selector(didTap3DModeAction)
+        )
+    }
+
+    private func addFullScreenAction(
+        _ theme: CollectibleMediaImagePreviewViewTheme
+    ) {
+        fullScreenActionView.customizeAppearance(theme.fullScreenAction)
+
+        addSubview(fullScreenActionView)
+        fullScreenActionView.snp.makeConstraints {
             $0.trailing == theme.fullScreenBadgePaddings.trailing
             $0.bottom == theme.fullScreenBadgePaddings.bottom
         }
+
+        fullScreenActionView.addTouch(
+            target: self,
+            action: #selector(didTapFullScreenAction)
+        )
+    }
+}
+
+extension CollectibleMediaImagePreviewView {
+    @objc
+    private func didTapFullScreenAction() {
+        handlers.didTapFullScreenAction?()
+    }
+
+    @objc
+    private func didTap3DModeAction() {
+        handlers.didTap3DModeAction?()
     }
 }
 
@@ -117,7 +152,8 @@ extension CollectibleMediaImagePreviewView {
             overlayView.alpha = 0.0
         }
 
-        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
+        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
+        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
 
     class func calculatePreferredSize(
@@ -133,12 +169,15 @@ extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
         overlayView.alpha = 0.0
         imageView.prepareForReuse()
-        fullScreenBadge.isHidden = false
+        threeDModeActionView.isHidden = false
+        fullScreenActionView.isHidden = false
     }
 }
 
 extension CollectibleMediaImagePreviewView {
     struct Handlers {
         var didLoadImage: ((UIImage) -> Void)?
+        var didTap3DModeAction: (() -> Void)?
+        var didTapFullScreenAction: (() -> Void)?
     }
 }

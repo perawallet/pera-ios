@@ -163,19 +163,6 @@ enum AlgorandWeb: String {
             }
         }
     }
-    
-    enum NftExplorer {
-        case asset(isMainnet: Bool, param: String)
-        
-        var link: URL? {
-            switch self {
-            case .asset(let isMainnet, let param):
-                return isMainnet
-                    ? URL(string: "https://www.nftexplorer.app/asset/\(param)")
-                    : nil
-            }
-        }
-    }
 }
 
 extension AlgorandWeb {
