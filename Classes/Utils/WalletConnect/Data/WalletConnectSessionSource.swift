@@ -109,6 +109,11 @@ extension WalletConnectSessionSource {
     func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
         return sessions?[url.topic]
     }
+    
+    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
+        _ = sessions?.updateValue(session, forKey: url.topic)
+        syncSessions()
+    }
 
     func removeWalletConnectSession(with url: WCURLMeta) {
         _ = sessions?.removeValue(forKey: url.topic)

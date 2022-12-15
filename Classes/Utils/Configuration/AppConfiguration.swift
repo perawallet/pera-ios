@@ -25,6 +25,7 @@ final class AppConfiguration {
     let loadingController: LoadingController
     let bannerController: BannerController
     let toastPresentationController: ToastPresentationController
+    let lastSeenNotificationController: LastSeenNotificationController
     let analytics: ALGAnalytics
     
     init(
@@ -35,6 +36,7 @@ final class AppConfiguration {
         loadingController: LoadingController,
         bannerController: BannerController,
         toastPresentationController: ToastPresentationController,
+        lastSeenNotificationController: LastSeenNotificationController,
         analytics: ALGAnalytics
     ) {
         self.api = api
@@ -44,6 +46,7 @@ final class AppConfiguration {
         self.loadingController = loadingController
         self.bannerController = bannerController
         self.toastPresentationController = toastPresentationController
+        self.lastSeenNotificationController = lastSeenNotificationController
         self.analytics = analytics
     }
     
@@ -56,6 +59,7 @@ final class AppConfiguration {
             loadingControlller: loadingController,
             bannerController: bannerController,
             toastPresentationController: toastPresentationController,
+            lastSeenNotificationController: lastSeenNotificationController,
             analytics: analytics
         )
         return configuration

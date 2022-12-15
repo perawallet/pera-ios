@@ -27,7 +27,10 @@ final class NotificationsViewController:
     private lazy var notificationsView = NotificationsView()
 
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
-    private lazy var dataController = NotificationsAPIDataController(api: api!)
+    private lazy var dataController = NotificationsAPIDataController(
+        api: api!,
+        lastSeenNotificationController: lastSeenNotificationController
+    )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
     private lazy var transactionController: TransactionController = {
@@ -36,6 +39,7 @@ final class NotificationsViewController:
         }
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

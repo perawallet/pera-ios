@@ -144,7 +144,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
@@ -265,7 +265,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
 
@@ -274,7 +274,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptOutRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptOutRequest(accountName: accountName))
         }
 
@@ -337,7 +337,7 @@ extension DeepLinkParser {
             for: rawAccount
         )
         if hasPendingOptInRequest {
-            let accountName = AccountNaming.getPrimaryName(for: rawAccount)
+            let accountName = rawAccount.primaryDisplayName
             return .failure(.tryingToActForAssetWithPendingOptInRequest(accountName: accountName))
         }
         
@@ -508,11 +508,30 @@ extension DeepLinkParser {
     func discover(
         walletConnectRequest draft: WalletConnectRequestDraft
     ) -> Result? {
+        if !hasTransactionAccount(draft.transactions) {
+            return .failure(.accountDoesNotExist)
+        }
+        
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
         return .success(.wcMainTransactionScreen(draft: draft))
+    }
+    
+    func hasTransactionAccount(_ transactions: [WCTransaction]) -> Bool {
+        guard let senderAddress = transactions.first?.transactionDetail?.sender,
+              let receiverAddress = transactions.last?.transactionDetail?.receiver,
+              senderAddress == receiverAddress else {
+            return false
+        }
+        
+        guard let account = sharedDataController.accountCollection.account(for: senderAddress),
+              !account.isWatchAccount() else {
+            return false
+        }
+        
+        return true
     }
     
     func discoverBuyAlgo(
@@ -563,10 +582,12 @@ extension DeepLinkParser {
         case accountSelect(asset: AssetID)
     }
     
-    enum Error: Swift.Error {
+    enum Error:
+        Swift.Error,
+        Equatable {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
-
+        case accountDoesNotExist
         case tryingToOptInForWatchAccount
         case tryingToActForAssetWithPendingOptInRequest(accountName: String)
         case tryingToActForAssetWithPendingOptOutRequest(accountName: String)
@@ -603,6 +624,32 @@ extension DeepLinkParser {
                 title: title,
                 description: description
             )
+        }
+
+        static func == (
+            lhs: Self,
+            rhs: Self
+        ) -> Bool {
+            switch (lhs, rhs) {
+            case (.waitingForAccountsToBeAvailable, .waitingForAccountsToBeAvailable):
+                return true
+            case (.waitingForAssetsToBeAvailable, .waitingForAssetsToBeAvailable):
+                return true
+            case (.accountDoesNotExist, .accountDoesNotExist):
+                return true
+            case (.tryingToOptInForWatchAccount, .tryingToOptInForWatchAccount):
+                return true
+            case (.tryingToActForAssetWithPendingOptInRequest(let accountName1), .tryingToActForAssetWithPendingOptInRequest(let accountName2)):
+                return accountName1 == accountName2
+            case (.tryingToActForAssetWithPendingOptOutRequest(let accountName1), .tryingToActForAssetWithPendingOptOutRequest(let accountName2)):
+                return accountName1 == accountName2
+            case (.accountNotFound, .accountNotFound):
+                return true
+            case (.assetNotFound, .assetNotFound):
+                return true
+            default:
+                return false
+            }
         }
     }
 }

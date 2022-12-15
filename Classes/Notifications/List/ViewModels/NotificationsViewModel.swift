@@ -54,7 +54,7 @@ extension NotificationsViewModel {
         if isFailedTransaction {
             notificationImage = img("img-nc-failed")
         } else {
-            notificationImage = img("img-nc-success")
+            notificationImage = img("icon-algo-circle")
         }
     }
 

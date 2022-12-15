@@ -257,7 +257,7 @@ extension ReceiveCollectibleAssetListViewController {
 
         open(
             .qrGenerator(
-                title: account.name ?? account.address.shortAddressDisplay,
+                title: account.primaryDisplayName,
                 draft: draft,
                 isTrackable: true
             ),
@@ -724,6 +724,7 @@ extension ReceiveCollectibleAssetListViewController {
     ) -> TransactionController {
         let transactionController = TransactionController(
             api: api!,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )
