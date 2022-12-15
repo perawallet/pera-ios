@@ -26,25 +26,13 @@ struct WCSessionAccountStatusViewModel: ViewModel {
 
 extension WCSessionAccountStatusViewModel {
     private mutating func bindAccountStatus(_ account: Account) {
-        let displayedAccountName = getAccountName(account)
+        let displayName = account.name?.truncatingPrefix(40) ?? account.address.shortAddressDisplay
         
         let fullText = "wallet-connect-session-connected-with-account"
-            .localized(params: displayedAccountName)
+            .localized(params: displayName)
         
         accountStatus = fullText.footnoteMedium(
             alignment: .left
         )
-    }
-    
-    private func getAccountName(_ account: Account) -> String {
-        guard let accountName = account.name else {
-            return account.address.shortAddressDisplay
-        }
-        
-        if accountName.count <= 40 {
-            return accountName
-        }
-        
-        return String(accountName.prefix(40)) + "..."
     }
 }
