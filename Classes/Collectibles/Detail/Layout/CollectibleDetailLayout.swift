@@ -59,6 +59,11 @@ extension CollectibleDetailLayout {
             insets.left = 0
             insets.right = 0
             return insets
+        case .name:
+            insets.top = Self.theme.nameTopPadding
+            insets.left = 0
+            insets.right = 0
+            return insets
         case .media:
             insets.top = Self.theme.mediaTopPadding
             insets.bottom = Self.theme.mediaBottomPadding
@@ -133,6 +138,12 @@ extension CollectibleDetailLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
+        case .name(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForNameItem: item
+            )
         case .media(let item):
             return listView(
                 collectionView,
@@ -200,7 +211,8 @@ extension CollectibleDetailLayout {
         }
 
         switch listSection {
-        case .media,
+        case .name,
+             .media,
              .action,
              .loading:
             return .zero
@@ -222,6 +234,20 @@ extension CollectibleDetailLayout {
         return CollectibleDetailLoadingView.calculatePreferredSize(
             for: CollectibleDetailLoadingView.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNameItem item: CollectibleDetailNameItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailNameCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailNameCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
         )
     }
 

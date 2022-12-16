@@ -24,6 +24,7 @@ extension CollectibleDetailLayout {
         let headerHeight: LayoutMetric
         let propertyHeight: LayoutMetric
         let propertiesCellSpacing: LayoutMetric
+        let nameTopPadding: LayoutMetric
         let mediaTopPadding: LayoutMetric
         let mediaBottomPadding: LayoutMetric
         let actionBottomPadding: LayoutMetric
@@ -39,7 +40,8 @@ extension CollectibleDetailLayout {
             self.headerHeight = 28
             self.propertyHeight = 60
             self.propertiesCellSpacing = 16
-            self.mediaTopPadding = 12
+            self.nameTopPadding = 10
+            self.mediaTopPadding = 20
             self.mediaBottomPadding = 24
             self.actionBottomPadding = 24
             self.descriptionTopPadding = 20

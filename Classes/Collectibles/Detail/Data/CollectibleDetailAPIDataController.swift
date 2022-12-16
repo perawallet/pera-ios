@@ -134,6 +134,7 @@ extension CollectibleDetailAPIDataController {
 
             var snapshot = Snapshot()
 
+            self.addNameContent(&snapshot)
             self.addMediaContent(&snapshot)
             self.addActionContentIfNeeded(&snapshot)
             self.addPropertiesContent(&snapshot)
@@ -141,6 +142,19 @@ extension CollectibleDetailAPIDataController {
 
             return snapshot
         }
+    }
+
+    private func addNameContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let itemIdentifier = CollectibleDetailNameItemIdentifier(asset)
+        let item = CollectibleDetailItem.name(itemIdentifier)
+
+        snapshot.appendSections([.name])
+        snapshot.appendItems(
+            [item],
+            toSection: .name
+        )
     }
 
     private func addMediaContent(

@@ -33,6 +33,7 @@ protocol CollectibleDetailDataController: AnyObject {
 enum CollectibleDetailSection:
     Int,
     Hashable {
+    case name
     case media
     case action
     case properties
@@ -43,6 +44,7 @@ enum CollectibleDetailSection:
 enum CollectibleDetailItem: Hashable {
     case loading
     case error(CollectibleMediaErrorViewModel)
+    case name(CollectibleDetailNameItemIdentifier)
     case media(CollectibleAsset)
     case sendAction
     case optOutAction
@@ -51,6 +53,27 @@ enum CollectibleDetailItem: Hashable {
     case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
     case properties(CollectiblePropertyViewModel)
+}
+
+struct CollectibleDetailNameItemIdentifier: Hashable {
+    private let name: String
+    let viewModel: CollectibleDetailNameViewModel
+
+    init(_ asset: CollectibleAsset) {
+        self.name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        self.viewModel =  CollectibleDetailNameViewModel(asset)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.name == rhs.name
+    }
 }
 
 struct CollectibleDetailAssetIDItemIdentifier: Hashable {
