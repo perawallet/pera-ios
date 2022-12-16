@@ -22,7 +22,7 @@ final class DiscoverURLGenerator {
         discoverUrl: DiscoverURL,
         theme: UIUserInterfaceStyle,
         session: Session?
-    ) -> URL? {
+    ) throws -> URL {
         var queryItems: [URLQueryItem] = []
         queryItems.append(.init(name: "version", value: "1"))
         queryItems.append(.init(name: "theme", value: theme.peraThemeValue))
@@ -39,7 +39,9 @@ final class DiscoverURLGenerator {
             queryItems.append(.init(name: "region", value: Locale.current.regionCode))
         }
 
-        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        guard var components = URLComponents(string: Environment.current.discoverBaseUrl) else {
+            throw DiscoverURLGeneratorError.invalidBaseUrl(Environment.current.discoverBaseUrl)
+        }
 
         switch discoverUrl {
         case .other(let url):
@@ -48,13 +50,18 @@ final class DiscoverURLGenerator {
             if let poolID = parameters.poolID {
                 queryItems.append(.init(name: "poolId", value: poolID))
             }
-            components?.path = "/token-detail/\(parameters.assetID)/"
+            components.path = "/token-detail/\(parameters.assetID)/"
         case .home:
             break
         }
 
-        components?.queryItems = queryItems
-        return components?.url
+        components.queryItems = queryItems
+
+        guard let finalURL = components.url else {
+            throw DiscoverURLGeneratorError.invalidURLComponents(components)
+        }
+
+        return finalURL
     }
 }
 
@@ -62,4 +69,9 @@ enum DiscoverURL {
     case assetDetail(parameters: DiscoverAssetParameters)
     case other(url: URL)
     case home
+}
+
+enum DiscoverURLGeneratorError: Error {
+    case invalidBaseUrl(String)
+    case invalidURLComponents(URLComponents)
 }

@@ -43,25 +43,9 @@ class InAppBrowserScreen:
 
     private let theme = InAppBrowserScreenTheme()
 
-    deinit {
-        stopObservingNotifications()
-    }
-
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-
-        startObservingNotifications()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         addUI()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
     }
 
     override func viewDidLayoutSubviews() {
@@ -78,13 +62,9 @@ class InAppBrowserScreen:
     override func setListeners() {
         super.setListeners()
 
-        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
     }
 
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
-        updateInterfaceTheme(userInterfaceStyle)
-    }
 
     private func createWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
@@ -95,15 +75,6 @@ class InAppBrowserScreen:
             frame: .zero,
             configuration: configuration
         )
-        
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            let versionString = "pera_ios_\(version)"
-            if let userAgent = webView.value(forKey: "userAgent") as? String {
-                webView.customUserAgent = "\(userAgent) \(versionString)"
-            } else {
-                webView.customUserAgent = versionString
-            }
-        }
 
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.showsHorizontalScrollIndicator = false
@@ -225,26 +196,11 @@ extension InAppBrowserScreen {
     }
 
     @objc
-    private func didRefreshList() {
+    func didPullToRefresh() {
         webView.reload()
     }
 }
 
-extension InAppBrowserScreen {
-    private func updateInterfaceTheme(_ style: UIUserInterfaceStyle) {
-        let theme = style.peraThemeValue
-        let script = "updateTheme('\(theme)')"
-        webView.evaluateJavaScript(script)
-    }
-
-    private func updateCurrency() {
-        guard let newCurrency = session?.preferredCurrencyID.localValue else {
-            return
-        }
-        let script = "updateCurrency('\(newCurrency)')"
-        webView.evaluateJavaScript(script)
-    }
-}
 
 extension InAppBrowserScreen {
     private func addUI() {
@@ -372,40 +328,5 @@ extension InAppBrowserScreen {
             webView.load(navigationAction.request)
         }
         return nil
-    }
-}
-
-extension InAppBrowserScreen {
-    private func startObservingNotifications() {
-        startObservingAppLifeCycleNotifications()
-        startObservingCurrencyNotification()
-    }
-
-    private func startObservingAppLifeCycleNotifications() {
-        observeWhenApplicationDidBecomeActive {
-            [weak self] _ in
-            guard let self else { return }
-            self.updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
-        }
-    }
-
-    private func startObservingCurrencyNotification() {
-        observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
-            [weak self] _ in
-            guard let self else { return }
-            self.updateCurrency()
-        }
-    }
-}
-
-
-extension UIUserInterfaceStyle {
-    var peraThemeValue: String {
-        switch self {
-        case .dark:
-            return "dark-theme"
-        default:
-            return "light-theme"
-        }
     }
 }

@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class DiscoverHomeScreen:
-    InAppBrowserScreen,
+    PeraInAppBrowserScreen,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -29,6 +29,10 @@ final class DiscoverHomeScreen:
 
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
+    }
+
+    override var discoverURL: DiscoverURL {
+        return .home
     }
 
     private lazy var theme = DiscoverHomeScreenTheme()
@@ -78,13 +82,6 @@ final class DiscoverHomeScreen:
         events.forEach { event in
             contentController.add(self, name: event.rawValue)
         }
-
-        let generatedUrl = DiscoverURLGenerator.generateUrl(
-            discoverUrl: .home,
-            theme: traitCollection.userInterfaceStyle,
-            session: session
-        )
-        load(url: generatedUrl)
     }
 
     override func viewDidLayoutSubviews() {
