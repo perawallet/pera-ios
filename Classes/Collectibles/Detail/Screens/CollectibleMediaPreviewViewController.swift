@@ -59,8 +59,8 @@ final class CollectibleMediaPreviewViewController:
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = Colors.Text.gray.uiColor
-        pageControl.currentPageIndicatorTintColor = Colors.Helpers.positive.uiColor
+        pageControl.pageIndicatorTintColor = Colors.Text.grayLighter.uiColor
+        pageControl.currentPageIndicatorTintColor = Colors.Text.gray.uiColor
         return pageControl
     }()
 
