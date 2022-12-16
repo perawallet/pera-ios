@@ -34,6 +34,7 @@ enum CollectibleDetailSection:
     Int,
     Hashable {
     case name
+    case accountInformation
     case media
     case action
     case properties
@@ -45,6 +46,7 @@ enum CollectibleDetailItem: Hashable {
     case loading
     case error(CollectibleMediaErrorViewModel)
     case name(CollectibleDetailNameItemIdentifier)
+    case accountInformation(CollectibleDetailAccountInformationItemIdentifier)
     case media(CollectibleAsset)
     case sendAction
     case optOutAction
@@ -73,6 +75,27 @@ struct CollectibleDetailNameItemIdentifier: Hashable {
         rhs: Self
     ) -> Bool {
         return lhs.name == rhs.name
+    }
+}
+
+struct CollectibleDetailAccountInformationItemIdentifier: Hashable {
+    private let id: String
+    let viewModel: CollectibleDetailAccountInformationViewModel
+
+    init(_ item: CollectibleAssetItem) {
+        self.id = item.asset.amount.description.appending(item.account.primaryDisplayName)
+        self.viewModel = CollectibleDetailAccountInformationViewModel(item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

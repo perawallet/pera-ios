@@ -135,6 +135,7 @@ extension CollectibleDetailAPIDataController {
             var snapshot = Snapshot()
 
             self.addNameContent(&snapshot)
+            self.addAccountInformationContentIfNeeded(&snapshot)
             self.addMediaContent(&snapshot)
             self.addActionContentIfNeeded(&snapshot)
             self.addPropertiesContent(&snapshot)
@@ -154,6 +155,29 @@ extension CollectibleDetailAPIDataController {
         snapshot.appendItems(
             [item],
             toSection: .name
+        )
+    }
+
+    private func addAccountInformationContentIfNeeded(
+        _ snapshot: inout Snapshot
+    ) {
+        /// <note> Opt-in flows shouldn't display account information.
+        if quickAction == .optIn {
+            return
+        }
+
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let itemIdentifier = CollectibleDetailAccountInformationItemIdentifier(collectibleAssetItem)
+        let item = CollectibleDetailItem.accountInformation(itemIdentifier)
+
+        snapshot.appendSections([.accountInformation])
+        snapshot.appendItems(
+            [item],
+            toSection: .accountInformation
         )
     }
 
