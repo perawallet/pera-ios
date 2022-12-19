@@ -20,11 +20,9 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-struct CollectibleListItemViewModel:
-    ViewModel,
-    Hashable {
-    private(set) var assetID: AssetID?
+struct CollectibleListItemViewModel: ViewModel {
     private(set) var image: ImageSource?
+    private(set) var overlay: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var topLeftBadgeCanvas: UIImage?
@@ -47,37 +45,33 @@ struct CollectibleListItemViewModel:
 }
 
 extension CollectibleListItemViewModel {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(assetID)
-        hasher.combine(title)
-        hasher.combine(subtitle)
-    }
-
-    static func == (
-        lhs: Self,
-        rhs: Self
-    ) -> Bool {
-        return lhs.assetID == rhs.assetID &&
-        lhs.title == rhs.title &&
-        lhs.subtitle == rhs.subtitle
-    }
-}
-
-extension CollectibleListItemViewModel {
     mutating func bind<T>(
         imageSize: CGSize,
         model: T
     ) {
         if let item = model as? CollectibleAssetItem {
-            bindAssetID(item)
             bindImage(imageSize: imageSize, item: item)
+            bindOverlay(item: item)
             bindAmount(item)
             bindTitle(item)
             bindSubtitle(item)
             bindTopLeftBadge(item)
             bindBottomLeftBadge(item)
+            return
+        }
+
+        if let update = model as? OptInBlockchainUpdate {
+            bindIcon(imageSize: imageSize, update: update)
+            bindTitle(update)
+            bindSubtitle(update)
+            bindPendingTitle()
+            return
+        }
+
+        if let update = model as? OptOutBlockchainUpdate {
+            bindIcon(imageSize: imageSize, update: update)
+            bindPrimaryTitle(update)
+            bindSecondaryTitle(update)
             bindPendingTitle()
             return
         }
@@ -85,12 +79,6 @@ extension CollectibleListItemViewModel {
 }
 
 extension CollectibleListItemViewModel {
-    private mutating func bindAssetID(
-        _ item: CollectibleAssetItem
-    ) {
-        assetID = getAssetID(item.asset)
-    }
-
     private mutating func bindAmount(
         _ item: CollectibleAssetItem
     ) {
@@ -106,6 +94,14 @@ extension CollectibleListItemViewModel {
         item: CollectibleAssetItem
     ) {
         image = getImage(imageSize: imageSize, asset: item.asset)
+    }
+
+    private mutating func bindOverlay(
+        item: CollectibleAssetItem
+    ) {
+        if !item.asset.isOwned {
+            overlay = "overlay-bg".uiImage
+        }
     }
 
     private mutating func bindTitle(
@@ -159,12 +155,6 @@ extension CollectibleListItemViewModel {
 }
 
 extension CollectibleListItemViewModel {
-    func getAssetID(
-        _ asset: CollectibleAsset
-    ) -> AssetID? {
-        return asset.id
-    }
-
     func getImage(
         imageSize: CGSize,
         asset: CollectibleAsset
@@ -273,6 +263,100 @@ extension CollectibleListItemViewModel {
         return .attributedString(
             "x\(formattedAmount)"
                 .footnoteBold(lineBreakMode: .byTruncatingTail)
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    mutating func bindIcon(imageSize: CGSize, update: OptInBlockchainUpdate) {
+        let placeholder = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        if let thumbnailImage = update.collectibleAssetThumbnailImage {
+            let prismURL = PrismURL(baseURL: thumbnailImage)
+                .setExpectedImageSize(imageSize)
+                .build()
+
+            image = PNGImageSource(
+                url: prismURL,
+                shape: .rounded(4),
+                placeholder: getPlaceholder(placeholder)
+            )
+            return
+        }
+
+        let imageSource =
+            PNGImageSource(
+                url: nil,
+                placeholder: getPlaceholder(placeholder)
+            )
+
+        image = imageSource
+    }
+
+    mutating func bindTitle(_ update: OptInBlockchainUpdate) {
+        guard let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString() else {
+            return
+        }
+
+        title = .attributedString(
+            collectionName
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+        )
+    }
+
+    mutating func bindSubtitle(_ update: OptInBlockchainUpdate) {
+        let subtitle = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        self.subtitle = .attributedString(
+            subtitle
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    mutating func bindIcon(imageSize: CGSize, update: OptOutBlockchainUpdate) {
+        let placeholder = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        if let thumbnailImage = update.collectibleAssetThumbnailImage {
+            let prismURL = PrismURL(baseURL: thumbnailImage)
+                .setExpectedImageSize(imageSize)
+                .build()
+
+            image = PNGImageSource(
+                url: prismURL,
+                shape: .rounded(4),
+                placeholder: getPlaceholder(placeholder)
+            )
+            return
+        }
+
+        let imageSource =
+            PNGImageSource(
+                url: nil,
+                placeholder: getPlaceholder(placeholder)
+            )
+
+        image = imageSource
+    }
+
+    mutating func bindPrimaryTitle(_ update: OptOutBlockchainUpdate) {
+        guard let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString() else {
+            return
+        }
+
+        title = .attributedString(
+            collectionName
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+        )
+    }
+
+    mutating func bindSecondaryTitle(_ update: OptOutBlockchainUpdate) {
+        let subtitle = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        self.subtitle = .attributedString(
+            subtitle
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 }
