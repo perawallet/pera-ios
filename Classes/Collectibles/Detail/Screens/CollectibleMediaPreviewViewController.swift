@@ -130,6 +130,12 @@ final class CollectibleMediaPreviewViewController:
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             listView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
+
+        pageControl.addTarget(
+            self,
+            action: #selector(didTapPageControl),
+            for: .valueChanged
+        )
     }
 
     override func viewDidLoad() {
@@ -199,6 +205,21 @@ extension CollectibleMediaPreviewViewController {
     @objc
     private func didTap3DActionView() {
         open3DCard()
+    }
+
+    @objc
+    private func didTapPageControl(_ sender: UIPageControl) {
+        if selectedIndex == sender.currentPage {
+            return
+        }
+
+        selectedIndex = sender.currentPage
+
+        listView.scrollToItem(
+            at: IndexPath(item: selectedIndex, section: 0),
+            at: .centeredHorizontally,
+            animated: true
+        )
     }
 }
 
