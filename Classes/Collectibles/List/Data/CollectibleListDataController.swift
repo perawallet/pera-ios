@@ -48,8 +48,18 @@ enum CollectibleListItem: Hashable {
     case header(ManagementItemViewModel)
     case watchAccountHeader(ManagementItemViewModel)
     case uiActions
-    case collectibleAsset(CollectibleListCollectibleAssetListItem)
-    case pendingCollectibleAsset(CollectibleListPendingCollectibleAssetListItem)
+    case collectibleAsset(CollectibleGalleryCollectibleAssetItem)
+    case pendingCollectibleAsset(CollectibleGalleryPendingCollectibleAssetItem)
+}
+
+enum CollectibleGalleryCollectibleAssetItem: Hashable {
+    case grid(CollectibleListCollectibleAssetListItem)
+    case list(CollectibleListCollectibleAssetListItemNew)
+}
+
+enum CollectibleGalleryPendingCollectibleAssetItem: Hashable {
+    case grid(CollectibleListPendingCollectibleAssetListItem)
+    case list(CollectibleListPendingCollectibleAssetListItemNew)
 }
 
 enum CollectibleEmptyItem: Hashable {
@@ -116,6 +126,64 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
     }
 }
 
+struct CollectibleListCollectibleAssetListItemNew: Hashable {
+    let account: Account
+    let asset: CollectibleAsset
+    let viewModel: NFTListItemViewModel
+
+    init(item: CollectibleAssetItem) {
+        self.account = item.account
+        self.asset = item.asset
+        self.viewModel = NFTListItemViewModel(item: item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(asset.id)
+        hasher.combine(account.address)
+    }
+
+    static func == (
+        lhs: CollectibleListCollectibleAssetListItemNew,
+        rhs: CollectibleListCollectibleAssetListItemNew
+    ) -> Bool {
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.account.address == rhs.account.address
+    }
+}
+
+struct CollectibleListPendingCollectibleAssetListItemNew: Hashable {
+    private let accountAddress: PublicKey
+    private let assetID: AssetID
+    let viewModel: NFTListItemViewModel
+
+    init(update: OptInBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = NFTListItemViewModel(update: update)
+    }
+
+    init(update: OptOutBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = NFTListItemViewModel(update: update)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(assetID)
+        hasher.combine(accountAddress)
+    }
+
+    static func == (
+        lhs: CollectibleListPendingCollectibleAssetListItemNew,
+        rhs: CollectibleListPendingCollectibleAssetListItemNew
+    ) -> Bool {
+        return
+            lhs.assetID == rhs.assetID &&
+            lhs.accountAddress == rhs.accountAddress
+    }
+}
+
 enum CollectibleDataControllerEvent {
     case didUpdate(CollectibleListDataController.Snapshot)
     case didFinishRunning(hasError: Bool)
@@ -137,6 +205,22 @@ enum CollectibleGalleryAccount {
         switch self {
         case .single(let account): return account
         default: return nil
+        }
+    }
+}
+
+extension CollectibleGalleryCollectibleAssetItem {
+    var account: Account {
+        switch self {
+        case .grid(let item): return item.account
+        case .list(let item): return item.account
+        }
+    }
+
+    var asset: CollectibleAsset {
+        switch self {
+        case .grid(let item): return item.asset
+        case .list(let item): return item.asset
         }
     }
 }

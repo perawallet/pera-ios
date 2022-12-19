@@ -46,6 +46,8 @@ final class CollectibleListViewController:
 
     private var positionYForDisplayingListHeader: CGFloat?
 
+    private var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
+
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -125,6 +127,12 @@ extension CollectibleListViewController {
                 return
             }
 
+            if let pendingCollectibleListItemCell = cell as? PendingCollectibleAssetListItemCell,
+               pendingCollectibleListItemCell.isLoading {
+                pendingCollectibleListItemCell.isLoading = true
+                return
+            }
+
             if let listLoadingCell = cell as? CollectibleListLoadingViewCell {
                 listLoadingCell.restartAnimating()
                 return
@@ -194,9 +202,15 @@ extension CollectibleListViewController {
             default:
                 break
             }
-        case .pendingCollectibleAsset:
-            let cell = cell as? PendingCollectibleGridItemCell
-            cell?.isLoading = true
+        case .pendingCollectibleAsset(let item):
+            switch item {
+            case .grid:
+                let cell = cell as? PendingCollectibleGridItemCell
+                cell?.isLoading = true
+            case .list:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = true
+            }
         default: break
         }
     }
@@ -219,9 +233,15 @@ extension CollectibleListViewController {
             default:
                 break
             }
-        case .pendingCollectibleAsset:
-            let cell = cell as? PendingCollectibleGridItemCell
-            cell?.isLoading = false
+        case .pendingCollectibleAsset(let item):
+            switch item {
+            case .grid:
+                let cell = cell as? PendingCollectibleGridItemCell
+                cell?.isLoading = false
+            case .list:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = false
+            }
         default:
             break
         }
@@ -241,12 +261,18 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .collectibleAsset(let item):
-            let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell
+            var currentImage: UIImage?
+
+            if let gridItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell {
+                currentImage = gridItemCell.contextView.currentImage
+            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? NFTListItemCell {
+                currentImage = listItemCell.contextView.currentImage
+            }
 
             openCollectibleDetail(
                 account: item.account,
                 asset: item.asset,
-                thumbnailImage: cell?.contextView.currentImage
+                thumbnailImage: currentImage
             )
         default:
             break
@@ -305,9 +331,15 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
-        case .collectibleAsset:
-            let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
-            return cell.getTargetedPreview()
+        case .collectibleAsset(let item):
+            switch item {
+            case .grid:
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
+                return cell.getTargetedPreview()
+            case .list:
+                let cell = collectionView.cellForItem(at: indexPath) as! NFTListItemCell
+                return cell.getTargetedPreview()
+            }
         default:
             return nil
         }
@@ -411,7 +443,11 @@ extension CollectibleListViewController {
     ) {
         cell.delegate = self
 
-//        cell.setGridUIStyleSelected() /// <todo> Get the preference from saved preference.
+        if collectibleGalleryUIStyleStore.galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+            cell.setGridUIStyleSelected()
+        } else {
+            cell.setListUIStyleSelected()
+        }
     }
 }
 
@@ -458,11 +494,15 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
     func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        /// <todo> Perform layout changes & save the preference.
+        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.gridUIStyleIndex
+        listView.setCollectionViewLayout(CollectibleListLayout.gridFlowLayout, animated: true)
+        dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        /// <todo> Perform layout changes & save the preference.
+        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.listUIStyleIndex
+        listView.setCollectionViewLayout(CollectibleListLayout.listFlowLayout, animated: true)
+        dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidEditSearchInput(_ cell: CollectibleGalleryUIActionsCell, input: String?) {
