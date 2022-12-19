@@ -25,7 +25,7 @@ final class CollectibleGalleryUIActionsView:
     private lazy var searchInputView = SearchInputView()
     private lazy var galleryUIStyleInputView = SegmentedControl(theme.galleryUIStyleInput)
 
-    private var selectedGalleryUIStyleIndex = CollectibleGalleryUIActionsView.gridUIStyleIndex {
+    private var selectedGalleryUIStyleIndex = -1 {
         didSet {
             updateSelectedSegmentIndexIfNeeded(old: oldValue)
         }
@@ -92,8 +92,6 @@ extension CollectibleGalleryUIActionsView {
             action: #selector(performGalleryUIStyleUpdateIfNeeded),
             for: .valueChanged
         )
-
-        galleryUIStyleInputView.selectedSegmentIndex = selectedGalleryUIStyleIndex
     }
 }
 
