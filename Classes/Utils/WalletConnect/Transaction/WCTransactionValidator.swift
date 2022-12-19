@@ -48,7 +48,12 @@ extension WCTransactionValidator {
             rejectTransactionRequest(with: .invalidInput(.signer))
             return
         }
-        
+
+        if !containsSignerInTheWallet(for: transactionGroups) {
+            rejectTransactionRequest(with: .unauthorized(.signerNotFound))
+            return
+        }
+
         if hasInvalidGroupedTransaction(in: transactionGroups) {
             rejectTransactionRequest(with: .invalidInput(.group))
             return
@@ -89,6 +94,17 @@ extension WCTransactionValidator {
         }
 
         return true
+    }
+
+    private func containsSignerInTheWallet(for transactionGroups: [Int64: [WCTransaction]]) -> Bool {
+        for group in transactionGroups {
+            let unsignableTransactions = group.value.filter { $0.containsSignerInTheWallet }
+            if unsignableTransactions.count != group.value.count {
+                return true
+            }
+        }
+
+        return false
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {

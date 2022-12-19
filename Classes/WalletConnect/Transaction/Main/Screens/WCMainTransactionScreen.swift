@@ -493,7 +493,7 @@ extension WCMainTransactionScreen {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: "title-error".localized,
-            description: .plain(reason.message),
+            description: .plain("wallet-connect-no-account-for-transaction".localized(params: reason.message)),
             secondaryActionButtonTitle: "title-ok".localized,
             secondaryAction: { [weak self] in
                 guard let self = self else {

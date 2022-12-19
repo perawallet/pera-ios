@@ -28,7 +28,14 @@ final class WCTransaction: Codable {
 
     /// ID is used to separate the transactions that contains exactly the same elements.
     private let id = UUID()
+    private(set) var signerAddress: PublicKey?
     private(set) var signerAccount: Account?
+
+    var containsSignerInTheWallet: Bool {
+        /// <note>
+        /// Checks if the received signer address is set but the wallet does not contain that account.
+        return signerAccount == nil && signerAddress != nil
+    }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -77,6 +84,7 @@ extension WCTransaction {
 
     func findSignerAccount(in accountCollection: AccountCollection, on session: Session) {
         if let authAddress = authAddress {
+            signerAddress = authAddress
             signerAccount = findAccount(authAddress, in: accountCollection, on: session)
             return
         }
@@ -84,11 +92,13 @@ extension WCTransaction {
         switch signer() {
         case .sender:
             if let sender = transactionDetail?.sender {
+                signerAddress = sender
                 signerAccount = findAccount(sender, in: accountCollection, on: session)
                 return
             }
         case let .current(address):
             if let address = address {
+                signerAddress = address
                 signerAccount = findAccount(address, in: accountCollection, on: session)
                 return
             }
