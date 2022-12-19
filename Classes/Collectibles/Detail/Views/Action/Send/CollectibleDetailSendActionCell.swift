@@ -45,8 +45,6 @@ final class CollectibleDetailSendActionCell:
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
-        let contextWidth = width
-        let maxContextSize = CGSize((contextWidth, .greatestFiniteMagnitude))
         let contextSize = theme.context.title?.text.string?.boundingSize(
             attributes: .font(theme.context.font?.uiFont),
             multiline: true,

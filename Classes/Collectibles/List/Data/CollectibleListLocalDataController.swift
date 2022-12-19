@@ -38,13 +38,17 @@ final class CollectibleListLocalDataController:
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
-    private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleListSnapshot)
 
     private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
     private lazy var collectibleFilterStore: CollectibleFilterStore = .init()
     private lazy var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.collectibles.updates",
+        qos: .userInitiated
+    )
 
     let galleryAccount: CollectibleGalleryAccount
 

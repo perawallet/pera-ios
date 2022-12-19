@@ -84,7 +84,7 @@ extension AssetPreviewViewModel {
         }
 
         if asset.isAlgo {
-            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            imageSource = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
 
@@ -104,11 +104,6 @@ extension AssetPreviewViewModel {
             .setExpectedImageSize(size)
             .setImageQuality(.normal)
             .build()
-
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-        : asset.naming.name
-
         let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
