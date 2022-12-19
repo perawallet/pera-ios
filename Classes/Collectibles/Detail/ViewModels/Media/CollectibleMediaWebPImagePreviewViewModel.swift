@@ -23,7 +23,8 @@ import Prism
 struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
     var isOwned: Bool = true
-    var isFullScreenBadgeHidden: Bool = false
+    var is3DModeActionHidden: Bool = false
+    var isFullScreenActionHidden: Bool = false
 
     init(
         imageSize: CGSize,
@@ -37,6 +38,7 @@ struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewVi
         )
 
         bindOwned(asset)
+        bindIs3DModeActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -56,7 +58,7 @@ extension CollectibleMediaWebPImagePreviewViewModel {
 
             image = PNGImageSource(
                 url: prismURL,
-                shape: .rounded(4),
+                shape: .rounded(12),
                 placeholder: getPlaceholder(placeholder)
             )
             return

@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleDetailWatchAccountActionCell.swift
+//   UIButton+Extensions.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class CollectibleDetailWatchAccountActionCell:
-    CollectionCell<CollectibleDetailActionView>,
-    ViewModelBindable,
-    UIInteractable {
-    static let theme = CollectibleDetailActionViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-        contextView.hideSendAction()
+extension UIButton: ListReusable {
+    public func prepareForReuse() {
+        setAttributedTitle(nil, for: state)
+        setTitle(nil, for: state)
     }
+}
+
+extension UIButton: ViewComposable {
+    public func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    public func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }

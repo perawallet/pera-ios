@@ -105,17 +105,17 @@ final class CollectibleListItemView:
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
             )
 
-        let subtitleSingilineSize =
+        let subtitleSingleLineSize =
             viewModel.subtitle.boundingSize(
                 multiline: false,
                 fittingSize: CGSize((.greatestFiniteMagnitude, .greatestFiniteMagnitude))
             )
         let subtitleHeight: CGFloat
 
-        if subtitleSingilineSize.width.ceil() > width {
-            subtitleHeight = subtitleSingilineSize.height * 2
+        if subtitleSingleLineSize.width.ceil() > width {
+            subtitleHeight = subtitleSingleLineSize.height * 2
         } else {
-            subtitleHeight = subtitleSingilineSize.height
+            subtitleHeight = subtitleSingleLineSize.height
         }
 
         let preferredHeight =

@@ -23,8 +23,10 @@ struct CollectibleMediaVideoPreviewViewTheme:
     LayoutSheet {
     let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
     let overlay: ViewStyle
-    let fullScreenBadge: ImageStyle
-    let fullScreenBadgeContentEdgeInsets: LayoutOffset
+    let threeDAction: ButtonStyle
+    let threeDActionContentEdgeInsets: LayoutPaddings
+    let threeDModeActionPaddings: LayoutPaddings
+    let fullScreenAction: ButtonStyle
     let fullScreenBadgePaddings: LayoutPaddings
     let corner: Corner
 
@@ -37,15 +39,21 @@ struct CollectibleMediaVideoPreviewViewTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
 
-        fullScreenBadge = [
-            .image("icon-full-screen"),
-            .backgroundColor(Colors.NFTIcon.iconBackground),
-            .contentMode(.center)
+        threeDAction = [
+            .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
+            .backgroundImage([.normal("icon-3d-bg"), .highlighted("icon-3d-bg")]),
+            .titleColor([ .normal(Colors.Text.white) ]),
+            .title("collectible-detail-tap-3D".localized.footnoteMedium()),
         ]
-        fullScreenBadgeContentEdgeInsets = (8, 8)
-        fullScreenBadgePaddings = (.noMetric, .noMetric, 12, 12)
+        threeDActionContentEdgeInsets = (4, 8, 4, 8)
+        threeDModeActionPaddings = (.noMetric, 16, 16, .noMetric)
 
-        corner = Corner(radius: 4)
+        fullScreenAction = [
+            .icon([ .normal("icon-full-screen"), .highlighted("icon-full-screen")])
+        ]
+        fullScreenBadgePaddings = (.noMetric, .noMetric, 16, 16)
+
+        corner = Corner(radius: 12)
     }
 }
 

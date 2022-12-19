@@ -59,20 +59,16 @@ final class CollectibleMediaPreviewViewController:
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = Colors.Text.gray.uiColor
-        pageControl.currentPageIndicatorTintColor = Colors.Helpers.positive.uiColor
+        pageControl.pageIndicatorTintColor = Colors.Text.grayLighter.uiColor
+        pageControl.currentPageIndicatorTintColor = Colors.Text.gray.uiColor
         return pageControl
     }()
-
-    private lazy var tap3DActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
 
     private var selectedIndex = 0 {
         didSet {
             pageControl.currentPage = selectedIndex
             selectedMedia = asset.media[safe: selectedIndex]
             eventHandler?(.didScrollToMedia(selectedMedia))
-
-            tap3DActionView.isHidden = !(selectedMedia?.type.isSupported ?? false)
         }
     }
 
@@ -106,17 +102,11 @@ final class CollectibleMediaPreviewViewController:
             return CGSize((size.width, 0))
         }
 
-        let tap3DViewHeight: CGFloat = 24
-        let tap3DViewTopPadding = Self.theme.tap3DActionViewTopPadding
-
         let mediaHeight =
-        size.width -
-        2 * Self.theme.horizontalInset
+            size.width -
+            2 * Self.theme.horizontalInset
 
-        var preferredHeight: CGFloat =
-        mediaHeight.float() +
-        tap3DViewHeight +
-        tap3DViewTopPadding
+        var preferredHeight: CGFloat = mediaHeight.float()
 
         if asset.media.count > 1 {
             let pageControlHeight: CGFloat = 26
@@ -130,7 +120,6 @@ final class CollectibleMediaPreviewViewController:
         super.prepareLayout()
         addListView()
         addPageControl()
-        addTap3DActionView()
     }
 
     override func linkInteractors() {
@@ -142,9 +131,10 @@ final class CollectibleMediaPreviewViewController:
             listView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
 
-        tap3DActionView.addTouch(
-            target: self,
-            action: #selector(didTap3DActionView)
+        pageControl.addTarget(
+            self,
+            action: #selector(didTapPageControl),
+            for: .valueChanged
         )
     }
 
@@ -204,22 +194,10 @@ extension CollectibleMediaPreviewViewController {
             $0.leading.trailing
                 .lessThanOrEqualToSuperview()
                 .inset(Self.theme.horizontalInset)
+            $0.bottom == 0
         }
 
         configurePageControl()
-    }
-
-    private func addTap3DActionView() {
-        tap3DActionView.customizeAppearance(Self.theme.tap3DActionView)
-
-        view.addSubview(tap3DActionView)
-        tap3DActionView.snp.makeConstraints {
-            $0.leading >= Self.theme.horizontalInset
-            $0.trailing <= Self.theme.horizontalInset
-            $0.centerX == 0
-            $0.top == pageControl.snp.bottom + Self.theme.tap3DActionViewTopPadding
-            $0.bottom == 0
-        }
     }
 }
 
@@ -227,6 +205,21 @@ extension CollectibleMediaPreviewViewController {
     @objc
     private func didTap3DActionView() {
         open3DCard()
+    }
+
+    @objc
+    private func didTapPageControl(_ sender: UIPageControl) {
+        if selectedIndex == sender.currentPage {
+            return
+        }
+
+        selectedIndex = sender.currentPage
+
+        listView.scrollToItem(
+            at: IndexPath(item: selectedIndex, section: 0),
+            at: .centeredHorizontally,
+            animated: true
+        )
     }
 }
 
@@ -286,12 +279,70 @@ extension CollectibleMediaPreviewViewController {
 
                 self.existingImages = [indexPath.item: image]
             }
+            cell.handlers.didTap3DModeAction = {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.open3DCard()
+            }
+            cell.handlers.didTapFullScreenAction = {
+                [weak self, weak cell] in
+                guard let self,
+                      let cell else {
+                    return
+                }
+
+                let image = cell.contextView.currentImage
+
+                guard let image = image else {
+                    return
+                }
+
+                self.openFullScreenImagePreview(
+                    image: image,
+                    media: media
+                )
+            }
         case .video:
             guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
                 return
             }
 
             cell.playVideo()
+
+            cell.startObserving(event: .perform3DModeAction) {
+                [weak self] in
+                guard let self else {
+                    return
+                }
+                self.open3DCard()
+            }
+            cell.startObserving(event: .performFullScreenAction) {
+                [weak self, weak cell] in
+                guard let self,
+                      let cell else {
+                    return
+                }
+
+                let player = cell.contextView.currentPlayer
+
+                guard cell.isReadyForDisplay,
+                      let player = player else {
+                    return
+                }
+
+                cell.stopVideo()
+
+                self.openFullScreenVideoPreview(
+                    with: player,
+                    didDismiss: {
+                        [weak cell] in
+                        cell?.playVideo()
+                    }
+                )
+            }
         default:
             break
         }
@@ -315,51 +366,6 @@ extension CollectibleMediaPreviewViewController {
             cell.stopVideo()
         default:
             break
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-        guard let media = asset.media[safe: indexPath.item] else {
-            return
-        }
-
-        let cell = collectionView.cellForItem(at: indexPath)
-
-        switch media.type {
-        case .video:
-            let videoPreviewCell = cell as? CollectibleMediaVideoPreviewCell
-            let player = videoPreviewCell?.contextView.currentPlayer
-
-            guard let videoPreviewCell = videoPreviewCell,
-                  videoPreviewCell.isReadyForDisplay,
-                  let player = player else {
-                return
-            }
-
-            videoPreviewCell.stopVideo()
-
-            openFullScreenVideoPreview(
-                with: player,
-                didDismiss: {
-                    [weak videoPreviewCell] in
-                    videoPreviewCell?.playVideo()
-                }
-            )
-        default:
-            let imagePreviewCell = cell as? CollectibleMediaImagePreviewCell
-            let image = imagePreviewCell?.contextView.currentImage
-
-            guard let image = image else {
-                return
-            }
-
-            openFullScreenImagePreview(
-                image: image,
-                media: media
-            )
         }
     }
 

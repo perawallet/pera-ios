@@ -25,6 +25,8 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleDetailSnapshot)
 
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+
     private var ongoingEndpoint: EndpointOperatable?
 
     private let api: ALGAPI
@@ -132,13 +134,51 @@ extension CollectibleDetailAPIDataController {
 
             var snapshot = Snapshot()
 
+            self.addNameContent(&snapshot)
+            self.addAccountInformationContentIfNeeded(&snapshot)
             self.addMediaContent(&snapshot)
             self.addActionContentIfNeeded(&snapshot)
-            self.addDescriptionContent(&snapshot)
             self.addPropertiesContent(&snapshot)
+            self.addDescriptionContent(&snapshot)
 
             return snapshot
         }
+    }
+
+    private func addNameContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let itemIdentifier = CollectibleDetailNameItemIdentifier(asset)
+        let item = CollectibleDetailItem.name(itemIdentifier)
+
+        snapshot.appendSections([.name])
+        snapshot.appendItems(
+            [item],
+            toSection: .name
+        )
+    }
+
+    private func addAccountInformationContentIfNeeded(
+        _ snapshot: inout Snapshot
+    ) {
+        /// <note> Opt-in flows shouldn't display account information.
+        if quickAction == .optIn {
+            return
+        }
+
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let itemIdentifier = CollectibleDetailAccountInformationItemIdentifier(collectibleAssetItem)
+        let item = CollectibleDetailItem.accountInformation(itemIdentifier)
+
+        snapshot.appendSections([.accountInformation])
+        snapshot.appendItems(
+            [item],
+            toSection: .accountInformation
+        )
     }
 
     private func addMediaContent(
@@ -177,23 +217,20 @@ extension CollectibleDetailAPIDataController {
         _ snapshot: inout Snapshot
     ) {
         if quickAction != nil {
-            addWatchAccountActionContent(&snapshot)
             return
         }
 
         if account.isWatchAccount() {
-            addWatchAccountActionContent(&snapshot)
             return
         }
 
         if asset.isOwned {
-            addStandardActionContent(&snapshot)
+            addSendActionContent(&snapshot)
             return
         }
 
         /// <note>: Creators cannot opt-out from the asset.
         if asset.creator?.address == account.address {
-            addCreatorAccountActionContent(&snapshot)
             return
         }
 
@@ -202,59 +239,12 @@ extension CollectibleDetailAPIDataController {
         }
     }
 
-    private func addWatchAccountActionContent(
+    private func addSendActionContent(
         _ snapshot: inout Snapshot
     ) {
-        let actionItem: [CollectibleDetailItem] = [
-            .watchAccountAction(
-                CollectibleDetailActionViewModel(
-                    asset: asset,
-                    account: account
-                )
-            )
-        ]
-
         snapshot.appendSections([.action])
         snapshot.appendItems(
-            actionItem,
-            toSection: .action
-        )
-    }
-
-    private func addCreatorAccountActionContent(
-        _ snapshot: inout Snapshot
-    ) {
-        let actionItem: [CollectibleDetailItem] = [
-            .collectibleCreatorAccountAction(
-                CollectibleDetailActionViewModel(
-                    asset: asset,
-                    account: account
-                )
-            )
-        ]
-
-        snapshot.appendSections([.action])
-        snapshot.appendItems(
-            actionItem,
-            toSection: .action
-        )
-    }
-
-    private func addStandardActionContent(
-        _ snapshot: inout Snapshot
-    ) {
-        let actionItem: [CollectibleDetailItem] = [
-            .action(
-                CollectibleDetailActionViewModel(
-                    asset: asset,
-                    account: account
-                )
-            )
-        ]
-
-        snapshot.appendSections([.action])
-        snapshot.appendItems(
-            actionItem,
+            [.sendAction],
             toSection: .action
         )
     }
@@ -262,18 +252,9 @@ extension CollectibleDetailAPIDataController {
     private func addOptedInActionContent(
         _ snapshot: inout Snapshot
     ) {
-        let actionItem: [CollectibleDetailItem] = [
-            .optedInAction(
-                CollectibleDetailOptedInActionViewModel(
-                    asset: asset,
-                    account: account
-                )
-            )
-        ]
-
         snapshot.appendSections([.action])
         snapshot.appendItems(
-            actionItem,
+            [.optOutAction],
             toSection: .action
         )
     }
@@ -293,37 +274,28 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let asset = account[asset.id] as? CollectibleAsset,
-           asset.isOwned {
+        if asset.creator?.address != nil {
             descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: .account(account),
-                        title: "collectible-detail-owner".localized,
-                        value: account.primaryDisplayName,
-                        isCollectibleSpecificValue: false
-                    )
+                .creatorAccount(
+                    CollectibleDetailCreatorAccountItemIdentifier(asset)
                 )
             )
         }
 
         descriptionItems.append(
             .assetID(
-                CollectibleDetailAssetIDItemIdentifier(viewModel: CollectibleDetailAssetIDItemViewModel(asset: asset))
+                CollectibleDetailAssetIDItemIdentifier(asset)
             )
         )
 
-        if let creator = asset.creator?.address {
-            let source = AlgoExplorerExternalSource(address: creator, network: api.network)
-
+        if let totalSupply = getTotalSupply(for: asset) {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
                         icon: nil,
-                        title: "collectible-detail-creator-address".localized,
-                        value: creator.shortAddressDisplay,
-                        isCollectibleSpecificValue: true,
-                        actionURL: source.url
+                        title: "title-total-supply".localized,
+                        value: totalSupply,
+                        isCollectibleSpecificValue: false
                     )
                 )
             )
@@ -348,6 +320,17 @@ extension CollectibleDetailAPIDataController {
         )
     }
 
+    private func getTotalSupply(for asset: CollectibleAsset) -> String? {
+        guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
+            return nil
+        }
+
+        let decimals = asset.decimals
+        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
+
+        return collectibleAmountFormatter.format(totalSupply)
+    }
+
     private func addPropertiesContent(
         _ snapshot: inout Snapshot
     ) {
@@ -361,40 +344,6 @@ extension CollectibleDetailAPIDataController {
                 toSection: .properties
             )
         }
-    }
-
-    private func addExternalSourcesContent(
-        _ snapshot: inout Snapshot
-    ) {
-        var externalSourceItems: [CollectibleDetailItem] = [
-            .external(
-                CollectibleExternalSourceViewModel(
-                    AlgoExplorerExternalSource(
-                        asset: asset.id,
-                        network: api.network
-                    )
-                )
-            )
-        ]
-
-        if !api.isTestNet {
-            externalSourceItems.append(
-                .external(
-                    CollectibleExternalSourceViewModel(
-                        NFTExplorerExternalSource(
-                            asset: asset.id,
-                            network: api.network
-                        )
-                    )
-                )
-            )
-        }
-
-        snapshot.appendSections([.external])
-        snapshot.appendItems(
-            externalSourceItems,
-            toSection: .external
-        )
     }
 
     private func deliverSnapshot(

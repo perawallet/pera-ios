@@ -23,7 +23,8 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
     private(set) var isOwned: Bool = true
-    private(set) var isFullScreenBadgeHidden: Bool = false
+    private(set) var is3DModeActionHidden: Bool = false
+    private(set) var isFullScreenActionHidden: Bool = false
 
     init(
         asset: CollectibleAsset,
@@ -32,6 +33,7 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
         bindPlaceholder(asset)
         bindURL(media)
         bindOwned(asset)
+        bindIs3DActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -61,10 +63,16 @@ extension CollectibleMediaVideoPreviewViewModel {
         isOwned = asset.isOwned
     }
 
+    private mutating func bindIs3DActionHidden(
+        _ asset: CollectibleAsset
+    ) {
+        is3DModeActionHidden = !asset.mediaType.isSupported
+    }
+
     private mutating func bindIsFullScreenBadgeHidden(
         _ asset: CollectibleAsset
     ) {
-        isFullScreenBadgeHidden = !asset.mediaType.isSupported
+        isFullScreenActionHidden = !asset.mediaType.isSupported
     }
 }
 

@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SingleLineIconTitleActionCell.swift
+//   CollectibleDetailAccountInformationCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleExternalSourceCell:
-    CollectionCell<CollectibleExternalSourceView>,
+final class CollectibleDetailAccountInformationCell:
+    CollectionCell<CollectibleDetailAccountInformationView>,
     ViewModelBindable,
     UIInteractable {
-    static let theme = CollectibleExternalSourceViewTheme()
+    static let theme = CollectibleDetailAccountInformationViewTheme()
 
-    override init(
-        frame: CGRect
-    ) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
     }
