@@ -46,8 +46,8 @@ extension CollectibleDetailLayout {
             self.mediaTopPadding = 20
             self.mediaBottomPadding = 24
             self.actionBottomPadding = 24
-            self.descriptionTopPadding = 20
-            self.descriptionBottomPadding = 36
+            self.descriptionTopPadding = 12
+            self.descriptionBottomPadding = 16
             self.propertiesTopPadding = 16
             self.propertiesBottomPadding = 40
         }
