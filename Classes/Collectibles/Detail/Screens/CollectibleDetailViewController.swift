@@ -392,6 +392,10 @@ extension CollectibleDetailViewController {
         case .loading:
             let loadingCell = cell as? CollectibleDetailLoadingCell
             loadingCell?.startAnimating()
+        case .accountInformation:
+            linkInteractors(
+                cell as! CollectibleDetailAccountInformationCell
+            )
         case .sendAction:
             linkInteractors(
                 cell as! CollectibleDetailSendActionCell
@@ -444,6 +448,14 @@ extension CollectibleDetailViewController {
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
             }
+        }
+    }
+    private func linkInteractors(
+        _ cell: CollectibleDetailAccountInformationCell
+    ) {
+        cell.startObserving(event: .didLongPressTitle) {
+            [unowned self] in
+            self.copyToClipboardController.copyAddress(account)
         }
     }
 
