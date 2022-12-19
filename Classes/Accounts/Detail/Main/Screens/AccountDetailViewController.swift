@@ -522,26 +522,21 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
-            [weak self] event in
+        var uiInteractions = AssetsFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [weak self] hasChanges in
             guard let self = self else { return }
-            
+
             self.dismiss(animated: true) {
                 [weak self] in
-                guard let self = self else { return}
-                
-                switch event {
-                case .didChangeFilter(let filter):
-                    self.assetListScreen.changeFilterSelection(filter)
-                }
+                guard let self = self else { return }
+
+                if hasChanges { self.assetListScreen.reloadData() }
             }
         }
         
         open(
-            .assetsFilterSelection(
-                filter: sharedDataController.selectedAssetsFilteringOption,
-                eventHandler: eventHandler
-            ),
+            .assetsFilterSelection(uiInteractions: uiInteractions),
             by: .present
         )
     }

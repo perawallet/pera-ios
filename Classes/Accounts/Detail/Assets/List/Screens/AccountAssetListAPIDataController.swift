@@ -31,6 +31,8 @@ final class AccountAssetListAPIDataController:
         params: nil
     )
 
+    private lazy var assetFilterStore = AssetFilterStore()
+
     private var accountHandle: AccountHandle
 
     private var searchKeyword: String? = nil
@@ -63,10 +65,6 @@ extension AccountAssetListAPIDataController {
 
     func reload() {
         deliverContentUpdates()
-    }
-    
-    func updateFilterSelection(with newSelection: AssetsFilteringOption) {
-        sharedDataController.selectedAssetsFilteringOption = newSelection
     }
 
     func reloadIfThereIsPendingUpdates() {
@@ -186,9 +184,17 @@ extension AccountAssetListAPIDataController {
                 if hasPendingOptOut {
                     return
                 }
-                
-                if self.sharedDataController.selectedAssetsFilteringOption == .hideZeroBalance,
+
+                if self.assetFilterStore.displayCollectibleAssetsInAssetList,
+                   !self.assetFilterStore.displayOptedInCollectibleAssetsInAssetList,
+                   let collectibleAsset = asset as? CollectibleAsset,
+                   !collectibleAsset.isOwned {
+                    return
+                }
+
+                if self.assetFilterStore.hideAssetsWithNoBalanceInAssetList,
                    !asset.isAlgo,
+                   !(asset is CollectibleAsset),
                    asset.amount == 0 {
                     return
                 }
@@ -228,7 +234,7 @@ extension AccountAssetListAPIDataController {
             let shouldShowEmptyContent =
                 !self.isKeywordContainsAlgo() &&
                 pendingItems.isEmpty &&
-                self.searchResults.isEmpty
+                assetListItems.isEmpty
 
             if shouldShowEmptyContent {
                 snapshot.appendSections([.empty])
@@ -267,34 +273,35 @@ extension AccountAssetListAPIDataController {
     private func makePortfolioItem() -> AccountAssetsItem {
         let currency = sharedDataController.currency
 
-        let isWatchAccount = accountHandle.value.isWatchAccount()
+        let aRawAccount = accountHandle.value
+        let isWatchAccount = aRawAccount.isWatchAccount()
 
         if isWatchAccount {
-                let portfolio = AccountPortfolioItem(
-                    accountValue: self.accountHandle,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
+            let portfolio = AccountPortfolioItem(
+                accountValue: accountHandle,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
+            let viewModel = WatchAccountPortfolioViewModel(portfolio)
+            return .watchPortfolio(viewModel)
+        } else {
+            let calculatedMinimumBalance =
+            self.minimumBalanceCalculator
+                .calculateMinimumAmount(
+                    for: aRawAccount,
+                    with: .algosTransaction,
+                    calculatedFee: .zero,
+                    isAfterTransaction: false
                 )
-                let viewModel = WatchAccountPortfolioViewModel(portfolio)
-                return .watchPortfolio(viewModel)
-            } else {
-                let calculatedMinimumBalance =
-                    self.minimumBalanceCalculator
-                        .calculateMinimumAmount(
-                            for: self.accountHandle.value,
-                            with: .algosTransaction,
-                            calculatedFee: .zero,
-                            isAfterTransaction: false
-                        )
-                let portfolio = AccountPortfolioItem(
-                    accountValue: self.accountHandle,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter,
-                    minimumBalance: calculatedMinimumBalance
-                )
-                let viewModel = AccountPortfolioViewModel(portfolio)
-                 return .portfolio(viewModel)
-            }     
+            let portfolio = AccountPortfolioItem(
+                accountValue: accountHandle,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                minimumBalance: calculatedMinimumBalance
+            )
+            let viewModel = AccountPortfolioViewModel(portfolio)
+            return .portfolio(viewModel)
+        }
     }
 
     private func makeTitleItem() -> AccountAssetsItem {
@@ -397,12 +404,20 @@ extension AccountAssetListAPIDataController {
             searchKeyword = query
         }
 
+        let assets: [Asset]
+
+        if assetFilterStore.displayCollectibleAssetsInAssetList {
+            assets = accountHandle.value.allAssets.someArray
+        } else {
+            assets = accountHandle.value.standardAssets.someArray
+        }
+
         guard let searchKeyword = searchKeyword else {
-            searchResults = accountHandle.value.allAssets.someArray
+            searchResults = assets
             return
         }
 
-        searchResults = accountHandle.value.allAssets.someArray.filter { asset in
+        searchResults = assets.filter { asset in
             isAssetContainsID(asset, query: searchKeyword) ||
             isAssetContainsName(asset, query: searchKeyword) ||
             isAssetContainsUnitName(asset, query: searchKeyword)

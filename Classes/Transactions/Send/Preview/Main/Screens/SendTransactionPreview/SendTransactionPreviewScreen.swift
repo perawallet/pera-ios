@@ -383,13 +383,21 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
          }
       }
 
+      let isCollectibleAsset = (draft as? SendTransactionDraft)?.asset is CollectibleAsset
+      if isCollectibleAsset {
+         NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didSendCollectible,
+            object: self
+         )
+      }
+
       if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
          analytics.track(
             .completeStandardTransaction(draft: draft, transactionId: id)
          )
       }
    }
-   
+
    func transactionController(
       _ transactionController: TransactionController,
       didFailedTransaction error: HIPTransactionError

@@ -160,7 +160,8 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
+    case accountCollectibleListFilterSelection(uiInteractions: AccountCollectibleListFilterSelectionViewController.UIInteractions)
+    case collectiblesFilterSelection(uiInteractions: CollectiblesFilterSelectionViewController.UIInteractions)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
@@ -195,10 +196,7 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
-    case assetsFilterSelection(
-        filter: AssetsFilteringOption?,
-        eventHandler: AssetsFilterSelectionViewController.EventHandler
-    )
+    case assetsFilterSelection(uiInteractions: AssetsFilterSelectionViewController.UIInteractions)
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler

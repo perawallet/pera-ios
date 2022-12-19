@@ -12,28 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetsFilterSelectionViewControllerTheme.swift
+//   DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AssetsFilterSelectionViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    let background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let spacingBetweenFilterItems: LayoutMetric
-    let filterItem: AssetFilterItemViewTheme
+struct DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel: AssetFilterItemViewModel {
+    let title: TextProvider?
+    let description: TextProvider?
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        self.contentPaddings = (40, 24, 16, 24)
-        self.spacingBetweenFilterItems = 24
-        self.filterItem = AssetFilterItemViewTheme(family)
+    init() {
+        self.title = Self.getTitle("collectible-filter-selection-toggle-title".localized)
+        self.description = Self.getDescription("collectible-filter-selection-toggle-description".localized)
     }
 }

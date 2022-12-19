@@ -35,6 +35,10 @@ final class NFTListItemView:
     private lazy var secondaryTitleView = Label()
     private lazy var amountView = Label()
 
+    var currentImage: UIImage? {
+        return iconView.imageContainer.image
+    }
+
     func customize(_ theme: NFTListItemViewTheme) {
         addIcon(theme)
         addIconOverlay(theme)
