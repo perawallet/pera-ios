@@ -224,13 +224,13 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        /// <note>: Creators cannot opt-out from the asset.
-        if asset.creator?.address == account.address {
+        if asset.isOwned {
+            addSendActionContent(&snapshot)
             return
         }
 
-        if asset.isOwned {
-            addSendActionContent(&snapshot)
+        /// <note>: Creators cannot opt-out from the asset.
+        if asset.creator?.address == account.address {
             return
         }
 
