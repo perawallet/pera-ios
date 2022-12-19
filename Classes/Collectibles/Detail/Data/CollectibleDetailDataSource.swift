@@ -39,6 +39,20 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 )
                 cell.bindData(viewModel)
                 return cell
+            case .name(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailNameCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
+            case .accountInformation(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailAccountInformationCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
             case .media:
                 let cell = collectionView.dequeue(
                     CollectibleMediaPreviewCell.self,
@@ -73,6 +87,13 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 let viewModel = CollectibleTransactionInfoViewModel(info)
                 cell.bindData(viewModel)
                 return cell
+            case .creatorAccount(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailCreatorAccountItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
             case .assetID(let item):
                 let cell = collectionView.dequeue(
                     CollectibleDetailAssetIDItemCell.self,
@@ -102,7 +123,9 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             )
 
             switch section {
-            case .media,
+            case .name,
+                 .accountInformation,
+                 .media,
                  .action,
                  .loading:
                 return header
@@ -132,9 +155,12 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
         [
             CollectibleDetailLoadingCell.self,
             CollectibleMediaErrorCell.self,
+            CollectibleDetailNameCell.self,
+            CollectibleDetailAccountInformationCell.self,
             CollectibleDetailSendActionCell.self,
             CollectibleDetailOptOutActionCell.self,
             CollectibleDescriptionCell.self,
+            CollectibleDetailCreatorAccountItemCell.self,
             CollectibleDetailAssetIDItemCell.self,
             CollectibleDetailInformationCell.self,
             CollectibleMediaPreviewCell.self,

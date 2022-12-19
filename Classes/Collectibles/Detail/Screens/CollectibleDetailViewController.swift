@@ -392,6 +392,10 @@ extension CollectibleDetailViewController {
         case .loading:
             let loadingCell = cell as? CollectibleDetailLoadingCell
             loadingCell?.startAnimating()
+        case .accountInformation:
+            linkInteractors(
+                cell as! CollectibleDetailAccountInformationCell
+            )
         case .sendAction:
             linkInteractors(
                 cell as! CollectibleDetailSendActionCell
@@ -407,6 +411,8 @@ extension CollectibleDetailViewController {
                     for: item
                 )
             }
+        case .creatorAccount:
+            linkInteractors(cell as! CollectibleDetailCreatorAccountItemCell)
         case .assetID:
             linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
         default:
@@ -442,6 +448,14 @@ extension CollectibleDetailViewController {
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
             }
+        }
+    }
+    private func linkInteractors(
+        _ cell: CollectibleDetailAccountInformationCell
+    ) {
+        cell.startObserving(event: .didLongPressTitle) {
+            [unowned self] in
+            self.copyToClipboardController.copyAddress(account)
         }
     }
 
@@ -558,6 +572,26 @@ extension CollectibleDetailViewController {
     }
 
     private func linkInteractors(
+        _ cell: CollectibleDetailCreatorAccountItemCell
+    ) {
+        cell.startObserving(event: .didTapAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            let source = AlgoExplorerExternalSource(
+                address: creator,
+                network: self.api!.network
+            )
+            self.open(source.url)
+        }
+
+        cell.startObserving(event: .didLongPressAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            self.copyToClipboardController.copyAddress(creator)
+        }
+    }
+
+    private func linkInteractors(
         _ cell: CollectibleDetailAssetIDItemCell
     ) {
         cell.startObserving(event: .didTapAccessory) {
@@ -576,7 +610,6 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didLongPressAccessory) {
             [unowned self] in
             self.copyToClipboardController.copyID(self.asset)
-            return
         }
     }
 

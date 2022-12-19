@@ -59,6 +59,16 @@ extension CollectibleDetailLayout {
             insets.left = 0
             insets.right = 0
             return insets
+        case .name:
+            insets.top = Self.theme.nameTopPadding
+            insets.left = 0
+            insets.right = 0
+            return insets
+        case .accountInformation:
+            insets.top = Self.theme.accountInformationTopPadding
+            insets.left = 0
+            insets.right = 0
+            return insets
         case .media:
             insets.top = Self.theme.mediaTopPadding
             insets.bottom = Self.theme.mediaBottomPadding
@@ -133,6 +143,18 @@ extension CollectibleDetailLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
+        case .name(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForNameItem: item
+            )
+        case .accountInformation(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountInformationItem: item
+            )
         case .media(let item):
             return listView(
                 collectionView,
@@ -167,6 +189,12 @@ extension CollectibleDetailLayout {
                 layout: collectionViewLayout,
                 sizeForInformationItem: item
             )
+        case .creatorAccount(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCreatorAccountItem: item
+            )
         case .assetID(let item):
             return listView(
                 collectionView,
@@ -194,7 +222,9 @@ extension CollectibleDetailLayout {
         }
 
         switch listSection {
-        case .media,
+        case .name,
+             .accountInformation,
+             .media,
              .action,
              .loading:
             return .zero
@@ -216,6 +246,34 @@ extension CollectibleDetailLayout {
         return CollectibleDetailLoadingView.calculatePreferredSize(
             for: CollectibleDetailLoadingView.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNameItem item: CollectibleDetailNameItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailNameCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailNameCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountInformationItem item: CollectibleDetailAccountInformationItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailAccountInformationCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailAccountInformationCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
         )
     }
 
@@ -295,6 +353,19 @@ extension CollectibleDetailLayout {
             CollectibleTransactionInfoViewModel(item),
             for: CollectibleDetailInformationCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
+        )
+    }
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCreatorAccountItem item: CollectibleDetailCreatorAccountItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailCreatorAccountItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailCreatorAccountItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
     }
 

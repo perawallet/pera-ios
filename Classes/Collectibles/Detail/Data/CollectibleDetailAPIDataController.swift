@@ -134,6 +134,8 @@ extension CollectibleDetailAPIDataController {
 
             var snapshot = Snapshot()
 
+            self.addNameContent(&snapshot)
+            self.addAccountInformationContentIfNeeded(&snapshot)
             self.addMediaContent(&snapshot)
             self.addActionContentIfNeeded(&snapshot)
             self.addPropertiesContent(&snapshot)
@@ -141,6 +143,42 @@ extension CollectibleDetailAPIDataController {
 
             return snapshot
         }
+    }
+
+    private func addNameContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let itemIdentifier = CollectibleDetailNameItemIdentifier(asset)
+        let item = CollectibleDetailItem.name(itemIdentifier)
+
+        snapshot.appendSections([.name])
+        snapshot.appendItems(
+            [item],
+            toSection: .name
+        )
+    }
+
+    private func addAccountInformationContentIfNeeded(
+        _ snapshot: inout Snapshot
+    ) {
+        /// <note> Opt-in flows shouldn't display account information.
+        if quickAction == .optIn {
+            return
+        }
+
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let itemIdentifier = CollectibleDetailAccountInformationItemIdentifier(collectibleAssetItem)
+        let item = CollectibleDetailItem.accountInformation(itemIdentifier)
+
+        snapshot.appendSections([.accountInformation])
+        snapshot.appendItems(
+            [item],
+            toSection: .accountInformation
+        )
     }
 
     private func addMediaContent(
@@ -186,13 +224,13 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        /// <note>: Creators cannot opt-out from the asset.
-        if asset.creator?.address == account.address {
+        if asset.isOwned {
+            addSendActionContent(&snapshot)
             return
         }
 
-        if asset.isOwned {
-            addSendActionContent(&snapshot)
+        /// <note>: Creators cannot opt-out from the asset.
+        if asset.creator?.address == account.address {
             return
         }
 
@@ -236,25 +274,17 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let creator = asset.creator?.address {
-            let source = AlgoExplorerExternalSource(address: creator, network: api.network)
-
+        if asset.creator?.address != nil {
             descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: nil,
-                        title: "collectible-detail-creator-address".localized,
-                        value: creator.shortAddressDisplay,
-                        isCollectibleSpecificValue: true,
-                        actionURL: source.url
-                    )
+                .creatorAccount(
+                    CollectibleDetailCreatorAccountItemIdentifier(asset)
                 )
             )
         }
 
         descriptionItems.append(
             .assetID(
-                CollectibleDetailAssetIDItemIdentifier(viewModel: CollectibleDetailAssetIDItemViewModel(asset: asset))
+                CollectibleDetailAssetIDItemIdentifier(asset)
             )
         )
 
