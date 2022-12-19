@@ -20,6 +20,10 @@ import Lottie
 import UIKit
 
 final class LottieImageView: View {
+    var isAnimationPlaying: Bool {
+        return animationView.isAnimationPlaying
+    }
+
     private lazy var animationView = LottieAnimationView()
 
     override init(frame: CGRect) {

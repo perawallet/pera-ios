@@ -1148,7 +1148,7 @@ class Router:
                 ),
                 configuration: configuration
             )
-        case .swapAccountSelection(let eventHandler):
+        case .swapAccountSelection(let swapAssetFlowCoordinator, let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
 
@@ -1185,6 +1185,7 @@ class Router:
                     itemDataSource: dataController
                 ),
                 listDataSource: diffableDataSource,
+                swapAssetFlowCoordinator: swapAssetFlowCoordinator,
                 theme: theme,
                 eventHandler: eventHandler,
                 configuration: configuration
@@ -1332,6 +1333,27 @@ class Router:
             let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
             screen.eventHandler = eventHandler
             viewController = screen
+        case .discoverSearch(let eventHandler):
+            let screen = DiscoverSearchScreen(
+                dataController: DiscoverSearchAPIDataController(
+                    api: appConfiguration.api,
+                    sharedDataController: appConfiguration.sharedDataController
+                ),
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .discoverAssetDetail(let parameters):
+            viewController = DiscoverAssetDetailScreen(
+                assetParameters: parameters,
+                swapDataStore: SwapDataLocalStore(),
+                configuration: configuration
+            )
+        case .discoverDappDetail(let dappParameters):
+            viewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

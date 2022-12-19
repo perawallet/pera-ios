@@ -49,13 +49,7 @@ class Environment {
         return token
     }()
 
-    lazy var apiKey: String = {
-        guard let apiKey = Bundle.main.infoDictionary?["API_KEY"] as? String else {
-            fatalError("apiKey should be set.")
-        }
-
-        return apiKey
-    }()
+    lazy var apiKey: String? = Bundle.main["API_KEY"]
     
     lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
     lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
@@ -98,6 +92,15 @@ class Environment {
     lazy var mobileApiV2 = "\(mobileBaseApi)/v2/"
 
     lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
+
+    lazy var discoverBaseUrl: String = {
+        switch target {
+        case .staging:
+            return "https://discover-mobile-staging.perawallet.app/"
+        case .prod:
+            return "https://discover-mobile.perawallet.app/"
+        }
+    }()
     
     private let target: AppTarget
     
