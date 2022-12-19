@@ -40,3 +40,12 @@ final class NFTListItemCell:
         separatorStyle = .single(separator)
     }
 }
+
+extension NFTListItemCell {
+    func getTargetedPreview() -> UITargetedPreview {
+        return UITargetedPreview(
+           view: self,
+           backgroundColor: Colors.Defaults.background.uiColor
+       )
+    }
+}

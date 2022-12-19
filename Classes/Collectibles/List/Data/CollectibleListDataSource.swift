@@ -73,29 +73,55 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 )
                 return cell
             case .collectibleAsset(let item):
-                let cell = collectionView.dequeue(
-                    CollectibleListItemCell.self,
-                    at: indexPath
-                )
-                cell.bindData(
-                    item.viewModel
-                )
-                return cell
+                switch item {
+                case .grid(let item):
+                    let cell = collectionView.dequeue(
+                        CollectibleListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                case .list(let item):
+                    let cell = collectionView.dequeue(
+                        NFTListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                }
             case .pendingCollectibleAsset(let item):
-                let cell = collectionView.dequeue(
-                    PendingCollectibleGridItemCell.self,
-                    at: indexPath
-                )
-                cell.bindData(
-                    item.viewModel
-                )
-                return cell
+                switch item {
+                case .grid(let item):
+                    let cell = collectionView.dequeue(
+                        PendingCollectibleGridItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                case .list(let item):
+                    let cell = collectionView.dequeue(
+                        PendingCollectibleAssetListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                }
             }
         }
 
         [
             CollectibleListItemCell.self,
             PendingCollectibleGridItemCell.self,
+            NFTListItemCell.self,
+            PendingCollectibleAssetListItemCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleGalleryUIActionsCell.self,
             ManagementItemWithSecondaryActionCell.self,

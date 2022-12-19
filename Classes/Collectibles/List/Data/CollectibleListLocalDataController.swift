@@ -42,6 +42,7 @@ final class CollectibleListLocalDataController:
 
     private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
     private lazy var collectibleFilterStore: CollectibleFilterStore = .init()
+    private lazy var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
@@ -378,8 +379,8 @@ extension CollectibleListLocalDataController {
             let update = pendingOptInAsset
 
             if update.isCollectibleAsset {
-                let listItem = makePendingCollectibleAssetOptInListItem(update)
-                pendingCollectibleItems.append(listItem)
+                let item = makePendingCollectibleAssetOptInItem(update)
+                pendingCollectibleItems.append(item)
                 continue
             }
         }
@@ -389,8 +390,8 @@ extension CollectibleListLocalDataController {
             let update = pendingOptOutAsset
 
             if update.isCollectibleAsset {
-                let listItem = makePendingCollectibleAssetOptOutListItem(update)
-                pendingCollectibleItems.append(listItem)
+                let item = makePendingCollectibleAssetOptOutItem(update)
+                pendingCollectibleItems.append(item)
                 continue
             }
         }
@@ -442,13 +443,45 @@ extension CollectibleListLocalDataController {
                 return
             }
 
-            let listItem = makeCollectibleAssetListItem(account: account, asset: collectibleAsset)
-            collectibleItems.append(listItem)
+            let item = makeCollectibleAssetItem(account: account, asset: collectibleAsset)
+            collectibleItems.append(item)
         }
 
         return collectibleItems
     }
 
+}
+
+extension CollectibleListLocalDataController {
+    private func makeCollectibleAssetItem(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
+        let galleryUIStyle = collectibleGalleryUIStyleStore.galleryUIStyle
+
+        if galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+           return makeCollectibleAssetListItem(account: account, asset: asset)
+        } else {
+            return makeCollectibleAssetListItemNew(account: account, asset: asset)
+        }
+    }
+
+    private func makePendingCollectibleAssetOptOutItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
+        let galleryUIStyle = collectibleGalleryUIStyleStore.galleryUIStyle
+
+        if galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+           return makePendingCollectibleAssetOptOutListItem(update)
+        } else {
+            return makePendingCollectibleAssetOptOutListItemNew(update)
+        }
+    }
+
+    private func makePendingCollectibleAssetOptInItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
+        let galleryUIStyle = collectibleGalleryUIStyleStore.galleryUIStyle
+
+        if galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+           return makePendingCollectibleAssetOptInListItem(update)
+        } else {
+            return makePendingCollectibleAssetOptInListItemNew(update)
+        }
+    }
 }
 
 extension CollectibleListLocalDataController {
@@ -462,7 +495,7 @@ extension CollectibleListLocalDataController {
             imageSize: imageSize,
             item: collectibleAssetItem
         )
-        return .collectibleAsset(listItem)
+        return .collectibleAsset(.grid(listItem))
     }
 
     private func makePendingCollectibleAssetOptInListItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
@@ -470,7 +503,7 @@ extension CollectibleListLocalDataController {
             imageSize: imageSize,
             update: update
         )
-        return .pendingCollectibleAsset(listItem)
+        return .pendingCollectibleAsset(.grid(listItem))
     }
 
     private func makePendingCollectibleAssetOptOutListItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
@@ -478,7 +511,29 @@ extension CollectibleListLocalDataController {
             imageSize: imageSize,
             update: update
         )
-        return .pendingCollectibleAsset(item)
+        return .pendingCollectibleAsset(.grid(item))
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func makeCollectibleAssetListItemNew(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let listItem = CollectibleListCollectibleAssetListItemNew(item: collectibleAssetItem)
+        return .collectibleAsset(.list(listItem))
+    }
+
+    private func makePendingCollectibleAssetOptInListItemNew(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
+        let listItem = CollectibleListPendingCollectibleAssetListItemNew(update: update)
+        return .pendingCollectibleAsset(.list(listItem))
+    }
+
+    private func makePendingCollectibleAssetOptOutListItemNew(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
+        let listItem = CollectibleListPendingCollectibleAssetListItemNew(update: update)
+        return .pendingCollectibleAsset(.list(listItem))
     }
 }
 
@@ -560,4 +615,15 @@ extension CollectibleListLocalDataController {
     ) -> Bool {
         return asset.unitName.someString.localizedCaseInsensitiveContains(query)
     }
+}
+
+struct CollectibleGalleryUIStyleStore: Storable {
+    typealias Object = Any
+
+    var galleryUIStyle: Int {
+        get { userDefaults.integer(forKey: galleryUIStyleKey) }
+        set { userDefaults.set(newValue, forKey: galleryUIStyleKey) }
+    }
+
+    private let galleryUIStyleKey = "cache.key.collectibleGalleryUIStyle"
 }
