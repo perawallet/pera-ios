@@ -96,8 +96,14 @@ extension AccountCollectibleListViewController {
 
                 self.analytics.track(.tapNFTReceive())
                 self.openReceiveCollectible()
-            case .didUpdate(let accounts):
-                self.account = accounts.first!
+            case .didUpdateSnapshot:
+                let address = self.account.value.address
+
+                guard let updatedAccount = self.sharedDataController.accountCollection[address] else {
+                    return
+                }
+
+                self.account = updatedAccount
             case .willDisplayListHeader:
                 self.setOptInActionHidden(true)
             case .didEndDisplayingListHeader:

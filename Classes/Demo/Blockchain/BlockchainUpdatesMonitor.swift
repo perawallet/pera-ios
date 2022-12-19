@@ -37,6 +37,12 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    func filterPendingOptInAssetUpdates() -> [OptInBlockchainUpdate] {
+        return table.reduce(into: [OptInBlockchainUpdate]()) {
+            $0 += $1.value.filterPendingOptInAssetUpdates().values
+        }
+    }
+
     func filterPendingOptInAssetUpdates(for account: Account) -> [AssetID : OptInBlockchainUpdate] {
         let address = account.address
         let monitor = table[address]
@@ -121,6 +127,12 @@ extension BlockchainUpdatesMonitor {
     func filterOptedOutAssetUpdates() -> [OptOutBlockchainUpdate] {
         return table.reduce(into: [OptOutBlockchainUpdate]()) {
             $0 += $1.value.filterOptedOutAssetUpdates().values
+        }
+    }
+
+    func filterPendingOptOutAssetUpdates() -> [OptOutBlockchainUpdate] {
+        return table.reduce(into: [OptOutBlockchainUpdate]()) {
+            $0 += $1.value.filterPendingOptOutAssetUpdates().values
         }
     }
 

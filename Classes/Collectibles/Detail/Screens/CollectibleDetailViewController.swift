@@ -783,10 +783,7 @@ extension CollectibleDetailViewController {
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didAddCollectible,
-                    object: self,
-                    userInfo: [
-                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                    ]
+                    object: self
                 )
                 
                 eventHandler?(.didOptInToAsset)
@@ -795,10 +792,7 @@ extension CollectibleDetailViewController {
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didRemoveCollectible,
-                    object: self,
-                    userInfo: [
-                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                    ]
+                    object: self
                 )
 
                 eventHandler?(.didOptOutFromAssetWithQuickAction)
@@ -808,10 +802,7 @@ extension CollectibleDetailViewController {
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didRemoveCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-            ]
+            object: self
         )
 
         eventHandler?(.didOptOutAssetFromAccount)

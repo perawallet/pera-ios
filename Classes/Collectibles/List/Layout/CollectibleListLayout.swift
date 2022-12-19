@@ -119,15 +119,18 @@ extension CollectibleListLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
-        case .collectible(let item):
-            switch item {
-            case .cell(let item):
-                return listView(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    sizeForCollectibleItem: item
-                )
-            }
+        case .collectibleAsset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCollectibleItem: item.viewModel
+            )
+        case .pendingCollectibleAsset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCollectibleItem: item.viewModel
+            )
         }
     }
 }
@@ -245,23 +248,6 @@ extension CollectibleListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
 
         return newSize
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleItem item: CollectibleCellItem
-    ) -> CGSize {
-        switch item {
-        case let .pending(item),
-            let .owner(item),
-            let .optedIn(item):
-            return self.listView(
-                listView,
-                layout: listViewLayout,
-                sizeForCollectibleItem: item.viewModel
-            )
-        }
     }
 
     private func listView(

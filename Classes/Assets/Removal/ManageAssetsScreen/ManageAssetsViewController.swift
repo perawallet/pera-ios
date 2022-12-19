@@ -570,15 +570,10 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         if let assetID = getAssetID(from: transactionController),
-           let collectibleAsset = optOutTransactions[assetID]?.asset as? CollectibleAsset {
-            let account = dataController.account
-
+           optOutTransactions[assetID]?.asset is CollectibleAsset {
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didRemoveCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
-                ]
+                object: self
             )
         }
 
