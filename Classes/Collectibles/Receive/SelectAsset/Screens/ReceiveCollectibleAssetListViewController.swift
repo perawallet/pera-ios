@@ -611,24 +611,9 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard
-            let assetID = getAssetID(from: transactionController),
-            let assetDetail = optInTransactions[assetID]?.asset
-        else {
-            return
-        }
-
-        let collectibleAsset = CollectibleAsset(
-            asset: ALGAsset(id: assetDetail.id),
-            decoration: assetDetail
-        )
-
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didAddCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (dataController.account, collectibleAsset)
-            ]
+            object: self
         )
 
         delegate?.receiveCollectibleAssetListViewController(

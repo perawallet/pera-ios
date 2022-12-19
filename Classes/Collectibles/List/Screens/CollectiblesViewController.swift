@@ -128,6 +128,8 @@ extension CollectiblesViewController {
                 }
 
                 self.bottomBannerController.dismissError()
+            case .didTapFilter:
+                self.openFilterSelection()
             default:
                 break
             }
@@ -147,6 +149,28 @@ extension CollectiblesViewController {
         ) as? ReceiveCollectibleAccountListViewController
 
         controller?.delegate = self
+    }
+}
+
+extension CollectiblesViewController {
+    private func openFilterSelection() {
+        var uiInteractions = CollectiblesFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [weak self] hasChanges in
+            guard let self = self else { return }
+
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                if hasChanges { self.collectibleListScreen.reload() }
+            }
+        }
+
+        open(
+            .collectiblesFilterSelection(uiInteractions: uiInteractions),
+            by: .present
+        )
     }
 }
 

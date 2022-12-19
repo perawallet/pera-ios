@@ -174,11 +174,6 @@ final class AccountAssetListViewController:
         if isViewFirstAppeared { return }
         dataController.reloadIfThereIsPendingUpdates()
     }
-    
-    func changeFilterSelection(_ filter: AssetsFilteringOption) {
-        dataController.updateFilterSelection(with: filter)
-        dataController.reload()
-    }
 }
 
 extension AccountAssetListViewController {

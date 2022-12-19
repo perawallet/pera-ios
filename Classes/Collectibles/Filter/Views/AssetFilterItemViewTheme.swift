@@ -12,19 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetsFilterSelectionViewControllerTheme.swift
+//   AssetFilterItemViewTheme.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-struct AssetsFilterSelectionViewControllerTheme:
+struct AssetFilterItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    let background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let spacingBetweenFilterItems: LayoutMetric
-    let filterItem: AssetFilterItemViewTheme
+    var background: ViewStyle
+    var minimumHorizontalSpacing: LayoutMetric
+    var title: TextStyle
+    var titleMaxWidthRatio: LayoutMetric
+    var description: TextStyle
+    var descriptionTopMargin: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -32,8 +34,16 @@ struct AssetsFilterSelectionViewControllerTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.contentPaddings = (40, 24, 16, 24)
-        self.spacingBetweenFilterItems = 24
-        self.filterItem = AssetFilterItemViewTheme(family)
+        self.minimumHorizontalSpacing = 8
+        self.title = [
+            .textColor(Colors.Text.main),
+            .textOverflow(FittingText())
+        ]
+        self.titleMaxWidthRatio = 0.7
+        self.description = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText())
+        ]
+        self.descriptionTopMargin = 8
     }
 }

@@ -96,8 +96,14 @@ extension AccountCollectibleListViewController {
 
                 self.analytics.track(.tapNFTReceive())
                 self.openReceiveCollectible()
-            case .didUpdate(let accounts):
-                self.account = accounts.first!
+            case .didUpdateSnapshot:
+                let address = self.account.value.address
+
+                guard let updatedAccount = self.sharedDataController.accountCollection[address] else {
+                    return
+                }
+
+                self.account = updatedAccount
             case .willDisplayListHeader:
                 self.setOptInActionHidden(true)
             case .didEndDisplayingListHeader:
@@ -117,6 +123,8 @@ extension AccountCollectibleListViewController {
                 }
 
                 self.bottomBannerController.dismissError()
+            case .didTapFilter:
+                self.openFilterSelection()
             }
         }
     }
@@ -169,6 +177,28 @@ extension AccountCollectibleListViewController {
         ) as? ReceiveCollectibleAssetListViewController
 
         controller?.delegate = self
+    }
+}
+
+extension AccountCollectibleListViewController {
+    private func openFilterSelection() {
+        var uiInteractions = AccountCollectibleListFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [weak self] hasChanges in
+            guard let self = self else { return }
+
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                if hasChanges { self.collectibleListScreen.reload() }
+            }
+        }
+
+        open(
+            .accountCollectibleListFilterSelection(uiInteractions: uiInteractions),
+            by: .present
+        )
     }
 }
 

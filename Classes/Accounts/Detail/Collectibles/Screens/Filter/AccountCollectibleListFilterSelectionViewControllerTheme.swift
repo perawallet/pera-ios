@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetsFilterSelectionViewControllerTheme.swift
+//   AccountCollectibleListFilterSelectionViewControllerTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AssetsFilterSelectionViewControllerTheme:
+struct AccountCollectibleListFilterSelectionViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     let background: ViewStyle

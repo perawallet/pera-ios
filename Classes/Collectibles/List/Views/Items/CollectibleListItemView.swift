@@ -63,6 +63,7 @@ final class CollectibleListItemView:
         _ viewModel: CollectibleListItemViewModel?
     ) {
         imageView.load(from: viewModel?.image)
+        overlayView.image = viewModel?.overlay
         amountCanvasView.image = viewModel?.amountCanvas
         titleView.editText = viewModel?.title
         subtitleView.editText = viewModel?.subtitle
@@ -76,6 +77,7 @@ final class CollectibleListItemView:
 
     func prepareForReuse() {
         imageView.prepareForReuse()
+        overlayView.image = nil
         titleView.editText = nil
         subtitleView.editText = nil
         topLeftBadgeView.image = nil
@@ -84,8 +86,6 @@ final class CollectibleListItemView:
         bottomLeftBadgeCanvasView.image = nil
         amountView.editText = nil
         amountCanvasView.image = nil
-
-        setPendingHiddenWhenPendingStatusChange(false)
     }
 
     class func calculatePreferredSize(
@@ -155,8 +155,6 @@ extension CollectibleListItemView {
     private func addOverlay(
         _ theme: CollectibleListItemViewTheme
     ) {
-        overlayView.customizeAppearance(theme.overlay)
-
         imageView.addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.top == 0
@@ -344,7 +342,19 @@ extension CollectibleListItemView {
 }
 
 extension CollectibleListItemView {
-    func setPendingHiddenWhenPendingStatusChange(_ isPending: Bool) {
+    var isLoading: Bool {
+        return pendingLoadingIndicatorView.isAnimating
+    }
+
+    func startLoading() {
+        setPendingHiddenWhenPendingStatusChange(true)
+    }
+
+    func stopLoading() {
+        setPendingHiddenWhenPendingStatusChange(false)
+    }
+    
+    private func setPendingHiddenWhenPendingStatusChange(_ isPending: Bool) {
         pendingOverlayView.isHidden = !isPending
         overlayView.isHidden = isPending
         bottomLeftBadgeCanvasView.isHidden = isPending

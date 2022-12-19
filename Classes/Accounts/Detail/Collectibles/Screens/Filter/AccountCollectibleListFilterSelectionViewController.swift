@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectiblesFilterSelectionViewController.swift
+//   AccountCollectibleListFilterSelectionViewController.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectiblesFilterSelectionViewController: ScrollScreen {
+final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
     lazy var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
     private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
-    private lazy var displayWatchAccountCollectibleAssetsInCollectibleListItemView = AssetFilterItemView()
 
     private lazy var store = CollectibleFilterStore()
 
-    private let theme: CollectiblesFilterSelectionViewControllerTheme
+    private let theme: AccountCollectibleListFilterSelectionViewControllerTheme
 
-    init(theme: CollectiblesFilterSelectionViewControllerTheme = .init()) {
+    init(theme: AccountCollectibleListFilterSelectionViewControllerTheme = .init()) {
         self.theme = theme
     }
 
@@ -49,7 +48,7 @@ final class CollectiblesFilterSelectionViewController: ScrollScreen {
     }
 }
 
-extension CollectiblesFilterSelectionViewController {
+extension AccountCollectibleListFilterSelectionViewController {
     private func addBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [unowned self] in
@@ -64,7 +63,7 @@ extension CollectiblesFilterSelectionViewController {
     }
 }
 
-extension CollectiblesFilterSelectionViewController {
+extension AccountCollectibleListFilterSelectionViewController {
     private func addUI() {
         addBackground()
         addContext()
@@ -73,7 +72,7 @@ extension CollectiblesFilterSelectionViewController {
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
-    
+
     private func addContext() {
         contentView.addSubview(contextView)
         contextView.spacing = theme.spacingBetweenFilterItems
@@ -96,7 +95,6 @@ extension CollectiblesFilterSelectionViewController {
 
     private func addFilterItems() {
         addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem()
-        addDisplayWatchAccountCollectibleAssetsInCollectibleListItem()
     }
 
     private func addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem() {
@@ -107,18 +105,9 @@ extension CollectiblesFilterSelectionViewController {
 
         contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
     }
-
-    private func addDisplayWatchAccountCollectibleAssetsInCollectibleListItem() {
-        displayWatchAccountCollectibleAssetsInCollectibleListItemView.customize(theme.filterItem)
-        displayWatchAccountCollectibleAssetsInCollectibleListItemView.bindData(DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel())
-
-        displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn = store.displayWatchAccountCollectibleAssetsInCollectibleList
-
-        contextView.addArrangedSubview(displayWatchAccountCollectibleAssetsInCollectibleListItemView)
-    }
 }
 
-extension CollectiblesFilterSelectionViewController {
+extension AccountCollectibleListFilterSelectionViewController {
     private func performChanges() {
         let hasChanges = hasChanges()
 
@@ -131,23 +120,15 @@ extension CollectiblesFilterSelectionViewController {
 
     private func saveFilters() {
         store.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
-        store.displayWatchAccountCollectibleAssetsInCollectibleList = displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        if store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn {
-            return true
-        }
-
-        if store.displayWatchAccountCollectibleAssetsInCollectibleList != displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn {
-            return true
-        }
-
-        return false
+        let hasChanges = store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        return hasChanges
     }
 }
 
-extension CollectiblesFilterSelectionViewController {
+extension AccountCollectibleListFilterSelectionViewController {
     struct UIInteractions {
         typealias HasChanges = Bool
         var didComplete: ((HasChanges) -> Void)?
