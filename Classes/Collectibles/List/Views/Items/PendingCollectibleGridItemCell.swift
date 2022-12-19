@@ -12,44 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemOptedInCell.swift
+//   PendingCollectibleGridItemCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleListItemOptedInCell:
+final class PendingCollectibleGridItemCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
-    var isPending: Bool = false {
-        didSet {
-            if oldValue == isPending {
-                return
-            }
-
-            contextView.setPendingHiddenWhenPendingStatusChange(isPending)
-        }
+    var isLoading: Bool = false {
+        didSet { updateLoadingIfNeeded(old: oldValue) }
     }
 
-    static let theme: CollectibleListItemViewTheme = {
-        var theme = CollectibleListItemViewTheme()
-        theme.configureOverlayForOptedInCell()
-        return theme
-    }()
+    static let theme = CollectibleListItemViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
+        isUserInteractionEnabled = false
     }
+}
 
-    override func prepareForReuse() {
-        contextView.prepareForReuse()
-
-        isPending = false
-    }
-
+extension PendingCollectibleGridItemCell {
     func getTargetedPreview() -> UITargetedPreview {
         return contextView.getTargetedPreview()
+    }
+}
+
+extension PendingCollectibleGridItemCell {
+    private func updateLoadingIfNeeded(old: Bool) {
+        if isLoading != old {
+            updateLoading()
+        }
+
+        if isLoading && !contextView.isLoading {
+            startLoading()
+        }
+    }
+
+    private func updateLoading() {
+        stopLoading()
+
+        if isLoading {
+            startLoading()
+        }
+    }
+
+    private func startLoading()  {
+        contextView.startLoading()
+    }
+
+    private func stopLoading() {
+        contextView.stopLoading()
     }
 }

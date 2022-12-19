@@ -19,14 +19,14 @@ import Foundation
 struct CollectibleFilterStore {
     private let cache = Cache()
 
-    var displayOptedInCollectibleAssets: Bool {
-        get { cache.displayOptedInCollectibleAssets }
-        set { cache.displayOptedInCollectibleAssets = newValue }
+    var displayOptedInCollectibleAssetsInCollectibleList: Bool {
+        get { cache.displayOptedInCollectibleAssetsInCollectibleList }
+        set { cache.displayOptedInCollectibleAssetsInCollectibleList = newValue }
     }
 
-    var displayWatchAccountCollectibleAssets: Bool {
-        get { cache.displayWatchAccountCollectibleAssets }
-        set { cache.displayWatchAccountCollectibleAssets = newValue  }
+    var displayWatchAccountCollectibleAssetsInCollectibleList: Bool {
+        get { cache.displayWatchAccountCollectibleAssetsInCollectibleList }
+        set { cache.displayWatchAccountCollectibleAssetsInCollectibleList = newValue  }
     }
 }
 
@@ -34,32 +34,32 @@ extension CollectibleFilterStore {
     private final class Cache: Storable {
         typealias Object = Any
 
-        var displayOptedInCollectibleAssets: Bool {
+        var displayOptedInCollectibleAssetsInCollectibleList: Bool {
             get {
-                let intValue = userDefaults.integer(forKey: displayOptedInCollectibleAssetsKey)
+                let intValue = userDefaults.integer(forKey: displayOptedInCollectibleAssetsInCollectibleListKey)
                 return intValue != 0
             }
             set {
                 let intValue = newValue ? 1 : 0
-                userDefaults.set(intValue, forKey: displayOptedInCollectibleAssetsKey)
+                userDefaults.set(intValue, forKey: displayOptedInCollectibleAssetsInCollectibleListKey)
             }
         }
 
-        var displayWatchAccountCollectibleAssets: Bool {
+        var displayWatchAccountCollectibleAssetsInCollectibleList: Bool {
             get {
-                if !userDefaults.valueExists(forKey: displayWatchAccountCollectibleAssetsKey)  {
-                    userDefaults.set(true, forKey: displayWatchAccountCollectibleAssetsKey)
+                if !userDefaults.valueExists(forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)  {
+                    userDefaults.set(true, forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)
                     return true
                 }
 
-                return userDefaults.bool(forKey: displayWatchAccountCollectibleAssetsKey)
+                return userDefaults.bool(forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)
             }
             set {
-                userDefaults.set(newValue, forKey: displayWatchAccountCollectibleAssetsKey)
+                userDefaults.set(newValue, forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)
             }
         }
 
-        private let displayOptedInCollectibleAssetsKey = "cache.key.collectibleListFilter"
-        private let displayWatchAccountCollectibleAssetsKey = "cache.key.displayWatchAccountCollectibleAssets"
+        private let displayOptedInCollectibleAssetsInCollectibleListKey = "cache.key.collectibleListFilter"
+        private let displayWatchAccountCollectibleAssetsInCollectibleListKey = "cache.key.displayWatchAccountCollectibleAssetsInCollectibleList"
     }
 }

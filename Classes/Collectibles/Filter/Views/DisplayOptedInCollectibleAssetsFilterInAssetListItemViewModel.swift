@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DisplayOptedInCollectibleAssetsFilterItemViewModel.swift
+//   DisplayOptedInCollectibleAssetsFilterInAssetListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct DisplayOptedInCollectibleAssetsFilterItemViewModel: AssetFilterItemViewModel {
+struct DisplayOptedInCollectibleAssetsFilterInAssetListItemViewModel: AssetFilterItemViewModel {
     let title: TextProvider?
     let description: TextProvider?
 

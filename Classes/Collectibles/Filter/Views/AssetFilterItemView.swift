@@ -19,10 +19,20 @@ import MacaroonUIKit
 
 final class AssetFilterItemView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractable {
+    var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .valueChanged: TargetActionInteraction(event: .valueChanged),
+    ]
+
     var isOn: Bool {
         get { toggleView.isOn }
-        set { toggleView.isOn = newValue }
+        set { toggleView.setOn(newValue, animated: true) }
+    }
+
+    var isEnabled: Bool {
+        get { toggleView.isUserInteractionEnabled }
+        set { toggleView.isUserInteractionEnabled = newValue }
     }
 
     private lazy var titleView = Label()
@@ -81,6 +91,11 @@ extension AssetFilterItemView {
             $0.trailing == 0
             $0.top == titleView
         }
+
+        startPublishing(
+            event: .valueChanged,
+            for: toggleView
+        )
     }
 
     private func addDescription(_ theme: AssetFilterItemViewTheme) {
@@ -93,5 +108,11 @@ extension AssetFilterItemView {
             $0.width == titleView
             $0.bottom == 0
         }
+    }
+}
+
+extension AssetFilterItemView {
+    enum Event {
+        case valueChanged
     }
 }

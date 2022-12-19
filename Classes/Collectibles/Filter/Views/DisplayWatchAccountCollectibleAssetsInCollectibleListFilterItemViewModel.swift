@@ -12,11 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetsFilteringOption.swift
+//   DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-enum AssetsFilteringOption: Int {
-    case all = 0
-    case hideZeroBalance = 1
+struct DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel: AssetFilterItemViewModel {
+    let title: TextProvider?
+    let description: TextProvider?
+
+    init() {
+        self.title = Self.getTitle("collectible-filter-selection-display-watch-account-collectible-assets-filter-title".localized)
+        self.description = Self.getDescription("collectible-filter-selection-display-watch-account-collectible-assets-filter-description".localized)
+    }
 }

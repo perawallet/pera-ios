@@ -12,11 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleAssetFilter.swift
+//   DisplayCollectibleAssetsInAssetListFilterItemViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-enum CollectibleAssetFilter: Int {
-    case all = 1
-    case owned
+struct DisplayCollectibleAssetsInAssetListFilterItemViewModel: AssetFilterItemViewModel {
+    let title: TextProvider?
+    let description: TextProvider?
+
+    init() {
+        self.title = Self.getTitle("asset-filter-selection-display-collectible-assets-filter-title".localized)
+        self.description = Self.getDescription("asset-filter-selection-display-collectible-assets-filter-description".localized)
+    }
 }

@@ -72,48 +72,56 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                     at: indexPath
                 )
                 return cell
-            case .collectible(let item):
+            case .collectibleAsset(let item):
                 switch item {
-                case .cell(let item):
-                    switch item {
-                    case .pending(let item):
-                        let cell = collectionView.dequeue(
-                            CollectibleListItemCell.self,
-                            at: indexPath
-                        )
-                        cell.isPending = item.isPending
-                        cell.bindData(
-                            item.viewModel
-                        )
-                        return cell
-                    case .owner(let item):
-                        let cell = collectionView.dequeue(
-                            CollectibleListItemCell.self,
-                            at: indexPath
-                        )
-                        cell.isPending = item.isPending
-                        cell.bindData(
-                            item.viewModel
-                        )
-                        return cell
-                    case .optedIn(let item):
-                        let cell = collectionView.dequeue(
-                            CollectibleListItemOptedInCell.self,
-                            at: indexPath
-                        )
-                        cell.isPending = item.isPending
-                        cell.bindData(
-                            item.viewModel
-                        )
-                        return cell
-                    }
+                case .grid(let item):
+                    let cell = collectionView.dequeue(
+                        CollectibleListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                case .list(let item):
+                    let cell = collectionView.dequeue(
+                        NFTListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                }
+            case .pendingCollectibleAsset(let item):
+                switch item {
+                case .grid(let item):
+                    let cell = collectionView.dequeue(
+                        PendingCollectibleGridItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
+                case .list(let item):
+                    let cell = collectionView.dequeue(
+                        PendingCollectibleAssetListItemCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        item.viewModel
+                    )
+                    return cell
                 }
             }
         }
 
         [
             CollectibleListItemCell.self,
-            CollectibleListItemOptedInCell.self,
+            PendingCollectibleGridItemCell.self,
+            NFTListItemCell.self,
+            PendingCollectibleAssetListItemCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleGalleryUIActionsCell.self,
             ManagementItemWithSecondaryActionCell.self,

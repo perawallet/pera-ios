@@ -46,6 +46,8 @@ final class CollectibleListViewController:
 
     private var positionYForDisplayingListHeader: CGFloat?
 
+    private var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
+
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -75,38 +77,6 @@ final class CollectibleListViewController:
         listView.delegate = self
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        listView
-            .visibleCells
-            .forEach { cell in
-                switch cell {
-                case is CollectibleListLoadingViewCell:
-                    let loadingCell = cell as? CollectibleListLoadingViewCell
-                    loadingCell?.restartAnimating()
-                default:
-                    break
-                }
-            }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        listView
-            .visibleCells
-            .forEach { cell in
-                switch cell {
-                case is CollectibleListLoadingViewCell:
-                    let loadingCell = cell as? CollectibleListLoadingViewCell
-                    loadingCell?.stopAnimating()
-                default:
-                    break
-                }
-            }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -127,21 +97,7 @@ final class CollectibleListViewController:
 
             switch event {
             case .didUpdate(let snapshot):
-                var accounts: [AccountHandle] = []
-
-                switch self.dataController.galleryAccount {
-                case .single(let account):
-                    guard let account = self.sharedDataController.accountCollection[account.value.address] else {
-                        return
-                    }
-
-                    accounts = [account]
-                case .all:
-                    accounts = self.sharedDataController.sortedAccounts()
-                }
-
-                self.eventHandler?(.didUpdate(accounts))
-
+                self.eventHandler?(.didUpdateSnapshot)
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             case .didFinishRunning(let hasError):
                 self.eventHandler?(.didFinishRunning(hasError: hasError))
@@ -151,8 +107,37 @@ final class CollectibleListViewController:
         dataController.load()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        restartLoadingOfVisibleCellsIfNeeded()
+    }
+
     private func build() {
         addListView()
+    }
+}
+
+extension CollectibleListViewController {
+    private func restartLoadingOfVisibleCellsIfNeeded() {
+        for cell in listView.visibleCells {
+            if let pendingCollectibleGridItemCell = cell as? PendingCollectibleGridItemCell,
+               pendingCollectibleGridItemCell.isLoading {
+                pendingCollectibleGridItemCell.isLoading = true
+                return
+            }
+
+            if let pendingCollectibleListItemCell = cell as? PendingCollectibleAssetListItemCell,
+               pendingCollectibleListItemCell.isLoading {
+                pendingCollectibleListItemCell.isLoading = true
+                return
+            }
+
+            if let listLoadingCell = cell as? CollectibleListLoadingViewCell {
+                listLoadingCell.restartAnimating()
+                return
+            }
+        }
     }
 }
 
@@ -217,11 +202,16 @@ extension CollectibleListViewController {
             default:
                 break
             }
-        case .collectible(let item):
+        case .pendingCollectibleAsset(let item):
             switch item {
-            case .cell(let item):
-                linkInteractors(cell, item: item)
+            case .grid:
+                let cell = cell as? PendingCollectibleGridItemCell
+                cell?.isLoading = true
+            case .list:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = true
             }
+        default: break
         }
     }
 
@@ -243,6 +233,15 @@ extension CollectibleListViewController {
             default:
                 break
             }
+        case .pendingCollectibleAsset(let item):
+            switch item {
+            case .grid:
+                let cell = cell as? PendingCollectibleGridItemCell
+                cell?.isLoading = false
+            case .list:
+                let cell = cell as? PendingCollectibleAssetListItemCell
+                cell?.isLoading = false
+            }
         default:
             break
         }
@@ -261,27 +260,20 @@ extension CollectibleListViewController {
         endEditing()
 
         switch itemIdentifier {
-        case .collectible(let item):
-            switch item {
-            case .cell(let cell):
-                switch cell {
-                case .pending: break
-                case .owner(let item):
-                    let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell
-                    openCollectibleDetail(
-                        account: item.account,
-                        asset: item.asset,
-                        thumbnailImage: cell?.contextView.currentImage
-                    )
-                case .optedIn(let item):
-                    let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemOptedInCell
-                    openCollectibleDetail(
-                        account: item.account,
-                        asset: item.asset,
-                        thumbnailImage: cell?.contextView.currentImage
-                    )
-                }
+        case .collectibleAsset(let item):
+            var currentImage: UIImage?
+
+            if let gridItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell {
+                currentImage = gridItemCell.contextView.currentImage
+            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? NFTListItemCell {
+                currentImage = listItemCell.contextView.currentImage
             }
+
+            openCollectibleDetail(
+                account: item.account,
+                asset: item.asset,
+                thumbnailImage: currentImage
+            )
         default:
             break
         }
@@ -292,7 +284,7 @@ extension CollectibleListViewController {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        guard let asset = getCollectibleItem(at: indexPath)?.asset else {
+        guard let asset = getCollectibleAsset(at: indexPath) else {
             return nil
         }
 
@@ -339,18 +331,14 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
-        case .collectible(let item):
+        case .collectibleAsset(let item):
             switch item {
-            case .cell(let cell):
-                switch cell {
-                case .pending,
-                     .owner:
-                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
-                    return cell.getTargetedPreview()
-                case .optedIn:
-                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemOptedInCell
-                    return cell.getTargetedPreview()
-                }
+            case .grid:
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
+                return cell.getTargetedPreview()
+            case .list:
+                let cell = collectionView.cellForItem(at: indexPath) as! NFTListItemCell
+                return cell.getTargetedPreview()
             }
         default:
             return nil
@@ -403,8 +391,8 @@ extension CollectibleListViewController {
     
     private func clearFiltersAndReload() {
         var store = CollectibleFilterStore()
-        store.displayWatchAccountCollectibleAssets = true
-        store.displayOptedInCollectibleAssets = true
+        store.displayWatchAccountCollectibleAssetsInCollectibleList = true
+        store.displayOptedInCollectibleAssetsInCollectibleList = true
 
         reload()
     }
@@ -455,14 +443,11 @@ extension CollectibleListViewController {
     ) {
         cell.delegate = self
 
-//        cell.setGridUIStyleSelected() /// <todo> Get the preference from saved preference.
-    }
-
-    private func linkInteractors(
-        _ cell: UICollectionViewCell,
-        item: CollectibleCellItem
-    ) {
-        cell.isUserInteractionEnabled = !item.isPending
+        if collectibleGalleryUIStyleStore.galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+            cell.setGridUIStyleSelected()
+        } else {
+            cell.setListUIStyleSelected()
+        }
     }
 }
 
@@ -509,11 +494,15 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
     func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        /// <todo> Perform layout changes & save the preference.
+        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.gridUIStyleIndex
+        listView.setCollectionViewLayout(CollectibleListLayout.gridFlowLayout, animated: true)
+        dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        /// <todo> Perform layout changes & save the preference.
+        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.listUIStyleIndex
+        listView.setCollectionViewLayout(CollectibleListLayout.listFlowLayout, animated: true)
+        dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidEditSearchInput(_ cell: CollectibleGalleryUIActionsCell, input: String?) {
@@ -580,27 +569,18 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
 }
 
 extension CollectibleListViewController {
-    private func getCollectibleItem(
+    private func getCollectibleAsset(
         at indexPath: IndexPath
-    ) -> CollectibleCellItemContainer? {
+    ) -> CollectibleAsset? {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return nil
         }
 
-        switch itemIdentifier {
-        case .collectible(let collectibleItem):
-            switch collectibleItem {
-            case .cell(let collectibleCellItem):
-                switch collectibleCellItem {
-                case .owner(let item),
-                     .optedIn(let item),
-                     .pending(let item):
-                    return item
-                }
-            }
-        default:
-            return nil
+        if case CollectibleListItem.collectibleAsset(let item) = itemIdentifier {
+            return item.asset
         }
+
+        return nil
     }
 }
 
@@ -612,7 +592,7 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController {
     enum Event {
-        case didUpdate([AccountHandle])
+        case didUpdateSnapshot
         case didTapReceive
         case willDisplayListHeader
         case didEndDisplayingListHeader

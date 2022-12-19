@@ -22,8 +22,8 @@ final class CollectiblesFilterSelectionViewController: ScrollScreen {
     lazy var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
-    private lazy var displayOptedInCollectibleAssetsFilterItemView = AssetFilterItemView()
-    private lazy var displayWatchAccountCollectibleAssetsItemView = AssetFilterItemView()
+    private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
+    private lazy var displayWatchAccountCollectibleAssetsInCollectibleListItemView = AssetFilterItemView()
 
     private lazy var store = CollectibleFilterStore()
 
@@ -95,26 +95,26 @@ extension CollectiblesFilterSelectionViewController {
     }
 
     private func addFilterItems() {
-        addDisplayOptedInCollectibleAssetsFilterItem()
-        addDisplayWatchAccountCollectibleAssetsItem()
+        addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem()
+        addDisplayWatchAccountCollectibleAssetsInCollectibleListItem()
     }
 
-    private func addDisplayOptedInCollectibleAssetsFilterItem() {
-        displayOptedInCollectibleAssetsFilterItemView.customize(theme.filterItem)
-        displayOptedInCollectibleAssetsFilterItemView.bindData(DisplayOptedInCollectibleAssetsFilterItemViewModel())
+    private func addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem() {
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.customize(theme.filterItem)
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.bindData(DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayOptedInCollectibleAssetsFilterItemView.isOn = store.displayOptedInCollectibleAssets
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = store.displayOptedInCollectibleAssetsInCollectibleList
 
-        contextView.addArrangedSubview(displayOptedInCollectibleAssetsFilterItemView)
+        contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
     }
 
-    private func addDisplayWatchAccountCollectibleAssetsItem() {
-        displayWatchAccountCollectibleAssetsItemView.customize(theme.filterItem)
-        displayWatchAccountCollectibleAssetsItemView.bindData(DisplayWatchAccountCollectibleAssetsFilterItemViewModel())
+    private func addDisplayWatchAccountCollectibleAssetsInCollectibleListItem() {
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.customize(theme.filterItem)
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.bindData(DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayWatchAccountCollectibleAssetsItemView.isOn = store.displayWatchAccountCollectibleAssets
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn = store.displayWatchAccountCollectibleAssetsInCollectibleList
 
-        contextView.addArrangedSubview(displayWatchAccountCollectibleAssetsItemView)
+        contextView.addArrangedSubview(displayWatchAccountCollectibleAssetsInCollectibleListItemView)
     }
 }
 
@@ -130,19 +130,16 @@ extension CollectiblesFilterSelectionViewController {
     }
 
     private func saveFilters() {
-        var store = CollectibleFilterStore()
-        store.displayOptedInCollectibleAssets = displayOptedInCollectibleAssetsFilterItemView.isOn
-        store.displayWatchAccountCollectibleAssets = displayWatchAccountCollectibleAssetsItemView.isOn
+        store.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        store.displayWatchAccountCollectibleAssetsInCollectibleList = displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        let store = CollectibleFilterStore()
-
-        if store.displayOptedInCollectibleAssets != displayOptedInCollectibleAssetsFilterItemView.isOn {
+        if store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn {
             return true
         }
 
-        if store.displayWatchAccountCollectibleAssets != displayWatchAccountCollectibleAssetsItemView.isOn {
+        if store.displayWatchAccountCollectibleAssetsInCollectibleList != displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn {
             return true
         }
 

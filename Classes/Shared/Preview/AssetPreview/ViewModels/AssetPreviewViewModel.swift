@@ -109,7 +109,6 @@ extension AssetPreviewViewModel {
             ? "title-unknown".localized
         : asset.naming.name
 
-        let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
