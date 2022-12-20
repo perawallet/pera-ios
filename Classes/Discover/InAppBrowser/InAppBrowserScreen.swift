@@ -160,20 +160,27 @@ class InAppBrowserScreen:
         decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
     ) {
         guard let requestUrl = navigationAction.request.url else {
-            decisionHandler(.allow, preferences)
+            decisionHandler(.cancel, preferences)
             return
         }
 
-        if requestUrl.scheme?.lowercased() == "mailto" {
+        /// Mail Check
+        if requestUrl.isMailURL {
             UIApplication.shared.open(requestUrl, options: [:], completionHandler: nil)
             decisionHandler(.cancel, preferences)
             return
         }
 
+        /// Web Check
+        if requestUrl.isWebURL {
+            decisionHandler(.allow, preferences)
+            return
+        }
+        
         let deeplinkQR = DeeplinkQR(url: requestUrl)
 
         guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
-            decisionHandler(.allow, preferences)
+            decisionHandler(.cancel, preferences)
             return
         }
 
