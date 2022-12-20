@@ -226,7 +226,7 @@ final class CollectibleDetailViewController:
 
 extension CollectibleDetailViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .share) {
+        let shareBarButtonItem = ALGBarButtonItem(kind: .share) {
             [weak self] in
             guard let self = self else {
                 return
@@ -235,7 +235,7 @@ extension CollectibleDetailViewController {
             self.shareCollectible()
         }
 
-        rightBarButtonItems = [doneBarButtonItem]
+        rightBarButtonItems = [shareBarButtonItem]
     }
 }
 

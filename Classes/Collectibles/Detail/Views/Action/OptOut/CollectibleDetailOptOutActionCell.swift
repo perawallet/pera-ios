@@ -45,14 +45,10 @@ final class CollectibleDetailOptOutActionCell:
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
-        let contextSize = theme.context.title?.text.string?.boundingSize(
-            attributes: .font(theme.context.font?.uiFont),
-            multiline: true,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        ) ?? .zero
+        let contextFontLineHeight = theme.contextFont.lineHeight
         let preferredHeight =
         theme.contextEdgeInsets.top +
-        contextSize.height +
+        contextFontLineHeight +
         theme.contextEdgeInsets.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }

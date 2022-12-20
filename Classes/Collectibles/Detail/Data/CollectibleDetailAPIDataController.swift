@@ -238,7 +238,7 @@ extension CollectibleDetailAPIDataController {
         }
 
         if account[asset.id] != nil {
-            addOptedInActionContent(&snapshot)
+            addOptOutActionContent(&snapshot)
         }
     }
 
@@ -252,7 +252,7 @@ extension CollectibleDetailAPIDataController {
         )
     }
 
-    private func addOptedInActionContent(
+    private func addOptOutActionContent(
         _ snapshot: inout Snapshot
     ) {
         snapshot.appendSections([.action])
@@ -291,13 +291,15 @@ extension CollectibleDetailAPIDataController {
             )
         )
 
-        if let totalSupply = getTotalSupply(for: asset) {
+        if let totalSupply = asset.totalSupply,
+           let formattedTotalSupply = collectibleAmountFormatter.format(totalSupply) {
+
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
                         icon: nil,
                         title: "title-total-supply".localized,
-                        value: totalSupply,
+                        value: formattedTotalSupply,
                         isCollectibleSpecificValue: false
                     )
                 )
@@ -321,17 +323,6 @@ extension CollectibleDetailAPIDataController {
             descriptionItems,
             toSection: .description
         )
-    }
-
-    private func getTotalSupply(for asset: CollectibleAsset) -> String? {
-        guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
-            return nil
-        }
-
-        let decimals = asset.decimals
-        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
-
-        return collectibleAmountFormatter.format(totalSupply)
     }
 
     private func addPropertiesContent(

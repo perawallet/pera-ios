@@ -15,19 +15,23 @@
 //   CollectibleDetailOptOutActionCellTheme.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
 
 struct CollectibleDetailOptOutActionCellTheme:
     StyleSheet,
     LayoutSheet {
+    private(set) var contextFont: UIFont
     private(set) var context: ButtonStyle
     private(set) var contextEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
+        let contextFont = Typography.bodyMedium()
+        self.contextFont = contextFont
         self.context = [
             .title("collectible-detail-opt-out".localized),
             .titleColor([ .normal(Colors.Button.Secondary.text) ]),
-            .font(Typography.bodyMedium()),
+            .font(contextFont),
             .backgroundImage([
                 .normal("components/buttons/secondary/bg"),
                 .highlighted("components/buttons/secondary/bg-highlighted"),

@@ -52,14 +52,10 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
         asset: Asset,
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
+        guard let totalSupply = asset.totalSupply else {
             bindSubtitle(text: nil)
             return
         }
-
-        /// totalSupply = total * 10^-(decimals)
-        let decimals = asset.decimals
-        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
 
         /// <note>
         /// The total supply isn't a value based on any currency.
