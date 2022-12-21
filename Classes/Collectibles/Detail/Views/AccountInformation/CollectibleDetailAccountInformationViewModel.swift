@@ -43,6 +43,7 @@ extension CollectibleDetailAccountInformationViewModel {
         let asset = item.asset
 
         if asset.isPure || !asset.isOwned {
+            amount = nil
             return
         }
 

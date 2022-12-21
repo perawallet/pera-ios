@@ -124,6 +124,7 @@ extension NFTListItemViewModel {
         let asset = item.asset
 
         if asset.isPure || !asset.isOwned {
+            amount = nil
             return
         }
 
@@ -133,6 +134,7 @@ extension NFTListItemViewModel {
             .unwrap { "x" + $0 }
 
         guard let formattedAmount else {
+            amount = nil
             return
         }
 
@@ -145,7 +147,7 @@ extension NFTListItemViewModel {
             amountText = formattedAmount
         }
 
-        self.amount = amountText.footnoteRegular(lineBreakMode: .byTruncatingTail)
+        amount = amountText.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
 

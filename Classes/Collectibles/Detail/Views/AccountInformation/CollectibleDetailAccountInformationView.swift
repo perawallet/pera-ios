@@ -113,10 +113,10 @@ final class CollectibleDetailAccountInformationView:
 
 extension CollectibleDetailAccountInformationView {
     private func updateUIWhenViewLayoutSubviews() {
-        updateAmountViewWhenViewLayoutSubviews()
+        updateAmountWhenViewLayoutSubviews()
     }
 
-    private func updateAmountViewWhenViewLayoutSubviews() {
+    private func updateAmountWhenViewLayoutSubviews() {
         if isAmountLayoutLoaded {
             return
         }
@@ -135,10 +135,10 @@ extension CollectibleDetailAccountInformationView {
 
 extension CollectibleDetailAccountInformationView {
     private func updateUIWhenUserInterfaceStyleDidChange() {
-        updateAmountViewWhenUserInterfaceStyleDidChange()
+        updateAmountWhenUserInterfaceStyleDidChange()
     }
 
-    private func updateAmountViewWhenUserInterfaceStyleDidChange() {
+    private func updateAmountWhenUserInterfaceStyleDidChange() {
         if let theme {
             amountView.draw(border: theme.amountBorder)
         }

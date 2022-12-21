@@ -85,6 +85,8 @@ extension CollectibleListItemViewModel {
         let asset = item.asset
 
         if asset.isPure || !asset.isOwned {
+            amount = nil
+            amountCanvas = nil
             return
         }
         
@@ -95,6 +97,8 @@ extension CollectibleListItemViewModel {
                 .unwrap { "x" + $0 }
 
         guard let formattedAmount else {
+            amount = nil
+            amountCanvas = nil
             return
         }
 
@@ -103,9 +107,7 @@ extension CollectibleListItemViewModel {
                 .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
 
-        if amount != nil {
-            amountCanvas = "badge-bg".uiImage
-        }
+        amountCanvas = "badge-bg".uiImage
     }
 
     private mutating func bindImage(
