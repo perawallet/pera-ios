@@ -17,19 +17,17 @@
 import Foundation
 import MagpieCore
 
-struct WalletConnectSubscriptionDraft: JSONObjectBody {
+struct SubscribeToWalletConnectSessionDraft: JSONObjectBody {
     let deviceID: String?
-    let bridgeURL: URL
-    let topicID: String
-    let dAppName: String
+    let wcSession: WCSession?
     let pushToken: String?
 
     var bodyParams: [APIBodyParam] {
         let params: [APIBodyParam] = [
             .init(.device, deviceID),
-            .init(.bridgeURL, bridgeURL),
-            .init(.topicID, topicID),
-            .init(.dAppName, dAppName),
+            .init(.bridgeURL, wcSession?.urlMeta.bridge),
+            .init(.topicID, wcSession?.peerMeta.id),
+            .init(.dAppName, wcSession?.peerMeta.name),
             .init(.pushToken, pushToken)
         ]
         return params

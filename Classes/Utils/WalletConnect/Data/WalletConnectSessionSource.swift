@@ -83,7 +83,7 @@ extension WalletConnectSessionSource {
     func addWalletConnectSession(_ session: WCSession) {
         if sessions != nil {
             if sessions?[session.urlMeta.topic] != nil {
-                return
+                updateWalletConnectSession(session, with: session.urlMeta)
             }
 
             self.sessions?[session.urlMeta.topic] = session
@@ -91,11 +91,6 @@ extension WalletConnectSessionSource {
         } else {
             sessions = [session.urlMeta.topic: session]
         }
-    }
-    
-    func updateWalletConnectSession(_ session: WCSession) {
-        sessions?[session.urlMeta.topic] = session
-        syncSessions()
     }
 
     var allWalletConnectSessions: [WCSession] {

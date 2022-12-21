@@ -16,15 +16,20 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
-    func sendWalletConnectSubscription(_ draft: WalletConnectSubscriptionDraft) -> EndpointOperatable {
+    func subscribeToWalletConnectSession(
+        _ draft: SubscribeToWalletConnectSessionDraft,
+        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1)
-            .path(.walletConnectSubscriptions)
+            .path(.subscribeToWalletConnectSession)
             .method(.post)
             .body(draft)
+            .completionHandler(handler)
             .execute()
     }
 }

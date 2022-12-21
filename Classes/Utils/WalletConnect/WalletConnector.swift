@@ -26,19 +26,24 @@ class WalletConnector {
         return "walletConnector.userInfoKey.sessionRequest"
     }
 
-    private let walletConnectBridge = WalletConnectBridge()
-
     private lazy var sessionSource = WalletConnectSessionSource()
 
     weak var delegate: WalletConnectorDelegate?
 
+    private let api: ALGAPI
+    private let pushToken: String?
     private let analytics: ALGAnalytics
+    private let walletConnectBridge = WalletConnectBridge()
 
     private var ongoingConnections: [String: Bool] = [:]
 
     init(
+        api: ALGAPI,
+        pushToken: String?,
         analytics: ALGAnalytics
     ) {
+        self.api = api
+        self.pushToken = pushToken
         self.analytics = analytics
 
         walletConnectBridge.delegate = self
@@ -153,6 +158,38 @@ extension WalletConnector {
     func disconnectFromAllSessions() {
         allWalletConnectSessions.forEach(disconnectFromSession)
     }
+    
+    func subscribeForNotificationsIfNeeded(_ session: WCSession) {
+        if session.isSubscribed {
+            return
+        }
+        
+        let user = api.session.authenticatedUser
+        let deviceID = user?.getDeviceId(on: api.network)
+        
+        let draft = SubscribeToWalletConnectSessionDraft(
+            deviceID: deviceID,
+            wcSession: session,
+            pushToken: pushToken
+        )
+        
+        api.subscribeToWalletConnectSession(draft) {
+            [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+            case .success:
+                session.isSubscribed = true
+                self.addToSavedSessions(session)
+            case .failure:
+                if self.sessionSource.getWalletConnectSession(with: session.urlMeta) == nil {
+                    self.addToSavedSessions(session)
+                }
+            }
+        }
+    }
 
     func reconnectToSavedSessionsIfPossible() {
         for session in allWalletConnectSessions {
@@ -197,11 +234,6 @@ extension WalletConnector {
     func resetAllSessions() {
         sessionSource.resetAllSessions()
     }
-    
-    func updateSessionForSubscription(_ session: WCSession) {
-        session.isSubscribed = true
-        sessionSource.updateWalletConnectSession(session)
-    }
 
     func saveConnectedWCSession(_ session: WCSession) {
         if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
@@ -235,12 +267,13 @@ extension WalletConnector: WalletConnectBridgeDelegate {
                 return
             }
 
-            let wcSession = session.toWCSession()
-            wcSession.isSubscribed = true
-            self.addToSavedSessions(wcSession)
+            let connectedSession = session.toWCSession()
+            let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta)
+            self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
+            
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
-            self.delegate?.walletConnector(self, didConnectTo: wcSession)
+            self.delegate?.walletConnector(self, didConnectTo: connectedSession)
         }
     }
 

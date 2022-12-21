@@ -619,41 +619,6 @@ extension HomeViewController {
     private func completeWalletConnectConfiguration() {
         reconnectToOldWCSessions()
         registerWCRequests()
-        subscribeToWCNotificationsIfNeeded()
-    }
-
-    private func subscribeToWCNotificationsIfNeeded() {
-        let unsubscribedWCSessions = walletConnector.allWalletConnectSessions.filter {
-            $0.isSubscribed == false
-        }
-        
-        if unsubscribedWCSessions.isEmpty {
-            return
-        }
-        
-        let user = api!.session.authenticatedUser
-        let deviceID = user?.getDeviceId(on: api!.network)
-
-        let pushNotificationController = PushNotificationController(
-            target: target,
-            session: session!,
-            api: api!,
-            bannerController: bannerController
-        )
-        let pushToken = pushNotificationController.token
-        
-        unsubscribedWCSessions.forEach {
-            let draft = WalletConnectSubscriptionDraft(
-                deviceID: deviceID,
-                bridgeURL: $0.urlMeta.bridge,
-                topicID: $0.peerMeta.id,
-                dAppName: $0.peerMeta.name,
-                pushToken: pushToken
-            )
-            
-            api!.sendWalletConnectSubscription(draft)
-            walletConnector.updateSessionForSubscription($0)
-        }
     }
     
     private func reconnectToOldWCSessions() {
