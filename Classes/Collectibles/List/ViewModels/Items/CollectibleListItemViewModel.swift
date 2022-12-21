@@ -82,11 +82,32 @@ extension CollectibleListItemViewModel {
     private mutating func bindAmount(
         _ item: CollectibleAssetItem
     ) {
-        amount = getAmount(item)
+        let asset = item.asset
 
-        if amount != nil {
-            amountCanvas = "badge-bg".uiImage
+        if asset.isPure || !asset.isOwned {
+            amount = nil
+            amountCanvas = nil
+            return
         }
+        
+        let formatter = item.amountFormatter
+        let formattedAmount =
+            formatter
+                .format(asset.decimalAmount)
+                .unwrap { "x" + $0 }
+
+        guard let formattedAmount else {
+            amount = nil
+            amountCanvas = nil
+            return
+        }
+
+        amount = .attributedString(
+            formattedAmount
+                .footnoteBold(lineBreakMode: .byTruncatingTail)
+        )
+
+        amountCanvas = "badge-bg".uiImage
     }
 
     private mutating func bindImage(
@@ -236,33 +257,6 @@ extension CollectibleListItemViewModel {
         return ImagePlaceholder(
             image: placeholderImage,
             text: placeholderText
-        )
-    }
-}
-
-extension CollectibleListItemViewModel {
-    func getAmount(
-        _ item: CollectibleAssetItem
-    ) -> EditText? {
-        let asset = item.asset
-
-        let shouldShowAmount = !asset.isPure && asset.isOwned
-
-        if !shouldShowAmount {
-            return nil
-        }
-
-        let unformattedAmount = asset.decimalAmount
-
-        let formatter = item.amountFormatter
-
-        guard let formattedAmount = formatter.format(unformattedAmount) else {
-            return nil
-        }
-
-        return .attributedString(
-            "x\(formattedAmount)"
-                .footnoteBold(lineBreakMode: .byTruncatingTail)
         )
     }
 }

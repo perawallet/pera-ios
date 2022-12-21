@@ -121,9 +121,20 @@ extension NFTListItemViewModel {
     }
 
     mutating func bindAmount(_ item: CollectibleAssetItem) {
-        let formattedAmount = getFormattedAmount(item)
+        let asset = item.asset
+
+        if asset.isPure || !asset.isOwned {
+            amount = nil
+            return
+        }
+
+        let formatter = item.amountFormatter
+        let formattedAmount = formatter
+            .format(asset.decimalAmount)
+            .unwrap { "x" + $0 }
 
         guard let formattedAmount else {
+            amount = nil
             return
         }
 
@@ -136,7 +147,7 @@ extension NFTListItemViewModel {
             amountText = formattedAmount
         }
 
-        self.amount = amountText.footnoteRegular(lineBreakMode: .byTruncatingTail)
+        amount = amountText.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
 
@@ -218,29 +229,5 @@ extension NFTListItemViewModel {
 
     private func getSecondaryTitle(_ assetUnitName: String?) -> TextProvider? {
         return assetUnitName?.footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
-}
-
-extension NFTListItemViewModel {
-    private func getFormattedAmount(
-        _ item: CollectibleAssetItem
-    ) -> String? {
-        let asset = item.asset
-
-        let shouldShowAmount = !asset.isPure && asset.isOwned
-
-        if !shouldShowAmount {
-            return nil
-        }
-
-        let unformattedAmount = asset.decimalAmount
-
-        let formatter = item.amountFormatter
-
-        guard let formattedAmount = formatter.format(unformattedAmount) else {
-            return nil
-        }
-
-        return "x\(formattedAmount)"
     }
 }
