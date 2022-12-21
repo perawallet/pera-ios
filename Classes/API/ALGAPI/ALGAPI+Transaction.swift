@@ -75,7 +75,7 @@ extension ALGAPI {
     @discardableResult
     func trackTransaction(_ draft: TransactionTrackDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.trackTransactions)
             .method(.post)
             .body(draft)
@@ -117,7 +117,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .type(.download(.file(draft.fileURL)))
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.exportTransactions, args: draft.account.address)
             .method(.get)
             .query(draft)

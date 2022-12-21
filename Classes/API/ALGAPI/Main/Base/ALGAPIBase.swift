@@ -39,8 +39,8 @@ extension ALGAPIBase {
     enum Base {
         case algod(ALGAPI.Network)
         case indexer(ALGAPI.Network)
-        case mobileV1
-        case mobileV2
+        case mobileV1(ALGAPI.Network)
+        case mobileV2(ALGAPI.Network)
         case algoExplorer
 
         init?(_ base: String, network: ALGAPI.Network) {
@@ -49,11 +49,11 @@ extension ALGAPIBase {
             } else if base.isIndexerApiBase {
                 self = .indexer(network)
             } else if base.isMobileApiV1Base {
-                self = .mobileV1
+                self = .mobileV1(network)
             } else if base.isAlgoExplorerApiBase {
                 self = .algoExplorer
             } else if base.isMobileApiV2Base {
-                self = .mobileV2
+                self = .mobileV2(network)
             } else {
                 return nil
             }
@@ -73,10 +73,18 @@ extension ALGAPIBase {
                 } else {
                     return Environment.current.mainNetIndexerApi
                 }
-            case .mobileV1:
-                return Environment.current.mobileApiV1
-            case .mobileV2:
-                return Environment.current.mobileApiV2
+            case let .mobileV1(network):
+                if network == .testnet {
+                    return Environment.current.testNetMobileAPIV1
+                } else {
+                    return Environment.current.mainNetMobileAPIV1
+                }
+            case let .mobileV2(network):
+                if network == .testnet {
+                    return Environment.current.testNetMobileAPIV2
+                } else {
+                    return Environment.current.mainNetMobileAPIV2
+                }
             case .algoExplorer:
                 return Environment.current.algoExplorerApi
             }
@@ -94,11 +102,11 @@ fileprivate extension String {
     }
 
     var isMobileApiV1Base: Bool {
-        return self == Environment.current.mobileApiV1
+        return self == Environment.current.testNetMobileAPIV1 || self == Environment.current.mainNetMobileAPIV1
     }
 
     var isMobileApiV2Base: Bool {
-        return self == Environment.current.mobileApiV2
+        return self == Environment.current.testNetMobileAPIV2 || self == Environment.current.mainNetMobileAPIV2
     }
 
     var isAlgoExplorerApiBase: Bool {
