@@ -30,11 +30,7 @@ final class DiscoverHomeScreen:
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
     }
-
-    override var discoverURL: DiscoverURL {
-        return .home
-    }
-
+    
     private lazy var theme = DiscoverHomeScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
@@ -49,6 +45,10 @@ final class DiscoverHomeScreen:
 
     deinit {
         navigationBarLargeTitleController.deactivate()
+    }
+
+    init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration, discoverURL: .home)
     }
 
     override func configureNavigationBarAppearance() {

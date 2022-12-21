@@ -19,10 +19,6 @@ import WebKit
 import MacaroonUtils
 
 final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHandler {
-    override var discoverURL: DiscoverURL {
-        return .assetDetail(parameters: assetParameters)
-    }
-
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -53,7 +49,7 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
     ) {
         self.assetParameters = assetParameters
         self.swapDataStore = swapDataStore
-        super.init(configuration: configuration)
+        super.init(configuration: configuration, discoverURL: .assetDetail(parameters: assetParameters))
     }
 
     override func viewWillDisappear(_ animated: Bool) {

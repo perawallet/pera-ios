@@ -21,15 +21,21 @@ import UIKit
 /// PeraInAppBrowserScreen should be used for websites that created by Pera
 /// It handles theme changes, some common logics on that websites.
 class PeraInAppBrowserScreen: InAppBrowserScreen {
-    var discoverURL: DiscoverURL {
-        fatalError("It should be set in necessary screen")
+    override var peraUserAgent: String? {
+        let version: String? = Bundle.main["CFBundleShortVersionString"]
+        let versionUserAgent = version.unwrap { "pera_ios_" + $0 }
+        let currentUserAgent = webView.value(forKey: "userAgent") as? String
+        return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
+
+    private let discoverURL: DiscoverURL
 
     deinit {
         stopObservingNotifications()
     }
 
-    override init(configuration: ViewControllerConfiguration) {
+    init(configuration: ViewControllerConfiguration, discoverURL: DiscoverURL) {
+        self.discoverURL = discoverURL
         super.init(configuration: configuration)
 
         startObservingNotifications()
@@ -38,74 +44,42 @@ class PeraInAppBrowserScreen: InAppBrowserScreen {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
+        updateTheme(self.traitCollection.userInterfaceStyle)
     }
 
     override func viewDidLoad() {
-        updateUserAgent()
         super.viewDidLoad()
-        loadGeneratedURL()
+        loadPeraURL()
     }
 
     override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
         super.preferredUserInterfaceStyleDidChange(to: userInterfaceStyle)
-        updateInterfaceTheme(userInterfaceStyle)
+        updateTheme(userInterfaceStyle)
     }
 
     override func didPullToRefresh() {
-        do {
-            let generatedUrl = try generateURL()
-
-            guard generatedUrl == webView.url else {
-                load(url: generatedUrl)
-                return
-            }
-
-            super.didPullToRefresh()
-
-        } catch {
-            super.didPullToRefresh()
-        }
+        loadPeraURL()
     }
 }
 
 extension PeraInAppBrowserScreen {
-    private func generateURL() throws -> URL {
-        do {
-            return try DiscoverURLGenerator.generateUrl(
-                discoverUrl: discoverURL,
-                theme: traitCollection.userInterfaceStyle,
-                session: session
-            )
-        } catch {
-            throw error
-        }
+    private func generatePeraURL() -> URL? {
+        DiscoverURLGenerator.generateUrl(
+            discoverUrl: discoverURL,
+            theme: traitCollection.userInterfaceStyle,
+            session: session
+        )
     }
 
-    private func loadGeneratedURL() {
-        do {
-            let generatedUrl = try generateURL()
-            load(url: generatedUrl)
-        } catch {
-            print(error)
-        }
+    private func loadPeraURL() {
+        let generatedUrl = generatePeraURL()
+        load(url: generatedUrl)
     }
 }
 
 extension PeraInAppBrowserScreen {
-    private func updateUserAgent() {
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            let versionString = "pera_ios_\(version)"
-            if let userAgent = webView.value(forKey: "userAgent") as? String {
-                webView.customUserAgent = "\(userAgent) \(versionString)"
-            } else {
-                webView.customUserAgent = versionString
-            }
-        }
-    }
-
-    private func updateInterfaceTheme(_ style: UIUserInterfaceStyle) {
-        let theme = style.peraThemeValue
+    private func updateTheme(_ style: UIUserInterfaceStyle) {
+        let theme = style.peraRawValue
         let script = "updateTheme('\(theme)')"
         webView.evaluateJavaScript(script)
     }
@@ -122,18 +96,18 @@ extension PeraInAppBrowserScreen {
 extension PeraInAppBrowserScreen {
     private func startObservingNotifications() {
         startObservingAppLifeCycleNotifications()
-        startObservingCurrencyNotification()
+        startObservingCurrencyChanges()
     }
 
     private func startObservingAppLifeCycleNotifications() {
         observeWhenApplicationDidBecomeActive {
             [weak self] _ in
             guard let self else { return }
-            self.updateInterfaceTheme(self.traitCollection.userInterfaceStyle)
+            self.updateTheme(self.traitCollection.userInterfaceStyle)
         }
     }
 
-    private func startObservingCurrencyNotification() {
+    private func startObservingCurrencyChanges() {
         observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
             [weak self] _ in
             guard let self else { return }
@@ -144,7 +118,7 @@ extension PeraInAppBrowserScreen {
 
 
 extension UIUserInterfaceStyle {
-    var peraThemeValue: String {
+    var peraRawValue: String {
         switch self {
         case .dark:
             return "dark-theme"

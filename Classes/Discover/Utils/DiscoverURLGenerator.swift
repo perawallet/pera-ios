@@ -22,10 +22,10 @@ final class DiscoverURLGenerator {
         discoverUrl: DiscoverURL,
         theme: UIUserInterfaceStyle,
         session: Session?
-    ) throws -> URL {
+    ) -> URL? {
         var queryItems: [URLQueryItem] = []
         queryItems.append(.init(name: "version", value: "1"))
-        queryItems.append(.init(name: "theme", value: theme.peraThemeValue))
+        queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         if #available(iOS 16, *) {
@@ -40,7 +40,7 @@ final class DiscoverURLGenerator {
         }
 
         guard var components = URLComponents(string: Environment.current.discoverBaseUrl) else {
-            throw DiscoverURLGeneratorError.invalidBaseUrl(Environment.current.discoverBaseUrl)
+            return nil
         }
 
         switch discoverUrl {
@@ -57,11 +57,7 @@ final class DiscoverURLGenerator {
 
         components.queryItems = queryItems
 
-        guard let finalURL = components.url else {
-            throw DiscoverURLGeneratorError.invalidURLComponents(components)
-        }
-
-        return finalURL
+        return components.url
     }
 }
 
@@ -69,9 +65,4 @@ enum DiscoverURL {
     case assetDetail(parameters: DiscoverAssetParameters)
     case other(url: URL)
     case home
-}
-
-enum DiscoverURLGeneratorError: Error {
-    case invalidBaseUrl(String)
-    case invalidURLComponents(URLComponents)
 }

@@ -26,6 +26,8 @@ class InAppBrowserScreen:
     NotificationObserver,
     WKUIDelegate {
 
+    private(set) var peraUserAgent: String? = nil
+
     var notificationObservations: [NSObjectProtocol] = []
 
     private(set) lazy var contentController = WKUserContentController()
@@ -298,6 +300,10 @@ extension InAppBrowserScreen {
         /// are being added so it won't be detected that which view is actually visible. It seems
         /// like `isHidden` property is the only way to prevent unnecessary transition.
         webView.isHidden = true
+
+        if let peraUserAgent {
+            webView.customUserAgent = peraUserAgent
+        }
 
         view.addSubview(webView)
         webView.snp.makeConstraints {
