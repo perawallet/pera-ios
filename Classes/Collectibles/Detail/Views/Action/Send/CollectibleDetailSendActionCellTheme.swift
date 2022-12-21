@@ -15,18 +15,22 @@
 //   CollectibleDetailSendActionCellTheme.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
 
 struct CollectibleDetailSendActionCellTheme:
     StyleSheet,
     LayoutSheet {
+    private(set) var contextFont: UIFont
     private(set) var context: ButtonStyle
     private(set) var contextEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
+        let contextFont = Typography.bodyMedium()
+        self.contextFont = contextFont
         self.context = [
             .title("title-send".localized),
-            .font(Typography.bodyMedium()),
+            .font(contextFont),
             .titleColor([
                 .normal(Colors.Button.Secondary.text),
                 .disabled(Colors.Button.Secondary.disabledText)
