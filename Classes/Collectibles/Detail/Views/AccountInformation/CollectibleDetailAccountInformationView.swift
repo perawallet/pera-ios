@@ -31,7 +31,7 @@ final class CollectibleDetailAccountInformationView:
     private lazy var titleView = UILabel()
     private lazy var amountView = Label()
 
-    private var isLayoutFinalized = false
+    private var isAmountLayoutLoaded = false
 
     private var theme: CollectibleDetailAccountInformationViewTheme?
 
@@ -83,8 +83,8 @@ final class CollectibleDetailAccountInformationView:
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         ).height ?? .zero
         let amountHeight =
-            amountTextHeight +
             theme.amountContentEdgeInsets.top +
+            amountTextHeight +
             theme.amountContentEdgeInsets.bottom
 
         let contentHeight = max(max(iconHeight, titleSize.height), amountHeight)
@@ -107,18 +107,21 @@ final class CollectibleDetailAccountInformationView:
     override func preferredUserInterfaceStyleDidChange() {
         super.preferredUserInterfaceStyleDidChange()
 
-        amountView.draw(border: theme!.amountBorder)
+        updateUIWhenUserInterfaceStyleDidChange()
     }
 }
 
 extension CollectibleDetailAccountInformationView {
     private func updateUIWhenViewLayoutSubviews() {
-        updatAmountViewWhenLayoutSubviews()
+        updateAmountViewWhenViewLayoutSubviews()
     }
 
-    private func updatAmountViewWhenLayoutSubviews() {
-        if isLayoutFinalized ||
-           amountView.bounds.isEmpty {
+    private func updateAmountViewWhenViewLayoutSubviews() {
+        if isAmountLayoutLoaded {
+            return
+        }
+
+        if amountView.bounds.isEmpty {
             return
         }
 
@@ -126,7 +129,19 @@ extension CollectibleDetailAccountInformationView {
         let amountViewCorner = Corner(radius: amountViewRadius.ceil())
         amountView.draw(corner: amountViewCorner)
 
-        isLayoutFinalized = true
+        isAmountLayoutLoaded = true
+    }
+}
+
+extension CollectibleDetailAccountInformationView {
+    private func updateUIWhenUserInterfaceStyleDidChange() {
+        updateAmountViewWhenUserInterfaceStyleDidChange()
+    }
+
+    private func updateAmountViewWhenUserInterfaceStyleDidChange() {
+        if let theme {
+            amountView.draw(border: theme.amountBorder)
+        }
     }
 }
 

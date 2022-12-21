@@ -40,36 +40,18 @@ extension CollectibleDetailAccountInformationViewModel {
     }
 
     mutating func bindAmount(_ item: CollectibleAssetItem) {
-        let formattedAmount = getFormattedAmount(item)
+        let asset = item.asset
 
-        guard let formattedAmount else {
+        if asset.isPure || !asset.isOwned {
             return
         }
 
-        amount = formattedAmount.captionRegular(lineBreakMode: .byTruncatingTail)
-    }
-}
-
-extension CollectibleDetailAccountInformationViewModel {
-    private func getFormattedAmount(
-        _ item: CollectibleAssetItem
-    ) -> String? {
-        let asset = item.asset
-
-        let shouldShowAmount = !asset.isPure && asset.isOwned
-
-        if !shouldShowAmount {
-            return nil
-        }
-
-        let unformattedAmount = asset.decimalAmount
-
         let formatter = item.amountFormatter
+        let formattedAmount =
+            formatter
+                .format(asset.decimalAmount)
+                .unwrap { "x" + $0 }
 
-        guard let formattedAmount = formatter.format(unformattedAmount) else {
-            return nil
-        }
-
-        return "x\(formattedAmount)"
+        amount = formattedAmount?.captionRegular(lineBreakMode: .byTruncatingTail)
     }
 }
