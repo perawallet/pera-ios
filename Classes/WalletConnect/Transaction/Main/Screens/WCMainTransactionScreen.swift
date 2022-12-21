@@ -142,7 +142,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         loadingController?.stopLoading()
 
-        if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
+        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
             return
         }
 
@@ -256,7 +256,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     private func getFirstSignableTransaction() -> WCTransaction? {
         return transactions.first { transaction in
-            transaction.signerAccount != nil
+            transaction.requestedSigner.account != nil
         }
     }
 
@@ -267,7 +267,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     private func signTransaction(_ transaction: WCTransaction) {
-        if let signerAccount = transaction.signerAccount {
+        if let signerAccount = transaction.requestedSigner.account {
             wcTransactionSigner.signTransaction(transaction, with: dataSource.transactionRequest, for: signerAccount)
         } else {
             signedTransactions.append(nil)
@@ -282,7 +282,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     private func continueSigningTransactions(after transaction: WCTransaction) {
         if let index = transactions.firstIndex(of: transaction),
            let nextTransaction = transactions.nextElement(afterElementAt: index) {
-            if let signerAccount = nextTransaction.signerAccount {
+            if let signerAccount = nextTransaction.requestedSigner.account {
                 wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
             } else {
                 signedTransactions.append(nil)

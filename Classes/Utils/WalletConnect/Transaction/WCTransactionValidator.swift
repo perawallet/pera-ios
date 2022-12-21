@@ -98,18 +98,21 @@ extension WCTransactionValidator {
 
     private func containsSignerInTheWallet(for transactionGroups: [Int64: [WCTransaction]]) -> Bool {
         for group in transactionGroups {
-            let unsignableTransactions = group.value.filter { $0.containsSignerInTheWallet }
-            if unsignableTransactions.count != group.value.count {
-                return true
+            /// <note>
+            /// In a group transaction, if there's a signer address specified but we don't have the signer account in the wallet,
+            /// the transaction should not e accepted.
+            let signableTransactionsInTheGroup = group.value.filter { $0.requestedSigner.containsSignerInTheWallet }
+            if signableTransactionsInTheGroup.isEmpty {
+                return false
             }
         }
 
-        return false
+        return true
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {
         for group in transactionGroups {
-            let signableTransactions = group.value.filter { $0.signerAccount != nil }
+            let signableTransactions = group.value.filter { $0.requestedSigner.account != nil }
             if signableTransactions.isEmpty {
                 return true
             }
