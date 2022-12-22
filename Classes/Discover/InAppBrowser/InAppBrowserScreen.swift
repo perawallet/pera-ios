@@ -26,7 +26,7 @@ class InAppBrowserScreen:
     NotificationObserver,
     WKUIDelegate {
 
-    private(set) var peraUserAgent: String? = nil
+    private(set) var userAgent: String? = nil
 
     var notificationObservations: [NSObjectProtocol] = []
 
@@ -301,8 +301,8 @@ extension InAppBrowserScreen {
         /// like `isHidden` property is the only way to prevent unnecessary transition.
         webView.isHidden = true
 
-        if let peraUserAgent {
-            webView.customUserAgent = peraUserAgent
+        if let userAgent {
+            webView.customUserAgent = userAgent
         }
 
         view.addSubview(webView)
