@@ -70,7 +70,8 @@ class AppDelegate:
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
         lastSeenNotificationController: lastSeenNotificationController,
-        analytics: analytics
+        analytics: analytics,
+        launchController: appLaunchController
     )
 
     private lazy var appLaunchController = createAppLaunchController()
@@ -147,7 +148,7 @@ class AppDelegate:
     ) {
         setNeedsUserInterfaceStyleUpdateIfNeeded()
         setNeedsNetworkBannerUpdateIfNeeded()
-        
+
         appLaunchController.becomeActive()
 
         lastSeenNotificationController.checkStatus()

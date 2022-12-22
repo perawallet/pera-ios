@@ -308,6 +308,9 @@
 "asset-removing-status" = "Varlık Kaldırılıyor";
 
 /* (No Comment) */
+"asset-search-not-found" = "We are not able to find this asset.";
+
+/* (No Comment) */
 "asset-search-placeholder" = "Varlık Kimliğini veya Adını Ara";
 
 /* (No Comment) */
@@ -708,6 +711,18 @@
 
 /* (No Comment) */
 "default-error-message" = "Bir hata meydana geldi.";
+
+/* (No Comment) */
+"discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+
+/* (No Comment) */
+"discover-error-connection-title" = "No Internet Connection";
+
+/* (No Comment) */
+"discover-error-fallback-body" = "We can't get that information right now.";
+
+/* MARK: Discover */
+"discover-search-input-placeholder" = "Search for any ASA";
 
 /* (No Comment) */
 "edit-node-title" = "Düğümü Düzenle";
@@ -1961,6 +1976,9 @@
 "swap-asset-not-available" = "Varlık mevcut değil.";
 
 /* (No Comment) */
+"swap-asset-not-opted-in-error" = "You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.";
+
+/* (No Comment) */
 "swap-asset-pool-search-error" = "Varlıkları şu anda gösteremiyoruz. Lütfen tekrar deneyin.";
 
 /* (No Comment) */
@@ -2192,6 +2210,9 @@
 "title-disconnect" = "Bağlantıyı Kes";
 
 /* (No Comment) */
+"title-discover" = "Discover";
+
+/* (No Comment) */
 "title-done" = "Bitti";
 
 /* (No Comment) */
@@ -2346,6 +2367,9 @@
 
 /* (No Comment) */
 "title-retry" = "Yeniden Dene";
+
+/* (No Comment) */
+"title-retry-later" = "Please try later.";
 
 /* (No Comment) */
 "title-save" = "Kaydet";

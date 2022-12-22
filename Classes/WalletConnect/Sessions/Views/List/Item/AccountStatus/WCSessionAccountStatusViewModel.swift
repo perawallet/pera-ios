@@ -19,15 +19,17 @@ import MacaroonUIKit
 struct WCSessionAccountStatusViewModel: ViewModel {
     private(set) var accountStatus: TextProvider?
     
-    init(accountName: String) {
-        bindAccountStatus(accountName)
+    init(account: Account) {
+        bindAccountStatus(account)
     }
 }
 
 extension WCSessionAccountStatusViewModel {
-    private mutating func bindAccountStatus(_ accountName: String) {
+    private mutating func bindAccountStatus(_ account: Account) {
+        let displayName = account.name?.truncatingPrefix(40) ?? account.address.shortAddressDisplay
+        
         let fullText = "wallet-connect-session-connected-with-account"
-            .localized(params: accountName)
+            .localized(params: displayName)
         
         accountStatus = fullText.footnoteMedium(
             alignment: .left

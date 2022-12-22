@@ -55,10 +55,12 @@ final class HomeViewController:
     )
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
+        loadingController: loadingController!,
         bannerController: bannerController!,
         presentingScreen: self
     )
@@ -430,7 +432,8 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
             self.analytics.track(.recordHomeScreen(type: .swap))
-            self.swapAssetFlowCoordinator.launch(account: nil)
+            self.swapAssetFlowCoordinator.resetDraft()
+            self.swapAssetFlowCoordinator.launch()
         }
 
         cell.startObserving(event: .send) {
