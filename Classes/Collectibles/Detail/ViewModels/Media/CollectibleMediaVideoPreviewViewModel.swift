@@ -60,17 +60,7 @@ extension CollectibleMediaVideoPreviewViewModel {
         _ asset: CollectibleAsset,
         _ optInStatus: OptInStatus
     ) {
-        if optInStatus == .rejected {
-            displaysOffColorMedia = false
-            return
-        }
-        
-        if asset.isOwned {
-            displaysOffColorMedia = false
-            return
-        }
-        
-        displaysOffColorMedia = true
+        displaysOffColorMedia = !asset.isOwned && !(optInStatus == .rejected)
     }
 
     private mutating func bindIsFullScreenBadgeHidden(
