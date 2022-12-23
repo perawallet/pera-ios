@@ -43,7 +43,7 @@ class InAppBrowserScreen:
 
     private lazy var refreshControl = UIRefreshControl()
 
-    private lazy var socialMediaDeeplinkParser = DiscoverSocialMediaLinkParser()
+    private lazy var socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
 
     private let theme = InAppBrowserScreenTheme()
 
@@ -175,7 +175,7 @@ class InAppBrowserScreen:
             return
         }
 
-        if let socialMediaUrl = try? socialMediaDeeplinkParser.parse(url: requestUrl) {
+        if let socialMediaUrl = socialMediaDeeplinkParser.route(url: requestUrl) {
             if application.canOpenURL(socialMediaUrl) {
                 application.open(socialMediaUrl)
                 decisionHandler(.cancel, preferences)

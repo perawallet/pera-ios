@@ -12,82 +12,85 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverSocialMediaLinkParserTests.swift
+//   DiscoverSocialMediaRouterTests.swift
 
 import XCTest
 
 @testable import pera_staging
 
-final class DiscoverSocialMediaLinkParserTests: XCTestCase {
+final class DiscoverSocialMediaRouterTests: XCTestCase {
 
     func testTwitterUsername() throws {
-        let parser = DiscoverSocialMediaLinkParser()
+        let router = DiscoverSocialMediaRouter()
 
         let peraUserExample = URL(string: "https://twitter.com/PeraAlgoWallet")!
-        let peraDeeplink = try parser.parse(url: peraUserExample)
+        let peraDeeplink = router.route(url: peraUserExample)
 
-        XCTAssertNoThrow(peraDeeplink)
         XCTAssertEqual(peraDeeplink, URL(string: "twitter://user?screen_name=PeraAlgoWallet"))
 
         let invalidURLExample = URL(string: "https://twitter.com/home")!
         let invalidURL2Example = URL(string: "https://twitter.com/explore")!
         let invalidURL3Example = URL(string: "https://twitter.com/settings")!
         let invalidURL4Example = URL(string: "https://twitter.com/notifications")!
-        XCTAssertThrowsError(try parser.parse(url: invalidURLExample))
-        XCTAssertThrowsError(try parser.parse(url: invalidURL2Example))
-        XCTAssertThrowsError(try parser.parse(url: invalidURL3Example))
-        XCTAssertThrowsError(try parser.parse(url: invalidURL4Example))
+
+        XCTAssertNil(router.route(url: invalidURLExample))
+        XCTAssertNil(router.route(url: invalidURL2Example))
+        XCTAssertNil(router.route(url: invalidURL3Example))
+        XCTAssertNil(router.route(url: invalidURL4Example))
 
         let hipoUserExample = URL(string: "https://m.twitter.com/hipolabs")!
-        let hipoDeeplink = try parser.parse(url: hipoUserExample)
+        let hipoDeeplink = router.route(url: hipoUserExample)
 
-        XCTAssertNoThrow(hipoDeeplink)
         XCTAssertEqual(hipoDeeplink, URL(string: "twitter://user?screen_name=hipolabs"))
 
         let tinymanUserExample = URL(string: "twitter://user?screen_name=tinyman")!
-        let tinymanDeeplink = try parser.parse(url: tinymanUserExample)
+        let tinymanDeeplink = router.route(url: tinymanUserExample)
+        let invalidURL5Example = URL(string: "twitter://users?screen_name=tinyman")!
+        XCTAssertNil(router.route(url: invalidURL5Example))
 
-        XCTAssertNoThrow(tinymanDeeplink)
         XCTAssertEqual(tinymanDeeplink, URL(string: "twitter://user?screen_name=tinyman"))
     }
 
     func testDiscordInvite() throws {
-        let parser = DiscoverSocialMediaLinkParser()
+        let router = DiscoverSocialMediaRouter()
 
         let peraDiscordExample = URL(string: "https://discord.com/invite/gR2UdkCTXQ")!
-        let peraDeeplink = try parser.parse(url: peraDiscordExample)
+        let peraDeeplink = router.route(url: peraDiscordExample)
 
-        XCTAssertNoThrow(peraDeeplink)
         XCTAssertEqual(peraDeeplink, URL(string: "com.hammerandchisel.discord://discord.com/invite/gR2UdkCTXQ"))
 
         let invalidURLExample = URL(string: "https://discord.com/invites/gR2UdkCTXQ")!
         let invalidURL2Example = URL(string: "https://discord.com/gR2UdkCTXQ")!
-        XCTAssertThrowsError(try parser.parse(url: invalidURLExample))
-        XCTAssertThrowsError(try parser.parse(url: invalidURL2Example))
+
+        XCTAssertNil(router.route(url: invalidURLExample))
+        XCTAssertNil(router.route(url: invalidURL2Example))
 
         let tinymanUserExample = URL(string: "com.hammerandchisel.discord://discord.com/invite/wvHnAdmEv6")!
-        let tinymanDeeplink = try parser.parse(url: tinymanUserExample)
+        let tinymanDeeplink = router.route(url: tinymanUserExample)
+        let invalidURL3Example = URL(string: "com.hammerandchisel.discord://discord.com/invite/wvHnAdmEv6/test")!
+        XCTAssertNil(router.route(url: invalidURL3Example))
 
-        XCTAssertNoThrow(tinymanDeeplink)
         XCTAssertEqual(tinymanDeeplink, URL(string: "com.hammerandchisel.discord://discord.com/invite/wvHnAdmEv6"))
     }
 
     func testTelegramInvite() throws {
-        let parser = DiscoverSocialMediaLinkParser()
+        let router = DiscoverSocialMediaRouter()
 
         let peraTelegramExample = URL(string: "https://t.me/PeraWallet")!
-        let peraDeeplink = try parser.parse(url: peraTelegramExample)
+        let peraDeeplink = router.route(url: peraTelegramExample)
 
-        XCTAssertNoThrow(peraDeeplink)
         XCTAssertEqual(peraDeeplink, URL(string: "tg://resolve?domain=PeraWallet"))
 
         let invalidURLExample = URL(string: "https://t.me/PeraWallet/Test")!
-        XCTAssertThrowsError(try parser.parse(url: invalidURLExample))
+        XCTAssertNil(router.route(url: invalidURLExample))
 
         let tinymanUserExample = URL(string: "tg://resolve?domain=tinymanofficial")!
-        let tinymanDeeplink = try parser.parse(url: tinymanUserExample)
+        let tinymanDeeplink = router.route(url: tinymanUserExample)
+        let invalidURL2Example = URL(string: "tg://resolve?domain2=tinymanofficialtest")!
+        let invalidURL3Example = URL(string: "tg://resolve2?domain=tinymanofficial")!
+        XCTAssertNil(router.route(url: invalidURL2Example))
+        XCTAssertNil(router.route(url: invalidURL3Example))
 
-        XCTAssertNoThrow(tinymanDeeplink)
         XCTAssertEqual(tinymanDeeplink, URL(string: "tg://resolve?domain=tinymanofficial"))
     }
 }
