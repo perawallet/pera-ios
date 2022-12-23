@@ -90,7 +90,6 @@ extension ALGAPIInterceptor {
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
         endpoint.setAdditionalHeader(APIKeyHeader())
-        endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), policy: .setIfNotExists)
         endpoint.setAdditionalHeader(AppNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppPackageNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppVersionHeader(application), policy: .alwaysOverride)
@@ -122,18 +121,6 @@ struct APIKeyHeader: Header {
     init() {
         self.key = "X-API-Key"
         self.value = Environment.current.apiKey
-    }
-}
-
-struct NetworkHeader: Header {
-    let key: String
-    let value: String?
-
-    init(
-        _ network: ALGAPI.Network?
-    ) {
-        self.key = "algorand-network"
-        self.value = network?.rawValue
     }
 }
 

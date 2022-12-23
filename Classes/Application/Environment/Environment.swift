@@ -69,8 +69,6 @@ class Environment {
             return mainNetAlgodHost
         }
     }()
-    
-    lazy var mobileHost = "api.perawallet.app"
 
     lazy var algoExplorerApiHost = "price.algoexplorerapi.io"
     
@@ -79,17 +77,51 @@ class Environment {
         return api
     }()
 
-    private lazy var mobileBaseApi: String = {
+    lazy var testNetStagingMobileHost = "testnet.staging.api.perawallet.app"
+    lazy var testNetProductionMobileHost = "testnet.api.perawallet.app"
+    lazy var testNetStagingMobileAPI = "\(schema)://\(testNetStagingMobileHost)"
+    lazy var testNetProductionMobileAPI = "\(schema)://\(testNetProductionMobileHost)"
+
+    lazy var mainNetStagingMobileHost = "mainnet.staging.api.perawallet.app"
+    lazy var mainNetProductionMobileHost = "mainnet.api.perawallet.app"
+    lazy var mainNetStagingMobileAPI = "\(schema)://\(mainNetStagingMobileHost)"
+    lazy var mainNetProductionMobileAPI = "\(schema)://\(mainNetProductionMobileHost)"
+
+    lazy var testNetMobileAPIV1: String = {
         switch target {
         case .staging:
-            return "https://staging.\(mobileHost)"
+            return "\(testNetStagingMobileAPI)/v1/"
         case .prod:
-            return "https://\(mobileHost)"
+            return "\(testNetProductionMobileAPI)/v1/"
         }
     }()
 
-    lazy var mobileApiV1 = "\(mobileBaseApi)/v1/"
-    lazy var mobileApiV2 = "\(mobileBaseApi)/v2/"
+    lazy var mainNetMobileAPIV1: String = {
+        switch target {
+        case .staging:
+            return "\(mainNetStagingMobileAPI)/v1/"
+        case .prod:
+            return "\(mainNetProductionMobileAPI)/v1/"
+        }
+    }()
+
+    lazy var testNetMobileAPIV2: String = {
+        switch target {
+        case .staging:
+            return "\(testNetStagingMobileAPI)/v2/"
+        case .prod:
+            return "\(testNetProductionMobileAPI)/v2/"
+        }
+    }()
+
+    lazy var mainNetMobileAPIV2: String = {
+        switch target {
+        case .staging:
+            return "\(mainNetStagingMobileAPI)/v2/"
+        case .prod:
+            return "\(mainNetProductionMobileAPI)/v2/"
+        }
+    }()
 
     lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
 
