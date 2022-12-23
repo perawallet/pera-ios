@@ -31,7 +31,7 @@ final class AccountAssetListAPIDataController:
         params: nil
     )
 
-    private lazy var assetFilterStore = AssetFilterStore()
+    private lazy var assetFilterOptions = AssetFilterOptions()
 
     private var accountHandle: AccountHandle
 
@@ -188,17 +188,11 @@ extension AccountAssetListAPIDataController {
                     return
                 }
 
-                if self.assetFilterStore.displayCollectibleAssetsInAssetList,
-                   !self.assetFilterStore.displayOptedInCollectibleAssetsInAssetList,
-                   let collectibleAsset = asset as? CollectibleAsset,
-                   !collectibleAsset.isOwned {
+                guard self.shouldDisplayOptedInCollectibleAsset(asset) else {
                     return
                 }
 
-                if self.assetFilterStore.hideAssetsWithNoBalanceInAssetList,
-                   !asset.isAlgo,
-                   !(asset is CollectibleAsset),
-                   asset.amount == 0 {
+                guard self.shouldHideAssetWithNoBalance(asset) else {
                     return
                 }
 
@@ -372,6 +366,30 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
+    private func shouldDisplayOptedInCollectibleAsset(_ asset: Asset) -> Bool {
+        if assetFilterOptions.displayCollectibleAssetsInAssetList,
+           !assetFilterOptions.displayOptedInCollectibleAssetsInAssetList,
+           let collectibleAsset = asset as? CollectibleAsset,
+           !collectibleAsset.isOwned {
+            return false
+        }
+
+        return true
+    }
+
+    private func shouldHideAssetWithNoBalance(_ asset: Asset) -> Bool {
+        if assetFilterOptions.hideAssetsWithNoBalanceInAssetList,
+           !asset.isAlgo,
+           !(asset is CollectibleAsset),
+           asset.amount == 0 {
+            return false
+        }
+
+        return true
+    }
+}
+
+extension AccountAssetListAPIDataController {
     private func publish(
         event: AccountAssetListDataControllerEvent
     ) {
@@ -409,7 +427,7 @@ extension AccountAssetListAPIDataController {
 
         let assets: [Asset]
 
-        if assetFilterStore.displayCollectibleAssetsInAssetList {
+        if assetFilterOptions.displayCollectibleAssetsInAssetList {
             assets = accountHandle.value.allAssets.someArray
         } else {
             assets = accountHandle.value.standardAssets.someArray

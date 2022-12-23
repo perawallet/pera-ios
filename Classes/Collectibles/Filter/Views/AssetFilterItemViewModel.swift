@@ -20,13 +20,3 @@ protocol AssetFilterItemViewModel: ViewModel {
     var title: TextProvider? { get }
     var description: TextProvider? { get }
 }
-
-extension AssetFilterItemViewModel {
-    static func getTitle(_ aTitle: String?) -> TextProvider? {
-        return aTitle?.bodyRegular()
-    }
-
-    static func getDescription(_ aDescription: String?) -> TextProvider? {
-        return aDescription?.footnoteRegular()
-    }
-}

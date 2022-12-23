@@ -19,14 +19,14 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetsFilterSelectionViewController: ScrollScreen {
-    lazy var uiInteractions = UIInteractions()
+    var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
     private lazy var hideAssetsWithNoBalanceInAssetListFilterItemView = AssetFilterItemView()
     private lazy var displayCollectibleAssetsInAssetListFilterItemView = AssetFilterItemView()
     private lazy var displayOptedInCollectibleAssetsFilterInAssetListItemView = AssetFilterItemView()
 
-    private lazy var store = AssetFilterStore()
+    private lazy var filterOptions = AssetFilterOptions()
 
     private let theme: AssetsFilterSelectionViewControllerTheme
 
@@ -54,7 +54,7 @@ extension AssetsFilterSelectionViewController {
     private func addBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [unowned self] in
-            performChanges()
+            self.performChanges()
         }
 
         rightBarButtonItems = [doneBarButtonItem]
@@ -105,7 +105,7 @@ extension AssetsFilterSelectionViewController {
         hideAssetsWithNoBalanceInAssetListFilterItemView.customize(theme.filterItem)
         hideAssetsWithNoBalanceInAssetListFilterItemView.bindData(HideAssetsWithNoBalanceInAssetListFilterItemViewModel())
 
-        hideAssetsWithNoBalanceInAssetListFilterItemView.isOn = store.hideAssetsWithNoBalanceInAssetList
+        hideAssetsWithNoBalanceInAssetListFilterItemView.isOn = filterOptions.hideAssetsWithNoBalanceInAssetList
 
         contextView.addArrangedSubview(hideAssetsWithNoBalanceInAssetListFilterItemView)
     }
@@ -114,7 +114,7 @@ extension AssetsFilterSelectionViewController {
         displayCollectibleAssetsInAssetListFilterItemView.customize(theme.filterItem)
         displayCollectibleAssetsInAssetListFilterItemView.bindData(DisplayCollectibleAssetsInAssetListFilterItemViewModel())
 
-        displayCollectibleAssetsInAssetListFilterItemView.isOn = store.displayCollectibleAssetsInAssetList
+        displayCollectibleAssetsInAssetListFilterItemView.isOn = filterOptions.displayCollectibleAssetsInAssetList
 
         contextView.addArrangedSubview(displayCollectibleAssetsInAssetListFilterItemView)
 
@@ -133,7 +133,7 @@ extension AssetsFilterSelectionViewController {
         displayOptedInCollectibleAssetsFilterInAssetListItemView.customize(theme.filterItem)
         displayOptedInCollectibleAssetsFilterInAssetListItemView.bindData(DisplayOptedInCollectibleAssetsFilterInAssetListItemViewModel())
 
-        displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn = store.displayOptedInCollectibleAssetsInAssetList
+        displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn = filterOptions.displayOptedInCollectibleAssetsInAssetList
         displayOptedInCollectibleAssetsFilterInAssetListItemView.isEnabled = displayCollectibleAssetsInAssetListFilterItemView.isOn
 
         contextView.addArrangedSubview(displayOptedInCollectibleAssetsFilterInAssetListItemView)
@@ -142,31 +142,31 @@ extension AssetsFilterSelectionViewController {
 
 extension AssetsFilterSelectionViewController {
     private func performChanges() {
-        let hasChanges = hasChanges()
-
-        if hasChanges {
+        if hasChanges() {
             saveFilters()
+            uiInteractions.didComplete?()
+            return
         }
 
-        uiInteractions.didComplete?(hasChanges)
+        uiInteractions.didCancel?()
     }
 
     private func saveFilters() {
-        store.hideAssetsWithNoBalanceInAssetList = hideAssetsWithNoBalanceInAssetListFilterItemView.isOn
-        store.displayCollectibleAssetsInAssetList = displayCollectibleAssetsInAssetListFilterItemView.isOn
-        store.displayOptedInCollectibleAssetsInAssetList = displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn
+        filterOptions.hideAssetsWithNoBalanceInAssetList = hideAssetsWithNoBalanceInAssetListFilterItemView.isOn
+        filterOptions.displayCollectibleAssetsInAssetList = displayCollectibleAssetsInAssetListFilterItemView.isOn
+        filterOptions.displayOptedInCollectibleAssetsInAssetList = displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        if store.hideAssetsWithNoBalanceInAssetList != hideAssetsWithNoBalanceInAssetListFilterItemView.isOn {
+        if filterOptions.hideAssetsWithNoBalanceInAssetList != hideAssetsWithNoBalanceInAssetListFilterItemView.isOn {
             return true
         }
 
-        if store.displayCollectibleAssetsInAssetList != displayCollectibleAssetsInAssetListFilterItemView.isOn {
+        if filterOptions.displayCollectibleAssetsInAssetList != displayCollectibleAssetsInAssetListFilterItemView.isOn {
             return true
         }
 
-        if store.displayOptedInCollectibleAssetsInAssetList != displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn {
+        if filterOptions.displayOptedInCollectibleAssetsInAssetList != displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn {
             return true
         }
 
@@ -176,7 +176,7 @@ extension AssetsFilterSelectionViewController {
 
 extension AssetsFilterSelectionViewController {
     struct UIInteractions {
-        typealias HasChanges = Bool
-        var didComplete: ((HasChanges) -> Void)?
+        var didComplete: (() -> Void)?
+        var didCancel: (() -> Void)?
     }
 }
