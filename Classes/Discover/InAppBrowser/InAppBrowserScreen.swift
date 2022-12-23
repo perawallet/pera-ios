@@ -43,6 +43,8 @@ class InAppBrowserScreen:
 
     private lazy var refreshControl = UIRefreshControl()
 
+    private lazy var socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
+
     private let theme = InAppBrowserScreenTheme()
 
     override func viewDidLoad() {
@@ -165,12 +167,20 @@ class InAppBrowserScreen:
             decisionHandler(.cancel, preferences)
             return
         }
-
+        let application = UIApplication.shared
         /// Mail Check
         if requestUrl.isMailURL {
-            UIApplication.shared.open(requestUrl, options: [:], completionHandler: nil)
+            application.open(requestUrl, options: [:], completionHandler: nil)
             decisionHandler(.cancel, preferences)
             return
+        }
+
+        if let socialMediaUrl = socialMediaDeeplinkParser.route(url: requestUrl) {
+            if application.canOpenURL(socialMediaUrl) {
+                application.open(socialMediaUrl)
+                decisionHandler(.cancel, preferences)
+                return
+            }
         }
 
         /// Web Check
@@ -178,7 +188,7 @@ class InAppBrowserScreen:
             decisionHandler(.allow, preferences)
             return
         }
-        
+
         let deeplinkQR = DeeplinkQR(url: requestUrl)
 
         guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {

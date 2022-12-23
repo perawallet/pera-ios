@@ -153,6 +153,18 @@
 		1781CCEB2864A337004B699A /* CGSize+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCEA2864A337004B699A /* CGSize+Additions.swift */; };
 		1781CCEC2864A337004B699A /* CGSize+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCEA2864A337004B699A /* CGSize+Additions.swift */; };
 		1781CCED2864A337004B699A /* CGSize+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCEA2864A337004B699A /* CGSize+Additions.swift */; };
+		1783308529548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */; };
+		1783308629548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */; };
+		1783308729548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */; };
+		1783308929548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */; };
+		1783308A29548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */; };
+		1783308B29548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */; };
+		1783308D29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */; };
+		1783308E29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */; };
+		1783308F29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */; };
+		1783309129548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
+		1783309229548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
+		1783309329548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -166,6 +178,7 @@
 		1793FBCD289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1793FBCE289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
 		1793FBCF289403D4009E6F90 /* BadgeButtonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */; };
+		1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		17A011C527EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
 		17A011C627EB6CBB008C147D /* AnnouncementAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */; };
@@ -434,6 +447,9 @@
 		17C9331629470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
 		17C9331729470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
 		17C9331829470E3D000EE03D /* DiscoverDappDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */; };
+		17C9331F29499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */; };
+		17C9332029499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */; };
+		17C9332129499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */; };
 		17CADC67284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
 		17CADC68284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
 		17CADC69284CFEC8001D19A8 /* HomePortfolioNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */; };
@@ -6378,11 +6394,16 @@
 		1770729E290AAC75009E02AE /* DiscoverSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchDataSource.swift; sourceTree = "<group>"; };
 		1781CCDE2860B275004B699A /* TransactionAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountValidator.swift; sourceTree = "<group>"; };
 		1781CCEA2864A337004B699A /* CGSize+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Additions.swift"; sourceTree = "<group>"; };
+		1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMediaDeeplink.swift; sourceTree = "<group>"; };
+		1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterDeeplink.swift; sourceTree = "<group>"; };
+		1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscordDeeplink.swift; sourceTree = "<group>"; };
+		1783309029548D6900AD5B4E /* TelegramDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramDeeplink.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
 		1793FBC8289403A5009E6F90 /* BadgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButton.swift; sourceTree = "<group>"; };
 		1793FBCC289403D4009E6F90 /* BadgeButtonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeButtonTheme.swift; sourceTree = "<group>"; };
+		1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaRouterTests.swift; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		17A011C427EB6CBB008C147D /* AnnouncementAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementAPIDataController.swift; sourceTree = "<group>"; };
 		17A011C827EB6D1C008C147D /* ALGAPI+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Device.swift"; sourceTree = "<group>"; };
@@ -6436,6 +6457,8 @@
 		17C9330D2946FD56000EE03D /* DiscoverAssetBuyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetBuyEvent.swift; sourceTree = "<group>"; };
 		17C9331129470545000EE03D /* DiscoverAssetSellEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetSellEvent.swift; sourceTree = "<group>"; };
 		17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDappDetailEvent.swift; sourceTree = "<group>"; };
+		17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaRouter.swift; sourceTree = "<group>"; };
+		17C9332C2949DC5E000EE03D /* macaroon */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = macaroon; path = ../macaroon; sourceTree = "<group>"; };
 		17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioNavigationView.swift; sourceTree = "<group>"; };
 		17CADC74285312FB001D19A8 /* AccountQuickActionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsCell.swift; sourceTree = "<group>"; };
 		17CADC7828531305001D19A8 /* AccountQuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsView.swift; sourceTree = "<group>"; };
@@ -8743,6 +8766,22 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		1798D9B4294B18C300A7B2AA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1798D9B5294B18CB00A7B2AA /* Discover */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1798D9B5294B18CB00A7B2AA /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				1798D9B6294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
 		17A011CC27EB6D4F008C147D /* Announcement */ = {
 			isa = PBXGroup;
 			children = (
@@ -8917,6 +8956,7 @@
 		17C932692934CCD0000EE03D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				17C9332229499F3F000EE03D /* SocialMediaDeeplinkRouter */,
 				17C9325F292B942D000EE03D /* DiscoverURLGenerator.swift */,
 			);
 			path = Utils;
@@ -8949,6 +8989,18 @@
 				17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */,
 			);
 			path = Discover;
+			sourceTree = "<group>";
+		};
+		17C9332229499F3F000EE03D /* SocialMediaDeeplinkRouter */ = {
+			isa = PBXGroup;
+			children = (
+				17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */,
+				1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */,
+				1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */,
+				1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */,
+				1783309029548D6900AD5B4E /* TelegramDeeplink.swift */,
+			);
+			path = SocialMediaDeeplinkRouter;
 			sourceTree = "<group>";
 		};
 		17CADC722853127D001D19A8 /* HomeQuickActions */ = {
@@ -11523,6 +11575,7 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
+				17C9332C2949DC5E000EE03D /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
@@ -11838,6 +11891,7 @@
 		2B95407825A75FB20098805B /* algorand-tests */ = {
 			isa = PBXGroup;
 			children = (
+				1798D9B4294B18C300A7B2AA /* Utils */,
 				174A0F3628EF167700D44019 /* Migration */,
 				2B95408C25A782D90098805B /* DB */,
 				2B95407B25A75FB20098805B /* Info.plist */,
@@ -19494,6 +19548,7 @@
 				D4979448287CC766004FBF8E /* AppCallAssetPreviewViewTheme.swift in Sources */,
 				2BCE8FA1284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
 				D4155E8F276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
+				1783308B29548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */,
 				F034523028B392B2009467A0 /* ASADiscoveryLoadingView.swift in Sources */,
 				F08708F4278F622600BEE5C2 /* CurrencyRefreshOperation.swift in Sources */,
 				17BD4DFC2292F1260003E49A /* TabBarController.swift in Sources */,
@@ -19632,6 +19687,7 @@
 				D419AF9A28D0A2A800673C39 /* AccountSelectionListLoadingAccountItemCell.swift in Sources */,
 				17BD4E0E2292F1260003E49A /* TransactionDetailViewController.swift in Sources */,
 				F0B5B0D527A1CBE100BC3E2D /* ALGAppLaunchController.swift in Sources */,
+				1783308F29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */,
 				F0C542D9291D9C1E00596A0A /* DiscoverErrorCell.swift in Sources */,
 				F0DB419127948DCE00EA437D /* ListItemButtonTheme.swift in Sources */,
 				17BD4E0F2292F1260003E49A /* SwiftDate+Region.swift in Sources */,
@@ -19994,6 +20050,7 @@
 				D4B7655428B3E73200A70DC6 /* TapBuyAlgoTabEvent.swift in Sources */,
 				D4979478287D8C0F004FBF8E /* AppCallAssetListViewController.swift in Sources */,
 				D4FC5F5F27F52BE20017E81F /* SelectedAccountPreviewViewTheme.swift in Sources */,
+				17C9332129499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */,
 				2B0E00B3278818C000D6B2E2 /* SecuritySettingsView.swift in Sources */,
 				2BCBF46527B557C9008814C7 /* MultilineTextInputFieldViewTheme.swift in Sources */,
 				D4979480287D8DAC004FBF8E /* AppCallAssetListDataController.swift in Sources */,
@@ -20109,6 +20166,7 @@
 				D499D29127C7DA8E00641FF5 /* CollectiblesViewController.swift in Sources */,
 				F010638828AC5E5400AB6873 /* RightAccessorizedLabelModel.swift in Sources */,
 				2B98E48727EB6262000FA690 /* CollectibleMediaVideoPreviewCell.swift in Sources */,
+				1783309329548D6900AD5B4E /* TelegramDeeplink.swift in Sources */,
 				D48D11DD27428D31000061CE /* AccountNameSwitchViewTheme.swift in Sources */,
 				95C9590C278A1132003D0D78 /* WCSingleTransactionRequestBottomView.swift in Sources */,
 				2BAAF4B228E49C5100FC59AF /* SelectAssetListItemCellTheme.swift in Sources */,
@@ -21099,6 +21157,7 @@
 				D4DC267928AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */,
 				D459E27427DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
 				2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
+				1783308729548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */,
 				F07DAAA5290A746000DDBCF2 /* EditSwapAmountDataProvider.swift in Sources */,
 				9568ADE627C7D97000668053 /* AlgoAccountViewModel.swift in Sources */,
 				2B57158A263479BF002C876D /* AlgorandChartView.swift in Sources */,
@@ -22062,6 +22121,7 @@
 				2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */,
 				17A76669290859C400A8746C /* DiscoverDappDetailScreen.swift in Sources */,
 				2BE8799028BD2CBD00A6C682 /* TransactionOptionListItemButtonViewModel.swift in Sources */,
+				17C9332029499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */,
 				D48D11D4274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				2B0F61F024EC129D00DA22A6 /* AssetViewModel.swift in Sources */,
 				2BD36DF326810E0600C57728 /* TitledInformation.swift in Sources */,
@@ -22136,6 +22196,7 @@
 				2B36FCCC28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */,
 				2B5739F626F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				F08709062790D67B00BEE5C2 /* HomeListDataSource.swift in Sources */,
+				1783308A29548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */,
 				953DEE1C279ED4CC00D76957 /* WCAssetInformationViewModel.swift in Sources */,
 				2B0F620624EC129D00DA22A6 /* LedgerTutorialInstructionView.swift in Sources */,
 				D473CA5D26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
@@ -22627,6 +22688,7 @@
 				F07DAAA02909EEC000DDBCF2 /* SwapDataStoreObservation.swift in Sources */,
 				D4D6E9F4273E793500DAF1EC /* EditAccountViewController+Theme.swift in Sources */,
 				95BB6C0327A2BAA600F2A2F1 /* VerticalTransactionAmountView.swift in Sources */,
+				1783309229548D6900AD5B4E /* TelegramDeeplink.swift in Sources */,
 				2B69AB2528BFA16B00A8D65D /* SwapTransactionPreparation.swift in Sources */,
 				D4BC63FC26DE21DB000CFD28 /* Button.swift in Sources */,
 				D4BAFA8B27DF4C2E0077B781 /* SendCollectibleAccountListViewController.swift in Sources */,
@@ -22712,6 +22774,7 @@
 				2BF305C329118E970050B2FB /* SwapAssetInputValidator.swift in Sources */,
 				2BC7DC35286F3F9000110A92 /* RewardDetailViewModel.swift in Sources */,
 				9501BBD82757BD7100E2C3A7 /* SelectAssetViewControllerDataSource.swift in Sources */,
+				1783308E29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */,
 				D45E191826E91FA500A32744 /* AccountNameSetupViewController+Theme.swift in Sources */,
 				F0C542AC291B056E00596A0A /* DiscoverSearchAssetNameListItemViewModel.swift in Sources */,
 				2B99D47F28F55C9D00323C11 /* LoadingScreenTheme.swift in Sources */,
@@ -23126,6 +23189,7 @@
 				F040FE08285777D500A74993 /* CopyToClipboardController.swift in Sources */,
 				2BB0B120277DAC8300A16494 /* HomeViewController.swift in Sources */,
 				D4DC267828AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */,
+				1783308629548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */,
 				D443A07027E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,
 				2B0E7CBA27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2BD95B092915528E005337E5 /* TapSwapInAccountDetailEvent.swift in Sources */,
@@ -24085,6 +24149,7 @@
 				2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */,
 				2B26271E284E3A8700ADE371 /* AlgoTransactionItemViewModel.swift in Sources */,
 				D4150DDB27C53E350064F736 /* NoContentWithActionViewIllustratedTheme.swift in Sources */,
+				17C9331F29499C28000EE03D /* DiscoverSocialMediaRouter.swift in Sources */,
 				2BC1826723D882D500888476 /* AlgorandSDK.swift in Sources */,
 				17CADC902859C168001D19A8 /* SortAccountAssetListViewController.swift in Sources */,
 				2BECB4D425A1019F0081870A /* NotificationFilterDataSource.swift in Sources */,
@@ -24159,6 +24224,7 @@
 				D4150DE227C5675E0064F736 /* CollectiblesNoContentWithActionViewModel.swift in Sources */,
 				95609E2627B69A44008CE7FA /* NotificationsDataController.swift in Sources */,
 				2BAAF4B028E49C5100FC59AF /* SelectAssetListItemCellTheme.swift in Sources */,
+				1783308929548D2B00AD5B4E /* TwitterDeeplink.swift in Sources */,
 				95AF1C7E27B13098001AB131 /* TransactionHistoryLoadingViewCommonTheme.swift in Sources */,
 				2B7ABF712332DCF50050B64B /* PendingTransactionView.swift in Sources */,
 				2B7A1FC527DEA4B80010F52E /* CollectibleDetailHeaderViewModel.swift in Sources */,
@@ -24650,6 +24716,7 @@
 				D469E70A27A13DEC002D8342 /* AlgoPriceChartTimeFrameSelectionView.swift in Sources */,
 				953DEE1F279EE40200D76957 /* WCAssetTransactionViewTheme.swift in Sources */,
 				F07DAA9F2909EEC000DDBCF2 /* SwapDataStoreObservation.swift in Sources */,
+				1783309129548D6900AD5B4E /* TelegramDeeplink.swift in Sources */,
 				2B0F7E1D25D6E3C100B16B85 /* WelcomeViewController.swift in Sources */,
 				2B8E5F8E25482FC6001D8E30 /* TapReceiveTabEvent.swift in Sources */,
 				D435A93D28AD2D4F006B495A /* Alert.swift in Sources */,
@@ -24735,6 +24802,7 @@
 				D41F4EF62892D13E00B59559 /* OptOutAssetScreenTheme.swift in Sources */,
 				2B9FDEB228A54F8300C8117D /* AssetSocialMediaGroupedListItemButtonTheme.swift in Sources */,
 				F018D69828FE05BF00FAB199 /* SwapQuickActionsView.swift in Sources */,
+				1783308D29548D5300AD5B4E /* DiscordDeeplink.swift in Sources */,
 				D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */,
 				2BE937342464AEE200322C1E /* TransactionDetailTitleLabel.swift in Sources */,
 				F087090D2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */,
@@ -25149,6 +25217,7 @@
 				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				D4BAABC42770D73900FF3D22 /* TransactionAmountViewTheme.swift in Sources */,
 				F0A812E32837E16B00D27BD3 /* CollectibleFullScreenVideoViewController.swift in Sources */,
+				1783308529548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */,
 				F03E9ABB28B1215700A3F07E /* ASADetailPageFragmentScreen.swift in Sources */,
 				2B968A8428869BD000184ED5 /* AsaVerificationInfoScreen.swift in Sources */,
 				2BD95B082915528E005337E5 /* TapSwapInAccountDetailEvent.swift in Sources */,
@@ -25459,6 +25528,7 @@
 				2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */,
 				2B2EE8C225B6F639006A53C5 /* LedgerAccountDetailViewModelTests.swift in Sources */,
 				2B95419525AE632B0098805B /* QRTextTests.swift in Sources */,
+				1798D9B7294B18E300A7B2AA /* DiscoverSocialMediaRouterTests.swift in Sources */,
 				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
 				2B2EE8B125B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardViewModelTests.swift in Sources */,
