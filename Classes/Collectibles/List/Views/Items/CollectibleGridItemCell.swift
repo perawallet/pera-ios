@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemCell.swift
+//   CollectibleGridItemCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleListItemCell:
-    CollectionCell<CollectibleListItemView>,
+final class CollectibleGridItemCell:
+    CollectionCell<CollectibleGridItemView>,
     ViewModelBindable {
-    static let theme = CollectibleListItemViewTheme()
+    static let theme = CollectibleGridItemViewTheme()
 
     override init(
         frame: CGRect
@@ -30,7 +30,7 @@ final class CollectibleListItemCell:
     }
 }
 
-extension CollectibleListItemCell {
+extension CollectibleGridItemCell {
     func getTargetedPreview() -> UITargetedPreview {
         return contextView.getTargetedPreview()
     }

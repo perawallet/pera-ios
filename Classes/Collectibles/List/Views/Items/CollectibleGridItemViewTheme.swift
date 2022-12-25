@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemViewTheme.swift
+//   CollectibleGridItemViewTheme.swift
 
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 
-struct CollectibleListItemViewTheme:
+struct CollectibleGridItemViewTheme:
     LayoutSheet,
     StyleSheet {
     let image: URLImageViewStyleLayoutSheet

@@ -25,7 +25,7 @@ final class CollectibleListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
-    private static let collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
+    private static let collectibleGalleryUIStyleCache: CollectibleGalleryUIStyleCache = .init()
 
     init(
         listDataSource: CollectibleListDataSource
@@ -35,7 +35,7 @@ final class CollectibleListLayout: NSObject {
     }
 
     class func build() -> UICollectionViewLayout {
-        if Self.collectibleGalleryUIStyleStore.galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
             return Self.gridFlowLayout
         } else {
             return Self.listFlowLayout
@@ -88,17 +88,6 @@ extension CollectibleListLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
-        }
-    }
-
-    func insetForSectionCollectiblesSection(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout
-    ) -> UIEdgeInsets {
-        if Self.collectibleGalleryUIStyleStore.galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
-            return UIEdgeInsets((28, sectionHorizontalInsets.leading, 8, sectionHorizontalInsets.trailing))
-        } else {
-            return UIEdgeInsets((16, 0, 8, 0))
         }
     }
 
@@ -159,7 +148,7 @@ extension CollectibleListLayout {
                 return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    sizeForCollectibleItem: item.viewModel
+                    sizeForCollectibleGridItem: item.viewModel
                 )
             case .list(let item):
                 return listView(
@@ -175,7 +164,7 @@ extension CollectibleListLayout {
                 return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    sizeForCollectibleItem: item.viewModel
+                    sizeForCollectibleGridItem: item.viewModel
                 )
             case .list(let item):
                 return listView(
@@ -185,6 +174,19 @@ extension CollectibleListLayout {
                     atSection: indexPath.section
                 )
             }
+        }
+    }
+}
+
+extension CollectibleListLayout {
+    private func insetForSectionCollectiblesSection(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout
+    ) -> UIEdgeInsets {
+        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+            return UIEdgeInsets((28, sectionHorizontalInsets.leading, 8, sectionHorizontalInsets.trailing))
+        } else {
+            return UIEdgeInsets((16, 0, 8, 0))
         }
     }
 }
@@ -297,7 +299,7 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    func listView(
+    private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
         sizeForHeaderItem item: ManagementItemViewModel,
@@ -327,16 +329,16 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleItem item: CollectibleListItemViewModel
+        sizeForCollectibleGridItem item: CollectibleGridItemViewModel
     ) -> CGSize {
-        let width = calculateGridCellWidth(
+        let width = calculateGridItemCellWidth(
             listView,
             layout: listViewLayout
         )
 
-        let newSize = CollectibleListItemCell.calculatePreferredSize(
+        let newSize = CollectibleGridItemCell.calculatePreferredSize(
             item,
-            for: CollectibleListItemCell.theme,
+            for: CollectibleGridItemCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 
@@ -401,7 +403,7 @@ extension CollectibleListLayout {
 }
 
 extension CollectibleListLayout {
-    func calculateGridCellWidth(
+    func calculateGridItemCellWidth(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) ->  LayoutMetric {

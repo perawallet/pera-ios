@@ -31,8 +31,8 @@ final class CollectibleGalleryUIActionsView:
         }
     }
 
-    static let gridUIStyleIndex = 0
-    static let listUIStyleIndex = 1
+    private let gridUIStyleIndex = 0
+    private let listUIStyleIndex = 1
 
     private var theme: CollectibleGalleryUIActionsViewTheme!
 
@@ -102,12 +102,12 @@ extension CollectibleGalleryUIActionsView {
     }
 
     private func publishGalleryUIStyleChange() {
-        if selectedGalleryUIStyleIndex == Self.gridUIStyleIndex {
+        if selectedGalleryUIStyleIndex == gridUIStyleIndex {
             delegate?.collectibleGalleryUIActionsViewDidSelectGridUIStyle(self)
             return
         }
 
-        if selectedGalleryUIStyleIndex == Self.listUIStyleIndex {
+        if selectedGalleryUIStyleIndex == listUIStyleIndex {
             delegate?.collectibleGalleryUIActionsViewDidSelectListUIStyle(self)
             return
         }
@@ -128,11 +128,11 @@ extension CollectibleGalleryUIActionsView {
 
 extension CollectibleGalleryUIActionsView {
     func setGridUIStyleSelected() {
-        selectedGalleryUIStyleIndex = Self.gridUIStyleIndex
+        selectedGalleryUIStyleIndex = gridUIStyleIndex
     }
 
     func setListUIStyleSelected() {
-        selectedGalleryUIStyleIndex = Self.listUIStyleIndex
+        selectedGalleryUIStyleIndex = listUIStyleIndex
     }
 }
 

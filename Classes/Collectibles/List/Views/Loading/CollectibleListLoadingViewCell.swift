@@ -34,10 +34,6 @@ final class CollectibleListLoadingViewCell:
 }
 
 extension CollectibleListLoadingViewCell {
-    func restartAnimating() {
-        contextView.restartAnimating()
-    }
-
     func startAnimating() {
         contextView.startAnimating()
     }

@@ -185,14 +185,14 @@ final class HomeViewController:
         _ animated: Bool
     ) {
         super.viewWillAppear(animated)
+
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
+
         switchToHighlightedNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
-        loadingCell?.restartAnimating()
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
@@ -215,9 +215,7 @@ final class HomeViewController:
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
-        loadingCell?.stopAnimating()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     override func linkInteractors() {
@@ -233,6 +231,20 @@ final class HomeViewController:
 
             self.configureNewNotificationBarButton()
         }
+    }
+}
+
+extension HomeViewController {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
+        if isViewFirstAppeared { return }
+
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.stopAnimating()
     }
 }
 
