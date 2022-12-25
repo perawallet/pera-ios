@@ -25,6 +25,7 @@ struct CollectibleDetailAccountInformationViewTheme:
     var iconSize: LayoutSize
     var spacingBetweenIconAndTitle: LayoutMetric
     var title: TextStyle
+    var titleContentEdgeInsets: LayoutPaddings
     var spacingBetweenTitleAndAmount: LayoutMetric
     var amount: TextStyle
     var amountBorder: Border
@@ -40,6 +41,7 @@ struct CollectibleDetailAccountInformationViewTheme:
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
+        self.titleContentEdgeInsets = (4, 0, 4, 0)
         self.spacingBetweenTitleAndAmount = 8
         self.amount = [
             .textOverflow(SingleLineText()),
