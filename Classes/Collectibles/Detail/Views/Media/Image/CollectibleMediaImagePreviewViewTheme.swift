@@ -22,7 +22,6 @@ struct CollectibleMediaImagePreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let image: URLImageViewStyleLayoutSheet
-    let overlay: ViewStyle
     let threeDAction: ButtonStyle
     let threeDActionContentEdgeInsets: LayoutPaddings
     let threeDModeActionPaddings: LayoutPaddings
@@ -34,9 +33,6 @@ struct CollectibleMediaImagePreviewViewTheme:
         _ family: LayoutFamily
     ) {
         image = URLImageViewCollectibleMediaTheme()
-        overlay = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
 
         threeDAction = [
             .icon([.normal("icon-3d"), .highlighted("icon-3d")]),

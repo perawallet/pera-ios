@@ -22,7 +22,7 @@ import Prism
 
 struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var isOwned: Bool = true
+    var overlayImage: UIImage?
     var is3DModeActionHidden: Bool = false
     var isFullScreenActionHidden: Bool = false
 
@@ -37,7 +37,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             media: media
         )
 
-        bindOwned(asset)
+        bindOverlayImage(asset)
         bindIs3DModeActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
