@@ -98,6 +98,7 @@ final class CollectibleDetailLoadingView:
         theme.actionHeight
 
         let description =
+        theme.spacingBetweenDescriptionAndAction +
         theme.descriptionHeight +
         theme.descriptionValueFirstLineTopMargin +
         theme.descriptionValueLineHeight +
@@ -196,7 +197,7 @@ extension CollectibleDetailLoadingView {
 
         addSubview(descriptionTitle)
         descriptionTitle.snp.makeConstraints {
-            $0.top == actionView.snp.bottom + theme.spacingBetweenDescriptionAndSeparator
+            $0.top == actionView.snp.bottom + theme.spacingBetweenDescriptionAndAction
             $0.leading == image
             $0.fitToHeight(theme.descriptionHeight)
             $0.width == self * theme.descriptionWidthMultiplier
