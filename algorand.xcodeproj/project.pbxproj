@@ -4436,6 +4436,9 @@
 		D454904B29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904A29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift */; };
 		D454904C29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904A29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift */; };
 		D454904D29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904A29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift */; };
+		D454904F29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904E29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift */; };
+		D454905029597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904E29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift */; };
+		D454905129597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904E29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift */; };
 		D45564AB294326E600A4F28C /* AssetFilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45564AA294326E600A4F28C /* AssetFilterItemView.swift */; };
 		D45564AC294326E600A4F28C /* AssetFilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45564AA294326E600A4F28C /* AssetFilterItemView.swift */; };
 		D45564AD294326E600A4F28C /* AssetFilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45564AA294326E600A4F28C /* AssetFilterItemView.swift */; };
@@ -7937,6 +7940,7 @@
 		D454904229590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingCell.swift; sourceTree = "<group>"; };
 		D454904629590E110095E0D1 /* CollectibleGalleryListLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingView.swift; sourceTree = "<group>"; };
 		D454904A29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingViewTheme.swift; sourceTree = "<group>"; };
+		D454904E29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleListItemLoadingCell.swift; sourceTree = "<group>"; };
 		D45564AA294326E600A4F28C /* AssetFilterItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFilterItemView.swift; sourceTree = "<group>"; };
 		D45564AE29432A9A00A4F28C /* AssetFilterItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFilterItemViewTheme.swift; sourceTree = "<group>"; };
 		D45564B229432C9500A4F28C /* AssetFilterItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFilterItemViewModel.swift; sourceTree = "<group>"; };
@@ -17211,6 +17215,7 @@
 				D45B19712936A2D8003058CA /* NFTListItemViewModel.swift */,
 				D40D4563293A57E5006F9E5C /* NFTListItemViewTheme.swift */,
 				D4D86C60293FDDF6001CE878 /* PendingCollectibleAssetListItemCell.swift */,
+				D454904E29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift */,
 			);
 			path = NFT;
 			sourceTree = "<group>";
@@ -21319,6 +21324,7 @@
 				0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				17BD4EDE2292F1260003E49A /* String+Attributes.swift in Sources */,
 				F0CF6B6C285163D9007C30E4 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,
+				D454905129597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */,
 				2B968A8628869BD000184ED5 /* AsaVerificationInfoScreen.swift in Sources */,
 				2BE09A7928F60B6E0059EEF0 /* SwapSummaryStatusView.swift in Sources */,
 				17CADC922859C168001D19A8 /* SortAccountAssetListViewController.swift in Sources */,
@@ -23381,6 +23387,7 @@
 				2B71A696291A3B870039EA99 /* WCSessionAccountStatusViewModel.swift in Sources */,
 				2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				F040FE08285777D500A74993 /* CopyToClipboardController.swift in Sources */,
+				D454905029597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */,
 				2BB0B120277DAC8300A16494 /* HomeViewController.swift in Sources */,
 				D4DC267828AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */,
 				D443A07027E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,
@@ -25732,6 +25739,7 @@
 				2BCCB5BA27D755CA00C5E497 /* OptOutAssetListItemCellTheme.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2BAD6CB327F88CDF0016E869 /* Collectible3DVideoViewController.swift in Sources */,
+				D454904F29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */,
 				D4D86C61293FDDF6001CE878 /* PendingCollectibleAssetListItemCell.swift in Sources */,
 				D44500F4283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
 				D4999E252891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift in Sources */,
