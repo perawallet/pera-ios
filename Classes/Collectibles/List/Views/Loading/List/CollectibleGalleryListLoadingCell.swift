@@ -12,28 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListLoadingViewCell.swift
+//   CollectibleGalleryListLoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleListLoadingViewCell:
-    CollectionCell<CollectibleListLoadingView> {
-    static let theme = CollectibleListLoadingViewTheme()
+final class CollectibleGalleryListLoadingCell:
+    CollectionCell<CollectibleGalleryListLoadingView> {
+    static let theme = CollectibleGalleryListLoadingViewTheme()
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
         contextView.customize(Self.theme)
     }
 }
 
-extension CollectibleListLoadingViewCell {
+extension CollectibleGalleryListLoadingCell {
     func startAnimating() {
         contextView.startAnimating()
     }

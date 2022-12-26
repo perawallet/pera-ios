@@ -192,10 +192,14 @@ extension CollectibleListLocalDataController {
 
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
+            [weak self] in
+            guard let self else { return nil }
+
             var snapshot = Snapshot()
+            let item = self.makeLoadingItem()
             snapshot.appendSections([.loading])
             snapshot.appendItems(
-                [.empty(.loading)],
+                [item],
                 toSection: .loading
             )
             return snapshot
@@ -365,6 +369,16 @@ extension CollectibleListLocalDataController {
             [.watchAccountHeader(viewModel)],
             toSection: .header
         )
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func makeLoadingItem() -> CollectibleListItem {
+        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+            return .empty(.loading(.grid))
+        } else {
+            return .empty(.loading(.list))
+        }
     }
 }
 

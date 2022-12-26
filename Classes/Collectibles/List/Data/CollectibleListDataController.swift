@@ -63,9 +63,14 @@ enum CollectibleGalleryPendingCollectibleAssetItem: Hashable {
 }
 
 enum CollectibleEmptyItem: Hashable {
-    case loading
+    case loading(CollectibleGalleryLoadingItem)
     case noContent(CollectiblesNoContentWithActionViewModel)
     case noContentSearch
+}
+
+enum CollectibleGalleryLoadingItem: Hashable {
+    case grid
+    case list
 }
 
 struct CollectibleListCollectibleAssetGridItem: Hashable {

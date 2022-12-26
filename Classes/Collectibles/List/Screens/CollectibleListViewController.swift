@@ -137,7 +137,12 @@ extension CollectibleListViewController {
                 return
             }
 
-            if let listLoadingCell = cell as? CollectibleListLoadingViewCell {
+            if let gridLoadingCell = cell as? CollectibleGalleryGridLoadingCell {
+                gridLoadingCell.startAnimating()
+                return
+            }
+
+            if let listLoadingCell = cell as? CollectibleGalleryListLoadingCell {
                 listLoadingCell.startAnimating()
                 return
             }
@@ -156,7 +161,13 @@ extension CollectibleListViewController {
                 return
             }
 
-            if let listLoadingCell = cell as? CollectibleListLoadingViewCell {
+
+            if let gridLoadingCell = cell as? CollectibleGalleryGridLoadingCell {
+                gridLoadingCell.stopAnimating()
+                return
+            }
+
+            if let listLoadingCell = cell as? CollectibleGalleryListLoadingCell {
                 listLoadingCell.stopAnimating()
                 return
             }
@@ -217,9 +228,15 @@ extension CollectibleListViewController {
             linkInteractors(cell as! CollectibleGalleryUIActionsCell)
         case .empty(let item):
             switch item {
-            case .loading:
-                let loadingCell = cell as? CollectibleListLoadingViewCell
-                loadingCell?.startAnimating()
+            case .loading(let item):
+                switch item {
+                case .grid:
+                    let loadingCell = cell as? CollectibleGalleryGridLoadingCell
+                    loadingCell?.startAnimating()
+                case .list:
+                    let loadingCell = cell as? CollectibleGalleryListLoadingCell
+                    loadingCell?.startAnimating()
+                }
             case .noContent:
                 linkInteractors(cell as! NoContentWithActionIllustratedCell)
             default:
@@ -250,9 +267,15 @@ extension CollectibleListViewController {
         switch itemIdentifier {
         case .empty(let item):
             switch item {
-            case .loading:
-                let loadingCell = cell as? CollectibleListLoadingViewCell
-                loadingCell?.stopAnimating()
+            case .loading(let item):
+                switch item {
+                case .grid:
+                    let loadingCell = cell as? CollectibleGalleryGridLoadingCell
+                    loadingCell?.stopAnimating()
+                case .list:
+                    let loadingCell = cell as? CollectibleGalleryListLoadingCell
+                    loadingCell?.stopAnimating()
+                }
             default:
                 break
             }

@@ -103,12 +103,21 @@ extension CollectibleListLayout {
         switch itemIdentifier {
         case .empty(let item):
             switch item {
-            case .loading:
-                return sizeForLoadingItem(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    atSection: indexPath.section
-                )
+            case .loading(let item):
+                switch item {
+                case .grid:
+                    return sizeForGridLoadingItem(
+                        collectionView,
+                        layout: collectionViewLayout,
+                        atSection: indexPath.section
+                    )
+                case .list:
+                    return sizeForListLoadingItem(
+                        collectionView,
+                        layout: collectionViewLayout,
+                        atSection: indexPath.section
+                    )
+                }
             case .noContent(let item):
                 return listView(
                     collectionView,
@@ -218,12 +227,12 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    private func sizeForLoadingItem(
+    private func sizeForGridLoadingItem(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = CollectibleListLoadingViewCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleGalleryGridLoadingCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -233,8 +242,33 @@ extension CollectibleListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = CollectibleListLoadingView.calculatePreferredSize(
-            for: CollectibleListLoadingViewCell.theme,
+        let newSize = CollectibleGalleryGridLoadingView.calculatePreferredSize(
+            for: CollectibleGalleryGridLoadingCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func sizeForListLoadingItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectibleGalleryListLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = CollectibleGalleryListLoadingView.calculatePreferredSize(
+            for: CollectibleGalleryListLoadingCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
