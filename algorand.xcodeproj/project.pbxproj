@@ -6462,7 +6462,6 @@
 		17C9331129470545000EE03D /* DiscoverAssetSellEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverAssetSellEvent.swift; sourceTree = "<group>"; };
 		17C9331529470E3D000EE03D /* DiscoverDappDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDappDetailEvent.swift; sourceTree = "<group>"; };
 		17C9331E29499C28000EE03D /* DiscoverSocialMediaRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSocialMediaRouter.swift; sourceTree = "<group>"; };
-		17C9332C2949DC5E000EE03D /* macaroon */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = macaroon; path = ../macaroon; sourceTree = "<group>"; };
 		17CADC66284CFEC8001D19A8 /* HomePortfolioNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioNavigationView.swift; sourceTree = "<group>"; };
 		17CADC74285312FB001D19A8 /* AccountQuickActionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsCell.swift; sourceTree = "<group>"; };
 		17CADC7828531305001D19A8 /* AccountQuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQuickActionsView.swift; sourceTree = "<group>"; };
@@ -11580,7 +11579,6 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
-				17C9332C2949DC5E000EE03D /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
