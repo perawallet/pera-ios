@@ -306,8 +306,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     return
                 }
 
+                let preferences = WalletConnectorPreferences(session: qrString)
+
                 walletConnector.delegate = self
-                walletConnector.connect(to: qrString)
+                walletConnector.connect(with: preferences)
                 startWCConnectionTimer()
             } else if let qrExportInformations = try? JSONDecoder().decode(QRExportInformations.self, from: qrStringData) {
                 captureSession = nil
@@ -350,11 +352,13 @@ extension QRScannerViewController: WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         stopWCConnectionTimer()
 
         let accounts = self.sharedDataController.sortedAccounts()
+        let walletConnectPreferences = preferences ?? WalletConnectorPreferences(session: session.url.absoluteString)
 
         guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak self] in
@@ -378,7 +382,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
             }
 
             self.wcConnectionModalTransition.perform(
-                .wcConnectionApproval(walletConnectSession: session, delegate: self, shouldShowInformationModal: true, completion: completion),
+                .wcConnectionApproval(walletConnectSession: session, delegate: self, preferences: walletConnectPreferences, completion: completion),
                 by: .present
             )
         }
@@ -468,10 +472,10 @@ extension QRScannerViewController: WalletConnectorDelegate {
 extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidApproveConnection(
         _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
-        _ shouldShowInformation: Bool
+        _ preferences: WalletConnectorPreferences
     ) {
         wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
-            guard shouldShowInformation else { return }
+            guard preferences.prefersConnectionApproval else { return }
             self?.presentWCSessionsApprovedModal()
         }
     }

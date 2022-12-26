@@ -733,10 +733,10 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnectionApproval(walletConnectSession, delegate, shouldShowInformationModal, completion):
+        case let .wcConnectionApproval(walletConnectSession, delegate, preferences, completion):
             let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
                 walletConnectSession: walletConnectSession,
-                shouldShowInformationModal: shouldShowInformationModal,
+                preferences: preferences,
                 walletConnectSessionConnectionCompletionHandler: completion,
                 configuration: configuration
             )
@@ -1367,11 +1367,12 @@ extension Router {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
-        shouldShowInformationModal: Bool,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let sharedDataController = appConfiguration.sharedDataController
         let bannerController = appConfiguration.bannerController
+        let walletConnectPreferences = preferences ?? WalletConnectorPreferences(session: session.url.absoluteString)
         
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
             !$0.value.isWatchAccount()
@@ -1397,7 +1398,7 @@ extension Router {
                 .wcConnectionApproval(
                     walletConnectSession: session,
                     delegate: self,
-                    shouldShowInformationModal: shouldShowInformationModal,
+                    preferences: walletConnectPreferences,
                     completion: completion
                 ),
                 by: .present
@@ -1418,14 +1419,14 @@ extension Router {
 extension Router {
     func wcConnectionApprovalViewControllerDidApproveConnection(
         _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
-        _ shouldShowInformationModal: Bool
+        _ preferences: WalletConnectorPreferences
     ) {
         let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
         
         wcConnectionApprovalViewController.dismissScreen {
             [weak self] in
             guard let self = self else { return }
-            guard shouldShowInformationModal else { return }
+            guard preferences.prefersConnectionApproval else { return }
             
             self.presentWCSessionsApprovedModal(dAppName: dAppName)
         }
@@ -1468,19 +1469,17 @@ extension Router {
             [weak self] notification in
             guard let self = self else { return }
 
-            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
-            let shouldShowInformationModalKey = WalletConnector.shouldShowInformationModalKey
-            let sessionKey = notification.userInfo?[userInfoKey] as? String
-            let shouldShowInformationModal = notification.userInfo?[shouldShowInformationModalKey] as? Bool
+            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
 
-            guard let sessionKey, let shouldShowInformationModal else {
+            guard let preferences else {
                 return
             }
             
             let walletConnector = self.appConfiguration.walletConnector
             
             walletConnector.delegate = self
-            walletConnector.connect(to: sessionKey, shouldShowInformationModal: shouldShowInformationModal)
+            walletConnector.connect(with: preferences)
         }
     }
 }

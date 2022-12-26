@@ -35,19 +35,19 @@ final class WCConnectionApprovalViewController: BaseViewController {
 
     private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)
 
-    private let shouldShowInformationModal: Bool
+    private let preferences: WalletConnectorPreferences
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
 
     private var selectedAccount: AccountHandle?
 
     init(
         walletConnectSession: WalletConnectSession,
-        shouldShowInformationModal: Bool,
+        preferences: WalletConnectorPreferences,
         walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
         configuration: ViewControllerConfiguration
     ) {
         self.walletConnectSession = walletConnectSession
-        self.shouldShowInformationModal = shouldShowInformationModal
+        self.preferences = preferences
         self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
         super.init(configuration: configuration)
 
@@ -121,7 +121,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             )
             self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(
                 self,
-                self.shouldShowInformationModal
+                self.preferences
             )
         }
     }
@@ -166,7 +166,7 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
 protocol WCConnectionApprovalViewControllerDelegate: AnyObject {
     func wcConnectionApprovalViewControllerDidApproveConnection(
         _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
-        _ shouldShowInformation: Bool
+        _ preferences: WalletConnectorPreferences
     )
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
 }

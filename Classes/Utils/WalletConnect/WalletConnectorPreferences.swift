@@ -12,32 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AppLaunchUIHandler.swift
+//   WalletConnectorPreferences.swift
 
 import Foundation
-import UIKit
 
-protocol AppLaunchUIHandler: AnyObject {
-    func launchUI(
-        _ state: AppLaunchUIState
-    )
-}
+struct WalletConnectorPreferences {
+    let session: String
+    let prefersConnectionApproval: Bool
 
-enum AppLaunchUIState {
-    case authorization /// pin
-    case onboarding
-    case main(
-        completion: (() -> Void)? = nil
-    )
-    case mainAfterAuthorization(
-        presented: UIViewController,
-        completion: () -> Void
-    )
-    case remoteNotification(
-        AlgorandNotification,
-        DeepLinkParser.Screen? = nil
-    )
-    case deeplink(DeepLinkParser.Screen)
-    case walletConnectSessionRequest(WalletConnectorPreferences)
+    init(session: String) {
+        self.session = session
+        self.prefersConnectionApproval = true
+    }
+    init(session: String, prefersConnectionApproval: Bool) {
+        self.session = session
+        self.prefersConnectionApproval = prefersConnectionApproval
+    }
 }
