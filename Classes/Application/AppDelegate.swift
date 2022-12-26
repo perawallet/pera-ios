@@ -339,12 +339,12 @@ extension AppDelegate {
             }
         case .deeplink(let screen):
             router.launch(deeplink: screen)
-        case .walletConnectSessionRequest(let key):
+        case .walletConnectSessionRequest(let preferences):
             NotificationCenter.default.post(
                 name: WalletConnector.didReceiveSessionRequestNotification,
                 object: nil,
                 userInfo: [
-                    WalletConnector.sessionRequestUserInfoKey: key
+                    WalletConnector.sessionRequestPreferencesKey: preferences
                 ]
             )
         }

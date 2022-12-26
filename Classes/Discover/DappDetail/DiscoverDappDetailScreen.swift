@@ -260,7 +260,7 @@ extension DiscoverDappDetailScreen {
             return
         }
 
-        launchController.receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+        launchController.receive(deeplinkWithSource: .walletConnectSessionRequestForDiscover(walletConnectURL))
     }
 
     private func recordAnalyticsEvent() {

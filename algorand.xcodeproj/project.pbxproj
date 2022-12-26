@@ -165,6 +165,9 @@
 		1783309129548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
 		1783309229548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
 		1783309329548D6900AD5B4E /* TelegramDeeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783309029548D6900AD5B4E /* TelegramDeeplink.swift */; };
+		178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
+		178330962955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
+		178330972955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -6398,6 +6401,7 @@
 		1783308829548D2B00AD5B4E /* TwitterDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterDeeplink.swift; sourceTree = "<group>"; };
 		1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscordDeeplink.swift; sourceTree = "<group>"; };
 		1783309029548D6900AD5B4E /* TelegramDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramDeeplink.swift; sourceTree = "<group>"; };
+		178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorPreferences.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
@@ -9250,6 +9254,7 @@
 				2B68A24026A872370076BD82 /* Transaction */,
 				2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */,
 				2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */,
+				178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */,
 			);
 			path = WalletConnect;
 			sourceTree = "<group>";
@@ -19757,6 +19762,7 @@
 				D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				171083282906720800A80CC0 /* InAppBrowserScreenTheme.swift in Sources */,
 				17CADC892853A672001D19A8 /* TransactionOptionsContextView.swift in Sources */,
+				178330972955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */,
 				2B05A677251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2B3C73052898627900A0181F /* Colors.swift in Sources */,
 				179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */,
@@ -21593,6 +21599,7 @@
 				2B4FD1F727C63F580097AB65 /* BuyAlgoTransactionViewController.swift in Sources */,
 				D41F4F042892E20E00B59559 /* TransferAssetBalanceScreen.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
+				178330962955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */,
 				2B8CD5822906D35F004A81B9 /* SwapQuickActionsView.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
 				2BD4E50B2855EB77003D57A4 /* SortCollectibleListDataController.swift in Sources */,
@@ -23621,6 +23628,7 @@
 				17D0FA4428EC28DE0061B55D /* ExportAccountListLocalDataController.swift in Sources */,
 				17A766702909361B00A8746C /* DiscoverDappDetailNavigationViewTheme.swift in Sources */,
 				D4194321273541870055EC70 /* PageBarStyleSheet.swift in Sources */,
+				178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */,
 				2B9352C727F3B9E9000DA8DB /* AccountShareView.swift in Sources */,
 				D497947A287D8D61004FBF8E /* AppCallAssetListLayout.swift in Sources */,
 				F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,

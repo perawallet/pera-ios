@@ -733,9 +733,10 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnectionApproval(walletConnectSession, delegate, completion):
+        case let .wcConnectionApproval(walletConnectSession, delegate, preferences, completion):
             let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
                 walletConnectSession: walletConnectSession,
+                preferences: preferences,
                 walletConnectSessionConnectionCompletionHandler: completion,
                 configuration: configuration
             )
@@ -1366,10 +1367,12 @@ extension Router {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let sharedDataController = appConfiguration.sharedDataController
         let bannerController = appConfiguration.bannerController
+        let walletConnectPreferences = preferences ?? WalletConnectorPreferences(session: session.url.absoluteString)
         
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
             !$0.value.isWatchAccount()
@@ -1395,6 +1398,7 @@ extension Router {
                 .wcConnectionApproval(
                     walletConnectSession: session,
                     delegate: self,
+                    preferences: walletConnectPreferences,
                     completion: completion
                 ),
                 by: .present
@@ -1414,13 +1418,15 @@ extension Router {
 
 extension Router {
     func wcConnectionApprovalViewControllerDidApproveConnection(
-        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController,
+        _ preferences: WalletConnectorPreferences
     ) {
         let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
         
         wcConnectionApprovalViewController.dismissScreen {
             [weak self] in
             guard let self = self else { return }
+            guard preferences.prefersConnectionApproval else { return }
             
             self.presentWCSessionsApprovedModal(dAppName: dAppName)
         }
@@ -1462,18 +1468,18 @@ extension Router {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
-            
-            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
-            let maybeSessionKey = notification.userInfo?[userInfoKey] as? String
 
-            guard let sessionKey = maybeSessionKey else {
+            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
+
+            guard let preferences else {
                 return
             }
             
             let walletConnector = self.appConfiguration.walletConnector
             
             walletConnector.delegate = self
-            walletConnector.connect(to: sessionKey)
+            walletConnector.connect(with: preferences)
         }
     }
 }
