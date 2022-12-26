@@ -42,18 +42,18 @@ final class CollectibleListLayout: NSObject {
         }
     }
 
-    static let listFlowLayout: UICollectionViewFlowLayout = {
+    static var listFlowLayout: UICollectionViewFlowLayout {
         let flowLayout = ALGCollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
         return flowLayout
-    }()
+    }
 
-    static let gridFlowLayout: UICollectionViewFlowLayout = {
+    static var gridFlowLayout: UICollectionViewFlowLayout {
         let flowLayout = TopAlignedCollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 20
         flowLayout.minimumInteritemSpacing = 24
         return flowLayout
-    }()
+    }
 }
 
 extension CollectibleListLayout {

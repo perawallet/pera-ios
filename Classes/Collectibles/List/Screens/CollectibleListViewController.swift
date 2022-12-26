@@ -540,14 +540,30 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
     func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
+        let oldLayout = listView.collectionViewLayout
+        let newLayout = CollectibleListLayout.gridFlowLayout
+
+        if type(of: oldLayout) == type(of: newLayout) {
+            return
+        }
+
         collectibleGalleryUIStyleCache.galleryUIStyle = .grid
-        listView.setCollectionViewLayout(CollectibleListLayout.gridFlowLayout, animated: true)
+
+        listView.setCollectionViewLayout(newLayout, animated: true)
         dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
+        let oldLayout = listView.collectionViewLayout
+        let newLayout = CollectibleListLayout.listFlowLayout
+
+        if type(of: oldLayout) == type(of: newLayout) {
+            return
+        }
+
         collectibleGalleryUIStyleCache.galleryUIStyle = .list
-        listView.setCollectionViewLayout(CollectibleListLayout.listFlowLayout, animated: true)
+
+        listView.setCollectionViewLayout(newLayout, animated: true)
         dataController.reload()
     }
 
