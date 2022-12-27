@@ -114,7 +114,7 @@ extension WCMainTransactionDataSource {
             fatalError("Unexpected index")
         }
 
-        let account: Account? = transaction.signerAccount
+        let account: Account? = transaction.requestedSigner.account
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
             if account == nil {
