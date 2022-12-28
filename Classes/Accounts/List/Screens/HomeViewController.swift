@@ -623,7 +623,7 @@ extension HomeViewController {
         reconnectToOldWCSessions()
         registerWCRequests()
     }
-
+    
     private func reconnectToOldWCSessions() {
         walletConnector.reconnectToSavedSessionsIfPossible()
     }

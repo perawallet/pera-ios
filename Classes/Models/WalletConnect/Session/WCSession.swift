@@ -24,12 +24,14 @@ final class WCSession:
     let peerMeta: WCPeerMeta
     let walletMeta: WCWalletMeta?
     let date: Date
+    var isSubscribed: Bool
 
     init(urlMeta: WCURLMeta, peerMeta: WCPeerMeta, walletMeta: WCWalletMeta?, date: Date) {
         self.urlMeta = urlMeta
         self.peerMeta = peerMeta
         self.walletMeta = walletMeta
         self.date = date
+        self.isSubscribed = false
     }
 
     var sessionBridgeValue: WalletConnectSession {
