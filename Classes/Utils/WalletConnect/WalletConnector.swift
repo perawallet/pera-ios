@@ -183,10 +183,10 @@ extension WalletConnector {
             case .success:
                 session.isSubscribed = true
                 self.addToSavedSessions(session)
-            case .failure:
-                if self.sessionSource.getWalletConnectSession(with: session.urlMeta) == nil {
-                    self.addToSavedSessions(session)
-                }
+            default:
+                break
+            // The session is already saved before subscription call.
+            // The failure means there is no change. So, it is not needed to handle.
             }
         }
     }
@@ -269,6 +269,11 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
             let connectedSession = session.toWCSession()
             let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta)
+            
+            if localSession == nil {
+                self.addToSavedSessions(connectedSession)
+            }
+            
             self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
             
             let key = session.url.absoluteString
