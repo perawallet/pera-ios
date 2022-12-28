@@ -28,9 +28,14 @@ protocol CollectibleMediaImagePreviewViewModel: ViewModel {
 extension CollectibleMediaImagePreviewViewModel {
     mutating func bindDisplaysOffColorMedia(
         _ asset: CollectibleAsset,
-        _ optInStatus: OptInStatus
+        _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
-        displaysOffColorMedia = !asset.isOwned && !(optInStatus == .rejected)
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
+            displaysOffColorMedia = false
+        case .optedIn:
+            displaysOffColorMedia = true
+        }
     }
 
     mutating func bindIsFullScreenBadgeHidden(

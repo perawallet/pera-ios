@@ -28,7 +28,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
-        optInStatus: OptInStatus,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media?
     ) {
         bindImage(
@@ -36,7 +36,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             asset: asset,
             media: media
         )
-        bindDisplaysOffColorMedia(asset, optInStatus)
+        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

@@ -27,12 +27,12 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
 
     init(
         asset: CollectibleAsset,
-        optInStatus: OptInStatus,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindDisplaysOffColorMedia(asset, optInStatus)
+        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -56,11 +56,16 @@ extension CollectibleMediaVideoPreviewViewModel {
         url = media.downloadURL
     }
     
-    private mutating func bindDisplaysOffColorMedia(
+    mutating func bindDisplaysOffColorMedia(
         _ asset: CollectibleAsset,
-        _ optInStatus: OptInStatus
+        _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
-        displaysOffColorMedia = !asset.isOwned && !(optInStatus == .rejected)
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
+            displaysOffColorMedia = false
+        case .optedIn:
+            displaysOffColorMedia = true
+        }
     }
 
     private mutating func bindIsFullScreenBadgeHidden(

@@ -83,21 +83,29 @@ final class CollectibleMediaPreviewViewController:
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
         theme: Self.theme,
         asset: asset,
-        optInStatus: optInStatus
+        accountCollectibleStatus: accountCollectibleStatus
     )
 
     private var asset: CollectibleAsset
-    private let optInStatus: OptInStatus
+    private var accountCollectibleStatus: AccountCollectibleStatus {
+        didSet {
+            if accountCollectibleStatus != oldValue {
+                dataSource.accountCollectibleStatus = accountCollectibleStatus
+                listView.reloadData()
+            }
+        }
+    }
+    
     private let thumbnailImage: UIImage?
 
     init(
         asset: CollectibleAsset,
-        optInStatus: OptInStatus,
+        accountCollectibleStatus: AccountCollectibleStatus,
         thumbnailImage: UIImage?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
-        self.optInStatus = optInStatus
+        self.accountCollectibleStatus = accountCollectibleStatus
         self.thumbnailImage = thumbnailImage
         super.init(configuration: configuration)
     }
@@ -252,6 +260,10 @@ extension CollectibleMediaPreviewViewController {
         if asset.media.count > 1 {
             pageControl.numberOfPages = asset.media.count
         }
+    }
+    
+    func updateAccountCollectibleStatus(_ accountCollectibleStatus: AccountCollectibleStatus) {
+        self.accountCollectibleStatus = accountCollectibleStatus
     }
 }
 
