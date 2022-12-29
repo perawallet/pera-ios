@@ -635,9 +635,9 @@
 		17D7F3BC294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17D7F3BD294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
-		17EEC31E28C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EEC31D28C60D4D008E223E /* AlgoSDK.xcframework */; };
-		17EEC31F28C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EEC31D28C60D4D008E223E /* AlgoSDK.xcframework */; };
-		17EEC32028C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EEC31D28C60D4D008E223E /* AlgoSDK.xcframework */; };
+		17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
+		17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
+		17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
 		17F6E68A224B71A6006DD31F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E689224B71A6006DD31F /* User.swift */; };
 		17F8BF5D28A2BA9700992F91 /* ALGAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */; };
 		17F8BF5E28A2BA9700992F91 /* ALGAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */; };
@@ -6526,7 +6526,7 @@
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
-		17EEC31D28C60D4D008E223E /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
+		17EF512C295ABAE700461347 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		17F6E689224B71A6006DD31F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalyticsProvider.swift; sourceTree = "<group>"; };
 		17F8BF6028A2BAC500992F91 /* ALGAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalytics.swift; sourceTree = "<group>"; };
@@ -8484,7 +8484,7 @@
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
 				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EEC32028C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */,
+				17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
@@ -8520,7 +8520,7 @@
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EEC31F28C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */,
+				17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
@@ -8556,7 +8556,7 @@
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
 				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EEC31E28C60D4D008E223E /* AlgoSDK.xcframework in Frameworks */,
+				17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
@@ -8742,7 +8742,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				17EEC31D28C60D4D008E223E /* AlgoSDK.xcframework */,
+				17EF512C295ABAE700461347 /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -25621,7 +25621,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25634,7 +25634,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -25650,7 +25650,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25662,7 +25662,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -25678,7 +25678,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25690,7 +25690,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -25707,7 +25707,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25720,7 +25720,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25737,7 +25737,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25749,7 +25749,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25766,7 +25766,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25778,7 +25778,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25917,7 +25917,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25930,7 +25930,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -25947,7 +25947,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25959,7 +25959,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26103,7 +26103,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26115,7 +26115,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.6.0;
+				MARKETING_VERSION = 5.6.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
