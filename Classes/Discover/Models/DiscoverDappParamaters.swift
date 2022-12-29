@@ -18,6 +18,6 @@ import Foundation
 import MacaroonUtils
 
 struct DiscoverDappParamaters: JSONModel {
-    let name: String
+    let name: String?
     let url: String
 }

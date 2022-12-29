@@ -57,7 +57,7 @@ extension DiscoverDappDetailNavigationViewModel {
     mutating func bindTitle(_ item: DiscoverDappParamaters) {
         let title = item.name
 
-        self.title = title.bodyMedium(
+        self.title = title?.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
