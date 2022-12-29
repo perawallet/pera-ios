@@ -1487,7 +1487,7 @@ extension Router {
         }
         
         let sharedDataController = appConfiguration.sharedDataController
-        let accounts = sharedDataController.sortedAccounts()
+        let accounts = sharedDataController.accountCollection
 
         guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak bannerController] in
