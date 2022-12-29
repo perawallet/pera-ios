@@ -116,13 +116,13 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     private func performChanges() {
-        if hasChanges() {
-            saveFilters()
-            uiInteractions.didComplete?()
+        if !hasChanges() {
+            uiInteractions.didCancel?()
             return
         }
 
-        uiInteractions.didCancel?()
+        saveFilters()
+        uiInteractions.didComplete?()
     }
 
     private func saveFilters() {

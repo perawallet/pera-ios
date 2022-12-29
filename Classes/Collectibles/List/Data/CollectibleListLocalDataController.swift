@@ -540,22 +540,23 @@ extension CollectibleListLocalDataController {
 
 extension CollectibleListLocalDataController {
     private func shouldDisplayWatchAccountCollectibleAsset(_ account: Account) -> Bool {
-        if case .all = galleryAccount,
-           !collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList,
-           account.isWatchAccount() {
-            return false
+        if !galleryAccount.isAll {
+            return true
         }
 
-        return true
+        if !account.isWatchAccount() {
+            return true
+        }
+
+        return collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList
     }
 
     private func shouldDisplayOptedInCollectibleAsset(_ collectibleAsset: CollectibleAsset) -> Bool {
-        if !collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList,
-           !collectibleAsset.isOwned {
-            return false
+        if collectibleAsset.isOwned {
+            return true
         }
 
-        return true
+        return collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList
     }
 }
 

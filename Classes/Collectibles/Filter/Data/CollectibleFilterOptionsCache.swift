@@ -31,16 +31,8 @@ final class CollectibleFilterOptionsCache {
     }
 
     var displayWatchAccountCollectibleAssetsInCollectibleList: Bool {
-        get {
-            if userDefaults.object(forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey) == nil {
-                return true
-            }
-
-            return userDefaults.bool(forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)
-        }
-        set {
-            userDefaults.set(newValue, forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey)
-        }
+        get { userDefaults.object(forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey) as? Bool ?? true }
+        set { userDefaults.set(newValue, forKey: displayWatchAccountCollectibleAssetsInCollectibleListKey) }
     }
 
     private let displayOptedInCollectibleAssetsInCollectibleListKey = "cache.key.collectibleListFilter"

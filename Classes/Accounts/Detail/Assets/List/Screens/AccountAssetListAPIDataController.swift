@@ -188,11 +188,11 @@ extension AccountAssetListAPIDataController {
                     return
                 }
 
-                guard self.shouldDisplayOptedInCollectibleAsset(asset) else {
+                if !self.shouldDisplayOptedInCollectibleAsset(asset) {
                     return
                 }
 
-                guard self.shouldHideAssetWithNoBalance(asset) else {
+                if self.shouldHideAssetWithNoBalance(asset) {
                     return
                 }
 
@@ -367,25 +367,28 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func shouldDisplayOptedInCollectibleAsset(_ asset: Asset) -> Bool {
-        if assetFilterOptions.displayCollectibleAssetsInAssetList,
-           !assetFilterOptions.displayOptedInCollectibleAssetsInAssetList,
-           let collectibleAsset = asset as? CollectibleAsset,
-           !collectibleAsset.isOwned {
-            return false
+        guard let asset = asset as? CollectibleAsset,
+              !asset.isOwned else {
+            return true
         }
 
-        return true
+        return assetFilterOptions.displayOptedInCollectibleAssetsInAssetList
     }
 
     private func shouldHideAssetWithNoBalance(_ asset: Asset) -> Bool {
-        if assetFilterOptions.hideAssetsWithNoBalanceInAssetList,
-           !asset.isAlgo,
-           !(asset is CollectibleAsset),
-           asset.amount == 0 {
+        if asset.amount != .zero {
             return false
         }
 
-        return true
+        if asset.isAlgo {
+            return false
+        }
+
+        if asset is CollectibleAsset {
+            return false
+        }
+
+        return assetFilterOptions.hideAssetsWithNoBalanceInAssetList
     }
 }
 

@@ -207,6 +207,13 @@ enum CollectibleGalleryAccount {
         default: return nil
         }
     }
+
+    var isAll: Bool {
+        switch self {
+        case .all: return true
+        default: return false
+        }
+    }
 }
 
 extension CollectibleGalleryCollectibleAssetItem {

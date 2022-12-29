@@ -31,21 +31,13 @@ final class AssetFilterOptionsCache {
     }
 
     var displayCollectibleAssetsInAssetList: Bool {
-        get {
-            return userDefaults.bool(forKey: displayCollectibleAssetsInAssetListKey)
-        }
-        set {
-            userDefaults.set(newValue, forKey: displayCollectibleAssetsInAssetListKey)
-        }
+        get { userDefaults.bool(forKey: displayCollectibleAssetsInAssetListKey) }
+        set { userDefaults.set(newValue, forKey: displayCollectibleAssetsInAssetListKey) }
     }
 
     var displayOptedInCollectibleAssetsInAssetList: Bool {
-        get {
-            return userDefaults.bool(forKey: displayOptedInCollectibleAssetsInAssetListKey)
-        }
-        set {
-            userDefaults.set(newValue, forKey: displayOptedInCollectibleAssetsInAssetListKey)
-        }
+        get { userDefaults.bool(forKey: displayOptedInCollectibleAssetsInAssetListKey) }
+        set { userDefaults.set(newValue, forKey: displayOptedInCollectibleAssetsInAssetListKey) }
     }
 
     private let hideAssetsWithNoBalanceInAssetListKey = "cache.key.assetsFilteringOption"
