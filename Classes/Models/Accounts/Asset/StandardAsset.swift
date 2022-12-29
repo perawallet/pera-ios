@@ -40,6 +40,8 @@ final class StandardAsset: Asset {
     let telegramURL: URL?
     let twitterURL: URL?
     let isAlgo = false
+    let algoPriceChangePercentage: Decimal?
+    let isAvailableOnDiscover: Bool?
 
     let isFault: Bool
 
@@ -92,6 +94,8 @@ final class StandardAsset: Asset {
         self.telegramURL = decoration.telegramURL
         self.twitterURL = decoration.twitterURL
         self.isFault = false
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 
     init(
@@ -120,6 +124,8 @@ final class StandardAsset: Asset {
         self.telegramURL = decoration.telegramURL
         self.twitterURL = decoration.twitterURL
         self.isFault = true
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 }
 

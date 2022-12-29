@@ -35,6 +35,7 @@ final class ASADetailScreen:
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
+    private lazy var marketView = ASADetailMarketView()
 
     private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
     private lazy var activityFragmentScreen = ASAActivityScreen(
@@ -360,6 +361,8 @@ extension ASADetailScreen {
             addQuickActions()
         }
 
+        addMarketView()
+
         addPagesFragment()
     }
 
@@ -399,9 +402,11 @@ extension ASADetailScreen {
     }
 
     private func updateUIWhenDataDidLoad() {
+        updateUIWhenViewLayoutDidChangeIfNeeded()
         bindUIData()
         removeLoading()
         removeError()
+        removeMarketViewIfNeeded()
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
@@ -416,6 +421,7 @@ extension ASADetailScreen {
     }
 
     private func bindUIData() {
+        bindMarketData()
         bindProfileData()
         bindPagesFragmentData()
     }
@@ -689,6 +695,61 @@ extension ASADetailScreen {
         let asset = dataController.asset
         aboutFragmentScreen.bindData(asset: asset)
     }
+
+    private func addMarketView() {
+        marketView.customize(theme.marketView)
+
+        let topView: UIView
+
+        if dataController.configuration.shouldDisplayQuickActions {
+            topView = quickActionsView
+        } else {
+            topView = profileView
+        }
+
+        view.addSubview(marketView)
+        marketView.snp.makeConstraints {
+            $0.top == topView.snp.bottom + theme.spacingBetweenProfileAndQuickActions
+            $0.leading == theme.profileHorizontalEdgeInsets.leading
+            $0.trailing == theme.profileHorizontalEdgeInsets.trailing
+        }
+
+        marketView.startObserving(event: .layoutChanged) {
+            [unowned self] in
+
+            self.updateUIWhenViewLayoutDidChangeIfNeeded()
+        }
+
+        marketView.startObserving(event: .market) {
+            [unowned self] in
+            let assetIDInString = String(self.dataController.asset.id)
+            let assetDetail = DiscoverAssetParameters(assetID: assetIDInString)
+            self.open(
+                .discoverAssetDetail(assetDetail),
+                by: .push
+            )
+        }
+
+        bindMarketData()
+    }
+
+    private func bindMarketData() {
+        let asset = dataController.asset
+        let viewModel = ASADetailMarketViewModel(
+            assetItem: .init(asset: asset,
+                             currency: sharedDataController.currency,
+                             currencyFormatter: currencyFormatter)
+        )
+        marketView.bindData(viewModel)
+    }
+
+    private func removeMarketViewIfNeeded() {
+        let shouldDisplayMarketView = dataController.asset.isAvailableOnDiscover ?? false
+        guard !shouldDisplayMarketView else {
+            return
+        }
+        marketView.removeFromSuperview()
+    }
 }
 
 extension ASADetailScreen {
@@ -715,6 +776,16 @@ extension ASADetailScreen {
                 theme.spacingBetweenProfileAndQuickActions +
                 quickActionsView.bounds.height
             maxHeight += quickActionsHeight
+        }
+
+
+        let shouldDisplayMarketView = dataController.asset.isAvailableOnDiscover ?? false
+
+        if shouldDisplayMarketView {
+            let marketViewHeight =
+                theme.spacingBetweenProfileAndQuickActions +
+                marketView.bounds.height
+            maxHeight += marketViewHeight
         }
 
         let height = maxHeight - minHeight

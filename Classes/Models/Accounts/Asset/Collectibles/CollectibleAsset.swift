@@ -50,6 +50,8 @@ final class CollectibleAsset: Asset {
     let twitterURL: URL?
     let isAlgo = false
     let isFault = false
+    let algoPriceChangePercentage: Decimal?
+    let isAvailableOnDiscover: Bool?
 
     var state: AssetState = .ready
 
@@ -124,6 +126,8 @@ final class CollectibleAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 
     init(decoration: AssetDecoration) {
@@ -156,6 +160,8 @@ final class CollectibleAsset: Asset {
         self.decimalAmount = 0
         self.usdValue = decoration.usdValue
         self.totalUSDValue = 0
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 }
 

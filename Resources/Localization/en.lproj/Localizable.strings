@@ -292,6 +292,7 @@
 "asset-opt-in-successful-message" = "%@ successfully added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-detail-markets-title" = "Markets";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";

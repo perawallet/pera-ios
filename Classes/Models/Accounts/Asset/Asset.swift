@@ -53,6 +53,9 @@ protocol Asset: AnyObject {
     var telegramURL: URL? { get }
     var twitterURL: URL? { get }
 
+    var algoPriceChangePercentage: Decimal? { get }
+    var isAvailableOnDiscover: Bool? { get }
+
     var isAlgo: Bool { get }
 
     var isFault: Bool { get }
