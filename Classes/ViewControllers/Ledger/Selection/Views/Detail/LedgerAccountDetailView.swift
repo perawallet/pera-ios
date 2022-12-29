@@ -31,7 +31,7 @@ final class LedgerAccountDetailView: View {
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.register(AccountListItemCell.self)
         collectionView.register(AssetListItemCell.self)
-        collectionView.register(NFTListItemCell.self)
+        collectionView.register(CollectibleListItemCell.self)
         collectionView.register(header: LedgerAccountDetailSectionHeaderReusableView.self)
         return collectionView
     }()

@@ -43,7 +43,7 @@ final class CollectibleListLayout: NSObject {
     }
 
     static var listFlowLayout: UICollectionViewFlowLayout {
-        let flowLayout = ALGCollectionViewFlowLayout()
+        let flowLayout = CollectionViewSwitchableFlowLayout()
         flowLayout.minimumLineSpacing = 0
         return flowLayout
     }
@@ -384,10 +384,10 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = NFTListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -397,9 +397,9 @@ extension CollectibleListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = NFTListItemCell.calculatePreferredSize(
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
-            for: NFTListItemCell.theme,
+            for: CollectibleListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -411,7 +411,7 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPendingCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForPendingCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = PendingCollectibleAssetListItemCell.reuseIdentifier

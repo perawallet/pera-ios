@@ -96,9 +96,9 @@ final class CollectibleListViewController:
             }
 
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdate(let update):
                 self.eventHandler?(.didUpdateSnapshot)
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(update.snapshot, animatingDifferences: self.isViewAppeared)
             case .didFinishRunning(let hasError):
                 self.eventHandler?(.didFinishRunning(hasError: hasError))
             }
@@ -109,12 +109,12 @@ final class CollectibleListViewController:
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startLoadingOfVisibleCellsIfNeeded()
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        stopLoadingOfVisibleCellsIfNeeded()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     private func build() {
@@ -123,7 +123,7 @@ final class CollectibleListViewController:
 }
 
 extension CollectibleListViewController {
-    private func startLoadingOfVisibleCellsIfNeeded() {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
         if isViewFirstAppeared { return }
 
         for cell in listView.visibleCells {
@@ -149,7 +149,7 @@ extension CollectibleListViewController {
         }
     }
 
-    private func stopLoadingOfVisibleCellsIfNeeded() {
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
         for cell in listView.visibleCells {
             if let pendingCollectibleGridItemCell = cell as? PendingCollectibleGridItemCell {
                 pendingCollectibleGridItemCell.stopLoading()
@@ -231,11 +231,9 @@ extension CollectibleListViewController {
             case .loading(let item):
                 switch item {
                 case .grid:
-                    let loadingCell = cell as? CollectibleGalleryGridLoadingCell
-                    loadingCell?.startAnimating()
+                    startAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
                 case .list:
-                    let loadingCell = cell as? CollectibleGalleryListLoadingCell
-                    loadingCell?.startAnimating()
+                    startAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
                 }
             case .noContent:
                 linkInteractors(cell as! NoContentWithActionIllustratedCell)
@@ -245,11 +243,9 @@ extension CollectibleListViewController {
         case .pendingCollectibleAsset(let item):
             switch item {
             case .grid:
-                let cell = cell as? PendingCollectibleGridItemCell
-                cell?.startLoading()
+                startAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.startLoading()
+                startAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             }
         default: break
         }
@@ -270,11 +266,9 @@ extension CollectibleListViewController {
             case .loading(let item):
                 switch item {
                 case .grid:
-                    let loadingCell = cell as? CollectibleGalleryGridLoadingCell
-                    loadingCell?.stopAnimating()
+                    stopAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
                 case .list:
-                    let loadingCell = cell as? CollectibleGalleryListLoadingCell
-                    loadingCell?.stopAnimating()
+                    stopAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
                 }
             default:
                 break
@@ -282,11 +276,9 @@ extension CollectibleListViewController {
         case .pendingCollectibleAsset(let item):
             switch item {
             case .grid:
-                let cell = cell as? PendingCollectibleGridItemCell
-                cell?.stopLoading()
+                stopAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.stopLoading()
+                stopAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             }
         default:
             break
@@ -311,7 +303,7 @@ extension CollectibleListViewController {
 
             if let gridItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleGridItemCell {
                 currentImage = gridItemCell.contextView.currentImage
-            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? NFTListItemCell {
+            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell {
                 currentImage = listItemCell.contextView.currentImage
             }
 
@@ -383,12 +375,52 @@ extension CollectibleListViewController {
                 let cell = collectionView.cellForItem(at: indexPath) as! CollectibleGridItemCell
                 return cell.getTargetedPreview()
             case .list:
-                let cell = collectionView.cellForItem(at: indexPath) as! NFTListItemCell
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
                 return cell.getTargetedPreview()
             }
         default:
             return nil
         }
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingListItemLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListItemLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingGridItemLoadingIfNeeded(_ cell: PendingCollectibleGridItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingGridItemLoadingIfNeeded(_ cell: PendingCollectibleGridItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: CollectibleGalleryListLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: CollectibleGalleryListLoadingCell?) {
+        cell?.stopAnimating()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingGridLoadingIfNeeded(_ cell: CollectibleGalleryGridLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingGridLoadingIfNeeded(_ cell: CollectibleGalleryGridLoadingCell?) {
+        cell?.stopAnimating()
     }
 }
 

@@ -82,11 +82,11 @@ struct AccountAssetsAssetListItem: Hashable {
 
 struct AccountAssetsCollectibleAssetListItem: Hashable {
     let asset: CollectibleAsset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.asset = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -102,17 +102,18 @@ struct AccountAssetsCollectibleAssetListItem: Hashable {
 }
 
 struct AccountAssetsPendingCollectibleAssetListItem: Hashable {
+    let viewModel: CollectibleListItemViewModel
+
     private let assetID: AssetID
-    let viewModel: NFTListItemViewModel
 
     init(update: OptInBlockchainUpdate) {
        self.assetID = update.assetID
-       self.viewModel = NFTListItemViewModel(update: update)
+       self.viewModel = CollectibleListItemViewModel(update: update)
    }
 
     init(update: OptOutBlockchainUpdate) {
        self.assetID = update.assetID
-       self.viewModel = NFTListItemViewModel(update: update)
+       self.viewModel = CollectibleListItemViewModel(update: update)
    }
 
     func hash(into hasher: inout Hasher) {

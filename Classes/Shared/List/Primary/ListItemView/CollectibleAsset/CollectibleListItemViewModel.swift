@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemViewModel.swift
+//   CollectibleListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
@@ -20,7 +20,7 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct NFTListItemViewModel: ViewModel {
+struct CollectibleListItemViewModel: ViewModel {
     private(set) var icon: ImageSource?
     private(set) var iconBottomRightBadge: UIImage?
     private(set) var iconOverlayImage: UIImage?
@@ -53,7 +53,7 @@ struct NFTListItemViewModel: ViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ item: CollectibleAssetItem) {
         let asset = item.asset
 
@@ -151,7 +151,7 @@ extension NFTListItemViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ update: OptInBlockchainUpdate) {
         icon = AssetImageSource(asset: "placeholder-bg".uiImage)
     }
@@ -176,7 +176,7 @@ extension NFTListItemViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ update: OptOutBlockchainUpdate) {
         icon = AssetImageSource(asset: "placeholder-bg".uiImage)
     }
@@ -201,7 +201,7 @@ extension NFTListItemViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     private func getPrimaryTitle(
         assetName: String?,
         assetVerificationTier: AssetVerificationTier

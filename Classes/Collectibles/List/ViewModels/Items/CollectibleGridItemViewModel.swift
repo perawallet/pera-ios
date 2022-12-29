@@ -120,12 +120,7 @@ extension CollectibleGridItemViewModel {
     private mutating func bindOverlay(
         item: CollectibleAssetItem
     ) {
-        guard !item.asset.isOwned else {
-            overlay = nil
-            return
-        }
-
-        overlay = "overlay-bg".uiImage
+        overlay = !item.asset.isOwned ? "overlay-bg".uiImage : nil
     }
 
     private mutating func bindTitle(

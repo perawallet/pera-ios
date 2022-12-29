@@ -119,7 +119,7 @@ extension LedgerAccountDetailDataSource {
             return cell
         case .collectibleAsset(let item):
             let cell = collectionView.dequeue(
-                NFTListItemCell.self,
+                CollectibleListItemCell.self,
                 at: indexPath
             )
             cell.bindData(item)
@@ -235,7 +235,7 @@ extension LedgerAccountDetailDataSource {
             asset: asset,
             amountFormatter: collectibleAmountFormatter
         )
-        let viewModel = NFTListItemViewModel(item: item)
+        let viewModel = CollectibleListItemViewModel(item: item)
         return .collectibleAsset(viewModel)
     }
 }
@@ -249,5 +249,5 @@ extension LedgerAccountDetailDataSource {
 
 enum LedgerAccountDetailAssetListItem {
     case asset(AssetListItemViewModel)
-    case collectibleAsset(NFTListItemViewModel)
+    case collectibleAsset(CollectibleListItemViewModel)
 }

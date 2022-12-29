@@ -30,7 +30,7 @@ final class SelectAssetViewController:
         collectionView.backgroundColor = .clear
         collectionView.register(PreviewLoadingCell.self)
         collectionView.register(AssetListItemCell.self)
-        collectionView.register(NFTListItemCell.self)
+        collectionView.register(CollectibleListItemCell.self)
         return collectionView
     }()
 

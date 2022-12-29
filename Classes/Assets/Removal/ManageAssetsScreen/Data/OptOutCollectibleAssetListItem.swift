@@ -18,11 +18,11 @@ import Foundation
 
 struct OptOutCollectibleAssetListItem: Hashable {
     let model: CollectibleAsset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.model = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
     func hash(into hasher: inout Hasher) {

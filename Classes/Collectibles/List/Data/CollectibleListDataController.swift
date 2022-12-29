@@ -19,8 +19,6 @@ import UIKit
 import MacaroonUIKit
 
 protocol CollectibleListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleSection, CollectibleListItem>
-
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)? { get set }
 
     var imageSize: CGSize { get set }
@@ -135,12 +133,12 @@ struct CollectibleListPendingCollectibleAssetGridItem: Hashable {
 struct CollectibleListCollectibleAssetListItem: Hashable {
     let account: Account
     let asset: CollectibleAsset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.account = item.account
         self.asset = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -159,7 +157,7 @@ struct CollectibleListCollectibleAssetListItem: Hashable {
 }
 
 struct CollectibleListPendingCollectibleAssetListItem: Hashable {
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     private let accountAddress: PublicKey
     private let assetID: AssetID
@@ -167,13 +165,13 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
     init(update: OptInBlockchainUpdate) {
         self.accountAddress = update.accountAddress
         self.assetID = update.assetID
-        self.viewModel = NFTListItemViewModel(update: update)
+        self.viewModel = CollectibleListItemViewModel(update: update)
     }
 
     init(update: OptOutBlockchainUpdate) {
         self.accountAddress = update.accountAddress
         self.assetID = update.assetID
-        self.viewModel = NFTListItemViewModel(update: update)
+        self.viewModel = CollectibleListItemViewModel(update: update)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -192,16 +190,31 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
 }
 
 enum CollectibleDataControllerEvent {
-    case didUpdate(CollectibleListDataController.Snapshot)
+    case didUpdate(CollectibleListUpdate)
     case didFinishRunning(hasError: Bool)
 
-    var snapshot: CollectibleListDataController.Snapshot? {
+    var snapshot: CollectibleListUpdate.Snapshot? {
         switch self {
-        case .didUpdate(let snapshot): return snapshot
-        default:
-            return nil
+        case .didUpdate(let update): return update.snapshot
+        default: return nil
         }
     }
+
+    var query: String? {
+        switch self {
+        case .didUpdate(let update): return update.query
+        default: return nil
+        }
+    }
+}
+
+struct CollectibleListUpdate {
+    let query: String?
+    let snapshot: Snapshot
+}
+
+extension CollectibleListUpdate {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleSection, CollectibleListItem>
 }
 
 enum CollectibleGalleryAccount {
@@ -212,6 +225,13 @@ enum CollectibleGalleryAccount {
         switch self {
         case .single(let account): return account
         default: return nil
+        }
+    }
+
+    var isAll: Bool {
+        switch self {
+        case .all: return true
+        default: return false
         }
     }
 }
