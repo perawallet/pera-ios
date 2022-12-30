@@ -32,6 +32,7 @@ struct ASADetailMarketViewTheme:
     var titleStyle: TextStyle
     var priceStyle: TextStyle
     var detailImage: ImageStyle
+    let height: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -53,5 +54,6 @@ struct ASADetailMarketViewTheme:
         self.detailImage = [
             .image("icon-list-arrow")
         ]
+        self.height = 48
     }
 }

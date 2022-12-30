@@ -736,9 +736,11 @@ extension ASADetailScreen {
     private func bindMarketData() {
         let asset = dataController.asset
         let viewModel = ASADetailMarketViewModel(
-            assetItem: .init(asset: asset,
-                             currency: sharedDataController.currency,
-                             currencyFormatter: currencyFormatter)
+            assetItem: .init(
+                asset: asset,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
         )
         marketView.bindData(viewModel)
     }

@@ -28,8 +28,6 @@ final class ASADetailMarketView:
         .layoutChanged: UIBlockInteraction()
     ]
 
-    private(set) var isLayoutLoaded = false
-
     private lazy var contentView = HStackView()
     private lazy var titleView = Label()
     private lazy var accessoryIcon = ImageView()
@@ -41,7 +39,7 @@ final class ASADetailMarketView:
     private var theme = ASADetailMarketViewTheme()
 
     override var intrinsicContentSize: CGSize {
-        CGSize((UIView.noIntrinsicMetric, 48))
+        CGSize((UIView.noIntrinsicMetric, theme.height))
     }
 
     func customize(_ theme: ASADetailMarketViewTheme) {
@@ -92,10 +90,8 @@ final class ASADetailMarketView:
 
         if bounds.isEmpty { return }
 
-        isLayoutLoaded = true
-
-        let isSaved = saveContentSizeIfNeeded()
-        if isSaved {
+        let isLayoutChanged = saveLayoutChangeIfNeeded()
+        if isLayoutChanged {
             uiInteractions[.layoutChanged]?.publish()
         }
     }
@@ -139,16 +135,16 @@ extension ASADetailMarketView {
 }
 
 extension ASADetailMarketView {
-    private func saveContentSizeIfNeeded() -> Bool {
-        var isSaved = false
+    private func saveLayoutChangeIfNeeded() -> Bool {
+        var isLayoutChanged = false
 
         let newContentSize = bounds.size
         if lastContentSize != newContentSize {
             lastContentSize = newContentSize
-            isSaved = true
+            isLayoutChanged = true
         }
 
-        return isSaved
+        return isLayoutChanged
     }
 }
 
