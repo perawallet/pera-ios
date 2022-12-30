@@ -441,9 +441,7 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if let url = item.ctaUrl {
-                self.openInBrowser(url)
-            }
+            self.triggerBannerCTA(item: item)
         }
     }
     
@@ -461,16 +459,7 @@ extension HomeViewController {
         cell.startObserving(event: .action) {
             [weak self] in
             guard let self = self else { return }
-
-            if let url = item.ctaUrl {
-                let title = item.title
-                let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
-
-                self.open(
-                    .discoverDappDetail(dappDetail),
-                    by: .push
-                )
-            }
+            self.triggerBannerCTA(item: item)
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
@@ -516,6 +505,18 @@ extension HomeViewController {
                     transitionStyle: nil,
                     transitioningDelegate: nil
                 )
+            )
+        }
+    }
+
+    private func triggerBannerCTA(item: AnnouncementViewModel) {
+        if let url = item.ctaUrl {
+            let title = item.title
+            let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
+
+            self.open(
+                .discoverDappDetail(dappDetail),
+                by: .push
             )
         }
     }
