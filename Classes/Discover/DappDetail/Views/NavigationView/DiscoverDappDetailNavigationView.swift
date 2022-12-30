@@ -46,7 +46,7 @@ extension DiscoverDappDetailNavigationView {
         addSubview(titleView)
         titleView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
     }
 
@@ -56,7 +56,7 @@ extension DiscoverDappDetailNavigationView {
         addSubview(subtitleView)
         subtitleView.snp.makeConstraints { make in
             make.top.equalTo(titleView.snp.bottom)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }

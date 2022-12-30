@@ -27,11 +27,13 @@ struct DiscoverDappDetailNavigationViewTheme:
         _ family: LayoutFamily
     ) {
         self.title = [
-            .textOverflow(SingleLineText()),
+            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingTail)),
+            .textAlignment(.center),
             .textColor(Colors.Text.main)
         ]
         self.subtitle = [
-            .textOverflow(SingleLineText()),
+            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingTail)),
+            .textAlignment(.center),
             .textColor(Colors.Text.grayLighter)
         ]
     }
