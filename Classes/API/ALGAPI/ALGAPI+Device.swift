@@ -38,7 +38,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.subscribeToWalletConnectSession)
             .method(.post)
             .body(draft)
