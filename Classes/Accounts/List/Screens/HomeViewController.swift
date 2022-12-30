@@ -489,7 +489,13 @@ extension HomeViewController {
             guard let self = self else { return }
 
             if let url = item.ctaUrl {
-                self.openInBrowser(url)
+                let title = item.title
+                let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
+
+                self.open(
+                    .discoverDappDetail(dappDetail),
+                    by: .push
+                )
             }
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
