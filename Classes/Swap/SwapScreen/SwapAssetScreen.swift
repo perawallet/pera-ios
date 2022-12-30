@@ -344,6 +344,7 @@ extension SwapAssetScreen {
     private func bindQuickActions() {
         let percentage = dataStore.amountPercentage
         self.swapQuickActionsViewModel = SwapQuickActionsViewModel(amountPercentage: percentage)
+        updateSwitchAssetsQuickActionItem()
         quickActionsView.bind(swapQuickActionsViewModel)
     }
 }
@@ -520,6 +521,8 @@ extension SwapAssetScreen {
     }
 
     private func updateQuickActions() {
+        updateSwitchAssetsQuickActionItem()
+        
         if let poolAsset = dataController.poolAsset {
             if let poolAssetInAccount = dataController.account[poolAsset.id],
                poolAssetInAccount.amount > 0 {
@@ -529,6 +532,17 @@ extension SwapAssetScreen {
             }
 
             quickActionsView.setRightQuickActionsHidden(false)
+        }
+    }
+    
+    private func updateSwitchAssetsQuickActionItem() {
+        let userAssetVerificationStatus = dataController.userAsset.verificationTier
+        
+        switch userAssetVerificationStatus {
+        case .suspicious, .unverified:
+            quickActionsView.setLeftQuickActionsEnabled(false)
+        default:
+            quickActionsView.setLeftQuickActionsEnabled(true)
         }
     }
 
@@ -586,6 +600,7 @@ extension SwapAssetScreen {
 
         swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(true)
         quickActionsView.bind(swapQuickActionsViewModel)
+        updateSwitchAssetsQuickActionItem()
         poolAssetView.stopAnimatingAmountView()
     }
 }
