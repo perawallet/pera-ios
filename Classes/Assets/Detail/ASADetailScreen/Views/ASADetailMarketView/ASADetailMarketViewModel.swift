@@ -49,21 +49,37 @@ extension ASADetailMarketViewModel {
     }
 
     mutating private func bindPrice(_ item: AssetItem) {
+        let amount: Decimal
         let asset = item.asset
 
-        guard let currencyValue = item.currency.primaryValue else {
-            return
-        }
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
         do {
-            let rawCurrency = try currencyValue.unwrap()
+            let exchanger: CurrencyExchanger
+            if asset.isAlgo {
+                guard let fiatCurrencyValue = item.currency.fiatValue else {
+                    price = nil
+                    return
+                }
 
-            let exchanger = CurrencyExchanger(currency: rawCurrency)
-            let amount = try exchanger.exchange(asset, amount: 1)
+                let rawFiatCurrency = try fiatCurrencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawFiatCurrency)
+                amount = try exchanger.exchangeAlgo(amount: 1)
 
-            let formatter = item.currencyFormatter
-            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
-            formatter.currency = rawCurrency
+                formatter.currency = rawFiatCurrency
+            } else {
+                guard let currencyValue = item.currency.primaryValue else {
+                    price = nil
+                    return
+                }
+
+                let rawCurrency = try currencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawCurrency)
+                amount = try exchanger.exchange(asset, amount: 1)
+
+                formatter.currency = rawCurrency
+            }
 
             price = formatter.format(amount)?.footnoteMedium()
         } catch {

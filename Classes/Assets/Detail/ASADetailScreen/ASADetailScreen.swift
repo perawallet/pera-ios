@@ -722,8 +722,16 @@ extension ASADetailScreen {
 
         marketView.startObserving(event: .market) {
             [unowned self] in
-            let assetIDInString = String(self.dataController.asset.id)
-            let assetDetail = DiscoverAssetParameters(assetID: assetIDInString)
+            let asset = self.dataController.asset
+            let assetID: String
+
+            if asset.isAlgo {
+                assetID = "ALGO"
+            } else {
+                assetID = String(asset.id)
+            }
+
+            let assetDetail = DiscoverAssetParameters(assetID: assetID)
             self.open(
                 .discoverAssetDetail(assetDetail),
                 by: .push
