@@ -17,7 +17,15 @@
 import Foundation
 
 final class CollectibleAmountFormatter {
-    private let numberFormatter = NumberFormatter()
+    private let numberFormatter: NumberFormatter
+
+    var formattingContext: CollectibleAmountFormattingContext = .listItem
+
+    init() {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        self.numberFormatter = numberFormatter
+    }
 }
 
 extension CollectibleAmountFormatter {
@@ -30,7 +38,7 @@ extension CollectibleAmountFormatter {
     func format(
         _ decimalNumber: NSDecimalNumber
     ) -> String? {
-        let contextHandler = CollectibleAmountFormattingHandler()
+        let contextHandler = formattingContext.makeHandler()
         let rules = contextHandler.makeRules(
             decimalNumber
         )

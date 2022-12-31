@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleAmountFormattingHandler.swift
+//   CollectibleAmountFormattingListItemHandler.swift
 
 import Foundation
 
-struct CollectibleAmountFormattingHandler {
+struct CollectibleAmountFormattingListItemHandler: CollectibleAmountFormattingContextHandling {
     func makeRules(
         _ rawNumber: NSDecimalNumber
     ) -> CollectibleAmountFormattingRules {
@@ -39,18 +39,7 @@ struct CollectibleAmountFormattingHandler {
     }
 }
 
-struct CollectibleAmountFormattingRules {
-    var locale: Locale?
-    var roundingMode: RoundingMode?
-    var minimumFractionDigits: Int?
-    var maximumFractionDigits: Int?
-}
-
-extension CollectibleAmountFormattingRules {
-    typealias RoundingMode = NumberFormatter.RoundingMode
-}
-
-extension CollectibleAmountFormattingHandler {
+extension CollectibleAmountFormattingListItemHandler {
     private func shouldRound(
         _ rawNumber: NSDecimalNumber
     ) -> Bool {
