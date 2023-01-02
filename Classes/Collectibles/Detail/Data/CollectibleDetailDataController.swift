@@ -28,6 +28,9 @@ protocol CollectibleDetailDataController: AnyObject {
 
     func hasOptedIn() -> OptInStatus
     func hasOptedOut() -> OptOutStatus
+    
+    var collectibleDescriptionViewModel: CollectibleDescriptionViewModel! { get set }
+    var collectibleDescriptionFittingWidth: CGFloat { get set}
 }
 
 enum CollectibleDetailSection:
@@ -50,7 +53,7 @@ enum CollectibleDetailItem: Hashable {
     case media(CollectibleAsset)
     case sendAction
     case optOutAction
-    case description(CollectibleDescriptionViewModel)
+    case description
     case creatorAccount(CollectibleDetailCreatorAccountItemIdentifier)
     case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
@@ -63,7 +66,7 @@ struct CollectibleDetailNameItemIdentifier: Hashable {
 
     init(_ asset: CollectibleAsset) {
         self.name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
-        self.viewModel =  CollectibleDetailNameViewModel(asset)
+        self.viewModel = CollectibleDetailNameViewModel(asset)
     }
 
     func hash(into hasher: inout Hasher) {

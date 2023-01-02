@@ -80,10 +80,22 @@ final class CollectibleDetailViewController:
 
     private lazy var assetQuickActionView = AssetQuickActionView()
 
-    private lazy var listLayout = CollectibleDetailLayout(dataSource: dataSource)
+    private lazy var listLayout = CollectibleDetailLayout(
+        dataSource: dataSource,
+        collectibleDescriptionProvider: {
+            [weak self] in
+            guard let self else { return nil }
+            return self.dataController.collectibleDescriptionViewModel
+        }
+    )
     private lazy var dataSource = CollectibleDetailDataSource(
         collectionView: listView,
-        mediaPreviewController: mediaPreviewController
+        mediaPreviewController: mediaPreviewController,
+        collectibleDescriptionProvider: {
+            [weak self] in
+            guard let self else { return nil }
+            return self.dataController.collectibleDescriptionViewModel
+        }
     )
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
@@ -128,6 +140,10 @@ final class CollectibleDetailViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.layoutIfNeeded()
+
+        dataController.collectibleDescriptionFittingWidth = listLayout.calculateContentWidth(listView)
 
         dataController.eventHandler = {
             [weak self] event in
@@ -415,6 +431,8 @@ extension CollectibleDetailViewController {
             linkInteractors(cell as! CollectibleDetailCreatorAccountItemCell)
         case .assetID:
             linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
+        case .description:
+            linkInteractors(cell as! CollectibleDescriptionCell )
         default:
             break
         }
@@ -611,6 +629,12 @@ extension CollectibleDetailViewController {
             [unowned self] in
             self.copyToClipboardController.copyID(self.asset)
         }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDescriptionCell
+    ) {
+        cell.delegate = self
     }
 
     private func openASADiscovery() {
@@ -914,6 +938,24 @@ extension CollectibleDetailViewController {
         default:
             break
         }
+    }
+}
+
+extension CollectibleDetailViewController: CollectibleDescriptionCellDelegate {
+    func collectibleDescriptionCellDidTapURL(_ cell: CollectibleDescriptionCell, url: URL) {
+        open(url)
+    }
+
+    func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell) {
+        dataController.collectibleDescriptionViewModel.bindIsTruncating(false)
+
+        listView.collectionViewLayout.invalidateLayout()
+    }
+
+    func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell) {
+        dataController.collectibleDescriptionViewModel.bindIsTruncating(true)
+
+        listView.collectionViewLayout.invalidateLayout()
     }
 }
 

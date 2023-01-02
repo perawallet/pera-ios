@@ -38,6 +38,9 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private let quickAction: AssetQuickAction?
     private let sharedDataController: SharedDataController
 
+    var collectibleDescriptionViewModel: CollectibleDescriptionViewModel!
+    var collectibleDescriptionFittingWidth: CGFloat = .zero
+
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
@@ -268,13 +271,16 @@ extension CollectibleDetailAPIDataController {
         var descriptionItems: [CollectibleDetailItem] = []
 
         if !asset.description.isNilOrEmpty {
-            descriptionItems.append(
-                .description(
-                    CollectibleDescriptionViewModel(
-                        asset
-                    )
+
+            if collectibleDescriptionViewModel == nil {
+                collectibleDescriptionViewModel = CollectibleDescriptionViewModel(
+                    asset: asset,
+                    fittingWidth: collectibleDescriptionFittingWidth,
+                    isTruncating: true
                 )
-            )
+            }
+
+            descriptionItems.append(.description)
         }
 
         if asset.creator?.address != nil {

@@ -21,7 +21,8 @@ import UIKit
 final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<CollectibleDetailSection, CollectibleDetailItem> {
     init(
         collectionView: UICollectionView,
-        mediaPreviewController: CollectibleMediaPreviewViewController
+        mediaPreviewController: CollectibleMediaPreviewViewController,
+        collectibleDescriptionProvider: @escaping () -> CollectibleDescriptionViewModel?
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -72,11 +73,12 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                     at: indexPath
                 )
                 return cell
-            case .description(let viewModel):
+            case .description:
                 let cell = collectionView.dequeue(
                     CollectibleDescriptionCell.self,
                     at: indexPath
                 )
+                let viewModel = collectibleDescriptionProvider()
                 cell.bindData(viewModel)
                 return cell
             case .information(let info):
