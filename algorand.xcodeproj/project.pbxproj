@@ -25669,7 +25669,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25698,7 +25698,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25726,7 +25726,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25755,7 +25755,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25785,7 +25785,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25814,7 +25814,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25965,7 +25965,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25995,7 +25995,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26151,7 +26151,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
