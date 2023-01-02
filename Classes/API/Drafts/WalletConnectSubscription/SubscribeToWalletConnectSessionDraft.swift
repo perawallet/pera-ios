@@ -26,7 +26,7 @@ struct SubscribeToWalletConnectSessionDraft: JSONObjectBody {
         let params: [APIBodyParam] = [
             .init(.device, deviceID),
             .init(.bridgeURL, wcSession?.urlMeta.bridge, .setIfPresent),
-            .init(.topicID, wcSession?.peerMeta.id, .setIfPresent),
+            .init(.topicID, wcSession?.walletMeta?.peerId, .setIfPresent),
             .init(.dAppName, wcSession?.peerMeta.name, .setIfPresent),
             .init(.pushToken, pushToken)
         ]
