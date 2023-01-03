@@ -101,7 +101,7 @@ final class ASADetailScreen:
     }
 
     private var shouldDisplayMarketInfo: Bool {
-        dataController.asset.isAvailableOnDiscover ?? false
+        dataController.asset.isAvailableOnDiscover
     }
 
     /// <todo>
