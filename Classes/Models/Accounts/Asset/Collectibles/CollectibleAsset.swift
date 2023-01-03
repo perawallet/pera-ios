@@ -50,8 +50,8 @@ final class CollectibleAsset: Asset {
     let twitterURL: URL?
     let isAlgo = false
     let isFault = false
-    let algoPriceChangePercentage: Decimal?
-    let isAvailableOnDiscover: Bool?
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     var state: AssetState = .ready
 

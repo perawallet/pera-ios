@@ -31,12 +31,6 @@ protocol ASADetailScreenDataController: AnyObject {
     func loadData()
 }
 
-extension ASADetailScreenDataController {
-    var shouldDisplayMarketButton: Bool {
-        asset.isAvailableOnDiscover ?? false
-    }
-}
-
 enum ASADetailScreenDataControllerEvent {
     case willLoadData
     case didLoadData

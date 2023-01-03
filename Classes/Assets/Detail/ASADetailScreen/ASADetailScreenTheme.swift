@@ -33,7 +33,7 @@ struct ASADetailScreenTheme:
     var quickActions: ASADetailQuickActionsViewTheme
     var spacingBetweenProfileAndQuickActions: LayoutMetric
     var pagesFragmentBackground: ViewStyle
-    var marketView: ASADetailMarketViewTheme
+    var marketInfo: ASADetailMarketViewTheme
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -54,6 +54,6 @@ struct ASADetailScreenTheme:
         self.pagesFragmentBackground = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.marketView = ASADetailMarketViewTheme()
+        self.marketInfo = ASADetailMarketViewTheme()
     }
 }

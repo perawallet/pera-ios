@@ -37,8 +37,8 @@ final class AssetDecoration: ALGEntityModel {
     let discordURL: URL?
     let telegramURL: URL?
     let twitterURL: URL?
-    let algoPriceChangePercentage: Decimal?
-    let isAvailableOnDiscover: Bool?
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     var state: AssetState = .ready
 
@@ -78,8 +78,8 @@ final class AssetDecoration: ALGEntityModel {
         self.twitterURL = apiModel.twitterUsername
             .unwrapNonEmptyString()
             .unwrap(URL.twitterURL(username:))
-        self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage
-        self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover
+        self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage ?? 0
+        self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
     }
     
     init(assetDetail: AssetDetail) {
@@ -100,8 +100,8 @@ final class AssetDecoration: ALGEntityModel {
         self.discordURL = nil
         self.telegramURL = nil
         self.twitterURL = nil
-        self.algoPriceChangePercentage = nil
-        self.isAvailableOnDiscover = nil
+        self.algoPriceChangePercentage = 0
+        self.isAvailableOnDiscover = false
     }
 
     func encode() -> APIModel {

@@ -24,8 +24,7 @@ final class ASADetailMarketView:
     ViewModelBindable,
     UIInteractable {
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .market: GestureInteraction(),
-        .layoutChanged: UIBlockInteraction()
+        .market: GestureInteraction()
     ]
 
     private lazy var contentView = HStackView()
@@ -84,17 +83,6 @@ final class ASADetailMarketView:
     ) -> CGSize {
         return .zero
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if bounds.isEmpty { return }
-
-        let isLayoutChanged = saveLayoutChangeIfNeeded()
-        if isLayoutChanged {
-            uiInteractions[.layoutChanged]?.publish()
-        }
-    }
 }
 
 extension ASADetailMarketView {
@@ -135,22 +123,7 @@ extension ASADetailMarketView {
 }
 
 extension ASADetailMarketView {
-    private func saveLayoutChangeIfNeeded() -> Bool {
-        var isLayoutChanged = false
-
-        let newContentSize = bounds.size
-        if lastContentSize != newContentSize {
-            lastContentSize = newContentSize
-            isLayoutChanged = true
-        }
-
-        return isLayoutChanged
-    }
-}
-
-extension ASADetailMarketView {
     enum Event {
         case market
-        case layoutChanged
     }
 }

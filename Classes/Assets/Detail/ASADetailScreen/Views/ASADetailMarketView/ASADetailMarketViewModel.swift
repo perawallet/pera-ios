@@ -19,8 +19,6 @@ import MacaroonUIKit
 import UIKit
 
 struct ASADetailMarketViewModel: ViewModel {
-    private let assetItem: AssetItem
-
     private(set) var title: TextProvider?
     private(set) var price: TextProvider?
     private(set) var priceChange: TextProvider?
@@ -29,8 +27,7 @@ struct ASADetailMarketViewModel: ViewModel {
     init(
         assetItem: AssetItem
     ) {
-        self.assetItem = assetItem
-        let isAvailableOnDiscover = assetItem.asset.isAvailableOnDiscover ?? false
+        let isAvailableOnDiscover = assetItem.asset.isAvailableOnDiscover
 
         guard isAvailableOnDiscover else {
             return
@@ -88,31 +85,28 @@ extension ASADetailMarketViewModel {
     }
 
     mutating private func bindPriceChange(_ item: AssetItem) {
-        guard let priceChangePercentage = item.asset.algoPriceChangePercentage, priceChangePercentage != 0 else {
+        let priceChangePercentage = item.asset.algoPriceChangePercentage
+
+        guard priceChangePercentage != 0 else {
             priceChange = nil
             return
         }
         var attributes = Typography.footnoteMediumAttributes()
 
-        if priceChangePercentage > 0 {
-            attributes.insert(.textColor(Colors.Helpers.positive))
-        } else {
-            attributes.insert(.textColor(Colors.Helpers.negative))
-        }
+        let textColor = priceChangePercentage > 0 ? Colors.Helpers.positive : Colors.Helpers.negative
+        attributes.insert(.textColor(textColor))
         
         priceChange = (priceChangePercentage / 100).toPercentage?.attributed(attributes)
     }
 
     mutating private func bindPriceChangeIcon(_ item: AssetItem){
-        guard let priceChangePercentage = item.asset.algoPriceChangePercentage, priceChangePercentage != 0 else {
+        let priceChangePercentage = item.asset.algoPriceChangePercentage
+
+        guard priceChangePercentage != 0 else {
             priceChangeIcon = nil
             return
         }
 
-        if priceChangePercentage > 0 {
-            priceChangeIcon = AssetImageSource(asset: img("icon-market-increase"))
-        } else {
-            priceChangeIcon = AssetImageSource(asset: img("icon-market-decrease"))
-        }
+        priceChangeIcon = priceChangePercentage > 0 ? "icon-market-increase".uiImage : "icon-market-decrease".uiImage
     }
 }

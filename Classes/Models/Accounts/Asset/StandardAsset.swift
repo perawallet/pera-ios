@@ -40,8 +40,8 @@ final class StandardAsset: Asset {
     let telegramURL: URL?
     let twitterURL: URL?
     let isAlgo = false
-    let algoPriceChangePercentage: Decimal?
-    let isAvailableOnDiscover: Bool?
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     let isFault: Bool
 
