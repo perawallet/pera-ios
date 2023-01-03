@@ -20,14 +20,8 @@ final class AssetFilterOptionsCache {
     private let userDefaults = UserDefaults.standard
     
     var hideAssetsWithNoBalanceInAssetList: Bool {
-        get {
-            let intValue = userDefaults.integer(forKey: hideAssetsWithNoBalanceInAssetListKey)
-            return intValue != 0
-        }
-        set {
-            let intValue = newValue ? 1 : 0
-            userDefaults.set(intValue, forKey: hideAssetsWithNoBalanceInAssetListKey)
-        }
+        get { userDefaults.bool(forKey: hideAssetsWithNoBalanceInAssetListKey) }
+        set { userDefaults.set(newValue, forKey: hideAssetsWithNoBalanceInAssetListKey) }
     }
 
     var displayCollectibleAssetsInAssetList: Bool {
@@ -40,7 +34,7 @@ final class AssetFilterOptionsCache {
         set { userDefaults.set(newValue, forKey: displayOptedInCollectibleAssetsInAssetListKey) }
     }
 
-    private let hideAssetsWithNoBalanceInAssetListKey = "cache.key.assetsFilteringOption"
+    private let hideAssetsWithNoBalanceInAssetListKey = "cache.key.hideAssetsWithNoBalanceInAssetList"
     private let displayCollectibleAssetsInAssetListKey = "cache.key.displayCollectibleAssetsInAssetList"
     private let displayOptedInCollectibleAssetsInAssetListKey = "cache.key.displayOptedInCollectibleAssetsInAssetList"
 }
