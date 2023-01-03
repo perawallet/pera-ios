@@ -38,10 +38,7 @@ final class SharedAPIDataController:
     var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? {
         didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
     }
-    var selectedAssetsFilteringOption: AssetsFilteringOption? {
-        didSet { cache.assetsFilteringOption = selectedAssetsFilteringOption?.rawValue }
-    }
-    
+
     private(set) var accountCollection: AccountCollection = []
 
     private(set) var currency: CurrencyProvider
@@ -128,8 +125,6 @@ final class SharedAPIDataController:
         self.selectedAccountAssetSortingAlgorithm = accountAssetSortingAlgorithms.first {
             $0.name == cache.accountAssetSortingAlgorithmName
         } ?? AccountAssetAscendingTitleAlgorithm()
-        
-        self.selectedAssetsFilteringOption = AssetsFilteringOption(rawValue: cache.assetsFilteringOption ?? .zero)
     }
 }
 
@@ -520,19 +515,10 @@ extension SharedAPIDataController {
             get { userDefaults.string(forKey: accountAssetSortingAlgorithmNameKey) }
             set { userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey) }
         }
-        
-        var assetsFilteringOption: Int? {
-            get { userDefaults.integer(forKey: assetsFilteringOptionKey) }
-            set {
-                userDefaults.set(newValue, forKey: assetsFilteringOptionKey)
-                userDefaults.synchronize()
-            }
-        }
 
         private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"
         private let collectibleSortingAlgorithmNameKey = "cache.key.collectibleSortingAlgorithmName"
         private let accountAssetSortingAlgorithmNameKey = "cache.key.accountAssetSortingAlgorithmName"
-        private let assetsFilteringOptionKey = "cache.key.assetsFilteringOption"
     }
 }
 

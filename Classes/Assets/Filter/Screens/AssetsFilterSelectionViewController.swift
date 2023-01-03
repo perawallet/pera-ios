@@ -29,14 +29,12 @@ final class AssetsFilterSelectionViewController: BaseScrollViewController {
     private lazy var toggleView = Toggle()
     
     private let theme: AssetsFilterSelectionViewControllerTheme
-    private var filter: AssetsFilteringOption
+    private var filterOptions = AssetFilterOptions()
     
     init(
-        filter: AssetsFilteringOption?,
         theme: AssetsFilterSelectionViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.filter = filter ?? .all
         self.theme = theme
         
         super.init(configuration: configuration)
@@ -52,19 +50,6 @@ final class AssetsFilterSelectionViewController: BaseScrollViewController {
         
         addContent()
     }
-    
-    override func setListeners() {
-        toggleView.addTarget(
-            self,
-            action: #selector(didChangeToggle(_:)),
-            for: .touchUpInside
-        )
-    }
-    
-    @objc
-    private func didChangeToggle(_ toggle: Toggle) {
-        filter = toggleView.isOn ? .hideZeroBalance : .all
-    }
 }
 
 extension AssetsFilterSelectionViewController {
@@ -76,11 +61,30 @@ extension AssetsFilterSelectionViewController {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [weak self] in
             guard let self = self else { return }
-            
-            self.eventHandler?(.didChangeFilter(self.filter))
+            self.performChanges()
         }
         
         rightBarButtonItems = [doneBarButtonItem]
+    }
+}
+
+extension AssetsFilterSelectionViewController {
+    private func performChanges() {
+        if !hasChanges() {
+            eventHandler?(.didCancel)
+            return
+        }
+
+        saveOptions()
+        eventHandler?(.didComplete)
+    }
+
+    private func saveOptions() {
+        filterOptions.hideAssetsWithNoBalanceInAssetList = toggleView.isOn
+    }
+
+    private func hasChanges() -> Bool {
+        return filterOptions.hideAssetsWithNoBalanceInAssetList != toggleView.isOn
     }
 }
 
@@ -117,7 +121,7 @@ extension AssetsFilterSelectionViewController {
             $0.centerY == toggleTitleView
         }
         
-        toggleView.isOn = filter == .hideZeroBalance
+        toggleView.isOn = filterOptions.hideAssetsWithNoBalanceInAssetList
     }
     
     private func addToggleDescription() {
@@ -135,6 +139,7 @@ extension AssetsFilterSelectionViewController {
 
 extension AssetsFilterSelectionViewController {
     enum Event {
-        case didChangeFilter(AssetsFilteringOption)
+        case didComplete
+        case didCancel
     }
 }

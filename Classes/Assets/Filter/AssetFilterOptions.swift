@@ -12,11 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetsFilteringOption.swift
+//   AssetFilterOptions.swift
 
 import Foundation
 
-enum AssetsFilteringOption: Int {
-    case all = 0
-    case hideZeroBalance = 1
+struct AssetFilterOptions {
+    var hideAssetsWithNoBalanceInAssetList: Bool {
+        get { cache.hideAssetsWithNoBalanceInAssetList }
+        set { cache.hideAssetsWithNoBalanceInAssetList = newValue }
+    }
+    
+    private let cache: AssetFilterOptionsCache
+    
+    init(cache: AssetFilterOptionsCache = .init()) {
+        self.cache = cache
+    }
 }
