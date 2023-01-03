@@ -344,7 +344,6 @@ extension SwapAssetScreen {
     private func bindQuickActions() {
         let percentage = dataStore.amountPercentage
         self.swapQuickActionsViewModel = SwapQuickActionsViewModel(amountPercentage: percentage)
-        updateSwitchAssetsQuickActionItem()
         quickActionsView.bind(swapQuickActionsViewModel)
     }
 }
@@ -521,7 +520,7 @@ extension SwapAssetScreen {
     }
 
     private func updateQuickActions() {
-        updateSwitchAssetsQuickActionItem()
+        updateQuickActionsStatesIfNeeded()
         
         if let poolAsset = dataController.poolAsset {
             if let poolAssetInAccount = dataController.account[poolAsset.id],
@@ -535,15 +534,14 @@ extension SwapAssetScreen {
         }
     }
     
-    private func updateSwitchAssetsQuickActionItem() {
-        let userAssetVerificationStatus = dataController.userAsset.verificationTier
-        
-        switch userAssetVerificationStatus {
-        case .suspicious, .unverified:
-            quickActionsView.setLeftQuickActionsEnabled(false)
-        default:
-            quickActionsView.setLeftQuickActionsEnabled(true)
-        }
+    private func updateQuickActionsStatesIfNeeded() {
+        updateLeftQuickActionsStatesIfNeeded()
+    }
+    
+    private func updateLeftQuickActionsStatesIfNeeded() {
+        let verificationStatus = dataController.userAsset.verificationTier
+        let isEnabled = !(verificationStatus.isSuspicious || verificationStatus.isUnverified)
+        quickActionsView.setLeftQuickActionsEnabled(isEnabled)
     }
 
     private func showInsufficientAlgoBalanceErrorForQuoteValidation(
@@ -600,7 +598,7 @@ extension SwapAssetScreen {
 
         swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(true)
         quickActionsView.bind(swapQuickActionsViewModel)
-        updateSwitchAssetsQuickActionItem()
+        updateQuickActionsStatesIfNeeded()
         poolAssetView.stopAnimatingAmountView()
     }
 }
