@@ -156,15 +156,15 @@ extension CollectiblesViewController {
     private func openFilterSelection() {
         var uiInteractions = CollectiblesFilterSelectionViewController.UIInteractions()
         uiInteractions.didComplete = {
-            [weak self] hasChanges in
-            guard let self = self else { return }
-
+            [unowned self] in
             self.dismiss(animated: true) {
-                [weak self] in
-                guard let self = self else { return }
-
-                if hasChanges { self.collectibleListScreen.reload() }
+                [unowned self] in
+                self.collectibleListScreen.reload()
             }
+        }
+        uiInteractions.didCancel = {
+            [unowned self] in
+            self.dismiss(animated: true)
         }
 
         open(

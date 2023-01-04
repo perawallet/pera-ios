@@ -40,7 +40,7 @@ final class CollectibleListLocalDataController:
     private var lastSnapshot: Snapshot?
 
     private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
-    private lazy var collectibleFilterStore: CollectibleFilterStore = .init()
+    private lazy var collectibleFilterOptions: CollectibleFilterOptions = .init()
     private lazy var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
@@ -429,15 +429,12 @@ extension CollectibleListLocalDataController {
                 return
             }
 
-            if case .all = galleryAccount,
-               !collectibleFilterStore.displayWatchAccountCollectibleAssetsInCollectibleList,
-               account.isWatchAccount() {
+            guard shouldDisplayWatchAccountCollectibleAsset(account) else {
                 hiddenCollectibleCount += 1
                 return
             }
 
-            if !collectibleFilterStore.displayOptedInCollectibleAssetsInCollectibleList,
-               !collectibleAsset.isOwned {
+            guard shouldDisplayOptedInCollectibleAsset(collectibleAsset) else {
                 hiddenCollectibleCount += 1
                 return
             }
@@ -538,6 +535,28 @@ extension CollectibleListLocalDataController {
     private func makePendingCollectibleAssetOptOutListItemNew(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
         let listItem = CollectibleListPendingCollectibleAssetListItemNew(update: update)
         return .pendingCollectibleAsset(.list(listItem))
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func shouldDisplayWatchAccountCollectibleAsset(_ account: Account) -> Bool {
+        if !galleryAccount.isAll {
+            return true
+        }
+
+        if !account.isWatchAccount() {
+            return true
+        }
+
+        return collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList
+    }
+
+    private func shouldDisplayOptedInCollectibleAsset(_ collectibleAsset: CollectibleAsset) -> Bool {
+        if collectibleAsset.isOwned {
+            return true
+        }
+
+        return collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList
     }
 }
 

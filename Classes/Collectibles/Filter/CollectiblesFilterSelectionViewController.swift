@@ -19,13 +19,13 @@ import MacaroonUIKit
 import UIKit
 
 final class CollectiblesFilterSelectionViewController: ScrollScreen {
-    lazy var uiInteractions = UIInteractions()
+    var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
     private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
     private lazy var displayWatchAccountCollectibleAssetsInCollectibleListItemView = AssetFilterItemView()
 
-    private lazy var store = CollectibleFilterStore()
+    private lazy var filterOptions = CollectibleFilterOptions()
 
     private let theme: CollectiblesFilterSelectionViewControllerTheme
 
@@ -37,9 +37,9 @@ final class CollectiblesFilterSelectionViewController: ScrollScreen {
         super.configureNavigationBar()
 
         addBarButtons()
-        bindNavigationItemTitle()
 
         navigationItem.largeTitleDisplayMode =  .never
+        navigationItem.title = "collectible-filter-selection-title".localized
     }
 
     override func viewDidLoad() {
@@ -53,14 +53,10 @@ extension CollectiblesFilterSelectionViewController {
     private func addBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [unowned self] in
-            performChanges()
+            self.performChanges()
         }
 
         rightBarButtonItems = [doneBarButtonItem]
-    }
-
-    private func bindNavigationItemTitle() {
-        title = "collectible-filter-selection-title".localized
     }
 }
 
@@ -103,7 +99,7 @@ extension CollectiblesFilterSelectionViewController {
         displayOptedInCollectibleAssetsInCollectibleListFilterItemView.customize(theme.filterItem)
         displayOptedInCollectibleAssetsInCollectibleListFilterItemView.bindData(DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = store.displayOptedInCollectibleAssetsInCollectibleList
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = filterOptions.displayOptedInCollectibleAssetsInCollectibleList
 
         contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
     }
@@ -112,7 +108,7 @@ extension CollectiblesFilterSelectionViewController {
         displayWatchAccountCollectibleAssetsInCollectibleListItemView.customize(theme.filterItem)
         displayWatchAccountCollectibleAssetsInCollectibleListItemView.bindData(DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn = store.displayWatchAccountCollectibleAssetsInCollectibleList
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn = filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList
 
         contextView.addArrangedSubview(displayWatchAccountCollectibleAssetsInCollectibleListItemView)
     }
@@ -120,26 +116,26 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     private func performChanges() {
-        let hasChanges = hasChanges()
-
-        if hasChanges {
-            saveFilters()
+        if !hasChanges() {
+            uiInteractions.didCancel?()
+            return
         }
 
-        uiInteractions.didComplete?(hasChanges)
+        saveFilters()
+        uiInteractions.didComplete?()
     }
 
     private func saveFilters() {
-        store.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
-        store.displayWatchAccountCollectibleAssetsInCollectibleList = displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn
+        filterOptions.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList = displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        if store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn {
+        if filterOptions.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn {
             return true
         }
 
-        if store.displayWatchAccountCollectibleAssetsInCollectibleList != displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn {
+        if filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList != displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn {
             return true
         }
 
@@ -149,7 +145,7 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     struct UIInteractions {
-        typealias HasChanges = Bool
-        var didComplete: ((HasChanges) -> Void)?
+        var didComplete: (() -> Void)?
+        var didCancel: (() -> Void)?
     }
 }

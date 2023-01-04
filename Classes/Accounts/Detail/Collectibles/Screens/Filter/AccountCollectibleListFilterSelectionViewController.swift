@@ -19,12 +19,12 @@ import MacaroonUIKit
 import UIKit
 
 final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
-    lazy var uiInteractions = UIInteractions()
+    var uiInteractions = UIInteractions()
 
     private lazy var contextView = VStackView()
     private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
 
-    private lazy var store = CollectibleFilterStore()
+    private lazy var filterOptions = CollectibleFilterOptions()
 
     private let theme: AccountCollectibleListFilterSelectionViewControllerTheme
 
@@ -36,9 +36,9 @@ final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
         super.configureNavigationBar()
 
         addBarButtons()
-        bindNavigationItemTitle()
 
         navigationItem.largeTitleDisplayMode =  .never
+        navigationItem.title = "collectible-filter-selection-title".localized
     }
 
     override func viewDidLoad() {
@@ -52,14 +52,10 @@ extension AccountCollectibleListFilterSelectionViewController {
     private func addBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [unowned self] in
-            performChanges()
+            self.performChanges()
         }
 
         rightBarButtonItems = [doneBarButtonItem]
-    }
-
-    private func bindNavigationItemTitle() {
-        title = "collectible-filter-selection-title".localized
     }
 }
 
@@ -101,7 +97,7 @@ extension AccountCollectibleListFilterSelectionViewController {
         displayOptedInCollectibleAssetsInCollectibleListFilterItemView.customize(theme.filterItem)
         displayOptedInCollectibleAssetsInCollectibleListFilterItemView.bindData(DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel())
 
-        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = store.displayOptedInCollectibleAssetsInCollectibleList
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = filterOptions.displayOptedInCollectibleAssetsInCollectibleList
 
         contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
     }
@@ -109,28 +105,28 @@ extension AccountCollectibleListFilterSelectionViewController {
 
 extension AccountCollectibleListFilterSelectionViewController {
     private func performChanges() {
-        let hasChanges = hasChanges()
-
-        if hasChanges {
-            saveFilters()
+        if !hasChanges() {
+            uiInteractions.didCancel?()
+            return
         }
 
-        uiInteractions.didComplete?(hasChanges)
+        saveFilters()
+        uiInteractions.didComplete?()
     }
 
     private func saveFilters() {
-        store.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        filterOptions.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        let hasChanges = store.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        let hasChanges = filterOptions.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
         return hasChanges
     }
 }
 
 extension AccountCollectibleListFilterSelectionViewController {
     struct UIInteractions {
-        typealias HasChanges = Bool
-        var didComplete: ((HasChanges) -> Void)?
+        var didComplete: (() -> Void)?
+        var didCancel: (() -> Void)?
     }
 }

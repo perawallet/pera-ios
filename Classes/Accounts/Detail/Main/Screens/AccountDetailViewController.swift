@@ -526,15 +526,15 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     ) {
         var uiInteractions = AssetsFilterSelectionViewController.UIInteractions()
         uiInteractions.didComplete = {
-            [weak self] hasChanges in
-            guard let self = self else { return }
-
+            [unowned self] in
             self.dismiss(animated: true) {
-                [weak self] in
-                guard let self = self else { return }
-
-                if hasChanges { self.assetListScreen.reloadData() }
+                [unowned self] in
+                self.assetListScreen.reloadData()
             }
+        }
+        uiInteractions.didCancel =  {
+            [unowned self] in
+            self.dismiss(animated: true)
         }
         
         open(
