@@ -520,6 +520,8 @@ extension SwapAssetScreen {
     }
 
     private func updateQuickActions() {
+        updateQuickActionsAccessibility()
+        
         if let poolAsset = dataController.poolAsset {
             if let poolAssetInAccount = dataController.account[poolAsset.id],
                poolAssetInAccount.amount > 0 {
@@ -530,6 +532,16 @@ extension SwapAssetScreen {
 
             quickActionsView.setRightQuickActionsHidden(false)
         }
+    }
+    
+    private func updateQuickActionsAccessibility() {
+        updateLeftQuickActionsAccessibility()
+    }
+    
+    private func updateLeftQuickActionsAccessibility() {
+        let verificationStatus = dataController.userAsset.verificationTier
+        let isEnabled = !(verificationStatus.isSuspicious || verificationStatus.isUnverified)
+        quickActionsView.setLeftQuickActionsEnabled(isEnabled)
     }
 
     private func showInsufficientAlgoBalanceErrorForQuoteValidation(
@@ -586,6 +598,9 @@ extension SwapAssetScreen {
 
         swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(true)
         quickActionsView.bind(swapQuickActionsViewModel)
+        
+        updateQuickActionsAccessibility()
+        
         poolAssetView.stopAnimatingAmountView()
     }
 }
