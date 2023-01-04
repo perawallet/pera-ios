@@ -520,7 +520,7 @@ extension SwapAssetScreen {
     }
 
     private func updateQuickActions() {
-        updateQuickActionsStatesIfNeeded()
+        updateQuickActionsAccessibility()
         
         if let poolAsset = dataController.poolAsset {
             if let poolAssetInAccount = dataController.account[poolAsset.id],
@@ -534,11 +534,11 @@ extension SwapAssetScreen {
         }
     }
     
-    private func updateQuickActionsStatesIfNeeded() {
-        updateLeftQuickActionsStatesIfNeeded()
+    private func updateQuickActionsAccessibility() {
+        updateLeftQuickActionsAccessibility()
     }
     
-    private func updateLeftQuickActionsStatesIfNeeded() {
+    private func updateLeftQuickActionsAccessibility() {
         let verificationStatus = dataController.userAsset.verificationTier
         let isEnabled = !(verificationStatus.isSuspicious || verificationStatus.isUnverified)
         quickActionsView.setLeftQuickActionsEnabled(isEnabled)
@@ -598,7 +598,9 @@ extension SwapAssetScreen {
 
         swapQuickActionsViewModel?.bindSwitchAssetsQuickActionItemEnabled(true)
         quickActionsView.bind(swapQuickActionsViewModel)
-        updateQuickActionsStatesIfNeeded()
+        
+        updateQuickActionsAccessibility()
+        
         poolAssetView.stopAnimatingAmountView()
     }
 }
