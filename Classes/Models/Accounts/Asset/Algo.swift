@@ -38,6 +38,8 @@ final class Algo: Asset {
     let discordURL: URL?
     let telegramURL: URL?
     let twitterURL: URL?
+    let algoPriceChangePercentage: Decimal = 0
+    let isAvailableOnDiscover: Bool = true
 
     let naming: AssetNaming = AssetNaming(
         id: 0,
