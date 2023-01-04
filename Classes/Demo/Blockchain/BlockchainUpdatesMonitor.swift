@@ -223,6 +223,8 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    /// <todo>
+    /// We may change the naming to pending send to pending transfer. It fits better.
     func filterPendingSendPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
         return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
             $0 += $1.value.filterPendingSendPureCollectibleAssetUpdates().values
