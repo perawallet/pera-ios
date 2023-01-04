@@ -29,6 +29,7 @@ final class AccountAssetListAPIDataController:
         transactionData: nil,
         params: nil
     )
+    private lazy var assetFilterOptions = AssetFilterOptions()
 
     private var accountHandle: AccountHandle
     private var assets: [StandardAsset] = []
@@ -73,10 +74,6 @@ extension AccountAssetListAPIDataController {
 
     func reload() {
         deliverContentUpdates()
-    }
-    
-    func updateFilterSelection(with newSelection: AssetsFilteringOption) {
-        sharedDataController.selectedAssetsFilteringOption = newSelection
     }
 
     func reloadIfThereIsPendingUpdates() {
@@ -224,9 +221,7 @@ extension AccountAssetListAPIDataController {
                     return
                 }
                 
-                if self.sharedDataController.selectedAssetsFilteringOption == .hideZeroBalance,
-                   !asset.isAlgo,
-                   asset.amount == 0 {
+                if self.shouldHideAssetWithNoBalance(asset) {
                     return
                 }
 
@@ -382,6 +377,20 @@ extension AccountAssetListAPIDataController {
         }
 
         return "algo".containsCaseInsensitive(keyword)
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    private func shouldHideAssetWithNoBalance(_ asset: Asset) -> Bool {
+        if asset.amount != .zero {
+            return false
+        }
+
+        if asset.isAlgo {
+            return false
+        }
+
+        return assetFilterOptions.hideAssetsWithNoBalanceInAssetList
     }
 }
 

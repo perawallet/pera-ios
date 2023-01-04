@@ -1110,11 +1110,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .assetsFilterSelection(let filter, let eventHandler):
-            let aViewController = AssetsFilterSelectionViewController(
-                filter: filter,
-                configuration: configuration
-            )
+        case .assetsFilterSelection(let eventHandler):
+            let aViewController = AssetsFilterSelectionViewController(configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
