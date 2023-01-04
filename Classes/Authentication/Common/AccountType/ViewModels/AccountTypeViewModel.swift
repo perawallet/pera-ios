@@ -47,6 +47,11 @@ extension AccountTypeViewModel {
                 image = img("icon-recover-passphrase")
             case .ledger:
                 image = img("icon-pair-ledger-account")
+            case let .import(importType):
+                switch importType {
+                case .web:
+                    image = img("icon-import-from-web")
+                }
             }
         case .rekey,
              .none:
@@ -71,6 +76,11 @@ extension AccountTypeViewModel {
                 title = "account-type-selection-passphrase".localized
             case .ledger:
                 title = "account-type-selection-ledger".localized
+            case let .import(importType):
+                switch importType {
+                case .web:
+                    title = "account-type-selection-import-web".localized
+                }
             case .none:
                 title = "account-type-selection-recover".localized
             }
@@ -97,6 +107,11 @@ extension AccountTypeViewModel {
                 detail = "account-type-selection-passphrase-detail".localized
             case .ledger:
                 detail = "account-type-selection-ledger-detail".localized
+            case let .import(importType):
+                switch importType {
+                case .web:
+                    detail = "account-type-selection-import-web-detail".localized
+                }
             case .none:
                 detail = "account-type-selection-recover-detail".localized
             }
