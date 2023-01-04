@@ -24,6 +24,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
+    private lazy var favouriteButton = makeFavouriteButton()
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
@@ -206,6 +207,11 @@ extension DiscoverDappDetailScreen {
         }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
+    
+    private func makeFavouriteButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverFavourite) {}
+        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+    }
 
     private func addNavigationToolbar() {
         let toolbar = UIToolbar(frame: .zero)
@@ -220,11 +226,13 @@ extension DiscoverDappDetailScreen {
         previousButton.isEnabled = false
         nextButton.isEnabled = false
 
-        items.append( homeButton )
-        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         items.append( previousButton )
         items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         items.append( nextButton )
+        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        items.append( homeButton )
+        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        items.append( favouriteButton )
         toolbar.items = items
 
         self.setToolbarItems(items, animated: true)
