@@ -24,6 +24,7 @@ protocol CollectibleListDataController: AnyObject {
     var imageSize: CGSize { get set }
 
     var galleryAccount: CollectibleGalleryAccount { get }
+    var galleryUIStyle: CollectibleGalleryUIStyle { get set }
 
     func load()
     func reload()

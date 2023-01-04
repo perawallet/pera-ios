@@ -27,7 +27,7 @@ final class CollectibleListViewController:
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleListLayout.build()
+        let collectionViewLayout = makeListViewLayout()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -41,27 +41,38 @@ final class CollectibleListViewController:
         return collectionView
     }()
 
-    private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource)
+    private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource, galleryUIStyle: galleryUIStyle)
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private var positionYForDisplayingListHeader: CGFloat?
-
-    private var collectibleGalleryUIStyleCache: CollectibleGalleryUIStyleCache = .init()
 
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme: CollectibleListViewControllerTheme
 
+    private var galleryUIStyleCache: CollectibleGalleryUIStyleCache
+    var galleryUIStyle: CollectibleGalleryUIStyle {
+        didSet {
+            galleryUIStyleCache.galleryUIStyle = galleryUIStyle
+            listLayout.galleryUIStyle = galleryUIStyle
+            dataController.galleryUIStyle = galleryUIStyle
+        }
+    }
+
     init(
         dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
         theme: CollectibleListViewControllerTheme = .common,
+        galleryUIStyleCache: CollectibleGalleryUIStyleCache,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
         self.theme = theme
+        self.galleryUIStyleCache = galleryUIStyleCache
+        self.galleryUIStyle = galleryUIStyleCache.galleryUIStyle
+        self.dataController.galleryUIStyle = galleryUIStyleCache.galleryUIStyle
 
         super.init(configuration: configuration)
     }
@@ -112,6 +123,11 @@ final class CollectibleListViewController:
         startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateListLayoutIfNeededWhenViewDidAppear()
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         stopAnimatingLoadingIfNeededWhenViewDidDisappear()
@@ -119,6 +135,47 @@ final class CollectibleListViewController:
 
     private func build() {
         addListView()
+    }
+}
+
+extension CollectibleListViewController {
+    private func updateListLayoutIfNeededWhenViewDidAppear() {
+        let hasChanges = galleryUIStyleCache.galleryUIStyle != galleryUIStyle
+        if !hasChanges {
+            return
+        }
+
+        galleryUIStyle = galleryUIStyleCache.galleryUIStyle
+
+        let newLayout = makeListViewLayout()
+        listView.setCollectionViewLayout(newLayout, animated: true)
+
+        updateGalleryUIActionsCellIfNeeded()
+
+        dataController.reload()
+    }
+}
+
+extension CollectibleListViewController {
+    private func updateGalleryUIActionsCellIfNeeded() {
+        if let indexPath = listDataSource.indexPath(for: .uiActions),
+           let cell = listView.cellForItem(at: indexPath) as? CollectibleGalleryUIActionsCell {
+            if galleryUIStyle.isGrid {
+                cell.setGridUIStyleSelected()
+            } else {
+                cell.setListUIStyleSelected()
+            }
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    private func makeListViewLayout() -> UICollectionViewLayout {
+        if galleryUIStyle.isGrid {
+            return CollectibleListLayout.gridFlowLayout
+        } else {
+            return CollectibleListLayout.listFlowLayout
+        }
     }
 }
 
@@ -521,7 +578,7 @@ extension CollectibleListViewController {
     ) {
         cell.delegate = self
 
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             cell.setGridUIStyleSelected()
         } else {
             cell.setListUIStyleSelected()
@@ -572,28 +629,22 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
     func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return
         }
 
-        let newLayout = CollectibleListLayout.gridFlowLayout
-
-        collectibleGalleryUIStyleCache.galleryUIStyle = .grid
-
-        listView.setCollectionViewLayout(newLayout, animated: true)
+        galleryUIStyle = .grid
+        listView.setCollectionViewLayout(CollectibleListLayout.gridFlowLayout, animated: true)
         dataController.reload()
     }
 
     func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isList {
+        if galleryUIStyle.isList {
             return
         }
 
-        let newLayout = CollectibleListLayout.listFlowLayout
-
-        collectibleGalleryUIStyleCache.galleryUIStyle = .list
-
-        listView.setCollectionViewLayout(newLayout, animated: true)
+        galleryUIStyle = .list
+        listView.setCollectionViewLayout(CollectibleListLayout.listFlowLayout, animated: true)
         dataController.reload()
     }
 
