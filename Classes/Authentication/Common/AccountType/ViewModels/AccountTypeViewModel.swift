@@ -23,10 +23,12 @@ struct AccountTypeViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
     private(set) var detail: String?
+    private(set) var badge: String?
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
         bindTitle(model)
+        bindBadge(model)
         bindDetail(model)
     }
 }
@@ -86,6 +88,23 @@ extension AccountTypeViewModel {
             }
         case .rekey,
              .none:
+            break
+        }
+    }
+
+    private mutating func bindBadge(_ mode: AccountSetupMode) {
+        switch mode {
+        case let .recover(type):
+            switch type {
+            case let .import(importType):
+                switch importType {
+                case .web:
+                    badge = "title-new-uppercased".localized
+                }
+            default:
+                break
+            }
+        default:
             break
         }
     }
