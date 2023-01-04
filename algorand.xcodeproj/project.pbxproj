@@ -147,6 +147,9 @@
 		1770729F290AAC75009E02AE /* DiscoverSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770729E290AAC75009E02AE /* DiscoverSearchDataSource.swift */; };
 		177072A0290AAC75009E02AE /* DiscoverSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770729E290AAC75009E02AE /* DiscoverSearchDataSource.swift */; };
 		177072A1290AAC75009E02AE /* DiscoverSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770729E290AAC75009E02AE /* DiscoverSearchDataSource.swift */; };
+		1773311429657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1773311329657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift */; };
+		1773311529657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1773311329657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift */; };
+		1773311629657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1773311329657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift */; };
 		1781CCDF2860B275004B699A /* TransactionAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCDE2860B275004B699A /* TransactionAmountValidator.swift */; };
 		1781CCE02860B275004B699A /* TransactionAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCDE2860B275004B699A /* TransactionAmountValidator.swift */; };
 		1781CCE12860B275004B699A /* TransactionAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1781CCDE2860B275004B699A /* TransactionAmountValidator.swift */; };
@@ -6404,6 +6407,7 @@
 		17707296290AAC2C009E02AE /* DiscoverSearchAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchAPIDataController.swift; sourceTree = "<group>"; };
 		1770729A290AAC61009E02AE /* DiscoverSearchScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchScreenLayout.swift; sourceTree = "<group>"; };
 		1770729E290AAC75009E02AE /* DiscoverSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchDataSource.swift; sourceTree = "<group>"; };
+		1773311329657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDappDetailScreenTheme.swift; sourceTree = "<group>"; };
 		1781CCDE2860B275004B699A /* TransactionAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountValidator.swift; sourceTree = "<group>"; };
 		1781CCEA2864A337004B699A /* CGSize+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Additions.swift"; sourceTree = "<group>"; };
 		1783308429548D0300AD5B4E /* SocialMediaDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMediaDeeplink.swift; sourceTree = "<group>"; };
@@ -8817,6 +8821,7 @@
 			isa = PBXGroup;
 			children = (
 				17A76667290859C400A8746C /* DiscoverDappDetailScreen.swift */,
+				1773311329657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift */,
 				17C932672934CC88000EE03D /* Views */,
 			);
 			path = DappDetail;
@@ -19862,6 +19867,7 @@
 				17A766842909626400A8746C /* DiscoverDappParamaters.swift in Sources */,
 				2B77472A25FFE88C0083EFFA /* InputSuggestionDataSource.swift in Sources */,
 				D48FDFC927CEBA0900C39FC7 /* ReceiveCollectibleAccountListLayout.swift in Sources */,
+				1773311629657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */,
 				2B7E3041267A51ED00E89EE3 /* WCGroupTransactionItemView.swift in Sources */,
 				D431506127EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
 				F063BE80290BFCBD00AEAEF7 /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
@@ -21796,6 +21802,7 @@
 				95BFE7932840BC9300A972A5 /* HomeQuickActionsViewTheme.swift in Sources */,
 				F0DB418027945C1900EA437D /* PortfolioCalculationInfoView.swift in Sources */,
 				D45C47FC277E1737001853A3 /* RangeSelectionViewModel.swift in Sources */,
+				1773311529657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */,
 				D4C3BD48278CE75300E898FD /* PrimaryImageViewModel.swift in Sources */,
 				17D0FA7828EC28DE0061B55D /* ExportAccountsConfirmationListDataSource.swift in Sources */,
 				2B2BCC212936365800465720 /* MobileAPIAssetCache.swift in Sources */,
@@ -23828,6 +23835,7 @@
 				D479D0F826D4FAD900110E04 /* BannerView.swift in Sources */,
 				2B343D0B259D17B0001EA8C8 /* NotificationFilterViewController.swift in Sources */,
 				2B99D45728EC96A200323C11 /* SwapConfirmSlippageToleranceInfoViewModel.swift in Sources */,
+				1773311429657D6F006E66F1 /* DiscoverDappDetailScreenTheme.swift in Sources */,
 				17D0FA7728EC28DE0061B55D /* ExportAccountsConfirmationListDataSource.swift in Sources */,
 				2B2BCC202936365800465720 /* MobileAPIAssetCache.swift in Sources */,
 				2BE4D06E2593845F005F5764 /* FirebaseAnalyticsProvider.swift in Sources */,

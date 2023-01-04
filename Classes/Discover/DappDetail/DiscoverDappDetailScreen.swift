@@ -28,6 +28,8 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
 
+    private lazy var theme = DiscoverDappDetailScreenTheme()
+
     private let dappParameters: DiscoverDappParamaters
 
     private static let navigationScriptKey = "navigation"
@@ -60,10 +62,9 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        updateWebViewLayout()
         initializeWebView()
         addNavigationToolbar()
-        adjustBottomInset()
         executeNavigationScript()
         executePeraConnectScript()
         recordAnalyticsEvent()
@@ -100,10 +101,6 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         )
 
         load(url: generatedUrl)
-    }
-
-    private func adjustBottomInset() {
-        webView.scrollView.contentInset.bottom = view.safeAreaBottom
     }
 
     private func addNavigation() {
@@ -207,12 +204,19 @@ extension DiscoverDappDetailScreen {
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
 
+    private func updateWebViewLayout() {
+        webView.snp.updateConstraints { make in
+            make.bottom.equalToSuperview().inset(view.safeAreaBottom + theme.toolbarHeight)
+        }
+    }
+
     private func addNavigationToolbar() {
         let toolbar = UIToolbar(frame: .zero)
-        webView.addSubview(toolbar)
+        view.addSubview(toolbar)
         toolbar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.bottom.equalToSuperview().inset(view.safeAreaBottom)
+            make.height.equalTo(theme.toolbarHeight)
         }
 
         var items = [UIBarButtonItem]()
