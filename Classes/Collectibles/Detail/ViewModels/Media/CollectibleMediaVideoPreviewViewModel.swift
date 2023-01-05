@@ -33,7 +33,7 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindOverlayImage(asset)
+        bindOverlayImage(asset, accountCollectibleStatus)
         bindIs3DActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
@@ -59,32 +59,21 @@ extension CollectibleMediaVideoPreviewViewModel {
     }
 
     private mutating func bindOverlayImage(
-        _ asset: CollectibleAsset
+        _ asset: CollectibleAsset,
+        _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
-        guard !asset.isOwned else {
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
             overlayImage = nil
-            return
+        case .optedIn:
+            overlayImage = "overlay-bg".uiImage
         }
-
-        overlayImage = "overlay-bg".uiImage
     }
 
     private mutating func bindIs3DActionHidden(
         _ asset: CollectibleAsset
     ) {
         is3DModeActionHidden = !asset.mediaType.isSupported
-    }
-    
-    mutating func bindDisplaysOffColorMedia(
-        _ asset: CollectibleAsset,
-        _ accountCollectibleStatus: AccountCollectibleStatus
-    ) {
-        switch accountCollectibleStatus {
-        case .notOptedIn, .owned:
-            displaysOffColorMedia = false
-        case .optedIn:
-            displaysOffColorMedia = true
-        }
     }
 
     private mutating func bindIsFullScreenBadgeHidden(

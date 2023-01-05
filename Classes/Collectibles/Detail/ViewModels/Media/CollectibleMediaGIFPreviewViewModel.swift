@@ -37,8 +37,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             asset: asset,
             media: media
         )
-
-        bindOverlayImage(asset)
+        bindOverlayImage(asset, accountCollectibleStatus)
         bindIs3DModeActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }

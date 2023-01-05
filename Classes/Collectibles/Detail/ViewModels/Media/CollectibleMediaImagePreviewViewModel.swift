@@ -28,14 +28,15 @@ protocol CollectibleMediaImagePreviewViewModel: ViewModel {
 
 extension CollectibleMediaImagePreviewViewModel {
     mutating func bindOverlayImage(
-        _ asset: CollectibleAsset
+        _ asset: CollectibleAsset,
+        _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
-        guard !asset.isOwned else {
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
             overlayImage = nil
-            return
+        case .optedIn:
+            overlayImage = "overlay-bg".uiImage
         }
-
-        overlayImage = "overlay-bg".uiImage
     }
 
     mutating func bindIs3DModeActionHidden(
@@ -43,27 +44,15 @@ extension CollectibleMediaImagePreviewViewModel {
     ) {
         is3DModeActionHidden = !asset.mediaType.isSupported
     }
-}
-
-extension CollectibleMediaImagePreviewViewModel {
-    mutating func bindDisplaysOffColorMedia(
-        _ asset: CollectibleAsset,
-        _ accountCollectibleStatus: AccountCollectibleStatus
-    ) {
-        switch accountCollectibleStatus {
-        case .notOptedIn, .owned:
-            displaysOffColorMedia = false
-        case .optedIn:
-            displaysOffColorMedia = true
-        }
-    }
 
     mutating func bindIsFullScreenBadgeHidden(
         _ asset: CollectibleAsset
     ) {
         isFullScreenActionHidden = !asset.mediaType.isSupported
     }
+}
 
+extension CollectibleMediaImagePreviewViewModel {
     func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {
