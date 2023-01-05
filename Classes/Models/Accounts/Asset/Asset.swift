@@ -26,6 +26,7 @@ protocol Asset: AnyObject {
     var creator: AssetCreator? { get }
     var decimals: Int { get }
     var total: UInt64? { get }
+    var totalSupply: Decimal? { get }
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
@@ -117,17 +118,5 @@ struct AssetNaming {
 
     var hasDisplayName: Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
-    }
-}
-
-extension Asset {
-    var totalSupply: Decimal? {
-        guard let microTotalSupply = total.unwrap(Decimal.init) else {
-            return nil
-        }
-
-        /// totalSupply = total * 10^-(decimals)
-        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
-        return totalSupply
     }
 }

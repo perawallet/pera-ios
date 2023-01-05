@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BlockchainBatchRequest.swift
+//   CollectibleAmountFormattingContext.swift
 
 import Foundation
 
-/// <note>
-/// Key -> account address
-typealias BlockchainBatchRequest = [String: BlockchainAccountBatchRequest]
+enum CollectibleAmountFormattingContext {
+    case listItem
+    case standalone
+}
 
-struct BlockchainAccountBatchRequest {
-    /// <note>
-    /// The dictionary is used to search faster.
-    var optInAssets: [AssetID : Any] = [:]
-    var optOutAssets: [AssetID: Any] = [:]
-    var sendPureCollectibleAssets: [AssetID: Any] = [:]
+extension CollectibleAmountFormattingContext {
+    func makeHandler() -> CollectibleAmountFormattingContextHandling {
+        switch self {
+        case .listItem:
+            return CollectibleAmountFormattingListItemHandler()
+        case .standalone:
+            return CollectibleAmountFormattingStandaloneContextHandler()
+        }
+    }
 }

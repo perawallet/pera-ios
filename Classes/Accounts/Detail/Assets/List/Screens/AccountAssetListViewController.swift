@@ -135,7 +135,7 @@ final class AccountAssetListViewController:
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        startLoadingOfVisibleCellsIfNeeded()
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -154,7 +154,7 @@ final class AccountAssetListViewController:
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        stopLoadingOfVisibleCellsIfNeeded()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     override func prepareLayout() {
@@ -340,7 +340,7 @@ extension AccountAssetListViewController {
 }
 
 extension AccountAssetListViewController {
-    private func startLoadingOfVisibleCellsIfNeeded() {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
         if isViewFirstAppeared { return }
 
         for cell in listView.visibleCells {
@@ -356,7 +356,7 @@ extension AccountAssetListViewController {
         }
     }
 
-    private func stopLoadingOfVisibleCellsIfNeeded() {
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
         for cell in listView.visibleCells {
             if let pendingAssetCell = cell as? PendingAssetListItemCell {
                 pendingAssetCell.stopLoading()
@@ -455,11 +455,9 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 let itemCell = cell as? SearchBarItemCell
                 itemCell?.delegate = self
             case .pendingAsset:
-                let cell = cell as? PendingAssetListItemCell
-                cell?.startLoading()
+                startAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
             case .pendingCollectibleAsset:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.startLoading()
+                startAnimatingListLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             default:
                 return
             }
@@ -533,11 +531,9 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             switch itemIdentifier {
             case .pendingAsset:
-                let cell = cell as? PendingAssetListItemCell
-                cell?.stopLoading()
+                stopAnimatingListLoadingIfNeeded(cell as! PendingAssetListItemCell)
             case .pendingCollectibleAsset:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.stopLoading()
+                stopAnimatingListLoadingIfNeeded(cell as! PendingCollectibleAssetListItemCell)
             default:
                 break
             }
@@ -683,6 +679,26 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             view: cell,
             backgroundColor: Colors.Defaults.background.uiColor
         )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: PendingAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: PendingAssetListItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.stopLoading()
     }
 }
 

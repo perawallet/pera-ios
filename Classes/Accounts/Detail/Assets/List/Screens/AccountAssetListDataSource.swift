@@ -82,7 +82,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 return cell
             case let .collectibleAsset(item):
                 let cell = collectionView.dequeue(
-                    NFTListItemCell.self,
+                    CollectibleListItemCell.self,
                     at: indexPath
                 )
                 cell.bindData(item.viewModel)
@@ -118,7 +118,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             SearchBarItemCell.self,
             AssetListItemCell.self,
             PendingAssetListItemCell.self,
-            NFTListItemCell.self,
+            CollectibleListItemCell.self,
             PendingCollectibleAssetListItemCell.self,
             AccountQuickActionsCell.self,
             NoContentCell.self

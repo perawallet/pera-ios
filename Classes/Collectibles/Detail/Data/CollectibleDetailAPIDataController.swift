@@ -28,7 +28,7 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
         qos: .userInitiated
     )
 
-    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+    private lazy var amountFormatter: CollectibleAmountFormatter = .init()
 
     private var ongoingEndpoint: EndpointOperatable?
 
@@ -172,7 +172,7 @@ extension CollectibleDetailAPIDataController {
         let collectibleAssetItem = CollectibleAssetItem(
             account: account,
             asset: asset,
-            amountFormatter: collectibleAmountFormatter
+            amountFormatter: amountFormatter
         )
         let itemIdentifier = CollectibleDetailAccountInformationItemIdentifier(collectibleAssetItem)
         let item = CollectibleDetailItem.accountInformation(itemIdentifier)
@@ -290,20 +290,23 @@ extension CollectibleDetailAPIDataController {
                 CollectibleDetailAssetIDItemIdentifier(asset)
             )
         )
+        
 
-        if let totalSupply = asset.totalSupply,
-           let formattedTotalSupply = collectibleAmountFormatter.format(totalSupply) {
+        if let totalSupply = asset.totalSupply {
+            amountFormatter.formattingContext = .listItem
 
-            descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: nil,
-                        title: "title-total-supply".localized,
-                        value: formattedTotalSupply,
-                        isCollectibleSpecificValue: false
+            if let formattedTotalSupply = amountFormatter.format(totalSupply) {
+                descriptionItems.append(
+                    .information(
+                        CollectibleTransactionInformation(
+                            icon: nil,
+                            title: "title-total-supply".localized,
+                            value: formattedTotalSupply,
+                            isCollectibleSpecificValue: false
+                        )
                     )
                 )
-            )
+            }
         }
 
         descriptionItems.append(

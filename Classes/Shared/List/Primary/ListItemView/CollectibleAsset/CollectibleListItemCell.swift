@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemCell.swift
+//   CollectibleListItemCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class NFTListItemCell:
-    CollectionCell<NFTListItemView>,
+final class CollectibleListItemCell:
+    CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
     override static var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
-    static let theme = NFTListItemViewTheme()
+    static let theme = CollectibleListItemViewTheme()
 
     override init(
         frame: CGRect
@@ -41,7 +41,7 @@ final class NFTListItemCell:
     }
 }
 
-extension NFTListItemCell {
+extension CollectibleListItemCell {
     func getTargetedPreview() -> UITargetedPreview {
         return UITargetedPreview(
            view: self,

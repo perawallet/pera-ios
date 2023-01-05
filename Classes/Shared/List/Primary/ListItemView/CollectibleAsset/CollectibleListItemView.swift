@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemView.swift
+//   CollectibleListItemView.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 
-/// <todo> Rename
-final class NFTListItemView:
+final class CollectibleListItemView:
     UIView,
     ViewComposable,
     ViewModelBindable,
@@ -39,7 +38,7 @@ final class NFTListItemView:
         return iconView.imageContainer.image
     }
 
-    func customize(_ theme: NFTListItemViewTheme) {
+    func customize(_ theme: CollectibleListItemViewTheme) {
         addIcon(theme)
         addIconOverlay(theme)
         addTitleContent(theme)
@@ -49,7 +48,7 @@ final class NFTListItemView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ viewModel: NFTListItemViewModel?) {
+    func bindData(_ viewModel: CollectibleListItemViewModel?) {
         iconView.load(from: viewModel?.icon)
         iconBottomRightBadgeView.image = viewModel?.iconBottomRightBadge
         iconOverlayView.image = viewModel?.iconOverlayImage
@@ -76,8 +75,8 @@ final class NFTListItemView:
     }
 
     static func calculatePreferredSize(
-        _ viewModel: NFTListItemViewModel?,
-        for theme: NFTListItemViewTheme,
+        _ viewModel: CollectibleListItemViewModel?,
+        for theme: CollectibleListItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -134,8 +133,8 @@ final class NFTListItemView:
     }
 }
 
-extension NFTListItemView {
-    private func addIcon(_ theme: NFTListItemViewTheme) {
+extension CollectibleListItemView {
+    private func addIcon(_ theme: CollectibleListItemViewTheme) {
         iconView.build(theme.icon)
         
         addSubview(iconView)
@@ -150,14 +149,14 @@ extension NFTListItemView {
         addLoadingIndicator(theme)
     }
     
-    private func addIconOverlay(_ theme: NFTListItemViewTheme) {
+    private func addIconOverlay(_ theme: CollectibleListItemViewTheme) {
         iconView.addSubview(iconOverlayView)
         iconOverlayView.snp.makeConstraints {
             $0.setPaddings()
         }
     }
     
-    private func addLoadingIndicator(_ theme: NFTListItemViewTheme) {
+    private func addLoadingIndicator(_ theme: CollectibleListItemViewTheme) {
         loadingIndicatorView.applyStyle(theme.loadingIndicator)
 
 
@@ -170,7 +169,7 @@ extension NFTListItemView {
         loadingIndicatorView.isHidden = true
     }
 
-    private func addIconBottomRightBadge(_ theme: NFTListItemViewTheme) {
+    private func addIconBottomRightBadge(_ theme: CollectibleListItemViewTheme) {
         addSubview(iconBottomRightBadgeView)
         iconBottomRightBadgeView.snp.makeConstraints {
             $0.top == iconView.snp.top + theme.iconBottomRightBadgePaddings.top
@@ -178,7 +177,7 @@ extension NFTListItemView {
         }
     }
 
-    private func addTitleContent(_ theme: NFTListItemViewTheme) {
+    private func addTitleContent(_ theme: CollectibleListItemViewTheme) {
         addSubview(titleContentView)
         titleContentView.snp.makeConstraints {
             $0.height >= iconView
@@ -194,7 +193,7 @@ extension NFTListItemView {
         addAmount(theme)
     }
 
-    private func addPrimaryTitle(_ theme: NFTListItemViewTheme) {
+    private func addPrimaryTitle(_ theme: CollectibleListItemViewTheme) {
         primaryTitleView.customizeAppearance(theme.primaryTitle)
 
         titleContentView.addSubview(primaryTitleView)
@@ -208,7 +207,7 @@ extension NFTListItemView {
         }
     }
 
-    private func addPrimaryTitleAccessory(_ theme: NFTListItemViewTheme) {
+    private func addPrimaryTitleAccessory(_ theme: CollectibleListItemViewTheme) {
         primaryTitleAccessoryView.customizeAppearance(theme.primaryTitleAccessory)
 
         titleContentView.addSubview(primaryTitleAccessoryView)
@@ -221,7 +220,7 @@ extension NFTListItemView {
         }
     }
 
-    private func addSecondaryTitle(_ theme: NFTListItemViewTheme) {
+    private func addSecondaryTitle(_ theme: CollectibleListItemViewTheme) {
         secondaryTitleView.customizeAppearance(theme.secondaryTitle)
 
         titleContentView.addSubview(secondaryTitleView)
@@ -233,7 +232,7 @@ extension NFTListItemView {
         }
     }
 
-    private func addAmount(_ theme: NFTListItemViewTheme) {
+    private func addAmount(_ theme: CollectibleListItemViewTheme) {
         amountView.customizeAppearance(theme.amount)
 
         titleContentView.addSubview(amountView)
@@ -248,7 +247,7 @@ extension NFTListItemView {
     }
 }
 
-extension NFTListItemView {
+extension CollectibleListItemView {
     var isLoading: Bool {
         return loadingIndicatorView.isAnimating
     }
