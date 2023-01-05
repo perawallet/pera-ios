@@ -39,6 +39,7 @@ final class CollectiblesViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
+        galleryUIStyleCache: .init(),
         configuration: configuration
     )
 

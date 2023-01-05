@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemView.swift
+//   CollectibleGridItemView.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-/// <todo> Rename
-final class CollectibleListItemView:
+final class CollectibleGridItemView:
     View,
     ViewModelBindable,
     ListReusable {
@@ -45,7 +44,7 @@ final class CollectibleListItemView:
     }
     
     func customize(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         addImage(theme)
         addTitleAndSubtitleContent(theme)
@@ -60,7 +59,7 @@ final class CollectibleListItemView:
     ) {}
 
     func bindData(
-        _ viewModel: CollectibleListItemViewModel?
+        _ viewModel: CollectibleGridItemViewModel?
     ) {
         imageView.load(from: viewModel?.image)
         overlayView.image = viewModel?.overlay
@@ -89,8 +88,8 @@ final class CollectibleListItemView:
     }
 
     class func calculatePreferredSize(
-        _ viewModel: CollectibleListItemViewModel?,
-        for theme: CollectibleListItemViewTheme,
+        _ viewModel: CollectibleGridItemViewModel?,
+        for theme: CollectibleGridItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -128,9 +127,9 @@ final class CollectibleListItemView:
     }
 }
 
-extension CollectibleListItemView {
+extension CollectibleGridItemView {
     private func addImage(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         imageView.build(theme.image)
 
@@ -153,7 +152,7 @@ extension CollectibleListItemView {
     }
 
     private func addOverlay(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         imageView.addSubview(overlayView)
         overlayView.snp.makeConstraints {
@@ -165,7 +164,7 @@ extension CollectibleListItemView {
     }
 
     private func addTitleAndSubtitleContent(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         addSubview(titleAndSubtitleContentView)
         titleAndSubtitleContentView.snp.makeConstraints {
@@ -180,7 +179,7 @@ extension CollectibleListItemView {
     }
 
     private func addTitle(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
 
@@ -194,7 +193,7 @@ extension CollectibleListItemView {
     }
 
     private func addSubtitle(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         subtitleView.customizeAppearance(theme.subtitle)
 
@@ -208,7 +207,7 @@ extension CollectibleListItemView {
     }
 
     private func addBottomLeftBadge(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         addSubview(bottomLeftBadgeCanvasView)
         bottomLeftBadgeCanvasView.snp.makeConstraints {
@@ -228,7 +227,7 @@ extension CollectibleListItemView {
     }
 
     private func addPendingOverlayView(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         pendingOverlayView.customizeAppearance(theme.pendingOverlay)
 
@@ -246,7 +245,7 @@ extension CollectibleListItemView {
     }
 
     private func addPendingCanvasView(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         pendingCanvasView.customizeAppearance(theme.pendingCanvas)
 
@@ -262,7 +261,7 @@ extension CollectibleListItemView {
     }
 
     private func addPendingLoadingIndicator(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         pendingLoadingIndicatorView.applyStyle(theme.indicator)
 
@@ -276,7 +275,7 @@ extension CollectibleListItemView {
     }
 
     private func addPendingTitle(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         pendingTitleView.customizeAppearance(theme.pendingTitle)
 
@@ -290,7 +289,7 @@ extension CollectibleListItemView {
     }
 
     private func addTopLeftBadge(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         addSubview(topLeftBadgeCanvasView)
         topLeftBadgeCanvasView.snp.makeConstraints {
@@ -311,7 +310,7 @@ extension CollectibleListItemView {
     }
 
     private func addAmount(
-        _ theme: CollectibleListItemViewTheme
+        _ theme: CollectibleGridItemViewTheme
     ) {
         addSubview(amountCanvasView)
         amountCanvasView.snp.makeConstraints {
@@ -332,7 +331,7 @@ extension CollectibleListItemView {
     }
 }
 
-extension CollectibleListItemView {
+extension CollectibleGridItemView {
     func getTargetedPreview() -> UITargetedPreview {
         return UITargetedPreview(
             view: imageView.imageContainer,
@@ -341,7 +340,7 @@ extension CollectibleListItemView {
     }
 }
 
-extension CollectibleListItemView {
+extension CollectibleGridItemView {
     var isLoading: Bool {
         return pendingLoadingIndicatorView.isAnimating
     }

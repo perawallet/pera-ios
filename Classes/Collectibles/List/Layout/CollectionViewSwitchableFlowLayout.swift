@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGCollectionViewFlowLayout.swift
+//   CollectionViewSwitchableFlowLayout.swift
 
 import Foundation
 import UIKit
 
-class ALGCollectionViewFlowLayout: UICollectionViewFlowLayout {
+class CollectionViewSwitchableFlowLayout: UICollectionViewFlowLayout {
     /// <note>
     /// Dynamically setting layout on UICollectionView causes inexplicable contentOffset change
     /// <src>
@@ -25,13 +25,12 @@ class ALGCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func targetContentOffset(
         forProposedContentOffset proposedContentOffset: CGPoint
     ) -> CGPoint {
-        if let collectionView = collectionView {
-            let currentContentOffset = collectionView.contentOffset
-            if currentContentOffset.y < proposedContentOffset.y {
-                return currentContentOffset
-            }
+        guard let collectionView else {
+            return proposedContentOffset
         }
 
-        return proposedContentOffset
+        let currentContentOffset = collectionView.contentOffset
+        let shouldPreventUnintentionalJumping = currentContentOffset.y < proposedContentOffset.y
+        return shouldPreventUnintentionalJumping ? currentContentOffset : proposedContentOffset
     }
 }

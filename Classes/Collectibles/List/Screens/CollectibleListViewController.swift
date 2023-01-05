@@ -26,27 +26,16 @@ final class CollectibleListViewController:
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleListLayout.build()
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: collectionViewLayout
-        )
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.contentInset.bottom = theme.listContentBottomInset
-        collectionView.backgroundColor = .clear
-        return collectionView
-    }()
+    private lazy var listView: UICollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: makeListLayout(galleryUIStyle)
+    )
 
-    private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource)
+    private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource, galleryUIStyle: galleryUIStyle)
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private var positionYForDisplayingListHeader: CGFloat?
 
-    private var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
     private var collectibleFilterOptions = CollectibleFilterOptions()
 
     private let dataController: CollectibleListDataController
@@ -54,15 +43,24 @@ final class CollectibleListViewController:
 
     private let theme: CollectibleListViewControllerTheme
 
+    private var galleryUIStyleCache: CollectibleGalleryUIStyleCache
+    var galleryUIStyle: CollectibleGalleryUIStyle {
+        didSet { performUpdatesWhenGalleryUIStyleDidChange(old: oldValue) }
+    }
+
     init(
         dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
         theme: CollectibleListViewControllerTheme = .common,
+        galleryUIStyleCache: CollectibleGalleryUIStyleCache,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
         self.theme = theme
+        self.galleryUIStyleCache = galleryUIStyleCache
+        self.galleryUIStyle = galleryUIStyleCache.galleryUIStyle
+        self.dataController.galleryUIStyle = galleryUIStyleCache.galleryUIStyle
 
         super.init(configuration: configuration)
     }
@@ -83,7 +81,7 @@ final class CollectibleListViewController:
 
         view.layoutIfNeeded()
 
-        let imageWidth = listLayout.calculateGridCellWidth(
+        let imageWidth = listLayout.calculateGridItemCellWidth(
             listView,
             layout: listView.collectionViewLayout
         )
@@ -97,9 +95,9 @@ final class CollectibleListViewController:
             }
 
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdate(let update):
                 self.eventHandler?(.didUpdateSnapshot)
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(update.snapshot, animatingDifferences: self.isViewAppeared)
             case .didFinishRunning(let hasError):
                 self.eventHandler?(.didFinishRunning(hasError: hasError))
             }
@@ -110,8 +108,17 @@ final class CollectibleListViewController:
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
+    }
 
-        restartLoadingOfVisibleCellsIfNeeded()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateListLayoutIfNeededWhenViewDidAppear()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     private func build() {
@@ -120,22 +127,107 @@ final class CollectibleListViewController:
 }
 
 extension CollectibleListViewController {
-    private func restartLoadingOfVisibleCellsIfNeeded() {
+    private func updateListLayoutIfNeededWhenViewDidAppear() {
+        if isViewFirstAppeared { return }
+
+        galleryUIStyle = galleryUIStyleCache.galleryUIStyle
+
+        updateGalleryUIActionsCellIfNeeded()
+    }
+}
+
+extension CollectibleListViewController {
+    private func performUpdatesWhenGalleryUIStyleDidChange(old: CollectibleGalleryUIStyle) {
+        if galleryUIStyle == old { return }
+
+        dataController.stopUpdates()
+
+        listLayout.galleryUIStyle = galleryUIStyle
+        dataController.galleryUIStyle = galleryUIStyle
+
+        listView.setCollectionViewLayout(
+            makeListLayout(galleryUIStyle),
+            animated: true
+        )
+
+        dataController.startUpdates()
+
+        dataController.reload()
+
+        galleryUIStyleCache.galleryUIStyle = galleryUIStyle
+    }
+}
+
+extension CollectibleListViewController {
+    private func updateGalleryUIActionsCellIfNeeded() {
+        if let indexPath = listDataSource.indexPath(for: .uiActions),
+           let cell = listView.cellForItem(at: indexPath) as? CollectibleGalleryUIActionsCell {
+            if galleryUIStyle.isGrid {
+                cell.setGridUIStyleSelected()
+            } else {
+                cell.setListUIStyleSelected()
+            }
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    private func makeListLayout(_ galleryUIStyle: CollectibleGalleryUIStyle) -> UICollectionViewLayout {
+        if galleryUIStyle.isGrid {
+            return CollectibleListLayout.gridFlowLayout
+        } else {
+            return CollectibleListLayout.listFlowLayout
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
+        if isViewFirstAppeared { return }
+
         for cell in listView.visibleCells {
-            if let pendingCollectibleGridItemCell = cell as? PendingCollectibleGridItemCell,
-               pendingCollectibleGridItemCell.isLoading {
-                pendingCollectibleGridItemCell.isLoading = true
+            if let pendingCollectibleGridItemCell = cell as? PendingCollectibleGridItemCell {
+                pendingCollectibleGridItemCell.startLoading()
                 return
             }
 
-            if let pendingCollectibleListItemCell = cell as? PendingCollectibleAssetListItemCell,
-               pendingCollectibleListItemCell.isLoading {
-                pendingCollectibleListItemCell.isLoading = true
+            if let pendingCollectibleListItemCell = cell as? PendingCollectibleAssetListItemCell {
+                pendingCollectibleListItemCell.startLoading()
                 return
             }
 
-            if let listLoadingCell = cell as? CollectibleListLoadingViewCell {
-                listLoadingCell.restartAnimating()
+            if let gridLoadingCell = cell as? CollectibleGalleryGridLoadingCell {
+                gridLoadingCell.startAnimating()
+                return
+            }
+
+            if let listLoadingCell = cell as? CollectibleGalleryListLoadingCell {
+                listLoadingCell.startAnimating()
+                return
+            }
+        }
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let pendingCollectibleGridItemCell = cell as? PendingCollectibleGridItemCell {
+                pendingCollectibleGridItemCell.stopLoading()
+                return
+            }
+
+            if let pendingCollectibleListItemCell = cell as? PendingCollectibleAssetListItemCell {
+                pendingCollectibleListItemCell.stopLoading()
+                return
+            }
+
+
+            if let gridLoadingCell = cell as? CollectibleGalleryGridLoadingCell {
+                gridLoadingCell.stopAnimating()
+                return
+            }
+
+            if let listLoadingCell = cell as? CollectibleGalleryListLoadingCell {
+                listLoadingCell.stopAnimating()
                 return
             }
         }
@@ -144,6 +236,13 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController {
     private func addListView() {
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.keyboardDismissMode = .onDrag
+        listView.contentInset.bottom = theme.listContentBottomInset
+        listView.backgroundColor = .clear
+
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.setPaddings()
@@ -195,9 +294,13 @@ extension CollectibleListViewController {
             linkInteractors(cell as! CollectibleGalleryUIActionsCell)
         case .empty(let item):
             switch item {
-            case .loading:
-                let loadingCell = cell as? CollectibleListLoadingViewCell
-                loadingCell?.startAnimating()
+            case .loading(let item):
+                switch item {
+                case .grid:
+                    startAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
+                case .list:
+                    startAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
+                }
             case .noContent:
                 linkInteractors(cell as! NoContentWithActionIllustratedCell)
             default:
@@ -206,11 +309,9 @@ extension CollectibleListViewController {
         case .pendingCollectibleAsset(let item):
             switch item {
             case .grid:
-                let cell = cell as? PendingCollectibleGridItemCell
-                cell?.isLoading = true
+                startAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.isLoading = true
+                startAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             }
         default: break
         }
@@ -228,20 +329,22 @@ extension CollectibleListViewController {
         switch itemIdentifier {
         case .empty(let item):
             switch item {
-            case .loading:
-                let loadingCell = cell as? CollectibleListLoadingViewCell
-                loadingCell?.stopAnimating()
+            case .loading(let item):
+                switch item {
+                case .grid:
+                    stopAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
+                case .list:
+                    stopAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
+                }
             default:
                 break
             }
         case .pendingCollectibleAsset(let item):
             switch item {
             case .grid:
-                let cell = cell as? PendingCollectibleGridItemCell
-                cell?.isLoading = false
+                stopAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
-                let cell = cell as? PendingCollectibleAssetListItemCell
-                cell?.isLoading = false
+                stopAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             }
         default:
             break
@@ -264,9 +367,9 @@ extension CollectibleListViewController {
         case .collectibleAsset(let item):
             var currentImage: UIImage?
 
-            if let gridItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell {
+            if let gridItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleGridItemCell {
                 currentImage = gridItemCell.contextView.currentImage
-            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? NFTListItemCell {
+            } else if let listItemCell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell {
                 currentImage = listItemCell.contextView.currentImage
             }
 
@@ -335,15 +438,55 @@ extension CollectibleListViewController {
         case .collectibleAsset(let item):
             switch item {
             case .grid:
-                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleGridItemCell
                 return cell.getTargetedPreview()
             case .list:
-                let cell = collectionView.cellForItem(at: indexPath) as! NFTListItemCell
+                let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
                 return cell.getTargetedPreview()
             }
         default:
             return nil
         }
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingListItemLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListItemLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingGridItemLoadingIfNeeded(_ cell: PendingCollectibleGridItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingGridItemLoadingIfNeeded(_ cell: PendingCollectibleGridItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: CollectibleGalleryListLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: CollectibleGalleryListLoadingCell?) {
+        cell?.stopAnimating()
+    }
+}
+
+extension CollectibleListViewController {
+    private func startAnimatingGridLoadingIfNeeded(_ cell: CollectibleGalleryGridLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingGridLoadingIfNeeded(_ cell: CollectibleGalleryGridLoadingCell?) {
+        cell?.stopAnimating()
     }
 }
 
@@ -443,7 +586,7 @@ extension CollectibleListViewController {
     ) {
         cell.delegate = self
 
-        if collectibleGalleryUIStyleStore.galleryUIStyle == CollectibleGalleryUIActionsView.gridUIStyleIndex {
+        if galleryUIStyle.isGrid {
             cell.setGridUIStyleSelected()
         } else {
             cell.setListUIStyleSelected()
@@ -494,15 +637,11 @@ extension CollectibleListViewController {
 
 extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate {
     func collectibleGalleryUIActionsViewDidSelectGridUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.gridUIStyleIndex
-        listView.setCollectionViewLayout(CollectibleListLayout.gridFlowLayout, animated: true)
-        dataController.reload()
+        galleryUIStyle = .grid
     }
 
     func collectibleGalleryUIActionsViewDidSelectListUIStyle(_ cell: CollectibleGalleryUIActionsCell) {
-        collectibleGalleryUIStyleStore.galleryUIStyle = CollectibleGalleryUIActionsView.listUIStyleIndex
-        listView.setCollectionViewLayout(CollectibleListLayout.listFlowLayout, animated: true)
-        dataController.reload()
+        galleryUIStyle = .list
     }
 
     func collectibleGalleryUIActionsViewDidEditSearchInput(_ cell: CollectibleGalleryUIActionsCell, input: String?) {

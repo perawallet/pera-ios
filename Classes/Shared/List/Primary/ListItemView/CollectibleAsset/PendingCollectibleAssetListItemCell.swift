@@ -18,17 +18,13 @@ import UIKit
 import MacaroonUIKit
 
 final class PendingCollectibleAssetListItemCell:
-    CollectionCell<NFTListItemView>,
+    CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
-    var isLoading: Bool = false {
-        didSet { updateLoadingIfNeeded(old: oldValue) }
-    }
-
     override static var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
-    static let theme = NFTListItemViewTheme()
+    static let theme = CollectibleListItemViewTheme()
 
     override init(
         frame: CGRect
@@ -48,29 +44,11 @@ final class PendingCollectibleAssetListItemCell:
 }
 
 extension PendingCollectibleAssetListItemCell {
-    private func updateLoadingIfNeeded(old: Bool) {
-        if isLoading != old {
-            updateLoading()
-        }
-
-        if isLoading && !contextView.isLoading {
-            startLoading()
-        }
-    }
-
-    private func updateLoading() {
-        stopLoading()
-
-        if isLoading {
-            startLoading()
-        }
-    }
-
-    private func startLoading()  {
+    func startLoading()  {
         contextView.startLoading()
     }
 
-    private func stopLoading() {
+    func stopLoading() {
         contextView.stopLoading()
     }
 }

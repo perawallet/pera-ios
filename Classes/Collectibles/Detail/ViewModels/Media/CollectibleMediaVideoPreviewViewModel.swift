@@ -22,7 +22,7 @@ import MacaroonURLImage
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
-    private(set) var isOwned: Bool = true
+    private(set) var overlayImage: UIImage?
     private(set) var is3DModeActionHidden: Bool = false
     private(set) var isFullScreenActionHidden: Bool = false
 
@@ -32,7 +32,7 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindOwned(asset)
+        bindOverlayImage(asset)
         bindIs3DActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
@@ -57,10 +57,15 @@ extension CollectibleMediaVideoPreviewViewModel {
         url = media.downloadURL
     }
 
-    private mutating func bindOwned(
+    private mutating func bindOverlayImage(
         _ asset: CollectibleAsset
     ) {
-        isOwned = asset.isOwned
+        guard !asset.isOwned else {
+            overlayImage = nil
+            return
+        }
+
+        overlayImage = "overlay-bg".uiImage
     }
 
     private mutating func bindIs3DActionHidden(

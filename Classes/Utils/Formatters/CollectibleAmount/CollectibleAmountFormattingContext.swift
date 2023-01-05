@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemCell.swift
+//   CollectibleAmountFormattingContext.swift
 
-import UIKit
-import MacaroonUIKit
+import Foundation
 
-final class CollectibleListItemCell:
-    CollectionCell<CollectibleListItemView>,
-    ViewModelBindable {
-    static let theme = CollectibleListItemViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
+enum CollectibleAmountFormattingContext {
+    case listItem
+    case standalone
 }
 
-extension CollectibleListItemCell {
-    func getTargetedPreview() -> UITargetedPreview {
-        return contextView.getTargetedPreview()
+extension CollectibleAmountFormattingContext {
+    func makeHandler() -> CollectibleAmountFormattingContextHandling {
+        switch self {
+        case .listItem:
+            return CollectibleAmountFormattingListItemHandler()
+        case .standalone:
+            return CollectibleAmountFormattingStandaloneContextHandler()
+        }
     }
 }

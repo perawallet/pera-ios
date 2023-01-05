@@ -133,7 +133,7 @@ extension SelectAssetViewControllerDataSource {
             return cell
         case .collectibleAsset(let item):
             let cell = collectionView.dequeue(
-                NFTListItemCell.self,
+                CollectibleListItemCell.self,
                 at: indexPath
             )
             cell.bindData(item.viewModel)
@@ -195,10 +195,10 @@ struct SelectAssetListItem: Hashable {
 
 struct SelectCollectibleAssetListItem {
     let asset: Asset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.asset = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 }

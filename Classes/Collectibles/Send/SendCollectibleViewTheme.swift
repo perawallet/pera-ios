@@ -25,6 +25,7 @@ struct SendCollectibleViewTheme:
     let contextViewContainerTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let image: URLImageViewStyleLayoutSheet
+    let imageCorner: Corner
     let titleAndSubtitleContainerVerticalPaddings: LayoutVerticalPaddings
     let title: TextStyle
     let subtitle: TextStyle
@@ -39,6 +40,7 @@ struct SendCollectibleViewTheme:
         horizontalPadding = 24
 
         image = URLImageViewCollectibleListTheme()
+        imageCorner = Corner(radius: 4)
 
         titleAndSubtitleContainerVerticalPaddings = (16, 16)
 

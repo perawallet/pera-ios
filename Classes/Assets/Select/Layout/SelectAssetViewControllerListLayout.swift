@@ -134,7 +134,7 @@ extension SelectAssetViewControllerListLayout {
         sizeForCollectibleAssetListItem item: SelectCollectibleAssetListItem,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = NFTListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -144,9 +144,9 @@ extension SelectAssetViewControllerListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = NFTListItemCell.calculatePreferredSize(
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
             item.viewModel,
-            for: NFTListItemCell.theme,
+            for: CollectibleListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

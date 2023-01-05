@@ -18,13 +18,9 @@ import UIKit
 import MacaroonUIKit
 
 final class PendingCollectibleGridItemCell:
-    CollectionCell<CollectibleListItemView>,
+    CollectionCell<CollectibleGridItemView>,
     ViewModelBindable {
-    var isLoading: Bool = false {
-        didSet { updateLoadingIfNeeded(old: oldValue) }
-    }
-
-    static let theme = CollectibleListItemViewTheme()
+    static let theme = CollectibleGridItemViewTheme()
 
     override init(
         frame: CGRect
@@ -43,29 +39,11 @@ extension PendingCollectibleGridItemCell {
 }
 
 extension PendingCollectibleGridItemCell {
-    private func updateLoadingIfNeeded(old: Bool) {
-        if isLoading != old {
-            updateLoading()
-        }
-
-        if isLoading && !contextView.isLoading {
-            startLoading()
-        }
-    }
-
-    private func updateLoading() {
-        stopLoading()
-
-        if isLoading {
-            startLoading()
-        }
-    }
-
-    private func startLoading()  {
+    func startLoading()  {
         contextView.startLoading()
     }
 
-    private func stopLoading() {
+    func stopLoading() {
         contextView.stopLoading()
     }
 }

@@ -1022,7 +1022,7 @@
 "collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
 "collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
 "collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
-"collectible-filter--selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
 
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";

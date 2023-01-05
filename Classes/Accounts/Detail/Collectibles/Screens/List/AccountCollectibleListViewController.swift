@@ -36,6 +36,7 @@ final class AccountCollectibleListViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
+        galleryUIStyleCache: .init(),
         configuration: configuration
     )
 

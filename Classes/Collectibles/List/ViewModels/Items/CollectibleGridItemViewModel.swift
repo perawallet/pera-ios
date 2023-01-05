@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemViewModel.swift
+//   CollectibleGridItemViewModel.swift
 
 import Foundation
 import UIKit
@@ -20,7 +20,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-struct CollectibleListItemViewModel: ViewModel {
+struct CollectibleGridItemViewModel: ViewModel {
     private(set) var image: ImageSource?
     private(set) var overlay: UIImage?
     private(set) var title: EditText?
@@ -44,7 +44,7 @@ struct CollectibleListItemViewModel: ViewModel {
     }
 }
 
-extension CollectibleListItemViewModel {
+extension CollectibleGridItemViewModel {
     mutating func bind<T>(
         imageSize: CGSize,
         model: T
@@ -75,10 +75,17 @@ extension CollectibleListItemViewModel {
             bindPendingTitle()
             return
         }
+
+        if let update = model as? SendPureCollectibleAssetBlockchainUpdate {
+            bindIcon(imageSize: imageSize, update: update)
+            bindPrimaryTitle(update)
+            bindSecondaryTitle(update)
+            bindPendingTitle()
+        }
     }
 }
 
-extension CollectibleListItemViewModel {
+extension CollectibleGridItemViewModel {
     private mutating func bindAmount(
         _ item: CollectibleAssetItem
     ) {
@@ -120,9 +127,7 @@ extension CollectibleListItemViewModel {
     private mutating func bindOverlay(
         item: CollectibleAssetItem
     ) {
-        if !item.asset.isOwned {
-            overlay = "overlay-bg".uiImage
-        }
+        overlay = !item.asset.isOwned ? "overlay-bg".uiImage : nil
     }
 
     private mutating func bindTitle(
@@ -175,7 +180,7 @@ extension CollectibleListItemViewModel {
     }
 }
 
-extension CollectibleListItemViewModel {
+extension CollectibleGridItemViewModel {
     func getImage(
         imageSize: CGSize,
         asset: CollectibleAsset
@@ -261,41 +266,30 @@ extension CollectibleListItemViewModel {
     }
 }
 
-extension CollectibleListItemViewModel {
+extension CollectibleGridItemViewModel {
     mutating func bindIcon(imageSize: CGSize, update: OptInBlockchainUpdate) {
         let placeholder = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
-
-        if let thumbnailImage = update.collectibleAssetThumbnailImage {
-            let prismURL = PrismURL(baseURL: thumbnailImage)
+        let url = update.collectibleAssetThumbnailImage.unwrap {
+            PrismURL(baseURL: $0)
                 .setExpectedImageSize(imageSize)
                 .build()
-
-            image = PNGImageSource(
-                url: prismURL,
-                shape: .rounded(4),
-                placeholder: getPlaceholder(placeholder)
-            )
-            return
-        }
-
-        let imageSource =
-            PNGImageSource(
-                url: nil,
-                placeholder: getPlaceholder(placeholder)
-            )
-
-        image = imageSource
+         }
+        image = PNGImageSource(
+            url: url,
+            shape: url == nil ? .original : .rounded(4),
+            placeholder: getPlaceholder(placeholder)
+        )
     }
 
     mutating func bindTitle(_ update: OptInBlockchainUpdate) {
-        guard let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString() else {
-            return
+        let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString()
+        title = collectionName.unwrap {
+            .attributedString(
+                $0.footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
+            )
         }
-
-        title = .attributedString(
-            collectionName
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
-        )
     }
 
     mutating func bindSubtitle(_ update: OptInBlockchainUpdate) {
@@ -308,45 +302,70 @@ extension CollectibleListItemViewModel {
     }
 }
 
-extension CollectibleListItemViewModel {
+extension CollectibleGridItemViewModel {
     mutating func bindIcon(imageSize: CGSize, update: OptOutBlockchainUpdate) {
         let placeholder = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
-
-        if let thumbnailImage = update.collectibleAssetThumbnailImage {
-            let prismURL = PrismURL(baseURL: thumbnailImage)
+        let url = update.collectibleAssetThumbnailImage.unwrap {
+            PrismURL(baseURL: $0)
                 .setExpectedImageSize(imageSize)
                 .build()
-
-            image = PNGImageSource(
-                url: prismURL,
-                shape: .rounded(4),
-                placeholder: getPlaceholder(placeholder)
-            )
-            return
-        }
-
-        let imageSource =
-            PNGImageSource(
-                url: nil,
-                placeholder: getPlaceholder(placeholder)
-            )
-
-        image = imageSource
+         }
+        image = PNGImageSource(
+            url: url,
+            shape: url == nil ? .original : .rounded(4),
+            placeholder: getPlaceholder(placeholder)
+        )
     }
 
     mutating func bindPrimaryTitle(_ update: OptOutBlockchainUpdate) {
-        guard let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString() else {
-            return
+        let collectionName = update.collectibleAssetCollectionName.unwrapNonEmptyString()
+        title = collectionName.unwrap {
+            .attributedString(
+                $0.footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
+            )
         }
-
-        title = .attributedString(
-            collectionName
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
-        )
     }
 
     mutating func bindSecondaryTitle(_ update: OptOutBlockchainUpdate) {
         let subtitle = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        self.subtitle = .attributedString(
+            subtitle
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
+        )
+    }
+}
+
+extension CollectibleGridItemViewModel {
+    mutating func bindIcon(imageSize: CGSize, update: SendPureCollectibleAssetBlockchainUpdate) {
+        let placeholder = update.assetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+        let url = update.assetThumbnailImage.unwrap {
+            PrismURL(baseURL: $0)
+                .setExpectedImageSize(imageSize)
+                .build()
+         }
+        image = PNGImageSource(
+            url: url,
+            shape: url == nil ? .original : .rounded(4),
+            placeholder: getPlaceholder(placeholder)
+        )
+    }
+
+    mutating func bindPrimaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        let collectionName = update.assetCollectionName.unwrapNonEmptyString()
+        title = collectionName.unwrap {
+            .attributedString(
+                $0.footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
+            )
+        }
+    }
+
+    mutating func bindSecondaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        let subtitle = update.assetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
 
         self.subtitle = .attributedString(
             subtitle

@@ -28,7 +28,7 @@ final class CollectibleDetailAccountInformationView:
     ]
 
     private lazy var iconView = ImageView()
-    private lazy var titleView = UILabel()
+    private lazy var titleView = Label()
     private lazy var amountView = Label()
 
     private var isAmountLayoutLoaded = false
@@ -74,10 +74,14 @@ final class CollectibleDetailAccountInformationView:
 
         let width = size.width
         let iconHeight = theme.iconSize.h
-        let titleSize = viewModel.title?.boundingSize(
+        let titleTextHeight = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((.greatestFiniteMagnitude, .greatestFiniteMagnitude))
-        ) ?? .zero
+        ).height ?? .zero
+        let titleHeight =
+            theme.titleContentEdgeInsets.top +
+            titleTextHeight +
+            theme.titleContentEdgeInsets.bottom
         let amountTextHeight = viewModel.amount?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
@@ -87,7 +91,7 @@ final class CollectibleDetailAccountInformationView:
             amountTextHeight +
             theme.amountContentEdgeInsets.bottom
 
-        let contentHeight = max(max(iconHeight, titleSize.height), amountHeight)
+        let contentHeight = max(max(iconHeight, titleHeight), amountHeight)
         let minCalculatedHeight = min(contentHeight.ceil(), size.height)
         return CGSize((size.width, minCalculatedHeight))
     }
@@ -168,6 +172,7 @@ extension CollectibleDetailAccountInformationView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
+        titleView.contentEdgeInsets = theme.titleContentEdgeInsets
         titleView.snp.makeConstraints {
             $0.top >= 0
             $0.leading == iconView.snp.trailing + theme.spacingBetweenIconAndTitle
