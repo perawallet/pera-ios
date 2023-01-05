@@ -22,11 +22,14 @@ final class CollectibleDetailLayout: NSObject {
     private static let theme = Theme()
     
     private let dataSource: CollectibleDetailDataSource
+    private let collectibleDescriptionProvider: () -> CollectibleDescriptionViewModel?
 
     init(
-        dataSource: CollectibleDetailDataSource
+        dataSource: CollectibleDetailDataSource,
+        collectibleDescriptionProvider: @escaping () -> CollectibleDescriptionViewModel?
     ) {
         self.dataSource = dataSource
+        self.collectibleDescriptionProvider = collectibleDescriptionProvider
         super.init()
     }
 
@@ -177,12 +180,16 @@ extension CollectibleDetailLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
-        case .description(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForDescriptionItem: item
-            )
+        case .description:
+            let descriptionItem = collectibleDescriptionProvider()
+            if let descriptionItem {
+                return listView(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    sizeForDescriptionItem: descriptionItem
+                )
+            }
+            return .zero
         case .information(let item):
             return listView(
                 collectionView,
