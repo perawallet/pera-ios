@@ -33,7 +33,7 @@ struct AssetFilterOptions {
     }
 
     private let cache: AssetFilterOptionsCache
-
+    
     init(cache: AssetFilterOptionsCache = .init()) {
         self.cache = cache
     }

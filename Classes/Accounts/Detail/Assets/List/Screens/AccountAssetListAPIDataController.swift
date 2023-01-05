@@ -30,6 +30,7 @@ final class AccountAssetListAPIDataController:
         transactionData: nil,
         params: nil
     )
+    private lazy var assetFilterOptions = AssetFilterOptions()
 
     private lazy var assetFilterOptions = AssetFilterOptions()
 
@@ -486,6 +487,20 @@ extension AccountAssetListAPIDataController {
         }
 
         return "algo".containsCaseInsensitive(keyword)
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    private func shouldHideAssetWithNoBalance(_ asset: Asset) -> Bool {
+        if asset.amount != .zero {
+            return false
+        }
+
+        if asset.isAlgo {
+            return false
+        }
+
+        return assetFilterOptions.hideAssetsWithNoBalanceInAssetList
     }
 }
 

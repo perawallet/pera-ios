@@ -28,6 +28,7 @@ protocol CollectibleDetailDataController: AnyObject {
 
     func hasOptedIn() -> OptInStatus
     func hasOptedOut() -> OptOutStatus
+    func getCurrentAccountCollectibleStatus() -> AccountCollectibleStatus
 }
 
 enum CollectibleDetailSection:
@@ -154,4 +155,10 @@ enum CollectibleDetailDataControllerEvent {
             return nil
         }
     }
+}
+
+enum AccountCollectibleStatus {
+    case notOptedIn
+    case optedIn
+    case owned
 }

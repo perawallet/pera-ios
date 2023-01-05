@@ -43,6 +43,20 @@ extension CollectibleMediaImagePreviewViewModel {
     ) {
         is3DModeActionHidden = !asset.mediaType.isSupported
     }
+}
+
+extension CollectibleMediaImagePreviewViewModel {
+    mutating func bindDisplaysOffColorMedia(
+        _ asset: CollectibleAsset,
+        _ accountCollectibleStatus: AccountCollectibleStatus
+    ) {
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
+            displaysOffColorMedia = false
+        case .optedIn:
+            displaysOffColorMedia = true
+        }
+    }
 
     mutating func bindIsFullScreenBadgeHidden(
         _ asset: CollectibleAsset

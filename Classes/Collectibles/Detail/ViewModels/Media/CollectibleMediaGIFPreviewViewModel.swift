@@ -29,6 +29,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media?
     ) {
         bindImage(

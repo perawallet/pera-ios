@@ -358,16 +358,26 @@ extension QRScannerViewController: WalletConnectorDelegate {
         let sessionChainId = session.chainId(for: api.network)
 
         if !api.network.allowedChainIDs.contains(sessionChainId) {
-            asyncMain { [weak bannerController] in
-                bannerController?.presentErrorBanner(
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-transaction-error-node".localized
                 )
+                
+                completion(
+                    session.getDeclinedWalletConnectionInfo(on: api.network)
+                )
+                
+                self.resetUIForScanning()
             }
             return
         }
 
-        let accounts = self.sharedDataController.sortedAccounts()
+        let accounts = self.sharedDataController.accountCollection
 
         guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak self] in
@@ -379,10 +389,14 @@ extension QRScannerViewController: WalletConnectorDelegate {
                     title: "title-error".localized,
                     message: "wallet-connect-session-error-no-account".localized
                 )
+                
+                completion(
+                    session.getDeclinedWalletConnectionInfo(on: api.network)
+                )
             }
-
             return
         }
+        
         dAppName = session.dAppInfo.peerMeta.name
 
         asyncMain { [weak self] in

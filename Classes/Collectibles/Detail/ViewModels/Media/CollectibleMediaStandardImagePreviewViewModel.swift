@@ -29,6 +29,7 @@ struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePrevi
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media?
     ) {
         bindImage(

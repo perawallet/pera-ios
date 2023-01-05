@@ -12,15 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+<<<<<<<< HEAD:Classes/Models/Accounts/Asset/Collectibles/CollectibleCollection.swift
 //   CollectibleCollection.swift
+========
+//   AssetFilterOptions.swift
+>>>>>>>> enhancement-5.5.x:Classes/Assets/Filter/AssetFilterOptions.swift
 
 import Foundation
 import MagpieCore
 
+<<<<<<<< HEAD:Classes/Models/Accounts/Asset/Collectibles/CollectibleCollection.swift
 final class CollectibleCollection: ALGAPIModel {
     let name: String?
 
     init() {
         self.name = nil
+========
+struct AssetFilterOptions {
+    var hideAssetsWithNoBalanceInAssetList: Bool {
+        get { cache.hideAssetsWithNoBalanceInAssetList }
+        set { cache.hideAssetsWithNoBalanceInAssetList = newValue }
+    }
+    
+    private let cache: AssetFilterOptionsCache
+    
+    init(cache: AssetFilterOptionsCache = .init()) {
+        self.cache = cache
+>>>>>>>> enhancement-5.5.x:Classes/Assets/Filter/AssetFilterOptions.swift
     }
 }

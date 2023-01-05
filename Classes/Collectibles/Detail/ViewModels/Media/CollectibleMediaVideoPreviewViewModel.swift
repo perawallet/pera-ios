@@ -28,6 +28,7 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
 
     init(
         asset: CollectibleAsset,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media
     ) {
         bindPlaceholder(asset)
@@ -72,6 +73,18 @@ extension CollectibleMediaVideoPreviewViewModel {
         _ asset: CollectibleAsset
     ) {
         is3DModeActionHidden = !asset.mediaType.isSupported
+    }
+    
+    mutating func bindDisplaysOffColorMedia(
+        _ asset: CollectibleAsset,
+        _ accountCollectibleStatus: AccountCollectibleStatus
+    ) {
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
+            displaysOffColorMedia = false
+        case .optedIn:
+            displaysOffColorMedia = true
+        }
     }
 
     private mutating func bindIsFullScreenBadgeHidden(
