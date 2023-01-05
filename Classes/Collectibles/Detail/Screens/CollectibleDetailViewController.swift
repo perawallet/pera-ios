@@ -947,13 +947,23 @@ extension CollectibleDetailViewController: CollectibleDescriptionCellDelegate {
     }
 
     func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell) {
-        dataController.collectibleDescriptionViewModel.bindIsTruncating(false)
-
-        listView.collectionViewLayout.invalidateLayout()
+        updateCollectibleDescriptionCell(cell, isTruncated: false)
     }
 
     func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell) {
-        dataController.collectibleDescriptionViewModel.bindIsTruncating(true)
+        updateCollectibleDescriptionCell(cell, isTruncated: true)
+    }
+
+    private func updateCollectibleDescriptionCell(_ cell: CollectibleDescriptionCell, isTruncated: Bool) {
+        let viewModel = CollectibleDescriptionViewModel(
+            asset: asset,
+            fittingWidth: dataController.collectibleDescriptionFittingWidth,
+            isTruncated: isTruncated
+        )
+
+        dataController.collectibleDescriptionViewModel = viewModel
+
+        cell.bindData(viewModel)
 
         listView.collectionViewLayout.invalidateLayout()
     }

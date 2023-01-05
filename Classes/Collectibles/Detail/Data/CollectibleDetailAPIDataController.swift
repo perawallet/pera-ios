@@ -276,7 +276,7 @@ extension CollectibleDetailAPIDataController {
                 collectibleDescriptionViewModel = CollectibleDescriptionViewModel(
                     asset: asset,
                     fittingWidth: collectibleDescriptionFittingWidth,
-                    isTruncating: true
+                    isTruncated: true
                 )
             }
 

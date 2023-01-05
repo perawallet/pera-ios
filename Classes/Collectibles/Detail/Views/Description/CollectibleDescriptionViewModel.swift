@@ -19,49 +19,38 @@ import MacaroonUIKit
 
 struct CollectibleDescriptionViewModel {
     private(set) var description: TextProvider?
-    private(set) var shouldShowToggleTruncationAction: Bool = false
-    private(set) var isTruncating: Bool = true
+    private(set) var isTruncatable: Bool = false
+    private(set) var isTruncated: Bool = true
 
-    private(set) var fullDescriptionHeight: CGFloat = .zero
-    private(set) var truncatedDescriptionHeight: CGFloat = .zero
+    private let characterThreshold = 180
 
     init(
         asset: Asset,
         fittingWidth: CGFloat,
-        isTruncating: Bool
+        isTruncated: Bool
     ) {
+        self.isTruncated = isTruncated
+
+        bindIsTruncatable(asset: asset, fittingWidth: fittingWidth)
         bindDescription(asset)
-        bindShouldShowToggleTruncationAction(fittingWidth: fittingWidth)
-        bindIsTruncating(isTruncating)
     }
 }
 
 extension CollectibleDescriptionViewModel {
+    mutating func bindIsTruncatable(asset: Asset, fittingWidth: CGFloat) {
+        let descriptionCharacterCount = asset.description!.count
+
+        isTruncatable = descriptionCharacterCount > characterThreshold
+    }
+
     mutating func bindDescription(_ asset: Asset) {
-        description = asset.description?.bodyRegular()
-    }
+        let description = asset.description!
 
-    mutating func bindShouldShowToggleTruncationAction(fittingWidth: CGFloat) {
-        let descriptionSingleLineSize = description?.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((.greatestFiniteMagnitude, .greatestFiniteMagnitude))
-        )
-        let descriptionLineHeight = descriptionSingleLineSize?.height ?? .zero
-
-        let numberOfLinesLimit = 4
-        let truncatedDescriptionHeight = descriptionLineHeight * numberOfLinesLimit.cgFloat
-        self.truncatedDescriptionHeight = truncatedDescriptionHeight
-
-        let fullDescriptionHeight = description?.boundingSize(
-            multiline: true,
-            fittingSize: CGSize((fittingWidth, .greatestFiniteMagnitude))
-        ).height ?? .zero
-        self.fullDescriptionHeight = fullDescriptionHeight
-
-        shouldShowToggleTruncationAction = fullDescriptionHeight > truncatedDescriptionHeight
-    }
-
-    mutating func bindIsTruncating(_ isTruncating: Bool) {
-        self.isTruncating = isTruncating
+        if isTruncated && isTruncatable {
+            let truncatedDescription = String(description.prefix(characterThreshold)) + "..." 
+            self.description = truncatedDescription.bodyRegular()
+        } else {
+            self.description = description.bodyRegular()
+        }
     }
 }

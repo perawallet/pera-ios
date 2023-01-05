@@ -41,22 +41,15 @@ final class CollectibleDescriptionView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: CollectibleDescriptionViewModel?) {
-        let shouldShowToggleTruncationAction = viewModel?.shouldShowToggleTruncationAction ?? false
-
         if let description = viewModel?.description {
             description.load(in: descriptionView)
-
-            let isTruncating = viewModel?.isTruncating ?? true
-            if let theme,
-               isTruncating && shouldShowToggleTruncationAction {
-                descriptionView.customizeBaseAppearance(textOverflow: theme.truncatedDescriptionOverflow)
-            }
         } else {
             descriptionView.text = nil
             descriptionView.attributedText = nil
         }
 
-        if shouldShowToggleTruncationAction,
+        let isTruncatable = viewModel?.isTruncatable ?? false
+        if isTruncatable,
            let theme {
             toggleTruncationActionView.customizeAppearance(theme.toggleTruncationAction)
         } else {
@@ -73,24 +66,23 @@ final class CollectibleDescriptionView:
             return CGSize((size.width, 0))
         }
 
-        let isTruncating = viewModel.isTruncating
+        let width = size.width
 
-        var preferredHeight: CGFloat
+        let descriptionSize = viewModel.description?.boundingSize(
+            multiline: true,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        ) ?? .zero
 
-        let shouldShowToggleTruncationAction = viewModel.shouldShowToggleTruncationAction
+        var preferredHeight = descriptionSize.height
 
-        if isTruncating && shouldShowToggleTruncationAction {
-            preferredHeight = viewModel.truncatedDescriptionHeight
-        } else {
-            preferredHeight = viewModel.fullDescriptionHeight
-        }
-
-        if shouldShowToggleTruncationAction {
+        let isTruncatable = viewModel.isTruncatable
+        if isTruncatable {
             preferredHeight +=
                 theme.context.toggleTruncationActionContentEdgeInsets.vertical +
                 theme.toggleTruncationActionFont.lineHeight
         }
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
@@ -135,21 +127,9 @@ extension CollectibleDescriptionView {
 }
 
 extension CollectibleDescriptionView {
-    private func updateDescriptionWhenToggleTruncationDidChange() {
-        guard let theme = theme else { return }
-
-        let isTruncated = !toggleTruncationActionView.isSelected
-        let textOverflow = isTruncated ? theme.truncatedDescriptionOverflow : theme.fullDescriptionOverflow
-        descriptionView.customizeBaseAppearance(textOverflow: textOverflow)
-    }
-}
-
-extension CollectibleDescriptionView {
     @objc
     private func toggleBodyTruncation() {
         toggleTruncationActionView.isSelected.toggle()
-
-        updateDescriptionWhenToggleTruncationDidChange()
 
         publishTruncationChange()
     }
