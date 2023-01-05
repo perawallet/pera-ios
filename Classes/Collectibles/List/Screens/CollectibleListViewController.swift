@@ -36,6 +36,8 @@ final class CollectibleListViewController:
 
     private var positionYForDisplayingListHeader: CGFloat?
 
+    private var collectibleFilterOptions = CollectibleFilterOptions()
+
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -515,7 +517,7 @@ extension CollectibleListViewController {
             self.dataController.galleryAccount.singleAccount?.value.isWatchAccount() ?? false
             
             if isWatchAccount {
-                self.clearFiltersAndReload()
+                self.clearFilters()
                 return
             }
             
@@ -527,14 +529,13 @@ extension CollectibleListViewController {
             guard let self = self else {
                 return
             }
-            self.clearFiltersAndReload()
+            self.clearFilters()
         }
     }
     
-    private func clearFiltersAndReload() {
-        var store = CollectibleFilterStore()
-        store.displayWatchAccountCollectibleAssetsInCollectibleList = true
-        store.displayOptedInCollectibleAssetsInCollectibleList = true
+    private func clearFilters() {
+        collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList = true
+        collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList = true
 
         reload()
     }

@@ -268,13 +268,7 @@ extension CollectibleDetailAPIDataController {
         var descriptionItems: [CollectibleDetailItem] = []
 
         if !asset.description.isNilOrEmpty {
-            descriptionItems.append(
-                .description(
-                    CollectibleDescriptionViewModel(
-                        asset
-                    )
-                )
-            )
+            descriptionItems.append(.description)
         }
 
         if asset.creator?.address != nil {

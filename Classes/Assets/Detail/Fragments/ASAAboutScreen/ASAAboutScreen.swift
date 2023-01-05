@@ -436,6 +436,8 @@ extension ASAAboutScreen {
         )
 
         bindDescriptionData()
+
+        descriptionView.delegate = self
     }
 
     private func bindDescriptionData() {
@@ -558,6 +560,12 @@ extension ASAAboutScreen {
         mailComposer.delegate = self
         mailComposer.configureMail(for: .report(assetId: asset.id))
         mailComposer.present(from: self)
+    }
+}
+
+extension ASAAboutScreen: ShowMoreViewDelegate {
+    func showMoreViewDidTapURL(_ view: ShowMoreView, url: URL) {
+        open(url)
     }
 }
 

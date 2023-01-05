@@ -12,34 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleDescriptionViewModel.swift
+//   CollectibleDescriptionCellTheme.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
 
-struct CollectibleDescriptionViewModel:
-    ViewModel,
-    Hashable {
-    private(set) var description: EditText?
+struct CollectibleDescriptionCellTheme:
+    StyleSheet,
+    LayoutSheet {
+    var contextPaddings: LayoutPaddings
+    var context: CollectibleDescriptionViewTheme
+    var toggleTruncationActionFont: UIFont
 
     init(
-        _ asset: CollectibleAsset
+        _ family: LayoutFamily
     ) {
-        bindDescription(asset)
-    }
-}
-
-extension CollectibleDescriptionViewModel {
-    private mutating func bindDescription(
-        _ asset: CollectibleAsset
-    ) {
-        guard let aDescription = asset.description else {
-            return
-        }
-
-        description = .attributedString(
-            aDescription
-                .bodyRegular()
-        )
+        self.contextPaddings = (0, 0, 12, 0)
+        self.context = CollectibleDescriptionViewTheme(family)
+        self.toggleTruncationActionFont = context.toggleTruncationAction.font?.uiFont ?? Typography.bodyMedium()
     }
 }
