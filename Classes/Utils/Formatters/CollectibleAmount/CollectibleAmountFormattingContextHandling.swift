@@ -27,7 +27,6 @@ protocol CollectibleAmountFormattingContextHandling {
 }
 
 struct CollectibleAmountFormattingRules {
-    var locale: Locale?
     var roundingMode: RoundingMode?
     var minimumFractionDigits: Int?
     var maximumFractionDigits: Int?
