@@ -25,16 +25,16 @@ struct ParsedSwapTransaction {
     let quote: SwapQuote?
 
     var paidAmount: UInt64 {
-        let fallbackAmountOutFromTheQuote = quote?.amountOutWithSlippage ?? 0
         if paidTransactions.isEmpty {
+            let fallbackAmountOutFromTheQuote = quote?.amountOutWithSlippage ?? 0
             return fallbackAmountOutFromTheQuote
         }
         return paidTransactions.reduce(0, {$0 + $1.amount })
     }
 
     var receivedAmount: UInt64 {
-        let fallbackAmountInFromTheQuote = quote?.amountOutWithSlippage ?? 0
         if receivedTransactions.isEmpty {
+            let fallbackAmountInFromTheQuote = quote?.amountOutWithSlippage ?? 0
             return fallbackAmountInFromTheQuote
         }
         return receivedTransactions.reduce(0, {$0 + $1.amount })
