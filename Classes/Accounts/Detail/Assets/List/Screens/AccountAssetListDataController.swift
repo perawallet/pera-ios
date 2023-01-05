@@ -119,18 +119,23 @@ struct AccountAssetsCollectibleAssetListItem: Hashable {
 
 struct AccountAssetsPendingCollectibleAssetListItem: Hashable {
     let viewModel: CollectibleListItemViewModel
-
+    
     private let assetID: AssetID
-
+    
     init(update: OptInBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = CollectibleListItemViewModel(update: update)
-   }
-
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+    
     init(update: OptOutBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = CollectibleListItemViewModel(update: update)
-   }
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+    
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(assetID)

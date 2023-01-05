@@ -168,6 +168,12 @@ extension AccountAssetListAPIDataController {
                 pendingItems.append(assetItem)
             }
 
+            let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates(for: account)
+            for pendingSendPureCollectibleAsset in pendingSendPureCollectibleAssets {
+                let update = pendingSendPureCollectibleAsset.value
+                pendingItems.append(self.makePendingPureCollectibleAssetSendListItem(update))
+            }
+
             assetItems.append(contentsOf: pendingItems)
 
             self.load(with: self.searchKeyword)
@@ -185,6 +191,14 @@ extension AccountAssetListAPIDataController {
                     for: account
                 )
                 if hasPendingOptOut {
+                    return
+                }
+
+                let hasPendingSendPureCollectibleAsset = monitor.hasPendingSendPureCollectibleAssetRequest(
+                    assetID: asset.id,
+                    for: account
+                )
+                if hasPendingSendPureCollectibleAsset {
                     return
                 }
 
@@ -366,6 +380,11 @@ extension AccountAssetListAPIDataController {
     }
 
     private func makePendingCollectibleAssetOptOutListItem(_ update: OptOutBlockchainUpdate) -> AccountAssetsItem {
+        let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
+        return .pendingCollectibleAsset(item)
+    }
+
+    private func makePendingPureCollectibleAssetSendListItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> AccountAssetsItem {
         let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
         return .pendingCollectibleAsset(item)
     }

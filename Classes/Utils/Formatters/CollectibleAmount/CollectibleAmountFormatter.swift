@@ -23,6 +23,7 @@ final class CollectibleAmountFormatter {
 
     init() {
         let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
         numberFormatter.numberStyle = .decimal
         self.numberFormatter = numberFormatter
     }
@@ -83,8 +84,6 @@ extension CollectibleAmountFormatter {
     private func applyRules(
         _ rules: CollectibleAmountFormattingRules
     ) {
-        numberFormatter.locale = rules.locale
-
         let minimumFractionDigits = rules.minimumFractionDigits ?? 0
         let preferredMaximumFractionDigits = rules.maximumFractionDigits ?? 0
         let maximumFractionDigits = max(minimumFractionDigits, preferredMaximumFractionDigits)

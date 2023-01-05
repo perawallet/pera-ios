@@ -37,13 +37,14 @@ final class CollectibleListLocalDataController:
 
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)?
 
+    var galleryUIStyle: CollectibleGalleryUIStyle = .grid
+
     private var lastSnapshot: Snapshot?
     private var lastQuery: String?
 
     private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
     private lazy var collectibleFilterStore: CollectibleFilterStore = .init()
-    private lazy var collectibleGalleryUIStyleCache: CollectibleGalleryUIStyleCache = .init()
-
+    
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.4)
 
     private let updateQueue = DispatchQueue(
@@ -59,6 +60,8 @@ final class CollectibleListLocalDataController:
     private let isWatchAccount: Bool
 
     var imageSize: CGSize = .zero
+
+    private var canPerformUpdates = true
 
     init(
         galleryAccount: CollectibleGalleryAccount,
@@ -120,6 +123,16 @@ extension CollectibleListLocalDataController {
         searchThrottler.cancelAll()
 
         deliverContentUpdate()
+    }
+}
+
+extension CollectibleListLocalDataController {
+    func startUpdates() {
+        canPerformUpdates = true
+    }
+
+    func stopUpdates() {
+        canPerformUpdates = false
     }
 }
 
@@ -345,6 +358,8 @@ extension CollectibleListLocalDataController {
             [weak self] in
             guard let self else { return }
 
+            guard self.canPerformUpdates else { return  }
+
             guard let update = update() else { return }
 
             self.publish(.didUpdate(update))
@@ -390,7 +405,7 @@ extension CollectibleListLocalDataController {
 
 extension CollectibleListLocalDataController {
     private func makeLoadingItem() -> CollectibleListItem {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return .empty(.loading(.grid))
         } else {
             return .empty(.loading(.list))
@@ -412,7 +427,12 @@ extension CollectibleListLocalDataController {
             return $0.isCollectibleAsset ? makePendingCollectibleAssetOptOutItem($0) : nil
         }
 
-        return pendingOptInCollectibleItems + pendingOptOutCollectibleItems
+        
+        let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates()
+        let pendingSendPureCollectibleItems =
+            pendingSendPureCollectibleAssets.map(makePendingPureCollectibleAssetSendItem)
+
+        return pendingOptInCollectibleItems + pendingOptOutCollectibleItems + pendingSendPureCollectibleItems
     }
 
     private func makeCollectibleList(query: String?) ->  CollectibleList {
@@ -424,12 +444,21 @@ extension CollectibleListLocalDataController {
             }
 
             /// <note>
-            /// Since we are showing separate pending item for pending opt out. We should filter collectible asset according to.
+            /// Since we are showing separate pending item for pending opt out, we should filter collectible asset according to.
             let hasPendingOptOut = hasPendingOptOut(
                 collectibleAsset: collectibleAsset,
                 account: account
             )
             if hasPendingOptOut {
+                return nil
+            }
+            /// <note>
+            /// Since we are showing separate pending item for pending send pur collectible asset, we should filter collectible asset according to.
+            let hasPendingSendPureCollectibleAsset = hasPendingSendPureCollectibleAsset(
+                collectibleAsset: collectibleAsset,
+                account: account
+            )
+            if hasPendingSendPureCollectibleAsset {
                 return nil
             }
 
@@ -463,7 +492,7 @@ extension CollectibleListLocalDataController {
 
 extension CollectibleListLocalDataController {
     private func makeCollectibleAssetItem(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return makeCollectibleAssetGridItem(account: account, asset: asset)
         } else {
             return makeCollectibleAssetListItem(account: account, asset: asset)
@@ -471,7 +500,7 @@ extension CollectibleListLocalDataController {
     }
 
     private func makePendingCollectibleAssetOptOutItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return makePendingCollectibleAssetOptOutGridItem(update)
         } else {
             return makePendingCollectibleAssetOptOutListItem(update)
@@ -479,10 +508,18 @@ extension CollectibleListLocalDataController {
     }
 
     private func makePendingCollectibleAssetOptInItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
-        if collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return makePendingCollectibleAssetOptInGridItem(update)
         } else {
             return makePendingCollectibleAssetOptInListItem(update)
+        }
+    }
+
+    private func makePendingPureCollectibleAssetSendItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return makePendingPureCollectibleAssetSendGridItem(update)
+        } else {
+            return makePendingPureCollectibleAssetSendListItem(update)
         }
     }
 }
@@ -516,6 +553,14 @@ extension CollectibleListLocalDataController {
         )
         return .pendingCollectibleAsset(.grid(item))
     }
+
+    private func makePendingPureCollectibleAssetSendGridItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetGridItem(
+            imageSize: imageSize,
+            update: update
+        )
+        return .pendingCollectibleAsset(.grid(item))
+    }
 }
 
 extension CollectibleListLocalDataController {
@@ -538,6 +583,11 @@ extension CollectibleListLocalDataController {
         let item = CollectibleListPendingCollectibleAssetListItem(update: update)
         return .pendingCollectibleAsset(.list(item))
     }
+
+    private func makePendingPureCollectibleAssetSendListItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetListItem(update: update)
+        return .pendingCollectibleAsset(.list(item))
+    }
 }
 
 extension CollectibleListLocalDataController {
@@ -555,6 +605,17 @@ extension CollectibleListLocalDataController {
     ) -> Bool {
         let monitor = sharedDataController.blockchainUpdatesMonitor
         return monitor.hasPendingOptOutRequest(
+            assetID: collectibleAsset.id,
+            for: account
+        )
+    }
+
+    private func hasPendingSendPureCollectibleAsset(
+        collectibleAsset: CollectibleAsset,
+        account: Account
+    ) -> Bool {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        return monitor.hasPendingSendPureCollectibleAssetRequest(
             assetID: collectibleAsset.id,
             for: account
         )

@@ -24,11 +24,16 @@ protocol CollectibleListDataController: AnyObject {
     var imageSize: CGSize { get set }
 
     var galleryAccount: CollectibleGalleryAccount { get }
+    var galleryUIStyle: CollectibleGalleryUIStyle { get set }
 
     func load()
     func reload()
+
     func search(for query: String)
     func resetSearch()
+
+    func startUpdates()
+    func stopUpdates()
 }
 
 enum CollectibleSection:
@@ -121,6 +126,12 @@ struct CollectibleListPendingCollectibleAssetGridItem: Hashable {
         self.viewModel = CollectibleGridItemViewModel(imageSize: imageSize, model: update)
     }
 
+    init(imageSize: CGSize, update: SendPureCollectibleAssetBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = CollectibleGridItemViewModel(imageSize: imageSize, model: update)
+    }
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(assetID)
         hasher.combine(accountAddress)
@@ -181,6 +192,12 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
     }
 
     init(update: OptOutBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
         self.accountAddress = update.accountAddress
         self.assetID = update.assetID
         self.viewModel = CollectibleListItemViewModel(update: update)
