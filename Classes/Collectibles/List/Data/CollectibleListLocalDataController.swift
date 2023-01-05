@@ -47,7 +47,6 @@ final class CollectibleListLocalDataController:
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.4)
     
     private lazy var collectibleFilterOptions: CollectibleFilterOptions = .init()
-    private lazy var collectibleGalleryUIStyleStore: CollectibleGalleryUIStyleStore = .init()
 
     private let updateQueue = DispatchQueue(
         label: "pera.queue.collectibles.updates",
@@ -465,13 +464,11 @@ extension CollectibleListLocalDataController {
             }
 
             guard shouldDisplayWatchAccountCollectibleAsset(account) else {
-                hiddenCollectibleCount += 1
-                return
+                return nil
             }
 
             guard shouldDisplayOptedInCollectibleAsset(collectibleAsset) else {
-                hiddenCollectibleCount += 1
-                return
+                return nil
             }
 
             if let query = query,
