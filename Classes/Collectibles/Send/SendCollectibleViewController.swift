@@ -667,6 +667,13 @@ extension SendCollectibleViewController {
             object: self
         )
 
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let request = SendPureCollectibleAssetBlockchainRequest(
+            account: draft.fromAccount,
+            asset: draft.collectibleAsset
+        ) 
+        monitor.startMonitoringSendPureCollectibleAssetUpdates(request)
+
         approveCollectibleTransactionViewController?.stopLoading()
         approveCollectibleTransactionViewController?.dismissScreen {
             [weak self] in

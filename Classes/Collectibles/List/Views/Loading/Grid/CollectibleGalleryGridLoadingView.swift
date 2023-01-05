@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListLoadingView.swift
+//   CollectibleGalleryGridLoadingView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleListLoadingView:
+final class CollectibleGalleryGridLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
@@ -43,7 +43,7 @@ final class CollectibleListLoadingView:
     }
 
     func customize(
-        _ theme: CollectibleListLoadingViewTheme
+        _ theme: CollectibleGalleryGridLoadingViewTheme
     ) {
         addManagementItem(theme)
         addUIActions(theme)
@@ -64,19 +64,19 @@ final class CollectibleListLoadingView:
     }
 
     class func calculatePreferredSize(
-        for theme: CollectibleListLoadingViewTheme,
+        for theme: CollectibleGalleryGridLoadingViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
 
         let managementItemSize = ManagementItemView.calculatePreferredSize(
-            CollectibleListLoadingView.managementItemViewModel,
+            CollectibleGalleryGridLoadingView.managementItemViewModel,
             for: theme.managementItemTheme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
-        let rowCount = CollectibleListLoadingView.rowCount
-        let columnCount = CollectibleListLoadingView.columnCount
+        let rowCount = CollectibleGalleryGridLoadingView.rowCount
+        let columnCount = CollectibleGalleryGridLoadingView.columnCount
 
         let rowSpacing = theme.collectibleListItemsHorizontalStackSpacing
         let itemWidth = (width - rowSpacing) / columnCount.cgFloat
@@ -102,12 +102,12 @@ final class CollectibleListLoadingView:
     }
 }
 
-extension CollectibleListLoadingView {
+extension CollectibleGalleryGridLoadingView {
     private func addManagementItem(
-        _ theme: CollectibleListLoadingViewTheme
+        _ theme: CollectibleGalleryGridLoadingViewTheme
     ) {
         managementItemView.customize(theme.managementItemTheme)
-        managementItemView.bindData(CollectibleListLoadingView.managementItemViewModel)
+        managementItemView.bindData(CollectibleGalleryGridLoadingView.managementItemViewModel)
 
         addSubview(managementItemView)
         managementItemView.snp.makeConstraints {
@@ -118,7 +118,7 @@ extension CollectibleListLoadingView {
     }
 
     private func addUIActions(
-        _ theme: CollectibleListLoadingViewTheme
+        _ theme: CollectibleGalleryGridLoadingViewTheme
     ) {
         uiActionsView.customize(theme.uiActions)
 
@@ -133,7 +133,7 @@ extension CollectibleListLoadingView {
     }
 
     private func addCollectibleListItemsVerticalStack(
-        _ theme: CollectibleListLoadingViewTheme
+        _ theme: CollectibleGalleryGridLoadingViewTheme
     ) {
         collectibleListItemsVerticalStack.axis = .vertical
         collectibleListItemsVerticalStack.spacing = theme.collectibleListItemsVerticalStackSpacing
@@ -150,10 +150,10 @@ extension CollectibleListLoadingView {
     }
 
     private func addCollectibleListItem(
-        _ theme: CollectibleListLoadingViewTheme
+        _ theme: CollectibleGalleryGridLoadingViewTheme
     ) {
-        let rowCount = CollectibleListLoadingView.rowCount
-        let columnCount = CollectibleListLoadingView.columnCount
+        let rowCount = CollectibleGalleryGridLoadingView.rowCount
+        let columnCount = CollectibleGalleryGridLoadingView.columnCount
 
         (0..<rowCount).forEach { _ in
             let collectibleListItemsHorizontalStack = UIStackView()

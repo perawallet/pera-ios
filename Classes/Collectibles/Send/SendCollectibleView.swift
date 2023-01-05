@@ -150,9 +150,8 @@ extension SendCollectibleView {
         _ theme: SendCollectibleViewTheme
     ) {
         imageView.build(theme.image)
-        imageView.layer.draw(corner: theme.imageCorner)
-        imageView.clipsToBounds = true
-        
+        imageView.draw(corner: theme.imageCorner)
+
         contextView.addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.centerX == 0

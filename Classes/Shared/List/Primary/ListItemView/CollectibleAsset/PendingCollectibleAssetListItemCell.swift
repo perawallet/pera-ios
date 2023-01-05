@@ -18,13 +18,13 @@ import UIKit
 import MacaroonUIKit
 
 final class PendingCollectibleAssetListItemCell:
-    CollectionCell<NFTListItemView>,
+    CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
     override static var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
-    static let theme = NFTListItemViewTheme()
+    static let theme = CollectibleListItemViewTheme()
 
     override init(
         frame: CGRect

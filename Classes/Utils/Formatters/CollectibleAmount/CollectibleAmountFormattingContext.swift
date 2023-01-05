@@ -12,33 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListLoadingViewCell.swift
+//   CollectibleAmountFormattingContext.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-final class CollectibleListLoadingViewCell:
-    CollectionCell<CollectibleListLoadingView> {
-    static let theme = CollectibleListLoadingViewTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(Self.theme)
-    }
+enum CollectibleAmountFormattingContext {
+    case listItem
+    case standalone
 }
 
-extension CollectibleListLoadingViewCell {
-    func startAnimating() {
-        contextView.startAnimating()
-    }
-
-    func stopAnimating() {
-        contextView.stopAnimating()
+extension CollectibleAmountFormattingContext {
+    func makeHandler() -> CollectibleAmountFormattingContextHandling {
+        switch self {
+        case .listItem:
+            return CollectibleAmountFormattingListItemHandler()
+        case .standalone:
+            return CollectibleAmountFormattingStandaloneContextHandler()
+        }
     }
 }

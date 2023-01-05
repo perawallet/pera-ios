@@ -12,18 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BlockchainBatchRequest.swift
+//   CollectibleGalleryGridLoadingCell.swift
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-/// <note>
-/// Key -> account address
-typealias BlockchainBatchRequest = [String: BlockchainAccountBatchRequest]
+final class CollectibleGalleryGridLoadingCell:
+    CollectionCell<CollectibleGalleryGridLoadingView> {
+    static let theme = CollectibleGalleryGridLoadingViewTheme()
 
-struct BlockchainAccountBatchRequest {
-    /// <note>
-    /// The dictionary is used to search faster.
-    var optInAssets: [AssetID : Any] = [:]
-    var optOutAssets: [AssetID: Any] = [:]
-    var sendPureCollectibleAssets: [AssetID: Any] = [:]
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        contextView.customize(Self.theme)
+    }
+}
+
+extension CollectibleGalleryGridLoadingCell {
+    func startAnimating() {
+        contextView.startAnimating()
+    }
+
+    func stopAnimating() {
+        contextView.stopAnimating()
+    }
 }
