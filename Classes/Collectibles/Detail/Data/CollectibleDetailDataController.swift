@@ -28,9 +28,6 @@ protocol CollectibleDetailDataController: AnyObject {
 
     func hasOptedIn() -> OptInStatus
     func hasOptedOut() -> OptOutStatus
-    
-    var collectibleDescriptionViewModel: CollectibleDescriptionViewModel! { get set }
-    var collectibleDescriptionFittingWidth: CGFloat { get set}
 }
 
 enum CollectibleDetailSection:

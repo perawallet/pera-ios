@@ -405,7 +405,7 @@ extension CollectibleDetailLayout {
 }
 
 extension CollectibleDetailLayout {
-    func calculateContentWidth(
+    private func calculateContentWidth(
         _ listView: UICollectionView
     ) -> LayoutMetric {
         return

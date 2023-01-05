@@ -23,32 +23,15 @@ struct CollectibleDescriptionViewTheme:
     LayoutSheet {
     var description: TextStyle
     var descriptionURLColor: Color
-    var fullDescriptionOverflow: TextOverflow
-    var truncatedDescriptionOverflow: TextOverflow
     var toggleTruncationAction: ButtonStyle
     var toggleTruncationActionContentEdgeInsets: UIEdgeInsets
 
-    let numberOfLinesLimit: Int
-
     init(_ family: LayoutFamily) {
-        self.init(
-            numberOfLinesLimit: 4,
-            family: family
-        )
-    }
-
-    init(
-        numberOfLinesLimit: Int,
-        family: LayoutFamily = .current
-    ) {
-        self.numberOfLinesLimit = numberOfLinesLimit
         self.description = [
             .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         self.descriptionURLColor = Colors.Link.primary
-        self.fullDescriptionOverflow = FittingText()
-        self.truncatedDescriptionOverflow = MultilineText(numberOfLines: numberOfLinesLimit)
         self.toggleTruncationAction = [
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Helpers.positive) ]),
