@@ -51,6 +51,13 @@ struct CollectibleListItemViewModel: ViewModel {
         bindPrimaryTitleAccessory(update)
         bindSecondaryTitle(update)
     }
+
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
+        bindIcon(update)
+        bindPrimaryTitle(update)
+        bindPrimaryTitleAccessory(update)
+        bindSecondaryTitle(update)
+    }
 }
 
 extension CollectibleListItemViewModel {
@@ -195,8 +202,25 @@ extension CollectibleListItemViewModel {
     mutating func bindSecondaryTitle(_ update: OptOutBlockchainUpdate) {
         secondaryTitle = getSecondaryTitle(update.assetUnitName)
     }
+}
 
-    mutating func bindTitle(_ update: OptOutBlockchainUpdate) {
+extension CollectibleListItemViewModel {
+    mutating func bindIcon(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        icon = AssetImageSource(asset: "placeholder-bg".uiImage)
+    }
+
+    mutating func bindPrimaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        primaryTitle = getPrimaryTitle(
+            assetName: update.assetName,
+            assetVerificationTier: update.assetVerificationTier
+        )
+    }
+
+    mutating func bindPrimaryTitleAccessory(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        primaryTitleAccessory = getPrimaryTitleAccessory(update.assetVerificationTier)
+    }
+
+    mutating func bindSecondaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
         secondaryTitle = getSecondaryTitle(update.assetUnitName)
     }
 }
