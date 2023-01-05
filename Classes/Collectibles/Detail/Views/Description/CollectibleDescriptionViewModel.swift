@@ -26,25 +26,32 @@ struct CollectibleDescriptionViewModel {
 
     init(
         asset: Asset,
-        fittingWidth: CGFloat,
         isTruncated: Bool
     ) {
         self.isTruncated = isTruncated
 
-        bindIsTruncatable(asset: asset, fittingWidth: fittingWidth)
+        bindIsTruncatable(asset: asset)
         bindDescription(asset)
     }
 }
 
 extension CollectibleDescriptionViewModel {
-    mutating func bindIsTruncatable(asset: Asset, fittingWidth: CGFloat) {
-        let descriptionCharacterCount = asset.description!.count
+    mutating func bindIsTruncatable(asset: Asset) {
+        guard let description = asset.description else {
+            isTruncatable = false
+            return
+        }
+
+        let descriptionCharacterCount = description.count
 
         isTruncatable = descriptionCharacterCount > characterThreshold
     }
 
     mutating func bindDescription(_ asset: Asset) {
-        let description = asset.description!
+        guard let description = asset.description else {
+            self.description = nil
+            return
+        }
 
         if isTruncated && isTruncatable {
             let truncatedDescription = String(description.prefix(characterThreshold)) + "..." 
