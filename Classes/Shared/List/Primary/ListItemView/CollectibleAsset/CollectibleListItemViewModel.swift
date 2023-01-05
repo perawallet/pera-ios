@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemViewModel.swift
+//   CollectibleListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
@@ -20,7 +20,7 @@ import MacaroonURLImage
 import Prism
 import UIKit
 
-struct NFTListItemViewModel: ViewModel {
+struct CollectibleListItemViewModel: ViewModel {
     private(set) var icon: ImageSource?
     private(set) var iconBottomRightBadge: UIImage?
     private(set) var iconOverlayImage: UIImage?
@@ -51,9 +51,16 @@ struct NFTListItemViewModel: ViewModel {
         bindPrimaryTitleAccessory(update)
         bindSecondaryTitle(update)
     }
+
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
+        bindIcon(update)
+        bindPrimaryTitle(update)
+        bindPrimaryTitleAccessory(update)
+        bindSecondaryTitle(update)
+    }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ item: CollectibleAssetItem) {
         let asset = item.asset
 
@@ -151,7 +158,7 @@ extension NFTListItemViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ update: OptInBlockchainUpdate) {
         icon = AssetImageSource(asset: "placeholder-bg".uiImage)
     }
@@ -176,7 +183,7 @@ extension NFTListItemViewModel {
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindIcon(_ update: OptOutBlockchainUpdate) {
         icon = AssetImageSource(asset: "placeholder-bg".uiImage)
     }
@@ -195,13 +202,30 @@ extension NFTListItemViewModel {
     mutating func bindSecondaryTitle(_ update: OptOutBlockchainUpdate) {
         secondaryTitle = getSecondaryTitle(update.assetUnitName)
     }
+}
 
-    mutating func bindTitle(_ update: OptOutBlockchainUpdate) {
+extension CollectibleListItemViewModel {
+    mutating func bindIcon(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        icon = AssetImageSource(asset: "placeholder-bg".uiImage)
+    }
+
+    mutating func bindPrimaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        primaryTitle = getPrimaryTitle(
+            assetName: update.assetName,
+            assetVerificationTier: update.assetVerificationTier
+        )
+    }
+
+    mutating func bindPrimaryTitleAccessory(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        primaryTitleAccessory = getPrimaryTitleAccessory(update.assetVerificationTier)
+    }
+
+    mutating func bindSecondaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
         secondaryTitle = getSecondaryTitle(update.assetUnitName)
     }
 }
 
-extension NFTListItemViewModel {
+extension CollectibleListItemViewModel {
     private func getPrimaryTitle(
         assetName: String?,
         assetVerificationTier: AssetVerificationTier

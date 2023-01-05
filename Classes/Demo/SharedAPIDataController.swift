@@ -425,6 +425,13 @@ extension SharedAPIDataController {
                 for: account
             )
         }
+
+        for assetID in blockchainUpdates.sentPureCollectibleAssets {
+            blockchainUpdatesMonitor.stopMonitoringSendPureCollectibleAssetUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
     }
     
     private func blockProcessorDidFailToFetchAssetDetails(

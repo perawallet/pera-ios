@@ -21,7 +21,7 @@ import UIKit
 struct OptOutCollectibleAssetListItemCellTheme:
     StyleSheet,
     LayoutSheet {
-    var context: NFTListItemViewTheme
+    var context: CollectibleListItemViewTheme
     var contextEdgeInsets: LayoutPaddings
     var spacingBetweenContextAndAccessory: LayoutMetric
     var accessorySize: LayoutSize
@@ -30,7 +30,7 @@ struct OptOutCollectibleAssetListItemCellTheme:
     var separator: Separator
 
     init(_ family: LayoutFamily) {
-        self.context = NFTListItemViewTheme(family)
+        self.context = CollectibleListItemViewTheme(family)
         self.contextEdgeInsets = (20, 24, 20, 20)
         self.spacingBetweenContextAndAccessory = 20
         self.accessorySize = (44, 48)

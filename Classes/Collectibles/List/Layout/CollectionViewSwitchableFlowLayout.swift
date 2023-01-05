@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGCollectionViewFlowLayout.swift
+//   CollectionViewSwitchableFlowLayout.swift
 
 import Foundation
 import UIKit
 
-class ALGCollectionViewFlowLayout: UICollectionViewFlowLayout {
+class CollectionViewSwitchableFlowLayout: UICollectionViewFlowLayout {
     /// <note>
     /// Dynamically setting layout on UICollectionView causes inexplicable contentOffset change
     /// <src>
