@@ -25,23 +25,17 @@ final class CollectibleListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
-    private static let collectibleGalleryUIStyleCache: CollectibleGalleryUIStyleCache = .init()
+    var galleryUIStyle: CollectibleGalleryUIStyle
 
     init(
-        listDataSource: CollectibleListDataSource
+        listDataSource: CollectibleListDataSource,
+        galleryUIStyle: CollectibleGalleryUIStyle
     ) {
         self.listDataSource = listDataSource
+        self.galleryUIStyle = galleryUIStyle
         super.init()
     }
-
-    class func build() -> UICollectionViewLayout {
-        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
-            return Self.gridFlowLayout
-        } else {
-            return Self.listFlowLayout
-        }
-    }
-
+    
     static var listFlowLayout: UICollectionViewFlowLayout {
         let flowLayout = CollectionViewSwitchableFlowLayout()
         flowLayout.minimumLineSpacing = 0
@@ -192,7 +186,7 @@ extension CollectibleListLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout
     ) -> UIEdgeInsets {
-        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return UIEdgeInsets((28, sectionHorizontalInsets.leading, 8, sectionHorizontalInsets.trailing))
         } else {
             return UIEdgeInsets((16, 0, 8, 0))

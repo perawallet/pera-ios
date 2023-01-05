@@ -24,11 +24,16 @@ protocol CollectibleListDataController: AnyObject {
     var imageSize: CGSize { get set }
 
     var galleryAccount: CollectibleGalleryAccount { get }
+    var galleryUIStyle: CollectibleGalleryUIStyle { get set }
 
     func load()
     func reload()
+
     func search(for query: String)
     func resetSearch()
+
+    func startUpdates()
+    func stopUpdates()
 }
 
 enum CollectibleSection:
@@ -84,7 +89,10 @@ struct CollectibleListCollectibleAssetGridItem: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(asset.id)
+        hasher.combine(asset.amount)
         hasher.combine(account.address)
+        hasher.combine(viewModel.title?.string)
+        hasher.combine(viewModel.subtitle?.string)
     }
 
     static func == (
@@ -93,7 +101,10 @@ struct CollectibleListCollectibleAssetGridItem: Hashable {
     ) -> Bool {
         return
             lhs.asset.id == rhs.asset.id &&
-            lhs.account.address == rhs.account.address
+            lhs.asset.amount == rhs.asset.amount &&
+            lhs.account.address == rhs.account.address &&
+            lhs.viewModel.title?.string == rhs.viewModel.title?.string &&
+            lhs.viewModel.subtitle?.string == rhs.viewModel.subtitle?.string
     }
 }
 
@@ -110,6 +121,12 @@ struct CollectibleListPendingCollectibleAssetGridItem: Hashable {
     }
 
     init(imageSize: CGSize, update: OptOutBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = CollectibleGridItemViewModel(imageSize: imageSize, model: update)
+    }
+
+    init(imageSize: CGSize, update: SendPureCollectibleAssetBlockchainUpdate) {
         self.accountAddress = update.accountAddress
         self.assetID = update.assetID
         self.viewModel = CollectibleGridItemViewModel(imageSize: imageSize, model: update)
@@ -143,7 +160,10 @@ struct CollectibleListCollectibleAssetListItem: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(asset.id)
+        hasher.combine(asset.amount)
         hasher.combine(account.address)
+        hasher.combine(viewModel.primaryTitle?.string)
+        hasher.combine(viewModel.secondaryTitle?.string)
     }
 
     static func == (
@@ -152,7 +172,10 @@ struct CollectibleListCollectibleAssetListItem: Hashable {
     ) -> Bool {
         return
             lhs.asset.id == rhs.asset.id &&
-            lhs.account.address == rhs.account.address
+            lhs.asset.amount == rhs.asset.amount &&
+            lhs.account.address == rhs.account.address &&
+            lhs.viewModel.primaryTitle?.string == rhs.viewModel.primaryTitle?.string &&
+            lhs.viewModel.secondaryTitle?.string == rhs.viewModel.secondaryTitle?.string
     }
 }
 
@@ -169,6 +192,12 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
     }
 
     init(update: OptOutBlockchainUpdate) {
+        self.accountAddress = update.accountAddress
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
         self.accountAddress = update.accountAddress
         self.assetID = update.assetID
         self.viewModel = CollectibleListItemViewModel(update: update)
