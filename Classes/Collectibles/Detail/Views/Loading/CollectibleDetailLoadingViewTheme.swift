@@ -33,7 +33,7 @@ struct CollectibleDetailLoadingViewTheme:
     let amountWidthMultiplier: LayoutMetric
     let actionTopPadding: LayoutMetric
     let actionHeight: LayoutMetric
-    let spacingBetweenDescriptionAndSeparator: LayoutMetric
+    let spacingBetweenDescriptionAndAction: LayoutMetric
     let descriptionHeight: LayoutMetric
     let descriptionWidthMultiplier: LayoutMetric
     let descriptionValueLineHeight: LayoutMetric
@@ -59,7 +59,7 @@ struct CollectibleDetailLoadingViewTheme:
         self.imagePaddings = (20, 24, .noMetric, 24)
         self.actionTopPadding = 24
         self.actionHeight = 52
-        self.spacingBetweenDescriptionAndSeparator = 24
+        self.spacingBetweenDescriptionAndAction = 24
         self.descriptionHeight = 24
         self.descriptionWidthMultiplier = 0.30
         self.descriptionValueLineHeight = 20

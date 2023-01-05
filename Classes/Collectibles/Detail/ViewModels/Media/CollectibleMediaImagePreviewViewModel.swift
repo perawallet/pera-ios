@@ -21,16 +21,21 @@ import MacaroonURLImage
 
 protocol CollectibleMediaImagePreviewViewModel: ViewModel {
     var image: ImageSource? { get set }
-    var isOwned: Bool { get set }
+    var overlayImage: UIImage? { get set }
     var is3DModeActionHidden: Bool { get set }
     var isFullScreenActionHidden: Bool { get set }
 }
 
 extension CollectibleMediaImagePreviewViewModel {
-    mutating func bindOwned(
+    mutating func bindOverlayImage(
         _ asset: CollectibleAsset
     ) {
-        isOwned = asset.isOwned
+        guard !asset.isOwned else {
+            overlayImage = nil
+            return
+        }
+
+        overlayImage = "overlay-bg".uiImage
     }
 
     mutating func bindIs3DModeActionHidden(

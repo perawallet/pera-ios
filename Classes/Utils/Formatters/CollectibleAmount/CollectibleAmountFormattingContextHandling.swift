@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BlockchainBatchRequest.swift
+//   CollectibleAmountFormattingContextHandling.swift
 
 import Foundation
 
-/// <note>
-/// Key -> account address
-typealias BlockchainBatchRequest = [String: BlockchainAccountBatchRequest]
+protocol CollectibleAmountFormattingContextHandling {
+    func makeRules(
+        _ rawNumber: NSDecimalNumber
+    ) -> CollectibleAmountFormattingRules
 
-struct BlockchainAccountBatchRequest {
-    /// <note>
-    /// The dictionary is used to search faster.
-    var optInAssets: [AssetID : Any] = [:]
-    var optOutAssets: [AssetID: Any] = [:]
-    var sendPureCollectibleAssets: [AssetID: Any] = [:]
+    func makeInput(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextInput
+}
+
+struct CollectibleAmountFormattingRules {
+    var roundingMode: RoundingMode?
+    var minimumFractionDigits: Int?
+    var maximumFractionDigits: Int?
+}
+
+extension CollectibleAmountFormattingRules {
+    typealias RoundingMode = NumberFormatter.RoundingMode
 }

@@ -25,7 +25,7 @@ final class CollectibleMediaImagePreviewView:
     lazy var handlers = Handlers()
 
     private(set) lazy var imageView = URLImageView()
-    private lazy var overlayView = UIView()
+    private lazy var overlayView = UIImageView()
     private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var fullScreenActionView = MacaroonUIKit.Button()
 
@@ -69,11 +69,6 @@ extension CollectibleMediaImagePreviewView {
     private func addOverlayView(
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
-        overlayView.customizeAppearance(theme.overlay)
-        overlayView.layer.draw(corner: theme.corner)
-        overlayView.clipsToBounds = true
-        overlayView.alpha = 0.0
-
         addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.setPaddings()
@@ -146,12 +141,7 @@ extension CollectibleMediaImagePreviewView {
             return
         }
 
-        if !viewModel.isOwned {
-            overlayView.alpha = 0.4
-        } else {
-            overlayView.alpha = 0.0
-        }
-
+        overlayView.image = viewModel.overlayImage
         threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
         fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
@@ -167,7 +157,7 @@ extension CollectibleMediaImagePreviewView {
 
 extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
-        overlayView.alpha = 0.0
+        overlayView.image = nil
         imageView.prepareForReuse()
         threeDModeActionView.isHidden = false
         fullScreenActionView.isHidden = false

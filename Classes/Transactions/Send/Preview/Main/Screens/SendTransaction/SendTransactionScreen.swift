@@ -39,7 +39,7 @@ final class SendTransactionScreen: BaseViewController {
     private lazy var nextButton = Button()
     private lazy var assetItemCanvasView = TripleShadowView()
     private lazy var assetItemView = PrimaryListItemView()
-    private lazy var collectibleAssetItemView = NFTListItemView()
+    private lazy var collectibleAssetItemView = CollectibleListItemView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
@@ -377,15 +377,15 @@ extension SendTransactionScreen {
         return viewModel
     }
 
-    private func makeCollectibleAssetItemView() -> NFTListItemView {
-        let view = NFTListItemView()
-        view.customize(NFTListItemViewTheme())
+    private func makeCollectibleAssetItemView() -> CollectibleListItemView {
+        let view = CollectibleListItemView()
+        view.customize(CollectibleListItemViewTheme())
         let item = CollectibleAssetItem(
             account: draft.from,
             asset: draft.asset as! CollectibleAsset,
             amountFormatter: .init()
         )
-        let viewModel = NFTListItemViewModel(item: item)
+        let viewModel = CollectibleListItemViewModel(item: item)
         view.bindData(viewModel)
         return view
     }

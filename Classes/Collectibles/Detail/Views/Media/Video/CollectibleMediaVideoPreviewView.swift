@@ -32,7 +32,7 @@ final class CollectibleMediaVideoPreviewView:
 
     private lazy var placeholderView = URLImagePlaceholderView()
     private(set) lazy var videoPlayerView = VideoPlayerView()
-    private lazy var overlayView = UIView()
+    private lazy var overlayView = UIImageView()
     private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var fullScreenActionView = MacaroonUIKit.Button()
     private(set) var isReadyForDisplay = false
@@ -95,11 +95,6 @@ extension CollectibleMediaVideoPreviewView {
     private func addOverlayView(
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
-        overlayView.customizeAppearance(theme.overlay)
-        overlayView.layer.draw(corner: theme.corner)
-        overlayView.clipsToBounds = true
-        overlayView.alpha = 0.0
-
         addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.setPaddings()
@@ -169,12 +164,7 @@ extension CollectibleMediaVideoPreviewView {
 
         addObservers()
 
-        if !viewModel.isOwned {
-            overlayView.alpha = 0.4
-        } else {
-            overlayView.alpha = 0.0
-        }
-
+        overlayView.image = viewModel.overlayImage
         threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
         fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
@@ -213,7 +203,7 @@ extension CollectibleMediaVideoPreviewView {
         stopVideo()
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
-        overlayView.alpha = 0.0
+        overlayView.image = nil
         threeDModeActionView.isHidden = false
         fullScreenActionView.isHidden = false
     }

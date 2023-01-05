@@ -70,50 +70,72 @@ struct AccountAssetsAssetListItem: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(asset.id)
+        hasher.combine(viewModel.title?.primaryTitle?.string)
+        hasher.combine(viewModel.title?.secondaryTitle?.string)
+        hasher.combine(viewModel.primaryValue?.string)
+        hasher.combine(viewModel.secondaryValue?.string)
     }
 
     static func == (
         lhs: AccountAssetsAssetListItem,
         rhs: AccountAssetsAssetListItem
     ) -> Bool {
-        return lhs.asset.id == rhs.asset.id
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.viewModel.title?.primaryTitle?.string == rhs.viewModel.title?.primaryTitle?.string &&
+            lhs.viewModel.title?.secondaryTitle?.string == rhs.viewModel.title?.secondaryTitle?.string &&
+            lhs.viewModel.primaryValue?.string == rhs.viewModel.primaryValue?.string &&
+            lhs.viewModel.secondaryValue?.string == rhs.viewModel.secondaryValue?.string
     }
 }
 
 struct AccountAssetsCollectibleAssetListItem: Hashable {
     let asset: CollectibleAsset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.asset = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(asset.id)
+        hasher.combine(asset.amount)
+        hasher.combine(viewModel.primaryTitle?.string)
+        hasher.combine(viewModel.secondaryTitle?.string)
     }
 
     static func == (
         lhs: AccountAssetsCollectibleAssetListItem,
         rhs: AccountAssetsCollectibleAssetListItem
     ) -> Bool {
-        return lhs.asset.id == rhs.asset.id
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.asset.amount == rhs.asset.amount &&
+            lhs.viewModel.primaryTitle?.string == rhs.viewModel.primaryTitle?.string &&
+            lhs.viewModel.secondaryTitle?.string == rhs.viewModel.secondaryTitle?.string
     }
 }
 
 struct AccountAssetsPendingCollectibleAssetListItem: Hashable {
+    let viewModel: CollectibleListItemViewModel
+    
     private let assetID: AssetID
-    let viewModel: NFTListItemViewModel
-
+    
     init(update: OptInBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = NFTListItemViewModel(update: update)
-   }
-
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+    
     init(update: OptOutBlockchainUpdate) {
-       self.assetID = update.assetID
-       self.viewModel = NFTListItemViewModel(update: update)
-   }
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
+    
+    init(update: SendPureCollectibleAssetBlockchainUpdate) {
+        self.assetID = update.assetID
+        self.viewModel = CollectibleListItemViewModel(update: update)
+    }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(assetID)

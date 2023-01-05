@@ -28,11 +28,19 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             switch itemIdentifier {
             case .empty(let item):
                 switch item {
-                case .loading:
-                    return collectionView.dequeue(
-                        CollectibleListLoadingViewCell.self,
-                        at: indexPath
-                    )
+                case .loading(let item):
+                    switch item {
+                    case .grid:
+                        return collectionView.dequeue(
+                            CollectibleGalleryGridLoadingCell.self,
+                            at: indexPath
+                        )
+                    case .list:
+                        return collectionView.dequeue(
+                            CollectibleGalleryListLoadingCell.self,
+                            at: indexPath
+                        )
+                    }
                 case .noContent(let item):
                     let cell = collectionView.dequeue(
                         NoContentWithActionIllustratedCell.self,
@@ -85,7 +93,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                     return cell
                 case .list(let item):
                     let cell = collectionView.dequeue(
-                        NFTListItemCell.self,
+                        CollectibleListItemCell.self,
                         at: indexPath
                     )
                     cell.bindData(
@@ -120,13 +128,14 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
         [
             CollectibleGridItemCell.self,
             PendingCollectibleGridItemCell.self,
-            NFTListItemCell.self,
+            CollectibleListItemCell.self,
             PendingCollectibleAssetListItemCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleGalleryUIActionsCell.self,
             ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
-            CollectibleListLoadingViewCell.self,
+            CollectibleGalleryGridLoadingCell.self,
+            CollectibleGalleryListLoadingCell.self,
             NoContentCell.self,
         ].forEach {
             collectionView.register($0)

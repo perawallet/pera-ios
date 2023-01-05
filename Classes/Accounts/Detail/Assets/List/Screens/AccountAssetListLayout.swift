@@ -265,10 +265,10 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = NFTListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -278,9 +278,9 @@ extension AccountAssetListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = NFTListItemCell.calculatePreferredSize(
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
-            for: NFTListItemCell.theme,
+            for: CollectibleListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -292,7 +292,7 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPendingCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForPendingCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = PendingCollectibleAssetListItemCell.reuseIdentifier

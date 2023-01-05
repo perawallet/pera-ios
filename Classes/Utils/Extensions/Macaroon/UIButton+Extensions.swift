@@ -18,10 +18,7 @@ import UIKit
 import MacaroonUIKit
 
 extension UIButton: ListReusable {
-    public func prepareForReuse() {
-        setAttributedTitle(nil, for: state)
-        setTitle(nil, for: state)
-    }
+    public func prepareForReuse() {}
 }
 
 extension UIButton: ViewComposable {

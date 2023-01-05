@@ -22,7 +22,6 @@ struct CollectibleMediaVideoPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
-    let overlay: ViewStyle
     let threeDAction: ButtonStyle
     let threeDActionContentEdgeInsets: LayoutPaddings
     let threeDModeActionPaddings: LayoutPaddings
@@ -34,10 +33,6 @@ struct CollectibleMediaVideoPreviewViewTheme:
         _ family: LayoutFamily
     ) {
         placeholder = PlaceholerViewTheme()
-
-        overlay = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
 
         threeDAction = [
             .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
