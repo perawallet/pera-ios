@@ -133,7 +133,8 @@ extension ALGSwapController {
                 groupID: transactionGroup.groupID,
                 paidTransactions: paidTransactions,
                 receivedTransactions: receivedTransactions,
-                otherTransactions: otherTransactions
+                otherTransactions: otherTransactions,
+                quote: quote
             )
 
             parsedSwapTransactions.append(parsedSwapTransaction)
