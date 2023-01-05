@@ -28,8 +28,12 @@ protocol CollectibleListDataController: AnyObject {
 
     func load()
     func reload()
+
     func search(for query: String)
     func resetSearch()
+
+    func startUpdates()
+    func stopUpdates()
 }
 
 enum CollectibleSection:

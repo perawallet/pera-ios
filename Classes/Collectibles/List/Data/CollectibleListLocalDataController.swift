@@ -61,6 +61,8 @@ final class CollectibleListLocalDataController:
 
     var imageSize: CGSize = .zero
 
+    private var isUpdatesAllowed = true
+
     init(
         galleryAccount: CollectibleGalleryAccount,
         sharedDataController: SharedDataController
@@ -121,6 +123,16 @@ extension CollectibleListLocalDataController {
         searchThrottler.cancelAll()
 
         deliverContentUpdate()
+    }
+}
+
+extension CollectibleListLocalDataController {
+    func startUpdates() {
+        isUpdatesAllowed = true
+    }
+
+    func stopUpdates() {
+        isUpdatesAllowed = false
     }
 }
 
@@ -345,6 +357,8 @@ extension CollectibleListLocalDataController {
         updateQueue.async {
             [weak self] in
             guard let self else { return }
+
+            guard self.isUpdatesAllowed else { return  }
 
             guard let update = update() else { return }
 
