@@ -61,7 +61,7 @@ final class CollectibleListLocalDataController:
 
     var imageSize: CGSize = .zero
 
-    private var isUpdatesAllowed = true
+    private var canPerformUpdates = true
 
     init(
         galleryAccount: CollectibleGalleryAccount,
@@ -128,11 +128,11 @@ extension CollectibleListLocalDataController {
 
 extension CollectibleListLocalDataController {
     func startUpdates() {
-        isUpdatesAllowed = true
+        canPerformUpdates = true
     }
 
     func stopUpdates() {
-        isUpdatesAllowed = false
+        canPerformUpdates = false
     }
 }
 
@@ -358,7 +358,7 @@ extension CollectibleListLocalDataController {
             [weak self] in
             guard let self else { return }
 
-            guard self.isUpdatesAllowed else { return  }
+            guard self.canPerformUpdates else { return  }
 
             guard let update = update() else { return }
 

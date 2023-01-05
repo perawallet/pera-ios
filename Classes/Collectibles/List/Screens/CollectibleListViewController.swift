@@ -128,11 +128,6 @@ extension CollectibleListViewController {
     private func updateListLayoutIfNeededWhenViewDidAppear() {
         if isViewFirstAppeared { return }
 
-        let hasChanges = galleryUIStyleCache.galleryUIStyle != galleryUIStyle
-        if !hasChanges {
-            return
-        }
-
         galleryUIStyle = galleryUIStyleCache.galleryUIStyle
 
         updateGalleryUIActionsCellIfNeeded()
