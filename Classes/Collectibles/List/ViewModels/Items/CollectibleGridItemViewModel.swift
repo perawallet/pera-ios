@@ -75,6 +75,13 @@ extension CollectibleGridItemViewModel {
             bindPendingTitle()
             return
         }
+
+        if let update = model as? SendPureCollectibleAssetBlockchainUpdate {
+            bindIcon(imageSize: imageSize, update: update)
+            bindPrimaryTitle(update)
+            bindSecondaryTitle(update)
+            bindPendingTitle()
+        }
     }
 }
 
@@ -323,6 +330,42 @@ extension CollectibleGridItemViewModel {
 
     mutating func bindSecondaryTitle(_ update: OptOutBlockchainUpdate) {
         let subtitle = update.collectibleAssetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+
+        self.subtitle = .attributedString(
+            subtitle
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
+        )
+    }
+}
+
+extension CollectibleGridItemViewModel {
+    mutating func bindIcon(imageSize: CGSize, update: SendPureCollectibleAssetBlockchainUpdate) {
+        let placeholder = update.assetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
+        let url = update.assetThumbnailImage.unwrap {
+            PrismURL(baseURL: $0)
+                .setExpectedImageSize(imageSize)
+                .build()
+         }
+        image = PNGImageSource(
+            url: url,
+            shape: url == nil ? .original : .rounded(4),
+            placeholder: getPlaceholder(placeholder)
+        )
+    }
+
+    mutating func bindPrimaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        let collectionName = update.assetCollectionName.unwrapNonEmptyString()
+        title = collectionName.unwrap {
+            .attributedString(
+                $0.footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
+            )
+        }
+    }
+
+    mutating func bindSecondaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
+        let subtitle = update.assetTitle ?? update.assetName ?? update.assetID.stringWithHashtag
 
         self.subtitle = .attributedString(
             subtitle

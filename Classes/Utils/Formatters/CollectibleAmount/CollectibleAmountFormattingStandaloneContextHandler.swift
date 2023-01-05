@@ -21,7 +21,6 @@ struct CollectibleAmountFormattingStandaloneContextHandler: CollectibleAmountFor
         _ rawNumber: NSDecimalNumber
     ) -> CollectibleAmountFormattingRules {
         var rules = CollectibleAmountFormattingRules()
-        rules.locale = Locale.preferred
         rules.roundingMode = .down
         rules.minimumFractionDigits = 0
         rules.maximumFractionDigits = Int(Int8.max)
