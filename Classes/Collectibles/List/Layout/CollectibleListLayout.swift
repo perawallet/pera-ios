@@ -25,35 +25,29 @@ final class CollectibleListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
-    private static let collectibleGalleryUIStyleCache: CollectibleGalleryUIStyleCache = .init()
+    var galleryUIStyle: CollectibleGalleryUIStyle
 
     init(
-        listDataSource: CollectibleListDataSource
+        listDataSource: CollectibleListDataSource,
+        galleryUIStyle: CollectibleGalleryUIStyle
     ) {
         self.listDataSource = listDataSource
+        self.galleryUIStyle = galleryUIStyle
         super.init()
     }
-
-    class func build() -> UICollectionViewLayout {
-        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
-            return Self.gridFlowLayout
-        } else {
-            return Self.listFlowLayout
-        }
-    }
-
-    static let listFlowLayout: UICollectionViewFlowLayout = {
-        let flowLayout = ALGCollectionViewFlowLayout()
+    
+    static var listFlowLayout: UICollectionViewFlowLayout {
+        let flowLayout = CollectionViewSwitchableFlowLayout()
         flowLayout.minimumLineSpacing = 0
         return flowLayout
-    }()
+    }
 
-    static let gridFlowLayout: UICollectionViewFlowLayout = {
+    static var gridFlowLayout: UICollectionViewFlowLayout {
         let flowLayout = TopAlignedCollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 20
         flowLayout.minimumInteritemSpacing = 24
         return flowLayout
-    }()
+    }
 }
 
 extension CollectibleListLayout {
@@ -192,7 +186,7 @@ extension CollectibleListLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout
     ) -> UIEdgeInsets {
-        if Self.collectibleGalleryUIStyleCache.galleryUIStyle.isGrid {
+        if galleryUIStyle.isGrid {
             return UIEdgeInsets((28, sectionHorizontalInsets.leading, 8, sectionHorizontalInsets.trailing))
         } else {
             return UIEdgeInsets((16, 0, 8, 0))
@@ -384,10 +378,10 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = NFTListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -397,9 +391,9 @@ extension CollectibleListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = NFTListItemCell.calculatePreferredSize(
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
-            for: NFTListItemCell.theme,
+            for: CollectibleListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -411,7 +405,7 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPendingCollectibleAssetCellItem item: NFTListItemViewModel,
+        sizeForPendingCollectibleAssetCellItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = PendingCollectibleAssetListItemCell.reuseIdentifier

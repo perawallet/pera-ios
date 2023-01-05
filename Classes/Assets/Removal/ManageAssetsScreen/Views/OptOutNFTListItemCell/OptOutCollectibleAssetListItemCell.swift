@@ -18,7 +18,7 @@ import UIKit
 import MacaroonUIKit
 
 final class OptOutCollectibleAssetListItemCell:
-    CollectionCell<NFTListItemView>,
+    CollectionCell<CollectibleListItemView>,
     ViewModelBindable,
     UIInteractable {
     var accessory: OptOutAssetListItemAccessory = .remove {
@@ -60,7 +60,7 @@ final class OptOutCollectibleAssetListItemCell:
     }
 
     static func calculatePreferredSize(
-        _ viewModel: NFTListItemViewModel?,
+        _ viewModel: CollectibleListItemViewModel?,
         for theme: OptOutAssetListItemCellTheme,
         fittingIn size: CGSize
     ) -> CGSize {

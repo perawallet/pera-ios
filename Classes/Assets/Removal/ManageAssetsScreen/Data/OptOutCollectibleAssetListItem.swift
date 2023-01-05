@@ -18,17 +18,18 @@ import Foundation
 
 struct OptOutCollectibleAssetListItem: Hashable {
     let model: CollectibleAsset
-    let viewModel: NFTListItemViewModel
+    let viewModel: CollectibleListItemViewModel
 
     init(item: CollectibleAssetItem) {
         self.model = item.asset
-        self.viewModel = NFTListItemViewModel(item: item)
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(model.id)
-        hasher.combine(model.naming.name)
-        hasher.combine(model.naming.unitName)
+        hasher.combine(model.amount)
+        hasher.combine(viewModel.primaryTitle?.string)
+        hasher.combine(viewModel.secondaryTitle?.string)
     }
 
     static func == (
@@ -37,7 +38,8 @@ struct OptOutCollectibleAssetListItem: Hashable {
     ) -> Bool {
         return
             lhs.model.id == rhs.model.id &&
-            lhs.model.naming.name == rhs.model.naming.name &&
-            lhs.model.naming.unitName == rhs.model.naming.unitName
+            lhs.model.amount == rhs.model.amount &&
+            lhs.viewModel.primaryTitle?.string == rhs.viewModel.primaryTitle?.string &&
+            lhs.viewModel.secondaryTitle?.string == rhs.viewModel.secondaryTitle?.string
     }
 }

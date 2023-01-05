@@ -23,6 +23,7 @@ final class CollectibleAsset: Asset {
     let amount: UInt64
     let decimals: Int
     let total: UInt64?
+    let totalSupply: Decimal?
     let decimalAmount: Decimal
     let isFrozen: Bool?
     let isDeleted: Bool?
@@ -95,6 +96,7 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
+        self.totalSupply = decoration.totalSupply
         self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
@@ -135,6 +137,7 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
+        self.totalSupply = decoration.totalSupply
         self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")

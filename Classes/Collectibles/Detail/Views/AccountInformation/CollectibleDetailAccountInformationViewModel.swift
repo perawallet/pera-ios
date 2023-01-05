@@ -48,6 +48,7 @@ extension CollectibleDetailAccountInformationViewModel {
         }
 
         let formatter = item.amountFormatter
+        formatter.formattingContext = .standalone
         let formattedAmount =
             formatter
                 .format(asset.decimalAmount)

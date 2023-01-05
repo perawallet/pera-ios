@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemViewTheme.swift
+//   CollectibleListItemViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import MacaroonURLImage
 import UIKit
 
-struct NFTListItemViewTheme:
+struct CollectibleListItemViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: URLImageViewStyleSheet & URLImageViewLayoutSheet
@@ -36,7 +36,7 @@ struct NFTListItemViewTheme:
     var amount: TextStyle
 
     init(_ family: LayoutFamily) {
-        self.icon = URLImageViewNFTListItemTheme()
+        self.icon = URLImageViewCollectibleListItemTheme()
         self.iconSize = (40, 40)
         self.iconBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
         self.loadingIndicator = [
@@ -63,7 +63,7 @@ struct NFTListItemViewTheme:
     }
 }
 
-struct URLImageViewNFTListItemTheme: URLImageViewStyleLayoutSheet {
+struct URLImageViewCollectibleListItemTheme: URLImageViewStyleLayoutSheet {
     struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
         var background: ViewStyle
         var image: ImageStyle

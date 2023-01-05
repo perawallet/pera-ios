@@ -41,7 +41,7 @@ extension ShimmerAnimatable where Self: UIView {
         layer.mask = gradientLayer
 
         let animation = composeAnimation()
-        gradientLayer.add(animation, forKey: animation.keyPath)
+        gradientLayer.add(animation, forKey: configuration.animationKey)
     }
 
     func stopAnimating() {
@@ -53,8 +53,7 @@ extension ShimmerAnimatable where Self: UIView {
     }
 
     var isAnimating: Bool {
-        let animationKey = configuration.animation.keyPath
-        return layer.animation(forKey: animationKey) != nil
+        return layer.animation(forKey: configuration.animationKey) != nil
     }
 
     func composeAnimationLayer() -> CAGradientLayer {
