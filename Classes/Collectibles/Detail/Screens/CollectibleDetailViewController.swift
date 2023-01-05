@@ -85,7 +85,7 @@ final class CollectibleDetailViewController:
         collectibleDescriptionProvider: {
             [weak self] in
             guard let self else { return nil }
-            return self.dataController.collectibleDescriptionViewModel
+            return self.collectibleDescriptionViewModel
         }
     )
     private lazy var dataSource = CollectibleDetailDataSource(
@@ -94,7 +94,7 @@ final class CollectibleDetailViewController:
         collectibleDescriptionProvider: {
             [weak self] in
             guard let self else { return nil }
-            return self.dataController.collectibleDescriptionViewModel
+            return self.collectibleDescriptionViewModel
         }
     )
 
@@ -105,6 +105,8 @@ final class CollectibleDetailViewController:
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()
+
+    private lazy var collectibleDescriptionViewModel = CollectibleDescriptionViewModel(asset: asset, isTruncated: true)
 
     private var asset: CollectibleAsset
     private var account: Account
@@ -140,10 +142,6 @@ final class CollectibleDetailViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.layoutIfNeeded()
-
-        dataController.collectibleDescriptionFittingWidth = listLayout.calculateContentWidth(listView)
 
         dataController.eventHandler = {
             [weak self] event in
@@ -947,13 +945,21 @@ extension CollectibleDetailViewController: CollectibleDescriptionCellDelegate {
     }
 
     func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell) {
-        dataController.collectibleDescriptionViewModel.bindIsTruncating(false)
-
-        listView.collectionViewLayout.invalidateLayout()
+        updateCollectibleDescriptionCell(cell, isTruncated: false)
     }
 
     func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell) {
-        dataController.collectibleDescriptionViewModel.bindIsTruncating(true)
+        updateCollectibleDescriptionCell(cell, isTruncated: true)
+    }
+
+    private func updateCollectibleDescriptionCell(_ cell: CollectibleDescriptionCell, isTruncated: Bool) {
+        let viewModel = CollectibleDescriptionViewModel(
+            asset: asset,
+            isTruncated: isTruncated
+        )
+        collectibleDescriptionViewModel = viewModel
+
+        cell.bindData(viewModel)
 
         listView.collectionViewLayout.invalidateLayout()
     }
