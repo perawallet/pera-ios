@@ -158,38 +158,6 @@ extension WalletConnector {
     func disconnectFromAllSessions() {
         allWalletConnectSessions.forEach(disconnectFromSession)
     }
-    
-    func subscribeForNotificationsIfNeeded(_ session: WCSession) {
-        if session.isSubscribed {
-            return
-        }
-        
-        let user = api.session.authenticatedUser
-        let deviceID = user?.getDeviceId(on: api.network)
-        
-        let draft = SubscribeToWalletConnectSessionDraft(
-            deviceID: deviceID,
-            wcSession: session,
-            pushToken: pushToken
-        )
-        
-        api.subscribeToWalletConnectSession(draft) {
-            [weak self] result in
-            guard let self = self else {
-                return
-            }
-            
-            switch result {
-            case .success:
-                session.isSubscribed = true
-                self.addToSavedSessions(session)
-            default:
-                break
-            // The session is already saved before subscription call.
-            // The failure means there is no change. So, it is not needed to handle.
-            }
-        }
-    }
 
     func reconnectToSavedSessionsIfPossible() {
         for session in allWalletConnectSessions {
@@ -273,8 +241,10 @@ extension WalletConnector: WalletConnectBridgeDelegate {
             if localSession == nil {
                 self.addToSavedSessions(connectedSession)
             }
-            
-            self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
+
+            /// <todo>
+            /// Disabled supporting WC push notificataions for now 06.01.2023
+//            self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
             
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
@@ -296,6 +266,40 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
         delegate?.walletConnector(self, didUpdate: session.toWCSession())
+    }
+}
+
+extension WalletConnector {
+    private func subscribeForNotificationsIfNeeded(_ session: WCSession) {
+        if session.isSubscribed {
+            return
+        }
+
+        let user = api.session.authenticatedUser
+        let deviceID = user?.getDeviceId(on: api.network)
+
+        let draft = SubscribeToWalletConnectSessionDraft(
+            deviceID: deviceID,
+            wcSession: session,
+            pushToken: pushToken
+        )
+
+        api.subscribeToWalletConnectSession(draft) {
+            [weak self] result in
+            guard let self = self else {
+                return
+            }
+
+            switch result {
+            case .success:
+                session.isSubscribed = true
+                self.addToSavedSessions(session)
+            default:
+                break
+            // The session is already saved before subscription call.
+            // The failure means there is no change. So, it is not needed to handle.
+            }
+        }
     }
 }
 
