@@ -39,10 +39,6 @@ enum AccountAdditionType {
 enum RecoverType: Equatable {
     case passphrase
     case ledger
-    case `import`(ImportType)
+    case importFromWeb
     case none
-}
-
-enum ImportType: Equatable {
-    case web
 }

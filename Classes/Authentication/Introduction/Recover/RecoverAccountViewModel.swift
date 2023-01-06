@@ -43,6 +43,6 @@ extension RecoverAccountViewModel {
     }
 
     private mutating func bindImportFromWebViewModel() {
-        importFromWebViewModel = AccountTypeViewModel(.recover(type: .import(.web)))
+        importFromWebViewModel = AccountTypeViewModel(.recover(type: .importFromWeb))
     }
 }

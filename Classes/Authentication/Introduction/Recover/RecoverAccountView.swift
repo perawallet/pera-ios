@@ -80,7 +80,7 @@ extension RecoverAccountView {
 
     @objc
     private func notifyDelegateToImportFromWeb() {
-        delegate?.recoverAccountView(self, didSelect: .import(.web))
+        delegate?.recoverAccountView(self, didSelect: .importFromWeb)
     }
 }
 
