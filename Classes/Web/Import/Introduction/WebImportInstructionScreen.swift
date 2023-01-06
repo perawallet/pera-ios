@@ -19,7 +19,9 @@ import MacaroonUIKit
 import UIKit
 
 final class WebImportInstructionScreen: ScrollScreen, NavigationBarLargeTitleConfigurable {
-    weak var delegate: WebImportInstructionScreenDelegate?
+    typealias EventHandler = (Event, WebImportInstructionScreen) -> Void
+
+    var eventHandler: EventHandler?
 
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
@@ -218,7 +220,7 @@ extension WebImportInstructionScreen {
 
     @objc
     private func performStartAction() {
-        delegate?.webImportInstructionDidStart(self)
+        eventHandler?(.didStart, self)
     }
 }
 
@@ -232,6 +234,8 @@ extension WebImportInstructionScreen {
     }
 }
 
-protocol WebImportInstructionScreenDelegate: AnyObject {
-    func webImportInstructionDidStart(_ screen: WebImportInstructionScreen)
+extension WebImportInstructionScreen {
+    enum Event {
+        case didStart
+    }
 }

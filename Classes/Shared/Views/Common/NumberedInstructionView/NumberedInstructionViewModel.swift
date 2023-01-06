@@ -21,7 +21,7 @@ struct NumberedInstructionViewModel: ViewModel {
     private(set) var number: TextProvider?
     private(set) var title: TextProvider?
 
-    init(number: Int, title: String?) {
+    init(number: Int, title: String) {
         bindNumber(number)
         bindTitle(title)
     }
@@ -32,7 +32,7 @@ extension NumberedInstructionViewModel {
         self.number = "\(number)".bodyRegular(alignment: .center)
     }
 
-    private mutating func bindTitle(_ title: String?) {
-        self.title = title?.bodyRegular()
+    private mutating func bindTitle(_ title: String) {
+        self.title = title.bodyRegular()
     }
 }
