@@ -25,14 +25,14 @@ final class AccountTypeView: Control {
     private lazy var titleLabel = UILabel()
     private lazy var detailLabel = UILabel()
 
-    private lazy var newBadgeView = Label()
+    private lazy var badgeView = Label()
 
     func customize(_ theme: AccountTypeViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addImageView(theme)
         addTitleLabel(theme)
-        addNewBadge(theme)
+        addBadge(theme)
         addDetailLabel(theme)
     }
 
@@ -77,20 +77,20 @@ extension AccountTypeView {
         detailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
-    private func addNewBadge(_ theme: AccountTypeViewTheme) {
-        newBadgeView.customizeAppearance(theme.newBadge)
-        newBadgeView.draw(corner: theme.newBadgeCorner)
-        newBadgeView.contentEdgeInsets = theme.newBadgeContentEdgeInsets
+    private func addBadge(_ theme: AccountTypeViewTheme) {
+        badgeView.customizeAppearance(theme.badge)
+        badgeView.draw(corner: theme.badgeCorner)
+        badgeView.contentEdgeInsets = theme.badgeContentEdgeInsets
 
-        addSubview(newBadgeView)
-        newBadgeView.fitToHorizontalIntrinsicSize()
-        newBadgeView.snp.makeConstraints {
+        addSubview(badgeView)
+        badgeView.fitToHorizontalIntrinsicSize()
+        badgeView.snp.makeConstraints {
             $0.centerY == titleLabel
-            $0.leading == titleLabel.snp.trailing + theme.newBadgeHorizontalEdgeInsets.leading
-            $0.trailing <= theme.newBadgeHorizontalEdgeInsets.trailing
+            $0.leading == titleLabel.snp.trailing + theme.badgeHorizontalEdgeInsets.leading
+            $0.trailing <= theme.badgeHorizontalEdgeInsets.trailing
         }
 
-        newBadgeView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        badgeView.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
 
@@ -99,6 +99,6 @@ extension AccountTypeView: ViewModelBindable {
         imageView.image = viewModel?.image
         titleLabel.text = viewModel?.title
         detailLabel.text = viewModel?.detail
-        newBadgeView.text = viewModel?.badge
+        badgeView.text = viewModel?.badge
     }
 }

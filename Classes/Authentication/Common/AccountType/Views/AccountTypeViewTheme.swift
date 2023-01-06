@@ -24,10 +24,10 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let detail: TextStyle
 
-    let newBadge: TextStyle
-    let newBadgeCorner: Corner
-    let newBadgeContentEdgeInsets: LayoutPaddings
-    let newBadgeHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
+    let badge: TextStyle
+    let badgeCorner: Corner
+    let badgeContentEdgeInsets: LayoutPaddings
+    let badgeHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
 
     let iconSize: LayoutSize
     let horizontalInset: LayoutMetric
@@ -51,16 +51,16 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
             .isInteractable(false)
         ]
 
-        self.newBadge = [
+        self.badge = [
             .textColor(Colors.Helpers.positive),
             .font(Typography.captionBold()),
             .textAlignment(.center),
             .textOverflow(SingleLineText()),
             .backgroundColor(Colors.Helpers.positiveLighter)
         ]
-        self.newBadgeCorner = Corner(radius: 8)
-        self.newBadgeContentEdgeInsets =  (3, 6, 3, 6)
-        self.newBadgeHorizontalEdgeInsets = .init(
+        self.badgeCorner = Corner(radius: 8)
+        self.badgeContentEdgeInsets =  (3, 6, 3, 6)
+        self.badgeHorizontalEdgeInsets = .init(
             leading: 8,
             trailing: 24
         )
