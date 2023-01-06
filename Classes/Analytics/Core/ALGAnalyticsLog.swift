@@ -34,6 +34,10 @@ enum ALGAnalyticsLogName:
     case ledgerTransactionError = "LedgerTransactionError"
     case mismatchAccountError = "MismatchAccountFound"
     case wcSessionSaveError = "WCSessionNotSaved"
+    case wcTransactionRequestParsedLog = "WCTransactionRequestParsed"
+    case wcTransactionRequestReceivedLog = "WCTransactionRequestReceived"
+    case wcTransactionRequestScreenDidAppearLog = "WCTransactionRequestScreenDidAppear"
+    case wcTransactionRequestScreenDidLoadLog = "WCTransactionRequestScreenDidLoad"
 }
 
 extension ALGAnalyticsLogName {
@@ -42,6 +46,10 @@ extension ALGAnalyticsLogName {
         case .ledgerTransactionError: return 0
         case .mismatchAccountError: return 1
         case .wcSessionSaveError: return 2
+        case .wcTransactionRequestParsedLog: return 3
+        case .wcTransactionRequestReceivedLog: return 4
+        case .wcTransactionRequestScreenDidAppearLog: return 5
+        case .wcTransactionRequestScreenDidLoadLog: return 6
         }
     }
 }

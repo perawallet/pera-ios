@@ -636,7 +636,7 @@ extension HomeViewController {
     }
 
     private func registerWCRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler()
+        let wcRequestHandler = TransactionSignRequestHandler(analytics: analytics)
         if let rootViewController = UIApplication.shared.rootViewController() {
             wcRequestHandler.delegate = rootViewController
         }

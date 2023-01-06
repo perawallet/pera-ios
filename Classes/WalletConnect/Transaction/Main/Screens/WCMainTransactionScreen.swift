@@ -71,6 +71,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         return WCTransactionSigner(api: api, analytics: analytics)
     }()
 
+    private let onceWhenViewDidAppear = Once()
+    
     private var transactionParams: TransactionParams?
 
     private var signedTransactions: [Data?] = []
@@ -137,28 +139,13 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         dappMessageView.delegate = self
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        loadingController?.stopLoading()
-
-        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
-            return
-        }
-
-        wcTransactionSigner.disonnectFromLedger()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        presentInitialWarningAlertIfNeeded()
-    }
-
     override func viewDidLoad() {
         dataSource.load()
 
         super.viewDidLoad()
-
+        
+        logScreenDidLoad()
+        
         guard dataSource.hasValidGroupTransaction else {
             /// <note>: This check prevents to show multiple reject sheet
             /// When data source load function called, it will call delegate function to let us know if group transaction is not validated
@@ -170,7 +157,25 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         getAssetDetailsIfNeeded()
         getTransactionParams()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentInitialWarningAlertIfNeeded()
+        logScreenDidAppearOnTheInitialLaunch()
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        loadingController?.stopLoading()
+
+        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
+            return
+        }
+
+        wcTransactionSigner.disonnectFromLedger()
+    }
+    
     override func bindData() {
         super.bindData()
 
@@ -450,6 +455,22 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             by: .presentWithoutNavigationController
         )
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
+    }
+    
+    private func logScreenDidLoad() {
+        analytics.record(
+            .wcTransactionRequestScreenDidLoad(transactionRequest: transactionRequest)
+        )
+    }
+    
+    private func logScreenDidAppearOnTheInitialLaunch() {
+        onceWhenViewDidAppear.execute { [weak self] in
+            guard let self else { return }
+
+            self.analytics.record(
+                .wcTransactionRequestScreenDidAppear(transactionRequest: self.transactionRequest)
+            )
+        }
     }
 }
 

@@ -19,6 +19,11 @@ import WalletConnectSwift
 import Foundation
 
 class TransactionSignRequestHandler: WalletConnectRequestHandler {
+    private let analytics: ALGAnalytics
+    
+    init(analytics: ALGAnalytics) {
+        self.analytics = analytics
+    }
 
     override func canHandle(request: WalletConnectRequest) -> Bool {
         return request.method == WalletConnectMethod.transactionSign.rawValue
@@ -31,6 +36,10 @@ class TransactionSignRequestHandler: WalletConnectRequestHandler {
 
 extension TransactionSignRequestHandler {
     private func handleTransaction(from request: WalletConnectRequest) {
+        analytics.record(
+            .wcTransactionRequestReceived(transactionRequest: request)
+        )
+        
         guard let transactions = try? request.parameter(of: [WCTransaction].self, at: 0) else {
             DispatchQueue.main.async {
                 self.delegate?.walletConnectRequestHandler(self, didInvalidate: request)
@@ -42,6 +51,10 @@ extension TransactionSignRequestHandler {
         if request.parameterCount > 1 {
             transactionOption = try? request.parameter(of: WCTransactionOption.self, at: 1)
         }
+        
+        analytics.record(
+            .wcTransactionRequestParsed(transactionRequest: request)
+        )
 
         DispatchQueue.main.async {
             self.delegate?.walletConnectRequestHandler(self, shouldSign: transactions, for: request, with: transactionOption)
