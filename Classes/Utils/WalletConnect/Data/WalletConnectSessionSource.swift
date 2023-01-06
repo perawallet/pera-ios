@@ -84,10 +84,10 @@ extension WalletConnectSessionSource {
         if sessions != nil {
             if sessions?[session.urlMeta.topic] != nil {
                 updateWalletConnectSession(session, with: session.urlMeta)
+            } else {
+                self.sessions?[session.urlMeta.topic] = session
+                syncSessions()
             }
-
-            self.sessions?[session.urlMeta.topic] = session
-            syncSessions()
         } else {
             sessions = [session.urlMeta.topic: session]
         }
