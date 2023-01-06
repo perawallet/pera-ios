@@ -72,6 +72,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }()
 
     private var transactionParams: TransactionParams?
+    private var rejectedReason: WCTransactionErrorResponse?
 
     private var signedTransactions: [Data?] = []
     private let wcSession: WCSession?
@@ -479,6 +480,12 @@ extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
 extension WCMainTransactionScreen {
 
     private func rejectSigning(reason: WCTransactionErrorResponse = .rejected(.user)) {
+        guard rejectedReason == nil else {
+            return
+        }
+
+        self.rejectedReason = reason
+
         switch reason {
         case .rejected(let rejection):
             if rejection == .user {
