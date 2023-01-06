@@ -531,9 +531,9 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             switch itemIdentifier {
             case .pendingAsset:
-                stopAnimatingListLoadingIfNeeded(cell as! PendingAssetListItemCell)
+                stopAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
             case .pendingCollectibleAsset:
-                stopAnimatingListLoadingIfNeeded(cell as! PendingCollectibleAssetListItemCell)
+                stopAnimatingListLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             default:
                 break
             }
