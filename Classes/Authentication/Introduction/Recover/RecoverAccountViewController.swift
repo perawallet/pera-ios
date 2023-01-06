@@ -81,6 +81,8 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
             open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase), by: .push)
         case .ledger:
             open(.tutorial(flow: flow, tutorial: .recoverWithLedger), by: .push)
+        case .importFromWeb:
+            break
         default:
             break
         }
