@@ -68,20 +68,21 @@ final class WCTransactionRequestedSigner {
         in accountCollection: AccountCollection,
         on session: Session
     ) -> Account? {
-        for accountHandle in accountCollection where !accountHandle.value.isWatchAccount() {
-            let account = accountHandle.value
-
-            if account.isRekeyed() && (account.address == address || account.authAddress == address) {
-                return findRekeyedAccount(for: account, among: accountCollection)
-            }
-
-            if account.isLedger() && account.ledgerDetail != nil && account.address == address {
-                return account
-            }
-
-            if session.privateData(for: address) != nil && account.address == address {
-                return account
-            }
+        guard let account = accountCollection.account(for: address),
+              !account.isWatchAccount() else {
+            return nil
+        }
+        
+        if account.isLedger() && account.ledgerDetail != nil {
+            return account
+        }
+        
+        if account.isRekeyed() {
+            return findRekeyedAccount(for: account, among: accountCollection)
+        }
+        
+        if session.privateData(for: address) != nil {
+            return account
         }
 
         return nil

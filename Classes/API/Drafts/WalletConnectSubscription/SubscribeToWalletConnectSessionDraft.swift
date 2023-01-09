@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ParsedSwapTransaction.swift
+//   WalletConnectSubscriptionDraft.swift
 
 import Foundation
+import MagpieCore
 
-struct ParsedSwapTransaction {
-    let purpose: SwapTransactionPurpose
-    let groupID: String
-    let paidTransactions: [SDKTransaction]
-    let receivedTransactions: [SDKTransaction]
-    let otherTransactions: [SDKTransaction]
+struct SubscribeToWalletConnectSessionDraft: JSONObjectBody {
+    let deviceID: String?
+    let wcSession: WCSession?
+    let pushToken: String?
 
-    var allFees: UInt64 {
-        return paidTransactions.reduce(0, {$0 + ($1.fee ?? 0) })
+    var bodyParams: [APIBodyParam] {
+        let params: [APIBodyParam] = [
+            .init(.device, deviceID),
+            .init(.bridgeURL, wcSession?.urlMeta.bridge, .setIfPresent),
+            .init(.topicID, wcSession?.walletMeta?.peerId, .setIfPresent),
+            .init(.dAppName, wcSession?.peerMeta.name, .setIfPresent),
+            .init(.pushToken, pushToken)
+        ]
+        return params
     }
 }

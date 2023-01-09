@@ -1110,11 +1110,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .assetsFilterSelection(let filter, let eventHandler):
-            let aViewController = AssetsFilterSelectionViewController(
-                filter: filter,
-                configuration: configuration
-            )
+        case .assetsFilterSelection(let eventHandler):
+            let aViewController = AssetsFilterSelectionViewController(configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
@@ -1467,12 +1464,7 @@ extension Router {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        let sharedDataController = appConfiguration.sharedDataController
         let bannerController = appConfiguration.bannerController
-        
-        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            !$0.value.isWatchAccount()
-        }
 
         let api = appConfiguration.api
         let sessionChainId = session.chainId(for: api.network)
@@ -1483,15 +1475,26 @@ extension Router {
                     title: "title-error".localized,
                     message: "wallet-connect-transaction-error-node".localized
                 )
+                
+                completion(
+                    session.getDeclinedWalletConnectionInfo(on: api.network)
+                )
             }
             return
         }
         
-        if !hasNonWatchAccount {
+        let sharedDataController = appConfiguration.sharedDataController
+        let accounts = sharedDataController.accountCollection
+
+        guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-session-error-no-account".localized
+                )
+                
+                completion(
+                    session.getDeclinedWalletConnectionInfo(on: api.network)
                 )
             }
             return

@@ -1307,7 +1307,6 @@
 "web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
-"web-export-result-title" = "Accounts exported successfully!";
 "web-export-result-title-singular" = "Account exported successfully!";
 "web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
 "web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";

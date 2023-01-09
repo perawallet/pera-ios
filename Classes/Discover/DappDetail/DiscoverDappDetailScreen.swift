@@ -55,7 +55,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        addNavigationTitle()
+        addNavigation()
     }
 
     override func viewDidLoad() {
@@ -106,12 +106,14 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         webView.scrollView.contentInset.bottom = view.safeAreaBottom
     }
 
-    private func addNavigationTitle() {
+    private func addNavigation() {
         navigationTitleView.customize(DiscoverDappDetailNavigationViewTheme())
 
         navigationItem.titleView = navigationTitleView
 
         bindNavigationTitle(with: dappParameters)
+
+        self.rightBarButtonItems = [ ALGBarButtonItem.flexibleSpace() ]
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {

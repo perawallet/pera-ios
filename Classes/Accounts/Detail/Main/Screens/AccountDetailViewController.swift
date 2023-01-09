@@ -533,17 +533,14 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
                 guard let self = self else { return}
                 
                 switch event {
-                case .didChangeFilter(let filter):
-                    self.assetListScreen.changeFilterSelection(filter)
+                case .didComplete: self.assetListScreen.reloadData()
+                case .didCancel: break
                 }
             }
         }
         
         open(
-            .assetsFilterSelection(
-                filter: sharedDataController.selectedAssetsFilteringOption,
-                eventHandler: eventHandler
-            ),
+            .assetsFilterSelection(eventHandler: eventHandler),
             by: .present
         )
     }

@@ -16,6 +16,7 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
@@ -27,6 +28,20 @@ extension ALGAPI {
             .base(.mobileV1(network))
             .path(.announcements, args: draft.deviceId)
             .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    func subscribeToWalletConnectSession(
+        _ draft: SubscribeToWalletConnectSessionDraft,
+        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.subscribeToWalletConnectSession)
+            .method(.post)
+            .body(draft)
             .completionHandler(handler)
             .execute()
     }
