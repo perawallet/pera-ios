@@ -54,10 +54,50 @@ extension CollectibleDescriptionViewModel {
         }
 
         if isTruncated && isTruncatable {
-            let truncatedDescription = String(description.prefix(characterThreshold)) + "..." 
+            var truncatedDescription = String(description.prefix(characterThreshold))
+
+            let lastTruncatedWordStartIndex = truncatedDescription.rangeOfCharacter(
+                from: .whitespacesAndNewlines,
+                options: .backwards
+            )?.upperBound ?? truncatedDescription.startIndex
+
+            let textAfterTruncatedDescription = description[truncatedDescription.endIndex..<description.endIndex]
+            let lastTruncatedWordEndIndex = textAfterTruncatedDescription.rangeOfCharacter(
+                from: .whitespacesAndNewlines
+            )?.lowerBound ?? description.endIndex
+
+            let lastTruncatedWord = String(description[lastTruncatedWordStartIndex..<lastTruncatedWordEndIndex])
+
+            if lastTruncatedWord.isValidURL {
+                let isLastWord = lastTruncatedWordEndIndex == description.endIndex
+                if isLastWord {
+                    truncatedDescription = description
+                    isTruncated = false
+                    isTruncatable = false
+                } else {
+                    truncatedDescription = String(description[description.startIndex..<lastTruncatedWordEndIndex]) + "..."
+                }
+            } else {
+                truncatedDescription += "..."
+            }
+
             self.description = truncatedDescription.bodyRegular()
         } else {
             self.description = description.bodyRegular()
+        }
+    }
+}
+
+fileprivate extension String {
+    /// <note>
+    /// Valid URL check that matches with `ActiveLabel`'s URL pattern.
+    var isValidURL: Bool {
+        get {
+            let pattern = "(^|[\\s.:;?\\-\\]<\\(])" +
+            "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
+            "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+            let predicate = NSPredicate(format: "SELF MATCHES %@", argumentArray: [pattern])
+            return predicate.evaluate(with: self)
         }
     }
 }
