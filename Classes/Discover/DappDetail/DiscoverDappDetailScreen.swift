@@ -21,6 +21,7 @@ import MacaroonUtils
 final class DiscoverDappDetailScreen: InAppBrowserScreen {
     private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
 
+    private lazy var toolbar = UIToolbar(frame: .zero)
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
@@ -28,7 +29,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
 
-    private lazy var theme = DiscoverDappDetailScreenTheme()
+    private var isViewLayoutLoaded = false
 
     private let dappParameters: DiscoverDappParamaters
 
@@ -62,12 +63,22 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateWebViewLayout()
         initializeWebView()
         addNavigationToolbar()
         executeNavigationScript()
         executePeraConnectScript()
         recordAnalyticsEvent()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty || toolbar.bounds.isEmpty { return }
+
+        if !isViewLayoutLoaded {
+            isViewLayoutLoaded = true
+            updateWebViewLayout()
+        }
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -206,17 +217,15 @@ extension DiscoverDappDetailScreen {
 
     private func updateWebViewLayout() {
         webView.snp.updateConstraints { make in
-            make.bottom.equalToSuperview().inset(view.safeAreaBottom + theme.toolbarHeight)
+            make.bottom.equalToSuperview().inset(view.safeAreaBottom + toolbar.bounds.height)
         }
     }
 
     private func addNavigationToolbar() {
-        let toolbar = UIToolbar(frame: .zero)
         view.addSubview(toolbar)
         toolbar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(view.safeAreaBottom)
-            make.height.equalTo(theme.toolbarHeight)
         }
 
         var items = [UIBarButtonItem]()
