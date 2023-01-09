@@ -277,6 +277,7 @@ extension ASADetailScreen {
 
     private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(dataController.account)
+        walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)
     }
 
