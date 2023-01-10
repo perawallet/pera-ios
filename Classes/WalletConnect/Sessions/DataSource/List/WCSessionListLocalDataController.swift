@@ -241,7 +241,7 @@ extension WCSessionListLocalDataController {
 extension WCSessionListLocalDataController {
     func walletConnector(
         _ walletConnector: WalletConnector,
-        didFailWith error: WalletConnector.Error
+        didFailWith error: WalletConnector.WCError
     ) {
         switch error {
         case .failedToDisconnectInactiveSession(let session):

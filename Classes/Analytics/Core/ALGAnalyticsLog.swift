@@ -37,6 +37,7 @@ enum ALGAnalyticsLogName:
     case walletConnectTransactionRequestDidAppear = "WCTransactionRequestDidAppear"
     case walletConnectTransactionRequestDidLoad = "WCTransactionRequestDidLoad"
     case walletConnectTransactionRequestReceived = "WCTransactionRequestReceived"
+    case walletConnectTransactionRequestSDKError = "WCTransactionRequestSDKError"
     case walletConnectTransactionRequestValidated = "WCTransactionRequestValidated"
 }
 
@@ -50,6 +51,7 @@ extension ALGAnalyticsLogName {
         case .walletConnectTransactionRequestDidLoad: return 4
         case .walletConnectTransactionRequestReceived: return 5
         case .walletConnectTransactionRequestValidated: return 6
+        case .walletConnectTransactionRequestSDKError: return 7
         }
     }
 }

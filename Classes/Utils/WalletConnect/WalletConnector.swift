@@ -267,6 +267,16 @@ extension WalletConnector: WalletConnectBridgeDelegate {
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
         delegate?.walletConnector(self, didUpdate: session.toWCSession())
     }
+    
+    func walletConnectBridge(
+        _ walletConnectBridge: WalletConnectBridge,
+        didFailWith error: Error?,
+        for url: WalletConnectURL
+    ) {
+        analytics.record(
+            .wcTransactionRequestSDKError(error: error, url: url)
+        )
+    }
 }
 
 extension WalletConnector {
@@ -304,7 +314,7 @@ extension WalletConnector {
 }
 
 extension WalletConnector {
-    enum Error {
+    enum WCError {
         case failedToConnect(url: WalletConnectURL)
         case failedToCreateSession(qr: String)
         case failedToDisconnectInactiveSession(session: WCSession)
@@ -320,7 +330,7 @@ protocol WalletConnectorDelegate: AnyObject {
     )
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession)
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession)
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error)
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError)
     func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession)
 }
 
@@ -341,7 +351,7 @@ extension WalletConnectorDelegate {
 
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
 
     }
 
