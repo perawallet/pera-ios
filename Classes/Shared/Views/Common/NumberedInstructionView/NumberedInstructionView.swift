@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class NumberedInstructionView: View {
+    // TODO: NumberBackground and NumberView would be combined into a single component
     private lazy var numberBackgroundView = ImageView()
     private lazy var numberView = Label()
     private lazy var instructionView = Label()
