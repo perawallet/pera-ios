@@ -105,7 +105,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
             return
         }
 
-        let generatedUrl = try? DiscoverURLGenerator.generateUrl(
+        let generatedUrl = DiscoverURLGenerator.generateUrl(
             discoverUrl: .other(url: url),
             theme: traitCollection.userInterfaceStyle,
             session: session
