@@ -18,8 +18,8 @@ import Foundation
 import MacaroonUIKit
 
 struct NumberedInstructionViewTheme: LayoutSheet, StyleSheet {
-    let background: ImageStyle
-    let title: TextStyle
+    let instruction: TextStyle
+    let numberBackground: ImageStyle
     let number: TextStyle
     let numberTopInset: LayoutMetric
     let numberImageSize: LayoutSize
@@ -27,14 +27,14 @@ struct NumberedInstructionViewTheme: LayoutSheet, StyleSheet {
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.background = [
-            .image("bg-import-account-instruction")
-        ]
-        self.title = [
+        self.instruction = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Typography.bodyRegular()),
             .textColor(Colors.Text.main)
+        ]
+        self.numberBackground = [
+            .image("bg-import-account-instruction")
         ]
         self.number = [
             .textOverflow(SingleLineText()),

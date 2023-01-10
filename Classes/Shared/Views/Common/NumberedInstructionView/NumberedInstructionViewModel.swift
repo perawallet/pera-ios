@@ -19,11 +19,11 @@ import MacaroonUIKit
 
 struct NumberedInstructionViewModel: ViewModel {
     private(set) var number: TextProvider?
-    private(set) var title: TextProvider?
+    private(set) var instruction: TextProvider?
 
-    init(number: Int, title: String) {
+    init(number: Int, instruction: String) {
         bindNumber(number)
-        bindTitle(title)
+        bindInstruction(instruction)
     }
 }
 
@@ -32,7 +32,7 @@ extension NumberedInstructionViewModel {
         self.number = "\(number)".bodyRegular(alignment: .center)
     }
 
-    private mutating func bindTitle(_ title: String) {
-        self.title = title.bodyRegular()
+    private mutating func bindInstruction(_ instruction: String) {
+        self.instruction = instruction.bodyRegular()
     }
 }

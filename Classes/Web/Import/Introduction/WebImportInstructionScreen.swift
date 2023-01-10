@@ -64,7 +64,7 @@ final class WebImportInstructionScreen: ScrollScreen, NavigationBarLargeTitleCon
             return
         }
 
-        updateUIWhenViewDidLayout()
+        updateUIWhenViewDidLayoutSubviews()
 
         isViewLayoutLoaded = true
     }
@@ -145,7 +145,7 @@ extension WebImportInstructionScreen {
         firstInstructionView.bind(
             NumberedInstructionViewModel(
                 number: 1,
-                title: "web-import-instruction-first-message".localized
+                instruction: "web-import-instruction-first-message".localized
             )
         )
     }
@@ -161,7 +161,7 @@ extension WebImportInstructionScreen {
         secondInstructionView.bind(
             NumberedInstructionViewModel(
                 number: 2,
-                title: "web-import-instruction-second-message".localized
+                instruction: "web-import-instruction-second-message".localized
             )
         )
     }
@@ -177,7 +177,7 @@ extension WebImportInstructionScreen {
         thirdInstructionView.bind(
             NumberedInstructionViewModel(
                 number: 3,
-                title: "web-import-instruction-third-message".localized
+                instruction: "web-import-instruction-third-message".localized
             )
         )
     }
@@ -195,7 +195,7 @@ extension WebImportInstructionScreen {
         fourthInstructionView.bind(
             NumberedInstructionViewModel(
                 number: 4,
-                title: "web-import-instruction-fourth-message".localized
+                instruction: "web-import-instruction-fourth-message".localized
             )
         )
     }
@@ -225,11 +225,11 @@ extension WebImportInstructionScreen {
 }
 
 extension WebImportInstructionScreen {
-    private func updateUIWhenViewDidLayout() {
-        updateAdditionalSafeAreaInetsWhenViewDidLayout()
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateAdditionalSafeAreaInetsWhenViewDidLayoutSubviews()
     }
 
-    private func updateAdditionalSafeAreaInetsWhenViewDidLayout() {
+    private func updateAdditionalSafeAreaInetsWhenViewDidLayoutSubviews() {
         scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height
     }
 }
