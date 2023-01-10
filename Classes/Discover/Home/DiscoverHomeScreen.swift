@@ -192,8 +192,19 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
     }
 
     private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
+        let screen = Screen.discoverDappDetail(dappDetail) {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case let .performFavorite(message):
+                let scriptString = "var message = '" + message + "'; handleMessage(message);"
+                self.webView.evaluateJavaScript(scriptString)
+            }
+        }
+        
         open(
-            .discoverDappDetail(dappDetail),
+            screen,
             by: .push
         )
     }

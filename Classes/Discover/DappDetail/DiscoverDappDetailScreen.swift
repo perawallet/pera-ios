@@ -19,12 +19,20 @@ import WebKit
 import MacaroonUtils
 
 final class DiscoverDappDetailScreen: InAppBrowserScreen {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+    
+    private var favoriteDapps: Set<String> = []
+    private var isCurrentUrlFavorite: Bool
+    
     private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
 
+    private lazy var toolbarView = UIToolbar(frame: .zero)
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
-    private lazy var favouriteButton = makeFavouriteButton()
+    private lazy var addFavoriteButton = makeAddFavoriteButton()
+    private lazy var removeFavoriteButton = makeRemoveFavoriteButton()
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
@@ -39,6 +47,12 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         configuration: ViewControllerConfiguration
     ) {
         self.dappParameters = dappParameters
+        self.isCurrentUrlFavorite = dappParameters.isFavorite
+        
+        if dappParameters.isFavorite {
+            self.favoriteDapps.insert(dappParameters.url)
+        }
+        
         super.init(configuration: configuration)
     }
 
@@ -75,6 +89,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         updateButtonsStateIfNeeded()
         updateTitle()
+        updateCurrentFavoriteState()
     }
 
     override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -162,6 +177,21 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
             forMainFrameOnly: false
         )
     }
+    
+    private func getUrlToFavorite() -> URL? {
+        guard let currentUrl = webView.url else {
+            return nil
+        }
+        
+        var urlComponents = URLComponents()
+        urlComponents.scheme = currentUrl.scheme
+        urlComponents.host = currentUrl.host
+        
+        let newUrl = urlComponents.url
+        
+        return newUrl
+        
+    }
 }
 
 extension DiscoverDappDetailScreen: WKScriptMessageHandler {
@@ -208,15 +238,25 @@ extension DiscoverDappDetailScreen {
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
     
-    private func makeFavouriteButton() -> UIBarButtonItem {
-        let button = ALGBarButtonItem(kind: .discoverFavourite) {}
+    private func makeAddFavoriteButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverAddFavorite) {
+            [unowned self] in
+            didTapFavorite()
+        }
+        return UIBarButtonItem(customView: BarButton(barButtonItem: button))
+    }
+    
+    private func makeRemoveFavoriteButton() -> UIBarButtonItem {
+        let button = ALGBarButtonItem(kind: .discoverRemoveFavorite) {
+            [unowned self] in
+            didTapFavorite()
+        }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
 
     private func addNavigationToolbar() {
-        let toolbar = UIToolbar(frame: .zero)
-        webView.addSubview(toolbar)
-        toolbar.snp.makeConstraints { make in
+        webView.addSubview(toolbarView)
+        toolbarView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.safeEqualToBottom(of: self)
         }
@@ -231,9 +271,16 @@ extension DiscoverDappDetailScreen {
         items.append( nextButton )
         items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         items.append( homeButton )
-        items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-        items.append( favouriteButton )
-        toolbar.items = items
+        
+        if eventHandler != nil {
+            items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            
+            isCurrentUrlFavorite
+                ? items.append(removeFavoriteButton)
+                : items.append(addFavoriteButton)
+        }
+
+        toolbarView.items = items
 
         self.setToolbarItems(items, animated: true)
         updateButtonsStateIfNeeded()
@@ -247,6 +294,54 @@ extension DiscoverDappDetailScreen {
         homeButton.isEnabled = isHomeEnabled
         previousButton.isEnabled = canGoBack
         nextButton.isEnabled = canGoForward
+    }
+    
+    private func toggleCurrentFavoriteState() {
+        guard let urlString = getUrlToFavorite()?.absoluteString,
+              let _ = eventHandler else {
+            return
+        }
+        
+        if favoriteDapps.contains(urlString) {
+            favoriteDapps.remove(urlString)
+            isCurrentUrlFavorite = false
+        } else {
+            favoriteDapps.insert(urlString)
+            isCurrentUrlFavorite = true
+        }
+        
+        updateFavoriteButtonIfNeeded()
+    }
+    
+    private func updateCurrentFavoriteState() {
+        guard let urlString = getUrlToFavorite()?.absoluteString,
+              let _ = eventHandler else {
+            return
+        }
+        
+        if favoriteDapps.contains(urlString) {
+            isCurrentUrlFavorite = true
+        } else {
+            isCurrentUrlFavorite = false
+        }
+        
+        updateFavoriteButtonIfNeeded()
+    }
+    
+    private func updateFavoriteButtonIfNeeded() {
+        var toolbarItems = toolbarView.items
+        
+        if isCurrentUrlFavorite && toolbarItems?.last == addFavoriteButton {
+            toolbarItems?.removeLast()
+            toolbarItems?.append(removeFavoriteButton)
+            toolbarView.items = toolbarItems
+            self.setToolbarItems(toolbarItems, animated: true)
+        } else if !isCurrentUrlFavorite && toolbarItems?.last == removeFavoriteButton {
+            toolbarItems?.removeLast()
+            toolbarItems?.append(addFavoriteButton)
+            toolbarView.items = toolbarItems
+            self.setToolbarItems(toolbarItems, animated: true)
+        }
     }
 
     private func updateTitle() {
@@ -277,4 +372,26 @@ extension DiscoverDappDetailScreen {
         self.analytics.track(.discoverDappDetail(dappParameters: dappParameters))
     }
     
+    private func didTapFavorite() {
+        let currentUrl = getUrlToFavorite()
+        
+        let favoriteDappDetails = DiscoverFavouriteDappDetails(
+            name: webView.title,
+            url: currentUrl
+        )
+        
+        guard let dappStringData = favoriteDappDetails.getStringData() else {
+            return
+        }
+        
+        eventHandler?(.performFavorite(dappStringData))
+        
+        toggleCurrentFavoriteState()
+    }
+}
+
+extension DiscoverDappDetailScreen {
+    enum Event {
+        case performFavorite(String)
+    }
 }

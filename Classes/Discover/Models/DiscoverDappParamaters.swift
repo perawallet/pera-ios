@@ -20,4 +20,5 @@ import MacaroonUtils
 struct DiscoverDappParamaters: JSONModel {
     let name: String?
     let url: String
+    let isFavorite: Bool
 }

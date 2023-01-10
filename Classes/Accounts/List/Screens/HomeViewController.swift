@@ -464,10 +464,14 @@ extension HomeViewController {
 
             if let url = item.ctaUrl {
                 let title = item.title
-                let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
+                let dappDetail = DiscoverDappParamaters(
+                    name: title,
+                    url: url.absoluteString,
+                    isFavorite: false
+                )
 
                 self.open(
-                    .discoverDappDetail(dappDetail),
+                    .discoverDappDetail(dappDetail, eventHandler: nil),
                     by: .push
                 )
             }

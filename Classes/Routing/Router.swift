@@ -1255,11 +1255,13 @@ class Router:
                 swapDataStore: SwapDataLocalStore(),
                 configuration: configuration
             )
-        case .discoverDappDetail(let dappParameters):
-            viewController = DiscoverDappDetailScreen(
+        case .discoverDappDetail(let dappParameters, let eventHandler):
+            let screen = DiscoverDappDetailScreen(
                 dappParameters: dappParameters,
                 configuration: configuration
             )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

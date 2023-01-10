@@ -635,6 +635,9 @@
 		17D7F3BC294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17D7F3BD294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
+		17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
+		17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
+		17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
 		17EF5133295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
 		17EF5134295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
 		17EF5135295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
@@ -644,9 +647,6 @@
 		17EF513B295B1FB600461347 /* ASADetailMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF513A295B1FB600461347 /* ASADetailMarketViewTheme.swift */; };
 		17EF513C295B1FB600461347 /* ASADetailMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF513A295B1FB600461347 /* ASADetailMarketViewTheme.swift */; };
 		17EF513D295B1FB600461347 /* ASADetailMarketViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF513A295B1FB600461347 /* ASADetailMarketViewTheme.swift */; };
-		17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
-		17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
-		17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
 		17F6E68A224B71A6006DD31F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E689224B71A6006DD31F /* User.swift */; };
 		17F8BF5D28A2BA9700992F91 /* ALGAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */; };
 		17F8BF5E28A2BA9700992F91 /* ALGAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */; };
@@ -2148,6 +2148,9 @@
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
 		2B82B1CC2253DE2500A8909F /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1CB2253DE2500A8909F /* ContactsViewModel.swift */; };
+		2B834932296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
+		2B834933296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
+		2B834934296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */; };
 		2B83502626B1D9420014F9CD /* WCTransactionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */; };
 		2B83502726B1D9420014F9CD /* WCTransactionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */; };
 		2B83502826B1D9420014F9CD /* WCTransactionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */; };
@@ -6535,10 +6538,10 @@
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
+		17EF512C295ABAE700461347 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		17EF5132295B0EA500461347 /* ASADetailMarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketView.swift; sourceTree = "<group>"; };
 		17EF5136295B1FAF00461347 /* ASADetailMarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketViewModel.swift; sourceTree = "<group>"; };
 		17EF513A295B1FB600461347 /* ASADetailMarketViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketViewTheme.swift; sourceTree = "<group>"; };
-		17EF512C295ABAE700461347 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		17F6E689224B71A6006DD31F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		17F8BF5C28A2BA9700992F91 /* ALGAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalyticsProvider.swift; sourceTree = "<group>"; };
 		17F8BF6028A2BAC500992F91 /* ALGAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalytics.swift; sourceTree = "<group>"; };
@@ -7017,6 +7020,7 @@
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
 		2B82B1CB2253DE2500A8909F /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
+		2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFavouriteDappDetails.swift; sourceTree = "<group>"; };
 		2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionValidator.swift; sourceTree = "<group>"; };
 		2B835B6227A424870091E9F6 /* WCGroupTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WCGroupTransactionViewController.swift; path = Screens/WCGroupTransactionViewController.swift; sourceTree = "<group>"; };
 		2B835B6427A424C00091E9F6 /* WCAlgosTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WCAlgosTransactionViewController.swift; path = Screens/WCAlgosTransactionViewController.swift; sourceTree = "<group>"; };
@@ -8828,6 +8832,7 @@
 				17A7667D2909625800A8746C /* DiscoverAssetParameters.swift */,
 				17A766812909626400A8746C /* DiscoverDappParamaters.swift */,
 				17C93290293F2495000EE03D /* DiscoverSwapParameters.swift */,
+				2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -20974,6 +20979,7 @@
 				D473CA6226E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				D4A70AFC2878363100FB52B0 /* AssetConfigInnerTransactionPreviewViewModel.swift in Sources */,
 				F010635628AAEBF700AB6873 /* ASAProfileView.swift in Sources */,
+				2B834934296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */,
 				2BE9373C2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,
 				D43A0C172790CA2D007430B9 /* LoadingView.swift in Sources */,
 				17BD4EC22292F1260003E49A /* AdaptiveLayoutConstants.swift in Sources */,
@@ -23090,6 +23096,7 @@
 				D4A0DEAB28980E0F00CE3895 /* AssetStatisticsSectionPriceViewTheme.swift in Sources */,
 				D4411D0F2836532000080911 /* CollectibleFullScreenImageDraft.swift in Sources */,
 				D49D31E42725A9BD00AADE9A /* ContactsViewTheme.swift in Sources */,
+				2B834933296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */,
 				17C9328B2939299F000EE03D /* SwapQuickActionsGroupView.swift in Sources */,
 				F09608832796B7BB00CFBB90 /* TransactionOptionsViewTheme.swift in Sources */,
 				D478CE26282E48420090032D /* CollectibleMediaPreviewController+VideoTransition.swift in Sources */,
@@ -25122,6 +25129,7 @@
 				D419AF9C28D0A2FC00673C39 /* AccountSelectionListLoadingAccountItemCellTheme.swift in Sources */,
 				2B14B046286F6E4A005C1396 /* CurrencySelectionLoadingView.swift in Sources */,
 				2B5BE09F251938E100324BEE /* AddAccountView.swift in Sources */,
+				2B834932296E062F001BA824 /* DiscoverFavouriteDappDetails.swift in Sources */,
 				17C9328A2939299F000EE03D /* SwapQuickActionsGroupView.swift in Sources */,
 				2BB93BE725BEF3B9001F1D6C /* TransactionData.swift in Sources */,
 				D43A0C342790D647007430B9 /* NoContentViewTheme.swift in Sources */,
