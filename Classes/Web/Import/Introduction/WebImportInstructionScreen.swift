@@ -51,9 +51,6 @@ final class WebImportInstructionScreen: ScrollScreen, NavigationBarLargeTitleCon
 
         view.customizeAppearance(theme.background)
 
-        addNavigationBarLargeTitle()
-        navigationBarLargeTitleController.activate()
-
         addUI()
     }
 
@@ -109,9 +106,11 @@ extension WebImportInstructionScreen {
                 theme.navigationBarEdgeInset
             )
         }
+        navigationBarLargeTitleController.activate()
     }
     
     private func addUI() {
+        addNavigationBarLargeTitle()
         addTitle()
         addInstructions()
         addStartAction()
