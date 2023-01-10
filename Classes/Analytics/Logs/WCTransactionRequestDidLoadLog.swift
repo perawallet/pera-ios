@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionRequestScreenDidLoadLog.swift
+//   WCTransactionRequestDidLoadLog.swift
 
 import Foundation
 
-struct WCTransactionRequestScreenDidLoadLog: ALGAnalyticsLog {
+struct WCTransactionRequestDidLoadLog: ALGAnalyticsLog {
     let name: ALGAnalyticsLogName
     let metadata: ALGAnalyticsMetadata
     
     fileprivate init(
         transactionRequest: WalletConnectRequest
     ) {
-        self.name = .wcTransactionRequestScreenDidLoadLog
+        self.name = .walletConnectTransactionRequestDidLoad
         self.metadata = [
             .wcRequestID: transactionRequest.id.unwrap(or: ""),
             .wcRequestURL: transactionRequest.url.absoluteString
@@ -31,11 +31,11 @@ struct WCTransactionRequestScreenDidLoadLog: ALGAnalyticsLog {
     }
 }
 
-extension ALGAnalyticsLog where Self == WCTransactionRequestScreenDidLoadLog {
-    static func wcTransactionRequestScreenDidLoad(
+extension ALGAnalyticsLog where Self == WCTransactionRequestDidLoadLog {
+    static func wcTransactionRequestDidLoad(
         transactionRequest: WalletConnectRequest
     ) -> Self {
-        return WCTransactionRequestScreenDidLoadLog(
+        return WCTransactionRequestDidLoadLog(
             transactionRequest: transactionRequest
         )
     }

@@ -23,7 +23,7 @@ struct WCTransactionRequestReceivedLog: ALGAnalyticsLog {
     fileprivate init(
         transactionRequest: WalletConnectRequest
     ) {
-        self.name = .wcTransactionRequestReceivedLog
+        self.name = .walletConnectTransactionRequestReceived
         self.metadata = [
             .wcRequestID: transactionRequest.id.unwrap(or: ""),
             .wcRequestURL: transactionRequest.url.absoluteString

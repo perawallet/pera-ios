@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCTransactionRequestParsedLog.swift
+//   WCTransactionRequestValidatedLog.swift
 
 import Foundation
 
-struct WCTransactionRequestParsedLog: ALGAnalyticsLog {
+struct WCTransactionRequestValidatedLog: ALGAnalyticsLog {
     let name: ALGAnalyticsLogName
     let metadata: ALGAnalyticsMetadata
     
     fileprivate init(
         transactionRequest: WalletConnectRequest
     ) {
-        self.name = .wcTransactionRequestParsedLog
+        self.name = .walletConnectTransactionRequestValidated
         self.metadata = [
             .wcRequestID: transactionRequest.id.unwrap(or: ""),
             .wcRequestURL: transactionRequest.url.absoluteString
@@ -31,11 +31,11 @@ struct WCTransactionRequestParsedLog: ALGAnalyticsLog {
     }
 }
 
-extension ALGAnalyticsLog where Self == WCTransactionRequestParsedLog {
-    static func wcTransactionRequestParsed(
+extension ALGAnalyticsLog where Self == WCTransactionRequestValidatedLog {
+    static func wcTransactionRequestValidated(
         transactionRequest: WalletConnectRequest
     ) -> Self {
-        return WCTransactionRequestParsedLog(
+        return WCTransactionRequestValidatedLog(
             transactionRequest: transactionRequest
         )
     }

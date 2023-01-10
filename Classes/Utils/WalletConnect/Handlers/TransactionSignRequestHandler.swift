@@ -53,7 +53,7 @@ extension TransactionSignRequestHandler {
         }
         
         analytics.record(
-            .wcTransactionRequestParsed(transactionRequest: request)
+            .wcTransactionRequestValidated(transactionRequest: request)
         )
 
         DispatchQueue.main.async {

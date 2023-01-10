@@ -70,8 +70,6 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         }
         return WCTransactionSigner(api: api, analytics: analytics)
     }()
-
-    private let onceWhenViewDidAppear = Once()
     
     private var transactionParams: TransactionParams?
 
@@ -144,7 +142,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         super.viewDidLoad()
         
-        logScreenDidLoad()
+        logScreenWhenViewDidLoad()
         
         guard dataSource.hasValidGroupTransaction else {
             /// <note>: This check prevents to show multiple reject sheet
@@ -161,19 +159,14 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         presentInitialWarningAlertIfNeeded()
-        logScreenDidAppearOnTheInitialLaunch()
+        logScreenWhenViewDidAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         loadingController?.stopLoading()
-
-        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
-            return
-        }
-
-        wcTransactionSigner.disonnectFromLedger()
+        disconnectFromTheLedgerIfNeeeded()
     }
     
     override func bindData() {
@@ -457,20 +450,28 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
     }
     
-    private func logScreenDidLoad() {
+    private func logScreenWhenViewDidLoad() {
         analytics.record(
-            .wcTransactionRequestScreenDidLoad(transactionRequest: transactionRequest)
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
         )
     }
     
-    private func logScreenDidAppearOnTheInitialLaunch() {
-        onceWhenViewDidAppear.execute { [weak self] in
-            guard let self else { return }
-
-            self.analytics.record(
-                .wcTransactionRequestScreenDidAppear(transactionRequest: self.transactionRequest)
-            )
+    private func logScreenWhenViewDidAppear() {
+        if !isViewFirstAppeared {
+            return
         }
+        
+        analytics.record(
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+        )
+    }
+    
+    private func disconnectFromTheLedgerIfNeeeded() {
+        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
+            return
+        }
+
+        wcTransactionSigner.disonnectFromLedger()
     }
 }
 
