@@ -114,6 +114,9 @@
 		1736FBA128AD2D31002BB713 /* TapNFTReceiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB9E28AD2D31002BB713 /* TapNFTReceiveEvent.swift */; };
 		1736FBA228B4AF34002BB713 /* AssetDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */; };
 		1736FBA328B4AF35002BB713 /* AssetDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */; };
+		173C113E296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
+		173C113F296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
+		173C1140296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		173DA1E92255F7B500378A82 /* ALGAPI+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */; };
 		173DA1ED2255F96E00378A82 /* TransactionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EC2255F96E00378A82 /* TransactionParams.swift */; };
@@ -6354,6 +6357,7 @@
 		1736FB9628AD1FB5002BB713 /* TapAlgoPriceTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapAlgoPriceTabEvent.swift; sourceTree = "<group>"; };
 		1736FB9A28AD2562002BB713 /* RecordAccountDetailScreenEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAccountDetailScreenEvent.swift; sourceTree = "<group>"; };
 		1736FB9E28AD2D31002BB713 /* TapNFTReceiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapNFTReceiveEvent.swift; sourceTree = "<group>"; };
+		173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportQRScannerScreen.swift; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Transaction.swift"; sourceTree = "<group>"; };
 		173DA1EC2255F96E00378A82 /* TransactionParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParams.swift; sourceTree = "<group>"; };
@@ -8685,6 +8689,14 @@
 			path = Discover;
 			sourceTree = "<group>";
 		};
+		173C113C296D59EF00FF6217 /* QRScanner */ = {
+			isa = PBXGroup;
+			children = (
+				173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */,
+			);
+			path = QRScanner;
+			sourceTree = "<group>";
+		};
 		1746715B225B6BE600B78641 /* TypeAliases */ = {
 			isa = PBXGroup;
 			children = (
@@ -9022,6 +9034,7 @@
 		17D0F9EB28EC28DD0061B55D /* Export */ = {
 			isa = PBXGroup;
 			children = (
+				173C113C296D59EF00FF6217 /* QRScanner */,
 				17D0F9EC28EC28DD0061B55D /* Result */,
 				17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */,
 				17D0F9F328EC28DD0061B55D /* QRExportInformations.swift */,
@@ -21146,6 +21159,7 @@
 				2BD5A6BC26334BB80048FA5E /* AlgoPriceTimeFrameSelection.swift in Sources */,
 				17BD4EE12292F1260003E49A /* AccountNameSetupView.swift in Sources */,
 				2B7E3033267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
+				173C1140296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */,
 				F0DB418127945C1900EA437D /* PortfolioCalculationInfoView.swift in Sources */,
 				2B7E589325878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
 				D46C647326E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */,
@@ -22170,6 +22184,7 @@
 				D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				17D0F88E28EC05C80061B55D /* NavigationBarTitleView.swift in Sources */,
 				2BD063EE25CEC8E5008BD15E /* BottomWarningView.swift in Sources */,
+				173C113F296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */,
 				046767882756A65F00C88F21 /* SingleSelectionViewTheme.swift in Sources */,
 				D40D5EAE287725840051A92B /* AppCallTransactionDetailViewController.swift in Sources */,
 				2BECB48B25A0C64B0081870A /* TitledToggleView.swift in Sources */,
@@ -24192,6 +24207,7 @@
 				D44EB6B326DF7A390008E234 /* AccountTypeViewTheme.swift in Sources */,
 				D4A6479627846367009DE241 /* TransactionsViewController+Theme.swift in Sources */,
 				D41F4F072892E22E00B59559 /* TransferAssetBalanceScreenTheme.swift in Sources */,
+				173C113E296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */,
 				2B0D84E82394888A00F0EAA7 /* AssetFreezeTransactionType.swift in Sources */,
 				D478AA8F28AAE734001958C8 /* SwapTransactionOptionListItemButtonViewModel.swift in Sources */,
 				95AF1C8327B13EE1001AB131 /* TransactionHistoryLoadingItemView.swift in Sources */,
