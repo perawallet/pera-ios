@@ -428,7 +428,6 @@ extension CollectibleListLocalDataController {
             return $0.isCollectibleAsset ? makePendingCollectibleAssetOptOutItem($0) : nil
         }
 
-        
         let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates()
         let pendingSendPureCollectibleItems =
             pendingSendPureCollectibleAssets.map(makePendingPureCollectibleAssetSendItem)
@@ -436,7 +435,7 @@ extension CollectibleListLocalDataController {
         return pendingOptInCollectibleItems + pendingOptOutCollectibleItems + pendingSendPureCollectibleItems
     }
 
-    private func makeCollectibleList(query: String?) ->  CollectibleList {
+    private func makeCollectibleList(query: String?) -> CollectibleList {
         let collectibleAssets = formSortedCollectibleAssets()
 
         let collectibleItems: [CollectibleListItem] = collectibleAssets.compactMap { collectibleAsset in
@@ -454,7 +453,7 @@ extension CollectibleListLocalDataController {
                 return nil
             }
             /// <note>
-            /// Since we are showing separate pending item for pending send pur collectible asset, we should filter collectible asset according to.
+            /// Since we are showing separate pending item for pending send pure collectible asset, we should filter collectible asset according to.
             let hasPendingSendPureCollectibleAsset = hasPendingSendPureCollectibleAsset(
                 collectibleAsset: collectibleAsset,
                 account: account
