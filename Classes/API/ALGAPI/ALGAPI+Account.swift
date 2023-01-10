@@ -61,12 +61,25 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
-            .path(.backups, args: draft.qrExportInformations.backupIdentifier)
+            .path(.backups, args: draft.qrBackupInformations.identifier)
             .method(.put)
             .headers([
-                ModificationHeader(draft.qrExportInformations.modificationKey)
+                ModificationHeader(draft.qrBackupInformations.modificationKey)
             ])
             .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchBackupDetail(
+        _ backupID: String,
+        onCompleted handler: @escaping (Response.Result<EncryptedBackup, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.backups, args: backupID)
+            .method(.get)
             .completionHandler(handler)
             .execute()
     }
