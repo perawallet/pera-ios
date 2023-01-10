@@ -2289,6 +2289,9 @@
 		2B8F179728B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */; };
 		2B8F179828B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */; };
 		2B8F78D1296D810B0013F7FF /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B8F78D0296D810B0013F7FF /* WalletConnectSwift */; };
+		2B8F78D3296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
+		2B8F78D4296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
+		2B8F78D5296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */; };
 		2B8FC7002670CF7F008D9845 /* WalletConnectBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */; };
 		2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */; };
 		2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */; };
@@ -7106,6 +7109,7 @@
 		2B8F179528B3A4C8009B31A3 /* AsaReportListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaReportListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B8F52CB265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2B8F52CC265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionRequestSDKErrorLog.swift; sourceTree = "<group>"; };
 		2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectBridge.swift; sourceTree = "<group>"; };
 		2B9352B227F2EEAC000DA8DB /* CollectibleDetailOptedInActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailOptedInActionCell.swift; sourceTree = "<group>"; };
 		2B9352B927F2EEDD000DA8DB /* CollectibleDetailOptedInActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailOptedInActionView.swift; sourceTree = "<group>"; };
@@ -9751,6 +9755,7 @@
 			isa = PBXGroup;
 			children = (
 				2B32A25E2552F031007CC3A6 /* LedgerTransactionErrorLog.swift */,
+				2B8F78D2296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift */,
 				2B8AE42B2968720400B18EE2 /* WCTransactionRequestDidAppearLog.swift */,
 				2B8AE427296863BC00B18EE2 /* WCTransactionRequestDidLoadLog.swift */,
 				2B8AE41F2968638400B18EE2 /* WCTransactionRequestReceivedLog.swift */,
@@ -19728,6 +19733,7 @@
 				D419AF9A28D0A2A800673C39 /* AccountSelectionListLoadingAccountItemCell.swift in Sources */,
 				17BD4E0E2292F1260003E49A /* TransactionDetailViewController.swift in Sources */,
 				F0B5B0D527A1CBE100BC3E2D /* ALGAppLaunchController.swift in Sources */,
+				2B8F78D5296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */,
 				F0C542D9291D9C1E00596A0A /* DiscoverErrorCell.swift in Sources */,
 				F0DB419127948DCE00EA437D /* ListItemButtonTheme.swift in Sources */,
 				17BD4E0F2292F1260003E49A /* SwiftDate+Region.swift in Sources */,
@@ -22201,6 +22207,7 @@
 				2B0F61F624EC129D00DA22A6 /* ALGBarButtonItem.swift in Sources */,
 				D4AC1FBF272D56760027353F /* AccountListViewController+Theme.swift in Sources */,
 				2B4334A527C44C3200A3D9D6 /* Asset.swift in Sources */,
+				2B8F78D4296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */,
 				2B0F61F724EC129D00DA22A6 /* TransactionDraft.swift in Sources */,
 				D41E83D8291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift in Sources */,
 				2B85F3EB257A71D100C871A5 /* LedgerOperation.swift in Sources */,
@@ -24013,6 +24020,7 @@
 				2B7A1F9127DE64C80010F52E /* CollectibleDescriptionViewTheme.swift in Sources */,
 				D48FDF9927CD765300C39FC7 /* ReceiveCollectibleAccountListViewController.swift in Sources */,
 				9568ADE027C7827300668053 /* BuyAlgoDraft.swift in Sources */,
+				2B8F78D3296D83D00013F7FF /* WCTransactionRequestSDKErrorLog.swift in Sources */,
 				F01063AA28ADD32F00AB6873 /* ASADetailScreen+PageItems.swift in Sources */,
 				2B233B5127C4784600D16B82 /* BuyAlgoHomeScreen.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,

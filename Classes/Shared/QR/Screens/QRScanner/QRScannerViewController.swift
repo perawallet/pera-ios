@@ -436,7 +436,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
         captureSession = nil
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
         switch error {
         case .failedToConnect,
                 .failedToCreateSession:
