@@ -28,7 +28,7 @@ final class CollectiblesViewController: BaseViewController {
     private lazy var bottomBannerController = BottomActionableBannerController(
         presentingView: view,
         configuration: BottomActionableBannerControllerConfiguration(
-            bottomMargin: view.safeAreaBottom + 48,
+            bottomMargin: view.safeAreaBottom + 64,
             contentBottomPadding: 20
         )
     )
