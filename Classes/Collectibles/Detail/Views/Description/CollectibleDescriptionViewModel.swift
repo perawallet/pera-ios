@@ -20,84 +20,100 @@ import MacaroonUIKit
 struct CollectibleDescriptionViewModel {
     private(set) var description: TextProvider?
     private(set) var isTruncatable: Bool = false
-    private(set) var isTruncated: Bool = true
 
-    private let characterThreshold = 180
+    private let isTruncated: Bool
+    private let characterThreshold: Int
 
     init(
         asset: Asset,
-        isTruncated: Bool
+        isTruncated: Bool,
+        characterThreshold: Int = 180
     ) {
         self.isTruncated = isTruncated
+        self.characterThreshold = characterThreshold
 
-        bindIsTruncatable(asset: asset)
-        bindDescription(asset)
+        bindDescription(
+            asset: asset,
+            isTruncated: isTruncated,
+            characterThreshold: characterThreshold
+        )
     }
 }
 
 extension CollectibleDescriptionViewModel {
-    mutating func bindIsTruncatable(asset: Asset) {
-        guard let description = asset.description else {
-            isTruncatable = false
-            return
-        }
-
-        let descriptionCharacterCount = description.count
-
-        isTruncatable = descriptionCharacterCount > characterThreshold
-    }
-
-    mutating func bindDescription(_ asset: Asset) {
+    private mutating func bindDescription(
+        asset: Asset,
+        isTruncated: Bool,
+        characterThreshold: Int
+    ) {
         guard let description = asset.description else {
             self.description = nil
+            self.isTruncatable = false
             return
         }
 
-        if isTruncated && isTruncatable {
-            var truncatedDescription = String(description.prefix(characterThreshold))
+        let (aDescription, isTruncatable) = formDescription(
+            from: description,
+            isTruncated: isTruncated,
+            characterThreshold: characterThreshold
+        )
 
-            let lastTruncatedWordStartIndex = truncatedDescription.rangeOfCharacter(
-                from: .whitespacesAndNewlines,
-                options: .backwards
-            )?.upperBound ?? truncatedDescription.startIndex
+        self.isTruncatable = isTruncatable
+        self.description = aDescription.bodyRegular()
+    }
 
-            let textAfterTruncatedDescription = description[truncatedDescription.endIndex..<description.endIndex]
-            let lastTruncatedWordEndIndex = textAfterTruncatedDescription.rangeOfCharacter(
-                from: .whitespacesAndNewlines
-            )?.lowerBound ?? description.endIndex
+    private func formDescription(
+        from description: String,
+        isTruncated: Bool,
+        characterThreshold: Int
+    ) -> (String, Bool) {
+        let descriptionCharacterCount = description.count
+        let isTruncatable = descriptionCharacterCount > characterThreshold
 
-            let lastTruncatedWord = String(description[lastTruncatedWordStartIndex..<lastTruncatedWordEndIndex])
+        guard isTruncated && isTruncatable else {
+            return (description, isTruncatable)
+        }
 
-            if lastTruncatedWord.isValidURL {
-                let isLastWord = lastTruncatedWordEndIndex == description.endIndex
-                if isLastWord {
-                    truncatedDescription = description
-                    isTruncated = false
-                    isTruncatable = false
-                } else {
-                    truncatedDescription = String(description[description.startIndex..<lastTruncatedWordEndIndex]) + "..."
-                }
-            } else {
-                truncatedDescription += "..."
-            }
+        let truncatedDescription = description.prefix(characterThreshold)
+        let textAfterTruncatedDescription = description.substring(
+            from: truncatedDescription.endIndex,
+            to: description.endIndex
+        )
 
-            self.description = truncatedDescription.bodyRegular()
+        let lastTruncatedWordStartIndex = truncatedDescription.lastWordStartIndex
+        let lastTruncatedWordEndIndex = textAfterTruncatedDescription.firstWordEndIndex
+        let lastTruncatedWord = description.substring(
+            from: lastTruncatedWordStartIndex,
+            to: lastTruncatedWordEndIndex
+        )
+
+        guard lastTruncatedWord.isValidURL else {
+            return ("\(truncatedDescription)...", isTruncatable)
+        }
+
+        let isLastWord = lastTruncatedWordEndIndex == description.endIndex
+        if isLastWord {
+            return (description, false)
         } else {
-            self.description = description.bodyRegular()
+            return ("\(description.substring(from: description.startIndex, to: lastTruncatedWordEndIndex))...", isTruncatable)
         }
     }
 }
 
-fileprivate extension String {
+private extension Substring {
     /// <note>
     /// Valid URL check that matches with `ActiveLabel`'s URL pattern.
     var isValidURL: Bool {
-        get {
-            let pattern = "(^|[\\s.:;?\\-\\]<\\(])" +
+        return Self.predicate.evaluate(with: self)
+    }
+
+    static let predicate: NSPredicate = {
+        /// <note>
+        /// URL pattern used in `ActiveLabel`'s `RegexParser`.
+        let pattern =
+            "(^|[\\s.:;?\\-\\]<\\(])" +
             "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
             "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
-            let predicate = NSPredicate(format: "SELF MATCHES %@", argumentArray: [pattern])
-            return predicate.evaluate(with: self)
-        }
-    }
+        return NSPredicate(format: "SELF MATCHES %@", argumentArray: [pattern])
+    }()
 }
