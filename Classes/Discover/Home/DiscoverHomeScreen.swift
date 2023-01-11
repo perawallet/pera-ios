@@ -197,9 +197,8 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
             guard let self = self else { return }
             
             switch event {
-            case let .performFavorite(message):
-                let scriptString = "var message = '" + message + "'; handleMessage(message);"
-                self.webView.evaluateJavaScript(scriptString)
+            case let .addToFavorites(dappDetails), let .removeFromFavorites(dappDetails):
+                self.callJSFavoriteHandlerMethod(dappDetails)
             }
         }
         
@@ -207,6 +206,19 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
             screen,
             by: .push
         )
+    }
+    
+    private func callJSFavoriteHandlerMethod(_ dappDetails: DiscoverFavouriteDappDetails) {
+        do {
+            guard let dappDetailsString = try dappDetails.encodedString() else {
+                return
+            }
+            
+            let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
+            self.webView.evaluateJavaScript(scriptString)
+        } catch {
+            return
+        }
     }
 
     private func openAssetDetail(_ assetDetail: DiscoverAssetParameters) {

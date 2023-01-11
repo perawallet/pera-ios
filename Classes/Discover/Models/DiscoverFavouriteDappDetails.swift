@@ -15,38 +15,27 @@
 //   FavouriteDappDetails.swift
 
 import Foundation
+import MacaroonUtils
 
-struct DiscoverFavouriteDappDetails: Codable {
+struct DiscoverFavouriteDappDetails: JSONModel {
     let action: String
-    let payload: PayloadData
+    let payload: Payload
+    
+    struct Payload: Codable {
+        let name: String?
+        let url: URL?
+        let logo: String?
+    }
     
     init(
         name:  String?,
         url: URL?
     ) {
         self.action = "handleBrowserFavoriteButtonClick"
-        self.payload = PayloadData(
+        self.payload = Payload(
             name: name,
             url: url,
             logo: nil
         )
-    }
-    
-    func getStringData() -> String? {
-        let jsonEncoder = JSONEncoder()
-        
-        guard let encodedData = try? jsonEncoder.encode(self) else {
-            return nil
-        }
-        
-        let stringData = String(data: encodedData, encoding: String.Encoding.utf8)
-        
-        return stringData
-    }
-    
-    struct PayloadData: Codable {
-        let name: String?
-        let url: URL?
-        let logo: String?
     }
 }

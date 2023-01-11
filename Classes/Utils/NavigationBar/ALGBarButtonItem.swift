@@ -168,16 +168,6 @@ struct ALGBarButtonItem: BarButtonItem {
                 let disabledIcon = img("icon-next-disabled")
                 return ImageContent(normal: icon, disabled: disabledIcon)
             }
-        case .discoverAddFavorite:
-            if let icon = img("icon-favourite") {
-                return ImageContent(normal: icon)
-            }
-            return nil
-        case .discoverRemoveFavorite:
-            if let icon = img("icon-favourite-filled") {
-                return ImageContent(normal: icon)
-            }
-            return nil
         case .flexibleSpace:
             return nil
         }
@@ -272,10 +262,6 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .discoverPrevious:
             return .explicit(CGSize(width: 40, height: 40))
-        case .discoverAddFavorite:
-            return .explicit(CGSize(width: 40, height: 40))
-        case .discoverRemoveFavorite:
-            return .explicit(CGSize(width: 40, height: 40))
         case .flexibleSpace:
             return .explicit(CGSize(width: 40, height: 40))
         }
@@ -329,8 +315,6 @@ extension ALGBarButtonItem {
         case discoverNext
         case discoverPrevious
         case discoverHome
-        case discoverAddFavorite
-        case discoverRemoveFavorite
         case flexibleSpace
     }
 }

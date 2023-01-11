@@ -467,7 +467,7 @@ extension HomeViewController {
                 let dappDetail = DiscoverDappParamaters(
                     name: title,
                     url: url.absoluteString,
-                    isFavorite: false
+                    isFavorite: nil
                 )
 
                 self.open(
