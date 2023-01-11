@@ -32,6 +32,8 @@ final class AccountAssetListAPIDataController:
     )
     private lazy var assetFilterOptions = AssetFilterOptions()
 
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.4)
+
     private var accountHandle: AccountHandle
 
     private var searchKeyword: String? = nil
@@ -44,8 +46,6 @@ final class AccountAssetListAPIDataController:
         label: "pera.queue.accountAssets.updates",
         qos: .userInitiated
     )
-
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
     init(
         _ accountHandle: AccountHandle,
@@ -136,103 +136,10 @@ extension AccountAssetListAPIDataController {
 
             assetItems.append(.search)
 
-            let account = self.accountHandle.value
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-
-            var pendingItems: [AccountAssetsItem] = []
-
-            let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
-            for pendingOptInAsset in pendingOptInAssets {
-                let update = pendingOptInAsset.value
-
-                if update.isCollectibleAsset {
-                    pendingItems.append(self.makePendingCollectibleAssetOptInListItem(update))
-                    continue
-                }
-
-                let assetItem = self.makePendingOptInAssetListItem(update)
-                pendingItems.append(assetItem)
-            }
-
-            let pendingOptOutAssets = monitor.filterPendingOptOutAssetUpdates(for: account)
-            for pendingOptOutAsset in pendingOptOutAssets {
-                let update = pendingOptOutAsset.value
-
-                if update.isCollectibleAsset {
-                    pendingItems.append(self.makePendingCollectibleAssetOptOutListItem(update))
-                    continue
-                }
-
-                let assetItem = self.makePendingOptOutAssetListItem(update)
-                pendingItems.append(assetItem)
-            }
-
-            let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates(for: account)
-            for pendingSendPureCollectibleAsset in pendingSendPureCollectibleAssets {
-                let update = pendingSendPureCollectibleAsset.value
-                pendingItems.append(self.makePendingPureCollectibleAssetSendListItem(update))
-            }
-
+            let pendingItems = self.makePendingAssetListItems()
             assetItems.append(contentsOf: pendingItems)
 
-            self.load(with: self.searchKeyword)
-
-            var assetListItems: [AccountAssetsItem] = []
-
-            if self.isKeywordContainsAlgo() {
-                let algoAssetListItem = self.makeAssetListItem(self.accountHandle.value.algo)
-                assetListItems.append(algoAssetListItem)
-            }
-
-            self.searchResults.forEach { asset in
-                let hasPendingOptOut = monitor.hasPendingOptOutRequest(
-                    assetID: asset.id,
-                    for: account
-                )
-                if hasPendingOptOut {
-                    return
-                }
-
-                let hasPendingSendPureCollectibleAsset = monitor.hasPendingSendPureCollectibleAssetRequest(
-                    assetID: asset.id,
-                    for: account
-                )
-                if hasPendingSendPureCollectibleAsset {
-                    return
-                }
-
-                if !self.shouldDisplayOptedInCollectibleAsset(asset) {
-                    return
-                }
-
-                if self.shouldHideAssetWithNoBalance(asset) {
-                    return
-                }
-
-                if let standardAsset = asset as? StandardAsset {
-                    let assetItem = self.makeAssetListItem(standardAsset)
-                    assetListItems.append(assetItem)
-                    return
-                }
-
-                if let collectibleAsset = asset as? CollectibleAsset {
-                    assetListItems.append(self.makeCollectibleAssetListItem(collectibleAsset))
-                    return
-                }
-            }
-
-            if let selectedAccountAssetSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                assetListItems.sort { assetListItem, otherAssetListItem in
-                    let asset = assetListItem.asset!
-                    let otherAsset = otherAssetListItem.asset!
-
-                    return selectedAccountAssetSortingAlgorithm.getFormula(
-                        asset: asset,
-                        otherAsset: otherAsset
-                    )
-                }
-            }
-
+            let assetListItems = self.makeAssetListItems()
             assetItems.append(contentsOf: assetListItems)
 
             snapshot.appendSections([.assets])
@@ -241,16 +148,12 @@ extension AccountAssetListAPIDataController {
                 toSection: .assets
             )
 
-            let shouldShowEmptyContent =
-                !self.isKeywordContainsAlgo() &&
-                pendingItems.isEmpty &&
-                assetListItems.isEmpty
-
+            let shouldShowEmptyContent = pendingItems.isEmpty && assetListItems.isEmpty
             if shouldShowEmptyContent {
+                let searchNoContentItem = self.makeSearchNoContentItem()
                 snapshot.appendSections([.empty])
-
                 snapshot.appendItems(
-                    [ .empty(AssetListSearchNoContentViewModel(hasBody: true)) ],
+                    [ searchNoContentItem ],
                     toSection: .empty
                 )
             }
@@ -269,13 +172,109 @@ extension AccountAssetListAPIDataController {
             [weak self] in
             guard let self = self else { return }
 
-            guard let updates = updates() else {
-                return
-            }
+            guard let updates = updates() else { return }
 
             self.lastSnapshot = updates.snapshot
             self.publish(event: .didUpdate(updates))
         }
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    private func makePendingAssetListItems() -> [AccountAssetsItem] {
+        let account = accountHandle.value
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
+        let pendingOptInAssetListItems = pendingOptInAssets.map { pendingOptInAsset in
+            let update = pendingOptInAsset.value
+
+            if update.isCollectibleAsset {
+                return makePendingCollectibleAssetOptInListItem(update)
+            } else {
+                return makePendingOptInAssetListItem(update)
+            }
+        }
+
+        let pendingOptOutAssets = monitor.filterPendingOptOutAssetUpdates(for: account)
+        let pendingOptOutAssetListItems = pendingOptOutAssets.map { pendingOptOutAsset in
+            let update = pendingOptOutAsset.value
+
+            if update.isCollectibleAsset {
+                return makePendingCollectibleAssetOptOutListItem(update)
+            } else {
+                return makePendingOptOutAssetListItem(update)
+            }
+        }
+
+        let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates(for: account)
+        let pendingSendPureCollectibleAssetListItems = pendingSendPureCollectibleAssets.map { pendingSendPureCollectibleAsset in
+            let update = pendingSendPureCollectibleAsset.value
+
+            return makePendingPureCollectibleAssetSendListItem(update)
+        }
+
+        return pendingOptInAssetListItems + pendingOptOutAssetListItems + pendingSendPureCollectibleAssetListItems
+    }
+
+    private func makeAssetListItems() -> [AccountAssetsItem] {
+        load(with: searchKeyword)
+
+        let account = accountHandle.value
+
+        var assetListItems: [AccountAssetsItem] = []
+
+        if isKeywordContainsAlgo() {
+            assetListItems.append(makeAssetListItem(account.algo))
+        }
+
+        searchResults.forEach { asset in
+            /// <note>
+            /// Since we are showing separate pending item for pending opt out, we should filter asset according to.
+            let hasPendingOptOut = hasPendingOptOutRequest(
+                asset: asset,
+                account: account
+            )
+            if hasPendingOptOut {
+                return
+            }
+            /// <note>
+            /// Since we are showing separate pending item for pending send pure collectible asset, we should filter collectible asset according to.
+            let hasPendingSendPureCollectibleAsset = hasPendingSendPureCollectibleAssetRequest(
+                assetID: asset.id,
+                account: account
+            )
+            if hasPendingSendPureCollectibleAsset {
+                return
+            }
+
+            if !shouldDisplayOptedInCollectibleAsset(asset) {
+                return
+            }
+
+            if shouldHideAssetWithNoBalance(asset) {
+                return
+            }
+
+            if let standardAsset = asset as? StandardAsset {
+                assetListItems.append(makeAssetListItem(standardAsset))
+            }
+
+            if let collectibleAsset = asset as? CollectibleAsset {
+                assetListItems.append(makeCollectibleAssetListItem(collectibleAsset))
+            }
+        }
+
+        if let selectedAccountAssetSortingAlgorithm = sharedDataController.selectedAccountAssetSortingAlgorithm {
+            assetListItems.sort { assetListItem, otherAssetListItem in
+                return selectedAccountAssetSortingAlgorithm.getFormula(
+                    asset: assetListItem.asset!,
+                    otherAsset: otherAssetListItem.asset!
+                )
+            }
+        }
+
+        return assetListItems
     }
 }
 
@@ -336,6 +335,10 @@ extension AccountAssetListAPIDataController {
         }
     }
 
+    private func makeSearchNoContentItem() -> AccountAssetsItem {
+        return .empty(AssetListSearchNoContentViewModel(hasBody: true))
+    }
+
     private func makeAssetListItem(_ asset: Asset) -> AccountAssetsItem {
         let currency = sharedDataController.currency
         let assetItem = AssetItem(
@@ -380,6 +383,30 @@ extension AccountAssetListAPIDataController {
     private func makePendingPureCollectibleAssetSendListItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> AccountAssetsItem {
         let item = AccountAssetsPendingCollectibleAssetListItem(update: update)
         return .pendingCollectibleAsset(item)
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    private func hasPendingOptOutRequest(
+        asset: Asset,
+        account: Account
+    ) -> Bool {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        return monitor.hasPendingOptOutRequest(
+            assetID: asset.id,
+            for: account
+        )
+    }
+
+    private func hasPendingSendPureCollectibleAssetRequest(
+        assetID: AssetID,
+        account: Account
+    ) -> Bool {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        return monitor.hasPendingSendPureCollectibleAssetRequest(
+            assetID: assetID,
+            for: account
+        )
     }
 }
 
