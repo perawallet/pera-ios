@@ -21,6 +21,7 @@ typealias APIQueryParam = ObjectQueryParam<APIParamKey>
 typealias APIBodyParam = JSONObjectBodyParam<APIParamKey>
 
 enum APIParamKey: String, CodingKey {
+    case availableOnDiscover = "available_on_discover_mobile"
     case accessToken = "access_token"
     case accounts = "accounts"
     case address = "address"
@@ -43,10 +44,13 @@ enum APIParamKey: String, CodingKey {
     case code = "code"
     case cursor = "cursor"
     case lastSeenNotificationId = "last_seen_notification_id"
-    case device = "device"
     case deviceId = "device_id"
     case email = "email"
     case encryptedContent = "encrypted_content"
+    case device = "device"
+    case bridgeURL = "bridge_url"
+    case topicID = "topic_id"
+    case dAppName = "dapp_name"
     case endDate = "end_date"
     case exclude = "exclude"
     case firstRound = "firstRound"

@@ -70,7 +70,8 @@ class AppDelegate:
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
         lastSeenNotificationController: lastSeenNotificationController,
-        analytics: analytics
+        analytics: analytics,
+        launchController: appLaunchController
     )
 
     private lazy var appLaunchController = createAppLaunchController()
@@ -78,7 +79,11 @@ class AppDelegate:
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnector(analytics: analytics)
+    private lazy var walletConnector = WalletConnector(
+        api: api,
+        pushToken: pushNotificationController.token,
+        analytics: analytics
+    )
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
@@ -143,7 +148,7 @@ class AppDelegate:
     ) {
         setNeedsUserInterfaceStyleUpdateIfNeeded()
         setNeedsNetworkBannerUpdateIfNeeded()
-        
+
         appLaunchController.becomeActive()
 
         lastSeenNotificationController.checkStatus()

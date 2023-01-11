@@ -27,21 +27,27 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
+    private let walletConnector: WalletConnector
 
     private var visibleAnnouncement: Announcement?
 
     private var lastSnapshot: Snapshot?
-    
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
+
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.home.updates",
+        qos: .userInitiated
+    )
 
     init(
         sharedDataController: SharedDataController,
         session: Session,
-        announcementDataController: AnnouncementAPIDataController
+        announcementDataController: AnnouncementAPIDataController,
+        walletConnector: WalletConnector
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
+        self.walletConnector = walletConnector
     }
     
     deinit {
@@ -84,6 +90,7 @@ extension HomeAPIDataController {
 
     func removeAccount(_ account: Account) {
         sharedDataController.resetPollingAfterRemoving(account)
+        walletConnector.updateSessionsWithRemovingAccount(account)
         reload()
     }
 }

@@ -198,10 +198,7 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
-    case assetsFilterSelection(
-        filter: AssetsFilteringOption?,
-        eventHandler: AssetsFilterSelectionViewController.EventHandler
-    )
+    case assetsFilterSelection(eventHandler: AssetsFilterSelectionViewController.EventHandler)
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler
@@ -215,7 +212,10 @@ indirect enum Screen {
         swapController: SwapController,
         coordinator: SwapAssetFlowCoordinator
     )
-    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
+    case swapAccountSelection(
+        swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
+        eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler
+    )
     case swapSignWithLedgerProcess(
         transactionSigner: SwapTransactionSigner,
         draft: SignWithLedgerProcessDraft,
@@ -302,6 +302,9 @@ indirect enum Screen {
         accounts: [Account],
         eventHandler: ExportsAccountsResultScreen.EventHandler
     )
+    case discoverSearch(DiscoverSearchScreen.EventHandler)
+    case discoverAssetDetail(DiscoverAssetParameters)
+    case discoverDappDetail(DiscoverDappParamaters)
 }
 
 extension Screen {

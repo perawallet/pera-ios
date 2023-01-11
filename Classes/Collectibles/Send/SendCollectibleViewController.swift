@@ -321,8 +321,9 @@ extension SendCollectibleViewController {
                         return
                     }
 
-                    self.askRecipientToOptInViewController?.dismissScreen {
-                        self.openOptInInformation()
+                    self.dismiss(animated: true) {
+                        [weak self] in
+                        self?.openOptInInformation()
                     }
                 }
             )
@@ -369,10 +370,8 @@ extension SendCollectibleViewController {
             by: .present
         ) as? ReceiverAccountSelectionListScreen
         screen?.eventHandler = {
-            [weak self] event in
-            guard let self = self else {
-                return
-            }
+            [weak self, weak screen] event in
+            guard let self = self else { return }
             self.sendCollectibleActionView.recustomizeTransferActionButtonAppearance(
                 self.theme.sendCollectibleViewTheme.actionViewTheme,
                 isEnabled: true

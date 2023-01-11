@@ -105,7 +105,8 @@ extension RootViewController {
             dataController: HomeAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
-                announcementDataController: announcementAPIDataController
+                announcementDataController: announcementAPIDataController,
+                walletConnector: appConfiguration.walletConnector
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -116,16 +117,9 @@ extension RootViewController {
             NavigationContainer(rootViewController: homeViewController)
         )
 
-        let algoStatisticsViewController =
-            AlgoStatisticsViewController(
-                dataController: AlgoStatisticsDataController(
-                    api: appConfiguration.api,
-                    sharedDataController: appConfiguration.sharedDataController
-                ),
-                configuration: configuration
-            )
-        let algoStatisticsTab = AlgoStatisticsTabBarItem(
-            NavigationContainer(rootViewController: algoStatisticsViewController)
+        let discoverViewController = DiscoverHomeScreen(configuration: configuration)
+        let discoverTab = DiscoverTabBarItem(
+            NavigationContainer(rootViewController: discoverViewController)
         )
 
         let collectibleListViewController = CollectiblesViewController(
@@ -143,19 +137,18 @@ extension RootViewController {
 
         mainContainer.items = [
             homeTab,
-            algoStatisticsTab,
+            discoverTab,
             FixedSpaceTabBarItem(width: .noMetric),
             collectiblesTab,
             settingsTab
         ]
+
+        setNeedsDiscoverTabBarItemUpdateIfNeeded()
     }
 
     func launch(
         tab: TabBarItemID
     ) {
-        if tab == .algoStatistics {
-            appConfiguration.analytics.track(.tapAlgoPrice())
-        }
         mainContainer.selectedTab = tab
     }
 
@@ -165,8 +158,8 @@ extension RootViewController {
 }
 
 extension RootViewController {
-    func hideGovernanceBanner() {
-        isDisplayingGovernanceBanner = false
+    private func setNeedsDiscoverTabBarItemUpdateIfNeeded() {
+        mainContainer.setNeedsDiscoverTabBarItemUpdateIfNeeded()
     }
 }
 

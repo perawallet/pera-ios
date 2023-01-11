@@ -26,11 +26,25 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.assetSearch)
             .method(.get)
             .query(draft)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func searchAssetsForDiscover(
+        draft: SearchAssetsForDiscoverDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.assetSearch)
+            .method(.get)
+            .query(draft)
             .completionHandler(handler)
             .execute()
     }
@@ -43,7 +57,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.assets)
             .method(.get)
             .query(draft)
@@ -60,7 +74,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
@@ -94,7 +108,7 @@ extension ALGAPI {
     @discardableResult
     func sendAssetSupportRequest(_ draft: AssetSupportDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.assetRequest)
             .method(.post)
             .body(draft)
@@ -104,10 +118,20 @@ extension ALGAPI {
     @discardableResult
     func getVerifiedAssets(onCompleted handler: @escaping (Response.ModelResult<VerifiedAssetList>) -> Void) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobileV1)
+            .base(.mobileV1(network))
             .path(.verifiedAssets)
             .method(.get)
             .query(LimitQuery())
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func getTrendingAssets(onCompleted handler: @escaping (Response.ModelResult<[AssetDecoration.APIModel]>) -> Void) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.trendingAssets)
+            .method(.get)
             .completionHandler(handler)
             .execute()
     }

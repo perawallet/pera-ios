@@ -48,10 +48,12 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(account: accountHandle.value),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
+        loadingController: loadingController!,
         bannerController: bannerController!,
         presentingScreen: self
     )
@@ -186,7 +188,7 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .swap))
 
-                self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
+                self.swapAssetFlowCoordinator.launch()
             case .send:
                 self.assetListScreen.endEditing()
 
@@ -231,7 +233,7 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             guard let self = self else { return }
             
             self.analytics.track(.recordAccountDetailScreen(type: .swap))
-            self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
+            self.swapAssetFlowCoordinator.launch()
         }
     }
 
@@ -531,17 +533,14 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
                 guard let self = self else { return}
                 
                 switch event {
-                case .didChangeFilter(let filter):
-                    self.assetListScreen.changeFilterSelection(filter)
+                case .didComplete: self.assetListScreen.reloadData()
+                case .didCancel: break
                 }
             }
         }
         
         open(
-            .assetsFilterSelection(
-                filter: sharedDataController.selectedAssetsFilteringOption,
-                eventHandler: eventHandler
-            ),
+            .assetsFilterSelection(eventHandler: eventHandler),
             by: .present
         )
     }

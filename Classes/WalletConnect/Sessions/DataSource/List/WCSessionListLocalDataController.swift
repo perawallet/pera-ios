@@ -23,7 +23,11 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
     var eventHandler: EventHandler?
     
     private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.wcSessionListLocalDataController")
+
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.wcsessions.updates",
+        qos: .userInitiated
+    )
 
     private var lastSnapshot: Snapshot? = nil
     private var disconnectedSessions: Set<WCSession> = []
@@ -287,6 +291,10 @@ extension WCSessionListLocalDataController {
         publish(.didStartDisconnectingFromSessions)
 
         lastSnapshot = snapshot
+        
+        let allSessions = walletConnector.allWalletConnectSessions
+        
+        disconnectedSessions = Set(allSessions)
         
         walletConnector.disconnectFromAllSessions()
     }

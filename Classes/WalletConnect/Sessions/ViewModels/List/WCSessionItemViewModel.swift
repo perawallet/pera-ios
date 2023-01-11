@@ -98,9 +98,7 @@ extension WCSessionItemViewModel {
         accounts = []
         
         accountList.forEach {
-            let accountStatusViewModel = WCSessionAccountStatusViewModel(
-                accountName: $0.name ?? $0.address.shortAddressDisplay
-            )
+            let accountStatusViewModel = WCSessionAccountStatusViewModel(account: $0)
             accounts?.append(accountStatusViewModel)
         }
     }
