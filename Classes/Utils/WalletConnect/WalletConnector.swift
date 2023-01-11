@@ -12,6 +12,7 @@
 //   WalletConnector.swift
 
 import Foundation
+import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
@@ -29,6 +30,9 @@ class WalletConnector {
     private lazy var sessionSource = WalletConnectSessionSource()
 
     weak var delegate: WalletConnectorDelegate?
+    
+    @Atomic(identifier: "walletConnector.isRegisteredToTheTransactionRequests")
+    var isRegisteredToTheTransactionRequests = false
 
     private let api: ALGAPI
     private let pushToken: String?
