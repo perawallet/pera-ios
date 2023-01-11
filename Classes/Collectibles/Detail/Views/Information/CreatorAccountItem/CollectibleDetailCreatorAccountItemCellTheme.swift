@@ -26,7 +26,7 @@ struct CollectibleDetailCreatorAccountItemCellTheme:
     var separator: Separator
 
     init(_ family: LayoutFamily) {
-        self.context = CollectibleDetailAssetIDItemViewTheme(family)
+        self.context = CollectibleDetailCreatorAccountItemViewTheme(family)
         self.contextEdgeInsets = (16, 0, 16, 0)
         self.separator = Separator(color: Colors.Layer.grayLighter)
     }
@@ -46,7 +46,7 @@ struct CollectibleDetailCreatorAccountItemViewTheme: SecondaryListItemViewTheme 
         self.contentEdgeInsets = (0, 0, 0, 0)
         self.title = [ .textOverflow(SingleLineText()) ]
         self.titleMinWidthRatio = 0.2
-        self.titleMaxWidthRatio = 0.35
+        self.titleMaxWidthRatio = 0.45
         self.minimumSpacingBetweenTitleAndAccessory = 12
         self.accessory = SecondaryListItemValueCommonViewTheme(
             isMultiline: false,
