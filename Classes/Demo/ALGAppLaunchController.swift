@@ -40,7 +40,6 @@ final class ALGAppLaunchController:
     private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
     private let walletConnector: WalletConnector
-    private let analytics: ALGAnalytics
     
     init(
         session: Session,
@@ -48,7 +47,6 @@ final class ALGAppLaunchController:
         sharedDataController: SharedDataController,
         authChecker: AppAuthChecker,
         walletConnector: WalletConnector,
-        analytics: ALGAnalytics,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session
@@ -57,7 +55,6 @@ final class ALGAppLaunchController:
         self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
         self.authChecker = authChecker
         self.walletConnector = walletConnector
-        self.analytics = analytics
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -228,8 +225,8 @@ extension ALGAppLaunchController {
     ) {
         switch event {
         case .didFinishRunning:
+            walletConnector.configureTransactionsIfNeeded()
             resumePendingDeeplink()
-            configureWCTransactionsIfNeeded()
         default: break
         }
     }
@@ -431,30 +428,6 @@ extension ALGAppLaunchController {
     
     private func cancelPendingDeeplink() {
         $pendingDeeplinkSource.mutate { $0 = nil }
-    }
-}
-
-extension ALGAppLaunchController {
-    private func configureWCTransactionsIfNeeded() {
-        if !walletConnector.isRegisteredToTheTransactionRequests {
-            return
-        }
-        
-        walletConnector.isRegisteredToTheTransactionRequests = true
-        registerToWCTransactionRequests()
-        reconnectToOldWCSessions()
-    }
-    
-    private func reconnectToOldWCSessions() {
-        walletConnector.reconnectToSavedSessionsIfPossible()
-    }
-
-    private func registerToWCTransactionRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler(analytics: analytics)
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
     }
 }
 

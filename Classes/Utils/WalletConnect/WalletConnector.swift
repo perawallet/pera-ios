@@ -12,7 +12,6 @@
 //   WalletConnector.swift
 
 import Foundation
-import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
@@ -31,7 +30,6 @@ class WalletConnector {
 
     weak var delegate: WalletConnectorDelegate?
     
-    @Atomic(identifier: "walletConnector.isRegisteredToTheTransactionRequests")
     var isRegisteredToTheTransactionRequests = false
 
     private let api: ALGAPI
@@ -51,6 +49,26 @@ class WalletConnector {
         self.analytics = analytics
 
         walletConnectBridge.delegate = self
+    }
+}
+
+extension WalletConnector {
+    func configureTransactionsIfNeeded() {
+        if !isRegisteredToTheTransactionRequests {
+            return
+        }
+        
+        isRegisteredToTheTransactionRequests = true
+        registerToWCTransactionRequests()
+        reconnectToSavedSessionsIfPossible()
+    }
+    
+    private func registerToWCTransactionRequests() {
+        let wcRequestHandler = TransactionSignRequestHandler(analytics: analytics)
+        if let rootViewController = UIApplication.shared.rootViewController() {
+            wcRequestHandler.delegate = rootViewController
+        }
+        register(for: wcRequestHandler)
     }
 }
 
