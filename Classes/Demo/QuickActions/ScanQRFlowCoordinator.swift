@@ -135,11 +135,17 @@ extension ScanQRFlowCoordinator {
 
     func qrScannerViewController(
         _ controller: QRScannerViewController,
-        didRead qrExportInformations: QRExportInformations,
+        didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     ) {
-        accountExportCoordinator.populate(qrExportInformations: qrExportInformations)
-        accountExportCoordinator.launch()
+        switch qrBackupParameters.action {
+        case .export:
+            accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
+        case .import:
+            break
+        case .unsupported:
+            break
+        }
     }
 }
 

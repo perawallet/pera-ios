@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QRExportInformations.swift
+//   Backup.swift
 
 import Foundation
 
-final class QRExportInformations: ALGAPIModel {
-    let backupIdentifier: String
-    let modificationKey: String
-    let encryptionKey: String
+struct Backup: ALGAPIModel, Identifiable {
+    let id: String
+    let encryptedContent: String
 
     init() {
-        backupIdentifier = ""
-        modificationKey = ""
-        encryptionKey = ""
+        id = ""
+        encryptedContent = ""
     }
 }
 
-extension QRExportInformations {
+extension Backup {
     enum CodingKeys: String, CodingKey {
-        case backupIdentifier = "backupId"
-        case modificationKey
-        case encryptionKey
+        case id
+        case encryptedContent = "encrypted_content"
     }
 }
