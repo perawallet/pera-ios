@@ -21,7 +21,7 @@ struct DiscoverFavouriteDappDetails: JSONModel {
     let action: String
     let payload: Payload
     
-    struct Payload: Codable {
+    struct Payload: JSONModel {
         let name: String?
         let url: URL?
         let logo: String?

@@ -51,11 +51,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         super.init(configuration: configuration)
 
-        if dappParameters.isFavorite != nil,
-           let dappURL = URL(string: dappParameters.url) {
-            favoriteDapps = []
-            self.favoriteDapps.insert(dappURL)
-        }
+        configureFavoriteDapps()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,6 +69,28 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         super.configureNavigationBarAppearance()
 
         addNavigation()
+    }
+    
+    private func shouldAllowFavoriteAction() -> Bool {
+        guard let _ = dappParameters.favorites else {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func configureFavoriteDapps() {
+        guard let favoriteList = dappParameters.favorites else {
+            return
+        }
+        
+        self.favoriteDapps = favoriteList.reduce(into: Set<URL>(), { partialResult, dapp in
+            guard let dappUrl = URL(string: dapp.url) else {
+                return
+            }
+            
+            partialResult.insert(dappUrl)
+        })
     }
 
     override func viewDidLoad() {
@@ -283,7 +301,7 @@ extension DiscoverDappDetailScreen {
         items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         items.append( homeButton )
         
-        if dappParameters.isFavorite != nil {
+        if shouldAllowFavoriteAction() {
             items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
             items.append(makeFavoriteButton())
         }
@@ -315,16 +333,33 @@ extension DiscoverDappDetailScreen {
             url: url
         )
         
-        if favoriteDapps.contains(url) {
-            favoriteDapps.remove(url)
-            updateFavoriteButtonState()
-            eventHandler?(.removeFromFavorites(dappDetails))
-            return
+        if isFavorite(url) {
+            removeFromFavorites(url: url, dapp: dappDetails)
+        } else {
+            addToFavorites(url: url, dapp: dappDetails)
         }
-        
+    }
+    
+    private func isFavorite(_ url: URL) -> Bool {
+        return favoriteDapps.contains(url)
+    }
+    
+    private func addToFavorites(
+        url: URL,
+        dapp: DiscoverFavouriteDappDetails
+    ) {
         favoriteDapps.insert(url)
         updateFavoriteButtonState()
-        eventHandler?(.addToFavorites(dappDetails))
+        eventHandler?(.addToFavorites(dapp))
+    }
+    
+    private func removeFromFavorites(
+        url: URL,
+        dapp: DiscoverFavouriteDappDetails
+    ) {
+        favoriteDapps.remove(url)
+        updateFavoriteButtonState()
+        eventHandler?(.removeFromFavorites(dapp))
     }
     
     private func updateFavoriteButtonState() {
@@ -332,7 +367,7 @@ extension DiscoverDappDetailScreen {
             return
         }
         
-        favoriteButton.isSelected = favoriteDapps.contains(url)
+        favoriteButton.isSelected = isFavorite(url)
     }
 
     private func updateTitle() {
