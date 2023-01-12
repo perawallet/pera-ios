@@ -58,14 +58,14 @@ final class ExportAccountDraft: JSONObjectBody {
 
 final class EncryptedExportAccountDraft: JSONObjectBody {
     let draft: ExportAccountDraft
-    let qrBackupInformations: QRBackupInformations
+    let qrBackupParameters: QRBackupParameters
 
     private(set) var encryptionError: EncryptionError?
 
     private(set) lazy var encryptedContent: String? = {
         do {
             let encodedContent = try draft.encoded()
-            let cryptor = Cryptor(key: qrBackupInformations.encryptionKey)
+            let cryptor = Cryptor(key: qrBackupParameters.encryptionKey)
             let encryptedContent = cryptor.encrypt(data: encodedContent)
 
             if let data = encryptedContent.data {
@@ -92,8 +92,8 @@ final class EncryptedExportAccountDraft: JSONObjectBody {
         return params
     }
 
-    init(draft: ExportAccountDraft, qrBackupInformations: QRBackupInformations) {
+    init(draft: ExportAccountDraft, qrBackupParameters: QRBackupParameters) {
         self.draft = draft
-        self.qrBackupInformations = qrBackupInformations
+        self.qrBackupParameters = qrBackupParameters
     }
 }

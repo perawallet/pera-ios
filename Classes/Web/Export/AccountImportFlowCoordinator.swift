@@ -21,7 +21,7 @@ final class AccountImportFlowCoordinator {
     private unowned let presentingScreen: UIViewController
     private let api: ALGAPI
     private var session: Session?
-    private var qrBackupInformations: QRBackupInformations?
+    private var qrBackupParameters: QRBackupParameters?
 
     init(
         presentingScreen: UIViewController,
@@ -35,19 +35,17 @@ final class AccountImportFlowCoordinator {
 }
 
 extension AccountImportFlowCoordinator {
-    func populate(qrBackupInformations: QRBackupInformations) {
-        self.qrBackupInformations = qrBackupInformations
+    func launch(qrBackupParameters: QRBackupParameters) {
+        self.qrBackupParameters = qrBackupParameters
     }
 
-    func launch() {
-    }
-
-    private func processEncryptedContent(_ content: EncryptedBackup) {
-        guard let qrBackupInformations else {
+    private func processEncryptedContent(_ content: Backup) {
+        guard let qrBackupParameters else {
             return
         }
 
-        let encryptionKey = qrBackupInformations.encryptionKey
+        // TODO: Will add a JSON encoder/decoder here to encrypt/decrypt all contents using it.
+        let encryptionKey = qrBackupParameters.encryptionKey
         let encryptedContentInString = content.encryptedContent
         let encryptedDataByteArray = encryptedContentInString
             .convertToByteArray(using: ",")

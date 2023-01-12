@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   EncryptedBackup.swift
+//   Backup.swift
 
 import Foundation
 
-struct EncryptedBackup: ALGAPIModel {
+struct Backup: ALGAPIModel, Identifiable {
     let id: String
     let encryptedContent: String
 
@@ -26,7 +26,7 @@ struct EncryptedBackup: ALGAPIModel {
     }
 }
 
-extension EncryptedBackup {
+extension Backup {
     enum CodingKeys: String, CodingKey {
         case id
         case encryptedContent = "encrypted_content"

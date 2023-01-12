@@ -114,9 +114,9 @@
 		1736FBA128AD2D31002BB713 /* TapNFTReceiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB9E28AD2D31002BB713 /* TapNFTReceiveEvent.swift */; };
 		1736FBA228B4AF34002BB713 /* AssetDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */; };
 		1736FBA328B4AF35002BB713 /* AssetDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AA70128B3ECFB00AD449B /* AssetDescriptionViewModel.swift */; };
-		173C1127296C10F700FF6217 /* EncryptedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* EncryptedBackup.swift */; };
-		173C1128296C10F700FF6217 /* EncryptedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* EncryptedBackup.swift */; };
-		173C1129296C10F700FF6217 /* EncryptedBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* EncryptedBackup.swift */; };
+		173C1127296C10F700FF6217 /* Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* Backup.swift */; };
+		173C1128296C10F700FF6217 /* Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* Backup.swift */; };
+		173C1129296C10F700FF6217 /* Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1126296C10F700FF6217 /* Backup.swift */; };
 		173C112B296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
 		173C112C296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
 		173C112D296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
@@ -548,9 +548,9 @@
 		17D0FA2928EC28DE0061B55D /* AccountExportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */; };
 		17D0FA2A28EC28DE0061B55D /* AccountExportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */; };
 		17D0FA2B28EC28DE0061B55D /* AccountExportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */; };
-		17D0FA2C28EC28DE0061B55D /* QRBackupInformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupInformations.swift */; };
-		17D0FA2D28EC28DE0061B55D /* QRBackupInformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupInformations.swift */; };
-		17D0FA2E28EC28DE0061B55D /* QRBackupInformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupInformations.swift */; };
+		17D0FA2C28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
+		17D0FA2D28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
+		17D0FA2E28EC28DE0061B55D /* QRBackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */; };
 		17D0FA2F28EC28DE0061B55D /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F428EC28DD0061B55D /* Cryptor.swift */; };
 		17D0FA3028EC28DE0061B55D /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F428EC28DD0061B55D /* Cryptor.swift */; };
 		17D0FA3128EC28DE0061B55D /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0F9F428EC28DD0061B55D /* Cryptor.swift */; };
@@ -6384,7 +6384,7 @@
 		1736FB9628AD1FB5002BB713 /* TapAlgoPriceTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapAlgoPriceTabEvent.swift; sourceTree = "<group>"; };
 		1736FB9A28AD2562002BB713 /* RecordAccountDetailScreenEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAccountDetailScreenEvent.swift; sourceTree = "<group>"; };
 		1736FB9E28AD2D31002BB713 /* TapNFTReceiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapNFTReceiveEvent.swift; sourceTree = "<group>"; };
-		173C1126296C10F700FF6217 /* EncryptedBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedBackup.swift; sourceTree = "<group>"; };
+		173C1126296C10F700FF6217 /* Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backup.swift; sourceTree = "<group>"; };
 		173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountImportFlowCoordinator.swift; sourceTree = "<group>"; };
 		173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupOperationScreen.swift; sourceTree = "<group>"; };
 		173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupOperationScreenTheme.swift; sourceTree = "<group>"; };
@@ -6503,7 +6503,7 @@
 		17D0F9F028EC28DD0061B55D /* ExportAccountsResultViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountsResultViewModel.swift; sourceTree = "<group>"; };
 		17D0F9F128EC28DD0061B55D /* ExportAccountsResultViewTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountsResultViewTheme.swift; sourceTree = "<group>"; };
 		17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountExportFlowCoordinator.swift; sourceTree = "<group>"; };
-		17D0F9F328EC28DD0061B55D /* QRBackupInformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRBackupInformations.swift; sourceTree = "<group>"; };
+		17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRBackupParameters.swift; sourceTree = "<group>"; };
 		17D0F9F428EC28DD0061B55D /* Cryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
 		17D0F9F528EC28DD0061B55D /* ExportAccountDraft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountDraft.swift; sourceTree = "<group>"; };
 		17D0F9F828EC28DD0061B55D /* ExportAccountListAccountHeaderItemState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountListAccountHeaderItemState.swift; sourceTree = "<group>"; };
@@ -8728,7 +8728,7 @@
 		173C1125296C10E300FF6217 /* Web */ = {
 			isa = PBXGroup;
 			children = (
-				173C1126296C10F700FF6217 /* EncryptedBackup.swift */,
+				173C1126296C10F700FF6217 /* Backup.swift */,
 			);
 			path = Web;
 			sourceTree = "<group>";
@@ -8740,8 +8740,8 @@
 				173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */,
 			);
 			path = BackupOperationScreen;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		173C113C296D59EF00FF6217 /* QRScanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -9121,7 +9121,7 @@
 				17D0F9EC28EC28DD0061B55D /* Result */,
 				17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */,
 				173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */,
-				17D0F9F328EC28DD0061B55D /* QRBackupInformations.swift */,
+				17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */,
 				17D0F9F428EC28DD0061B55D /* Cryptor.swift */,
 				17D0F9F528EC28DD0061B55D /* ExportAccountDraft.swift */,
 				17D0F9F628EC28DD0061B55D /* AccountsSelection */,
@@ -20234,7 +20234,7 @@
 				D4241FCE26E764880064CDD0 /* FormInputFieldAssistiveViewCommonTheme.swift in Sources */,
 				959672DB27BA453600BFDE5D /* NotificationLoadingCell.swift in Sources */,
 				17BD4E582292F1260003E49A /* TransactionHistoryContextView.swift in Sources */,
-				173C1129296C10F700FF6217 /* EncryptedBackup.swift in Sources */,
+				173C1129296C10F700FF6217 /* Backup.swift in Sources */,
 				D46BB37E277CE66100F50F44 /* ContactDisplayViewModel.swift in Sources */,
 				2BAD6CAD27F884FB0016E869 /* Collectible3DCardDisplayable.swift in Sources */,
 				2B2359942794D1790006D259 /* TransactionsAPIDataController.swift in Sources */,
@@ -21449,7 +21449,7 @@
 				D4B6EA5C276F8E1A005E2D2C /* TransactionContactInformationViewTheme.swift in Sources */,
 				2B288AD1268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5818257E56DB00731C97 /* Int16+Byte.swift in Sources */,
-				17D0FA2E28EC28DE0061B55D /* QRBackupInformations.swift in Sources */,
+				17D0FA2E28EC28DE0061B55D /* QRBackupParameters.swift in Sources */,
 				D4A0DE9C2898037300CE3895 /* AssetStatisticsSectionView.swift in Sources */,
 				D419AFA228D0A3A300673C39 /* AccountSelectionListLoadingAccountItemViewTheme.swift in Sources */,
 				2B0322E9269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift in Sources */,
@@ -23301,7 +23301,7 @@
 				95BB6BF727A14C0100F2A2F1 /* WCTransactionFullDappDetailViewController+Theme.swift in Sources */,
 				D4FC5F6227F52DA30017E81F /* SelectedAccountPreviewViewModel.swift in Sources */,
 				F034521328B2CD9B009467A0 /* OptInAssetNameViewModel.swift in Sources */,
-				173C1128296C10F700FF6217 /* EncryptedBackup.swift in Sources */,
+				173C1128296C10F700FF6217 /* Backup.swift in Sources */,
 				2B698243278C90AF008EC669 /* PendingAssetPreviewView.swift in Sources */,
 				2B98E48B27EB6273000FA690 /* CollectibleMediaVideoPreviewView.swift in Sources */,
 				F0DB415A279382EC00EA437D /* TitleWithAccessoryViewModel.swift in Sources */,
@@ -23482,7 +23482,7 @@
 				2B0F631C24EC129D00DA22A6 /* NodeSettingsViewController.swift in Sources */,
 				2B288AD0268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5817257E56DB00731C97 /* Int16+Byte.swift in Sources */,
-				17D0FA2D28EC28DE0061B55D /* QRBackupInformations.swift in Sources */,
+				17D0FA2D28EC28DE0061B55D /* QRBackupParameters.swift in Sources */,
 				95266BF927B5386700E99EC7 /* SelectAccountDataController.swift in Sources */,
 				D4A0DE9B2898037300CE3895 /* AssetStatisticsSectionView.swift in Sources */,
 				2B7A1F7A27DE63330010F52E /* CollectibleExternalSourceViewTheme.swift in Sources */,
@@ -25333,7 +25333,7 @@
 				D48D11D72742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
 				2BE936FC24534F5600322C1E /* NumpadButton.swift in Sources */,
 				2BE8799228BD2CBD00A6C682 /* ScanQRCodeTransactionOptionListItemButtonViewModel.swift in Sources */,
-				173C1127296C10F700FF6217 /* EncryptedBackup.swift in Sources */,
+				173C1127296C10F700FF6217 /* Backup.swift in Sources */,
 				F0DB4159279382EC00EA437D /* TitleWithAccessoryViewModel.swift in Sources */,
 				2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */,
 				2B38C93024D436F20059AB02 /* InstructionItemView.swift in Sources */,
@@ -25512,7 +25512,7 @@
 				F063BE82290BFD1500AEAEF7 /* SwapSlippageTolerancePercentage.swift in Sources */,
 				17AC727A286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */,
 				2B80C543277322BB00BB071E /* AddAssetItemView.swift in Sources */,
-				17D0FA2C28EC28DE0061B55D /* QRBackupInformations.swift in Sources */,
+				17D0FA2C28EC28DE0061B55D /* QRBackupParameters.swift in Sources */,
 				D4A0DE9A2898037300CE3895 /* AssetStatisticsSectionView.swift in Sources */,
 				D419AFA028D0A3A300673C39 /* AccountSelectionListLoadingAccountItemViewTheme.swift in Sources */,
 				2B7A1F7927DE63330010F52E /* CollectibleExternalSourceViewTheme.swift in Sources */,

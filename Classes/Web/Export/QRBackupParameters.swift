@@ -12,55 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   QRBackupInformations.swift
+//   QRBackupParameters.swift
 
 import Foundation
 
-final class QRBackupInformations: ALGAPIModel {
-    let identifier: String
+enum QRBackupAction: RawRepresentable, ALGAPIModel {
+    var rawValue: String {
+        switch self {
+        case .import:
+            return "import"
+        case .export:
+            return "export"
+        case .unsupported(let unsupportedValue):
+            return unsupportedValue
+        }
+    }
+
+    init?(rawValue: String) {
+        switch rawValue {
+        case "import":
+            self = .import
+        case "export":
+            self = .export
+        default:
+            self = .unsupported(rawValue)
+        }
+    }
+
+    init() {
+        self = .unsupported("unsupported")
+    }
+
+    case `import`
+    case export
+    case unsupported(String)
+}
+
+final class QRBackupParameters: ALGAPIModel, Identifiable {
+    let id: String
     let modificationKey: String
     let encryptionKey: String
     let version: String
-    let action: Action
+    let action: QRBackupAction
 
     init() {
-        identifier = ""
+        id = ""
         modificationKey = ""
         encryptionKey = ""
         version = ""
-        action = .none
+        action = QRBackupAction()
     }
 }
 
-extension QRBackupInformations {
+extension QRBackupParameters {
     enum CodingKeys: String, CodingKey {
-        case identifier = "backupId"
+        case id = "backupId"
         case modificationKey
         case encryptionKey
         case version
         case action
-    }
-}
-
-extension QRBackupInformations {
-    enum Action: String, ALGAPIModel {
-        init?(rawValue: String) {
-            switch rawValue {
-            case "import":
-                self = .import
-            case "export":
-                self = .export
-            default:
-                self = .none
-            }
-        }
-
-        init() {
-            self = .none
-        }
-
-        case `import`
-        case export
-        case none
     }
 }

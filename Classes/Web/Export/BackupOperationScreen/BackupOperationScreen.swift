@@ -17,6 +17,8 @@
 import Foundation
 import MacaroonUIKit
 import MagpieCore
+import MagpieHipo
+import MagpieExceptions
 
 final class BackupOperationScreen: BaseViewController {
     typealias EventHandler = (Event, BackupOperationScreen) -> Void
@@ -27,13 +29,13 @@ final class BackupOperationScreen: BaseViewController {
         return false
     }
 
-    private lazy var loadingTitleView = Label()
+    private lazy var loadingView = Label()
     private lazy var theme = BackupOperationScreenTheme()
 
-    private let backupInformations: QRBackupInformations
+    private let backupParameters: QRBackupParameters
 
-    init(configuration: ViewControllerConfiguration, backupInformations: QRBackupInformations) {
-        self.backupInformations = backupInformations
+    init(configuration: ViewControllerConfiguration, backupParameters: QRBackupParameters) {
+        self.backupParameters = backupParameters
         super.init(configuration: configuration)
     }
 
@@ -49,9 +51,9 @@ final class BackupOperationScreen: BaseViewController {
     }
 
     private func addLoadingView() {
-        loadingTitleView.customizeAppearance(theme.loading)
-        view.addSubview(loadingTitleView)
-        loadingTitleView.snp.makeConstraints { make in
+        loadingView.customizeAppearance(theme.loading)
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(theme.loadingHorizontalInset)
             make.centerY.equalToSuperview()
         }
@@ -60,13 +62,13 @@ final class BackupOperationScreen: BaseViewController {
 
 extension BackupOperationScreen {
     private func fetchAccounts() {
-        api?.fetchBackupDetail(backupInformations.identifier) { [weak self] apiResponse in
+        api?.fetchBackupDetail(backupParameters.id) { [weak self] apiResponse in
             guard let self else { return }
             switch apiResponse {
-            case .failure(let apiError, _):
-                self.eventHandler?(.didFailedToFetchEncryptedBackup(apiError), self)
             case .success(let encryptedBackup):
-                self.eventHandler?(.didFetchedEncryptedBackup(encryptedBackup), self)
+                self.eventHandler?(.didFetchBackup(encryptedBackup), self)
+            case .failure(_, let model):
+                self.eventHandler?(.didFailToFetchBackup(model), self)
             }
         }
     }
@@ -74,7 +76,7 @@ extension BackupOperationScreen {
 
 extension BackupOperationScreen {
     enum Event {
-        case didFetchedEncryptedBackup(EncryptedBackup)
-        case didFailedToFetchEncryptedBackup(APIError)
+        case didFetchBackup(Backup)
+        case didFailToFetchBackup(HIPAPIError?)
     }
 }
