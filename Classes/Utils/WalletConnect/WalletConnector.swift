@@ -54,7 +54,7 @@ class WalletConnector {
 
 extension WalletConnector {
     func configureTransactionsIfNeeded() {
-        if !isRegisteredToTheTransactionRequests {
+        if isRegisteredToTheTransactionRequests {
             return
         }
         
