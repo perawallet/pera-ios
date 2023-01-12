@@ -21,6 +21,8 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
+    typealias EventHandler = (Event, ImportQRScannerScreen) -> Void
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -32,13 +34,14 @@ final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
     override var shouldShowNavigationBar: Bool {
         return false
     }
-
+    
     var notificationObservations: [NSObjectProtocol] = []
+
+    var eventHandler: EventHandler?
 
     private lazy var overlayView = QRScannerOverlayView {
         [weak self] in
         guard let self = self else { return }
-
         $0.cancelMode = self.canGoBack() ? .pop : .dismiss
         $0.showsConnectedAppsButton = false
     }
@@ -58,6 +61,10 @@ final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
+
+        asyncMain(afterDuration: 5.0) {
+            self.eventHandler?(.didReadBackup(parameters: QRBackupParameters()), self)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -225,19 +232,15 @@ extension ImportQRScannerScreen {
     }
 
     private func setupOverlayViewLayout() {
+        overlayView.customize(
+            QRScannerOverlayViewTheme(
+                LayoutFamily.current,
+                title: "web-import-qr-scanner-title".localized
+            )
+        )
         view.addSubview(overlayView)
         overlayView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-}
-
-extension ImportQRScannerScreen {
-    private func closeScreen() {
-        if canGoBack() {
-            popScreen()
-        } else {
-            dismissScreen()
+            $0.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 }
@@ -260,7 +263,11 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
 
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-        // TODO: QRBackupInformation check will be implemented here
+        guard let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) else {
+            return
+        }
+
+        eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
     }
 }
 
@@ -275,5 +282,11 @@ extension ImportQRScannerScreen: QRScannerOverlayViewDelegate {
         case .pop: popScreen()
         case .dismiss: dismissScreen()
         }
+    }
+}
+
+extension ImportQRScannerScreen {
+    enum Event {
+        case didReadBackup(parameters: QRBackupParameters)
     }
 }

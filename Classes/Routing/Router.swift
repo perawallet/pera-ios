@@ -1259,6 +1259,19 @@ class Router:
                 dappParameters: dappParameters,
                 configuration: configuration
             )
+
+        case .importAccountIntroduction(let eventHandler):
+            let screen = WebImportInstructionScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountQRScanner(let eventHandler):
+            let screen = ImportQRScannerScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .importAccountFetchBackup(backupParameters, eventHandler):
+            let screen = BackupOperationScreen(configuration: configuration, backupParameters: backupParameters)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

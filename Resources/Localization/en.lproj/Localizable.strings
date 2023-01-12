@@ -1326,6 +1326,7 @@
 "web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
 "web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
 "web-import-instruction-fourth-message" = "Tap Start to scan the QR";
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web Wallet";
 
 // MARK: Discover
 "discover-search-input-placeholder" = "Search for any ASA";

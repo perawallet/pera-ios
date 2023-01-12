@@ -8807,6 +8807,9 @@
 		1773311729659115006E66F1 /* Import */ = {
 			isa = PBXGroup;
 			children = (
+				173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */,
+				173C113C296D59EF00FF6217 /* QRScanner */,
+				173C112E296C3F5400FF6217 /* BackupOperationScreen */,
 				177331182965911D006E66F1 /* Introduction */,
 			);
 			path = Import;
@@ -9116,11 +9119,8 @@
 		17D0F9EB28EC28DD0061B55D /* Export */ = {
 			isa = PBXGroup;
 			children = (
-				173C112E296C3F5400FF6217 /* BackupOperationScreen */,
-				173C113C296D59EF00FF6217 /* QRScanner */,
 				17D0F9EC28EC28DD0061B55D /* Result */,
 				17D0F9F228EC28DD0061B55D /* AccountExportFlowCoordinator.swift */,
-				173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */,
 				17D0F9F328EC28DD0061B55D /* QRBackupParameters.swift */,
 				17D0F9F428EC28DD0061B55D /* Cryptor.swift */,
 				17D0F9F528EC28DD0061B55D /* ExportAccountDraft.swift */,

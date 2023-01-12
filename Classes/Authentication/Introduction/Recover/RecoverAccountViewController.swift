@@ -19,8 +19,13 @@ import UIKit
 final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
+    private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
+        presentingScreen: self,
+        session: self.session
+    )
 
     private let flow: AccountSetupFlow
+
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
@@ -82,7 +87,7 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
         case .ledger:
             open(.tutorial(flow: flow, tutorial: .recoverWithLedger), by: .push)
         case .importFromWeb:
-            break
+            accountImportCoordinator.launch(qrBackupParameters: nil)
         default:
             break
         }

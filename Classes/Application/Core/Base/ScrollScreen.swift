@@ -20,11 +20,20 @@ import MacaroonUIKit
 class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var leftBarButtonItems: [BarButtonItemRef] = []
     var rightBarButtonItems: [BarButtonItemRef] = []
+    var shouldShowNavigationBar: Bool {
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setNeedsNavigationBarAppearanceUpdate()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setNeedsNavigationBarAppearanceUpdateWhenAppearing()
     }
 
     override func configureNavigationBar() {
@@ -35,6 +44,10 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
         /// In order to prevent conflicts, navigation bar controller life cycle removed
         /// Otherwise multiple back buttons can be added
         remove(lifeCycleObserver: navigationBarController)
+    }
+
+    private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
     }
 }
 

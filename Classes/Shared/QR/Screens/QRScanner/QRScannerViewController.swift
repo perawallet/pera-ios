@@ -256,6 +256,7 @@ extension QRScannerViewController {
     }
 
     private func setupOverlayViewLayout() {
+        overlayView.customize(QRScannerOverlayViewTheme())
         view.addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.edges.equalToSuperview()

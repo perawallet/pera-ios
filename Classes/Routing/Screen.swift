@@ -298,6 +298,9 @@ indirect enum Screen {
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
     case discoverDappDetail(DiscoverDappParamaters)
+    case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
+    case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
+    case importAccountFetchBackup(QRBackupParameters, BackupOperationScreen.EventHandler)
 }
 
 extension Screen {
