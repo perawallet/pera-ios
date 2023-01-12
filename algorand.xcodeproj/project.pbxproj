@@ -2915,6 +2915,8 @@
 		2BC1827523D8DF1100888476 /* AssetAdditionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827323D8DF1100888476 /* AssetAdditionDraft.swift */; };
 		2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827623D8DF2400888476 /* AssetRemovalDraft.swift */; };
 		2BC1827823D8DF2400888476 /* AssetRemovalDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1827623D8DF2400888476 /* AssetRemovalDraft.swift */; };
+		2BC1D3FF29703E7B001E4572 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */; };
+		2BC1D40129703E8F001E4572 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BC1D40029703E8F001E4572 /* WalletConnectSwift */; };
 		2BC35E842902D63100AFE7EE /* WCConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC35E832902D63100AFE7EE /* WCConnectionView.swift */; };
 		2BC35E852902D63100AFE7EE /* WCConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC35E832902D63100AFE7EE /* WCConnectionView.swift */; };
 		2BC35E862902D63100AFE7EE /* WCConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC35E832902D63100AFE7EE /* WCConnectionView.swift */; };
@@ -8544,6 +8546,7 @@
 				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
+				2BC1D3FF29703E7B001E4572 /* WalletConnectSwift in Frameworks */,
 				CBAD47342745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */,
 				CBAD47372745434A00C91946 /* MacaroonApplication in Frameworks */,
@@ -8579,6 +8582,7 @@
 				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
+				2BC1D40129703E8F001E4572 /* WalletConnectSwift in Frameworks */,
 				CBAD47242745434A00C91946 /* MacaroonResources in Frameworks */,
 				CBAD471E2745434A00C91946 /* MacaroonApplication in Frameworks */,
 				D4A241DE27D2BF1300641FF0 /* Prism in Frameworks */,
@@ -19059,6 +19063,7 @@
 				F05E6C542863009C004E33D6 /* MacaroonToastUIKit */,
 				F0454224287D8C940081C01C /* MacaroonStorySheet */,
 				17D0F8A228EC08130061B55D /* OrderedCollections */,
+				2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -19106,6 +19111,7 @@
 				F05E6C56286300A7004E33D6 /* MacaroonToastUIKit */,
 				F0454222287D8C8D0081C01C /* MacaroonStorySheet */,
 				17D0F8A028EC08080061B55D /* OrderedCollections */,
+				2BC1D40029703E8F001E4572 /* WalletConnectSwift */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -25711,7 +25717,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25740,7 +25746,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25768,7 +25774,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25797,7 +25803,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -25827,7 +25833,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -25856,7 +25862,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26007,7 +26013,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -26037,7 +26043,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26193,7 +26199,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26719,6 +26725,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonVendors;
+		};
+		2BC1D3FE29703E7B001E4572 /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		2BC1D40029703E8F001E4572 /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
 		};
 		D499D27D27C7D40B00641FF5 /* Prism */ = {
 			isa = XCSwiftPackageProductDependency;
