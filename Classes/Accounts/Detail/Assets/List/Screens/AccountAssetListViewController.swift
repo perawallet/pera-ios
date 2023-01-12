@@ -632,7 +632,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        guard let asset = getAsset(at: indexPath) else {
+        guard let asset = getAsset(at: indexPath),
+              !asset.isAlgo else {
             return nil
         }
 
