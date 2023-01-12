@@ -119,9 +119,9 @@ class AppDelegate:
         setupAppLibs()
         runMigrations()
 
+        makeWindow()
         prepareForLaunch()
 
-        makeWindow()
         makeNetworkBanner()
 
         launch(with: launchOptions)
@@ -538,6 +538,7 @@ extension AppDelegate {
             api: api,
             sharedDataController: sharedDataController,
             authChecker: ALGAppAuthChecker(session: session),
+            walletConnector: walletConnector,
             uiHandler: self
         )
     }
