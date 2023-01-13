@@ -773,8 +773,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
