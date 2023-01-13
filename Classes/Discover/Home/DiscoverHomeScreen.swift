@@ -198,9 +198,9 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
             
             switch event {
             case let .addToFavorites(dappDetails):
-                self.updateFavorite(dapp: dappDetails)
+                self.addToFavorites(dappDetails)
             case let .removeFromFavorites(dappDetails):
-                self.updateFavorite(dapp: dappDetails)
+                self.removeFromFavorites(dappDetails)
             }
         }
         
@@ -210,7 +210,15 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
         )
     }
     
-    private func updateFavorite(dapp: DiscoverFavouriteDappDetails) {
+    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
         guard let dappDetailsString = try? dapp.encodedString() else {
             return
         }
