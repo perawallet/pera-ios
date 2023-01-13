@@ -344,10 +344,26 @@ extension DiscoverDappDetailScreen {
         return favoriteDapps.contains(url)
     }
     
+    private func didFavoritesReachMaxLimit() -> Bool {
+        if favoriteDapps.count < 50 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     private func addToFavorites(
         url: URL,
         dapp: DiscoverFavouriteDappDetails
     ) {
+        if didFavoritesReachMaxLimit() {
+            self.bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "discover-error-favorites-max-limit".localized
+            )
+            return
+        }
+        
         favoriteDapps.insert(url)
         updateFavoriteButtonState()
         eventHandler?(.addToFavorites(dapp))
