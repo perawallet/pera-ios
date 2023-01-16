@@ -23,7 +23,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
     
-    private lazy var favoriteDapps: Set<URL> = []
+    private lazy var favoriteDapps = createFavoriteDapps()
     
     private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
 
@@ -50,8 +50,6 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         self.dappParameters = dappParameters
 
         super.init(configuration: configuration)
-
-        favoriteDapps = createFavoriteDapps()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,7 +94,7 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         updateButtonsStateIfNeeded()
         updateTitle()
-        updateFavouriteActionStateForCurrenctURL()
+        updateFavouriteActionStateForCurrentURL()
     }
 
     override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -141,6 +139,10 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     private func bindNavigationTitle(with dappParameters: DiscoverDappParamaters) {
         navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
+    }
+    
+    private func bindNavigationTitle(title: String?, subtitle: String?) {
+        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title, subtitle))
     }
 
     /// <note>
@@ -280,6 +282,7 @@ extension DiscoverDappDetailScreen {
     
     private func updateTitle() {
         guard let item = webView.backForwardList.currentItem else {
+            bindNavigationTitle(title: webView.title, subtitle: webView.url?.presentationString)
             return
         }
 
@@ -378,7 +381,7 @@ extension DiscoverDappDetailScreen {
         }
         
         favoriteDapps.insert(url)
-        updateFavouriteActionStateForCurrenctURL()
+        updateFavouriteActionState(for: url)
         eventHandler?(.addToFavorites(dapp))
     }
     
@@ -391,12 +394,16 @@ extension DiscoverDappDetailScreen {
         dapp: DiscoverFavouriteDappDetails
     ) {
         favoriteDapps.remove(url)
-        updateFavouriteActionStateForCurrenctURL()
+        updateFavouriteActionState(for: url)
         eventHandler?(.removeFromFavorites(dapp))
     }
     
-    private func updateFavouriteActionStateForCurrenctURL() {
+    private func updateFavouriteActionStateForCurrentURL() {
         let url = createURLToAddFavorites()
+        updateFavouriteActionState(for: url)
+    }
+    
+    private func updateFavouriteActionState(for url: URL?) {
         let isSelected = url.unwrap(isFavorite) ?? false
         setFavoriteActionSelected(isSelected)
     }
