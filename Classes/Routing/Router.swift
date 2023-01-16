@@ -1272,6 +1272,10 @@ class Router:
             let screen = BackupOperationScreen(configuration: configuration, backupParameters: backupParameters)
             screen.eventHandler = eventHandler
             viewController = screen
+        case .importAccountError(let eventHandler):
+            let screen = WebImportErrorScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

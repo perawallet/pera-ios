@@ -64,8 +64,8 @@ extension AccountImportFlowCoordinator {
             }
 
             switch event {
-            case .didFetchBackup(let backup):
-                let accounts = self.getEncryptedAccounts(from: backup, with: parameters)
+            case let .didSaveAccounts(importedAccounts, unimportedAccountsCount):
+                break
             case .didFailToFetchBackup(let error):
                 // route to error screen
                 break
@@ -84,34 +84,23 @@ extension AccountImportFlowCoordinator {
             switch event {
             case .didReadBackup(let parameters):
                 self.openBackupScreen(with: parameters, on: qrScannerScreen)
+            case .didReadUnsupportedAction(let parameters):
+                print(parameters)
+                self.openErrorScreen(on: qrScannerScreen)
             }
         }
         screen.open(qrScannerScreen, by: .push)
     }
 
-    private func getEncryptedAccounts(from backup: Backup, with qrBackupParameters: QRBackupParameters) -> [Account] {
-        // TODO: Will add a JSON encoder/decoder here to encrypt/decrypt all contents using it.
-        let encryptionKey = qrBackupParameters.encryptionKey
-        let encryptedContentInString = backup.encryptedContent
-        let encryptedDataByteArray = encryptedContentInString
-            .convertToByteArray(using: ",")
-        let encryptedData = Data(bytes: encryptedDataByteArray)
+    private func openErrorScreen(on screen: UIViewController) {
+        let errorScreen = Screen.importAccountError { [weak self] event, _ in
+            guard let self else {
+                return
+            }
 
-        let cryptor = Cryptor(key: encryptionKey)
-        let decryptedContent = cryptor.decrypt(data: encryptedData)
-        let jsonDecoder = JSONDecoder()
-
-        if let decryptedData = decryptedContent?.data {
-            let users = try? jsonDecoder.decode([EncodedUser].self, from: decryptedData)
-        } else {
-            // TODO: Handle Error Here
+            self.presentingScreen.dismissScreen()
         }
 
-        return []
+        screen.open(errorScreen, by: .push)
     }
-}
-
-struct EncodedUser: JSONModel {
-    let name: String
-    let private_key: String
 }

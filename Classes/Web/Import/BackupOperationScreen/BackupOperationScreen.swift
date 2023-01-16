@@ -32,6 +32,13 @@ final class BackupOperationScreen: BaseViewController {
     private lazy var loadingView = Label()
     private lazy var theme = BackupOperationScreenTheme()
 
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private let backupParameters: QRBackupParameters
 
     init(configuration: ViewControllerConfiguration, backupParameters: QRBackupParameters) {
@@ -66,17 +73,88 @@ extension BackupOperationScreen {
             guard let self else { return }
             switch apiResponse {
             case .success(let encryptedBackup):
-                self.eventHandler?(.didFetchBackup(encryptedBackup), self)
+                self.processEncryptedAccounts(from: encryptedBackup, with: self.backupParameters)
             case .failure(_, let model):
                 self.eventHandler?(.didFailToFetchBackup(model), self)
             }
         }
     }
+
+    private func processEncryptedAccounts(
+        from backup: Backup,
+        with qrBackupParameters: QRBackupParameters
+    ) {
+        // TODO: Will add a JSON encoder/decoder here to encrypt/decrypt all contents using it.
+        let encryptionKey = qrBackupParameters.encryptionKey
+        let encryptedContentInString = backup.encryptedContent
+        let encryptedDataByteArray = encryptedContentInString
+            .convertToByteArray(using: ",")
+        let encryptedData = Data(bytes: encryptedDataByteArray)
+
+        let cryptor = Cryptor(key: encryptionKey)
+        let decryptedContent = cryptor.decrypt(data: encryptedData)
+        let jsonDecoder = JSONDecoder()
+
+        if let decryptedData = decryptedContent?.data {
+            let users = try? jsonDecoder.decode([EncodedAccount].self, from: decryptedData)
+            saveAccounts(users)
+        } else {
+            self.eventHandler?(.didFailToFetchBackup(nil), self)
+        }
+    }
+
+    private func saveAccounts(_ accounts: [EncodedAccount]?) {
+        guard let session, let accounts, !accounts.isEmpty else {
+            return
+        }
+
+        var importedAccounts: [AccountInformation] = []
+
+        for account in accounts {
+            guard let accountInformation = account.createAccountInformation() else {
+                continue
+            }
+
+            let accountAddress = accountInformation.address
+            let sessionAccountInformation = session.accountInformation(from: accountAddress)
+
+            if accountInformation == sessionAccountInformation {
+                continue
+            }
+
+            importedAccounts.append(accountInformation)
+        }
+
+        let user: User
+
+        if let authenticatedUser = session.authenticatedUser {
+            user = authenticatedUser
+
+            for account in importedAccounts {
+                authenticatedUser.addAccount(account)
+            }
+
+            pushNotificationController.sendDeviceDetails()
+        } else {
+            user = User(accounts: importedAccounts)
+        }
+
+        NotificationCenter.default.post(
+            name: .didAddAccount,
+            object: self
+        )
+
+        session.authenticatedUser = user
+
+        let unimportedAccountsCount = accounts.count - importedAccounts.count
+
+        eventHandler?(.didSaveAccounts(importedAccounts: importedAccounts, unimportedAccountsCount: unimportedAccountsCount), self)
+    }
 }
 
 extension BackupOperationScreen {
     enum Event {
-        case didFetchBackup(Backup)
+        case didSaveAccounts(importedAccounts: [AccountInformation], unimportedAccountsCount: Int)
         case didFailToFetchBackup(HIPAPIError?)
     }
 }

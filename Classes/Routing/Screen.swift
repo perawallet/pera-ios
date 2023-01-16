@@ -301,6 +301,7 @@ indirect enum Screen {
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
     case importAccountFetchBackup(QRBackupParameters, BackupOperationScreen.EventHandler)
+    case importAccountError(WebImportErrorScreen.EventHandler)
 }
 
 extension Screen {

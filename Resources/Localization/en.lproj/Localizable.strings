@@ -1327,6 +1327,12 @@
 "web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
 "web-import-instruction-fourth-message" = "Tap Start to scan the QR";
 "web-import-qr-scanner-title" = "Scan QR code on Pera Web Wallet";
+"web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+
+"backup-operation-loading-body" = "Importing your accounts";
+
+"web-import-error-action" = "Go to Home";
+
 
 // MARK: Discover
 "discover-search-input-placeholder" = "Search for any ASA";
@@ -1334,5 +1340,3 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 
-// MARK: WebImport
-"backup-operation-loading-body" = "Importing your accounts";

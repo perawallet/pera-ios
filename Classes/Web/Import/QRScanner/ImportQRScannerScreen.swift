@@ -267,7 +267,12 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
+        if qrBackupParameters.action == .import {
+            eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
+        } else {
+            eventHandler?(.didReadUnsupportedAction(parameters: qrBackupParameters), self)
+        }
+
     }
 }
 
@@ -288,5 +293,6 @@ extension ImportQRScannerScreen: QRScannerOverlayViewDelegate {
 extension ImportQRScannerScreen {
     enum Event {
         case didReadBackup(parameters: QRBackupParameters)
+        case didReadUnsupportedAction(parameters: QRBackupParameters)
     }
 }
