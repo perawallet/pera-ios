@@ -117,6 +117,12 @@ extension AccountInformation: Equatable {
     }
 }
 
+extension AccountInformation: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
+}
+
 enum AccountType: String, Codable {
     case standard = "standard"
     case watch = "watch"

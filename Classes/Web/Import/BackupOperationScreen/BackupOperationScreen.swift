@@ -46,6 +46,12 @@ final class BackupOperationScreen: BaseViewController {
         super.init(configuration: configuration)
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        view.customizeAppearance(theme.background)
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         addLoadingView()
@@ -110,8 +116,9 @@ extension BackupOperationScreen {
 
         var importedAccounts: [AccountInformation] = []
 
+        var preferredOrder = sharedDataController.getPreferredOrderForNewAccount()
         for account in accounts {
-            guard let accountInformation = account.createAccountInformation() else {
+            guard let accountInformation = account.createAccountInformation(with: preferredOrder) else {
                 continue
             }
 
@@ -122,6 +129,9 @@ extension BackupOperationScreen {
                 continue
             }
 
+            preferredOrder = preferredOrder.advanced(by: 1)
+
+            session.savePrivate(account.privateKey, for: accountAddress)
             importedAccounts.append(accountInformation)
         }
 

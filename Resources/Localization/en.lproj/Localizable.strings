@@ -1333,6 +1333,16 @@
 
 "web-import-error-action" = "Go to Home";
 
+"web-import-success-header-title" = "Accounts imported";
+"web-import-success-header-singular-title" = "Account imported";
+"web-import-success-header-body" = "%@ accounts were imported from Pera Web";
+"web-import-success-header-singular-body" = "%@ account was imported from Pera Web";
+"web-import-success-unimported-title" = "Unimported Accounts";
+"web-import-success-unimported-singular-title" = "Unimported Account";
+"web-import-success-unimported-body" = "%@ accounts were not imported because they were previously imported.";
+"web-import-success-unimported-singular-body" = "%@ account was not imported because it was previously imported.";
+"web-import-success-button-title" = "Explore Pera Mobile";
+
 
 // MARK: Discover
 "discover-search-input-placeholder" = "Search for any ASA";

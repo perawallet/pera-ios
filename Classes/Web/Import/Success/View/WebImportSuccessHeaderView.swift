@@ -12,26 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BackupOperationScreenTheme.swift
+//   WebImportSuccessHeaderView.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct BackupOperationScreenTheme: LayoutSheet, StyleSheet {
-    let background: ViewStyle
-    let loading: TextStyle
-    let loadingHorizontalInset: LayoutMetric
+final class WebImportSuccessHeaderView:
+    CollectionCell<NoContentView>,
+    ViewModelBindable {
+    static let theme = WebImportSuccessHeaderViewTheme()
 
-    init(_ family: LayoutFamily) {
-        background = [
-            .backgroundColor(Colors.Defaults.background)
-        ]
-        loading = [
-            .textColor(Colors.Text.main),
-            .text("backup-operation-loading-body".localized),
-            .font(Typography.bodyLargeMedium()),
-            .textAlignment(.center)
-        ]
-        loadingHorizontalInset = 24
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        customize()
+    }
+
+    func customize() {
+        contextView.customize(Self.theme)
     }
 }

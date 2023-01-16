@@ -65,10 +65,18 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case let .didSaveAccounts(importedAccounts, unimportedAccountsCount):
-                break
-            case .didFailToFetchBackup(let error):
-                // route to error screen
-                break
+                if importedAccounts.isEmpty {
+                    self.openErrorScreen(on: backupScreen)
+                    return
+                }
+
+                self.openSuccessScreen(
+                    importedAccountInformations: importedAccounts,
+                    unimportedAccountCount: unimportedAccountsCount,
+                    on: backupScreen
+                )
+            case .didFailToFetchBackup:
+                self.openErrorScreen(on: backupScreen)
             }
         }
 
@@ -90,6 +98,28 @@ extension AccountImportFlowCoordinator {
             }
         }
         screen.open(qrScannerScreen, by: .push)
+    }
+
+    private func openSuccessScreen(
+        importedAccountInformations: [AccountInformation],
+        unimportedAccountCount: Int,
+        on screen: UIViewController
+    ) {
+        let successScreen = Screen.importAccountSuccess(
+            accountInformations: importedAccountInformations,
+            unimportedAccountCount: unimportedAccountCount
+        ) { [weak self] event, successScreen in
+            guard let self else {
+                return
+            }
+
+            switch event {
+            case .didGoToHome:
+                self.presentingScreen.dismissScreen()
+            }
+        }
+
+        screen.open(successScreen, by: .push)
     }
 
     private func openErrorScreen(on screen: UIViewController) {
