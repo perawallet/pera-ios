@@ -141,8 +141,8 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
     }
     
-    private func bindNavigationTitle(title: String?, subtitle: String?) {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title, subtitle))
+    private func bindNavigationTitleForCurrentURL() {
+        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
     }
 
     /// <note>
@@ -282,7 +282,7 @@ extension DiscoverDappDetailScreen {
     
     private func updateTitle() {
         guard let item = webView.backForwardList.currentItem else {
-            bindNavigationTitle(title: webView.title, subtitle: webView.url?.presentationString)
+            bindNavigationTitleForCurrentURL()
             return
         }
 

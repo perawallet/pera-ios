@@ -31,7 +31,7 @@ struct DiscoverDappDetailNavigationViewModel: ViewModel {
         bind(model)
     }
     
-    init(_ title: String?, _ subtitle: String?) {
+    init(title: String?, subtitle: String?) {
         bind(title, subtitle)
     }
 }
