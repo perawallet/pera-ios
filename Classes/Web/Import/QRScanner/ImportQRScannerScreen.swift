@@ -61,10 +61,6 @@ final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
-
-        asyncMain(afterDuration: 5.0) {
-            self.eventHandler?(.didReadBackup(parameters: QRBackupParameters()), self)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

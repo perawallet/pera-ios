@@ -40,7 +40,7 @@ extension AccountImportFlowCoordinator {
             return
         }
 
-        openBackupScreen(with: qrBackupParameters, on: presentingScreen)
+        openBackupScreen(with: qrBackupParameters, on: presentingScreen, transition: .present)
     }
 
     private func openIntroductionScreen() {
@@ -57,7 +57,7 @@ extension AccountImportFlowCoordinator {
         presentingScreen.open(introductionScreen, by: .push)
     }
 
-    private func openBackupScreen(with parameters: QRBackupParameters, on screen: UIViewController) {
+    private func openBackupScreen(with parameters: QRBackupParameters, on screen: UIViewController, transition: Screen.Transition.Open = .push) {
         let backupScreen = Screen.importAccountFetchBackup(parameters) { [weak self] event, backupScreen in
             guard let self else {
                 return
@@ -80,7 +80,7 @@ extension AccountImportFlowCoordinator {
             }
         }
 
-        screen.open(backupScreen, by: .push)
+        screen.open(backupScreen, by: transition)
     }
 
     private func openQRScannerScreen(on screen: UIViewController) {
@@ -92,8 +92,7 @@ extension AccountImportFlowCoordinator {
             switch event {
             case .didReadBackup(let parameters):
                 self.openBackupScreen(with: parameters, on: qrScannerScreen)
-            case .didReadUnsupportedAction(let parameters):
-                print(parameters)
+            case .didReadUnsupportedAction:
                 self.openErrorScreen(on: qrScannerScreen)
             }
         }
@@ -115,7 +114,7 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didGoToHome:
-                self.presentingScreen.dismissScreen()
+                self.dismissScreen(successScreen)
             }
         }
 
@@ -123,14 +122,22 @@ extension AccountImportFlowCoordinator {
     }
 
     private func openErrorScreen(on screen: UIViewController) {
-        let errorScreen = Screen.importAccountError { [weak self] event, _ in
+        let errorScreen = Screen.importAccountError { [weak self] event, errorScreen in
             guard let self else {
                 return
             }
 
-            self.presentingScreen.dismissScreen()
+            self.dismissScreen(errorScreen)
         }
 
         screen.open(errorScreen, by: .push)
+    }
+
+    private func dismissScreen(_ displayingScreen: UIViewController) {
+        if self.presentingScreen.presentedViewController == nil {
+            self.presentingScreen.dismissScreen()
+        } else {
+            displayingScreen.dismissScreen()
+        }
     }
 }
