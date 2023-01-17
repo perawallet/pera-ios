@@ -192,10 +192,40 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
     }
 
     private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
+        let screen = Screen.discoverDappDetail(dappDetail) {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case let .addToFavorites(dappDetails):
+                self.addToFavorites(dappDetails)
+            case let .removeFromFavorites(dappDetails):
+                self.removeFromFavorites(dappDetails)
+            }
+        }
+        
         open(
-            .discoverDappDetail(dappDetail),
+            screen,
             by: .push
         )
+    }
+    
+    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
+        guard let dappDetailsString = try? dapp.encodedString() else {
+            return
+        }
+        
+        let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
+        
+        self.webView.evaluateJavaScript(scriptString)
     }
 
     private func openAssetDetail(_ assetDetail: DiscoverAssetParameters) {

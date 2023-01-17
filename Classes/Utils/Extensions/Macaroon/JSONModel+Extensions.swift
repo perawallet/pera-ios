@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappParamaters.swift
+//   JSONModel+Extensions.swift
 
 import Foundation
 import MacaroonUtils
 
-struct DiscoverDappParamaters: JSONModel {
-    let name: String?
-    let url: String
-    let favorites: [FavoriteDapp]?
-    
-    struct FavoriteDapp: JSONModel {
-        let name: String
-        let url: String
-        let logo: String?
+extension JSONModel {
+    func encodedString() throws -> String? {
+        let encodedData = try encoded()
+        
+        return String(data: encodedData, encoding: String.Encoding.utf8)
     }
 }

@@ -301,7 +301,10 @@ indirect enum Screen {
     )
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
-    case discoverDappDetail(DiscoverDappParamaters)
+    case discoverDappDetail(
+        DiscoverDappParamaters,
+        eventHandler: DiscoverDappDetailScreen.EventHandler?
+    )
 }
 
 extension Screen {

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappParamaters.swift
+//   FavouriteDappDetails.swift
 
 import Foundation
 import MacaroonUtils
 
-struct DiscoverDappParamaters: JSONModel {
-    let name: String?
-    let url: String
-    let favorites: [FavoriteDapp]?
+struct DiscoverFavouriteDappDetails: JSONModel {
+    let action: String
+    let payload: Payload
     
-    struct FavoriteDapp: JSONModel {
-        let name: String
-        let url: String
+    struct Payload: JSONModel {
+        let name: String?
+        let url: URL?
         let logo: String?
+    }
+    
+    init(
+        name:  String?,
+        url: URL?
+    ) {
+        self.action = "handleBrowserFavoriteButtonClick"
+        self.payload = Payload(
+            name: name,
+            url: url,
+            logo: nil
+        )
     }
 }
