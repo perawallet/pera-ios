@@ -101,8 +101,7 @@ class AppDelegate:
     private lazy var pushNotificationController = PushNotificationController(
         target: ALGAppTarget.current,
         session: session,
-        api: api,
-        bannerController: bannerController
+        api: api
     )
     private lazy var lastSeenNotificationController = LastSeenNotificationController(
         api: api
@@ -119,9 +118,9 @@ class AppDelegate:
         setupAppLibs()
         runMigrations()
 
-        makeWindow()
         prepareForLaunch()
 
+        makeWindow()
         makeNetworkBanner()
 
         launch(with: launchOptions)
@@ -341,7 +340,7 @@ extension AppDelegate {
             )
         case .remoteNotification(let notification, let screen, let error):
             if let error = error {
-                pushNotificationController.present(notification: notification) {
+                present(notification: notification) {
                     [unowned self] in
                     let uiRepresentation = error.uiRepresentation
                     bannerController.presentErrorBanner(
@@ -353,11 +352,11 @@ extension AppDelegate {
             }
 
             guard let someScreen = screen else {
-                pushNotificationController.present(notification: notification)
+                present(notification: notification)
                 return
             }
             
-            pushNotificationController.present(notification: notification) {
+            present(notification: notification) {
                 [unowned self] in
                 self.router.launch(deeplink: someScreen)
             }
@@ -514,6 +513,18 @@ extension AppDelegate {
     private func authorizeNotifications(for deviceToken: Data) {
         let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         pushNotificationController.authorizeDevice(with: pushToken)
+    }
+
+    func present(
+        notification: AlgorandNotification,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard let alert = notification.alert else { return }
+
+        bannerController.presentNotification(
+            alert,
+            handler
+        )
     }
 }
 

@@ -53,8 +53,7 @@ class RootViewController: UIViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: appConfiguration.session,
-        api: appConfiguration.api,
-        bannerController: appConfiguration.bannerController
+        api: appConfiguration.api
     )
 
     private var currentWCTransactionRequest: WalletConnectRequest?

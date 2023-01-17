@@ -42,8 +42,7 @@ final class HomeViewController:
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)

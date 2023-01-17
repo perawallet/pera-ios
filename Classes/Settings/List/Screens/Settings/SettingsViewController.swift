@@ -24,8 +24,7 @@ final class SettingsViewController: BaseViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
     
     private lazy var theme = Theme()
