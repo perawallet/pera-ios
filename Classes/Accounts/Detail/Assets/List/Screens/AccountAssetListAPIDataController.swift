@@ -99,7 +99,7 @@ extension AccountAssetListAPIDataController {
             if let updatedAccountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
                 accountHandle = updatedAccountHandle
             }
-           // deliverContentUpdates()
+            deliverContentUpdates()
         default:
             break
         }
@@ -108,6 +108,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func deliverContentUpdatesByLoading(
+        searchQuery: String? = nil,
         isNewSearch: Bool = false,
         completion: (() -> Void)? = nil
     ) {
@@ -124,7 +125,10 @@ extension AccountAssetListAPIDataController {
             /// Asset items for search/filter/sort operations are handled after we send an update for the loading state.
             self.deliverUpdates {
                 [unowned self] in
-                self.addAssetItems(&snapshot)
+                self.addAssetItems(
+                    searchQuery: searchQuery,
+                    snapshot: &snapshot
+                )
                 snapshot.deleteItems(self.assetLoadingItems)
 
                 let updates = Updates(snapshot: snapshot)
@@ -146,7 +150,10 @@ extension AccountAssetListAPIDataController {
             
             self.addPortfolioSection(&snapshot)
             self.addQuickActionsSectionIfNeeded(&snapshot)
-            self.addAssetSection(&snapshot)
+            self.addAssetSection(
+                searchQuery: self.searchKeyword,
+                snapshot: &snapshot
+            )
             
             return Updates(snapshot: snapshot)
         }
@@ -203,8 +210,11 @@ extension AccountAssetListAPIDataController {
         ]
     }
     
-    private func addAssetItems(_ snapshot: inout Snapshot) {
-        let assetItems = makeAssetItems()
+    private func addAssetItems(
+        searchQuery: String?,
+        snapshot: inout Snapshot
+    ) {
+        let assetItems = makeAssetItems(searchQuery: searchQuery)
 
         snapshot.appendItems(
             assetItems,
@@ -217,9 +227,12 @@ extension AccountAssetListAPIDataController {
         }
     }
     
-    private func addAssetSection(_ snapshot: inout Snapshot) {
+    private func addAssetSection(
+        searchQuery: String?,
+        snapshot: inout Snapshot
+    ) {
         var items = makeCommonAssetItems()
-        let assetItems = makeAssetItems()
+        let assetItems = makeAssetItems(searchQuery: searchQuery)
         
         items.append(contentsOf: assetItems)
 
@@ -235,13 +248,16 @@ extension AccountAssetListAPIDataController {
         }
     }
 
-    private func makeAssetItems() -> [AccountAssetsItem] {
+    private func makeAssetItems(searchQuery: String? = nil) -> [AccountAssetsItem] {
         var assetItems: [AccountAssetsItem] = []
         
         let pendingItems = makePendingAssetListItems(accountHandle.value)
         assetItems.append(contentsOf: pendingItems)
 
-        let assetListItems = makeAssetListItems(accountHandle)
+        let assetListItems = makeAssetListItems(
+            searchQuery: searchQuery,
+            account: accountHandle
+        )
         assetItems.append(contentsOf: assetListItems)
 
         return assetItems
@@ -307,11 +323,11 @@ extension AccountAssetListAPIDataController {
         return pendingOptInAssetListItems + pendingOptOutAssetListItems + pendingSendPureCollectibleAssetListItems
     }
 
-    private func makeAssetListItems(_ accountHandle: AccountHandle) -> [AccountAssetsItem] {
-        load(
-            with: searchKeyword,
-            accountHandle: accountHandle
-        )
+    private func makeAssetListItems(
+        searchQuery: String?,
+        account: AccountHandle
+    ) -> [AccountAssetsItem] {
+        load(with: searchQuery)
 
         let account = accountHandle.value
 
@@ -559,18 +575,15 @@ extension AccountAssetListAPIDataController {
             [weak self] in
             guard let self = self else { return }
 
-            self.searchKeyword = query
             self.deliverContentUpdatesByLoading(
+                searchQuery: query,
                 isNewSearch: true,
                 completion: completion
             )
         }
     }
 
-    private func load(
-        with query: String?,
-        accountHandle: AccountHandle
-    ) {
+    private func load(with query: String?) {
         if query.isNilOrEmpty {
             searchKeyword = nil
         } else {
