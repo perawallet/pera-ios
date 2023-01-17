@@ -270,7 +270,7 @@ extension DiscoverDappDetailScreen {
 
         toolbar.items = items
 
-        self.setToolbarItems(items, animated: true)
+        setToolbarItems(items, animated: true)
         updateButtonsStateIfNeeded()
     }
     
@@ -381,7 +381,7 @@ extension DiscoverDappDetailScreen {
         }
         
         favoriteDapps.insert(url)
-        updateFavouriteActionState(for: url)
+        setFavoriteActionSelected(true)
         eventHandler?(.addToFavorites(dapp))
     }
     
@@ -394,7 +394,7 @@ extension DiscoverDappDetailScreen {
         dapp: DiscoverFavouriteDappDetails
     ) {
         favoriteDapps.remove(url)
-        updateFavouriteActionState(for: url)
+        setFavoriteActionSelected(false)
         eventHandler?(.removeFromFavorites(dapp))
     }
     
