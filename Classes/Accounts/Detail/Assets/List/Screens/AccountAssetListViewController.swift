@@ -176,7 +176,7 @@ final class AccountAssetListViewController:
         dataController.reload()
     }
 
-    func reloadDataIfThereIsPendingUpdates() {
+    private func reloadDataIfThereIsPendingUpdates() {
         if isViewFirstAppeared { return }
         dataController.reloadIfThereIsPendingUpdates()
     }
@@ -353,6 +353,11 @@ extension AccountAssetListViewController {
                 pendingCollectibleAssetCell.startLoading()
                 return
             }
+
+            if let assetLoadingCell = cell as? AccountAssetListAssetListItemLoadingCell {
+                assetLoadingCell.startAnimating()
+                return
+            }
         }
     }
 
@@ -365,6 +370,11 @@ extension AccountAssetListViewController {
 
             if let pendingCollectibleAssetCell = cell as? PendingCollectibleAssetListItemCell {
                 pendingCollectibleAssetCell.stopLoading()
+                return
+            }
+
+            if let assetLoadingCell = cell as? AccountAssetListAssetListItemLoadingCell {
+                assetLoadingCell.stopAnimating()
                 return
             }
         }
@@ -454,6 +464,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .search:
                 let itemCell = cell as? SearchBarItemCell
                 itemCell?.delegate = self
+            case .assetLoading:
+                startAnimatingListLoadingIfNeeded(cell as? AccountAssetListAssetListItemLoadingCell)
             case .pendingAsset:
                 startAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
             case .pendingCollectibleAsset:
@@ -530,6 +542,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
+            case .assetLoading:
+                stopAnimatingListLoadingIfNeeded(cell as? AccountAssetListAssetListItemLoadingCell)
             case .pendingAsset:
                 stopAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
             case .pendingCollectibleAsset:
@@ -632,8 +646,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         contextMenuConfigurationForItemAt indexPath: IndexPath,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        guard let asset = getAsset(at: indexPath),
-              !asset.isAlgo else {
+        guard let asset = getAsset(at: indexPath) else {
             return nil
         }
 
@@ -690,6 +703,16 @@ extension AccountAssetListViewController {
 
     private func stopAnimatingListLoadingIfNeeded(_ cell: PendingAssetListItemCell?) {
         cell?.stopLoading()
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: AccountAssetListAssetListItemLoadingCell?) {
+        cell?.startAnimating()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: AccountAssetListAssetListItemLoadingCell?) {
+        cell?.stopAnimating()
     }
 }
 

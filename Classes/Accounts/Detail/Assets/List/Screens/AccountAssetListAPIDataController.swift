@@ -66,7 +66,7 @@ extension AccountAssetListAPIDataController {
     }
 
     func reload() {
-        deliverContentUpdates()
+        deliverContentUpdatesByLoading()
     }
 
     func reloadIfThereIsPendingUpdates() {
@@ -75,7 +75,7 @@ extension AccountAssetListAPIDataController {
 
         if monitor.hasAnyPendingOptInRequest(for: account) ||
            monitor.hasAnyPendingOptOutRequest(for: account) {
-            reload()
+            deliverContentUpdates()
         }
     }
 }
@@ -87,15 +87,19 @@ extension AccountAssetListAPIDataController {
     ) {
         switch event {
         case let .didStartRunning(first):
-            if first ||
-               lastSnapshot == nil {
-                deliverContentUpdates()
+            if first || lastSnapshot == nil {
+                deliverContentUpdatesByLoading()
             }
         case .didFinishRunning:
+            if lastSnapshot == nil {
+                deliverContentUpdatesByLoading()
+                return
+            }
+
             if let updatedAccountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
                 accountHandle = updatedAccountHandle
             }
-            deliverContentUpdates()
+           // deliverContentUpdates()
         default:
             break
         }
@@ -103,59 +107,28 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
-    private func deliverContentUpdates(
+    private func deliverContentUpdatesByLoading(
         isNewSearch: Bool = false,
         completion: (() -> Void)? = nil
     ) {
         deliverUpdates {
-            [weak self] in
-            guard let self = self else { return nil }
+            [unowned self] in
 
             var snapshot = Snapshot()
 
-            let portfolioItem = self.makePortfolioItem()
-            snapshot.appendSections([.portfolio])
-            snapshot.appendItems(
-                [ portfolioItem ],
-                toSection: .portfolio
-            )
+            self.addPortfolioSection(&snapshot)
+            self.addQuickActionsSectionIfNeeded(&snapshot)
+            self.addCommonAndLoadingAssetItems(&snapshot)
 
-            let isWatchAccount = self.accountHandle.value.isWatchAccount()
-            if !isWatchAccount {
-                snapshot.appendSections([.quickActions])
-                snapshot.appendItems(
-                    [.quickActions],
-                    toSection: .quickActions
-                )
-            }
+            /// <note>
+            /// Asset items for search/filter/sort operations are handled after we send an update for the loading state.
+            self.deliverUpdates {
+                [unowned self] in
+                self.addAssetItems(&snapshot)
+                snapshot.deleteItems(self.assetLoadingItems)
 
-            var assetItems: [AccountAssetsItem] = []
-
-            let titleItem = self.makeTitleItem()
-            assetItems.append(titleItem)
-
-            assetItems.append(.search)
-
-            let pendingItems = self.makePendingAssetListItems()
-            assetItems.append(contentsOf: pendingItems)
-
-            let assetListItems = self.makeAssetListItems()
-            assetItems.append(contentsOf: assetListItems)
-
-            snapshot.appendSections([.assets])
-            snapshot.appendItems(
-                assetItems,
-                toSection: .assets
-            )
-
-            let shouldShowEmptyContent = pendingItems.isEmpty && assetListItems.isEmpty
-            if shouldShowEmptyContent {
-                let searchNoContentItem = self.makeSearchNoContentItem()
-                snapshot.appendSections([.empty])
-                snapshot.appendItems(
-                    [ searchNoContentItem ],
-                    toSection: .empty
-                )
+                let updates = Updates(snapshot: snapshot)
+                return updates
             }
 
             var updates = Updates(snapshot: snapshot)
@@ -163,6 +136,124 @@ extension AccountAssetListAPIDataController {
             updates.completion = completion
             return updates
         }
+    }
+
+    private func deliverContentUpdates() {
+        deliverUpdates {
+            [unowned self] in
+
+            var snapshot = Snapshot()
+            
+            self.addPortfolioSection(&snapshot)
+            self.addQuickActionsSectionIfNeeded(&snapshot)
+            self.addAssetSection(&snapshot)
+            
+            return Updates(snapshot: snapshot)
+        }
+    }
+    
+    private func addPortfolioSection(_ snapshot: inout Snapshot) {
+        let portfolioItem = makePortfolioItem(accountHandle)
+        snapshot.appendSections([.portfolio])
+        snapshot.appendItems(
+            [ portfolioItem ],
+            toSection: .portfolio
+        )
+    }
+    
+    private func addQuickActionsSectionIfNeeded(_ snapshot: inout Snapshot) {
+        let isWatchAccount = accountHandle.value.isWatchAccount()
+        if !isWatchAccount {
+            snapshot.appendSections([.quickActions])
+            snapshot.appendItems(
+                [.quickActions],
+                toSection: .quickActions
+            )
+        }
+    }
+    
+    private func addCommonAndLoadingAssetItems(_ snapshot: inout Snapshot) {
+        var assetItems = makeCommonAssetItems()
+        let loadingItems = assetLoadingItems
+        
+        assetItems.append(contentsOf: loadingItems)
+        
+        snapshot.appendSections([.assets])
+        snapshot.appendItems(
+            assetItems,
+            toSection: .assets
+        )
+    }
+    
+    private func makeCommonAssetItems() -> [AccountAssetsItem] {
+        var assetItems: [AccountAssetsItem] = []
+        let titleItem = makeTitleItem(accountHandle.value)
+        assetItems.append(titleItem)
+
+        assetItems.append(.search)
+        
+        return assetItems
+    }
+    
+    var assetLoadingItems: [AccountAssetsItem] {
+        return [
+            .assetLoading("1"),
+            .assetLoading("2"),
+            .assetLoading("3")
+        ]
+    }
+    
+    private func addAssetItems(_ snapshot: inout Snapshot) {
+        let assetItems = makeAssetItems()
+
+        snapshot.appendItems(
+            assetItems,
+            toSection: .assets
+        )
+        
+        let shouldShowEmptyContent = assetItems.isEmpty
+        if shouldShowEmptyContent {
+            addEmptySection(&snapshot)
+        }
+    }
+    
+    private func addAssetSection(_ snapshot: inout Snapshot) {
+        var items = makeCommonAssetItems()
+        let assetItems = makeAssetItems()
+        
+        items.append(contentsOf: assetItems)
+
+        snapshot.appendSections([.assets])
+        snapshot.appendItems(
+            items,
+            toSection: .assets
+        )
+        
+        let shouldShowEmptyContent = assetItems.isEmpty
+        if shouldShowEmptyContent {
+            addEmptySection(&snapshot)
+        }
+    }
+
+    private func makeAssetItems() -> [AccountAssetsItem] {
+        var assetItems: [AccountAssetsItem] = []
+        
+        let pendingItems = makePendingAssetListItems(accountHandle.value)
+        assetItems.append(contentsOf: pendingItems)
+
+        let assetListItems = makeAssetListItems(accountHandle)
+        assetItems.append(contentsOf: assetListItems)
+
+        return assetItems
+    }
+    
+    private func addEmptySection(_ snapshot: inout Snapshot) {
+        let searchNoContentItem = self.makeSearchNoContentItem()
+        snapshot.appendSections([.empty])
+        snapshot.appendItems(
+            [ searchNoContentItem ],
+            toSection: .empty
+        )
     }
 
     private func deliverUpdates(
@@ -181,8 +272,7 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
-    private func makePendingAssetListItems() -> [AccountAssetsItem] {
-        let account = accountHandle.value
+    private func makePendingAssetListItems(_ account: Account) -> [AccountAssetsItem] {
         let monitor = sharedDataController.blockchainUpdatesMonitor
 
         let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
@@ -217,8 +307,11 @@ extension AccountAssetListAPIDataController {
         return pendingOptInAssetListItems + pendingOptOutAssetListItems + pendingSendPureCollectibleAssetListItems
     }
 
-    private func makeAssetListItems() -> [AccountAssetsItem] {
-        load(with: searchKeyword)
+    private func makeAssetListItems(_ accountHandle: AccountHandle) -> [AccountAssetsItem] {
+        load(
+            with: searchKeyword,
+            accountHandle: accountHandle
+        )
 
         let account = accountHandle.value
 
@@ -261,7 +354,7 @@ extension AccountAssetListAPIDataController {
             }
 
             if let collectibleAsset = asset as? CollectibleAsset {
-                assetListItems.append(makeCollectibleAssetListItem(collectibleAsset))
+                assetListItems.append(makeCollectibleAssetListItem(asset: collectibleAsset, account: account))
             }
         }
 
@@ -279,7 +372,7 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
-    private func makePortfolioItem() -> AccountAssetsItem {
+    private func makePortfolioItem(_ accountHandle: AccountHandle) -> AccountAssetsItem {
         let currency = sharedDataController.currency
 
         let aRawAccount = accountHandle.value
@@ -313,8 +406,8 @@ extension AccountAssetListAPIDataController {
         }
     }
 
-    private func makeTitleItem() -> AccountAssetsItem {
-        let isWatchAccount = accountHandle.value.isWatchAccount()
+    private func makeTitleItem(_ account: Account) -> AccountAssetsItem {
+        let isWatchAccount = account.isWatchAccount()
 
         if isWatchAccount {
             return .watchAccountAssetManagement(
@@ -360,9 +453,9 @@ extension AccountAssetListAPIDataController {
         return .pendingAsset(listItem)
     }
 
-    private func makeCollectibleAssetListItem(_ asset: CollectibleAsset) -> AccountAssetsItem {
+    private func makeCollectibleAssetListItem(asset: CollectibleAsset, account: Account) -> AccountAssetsItem {
         let collectibleAssetItem = CollectibleAssetItem(
-            account: accountHandle.value,
+            account: account,
             asset: asset,
             amountFormatter: collectibleAmountFormatter
         )
@@ -458,15 +551,18 @@ extension AccountAssetListAPIDataController {
             [weak self] in
             guard let self = self else { return }
 
-            self.load(with: query)
-            self.deliverContentUpdates(
+            self.searchKeyword = query
+            self.deliverContentUpdatesByLoading(
                 isNewSearch: true,
                 completion: completion
             )
         }
     }
 
-    private func load(with query: String?) {
+    private func load(
+        with query: String?,
+        accountHandle: AccountHandle
+    ) {
         if query.isNilOrEmpty {
             searchKeyword = nil
         } else {
@@ -475,10 +571,12 @@ extension AccountAssetListAPIDataController {
 
         let assets: [Asset]
 
+        let account = accountHandle.value
+
         if assetFilterOptions.displayCollectibleAssetsInAssetList {
-            assets = accountHandle.value.allAssets.someArray
+            assets = account.allAssets.someArray
         } else {
-            assets = accountHandle.value.standardAssets.someArray
+            assets = account.standardAssets.someArray
         }
 
         guard let searchKeyword = searchKeyword else {

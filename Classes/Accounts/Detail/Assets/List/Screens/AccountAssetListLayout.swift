@@ -85,6 +85,8 @@ extension AccountAssetListLayout {
             return CGSize(theme.assetManagementItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
+        case .assetLoading:
+            return CGSize(theme.assetLoadingItemSize)
         case let .asset(item):
             return listView(
                 collectionView,
