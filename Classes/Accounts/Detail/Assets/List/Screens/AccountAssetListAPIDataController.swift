@@ -354,7 +354,12 @@ extension AccountAssetListAPIDataController {
             }
 
             if let collectibleAsset = asset as? CollectibleAsset {
-                assetListItems.append(makeCollectibleAssetListItem(asset: collectibleAsset, account: account))
+                assetListItems.append(
+                    makeCollectibleAssetListItem(
+                        asset: collectibleAsset,
+                        account: account
+                    )
+                )
             }
         }
 
@@ -453,7 +458,10 @@ extension AccountAssetListAPIDataController {
         return .pendingAsset(listItem)
     }
 
-    private func makeCollectibleAssetListItem(asset: CollectibleAsset, account: Account) -> AccountAssetsItem {
+    private func makeCollectibleAssetListItem(
+        asset: CollectibleAsset,
+        account: Account
+    ) -> AccountAssetsItem {
         let collectibleAssetItem = CollectibleAssetItem(
             account: account,
             asset: asset,
