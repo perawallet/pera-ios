@@ -424,6 +424,7 @@ extension ASADetailScreen {
         removeLoading()
         removeError()
         removeMarketInfoIfNeeded()
+        updateUIWhenViewLayoutDidChangeIfNeeded()
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
