@@ -1276,10 +1276,10 @@ class Router:
             let screen = WebImportErrorScreen()
             screen.eventHandler = eventHandler
             viewController = screen
-        case .importAccountSuccess(let accountInformations, let unimportedAccountCount, let eventHandler):
+        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
             let dataController = WebImportSuccessScreenLocalDataController(
-                importedAccounts: accountInformations,
-                unimportedAccountCount: unimportedAccountCount
+                importedAccounts: importedAccounts,
+                unimportedAccounts: unimportedAccounts
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,

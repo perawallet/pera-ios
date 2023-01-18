@@ -28,15 +28,15 @@ final class WebImportSuccessScreenLocalDataController:
         qos: .userInitiated
     )
 
-    private let importedAccounts: [AccountInformation]
-    private let unimportedAccountCount: Int
+    private let importedAccounts: [Account]
+    private let unimportedAccounts: [Account]
 
     init(
-        importedAccounts: [AccountInformation],
-        unimportedAccountCount: Int
+        importedAccounts: [Account],
+        unimportedAccounts: [Account]
     ) {
         self.importedAccounts = importedAccounts
-        self.unimportedAccountCount = unimportedAccountCount
+        self.unimportedAccounts = unimportedAccounts
     }
 }
 
@@ -56,15 +56,14 @@ extension WebImportSuccessScreenLocalDataController {
             snapshot.appendSections([.accounts])
 
             let importedAccountCount = self.importedAccounts.count
-            let unimportedAccountCount = self.unimportedAccountCount
+            let unimportedAccountCount = self.unimportedAccounts.count
 
             snapshot.appendItems([.header(importedAccountCount)])
             if unimportedAccountCount > 0 {
                 snapshot.appendItems([.missingAccounts(unimportedAccountCount)])
             }
 
-            let accounts = self.importedAccounts.map { accountInformation in
-                let account = Account(localAccount: accountInformation)
+            let accounts = self.importedAccounts.map { account in
                 return WebImportSuccessListViewItem.account(AccountListItemViewModel(account))
             }
             snapshot.appendItems(accounts)

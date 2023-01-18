@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 import MagpieExceptions
@@ -79,92 +80,119 @@ extension BackupOperationScreen {
             guard let self else { return }
             switch apiResponse {
             case .success(let encryptedBackup):
-                self.processEncryptedAccounts(from: encryptedBackup, with: self.backupParameters)
+                self.decryptAccounts(from: encryptedBackup)
             case .failure(_, let model):
-                self.eventHandler?(.didFailToFetchBackup(model), self)
+                self.eventHandler?(.didFailToFetchBackup(.networkFailed(model)), self)
             }
         }
     }
 
-    private func processEncryptedAccounts(
-        from backup: Backup,
-        with qrBackupParameters: QRBackupParameters
+    private func decryptAccounts(
+        from backup: Backup
     ) {
-        // TODO: Will add a JSON encoder/decoder here to encrypt/decrypt all contents using it.
-        let encryptionKey = qrBackupParameters.encryptionKey
+        let encryptionKey = backupParameters.encryptionKey
         let encryptedContentInString = backup.encryptedContent
         let encryptedDataByteArray = encryptedContentInString
             .convertToByteArray(using: ",")
         let encryptedData = Data(bytes: encryptedDataByteArray)
 
         let cryptor = Cryptor(key: encryptionKey)
-        let decryptedContent = cryptor.decrypt(data: encryptedData)
-        let jsonDecoder = JSONDecoder()
 
-        if let decryptedData = decryptedContent?.data {
-            let users = try? jsonDecoder.decode([EncodedAccount].self, from: decryptedData)
-            saveAccounts(users)
-        } else {
-            self.eventHandler?(.didFailToFetchBackup(nil), self)
+        asyncBackground {
+            [weak self] in
+            guard let self else { return }
+
+            let decryptedContent = cryptor.decrypt(data: encryptedData)
+
+            guard let decryptedData = decryptedContent?.data else {
+                self.eventHandler?(.didFailToFetchBackup(.decryption), self)
+                return
+            }
+
+            do {
+                let encodedAccounts = try [EncodedAccount].decoded(decryptedData)
+                self.importEncodedAccounts(encodedAccounts)
+            } catch {
+                self.eventHandler?(.didFailToFetchBackup(.serialization(error)), self)
+            }
         }
     }
 
-    private func saveAccounts(_ accounts: [EncodedAccount]?) {
-        guard let session, let accounts, !accounts.isEmpty else {
+    private func importEncodedAccounts(_ encodedAccounts: [EncodedAccount]) {
+        guard let session, !encodedAccounts.isEmpty else {
+            eventHandler?(.didFailToFetchBackup(.notImportableAccountFound), self)
             return
         }
 
-        var importedAccounts: [AccountInformation] = []
+        var importableAccounts: [AccountInformation] = []
+        var unimportedAccounts: [AccountInformation] = []
 
         var preferredOrder = sharedDataController.getPreferredOrderForNewAccount()
-        for account in accounts {
-            guard let accountInformation = account.createAccountInformation(with: preferredOrder) else {
+        for encodedAccount in encodedAccounts {
+            guard let accountInformation = encodedAccount.createAccountInformation(with: preferredOrder) else {
                 continue
             }
 
             let accountAddress = accountInformation.address
-            let sessionAccountInformation = session.accountInformation(from: accountAddress)
+            let accountAddressInSharedCollection = sharedDataController.accountCollection[accountAddress]?.value.address
 
-            if accountInformation == sessionAccountInformation {
+            if accountAddress == accountAddressInSharedCollection {
+                unimportedAccounts.append(accountInformation)
                 continue
             }
 
             preferredOrder = preferredOrder.advanced(by: 1)
 
-            session.savePrivate(account.privateKey, for: accountAddress)
-            importedAccounts.append(accountInformation)
+            session.savePrivate(encodedAccount.privateKey, for: accountAddress)
+            importableAccounts.append(accountInformation)
         }
 
-        let user: User
+        saveUser(with: importableAccounts)
+        completeBackupImport(importedAccounts: importableAccounts, unimportedAccounts: unimportedAccounts)
+    }
 
-        if let authenticatedUser = session.authenticatedUser {
-            user = authenticatedUser
-
-            for account in importedAccounts {
-                authenticatedUser.addAccount(account)
-            }
-
-            pushNotificationController.sendDeviceDetails()
-        } else {
-            user = User(accounts: importedAccounts)
+    private func saveUser(with accounts: [AccountInformation]) {
+        guard let session else {
+            return
         }
+
+        let authenticatedUser = session.authenticatedUser ?? User()
+        authenticatedUser.addAccounts(accounts)
+
+        pushNotificationController.sendDeviceDetails()
 
         NotificationCenter.default.post(
             name: .didAddAccount,
             object: self
         )
 
-        session.authenticatedUser = user
+        session.authenticatedUser = authenticatedUser
+    }
 
-        let unimportedAccountsCount = accounts.count - importedAccounts.count
-
-        eventHandler?(.didSaveAccounts(importedAccounts: importedAccounts, unimportedAccountsCount: unimportedAccountsCount), self)
+    private func completeBackupImport(
+        importedAccounts: [AccountInformation],
+        unimportedAccounts: [AccountInformation]
+    ) {
+        eventHandler?(
+            .didCompleteImport(
+                importedAccounts: importedAccounts.map({.init(localAccount: $0)}),
+                unimportedAccounts: unimportedAccounts.map({.init(localAccount: $0)})
+            ),
+            self
+        )
     }
 }
 
 extension BackupOperationScreen {
     enum Event {
-        case didSaveAccounts(importedAccounts: [AccountInformation], unimportedAccountsCount: Int)
-        case didFailToFetchBackup(HIPAPIError?)
+        case didCompleteImport(importedAccounts: [Account], unimportedAccounts: [Account])
+        case didFailToFetchBackup(BackupOperationError)
     }
+}
+
+enum BackupOperationError: Error {
+    case networkFailed(HIPAPIError?)
+    case decryption
+    case serialization(Error)
+    case notImportableAccountFound
 }
