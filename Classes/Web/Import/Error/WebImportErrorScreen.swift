@@ -32,9 +32,6 @@ final class WebImportErrorScreen: ScrollScreen {
 
     override func prepareLayout() {
         super.prepareLayout()
-
-        customizeViewAppearance(theme.background)
-
         addUI(theme)
     }
 
@@ -58,8 +55,13 @@ final class WebImportErrorScreen: ScrollScreen {
     }
 
     private func addUI(_ theme: WebImportErrorScreenTheme) {
+        addBackground(theme)
         addResultView(theme)
         addGoToHomeActionView(theme)
+    }
+
+    private func addBackground(_ theme: WebImportErrorScreenTheme) {
+        customizeViewAppearance(theme.background)
     }
 
     private func addResultView(_ theme: WebImportErrorScreenTheme) {
@@ -85,18 +87,18 @@ final class WebImportErrorScreen: ScrollScreen {
 
         goToHomeActionView.addTouch(
             target: self,
-            action: #selector(performGoToHomeAction)
+            action: #selector(notifyToGoHome)
         )
     }
 
     @objc
-    private func performGoToHomeAction() {
-        eventHandler?(.didGoHome, self)
+    private func notifyToGoHome() {
+        eventHandler?(.goHome, self)
     }
 }
 
 extension WebImportErrorScreen {
     enum Event {
-        case didGoHome
+        case goHome
     }
 }

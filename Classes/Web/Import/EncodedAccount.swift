@@ -28,14 +28,6 @@ struct EncodedAccount: JSONModel {
         let privateKeyByteArray = privateKeyString.convertToByteArray(using: ",")
         privateKey = Data(bytes: privateKeyByteArray)
     }
-
-    func createAccountInformation(with preferredOrder: Int) -> AccountInformation? {
-        var error: NSError?
-        guard let address = AlgorandSDK().addressFrom(privateKey, error: &error) else {
-            return nil
-        }
-        return AccountInformation(address: address, name: name, type: .standard, preferredOrder: preferredOrder)
-    }
 }
 
 extension EncodedAccount {

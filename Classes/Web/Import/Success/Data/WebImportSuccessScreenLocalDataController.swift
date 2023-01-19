@@ -19,6 +19,7 @@ import MacaroonUtils
 
 final class WebImportSuccessScreenLocalDataController:
     WebImportSuccessScreenDataController {
+
     var eventHandler: ((WebImportSuccessScreenDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
@@ -28,8 +29,20 @@ final class WebImportSuccessScreenLocalDataController:
         qos: .userInitiated
     )
 
+    private var accountModelsCache: [String: Account] = [:]
+    private var accountViewModelsCache: [String: AccountListItemViewModel] = [:]
+
+
     private let importedAccounts: [Account]
     private let unimportedAccounts: [Account]
+
+    subscript(address: String) -> Account? {
+        findModel(for: address)
+    }
+
+    subscript(address: String) -> AccountListItemViewModel? {
+        findViewModel(for: address)
+    }
 
     init(
         importedAccounts: [Account],
@@ -42,7 +55,23 @@ final class WebImportSuccessScreenLocalDataController:
 
 extension WebImportSuccessScreenLocalDataController {
     func load() {
+        clearCache()
         deliverContentSnapshot()
+    }
+
+    private func findModel(for address: String) -> Account? {
+        return accountModelsCache[address]
+    }
+
+    private func findViewModel(for address: String) -> AccountListItemViewModel? {
+        if let cachedViewModel = accountViewModelsCache[address] {
+            return cachedViewModel
+        } else {
+            let account = findModel(for: address)
+            return account.unwrap {
+                AccountListItemViewModel($0)
+            }
+        }
     }
 }
 
@@ -58,15 +87,12 @@ extension WebImportSuccessScreenLocalDataController {
             let importedAccountCount = self.importedAccounts.count
             let unimportedAccountCount = self.unimportedAccounts.count
 
-            snapshot.appendItems([.header(importedAccountCount)])
+            snapshot.appendItems([.header(.init(importedAccountCount: importedAccountCount))])
             if unimportedAccountCount > 0 {
-                snapshot.appendItems([.missingAccounts(unimportedAccountCount)])
+                snapshot.appendItems([.missingAccounts(.init(unimportedAccountCount: unimportedAccountCount))])
             }
 
-            let accounts = self.importedAccounts.map { account in
-                return WebImportSuccessListViewItem.account(AccountListItemViewModel(account))
-            }
-            snapshot.appendItems(accounts)
+            snapshot.appendItems(self.createAccountListItems(accounts: self.importedAccounts))
 
             return snapshot
         }
@@ -80,6 +106,38 @@ extension WebImportSuccessScreenLocalDataController {
             guard let self = self else { return }
             self.publish(.didUpdate(snapshot()))
         }
+    }
+
+    private func createAccountListItems(
+        accounts: [Account]
+    ) -> [WebImportSuccessListViewItem] {
+        var listItems: [WebImportSuccessListViewItem] = []
+        accounts.forEach { account in
+            let item = createAccountListItem(
+                account: account
+            )
+            listItems.append(item)
+        }
+        return listItems
+    }
+
+    private func createAccountListItem(
+        account: Account
+    ) -> WebImportSuccessListViewItem {
+        saveToCache(account)
+
+        let accountItem = WebImportSuccessListViewAccountItem(accountAddress: account.address)
+        return .account(accountItem)
+    }
+
+    private func saveToCache(_ account: Account) {
+        accountModelsCache[account.address] = account
+        accountViewModelsCache[account.address] = AccountListItemViewModel(account)
+    }
+
+    private func clearCache() {
+        accountModelsCache = [:]
+        accountViewModelsCache = [:]
     }
 }
 

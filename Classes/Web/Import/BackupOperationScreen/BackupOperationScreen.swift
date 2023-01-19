@@ -105,15 +105,21 @@ extension BackupOperationScreen {
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
             guard let decryptedData = decryptedContent?.data else {
-                self.eventHandler?(.didFailToFetchBackup(.decryption), self)
+                asyncMain {
+                    self.eventHandler?(.didFailToFetchBackup(.decryption), self)
+                }
                 return
             }
 
             do {
                 let encodedAccounts = try [EncodedAccount].decoded(decryptedData)
-                self.importEncodedAccounts(encodedAccounts)
+                asyncMain {
+                    self.importEncodedAccounts(encodedAccounts)
+                }
             } catch {
-                self.eventHandler?(.didFailToFetchBackup(.serialization(error)), self)
+                asyncMain {
+                    self.eventHandler?(.didFailToFetchBackup(.serialization(error)), self)
+                }
             }
         }
     }
@@ -127,24 +133,28 @@ extension BackupOperationScreen {
         var importableAccounts: [AccountInformation] = []
         var unimportedAccounts: [AccountInformation] = []
 
-        var preferredOrder = sharedDataController.getPreferredOrderForNewAccount()
-        for encodedAccount in encodedAccounts {
-            guard let accountInformation = encodedAccount.createAccountInformation(with: preferredOrder) else {
-                continue
+        let preferredOrder = sharedDataController.getPreferredOrderForNewAccount()
+
+        do {
+            let transferAccounts = try convertEncodedAccountsToTransferAccounts(
+                from: encodedAccounts,
+                preferredOrder: preferredOrder
+            )
+
+            for transferAccount in transferAccounts {
+                let accountAddress = transferAccount.accountInformation.address
+                let accountAddressInSharedCollection = sharedDataController.accountCollection[accountAddress]?.value.address
+
+                if accountAddress == accountAddressInSharedCollection {
+                    unimportedAccounts.append(transferAccount.accountInformation)
+                    continue
+                }
+
+                session.savePrivate(transferAccount.privateKey, for: accountAddress)
+                importableAccounts.append(transferAccount.accountInformation)
             }
-
-            let accountAddress = accountInformation.address
-            let accountAddressInSharedCollection = sharedDataController.accountCollection[accountAddress]?.value.address
-
-            if accountAddress == accountAddressInSharedCollection {
-                unimportedAccounts.append(accountInformation)
-                continue
-            }
-
-            preferredOrder = preferredOrder.advanced(by: 1)
-
-            session.savePrivate(encodedAccount.privateKey, for: accountAddress)
-            importableAccounts.append(accountInformation)
+        } catch {
+            eventHandler?(.didFailToFetchBackup(.invalidPrivateKey), self)
         }
 
         saveUser(with: importableAccounts)
@@ -181,6 +191,43 @@ extension BackupOperationScreen {
             self
         )
     }
+
+    private func convertEncodedAccountsToTransferAccounts(
+        from encodedAccounts: [EncodedAccount],
+        preferredOrder: Int
+    ) throws -> [TransferAccount] {
+        var currentPreferredOrder = preferredOrder
+        var transferAccounts: [TransferAccount] = []
+
+        for encodedAccount in encodedAccounts {
+            var error: NSError?
+            guard let address = AlgorandSDK().addressFrom(encodedAccount.privateKey, error: &error) else {
+                throw BackupOperationError.invalidPrivateKey
+            }
+            let accountInformation = AccountInformation(
+                address: address,
+                name: encodedAccount.name,
+                type: .standard,
+                preferredOrder: currentPreferredOrder
+            )
+            transferAccounts.append(
+                TransferAccount(
+                    privateKey: encodedAccount.privateKey,
+                    accountInformation: accountInformation
+                )
+            )
+            currentPreferredOrder = currentPreferredOrder.advanced(by: 1)
+        }
+
+        return transferAccounts
+    }
+}
+
+extension BackupOperationScreen {
+    private struct TransferAccount {
+        let privateKey: Data
+        let accountInformation: AccountInformation
+    }
 }
 
 extension BackupOperationScreen {
@@ -195,4 +242,5 @@ enum BackupOperationError: Error {
     case decryption
     case serialization(Error)
     case notImportableAccountFound
+    case invalidPrivateKey
 }

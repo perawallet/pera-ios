@@ -36,20 +36,10 @@ final class WebImportSuccessScreen: BaseViewController {
     private lazy var footerBackgroundView = EffectView()
 
     private lazy var theme = WebImportSuccessScreenTheme()
-    private lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.customizeAppearance(theme.listView)
-        collectionView.contentInset.top = theme.listContentInsetTop
-        return collectionView
-    }()
+    private lazy var listView = createListView()
 
     private lazy var listLayout = WebImportSuccessScreenListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = WebImportSuccessScreenDataSource(listView)
+    private lazy var listDataSource = WebImportSuccessScreenDataSource(listView, dataController: dataController)
 
     private lazy var goToHomeActionView = MacaroonUIKit.Button()
 
@@ -89,7 +79,7 @@ final class WebImportSuccessScreen: BaseViewController {
 
             switch event {
             case .didUpdate(let snapshot):
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.reload(snapshot)
             }
         }
         dataController.load()
@@ -125,6 +115,18 @@ final class WebImportSuccessScreen: BaseViewController {
 }
 
 extension WebImportSuccessScreen {
+    private func createListView() -> UICollectionView {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.customizeAppearance(theme.listView)
+        collectionView.contentInset.top = theme.listContentInsetTop
+        return collectionView
+    }
+
     private func addList() {
         view.addSubview(listView)
         listView.snp.makeConstraints {

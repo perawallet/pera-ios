@@ -20,7 +20,8 @@ import UIKit
 
 final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource<WebImportSuccessListViewSection, WebImportSuccessListViewItem> {
     init(
-        _ collectionView: UICollectionView
+        _ collectionView: UICollectionView,
+        dataController: WebImportSuccessScreenDataController?
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -32,25 +33,29 @@ final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource
                     at: indexPath
                 )
                 cell.bindData(
-                   item
+                    dataController?.accountListItemViewModel(for: item.accountAddress)
                 )
                 return cell
-            case .header(let importedAccountCount):
+            case .header(let item):
                 let cell = collectionView.dequeue(
                     WebImportSuccessHeaderView.self,
                     at: indexPath
                 )
                 cell.bindData(
-                    WebImportSuccessHeaderViewModel(importedAccountCount: importedAccountCount)
+                    WebImportSuccessHeaderViewModel(
+                        importedAccountCount: item.importedAccountCount
+                    )
                 )
                 return cell
-            case .missingAccounts(let unimportedAccountCount):
+            case .missingAccounts(let item):
                 let cell = collectionView.dequeue(
                     WebImportSuccessInfoBoxCell.self,
                     at: indexPath
                 )
                 cell.bindData(
-                    WebImportSuccessInfoBoxViewModel(unimportedAccountCount: unimportedAccountCount)
+                    WebImportSuccessInfoBoxViewModel(
+                        unimportedAccountCount: item.unimportedAccountCount
+                    )
                 )
                 return cell
                 

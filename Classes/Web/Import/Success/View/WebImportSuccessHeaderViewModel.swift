@@ -27,7 +27,6 @@ struct WebImportSuccessHeaderViewModel: NoContentViewModel {
         bindTitle(for: importedAccountCount)
         bindBody(for: importedAccountCount)
     }
-    
 }
 
 extension WebImportSuccessHeaderViewModel {

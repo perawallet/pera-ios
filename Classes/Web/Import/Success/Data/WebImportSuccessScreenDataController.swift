@@ -20,9 +20,18 @@ import UIKit
 protocol WebImportSuccessScreenDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<WebImportSuccessListViewSection, WebImportSuccessListViewItem>
 
+    subscript (address: String) -> Account? { get }
+    subscript (address: String) -> AccountListItemViewModel? { get }
+
     var eventHandler: ((WebImportSuccessScreenDataControllerEvent) -> Void)? { get set }
 
     func load()
+}
+
+extension WebImportSuccessScreenDataController {
+    func accountListItemViewModel(for accountAddress: String) -> AccountListItemViewModel? {
+        self[accountAddress]
+    }
 }
 
 enum WebImportSuccessListViewSection:
@@ -32,9 +41,21 @@ enum WebImportSuccessListViewSection:
 }
 
 enum WebImportSuccessListViewItem: Hashable {
-    case header(Int)
-    case missingAccounts(Int)
-    case account(AccountListItemViewModel)
+    case header(WebImportSuccessListHeaderItem)
+    case missingAccounts(WebImportSuccessListMissingAccountItem)
+    case account(WebImportSuccessListViewAccountItem)
+}
+
+struct WebImportSuccessListHeaderItem: Hashable {
+    let importedAccountCount: Int
+}
+
+struct WebImportSuccessListMissingAccountItem: Hashable {
+    let unimportedAccountCount: Int
+}
+
+struct WebImportSuccessListViewAccountItem: Hashable {
+    let accountAddress: String
 }
 
 enum WebImportSuccessScreenDataControllerEvent {
