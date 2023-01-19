@@ -298,6 +298,9 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         analytics.record(
             .wcTransactionRequestSDKError(error: error, url: url)
         )
+        analytics.track(
+            .wcTransactionRequestSDKError(error: error, url: url)
+        )
     }
 }
 
