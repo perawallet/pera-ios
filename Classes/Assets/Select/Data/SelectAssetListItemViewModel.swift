@@ -22,6 +22,7 @@ import UIKit
 
 struct SelectAssetListItemViewModel:
     PrimaryListItemViewModel,
+    SortableAssetListItemViewModel,
     Hashable {
     var imageSource: ImageSource?
     var title: PrimaryTitleViewModel?

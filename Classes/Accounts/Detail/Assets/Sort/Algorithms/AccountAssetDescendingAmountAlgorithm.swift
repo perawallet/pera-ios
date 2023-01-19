@@ -28,8 +28,8 @@ struct AccountAssetDescendingAmountAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetDescendingAmountAlgorithm {
     func getFormula(
-        viewModel: AssetListItemViewModel,
-        otherViewModel: AssetListItemViewModel
+        viewModel: SortableAssetListItemViewModel,
+        otherViewModel: SortableAssetListItemViewModel
     ) -> Bool {
         guard let assetPreviewCurrencyValue = viewModel.valueInUSD,
               let otherAssetPreviewCurrencyValue = otherViewModel.valueInUSD else {
@@ -42,7 +42,8 @@ extension AccountAssetDescendingAmountAlgorithm {
 
         if let assetPreviewTitle = viewModel.title?.primaryTitle?.string,
            let otherAssetPreviewTitle = otherViewModel.title?.primaryTitle?.string {
-            return assetPreviewTitle > otherAssetPreviewTitle
+            let comparison = assetPreviewTitle.caseInsensitiveCompare(otherAssetPreviewTitle)
+            return comparison == .orderedAscending
         }
 
         if let assetPreviewID = viewModel.asset?.id,

@@ -29,8 +29,8 @@ struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetAscendingTitleAlgorithm {
     func getFormula(
-        viewModel: AssetListItemViewModel,
-        otherViewModel: AssetListItemViewModel
+        viewModel: SortableAssetListItemViewModel,
+        otherViewModel: SortableAssetListItemViewModel
     ) -> Bool {
         let assetTitle =
             viewModel.title?.primaryTitle?.string ??
