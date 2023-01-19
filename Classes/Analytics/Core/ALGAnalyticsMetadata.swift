@@ -68,4 +68,5 @@ enum ALGAnalyticsMetadataKey:
     case query = "query"
     case wcRequestID = "wc_request_id"
     case wcRequestURL = "wc_request_url"
+    case wcRequestError = "wc_request_error"
 }
