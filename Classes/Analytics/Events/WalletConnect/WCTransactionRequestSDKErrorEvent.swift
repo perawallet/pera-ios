@@ -27,9 +27,11 @@ struct WCTransactionRequestSDKErrorEvent: ALGAnalyticsEvent {
     ) {
         self.name = .wcTransactionRequestSDKError
         
-        var metadata: ALGAnalyticsMetadata = [.wcRequestURL: url.absoluteString]
+        var metadata: ALGAnalyticsMetadata = [
+            .wcRequestURL: url.absoluteString.prefix(100)
+        ]
         if let error {
-            metadata[.wcRequestError] = error.localizedDescription
+            metadata[.wcRequestError] = error.localizedDescription.prefix(100)
         }
 
         self.metadata = metadata
