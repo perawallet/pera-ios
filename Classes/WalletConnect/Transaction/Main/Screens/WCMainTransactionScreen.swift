@@ -456,6 +456,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         analytics.record(
             .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
         )
+        
+        analytics.track(
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
+        )
     }
     
     private func logScreenWhenViewDidAppear() {
@@ -464,6 +468,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
         
         analytics.record(
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+        )
+        
+        analytics.track(
             .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
         )
     }
