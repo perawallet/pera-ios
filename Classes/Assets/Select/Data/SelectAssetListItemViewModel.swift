@@ -178,7 +178,7 @@ extension SelectAssetListItemViewModel {
                 }
 
                 exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+                valueInUSD = try exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)
 
                 formatter.currency = fiatRawCurrency
             } else {
