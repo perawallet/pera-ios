@@ -68,9 +68,7 @@ extension WebImportSuccessScreenLocalDataController {
             return cachedViewModel
         } else {
             let account = findModel(for: address)
-            return account.unwrap {
-                AccountListItemViewModel($0)
-            }
+            return account.unwrap(AccountListItemViewModel.init)
         }
     }
 }

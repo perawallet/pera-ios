@@ -21,7 +21,7 @@ import UIKit
 final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource<WebImportSuccessListViewSection, WebImportSuccessListViewItem> {
     init(
         _ collectionView: UICollectionView,
-        dataController: WebImportSuccessScreenDataController?
+        dataController: WebImportSuccessScreenDataController
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -33,7 +33,7 @@ final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource
                     at: indexPath
                 )
                 cell.bindData(
-                    dataController?.accountListItemViewModel(for: item.accountAddress)
+                    dataController.accountListItemViewModel(for: item.accountAddress)
                 )
                 return cell
             case .header(let item):

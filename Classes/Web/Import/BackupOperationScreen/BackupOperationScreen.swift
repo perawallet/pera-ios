@@ -133,19 +133,15 @@ extension BackupOperationScreen {
         var importableAccounts: [AccountInformation] = []
         var unimportedAccounts: [AccountInformation] = []
 
-        let preferredOrder = sharedDataController.getPreferredOrderForNewAccount()
-
         do {
             let transferAccounts = try convertEncodedAccountsToTransferAccounts(
-                from: encodedAccounts,
-                preferredOrder: preferredOrder
+                from: encodedAccounts
             )
 
             for transferAccount in transferAccounts {
                 let accountAddress = transferAccount.accountInformation.address
-                let accountAddressInSharedCollection = sharedDataController.accountCollection[accountAddress]?.value.address
 
-                if accountAddress == accountAddressInSharedCollection {
+                if sharedDataController.accountCollection[accountAddress] != nil {
                     unimportedAccounts.append(transferAccount.accountInformation)
                     continue
                 }
@@ -157,11 +153,11 @@ extension BackupOperationScreen {
             eventHandler?(.didFailToFetchBackup(.invalidPrivateKey), self)
         }
 
-        saveUser(with: importableAccounts)
+        saveAccounts(importableAccounts)
         completeBackupImport(importedAccounts: importableAccounts, unimportedAccounts: unimportedAccounts)
     }
 
-    private func saveUser(with accounts: [AccountInformation]) {
+    private func saveAccounts(_ accounts: [AccountInformation]) {
         guard let session else {
             return
         }
@@ -175,8 +171,6 @@ extension BackupOperationScreen {
             name: .didAddAccount,
             object: self
         )
-
-        session.authenticatedUser = authenticatedUser
     }
 
     private func completeBackupImport(
@@ -193,10 +187,9 @@ extension BackupOperationScreen {
     }
 
     private func convertEncodedAccountsToTransferAccounts(
-        from encodedAccounts: [EncodedAccount],
-        preferredOrder: Int
+        from encodedAccounts: [EncodedAccount]
     ) throws -> [TransferAccount] {
-        var currentPreferredOrder = preferredOrder
+        var currentPreferredOrder = sharedDataController.getPreferredOrderForNewAccount()
         var transferAccounts: [TransferAccount] = []
 
         for encodedAccount in encodedAccounts {

@@ -99,7 +99,7 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didGoToHome:
-                self.endFlow(from: successScreen)
+                self.finish(from: successScreen)
             }
         }
 
@@ -112,13 +112,13 @@ extension AccountImportFlowCoordinator {
                 return
             }
 
-            self.endFlow(from: errorScreen)
+            self.finish(from: errorScreen)
         }
 
         screen.open(errorScreen, by: .push)
     }
 
-    private func endFlow(from screen: UIViewController) {
+    private func finish(from screen: UIViewController) {
         let isPresented = presentingScreen.presentedViewController != nil
 
         if isPresented {
