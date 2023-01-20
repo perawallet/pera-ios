@@ -40,15 +40,19 @@ extension AccountAssetDescendingAmountAlgorithm {
             return assetPreviewCurrencyValue > otherAssetPreviewCurrencyValue
         }
 
-        if let assetPreviewTitle = viewModel.title?.primaryTitle?.string,
-           let otherAssetPreviewTitle = otherViewModel.title?.primaryTitle?.string {
-            let comparison = assetPreviewTitle.caseInsensitiveCompare(otherAssetPreviewTitle)
+        if let assetTitle =
+            viewModel.title?.primaryTitle?.string ??
+            viewModel.title?.secondaryTitle?.string,
+           let otherAssetTitle =
+            otherViewModel.title?.primaryTitle?.string ??
+            otherViewModel.title?.secondaryTitle?.string {
+            let comparison = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
             return comparison == .orderedAscending
         }
 
-        if let assetPreviewID = viewModel.asset?.id,
-           let otherAssetPreviewID = otherViewModel.asset?.id {
-            return assetPreviewID > otherAssetPreviewID
+        if let assetID = viewModel.asset?.id,
+           let otherAssetID = otherViewModel.asset?.id {
+            return assetID > otherAssetID
         }
 
         return false
