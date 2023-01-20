@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BackupOperationScreenTheme.swift
+//   ImportAccountScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct BackupOperationScreenTheme: LayoutSheet, StyleSheet {
+struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
     let background: ViewStyle
     let loading: TextStyle
     let loadingHorizontalInset: LayoutMetric

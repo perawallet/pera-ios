@@ -35,7 +35,7 @@ extension AccountImportFlowCoordinator {
             return
         }
 
-        continueToBackupAfterLaunch(parameters: qrBackupParameters, on: presentingScreen)
+        continueToImportAccountAfterLaunch(parameters: qrBackupParameters, from: presentingScreen)
     }
 
     private func continueIntroductionScreen() {
@@ -52,20 +52,20 @@ extension AccountImportFlowCoordinator {
         presentingScreen.open(introductionScreen, by: .push)
     }
 
-    private func continueToBackupAfterLaunch(
-        parameters: QRBackupParameters,
-        on sourceScreen: UIViewController
-    ) {
-        let backupScreen = makeBackupScreen(with: parameters)
-        sourceScreen.open(backupScreen, by: .present)
-    }
-
-    private func continueToBackupAfterQR(
+    private func continueToImportAccountAfterLaunch(
         parameters: QRBackupParameters,
         from sourceScreen: UIViewController
     ) {
-        let backupScreen = makeBackupScreen(with: parameters)
-        sourceScreen.open(backupScreen, by: .push)
+        let importAccountScreen = makeImportAccountScreen(with: parameters)
+        sourceScreen.open(importAccountScreen, by: .present)
+    }
+
+    private func continueToImportAccountAfterQR(
+        parameters: QRBackupParameters,
+        from sourceScreen: UIViewController
+    ) {
+        let importAccountScreen = makeImportAccountScreen(with: parameters)
+        sourceScreen.open(importAccountScreen, by: .push)
     }
 
     private func continueQRScannerScreen(from screen: UIViewController) {
@@ -76,7 +76,7 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didReadBackup(let parameters):
-                self.continueToBackupAfterQR(parameters: parameters, from: qrScannerScreen)
+                self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
             case .didReadUnsupportedAction:
                 self.continueErrorScreen(from: qrScannerScreen)
             }
@@ -119,19 +119,13 @@ extension AccountImportFlowCoordinator {
     }
 
     private func finish(from screen: UIViewController) {
-        let isPresented = presentingScreen.presentedViewController != nil
-
-        if isPresented {
-            screen.dismissScreen()
-        } else {
-            presentingScreen.dismissScreen()
-        }
+        screen.dismiss(animated: true)
     }
 }
 
 extension AccountImportFlowCoordinator {
-    private func makeBackupScreen(with parameters: QRBackupParameters) -> Screen {
-        Screen.importAccountFetchBackup(parameters) { [weak self] event, backupScreen in
+    private func makeImportAccountScreen(with parameters: QRBackupParameters) -> Screen {
+        Screen.importAccount(parameters) { [weak self] event, importAccountScreen in
             guard let self else {
                 return
             }
@@ -139,17 +133,17 @@ extension AccountImportFlowCoordinator {
             switch event {
             case let .didCompleteImport(importedAccounts, unimportedAccounts):
                 if importedAccounts.isEmpty {
-                    self.continueErrorScreen(from: backupScreen)
+                    self.continueErrorScreen(from: importAccountScreen)
                     return
                 }
 
                 self.continueSuccessScreen(
                     importedAccounts: importedAccounts,
                     unimportedAccounts: unimportedAccounts,
-                    from: backupScreen
+                    from: importAccountScreen
                 )
-            case .didFailToFetchBackup:
-                self.continueErrorScreen(from: backupScreen)
+            case .didFailToImport:
+                self.continueErrorScreen(from: importAccountScreen)
             }
         }
     }

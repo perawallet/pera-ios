@@ -120,12 +120,12 @@
 		173C112B296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
 		173C112C296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
 		173C112D296C36FA00FF6217 /* AccountImportFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */; };
-		173C1130296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */; };
-		173C1131296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */; };
-		173C1132296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */; };
-		173C1134296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */; };
-		173C1135296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */; };
-		173C1136296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */; };
+		173C1130296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* ImportAccountScreen.swift */; };
+		173C1131296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* ImportAccountScreen.swift */; };
+		173C1132296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C112F296C3F8400FF6217 /* ImportAccountScreen.swift */; };
+		173C1134296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* ImportAccountScreenTheme.swift */; };
+		173C1135296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* ImportAccountScreenTheme.swift */; };
+		173C1136296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C1133296C518D00FF6217 /* ImportAccountScreenTheme.swift */; };
 		173C113E296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
 		173C113F296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
 		173C1140296D5A0000FF6217 /* ImportQRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */; };
@@ -287,9 +287,9 @@
 		17AEC5602970696C002B3B23 /* WebImportErrorResultViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC55F2970696C002B3B23 /* WebImportErrorResultViewTheme.swift */; };
 		17AEC5612970696C002B3B23 /* WebImportErrorResultViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC55F2970696C002B3B23 /* WebImportErrorResultViewTheme.swift */; };
 		17AEC5622970696C002B3B23 /* WebImportErrorResultViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC55F2970696C002B3B23 /* WebImportErrorResultViewTheme.swift */; };
-		17AEC564297521E6002B3B23 /* EncodedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* EncodedAccount.swift */; };
-		17AEC565297521E6002B3B23 /* EncodedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* EncodedAccount.swift */; };
-		17AEC566297521E6002B3B23 /* EncodedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* EncodedAccount.swift */; };
+		17AEC564297521E6002B3B23 /* AccountImportParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* AccountImportParameters.swift */; };
+		17AEC565297521E6002B3B23 /* AccountImportParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* AccountImportParameters.swift */; };
+		17AEC566297521E6002B3B23 /* AccountImportParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC563297521E6002B3B23 /* AccountImportParameters.swift */; };
 		17AEC56929752AB6002B3B23 /* WebImportSuccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC56829752AB6002B3B23 /* WebImportSuccessScreen.swift */; };
 		17AEC56A29752AB6002B3B23 /* WebImportSuccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC56829752AB6002B3B23 /* WebImportSuccessScreen.swift */; };
 		17AEC56B29752AB6002B3B23 /* WebImportSuccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEC56829752AB6002B3B23 /* WebImportSuccessScreen.swift */; };
@@ -6437,8 +6437,8 @@
 		1736FB9E28AD2D31002BB713 /* TapNFTReceiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapNFTReceiveEvent.swift; sourceTree = "<group>"; };
 		173C1126296C10F700FF6217 /* Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backup.swift; sourceTree = "<group>"; };
 		173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountImportFlowCoordinator.swift; sourceTree = "<group>"; };
-		173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupOperationScreen.swift; sourceTree = "<group>"; };
-		173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupOperationScreenTheme.swift; sourceTree = "<group>"; };
+		173C112F296C3F8400FF6217 /* ImportAccountScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccountScreen.swift; sourceTree = "<group>"; };
+		173C1133296C518D00FF6217 /* ImportAccountScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccountScreenTheme.swift; sourceTree = "<group>"; };
 		173C113D296D5A0000FF6217 /* ImportQRScannerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportQRScannerScreen.swift; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Transaction.swift"; sourceTree = "<group>"; };
@@ -6504,7 +6504,7 @@
 		17AEC556297044CB002B3B23 /* WebImportErrorScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorScreenTheme.swift; sourceTree = "<group>"; };
 		17AEC55B2970683F002B3B23 /* WebImportErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorViewModel.swift; sourceTree = "<group>"; };
 		17AEC55F2970696C002B3B23 /* WebImportErrorResultViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportErrorResultViewTheme.swift; sourceTree = "<group>"; };
-		17AEC563297521E6002B3B23 /* EncodedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedAccount.swift; sourceTree = "<group>"; };
+		17AEC563297521E6002B3B23 /* AccountImportParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountImportParameters.swift; sourceTree = "<group>"; };
 		17AEC56829752AB6002B3B23 /* WebImportSuccessScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportSuccessScreen.swift; sourceTree = "<group>"; };
 		17AEC56D29752ACF002B3B23 /* WebImportSuccessScreenDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportSuccessScreenDataController.swift; sourceTree = "<group>"; };
 		17AEC57129752ADE002B3B23 /* WebImportSuccessScreenDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImportSuccessScreenDataSource.swift; sourceTree = "<group>"; };
@@ -8801,13 +8801,13 @@
 			path = Web;
 			sourceTree = "<group>";
 		};
-		173C112E296C3F5400FF6217 /* BackupOperationScreen */ = {
+		173C112E296C3F5400FF6217 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				173C112F296C3F8400FF6217 /* BackupOperationScreen.swift */,
-				173C1133296C518D00FF6217 /* BackupOperationScreenTheme.swift */,
+				173C112F296C3F8400FF6217 /* ImportAccountScreen.swift */,
+				173C1133296C518D00FF6217 /* ImportAccountScreenTheme.swift */,
 			);
-			path = BackupOperationScreen;
+			path = Account;
 			sourceTree = "<group>";
 		};
 		173C113C296D59EF00FF6217 /* QRScanner */ = {
@@ -8879,9 +8879,9 @@
 				17AEC5512970446E002B3B23 /* Error */,
 				173C112A296C36FA00FF6217 /* AccountImportFlowCoordinator.swift */,
 				173C113C296D59EF00FF6217 /* QRScanner */,
-				173C112E296C3F5400FF6217 /* BackupOperationScreen */,
+				173C112E296C3F5400FF6217 /* Account */,
 				177331182965911D006E66F1 /* Introduction */,
-				17AEC563297521E6002B3B23 /* EncodedAccount.swift */,
+				17AEC563297521E6002B3B23 /* AccountImportParameters.swift */,
 			);
 			path = Import;
 			sourceTree = "<group>";
@@ -20177,7 +20177,7 @@
 				F096C10328C6442500E5E576 /* AssetActionConfirmationLoadingViewModel.swift in Sources */,
 				D4012367287330AC00E45D30 /* TooltipView.swift in Sources */,
 				2B77470F25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
-				173C1136296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */,
+				173C1136296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */,
 				2B77473725FFE92E0083EFFA /* InputSuggestionView.swift in Sources */,
 				2B5F6F8A2768D80F00C9B780 /* SettingsDetailView.swift in Sources */,
 				2B69A9D228617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
@@ -20563,7 +20563,7 @@
 				F01264352835A46F00380C4E /* DeeplinkConfig.swift in Sources */,
 				2BD36E072681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B88CC882618A509000027B4 /* Array+View.swift in Sources */,
-				173C1132296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */,
+				173C1132296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */,
 				2B8E5F972548318C001D8E30 /* ALGAnalyticsScreen.swift in Sources */,
 				F0DB415F2793839B00EA437D /* TitleWithAccessoryView.swift in Sources */,
 				17BD4E752292F1260003E49A /* EditAccountView.swift in Sources */,
@@ -20778,7 +20778,7 @@
 				F03451CD28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */,
 				2BC635DC2886FB4E00507AEA /* PrimaryTitleView.swift in Sources */,
 				D43A0C2A2790D177007430B9 /* NoContentView.swift in Sources */,
-				17AEC566297521E6002B3B23 /* EncodedAccount.swift in Sources */,
+				17AEC566297521E6002B3B23 /* AccountImportParameters.swift in Sources */,
 				2B99D4BB28F58A6500323C11 /* SwapConfirmExchangeFeeInfoViewModel.swift in Sources */,
 				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
@@ -22855,7 +22855,7 @@
 				17A7668B290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
 				D40D5EB628772DC40051A92B /* AppCallTransactionDetailViewModel.swift in Sources */,
 				F0C542F1291DE4F200596A0A /* DiscoverSearchNextListErrorViewModel.swift in Sources */,
-				173C1135296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */,
+				173C1135296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */,
 				D473CA5526E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */,
 				D430A40226DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */,
 				D497946F287D89EF004FBF8E /* AppCallAssetPreviewWithImageViewModel.swift in Sources */,
@@ -22870,7 +22870,7 @@
 				D43A0C312790D634007430B9 /* NoContentViewModel.swift in Sources */,
 				D4DC26BC28B3A3C00068152E /* ASAAboutScreenASAProjectWebsiteSecondaryListItem.swift in Sources */,
 				2B0F627724EC129D00DA22A6 /* ContentStateView.swift in Sources */,
-				17AEC565297521E6002B3B23 /* EncodedAccount.swift in Sources */,
+				17AEC565297521E6002B3B23 /* AccountImportParameters.swift in Sources */,
 				048B3C1727228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
 				2B0F627824EC129D00DA22A6 /* CIImage+Additions.swift in Sources */,
 				F07C3C1F28B44D65003D55BC /* ASAAboutLoadingViewTheme.swift in Sources */,
@@ -23332,7 +23332,7 @@
 				95AF1C7B27B1308F001AB131 /* TransactionHistoryLoadingViewTheme.swift in Sources */,
 				D4372B3028D465F10057532B /* SignWithLedgerProcessScreenTheme.swift in Sources */,
 				2B8CD5912906FB0A004A81B9 /* SwapErrorView.swift in Sources */,
-				173C1131296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */,
+				173C1131296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */,
 				D4A2E49028A127DC0053B654 /* WCSessionListLocalDataController.swift in Sources */,
 				17CADCAE285A0BD9001D19A8 /* AccountAssetDescendingTitleAlgorithm.swift in Sources */,
 				D4CCA1DA27242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
@@ -24904,7 +24904,7 @@
 				2BE4D054259371CC005F5764 /* ShowAssetDetailEvent.swift in Sources */,
 				17A7668A290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
 				D4919D2D27A15AB7001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
-				173C1134296C518D00FF6217 /* BackupOperationScreenTheme.swift in Sources */,
+				173C1134296C518D00FF6217 /* ImportAccountScreenTheme.swift in Sources */,
 				F0C542F0291DE4F200596A0A /* DiscoverSearchNextListErrorViewModel.swift in Sources */,
 				2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				D4CF680528C87BDE0007A727 /* SwapAccountSelectionListDataSource.swift in Sources */,
@@ -24919,7 +24919,7 @@
 				2B69B2202902C593008BF750 /* SelectAssetListItemViewModel.swift in Sources */,
 				2B69AAD228BE26FD00A8D65D /* AssetAmountInputViewModel.swift in Sources */,
 				2BCBAAA7273BF3C900B3A746 /* LedgerPairWarningView.swift in Sources */,
-				17AEC564297521E6002B3B23 /* EncodedAccount.swift in Sources */,
+				17AEC564297521E6002B3B23 /* AccountImportParameters.swift in Sources */,
 				D40D5EB528772DC40051A92B /* AppCallTransactionDetailViewModel.swift in Sources */,
 				D4487AA127BD356400B4B0AB /* RecoverAccountViewTheme.swift in Sources */,
 				D497946E287D89EF004FBF8E /* AppCallAssetPreviewWithImageViewModel.swift in Sources */,
@@ -25381,7 +25381,7 @@
 				D4CCA1D927242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
 				F010634D28AAE80900AB6873 /* ASAAboutScreen.swift in Sources */,
 				D47C4AA1279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
-				173C1130296C3F8400FF6217 /* BackupOperationScreen.swift in Sources */,
+				173C1130296C3F8400FF6217 /* ImportAccountScreen.swift in Sources */,
 				2B8CD5902906FB0A004A81B9 /* SwapErrorView.swift in Sources */,
 				2B0AD8372757DEDD00F83660 /* SingleLineTitleActionViewModel.swift in Sources */,
 				2B99D4BD28F58A7A00323C11 /* SwapConfirmPeraFeeInfoViewModel.swift in Sources */,

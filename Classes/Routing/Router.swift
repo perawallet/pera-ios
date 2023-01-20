@@ -1268,8 +1268,8 @@ class Router:
             let screen = ImportQRScannerScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .importAccountFetchBackup(backupParameters, eventHandler):
-            let screen = BackupOperationScreen(configuration: configuration, backupParameters: backupParameters)
+        case let .importAccount(backupParameters, eventHandler):
+            let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountError(let eventHandler):

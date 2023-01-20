@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BackupOperationScreen.swift
+//   ImportAccountScreen.swift
 
 import Foundation
 import MacaroonUIKit
@@ -21,8 +21,8 @@ import MagpieCore
 import MagpieHipo
 import MagpieExceptions
 
-final class BackupOperationScreen: BaseViewController {
-    typealias EventHandler = (Event, BackupOperationScreen) -> Void
+final class ImportAccountScreen: BaseViewController {
+    typealias EventHandler = (Event, ImportAccountScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -31,7 +31,7 @@ final class BackupOperationScreen: BaseViewController {
     }
 
     private lazy var loadingView = Label()
-    private lazy var theme = BackupOperationScreenTheme()
+    private lazy var theme = ImportAccountScreenTheme()
 
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -74,7 +74,7 @@ final class BackupOperationScreen: BaseViewController {
     }
 }
 
-extension BackupOperationScreen {
+extension ImportAccountScreen {
     private func fetchAccounts() {
         api?.fetchBackupDetail(backupParameters.id) { [weak self] apiResponse in
             guard let self else { return }
@@ -82,7 +82,7 @@ extension BackupOperationScreen {
             case .success(let encryptedBackup):
                 self.decryptAccounts(from: encryptedBackup)
             case .failure(_, let model):
-                self.eventHandler?(.didFailToFetchBackup(.networkFailed(model)), self)
+                self.eventHandler?(.didFailToImport(.networkFailed(model)), self)
             }
         }
     }
@@ -90,43 +90,38 @@ extension BackupOperationScreen {
     private func decryptAccounts(
         from backup: Backup
     ) {
-        let encryptionKey = backupParameters.encryptionKey
-        let encryptedContentInString = backup.encryptedContent
-        let encryptedDataByteArray = encryptedContentInString
-            .convertToByteArray(using: ",")
-        let encryptedData = Data(bytes: encryptedDataByteArray)
-
-        let cryptor = Cryptor(key: encryptionKey)
-
         asyncBackground {
             [weak self] in
             guard let self else { return }
 
+            let encryptionKey = self.backupParameters.encryptionKey
+            let encryptedContentInString = backup.encryptedContent
+            let encryptedDataByteArray = encryptedContentInString
+                .convertToByteArray(using: ",")
+            let encryptedData = Data(bytes: encryptedDataByteArray)
+
+            let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
             guard let decryptedData = decryptedContent?.data else {
-                asyncMain {
-                    self.eventHandler?(.didFailToFetchBackup(.decryption), self)
-                }
+                self.publish(.didFailToImport(.decryption))
                 return
             }
 
             do {
-                let encodedAccounts = try [EncodedAccount].decoded(decryptedData)
+                let accountParameters = try [AccountImportParameters].decoded(decryptedData)
                 asyncMain {
-                    self.importEncodedAccounts(encodedAccounts)
+                    self.importAccounts(from: accountParameters)
                 }
             } catch {
-                asyncMain {
-                    self.eventHandler?(.didFailToFetchBackup(.serialization(error)), self)
-                }
+                self.publish(.didFailToImport(.serialization(error)))
             }
         }
     }
 
-    private func importEncodedAccounts(_ encodedAccounts: [EncodedAccount]) {
-        guard let session, !encodedAccounts.isEmpty else {
-            eventHandler?(.didFailToFetchBackup(.notImportableAccountFound), self)
+    private func importAccounts(from parameters: [AccountImportParameters]) {
+        guard let session, !parameters.isEmpty else {
+            eventHandler?(.didFailToImport(.notImportableAccountFound), self)
             return
         }
 
@@ -134,8 +129,8 @@ extension BackupOperationScreen {
         var unimportedAccounts: [AccountInformation] = []
 
         do {
-            let transferAccounts = try convertEncodedAccountsToTransferAccounts(
-                from: encodedAccounts
+            let transferAccounts = try convertAccountParametersToTransferAccounts(
+                from: parameters
             )
 
             for transferAccount in transferAccounts {
@@ -143,18 +138,17 @@ extension BackupOperationScreen {
 
                 if sharedDataController.accountCollection[accountAddress] != nil {
                     unimportedAccounts.append(transferAccount.accountInformation)
-                    continue
+                } else {
+                    session.savePrivate(transferAccount.privateKey, for: accountAddress)
+                    importableAccounts.append(transferAccount.accountInformation)
                 }
-
-                session.savePrivate(transferAccount.privateKey, for: accountAddress)
-                importableAccounts.append(transferAccount.accountInformation)
             }
         } catch {
-            eventHandler?(.didFailToFetchBackup(.invalidPrivateKey), self)
+            eventHandler?(.didFailToImport(.invalidPrivateKey), self)
         }
 
         saveAccounts(importableAccounts)
-        completeBackupImport(importedAccounts: importableAccounts, unimportedAccounts: unimportedAccounts)
+        completeImporting(imported: importableAccounts, unimported: unimportedAccounts)
     }
 
     private func saveAccounts(_ accounts: [AccountInformation]) {
@@ -173,39 +167,39 @@ extension BackupOperationScreen {
         )
     }
 
-    private func completeBackupImport(
-        importedAccounts: [AccountInformation],
-        unimportedAccounts: [AccountInformation]
+    private func completeImporting(
+        imported: [AccountInformation],
+        unimported: [AccountInformation]
     ) {
         eventHandler?(
             .didCompleteImport(
-                importedAccounts: importedAccounts.map({.init(localAccount: $0)}),
-                unimportedAccounts: unimportedAccounts.map({.init(localAccount: $0)})
+                importedAccounts: imported.map({.init(localAccount: $0)}),
+                unimportedAccounts: unimported.map({.init(localAccount: $0)})
             ),
             self
         )
     }
 
-    private func convertEncodedAccountsToTransferAccounts(
-        from encodedAccounts: [EncodedAccount]
+    private func convertAccountParametersToTransferAccounts(
+        from accountParameters: [AccountImportParameters]
     ) throws -> [TransferAccount] {
         var currentPreferredOrder = sharedDataController.getPreferredOrderForNewAccount()
         var transferAccounts: [TransferAccount] = []
 
-        for encodedAccount in encodedAccounts {
+        for accountParameter in accountParameters {
             var error: NSError?
-            guard let address = AlgorandSDK().addressFrom(encodedAccount.privateKey, error: &error) else {
-                throw BackupOperationError.invalidPrivateKey
+            guard let address = AlgorandSDK().addressFrom(accountParameter.privateKey, error: &error) else {
+                throw ImportAccountScreenError.invalidPrivateKey
             }
             let accountInformation = AccountInformation(
                 address: address,
-                name: encodedAccount.name,
+                name: accountParameter.name,
                 type: .standard,
                 preferredOrder: currentPreferredOrder
             )
             transferAccounts.append(
                 TransferAccount(
-                    privateKey: encodedAccount.privateKey,
+                    privateKey: accountParameter.privateKey,
                     accountInformation: accountInformation
                 )
             )
@@ -214,23 +208,32 @@ extension BackupOperationScreen {
 
         return transferAccounts
     }
+
+    private func publish(
+        _ event: Event
+    ) {
+        asyncMain { [weak self] in
+            guard let self = self else { return }
+            self.eventHandler?(event, self)
+        }
+    }
 }
 
-extension BackupOperationScreen {
+extension ImportAccountScreen {
     private struct TransferAccount {
         let privateKey: Data
         let accountInformation: AccountInformation
     }
 }
 
-extension BackupOperationScreen {
+extension ImportAccountScreen {
     enum Event {
         case didCompleteImport(importedAccounts: [Account], unimportedAccounts: [Account])
-        case didFailToFetchBackup(BackupOperationError)
+        case didFailToImport(ImportAccountScreenError)
     }
 }
 
-enum BackupOperationError: Error {
+enum ImportAccountScreenError: Error {
     case networkFailed(HIPAPIError?)
     case decryption
     case serialization(Error)

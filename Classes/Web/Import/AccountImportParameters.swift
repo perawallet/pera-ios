@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   EncodedAccount.swift
+//   AccountImportParameters.swift
 
 import Foundation
 import MacaroonUtils
 
-struct EncodedAccount: JSONModel {
+struct AccountImportParameters: JSONModel {
     let name: String
     let privateKey: Data
 
@@ -30,7 +30,7 @@ struct EncodedAccount: JSONModel {
     }
 }
 
-extension EncodedAccount {
+extension AccountImportParameters {
     enum CodingKeys: String, CodingKey {
         case name
         case privateKey = "private_key"
