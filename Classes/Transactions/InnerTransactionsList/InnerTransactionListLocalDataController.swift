@@ -31,13 +31,16 @@ final class InnerTransactionListLocalDataController:
     
     private lazy var innerTransactions: [Transaction] = draft.innerTransactions
 
+    private let sharedDataController: SharedDataController
     private let currency: CurrencyProvider
 
     init(
         draft: InnerTransactionListDraft,
+        sharedDataController: SharedDataController,
         currency: CurrencyProvider
     ) {
         self.draft = draft
+        self.sharedDataController = sharedDataController
         self.currency = currency
     }
 }
@@ -115,10 +118,21 @@ extension InnerTransactionListLocalDataController {
 
             return item
         case .assetTransfer:
+            var asset = draft.asset
+            
+            if let transactionAssetID = transaction.assetTransfer?.assetId,
+               let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] {
+                if assetDecoration.isCollectible {
+                    asset = CollectibleAsset(decoration: assetDecoration)
+                } else {
+                    asset = StandardAsset(decoration: assetDecoration)
+                }
+            }
+            
             let viewModel = AssetInnerTransactionPreviewViewModel(
                 transaction: transaction,
                 account: draft.account,
-                asset: draft.asset,
+                asset: asset,
                 currency: currency,
                 currencyFormatter: currencyFormatter
             )
