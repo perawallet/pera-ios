@@ -55,10 +55,10 @@ extension SelectAssetViewControllerDataSource {
             [weak self] in
             guard let self = self else { return }
 
-            var items: [SelectAssetListItem] = []
+            var listItems: [SelectAssetListItem] = []
 
             let algoItem = self.makeAssetItem(self.account.algo)
-            items.append(algoItem)
+            listItems.append(algoItem)
 
             for blockchainAsset in self.account.assets.someArray {
                 let asset = self.account[blockchainAsset.id]
@@ -66,16 +66,25 @@ extension SelectAssetViewControllerDataSource {
                 switch asset {
                 case let standardAsset as StandardAsset:
                     let assetItem = self.makeAssetItem(standardAsset)
-                    items.append(assetItem)
+                    listItems.append(assetItem)
                 case let collectibleAsset as CollectibleAsset where collectibleAsset.isOwned:
                     let assetItem = self.makeAssetItem(collectibleAsset)
-                    items.append(assetItem)
+                    listItems.append(assetItem)
                 default:
                     break
                 }
             }
-
-            self.items = items
+            
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                listItems.sort(by: {
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        viewModel: $0.viewModel,
+                        otherViewModel: $1.viewModel
+                    )
+                })
+            }
+            
+            self.items = listItems
 
             asyncMain(execute: completion)
         }

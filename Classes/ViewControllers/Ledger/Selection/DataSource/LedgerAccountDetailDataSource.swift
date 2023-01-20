@@ -30,7 +30,7 @@ final class LedgerAccountDetailDataSource: NSObject {
     private let account: Account
     private let rekeyedAccounts: [Account]
 
-    private var assetItems: [AssetItem] = []
+    private var assetItems: [AssetListItemViewModel] = []
 
     init(
         api: ALGAPI,
@@ -110,7 +110,7 @@ extension LedgerAccountDetailDataSource {
 
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetListItemCell.self, at: indexPath)
-        cell.bindData(AssetListItemViewModel(assetItems[indexPath.item]))
+        cell.bindData(assetItems[indexPath.item])
         return cell
     }
 
@@ -155,8 +155,9 @@ extension LedgerAccountDetailDataSource {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
+        let algoViewModel = AssetListItemViewModel(algoAssetItem)
 
-        assetItems.append(algoAssetItem)
+        assetItems.append(algoViewModel)
 
         guard let assets = account.assets,
               !assets.isEmpty else {
@@ -199,7 +200,8 @@ extension LedgerAccountDetailDataSource {
                                 currency: currency,
                                 currencyFormatter: currencyFormatter
                             )
-                            self.assetItems.append(collectibleAssetItem)
+                            let viewModel = AssetListItemViewModel(collectibleAssetItem)
+                            self.assetItems.append(viewModel)
                         } else {
                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
                             self.account.append(standardAsset)
@@ -209,9 +211,14 @@ extension LedgerAccountDetailDataSource {
                                 currency: currency,
                                 currencyFormatter: currencyFormatter
                             )
-                            self.assetItems.append(standardAssetItem)
+                            let viewModel = AssetListItemViewModel(standardAssetItem)
+                            self.assetItems.append(viewModel)
                         }
                     }
+                }
+                
+                if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                    self.assetItems.sort(by: selectedAccountSortingAlgorithm.getFormula)
                 }
 
                 self.eventHandler?(.didLoadData)

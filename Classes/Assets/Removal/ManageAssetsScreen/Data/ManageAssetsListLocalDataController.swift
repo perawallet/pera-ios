@@ -167,7 +167,7 @@ extension ManageAssetsListLocalDataController {
             
             var snapshot = Snapshot()
             
-            var assetItems: [ManageAssetSearchItem] = []
+            var optOutListItems: [OptOutAssetListItem] = []
 
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
@@ -179,10 +179,25 @@ extension ManageAssetsListLocalDataController {
                     currencyFormatter: currencyFormatter
                 )
                 let optOutAssetListItem = OptOutAssetListItem(item: item)
-                let assetItem = ManageAssetSearchItem.asset(optOutAssetListItem)
-                assetItems.append(assetItem)
-
-                self.assetItems[asset.id] = assetItem
+                optOutListItems.append(optOutAssetListItem)
+            }
+            
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                optOutListItems.sort(by: {
+                    guard let firstItem = $0.viewModel.content,
+                          let secondItem = $1.viewModel.content else {
+                        return false
+                    }
+                    
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        viewModel: firstItem,
+                        otherViewModel: secondItem
+                    )
+                })
+            }
+            
+            var assetItems = optOutListItems.map { viewModel in
+                return ManageAssetSearchItem.asset(viewModel)
             }
 
             snapshot.appendSections([.assets])

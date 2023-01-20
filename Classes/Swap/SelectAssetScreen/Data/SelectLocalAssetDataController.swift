@@ -153,18 +153,31 @@ extension SelectLocalAssetDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.assets])
 
-            let selectAssetItems: [SelectAssetItem] = self.searchResults.map {
+            var selectAssetListItems: [SelectAssetListItem] = self.searchResults.map {
                 asset in
                 let assetItem = AssetItem(
                     asset: asset,
                     currency: currency,
                     currencyFormatter: currencyFormatter
                 )
-                let listItem = SelectAssetListItem(item: assetItem, account: self.account)
-                return SelectAssetItem.asset(listItem)
+                return SelectAssetListItem(item: assetItem, account: self.account)
             }
+            
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                selectAssetListItems.sort(by: {
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        viewModel: $0.viewModel,
+                        otherViewModel: $1.viewModel
+                    )
+                })
+            }
+            
+            let assetItems: [SelectAssetItem] = selectAssetListItems.map({ viewModel in
+                return SelectAssetItem.asset(viewModel)
+            })
+            
             snapshot.appendItems(
-                selectAssetItems,
+                assetItems,
                 toSection: .assets
             )
 
