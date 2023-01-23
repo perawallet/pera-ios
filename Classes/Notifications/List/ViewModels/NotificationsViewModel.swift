@@ -59,13 +59,16 @@ extension NotificationsViewModel {
         
         let size = CGSize(width: 40, height: 40)
         let shape: ImageShape = .rounded(4)
-        
         let url = PrismURL(baseURL: notification.icon)?
             .setExpectedImageSize(size)
-            .setImageQuality(.normal)
             .build()
-
-        icon = PNGImageSource(url: url, shape: shape)
+        let placeholder = ImagePlaceholder(image: .init(asset: "asset-image-placeholder-border".uiImage))
+        
+        icon = PNGImageSource(
+            url: url,
+            shape: shape,
+            placeholder: placeholder
+        )
     }
 
     private func bindTitle(notification: NotificationMessage) {
