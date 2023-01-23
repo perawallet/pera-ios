@@ -151,9 +151,12 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
 
       do {
-
          let transactionDetail = try JSONDecoder().decode(SDKTransaction.self, from: jsonData)
          transactionDraft.fee = transactionDetail.fee
+         
+         if transactionDraft is AlgosTransactionSendDraft {
+            transactionDraft.amount = transactionDetail.amount.toAlgos
+         }
 
          let currency = sharedDataController.currency
 
