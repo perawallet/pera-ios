@@ -61,7 +61,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
-            .path(.backups, args: draft.qrBackupParameters.backupIdentifier)
+            .path(.backups, args: draft.qrBackupParameters.id)
             .method(.put)
             .headers([
                 ModificationHeader(draft.qrBackupParameters.modificationKey)
@@ -77,7 +77,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Backup, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.backups, args: backupID)
             .method(.get)
             .completionHandler(handler)
