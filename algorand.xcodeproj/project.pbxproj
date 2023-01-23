@@ -3284,6 +3284,9 @@
 		2BE4D16A25967F92005F5764 /* Account+Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D16925967F92005F5764 /* Account+Signature.swift */; };
 		2BE4D16B25967F92005F5764 /* Account+Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D16925967F92005F5764 /* Account+Signature.swift */; };
 		2BE4D16C25967F92005F5764 /* Account+Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D16925967F92005F5764 /* Account+Signature.swift */; };
+		2BE6E9AA297EC05900BFE7DE /* NameServiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6E9A9297EC05900BFE7DE /* NameServiceValidator.swift */; };
+		2BE6E9AB297EC05900BFE7DE /* NameServiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6E9A9297EC05900BFE7DE /* NameServiceValidator.swift */; };
+		2BE6E9AC297EC05900BFE7DE /* NameServiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6E9A9297EC05900BFE7DE /* NameServiceValidator.swift */; };
 		2BE7517525BF490500F2CC66 /* TransactionFeeCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE7517425BF490500F2CC66 /* TransactionFeeCalculatorTests.swift */; };
 		2BE8798628BD2CBD00A6C682 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE8798128BD2CBC00A6C682 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift */; };
 		2BE8798728BD2CBD00A6C682 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE8798128BD2CBC00A6C682 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift */; };
@@ -7479,6 +7482,7 @@
 		2BE4D15825967F3E005F5764 /* Account+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Helpers.swift"; sourceTree = "<group>"; };
 		2BE4D16225967F78005F5764 /* AccountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountResponse.swift; sourceTree = "<group>"; };
 		2BE4D16925967F92005F5764 /* Account+Signature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Signature.swift"; sourceTree = "<group>"; };
+		2BE6E9A9297EC05900BFE7DE /* NameServiceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameServiceValidator.swift; sourceTree = "<group>"; };
 		2BE7517425BF490500F2CC66 /* TransactionFeeCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFeeCalculatorTests.swift; sourceTree = "<group>"; };
 		2BE8798128BD2CBC00A6C682 /* BuyAlgoTransactionOptionListItemButtonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyAlgoTransactionOptionListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2BE8798228BD2CBC00A6C682 /* SendTransactionOptionListItemButtonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTransactionOptionListItemButtonViewModel.swift; sourceTree = "<group>"; };
@@ -9856,6 +9860,7 @@
 			isa = PBXGroup;
 			children = (
 				2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */,
+				2BE6E9A9297EC05900BFE7DE /* NameServiceValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -21413,6 +21418,7 @@
 				2BD95B16291552C1005337E5 /* TapSwapAssetEvent.swift in Sources */,
 				D43A0C502790D8E2007430B9 /* ResultView.swift in Sources */,
 				2BA9F02E268DCDC7003BDDA8 /* WCMultisigMetadata.swift in Sources */,
+				2BE6E9AC297EC05900BFE7DE /* NameServiceValidator.swift in Sources */,
 				17BD4EFC2292F1260003E49A /* UILabel+Factory.swift in Sources */,
 				2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				2B71CB9E2900098D00B1E1A0 /* SwapAssetAmountInInputViewModel.swift in Sources */,
@@ -22832,6 +22838,7 @@
 				2B0E00BF27881AB800D6B2E2 /* SecuritySettings.swift in Sources */,
 				2BBC2D63278B92890091B6FC /* InvalidAccountOptionsViewController.swift in Sources */,
 				2B262706284D63A100ADE371 /* TransactionListItemDraftComposer.swift in Sources */,
+				2BE6E9AB297EC05900BFE7DE /* NameServiceValidator.swift in Sources */,
 				2B0F628F24EC129D00DA22A6 /* ContactsViewModel.swift in Sources */,
 				F0CF6B63285163AE007C30E4 /* AccountDescendingTitleAlgorithm.swift in Sources */,
 				17CADC9D2859C7C1001D19A8 /* SortAccountAssetListLocalDataController.swift in Sources */,
@@ -25414,6 +25421,7 @@
 				F045BE5D28737A460069056B /* CurrencyAPIProvider.swift in Sources */,
 				17D0FA7D28EC28DF0061B55D /* ExportAccountsConfirmationListItemHeaderViewModel.swift in Sources */,
 				D4A0DEA628980B7900CE3895 /* AssetStatisticsSectionTotalSupplyViewTheme.swift in Sources */,
+				2BE6E9AA297EC05900BFE7DE /* NameServiceValidator.swift in Sources */,
 				959672E527BA4E3A00BFDE5D /* NotificationLoadingViewCommonTheme.swift in Sources */,
 				2BA4B3F9267819B20041586B /* WCSessionItemCell.swift in Sources */,
 				D4155E9A276CDCB200BCBFA4 /* AccountSelectionViewTheme.swift in Sources */,

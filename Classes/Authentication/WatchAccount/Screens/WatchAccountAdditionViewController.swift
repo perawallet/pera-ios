@@ -494,7 +494,7 @@ extension WatchAccountAdditionViewController: FormInputFieldViewEditingDelegate 
 
         reset()
 
-        if let address = addressInputView.text,
+        if let address = addressInputView.text?.trimmed.lowercased(),
            dataController.shouldSearchNameServices(for: address) {
            dataController.searchNameServices(for: address)
             return

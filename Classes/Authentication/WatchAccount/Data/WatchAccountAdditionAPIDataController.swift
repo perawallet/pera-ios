@@ -22,6 +22,7 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
     var eventHandler: EventHandler?
 
     private lazy var apiThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var nameServiceValidator = NameServiceValidator()
 
     private var ongoingEndpointToLoadNameServices: EndpointOperatable?
 
@@ -83,13 +84,7 @@ extension WatchAccountAdditionAPIDataController {
     }
 
     func shouldSearchNameServices(for query: String?) -> Bool {
-        if let query = query,
-           !query.isEmptyOrBlank,
-           query.containsNameService {
-            return true
-        }
-
-        return false
+        return nameServiceValidator.validate(query)
     }
 
     func cancelNameServiceSearchingIfNeeded() {

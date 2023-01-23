@@ -39,6 +39,7 @@ final class AccountSelectScreenListAPIDataController:
         qos: .userInitiated
     )
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var nameServiceValidator = NameServiceValidator()
 
     private var _contacts: [Contact] = []
     private var contacts: [Contact] = []
@@ -87,7 +88,7 @@ extension AccountSelectScreenListAPIDataController {
             }
 
             self.searchQuery = query
-            self.searchNameService(query: query)
+            self.searchNameService()
 
             self.reload()
         }
@@ -408,17 +409,18 @@ extension AccountSelectScreenListAPIDataController {
 
 /// <mark>: NFDomain Search
 extension AccountSelectScreenListAPIDataController {
-    private func searchNameService(query: String?) {
-        self.matchedAccounts = []
-
-        guard let searchQuery = query, !searchQuery.isEmptyOrBlank, searchQuery.containsNameService else {
+    private func searchNameService() {
+        let query = searchQuery?.trimmed.lowercased()
+        
+        if nameServiceValidator.validate(query) {
+            nameServiceAPIStatus = .searching
+            self.matchedAccounts = []
+        } else {
             nameServiceAPIStatus = .idle
             return
         }
-
-        nameServiceAPIStatus = .searching
-
-        api.fetchNameServices(NameServiceQuery(name: searchQuery)) {
+        
+        api.fetchNameServices(NameServiceQuery(name: query)) {
             [weak self] result in
             guard let self = self else { return }
 
