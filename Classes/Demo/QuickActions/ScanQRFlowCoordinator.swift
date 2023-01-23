@@ -29,6 +29,9 @@ final class ScanQRFlowCoordinator:
         api: api,
         session: session
     )
+    private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
+        presentingScreen: presentingScreen
+    )
 
     private lazy var transactionController = TransactionController(
         api: api,
@@ -142,7 +145,12 @@ extension ScanQRFlowCoordinator {
         case .export:
             accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
         case .import:
-            break
+            controller.dismissScreen {
+                [weak self] in
+                guard let self = self else { return }
+                
+                self.accountImportCoordinator.launch(qrBackupParameters: qrBackupParameters)
+            }
         case .unsupported:
             break
         }

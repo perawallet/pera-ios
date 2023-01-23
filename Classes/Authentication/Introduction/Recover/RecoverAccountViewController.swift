@@ -20,8 +20,7 @@ final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
-        presentingScreen: self,
-        session: self.session
+        presentingScreen: self
     )
 
     private let flow: AccountSetupFlow

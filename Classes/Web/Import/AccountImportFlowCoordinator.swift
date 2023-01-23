@@ -22,28 +22,23 @@ import MacaroonUtils
 
 final class AccountImportFlowCoordinator {
     private unowned let presentingScreen: UIViewController
-    private var session: Session?
 
-    init(
-        presentingScreen: UIViewController,
-        session: Session?
-    ) {
+    init(presentingScreen: UIViewController) {
         self.presentingScreen = presentingScreen
-        self.session = session
     }
 }
 
 extension AccountImportFlowCoordinator {
     func launch(qrBackupParameters: QRBackupParameters?) {
         guard let qrBackupParameters else {
-            openIntroductionScreen()
+            continueIntroductionScreen()
             return
         }
 
-        openBackupScreen(with: qrBackupParameters, on: presentingScreen)
+        continueToImportAccountAfterLaunch(parameters: qrBackupParameters, from: presentingScreen)
     }
 
-    private func openIntroductionScreen() {
+    private func continueIntroductionScreen() {
         let introductionScreen = Screen.importAccountIntroduction { [weak self] event, introductionScreen in
             guard let self else {
                 return
@@ -51,31 +46,29 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didStart:
-                self.openQRScannerScreen(on: introductionScreen)
+                self.continueQRScannerScreen(from: introductionScreen)
             }
         }
         presentingScreen.open(introductionScreen, by: .push)
     }
 
-    private func openBackupScreen(with parameters: QRBackupParameters, on screen: UIViewController) {
-        let backupScreen = Screen.importAccountFetchBackup(parameters) { [weak self] event, backupScreen in
-            guard let self else {
-                return
-            }
-
-            switch event {
-            case .didFetchBackup(let backup):
-                let accounts = self.getEncryptedAccounts(from: backup, with: parameters)
-            case .didFailToFetchBackup(let error):
-                // route to error screen
-                break
-            }
-        }
-
-        screen.open(backupScreen, by: .push)
+    private func continueToImportAccountAfterLaunch(
+        parameters: QRBackupParameters,
+        from sourceScreen: UIViewController
+    ) {
+        let importAccountScreen = makeImportAccountScreen(with: parameters)
+        sourceScreen.open(importAccountScreen, by: .present)
     }
 
-    private func openQRScannerScreen(on screen: UIViewController) {
+    private func continueToImportAccountAfterQR(
+        parameters: QRBackupParameters,
+        from sourceScreen: UIViewController
+    ) {
+        let importAccountScreen = makeImportAccountScreen(with: parameters)
+        sourceScreen.open(importAccountScreen, by: .push)
+    }
+
+    private func continueQRScannerScreen(from screen: UIViewController) {
         let qrScannerScreen = Screen.importAccountQRScanner { [weak self] event, qrScannerScreen in
             guard let self else {
                 return
@@ -83,35 +76,75 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didReadBackup(let parameters):
-                self.openBackupScreen(with: parameters, on: qrScannerScreen)
+                self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
+            case .didReadUnsupportedAction:
+                self.continueErrorScreen(from: qrScannerScreen)
             }
         }
         screen.open(qrScannerScreen, by: .push)
     }
 
-    private func getEncryptedAccounts(from backup: Backup, with qrBackupParameters: QRBackupParameters) -> [Account] {
-        // TODO: Will add a JSON encoder/decoder here to encrypt/decrypt all contents using it.
-        let encryptionKey = qrBackupParameters.encryptionKey
-        let encryptedContentInString = backup.encryptedContent
-        let encryptedDataByteArray = encryptedContentInString
-            .convertToByteArray(using: ",")
-        let encryptedData = Data(bytes: encryptedDataByteArray)
+    private func continueSuccessScreen(
+        importedAccounts: [Account],
+        unimportedAccounts: [Account],
+        from screen: UIViewController
+    ) {
+        let successScreen = Screen.importAccountSuccess(
+            importedAccounts: importedAccounts,
+            unimportedAccounts: unimportedAccounts
+        ) { [weak self] event, successScreen in
+            guard let self else {
+                return
+            }
 
-        let cryptor = Cryptor(key: encryptionKey)
-        let decryptedContent = cryptor.decrypt(data: encryptedData)
-        let jsonDecoder = JSONDecoder()
-
-        if let decryptedData = decryptedContent?.data {
-            let users = try? jsonDecoder.decode([EncodedUser].self, from: decryptedData)
-        } else {
-            // TODO: Handle Error Here
+            switch event {
+            case .didGoToHome:
+                self.finish(from: successScreen)
+            }
         }
 
-        return []
+        screen.open(successScreen, by: .push)
+    }
+
+    private func continueErrorScreen(from screen: UIViewController) {
+        let errorScreen = Screen.importAccountError { [weak self] event, errorScreen in
+            guard let self else {
+                return
+            }
+
+            self.finish(from: errorScreen)
+        }
+
+        screen.open(errorScreen, by: .push)
+    }
+
+    private func finish(from screen: UIViewController) {
+        screen.dismiss(animated: true)
     }
 }
 
-struct EncodedUser: JSONModel {
-    let name: String
-    let private_key: String
+extension AccountImportFlowCoordinator {
+    private func makeImportAccountScreen(with parameters: QRBackupParameters) -> Screen {
+        Screen.importAccount(parameters) { [weak self] event, importAccountScreen in
+            guard let self else {
+                return
+            }
+
+            switch event {
+            case let .didCompleteImport(importedAccounts, unimportedAccounts):
+                if importedAccounts.isEmpty {
+                    self.continueErrorScreen(from: importAccountScreen)
+                    return
+                }
+
+                self.continueSuccessScreen(
+                    importedAccounts: importedAccounts,
+                    unimportedAccounts: unimportedAccounts,
+                    from: importAccountScreen
+                )
+            case .didFailToImport:
+                self.continueErrorScreen(from: importAccountScreen)
+            }
+        }
+    }
 }

@@ -111,9 +111,13 @@ extension AccountInformation {
     }
 }
 
-extension AccountInformation: Equatable {
+extension AccountInformation: Hashable {
     static func == (lhs: AccountInformation, rhs: AccountInformation) -> Bool {
         return lhs.address == rhs.address
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
     }
 }
 

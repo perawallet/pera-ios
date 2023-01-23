@@ -12,22 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BackupOperationScreenTheme.swift
+//   WebImportSuccessInfoBoxCell.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct BackupOperationScreenTheme: LayoutSheet, StyleSheet {
-    let loading: TextStyle
-    let loadingHorizontalInset: LayoutMetric
+final class WebImportSuccessInfoBoxCell:
+    CollectionCell<InfoBoxView>,
+    ViewModelBindable {
+    override static var contextPaddings: LayoutPaddings {
+        return (0, 0, 16, 0)
+    }
 
-    init(_ family: LayoutFamily) {
-        loading = [
-            .textColor(Colors.Text.main),
-            .text("backup-operation-loading-body".localized),
-            .font(Typography.bodyLargeMedium()),
-            .textAlignment(.center)
-        ]
-        loadingHorizontalInset = 24
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        customize()
+    }
+
+    func customize() {
+        contextView.customize(WebImportSuccessInfoBoxTheme())
     }
 }

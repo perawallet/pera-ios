@@ -61,10 +61,6 @@ final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
-
-        asyncMain(afterDuration: 5.0) {
-            self.eventHandler?(.didReadBackup(parameters: QRBackupParameters()), self)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -267,7 +263,12 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
+        if qrBackupParameters.action == .import {
+            eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
+        } else {
+            eventHandler?(.didReadUnsupportedAction(parameters: qrBackupParameters), self)
+        }
+
     }
 }
 
@@ -288,5 +289,6 @@ extension ImportQRScannerScreen: QRScannerOverlayViewDelegate {
 extension ImportQRScannerScreen {
     enum Event {
         case didReadBackup(parameters: QRBackupParameters)
+        case didReadUnsupportedAction(parameters: QRBackupParameters)
     }
 }

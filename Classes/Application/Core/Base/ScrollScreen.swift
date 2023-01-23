@@ -28,6 +28,7 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
         super.viewDidLoad()
 
         setNeedsNavigationBarAppearanceUpdate()
+        bindData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
