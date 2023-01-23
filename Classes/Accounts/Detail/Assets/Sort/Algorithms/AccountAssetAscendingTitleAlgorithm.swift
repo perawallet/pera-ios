@@ -32,15 +32,9 @@ extension AccountAssetAscendingTitleAlgorithm {
         viewModel: SortableAssetListItemViewModel,
         otherViewModel: SortableAssetListItemViewModel
     ) -> Bool {
-        let assetTitle =
-            viewModel.title?.primaryTitle?.string ??
-            viewModel.title?.secondaryTitle?.string ??
-            viewModel.asset.unwrap { String($0.id) }
-        let otherAssetTitle =
-            otherViewModel.title?.primaryTitle?.string ??
-            otherViewModel.title?.secondaryTitle?.string ??
-            viewModel.asset.unwrap { String($0.id) }
-
+        let assetTitle = getSortableTitle(viewModel)
+        let otherAssetTitle = getSortableTitle(otherViewModel)
+        
         guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
             return false
         }
@@ -51,5 +45,11 @@ extension AccountAssetAscendingTitleAlgorithm {
 
         let result = anAssetTitle.localizedCaseInsensitiveCompare(anOtherAssetTitle)
         return result == .orderedAscending
+    }
+    
+    private func getSortableTitle(_ viewModel: SortableAssetListItemViewModel) -> String? {
+        return viewModel.title?.primaryTitle?.string
+            ?? viewModel.title?.secondaryTitle?.string
+            ?? viewModel.asset.unwrap { String($0.id) }
     }
 }
