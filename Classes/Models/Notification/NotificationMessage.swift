@@ -24,6 +24,7 @@ final class NotificationMessage: ALGEntityModel {
     let url: URL?
     let date: Date?
     let message: String?
+    let icon: URL?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -34,6 +35,7 @@ final class NotificationMessage: ALGEntityModel {
         /// Without format string ???
         self.date = apiModel.creationDatetime?.toDate()?.date
         self.message = apiModel.message
+        self.icon = apiModel.icon
     }
 
     func encode() -> APIModel {
@@ -42,6 +44,7 @@ final class NotificationMessage: ALGEntityModel {
         apiModel.url = url
         apiModel.creationDatetime = date?.toString(.standard)
         apiModel.message = message
+        apiModel.icon = icon
         return apiModel
     }
 }
@@ -52,12 +55,14 @@ extension NotificationMessage {
         var url: URL?
         var creationDatetime: String?
         var message: String?
+        var icon: URL?
 
         init() {
             self.id = nil
             self.url = nil
             self.creationDatetime = nil
             self.message = nil
+            self.icon = nil
         }
 
         enum CodingKeys: String, CodingKey {
@@ -65,6 +70,7 @@ extension NotificationMessage {
             case url = "url"
             case creationDatetime = "creation_datetime"
             case message = "message"
+            case icon = "icon"
         }
     }
 }
