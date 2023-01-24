@@ -18,6 +18,7 @@ import Foundation
 import CoreGraphics
 import MacaroonUtils
 import MacaroonURLImage
+import MacaroonForm
 
 final class AccountSelectScreenListAPIDataController:
     AccountSelectScreenListDataController,
@@ -39,7 +40,7 @@ final class AccountSelectScreenListAPIDataController:
         qos: .userInitiated
     )
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
-    private lazy var nameServiceValidator = NameServiceValidator()
+    private lazy var nameServiceValidator = RegexValidator(regex: .nameService)
 
     private var _contacts: [Contact] = []
     private var contacts: [Contact] = []
@@ -410,17 +411,21 @@ extension AccountSelectScreenListAPIDataController {
 /// <mark>: NFDomain Search
 extension AccountSelectScreenListAPIDataController {
     private func searchNameService() {
-        let query = searchQuery?.trimmed.lowercased()
-        
-        if nameServiceValidator.validate(query) {
-            nameServiceAPIStatus = .searching
-            self.matchedAccounts = []
-        } else {
-            nameServiceAPIStatus = .idle
-            return
+        nameServiceValidator.validate(searchQuery) { validation in
+            switch validation {
+            case .success(let text):
+                nameServiceAPIStatus = .searching
+                fetchNameServices(NameServiceQuery(name: text))
+            case .failure:
+                nameServiceAPIStatus = .idle
+            }
         }
+    }
+    
+    private func fetchNameServices(_ query: NameServiceQuery) {
+        self.matchedAccounts = []
         
-        api.fetchNameServices(NameServiceQuery(name: query)) {
+        api.fetchNameServices(query) {
             [weak self] result in
             guard let self = self else { return }
 
