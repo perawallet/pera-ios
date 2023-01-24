@@ -39,17 +39,17 @@ extension AccountAssetAscendingTitleAlgorithm {
             return false
         }
 
-        guard let anOtherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
+        guard let anotherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
             return true
         }
 
-        let result = anAssetTitle.localizedCaseInsensitiveCompare(anOtherAssetTitle)
+        let result = anAssetTitle.localizedCaseInsensitiveCompare(anotherAssetTitle)
         return result == .orderedAscending
     }
     
     private func getSortableTitle(_ viewModel: SortableAssetListItemViewModel) -> String? {
-        return viewModel.title?.primaryTitle?.string
-            ?? viewModel.title?.secondaryTitle?.string
-            ?? viewModel.asset.unwrap { String($0.id) }
+        return viewModel.title?.primaryTitle?.string ??
+            viewModel.title?.secondaryTitle?.string ??
+            viewModel.asset.unwrap { String($0.id) }
     }
 }
