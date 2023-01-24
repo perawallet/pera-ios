@@ -36,10 +36,6 @@ extension String {
     var trimmed: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
-
-    var containsNameService: Bool {
-        return hasSuffix(".algo")
-    }
 }
 
 extension Optional where Wrapped == String {
