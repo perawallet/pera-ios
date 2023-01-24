@@ -494,7 +494,7 @@ extension WatchAccountAdditionViewController: FormInputFieldViewEditingDelegate 
 
         reset()
 
-        dataController.searchNameServices(for: addressInputView.text)
+        dataController.searchNameServicesIfNeeded(for: addressInputView.text)
     }
 
     func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) { }

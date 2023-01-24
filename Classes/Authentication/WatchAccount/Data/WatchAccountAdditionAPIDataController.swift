@@ -53,7 +53,7 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
 }
 
 extension WatchAccountAdditionAPIDataController {
-    func searchNameServices(for query: String?) {
+    func searchNameServicesIfNeeded(for query: String?) {
         nameServiceValidator.validate(query) { validation in
             switch validation {
             case .success(let text):

@@ -89,7 +89,7 @@ extension AccountSelectScreenListAPIDataController {
             }
 
             self.searchQuery = query
-            self.searchNameService()
+            self.searchNameServicesIfNeeded()
 
             self.reload()
         }
@@ -410,7 +410,7 @@ extension AccountSelectScreenListAPIDataController {
 
 /// <mark>: NFDomain Search
 extension AccountSelectScreenListAPIDataController {
-    private func searchNameService() {
+    private func searchNameServicesIfNeeded() {
         nameServiceValidator.validate(searchQuery) { validation in
             switch validation {
             case .success(let text):
