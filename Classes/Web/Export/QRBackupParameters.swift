@@ -50,14 +50,14 @@ enum QRBackupAction: RawRepresentable, ALGAPIModel {
 
 final class QRBackupParameters: ALGAPIModel, Identifiable {
     let id: String
-    let modificationKey: String
+    let modificationKey: String?
     let encryptionKey: String
     let version: String
     let action: QRBackupAction
 
     init() {
         id = ""
-        modificationKey = ""
+        modificationKey = nil
         encryptionKey = ""
         version = ""
         action = QRBackupAction()

@@ -59,13 +59,19 @@ extension ALGAPI {
         _ draft: EncryptedExportAccountDraft,
         onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
+        let modificationHeader: Headers
+
+        if let modificationKey = draft.qrBackupParameters.modificationKey {
+            modificationHeader = [ModificationHeader(modificationKey)]
+        } else {
+            modificationHeader = []
+        }
+
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.backups, args: draft.qrBackupParameters.id)
             .method(.put)
-            .headers([
-                ModificationHeader(draft.qrBackupParameters.modificationKey)
-            ])
+            .headers(modificationHeader)
             .body(draft)
             .completionHandler(handler)
             .execute()
