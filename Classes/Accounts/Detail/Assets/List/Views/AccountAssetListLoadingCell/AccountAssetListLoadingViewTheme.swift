@@ -12,34 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountAssetListAssetListItemLoadingCell.swift
+//   AccountAssetListLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class AccountAssetListAssetListItemLoadingCell: CollectionCell<PreviewLoadingView> {
-    static let theme =  PreviewLoadingViewCommonTheme()
+struct AccountAssetListLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var asset: PreviewLoadingViewTheme
+    var assetHeight: CGFloat
+    var assetSeparator: Separator
+    var numberOfAssets: Int
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme)
-
-        let separator = Separator(
+    init(_ family: LayoutFamily) {
+        self.asset = PreviewLoadingViewCommonTheme(family)
+        self.assetHeight = 75
+        self.assetSeparator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((56, 0))
         )
-        separatorStyle = .single(separator)
-    }
-}
-
-extension AccountAssetListAssetListItemLoadingCell {
-    func startAnimating() {
-        contextView.startAnimating()
-    }
-
-    func stopAnimating() {
-        contextView.stopAnimating()
+        self.numberOfAssets = 3
     }
 }
