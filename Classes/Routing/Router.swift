@@ -667,6 +667,10 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                dataController: AccountDetailAPIDataController(
+                    account: accountHandle,
+                    sharedDataController: appConfiguration.sharedDataController
+                ),
                 swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController

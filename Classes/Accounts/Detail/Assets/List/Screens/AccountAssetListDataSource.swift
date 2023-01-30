@@ -66,6 +66,11 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                     SearchBarItemCell.self,
                     at: indexPath
                 )
+            case .assetLoading:
+                return collectionView.dequeue(
+                    AccountAssetListLoadingCell.self,
+                    at: indexPath
+                )
             case let .asset(item):
                 let cell = collectionView.dequeue(
                     AssetListItemCell.self,
@@ -116,6 +121,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             ManagementItemWithSecondaryActionCell.self,
             ManagementItemCell.self,
             SearchBarItemCell.self,
+            AccountAssetListLoadingCell.self,
             AssetListItemCell.self,
             PendingAssetListItemCell.self,
             CollectibleListItemCell.self,

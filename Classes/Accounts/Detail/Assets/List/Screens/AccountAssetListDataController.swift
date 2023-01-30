@@ -21,9 +21,10 @@ import UIKit
 protocol AccountAssetListDataController: AnyObject {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }
 
-    func load()
-    func reload()
-    func reloadIfThereIsPendingUpdates()
+    var account: AccountHandle { get }
+
+    func load(query: AccountAssetListQuery?)
+    func reloadIfNeededForPendingAssetRequests()
 }
 
 enum AccountAssetsSection:
@@ -39,6 +40,7 @@ enum AccountAssetsItem: Hashable {
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(WatchAccountPortfolioViewModel)
     case search
+    case assetLoading
     case asset(AccountAssetsAssetListItem)
     case pendingAsset(AccountAssetsPendingAssetListItem)
     case collectibleAsset(AccountAssetsCollectibleAssetListItem)
@@ -180,13 +182,18 @@ enum AccountAssetListDataControllerEvent {
 }
 
 struct AccountAssetListUpdates {
-    var isNewSearch = false
-    var completion: Completion?
-
     let snapshot: Snapshot
+    let operation: Operation
+}
 
-    init(snapshot: Snapshot) {
-        self.snapshot = snapshot
+extension AccountAssetListUpdates {
+    enum Operation {
+        /// Load/Filter/Sort
+        case customize
+        /// Search by keyword
+        case search
+        /// Reload by the last query
+        case refresh
     }
 }
 
