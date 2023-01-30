@@ -667,6 +667,10 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                dataController: AccountDetailAPIDataController(
+                    account: accountHandle,
+                    sharedDataController: appConfiguration.sharedDataController
+                ),
                 swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
@@ -1002,11 +1006,14 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .collectiblesFilterSelection(filter):
-            viewController = CollectiblesFilterSelectionViewController(
-                filter: filter,
-                configuration: configuration
-            )
+        case let .collectiblesFilterSelection(uiInteractions):
+            let aViewController = CollectiblesFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
+        case let .accountCollectibleListFilterSelection(uiInteractions):
+            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
             viewController = ReceiveCollectibleAccountListViewController(
                 dataController: dataController,
@@ -1110,9 +1117,9 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .assetsFilterSelection(let eventHandler):
-            let aViewController = AssetsFilterSelectionViewController(configuration: configuration)
-            aViewController.eventHandler = eventHandler
+        case let .assetsFilterSelection(uiInteractions):
+            let aViewController = AssetsFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(

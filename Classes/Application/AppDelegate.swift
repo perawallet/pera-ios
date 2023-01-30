@@ -410,6 +410,11 @@ extension AppDelegate {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
                 monitor.finishMonitoringOptOutUpdates(associatedWith: update)
             }
+
+            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdates()
+            for update in sentPureCollectibleAssetUpdates {
+                monitor.finishMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
+            }
         }
     }
 }

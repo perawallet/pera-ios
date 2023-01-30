@@ -18,6 +18,7 @@ import Foundation
 import CoreGraphics
 import MacaroonUtils
 
+/// <todo> Separate the data controllers (Account Detail Collectibles & Collectibles).
 final class CollectibleListLocalDataController:
     CollectibleListDataController,
     SharedDataControllerObserver,
@@ -25,33 +26,29 @@ final class CollectibleListLocalDataController:
     static var didAddCollectible: Notification.Name {
         return .init(rawValue: Constants.Notification.collectibleListDidAddCollectible)
     }
-
     static var didRemoveCollectible: Notification.Name {
         return .init(rawValue: Constants.Notification.collectibleListDidRemoveCollectible)
     }
-
     static var didSendCollectible: Notification.Name {
         return .init(rawValue: Constants.Notification.collectibleListDidSendCollectible)
-    }
-
-    static var didChangeFilter: Notification.Name {
-        return .init(rawValue: Constants.Notification.collectibleListDidChangeFilter)
-    }
-
-    static var collectibleListFilterInfoKey: String {
-        return Constants.Notification.InfoKey.collectibleListFilter
-    }
-
-    static var accountAssetPairUserInfoKey: String {
-        return Constants.Notification.InfoKey.collectibleListAccountAssetPair
     }
 
     var notificationObservations: [NSObjectProtocol] = []
 
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)?
 
+    var galleryUIStyle: CollectibleGalleryUIStyle = .grid
+
     private var lastSnapshot: Snapshot?
-    private let snapshotQueue = DispatchQueue(
+    private var lastQuery: String?
+
+    private lazy var collectibleAmountFormatter: CollectibleAmountFormatter = .init()
+    
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.4)
+    
+    private lazy var collectibleFilterOptions: CollectibleFilterOptions = .init()
+
+    private let updateQueue = DispatchQueue(
         label: "pera.queue.collectibles.updates",
         qos: .userInitiated
     )
@@ -60,24 +57,12 @@ final class CollectibleListLocalDataController:
 
     private var accounts: AccountCollection = []
     private let sharedDataController: SharedDataController
-    private let cache: Cache
-
-    typealias AccountAssetPair = (account: Account, asset: CollectibleAsset)
-    private var addedAccountAssetPairs: [AccountAssetPair] = []
-    private var removedAccountAssetPairs: [AccountAssetPair] = []
-    private var sentAccountAssetPairs: [AccountAssetPair] = []
 
     private let isWatchAccount: Bool
 
     var imageSize: CGSize = .zero
 
-    private var lastQuery: String?
-
-    private(set) var currentFilter: Filter {
-        didSet { cache.filter = currentFilter }
-    }
-
-    private var hiddenCollectibleCount: Int = .zero
+    private var canPerformUpdates = true
 
     init(
         galleryAccount: CollectibleGalleryAccount,
@@ -88,12 +73,7 @@ final class CollectibleListLocalDataController:
 
         self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
 
-        let cache = Cache()
-        self.cache = cache
-        self.currentFilter = cache.filter ?? .owned
-
-        self.observePendingAccountAssetPairs()
-        self.observeDidChangeFilter()
+        self.startObservingCollectibleAssetActions()
     }
 
     deinit {
@@ -103,62 +83,57 @@ final class CollectibleListLocalDataController:
 }
 
 extension CollectibleListLocalDataController {
+    private func startObservingCollectibleAssetActions() {
+        observe(notification: Self.didAddCollectible) {
+            [weak self] _ in
+            guard let self else { return }
+            self.reload()
+        }
+        observe(notification: Self.didRemoveCollectible) {
+            [weak self] _ in
+            guard let self else { return }
+            self.reload()
+        }
+        observe(notification: Self.didSendCollectible) {
+            [weak self] _ in
+            guard let self else { return }
+            self.reload()
+        }
+    }
+}
+
+extension CollectibleListLocalDataController {
     func load() {
         sharedDataController.add(self)
     }
 
     func reload() {
-        deliverContentSnapshot(with: lastQuery)
+        deliverContentUpdate(query: lastQuery)
     }
 
     func search(for query: String) {
-        lastQuery = query
+        searchThrottler.performNext {
+            [weak self] in
+            guard let self = self else { return }
 
-        deliverContentSnapshot(with: query)
+            self.deliverContentUpdate(query: query)
+        }
     }
 
     func resetSearch() {
-        lastQuery = nil
-        deliverContentSnapshot()
+        searchThrottler.cancelAll()
+
+        deliverContentUpdate()
     }
 }
 
 extension CollectibleListLocalDataController {
-    func filter(
-        by filter: Filter
-    ) {
-        if filter == currentFilter {
-            return
-        }
-
-        notifyDidChangeFilterObservers(filter)
+    func startUpdates() {
+        canPerformUpdates = true
     }
 
-    private func notifyDidChangeFilterObservers(_ filter: Filter) {
-        NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didChangeFilter,
-            object: nil,
-            userInfo: [
-                Self.collectibleListFilterInfoKey: filter
-            ]
-        )
-    }
-
-    private func observeDidChangeFilter() {
-        observe(notification: Self.didChangeFilter) {
-            [weak self] notification in
-            guard let self = self else { return }
-
-            if let filter =
-                notification.userInfo?[
-                    Self.collectibleListFilterInfoKey
-                ] as? Filter {
-
-                self.currentFilter = filter
-
-                self.deliverContentSnapshot(with: self.lastQuery)
-            }
-        }
+    func stopUpdates() {
+        canPerformUpdates = false
     }
 }
 
@@ -169,11 +144,10 @@ extension CollectibleListLocalDataController {
     ) {
         switch event {
         case .didBecomeIdle:
-            deliverInitialSnapshot()
+            deliverInitialUpdate()
         case .didStartRunning(let isFirst):
-            if isFirst ||
-                lastSnapshot == nil {
-                deliverInitialSnapshot()
+            if isFirst || lastSnapshot == nil {
+                deliverInitialUpdate()
             }
         case .didFinishRunning:
             switch galleryAccount {
@@ -182,11 +156,11 @@ extension CollectibleListLocalDataController {
                     return
                 }
 
-                if case .failed = updatedAccount.status {
-                    if lastSnapshot == nil {
-                        deliverInitialSnapshot()
-                    }
+                if lastSnapshot == nil {
+                    deliverInitialUpdate()
+                }
 
+                if case .failed = updatedAccount.status {
                     eventHandler?(.didFinishRunning(hasError: true))
                     return
                 }
@@ -195,20 +169,16 @@ extension CollectibleListLocalDataController {
 
                 accounts = [updatedAccount]
 
-                if let lastQuery = lastQuery {
-                    search(for: lastQuery)
-                } else {
-                    deliverContentSnapshot()
-                }
+                deliverContentUpdate(query: lastQuery)
             case .all:
                 let accounts = sharedDataController.accountCollection
 
+                if lastSnapshot == nil {
+                    deliverInitialUpdate()
+                }
+
                 for account in accounts {
                     if case .failed = account.status {
-                        if lastSnapshot == nil {
-                            deliverInitialSnapshot()
-                        }
-
                         eventHandler?(.didFinishRunning(hasError: true))
                         return
                     }
@@ -218,186 +188,87 @@ extension CollectibleListLocalDataController {
 
                 self.accounts = accounts
 
-                if let lastQuery = lastQuery {
-                    search(for: lastQuery)
-                } else {
-                    deliverContentSnapshot()
-                }
+                deliverContentUpdate(query: lastQuery)
             }
         }
     }
 }
 
 extension CollectibleListLocalDataController {
-    private func deliverInitialSnapshot() {
+    private func deliverInitialUpdate() {
         if sharedDataController.isPollingAvailable {
-            deliverLoadingSnapshot()
+            deliverLoadingUpdate(query: lastQuery)
         } else {
-            deliverNoContentSnapshot()
+            deliverNoContentUpdate(query: lastQuery)
         }
     }
 
-    private func deliverLoadingSnapshot() {
-        deliverSnapshot {
+    private func deliverLoadingUpdate(query: String?) {
+        deliverUpdate {
+            [weak self] in
+            guard let self else { return nil }
+
             var snapshot = Snapshot()
+            let item = self.makeLoadingItem()
             snapshot.appendSections([.loading])
             snapshot.appendItems(
-                [.empty(.loading)],
+                [item],
                 toSection: .loading
             )
-            return snapshot
+            let update = CollectibleListUpdate(
+                query: query,
+                snapshot: snapshot
+            )
+            return update
         }
     }
 
-    private func deliverContentSnapshot(
-        with query: String? = nil
-    ) {
-        hiddenCollectibleCount = .zero
-
-        clearPendingAssetPairsIfNeeded()
-
-        var collectibleItems: [CollectibleListItem] = []
-
-        let collectibleAssets = formSortedCollectibleAssets()
-        collectibleAssets.forEach { collectibleAsset in
-            guard
-                let address = collectibleAsset.optedInAddress,
-                let account = accounts.account(for: address)
-            else {
-                return
-            }
-
-            if currentFilter == .owned,
-               !collectibleAsset.isOwned {
-                hiddenCollectibleCount += 1
-                return
-            }
-
-            if let query = query,
-               !isAssetContains(collectibleAsset, query: query) {
-                return
-            }
-
-            let cellItem: CollectibleItem
-
-            if collectibleAsset.isOwned {
-                cellItem = .cell(
-                    .owner(
-                        CollectibleCellItemContainer(
-                            isPending: getPendingStatus(
-                                asset: collectibleAsset,
-                                account: account
-                            ),
-                            account: account,
-                            asset: collectibleAsset,
-                            viewModel: CollectibleListItemViewModel(
-                                imageSize: imageSize,
-                                model: collectibleAsset
-                            )
-                        )
-                    )
-                )
-            } else {
-                cellItem = .cell(
-                    .optedIn(
-                        CollectibleCellItemContainer(
-                            isPending: getPendingStatus(
-                                asset: collectibleAsset,
-                                account: account
-                            ),
-                            account: account,
-                            asset: collectibleAsset,
-                            viewModel: CollectibleListItemViewModel(
-                                imageSize: imageSize,
-                                model: collectibleAsset
-                            )
-                        )
-                    )
-                )
-            }
-
-            let listItem: CollectibleListItem = .collectible(cellItem)
-            collectibleItems.append(listItem)
-        }
-
-        var pendingCollectibleItems: [CollectibleListItem] = []
-
-        let pendingAccountAssetPairs =
-        addedAccountAssetPairs +
-        removedAccountAssetPairs +
-        sentAccountAssetPairs
-
-        pendingAccountAssetPairs.forEach { pendingAccountAssetPair in
-            let pendingCollectibleAsset = pendingAccountAssetPair.asset
-            let pendingCollectibleAccount = pendingAccountAssetPair.account
-
-            let account = accounts.account(for: pendingCollectibleAccount.address)
-
-            if let account = account,
-               account.containsCollectibleAsset(pendingCollectibleAsset.id) {
-                return
-            }
-
-            if let query = query,
-               !isAssetContains(
-                pendingCollectibleAsset,
-                query: query
-               ) {
-                return
-            }
-
-            let cellItem: CollectibleItem = .cell(
-                .pending(
-                    CollectibleCellItemContainer(
-                        isPending: true,
-                        account: pendingCollectibleAccount,
-                        asset: pendingCollectibleAsset,
-                        viewModel: CollectibleListItemViewModel(
-                            imageSize: imageSize,
-                            model: pendingCollectibleAsset
-                        )
-                    )
-                )
-            )
-
-            let listItem: CollectibleListItem = .collectible(cellItem)
-            pendingCollectibleItems.append(listItem)
-        }
-
-        if collectibleItems.isEmpty &&
-            pendingCollectibleItems.isEmpty {
-            if lastQuery != nil {
-                deliverSearchNoContentSnapshot()
-            } else {
-                deliverNoContentSnapshot()
-            }
-
-            return
-        }
-
-        deliverSnapshot {
+    private func deliverContentUpdate(query: String? = nil) {
+        deliverUpdate {
             [weak self] in
-            guard let self = self else { return Snapshot() }
+            guard let self else { return nil }
+
+            let pendingCollectibleItems = self.makePendingCollectibleListItems()
+            let collectibleList = self.makeCollectibleList(query: query)
+
+            let shouldShowEmptyContent = pendingCollectibleItems.isEmpty && collectibleList.isEmpty
+
+            if shouldShowEmptyContent {
+                let isSearching = !query.isNilOrEmpty
+
+                if isSearching {
+                    self.deliverSearchNoContentUpdate(query: query)
+                } else {
+                    self.deliverNoContentUpdate(
+                        query: query,
+                        collectibleList: collectibleList
+                    )
+                }
+
+                return nil
+            }
 
             var snapshot = Snapshot()
+
+            let visibleCollectibleItems = collectibleList.visibleItems
 
             if self.isWatchAccount {
                 self.addWatchAccountHeaderContent(
-                    withCollectibleCount: collectibleItems.count,
+                    withCollectibleCount: visibleCollectibleItems.count,
                     to: &snapshot
                 )
             } else {
                 self.addHeaderContent(
-                    withCollectibleCount: collectibleItems.count,
+                    withCollectibleCount: visibleCollectibleItems.count,
                     to: &snapshot
                 )
             }
 
-            snapshot.appendSections([.search, .collectibles])
+            snapshot.appendSections([.uiActions, .collectibles])
 
             snapshot.appendItems(
-                [.search],
-                toSection: .search
+                [.uiActions],
+                toSection: .uiActions
             )
 
             snapshot.appendItems(
@@ -406,42 +277,48 @@ extension CollectibleListLocalDataController {
             )
 
             snapshot.appendItems(
-                collectibleItems,
+                visibleCollectibleItems,
                 toSection: .collectibles
             )
 
-            return snapshot
+            let update = CollectibleListUpdate(
+                query: query,
+                snapshot: snapshot
+            )
+            return update
         }
     }
 
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot {
+    private func deliverNoContentUpdate(
+        query: String?,
+        collectibleList: CollectibleList? = nil
+    ) {
+        deliverUpdate {
             [weak self] in
-            guard let self = self else { return Snapshot() }
+            guard let self else { return nil }
 
             var snapshot = Snapshot()
+            let viewModel = CollectiblesNoContentWithActionViewModel(
+                hiddenCollectibleCount: collectibleList?.hiddenCount ?? .zero,
+                isWatchAccount: self.isWatchAccount
+            )
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [
-                    .empty(
-                        .noContent(
-                            CollectiblesNoContentWithActionViewModel(
-                                hiddenCollectibleCount: self.hiddenCollectibleCount,
-                                isWatchAccount: self.isWatchAccount
-                            )
-                        )
-                    )
-                ],
+                [.empty(.noContent(viewModel))],
                 toSection: .empty
             )
-            return snapshot
+            let update = CollectibleListUpdate(
+                query: query,
+                snapshot: snapshot
+            )
+            return update
         }
     }
 
-    private func deliverSearchNoContentSnapshot() {
-        deliverSnapshot {
+    private func deliverSearchNoContentUpdate(query: String?) {
+        deliverUpdate {
             [weak self] in
-            guard let self = self else { return Snapshot() }
+            guard let self else { return nil }
 
             var snapshot = Snapshot()
 
@@ -457,11 +334,11 @@ extension CollectibleListLocalDataController {
                 )
             }
 
-            snapshot.appendSections([.search, .empty])
+            snapshot.appendSections([.uiActions, .empty])
 
             snapshot.appendItems(
-                [.search],
-                toSection: .search
+                [.uiActions],
+                toSection: .uiActions
             )
 
             snapshot.appendItems(
@@ -469,26 +346,42 @@ extension CollectibleListLocalDataController {
                 toSection: .empty
             )
 
-            return snapshot
+            let update = CollectibleListUpdate(
+                query: query,
+                snapshot: snapshot
+            )
+            return update
         }
     }
 
+    private func deliverUpdate(_ update: @escaping () -> CollectibleListUpdate?) {
+        updateQueue.async {
+            [weak self] in
+            guard let self else { return }
+
+            guard self.canPerformUpdates else { return  }
+
+            guard let update = update() else { return }
+
+            self.publish(.didUpdate(update))
+        }
+    }
+}
+
+extension CollectibleListLocalDataController {
     private func addHeaderContent(
         withCollectibleCount count: Int,
         to snapshot: inout Snapshot
     ) {
-        let headerItem: CollectibleListItem = .header(
-            ManagementItemViewModel(
-                .collectible(
-                    count: count,
-                    isWatchAccountDisplay: false
-                )
+        let viewModel = ManagementItemViewModel(
+            .collectible(
+                count: count,
+                isWatchAccountDisplay: false
             )
         )
-
         snapshot.appendSections([.header])
         snapshot.appendItems(
-            [headerItem],
+            [.header(viewModel)],
             toSection: .header
         )
     }
@@ -497,211 +390,254 @@ extension CollectibleListLocalDataController {
         withCollectibleCount count: Int,
         to snapshot: inout Snapshot
     ) {
-        let headerItem: CollectibleListItem = .watchAccountHeader(
-            ManagementItemViewModel(
-                .collectible(
-                    count: count,
-                    isWatchAccountDisplay: true
-                )
+        let viewModel = ManagementItemViewModel(
+            .collectible(
+                count: count,
+                isWatchAccountDisplay: true
             )
         )
-
         snapshot.appendSections([.header])
         snapshot.appendItems(
-            [headerItem],
+            [.watchAccountHeader(viewModel)],
             toSection: .header
         )
     }
+}
 
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot
-    ) {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-            self.publish(.didUpdate(snapshot()))
+extension CollectibleListLocalDataController {
+    private func makeLoadingItem() -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return .empty(.loading(.grid))
+        } else {
+            return .empty(.loading(.list))
         }
     }
 }
 
 extension CollectibleListLocalDataController {
-    private func observePendingAccountAssetPairs() {
-        observe(notification: Self.didAddCollectible) {
-            [weak self] notification in
-            guard let self = self else { return }
+    private func makePendingCollectibleListItems() -> [CollectibleListItem] {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
 
-            if let accountAssetPair =
-                notification.userInfo?[
-                    Self.accountAssetPairUserInfoKey
-                ] as? AccountAssetPair {
-
-                self.addAddedAccountAssetPair(
-                    accountAssetPair
-                )
-            }
+        let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates()
+        let pendingOptInCollectibleItems = pendingOptInAssets.compactMap {
+            return $0.isCollectibleAsset ? makePendingCollectibleAssetOptInItem($0) : nil
         }
 
-        observe(notification: Self.didRemoveCollectible) {
-            [weak self] notification in
-            guard let self = self else { return }
-
-            if let accountAssetPair =
-                notification.userInfo?[
-                    Self.accountAssetPairUserInfoKey
-                ] as? AccountAssetPair {
-
-                self.addRemovedAccountAssetPair(
-                    accountAssetPair
-                )
-            }
+        let pendingOptOutAssets = monitor.filterPendingOptOutAssetUpdates()
+        let pendingOptOutCollectibleItems = pendingOptOutAssets.compactMap {
+            return $0.isCollectibleAsset ? makePendingCollectibleAssetOptOutItem($0) : nil
         }
 
-        observe(notification: Self.didSendCollectible) {
-            [weak self] notification in
-            guard let self = self else { return }
+        let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates()
+        let pendingSendPureCollectibleItems =
+            pendingSendPureCollectibleAssets.map(makePendingPureCollectibleAssetSendItem)
 
-            if let accountAssetPair =
-                notification.userInfo?[
-                    Self.accountAssetPairUserInfoKey
-                ] as? AccountAssetPair {
-
-                self.addSentAccountAssetPair(
-                    accountAssetPair
-                )
-            }
-        }
+        return pendingOptInCollectibleItems + pendingOptOutCollectibleItems + pendingSendPureCollectibleItems
     }
 
-    private func addAddedAccountAssetPair(
-        _ accountAssetPair: AccountAssetPair
-    ) {
-        let isAlreadyPending = addedAccountAssetPairs.contains { addedAccountAssetPair in
-            addedAccountAssetPair.account.address == accountAssetPair.account.address &&
-            addedAccountAssetPair.asset.id == accountAssetPair.asset.id
-        }
+    private func makeCollectibleList(query: String?) -> CollectibleList {
+        let collectibleAssets = formSortedCollectibleAssets()
 
-        if isAlreadyPending {
-            return
-        }
-
-        accountAssetPair.asset.state = .pending(.add)
-        addedAccountAssetPairs.append(accountAssetPair)
-
-        if let lastQuery = lastQuery {
-            search(for: lastQuery)
-        } else {
-            deliverContentSnapshot()
-        }
-    }
-
-    private func addRemovedAccountAssetPair(
-        _ accountAssetPair: AccountAssetPair
-    ) {
-        let isAlreadyPending = removedAccountAssetPairs.contains { removedAccountAssetPair in
-            removedAccountAssetPair.account.address == accountAssetPair.account.address &&
-            removedAccountAssetPair.asset.id == accountAssetPair.asset.id
-        }
-
-        if isAlreadyPending {
-            return
-        }
-
-        accountAssetPair.asset.state = .pending(.remove)
-        removedAccountAssetPairs.append(accountAssetPair)
-
-        if let lastQuery = lastQuery {
-            search(for: lastQuery)
-        } else {
-            deliverContentSnapshot()
-        }
-    }
-
-    private func addSentAccountAssetPair(
-        _ accountAssetPair: AccountAssetPair
-    ) {
-        let isAlreadyPending = sentAccountAssetPairs.contains { sentAccountAssetPair in
-            sentAccountAssetPair.account.address == accountAssetPair.account.address &&
-            sentAccountAssetPair.asset.id == accountAssetPair.asset.id
-        }
-
-        if isAlreadyPending {
-            return
-        }
-
-        accountAssetPair.asset.state = .pending(.remove)
-        sentAccountAssetPairs.append(accountAssetPair)
-
-        if let lastQuery = lastQuery {
-            search(for: lastQuery)
-        } else {
-            deliverContentSnapshot()
-        }
-    }
-
-    private func clearPendingAssetPairsIfNeeded() {
-        accounts.forEach {
-            let account = $0.value
-            clearAddedAccountAssetPairsIfNeeded(for: account)
-            clearRemovedAccountAssetPairsIfNeeded(for: account)
-            clearSentAccountAssetPairsIfNeeded(for: account)
-        }
-    }
-
-    private func clearAddedAccountAssetPairsIfNeeded(
-        for account: Account
-    ) {
-        addedAccountAssetPairs = addedAccountAssetPairs.filter {
-            pendingAddedAccountAssetPair in
-            if account.address != pendingAddedAccountAssetPair.account.address {
-                return true
+        let collectibleItems: [CollectibleListItem] = collectibleAssets.compactMap { collectibleAsset in
+            guard let account = account(for: collectibleAsset) else {
+                return nil
             }
 
-            return !account.containsCollectibleAsset(pendingAddedAccountAssetPair.asset.id)
-        }
-    }
-
-    private func clearRemovedAccountAssetPairsIfNeeded(
-        for account: Account
-    ) {
-        removedAccountAssetPairs = removedAccountAssetPairs.filter {
-            pendingRemovedAccountAssetPair in
-            if account.address != pendingRemovedAccountAssetPair.account.address {
-                return true
-            }
-
-            return account.containsCollectibleAsset(pendingRemovedAccountAssetPair.asset.id)
-        }
-    }
-
-    private func clearSentAccountAssetPairsIfNeeded(
-        for account: Account
-    ) {
-        sentAccountAssetPairs = sentAccountAssetPairs.filter {
-            pendingSentAccountAssetPair in
-            if account.address != pendingSentAccountAssetPair.account.address {
-                return true
-            }
-
-            let matchingCollectibleAsset = account.collectibleAssets?.first(
-                matching: (\.id, pendingSentAccountAssetPair.asset.id)
+            /// <note>
+            /// Since we are showing separate pending item for pending opt out, we should filter collectible asset according to.
+            let hasPendingOptOut = hasPendingOptOut(
+                collectibleAsset: collectibleAsset,
+                account: account
             )
-            return (matchingCollectibleAsset?.isOwned ?? false)
+            if hasPendingOptOut {
+                return nil
+            }
+            /// <note>
+            /// Since we are showing separate pending item for pending send pure collectible asset, we should filter collectible asset according to.
+            let hasPendingSendPureCollectibleAsset = hasPendingSendPureCollectibleAsset(
+                collectibleAsset: collectibleAsset,
+                account: account
+            )
+            if hasPendingSendPureCollectibleAsset {
+                return nil
+            }
+
+            guard shouldDisplayWatchAccountCollectibleAsset(account) else {
+                return nil
+            }
+
+            guard shouldDisplayOptedInCollectibleAsset(collectibleAsset) else {
+                return nil
+            }
+
+            if let query = query,
+               !isAssetContains(collectibleAsset, query: query) {
+                return nil
+            }
+
+            let item = makeCollectibleAssetItem(account: account, asset: collectibleAsset)
+            return item
+        }
+
+        let collectibleList = CollectibleList(
+            allItems: collectibleAssets,
+            visibleItems: collectibleItems
+        )
+        return collectibleList
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func makeCollectibleAssetItem(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return makeCollectibleAssetGridItem(account: account, asset: asset)
+        } else {
+            return makeCollectibleAssetListItem(account: account, asset: asset)
         }
     }
 
-    private func getPendingStatus(
-        asset: CollectibleAsset,
+    private func makePendingCollectibleAssetOptOutItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return makePendingCollectibleAssetOptOutGridItem(update)
+        } else {
+            return makePendingCollectibleAssetOptOutListItem(update)
+        }
+    }
+
+    private func makePendingCollectibleAssetOptInItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return makePendingCollectibleAssetOptInGridItem(update)
+        } else {
+            return makePendingCollectibleAssetOptInListItem(update)
+        }
+    }
+
+    private func makePendingPureCollectibleAssetSendItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        if galleryUIStyle.isGrid {
+            return makePendingPureCollectibleAssetSendGridItem(update)
+        } else {
+            return makePendingPureCollectibleAssetSendListItem(update)
+        }
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func makeCollectibleAssetGridItem(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let gridItem = CollectibleListCollectibleAssetGridItem(
+            imageSize: imageSize,
+            item: collectibleAssetItem
+        )
+        return .collectibleAsset(.grid(gridItem))
+    }
+
+    private func makePendingCollectibleAssetOptInGridItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetGridItem(
+            imageSize: imageSize,
+            update: update
+        )
+        return .pendingCollectibleAsset(.grid(item))
+    }
+
+    private func makePendingCollectibleAssetOptOutGridItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetGridItem(
+            imageSize: imageSize,
+            update: update
+        )
+        return .pendingCollectibleAsset(.grid(item))
+    }
+
+    private func makePendingPureCollectibleAssetSendGridItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetGridItem(
+            imageSize: imageSize,
+            update: update
+        )
+        return .pendingCollectibleAsset(.grid(item))
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func makeCollectibleAssetListItem(account: Account, asset: CollectibleAsset) -> CollectibleListItem {
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let listItem = CollectibleListCollectibleAssetListItem(item: collectibleAssetItem)
+        return .collectibleAsset(.list(listItem))
+    }
+
+    private func makePendingCollectibleAssetOptInListItem(_ update: OptInBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetListItem(update: update)
+        return .pendingCollectibleAsset(.list(item))
+    }
+
+    private func makePendingCollectibleAssetOptOutListItem(_ update: OptOutBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetListItem(update: update)
+        return .pendingCollectibleAsset(.list(item))
+    }
+
+    private func makePendingPureCollectibleAssetSendListItem(_ update: SendPureCollectibleAssetBlockchainUpdate) -> CollectibleListItem {
+        let item = CollectibleListPendingCollectibleAssetListItem(update: update)
+        return .pendingCollectibleAsset(.list(item))
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func account(for collectibleAsset: CollectibleAsset) -> Account? {
+        let address = collectibleAsset.optedInAddress
+        let account = address.unwrap { accounts.account(for: $0) }
+        return account
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func hasPendingOptOut(
+        collectibleAsset: CollectibleAsset,
         account: Account
     ) -> Bool {
-        let pendingAccountAssetPairs =
-        addedAccountAssetPairs +
-        removedAccountAssetPairs +
-        sentAccountAssetPairs
-
-        let matchingPendingAccountAssetPair = pendingAccountAssetPairs.first(
-            matching: (\.asset.id, asset.id)
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        return monitor.hasPendingOptOutRequest(
+            assetID: collectibleAsset.id,
+            for: account
         )
-        return matchingPendingAccountAssetPair?.account.address == account.address
+    }
+
+    private func hasPendingSendPureCollectibleAsset(
+        collectibleAsset: CollectibleAsset,
+        account: Account
+    ) -> Bool {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        return monitor.hasPendingSendPureCollectibleAssetRequest(
+            assetID: collectibleAsset.id,
+            for: account
+        )
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func shouldDisplayWatchAccountCollectibleAsset(_ account: Account) -> Bool {
+        if !galleryAccount.isAll {
+            return true
+        }
+
+        if !account.isWatchAccount() {
+            return true
+        }
+
+        return collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList
+    }
+
+    private func shouldDisplayOptedInCollectibleAsset(_ collectibleAsset: CollectibleAsset) -> Bool {
+        if collectibleAsset.isOwned {
+            return true
+        }
+
+        return collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList
     }
 }
 
@@ -735,11 +671,12 @@ extension CollectibleListLocalDataController {
     private func publish(
         _ event: CollectibleDataControllerEvent
     ) {
-        DispatchQueue.main.async {
+        asyncMain {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.lastSnapshot = event.snapshot
+            self.lastQuery = event.query
             self.eventHandler?(event)
         }
     }
@@ -785,24 +722,27 @@ extension CollectibleListLocalDataController {
     }
 }
 
-extension CollectibleListLocalDataController {
-    private final class Cache: Storable {
-        typealias Object = Any
-
-        var filter: Filter? {
-            get {
-                let aRawValue = userDefaults.integer(forKey: filterKey)
-                return Filter(rawValue: aRawValue)
-            }
-            set {
-                if newValue == filter {
-                    return
-                }
-
-                userDefaults.set(newValue?.rawValue, forKey: filterKey)
-            }
+private extension CollectibleListLocalDataController {
+    struct CollectibleList {
+        var totalCount: Int {
+            return allItems.count
+        }
+        var visibleCount: Int {
+            return visibleItems.count
+        }
+        var hiddenCount: Int {
+            return totalCount - visibleItems.count
         }
 
-        private let filterKey = "cache.key.collectibleListFilter"
+        var isEmpty: Bool {
+            return visibleItems.isEmpty
+        }
+
+        let allItems: [CollectibleAsset]
+        let visibleItems: [CollectibleListItem]
     }
+}
+
+extension CollectibleListLocalDataController {
+    typealias Snapshot = CollectibleListUpdate.Snapshot
 }

@@ -28,7 +28,7 @@ final class CollectiblesViewController: BaseViewController {
     private lazy var bottomBannerController = BottomActionableBannerController(
         presentingView: view,
         configuration: BottomActionableBannerControllerConfiguration(
-            bottomMargin: view.safeAreaBottom + 48,
+            bottomMargin: view.safeAreaBottom + 64,
             contentBottomPadding: 20
         )
     )
@@ -39,6 +39,7 @@ final class CollectiblesViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
+        galleryUIStyleCache: .init(),
         configuration: configuration
     )
 
@@ -128,6 +129,8 @@ extension CollectiblesViewController {
                 }
 
                 self.bottomBannerController.dismissError()
+            case .didTapFilter:
+                self.openFilterSelection()
             default:
                 break
             }
@@ -147,6 +150,28 @@ extension CollectiblesViewController {
         ) as? ReceiveCollectibleAccountListViewController
 
         controller?.delegate = self
+    }
+}
+
+extension CollectiblesViewController {
+    private func openFilterSelection() {
+        var uiInteractions = CollectiblesFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [unowned self] in
+            self.dismiss(animated: true) {
+                [unowned self] in
+                self.collectibleListScreen.reload()
+            }
+        }
+        uiInteractions.didCancel = {
+            [unowned self] in
+            self.dismiss(animated: true)
+        }
+
+        open(
+            .collectiblesFilterSelection(uiInteractions: uiInteractions),
+            by: .present
+        )
     }
 }
 

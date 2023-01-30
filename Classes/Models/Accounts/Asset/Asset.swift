@@ -25,7 +25,8 @@ protocol Asset: AnyObject {
     var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
     var decimals: Int { get }
-    var total: UInt64? {get}
+    var total: UInt64? { get }
+    var totalSupply: Decimal? { get }
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
