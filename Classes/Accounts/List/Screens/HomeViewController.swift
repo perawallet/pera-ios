@@ -497,6 +497,7 @@ extension HomeViewController {
         cell.startObserving(event: .action) {
             [weak self] in
             guard let self = self else { return }
+
             self.triggerBannerCTA(item: item)
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
@@ -561,10 +562,17 @@ extension HomeViewController {
     private func triggerBannerCTA(item: AnnouncementViewModel) {
         if let url = item.ctaUrl {
             let title = item.title
-            let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
+            let dappDetail = DiscoverDappParamaters(
+                name: title,
+                url: url.absoluteString,
+                favorites: nil
+            )
 
             self.open(
-                .discoverDappDetail(dappDetail),
+                .discoverDappDetail(
+                    dappDetail,
+                    eventHandler: nil
+                ),
                 by: .push
             )
         }

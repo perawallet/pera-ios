@@ -1353,11 +1353,13 @@ class Router:
                 swapDataStore: SwapDataLocalStore(),
                 configuration: configuration
             )
-        case .discoverDappDetail(let dappParameters):
-            viewController = DiscoverDappDetailScreen(
+        case .discoverDappDetail(let dappParameters, let eventHandler):
+            let screen = DiscoverDappDetailScreen(
                 dappParameters: dappParameters,
                 configuration: configuration
             )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
@@ -1469,6 +1471,7 @@ extension Router {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let bannerController = appConfiguration.bannerController
@@ -1491,21 +1494,22 @@ extension Router {
         }
         
         let sharedDataController = appConfiguration.sharedDataController
-        let accounts = sharedDataController.accountCollection
 
-        guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
+        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
+            !$0.value.isWatchAccount()
+        }
+
+        if !hasNonWatchAccount {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-session-error-no-account".localized
                 )
-                
-                completion(
-                    session.getDeclinedWalletConnectionInfo(on: api.network)
-                )
             }
             return
         }
+
+        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
 
         asyncMain { [weak self] in
             guard let self = self else { return }
@@ -1537,7 +1541,9 @@ extension Router {
                     screen?.dismissScreen {
                         [weak self] in
                         guard let self = self else { return }
-                        
+
+                        if !shouldShowConnectionApproval { return }
+
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }
@@ -1588,18 +1594,18 @@ extension Router {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
-            
-            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
-            let maybeSessionKey = notification.userInfo?[userInfoKey] as? String
 
-            guard let sessionKey = maybeSessionKey else {
+            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
+
+            guard let preferences else {
                 return
             }
             
             let walletConnector = self.appConfiguration.walletConnector
             
             walletConnector.delegate = self
-            walletConnector.connect(to: sessionKey)
+            walletConnector.connect(with: preferences)
         }
     }
 }

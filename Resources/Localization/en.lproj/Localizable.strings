@@ -298,6 +298,7 @@
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-detail-markets-title" = "Markets";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -1332,3 +1333,4 @@
 "discover-error-fallback-body" = "We can't get that information right now.";
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";

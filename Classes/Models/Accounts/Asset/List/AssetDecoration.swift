@@ -38,6 +38,8 @@ final class AssetDecoration: ALGEntityModel {
     let discordURL: URL?
     let telegramURL: URL?
     let twitterURL: URL?
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     var state: AssetState = .ready
 
@@ -78,6 +80,8 @@ final class AssetDecoration: ALGEntityModel {
         self.twitterURL = apiModel.twitterUsername
             .unwrapNonEmptyString()
             .unwrap(URL.twitterURL(username:))
+        self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage ?? 0
+        self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
     }
     
     init(assetDetail: AssetDetail) {
@@ -99,6 +103,8 @@ final class AssetDecoration: ALGEntityModel {
         self.discordURL = nil
         self.telegramURL = nil
         self.twitterURL = nil
+        self.algoPriceChangePercentage = 0
+        self.isAvailableOnDiscover = false
     }
 
     func encode() -> APIModel {
@@ -121,6 +127,8 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.discordURL = discordURL?.absoluteString
         apiModel.telegramURL = telegramURL?.absoluteString
         apiModel.twitterUsername = twitterURL?.pathComponents.last
+        apiModel.algoPriceChangePercentage = algoPriceChangePercentage
+        apiModel.isAvailableOnDiscover = isAvailableOnDiscover
         return apiModel
     }
 
@@ -143,6 +151,8 @@ final class AssetDecoration: ALGEntityModel {
         self.discordURL = asset.discordURL
         self.telegramURL = asset.telegramURL
         self.twitterURL = asset.twitterURL
+        self.algoPriceChangePercentage = asset.algoPriceChangePercentage
+        self.isAvailableOnDiscover = asset.isAvailableOnDiscover
     }
 }
 
@@ -166,6 +176,8 @@ extension AssetDecoration {
         var discordURL: String?
         var telegramURL: String?
         var twitterUsername: String?
+        var algoPriceChangePercentage: Decimal?
+        var isAvailableOnDiscover: Bool?
 
         init() {
             self.assetId = 0
@@ -191,6 +203,8 @@ extension AssetDecoration {
             case discordURL = "discord_url"
             case telegramURL = "telegram_url"
             case twitterUsername = "twitter_username"
+            case algoPriceChangePercentage = "last_24_hours_algo_price_change_percentage"
+            case isAvailableOnDiscover = "available_on_discover_mobile"
         }
     }
 }
