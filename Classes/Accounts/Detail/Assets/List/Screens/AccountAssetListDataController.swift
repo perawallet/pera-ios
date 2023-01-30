@@ -27,50 +27,6 @@ protocol AccountAssetListDataController: AnyObject {
     func reloadIfNeededForPendingAssetRequests()
 }
 
-struct AccountAssetListQuery: Equatable {
-    var keyword: String?
-
-    var showsOnlyNonNFTAssets: Bool = false
-    /// <note>
-    /// Non-NFT amount > 0
-    var showsOnlyOwnedNonNFTAssets: Bool = false
-    /// <note>
-    /// NFT amount > 0
-    var showsOnlyOwnedNFTAssets: Bool = false
-
-    var sortingAlgorithm: AccountAssetSortingAlgorithm?
-
-    init(
-        filteringBy filters: AssetFilterOptions? = nil,
-        sortingBy order: AccountAssetSortingAlgorithm? = nil
-    ) {
-        update(withFilters: filters)
-        update(withSort: order)
-    }
-
-    mutating func update(withFilters filters: AssetFilterOptions?) {
-        showsOnlyNonNFTAssets = !(filters?.displayCollectibleAssetsInAssetList ?? true)
-        showsOnlyOwnedNonNFTAssets = filters?.hideAssetsWithNoBalanceInAssetList ?? false
-        showsOnlyOwnedNFTAssets = !(filters?.displayOptedInCollectibleAssetsInAssetList ?? true)
-    }
-
-    mutating func update(withSort order: AccountAssetSortingAlgorithm?) {
-        sortingAlgorithm = order
-    }
-
-    static func == (
-        lhs: AccountAssetListQuery,
-        rhs: AccountAssetListQuery
-    ) -> Bool {
-        return
-            lhs.keyword == rhs.keyword &&
-            lhs.showsOnlyNonNFTAssets == rhs.showsOnlyNonNFTAssets &&
-            lhs.showsOnlyOwnedNonNFTAssets == rhs.showsOnlyOwnedNonNFTAssets &&
-            lhs.showsOnlyOwnedNFTAssets == rhs.showsOnlyOwnedNFTAssets &&
-            lhs.sortingAlgorithm?.id == rhs.sortingAlgorithm?.id
-    }
-}
-
 enum AccountAssetsSection:
     Int,
     Hashable {
