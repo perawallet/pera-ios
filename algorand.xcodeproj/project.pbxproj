@@ -4007,7 +4007,6 @@
 		D411B36E26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */; };
 		D411B36F26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */; };
 		D411B37426EA1043004FF980 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
-		D411B37526EA1043004FF980 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
 		D411B37626EA1043004FF980 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
 		D411B37826EA1070004FF980 /* AccountListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37726EA1070004FF980 /* AccountListItemViewModel.swift */; };
 		D411B37926EA1070004FF980 /* AccountListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37726EA1070004FF980 /* AccountListItemViewModel.swift */; };
@@ -23238,7 +23237,6 @@
 				D479D0FD26D4FB1F00110E04 /* BannerViewModel.swift in Sources */,
 				D4624C9F28C9ED3200EBF858 /* UILabel+Extensions.swift in Sources */,
 				17AC7277286A0A79006919C3 /* UniversalLinkConfig.swift in Sources */,
-				95B01152276A7F9C00B5CA7B /* EditNoteScreenTheme.swift in Sources */,
 				2B0F629224EC129D00DA22A6 /* TransactionDetailViewModel.swift in Sources */,
 				2B9E2F5126F0F2A0003D824A /* WCAssetConfigTransactionItemViewModel.swift in Sources */,
 				D439518A293540CD0052FEB9 /* CollectibleGalleryUIActionsView.swift in Sources */,
@@ -24083,7 +24081,6 @@
 				17A766702909361B00A8746C /* DiscoverDappDetailNavigationViewTheme.swift in Sources */,
 				D4194321273541870055EC70 /* PageBarStyleSheet.swift in Sources */,
 				178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */,
-				2B9352C727F3B9E9000DA8DB /* AccountShareView.swift in Sources */,
 				D497947A287D8D61004FBF8E /* AppCallAssetListLayout.swift in Sources */,
 				F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
 				2B14B04A286F6FCD005C1396 /* CurrencySelectionLoadingViewTheme.swift in Sources */,
@@ -25459,7 +25456,6 @@
 				D43A0C192790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B119E8A296EE94300FE6962 /* JSONModel+Extensions.swift in Sources */,
-				2B9352B327F2EEAC000DA8DB /* CollectibleDetailOptedInActionCell.swift in Sources */,
 				2B69AB0228BE842E00A8D65D /* SwapAssetSelectionEmptyViewDraft.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
 				2BB8483227E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift in Sources */,
@@ -26134,7 +26130,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -26163,7 +26159,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26191,7 +26187,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26220,7 +26216,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -26250,7 +26246,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26279,7 +26275,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26430,7 +26426,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -26460,7 +26456,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -26616,7 +26612,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
