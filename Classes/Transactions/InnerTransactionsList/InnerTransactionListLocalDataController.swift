@@ -118,21 +118,10 @@ extension InnerTransactionListLocalDataController {
 
             return item
         case .assetTransfer:
-            var asset = draft.asset
-            
-            if let transactionAssetID = transaction.assetTransfer?.assetId,
-               let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] {
-                if assetDecoration.isCollectible {
-                    asset = CollectibleAsset(decoration: assetDecoration)
-                } else {
-                    asset = StandardAsset(decoration: assetDecoration)
-                }
-            }
-            
             let viewModel = AssetInnerTransactionPreviewViewModel(
                 transaction: transaction,
                 account: draft.account,
-                asset: asset,
+                asset: getAsset(from: transaction),
                 currency: currency,
                 currencyFormatter: currencyFormatter
             )
@@ -171,6 +160,19 @@ extension InnerTransactionListLocalDataController {
         }
 
         return nil
+    }
+    
+    private func getAsset(from transaction: Transaction) -> Asset? {
+        if let transactionAssetID = transaction.assetTransfer?.assetId,
+           let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] {
+            if assetDecoration.isCollectible {
+                return CollectibleAsset(decoration: assetDecoration)
+            } else {
+                return StandardAsset(decoration: assetDecoration)
+            }
+        }
+        
+        return draft.asset
     }
 
     private func deliverSnapshot(
