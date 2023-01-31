@@ -22,3 +22,11 @@ protocol SortableAssetListItemViewModel: ViewModel {
     var asset: Asset? { get }
     var valueInUSD: Decimal? { get }
 }
+
+extension SortableAssetListItemViewModel {
+    func getSortableTitle() -> String? {
+        return title?.primaryTitle?.string ??
+            title?.secondaryTitle?.string ??
+            asset.unwrap { String($0.id) }
+    }
+}

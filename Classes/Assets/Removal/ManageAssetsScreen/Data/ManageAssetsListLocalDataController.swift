@@ -183,7 +183,7 @@ extension ManageAssetsListLocalDataController {
             }
             
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                optOutListItems.sort(by: {
+                optOutListItems.sort {
                     guard let firstItem = $0.viewModel.content,
                           let secondItem = $1.viewModel.content else {
                         return false
@@ -193,7 +193,7 @@ extension ManageAssetsListLocalDataController {
                         viewModel: firstItem,
                         otherViewModel: secondItem
                     )
-                })
+                }
             }
             
             var assetItems = optOutListItems.map { viewModel in

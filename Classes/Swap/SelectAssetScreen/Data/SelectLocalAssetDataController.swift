@@ -164,12 +164,12 @@ extension SelectLocalAssetDataController {
             }
             
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                selectAssetListItems.sort(by: {
+                selectAssetListItems.sort {
                     return selectedAccountSortingAlgorithm.getFormula(
                         viewModel: $0.viewModel,
                         otherViewModel: $1.viewModel
                     )
-                })
+                }
             }
             
             let assetItems: [SelectAssetItem] = selectAssetListItems.map({ viewModel in

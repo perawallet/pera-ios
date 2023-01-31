@@ -40,24 +40,18 @@ extension AccountAssetAscendingAmountAlgorithm {
             return assetPreviewCurrencyValue < otherAssetPreviewCurrencyValue
         }
         
-        let assetTitle = getSortableTitle(viewModel)
-        let otherAssetTitle = getSortableTitle(otherViewModel)
+        let assetTitle = viewModel.getSortableTitle()
+        let otherAssetTitle = otherViewModel.getSortableTitle()
         
         guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
-            return true
+            return false
         }
 
         guard let anotherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
-            return false
+            return true
         }
         
         let result = anAssetTitle.localizedCaseInsensitiveCompare(anotherAssetTitle)
         return result == .orderedAscending
-    }
-    
-    private func getSortableTitle(_ viewModel: SortableAssetListItemViewModel) -> String? {
-        return viewModel.title?.primaryTitle?.string ??
-            viewModel.title?.secondaryTitle?.string ??
-            viewModel.asset.unwrap { String($0.id) }
     }
 }

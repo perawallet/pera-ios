@@ -76,12 +76,12 @@ extension SelectAssetViewControllerDataSource {
             }
             
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                listItems.sort(by: {
+                listItems.sort {
                     return selectedAccountSortingAlgorithm.getFormula(
                         viewModel: $0.viewModel,
                         otherViewModel: $1.viewModel
                     )
-                })
+                }
             }
             
             self.items = listItems
