@@ -366,13 +366,13 @@ extension SwapAssetScreen {
         keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
             [weak self] keyboard in
             guard let self = self else { return }
-            self.updateFooterLayoutWhenKeyboardIsShowing(keyboard)
+            self.updateFooterWhenKeyboardIsShowing(keyboard)
         }
 
         keyboardController.performAlongsideWhenKeyboardIsHiding(animated: true) {
             [weak self] keyboard in
             guard let self = self else { return }
-            self.updateFooterLayoutWhenKeyboardIsHiding(keyboard)
+            self.updateFooterWhenKeyboardIsHiding(keyboard)
         }
     }
 
@@ -897,7 +897,7 @@ extension SwapAssetScreen {
         return nil
     }
 
-    private func updateFooterLayoutWhenKeyboardIsShowing(
+    private func updateFooterWhenKeyboardIsShowing(
         _ keyboard: MacaroonForm.Keyboard
     ) {
         footerBackgroundView.snp.updateConstraints {
@@ -906,7 +906,7 @@ extension SwapAssetScreen {
         }
     }
 
-    private func updateFooterLayoutWhenKeyboardIsHiding(
+    private func updateFooterWhenKeyboardIsHiding(
         _ keyboard: MacaroonForm.Keyboard
     ) {
         footerBackgroundView.snp.updateConstraints {
