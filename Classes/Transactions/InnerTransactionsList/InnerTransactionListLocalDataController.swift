@@ -163,16 +163,14 @@ extension InnerTransactionListLocalDataController {
     }
     
     private func getAsset(from transaction: Transaction) -> Asset? {
-        if let transactionAssetID = transaction.assetTransfer?.assetId,
-           let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] {
-            if assetDecoration.isCollectible {
-                return CollectibleAsset(decoration: assetDecoration)
-            } else {
-                return StandardAsset(decoration: assetDecoration)
-            }
+        guard let transactionAssetID = transaction.assetTransfer?.assetId,
+              let assetDecoration = sharedDataController.assetDetailCollection[transactionAssetID] else {
+            return draft.asset
         }
         
-        return draft.asset
+        return assetDecoration.isCollectible ?
+            CollectibleAsset(decoration: assetDecoration) :
+            StandardAsset(decoration: assetDecoration)
     }
 
     private func deliverSnapshot(
