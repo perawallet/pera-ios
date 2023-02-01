@@ -770,7 +770,7 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
 // MARK: - TransactionSendControllerDelegate
 extension SendTransactionScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -798,7 +798,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         _ controller: TransactionSendController,
         didFailValidation error: TransactionSendControllerError
     ) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -858,15 +858,12 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         }
     }
 
-    private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
-        guard !draft.from.requiresLedgerConnection() else {
-            execute()
-            return
-        }
-
-        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
-            execute()
-        }
+    private func stopLoading(execute: @escaping () -> Void) {
+        loadingController?.stopLoadingAfter(
+            seconds: 0.3,
+            on: .main,
+            execute: execute
+        )
     }
 }
 
