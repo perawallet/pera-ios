@@ -151,9 +151,15 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
 
       do {
-
          let transactionDetail = try JSONDecoder().decode(SDKTransaction.self, from: jsonData)
          transactionDraft.fee = transactionDetail.fee
+
+         /// <note>: When transaction detail fetched from SDK, amount will be updated as well
+         /// Otherwise, amount field wouldn't be normalized with minimum balance
+         /// This is only needed for Algo transaction
+         if transactionDraft is AlgosTransactionSendDraft {
+            transactionDraft.amount = transactionDetail.amount.toAlgos
+         }
 
          let currency = sharedDataController.currency
 
