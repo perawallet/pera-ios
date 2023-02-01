@@ -29,7 +29,10 @@ final class ReceiverAccountSelectionListAPIDataController:
 
     private var lastQuery: String?
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.receiverAccountSelectionListAPIDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "com.algorand.queue.receiverAccountSelectionListAPIDataController",
+        qos: .userInitiated
+    )
 
     private var accounts: [AccountHandle] = []
 
