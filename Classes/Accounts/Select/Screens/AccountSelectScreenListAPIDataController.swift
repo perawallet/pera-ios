@@ -18,6 +18,7 @@ import Foundation
 import CoreGraphics
 import MacaroonUtils
 import MacaroonURLImage
+import MacaroonForm
 
 final class AccountSelectScreenListAPIDataController:
     AccountSelectScreenListDataController,
@@ -39,6 +40,7 @@ final class AccountSelectScreenListAPIDataController:
         qos: .userInitiated
     )
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var nameServiceValidator = RegexValidator.nameService()
 
     private var _contacts: [Contact] = []
     private var contacts: [Contact] = []
@@ -87,7 +89,7 @@ extension AccountSelectScreenListAPIDataController {
             }
 
             self.searchQuery = query
-            self.searchNameService(query: query)
+            self.searchNameServicesIfNeeded()
 
             self.reload()
         }
@@ -408,17 +410,33 @@ extension AccountSelectScreenListAPIDataController {
 
 /// <mark>: NFDomain Search
 extension AccountSelectScreenListAPIDataController {
-    private func searchNameService(query: String?) {
-        self.matchedAccounts = []
-
-        guard let searchQuery = query, !searchQuery.isEmptyOrBlank, searchQuery.containsNameService else {
-            nameServiceAPIStatus = .idle
+    private func searchNameServicesIfNeeded() {
+        guard let preparedName = prepareQueryForValidation(searchQuery) else {
             return
         }
-
-        nameServiceAPIStatus = .searching
-
-        api.fetchNameServices(NameServiceQuery(name: searchQuery)) {
+        
+        let validationResult = nameServiceValidator.validate(preparedName)
+        
+        switch validationResult {
+        case .success:
+            nameServiceAPIStatus = .searching
+            
+            let query = NameServiceQuery(name: preparedName)
+            fetchNameServices(query)
+        case .failure:
+            nameServiceAPIStatus = .idle
+        }
+    }
+    
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let text = query?.trimmed().lowercased()
+        return text.unwrapNonEmptyString()
+    }
+    
+    private func fetchNameServices(_ query: NameServiceQuery) {
+        self.matchedAccounts = []
+        
+        api.fetchNameServices(query) {
             [weak self] result in
             guard let self = self else { return }
 
