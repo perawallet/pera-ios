@@ -172,9 +172,9 @@ extension SelectLocalAssetDataController {
                 }
             }
             
-            let assetItems: [SelectAssetItem] = selectAssetListItems.map({ viewModel in
+            let assetItems: [SelectAssetItem] = selectAssetListItems.map { viewModel in
                 return SelectAssetItem.asset(viewModel)
-            })
+            }
             
             snapshot.appendItems(
                 assetItems,

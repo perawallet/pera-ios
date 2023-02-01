@@ -196,7 +196,7 @@ extension ManageAssetsListLocalDataController {
                 }
             }
             
-            var assetItems = optOutListItems.map { viewModel in
+            let assetItems = optOutListItems.map { viewModel in
                 return ManageAssetSearchItem.asset(viewModel)
             }
 

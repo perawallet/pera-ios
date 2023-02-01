@@ -244,9 +244,9 @@ extension AccountAssetListAPIDataController {
             }
 
             assetItems.append(
-                contentsOf: self.assetListItems.map({ viewModel in
+                contentsOf: self.assetListItems.map { viewModel in
                     return .asset(viewModel)
-                })
+                }
             )
 
             let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)

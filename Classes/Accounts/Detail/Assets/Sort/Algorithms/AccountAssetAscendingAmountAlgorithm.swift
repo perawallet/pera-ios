@@ -40,18 +40,8 @@ extension AccountAssetAscendingAmountAlgorithm {
             return assetPreviewCurrencyValue < otherAssetPreviewCurrencyValue
         }
         
-        let assetTitle = viewModel.getSortableTitle()
-        let otherAssetTitle = otherViewModel.getSortableTitle()
+        let titleSortingAlgorithm = AccountAssetAscendingTitleAlgorithm()
         
-        guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
-            return false
-        }
-
-        guard let anotherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
-            return true
-        }
-        
-        let result = anAssetTitle.localizedCaseInsensitiveCompare(anotherAssetTitle)
-        return result == .orderedAscending
+        return titleSortingAlgorithm.getFormula(viewModel: viewModel, otherViewModel: otherViewModel)
     }
 }
