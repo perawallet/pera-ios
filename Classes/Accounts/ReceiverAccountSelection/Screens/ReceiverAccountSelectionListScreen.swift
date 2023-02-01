@@ -380,6 +380,8 @@ extension ReceiverAccountSelectionListScreen {
             return
         }
 
+        searchInputView.endEditing()
+
         switch itemIdentifier {
         case .account(let item, _):
             guard let address = item.address,
