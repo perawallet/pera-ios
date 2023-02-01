@@ -305,7 +305,7 @@ indirect enum Screen {
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
     case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
-    case importAccountError(WebImportErrorScreen.EventHandler)
+    case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
     case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
 }
 

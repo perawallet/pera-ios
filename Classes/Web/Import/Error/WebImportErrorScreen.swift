@@ -30,6 +30,13 @@ final class WebImportErrorScreen: ScrollScreen {
     private lazy var resultView = ResultView()
     private lazy var goToHomeActionView = MacaroonUIKit.Button()
 
+    private let error: ImportAccountScreenError
+
+    init(error: ImportAccountScreenError) {
+        self.error = error
+        super.init()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         addUI(theme)
@@ -51,7 +58,9 @@ final class WebImportErrorScreen: ScrollScreen {
     override func bindData() {
         super.bindData()
 
-        resultView.bindData(WebImportErrorViewModel())
+        resultView.bindData(
+            WebImportErrorViewModel(error: error)
+        )
     }
 
     private func addUI(_ theme: WebImportErrorScreenTheme) {

@@ -20,11 +20,20 @@ final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
-        presentingScreen: self
+        presentingScreen: self,
+        initializeAccount: initializeAccount
     )
 
     private let flow: AccountSetupFlow
 
+    private var initializeAccount: Bool {
+        switch flow {
+        case .initializeAccount:
+            return true
+        default:
+            return false
+        }
+    }
 
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow

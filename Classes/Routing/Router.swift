@@ -1364,8 +1364,8 @@ class Router:
             let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
             screen.eventHandler = eventHandler
             viewController = screen
-        case .importAccountError(let eventHandler):
-            let screen = WebImportErrorScreen()
+        case .importAccountError(let error, let eventHandler):
+            let screen = WebImportErrorScreen(error: error)
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):

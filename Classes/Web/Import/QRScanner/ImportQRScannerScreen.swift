@@ -247,6 +247,10 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
         didOutput metadataObjects: [AVMetadataObject],
         from connection: AVCaptureConnection
     ) {
+        captureSessionQueue.async {
+            self.captureSession?.stopRunning()
+        }
+
         guard let metadataObject = metadataObjects.first else {
             return
         }
@@ -263,12 +267,16 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        if qrBackupParameters.action == .import {
+        validateParameters(qrBackupParameters)
+    }
+
+    private func validateParameters(_ qrBackupParameters: QRBackupParameters) {
+        switch qrBackupParameters.action {
+        case .import:
             eventHandler?(.didReadBackup(parameters: qrBackupParameters), self)
-        } else {
+        default:
             eventHandler?(.didReadUnsupportedAction(parameters: qrBackupParameters), self)
         }
-
     }
 }
 

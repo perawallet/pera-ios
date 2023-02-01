@@ -18,21 +18,83 @@ import Foundation
 import MacaroonUtils
 
 struct AccountImportParameters: JSONModel {
-    let name: String
-    let privateKey: Data
+    let address: String
+    let name: String?
+    let accountType: ImportedAccountType
+    let privateKey: Data?
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        let privateKeyString = try container.decode(String.self, forKey: .privateKey)
-        let privateKeyByteArray = privateKeyString.convertToByteArray(using: ",")
-        privateKey = Data(bytes: privateKeyByteArray)
+        address = try container.decode(String.self, forKey: .address)
+        name = try? container.decodeIfPresent(String.self, forKey: .name)
+        accountType = try container.decode(ImportedAccountType.self, forKey: .accountType)
+        privateKey = try? container.decodeIfPresent(Data.self, forKey: .privateKey)
     }
 }
 
 extension AccountImportParameters {
     enum CodingKeys: String, CodingKey {
+        case address
         case name
+        case accountType = "account_type"
         case privateKey = "private_key"
+    }
+}
+
+enum ImportedAccountType:
+    ALGAPIModel,
+    RawRepresentable,
+    CaseIterable,
+    Hashable {
+    case single
+    case unsupported(String)
+
+    var rawValue: String {
+        switch self {
+        case .single: return "single"
+        case .unsupported(let someType): return someType
+        }
+    }
+
+    var peraAccountType: AccountType {
+        switch self {
+        case .single:
+            return .standard
+        case .unsupported:
+            return .standard
+        }
+    }
+
+    static var allCases: [ImportedAccountType] = [
+        .single
+    ]
+
+    init() {
+        self = .unsupported("Unsupported")
+    }
+
+    init?(rawValue: String) {
+        let someType = Self.allCases.first(matching: (\.rawValue, rawValue))
+        self = someType ?? .unsupported(rawValue)
+    }
+
+    init(peraType: AccountType) {
+        switch peraType {
+        case .standard:
+            self = .single
+        default:
+            self = .unsupported(peraType.rawValue)
+        }
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
+    }
+
+    static func == (
+        lhs: ImportedAccountType,
+        rhs: ImportedAccountType
+    ) -> Bool {
+        return lhs.rawValue == rhs.rawValue
     }
 }

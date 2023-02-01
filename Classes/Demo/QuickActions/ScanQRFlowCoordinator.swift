@@ -30,7 +30,8 @@ final class ScanQRFlowCoordinator:
         session: session
     )
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
-        presentingScreen: presentingScreen
+        presentingScreen: presentingScreen,
+        initializeAccount: false
     )
 
     private lazy var transactionController = TransactionController(
@@ -142,6 +143,11 @@ extension ScanQRFlowCoordinator {
         didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     ) {
+        if qrBackupParameters.version != "1" {
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
+        }
+
         switch qrBackupParameters.action {
         case .export:
             accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
@@ -153,8 +159,18 @@ extension ScanQRFlowCoordinator {
                 self.accountImportCoordinator.launch(qrBackupParameters: qrBackupParameters)
             }
         case .unsupported:
-            break
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
         }
+    }
+
+    private func showUnsupportedQRError(
+        on controller: QRScannerViewController,
+        using qrBackupParameters: QRBackupParameters
+    ) {
+        let message = "web-import-error-unsupported-version-body"
+            .localized(qrBackupParameters.version)
+        controller.bannerController?.presentErrorBanner(title: "Error", message: message)
     }
 }
 
