@@ -38,7 +38,7 @@ class RemoveAssetTransactionDataBuilder: TransactionDataBuilder {
             return nil
         }
 
-        if !isValidAddress(toAccount.address.trimmed) {
+        if !isValidAddress(toAccount.address.trimmed()) {
             return nil
         }
 

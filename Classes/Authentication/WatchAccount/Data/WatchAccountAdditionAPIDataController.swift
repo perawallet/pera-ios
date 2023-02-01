@@ -23,7 +23,7 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
     var eventHandler: EventHandler?
 
     private lazy var apiThrottler = Throttler(intervalInSeconds: 0.3)
-    private lazy var nameServiceValidator = RegexValidator(regex: .nameService)
+    private lazy var nameServiceValidator = RegexValidator.nameService()
 
     private var ongoingEndpointToLoadNameServices: EndpointOperatable?
 
@@ -53,15 +53,25 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
 }
 
 extension WatchAccountAdditionAPIDataController {
-    func searchNameServicesIfNeeded(for query: String?) {
-        nameServiceValidator.validate(query) { validation in
-            switch validation {
-            case .success(let text):
-                fetchNameServices(NameServiceQuery(name: text))
-            case .failure:
-                cancelNameServiceSearchingIfNeeded()
-            }
+    func searchNameServicesIfNeeded(for searchQuery: String?) {
+        guard let preparedName = prepareQueryForValidation(searchQuery) else {
+            return
         }
+        
+        let validationResult = nameServiceValidator.validate(preparedName)
+        
+        switch validationResult {
+        case .success:
+            let query = NameServiceQuery(name: preparedName)
+            fetchNameServices(query)
+        case .failure:
+            cancelNameServiceSearchingIfNeeded()
+        }
+    }
+    
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let text = query?.trimmed().lowercased()
+        return text.unwrapNonEmptyString()
     }
     
     private func fetchNameServices(_ query: NameServiceQuery) {

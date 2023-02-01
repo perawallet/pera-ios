@@ -40,7 +40,7 @@ final class AccountSelectScreenListAPIDataController:
         qos: .userInitiated
     )
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
-    private lazy var nameServiceValidator = RegexValidator(regex: .nameService)
+    private lazy var nameServiceValidator = RegexValidator.nameService()
 
     private var _contacts: [Contact] = []
     private var contacts: [Contact] = []
@@ -411,15 +411,26 @@ extension AccountSelectScreenListAPIDataController {
 /// <mark>: NFDomain Search
 extension AccountSelectScreenListAPIDataController {
     private func searchNameServicesIfNeeded() {
-        nameServiceValidator.validate(searchQuery) { validation in
-            switch validation {
-            case .success(let text):
-                nameServiceAPIStatus = .searching
-                fetchNameServices(NameServiceQuery(name: text))
-            case .failure:
-                nameServiceAPIStatus = .idle
-            }
+        guard let preparedName = prepareQueryForValidation(searchQuery) else {
+            return
         }
+        
+        let validationResult = nameServiceValidator.validate(preparedName)
+        
+        switch validationResult {
+        case .success:
+            nameServiceAPIStatus = .searching
+            
+            let query = NameServiceQuery(name: preparedName)
+            fetchNameServices(query)
+        case .failure:
+            nameServiceAPIStatus = .idle
+        }
+    }
+    
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let text = query?.trimmed().lowercased()
+        return text.unwrapNonEmptyString()
     }
     
     private func fetchNameServices(_ query: NameServiceQuery) {

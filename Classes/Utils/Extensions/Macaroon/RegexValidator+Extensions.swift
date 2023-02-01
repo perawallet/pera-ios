@@ -18,10 +18,14 @@ import Foundation
 import MacaroonForm
 
 extension RegexValidator {
-    init(
+    static func nameService() -> RegexValidator {
+        return RegexValidator(regex: .nameService, optional: false, failMessage: nil)
+    }
+        
+    private init(
         regex: Regex,
-        optional: Bool = false,
-        failMessage: FailMessage? = nil
+        optional: Bool,
+        failMessage: FailMessage?
     ) {
         self.init(
             regex: regex.rawValue,
@@ -32,39 +36,7 @@ extension RegexValidator {
 }
 
 extension RegexValidator {
-    func validate(_ text: String?, _ handler: (RegexValidation) -> Void) {
-        guard let preparedText = prepareForValidation(text) else {
-            handler(.failure)
-            return
-        }
-        
-        let validationResult: Validation = validate(preparedText)
-        
-        switch validationResult {
-        case .success:
-            handler(.success(preparedText))
-        case .failure:
-            handler(.failure)
-        }
-    }
-    
-    private func prepareForValidation(_ query: String?) -> String? {
-        guard let text = query?.trimmed.lowercased(),
-              !text.isEmptyOrBlank else {
-            return nil
-        }
-        
-        return text
-    }
-}
-
-extension RegexValidator {
     enum Regex: String {
         case nameService = #"^([a-z0-9\-]+\.){0,1}([a-z0-9\-]+)(\.[a-z0-9]+)$"#
     }
-}
-
-enum RegexValidation {
-    case success(String?)
-    case failure
 }

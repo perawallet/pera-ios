@@ -33,7 +33,7 @@ extension String {
         return String(prefix(6)) + "..." + String(suffix(6))
     }
 
-    var trimmed: String {
+    func trimmed() -> String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
