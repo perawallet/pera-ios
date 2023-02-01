@@ -66,14 +66,6 @@ struct SendTransactionDraft: TransactionSendDraft {
     var toNameService: NameService?
  }
 
- extension SendTransactionDraft {
-     mutating func resetReceiver() {
-         toAccount = nil
-         toContact = nil
-         toNameService = nil
-     }
- }
-
 enum TransactionMode {
     case algo
     case asset(Asset)

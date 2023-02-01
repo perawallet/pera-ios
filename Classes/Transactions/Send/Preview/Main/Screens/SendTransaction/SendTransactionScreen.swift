@@ -476,11 +476,11 @@ extension SendTransactionScreen: TransactionSignChecking {
         self.draft.updateNote(note)
     }
 
-    private func redirectToPreview() {
+    private func redirectToPreview(_ previewDraft: SendTransactionDraft) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         transactionSendController = TransactionSendController(
-            draft: draft,
+            draft: previewDraft,
             api: api!,
             analytics: analytics
         )
@@ -503,7 +503,7 @@ extension SendTransactionScreen {
         draft.amount = amount.decimalAmount
 
         if draft.hasReceiver {
-            redirectToPreview()
+            redirectToPreview(draft)
             return
         }
 
@@ -520,27 +520,19 @@ extension SendTransactionScreen {
                 return
             }
 
+            var nextDraft = self.draft
+
             switch event {
             case .didSelectAccount(let account):
-                self.draft.resetReceiver()
-
-                self.draft.toAccount = account
-
-                self.redirectToPreview()
+                nextDraft.toAccount = account
             case .didSelectContact(let contact):
-                self.draft.resetReceiver()
-
-                self.draft.toContact = contact
-
-                self.redirectToPreview()
+                nextDraft.toContact = contact
             case .didSelectNameService(let nameService):
-                self.draft.resetReceiver()
-
-                self.draft.toAccount = nameService.account.value
-                self.draft.toNameService = nameService
-
-                self.redirectToPreview()
+                nextDraft.toAccount = nameService.account.value
+                nextDraft.toNameService = nameService
             }
+
+            self.redirectToPreview(nextDraft)
         }
     }
 
@@ -777,7 +769,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
 
             let controller = self.open(
                 .sendTransactionPreview(
-                    draft: self.draft
+                    draft: controller.draft
                 ),
                 by: .push
             ) as? SendTransactionPreviewScreen
