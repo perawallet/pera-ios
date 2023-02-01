@@ -26,11 +26,8 @@ protocol CollectibleListDataController: AnyObject {
     var galleryAccount: CollectibleGalleryAccount { get }
     var galleryUIStyle: CollectibleGalleryUIStyle { get set }
 
-    func load()
-    func reload()
-
-    func search(for query: String)
-    func resetSearch()
+    func load(query: CollectibleListQuery?)
+    func loadByLoading(_ galleryUIStyle: CollectibleGalleryUIStyle)
 
     func startUpdates()
     func stopUpdates()
@@ -40,7 +37,6 @@ enum CollectibleSection:
     Int,
     Hashable {
     case empty
-    case loading
     case header
     case uiActions
     case collectibles
@@ -52,7 +48,13 @@ enum CollectibleListItem: Hashable {
     case watchAccountHeader(ManagementItemViewModel)
     case uiActions
     case collectibleAsset(CollectibleGalleryCollectibleAssetItem)
+    case collectibleAssetsLoading(CollectibleGalleryCollectibleAssetsLoadingItem)
     case pendingCollectibleAsset(CollectibleGalleryPendingCollectibleAssetItem)
+}
+
+enum CollectibleGalleryCollectibleAssetsLoadingItem: Hashable {
+    case grid
+    case list
 }
 
 enum CollectibleGalleryCollectibleAssetItem: Hashable {
@@ -66,14 +68,8 @@ enum CollectibleGalleryPendingCollectibleAssetItem: Hashable {
 }
 
 enum CollectibleEmptyItem: Hashable {
-    case loading(CollectibleGalleryLoadingItem)
     case noContent(CollectiblesNoContentWithActionViewModel)
     case noContentSearch
-}
-
-enum CollectibleGalleryLoadingItem: Hashable {
-    case grid
-    case list
 }
 
 struct CollectibleListCollectibleAssetGridItem: Hashable {
@@ -218,34 +214,6 @@ struct CollectibleListPendingCollectibleAssetListItem: Hashable {
     }
 }
 
-enum CollectibleDataControllerEvent {
-    case didUpdate(CollectibleListUpdate)
-    case didFinishRunning(hasError: Bool)
-
-    var snapshot: CollectibleListUpdate.Snapshot? {
-        switch self {
-        case .didUpdate(let update): return update.snapshot
-        default: return nil
-        }
-    }
-
-    var query: String? {
-        switch self {
-        case .didUpdate(let update): return update.query
-        default: return nil
-        }
-    }
-}
-
-struct CollectibleListUpdate {
-    let query: String?
-    let snapshot: Snapshot
-}
-
-extension CollectibleListUpdate {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleSection, CollectibleListItem>
-}
-
 enum CollectibleGalleryAccount {
     case single(AccountHandle)
     case all
@@ -279,4 +247,17 @@ extension CollectibleGalleryCollectibleAssetItem {
         case .list(let item): return item.asset
         }
     }
+}
+
+enum CollectibleDataControllerEvent {
+    case didUpdate(CollectibleListUpdates)
+    case didFinishRunning(hasError: Bool)
+}
+
+struct CollectibleListUpdates {
+    let snapshot: Snapshot
+}
+
+extension CollectibleListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleSection, CollectibleListItem>
 }

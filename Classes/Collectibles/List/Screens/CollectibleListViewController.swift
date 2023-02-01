@@ -36,25 +36,27 @@ final class CollectibleListViewController:
 
     private var positionYForDisplayingListHeader: CGFloat?
 
-    private var collectibleFilterOptions = CollectibleFilterOptions()
-
+    private var query: CollectibleListQuery
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
     private let theme: CollectibleListViewControllerTheme
 
     private var galleryUIStyleCache: CollectibleGalleryUIStyleCache
+    
     var galleryUIStyle: CollectibleGalleryUIStyle {
         didSet { performUpdatesWhenGalleryUIStyleDidChange(old: oldValue) }
     }
 
     init(
+        query: CollectibleListQuery,
         dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
         theme: CollectibleListViewControllerTheme = .common,
         galleryUIStyleCache: CollectibleGalleryUIStyleCache,
         configuration: ViewControllerConfiguration
     ) {
+        self.query = query
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
         self.theme = theme
@@ -97,13 +99,17 @@ final class CollectibleListViewController:
             switch event {
             case .didUpdate(let update):
                 self.eventHandler?(.didUpdateSnapshot)
-                self.listDataSource.apply(update.snapshot, animatingDifferences: self.isViewAppeared)
+
+                self.listDataSource.apply(
+                    update.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
             case .didFinishRunning(let hasError):
                 self.eventHandler?(.didFinishRunning(hasError: hasError))
             }
         }
 
-        dataController.load()
+        dataController.load(query: query)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -127,6 +133,18 @@ final class CollectibleListViewController:
 }
 
 extension CollectibleListViewController {
+    func reloadData(_ filters: CollectibleFilterOptions?) {
+        query.update(withFilters: filters)
+        dataController.load(query: query)
+    }
+
+    private func reloadData(_ order: CollectibleSortingAlgorithm?) {
+        query.update(withSort: order)
+        dataController.load(query: query)
+    }
+}
+
+extension CollectibleListViewController {
     private func updateListLayoutIfNeededWhenViewDidAppear() {
         if isViewFirstAppeared { return }
 
@@ -144,15 +162,14 @@ extension CollectibleListViewController {
 
         listLayout.galleryUIStyle = galleryUIStyle
         dataController.galleryUIStyle = galleryUIStyle
-
         listView.setCollectionViewLayout(
             makeListLayout(galleryUIStyle),
             animated: true
         )
 
         dataController.startUpdates()
-
-        dataController.reload()
+        
+        dataController.loadByLoading(galleryUIStyle)
 
         galleryUIStyleCache.galleryUIStyle = galleryUIStyle
     }
@@ -294,13 +311,6 @@ extension CollectibleListViewController {
             linkInteractors(cell as! CollectibleGalleryUIActionsCell)
         case .empty(let item):
             switch item {
-            case .loading(let item):
-                switch item {
-                case .grid:
-                    startAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
-                case .list:
-                    startAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
-                }
             case .noContent:
                 linkInteractors(cell as! NoContentWithActionIllustratedCell)
             default:
@@ -312,6 +322,13 @@ extension CollectibleListViewController {
                 startAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
                 startAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
+            }
+        case .collectibleAssetsLoading(let item):
+            switch item {
+            case .grid:
+                startAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
+            case .list:
+                startAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
             }
         default: break
         }
@@ -327,24 +344,19 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
-        case .empty(let item):
-            switch item {
-            case .loading(let item):
-                switch item {
-                case .grid:
-                    stopAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
-                case .list:
-                    stopAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
-                }
-            default:
-                break
-            }
         case .pendingCollectibleAsset(let item):
             switch item {
             case .grid:
                 stopAnimatingGridItemLoadingIfNeeded(cell as? PendingCollectibleGridItemCell)
             case .list:
                 stopAnimatingListItemLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
+            }
+        case .collectibleAssetsLoading(let item):
+            switch item {
+            case .grid:
+                stopAnimatingGridLoadingIfNeeded(cell as? CollectibleGalleryGridLoadingCell)
+            case .list:
+                stopAnimatingListLoadingIfNeeded(cell as? CollectibleGalleryListLoadingCell)
             }
         default:
             break
@@ -534,10 +546,11 @@ extension CollectibleListViewController {
     }
     
     private func clearFilters() {
-        collectibleFilterOptions.displayWatchAccountCollectibleAssetsInCollectibleList = true
-        collectibleFilterOptions.displayOptedInCollectibleAssetsInCollectibleList = true
+        var filters = CollectibleFilterOptions()
+        filters.displayWatchAccountCollectibleAssetsInCollectibleList = true
+        filters.displayOptedInCollectibleAssetsInCollectibleList = true
 
-        reload()
+        reloadData(filters)
     }
 
     private func linkInteractors(
@@ -645,16 +658,8 @@ extension CollectibleListViewController: CollectibleGalleryUIActionsCellDelegate
     }
 
     func collectibleGalleryUIActionsViewDidEditSearchInput(_ cell: CollectibleGalleryUIActionsCell, input: String?) {
-        guard let query = input else {
-            return
-        }
-
-        if query.isEmpty {
-            dataController.resetSearch()
-            return
-        }
-
-        dataController.search(for: query)
+        query.keyword = input
+        dataController.load(query: query)
     }
 
     func collectibleGalleryUIActionsViewDidReturnSearchInput(_ cell: CollectibleGalleryUIActionsCell) {
@@ -669,15 +674,14 @@ extension CollectibleListViewController: ManagementOptionsViewControllerDelegate
         let eventHandler: SortCollectibleListViewController.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
-            
-            self.dismiss(animated: true) {
-                [weak self] in
-                guard let self = self else { return }
 
-                switch event {
-                case .didComplete: self.reload()
-                }
+            switch event {
+            case .didComplete:
+                let order = self.sharedDataController.selectedCollectibleSortingAlgorithm
+                self.reloadData(order)
             }
+
+            self.dismiss(animated: true)
         }
 
         open(
@@ -720,12 +724,6 @@ extension CollectibleListViewController {
         }
 
         return nil
-    }
-}
-
-extension CollectibleListViewController {
-    func reload() {
-        dataController.reload()
     }
 }
 

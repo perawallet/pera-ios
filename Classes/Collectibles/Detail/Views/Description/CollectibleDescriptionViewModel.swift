@@ -21,17 +21,11 @@ struct CollectibleDescriptionViewModel {
     private(set) var description: TextProvider?
     private(set) var isTruncatable: Bool = false
 
-    private let isTruncated: Bool
-    private let characterThreshold: Int
-
     init(
         asset: Asset,
         isTruncated: Bool,
         characterThreshold: Int = 180
     ) {
-        self.isTruncated = isTruncated
-        self.characterThreshold = characterThreshold
-
         bindDescription(
             asset: asset,
             isTruncated: isTruncated,
@@ -75,27 +69,21 @@ extension CollectibleDescriptionViewModel {
         }
 
         let truncatedDescription = description.prefix(characterThreshold)
-        let textAfterTruncatedDescription = description.substring(
-            from: truncatedDescription.endIndex,
-            to: description.endIndex
-        )
+        let textAfterTruncatedDescription = description.substring(withRange: truncatedDescription.endIndex..<description.endIndex)
 
-        let lastTruncatedWordStartIndex = truncatedDescription.lastWordStartIndex
-        let lastTruncatedWordEndIndex = textAfterTruncatedDescription.firstWordEndIndex
-        let lastTruncatedWord = description.substring(
-            from: lastTruncatedWordStartIndex,
-            to: lastTruncatedWordEndIndex
-        )
+        let startIndexOfLastTruncatedWord = truncatedDescription.startIndexOfLastWord
+        let endIndexOfLastTruncatedWord = textAfterTruncatedDescription.endIndexOfFirstWord
+        let lastTruncatedWord = description.substring(withRange: startIndexOfLastTruncatedWord..<endIndexOfLastTruncatedWord)
 
         guard lastTruncatedWord.isValidURL else {
             return ("\(truncatedDescription)...", isTruncatable)
         }
 
-        let isLastWord = lastTruncatedWordEndIndex == description.endIndex
+        let isLastWord = endIndexOfLastTruncatedWord == description.endIndex
         if isLastWord {
             return (description, false)
         } else {
-            return ("\(description.substring(from: description.startIndex, to: lastTruncatedWordEndIndex))...", isTruncatable)
+            return ("\(description.substring(withRange: description.startIndex..<endIndexOfLastTruncatedWord))...", isTruncatable)
         }
     }
 }

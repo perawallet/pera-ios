@@ -34,22 +34,26 @@ final class CollectiblesViewController: BaseViewController {
     )
 
     private lazy var collectibleListScreen = CollectibleListViewController(
-        dataController: CollectibleListLocalDataController(
-            galleryAccount: .all,
-            sharedDataController: sharedDataController
-        ),
+        query: query,
+        dataController: dataController,
         copyToClipboardController: copyToClipboardController,
         galleryUIStyleCache: .init(),
         configuration: configuration
     )
 
+    private let query: CollectibleListQuery
+    private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
     init(
+        query: CollectibleListQuery,
+        dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.query = query
         self.copyToClipboardController = copyToClipboardController
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
 
@@ -158,10 +162,11 @@ extension CollectiblesViewController {
         var uiInteractions = CollectiblesFilterSelectionViewController.UIInteractions()
         uiInteractions.didComplete = {
             [unowned self] in
-            self.dismiss(animated: true) {
-                [unowned self] in
-                self.collectibleListScreen.reload()
-            }
+
+            let filters = CollectibleFilterOptions()
+            self.collectibleListScreen.reloadData(filters)
+
+            self.dismiss(animated: true)
         }
         uiInteractions.didCancel = {
             [unowned self] in

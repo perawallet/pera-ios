@@ -19,33 +19,21 @@ import MacaroonUIKit
 struct CollectibleGalleryListLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-    var managementItemTheme: ManagementItemViewTheme
-    var managementItemTopPadding: LayoutMetric
-    var uiActions: CollectibleGalleryUIActionsViewTheme
-    var uiActionsPaddings: LayoutPaddings
-    var uiActionsHeight: LayoutMetric
-    var collectibleListItemsContentPaddings: LayoutPaddings
-    var collectibleListItem: PreviewLoadingViewTheme
-    var collectibleListItemSeparator: Separator
-    var collectibleListItemHeight: LayoutMetric
-    var numberOfCollectibleListItems: Int
+    var asset: PreviewLoadingViewTheme
+    var assetHeight: LayoutMetric
+    var assetSeparator: Separator
+    var numberOfAssets: Int
 
     init(_ family: LayoutFamily) {
-        self.managementItemTheme = ManagementItemViewTheme()
-        self.managementItemTopPadding = 28
-        self.uiActions = CollectibleGalleryUIActionsViewTheme(family)
-        self.uiActionsPaddings = (16, 0, .noMetric, 0)
-        self.uiActionsHeight = 40
-        self.collectibleListItemsContentPaddings = (16, 0, 8, 0)
-        var collectibleListItem = PreviewLoadingViewCommonTheme()
-        collectibleListItem.imageViewCorner = 4
-        self.collectibleListItem = collectibleListItem
-        self.collectibleListItemSeparator = Separator(
+        var asset = PreviewLoadingViewCommonTheme(family)
+        asset.imageViewCorner = 4
+        self.asset = asset
+        self.assetHeight = 75
+        self.assetSeparator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((56, 0))
         )
-        self.collectibleListItemHeight = 75
-        self.numberOfCollectibleListItems = 8
+        self.numberOfAssets = 10
     }
 }

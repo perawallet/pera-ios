@@ -28,19 +28,6 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             switch itemIdentifier {
             case .empty(let item):
                 switch item {
-                case .loading(let item):
-                    switch item {
-                    case .grid:
-                        return collectionView.dequeue(
-                            CollectibleGalleryGridLoadingCell.self,
-                            at: indexPath
-                        )
-                    case .list:
-                        return collectionView.dequeue(
-                            CollectibleGalleryListLoadingCell.self,
-                            at: indexPath
-                        )
-                    }
                 case .noContent(let item):
                     let cell = collectionView.dequeue(
                         NoContentWithActionIllustratedCell.self,
@@ -121,6 +108,19 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                         item.viewModel
                     )
                     return cell
+                }
+            case .collectibleAssetsLoading(let item):
+                switch item {
+                case .grid:
+                    return collectionView.dequeue(
+                        CollectibleGalleryGridLoadingCell.self,
+                        at: indexPath
+                    )
+                case .list:
+                    return collectionView.dequeue(
+                        CollectibleGalleryListLoadingCell.self,
+                        at: indexPath
+                    )
                 }
             }
         }

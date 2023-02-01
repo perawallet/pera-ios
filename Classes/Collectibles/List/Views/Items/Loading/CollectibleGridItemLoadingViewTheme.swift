@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemLoadingViewTheme.swift
+//   CollectibleGridItemLoadingViewTheme.swift
 
 import MacaroonUIKit
 
-struct CollectibleListItemLoadingViewTheme:
+struct CollectibleGridItemLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
     let titleViewHeight: LayoutMetric

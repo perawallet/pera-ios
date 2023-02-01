@@ -18,6 +18,7 @@ import Foundation
 
 final class AccountDetailAPIDataController: AccountDetailDataController {
     let assetListDataController: AccountAssetListDataController
+    let collectibleListDataController: CollectibleListDataController
 
     init(
         account: AccountHandle,
@@ -27,5 +28,9 @@ final class AccountDetailAPIDataController: AccountDetailDataController {
             account: account,
             sharedDataController: sharedDataController
         )
+        self.collectibleListDataController = CollectibleListLocalDataController(
+           galleryAccount: .single(account),
+           sharedDataController: sharedDataController
+       )
     }
 }

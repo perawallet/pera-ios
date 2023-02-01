@@ -21,152 +21,76 @@ final class CollectibleGalleryGridLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
-    private lazy var managementItemView = ManagementItemView()
-    private lazy var uiActionsView = CollectibleGalleryUIActionsView()
-    private lazy var collectibleListItemsVerticalStack = UIStackView()
+    private lazy var assetsView = VStackView()
 
-    private static let managementItemViewModel = ManagementItemViewModel(
-        .collectible(
-            count: .zero,
-            isWatchAccountDisplay: false
-        )
-    )
-
-    private static let rowCount = 2
-    private static let columnCount = 2
-
-    override init(
-        frame: CGRect
-    ) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        linkInteractors()
-    }
 
-    func customize(
-        _ theme: CollectibleGalleryGridLoadingViewTheme
-    ) {
-        addManagementItem(theme)
-        addUIActions(theme)
-        addCollectibleListItemsVerticalStack(theme)
-        addCollectibleListItem(theme)
-    }
-
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
-
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
-
-    func linkInteractors() {
         isUserInteractionEnabled = false
     }
 
+    func customize(_ theme: CollectibleGalleryGridLoadingViewTheme) {
+        addUI(theme)
+    }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
     class func calculatePreferredSize(
         for theme: CollectibleGalleryGridLoadingViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
 
-        let managementItemSize = ManagementItemView.calculatePreferredSize(
-            CollectibleGalleryGridLoadingView.managementItemViewModel,
-            for: theme.managementItemTheme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        let rowCount = theme.assetsRowCount
+        let columnCount = theme.assetColumnCount
+
+        let rowSpacing = theme.assetHorizontalSpacing
+        let assetWidth = (width - rowSpacing) / columnCount.cgFloat
+
+        let assetHeight =  CollectibleGridItemLoadingView.calculatePreferredSize(
+            for: theme.asset,
+            fittingIn: CGSize((assetWidth.float(), size.height))
         )
 
-        let rowCount = CollectibleGalleryGridLoadingView.rowCount
-        let columnCount = CollectibleGalleryGridLoadingView.columnCount
-
-        let rowSpacing = theme.collectibleListItemsHorizontalStackSpacing
-        let itemWidth = (width - rowSpacing) / columnCount.cgFloat
-
-        let itemHeight =  CollectibleListItemLoadingView.calculatePreferredSize(
-            for: theme.collectibleListItemLoadingViewTheme,
-            fittingIn: CGSize((itemWidth.float(), size.height))
-        )
-
-        let collectibleListItemsVerticalStackItemsHeight = itemHeight.height * rowCount.cgFloat
-
-        let preferredHeight =
-        theme.managementItemTopPadding +
-        managementItemSize.height +
-        theme.uiActionsHeight +
-        theme.uiActionsPaddings.top +
-        theme.collectibleListItemsVerticalStackPaddings.top +
-        theme.collectibleListItemsVerticalStackSpacing +
-        collectibleListItemsVerticalStackItemsHeight +
-        theme.collectibleListItemsVerticalStackPaddings.bottom
+        let assetsHeight = assetHeight.height * rowCount.cgFloat
+        let assetsSpacing = theme.assetVerticalSpacing * (rowCount.cgFloat - 1)
+        let preferredHeight = assetsHeight + assetsSpacing
 
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
 extension CollectibleGalleryGridLoadingView {
-    private func addManagementItem(
-        _ theme: CollectibleGalleryGridLoadingViewTheme
-    ) {
-        managementItemView.customize(theme.managementItemTheme)
-        managementItemView.bindData(CollectibleGalleryGridLoadingView.managementItemViewModel)
+    private func addUI(_ theme: CollectibleGalleryGridLoadingViewTheme) {
+        addAssets(theme)
+    }
 
-        addSubview(managementItemView)
-        managementItemView.snp.makeConstraints {
-            $0.top == theme.managementItemTopPadding
+    private func addAssets(_ theme: CollectibleGalleryGridLoadingViewTheme) {
+        addSubview(assetsView)
+        assetsView.snp.makeConstraints {
+            $0.top == 0
             $0.leading == 0
             $0.trailing == 0
+            $0.bottom == 0
         }
-    }
 
-    private func addUIActions(
-        _ theme: CollectibleGalleryGridLoadingViewTheme
-    ) {
-        uiActionsView.customize(theme.uiActions)
+        assetsView.spacing = theme.assetVerticalSpacing
+        assetsView.distribution = .equalSpacing
 
-        addSubview(uiActionsView)
-        uiActionsView.snp.makeConstraints {
-            $0.top == managementItemView.snp.bottom + theme.uiActionsPaddings.top
-            $0.leading == theme.uiActionsPaddings.leading
-            $0.trailing == theme.uiActionsPaddings.trailing
+        (0..<theme.assetsRowCount).forEach { _ in
+            let assetHorizontalStack = UIStackView()
+            assetHorizontalStack.spacing = theme.assetHorizontalSpacing
+            assetHorizontalStack.distribution = .fillEqually
 
-            $0.fitToHeight(theme.uiActionsHeight)
-        }
-    }
-
-    private func addCollectibleListItemsVerticalStack(
-        _ theme: CollectibleGalleryGridLoadingViewTheme
-    ) {
-        collectibleListItemsVerticalStack.axis = .vertical
-        collectibleListItemsVerticalStack.spacing = theme.collectibleListItemsVerticalStackSpacing
-        collectibleListItemsVerticalStack.distribution = .equalSpacing
-
-        addSubview(collectibleListItemsVerticalStack)
-
-        collectibleListItemsVerticalStack.snp.makeConstraints {
-            $0.top == uiActionsView.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
-            $0.leading == theme.collectibleListItemsVerticalStackPaddings.leading
-            $0.trailing == theme.collectibleListItemsVerticalStackPaddings.trailing
-            $0.bottom == theme.collectibleListItemsVerticalStackPaddings.bottom
-        }
-    }
-
-    private func addCollectibleListItem(
-        _ theme: CollectibleGalleryGridLoadingViewTheme
-    ) {
-        let rowCount = CollectibleGalleryGridLoadingView.rowCount
-        let columnCount = CollectibleGalleryGridLoadingView.columnCount
-
-        (0..<rowCount).forEach { _ in
-            let collectibleListItemsHorizontalStack = UIStackView()
-            collectibleListItemsHorizontalStack.spacing = theme.collectibleListItemsHorizontalStackSpacing
-            collectibleListItemsHorizontalStack.distribution = .fillEqually
-
-            (0..<columnCount).forEach { _ in
-                let collectibleListItem = CollectibleListItemLoadingView()
-                collectibleListItem.customize(theme.collectibleListItemLoadingViewTheme)
-                collectibleListItemsHorizontalStack.addArrangedSubview(collectibleListItem)
+            (0..<theme.assetColumnCount).forEach { _ in
+                let view = CollectibleGridItemLoadingView()
+                view.customize(theme.asset)
+                assetHorizontalStack.addArrangedSubview(view)
             }
 
-            collectibleListItemsVerticalStack.addArrangedSubview(collectibleListItemsHorizontalStack)
+            assetsView.addArrangedSubview(assetHorizontalStack)
         }
     }
 }

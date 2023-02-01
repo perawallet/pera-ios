@@ -29,12 +29,7 @@ final class AccountDetailViewController: PageContainer {
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = createAssetListScreen()
-
-    private lazy var collectibleListScreen = AccountCollectibleListViewController(
-        account: accountHandle,
-        copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    )
+    private lazy var collectibleListScreen = createCollectibleListScreen()
     
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
@@ -572,6 +567,20 @@ extension AccountDetailViewController {
         return AccountAssetListViewController(
             query: query,
             dataController: dataController.assetListDataController,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
+    }
+
+    private func createCollectibleListScreen() -> AccountCollectibleListViewController {
+        let query = CollectibleListQuery(
+            filteringBy: .init(),
+            sortingBy: sharedDataController.selectedCollectibleSortingAlgorithm
+        )
+        return AccountCollectibleListViewController(
+            account: accountHandle,
+            query: query,
+            dataController: dataController.collectibleListDataController,
             copyToClipboardController: copyToClipboardController,
             configuration: configuration
         )

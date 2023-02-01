@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemLoadingView.swift
+//   CollectibleGridItemLoadingView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleListItemLoadingView:
+final class CollectibleGridItemLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
@@ -33,7 +33,7 @@ final class CollectibleListItemLoadingView:
     }
 
     func customize(
-        _ theme: CollectibleListItemLoadingViewTheme
+        _ theme: CollectibleGridItemLoadingViewTheme
     ) {
         addImage(theme)
         addTitle(theme)
@@ -53,7 +53,7 @@ final class CollectibleListItemLoadingView:
     }
 
     class func calculatePreferredSize(
-        for theme: CollectibleListItemLoadingViewTheme,
+        for theme: CollectibleGridItemLoadingViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
@@ -71,9 +71,9 @@ final class CollectibleListItemLoadingView:
     }
 }
 
-extension CollectibleListItemLoadingView {
+extension CollectibleGridItemLoadingView {
     private func addImage(
-        _ theme: CollectibleListItemLoadingViewTheme
+        _ theme: CollectibleGridItemLoadingViewTheme
     ) {
         image.draw(corner: theme.corner)
 
@@ -88,7 +88,7 @@ extension CollectibleListItemLoadingView {
     }
 
     private func addTitle(
-        _ theme: CollectibleListItemLoadingViewTheme
+        _ theme: CollectibleGridItemLoadingViewTheme
     ) {
         title.draw(corner: theme.corner)
 
@@ -102,7 +102,7 @@ extension CollectibleListItemLoadingView {
     }
 
     private func addSubtitle(
-        _ theme: CollectibleListItemLoadingViewTheme
+        _ theme: CollectibleGridItemLoadingViewTheme
     ) {
         subtitle.draw(corner: theme.corner)
 
