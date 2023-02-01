@@ -32,6 +32,11 @@ class RemoveAssetTransactionDataBuilder: TransactionDataBuilder {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
+        
+        if assetTransactionDraft.assetCreator == assetTransactionDraft.from.address {
+            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.optOutFromCreator))
+            return nil
+        }
 
         if !isValidAddress(toAccount.address.trimmed) {
             return nil

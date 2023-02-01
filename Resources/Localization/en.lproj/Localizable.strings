@@ -295,6 +295,7 @@
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";

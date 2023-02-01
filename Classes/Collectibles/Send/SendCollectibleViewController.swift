@@ -520,9 +520,20 @@ extension SendCollectibleViewController: TransactionSignChecking {
                 assetId: draft.collectibleAsset.id
             )
 
-            api?.sendAssetSupportRequest(
-                draft
-            )
+            api?.sendAssetSupportRequest(draft) {
+                [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .success:
+                    return
+                case let .failure(apiError, errorModel):
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: errorModel?.message() ?? apiError.description
+                    )
+                }
+            }
         }
     }
 }
