@@ -19,39 +19,19 @@ import MacaroonUIKit
 struct CollectibleGalleryGridLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-    let managementItemTheme: ManagementItemViewTheme
-    let managementItemTopPadding: LayoutMetric
-
-    let uiActions: CollectibleGalleryUIActionsViewTheme
-    let uiActionsPaddings: LayoutPaddings
-    let uiActionsHeight: LayoutMetric
-
-    let collectibleListItemsVerticalStackSpacing: LayoutMetric
-    let collectibleListItemsVerticalStackPaddings: LayoutPaddings
-
-    let collectibleListItemsHorizontalStackSpacing: LayoutMetric
-
-    let collectibleListItemLoadingViewTheme: CollectibleListItemLoadingViewTheme
-
-    let corner: Corner
+    let assetVerticalSpacing: LayoutMetric
+    let assetHorizontalSpacing: LayoutMetric
+    let asset: CollectibleGridItemLoadingViewTheme
+    let assetsRowCount: Int
+    let assetColumnCount: Int
 
     init(
         _ family: LayoutFamily
     ) {
-        managementItemTheme = ManagementItemViewTheme()
-        managementItemTopPadding = 28
-
-        uiActions = CollectibleGalleryUIActionsViewTheme(family)
-        uiActionsPaddings = (16, 0, .noMetric, 0)
-        uiActionsHeight = 40
-
-        collectibleListItemsVerticalStackSpacing = 20
-        collectibleListItemsVerticalStackPaddings = (28, 0, 8, 0)
-
-        collectibleListItemsHorizontalStackSpacing = 24
-
-        collectibleListItemLoadingViewTheme = CollectibleListItemLoadingViewTheme()
-
-        corner = Corner(radius: 4)
+        self.assetVerticalSpacing = 20
+        self.assetHorizontalSpacing = 24
+        self.asset = CollectibleGridItemLoadingViewTheme(family)
+        self.assetsRowCount = 4
+        self.assetColumnCount = 2
     }
 }

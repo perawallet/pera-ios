@@ -20,12 +20,33 @@ import UIKit
 
 final class CollectibleGalleryListLoadingCell:
     CollectionCell<CollectibleGalleryListLoadingView> {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
+
     static let theme = CollectibleGalleryListLoadingViewTheme()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         contextView.customize(Self.theme)
+    }
+}
+
+extension CollectibleGalleryListLoadingCell {
+    static func calculatePreferredSize(
+        for theme: CollectibleGalleryListLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let contextHorizontalPaddings = contextPaddings.leading + contextPaddings.trailing
+        let maxWidth = size.width - contextHorizontalPaddings
+        let preferredSize = ContextView.calculatePreferredSize(
+            for: theme,
+            fittingIn: CGSize(width: maxWidth, height: size.height)
+        )
+        let width = (preferredSize.width + contextHorizontalPaddings).ceil()
+        let height = (preferredSize.height + contextPaddings.top + contextPaddings.bottom).ceil()
+        return CGSize(width: width, height: height)
     }
 }
 

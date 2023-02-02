@@ -69,8 +69,6 @@ extension CollectibleListLayout {
         switch listSection {
         case .empty:
             return insets
-        case .loading:
-            return insets
         case .header:
             insets.top = 28
             return insets
@@ -97,21 +95,6 @@ extension CollectibleListLayout {
         switch itemIdentifier {
         case .empty(let item):
             switch item {
-            case .loading(let item):
-                switch item {
-                case .grid:
-                    return sizeForGridLoadingItem(
-                        collectionView,
-                        layout: collectionViewLayout,
-                        atSection: indexPath.section
-                    )
-                case .list:
-                    return sizeForListLoadingItem(
-                        collectionView,
-                        layout: collectionViewLayout,
-                        atSection: indexPath.section
-                    )
-                }
             case .noContent(let item):
                 return listView(
                     collectionView,
@@ -157,7 +140,7 @@ extension CollectibleListLayout {
                 return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    sizeForCollectibleAssetCellItem: item.viewModel,
+                    sizeForCollectibleListItem: item.viewModel,
                     atSection: indexPath.section
                 )
             }
@@ -174,6 +157,21 @@ extension CollectibleListLayout {
                     collectionView,
                     layout: collectionViewLayout,
                     sizeForPendingCollectibleAssetCellItem: item.viewModel,
+                    atSection: indexPath.section
+                )
+            }
+        case .collectibleAssetsLoading(let item):
+            switch item {
+            case .grid:
+                return sizeForCollectibleAssetsLoadingGridItem(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    atSection: indexPath.section
+                )
+            case .list:
+                return sizeForCollectibleAssetsLoadingListItem(
+                    collectionView,
+                    layout: collectionViewLayout,
                     atSection: indexPath.section
                 )
             }
@@ -221,7 +219,7 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    private func sizeForGridLoadingItem(
+    private func sizeForCollectibleAssetsLoadingGridItem(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
         atSection section: Int
@@ -236,7 +234,7 @@ extension CollectibleListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = CollectibleGalleryGridLoadingView.calculatePreferredSize(
+        let newSize = CollectibleGalleryGridLoadingCell.calculatePreferredSize(
             for: CollectibleGalleryGridLoadingCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
@@ -246,7 +244,7 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    private func sizeForListLoadingItem(
+    private func sizeForCollectibleAssetsLoadingListItem(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
         atSection section: Int
@@ -261,7 +259,7 @@ extension CollectibleListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = CollectibleGalleryListLoadingView.calculatePreferredSize(
+        let newSize = CollectibleGalleryListLoadingCell.calculatePreferredSize(
             for: CollectibleGalleryListLoadingCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
@@ -378,7 +376,7 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleAssetCellItem item: CollectibleListItemViewModel,
+        sizeForCollectibleListItem item: CollectibleListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier

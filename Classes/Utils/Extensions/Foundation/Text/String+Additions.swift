@@ -17,10 +17,12 @@
 import Foundation
 
 extension String {
-    func substring(
-        from: Index,
-        to: Index
+    func safeSubstring(
+        with range: Range<Index>
     ) -> Substring {
+        let from = range.lowerBound
+        let to = range.upperBound
+
         guard from <= to else {
             return self[startIndex...]
         }
@@ -34,12 +36,12 @@ extension String {
 }
 
 extension StringProtocol {
-    var firstWordEndIndex: Index {
+    var endIndexOfFirstWord: Index {
         let aRange = rangeOfCharacter(from: .whitespacesAndNewlines)
         return aRange?.lowerBound ?? endIndex
     }
 
-    var lastWordStartIndex: Index {
+    var startIndexOfLastWord: Index {
         let aRange = rangeOfCharacter(from: .whitespacesAndNewlines, options: .backwards)
         return aRange?.upperBound ?? startIndex
     }

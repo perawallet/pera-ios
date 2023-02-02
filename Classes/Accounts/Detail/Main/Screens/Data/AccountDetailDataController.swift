@@ -20,4 +20,5 @@ protocol AccountDetailDataController: AnyObject {
     /// <???>
     /// Open or close composition
     var assetListDataController: AccountAssetListDataController { get }
+    var collectibleListDataController: CollectibleListDataController { get }
 }

@@ -21,27 +21,16 @@ final class CollectibleGalleryListLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
-    private lazy var managementItemView = ManagementItemView()
-    private lazy var uiActionsView = CollectibleGalleryUIActionsView()
-    private lazy var collectibleListItemsContentView = VStackView()
+    private lazy var assetsView = VStackView()
 
-    private static let managementItemViewModel = ManagementItemViewModel(
-        .collectible(
-            count: .zero,
-            isWatchAccountDisplay: false
-        )
-    )
-
-    override init(frame: CGRect ) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
 
         isUserInteractionEnabled = false
     }
 
     func customize(_ theme: CollectibleGalleryListLoadingViewTheme) {
-        addManagementItem(theme)
-        addUIActions(theme)
-        addCollectibleListItemsContent(theme)
+        addUI(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -53,76 +42,35 @@ final class CollectibleGalleryListLoadingView:
         fittingIn size: CGSize
     ) -> CGSize {
         let width = size.width
-
-        let managementItemSize = ManagementItemView.calculatePreferredSize(
-            CollectibleGalleryListLoadingView.managementItemViewModel,
-            for: theme.managementItemTheme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        let collectibleListItemsContentHeight = theme.collectibleListItemHeight * theme.numberOfCollectibleListItems.cgFloat
-
-        let preferredHeight =
-            theme.managementItemTopPadding +
-            managementItemSize.height +
-            theme.uiActionsHeight +
-            theme.uiActionsPaddings.top +
-            theme.collectibleListItemsContentPaddings.top +
-            collectibleListItemsContentHeight +
-            theme.collectibleListItemsContentPaddings.bottom
-
-        return CGSize((width, min(preferredHeight.ceil(), size.height)))
+        let height = theme.assetHeight * CGFloat(theme.numberOfAssets)
+        return .init(width: width, height: height)
     }
 }
 
 extension CollectibleGalleryListLoadingView {
-    private func addManagementItem(_ theme: CollectibleGalleryListLoadingViewTheme) {
-        managementItemView.customize(theme.managementItemTheme)
-        managementItemView.bindData(CollectibleGalleryListLoadingView.managementItemViewModel)
+    private func addUI(_ theme: CollectibleGalleryListLoadingViewTheme) {
+        addAssets(theme)
+    }
 
-        addSubview(managementItemView)
-        managementItemView.snp.makeConstraints {
-            $0.top == theme.managementItemTopPadding
+    private func addAssets(_ theme: CollectibleGalleryListLoadingViewTheme) {
+        addSubview(assetsView)
+        assetsView.snp.makeConstraints {
+            $0.top == 0
             $0.leading == 0
             $0.trailing == 0
-        }
-    }
-
-    private func addUIActions(_ theme: CollectibleGalleryListLoadingViewTheme) {
-        uiActionsView.customize(theme.uiActions)
-
-        addSubview(uiActionsView)
-        uiActionsView.snp.makeConstraints {
-            $0.top == managementItemView.snp.bottom + theme.uiActionsPaddings.top
-            $0.leading == theme.uiActionsPaddings.leading
-            $0.trailing == theme.uiActionsPaddings.trailing
-            $0.fitToHeight(theme.uiActionsHeight)
-        }
-    }
-
-    private func addCollectibleListItemsContent(_ theme: CollectibleGalleryListLoadingViewTheme) {
-        addSubview(collectibleListItemsContentView)
-        collectibleListItemsContentView.snp.makeConstraints {
-            $0.top == uiActionsView.snp.bottom + theme.collectibleListItemsContentPaddings.top
-            $0.leading == theme.collectibleListItemsContentPaddings.leading
-            $0.trailing == theme.collectibleListItemsContentPaddings.trailing
-            $0.bottom == theme.collectibleListItemsContentPaddings.bottom
+            $0.bottom == 0
         }
 
-        addCollectibleListItems(theme)
-    }
-
-    private func addCollectibleListItems(_ theme: CollectibleGalleryListLoadingViewTheme) {
-        (1...theme.numberOfCollectibleListItems).forEach { i in
+        (1...theme.numberOfAssets).forEach { i in
             let view = PreviewLoadingView()
-            view.customize(theme.collectibleListItem)
+            view.customize(theme.asset)
             view.snp.makeConstraints {
-                $0.fitToHeight(theme.collectibleListItemHeight)
+                $0.fitToHeight(theme.assetHeight)
             }
-            collectibleListItemsContentView.addArrangedSubview(view)
+            assetsView.addArrangedSubview(view)
 
-            if i != theme.numberOfCollectibleListItems {
-                view.addSeparator(theme.collectibleListItemSeparator)
+            if i != theme.numberOfAssets {
+                view.addSeparator(theme.assetSeparator)
             }
         }
     }

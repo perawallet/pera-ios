@@ -31,10 +31,8 @@ final class AccountCollectibleListViewController: BaseViewController {
     )
 
     private lazy var collectibleListScreen = CollectibleListViewController(
-        dataController: CollectibleListLocalDataController(
-            galleryAccount: .single(account),
-            sharedDataController: sharedDataController
-        ),
+        query: query,
+        dataController: dataController,
         copyToClipboardController: copyToClipboardController,
         galleryUIStyleCache: .init(),
         configuration: configuration
@@ -43,15 +41,20 @@ final class AccountCollectibleListViewController: BaseViewController {
     private lazy var optInActionView = FloatingActionItemButton(hasTitleLabel: false)
 
     private var account: AccountHandle
-
+    private let query: CollectibleListQuery
+    private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         account: AccountHandle,
+        query: CollectibleListQuery,
+        dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
+        self.query = query
+        self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -186,10 +189,11 @@ extension AccountCollectibleListViewController {
         var uiInteractions = AccountCollectibleListFilterSelectionViewController.UIInteractions()
         uiInteractions.didComplete = {
             [unowned self] in
-            self.dismiss(animated: true) {
-                [unowned self] in
-                self.collectibleListScreen.reload()
-            }
+
+            let filters = CollectibleFilterOptions()
+            self.collectibleListScreen.reloadData(filters)
+
+            self.dismiss(animated: true)
         }
         uiInteractions.didCancel = {
             [unowned self] in
