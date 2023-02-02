@@ -22,8 +22,8 @@ import MacaroonForm
 final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataController {
     var eventHandler: EventHandler?
 
-    private lazy var apiThrottler = Throttler(intervalInSeconds: 0.3)
-    private lazy var nameServiceValidator = RegexValidator.nameService()
+    private lazy var apiThrottler: Throttler = .init(intervalInSeconds: 0.3)
+    private lazy var nameServiceValidator: RegexValidator = .nameService()
 
     private var ongoingEndpointToLoadNameServices: EndpointOperatable?
 
@@ -54,24 +54,14 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
 
 extension WatchAccountAdditionAPIDataController {
     func searchNameServicesIfNeeded(for searchQuery: String?) {
-        guard let preparedName = prepareQueryForValidation(searchQuery) else {
+        guard let preparedQuery = prepareQueryForValidation(searchQuery),
+              isQueryValidNameService(preparedQuery) else {
+            cancelNameServiceSearchingIfNeeded()
             return
         }
-        
-        let validationResult = nameServiceValidator.validate(preparedName)
-        
-        switch validationResult {
-        case .success:
-            let query = NameServiceQuery(name: preparedName)
-            fetchNameServices(query)
-        case .failure:
-            cancelNameServiceSearchingIfNeeded()
-        }
-    }
-    
-    private func prepareQueryForValidation(_ query: String?) -> String? {
-        let text = query?.trimmed().lowercased()
-        return text.unwrapNonEmptyString()
+
+        let nameServiceQuery = NameServiceQuery(name: preparedQuery)
+        fetchNameServices(nameServiceQuery)
     }
     
     private func fetchNameServices(_ query: NameServiceQuery) {
@@ -102,6 +92,16 @@ extension WatchAccountAdditionAPIDataController {
         }
 
         apiThrottler.performNext(task)
+    }
+
+    private func isQueryValidNameService(_ query: String?) -> Bool {
+        let validationResult = nameServiceValidator.validate(query)
+        return validationResult.isSuccess
+    }
+
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let preparedQuery = query?.trimmed().lowercased()
+        return preparedQuery.unwrapNonEmptyString()
     }
 
     func cancelNameServiceSearchingIfNeeded() {

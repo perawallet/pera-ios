@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUtils
 import CoreGraphics
 import MacaroonURLImage
+import MacaroonForm
 import MagpieCore
 
 final class ReceiverAccountSelectionListAPIDataController:
@@ -29,7 +30,7 @@ final class ReceiverAccountSelectionListAPIDataController:
 
     private var lastQuery: String?
 
-    private let snapshotQueue = DispatchQueue(
+    private let snapshotQueue: DispatchQueue = .init(
         label: "com.algorand.queue.receiverAccountSelectionListAPIDataController",
         qos: .userInitiated
     )
@@ -42,9 +43,10 @@ final class ReceiverAccountSelectionListAPIDataController:
 
     private var ongoingNameServiceEndpoint: EndpointOperatable?
     private var nameServiceAPIStatus: NameServiceAPIStatus = .idle
+    private var nameServiceValidator: RegexValidator = .nameService()
     private var matchedAccounts: [NameService] = []
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var searchThrottler: Throttler = .init(intervalInSeconds: 0.3)
 
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
@@ -231,8 +233,8 @@ extension ReceiverAccountSelectionListAPIDataController {
                     return snapshot
                 }
 
-                if let query = query,
-                   query.containsNameService {
+                if let preparedQuery = self.prepareQueryForValidation(query),
+                    self.isQueryValidNameService(preparedQuery) {
 
                     if self.nameServiceAPIStatus == .searching {
                         self.addNameServiceSearchingContent(&snapshot)
@@ -261,8 +263,8 @@ extension ReceiverAccountSelectionListAPIDataController {
                 )
             }
 
-            if let searchQuery = query,
-               searchQuery.containsNameService {
+            if let preparedQuery = self.prepareQueryForValidation(query),
+                self.isQueryValidNameService(preparedQuery) {
 
                 if self.nameServiceAPIStatus == .searching {
                     self.addNameServiceSearchingContent(&snapshot)
@@ -539,12 +541,13 @@ extension ReceiverAccountSelectionListAPIDataController {
 
 extension ReceiverAccountSelectionListAPIDataController {
     private func fetchNameServiceIfNeeded(for query: String?) {
-        if shouldFetchNameService(for: query) {
-            fetchNameService(for: query)
+        guard let preparedQuery = prepareQueryForValidation(query),
+              isQueryValidNameService(preparedQuery) else {
+            nameServiceAPIStatus = .idle
             return
         }
 
-        nameServiceAPIStatus = .idle
+        fetchNameService(for: preparedQuery)
     }
 
     private func fetchNameService(for query: String?) {
@@ -553,7 +556,6 @@ extension ReceiverAccountSelectionListAPIDataController {
         matchedAccounts = []
 
         nameServiceAPIStatus = .searching
-
 
         ongoingNameServiceEndpoint = api.fetchNameServices(NameServiceQuery(name: query)) {
             [weak self] result in
@@ -572,14 +574,14 @@ extension ReceiverAccountSelectionListAPIDataController {
         }
     }
 
-    private func shouldFetchNameService(for query: String?) -> Bool {
-        if let query = query,
-           !query.isEmptyOrBlank,
-           query.containsNameService {
-            return true
-        }
+    private func isQueryValidNameService(_ query: String?) -> Bool {
+        let validationResult = nameServiceValidator.validate(query)
+        return validationResult.isSuccess
+    }
 
-        return false
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let preparedQuery = query?.trimmed().lowercased()
+        return preparedQuery.unwrapNonEmptyString()
     }
 
     private func cancelOngoingNameServiceEndpoint() {
