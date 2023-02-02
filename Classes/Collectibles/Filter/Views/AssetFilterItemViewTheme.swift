@@ -27,6 +27,8 @@ struct AssetFilterItemViewTheme:
     var titleMaxWidthRatio: LayoutMetric
     var description: TextStyle
     var descriptionTopMargin: LayoutMetric
+    var toggle: ToggleTheme
+    var disabledStateAlpha: CGFloat
 
     init(
         _ family: LayoutFamily
@@ -45,5 +47,7 @@ struct AssetFilterItemViewTheme:
             .textOverflow(FittingText())
         ]
         self.descriptionTopMargin = 8
+        self.toggle = ToggleTheme(family)
+        self.disabledStateAlpha = 0.5
     }
 }
