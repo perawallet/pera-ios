@@ -169,7 +169,7 @@ extension CollectibleListViewController {
 
         dataController.startUpdates()
         
-        dataController.loadByLoading(galleryUIStyle)
+        dataController.load(galleryUIStyle: galleryUIStyle)
 
         galleryUIStyleCache.galleryUIStyle = galleryUIStyle
     }

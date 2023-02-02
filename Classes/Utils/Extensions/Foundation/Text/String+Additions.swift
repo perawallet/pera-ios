@@ -17,8 +17,8 @@
 import Foundation
 
 extension String {
-    func substring(
-        withRange range: Range<Index>
+    func safeSubstring(
+        with range: Range<Index>
     ) -> Substring {
         let from = range.lowerBound
         let to = range.upperBound

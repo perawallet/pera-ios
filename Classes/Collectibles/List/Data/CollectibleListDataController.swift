@@ -27,7 +27,7 @@ protocol CollectibleListDataController: AnyObject {
     var galleryUIStyle: CollectibleGalleryUIStyle { get set }
 
     func load(query: CollectibleListQuery?)
-    func loadByLoading(_ galleryUIStyle: CollectibleGalleryUIStyle)
+    func load(galleryUIStyle: CollectibleGalleryUIStyle)
 
     func startUpdates()
     func stopUpdates()

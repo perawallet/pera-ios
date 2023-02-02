@@ -69,11 +69,11 @@ extension CollectibleDescriptionViewModel {
         }
 
         let truncatedDescription = description.prefix(characterThreshold)
-        let textAfterTruncatedDescription = description.substring(withRange: truncatedDescription.endIndex..<description.endIndex)
+        let textAfterTruncatedDescription = description.safeSubstring(with: truncatedDescription.endIndex..<description.endIndex)
 
         let startIndexOfLastTruncatedWord = truncatedDescription.startIndexOfLastWord
         let endIndexOfLastTruncatedWord = textAfterTruncatedDescription.endIndexOfFirstWord
-        let lastTruncatedWord = description.substring(withRange: startIndexOfLastTruncatedWord..<endIndexOfLastTruncatedWord)
+        let lastTruncatedWord = description.safeSubstring(with: startIndexOfLastTruncatedWord..<endIndexOfLastTruncatedWord)
 
         guard lastTruncatedWord.isValidURL else {
             return ("\(truncatedDescription)...", isTruncatable)
@@ -83,7 +83,7 @@ extension CollectibleDescriptionViewModel {
         if isLastWord {
             return (description, false)
         } else {
-            return ("\(description.substring(withRange: description.startIndex..<endIndexOfLastTruncatedWord))...", isTruncatable)
+            return ("\(description.safeSubstring(with: description.startIndex..<endIndexOfLastTruncatedWord))...", isTruncatable)
         }
     }
 }

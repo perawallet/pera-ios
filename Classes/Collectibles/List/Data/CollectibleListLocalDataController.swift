@@ -179,7 +179,7 @@ extension CollectibleListLocalDataController {
         sharedDataController.add(self)
     }
 
-    func loadByLoading(_ galleryUIStyle: CollectibleGalleryUIStyle) {
+    func load(galleryUIStyle: CollectibleGalleryUIStyle) {
         cancelOngoingLoading()
         deliverUpdatesForLoading()
 
@@ -255,10 +255,6 @@ extension CollectibleListLocalDataController {
             canDeliverUpdatesForAssets = false
 
             deliverInitialUpdates()
-        case .didStartRunning(let isFirst):
-            if isFirst || lastSnapshot == nil {
-                deliverInitialUpdates()
-            }
         case .didFinishRunning:
             canDeliverUpdatesForAssets = true
 
@@ -294,6 +290,8 @@ extension CollectibleListLocalDataController {
 
                 reload()
             }
+        default:
+            break
         }
     }
 }
@@ -392,18 +390,18 @@ extension CollectibleListLocalDataController {
                 withCollectibleCount: count
             )
         } else {
-            appendSectionsForNonWatchAccountHeader(
+            appendSectionsForNormalAccountHeader(
                 into: &snapshot,
                 withCollectibleCount: count
             )
         }
     }
 
-    private func appendSectionsForNonWatchAccountHeader(
+    private func appendSectionsForNormalAccountHeader(
         into snapshot: inout Snapshot,
         withCollectibleCount count: Int
     ) {
-        let items = makeNonWatchAccountHeaderItems(withCollectibleCount: count)
+        let items = makeNormalAccountHeaderItems(withCollectibleCount: count)
         snapshot.appendSections([.header])
         snapshot.appendItems(
             items,
@@ -531,7 +529,7 @@ extension CollectibleListLocalDataController {
         return [ .uiActions ]
     }
 
-    private func makeNonWatchAccountHeaderItems(withCollectibleCount count: Int) -> [CollectibleListItem] {
+    private func makeNormalAccountHeaderItems(withCollectibleCount count: Int) -> [CollectibleListItem] {
         let viewModel = ManagementItemViewModel(
             .collectible(
                 count: count,
