@@ -12,29 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleDraft.swift
+//   TitleVIewTheme+ReceiverAccountSelectionList.swift
 
-import UIKit
+import Foundation
 
-struct SendCollectibleDraft {
-    let fromAccount: Account
-    let collectibleAsset: CollectibleAsset
-    let image: UIImage?
-
-    var toAccount: Account?
-    var toContact: Contact?
-    var toNameService: NameService?
-    var fee: UInt64?
-
-    var receiverAddress: String? {
-        toAccount?.address ??
-        toContact?.address ??
-        toNameService?.address
-    }
-
-    mutating func resetReceiver() {
-        toAccount = nil
-        toContact = nil
-        toNameService = nil
+extension TitleViewTheme {
+    mutating func configureForReceiverAccountSelectionListHeader() {
+        paddings = (0, 0, 12, 0)
     }
 }

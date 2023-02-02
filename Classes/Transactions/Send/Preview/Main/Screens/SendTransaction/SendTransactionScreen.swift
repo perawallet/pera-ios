@@ -476,11 +476,11 @@ extension SendTransactionScreen: TransactionSignChecking {
         self.draft.updateNote(note)
     }
 
-    private func redirectToPreview() {
+    private func redirectToPreview(_ previewDraft: SendTransactionDraft) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         transactionSendController = TransactionSendController(
-            draft: draft,
+            draft: previewDraft,
             api: api!,
             analytics: analytics
         )
@@ -503,24 +503,36 @@ extension SendTransactionScreen {
         draft.amount = amount.decimalAmount
 
         if draft.hasReceiver {
-            redirectToPreview()
+            redirectToPreview(draft)
             return
         }
 
-        let controller = open(
-            .transactionAccountSelect(draft: draft),
+        let screen = open(
+            .sendAssetReceiverAccountSelectionList(
+                asset: draft.asset,
+                addressInputViewText: nil
+            ),
             by: .push
-        ) as? AccountSelectScreen
-
-        controller?.eventHandler = {
+        ) as? ReceiverAccountSelectionListScreen
+        screen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
-            case .didEditNote(let note):
-                self.didEditNote(note: note)
+            guard let self = self else {
+                return
             }
+
+            var nextDraft = self.draft
+
+            switch event {
+            case .didSelectAccount(let account):
+                nextDraft.toAccount = account
+            case .didSelectContact(let contact):
+                nextDraft.toContact = contact
+            case .didSelectNameService(let nameService):
+                nextDraft.toAccount = nameService.account.value
+                nextDraft.toNameService = nameService
+            }
+
+            self.redirectToPreview(nextDraft)
         }
     }
 
@@ -750,14 +762,14 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
 // MARK: - TransactionSendControllerDelegate
 extension SendTransactionScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
 
             let controller = self.open(
                 .sendTransactionPreview(
-                    draft: self.draft
+                    draft: controller.draft
                 ),
                 by: .push
             ) as? SendTransactionPreviewScreen
@@ -778,7 +790,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         _ controller: TransactionSendController,
         didFailValidation error: TransactionSendControllerError
     ) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -838,15 +850,12 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         }
     }
 
-    private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
-        guard !draft.from.requiresLedgerConnection() else {
-            execute()
-            return
-        }
-
-        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
-            execute()
-        }
+    private func stopLoading(execute: @escaping () -> Void) {
+        loadingController?.stopLoadingAfter(
+            seconds: 0.3,
+            on: .main,
+            execute: execute
+        )
     }
 }
 

@@ -12,29 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleDraft.swift
+//   ReceiverAccountSelectionListTitleSupplementaryCell.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
-struct SendCollectibleDraft {
-    let fromAccount: Account
-    let collectibleAsset: CollectibleAsset
-    let image: UIImage?
+final class ReceiverAccountSelectionListTitleSupplementaryCell:
+    CollectionCell<TitleView>,
+    ViewModelBindable {
+    static let theme: TitleViewTheme = {
+        var theme = TitleViewTheme()
+        theme.configureForReceiverAccountSelectionListHeader()
+        return theme
+    }()
 
-    var toAccount: Account?
-    var toContact: Contact?
-    var toNameService: NameService?
-    var fee: UInt64?
-
-    var receiverAddress: String? {
-        toAccount?.address ??
-        toContact?.address ??
-        toNameService?.address
-    }
-
-    mutating func resetReceiver() {
-        toAccount = nil
-        toContact = nil
-        toNameService = nil
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }
