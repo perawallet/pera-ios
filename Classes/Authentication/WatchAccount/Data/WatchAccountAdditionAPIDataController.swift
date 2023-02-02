@@ -17,11 +17,13 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import MacaroonForm
 
 final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataController {
     var eventHandler: EventHandler?
 
     private lazy var apiThrottler = Throttler(intervalInSeconds: 0.3)
+    private lazy var nameServiceValidator = RegexValidator.nameService()
 
     private var ongoingEndpointToLoadNameServices: EndpointOperatable?
 
@@ -51,7 +53,28 @@ final class WatchAccountAdditionAPIDataController: WatchAccountAdditionDataContr
 }
 
 extension WatchAccountAdditionAPIDataController {
-    func searchNameServices(for query: String?) {
+    func searchNameServicesIfNeeded(for searchQuery: String?) {
+        guard let preparedName = prepareQueryForValidation(searchQuery) else {
+            return
+        }
+        
+        let validationResult = nameServiceValidator.validate(preparedName)
+        
+        switch validationResult {
+        case .success:
+            let query = NameServiceQuery(name: preparedName)
+            fetchNameServices(query)
+        case .failure:
+            cancelNameServiceSearchingIfNeeded()
+        }
+    }
+    
+    private func prepareQueryForValidation(_ query: String?) -> String? {
+        let text = query?.trimmed().lowercased()
+        return text.unwrapNonEmptyString()
+    }
+    
+    private func fetchNameServices(_ query: NameServiceQuery) {
         let task = {
             [weak self] in
             guard let self = self else {
@@ -62,7 +85,6 @@ extension WatchAccountAdditionAPIDataController {
 
             self.publish(.willLoadNameServices)
 
-            let query = NameServiceQuery(name: query)
             self.ongoingEndpointToLoadNameServices = self.api.fetchNameServices(query) {
                 [weak self] result in
                 guard let self = self else { return }
@@ -80,16 +102,6 @@ extension WatchAccountAdditionAPIDataController {
         }
 
         apiThrottler.performNext(task)
-    }
-
-    func shouldSearchNameServices(for query: String?) -> Bool {
-        if let query = query,
-           !query.isEmptyOrBlank,
-           query.containsNameService {
-            return true
-        }
-
-        return false
     }
 
     func cancelNameServiceSearchingIfNeeded() {

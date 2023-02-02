@@ -2461,6 +2461,9 @@
 		2B9A3E7B26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
 		2B9A3E7C26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
 		2B9A3E7D26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
+		2B9DDA35297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
+		2B9DDA36297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
+		2B9DDA37297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */; };
 		2B9E2F3D26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
 		2B9E2F3E26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
 		2B9E2F3F26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */; };
@@ -7130,6 +7133,7 @@
 		2B9A0DA527F45B0D006FC587 /* ManageAssetsListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetsListLocalDataController.swift; sourceTree = "<group>"; };
 		2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAPIModel.swift; sourceTree = "<group>"; };
 		2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGEntityModel.swift; sourceTree = "<group>"; };
+		2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegexValidator+Extensions.swift"; sourceTree = "<group>"; };
 		2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetCreationTransactionView.swift; sourceTree = "<group>"; };
 		2B9E2F4126F0D332003D824A /* WCAssetCreationTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetCreationTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B9E2F4626F0DDB8003D824A /* WCAssetConfigTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetConfigTransactionItemView.swift; sourceTree = "<group>"; };
@@ -18027,6 +18031,7 @@
 				17AC72A32871D209006919C3 /* ImageSource+Size.swift */,
 				F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */,
 				D4624C9D28C9ED3200EBF858 /* UILabel+Extensions.swift */,
+				2B9DDA34297FEE0D00E4BE12 /* RegexValidator+Extensions.swift */,
 			);
 			path = Macaroon;
 			sourceTree = "<group>";
@@ -19681,6 +19686,7 @@
 				2BE4D0702593845F005F5764 /* FirebaseAnalyticsProvider.swift in Sources */,
 				F087090B2790D97600BEE5C2 /* HomeLoadingView.swift in Sources */,
 				2B4EEEC224BE001D00059A16 /* NotificationCell.swift in Sources */,
+				2B9DDA37297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */,
 				2B262717284D668A00ADE371 /* AppCallTransactionItemDraftComposer.swift in Sources */,
 				17A011CB27EB6D1C008C147D /* ALGAPI+Device.swift in Sources */,
 				D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
@@ -21845,6 +21851,7 @@
 				D460D48027FC2BFA009AB634 /* CollectibleListItemOptedInCell.swift in Sources */,
 				2BD36E0F2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */,
 				D45C2D2E27B910360015420F /* SendTransactionPreviewViewTheme.swift in Sources */,
+				2B9DDA36297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */,
 				D4FC5F4A27F5039E0017E81F /* ReceiveCollectibleInfoBoxCell.swift in Sources */,
 				2B4334B427CEE21600A3D9D6 /* NoContentWithActionViewIllustratedTheme.swift in Sources */,
 				2B69A9BD285B7B65004014E2 /* QRScanOptionsViewController.swift in Sources */,
@@ -23556,6 +23563,7 @@
 				17A766702909361B00A8746C /* DiscoverDappDetailNavigationViewTheme.swift in Sources */,
 				D4194321273541870055EC70 /* PageBarStyleSheet.swift in Sources */,
 				2B9352C727F3B9E9000DA8DB /* AccountShareView.swift in Sources */,
+				2B9DDA35297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */,
 				D497947A287D8D61004FBF8E /* AppCallAssetListLayout.swift in Sources */,
 				F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
 				2B14B04A286F6FCD005C1396 /* CurrencySelectionLoadingViewTheme.swift in Sources */,
