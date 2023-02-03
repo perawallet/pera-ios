@@ -22,16 +22,12 @@ import MacaroonUtils
 final class SelectAssetViewControllerDataSource:
     NSObject,
     UICollectionViewDataSource {
-    var isEmpty: Bool {
-        return items.isEmpty
-    }
-
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
-    private var items: [SelectAssetListItem] = []
+    private var itemIdentifiers: [SelectAssetListItemIdentifier] = []
 
     private let account: Account
-
     private let sharedDataController: SharedDataController
 
     init(
@@ -43,10 +39,6 @@ final class SelectAssetViewControllerDataSource:
 
         super.init()
     }
-    
-    subscript(indexPath: IndexPath) -> SelectAssetListItem? {
-        return items[safe: indexPath.item]
-    }
 }
 
 extension SelectAssetViewControllerDataSource {
@@ -55,49 +47,70 @@ extension SelectAssetViewControllerDataSource {
             [weak self] in
             guard let self = self else { return }
 
-            var listItems: [SelectAssetListItem] = []
+            var itemIdentifiers: [SelectAssetListItemIdentifier] = []
 
-            let algoItem = self.makeAssetItem(self.account.algo)
-            listItems.append(algoItem)
+            let algoItemIdentifier = self.makeAssetListItemIdentifier(self.account.algo)
+            itemIdentifiers.append(algoItemIdentifier)
 
-            for blockchainAsset in self.account.assets.someArray {
+            for blockchainAsset in self.account.allAssets.someArray {
                 let asset = self.account[blockchainAsset.id]
 
                 switch asset {
                 case let standardAsset as StandardAsset:
-                    let assetItem = self.makeAssetItem(standardAsset)
-                    listItems.append(assetItem)
+                    let assetListItemIdentifier = self.makeAssetListItemIdentifier(standardAsset)
+                    itemIdentifiers.append(assetListItemIdentifier)
                 case let collectibleAsset as CollectibleAsset where collectibleAsset.isOwned:
-                    let assetItem = self.makeAssetItem(collectibleAsset)
-                    listItems.append(assetItem)
+                    let collectibleAssetListItemIdentifier = self.makeCollectibleAssetListItemIdentifier(collectibleAsset)
+                    itemIdentifiers.append(collectibleAssetListItemIdentifier)
                 default:
                     break
                 }
             }
-            
+
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                listItems.sort {
+                itemIdentifiers.sort {
                     return selectedAccountSortingAlgorithm.getFormula(
-                        viewModel: $0.viewModel,
-                        otherViewModel: $1.viewModel
+                        asset: $0.asset,
+                        otherAsset: $1.asset
                     )
                 }
             }
             
-            self.items = listItems
-
+            self.itemIdentifiers = itemIdentifiers
+            
             asyncMain(execute: completion)
         }
     }
 
-    private func makeAssetItem(_ asset: Asset) -> SelectAssetListItem {
+    private func makeAssetListItemIdentifier(_ asset: Asset) -> SelectAssetListItemIdentifier {
         let item = AssetItem(
             asset: asset,
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter,
             currencyFormattingContext: .listItem
         )
-        return SelectAssetListItem(item: item, account: account)
+        let listItem = SelectAssetListItem(item: item, account: account)
+        return .asset(listItem)
+    }
+
+    private func makeCollectibleAssetListItemIdentifier(_ asset: CollectibleAsset) -> SelectAssetListItemIdentifier {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let listItem = SelectCollectibleAssetListItem(item: item)
+        return .collectibleAsset(listItem)
+    }
+}
+
+extension SelectAssetViewControllerDataSource {
+    func itemIdentifier(for indexPath: IndexPath) -> SelectAssetListItemIdentifier? {
+        return itemIdentifiers[safe: indexPath.item]
+    }
+
+    var isEmpty: Bool {
+        return itemIdentifiers.isEmpty
     }
 }
 
@@ -106,10 +119,10 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        if items.isEmpty {
+        if itemIdentifiers.isEmpty {
             return 2
         } else {
-            return items.count
+            return itemIdentifiers.count
         }
     }
 
@@ -117,31 +130,55 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        if let item = self[indexPath] {
+        let itemIdentifier = itemIdentifier(for: indexPath)
+
+        switch itemIdentifier {
+        case .asset(let item):
             let cell = collectionView.dequeue(
                 AssetListItemCell.self,
                 at: indexPath
             )
             cell.bindData(item.viewModel)
             return cell
-        } else {
-            return collectionView.dequeue(
-                PreviewLoadingCell.self,
+        case .collectibleAsset(let item):
+            let cell = collectionView.dequeue(
+                CollectibleListItemCell.self,
                 at: indexPath
             )
+            cell.bindData(item.viewModel)
+            return cell
+        default:
+            break
+        }
+
+        return collectionView.dequeue(
+            PreviewLoadingCell.self,
+            at: indexPath
+        )
+    }
+}
+
+enum SelectAssetListItemIdentifier {
+    case asset(SelectAssetListItem)
+    case collectibleAsset(SelectCollectibleAssetListItem)
+
+    var asset: Asset {
+        switch self {
+        case .collectibleAsset(let item): return item.asset
+        case .asset(let item): return item.asset
         }
     }
 }
 
 struct SelectAssetListItem: Hashable {
-    let model: Asset
+    let asset: Asset
     let viewModel: SelectAssetListItemViewModel
 
     init(
         item: AssetItem,
         account: Account
     ) {
-        self.model = item.asset
+        self.asset = item.asset
         self.viewModel = SelectAssetListItemViewModel(
             item: item,
             account: account
@@ -149,9 +186,9 @@ struct SelectAssetListItem: Hashable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(model.id)
-        hasher.combine(model.naming.name)
-        hasher.combine(model.naming.unitName)
+        hasher.combine(asset.id)
+        hasher.combine(asset.naming.name)
+        hasher.combine(asset.naming.unitName)
     }
 
     static func == (
@@ -159,8 +196,18 @@ struct SelectAssetListItem: Hashable {
         rhs: SelectAssetListItem
     ) -> Bool {
         return
-            lhs.model.id == rhs.model.id &&
-            lhs.model.naming.name == rhs.model.naming.name &&
-            lhs.model.naming.unitName == rhs.model.naming.unitName
+            lhs.asset.id == rhs.asset.id &&
+            lhs.asset.naming.name == rhs.asset.naming.name &&
+            lhs.asset.naming.unitName == rhs.asset.naming.unitName
+    }
+}
+
+struct SelectCollectibleAssetListItem {
+    let asset: Asset
+    let viewModel: CollectibleListItemViewModel
+
+    init(item: CollectibleAssetItem) {
+        self.asset = item.asset
+        self.viewModel = CollectibleListItemViewModel(item: item)
     }
 }

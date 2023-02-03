@@ -37,8 +37,9 @@ final class SendTransactionScreen: BaseViewController {
 
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var nextButton = Button()
-    private lazy var accountContainerView = TripleShadowView()
-    private lazy var accountView = PrimaryListItemView()
+    private lazy var assetItemCanvasView = TripleShadowView()
+    private lazy var assetItemView = PrimaryListItemView()
+    private lazy var collectibleAssetItemView = CollectibleListItemView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
@@ -136,7 +137,7 @@ final class SendTransactionScreen: BaseViewController {
         super.prepareLayout()
 
         addNextButton()
-        addAccountView()
+        addAssetItem()
         addNumpad()
         addButtons()
         addLabels()
@@ -145,7 +146,6 @@ final class SendTransactionScreen: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        bindAssetPreview()
         bindAmount()
 
         self.note = draft.lockedNote ?? draft.note
@@ -178,33 +178,6 @@ extension SendTransactionScreen {
 }
 
 extension SendTransactionScreen {
-    private func bindAssetPreview() {
-        let currency = sharedDataController.currency
-
-        let viewModel: PrimaryListItemViewModel
-
-        switch draft.transactionMode {
-        case .algo:
-            let algoAssetItem = AssetItem(
-                asset: draft.from.algo,
-                currency: sharedDataController.currency,
-                currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
-            )
-            viewModel = AssetListItemViewModel(algoAssetItem)
-        case .asset(let asset):
-            let assetItem = AssetItem(
-                asset: asset,
-                currency: currency,
-                currencyFormatter: currencyFormatter,
-                currencyFormattingContext: .standalone()
-            )
-            viewModel = AssetListItemViewModel(assetItem)
-        }
-
-        accountView.bindData(viewModel)
-    }
-
     private func bindAmount() {
         let amountValue = self.amount
         var showingValue = ""
@@ -349,23 +322,72 @@ extension SendTransactionScreen {
         }
     }
 
-    private func addAccountView() {
-        accountView.customize(AssetListItemTheme())
+    private func addAssetItem() {
+        let isCollectible = draft.asset is CollectibleAsset
+        let itemView = isCollectible ? makeCollectibleAssetItemView() : makeAssetItemView()
 
-        accountContainerView.drawAppearance(shadow: theme.accountContainerFirstShadow)
-        accountContainerView.drawAppearance(secondShadow: theme.accountContainerSecondShadow)
-        accountContainerView.drawAppearance(thirdShadow: theme.accountContainerThirdShadow)
+        assetItemCanvasView.drawAppearance(shadow: theme.accountContainerFirstShadow)
+        assetItemCanvasView.drawAppearance(secondShadow: theme.accountContainerSecondShadow)
+        assetItemCanvasView.drawAppearance(thirdShadow: theme.accountContainerThirdShadow)
 
-        view.addSubview(accountContainerView)
-        accountContainerView.snp.makeConstraints { make in
+        view.addSubview(assetItemCanvasView)
+        assetItemCanvasView.snp.makeConstraints { make in
             make.bottom.equalTo(nextButton.snp.top).offset(theme.defaultBottomInset)
             make.leading.trailing.equalToSuperview().inset(theme.defaultLeadingInset)
         }
 
-        accountContainerView.addSubview(accountView)
-        accountView.snp.makeConstraints { make in
+        assetItemCanvasView.addSubview(itemView)
+        itemView.snp.makeConstraints { make in
             make.setPaddings(theme.accountPaddings)
         }
+    }
+
+    private func makeAssetItemView() -> PrimaryListItemView {
+        let view = PrimaryListItemView()
+        view.customize(AssetListItemTheme())
+        let viewModel = makeAssetItemViewModel()
+        view.bindData(viewModel)
+        return view
+    }
+
+    private func makeAssetItemViewModel() -> PrimaryListItemViewModel {
+        let currency = sharedDataController.currency
+
+        let viewModel: PrimaryListItemViewModel
+
+        switch draft.transactionMode {
+        case .algo:
+            let algoAssetItem = AssetItem(
+                asset: draft.from.algo,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(algoAssetItem)
+        case .asset(let asset):
+            let assetItem = AssetItem(
+                asset: asset,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(assetItem)
+        }
+
+        return viewModel
+    }
+
+    private func makeCollectibleAssetItemView() -> CollectibleListItemView {
+        let view = CollectibleListItemView()
+        view.customize(CollectibleListItemViewTheme())
+        let item = CollectibleAssetItem(
+            account: draft.from,
+            asset: draft.asset as! CollectibleAsset,
+            amountFormatter: .init()
+        )
+        let viewModel = CollectibleListItemViewModel(item: item)
+        view.bindData(viewModel)
+        return view
     }
 
     private func addNumpad() {
@@ -374,7 +396,7 @@ extension SendTransactionScreen {
 
         view.addSubview(numpadView)
         numpadView.snp.makeConstraints { make in
-            make.bottom.equalTo(accountView.snp.top).offset(theme.numpadBottomInset)
+            make.bottom.equalTo(assetItemCanvasView.snp.top).offset(theme.numpadBottomInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -476,11 +498,11 @@ extension SendTransactionScreen: TransactionSignChecking {
         self.draft.updateNote(note)
     }
 
-    private func redirectToPreview() {
+    private func redirectToPreview(_ previewDraft: SendTransactionDraft) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         transactionSendController = TransactionSendController(
-            draft: draft,
+            draft: previewDraft,
             api: api!,
             analytics: analytics
         )
@@ -503,24 +525,36 @@ extension SendTransactionScreen {
         draft.amount = amount.decimalAmount
 
         if draft.hasReceiver {
-            redirectToPreview()
+            redirectToPreview(draft)
             return
         }
 
-        let controller = open(
-            .transactionAccountSelect(draft: draft),
+        let screen = open(
+            .sendAssetReceiverAccountSelectionList(
+                asset: draft.asset,
+                addressInputViewText: nil
+            ),
             by: .push
-        ) as? AccountSelectScreen
-
-        controller?.eventHandler = {
+        ) as? ReceiverAccountSelectionListScreen
+        screen?.eventHandler = {
             [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
-            case .didEditNote(let note):
-                self.didEditNote(note: note)
+            guard let self = self else {
+                return
             }
+
+            var nextDraft = self.draft
+
+            switch event {
+            case .didSelectAccount(let account):
+                nextDraft.toAccount = account
+            case .didSelectContact(let contact):
+                nextDraft.toContact = contact
+            case .didSelectNameService(let nameService):
+                nextDraft.toAccount = nameService.account.value
+                nextDraft.toNameService = nameService
+            }
+
+            self.redirectToPreview(nextDraft)
         }
     }
 
@@ -750,14 +784,14 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
 // MARK: - TransactionSendControllerDelegate
 extension SendTransactionScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
 
             let controller = self.open(
                 .sendTransactionPreview(
-                    draft: self.draft
+                    draft: controller.draft
                 ),
                 by: .push
             ) as? SendTransactionPreviewScreen
@@ -778,7 +812,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         _ controller: TransactionSendController,
         didFailValidation error: TransactionSendControllerError
     ) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -838,15 +872,12 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
         }
     }
 
-    private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
-        guard !draft.from.requiresLedgerConnection() else {
-            execute()
-            return
-        }
-
-        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
-            execute()
-        }
+    private func stopLoading(execute: @escaping () -> Void) {
+        loadingController?.stopLoadingAfter(
+            seconds: 0.3,
+            on: .main,
+            execute: execute
+        )
     }
 }
 
@@ -919,9 +950,21 @@ extension SendTransactionScreen {
             receiver: receiverAddress,
             assetId: draft.asset!.id
         )
-        api?.sendAssetSupportRequest(
-            draft
-        )
+        
+        api?.sendAssetSupportRequest(draft) {
+            [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success:
+                return
+            case let .failure(apiError, errorModel):
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: errorModel?.message() ?? apiError.description
+                )
+            }
+        }
     }
 
     private func openOptInInformation() {

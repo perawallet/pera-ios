@@ -366,13 +366,13 @@ extension SwapAssetScreen {
         keyboardController.performAlongsideWhenKeyboardIsShowing(animated: true) {
             [weak self] keyboard in
             guard let self = self else { return }
-            self.updateSwapActionLayoutWhenKeyboardIsShowing(keyboard)
+            self.updateFooterWhenKeyboardIsShowing(keyboard)
         }
 
         keyboardController.performAlongsideWhenKeyboardIsHiding(animated: true) {
             [weak self] keyboard in
             guard let self = self else { return }
-            self.updateSwapActionLayoutWhenKeyboardIsHiding(keyboard)
+            self.updateFooterWhenKeyboardIsHiding(keyboard)
         }
     }
 
@@ -897,31 +897,21 @@ extension SwapAssetScreen {
         return nil
     }
 
-    private func updateSwapActionLayoutWhenKeyboardIsShowing(
+    private func updateFooterWhenKeyboardIsShowing(
         _ keyboard: MacaroonForm.Keyboard
     ) {
-        swapActionView.snp.updateConstraints {
+        footerBackgroundView.snp.updateConstraints {
             let bottomInsetUnderKeyboard = bottomInsetUnderKeyboardWhenKeyboardDidShow(keyboardController)
             $0.bottom == bottomInsetUnderKeyboard
         }
     }
 
-    private func updateSwapActionLayoutWhenKeyboardIsHiding(
+    private func updateFooterWhenKeyboardIsHiding(
         _ keyboard: MacaroonForm.Keyboard
     ) {
-        let bottomInsetUnderKeyboard =
-            bottomInsetUnderKeyboardWhenKeyboardDidShow(
-                keyboardController
-            )
-
-        /// <note>
-        /// This is valid if the bottom inset under the keyboard is temporarily used.
-        if bottomInsetUnderKeyboard > 0 {
-            return
-        }
-
-        swapActionView.snp.updateConstraints {
-            $0.bottom == theme.swapActionEdgeInsets.bottom
+        footerBackgroundView.snp.updateConstraints {
+            let bottomInsetUnderKeyboard = bottomInsetUnderKeyboardWhenKeyboardDidShow(keyboardController)
+            $0.bottom == bottomInsetUnderKeyboard
         }
     }
 

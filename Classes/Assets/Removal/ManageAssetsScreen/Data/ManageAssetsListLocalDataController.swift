@@ -23,6 +23,7 @@ final class ManageAssetsListLocalDataController:
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
     
     private(set) var account: Account
 
@@ -53,14 +54,6 @@ final class ManageAssetsListLocalDataController:
     
     deinit {
         sharedDataController.remove(self)
-    }
-    
-    subscript(index: Int) -> Asset? {
-        return searchResults[safe: index]
-    }
-    
-    subscript(assetID: AssetID) -> Asset? {
-        return searchResults.first(matching: (\.id, assetID))
     }
 }
 
@@ -167,35 +160,30 @@ extension ManageAssetsListLocalDataController {
             
             var optOutListItems: [ManageAssetSearchItem] = []
 
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
-
             self.searchResults.forEach { asset in
-                let item = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-                let optOutAssetListItem = OptOutAssetListItem(item: item)
-                optOutListItems.append(.asset(optOutAssetListItem))
+                if let collectibleAsset = asset as? CollectibleAsset {
+                    let collectibleAssetItem = self.makeCollectibleAssetItem(collectibleAsset)
+                    optOutListItems.append(collectibleAssetItem)
+                    return
+                }
+
+                if let standardAsset = asset as? StandardAsset {
+                    let assetItem = self.makeStandardAssetItem(standardAsset)
+                    optOutListItems.append(assetItem)
+                    return
+                }
             }
             
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
                 optOutListItems.sort {
-                    if case let .asset(firstItem) = $0,
-                       case let .asset(secondItem) = $1 {
-                        guard let firstViewModel = firstItem.viewModel.content,
-                              let secondViewModel = secondItem.viewModel.content else {
-                            return false
-                        }
-
-                        return selectedAccountSortingAlgorithm.getFormula(
-                            viewModel: firstViewModel,
-                            otherViewModel: secondViewModel
-                        )
+                    guard let firstItem = $0.asset, let secondItem = $1.asset else {
+                        return false
                     }
-
-                    return false
+                    
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        asset: firstItem,
+                        otherAsset: secondItem
+                    )
                 }
             }
 
@@ -208,7 +196,29 @@ extension ManageAssetsListLocalDataController {
             return snapshot
         }
     }
-    
+
+    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetSearchItem {
+        let currency = sharedDataController.currency
+        let currencyFormatter = currencyFormatter
+        let item = AssetItem(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        let optOutAssetListItem = OptOutAssetListItem(item: item)
+        return .asset(optOutAssetListItem)
+    }
+
+    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetSearchItem {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: item)
+        return .collectibleAsset(optOutCollectibleAssetListItem)
+    }
+
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()

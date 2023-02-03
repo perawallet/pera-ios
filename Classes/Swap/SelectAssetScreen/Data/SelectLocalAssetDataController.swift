@@ -169,8 +169,8 @@ extension SelectLocalAssetDataController {
                      if case let .asset(firstItem) = $0,
                         case let .asset(secondItem) = $1 {
                          return selectedAccountSortingAlgorithm.getFormula(
-                            viewModel: firstItem.viewModel,
-                            otherViewModel: secondItem.viewModel
+                            asset: firstItem.asset,
+                            otherAsset: secondItem.asset
                          )
                      }
                      

@@ -29,11 +29,11 @@ struct AccountAssetAscendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetAscendingTitleAlgorithm {
     func getFormula(
-        viewModel: SortableAssetListItemViewModel,
-        otherViewModel: SortableAssetListItemViewModel
+        asset: Asset,
+        otherAsset: Asset
     ) -> Bool {
-        let assetTitle = viewModel.getSortableTitle()
-        let otherAssetTitle = otherViewModel.getSortableTitle()
+        let assetTitle = getSortableTitle(from: asset)
+        let otherAssetTitle = getSortableTitle(from: otherAsset)
         
         guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
             return false
@@ -45,5 +45,11 @@ extension AccountAssetAscendingTitleAlgorithm {
 
         let result = anAssetTitle.localizedCaseInsensitiveCompare(anotherAssetTitle)
         return result == .orderedAscending
+    }
+    
+    func getSortableTitle(from asset: Asset) -> String? {
+        return asset.naming.name ??
+            asset.naming.unitName ??
+            String(asset.id)
     }
 }

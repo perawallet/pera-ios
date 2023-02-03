@@ -23,14 +23,15 @@ final class LedgerAccountDetailDataSource: NSObject {
     var eventHandler: EventHandler?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
+
+    private var assetListItems: [LedgerAccountDetailAssetListItem] = []
 
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let loadingController: LoadingController?
     private let account: Account
     private let rekeyedAccounts: [Account]
-
-    private var assetItems: [AssetListItemViewModel] = []
 
     init(
         api: ALGAPI,
@@ -51,7 +52,7 @@ final class LedgerAccountDetailDataSource: NSObject {
 extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
     private var sections: [Section] {
         var sections: [Section] = [.ledgerAccount]
-        if !assetItems.isEmpty { sections.append(.assets) }
+        if !assetListItems.isEmpty { sections.append(.assets) }
         if !rekeyedAccounts.isEmpty { sections.append(.rekeyedAccounts) }
         return sections
     }
@@ -62,12 +63,9 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
-        case .ledgerAccount:
-            return 1
-        case .assets:
-            return assetItems.count
-        case .rekeyedAccounts:
-            return account.isRekeyed() ? 1 : rekeyedAccounts.count
+        case .ledgerAccount: return 1
+        case .assets: return assetListItems.count
+        case .rekeyedAccounts: return account.isRekeyed() ? 1 : rekeyedAccounts.count
         }
     }
 
@@ -109,9 +107,24 @@ extension LedgerAccountDetailDataSource {
     }
 
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetListItemCell.self, at: indexPath)
-        cell.bindData(assetItems[indexPath.item])
-        return cell
+        let assetListItem = assetListItems[indexPath.item]
+
+        switch assetListItem {
+        case .asset(let item):
+            let cell = collectionView.dequeue(
+                AssetListItemCell.self,
+                at: indexPath
+            )
+            cell.bindData(item.viewModel)
+            return cell
+        case .collectibleAsset(let item):
+            let cell = collectionView.dequeue(
+                CollectibleListItemCell.self,
+                at: indexPath
+            )
+            cell.bindData(item.viewModel)
+            return cell
+        }
     }
 
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -147,22 +160,13 @@ extension LedgerAccountDetailDataSource {
 
 extension LedgerAccountDetailDataSource {
     func fetchAssets() {
-        let currency = sharedDataController.currency
-        let currencyFormatter = currencyFormatter
-
-        let algoAssetItem = AssetItem(
-            asset: account.algo,
-            currency: currency,
-            currencyFormatter: currencyFormatter
-        )
-        let algoViewModel = AssetListItemViewModel(algoAssetItem)
-
-        assetItems.append(algoViewModel)
+        let algoAssetListItem = makeAssetListItem(account.algo)
+        assetListItems.append(algoAssetListItem)
 
         guard let assets = account.assets,
               !assets.isEmpty else {
-                  return
-              }
+            return
+        }
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -195,30 +199,25 @@ extension LedgerAccountDetailDataSource {
                             let collectibleAsset = CollectibleAsset(asset: asset, decoration: assetDetail)
                             self.account.append(collectibleAsset)
 
-                            let collectibleAssetItem = AssetItem(
-                                asset: collectibleAsset,
-                                currency: currency,
-                                currencyFormatter: currencyFormatter
-                            )
-                            let viewModel = AssetListItemViewModel(collectibleAssetItem)
-                            self.assetItems.append(viewModel)
+                            let collectibleAssetListItem = self.makeCollectibleAssetListItem(collectibleAsset)
+                            self.assetListItems.append(collectibleAssetListItem)
                         } else {
                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
                             self.account.append(standardAsset)
 
-                            let standardAssetItem = AssetItem(
-                                asset: standardAsset,
-                                currency: currency,
-                                currencyFormatter: currencyFormatter
-                            )
-                            let viewModel = AssetListItemViewModel(standardAssetItem)
-                            self.assetItems.append(viewModel)
+                            let assetListItem = self.makeAssetListItem(standardAsset)
+                            self.assetListItems.append(assetListItem)
                         }
                     }
                 }
                 
                 if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                    self.assetItems.sort(by: selectedAccountSortingAlgorithm.getFormula)
+                    self.assetListItems.sort {
+                        return selectedAccountSortingAlgorithm.getFormula(
+                            asset: $0.asset,
+                            otherAsset: $1.asset
+                        )
+                    }
                 }
 
                 self.eventHandler?(.didLoadData)
@@ -227,11 +226,104 @@ extension LedgerAccountDetailDataSource {
             }
         }
     }
+
+    private func makeAssetListItem(_ asset: Asset) -> LedgerAccountDetailAssetListItem {
+        let currency = sharedDataController.currency
+        let item = AssetItem(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        
+        return .asset(LedgerAccountAssetListItem(item: item))
+    }
+
+    private func makeCollectibleAssetListItem(_ asset: CollectibleAsset) -> LedgerAccountDetailAssetListItem {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        
+        return .collectibleAsset(LedgerAccountCollectibleListItem(item: item))
+    }
 }
 
 extension LedgerAccountDetailDataSource {
     enum Event {
         case didLoadData
         case didFailLoadingData
+    }
+}
+
+enum LedgerAccountDetailAssetListItem {
+    case asset(LedgerAccountAssetListItem)
+    case collectibleAsset(LedgerAccountCollectibleListItem)
+}
+
+extension LedgerAccountDetailAssetListItem {
+    var asset: Asset {
+        switch self {
+        case .asset(let item): return item.asset
+        case .collectibleAsset(let item): return item.asset
+        }
+    }
+}
+
+struct LedgerAccountAssetListItem: Hashable {
+    let asset: Asset
+    let viewModel: AssetListItemViewModel
+    
+    init(item: AssetItem) {
+        self.asset = item.asset
+        self.viewModel = AssetListItemViewModel(item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(asset.id)
+        hasher.combine(viewModel.title?.primaryTitle?.string)
+        hasher.combine(viewModel.title?.secondaryTitle?.string)
+        hasher.combine(viewModel.primaryValue?.string)
+        hasher.combine(viewModel.secondaryValue?.string)
+    }
+
+    static func == (
+        lhs: LedgerAccountAssetListItem,
+        rhs: LedgerAccountAssetListItem
+    ) -> Bool {
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.viewModel.title?.primaryTitle?.string == rhs.viewModel.title?.primaryTitle?.string &&
+            lhs.viewModel.title?.secondaryTitle?.string == rhs.viewModel.title?.secondaryTitle?.string &&
+            lhs.viewModel.primaryValue?.string == rhs.viewModel.primaryValue?.string &&
+            lhs.viewModel.secondaryValue?.string == rhs.viewModel.secondaryValue?.string
+    }
+}
+
+struct LedgerAccountCollectibleListItem: Hashable {
+    let asset: CollectibleAsset
+    let viewModel: CollectibleListItemViewModel
+
+    init(item: CollectibleAssetItem) {
+        self.asset = item.asset
+        self.viewModel = CollectibleListItemViewModel(item: item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(asset.id)
+        hasher.combine(asset.amount)
+        hasher.combine(viewModel.primaryTitle?.string)
+        hasher.combine(viewModel.secondaryTitle?.string)
+    }
+
+    static func == (
+        lhs: LedgerAccountCollectibleListItem,
+        rhs: LedgerAccountCollectibleListItem
+    ) -> Bool {
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.asset.amount == rhs.asset.amount &&
+            lhs.viewModel.primaryTitle?.string == rhs.viewModel.primaryTitle?.string &&
+            lhs.viewModel.secondaryTitle?.string == rhs.viewModel.secondaryTitle?.string
     }
 }

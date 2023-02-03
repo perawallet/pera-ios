@@ -20,7 +20,11 @@ struct AccountAssetDescendingAmountAlgorithm: AccountAssetSortingAlgorithm {
     let id: String
     let name: String
 
-    init() {
+    private let currency: CurrencyProvider
+
+    init(currency: CurrencyProvider) {
+        self.currency = currency
+
         self.id = "cache.value.accountAssetDescendingAmountAlgorithm"
         self.name = "title-highest-value-to-lowest".localized
     }
@@ -28,20 +32,39 @@ struct AccountAssetDescendingAmountAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetDescendingAmountAlgorithm {
     func getFormula(
-        viewModel: SortableAssetListItemViewModel,
-        otherViewModel: SortableAssetListItemViewModel
+        asset: Asset,
+        otherAsset: Asset
     ) -> Bool {
-        guard let assetPreviewCurrencyValue = viewModel.valueInUSD,
-              let otherAssetPreviewCurrencyValue = otherViewModel.valueInUSD else {
-            return false
+        let assetValue = getValueInUSD(for: asset)
+        let otherAssetValue = getValueInUSD(for: otherAsset)
+        
+        if assetValue != otherAssetValue {
+            return assetValue > otherAssetValue
         }
-
-        if assetPreviewCurrencyValue != otherAssetPreviewCurrencyValue {
-            return assetPreviewCurrencyValue > otherAssetPreviewCurrencyValue
-        }
-
+        
         let titleSortingAlgorithm = AccountAssetAscendingTitleAlgorithm()
         
-        return titleSortingAlgorithm.getFormula(viewModel: viewModel, otherViewModel: otherViewModel)
+        return titleSortingAlgorithm.getFormula(asset: asset, otherAsset: otherAsset)
+    }
+
+    private func getValueInUSD(for asset: Asset) -> Decimal {
+        var valueInUSD: Decimal = 0.0
+
+        if asset.isAlgo {
+            guard let fiatCurrencyValue = try? currency.fiatValue?.unwrap() else {
+                return valueInUSD
+            }
+
+            let exchanger = CurrencyExchanger(currency: fiatCurrencyValue)
+            valueInUSD = (try? exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)) ?? 0
+        } else {
+            guard currency.primaryValue != nil else {
+                return valueInUSD
+            }
+
+            valueInUSD = asset.totalUSDValue ?? 0
+        }
+
+        return valueInUSD
     }
 }

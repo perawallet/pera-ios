@@ -147,7 +147,6 @@ indirect enum Screen {
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
     )
     case transactionResult
-    case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
     case wcSingleTransactionScreen(
@@ -160,7 +159,8 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
+    case accountCollectibleListFilterSelection(uiInteractions: AccountCollectibleListFilterSelectionViewController.UIInteractions)
+    case collectiblesFilterSelection(uiInteractions: CollectiblesFilterSelectionViewController.UIInteractions)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
@@ -173,8 +173,12 @@ indirect enum Screen {
         eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
-    case sendCollectibleAccountList(
-        dataController: SendCollectibleAccountListDataController
+    case sendCollectibleReceiverAccountSelectionList(
+        addressInputViewText: String?
+    )
+    case sendAssetReceiverAccountSelectionList(
+        asset: Asset?,
+        addressInputViewText: String?
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
@@ -195,7 +199,7 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
-    case assetsFilterSelection(eventHandler: AssetsFilterSelectionViewController.EventHandler)
+    case assetsFilterSelection(uiInteractions: AssetsFilterSelectionViewController.UIInteractions)
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler
@@ -301,7 +305,10 @@ indirect enum Screen {
     )
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
-    case discoverDappDetail(DiscoverDappParamaters)
+    case discoverDappDetail(
+        DiscoverDappParamaters,
+        eventHandler: DiscoverDappDetailScreen.EventHandler?
+    )
 }
 
 extension Screen {

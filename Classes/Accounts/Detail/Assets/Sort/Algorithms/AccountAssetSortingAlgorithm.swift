@@ -21,7 +21,7 @@ protocol AccountAssetSortingAlgorithm {
     var name: String { get }
 
     func getFormula(
-        viewModel: SortableAssetListItemViewModel,
-        otherViewModel: SortableAssetListItemViewModel
+        asset: Asset,
+        otherAsset: Asset
     ) -> Bool
 }
