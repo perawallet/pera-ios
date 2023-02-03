@@ -39,8 +39,6 @@ final class ManageAssetsListLocalDataController:
 
     private var lastQuery: String? = nil
 
-    private var assetItems: [AssetID: ManageAssetSearchItem] = [:]
-
     weak var dataSource: ManageAssetsListDataSource?
 
     init(
@@ -167,7 +165,7 @@ extension ManageAssetsListLocalDataController {
             
             var snapshot = Snapshot()
             
-            var optOutListItems: [OptOutAssetListItem] = []
+            var optOutListItems: [ManageAssetSearchItem] = []
 
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
@@ -179,30 +177,31 @@ extension ManageAssetsListLocalDataController {
                     currencyFormatter: currencyFormatter
                 )
                 let optOutAssetListItem = OptOutAssetListItem(item: item)
-                optOutListItems.append(optOutAssetListItem)
+                optOutListItems.append(.asset(optOutAssetListItem))
             }
             
             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
                 optOutListItems.sort {
-                    guard let firstItem = $0.viewModel.content,
-                          let secondItem = $1.viewModel.content else {
-                        return false
+                    if case let .asset(firstItem) = $0,
+                       case let .asset(secondItem) = $1 {
+                        guard let firstViewModel = firstItem.viewModel.content,
+                              let secondViewModel = secondItem.viewModel.content else {
+                            return false
+                        }
+
+                        return selectedAccountSortingAlgorithm.getFormula(
+                            viewModel: firstViewModel,
+                            otherViewModel: secondViewModel
+                        )
                     }
-                    
-                    return selectedAccountSortingAlgorithm.getFormula(
-                        viewModel: firstItem,
-                        otherViewModel: secondItem
-                    )
+
+                    return false
                 }
-            }
-            
-            let assetItems = optOutListItems.map { viewModel in
-                return ManageAssetSearchItem.asset(viewModel)
             }
 
             snapshot.appendSections([.assets])
             snapshot.appendItems(
-                assetItems,
+                optOutListItems,
                 toSection: .assets
             )
 

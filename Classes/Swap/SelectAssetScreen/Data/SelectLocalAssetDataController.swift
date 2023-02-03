@@ -141,48 +141,50 @@ extension SelectLocalAssetDataController {
             return
         }
 
-        deliverUpdates() {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+         deliverUpdates() {
+             [weak self] in
+             guard let self = self else {
+                 return Snapshot()
+             }
 
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
+             let currency = self.sharedDataController.currency
+             let currencyFormatter = self.currencyFormatter
 
-            var snapshot = Snapshot()
-            snapshot.appendSections([.assets])
+             var snapshot = Snapshot()
+             snapshot.appendSections([.assets])
 
-            var selectAssetListItems: [SelectAssetListItem] = self.searchResults.map {
-                asset in
-                let assetItem = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-                return SelectAssetListItem(item: assetItem, account: self.account)
-            }
-            
-            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-                selectAssetListItems.sort {
-                    return selectedAccountSortingAlgorithm.getFormula(
-                        viewModel: $0.viewModel,
-                        otherViewModel: $1.viewModel
-                    )
-                }
-            }
-            
-            let assetItems: [SelectAssetItem] = selectAssetListItems.map { viewModel in
-                return SelectAssetItem.asset(viewModel)
-            }
-            
-            snapshot.appendItems(
-                assetItems,
-                toSection: .assets
-            )
+             var selectAssetItems: [SelectAssetItem] = self.searchResults.map {
+                 asset in
+                 let assetItem = AssetItem(
+                     asset: asset,
+                     currency: currency,
+                     currencyFormatter: currencyFormatter
+                 )
+                 let listItem = SelectAssetListItem(item: assetItem, account: self.account)
+                 return SelectAssetItem.asset(listItem)
+             }
+             
+             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                 selectAssetItems.sort {
+                     if case let .asset(firstItem) = $0,
+                        case let .asset(secondItem) = $1 {
+                         return selectedAccountSortingAlgorithm.getFormula(
+                            viewModel: firstItem.viewModel,
+                            otherViewModel: secondItem.viewModel
+                         )
+                     }
+                     
+                     return false
+                 }
+             }
+             
+             snapshot.appendItems(
+                 selectAssetItems,
+                 toSection: .assets
+             )
 
-            return snapshot
-        }
+             return snapshot
+         }
     }
 
     private func deliverNoContentSnapshot() {
