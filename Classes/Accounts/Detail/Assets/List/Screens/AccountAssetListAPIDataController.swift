@@ -193,9 +193,6 @@ extension AccountAssetListAPIDataController {
         if lastSnapshot?.itemIdentifiers(inSection: .assets).last == .assetLoading {
             return
         }
-
-        let updates = makeUpdatesForLoading(for: operation)
-        publish(updates: updates)
     }
 
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {

@@ -35,32 +35,18 @@ extension AccountAssetAscendingAmountAlgorithm {
         asset: Asset,
         otherAsset: Asset
     ) -> Bool {
-        let assetCurrencyValue = getValueInUSD(for: asset)
-        let otherAssetCurrencyValue = getValueInUSD(for: otherAsset)
-        if assetCurrencyValue != otherAssetCurrencyValue {
-            return assetCurrencyValue < otherAssetCurrencyValue
+        let assetValue = getValueInUSD(for: asset)
+        let otherAssetValue = getValueInUSD(for: otherAsset)
+        
+        if assetValue != otherAssetValue {
+            return assetValue < otherAssetValue
         }
-
-        let assetTitle =
-            asset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
-        let otherAssetTitle =
-            otherAsset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
-        if assetTitle != otherAssetTitle {
-            let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
-            return result == .orderedAscending
-        }
-
-        let assetID = asset.id
-        let otherAssetID = otherAsset.id
-        if assetID != otherAssetID {
-            return assetID < otherAssetID
-        }
-
-        return false
+        
+        let titleSortingAlgorithm = AccountAssetAscendingTitleAlgorithm()
+        
+        return titleSortingAlgorithm.getFormula(asset: asset, otherAsset: otherAsset)
     }
-
+    
     private func getValueInUSD(for asset: Asset) -> Decimal {
         var valueInUSD: Decimal = 0.0
 

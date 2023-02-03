@@ -32,23 +32,24 @@ extension AccountAssetDescendingTitleAlgorithm {
         asset: Asset,
         otherAsset: Asset
     ) -> Bool {
-        let assetTitle =
-            asset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
-        let otherAssetTitle =
-            otherAsset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
-        if assetTitle != otherAssetTitle {
-            let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
-            return result == .orderedDescending
+        let assetTitle = getSortableTitle(from: asset)
+        let otherAssetTitle = getSortableTitle(from: otherAsset)
+        
+        guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
+            return true
         }
 
-        let assetID = asset.id
-        let otherAssetID = otherAsset.id
-        if assetID != otherAssetID {
-            return assetID > otherAssetID
+        guard let anotherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
+            return false
         }
 
-        return false
+        let result = anAssetTitle.localizedCaseInsensitiveCompare(anotherAssetTitle)
+        return result == .orderedDescending
+    }
+    
+    func getSortableTitle(from asset: Asset) -> String? {
+        return asset.naming.name ??
+            asset.naming.unitName ??
+            String(asset.id)
     }
 }
