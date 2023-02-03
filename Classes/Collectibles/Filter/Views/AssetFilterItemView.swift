@@ -32,7 +32,7 @@ final class AssetFilterItemView:
 
     var isEnabled: Bool {
         get { toggleView.isUserInteractionEnabled }
-        set { updateUIWhenViewEnabledStateDidChange(new: newValue) }
+        set { updateUIForState(enabled: newValue) }
     }
 
     private lazy var titleView = Label()
@@ -72,16 +72,9 @@ final class AssetFilterItemView:
 }
 
 extension AssetFilterItemView {
-    private func updateUIWhenViewEnabledStateDidChange(new: Bool) {
-        if new == isEnabled {
-            return
-        }
-
-        toggleView.isUserInteractionEnabled = new
-
-        let disabledStateAlpha = theme?.disabledStateAlpha ?? 0.5
-        let alpha = new ? 1 : disabledStateAlpha
-        self.alpha = alpha
+    private func updateUIForState(enabled: Bool) {
+        toggleView.isUserInteractionEnabled = enabled
+        alpha = enabled ? 1 : 0.5
     }
 }
 

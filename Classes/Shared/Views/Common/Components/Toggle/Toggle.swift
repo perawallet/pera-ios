@@ -16,18 +16,9 @@
 
 import Foundation
 import UIKit
-import MacaroonUIKit
 
+/// <todo> Add it as a style to `Macaroon`
 final class Toggle: UISwitch {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     func customize(_ theme: ToggleTheme) {
         layer.cornerRadius = theme.cornerRadius
         backgroundColor = theme.backgroundColor.uiColor

@@ -28,7 +28,6 @@ struct AssetFilterItemViewTheme:
     var description: TextStyle
     var descriptionTopMargin: LayoutMetric
     var toggle: ToggleTheme
-    var disabledStateAlpha: CGFloat
 
     init(
         _ family: LayoutFamily
@@ -48,6 +47,5 @@ struct AssetFilterItemViewTheme:
         ]
         self.descriptionTopMargin = 8
         self.toggle = ToggleTheme(family)
-        self.disabledStateAlpha = 0.5
     }
 }
