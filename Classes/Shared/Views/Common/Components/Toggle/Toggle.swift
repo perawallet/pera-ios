@@ -19,9 +19,18 @@ import UIKit
 
 /// <todo> Add it as a style to `Macaroon`
 final class Toggle: UISwitch {
+    var offTintColor: UIColor? {
+        didSet {
+            let minSide = min(bounds.size.height, bounds.size.width).ceil()
+            let radius = (minSide / 2).ceil()
+            layer.cornerRadius = radius
+            backgroundColor = offTintColor
+            tintColor = offTintColor
+        }
+    }
+
     func customize(_ theme: ToggleTheme) {
-        layer.cornerRadius = theme.cornerRadius
-        backgroundColor = theme.backgroundColor.uiColor
+        offTintColor = theme.offTintColor.uiColor
         onTintColor = theme.onTintColor.uiColor
     }
 }

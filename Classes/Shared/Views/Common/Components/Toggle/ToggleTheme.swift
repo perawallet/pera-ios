@@ -20,13 +20,11 @@ import MacaroonUIKit
 struct ToggleTheme:
     LayoutSheet,
     StyleSheet {
-    var cornerRadius: LayoutMetric
-    var backgroundColor: Color
+    var offTintColor: Color
     var onTintColor: Color
 
     init(_ family: LayoutFamily) {
-        self.cornerRadius = 16
-        self.backgroundColor = Colors.Switches.offBackground
+        self.offTintColor = Colors.Switches.offBackground
         self.onTintColor = Colors.Switches.background
     }
 }
