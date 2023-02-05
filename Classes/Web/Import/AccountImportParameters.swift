@@ -17,23 +17,54 @@
 import Foundation
 import MacaroonUtils
 
-struct AccountImportParameters: JSONModel {
+struct AccountImportParameters: ALGEntityModel {
     let address: String
     let name: String?
     let accountType: ImportedAccountType
     let privateKey: Data?
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        address = try container.decode(String.self, forKey: .address)
-        name = try? container.decodeIfPresent(String.self, forKey: .name)
-        accountType = try container.decode(ImportedAccountType.self, forKey: .accountType)
-        privateKey = try? container.decodeIfPresent(Data.self, forKey: .privateKey)
+    init() {
+        address = ""
+        name = nil
+        accountType = .unsupported("unsupported")
+        privateKey = nil
+    }
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        address = apiModel.address ?? ""
+        name = apiModel.name
+        accountType = apiModel.accountType ?? .unsupported("unsupported")
+        privateKey = apiModel.privateKey
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.address = address
+        apiModel.name = name
+        apiModel.accountType = accountType
+        apiModel.privateKey = privateKey
+        return apiModel
     }
 }
 
 extension AccountImportParameters {
-    enum CodingKeys: String, CodingKey {
+    struct APIModel: ALGAPIModel {
+        var address: String?
+        var name: String?
+        var accountType: ImportedAccountType?
+        var privateKey: Data?
+
+        init() {
+            self.address = nil
+            self.name = nil
+            self.accountType = nil
+            self.privateKey = nil
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
         case address
         case name
         case accountType = "account_type"
@@ -56,7 +87,7 @@ enum ImportedAccountType:
         }
     }
 
-    var peraAccountType: AccountType {
+    var rawAccountType: AccountType {
         switch self {
         case .single:
             return .standard
@@ -74,26 +105,30 @@ enum ImportedAccountType:
     }
 
     init?(rawValue: String) {
-        let someType = Self.allCases.first(matching: (\.rawValue, rawValue))
-        self = someType ?? .unsupported(rawValue)
+        switch rawValue {
+            case AccountType.standard.rawValue: self = .single
+            default: self = .unsupported(rawValue)
+        }
     }
 
-    init(peraType: AccountType) {
-        switch peraType {
+    init(rawAccountType: AccountType) {
+        switch rawAccountType {
         case .standard:
             self = .single
         default:
-            self = .unsupported(peraType.rawValue)
+            self = .unsupported(rawAccountType.rawValue)
         }
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(rawValue)
     }
+}
 
+extension RawRepresentable where Self: Hashable, Self.RawValue: Hashable {
     static func == (
-        lhs: ImportedAccountType,
-        rhs: ImportedAccountType
+        lhs: Self,
+        rhs: Self
     ) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }

@@ -21,12 +21,13 @@ import MacaroonUtils
 
 
 final class AccountImportFlowCoordinator {
-    private unowned let presentingScreen: UIViewController
-    private let initializeAccount: Bool
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
 
-    init(presentingScreen: UIViewController, initializeAccount: Bool) {
+    private unowned let presentingScreen: UIViewController
+
+    init(presentingScreen: UIViewController) {
         self.presentingScreen = presentingScreen
-        self.initializeAccount = initializeAccount
     }
 }
 
@@ -78,15 +79,16 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didReadBackup(let parameters):
-                if parameters.version != "1" {
+                if !parameters.isSupported() {
                     self.continueErrorScreen(error: .unsupportedVersion(version: parameters.version), from: qrScannerScreen)
-                    return
+                } else {
+                    self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
                 }
-                self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
+
             case .didReadUnsupportedAction(let parameters):
-                if parameters.version != "1" {
+                if !parameters.isSupported() {
                     self.continueErrorScreen(error: .unsupportedVersion(version: parameters.version), from: qrScannerScreen)
-                } else if parameters.action != .import {
+                } else {
                     self.continueErrorScreen(error: .unsupportedAction, from: qrScannerScreen)
                 }
             }
@@ -133,10 +135,7 @@ extension AccountImportFlowCoordinator {
 
     private func finish(from screen: UIViewController) {
         screen.dismiss(animated: true)
-
-        if initializeAccount {
-            presentingScreen.launchMain()
-        }
+        eventHandler?(.didFinish)
     }
 }
 
@@ -163,5 +162,11 @@ extension AccountImportFlowCoordinator {
                 self.continueErrorScreen(error: error, from: importAccountScreen)
             }
         }
+    }
+}
+
+extension AccountImportFlowCoordinator {
+    enum Event {
+        case didFinish
     }
 }

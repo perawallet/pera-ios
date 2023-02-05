@@ -30,8 +30,7 @@ final class ScanQRFlowCoordinator:
         session: session
     )
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
-        presentingScreen: presentingScreen,
-        initializeAccount: false
+        presentingScreen: presentingScreen
     )
 
     private lazy var transactionController = TransactionController(
@@ -143,7 +142,7 @@ extension ScanQRFlowCoordinator {
         didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     ) {
-        if qrBackupParameters.version != "1" {
+        if !qrBackupParameters.isSupported() {
             showUnsupportedQRError(on: controller, using: qrBackupParameters)
             return
         }

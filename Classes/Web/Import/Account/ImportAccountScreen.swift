@@ -109,7 +109,10 @@ extension ImportAccountScreen {
             }
 
             do {
-                let accountParameters = try [AccountImportParameters].decoded(decryptedData)
+                let accountParameters = try [AccountImportParameters.APIModel]
+                    .decoded(decryptedData)
+                    .map { AccountImportParameters.init($0) }
+
                 asyncMain {
                     self.importAccounts(from: accountParameters)
                 }
@@ -198,7 +201,7 @@ extension ImportAccountScreen {
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                type: accountParameter.accountType.peraAccountType,
+                type: accountParameter.accountType.rawAccountType,
                 preferredOrder: currentPreferredOrder
             )
             transferAccounts.append(

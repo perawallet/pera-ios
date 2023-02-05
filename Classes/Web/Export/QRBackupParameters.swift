@@ -62,6 +62,10 @@ final class QRBackupParameters: ALGAPIModel, Identifiable {
         version = ""
         action = QRBackupAction()
     }
+
+    func isSupported() -> Bool {
+        return version == "1"
+    }
 }
 
 extension QRBackupParameters {

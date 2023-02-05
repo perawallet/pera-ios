@@ -20,8 +20,7 @@ final class RecoverAccountViewController: BaseViewController {
     private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
-        presentingScreen: self,
-        initializeAccount: initializeAccount
+        presentingScreen: self
     )
 
     private let flow: AccountSetupFlow
@@ -95,10 +94,22 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
         case .ledger:
             open(.tutorial(flow: flow, tutorial: .recoverWithLedger), by: .push)
         case .importFromWeb:
+            accountImportCoordinator.eventHandler = {
+                [weak self] event in
+                guard let self else {
+                    return
+                }
+
+                switch event {
+                case .didFinish:
+                    if self.initializeAccount {
+                        self.launchMain()
+                    }
+                }
+            }
             accountImportCoordinator.launch(qrBackupParameters: nil)
         default:
             break
         }
     }
 }
-
