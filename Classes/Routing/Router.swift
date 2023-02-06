@@ -1379,6 +1379,16 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupAccountList(let eventHandler):
+            let dataController = AlgorandSecureBackupAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = AlgorandSecureBackupAccountListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

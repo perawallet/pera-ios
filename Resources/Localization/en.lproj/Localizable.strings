@@ -1358,3 +1358,7 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 
+// MARK: Secure Backup
+"algorand-secure-backup-account-list-title" = "Choose accounts to backup";
+"algorand-secure-backup-account-list-action-title" = "Backup accounts (%@)";
+"algorand-secure-backup-account-list-action-title-singular" = "Backup account (%@)";
