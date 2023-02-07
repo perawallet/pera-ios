@@ -95,11 +95,7 @@ extension ImportAccountScreen {
             guard let self else { return }
 
             let encryptionKey = self.backupParameters.encryptionKey
-            let encryptedContentInString = backup.encryptedContent
-            let encryptedDataByteArray = encryptedContentInString
-                .convertToByteArray(using: ",")
-            let encryptedData = Data(base64Encoded: encryptedContentInString) ?? Data(bytes: encryptedDataByteArray)
-
+            let encryptedData = self.extractEncryptedData(from: backup)
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
@@ -119,6 +115,16 @@ extension ImportAccountScreen {
             } catch {
                 self.publish(.didFailToImport(.serialization(error)))
             }
+        }
+    }
+
+    private func extractEncryptedData(from backup: Backup) -> Data {
+        let content = backup.encryptedContent
+        if let base64Data = Data(base64Encoded: content) {
+            return base64Data
+        } else {
+            let byteArray = content.convertToByteArray(using: ",")
+            return Data(bytes: byteArray)
         }
     }
 
