@@ -96,6 +96,7 @@
 "title-select-account" = "Select Account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
+"title-start" = "Start";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1358,7 +1359,16 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 
-// MARK: Secure Backup
+// MARK: Algorand Secure Backup
+"algorand-secure-backup-instruction-title" = "Algorand Secure Backup";
+"algorand-secure-backup-instruction-header-title" = "Backup your accounts using the Algorand Secure Backup protocol. You will generate an encrypted text file representing your accounts and a 12-word key used to decrypt them in future.";
+"algorand-secure-backup-instruction-first-instruction-title" = "Select your accounts";
+"algorand-secure-backup-instruction-first-instruction-subtitle" = "Select one, some or all of your accounts to be included in your backup file.";
+"algorand-secure-backup-instruction-second-instruction-title" = "Store your 12-word key";
+"algorand-secure-backup-instruction-second-instruction-subtitle" = "Record or save your 12-word key securely. Learn more";
+"algorand-secure-backup-instruction-second-instruction-subtitle-highlighted-text" = "Learn more";
+"algorand-secure-backup-instruction-third-instruction-title" = "Save your backup file";
+"algorand-secure-backup-instruction-third-instruction-subtitle" = "Download your backup to a secure location on your device.";
 "algorand-secure-backup-account-list-title" = "Choose accounts to backup";
 "algorand-secure-backup-account-list-action-title" = "Backup accounts (%@)";
 "algorand-secure-backup-account-list-action-title-singular" = "Backup account (%@)";
