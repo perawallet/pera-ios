@@ -1370,5 +1370,6 @@
 "algorand-secure-backup-instruction-third-instruction-title" = "Save your backup file";
 "algorand-secure-backup-instruction-third-instruction-subtitle" = "Download your backup to a secure location on your device.";
 "algorand-secure-backup-account-list-title" = "Choose accounts to backup";
-"algorand-secure-backup-account-list-action-title" = "Backup accounts (%@)";
-"algorand-secure-backup-account-list-action-title-singular" = "Backup account (%@)";
+"algorand-secure-backup-account-list-action-title" = "Backup account";
+"algorand-secure-backup-account-list-action-title-singular" = "Backup account (1)";
+"algorand-secure-backup-account-list-action-title-plural" = "Backup accounts (%@)";

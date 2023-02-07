@@ -57,7 +57,7 @@ final class AlgorandSecureBackupInstructionItemView:
         }
 
         if let subtitle = viewModel?.subtitle {
-            if let highlightedText = viewModel?.subtitle.highlightedText {
+            if let highlightedText = subtitle.highlightedText {
                 let hyperlink: ALGActiveType = .word(highlightedText.text)
                 subtitleView.attachHyperlink(
                     hyperlink,
