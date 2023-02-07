@@ -159,9 +159,8 @@ extension AlgorandSecureBackupInstructionScreen {
             AlgorandSecureBackupSecondInstructionItemViewModel()
         )
         instruction.startObserving(event: .performHyperlinkAction) {
-            // [unowned self] in
-            // self.open(LINK)
-            // <todo>: Open the Learn more url.
+            [unowned self] in
+            self.open(AlgorandWeb.algorandSecureBackup.link)
         }
     }
 
