@@ -59,7 +59,8 @@ final class ManageAssetsListLocalDataController:
 
 extension ManageAssetsListLocalDataController {
     func fetchAssets() {
-        accountAssets = account.allAssets ?? []
+        setRemovableAccountAssets()
+        
         searchResults = accountAssets
 
         if let lastQuery = lastQuery {
@@ -67,6 +68,12 @@ extension ManageAssetsListLocalDataController {
         } else {
             deliverContentSnapshot()
         }
+    }
+    
+    func setRemovableAccountAssets() {
+        accountAssets = account.allAssets?.filter {
+            $0.creator?.address != account.address
+        } ?? []
     }
 
     func search(for query: String) {
