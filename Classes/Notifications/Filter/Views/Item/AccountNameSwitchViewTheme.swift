@@ -21,8 +21,10 @@ import UIKit
 
 struct AccountNameSwitchViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
+    let toggle: ToggleTheme
 
     init(_ family: LayoutFamily) {
         self.horizontalPadding = 24
+        self.toggle = ToggleTheme(family)
     }
 }
