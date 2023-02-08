@@ -27,7 +27,7 @@ struct WCTransactionRequestDidAppearEvent: ALGAnalyticsEvent {
         self.name = .wcTransactionRequestDidAppear
         self.metadata = [
             .wcRequestID: transactionRequest.id ?? "",
-            .wcRequestURL: transactionRequest.url.absoluteString.prefix(100)
+            .wcRequestURL: transactionRequest.url.absoluteString.prefix(99)
         ]
     }
 }

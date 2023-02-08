@@ -26,7 +26,7 @@ struct WCTransactionRequestDidAppearLog: ALGAnalyticsLog {
         self.name = .walletConnectTransactionRequestDidAppear
         self.metadata = [
             .wcRequestID: transactionRequest.id.unwrap(or: ""),
-            .wcRequestURL: transactionRequest.url.absoluteString
+            .wcRequestURL: transactionRequest.url.absoluteString.prefix(99)
         ]
     }
 }
