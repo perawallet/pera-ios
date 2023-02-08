@@ -284,6 +284,10 @@ extension WCSessionListLocalDataController {
             session: session
         )
     }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
+        publish(.didExceededMaximumSessionLimit)
+    }
 }
 
 extension WCSessionListLocalDataController {

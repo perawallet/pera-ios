@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct WCSessionListViewControllerTheme:
     LayoutSheet,
     StyleSheet {
+    let navigationTitle: PrimaryTitleViewTheme
     let background: ViewStyle
     let disconnectAllAction: ButtonStyle
     let disconnectAllActionEdgeInsets: LayoutPaddings
@@ -28,6 +29,7 @@ struct WCSessionListViewControllerTheme:
     let spacingBetweenListAndDisconnectAllAction: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.navigationTitle = NavigationPrimaryTitleItemViewTheme()
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]

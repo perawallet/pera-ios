@@ -30,7 +30,10 @@ final class SettingsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
 
-    private lazy var dataSource = SettingsDataSource(session: session)
+    private lazy var dataSource = SettingsDataSource(
+        session: session,
+        walletConnector: walletConnector
+    )
 
     override var prefersLargeTitle: Bool {
         return true

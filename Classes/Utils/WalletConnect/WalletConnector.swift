@@ -58,6 +58,7 @@ extension WalletConnector {
             return
         }
         
+        clearOlderSessionsIfNeeded()
         isRegisteredToTheTransactionRequests = true
         registerToWCTransactionRequests()
         reconnectToSavedSessionsIfPossible()
@@ -286,9 +287,10 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         }
     }
 
-    func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
-        delegate?.walletConnector(self, didUpdate: session.toWCSession())
-    }
+    func walletConnectBridge(
+        _ walletConnectBridge: WalletConnectBridge,
+        didUpdate session: WalletConnectSession
+    ) { }
     
     func walletConnectBridge(
         _ walletConnectBridge: WalletConnectBridge,
@@ -336,6 +338,28 @@ extension WalletConnector {
             }
         }
     }
+    
+    /// <note
+    /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
+    func clearOlderSessionsIfNeeded() {
+        guard let sessions = sessionSource.sessions,
+              sessions.count > WalletConnectSessionSource.sessionLimit else {
+            return
+        }
+        
+        let orderedSessions = sessions.map { $1 }.sorted(
+            by: \.date,
+            using: >
+        )
+        let oldSessions = Array(orderedSessions[WalletConnectSessionSource.sessionLimit...])
+        
+        for session in oldSessions {
+            removeFromSessions(session)
+            try? walletConnectBridge.disconnect(from: session.sessionBridgeValue)
+        }
+        
+        delegate?.walletConnectorDidExceededMaximumSessionLimit(self)
+    }
 }
 
 extension WalletConnector {
@@ -353,10 +377,19 @@ protocol WalletConnectorDelegate: AnyObject {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession)
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession)
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError)
-    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession)
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    )
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didDisconnectFrom session: WCSession
+    )
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didFailWith error: WalletConnector.WCError
+    )
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector)
 }
 
 extension WalletConnectorDelegate {
@@ -364,25 +397,24 @@ extension WalletConnectorDelegate {
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
+    ) { }
 
-    }
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    ) { }
 
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didDisconnectFrom session: WCSession
+    ) { }
 
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession) {
-
-    }
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didFailWith error: WalletConnector.WCError
+    ) { }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) { }
 }
 
 enum WalletConnectMethod: String {

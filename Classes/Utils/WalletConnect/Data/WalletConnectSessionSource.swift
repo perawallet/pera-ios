@@ -18,6 +18,7 @@
 import Foundation
 
 class WalletConnectSessionSource {
+    static let sessionLimit = 50
 
     var sessions: [String: WCSession]? {
         get {

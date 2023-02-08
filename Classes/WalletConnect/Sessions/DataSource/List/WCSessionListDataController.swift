@@ -64,6 +64,7 @@ enum WCSessionListDataControllerEvent {
     case didStartDisconnectingFromSessions
     case didDisconnectFromSessions
     case didFailDisconnectingFromSession
+    case didExceededMaximumSessionLimit
     
     var snapshot: WCSessionListDataController.Snapshot? {
         switch self {
