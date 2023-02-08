@@ -1397,6 +1397,10 @@ class Router:
             let screen = AlgorandSecureBackupSuccessScreen()
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupError(let eventHandler):
+            let screen = AlgorandSecureBackupErrorScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

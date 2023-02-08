@@ -310,6 +310,7 @@ indirect enum Screen {
     case algorandSecureBackupInstruction(eventHandler: AlgorandSecureBackupInstructionScreen.EventHandler)
     case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupSuccess(eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
+    case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
 }
 
 extension Screen {

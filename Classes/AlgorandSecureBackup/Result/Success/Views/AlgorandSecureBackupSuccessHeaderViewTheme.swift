@@ -20,7 +20,6 @@ import MacaroonUIKit
 struct AlgorandSecureBackupSuccessHeaderViewTheme: ResultWithHyperlinkViewTheme {
     var icon: ImageStyle
     var iconSize: CGSize?
-    var iconLeadingMargin: LayoutMetric
     var title: TextStyle
     var titleTopMargin: LayoutMetric
     var bodyTopMargin: LayoutMetric
@@ -33,8 +32,6 @@ struct AlgorandSecureBackupSuccessHeaderViewTheme: ResultWithHyperlinkViewTheme 
             .adjustsImageForContentSizeCategory(false),
             .contentMode(.left)
         ]
-        self.iconSize = nil
-        self.iconLeadingMargin = 10
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
