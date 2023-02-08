@@ -23,10 +23,10 @@ struct SettingsPrimaryDetailViewTheme:
     let backgroundColor: Color
     let horizontalInset: LayoutMetric
     let image: ImageStyle
+    let imageSize: LayoutSize
     let title: PrimaryTitleViewTheme
     let titleOffset: LayoutMetric
     let accessory: ImageStyle
-    let imageSize: LayoutSize
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
@@ -34,11 +34,11 @@ struct SettingsPrimaryDetailViewTheme:
         self.image = [
             .image("icon-settings-wallet-connect")
         ]
+        self.imageSize = (24, 24)
         self.title = SettingsPrimaryTitleItemViewTheme()
         self.titleOffset = 16
         self.accessory = [
             .image("icon-list-arrow")
         ]
-        self.imageSize = (24, 24)
     }
 }

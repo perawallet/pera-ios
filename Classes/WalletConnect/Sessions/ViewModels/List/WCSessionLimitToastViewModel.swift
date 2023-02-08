@@ -18,13 +18,24 @@ import Foundation
 import MacaroonUIKit
 
 struct WCSessionLimitToastViewModel: ToastViewModel {
-    var title: TextProvider?
-    var body: TextProvider?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init(title: String?) {
+        bindTitle(title)
+        bindBody()
+    }
+}
+
+extension WCSessionLimitToastViewModel {
+    mutating func bindTitle(_ title: String?) {
         self.title = title?.bodyMedium(
             alignment: .center,
             lineBreakMode: .byWordWrapping
         )
+    }
+    
+    mutating func bindBody() {
+        self.body = nil
     }
 }
