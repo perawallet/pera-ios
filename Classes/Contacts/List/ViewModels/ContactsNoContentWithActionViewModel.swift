@@ -21,7 +21,7 @@ import MacaroonUIKit
 struct ContactsNoContentWithActionViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -43,7 +43,7 @@ extension ContactsNoContentWithActionViewModel {
     }
 
     private mutating func bindBody() {
-        body = BodyTextProvider(text: "contacts-empty-detail-text".localized)
+        body = "contacts-empty-detail-text".localized
     }
 
     private mutating func bindActionTitle() {

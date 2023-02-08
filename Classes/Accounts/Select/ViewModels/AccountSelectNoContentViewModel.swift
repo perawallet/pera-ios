@@ -22,7 +22,7 @@ struct AccountSelectNoContentViewModel:
     Hashable {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
 
     init(hasBody: Bool) {
         bindTitle()
@@ -56,8 +56,7 @@ extension AccountSelectNoContentViewModel {
     private mutating func bindBody() {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
-
-        let aBody =
+        body =
             "account-select-search-empty-detail"
                 .localized
                 .attributed([
@@ -69,6 +68,5 @@ extension AccountSelectNoContentViewModel {
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
-        body = BodyTextProvider(text: aBody)
     }
 }

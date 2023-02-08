@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct NoInternetConnectionViewModel: NoContentViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindImage()
@@ -44,12 +44,11 @@ extension NoInternetConnectionViewModel {
     }
 
     private mutating func bindBody() {
-        let aBody =
+        body =
             "internet-connection-error-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        body = BodyTextProvider(text: aBody)
     }
 }

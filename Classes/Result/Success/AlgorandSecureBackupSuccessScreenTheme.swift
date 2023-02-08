@@ -22,7 +22,7 @@ struct AlgorandSecureBackupSuccessScreenTheme:
     StyleSheet {
     var background: ViewStyle
     var contextPaddings: LayoutPaddings
-    var header: ResultViewTheme
+    var header: ResultWithHyperlinkViewTheme
     var spacingBetweenHeaderAndFileContent: LayoutMetric
     var fileContentFirstShadow: MacaroonUIKit.Shadow
     var fileContentSecondShadow: MacaroonUIKit.Shadow

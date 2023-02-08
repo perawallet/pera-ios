@@ -24,7 +24,7 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     var eventHandler: EventHandler?
 
     private lazy var contextView = UIView()
-    private lazy var headerView = ResultView()
+    private lazy var headerView = ResultWithHyperlinkView()
     private lazy var fileContentView = TripleShadowView()
     private lazy var fileIconView = UIImageView()
     private lazy var fileInfoContentView = UIView()

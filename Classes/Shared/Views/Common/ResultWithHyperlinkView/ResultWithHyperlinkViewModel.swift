@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,32 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ResultViewModel.swift
+//   ResultWithHyperlinkViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol ResultViewModel: ViewModel {
+protocol ResultWithHyperlinkViewModel: ViewModel {
     var icon: Image? { get }
     var title: TextProvider? { get }
-    var body: TextProvider? { get }
+    var body: BodyTextProvider? { get }
+
+    typealias BodyTextProvider = ResultWithHyperlinkViewBodyTextProvider
+    typealias HighlightedText = ResultWithHyperlinkViewBodyTextProvider.HighlightedText
 }
 
-extension ResultViewModel where Self: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title?.string)
-        hasher.combine(body?.string)
-    }
+struct ResultWithHyperlinkViewBodyTextProvider {
+    var text: TextProvider
+    var highlightedText: HighlightedText? = nil
 
-    static func == (
-        lhs: Self,
-        rhs: Self
-    ) -> Bool {
-        return
-            lhs.title?.string == rhs.title?.string &&
-            lhs.body?.string == rhs.body?.string
+    struct HighlightedText {
+        let text: String
+        let attributes: TextAttributeGroup
     }
 }

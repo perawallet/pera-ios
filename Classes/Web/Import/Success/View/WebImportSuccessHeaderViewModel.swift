@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct WebImportSuccessHeaderViewModel: NoContentViewModel {
     var icon: Image?
     var title: TextProvider?
-    var body: BodyTextProvider?
+    var body: TextProvider?
 
     init(importedAccountCount: Int) {
         bindIcon()
@@ -43,6 +43,6 @@ extension WebImportSuccessHeaderViewModel {
     private mutating func bindBody(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
         let resultBody = isSingular ? "web-import-success-header-singular-body".localized("\(importedAccountCount)") : "web-import-success-header-body".localized("\(importedAccountCount)")
-        body = BodyTextProvider(text: resultBody.bodyRegular())
+        body = resultBody.bodyRegular()
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SelectAssetNoContentItemViewModel.swift
+//   ResultWithHyperlinkViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct SelectAssetNoContentItemViewModel:
-    NoContentViewModel,
-    Hashable {
-    private(set) var icon: Image?
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
-
-    init() {
-        bindTitle()
-    }
-}
-
-extension SelectAssetNoContentItemViewModel {
-    mutating func bindTitle() {
-        title =
-            "asset-not-found-title"
-                .localized
-                .bodyLargeMedium(
-                    alignment: .center
-                )
-    }
+protocol ResultWithHyperlinkViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: ImageStyle { get }
+    var iconSize: CGSize? { get }
+    var title: TextStyle { get }
+    var titleTopMargin: LayoutMetric { get }
+    var body: TextStyle { get }
+    var bodyTopMargin: LayoutMetric { get }
 }

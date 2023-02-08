@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupSuccessHeaderViewModel: ResultViewModel {
+struct AlgorandSecureBackupSuccessHeaderViewModel: ResultWithHyperlinkViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
     private(set) var body: BodyTextProvider?

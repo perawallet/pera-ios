@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupSuccessHeaderViewTheme: ResultViewTheme {
+struct AlgorandSecureBackupSuccessHeaderViewTheme: ResultWithHyperlinkViewTheme {
     var icon: ImageStyle
     var iconSize: CGSize?
     var iconLeadingMargin: LayoutMetric

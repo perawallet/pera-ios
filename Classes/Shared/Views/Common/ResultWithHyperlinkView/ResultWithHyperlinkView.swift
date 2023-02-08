@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ResultView.swift
+//   ResultWithHyperlinkView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ResultView:
+final class ResultWithHyperlinkView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performHyperlinkAction: UIBlockInteraction()
+    ]
+
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
-    private lazy var bodyView = Label()
+    private lazy var bodyView = ALGActiveLabel()
 
     func customize(
-        _ theme: ResultViewTheme
+        _ theme: ResultWithHyperlinkViewTheme
     ) {
         addIcon(theme)
         addTitle(theme)
@@ -43,7 +47,7 @@ final class ResultView:
     ) {}
 
     func bindData(
-        _ viewModel: ResultViewModel?
+        _ viewModel: ResultWithHyperlinkViewModel?
     ) {
         if let icon = viewModel?.icon?.uiImage {
             iconView.image = icon
@@ -59,7 +63,21 @@ final class ResultView:
         }
 
         if let body = viewModel?.body {
-            body.load(in: bodyView)
+            if let highlightedText = body.highlightedText {
+                let hyperlink: ALGActiveType = .word(highlightedText.text)
+                bodyView.attachHyperlink(
+                    hyperlink,
+                    to: body.text,
+                    attributes: highlightedText.attributes
+                ) {
+                    [unowned self] in
+                    let interaction = self.uiInteractions[.performHyperlinkAction]
+                    interaction?.publish()
+                }
+                return
+            }
+
+            body.text.load(in: bodyView)
         } else {
             bodyView.text = nil
             bodyView.attributedText = nil
@@ -67,8 +85,8 @@ final class ResultView:
     }
 
     class func calculatePreferredSize(
-        _ viewModel: ResultViewModel?,
-        for theme: ResultViewTheme,
+        _ viewModel: ResultWithHyperlinkViewModel?,
+        for theme: ResultWithHyperlinkViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -82,30 +100,27 @@ final class ResultView:
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
             ) ?? .zero
         let bodySize =
-            viewModel.body?.boundingSize(
+            viewModel.body?.text.boundingSize(
                 multiline: true,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
             ) ?? .zero
         var preferredHeight =
             iconSize.height +
             titleSize.height +
+            theme.bodyTopMargin +
             bodySize.height
 
         if viewModel.icon != nil {
             preferredHeight += theme.titleTopMargin
         }
 
-        if viewModel.body != nil {
-            preferredHeight += theme.bodyTopMargin
-        }
-
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
-extension ResultView {
+extension ResultWithHyperlinkView {
     private func addIcon(
-        _ theme: ResultViewTheme
+        _ theme: ResultWithHyperlinkViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
 
@@ -123,7 +138,7 @@ extension ResultView {
     }
 
     private func addTitle(
-        _ theme: ResultViewTheme
+        _ theme: ResultWithHyperlinkViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
 
@@ -138,16 +153,21 @@ extension ResultView {
     }
 
     private func addBody(
-        _ theme: ResultViewTheme
+        _ theme: ResultWithHyperlinkViewTheme
     ) {
         bodyView.customizeAppearance(theme.body)
-        bodyView.contentEdgeInsets.top = theme.bodyTopMargin
 
         addSubview(bodyView)
         bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
+            $0.top == titleView.snp.bottom + theme.bodyTopMargin
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
+    }
+}
+
+extension ResultWithHyperlinkView {
+    enum Event {
+        case performHyperlinkAction
     }
 }

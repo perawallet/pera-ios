@@ -21,7 +21,7 @@ import MacaroonUIKit
 struct AssetAdditionNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindTitle()

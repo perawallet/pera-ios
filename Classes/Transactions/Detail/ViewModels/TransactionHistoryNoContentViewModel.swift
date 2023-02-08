@@ -21,7 +21,7 @@ import MacaroonUIKit
 struct TransactionHistoryNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindTitle()
@@ -40,12 +40,11 @@ extension TransactionHistoryNoContentViewModel {
     }
 
     private mutating func bindBody() {
-        let aBody =
+        body =
             "accounts-tranaction-empty-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        body = BodyTextProvider(text: aBody)
     }
 }

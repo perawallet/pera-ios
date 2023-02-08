@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct ExportAccountsResultViewModel: ResultViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
 
     init(accounts: [Account]) {
         let hasSingularAccount = accounts.isSingular
@@ -46,6 +46,6 @@ extension ExportAccountsResultViewModel {
         let resultBody = hasSingularAccount
             ? "web-export-result-body-singular".localized
             : "web-export-result-body".localized
-        body = BodyTextProvider(text: resultBody.bodyRegular())
+        body = resultBody.bodyRegular()
     }
 }

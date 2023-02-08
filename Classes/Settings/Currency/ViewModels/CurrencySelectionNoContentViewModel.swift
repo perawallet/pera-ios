@@ -20,7 +20,7 @@ import MacaroonUIKit
 struct CurrencySelectionNoContentViewModel: NoContentViewModel, Hashable {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
-    private(set) var body: BodyTextProvider?
+    private(set) var body: TextProvider?
     
     init() {
         bindTitle()
@@ -39,12 +39,11 @@ extension CurrencySelectionNoContentViewModel {
     }
     
     private mutating func bindBody() {
-        let aBody =
+        body =
             "settings-currency-not-found-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        body = BodyTextProvider(text: aBody)
     }
 }
