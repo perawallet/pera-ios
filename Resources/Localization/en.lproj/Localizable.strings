@@ -1373,3 +1373,7 @@
 "algorand-secure-backup-account-list-action-title" = "Backup account";
 "algorand-secure-backup-account-list-action-title-singular" = "Backup account (1)";
 "algorand-secure-backup-account-list-action-title-plural" = "Backup accounts (%@)";
+"algorand-secure-backup-success-header-title" = "Your backup file is ready";
+"algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
+"algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";
+"algorand-secure-backup-success-save-action-title" = "Save backup file";

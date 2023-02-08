@@ -21,8 +21,8 @@ struct CollectiblesNoContentWithActionViewModel:
     NoContentWithActionViewModel,
     Hashable {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: BodyTextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -66,19 +66,18 @@ extension CollectiblesNoContentWithActionViewModel {
     }
 
     private mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "collectibles-empty-title"
                 .localized
                 .titleMedium(alignment: .center)
-        )
     }
 
     private mutating func bindBody() {
-        body = .attributedString(
+        let aBody =
             "collectibles-empty-body"
                 .localized
                 .bodyRegular(alignment: .center)
-        )
+        body = BodyTextProvider(text: aBody)
     }
 }
 

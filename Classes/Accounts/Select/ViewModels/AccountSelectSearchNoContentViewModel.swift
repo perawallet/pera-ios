@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 struct AccountSelectSearchNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: BodyTextProvider?
 
     init() {
         bindTitle()
@@ -31,21 +31,20 @@ struct AccountSelectSearchNoContentViewModel: NoContentViewModel {
 
 extension AccountSelectSearchNoContentViewModel {
     private mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "account-select-search-empty-title".localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 
     private mutating func bindBody() {
-        body = .attributedString(
+        let aBody =
             "account-select-search-empty-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        )
+        body = BodyTextProvider(text: aBody)
     }
 }

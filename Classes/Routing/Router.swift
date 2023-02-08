@@ -1393,6 +1393,10 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupSuccess(let eventHandler):
+            let screen = AlgorandSecureBackupSuccessScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

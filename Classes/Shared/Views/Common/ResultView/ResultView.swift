@@ -21,10 +21,15 @@ import UIKit
 
 final class ResultView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performHyperlinkAction: UIBlockInteraction()
+    ]
+
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
-    private lazy var bodyView = Label()
+    private lazy var bodyView = ALGActiveLabel()
 
     func customize(
         _ theme: ResultViewTheme
@@ -51,8 +56,33 @@ final class ResultView:
             iconView.removeFromSuperview()
         }
 
-        titleView.editText = viewModel?.title
-        bodyView.editText = viewModel?.body
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let body = viewModel?.body {
+            if let highlightedText = body.highlightedText {
+                let hyperlink: ALGActiveType = .word(highlightedText.text)
+                bodyView.attachHyperlink(
+                    hyperlink,
+                    to: body.text,
+                    attributes: highlightedText.attributes
+                ) {
+                    [unowned self] in
+                    let interaction = self.uiInteractions[.performHyperlinkAction]
+                    interaction?.publish()
+                }
+                return
+            }
+
+            body.text.load(in: bodyView)
+        } else {
+            bodyView.text = nil
+            bodyView.attributedText = nil
+        }
     }
 
     class func calculatePreferredSize(
@@ -66,13 +96,15 @@ final class ResultView:
 
         let iconSize = theme.iconSize ?? (viewModel.icon?.uiImage.size ?? .zero)
         let titleSize =
-            viewModel.title.boundingSize(
+            viewModel.title?.boundingSize(
+                multiline: true,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
-            )
+            ) ?? .zero
         let bodySize =
-            viewModel.body.boundingSize(
+            viewModel.body?.text.boundingSize(
+                multiline: true,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
-            )
+            ) ?? .zero
         var preferredHeight =
             iconSize.height +
             titleSize.height +
@@ -136,5 +168,11 @@ extension ResultView {
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
+    }
+}
+
+extension ResultView {
+    enum Event {
+        case performHyperlinkAction
     }
 }

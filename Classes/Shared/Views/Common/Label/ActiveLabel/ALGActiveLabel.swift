@@ -16,8 +16,46 @@
 
 import ActiveLabel
 import MacaroonUIKit
+import UIKit
 
 final class ALGActiveLabel: ActiveLabel {
+    var contentEdgeInsets: LayoutPaddings = (0, 0, 0, 0) {
+        didSet { invalidateIntrinsicContentSize() }
+    }
+
+    override func textRect(
+        forBounds bounds: CGRect,
+        limitedToNumberOfLines numberOfLines: Int
+    ) -> CGRect {
+        let textRect =
+            super.textRect(
+                forBounds: bounds.inset(
+                    by: UIEdgeInsets(contentEdgeInsets)
+                ),
+                limitedToNumberOfLines: numberOfLines
+            )
+
+        if text.isNilOrEmpty {
+            return textRect
+        }
+
+        return textRect.inset(
+            by: UIEdgeInsets(contentEdgeInsets)
+        )
+    }
+
+    override func drawText(in rect: CGRect) {
+        let someRect =
+            text.isNilOrEmpty
+                ? rect
+                : rect.inset(
+                    by: UIEdgeInsets(contentEdgeInsets)
+                )
+        super.drawText(
+            in: someRect
+        )
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
 

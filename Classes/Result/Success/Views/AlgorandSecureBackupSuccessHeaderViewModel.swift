@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,54 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomeNoContentViewModel.swift
+//   AlgorandSecureBackupSuccessHeaderViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct HomeNoContentViewModel: NoContentWithActionViewModel, NoContentViewModel {
+struct AlgorandSecureBackupSuccessHeaderViewModel: ResultViewModel {
     private(set) var icon: Image?
     private(set) var title: TextProvider?
     private(set) var body: BodyTextProvider?
-    private(set) var primaryAction: Action?
-    private(set) var secondaryAction: Action?
 
     init() {
         bindIcon()
         bindTitle()
         bindBody()
-        bindActionTitle()
     }
 }
 
-extension HomeNoContentViewModel {
+extension AlgorandSecureBackupSuccessHeaderViewModel {
     private mutating func bindIcon() {
-        icon = "img-accounts-empty"
+        icon = "check"
     }
 
     private mutating func bindTitle() {
-        title =
-            "empty-accounts-title"
-                .localized
-                .bodyLargeMedium(
-                    alignment: .center
-                )
+        title = "algorand-secure-backup-success-header-title".localized.titleMedium()
     }
 
     private mutating func bindBody() {
-        let aBody =
-            "empty-accounts-detail"
-                .localized
-                .bodyRegular(
-                    alignment: .center
-                )
-        body = BodyTextProvider(text: aBody)
-    }
+        let bodyText = "algorand-secure-backup-success-header-body".localized.bodyRegular()
 
-    private mutating func bindActionTitle() {
-        primaryAction = Action(
-            title: .string("empty-accounts-action".localized),
-            image: nil
+        var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
+        bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
+
+        let bodyHighlightedText = HighlightedText(
+            text: "algorand-secure-backup-success-header-body-highlighted-text".localized,
+            attributes: bodyHighlightedTextAttributes
         )
+        body = BodyTextProvider(text: bodyText, highlightedText: bodyHighlightedText)
     }
 }

@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct ExportAccountsResultViewModel: ResultViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: BodyTextProvider?
 
     init(accounts: [Account]) {
         let hasSingularAccount = accounts.isSingular
@@ -36,12 +36,16 @@ extension ExportAccountsResultViewModel {
     }
 
     private mutating func bindTitle(hasSingularAccount: Bool) {
-        let resultTitle = hasSingularAccount ? "web-export-result-title-singular".localized : "web-export-result-title".localized
-        title = .attributedString(resultTitle.titleMedium())
+        let resultTitle = hasSingularAccount
+            ? "web-export-result-title-singular".localized
+            : "web-export-result-title".localized
+        title = resultTitle.titleMedium()
     }
 
     private mutating func bindBody(hasSingularAccount: Bool) {
-        let resultBody = hasSingularAccount ? "web-export-result-body-singular".localized : "web-export-result-body".localized
-        body = .attributedString(resultBody.bodyRegular())
+        let resultBody = hasSingularAccount
+            ? "web-export-result-body-singular".localized
+            : "web-export-result-body".localized
+        body = BodyTextProvider(text: resultBody.bodyRegular())
     }
 }
