@@ -35,7 +35,9 @@ struct AccountImportParameters: ALGEntityModel {
     ) {
         address = apiModel.address ?? ""
         name = apiModel.name
-        accountType = apiModel.accountType ?? .unsupported("unsupported")
+        accountType = apiModel.accountType.unwrap { accountTypeRawValue in
+            AccountImportParameters.AccountType(rawValue: accountTypeRawValue)
+        } ?? .unsupported("Unsupported")
         privateKey = apiModel.privateKey
     }
 
@@ -43,7 +45,7 @@ struct AccountImportParameters: ALGEntityModel {
         var apiModel = APIModel()
         apiModel.address = address
         apiModel.name = name
-        apiModel.accountType = accountType
+        apiModel.accountType = accountType.rawValue
         apiModel.privateKey = privateKey
         return apiModel
     }
@@ -86,7 +88,12 @@ extension AccountImportParameters {
             if let rawAccountType = RawAccountType(rawValue: rawValue) {
                 self.init(rawAccountType: rawAccountType)
             } else {
-                self = .unsupported(rawValue)
+                switch rawValue {
+                case "single":
+                    self = .single
+                default:
+                    self = .unsupported(rawValue)
+                }
             }
         }
 
@@ -103,7 +110,7 @@ extension AccountImportParameters {
     struct APIModel: ALGAPIModel {
         var address: String?
         var name: String?
-        var accountType: AccountImportParameters.AccountType?
+        var accountType: String?
         var privateKey: Data?
 
         init() {
@@ -113,7 +120,9 @@ extension AccountImportParameters {
             self.privateKey = nil
         }
     }
+}
 
+extension AccountImportParameters.APIModel {
     private enum CodingKeys: String, CodingKey {
         case address
         case name
