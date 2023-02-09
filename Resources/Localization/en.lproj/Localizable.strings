@@ -1343,3 +1343,8 @@
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your ALGO or USDC balance";
+
+// MARK: Buy Gift Cards with Crypto Alert Item
+"buy-gift-cards-with-crypto-alert-title" = "Buy Gift Cards with Crypto";
+"buy-gift-cards-with-crypto-alert-body" = "You can use your ALGO or USDC balance to buy gift card and mobile topups from thousands of brands worldwide!";
+"buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";

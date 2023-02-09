@@ -1136,15 +1136,20 @@ extension HomeViewController {
         return [
             makeCopyAddressIntroductionAlertItem(),
             makeSwapIntroductionAlertItem(),
+            makeBuyGiftCardsWithCryptoIntroductionAlertItem()
         ]
+    }
+
+    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
+        return CopyAddressIntroductionAlertItem(delegate: self)
     }
 
     private func makeSwapIntroductionAlertItem() -> any AlertItem {
         return SwapIntroductionAlertItem(delegate: swapAssetFlowCoordinator)
     }
 
-    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
-        return CopyAddressIntroductionAlertItem(delegate: self)
+    private func makeBuyGiftCardsWithCryptoIntroductionAlertItem() -> any AlertItem {
+        return BuyGiftCardsWithCryptoIntroductionAlertItem(delegate: self)
     }
 }
 
@@ -1152,4 +1157,19 @@ extension HomeViewController: CopyAddressIntroductionAlertItemDelegate {
     func copyAddressIntroductionAlertItemDidPerformGotIt(_ item: CopyAddressIntroductionAlertItem) {
         dismiss(animated: true)
     }
+}
+
+extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegate {
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
+        dismiss(animated: true) {
+            [unowned self] in
+            self.openBuyGiftCardsWithCrypto()
+        }
+    }
+
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
+        dismiss(animated: true)
+    }
+
+    private func openBuyGiftCardsWithCrypto() {}
 }
