@@ -17,11 +17,11 @@
 import Foundation
 
 protocol ALGAnalyticsParameterRegulator {
-    func regulate(_ parameter: String) -> Substring
+    static func regulate(_ parameter: String) -> String
 }
 
 extension ALGAnalyticsParameterRegulator {
-    func regulate(_ parameter: String) -> Substring {
-        return parameter.prefix(99)
+    static func regulate(_ parameter: String) -> String {
+        return String(parameter.prefix(99))
     }
 }
