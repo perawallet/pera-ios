@@ -1561,8 +1561,7 @@ extension Router {
     }
     
     func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
-        let viewModel = WCSessionLimitToastViewModel(title: "wallet-connect-session-limit-warning-message".localized)
-        appConfiguration.toastPresentationController.present(message: viewModel)
+        appConfiguration.toastPresentationController.present(message: WCSessionLimitToastViewModel())
     }
 }
 

@@ -48,7 +48,7 @@ extension SettingsPrimaryDetailView {
         imageView.fitToIntrinsicSize()
         imageView.snp.makeConstraints {
             $0.fitToSize(theme.imageSize)
-            $0.top == 20
+            $0.top == theme.topInset
             $0.leading == theme.horizontalInset
         }
     }

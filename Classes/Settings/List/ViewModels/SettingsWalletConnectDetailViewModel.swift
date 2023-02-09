@@ -22,10 +22,10 @@ struct SettingsWalletConnectDetailViewModel: PrimaryTitleViewModel {
     private(set) var primaryTitleAccessory: Image?
     private(set) var secondaryTitle: TextProvider?
 
-    init(walletConnector: WalletConnector) {
+    init(activeSessionCount: Int) {
         bindPrimaryTitle()
         bindPrimaryTitleAccessory()
-        bindSecondaryTitle(walletConnector)
+        bindSecondaryTitle(activeSessionCount)
     }
 }
 
@@ -40,9 +40,8 @@ extension SettingsWalletConnectDetailViewModel {
         primaryTitleAccessory = nil
     }
 
-    mutating func bindSecondaryTitle(_ walletConnector: WalletConnector) {
+    mutating func bindSecondaryTitle(_ activeSessionCount: Int) {
         let totalSessionLimit = WalletConnectSessionSource.sessionLimit
-        let activeSessionCount = walletConnector.allWalletConnectSessions.count
         let detailText = "\(activeSessionCount)/\(totalSessionLimit)"
         secondaryTitle = detailText.footnoteRegular()
     }

@@ -22,6 +22,7 @@ struct SettingsPrimaryDetailViewTheme:
     StyleSheet {
     let backgroundColor: Color
     let horizontalInset: LayoutMetric
+    let topInset: LayoutMetric
     let image: ImageStyle
     let imageSize: LayoutSize
     let title: PrimaryTitleViewTheme
@@ -31,6 +32,7 @@ struct SettingsPrimaryDetailViewTheme:
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.horizontalInset = 24
+        self.topInset = 20
         self.image = [
             .image("icon-settings-wallet-connect")
         ]

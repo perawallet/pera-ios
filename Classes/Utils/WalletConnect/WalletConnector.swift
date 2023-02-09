@@ -358,7 +358,9 @@ extension WalletConnector {
             by: \.date,
             using: >
         )
-        let oldSessions = Array(orderedSessions[WalletConnectSessionSource.sessionLimit...])
+        
+        let fromRange = WalletConnectSessionSource.sessionLimit
+        let oldSessions = Array(orderedSessions[fromRange...])
         
         for session in oldSessions {
             removeFromSessions(session)

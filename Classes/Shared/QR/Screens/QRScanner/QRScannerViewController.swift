@@ -471,8 +471,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
         guard let toastPresentationController = configuration.toastPresentationController else { return }
         
-        let viewModel = WCSessionLimitToastViewModel(title: "wallet-connect-session-limit-warning-message".localized)
-        toastPresentationController.present(message: viewModel)
+        toastPresentationController.present(message: WCSessionLimitToastViewModel())
     }
 
     private func startWCConnectionTimer() {

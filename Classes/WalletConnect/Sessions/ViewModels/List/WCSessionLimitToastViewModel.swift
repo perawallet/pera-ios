@@ -21,18 +21,20 @@ struct WCSessionLimitToastViewModel: ToastViewModel {
     private(set) var title: TextProvider?
     private(set) var body: TextProvider?
 
-    init(title: String?) {
-        bindTitle(title)
+    init() {
+        bindTitle()
         bindBody()
     }
 }
 
 extension WCSessionLimitToastViewModel {
-    mutating func bindTitle(_ title: String?) {
-        self.title = title?.bodyMedium(
-            alignment: .center,
-            lineBreakMode: .byWordWrapping
-        )
+    mutating func bindTitle() {
+        self.title =  "wallet-connect-session-limit-warning-message"
+            .localized
+            .bodyMedium(
+                alignment: .center,
+                lineBreakMode: .byWordWrapping
+            )
     }
     
     mutating func bindBody() {

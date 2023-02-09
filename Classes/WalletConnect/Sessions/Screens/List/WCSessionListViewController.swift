@@ -108,8 +108,7 @@ final class WCSessionListViewController:
             case .didExceededMaximumSessionLimit:
                 guard let toastPresentationController = self.configuration.toastPresentationController else { return }
                 
-                let viewModel = WCSessionLimitToastViewModel(title: "wallet-connect-session-limit-warning-message".localized)
-                toastPresentationController.present(message: viewModel)
+                toastPresentationController.present(message: WCSessionLimitToastViewModel())
             }
         }
 
@@ -177,15 +176,19 @@ extension WCSessionListViewController {
         )
         navigationTitleView.addGestureRecognizer(recognizer)
         
+        let viewModel = composeNavigationViewModel()
+        navigationTitleView.bindData(viewModel)
+    }
+    
+    private func composeNavigationViewModel() -> NavigationPrimaryTitleItemViewModel {
         let totalSessionLimit = WalletConnectSessionSource.sessionLimit
         let activeSessionCount = walletConnector.allWalletConnectSessions.count
         let detailText = "\(activeSessionCount)/\(totalSessionLimit)"
 
-        let viewModel = NavigationPrimaryTitleItemViewModel(
+        return NavigationPrimaryTitleItemViewModel(
             title: "settings-wallet-connect-title".localized,
             detail: detailText
         )
-        navigationTitleView.bindData(viewModel)
     }
 }
 

@@ -40,12 +40,12 @@ final class SettingsDataSource: NSObject {
         .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer
     ]
     
-    private var session: Session?
     private let walletConnector: WalletConnector
+    private var session: Session?
     
     init(
-        session: Session?,
-        walletConnector: WalletConnector
+        walletConnector: WalletConnector,
+        session: Session?
     ) {
         self.walletConnector = walletConnector
         
@@ -69,7 +69,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
             case .account:
                 if let setting = accountSettings[safe: indexPath.item] {
                     if setting == .walletConnect {
-                        return setSettingsPrimaryDetailCell(
+                        return settingsPrimaryDetailCell(
                             in: collectionView,
                             at: indexPath
                         )
@@ -104,12 +104,13 @@ extension SettingsDataSource: UICollectionViewDataSource {
         return cell
     }
     
-    private func setSettingsPrimaryDetailCell(
+    private func settingsPrimaryDetailCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath
     ) -> SettingsPrimaryDetailCell {
         let cell = collectionView.dequeue(SettingsPrimaryDetailCell.self, at: indexPath)
-        cell.bindData(SettingsWalletConnectDetailViewModel(walletConnector: walletConnector))
+        let activeSessionCount = walletConnector.allWalletConnectSessions.count
+        cell.bindData(SettingsWalletConnectDetailViewModel(activeSessionCount: activeSessionCount))
         return cell
     }
     
