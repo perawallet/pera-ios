@@ -25,6 +25,8 @@ final class EditNoteScreen:
     BaseScrollViewController,
     BottomSheetScrollPresentable,
     MacaroonForm.KeyboardControllerDataSource {
+    let noteMaxByteSize = 1024
+    
     weak var delegate: EditNoteScreenDelegate?
 
     var modalBottomPadding: LayoutMetric {
@@ -68,6 +70,12 @@ final class EditNoteScreen:
 
         bindNavigationTitle()
         addNavigationActions()
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        noteInputView.editingDelegate = self
     }
 
     override func viewDidLoad() {
@@ -155,6 +163,29 @@ extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
     func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
         didTapDoneButton()
     }
+}
+
+extension EditNoteScreen: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidEdit(_ view: MacaroonForm.FormInputFieldView) {
+        guard let noteByteArray = noteInputView.text?.convertToByteArray() else {
+            return
+        }
+        
+        let noteByteSize = noteByteArray.count
+        
+        if noteByteSize > noteMaxByteSize {
+            let extraBytes = noteByteSize - noteMaxByteSize
+            
+            noteInputView.text = String(
+                decoding: noteByteArray.dropLast(extraBytes),
+                as: UTF8.self
+            )
+        }
+    }
+    
+    func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) {}
+    
+    func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) {}
 }
 
 extension EditNoteScreen {
