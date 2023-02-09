@@ -25,12 +25,7 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
 
     private lazy var contextView = UIView()
     private lazy var headerView = ResultWithHyperlinkView()
-    private lazy var fileContentView = TripleShadowView()
-    private lazy var fileIconView = UIImageView()
-    private lazy var fileInfoContentView = UIView()
-    private lazy var fileInfoNameView = UILabel()
-    private lazy var fileInfoSizeView = UILabel()
-    private lazy var fileCopyAccessory = UIButton()
+    private lazy var fileInfoView = FileInfoView()
     private lazy var saveActionView = MacaroonUIKit.Button(theme.saveActionLayout)
     private lazy var doneActionView = MacaroonUIKit.Button()
 
@@ -81,7 +76,7 @@ extension AlgorandSecureBackupSuccessScreen {
         }
 
         addHeader()
-        addFileContent()
+        addFileInfo()
     }
 
     private func addHeader() {
@@ -102,91 +97,18 @@ extension AlgorandSecureBackupSuccessScreen {
         }
     }
 
-    private func addFileContent() {
-        fileContentView.drawAppearance(shadow: theme.fileContentFirstShadow)
-        fileContentView.drawAppearance(secondShadow: theme.fileContentSecondShadow)
-        fileContentView.drawAppearance(thirdShadow: theme.fileContentThirdShadow)
-
-        contextView.addSubview(fileContentView)
-        fileContentView.snp.makeConstraints {
+    private func addFileInfo() {
+        fileInfoView.customize(theme.fileInfo)
+        
+        contextView.addSubview(fileInfoView)
+        fileInfoView.snp.makeConstraints {
             $0.top == headerView.snp.bottom + theme.spacingBetweenHeaderAndFileContent
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
         }
 
-        addFileIcon()
-        addFileInfoContent()
-        addFileCopyAccessory()
-    }
-
-    private func addFileIcon() {
-        fileIconView.customizeAppearance(theme.fileIcon)
-
-        fileContentView.addSubview(fileIconView)
-        fileIconView.fitToIntrinsicSize()
-        fileIconView.snp.makeConstraints {
-            $0.top == theme.fileContentPaddings.top
-            $0.leading == theme.fileContentPaddings.leading
-            $0.bottom == theme.fileContentPaddings.bottom
-        }
-    }
-
-    private func addFileInfoContent() {
-        fileContentView.addSubview(fileInfoContentView)
-        fileInfoContentView.snp.makeConstraints {
-            $0.top >= 0
-            $0.leading == fileIconView.snp.trailing + theme.spacingBetweenFileIconAndFileInfoContent
-            $0.bottom <= 0
-            $0.centerY == 0
-        }
-
-        addFileInfoName()
-        addFileInfoSize()
-    }
-
-    private func addFileInfoName() {
-        fileInfoNameView.customizeAppearance(theme.fileInfoName)
-
-        fileInfoContentView.addSubview(fileInfoNameView)
-        fileInfoNameView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-        }
-
-        bindFileInfoName()
-    }
-
-    private func addFileInfoSize() {
-        fileInfoSizeView.customizeAppearance(theme.fileInfoSize)
-
-        fileInfoContentView.addSubview(fileInfoSizeView)
-        fileInfoSizeView.snp.makeConstraints {
-            $0.top == fileInfoNameView.snp.bottom + theme.spacingBetweenFileInfoNameAndFileInfoSize
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-
-        bindFileInfoSize()
-    }
-
-    private func addFileCopyAccessory() {
-        fileCopyAccessory.customizeAppearance(theme.fileCopyAccessory)
-
-        fileContentView.addSubview(fileCopyAccessory)
-        fileCopyAccessory.fitToIntrinsicSize()
-        fileCopyAccessory.snp.makeConstraints {
-            $0.leading == fileInfoContentView.snp.trailing + theme.spacingBetweenFileInfoContentAndFileCopyAccessory
-            $0.trailing == theme.fileContentPaddings.trailing
-            $0.centerY == 0
-        }
-
-        fileCopyAccessory.addTouch(
-            target: self,
-            action: #selector(performCopy)
-        )
+        bindFileInfo()
     }
 
     private func addSaveAction() {
@@ -231,12 +153,9 @@ extension AlgorandSecureBackupSuccessScreen {
         headerView.bindData(viewModel)
     }
 
-    private func bindFileInfoName() {
-        fileInfoNameView.attributedText = "19/01/2023_backup.txt".footnoteMedium(lineBreakMode: .byTruncatingTail)
-    }
-
-    private func bindFileInfoSize() {
-        fileInfoSizeView.attributedText = "239 KB".footnoteRegular(lineBreakMode: .byTruncatingTail)
+    private func bindFileInfo() {
+        let viewModel = FileInfoViewModel()
+        fileInfoView.bindData(viewModel)
     }
 }
 

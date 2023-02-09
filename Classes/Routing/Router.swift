@@ -1379,8 +1379,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .algorandSecureBackupInstruction(let eventHandler):
-            let screen = AlgorandSecureBackupInstructionScreen()
+        case .algorandSecureBackupInstructions(let eventHandler):
+            let screen = AlgorandSecureBackupInstructionsScreen()
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupAccountList(let eventHandler):

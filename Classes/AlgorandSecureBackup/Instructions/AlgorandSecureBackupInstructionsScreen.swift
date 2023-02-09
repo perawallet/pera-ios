@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupInstructionScreen.swift
+//   AlgorandSecureBackupInstructionsScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AlgorandSecureBackupInstructionScreen:
+final class AlgorandSecureBackupInstructionsScreen:
     ScrollScreen,
     NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event) -> Void
@@ -43,9 +43,9 @@ final class AlgorandSecureBackupInstructionScreen:
     private lazy var instructionsView = VStackView()
     private lazy var startActionView = MacaroonUIKit.Button()
 
-    private let theme: AlgorandSecureBackupInstructionScreenTheme
+    private let theme: AlgorandSecureBackupInstructionsScreenTheme
 
-    init(theme: AlgorandSecureBackupInstructionScreenTheme = .init()) {
+    init(theme: AlgorandSecureBackupInstructionsScreenTheme = .init()) {
         self.theme = theme
     }
 
@@ -93,7 +93,7 @@ final class AlgorandSecureBackupInstructionScreen:
     }
 }
 
-extension AlgorandSecureBackupInstructionScreen {
+extension AlgorandSecureBackupInstructionsScreen {
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
@@ -143,31 +143,28 @@ extension AlgorandSecureBackupInstructionScreen {
             $0.trailing == 0
         }
 
-        addFirstInstruction()
-        addSecondInstruction()
-        addThirdInstruction()
+        addSelectAccountsInstruction()
+        addStoreKeysInstruction()
+        addSaveBackupFileInstruction()
     }
 
-    private func addFirstInstruction() {
-        addInstruction(
-            AlgorandSecureBackupFirstInstructionItemViewModel()
-        )
+    private func addSelectAccountsInstruction() {
+        let viewModel = AlgorandSecureBackupSelectAccountsInstructionItemViewModel(number: 1)
+        addInstruction(viewModel)
     }
 
-    private func addSecondInstruction() {
-        let instruction = addInstruction(
-            AlgorandSecureBackupSecondInstructionItemViewModel()
-        )
+    private func addStoreKeysInstruction() {
+        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(number: 2)
+        let instruction = addInstruction(viewModel)
         instruction.startObserving(event: .performHyperlinkAction) {
             [unowned self] in
             self.open(AlgorandWeb.algorandSecureBackup.link)
         }
     }
 
-    private func addThirdInstruction() {
-        addInstruction(
-            AlgorandSecureBackupThirdInstructionItemViewModel()
-        )
+    private func addSaveBackupFileInstruction() {
+        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(number: 3)
+        addInstruction(viewModel)
     }
 
     @discardableResult
@@ -203,7 +200,7 @@ extension AlgorandSecureBackupInstructionScreen {
     }
 }
 
-extension AlgorandSecureBackupInstructionScreen {
+extension AlgorandSecureBackupInstructionsScreen {
     private func bindHeader() {
         headerView.attributedText =
             "algorand-secure-backup-instruction-header-title"
@@ -216,14 +213,14 @@ extension AlgorandSecureBackupInstructionScreen {
     }
 }
 
-extension AlgorandSecureBackupInstructionScreen {
+extension AlgorandSecureBackupInstructionsScreen {
     @objc
     private func performStartAction() {
         eventHandler?(.performStart)
     }
 }
 
-extension AlgorandSecureBackupInstructionScreen {
+extension AlgorandSecureBackupInstructionsScreen {
     enum Event {
         case performStart
     }
