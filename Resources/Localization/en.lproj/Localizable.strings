@@ -1123,6 +1123,7 @@
 "story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
 
 //MARK: QuickActions
+"quick-actions-buy-sell-title" = "Buy / Sell";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";

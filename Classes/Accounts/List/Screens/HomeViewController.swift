@@ -433,7 +433,7 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeQuickActionsCell
     ) {
-        cell.startObserving(event: .buyAlgo) {
+        cell.startObserving(event: .buySell) {
             [weak self] in
             guard let self = self else { return }
             self.analytics.track(.recordHomeScreen(type: .buyAlgo))

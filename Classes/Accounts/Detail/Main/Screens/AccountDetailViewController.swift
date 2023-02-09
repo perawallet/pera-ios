@@ -172,7 +172,7 @@ extension AccountDetailViewController {
                 self.analytics.track(.recordAccountDetailScreen(type: .addAssets))
 
                 self.openAddAssetScreen()
-            case .buyAlgo:
+            case .buySell:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
 
