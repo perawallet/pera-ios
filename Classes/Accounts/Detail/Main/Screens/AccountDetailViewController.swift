@@ -25,12 +25,13 @@ final class AccountDetailViewController: PageContainer {
     var eventHandler: EventHandler?
     
     private lazy var theme = Theme()
+
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = createAssetListScreen()
     private lazy var collectibleListScreen = createCollectibleListScreen()
-    
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
         copyToClipboardController: copyToClipboardController,
@@ -174,11 +175,8 @@ extension AccountDetailViewController {
                 self.openAddAssetScreen()
             case .buySell:
                 self.assetListScreen.endEditing()
-                self.analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
 
-                let draft = BuyAlgoDraft()
-                draft.address = self.accountHandle.value.address
-                self.buyAlgoFlowCoordinator.launch(draft: draft)
+                self.openBuySellOptions()
             case .swap:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .swap))
@@ -211,14 +209,10 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
         }
     }
 
-    func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
+    func transactionOptionsScreenDidBuySell(_ transactionOptionsScreen: TransactionOptionsScreen) {
         transactionOptionsScreen.dismiss(animated: true) {
             [weak self] in
-
-            let buyAlgoDraft = BuyAlgoDraft()
-            buyAlgoDraft.address = self?.accountHandle.value.address
-            
-            self?.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
+            self?.openBuySellOptions()
         }
     }
 
@@ -252,6 +246,43 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             self?.presentOptionsScreen()
         }
     }
+}
+
+extension AccountDetailViewController {
+    private func openBuySellOptions() {
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyAlgoWithMoonpay:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithMoonpay()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHander: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyAlgoWithMoonpay() {
+        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
+
+        let draft = BuyAlgoDraft()
+        draft.address = accountHandle.value.address
+        buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func openBuyGiftCardsWithBidali() {}
 }
 
 extension AccountDetailViewController {

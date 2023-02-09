@@ -29,6 +29,7 @@ final class HomeViewController:
     private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
         presentingScreen: self,
@@ -436,8 +437,7 @@ extension HomeViewController {
         cell.startObserving(event: .buySell) {
             [weak self] in
             guard let self = self else { return }
-            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
-            self.buyAlgoFlowCoordinator.launch()
+            self.openBuySellOptions()
         }
 
         cell.startObserving(event: .swap) {
@@ -577,6 +577,41 @@ extension HomeViewController {
             )
         }
     }
+}
+
+extension HomeViewController {
+    private func openBuySellOptions() {
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyAlgoWithMoonpay:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithMoonpay()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHander: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyAlgoWithMoonpay() {
+        analytics.track(.recordHomeScreen(type: .buyAlgo))
+
+        buyAlgoFlowCoordinator.launch()
+    }
+
+    private func openBuyGiftCardsWithBidali() {}
 }
 
 extension HomeViewController {

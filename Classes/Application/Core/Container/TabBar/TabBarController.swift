@@ -34,12 +34,12 @@ final class TabBarController: TabBarContainer {
 
     private lazy var toggleTransactionOptionsActionView = Button()
 
-    private lazy var buyAlgoAction = TransactionOptionListAction(
-        viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+    private lazy var buySellAction = TransactionOptionListAction(
+        viewModel: BuySellTransactionOptionListItemButtonViewModel()
     ) {
         [weak self] _ in
         guard let self = self else { return }
-        self.navigateToBuyAlgo()
+        self.navigateToBuySell()
     }
 
     private lazy var swapActionViewModel = createSwapActionViewModel()
@@ -98,7 +98,8 @@ final class TabBarController: TabBarContainer {
     )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
@@ -229,7 +230,7 @@ extension TabBarController {
 
         let aView = TransactionOptionsView(
             actions: [
-                buyAlgoAction,
+                buySellAction,
                 swapAction,
                 sendAction,
                 receiveAction,
@@ -367,12 +368,40 @@ extension TabBarController {
         analytics.track(.tapReceiveTab())
     }
 
-    private func navigateToBuyAlgo() {
+    private func navigateToBuySell() {
         toggleTransactionOptions()
+
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyAlgoWithMoonpay:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithMoonpay()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHander: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyAlgoWithMoonpay() {
         buyAlgoFlowCoordinator.launch()
 
         analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
+
+    private func openBuyGiftCardsWithBidali() {}
 
     private func navigateToQRScanner() {
         toggleTransactionOptions()

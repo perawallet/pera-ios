@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionOptionListItemButtonViewModel.swift
+//   BuySellTransactionOptionListItemButtonViewModel.swift
 
 import MacaroonUIKit
 
-struct BuyAlgoTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
+struct BuySellTransactionOptionListItemButtonViewModel: TransactionOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
 
     init() {
-        icon = "icon-transaction-option-list-buy-algo"
-        title = Self.getTitle("title-buy-algo".localized)
-        subtitle = Self.getSubtitle("transaction-option-list-buy-algo-subtitle".localized)
+        icon = "icon-transaction-option-list-buy-sell"
+        title = Self.getTitle("title-buy-sell".localized)
+        subtitle = Self.getSubtitle("transaction-option-list-buy-sell-subtitle".localized)
     }
 }

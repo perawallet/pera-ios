@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "buy-algo-icon.pdf",
+      "filename" : "icon-moonpay-option.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,12 +11,15 @@
           "value" : "dark"
         }
       ],
-      "filename" : "buy-algo-icon 1.pdf",
+      "filename" : "icon-moonpay-option-dark.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

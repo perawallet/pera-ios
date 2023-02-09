@@ -54,7 +54,7 @@
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-retry-later" = "Please try later.";
 "title-press-hold-copy-address" = "Press and hold to copy address";
-"title-buy-algo" = "Buy ALGO";
+"title-buy-sell" = "Buy / Sell";
 "title-sort" = "Sort";
 "title-alphabetically-a-to-z" = "Alphabetically A to Z";
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
@@ -1103,9 +1103,9 @@
 
 // MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
-"moonpay-introduction-title"="Buy ALGO with Moonpay";
-"moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
-"moonpay-introduction-security"="Secured by";
+"moonpay-introduction-title" = "Buy ALGO with MoonPay";
+"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-security" = "Secured by";
 "moonpay-transaction-completed-title" = "Your Algos are on their way!";
 "moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
 "moonpay-transaction-pending-title" = "Your Algos are on their way!";
@@ -1132,7 +1132,7 @@
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
-"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
@@ -1335,3 +1335,11 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 "discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
+// MARK: Buy / Sell Options
+"buy-sell-options-buy-header-title" = "Buy crypto";
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-sell-header-title" = "Sell crypto";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your ALGO or USDC balance";

@@ -1360,6 +1360,10 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .buySellOptions(let eventHandler):
+            let screen = BuySellOptionsScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
