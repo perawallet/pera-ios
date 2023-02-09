@@ -94,6 +94,7 @@ final class WCSessionListViewController:
                     animatingDifferences: self.isViewAppeared
                 )
 
+                self.bindNavigationTitleView()
                 self.showDisconnectAllActionIfNeeded()
             case .didStartDisconnectingFromSession,
                  .didStartDisconnectingFromSessions:
@@ -175,20 +176,20 @@ extension WCSessionListViewController {
             action: #selector(didTapSessionCountTitle)
         )
         navigationTitleView.addGestureRecognizer(recognizer)
-        
-        let viewModel = composeNavigationViewModel()
-        navigationTitleView.bindData(viewModel)
+        bindNavigationTitleView()
     }
     
-    private func composeNavigationViewModel() -> NavigationPrimaryTitleItemViewModel {
+    private func bindNavigationTitleView() {
         let totalSessionLimit = WalletConnectSessionSource.sessionLimit
         let activeSessionCount = walletConnector.allWalletConnectSessions.count
         let detailText = "\(activeSessionCount)/\(totalSessionLimit)"
 
-        return NavigationPrimaryTitleItemViewModel(
+        let viewModel = NavigationPrimaryTitleItemViewModel(
             title: "settings-wallet-connect-title".localized,
             detail: detailText
         )
+        
+        navigationTitleView.bindData(viewModel)
     }
 }
 
