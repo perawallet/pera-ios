@@ -92,7 +92,7 @@ extension AccountImportParameters {
 
         init(stringRawValue: String) {
             switch stringRawValue {
-            case stringRawValue:
+            case Self.single.rawValue:
                 self = .single
             default:
                 self = .unsupported(stringRawValue)
