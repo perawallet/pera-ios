@@ -27,7 +27,7 @@ final class SettingsPrimaryDetailView: View {
         customize(SettingsPrimaryDetailViewTheme())
     }
     
-    func customize(_ theme: SettingsPrimaryDetailViewTheme) {
+    private func customize(_ theme: SettingsPrimaryDetailViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addImage(theme)

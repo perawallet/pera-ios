@@ -95,7 +95,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
+        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url).topic)
         self.dataSource = WCMainTransactionDataSource(
             sharedDataController: configuration.sharedDataController,
             transactions: transactions,

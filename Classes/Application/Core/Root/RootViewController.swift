@@ -56,7 +56,7 @@ class RootViewController: UIViewController {
         api: appConfiguration.api
     )
     
-    private var sessionsForOngoingWCTransactionRequests: Set<WCSession> = []
+    private var sessionsForOngoingWCTransactionRequests: [String: WCSession] = [:]
     private var wcTransactionSuccessTransition: BottomSheetTransition?
 
     let target: ALGAppTarget
@@ -104,7 +104,7 @@ extension RootViewController {
                 sharedDataController: appConfiguration.sharedDataController,
                 session: appConfiguration.session,
                 announcementDataController: announcementAPIDataController,
-                walletConnector: appConfiguration.walletConnector
+                walletConnector: walletConnector
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -188,7 +188,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
         didInvalidate request: WalletConnectRequest
     ) {
-        appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput(.parse))
+        walletConnector.rejectTransactionRequest(request, with: .invalidInput(.parse))
     }
 
     private func openWCTransactionRequestScreenIfNeeded(
@@ -196,38 +196,24 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for transactions: [WCTransaction],
         with transactionOption: WCTransactionOption?
     ) {
-        guard let requestSession = findWCRequestSessionFromTopic(request: request) else {
-            appConfiguration.walletConnector.rejectTransactionRequest(
+        guard let requestSession = walletConnector.getWalletConnectSession(with: request.url.topic) else {
+            walletConnector.rejectTransactionRequest(
                 request,
                 with: .invalidInput(.session)
             )
             return
         }
         
-        if sessionsForOngoingWCTransactionRequests.contains(requestSession) {
-            appConfiguration.walletConnector.rejectTransactionRequest(
+        if isThereOngoingWCTransactionRequestOnTheSameSession(requestSession) {
+            walletConnector.rejectTransactionRequest(
                 request,
                 with: .rejected(.alreadyDisplayed)
             )
             return
         }
         
-        sessionsForOngoingWCTransactionRequests.insert(requestSession)
+        sessionsForOngoingWCTransactionRequests[requestSession.urlMeta.topic] = requestSession
         
-        openWCTransactionRequestScreen(
-            request,
-            animated: true,
-            for: transactions,
-            and: transactionOption
-        )
-    }
-
-    private func openWCTransactionRequestScreen(
-        _ request: WalletConnectRequest,
-        animated: Bool,
-        for transactions: [WCTransaction],
-        and transactionOption: WCTransactionOption?
-    ) {
         let draft = WalletConnectRequestDraft(
             request: request,
             transactions: transactions,
@@ -236,9 +222,8 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         launchController.receive(deeplinkWithSource: .walletConnectRequest(draft))
     }
     
-    private func findWCRequestSessionFromTopic(request: WalletConnectRequest) -> WCSession? {
-        let walletConnectSessions = appConfiguration.walletConnector.allWalletConnectSessions
-        return walletConnectSessions.first { $0.urlMeta.topic == request.url.topic }
+    private func isThereOngoingWCTransactionRequestOnTheSameSession(_ session: WCSession) -> Bool {
+        return sessionsForOngoingWCTransactionRequests[session.urlMeta.topic] != nil
     }
 }
 
@@ -247,10 +232,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         _ wcMainTransactionScreen: WCMainTransactionScreen,
         didRejected request: WalletConnectRequest
     ) {
-        if let requestSession = findWCRequestSessionFromTopic(request: request) {
-            sessionsForOngoingWCTransactionRequests.remove(requestSession)
-        }
-
+        clearOngoingWCTransactionRequestIfNeedeed(for: request)
         wcMainTransactionScreen.dismissScreen()
     }
 
@@ -261,7 +243,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
     ) {
         guard let wcSession = session else { return }
         
-        sessionsForOngoingWCTransactionRequests.remove(wcSession)
+        clearOngoingWCTransactionRequest(for: wcSession)
         
         wcMainTransactionScreen.dismissScreen {
             [weak self] in
@@ -269,6 +251,15 @@ extension RootViewController: WCMainTransactionScreenDelegate {
 
             self.presentWCTransactionSuccessMessage(for: wcSession)
         }
+    }
+    
+    private func clearOngoingWCTransactionRequestIfNeedeed(for request: WalletConnectRequest) {
+        guard let requestSession = walletConnector.getWalletConnectSession(with: request.url.topic) else { return }
+        clearOngoingWCTransactionRequest(for: requestSession)
+    }
+    
+    private func clearOngoingWCTransactionRequest(for session: WCSession) {
+        sessionsForOngoingWCTransactionRequests[session.urlMeta.topic] = nil
     }
 
     private func presentWCTransactionSuccessMessage(for session: WCSession) {
@@ -309,8 +300,8 @@ extension RootViewController {
             if isCompleted {
                 self.appConfiguration.session.reset(includingContacts: true)
 
-                self.appConfiguration.walletConnector.disconnectFromAllSessions()
-                self.appConfiguration.walletConnector.resetAllSessions()
+                self.walletConnector.disconnectFromAllSessions()
+                self.walletConnector.resetAllSessions()
 
                 self.appConfiguration.sharedDataController.resetPolling()
 
@@ -346,6 +337,12 @@ extension RootViewController {
                 $0.trailing == 0
             }
         }
+    }
+}
+
+extension RootViewController {
+    private var walletConnector: WalletConnector {
+        return appConfiguration.walletConnector
     }
 }
 

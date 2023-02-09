@@ -12,6 +12,7 @@
 //   WalletConnector.swift
 
 import Foundation
+import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
@@ -59,8 +60,9 @@ extension WalletConnector {
             return
         }
         
-        clearOlderSessionsIfNeeded()
         isRegisteredToTheTransactionRequests = true
+        
+        clearOlderSessionsIfNeeded()
         registerToWCTransactionRequests()
         reconnectToSavedSessionsIfPossible()
     }
@@ -184,6 +186,11 @@ extension WalletConnector {
             delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
     }
+    
+    func disconnectFromSessionForcefully(_ session: WCSession) {
+        try? walletConnectBridge.disconnect(from: session.sessionBridgeValue)
+        removeFromSessions(session)
+    }
 
     func disconnectFromAllSessions() {
         allWalletConnectSessions.forEach(disconnectFromSession)
@@ -221,8 +228,8 @@ extension WalletConnector {
         sessionSource.allWalletConnectSessions
     }
 
-    func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
-        return sessionSource.getWalletConnectSession(with: url)
+    func getWalletConnectSession(with topic: WalletConnectTopic) -> WCSession? {
+        return sessionSource.getWalletConnectSession(with: topic)
     }
     
     func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
@@ -266,7 +273,7 @@ extension WalletConnector: WalletConnectBridgeDelegate {
             }
 
             let connectedSession = session.toWCSession()
-            let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta)
+            let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta.topic)
             
             if localSession == nil {
                 self.addToSavedSessions(connectedSession)
@@ -349,20 +356,14 @@ extension WalletConnector {
     /// <note
     /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
     func clearOlderSessionsIfNeeded() {
-        guard let sessions = sessionSource.sessions,
-              sessions.count > WalletConnectSessionSource.sessionLimit else {
-            return
-        }
+        let sessionLimit = WalletConnectSessionSource.sessionLimit
         
-        let orderedSessions = sessions.map { $1 }.sorted(
-            by: \.date,
-            using: >
-        )
+        guard let sessions = sessionSource.sessions.unwrap(where: { $0.count > sessionLimit }) else { return }
         
-        let fromRange = WalletConnectSessionSource.sessionLimit
-        let oldSessions = Array(orderedSessions[fromRange...])
+        let orderedSessions = sessions.values.sorted { $0.date > $1.date }
+        let oldSessions = orderedSessions[sessionLimit...]
         
-        for session in oldSessions {
+        oldSessions.forEach { session in
             removeFromSessions(session)
             try? walletConnectBridge.disconnect(from: session.sessionBridgeValue)
         }

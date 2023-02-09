@@ -111,3 +111,4 @@ typealias WalletConnectRequest = WalletConnectSwift.Request
 typealias WalletConnectResponse = WalletConnectSwift.Response
 typealias WalletConnectSessionWalletInfo = WalletConnectSwift.Session.WalletInfo
 typealias WalletConnectSessionConnectionCompletionHandler = (WalletConnectSessionWalletInfo) -> Void
+typealias WalletConnectTopic = String
