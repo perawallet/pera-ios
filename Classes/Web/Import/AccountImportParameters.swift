@@ -35,9 +35,7 @@ struct AccountImportParameters: ALGEntityModel {
     ) {
         address = apiModel.address ?? ""
         name = apiModel.name
-        accountType = apiModel.accountType.unwrap { accountTypeRawValue in
-            AccountImportParameters.AccountType(rawValue: accountTypeRawValue)
-        } ?? .unsupported("Unsupported")
+        accountType = apiModel.accountType ?? .unsupported("Unsupported")
         privateKey = apiModel.privateKey
     }
 
@@ -45,7 +43,7 @@ struct AccountImportParameters: ALGEntityModel {
         var apiModel = APIModel()
         apiModel.address = address
         apiModel.name = name
-        apiModel.accountType = accountType.rawValue
+        apiModel.accountType = accountType
         apiModel.privateKey = privateKey
         return apiModel
     }
@@ -88,12 +86,16 @@ extension AccountImportParameters {
             if let rawAccountType = RawAccountType(rawValue: rawValue) {
                 self.init(rawAccountType: rawAccountType)
             } else {
-                switch rawValue {
-                case "single":
-                    self = .single
-                default:
-                    self = .unsupported(rawValue)
-                }
+                self.init(stringRawValue: rawValue)
+            }
+        }
+
+        init(stringRawValue: String) {
+            switch stringRawValue {
+            case stringRawValue:
+                self = .single
+            default:
+                self = .unsupported(stringRawValue)
             }
         }
 
@@ -103,6 +105,13 @@ extension AccountImportParameters {
             default: self = .unsupported(rawAccountType.rawValue)
             }
         }
+
+        init(from decoder: Decoder) throws {
+            let singleValueContainer = try decoder.singleValueContainer()
+            let rawValue = try singleValueContainer.decode(String.self)
+
+            self.init(stringRawValue: rawValue)
+        }
     }
 }
 
@@ -110,7 +119,7 @@ extension AccountImportParameters {
     struct APIModel: ALGAPIModel {
         var address: String?
         var name: String?
-        var accountType: String?
+        var accountType: AccountImportParameters.AccountType?
         var privateKey: Data?
 
         init() {
