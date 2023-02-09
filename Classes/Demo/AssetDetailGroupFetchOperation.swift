@@ -233,7 +233,7 @@ extension AssetDetailGroupFetchOperation {
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
         let ids = assets.map(\.id)
-        let draft = AssetFetchQuery(ids: ids)
+        let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
         return
             api.fetchAssetDetails(
                 draft,
