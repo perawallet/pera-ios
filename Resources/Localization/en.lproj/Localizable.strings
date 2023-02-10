@@ -1323,6 +1323,7 @@
 "web-import-instruction-fourth-message" = "Tap Start to scan the QR";
 "web-import-qr-scanner-title" = "Scan QR code on Pera Web Wallet";
 "web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+"web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
 
 "backup-operation-loading-body" = "Importing your accounts";
 

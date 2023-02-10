@@ -22,10 +22,10 @@ struct WebImportErrorViewModel: ResultViewModel {
     private(set) var title: EditText?
     private(set) var body: EditText?
 
-    init() {
+    init(error: ImportAccountScreenError) {
         bindIcon()
         bindTitle()
-        bindBody()
+        bindBody(with: error)
     }
 }
 
@@ -38,7 +38,29 @@ extension WebImportErrorViewModel {
         title = .attributedString("title-generic-error".localized.titleMedium())
     }
 
-    private mutating func bindBody() {
+    private mutating func bindBody(with error: ImportAccountScreenError) {
+        switch error {
+        case .unsupportedVersion(let qrVersion):
+            if qrVersion != "1" {
+                bindUnsupportedVersionBody(qrVersion)
+            } else {
+                bindGenericBody()
+            }
+        default:
+            bindGenericBody()
+        }
+
+    }
+
+    private mutating func bindUnsupportedVersionBody(_ qrVersion: String) {
+        body = .attributedString(
+            "web-import-error-unsupported-version-body"
+                .localized(qrVersion)
+                .bodyRegular()
+        )
+    }
+
+    private mutating func bindGenericBody() {
         body = .attributedString("web-import-error-body".localized.bodyRegular())
     }
 }

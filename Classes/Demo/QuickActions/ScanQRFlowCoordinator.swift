@@ -142,6 +142,11 @@ extension ScanQRFlowCoordinator {
         didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     ) {
+        if !qrBackupParameters.isSupported() {
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
+        }
+
         switch qrBackupParameters.action {
         case .export:
             accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
@@ -153,8 +158,18 @@ extension ScanQRFlowCoordinator {
                 self.accountImportCoordinator.launch(qrBackupParameters: qrBackupParameters)
             }
         case .unsupported:
-            break
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
         }
+    }
+
+    private func showUnsupportedQRError(
+        on controller: QRScannerViewController,
+        using qrBackupParameters: QRBackupParameters
+    ) {
+        let message = "web-import-error-unsupported-version-body"
+            .localized(qrBackupParameters.version)
+        controller.bannerController?.presentErrorBanner(title: "Error", message: message)
     }
 }
 

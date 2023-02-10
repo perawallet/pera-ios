@@ -17,22 +17,125 @@
 import Foundation
 import MacaroonUtils
 
-struct AccountImportParameters: JSONModel {
-    let name: String
-    let privateKey: Data
+struct AccountImportParameters: ALGEntityModel {
+    let address: String
+    let name: String?
+    let accountType: AccountType
+    let privateKey: Data?
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        let privateKeyString = try container.decode(String.self, forKey: .privateKey)
-        let privateKeyByteArray = privateKeyString.convertToByteArray(using: ",")
-        privateKey = Data(bytes: privateKeyByteArray)
+    init() {
+        address = ""
+        name = nil
+        accountType = .unsupported("unsupported")
+        privateKey = nil
+    }
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        address = apiModel.address ?? ""
+        name = apiModel.name
+        accountType = apiModel.accountType ?? .unsupported("Unsupported")
+        privateKey = apiModel.privateKey
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.address = address
+        apiModel.name = name
+        apiModel.accountType = accountType
+        apiModel.privateKey = privateKey
+        return apiModel
     }
 }
 
 extension AccountImportParameters {
-    enum CodingKeys: String, CodingKey {
+    enum AccountType:
+        ALGAPIModel,
+        RawRepresentable,
+        CaseIterable,
+        Hashable {
+        case single
+        case unsupported(String)
+
+        typealias RawAccountType = AccountInformation.AccountType
+
+        var rawValue: String {
+            switch self {
+            case .single: return "single"
+            case .unsupported(let someType): return someType
+            }
+        }
+
+        var rawAccountType: RawAccountType {
+            switch self {
+            case .single: return .standard
+            case .unsupported: return .standard
+            }
+        }
+
+        static var allCases: [AccountType] = [
+            .single
+        ]
+
+        init() {
+            self = .unsupported("Unsupported")
+        }
+
+        init?(rawValue: String) {
+            if let rawAccountType = RawAccountType(rawValue: rawValue) {
+                self.init(rawAccountType: rawAccountType)
+            } else {
+                self.init(stringRawValue: rawValue)
+            }
+        }
+
+        private init(stringRawValue: String) {
+            switch stringRawValue {
+            case Self.single.rawValue:
+                self = .single
+            default:
+                self = .unsupported(stringRawValue)
+            }
+        }
+
+        init(rawAccountType: RawAccountType) {
+            switch rawAccountType {
+            case .standard: self = .single
+            default: self = .unsupported(rawAccountType.rawValue)
+            }
+        }
+
+        init(from decoder: Decoder) throws {
+            let singleValueContainer = try decoder.singleValueContainer()
+            let rawValue = try singleValueContainer.decode(String.self)
+
+            self.init(stringRawValue: rawValue)
+        }
+    }
+}
+
+extension AccountImportParameters {
+    struct APIModel: ALGAPIModel {
+        var address: String?
+        var name: String?
+        var accountType: AccountImportParameters.AccountType?
+        var privateKey: Data?
+
+        init() {
+            self.address = nil
+            self.name = nil
+            self.accountType = nil
+            self.privateKey = nil
+        }
+    }
+}
+
+extension AccountImportParameters.APIModel {
+    private enum CodingKeys: String, CodingKey {
+        case address
         case name
+        case accountType = "account_type"
         case privateKey = "private_key"
     }
 }

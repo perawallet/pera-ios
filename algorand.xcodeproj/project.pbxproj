@@ -5666,6 +5666,9 @@
 		D4FFDCB727E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
 		D4FFDCB827E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
 		D4FFDCB927E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */; };
+		F00AA6FA2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */; };
+		F00AA6FB2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */; };
+		F00AA6FC2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */; };
 		F010633C28AADC0800AB6873 /* ASADetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F010633B28AADC0800AB6873 /* ASADetailScreen.swift */; };
 		F010633D28AADC0800AB6873 /* ASADetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F010633B28AADC0800AB6873 /* ASADetailScreen.swift */; };
 		F010633E28AADC0800AB6873 /* ASADetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F010633B28AADC0800AB6873 /* ASADetailScreen.swift */; };
@@ -8362,6 +8365,7 @@
 		D4FDC5CB289D45350069C038 /* WCSessionListViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4FFDCB627E9D32900BF56B9 /* ActionableBannerDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableBannerDraft.swift; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RawRepresentable+Extensions.swift"; sourceTree = "<group>"; };
 		F010633B28AADC0800AB6873 /* ASADetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailScreen.swift; sourceTree = "<group>"; };
 		F010634728AAE7EA00AB6873 /* ASAActivityScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAActivityScreen.swift; sourceTree = "<group>"; };
 		F010634C28AAE80900AB6873 /* ASAAboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAAboutScreen.swift; sourceTree = "<group>"; };
@@ -12001,6 +12005,7 @@
 				2B982331231D3958009560CD /* Codable */,
 				2B43B83A22A8394000CEA8F3 /* Date */,
 				2B1CFA092554112000D60B73 /* Dictionary */,
+				F00AA6F82991620100BCC122 /* Enums */,
 				17AA1B0222660E43000B0BB0 /* Formatter */,
 				2B8BE4F822393721005D8565 /* Notification */,
 				17D04F4D225FACDC0051BC43 /* Numbers */,
@@ -18160,6 +18165,14 @@
 			path = ActionableBanner;
 			sourceTree = "<group>";
 		};
+		F00AA6F82991620100BCC122 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				F00AA6F92991621600BCC122 /* RawRepresentable+Extensions.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		F010633A28AADBD100AB6873 /* ASADetailScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -21069,6 +21082,7 @@
 				D4C45BF12726B59D00F4AE31 /* ContactDetailViewTheme.swift in Sources */,
 				D401FCAC28E640D100FBA85C /* CollectibleDetailAssetIDItemCellTheme.swift in Sources */,
 				2B6B3EF82774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
+				F00AA6FC2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */,
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
 				2B71CBAF29008FBE00B1E1A0 /* SwapAvailableBalancePercentageValidator.swift in Sources */,
 				2BF811D125E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
@@ -23683,6 +23697,7 @@
 				F08A81C6293E9EB600258184 /* CSVFile.swift in Sources */,
 				2B99D42928E9DA6D00323C11 /* TitleSeparatorViewTheme.swift in Sources */,
 				D478AA9728AB8041001958C8 /* SwapIntroductionScreen.swift in Sources */,
+				F00AA6FB2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */,
 				2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */,
 				D4F72B6B28E446D100907287 /* DeviceRegistrationController.swift in Sources */,
 				2BB8482927E8EC98004F2E39 /* Media.swift in Sources */,
@@ -23889,6 +23904,7 @@
 				D45C47FB277E1737001853A3 /* RangeSelectionViewModel.swift in Sources */,
 				D459E27F27DD332900F7FC33 /* ApproveCollectibleTransactionViewController.swift in Sources */,
 				D4092BAC276B522C0009722D /* WCSessionShortListViewTheme.swift in Sources */,
+				F00AA6FA2991621600BCC122 /* RawRepresentable+Extensions.swift in Sources */,
 				D4F72B7628E4A26700907287 /* AccountNameTitleViewModel.swift in Sources */,
 				1736FB8F28AD017A002BB713 /* RecordHomeScreenEvent.swift in Sources */,
 				2B69AAE128BE276300A8D65D /* SwapAssetAmountView.swift in Sources */,

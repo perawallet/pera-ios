@@ -95,11 +95,7 @@ extension ImportAccountScreen {
             guard let self else { return }
 
             let encryptionKey = self.backupParameters.encryptionKey
-            let encryptedContentInString = backup.encryptedContent
-            let encryptedDataByteArray = encryptedContentInString
-                .convertToByteArray(using: ",")
-            let encryptedData = Data(bytes: encryptedDataByteArray)
-
+            let encryptedData = self.extractEncryptedData(from: backup)
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
@@ -109,13 +105,26 @@ extension ImportAccountScreen {
             }
 
             do {
-                let accountParameters = try [AccountImportParameters].decoded(decryptedData)
+                let accountParameters = try [AccountImportParameters.APIModel]
+                    .decoded(decryptedData)
+                    .map { AccountImportParameters.init($0) }
+
                 asyncMain {
                     self.importAccounts(from: accountParameters)
                 }
             } catch {
                 self.publish(.didFailToImport(.serialization(error)))
             }
+        }
+    }
+
+    private func extractEncryptedData(from backup: Backup) -> Data {
+        let content = backup.encryptedContent
+        if let base64Data = Data(base64Encoded: content) {
+            return base64Data
+        } else {
+            let byteArray = content.convertToByteArray(using: ",")
+            return Data(bytes: byteArray)
         }
     }
 
@@ -165,6 +174,8 @@ extension ImportAccountScreen {
             name: .didAddAccount,
             object: self
         )
+
+        session.authenticatedUser = authenticatedUser
     }
 
     private func completeImporting(
@@ -187,19 +198,21 @@ extension ImportAccountScreen {
         var transferAccounts: [TransferAccount] = []
 
         for accountParameter in accountParameters {
-            var error: NSError?
-            guard let address = AlgorandSDK().addressFrom(accountParameter.privateKey, error: &error) else {
-                throw ImportAccountScreenError.invalidPrivateKey
+            guard let privateKey = accountParameter.privateKey else {
+                continue
             }
+
+            let accountAddress = accountParameter.address
+            
             let accountInformation = AccountInformation(
-                address: address,
-                name: accountParameter.name,
-                type: .standard,
+                address: accountAddress,
+                name: accountParameter.name ?? accountAddress.shortAddressDisplay,
+                type: accountParameter.accountType.rawAccountType,
                 preferredOrder: currentPreferredOrder
             )
             transferAccounts.append(
                 TransferAccount(
-                    privateKey: accountParameter.privateKey,
+                    privateKey: privateKey,
                     accountInformation: accountInformation
                 )
             )
@@ -239,4 +252,6 @@ enum ImportAccountScreenError: Error {
     case serialization(Error)
     case notImportableAccountFound
     case invalidPrivateKey
+    case unsupportedVersion(version: String)
+    case unsupportedAction
 }

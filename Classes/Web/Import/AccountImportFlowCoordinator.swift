@@ -21,6 +21,9 @@ import MacaroonUtils
 
 
 final class AccountImportFlowCoordinator {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+
     private unowned let presentingScreen: UIViewController
 
     init(presentingScreen: UIViewController) {
@@ -76,9 +79,18 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case .didReadBackup(let parameters):
-                self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
-            case .didReadUnsupportedAction:
-                self.continueErrorScreen(from: qrScannerScreen)
+                if !parameters.isSupported() {
+                    self.continueErrorScreen(error: .unsupportedVersion(version: parameters.version), from: qrScannerScreen)
+                } else {
+                    self.continueToImportAccountAfterQR(parameters: parameters, from: qrScannerScreen)
+                }
+
+            case .didReadUnsupportedAction(let parameters):
+                if !parameters.isSupported() {
+                    self.continueErrorScreen(error: .unsupportedVersion(version: parameters.version), from: qrScannerScreen)
+                } else {
+                    self.continueErrorScreen(error: .unsupportedAction, from: qrScannerScreen)
+                }
             }
         }
         screen.open(qrScannerScreen, by: .push)
@@ -106,8 +118,11 @@ extension AccountImportFlowCoordinator {
         screen.open(successScreen, by: .push)
     }
 
-    private func continueErrorScreen(from screen: UIViewController) {
-        let errorScreen = Screen.importAccountError { [weak self] event, errorScreen in
+    private func continueErrorScreen(
+        error: ImportAccountScreenError,
+        from screen: UIViewController
+    ) {
+        let errorScreen = Screen.importAccountError(error) { [weak self] event, errorScreen in
             guard let self else {
                 return
             }
@@ -120,6 +135,7 @@ extension AccountImportFlowCoordinator {
 
     private func finish(from screen: UIViewController) {
         screen.dismiss(animated: true)
+        eventHandler?(.didFinish)
     }
 }
 
@@ -133,7 +149,7 @@ extension AccountImportFlowCoordinator {
             switch event {
             case let .didCompleteImport(importedAccounts, unimportedAccounts):
                 if importedAccounts.isEmpty {
-                    self.continueErrorScreen(from: importAccountScreen)
+                    self.continueErrorScreen(error: .notImportableAccountFound, from: importAccountScreen)
                     return
                 }
 
@@ -142,9 +158,15 @@ extension AccountImportFlowCoordinator {
                     unimportedAccounts: unimportedAccounts,
                     from: importAccountScreen
                 )
-            case .didFailToImport:
-                self.continueErrorScreen(from: importAccountScreen)
+            case .didFailToImport(let error):
+                self.continueErrorScreen(error: error, from: importAccountScreen)
             }
         }
+    }
+}
+
+extension AccountImportFlowCoordinator {
+    enum Event {
+        case didFinish
     }
 }
