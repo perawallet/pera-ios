@@ -12,6 +12,7 @@
 //   WalletConnector.swift
 
 import Foundation
+import MacaroonUtils
 import UIKit
 import WalletConnectSwift
 
@@ -60,6 +61,8 @@ extension WalletConnector {
         }
         
         isRegisteredToTheTransactionRequests = true
+        
+        clearExpiredSessionsIfNeeded()
         registerToWCTransactionRequests()
         reconnectToSavedSessionsIfPossible()
     }
@@ -183,6 +186,11 @@ extension WalletConnector {
             delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
     }
+    
+    private func disconnectFromSessionSilently(_ session: WCSession) {
+        try? walletConnectBridge.disconnect(from: session.sessionBridgeValue)
+        removeFromSessions(session)
+    }
 
     func disconnectFromAllSessions() {
         allWalletConnectSessions.forEach(disconnectFromSession)
@@ -220,8 +228,8 @@ extension WalletConnector {
         sessionSource.allWalletConnectSessions
     }
 
-    func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
-        return sessionSource.getWalletConnectSession(with: url)
+    func getWalletConnectSession(for topic: WalletConnectTopic) -> WCSession? {
+        return sessionSource.getWalletConnectSession(for: topic)
     }
     
     func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
@@ -265,7 +273,7 @@ extension WalletConnector: WalletConnectBridgeDelegate {
             }
 
             let connectedSession = session.toWCSession()
-            let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta)
+            let localSession = self.sessionSource.getWalletConnectSession(for: connectedSession.urlMeta.topic)
             
             if localSession == nil {
                 self.addToSavedSessions(connectedSession)
@@ -293,9 +301,10 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         }
     }
 
-    func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
-        delegate?.walletConnector(self, didUpdate: session.toWCSession())
-    }
+    func walletConnectBridge(
+        _ walletConnectBridge: WalletConnectBridge,
+        didUpdate session: WalletConnectSession
+    ) { }
     
     func walletConnectBridge(
         _ walletConnectBridge: WalletConnectBridge,
@@ -343,6 +352,23 @@ extension WalletConnector {
             }
         }
     }
+    
+    /// <note
+    /// The oldest sessions on the device should be disconnected and removed when the maximum session limit is exceeded.
+    func clearExpiredSessionsIfNeeded() {
+        let sessionLimit = WalletConnectSessionSource.sessionLimit
+        
+        guard let sessions = sessionSource.sessions.unwrap(where: { $0.count > sessionLimit }) else { return }
+        
+        let orderedSessions = sessions.values.sorted { $0.date > $1.date }
+        let oldSessions = orderedSessions[sessionLimit...]
+        
+        oldSessions.forEach { session in
+            disconnectFromSessionSilently(session)
+        }
+        
+        delegate?.walletConnectorDidExceededMaximumSessionLimit(self)
+    }
 }
 
 extension WalletConnector {
@@ -361,10 +387,19 @@ protocol WalletConnectorDelegate: AnyObject {
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession)
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession)
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError)
-    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession)
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    )
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didDisconnectFrom session: WCSession
+    )
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didFailWith error: WalletConnector.WCError
+    )
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector)
 }
 
 extension WalletConnectorDelegate {
@@ -373,25 +408,24 @@ extension WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
+    ) { }
 
-    }
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    ) { }
 
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didDisconnectFrom session: WCSession
+    ) { }
 
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession) {
-
-    }
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didFailWith error: WalletConnector.WCError
+    ) { }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) { }
 }
 
 enum WalletConnectMethod: String {

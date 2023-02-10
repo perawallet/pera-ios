@@ -30,7 +30,10 @@ final class SettingsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
 
-    private lazy var dataSource = SettingsDataSource(session: session)
+    private lazy var dataSource = SettingsDataSource(
+        walletConnector: walletConnector,
+        session: session
+    )
 
     override var prefersLargeTitle: Bool {
         return true
@@ -61,6 +64,11 @@ final class SettingsViewController: BaseViewController {
     
     override func prepareLayout() {
         addSettingsView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateWalletConnectSessionCount()
     }
 }
 
@@ -241,5 +249,19 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
+    }
+    
+    private func updateWalletConnectSessionCount() {
+        guard let section = dataSource.sections.firstIndex(of: .account),
+              let item = dataSource.accountSettings.firstIndex(of: .walletConnect) else {
+            return
+        }
+        
+        let indexPath = IndexPath(item: item, section: section)
+        
+        guard let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsPrimaryDetailCell else { return }
+        
+        let activeSessionCount = walletConnector.allWalletConnectSessions.count
+        cell.bindData(SettingsWalletConnectDetailViewModel(activeSessionCount: activeSessionCount))
     }
 }

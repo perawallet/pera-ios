@@ -1548,8 +1548,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1559,6 +1557,11 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
+    }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
+        appConfiguration.toastPresentationController.present(message: WCSessionLimitToastViewModel())
     }
 }
 

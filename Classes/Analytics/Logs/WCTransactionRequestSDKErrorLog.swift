@@ -26,7 +26,7 @@ struct WCTransactionRequestSDKErrorLog: ALGAnalyticsLog {
     ) {
         self.name = .walletConnectTransactionRequestSDKError
         
-        var metadata: ALGAnalyticsMetadata = [.wcRequestURL: url.absoluteString]
+        var metadata: ALGAnalyticsMetadata = [.wcRequestURL: Self.regulate(url.absoluteString)]
         if let error {
             metadata[.wcRequestError] = error.localizedDescription
         }

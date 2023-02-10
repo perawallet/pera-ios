@@ -95,7 +95,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
+        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: transactionRequest.url.topic)
         self.dataSource = WCMainTransactionDataSource(
             sharedDataController: configuration.sharedDataController,
             transactions: transactions,
@@ -488,7 +488,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
     func wcSingleTransactionRequestScreenDidReject(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
         rejectSigning()
-        dismissScreen()
 
     }
 
@@ -500,7 +499,6 @@ extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
 extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
     func wcUnsignedRequestScreenDidReject(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
         rejectSigning()
-        dismissScreen()
     }
 
     func wcUnsignedRequestScreenDidConfirm(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {

@@ -18,7 +18,9 @@ import Foundation
 import MacaroonVendors
 import UIKit
 
-protocol ALGAnalyticsEvent: AnalyticsEvent
+protocol ALGAnalyticsEvent:
+    AnalyticsEvent,
+    ALGAnalyticsParameterRegulator
 where
     Self.Name == ALGAnalyticsEventName,
     Self.Metadata == ALGAnalyticsMetadata {}

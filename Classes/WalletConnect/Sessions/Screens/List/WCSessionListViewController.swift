@@ -22,6 +22,8 @@ import MacaroonUIKit
 final class WCSessionListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+    private lazy var navigationTitleView = PrimaryTitleView()
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = WCSessionListLayout.build()
         let collectionView =
@@ -40,6 +42,8 @@ final class WCSessionListViewController:
 
     private lazy var listLayout = WCSessionListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = WCSessionListDataSource(listView)
+    
+    private var transitionToSessionLimitInfo: BottomSheetTransition?
 
     private var isLayoutFinalized = false
 
@@ -60,9 +64,8 @@ final class WCSessionListViewController:
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "settings-wallet-connect-title".localized
-
         addBarButtons()
+        addNavigationTitle()
     }
 
     override func setListeners() {
@@ -91,6 +94,7 @@ final class WCSessionListViewController:
                     animatingDifferences: self.isViewAppeared
                 )
 
+                self.bindNavigationTitleView()
                 self.showDisconnectAllActionIfNeeded()
             case .didStartDisconnectingFromSession,
                  .didStartDisconnectingFromSessions:
@@ -102,6 +106,10 @@ final class WCSessionListViewController:
                     title: "title-error".localized,
                     message: "title-generic-error".localized
                 )
+            case .didExceededMaximumSessionLimit:
+                guard let toastPresentationController = self.configuration.toastPresentationController else { return }
+                
+                toastPresentationController.present(message: WCSessionLimitToastViewModel())
             }
         }
 
@@ -156,6 +164,32 @@ extension WCSessionListViewController {
         }
 
         rightBarButtonItems = [qrBarButtonItem]
+    }
+    
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapSessionCountTitle)
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+        bindNavigationTitleView()
+    }
+    
+    private func bindNavigationTitleView() {
+        let totalSessionLimit = WalletConnectSessionSource.sessionLimit
+        let activeSessionCount = walletConnector.allWalletConnectSessions.count
+        let detailText = "\(activeSessionCount)/\(totalSessionLimit)"
+
+        let viewModel = NavigationPrimaryTitleItemViewModel(
+            title: "settings-wallet-connect-title".localized,
+            detail: detailText
+        )
+        
+        navigationTitleView.bindData(viewModel)
     }
 }
 
@@ -280,6 +314,35 @@ extension WCSessionListViewController {
             by: .push
         ) as? QRScannerViewController
         qrScannerViewController?.delegate = self
+    }
+    
+    @objc
+    private func didTapSessionCountTitle() {
+        openPriceImpactInfo()
+    }
+    
+    private func openPriceImpactInfo() {
+        let transition = BottomSheetTransition(presentingViewController: self)
+
+        let uiSheet = UISheet(
+            title: "wallet-connect-session-limit-info-title".localized.bodyLargeMedium(),
+            body:"wallet-connect-session-limit-info-detail".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transition.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToSessionLimitInfo = transition
     }
 }
 

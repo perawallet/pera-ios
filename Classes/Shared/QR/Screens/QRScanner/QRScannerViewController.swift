@@ -443,6 +443,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self, session: session)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
@@ -465,6 +466,12 @@ extension QRScannerViewController: WalletConnectorDelegate {
         default:
             break
         }
+    }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
+        guard let toastPresentationController = configuration.toastPresentationController else { return }
+        
+        toastPresentationController.present(message: WCSessionLimitToastViewModel())
     }
 
     private func startWCConnectionTimer() {

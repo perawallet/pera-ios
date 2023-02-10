@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUtils
 
-protocol ALGAnalyticsLog {
+protocol ALGAnalyticsLog: ALGAnalyticsParameterRegulator {
     var name: ALGAnalyticsLogName { get }
     var metadata: ALGAnalyticsMetadata { get }
 }
