@@ -443,7 +443,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self, session: session)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
-        walletConnector.clearOlderSessionsIfNeeded()
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {

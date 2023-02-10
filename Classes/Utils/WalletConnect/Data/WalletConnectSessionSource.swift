@@ -102,7 +102,7 @@ extension WalletConnectSessionSource {
         return []
     }
 
-    func getWalletConnectSession(with topic: WalletConnectTopic) -> WCSession? {
+    func getWalletConnectSession(for topic: WalletConnectTopic) -> WCSession? {
         return sessions?[topic]
     }
     

@@ -1557,7 +1557,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
-        walletConnector.clearOlderSessionsIfNeeded()
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
     
     func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {

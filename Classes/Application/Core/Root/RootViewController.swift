@@ -196,7 +196,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for transactions: [WCTransaction],
         with transactionOption: WCTransactionOption?
     ) {
-        guard let requestSession = walletConnector.getWalletConnectSession(with: request.url.topic) else {
+        guard let requestSession = walletConnector.getWalletConnectSession(for: request.url.topic) else {
             walletConnector.rejectTransactionRequest(
                 request,
                 with: .invalidInput(.session)
@@ -204,7 +204,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             return
         }
         
-        if isThereOngoingWCTransactionRequestOnTheSameSession(requestSession) {
+        if hasOngoingTransactionRequest(for: requestSession) {
             walletConnector.rejectTransactionRequest(
                 request,
                 with: .rejected(.alreadyDisplayed)
@@ -212,7 +212,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             return
         }
         
-        sessionsForOngoingWCTransactionRequests[requestSession.urlMeta.topic] = requestSession
+        addOngoingTransactionRequest(for: requestSession)
         
         let draft = WalletConnectRequestDraft(
             request: request,
@@ -222,8 +222,12 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         launchController.receive(deeplinkWithSource: .walletConnectRequest(draft))
     }
     
-    private func isThereOngoingWCTransactionRequestOnTheSameSession(_ session: WCSession) -> Bool {
+    private func hasOngoingTransactionRequest(for session: WCSession) -> Bool {
         return sessionsForOngoingWCTransactionRequests[session.urlMeta.topic] != nil
+    }
+    
+    private func addOngoingTransactionRequest(for session: WCSession) {
+        sessionsForOngoingWCTransactionRequests[session.urlMeta.topic] = session
     }
 }
 
@@ -232,7 +236,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         _ wcMainTransactionScreen: WCMainTransactionScreen,
         didRejected request: WalletConnectRequest
     ) {
-        clearOngoingWCTransactionRequestIfNeedeed(for: request)
+        clearOngoingWCTransactionRequest(request)
         wcMainTransactionScreen.dismissScreen()
     }
 
@@ -253,8 +257,8 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         }
     }
     
-    private func clearOngoingWCTransactionRequestIfNeedeed(for request: WalletConnectRequest) {
-        guard let requestSession = walletConnector.getWalletConnectSession(with: request.url.topic) else { return }
+    private func clearOngoingWCTransactionRequest(_ request: WalletConnectRequest) {
+        guard let requestSession = walletConnector.getWalletConnectSession(for: request.url.topic) else { return }
         clearOngoingWCTransactionRequest(for: requestSession)
     }
     

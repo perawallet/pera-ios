@@ -17,6 +17,13 @@
 import Foundation
 
 final class SettingsPrimaryDetailCell: BaseCollectionViewCell<SettingsPrimaryDetailView> {
+    static let theme = SettingsPrimaryDetailViewTheme()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+    
     func bindData(_ viewModel: PrimaryTitleViewModel) {
         contextView.bindData(viewModel)
     }

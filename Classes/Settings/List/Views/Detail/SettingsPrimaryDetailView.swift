@@ -22,12 +22,7 @@ final class SettingsPrimaryDetailView: View {
     private lazy var titleView = PrimaryTitleView()
     private lazy var accessoryView = UIImageView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        customize(SettingsPrimaryDetailViewTheme())
-    }
-    
-    private func customize(_ theme: SettingsPrimaryDetailViewTheme) {
+    func customize(_ theme: SettingsPrimaryDetailViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addImage(theme)
