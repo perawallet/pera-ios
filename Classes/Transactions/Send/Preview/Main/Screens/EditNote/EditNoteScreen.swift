@@ -48,6 +48,8 @@ final class EditNoteScreen:
 
     private var note: String?
     private let isLocked: Bool
+    
+    private lazy var transactionNoteValidator = ByteSizeValidator()
 
     init(
         note: String?,
@@ -167,25 +169,51 @@ extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
 
 extension EditNoteScreen: FormInputFieldViewEditingDelegate {
     func formInputFieldViewDidEdit(_ view: MacaroonForm.FormInputFieldView) {
-        guard let noteByteArray = noteInputView.text?.convertToByteArray() else {
-            return
-        }
-        
-        let noteByteSize = noteByteArray.count
-        
-        if noteByteSize > noteMaxByteSize {
-            let extraBytes = noteByteSize - noteMaxByteSize
-            
-            noteInputView.text = String(
-                decoding: noteByteArray.dropLast(extraBytes),
-                as: UTF8.self
-            )
-        }
+        validateNoteForSize()
     }
     
     func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) {}
     
     func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) {}
+}
+
+extension EditNoteScreen {
+    private func validateNoteForSize() {
+        guard let noteByteArray = noteInputView.text?.convertToByteArray(),
+              !noteByteArray.isEmpty else {
+            return
+        }
+        
+        let validation = transactionNoteValidator.validate(
+            byteArray: noteByteArray,
+            maxSize: 1024
+        )
+        
+        switch validation {
+        case .success:
+            return
+        case .failure(let validationError):
+            switch validationError as? ByteSizeValidator.Error {
+            case .exceededSize(let amount):
+                setNoteWithoutExtraBytes(
+                    byteArray: noteByteArray,
+                    exceededBytes: amount
+                )
+            default:
+                return
+            }
+        }
+    }
+    
+    private func setNoteWithoutExtraBytes(
+        byteArray: [UInt8],
+        exceededBytes: Int
+    ) {
+        noteInputView.text = String(
+            decoding: byteArray.dropLast(exceededBytes),
+            as: UTF8.self
+        )
+    }
 }
 
 extension EditNoteScreen {
