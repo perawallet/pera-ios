@@ -199,6 +199,8 @@ extension TutorialViewController: TutorialViewDelegate {
             }
 
             launchMain()
+        case .ledgerSuccessfullyConnected:
+            uiHandlers.didTapSecondaryActionButton?(self)
         default:
             break
         }
@@ -310,7 +312,7 @@ enum Tutorial: Equatable {
     case passphraseVerified(account: AccountInformation)
     case accountVerified(flow: AccountSetupFlow)
     case recoverWithLedger
-    case ledgerSuccessfullyConnected
+    case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case accountSuccessfullyRekeyed(accountName: String)
     case collectibleTransferConfirmed
 }
