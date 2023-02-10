@@ -38,6 +38,10 @@ final class CollectibleDescriptionCell:
 }
 
 extension CollectibleDescriptionCell: CollectibleDescriptionViewDelegate {
+    func collectibleDescriptionViewDidTapURLString(_ view: CollectibleDescriptionView, urlString: String) {
+        delegate?.collectibleDescriptionCellDidTapURLString(self, urlString: urlString)
+    }
+
     func collectibleDescriptionViewDidTapURL(_ view: CollectibleDescriptionView, url: URL) {
         delegate?.collectibleDescriptionCellDidTapURL(self, url: url)
     }
@@ -53,6 +57,7 @@ extension CollectibleDescriptionCell: CollectibleDescriptionViewDelegate {
 
 protocol CollectibleDescriptionCellDelegate: AnyObject {
     func collectibleDescriptionCellDidTapURL(_ cell: CollectibleDescriptionCell, url: URL)
+    func collectibleDescriptionCellDidTapURLString(_ cell: CollectibleDescriptionCell, urlString: String)
     func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell)
     func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell)
 }

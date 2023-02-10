@@ -944,7 +944,30 @@ extension CollectibleDetailViewController {
     }
 }
 
+extension CharacterSet {
+    static let urlAllowedCharacters: CharacterSet = {
+        var characters = CharacterSet(charactersIn: "#")
+        characters.formUnion(.urlUserAllowed)
+        characters.formUnion(.urlPasswordAllowed)
+        characters.formUnion(.urlHostAllowed)
+        characters.formUnion(.urlPathAllowed)
+        characters.formUnion(.urlQueryAllowed)
+        characters.formUnion(.urlFragmentAllowed)
+        return characters
+    }()
+}
+
 extension CollectibleDetailViewController: CollectibleDescriptionCellDelegate {
+    func collectibleDescriptionCellDidTapURLString(_ cell: CollectibleDescriptionCell, urlString: String) {
+        guard let decodedURLString = urlString.removingPercentEncoding,
+              let encodedURLString = decodedURLString.addingPercentEncoding(withAllowedCharacters: .urlAllowedCharacters),
+              let url = URL(string: encodedURLString) else {
+            return
+        }
+
+        open(url)
+    }
+
     func collectibleDescriptionCellDidTapURL(_ cell: CollectibleDescriptionCell, url: URL) {
         open(url)
     }
