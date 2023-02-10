@@ -90,7 +90,7 @@ extension AccountImportParameters {
             }
         }
 
-        init(stringRawValue: String) {
+        private init(stringRawValue: String) {
             switch stringRawValue {
             case Self.single.rawValue:
                 self = .single
