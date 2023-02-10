@@ -307,8 +307,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     return
                 }
 
+                let preferences = WalletConnectorPreferences(session: qrString)
+
                 walletConnector.delegate = self
-                walletConnector.connect(to: qrString)
+                walletConnector.connect(with: preferences)
                 startWCConnectionTimer()
             } else if let qrBackupParameters = try? JSONDecoder().decode(QRBackupParameters.self, from: qrStringData) {
                 captureSession = nil
@@ -351,6 +353,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         stopWCConnectionTimer()
@@ -397,14 +400,16 @@ extension QRScannerViewController: WalletConnectorDelegate {
             }
             return
         }
-        
+
+        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
+
         dAppName = session.dAppInfo.peerMeta.name
 
         asyncMain { [weak self] in
             guard let self = self else {
                 return
             }
-            
+
             let wcConnectionScreen = self.wcConnectionModalTransition.perform(
                 .wcConnection(
                     walletConnectSession: session,
@@ -424,7 +429,11 @@ extension QRScannerViewController: WalletConnectorDelegate {
                 case .performConnect:
                     wcConnectionScreen?.dismiss(animated: true) {
                         [weak self] in
-                        self?.presentWCSessionsApprovedModal()
+                        guard let self else { return }
+
+                        if !shouldShowConnectionApproval { return }
+
+                        self.presentWCSessionsApprovedModal()
                     }
                 }
             }
@@ -511,6 +520,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
         )
     }
 }
+
 
 extension QRScannerViewController {
     private func resetUIForScanning() {
