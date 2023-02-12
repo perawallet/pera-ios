@@ -306,7 +306,8 @@ indirect enum Screen {
         DiscoverDappParamaters,
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
-    case buySellOptions(eventHander: BuySellOptionsScreen.EventHandler)
+    case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
+    case bidaliIntroduction(eventHandler: BidaliIntroductionScreen.EventHandler)
 }
 
 extension Screen {

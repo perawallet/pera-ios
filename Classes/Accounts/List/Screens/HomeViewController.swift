@@ -600,7 +600,7 @@ extension HomeViewController {
         }
 
         transitionToBuySellOptions.perform(
-            .buySellOptions(eventHander: eventHandler),
+            .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
     }

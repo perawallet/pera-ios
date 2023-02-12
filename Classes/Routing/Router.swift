@@ -1364,6 +1364,10 @@ class Router:
             let screen = BuySellOptionsScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
+        case .bidaliIntroduction(let eventHandler):
+            let aViewController = BidaliIntroductionScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         }
 
         return viewController as? T

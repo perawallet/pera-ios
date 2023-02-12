@@ -390,7 +390,7 @@ extension TabBarController {
         }
 
         transitionToBuySellOptions.perform(
-            .buySellOptions(eventHander: eventHandler),
+            .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
     }

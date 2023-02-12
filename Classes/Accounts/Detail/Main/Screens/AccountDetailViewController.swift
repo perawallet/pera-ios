@@ -269,7 +269,7 @@ extension AccountDetailViewController {
         }
 
         transitionToBuySellOptions.perform(
-            .buySellOptions(eventHander: eventHandler),
+            .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
     }

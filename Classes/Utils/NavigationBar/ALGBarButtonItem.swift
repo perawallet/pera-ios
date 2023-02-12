@@ -87,9 +87,9 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .close:
-            if let icon = img("icon-close") {
-                return ImageContent(normal: icon)
+        case .close(let color):
+            if let icon = img("icon-close")?.withRenderingMode(.alwaysTemplate) {
+                return ImageContent(normal: icon, tintColor: color)
             }
             return nil
         case .closeTitle:
@@ -285,7 +285,7 @@ struct ALGBarButtonItem: BarButtonItem {
     }
 
     static func dismiss() -> ALGBarButtonItem? {
-        return ALGBarButtonItem(kind: .close)
+        return ALGBarButtonItem(kind: .close(Colors.Text.main.uiColor))
     }
 
     static func flexibleSpace() -> ALGBarButtonItem {
@@ -302,7 +302,7 @@ extension ALGBarButtonItem {
         case add
         case notification
         case newNotification
-        case close
+        case close(UIColor)
         case closeTitle
         case save
         case qr
