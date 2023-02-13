@@ -20,6 +20,10 @@ import WebKit
 final class BidaliDappDetailScreen:
     DiscoverDappDetailScreen,
     SharedDataControllerObserver {
+    override var allowsPullToRefresh: Bool {
+        return false
+    }
+
     private var messageHandlers: [MessageHandler] = [.paymentRequest, .openURLRequest]
 
     private var account: AccountHandle {

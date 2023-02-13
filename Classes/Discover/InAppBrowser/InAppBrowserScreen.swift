@@ -28,6 +28,10 @@ class InAppBrowserScreen:
 
     private(set) var userAgent: String? = nil
 
+    var allowsPullToRefresh: Bool {
+        return true
+    }
+
     var notificationObservations: [NSObjectProtocol] = []
 
     private(set) lazy var contentController = WKUserContentController()
@@ -66,9 +70,8 @@ class InAppBrowserScreen:
     override func setListeners() {
         super.setListeners()
 
-        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        linkRefreshControlInteractionIfNeeded()
     }
-
 
     private func createWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
@@ -83,7 +86,10 @@ class InAppBrowserScreen:
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.showsHorizontalScrollIndicator = false
         webView.allowsLinkPreview = false
-        webView.scrollView.refreshControl = refreshControl
+
+        if allowsPullToRefresh {
+            webView.scrollView.refreshControl = refreshControl
+        }
 
         let selectionString  = """
         var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}textarea,input{user-select:text;-webkit-user-select:text;}';
@@ -117,7 +123,7 @@ class InAppBrowserScreen:
         withError error: Error
     ) {
         defer {
-            refreshControl.endRefreshing()
+            endRefreshingIfNeeded()
         }
 
         let systemError = error as NSError
@@ -135,7 +141,7 @@ class InAppBrowserScreen:
         didFinish navigation: WKNavigation!
     ) {
         updateUIForURL()
-        refreshControl.endRefreshing()
+        endRefreshingIfNeeded()
     }
 
     func webView(
@@ -144,7 +150,7 @@ class InAppBrowserScreen:
         withError error: Error
     ) {
         defer {
-            refreshControl.endRefreshing()
+            endRefreshingIfNeeded()
         }
 
         let systemError = error as NSError
@@ -224,6 +230,23 @@ extension InAppBrowserScreen {
     }
 }
 
+extension InAppBrowserScreen {
+    private func linkRefreshControlInteractionIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        refreshControl.addTarget(
+            self,
+            action: #selector(didPullToRefresh),
+            for: .valueChanged
+        )
+    }
+
+    private func endRefreshingIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        refreshControl.endRefreshing()
+    }
+}
 
 extension InAppBrowserScreen {
     private func addUI() {
