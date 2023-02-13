@@ -59,7 +59,20 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
             theme: AlertScreenWithFillingImageTheme()
         )
 
-        let buyGiftCardsAction = AlertAction(
+        let buyGiftCardsAction = makeBuyGiftCardsAction()
+        alert.addAction(buyGiftCardsAction)
+
+        let laterAction = makeLaterAction()
+        alert.addAction(laterAction)
+        return alert
+    }
+
+    func cancel() {}
+}
+
+extension BuyGiftCardsWithCryptoIntroductionAlertItem {
+    private func makeBuyGiftCardsAction() -> AlertAction {
+        return AlertAction(
             title: "buy-gift-cards-with-crypto-alert-primary-action".localized,
             style: .primary
         ) {
@@ -67,9 +80,10 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
             guard let self = self else { return }
             self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(self)
         }
-        alert.addAction(buyGiftCardsAction)
+    }
 
-        let laterAction = AlertAction(
+    private func makeLaterAction() -> AlertAction {
+        return AlertAction(
             title: "title-later".localized,
             style: .secondary
         ) {
@@ -77,11 +91,7 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
             guard let self = self else { return }
             self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(self)
         }
-        alert.addAction(laterAction)
-        return alert
     }
-
-    func cancel() {}
 }
 
 extension BuyGiftCardsWithCryptoIntroductionAlertItem {
