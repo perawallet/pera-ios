@@ -62,6 +62,10 @@ final class BidaliDappDetailScreen:
         sharedDataController.remove(self)
     }
 
+    override func addRightBarButtonItems() {
+        rightBarButtonItems = [ makeReloadBarButtonItem() ]
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -79,6 +83,15 @@ final class BidaliDappDetailScreen:
         super.viewDidAppearAfterInteractiveDismiss()
 
         cancelPayment()
+    }
+}
+
+extension BidaliDappDetailScreen {
+    private func makeReloadBarButtonItem() -> ALGBarButtonItem {
+        ALGBarButtonItem(kind: .reload) {
+            [unowned self] in
+            self.reload()
+        }
     }
 }
 
@@ -247,7 +260,7 @@ extension BidaliDappDetailScreen {
     }
 
     private func openPaymentRequest(_ draft: SendTransactionDraft) {
-        /// <todo> Cancel payment on interactive dismiss, close action and on all error cases.
+        /// <todo> Cancel payment on close action and on all error cases.
 
         let controller = open(
             .sendTransactionPreview(draft: draft),

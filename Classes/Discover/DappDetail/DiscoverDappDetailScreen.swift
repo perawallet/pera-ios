@@ -130,6 +130,10 @@ class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         bindNavigationTitle(with: dappParameters)
 
+        addRightBarButtonItems()
+    }
+
+    func addRightBarButtonItems() {
         self.rightBarButtonItems = [ ALGBarButtonItem.flexibleSpace() ]
     }
 

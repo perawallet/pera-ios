@@ -216,6 +216,10 @@ extension InAppBrowserScreen {
 
     @objc
     func didPullToRefresh() {
+        reload()
+    }
+
+    func reload() {
         webView.reload()
     }
 }
