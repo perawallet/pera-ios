@@ -1368,6 +1368,11 @@ class Router:
             let aViewController = BidaliIntroductionScreen()
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .bidaliDappDetail(let account):
+            viewController = BidaliDappDetailScreen(
+                account: account,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

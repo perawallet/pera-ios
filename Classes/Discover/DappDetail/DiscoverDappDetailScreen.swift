@@ -19,7 +19,7 @@ import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class DiscoverDappDetailScreen: InAppBrowserScreen {
+class DiscoverDappDetailScreen: InAppBrowserScreen {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
     
