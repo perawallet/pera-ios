@@ -74,6 +74,12 @@ final class BidaliDappDetailScreen:
 
         removeMessageHandlers() /// <todo> This should be removed after fixing retain cycle as discussed.
     }
+
+    override func viewDidAppearAfterInteractiveDismiss() {
+        super.viewDidAppearAfterInteractiveDismiss()
+
+        cancelPayment()
+    }
 }
 
 extension BidaliDappDetailScreen {
@@ -247,6 +253,7 @@ extension BidaliDappDetailScreen {
             .sendTransactionPreview(draft: draft),
             by: .present
         ) as? SendTransactionPreviewScreen
+        controller?.navigationController?.presentationController?.delegate = self
         controller?.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
