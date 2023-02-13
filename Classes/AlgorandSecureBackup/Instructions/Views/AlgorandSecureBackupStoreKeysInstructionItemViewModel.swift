@@ -18,27 +18,30 @@ import Foundation
 import MacaroonUIKit
 
 struct AlgorandSecureBackupStoreKeysInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
+    var order: TextProvider?
+    var title: TextProvider?
+    var subtitle: SubtitleTextProvider?
 
-    init(number: Int) {
-        self.number = Self.getNumber(number)
-        self.title = Self.getTitle()
-        self.subtitle = Self.getSubtitle()
+    init(order: Int) {
+        bindOrder(order)
+        bindTitle()
+        bindSubtitle()
     }
 }
 
 extension AlgorandSecureBackupStoreKeysInstructionItemViewModel {
-    private static func getNumber(_ number: Int) -> TextProvider {
-        return "\(number)".bodyRegular(alignment: .center)
+    private mutating func bindOrder(_ order: Int) {
+        self.order = "\(order)".bodyRegular(alignment: .center)
     }
 
-    private static  func getTitle() -> TextProvider {
-        return "algorand-secure-backup-instruction-store-keys-instruction-title".localized.bodyMedium()
+    private mutating func bindTitle() {
+        title =
+            "algorand-secure-backup-instruction-store-keys-instruction-title"
+                .localized
+                .bodyMedium()
     }
 
-    private static func getSubtitle() -> SubtitleTextProvider {
+    private mutating func bindSubtitle() {
         let subtitleText = "algorand-secure-backup-instruction-store-keys-instruction-subtitle".localized.footnoteRegular()
         var subtitleHighlightedTextAttributes = Typography.footnoteMediumAttributes(
             alignment: .center
@@ -49,6 +52,6 @@ extension AlgorandSecureBackupStoreKeysInstructionItemViewModel {
             attributes: subtitleHighlightedTextAttributes
         )
 
-        return SubtitleTextProvider(text: subtitleText, highlightedText: subtitleHighlightedText)
+        subtitle = SubtitleTextProvider(text: subtitleText, highlightedText: subtitleHighlightedText)
     }
 }

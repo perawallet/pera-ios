@@ -21,12 +21,12 @@ import UIKit
 struct AlgorandSecureBackupInstructionItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    var number: TextStyle
-    var numberFirstShadow: MacaroonUIKit.Shadow
-    var numberSecondShadow: MacaroonUIKit.Shadow
-    var numberThirdShadow: MacaroonUIKit.Shadow
-    var numberSize: LayoutSize
-    var spacingBetweenNumberAndContent: LayoutMetric
+    var order: TextStyle
+    var orderFirstShadow: MacaroonUIKit.Shadow
+    var orderSecondShadow: MacaroonUIKit.Shadow
+    var orderThirdShadow: MacaroonUIKit.Shadow
+    var orderSize: LayoutSize
+    var spacingBetweenOrderAndContent: LayoutMetric
     var title: TextStyle
     var spacingBetweenTitleAndSubtitle: LayoutMetric
     var subtitle: TextStyle
@@ -34,11 +34,11 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.number = [
+        self.order = [
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
         ]
-        self.numberFirstShadow = MacaroonUIKit.Shadow(
+        self.orderFirstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -48,7 +48,7 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberSecondShadow = MacaroonUIKit.Shadow(
+        self.orderSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -58,7 +58,7 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberThirdShadow = MacaroonUIKit.Shadow(
+        self.orderThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -68,8 +68,8 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberSize = (40, 40)
-        self.spacingBetweenNumberAndContent = 20
+        self.orderSize = (40, 40)
+        self.spacingBetweenOrderAndContent = 20
         self.title = [
             .textColor(Colors.Text.main),
             .textOverflow(FittingText()),

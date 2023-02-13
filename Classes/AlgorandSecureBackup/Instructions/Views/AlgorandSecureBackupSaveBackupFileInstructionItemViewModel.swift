@@ -18,12 +18,12 @@ import Foundation
 import MacaroonUIKit
 
 struct AlgorandSecureBackupSaveBackupFileInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
+    var order: TextProvider?
+    var title: TextProvider?
+    var subtitle: SubtitleTextProvider?
 
-    init(number: Int) {
-        self.number = "\(number)".bodyRegular(alignment: .center)
+    init(order: Int) {
+        self.order = "\(order)".bodyRegular(alignment: .center)
         self.title = "algorand-secure-backup-instruction-save-backup-file-instruction-title".localized.bodyMedium()
         self.subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-save-backup-file-instruction-subtitle".localized.footnoteRegular())
     }

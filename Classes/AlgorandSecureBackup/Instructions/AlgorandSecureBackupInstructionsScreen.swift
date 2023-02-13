@@ -149,12 +149,12 @@ extension AlgorandSecureBackupInstructionsScreen {
     }
 
     private func addSelectAccountsInstruction() {
-        let viewModel = AlgorandSecureBackupSelectAccountsInstructionItemViewModel(number: 1)
+        let viewModel = AlgorandSecureBackupSelectAccountsInstructionItemViewModel(order: 1)
         addInstruction(viewModel)
     }
 
     private func addStoreKeysInstruction() {
-        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(number: 2)
+        let viewModel = AlgorandSecureBackupStoreKeysInstructionItemViewModel(order: 2)
         let instruction = addInstruction(viewModel)
         instruction.startObserving(event: .performHyperlinkAction) {
             [unowned self] in
@@ -163,7 +163,7 @@ extension AlgorandSecureBackupInstructionsScreen {
     }
 
     private func addSaveBackupFileInstruction() {
-        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(number: 3)
+        let viewModel = AlgorandSecureBackupSaveBackupFileInstructionItemViewModel(order: 3)
         addInstruction(viewModel)
     }
 
