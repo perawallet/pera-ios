@@ -264,8 +264,6 @@ extension BidaliDappDetailScreen {
     }
 
     private func openPaymentRequest(_ draft: SendTransactionDraft) {
-        /// <todo> Cancel payment on close action and on all error cases.
-
         let controller = open(
             .sendTransactionPreview(draft: draft),
             by: .present
@@ -275,10 +273,9 @@ extension BidaliDappDetailScreen {
             [weak self] event in
             guard let self = self else { return }
 
-            self.dismiss(animated: true)
-
             switch event {
             case .didCompleteTransaction: self.confirmPayment()
+            case .didPerformDismiss: self.cancelPayment()
             default: break
             }
         }
