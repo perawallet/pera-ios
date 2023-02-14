@@ -165,7 +165,11 @@ extension Transaction {
             return nil
         }
         
-        return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+        let note = String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+        
+        let preparedNote = note.replacingOccurrences(of: "\0", with: "")
+        
+        return preparedNote
     }
 
     func isAssetCreationTransaction(for account: String) -> Bool {
