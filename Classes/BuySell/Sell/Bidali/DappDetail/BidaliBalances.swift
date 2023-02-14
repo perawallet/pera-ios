@@ -29,9 +29,18 @@ struct BidaliBalances:
         network: ALGAPI.Network
     ) {
         self.algo = account.value.algo.decimalAmount
-        self.usdc = account.value[BidaliPaymentCurrency.usdcAssetID]?.decimalAmount
-        self.usdt = account.value[BidaliPaymentCurrency.usdtAssetID]?.decimalAmount
-        self.testnetUSDC = network == .testnet ? account.value[BidaliPaymentCurrency.testnetUSDCAssetID]?.decimalAmount : nil
+
+        self.usdc = network == .mainnet
+            ? account.value[BidaliPaymentCurrency.usdcAssetID]?.decimalAmount
+            : nil
+
+        self.usdt = network == .mainnet
+            ? account.value[BidaliPaymentCurrency.usdtAssetID]?.decimalAmount
+            : nil
+
+        self.testnetUSDC = network == .mainnet
+            ? nil
+            : account.value[BidaliPaymentCurrency.testnetUSDCAssetID]?.decimalAmount
     }
 }
 

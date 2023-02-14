@@ -39,6 +39,7 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(account: accountHandle.value),
         dataStore: swapDataStore,
@@ -282,7 +283,9 @@ extension AccountDetailViewController {
         buyAlgoFlowCoordinator.launch(draft: draft)
     }
 
-    private func openBuyGiftCardsWithBidali() {}
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch(accountHandle)
+    }
 }
 
 extension AccountDetailViewController {

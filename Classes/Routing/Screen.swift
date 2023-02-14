@@ -307,7 +307,7 @@ indirect enum Screen {
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
-    case bidaliIntroduction(eventHandler: BidaliIntroductionScreen.EventHandler)
+    case bidaliIntroduction
     case bidaliDappDetail(account: AccountHandle)
 }
 
