@@ -1342,15 +1342,15 @@
 "buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
-"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your ALGO or USDC balance";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
 
 // MARK: Buy Gift Cards with Crypto Alert Item
 "buy-gift-cards-with-crypto-alert-title" = "Buy Gift Cards with Crypto";
-"buy-gift-cards-with-crypto-alert-body" = "You can use your ALGO or USDC balance to buy gift card and mobile topups from thousands of brands worldwide!";
+"buy-gift-cards-with-crypto-alert-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousands of brands worldwide!";
 "buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";
 
 // MARK: Bidali Introduction
 "bidali-introduction-navigation-title" = "Buy gift cards with Bidali";
 "bidali-introduction-title" = "Buy gift cards";
-"bidali-introduction-body" = "You can use your ALGO or USDC balance to Buy gift card and mobile topups from thousands of brands worldwide!";
+"bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousands of brands worldwide!";
 "bidali-introduction-action-title" = "Buy gift cards";

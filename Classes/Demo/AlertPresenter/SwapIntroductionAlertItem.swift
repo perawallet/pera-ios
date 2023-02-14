@@ -78,8 +78,7 @@ extension SwapIntroductionAlertItem {
             title: "swap-alert-primary-action".localized,
             style: .primary
         ) {
-            [weak self] in
-            guard let self = self else { return }
+            [unowned self] in
             self.delegate.swapIntroductionAlertItemDidPerformTrySwap(self)
         }
     }
@@ -89,8 +88,7 @@ extension SwapIntroductionAlertItem {
             title: "title-later".localized,
             style: .secondary
         ) {
-            [weak self] in
-            guard let self = self else { return }
+            [unowned self] in
             self.delegate.swapIntroductionAlertItemDidPerformLaterAction(self)
         }
     }

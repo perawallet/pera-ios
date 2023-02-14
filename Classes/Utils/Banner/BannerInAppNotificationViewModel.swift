@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,42 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerErrorViewModel.swift
+//   BannerInAppNotificationViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BannerErrorViewModel:  BannerViewModel {
+struct BannerInAppNotificationViewModel:  BannerViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var message: EditText?
 
-    init(
-        title: String,
-        message: String
-    ) {
+    init(title: String) {
         bindIcon()
         bindTitle(title)
-        bindMessage(message)
     }
 }
 
-extension BannerErrorViewModel {
+extension BannerInAppNotificationViewModel {
     private mutating func bindIcon() {
-        icon = "icon-info-24".uiImage
+        icon = "icon-in-app-notification-alert"
     }
 
     private mutating func bindTitle(
         _ someTitle: String
     ) {
         title = getTitle(someTitle)
-    }
-
-    private mutating func bindMessage(
-        _ someMessage: String
-    ) {
-        message = getMessage(someMessage)
     }
 }

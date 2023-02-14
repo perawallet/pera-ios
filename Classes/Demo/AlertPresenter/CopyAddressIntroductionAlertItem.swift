@@ -74,8 +74,7 @@ extension CopyAddressIntroductionAlertItem {
             title: "title-got-it".localized,
             style: .secondary
         ) {
-            [weak self] in
-            guard let self = self else { return }
+            [unowned self] in
             self.delegate.copyAddressIntroductionAlertItemDidPerformGotIt(self)
         }
     }
