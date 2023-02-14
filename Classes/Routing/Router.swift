@@ -958,7 +958,7 @@ class Router:
             viewController = aViewController
         case .transactionResult:
             let resultScreen = TransactionResultScreen(configuration: configuration)
-            resultScreen.isModalInPresentation = false
+            resultScreen.isModalInPresentation = true
             viewController = resultScreen
         case .transactionAccountSelect(let draft):
             let dataController = AccountSelectScreenListAPIDataController(
