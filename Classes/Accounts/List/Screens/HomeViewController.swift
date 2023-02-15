@@ -591,6 +591,12 @@ extension HomeViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyUSDCWithTransaK:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyUSDCWithTransaK()
+                }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -611,6 +617,8 @@ extension HomeViewController {
 
         buyAlgoFlowCoordinator.launch()
     }
+
+    private func openBuyUSDCWithTransaK() {}
 }
 
 extension HomeViewController {

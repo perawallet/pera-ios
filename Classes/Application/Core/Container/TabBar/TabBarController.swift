@@ -381,6 +381,12 @@ extension TabBarController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyUSDCWithTransaK:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyUSDCWithTransaK()
+                }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -401,6 +407,8 @@ extension TabBarController {
 
         analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
+
+    private func openBuyUSDCWithTransaK() {}
 
     private func openBuyGiftCardsWithBidali() {
         bidaliFlowCoordinator.launch()

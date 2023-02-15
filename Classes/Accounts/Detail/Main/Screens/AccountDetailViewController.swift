@@ -260,6 +260,12 @@ extension AccountDetailViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyUSDCWithTransaK:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyUSDCWithTransaK()
+                }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -282,6 +288,8 @@ extension AccountDetailViewController {
         draft.address = accountHandle.value.address
         buyAlgoFlowCoordinator.launch(draft: draft)
     }
+
+    private func openBuyUSDCWithTransaK() {}
 
     private func openBuyGiftCardsWithBidali() {
         bidaliFlowCoordinator.launch(accountHandle)
