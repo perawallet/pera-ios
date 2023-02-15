@@ -309,6 +309,9 @@ indirect enum Screen {
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
     case bidaliIntroduction
     case bidaliDappDetail(account: AccountHandle)
+    case bidaliAccountSelection(
+        eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
+    )
 }
 
 extension Screen {

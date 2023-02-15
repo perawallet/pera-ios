@@ -97,6 +97,7 @@
 "title-to" = "To";
 "title-try-again" = "Try Again";
 "filter" = "Filter";
+"title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";

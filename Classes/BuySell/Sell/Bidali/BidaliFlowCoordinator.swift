@@ -55,14 +55,33 @@ extension BidaliFlowCoordinator {
                     return
                 }
 
-//                self.openAccountSelection(from:)
+                self.openAccountSelection(from: screen)
             }
         }
     }
 }
 
 extension BidaliFlowCoordinator {
-    private func openAccountSelection(from screen: UIViewController) { }
+    private func openAccountSelection(from screen: UIViewController) {
+        let accountSelectionScreen = Screen.bidaliAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let account):
+                self.openDappDetail(
+                    from: screen,
+                    with: account
+                )
+            default: break
+            }
+        }
+
+        screen.open(
+            accountSelectionScreen,
+            by: .push
+        )
+    }
 }
 
 extension BidaliFlowCoordinator {
