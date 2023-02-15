@@ -52,14 +52,28 @@ final class NotificationsViewModel: Hashable {
 
 extension NotificationsViewModel {
     private func bindImage(notification: NotificationMessage) {
+        guard let notificationIconUrl = notification.icon?.logo,
+              let notificationIconShape = notification.icon?.shape else {
+            icon = AssetImageSource(asset: "notification-icon-default".uiImage)
+            return
+        }
+        
         if notification.icon == nil {
             icon = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
         
         let size = CGSize(width: 40, height: 40)
-        let shape: ImageShape = .rounded(4)
-        let url = PrismURL(baseURL: notification.icon)?
+        let shape: ImageShape
+        
+        switch notificationIconShape {
+        case .circle:
+            shape = .circle
+        case .rectangle:
+            shape = .rounded(4)
+        }
+        
+        let url = PrismURL(baseURL: notificationIconUrl)?
             .setExpectedImageSize(size)
             .build()
         let placeholder = ImagePlaceholder(image: .init(asset: "asset-image-placeholder-border".uiImage))
