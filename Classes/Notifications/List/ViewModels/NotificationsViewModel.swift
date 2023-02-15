@@ -15,11 +15,11 @@
 //
 //  NotificationsViewModel.swift
 
-import UIKit
-import SwiftDate
 import MacaroonUIKit
-import Prism
 import MacaroonURLImage
+import Prism
+import SwiftDate
+import UIKit
 
 final class NotificationsViewModel: Hashable {
     private(set) var icon: ImageSource?
@@ -52,25 +52,22 @@ final class NotificationsViewModel: Hashable {
 
 extension NotificationsViewModel {
     private func bindImage(notification: NotificationMessage) {
-        guard let notificationIconUrl = notification.icon?.logo,
-              let notificationIconShape = notification.icon?.shape else {
+        guard let notificationIcon = notification.icon,
+              let notificationIconUrl = notificationIcon.logo else {
             icon = AssetImageSource(asset: "notification-icon-default".uiImage)
-            return
-        }
-        
-        if notification.icon == nil {
-            icon = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
         
         let size = CGSize(width: 40, height: 40)
         let shape: ImageShape
         
-        switch notificationIconShape {
+        switch notificationIcon.shape {
         case .circle:
             shape = .circle
         case .rectangle:
             shape = .rounded(4)
+        case .none:
+            shape = .circle
         }
         
         let url = PrismURL(baseURL: notificationIconUrl)?
