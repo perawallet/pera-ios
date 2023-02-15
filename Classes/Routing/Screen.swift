@@ -306,6 +306,7 @@ indirect enum Screen {
         DiscoverDappParamaters,
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
+    case discoverGeneric(DiscoverGenericParameters)
 }
 
 extension Screen {
