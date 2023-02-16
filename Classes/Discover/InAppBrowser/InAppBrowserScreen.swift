@@ -20,6 +20,9 @@ import MacaroonUIKit
 import MacaroonUtils
 import WebKit
 
+/// @abstract
+/// <todo>
+/// How to prevent the standalone usage ???
 class InAppBrowserScreen<ScriptMessage>:
     BaseViewController,
     WKNavigationDelegate,
@@ -135,17 +138,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
         didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
-        defer {
-            refreshControl.endRefreshing()
-        }
-
-        let systemError = error as NSError
-
-        if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
-            updateUIForURL()
-            return
-        }
-        
         updateUIForError(error)
     }
 
@@ -162,17 +154,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
         didFail navigation: WKNavigation!,
         withError error: Error
     ) {
-        defer {
-            refreshControl.endRefreshing()
-        }
-
-        let systemError = error as NSError
-
-        if systemError.code == NSURLErrorCancelled && systemError.domain == NSURLErrorDomain {
-            updateUIForURL()
-            return
-        }
-
         updateUIForError(error)
     }
 
@@ -182,41 +163,23 @@ where ScriptMessage: InAppBrowserScriptMessage {
         preferences: WKWebpagePreferences,
         decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
     ) {
-        guard let requestUrl = navigationAction.request.url else {
-            decisionHandler(.cancel, preferences)
-            return
-        }
-        let application = UIApplication.shared
-        /// Mail Check
-        if requestUrl.isMailURL {
-            application.open(requestUrl, options: [:], completionHandler: nil)
+        guard let url = navigationAction.request.url else {
             decisionHandler(.cancel, preferences)
             return
         }
 
-        if let socialMediaUrl = socialMediaDeeplinkParser.route(url: requestUrl) {
-            if application.canOpenURL(socialMediaUrl) {
-                application.open(socialMediaUrl)
-                decisionHandler(.cancel, preferences)
-                return
-            }
+        let policy: WKNavigationActionPolicy
+        if url.isMailURL {
+            policy = navigateToMail(url)
+        } else if let socialMediaURL = socialMediaDeeplinkParser.route(url: url) {
+            policy = navigateToSocialMedia(socialMediaURL)
+        } else if let walletConnectSessionURL = DeeplinkQR(url: url).walletConnectUrl() {
+            policy = navigateToWalletConnectSession(walletConnectSessionURL)
+        } else {
+            policy = url.isWebURL ? .allow : .cancel
         }
 
-        /// Web Check
-        if requestUrl.isWebURL {
-            decisionHandler(.allow, preferences)
-            return
-        }
-
-        let deeplinkQR = DeeplinkQR(url: requestUrl)
-
-        guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
-            decisionHandler(.cancel, preferences)
-            return
-        }
-
-        launchController.receive(deeplinkWithSource: .walletConnectSessionRequestForDiscover(walletConnectURL))
-        decisionHandler(.cancel, preferences)
+        decisionHandler(policy, preferences)
     }
 
     /// <mark>
@@ -270,6 +233,15 @@ extension InAppBrowserScreen {
     }
 
     private func updateUIForError(_ error: Error) {
+        defer {
+            refreshControl.endRefreshing()
+        }
+
+        if !isPresentable(error) {
+            updateUIForURL()
+            return
+        }
+
         let viewModel = InAppBrowserErrorViewModel(error: error)
         let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
         updateUI(for: state)
@@ -386,5 +358,36 @@ extension InAppBrowserScreen {
             [unowned self] in
             self.load(url: self.lastURL)
         }
+    }
+}
+
+extension InAppBrowserScreen {
+    private func isPresentable(_ error: Error) -> Bool {
+        guard let urlError = error as? URLError else { return true }
+        return urlError.code != .cancelled
+    }
+}
+
+extension InAppBrowserScreen {
+    private func navigateToMail(_ url: URL) -> WKNavigationActionPolicy {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+
+        return .cancel
+    }
+
+    private func navigateToSocialMedia(_ url: URL) -> WKNavigationActionPolicy {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+
+        return .cancel
+    }
+
+    private func navigateToWalletConnectSession(_ url: URL) -> WKNavigationActionPolicy {
+        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(url)
+        launchController.receive(deeplinkWithSource: src)
+        return .cancel
     }
 }
