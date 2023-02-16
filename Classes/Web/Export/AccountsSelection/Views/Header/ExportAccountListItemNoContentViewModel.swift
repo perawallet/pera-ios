@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct ExportAccountListItemNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindBody()
@@ -32,11 +32,9 @@ extension ExportAccountListItemNoContentViewModel {
         var attributes = Typography.bodyMediumAttributes(alignment: .center)
         attributes.insert(.textColor(Colors.Text.main))
 
-        body = .attributedString(
+        body =
             "web-export-account-list-no-content-body"
                 .localized
                 .attributed(attributes)
-        )
-
     }
 }

@@ -16,6 +16,7 @@
 
 import ActiveLabel
 import MacaroonUIKit
+import UIKit
 
 final class ALGActiveLabel: ActiveLabel {
     override func layoutSubviews() {
