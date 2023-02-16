@@ -31,7 +31,6 @@ final class SettingsView: View {
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         collectionView.register(SettingsDetailCell.self)
-        collectionView.register(SettingsPrimaryDetailCell.self)
         collectionView.register(SettingsToggleCell.self)
         collectionView.register(footer: SettingsFooterSupplementaryView.self)
         collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)

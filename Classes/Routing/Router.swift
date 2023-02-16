@@ -1559,10 +1559,6 @@ extension Router {
         walletConnector.saveConnectedWCSession(session)
         walletConnector.clearExpiredSessionsIfNeeded()
     }
-    
-    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
-        appConfiguration.toastPresentationController.present(message: WCSessionLimitToastViewModel())
-    }
 }
 
 extension Router {
