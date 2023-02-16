@@ -166,10 +166,8 @@ extension Transaction {
         }
         
         let note = String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
-        
-        let preparedNote = note.replacingOccurrences(of: "\0", with: "")
-        
-        return preparedNote
+        let validNote = note.without("\0")
+        return validNote
     }
 
     func isAssetCreationTransaction(for account: String) -> Bool {
