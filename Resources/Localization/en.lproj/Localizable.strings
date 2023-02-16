@@ -96,6 +96,7 @@
 "title-select-account" = "Select Account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
+"title-start" = "Start";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1358,7 +1359,24 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 
-// MARK: Secure Backup
+// MARK: Algorand Secure Backup
+"algorand-secure-backup-instruction-title" = "Algorand Secure Backup";
+"algorand-secure-backup-instruction-header-title" = "Backup your accounts using the Algorand Secure Backup protocol. You will generate an encrypted text file representing your accounts and a 12-word key used to decrypt them in future.";
+"algorand-secure-backup-instruction-select-accounts-instruction-title" = "Select your accounts";
+"algorand-secure-backup-instruction-select-accounts-instruction-subtitle" = "Select one, some or all of your accounts to be included in your backup file.";
+"algorand-secure-backup-instruction-store-keys-instruction-title" = "Store your 12-word key";
+"algorand-secure-backup-instruction-store-keys-instruction-subtitle" = "Record or save your 12-word key securely. Learn more";
+"algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text" = "Learn more";
+"algorand-secure-backup-instruction-save-backup-file-instruction-title" = "Save your backup file";
+"algorand-secure-backup-instruction-save-backup-file-instruction-subtitle" = "Download your backup to a secure location on your device.";
 "algorand-secure-backup-account-list-title" = "Choose accounts to backup";
-"algorand-secure-backup-account-list-action-title" = "Backup accounts (%@)";
-"algorand-secure-backup-account-list-action-title-singular" = "Backup account (%@)";
+"algorand-secure-backup-account-list-action-title" = "Backup account";
+"algorand-secure-backup-account-list-action-title-singular" = "Backup account (1)";
+"algorand-secure-backup-account-list-action-title-plural" = "Backup accounts (%@)";
+"algorand-secure-backup-success-header-title" = "Your backup file is ready";
+"algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
+"algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";
+"algorand-secure-backup-success-save-action-title" = "Save backup file";
+"algorand-secure-backup-error-result-body" = "An error occurred while generating your Algorand Secure Backup. Please try again or contact support.";
+"algorand-secure-backup-error-result-body-highlighted-text" =  "contact support";
+"algorand-secure-backup-error-action-title" = "Try again";

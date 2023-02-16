@@ -189,9 +189,17 @@ extension AlgorandSecureBackupAccountListScreen {
         let selectedAccounts = dataController.getSelectedAccounts()
         let selectedAccountsCount = selectedAccounts.count
 
-        let title = selectedAccountsCount <= 1
-            ? "algorand-secure-backup-account-list-action-title-singular".localized(params: "\(selectedAccountsCount)")
-            : "algorand-secure-backup-account-list-action-title".localized(params: "\(selectedAccountsCount)")
+        let title: String
+
+        /// <todo>:
+        /// Support singular/plural localization properly.
+        if selectedAccountsCount == 0 {
+            title = "algorand-secure-backup-account-list-action-title".localized
+        } else if selectedAccountsCount == 1 {
+            title = "algorand-secure-backup-account-list-action-title-singular".localized
+        } else {
+            title = "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(selectedAccountsCount)")
+        }
 
         continueActionView.editTitle = .string(title)
     }
