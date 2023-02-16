@@ -108,8 +108,6 @@ extension NotificationIcon {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            self.shape = try container.decode(NotificationIconShape.self, forKey: .shape)
-            
             let logoString = try container.decodeIfPresent(
                 String.self,
                 forKey: .logo
@@ -120,6 +118,8 @@ extension NotificationIcon {
             
             if self.logo == nil {
                 self.shape = nil
+            } else {
+                self.shape = try container.decode(NotificationIconShape.self, forKey: .shape)
             }
         }
         
@@ -132,7 +132,7 @@ extension NotificationIcon {
 
 enum NotificationIconShape:
     String,
-    Codable {
+    APIModel {
     case circle
     case rectangle
     
