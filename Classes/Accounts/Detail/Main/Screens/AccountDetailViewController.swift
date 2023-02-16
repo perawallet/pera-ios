@@ -39,8 +39,10 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self)
     private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
+
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(account: accountHandle.value),
         dataStore: swapDataStore,
@@ -261,6 +263,12 @@ extension AccountDetailViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyAlgoWithSardine:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithSardine()
+                }
             case .performBuyUSDCWithTransaK:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -288,6 +296,10 @@ extension AccountDetailViewController {
         let draft = BuyAlgoDraft()
         draft.address = accountHandle.value.address
         buyAlgoFlowCoordinator.launch(draft: draft)
+    }
+
+    private func openBuyAlgoWithSardine() {
+        sardineFlowCoordinator.launch(accountHandle)
     }
 
     private func openBuyUSDCWithTransaK() {

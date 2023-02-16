@@ -1414,6 +1414,8 @@ class Router:
             )
         case .transaKIntroduction:
             viewController = TransaKIntroductionScreen()
+        case .sardineIntroduction:
+            viewController = SardineIntroductionScreen()
         }
 
         return viewController as? T
