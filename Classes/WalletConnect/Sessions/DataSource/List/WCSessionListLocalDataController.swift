@@ -34,7 +34,7 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
 
     private var cachedSessionListItems: [WCSession: WCSessionListItem] = [:]
 
-    private lazy var sessions: [WCSession] = walletConnector.allWalletConnectSessions
+    private lazy var sessions = [WCSession]()
 
     var shouldShowDisconnectAllAction: Bool {
         return walletConnector.allWalletConnectSessions.count > 1
@@ -56,11 +56,19 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
 
 extension WCSessionListLocalDataController {
     func load() {
+        setWCSessions()
+        
         if sessions.isEmpty {
             deliverNoContentSnapshot()
         } else {
             deliverContentSnapshot()
         }
+    }
+    
+    private func setWCSessions() {
+        sessions = walletConnector
+            .allWalletConnectSessions
+            .sorted(by: \.date)
     }
 }
 
@@ -208,11 +216,18 @@ extension WCSessionListLocalDataController {
             if !snapshot.sectionIdentifiers.contains(.sessions) {
                 snapshot.appendSections([ .sessions ] )
             }
-
-            snapshot.appendItems(
-                [item],
-                toSection: .sessions
-            )
+            
+            if let firstItemOnSection = snapshot.itemIdentifiers(inSection: .sessions).first {
+                snapshot.insertItems(
+                    [item],
+                    beforeItem: firstItemOnSection
+                )
+            } else {
+                snapshot.appendItems(
+                    [item],
+                    toSection: .sessions
+                )
+            }
 
             if let session = item.session {
                 self.cachedSessionListItems[session] = item
@@ -283,10 +298,6 @@ extension WCSessionListLocalDataController {
             lastSnapshot,
             session: session
         )
-    }
-    
-    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
-        publish(.didExceededMaximumSessionLimit)
     }
 }
 
