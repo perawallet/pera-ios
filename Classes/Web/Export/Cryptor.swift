@@ -21,28 +21,26 @@ import AlgoSDK
 
 final class Cryptor {
     typealias EncryptionData = (data: Data?, error: EncryptionError?)
-    let key: String
+    let keyData: Data
 
     init(key: String) {
-        self.key = key
+        self.keyData = Data(bytes: key.convertToByteArray(using: ","))
+    }
+
+    init(data: Data) {
+        self.keyData = data
     }
 
     func encrypt(data: Data) -> EncryptionData {
-        let encryptedContent = AlgoMobileEncrypt(data, generateKeyData())
+        let encryptedContent = AlgoMobileEncrypt(data, keyData)
         let error = EncryptionError(rawValue: encryptedContent?.errorCode ?? EncryptionError.unknown.rawValue)
         return (encryptedContent?.encryptedData, error)
     }
 
     func decrypt(data: Data) -> EncryptionData? {
-        let decryptedContent = AlgoMobileDecrypt(data, generateKeyData())
+        let decryptedContent = AlgoMobileDecrypt(data, keyData)
         let error = EncryptionError(rawValue: decryptedContent?.errorCode ?? EncryptionError.unknown.rawValue)
         return (decryptedContent?.decryptedData, error)
-    }
-
-    private func generateKeyData() -> Data {
-        let data = key.convertToByteArray(using: ",")
-
-        return Data(bytes: data)
     }
 }
 
