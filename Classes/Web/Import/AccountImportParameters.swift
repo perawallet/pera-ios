@@ -20,7 +20,7 @@ import MacaroonUtils
 struct AccountImportParameters: ALGEntityModel {
     let address: String
     let name: String?
-    let accountType: ImportedAccountType
+    let accountType: AccountType
     let privateKey: Data?
 
     init() {
@@ -35,7 +35,7 @@ struct AccountImportParameters: ALGEntityModel {
     ) {
         address = apiModel.address ?? ""
         name = apiModel.name
-        accountType = apiModel.accountType ?? .unsupported("unsupported")
+        accountType = apiModel.accountType ?? .unsupported("Unsupported")
         privateKey = apiModel.privateKey
     }
 
@@ -50,10 +50,76 @@ struct AccountImportParameters: ALGEntityModel {
 }
 
 extension AccountImportParameters {
+    enum AccountType:
+        ALGAPIModel,
+        RawRepresentable,
+        CaseIterable,
+        Hashable {
+        case single
+        case unsupported(String)
+
+        typealias RawAccountType = AccountInformation.AccountType
+
+        var rawValue: String {
+            switch self {
+            case .single: return "single"
+            case .unsupported(let someType): return someType
+            }
+        }
+
+        var rawAccountType: RawAccountType {
+            switch self {
+            case .single: return .standard
+            case .unsupported: return .standard
+            }
+        }
+
+        static var allCases: [AccountType] = [
+            .single
+        ]
+
+        init() {
+            self = .unsupported("Unsupported")
+        }
+
+        init?(rawValue: String) {
+            if let rawAccountType = RawAccountType(rawValue: rawValue) {
+                self.init(rawAccountType: rawAccountType)
+            } else {
+                self.init(stringRawValue: rawValue)
+            }
+        }
+
+        private init(stringRawValue: String) {
+            switch stringRawValue {
+            case Self.single.rawValue:
+                self = .single
+            default:
+                self = .unsupported(stringRawValue)
+            }
+        }
+
+        init(rawAccountType: RawAccountType) {
+            switch rawAccountType {
+            case .standard: self = .single
+            default: self = .unsupported(rawAccountType.rawValue)
+            }
+        }
+
+        init(from decoder: Decoder) throws {
+            let singleValueContainer = try decoder.singleValueContainer()
+            let rawValue = try singleValueContainer.decode(String.self)
+
+            self.init(stringRawValue: rawValue)
+        }
+    }
+}
+
+extension AccountImportParameters {
     struct APIModel: ALGAPIModel {
         var address: String?
         var name: String?
-        var accountType: ImportedAccountType?
+        var accountType: AccountImportParameters.AccountType?
         var privateKey: Data?
 
         init() {
@@ -63,73 +129,13 @@ extension AccountImportParameters {
             self.privateKey = nil
         }
     }
+}
 
+extension AccountImportParameters.APIModel {
     private enum CodingKeys: String, CodingKey {
         case address
         case name
         case accountType = "account_type"
         case privateKey = "private_key"
-    }
-}
-
-enum ImportedAccountType:
-    ALGAPIModel,
-    RawRepresentable,
-    CaseIterable,
-    Hashable {
-    case single
-    case unsupported(String)
-
-    var rawValue: String {
-        switch self {
-        case .single: return "single"
-        case .unsupported(let someType): return someType
-        }
-    }
-
-    var rawAccountType: AccountType {
-        switch self {
-        case .single:
-            return .standard
-        case .unsupported:
-            return .standard
-        }
-    }
-
-    static var allCases: [ImportedAccountType] = [
-        .single
-    ]
-
-    init() {
-        self = .unsupported("Unsupported")
-    }
-
-    init?(rawValue: String) {
-        switch rawValue {
-            case AccountType.standard.rawValue: self = .single
-            default: self = .unsupported(rawValue)
-        }
-    }
-
-    init(rawAccountType: AccountType) {
-        switch rawAccountType {
-        case .standard:
-            self = .single
-        default:
-            self = .unsupported(rawAccountType.rawValue)
-        }
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(rawValue)
-    }
-}
-
-extension RawRepresentable where Self: Hashable, Self.RawValue: Hashable {
-    static func == (
-        lhs: Self,
-        rhs: Self
-    ) -> Bool {
-        return lhs.rawValue == rhs.rawValue
     }
 }

@@ -125,7 +125,7 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
+    case accountListOptions(accountType: AccountInformation.AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case sortAccountList(
         dataController: SortAccountListDataController,
         eventHandler: SortAccountListViewController.EventHandler
@@ -160,7 +160,8 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
+    case accountCollectibleListFilterSelection(uiInteractions: AccountCollectibleListFilterSelectionViewController.UIInteractions)
+    case collectiblesFilterSelection(uiInteractions: CollectiblesFilterSelectionViewController.UIInteractions)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
@@ -195,7 +196,7 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
-    case assetsFilterSelection(eventHandler: AssetsFilterSelectionViewController.EventHandler)
+    case assetsFilterSelection(uiInteractions: AssetsFilterSelectionViewController.UIInteractions)
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler
@@ -301,7 +302,10 @@ indirect enum Screen {
     )
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
-    case discoverDappDetail(DiscoverDappParamaters)
+    case discoverDappDetail(
+        DiscoverDappParamaters,
+        eventHandler: DiscoverDappDetailScreen.EventHandler?
+    )
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
     case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)

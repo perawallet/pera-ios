@@ -46,7 +46,7 @@ final class Account: ALGEntityModel {
     var totalCreatedApps: Int
 
     var name: String?
-    var type: AccountType = .standard
+    var type: AccountInformation.AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
@@ -98,7 +98,7 @@ final class Account: ALGEntityModel {
 
     init(
         address: String,
-        type: AccountType,
+        type: AccountInformation.AccountType,
         ledgerDetail: LedgerDetail? = nil,
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
