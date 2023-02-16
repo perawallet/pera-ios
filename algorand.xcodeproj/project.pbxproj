@@ -200,6 +200,12 @@
 		17899DF2299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
 		17899DF3299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
 		17899DF4299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
+		17899DF6299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DF7299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DF8299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DFA299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
+		17899DFB299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
+		17899DFC299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -6787,6 +6793,8 @@
 		1783309029548D6900AD5B4E /* TelegramDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramDeeplink.swift; sourceTree = "<group>"; };
 		178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorPreferences.swift; sourceTree = "<group>"; };
 		17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
+		17899DF5299E746E00DE6A72 /* BackupParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupParameters.swift; sourceTree = "<group>"; };
+		17899DF9299E74AB00DE6A72 /* SecureBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackup.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		17924433288FD0450075F36F /* NotificationStatusFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationStatusFetchDraft.swift; sourceTree = "<group>"; };
@@ -18538,6 +18546,8 @@
 				D41970EE29922C2A003FEEB1 /* Instructions */,
 				D4D87E6E29912170004F7BF2 /* AccountList */,
 				D419711129927D86003FEEB1 /* Result */,
+				17899DF5299E746E00DE6A72 /* BackupParameters.swift */,
+				17899DF9299E74AB00DE6A72 /* SecureBackup.swift */,
 			);
 			path = AlgorandSecureBackup;
 			sourceTree = "<group>";
@@ -21363,6 +21373,7 @@
 				2B7E586225866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
 				D419711B2992F8E5003FEEB1 /* AlgorandSecureBackupSuccessScreen.swift in Sources */,
 				D4A70AF82878361700FB52B0 /* AssetInnerTransactionPreviewViewModel.swift in Sources */,
+				17899DFC299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				D47C4AB72791C3820012D7A6 /* WCSessionListNoContentViewModel.swift in Sources */,
 				D4DC26BD28B3A3C00068152E /* ASAAboutScreenASAProjectWebsiteSecondaryListItem.swift in Sources */,
 				D4A0DEA4289803F600CE3895 /* AssetStatisticsSectionViewModel.swift in Sources */,
@@ -22065,6 +22076,7 @@
 				D4B91DA52736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */,
 				F034521C28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */,
 				2B2DF28D28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
+				17899DF8299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
@@ -23039,6 +23051,7 @@
 				F0C542B8291C383800596A0A /* DiscoverSearchListLoadingView.swift in Sources */,
 				2B7E3066267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				2BED6572266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
+				17899DF7299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				F010638B28AC71A000AB6873 /* ASADetailScreenTheme.swift in Sources */,
 				2B83D05826C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				2B2AACAA250A6D6600B8C5C5 /* RekeyAccountEvent.swift in Sources */,
@@ -23747,6 +23760,7 @@
 				2B2AACAF250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B5739FA26F3F873007E0252 /* WCAssetConfigParameters.swift in Sources */,
 				D478AA9B28AB80AB001958C8 /* SwapIntroductionScreenTheme.swift in Sources */,
+				17899DFB299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				D43A0C292790D177007430B9 /* NoContentView.swift in Sources */,
 				D4E34CC127F71C5E00B0C3F4 /* SelectAssetViewControllerTheme.swift in Sources */,
 				17A7668B290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
@@ -25675,6 +25689,7 @@
 				2BD36E052681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B8E5F952548318C001D8E30 /* ALGAnalyticsScreen.swift in Sources */,
 				F040FE0F2858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift in Sources */,
+				17899DFA299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				046767812756A65F00C88F21 /* SingleSelectionView.swift in Sources */,
 				D4A0DEA2289803F600CE3895 /* AssetStatisticsSectionViewModel.swift in Sources */,
 				95266BFC27B538B800E99EC7 /* SelectAccountAPIDataController.swift in Sources */,
@@ -26377,6 +26392,7 @@
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6BFE27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				D47C4AA92791B5B90012D7A6 /* ListErrorViewModel.swift in Sources */,
+				17899DF6299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */,
 				2BB350C425892BD900A03BAC /* WrappedStackView.swift in Sources */,
