@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupThirdInstructionItemViewModel.swift
+//   ResultWithHyperlinkViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AlgorandSecureBackupThirdInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
-
-    init() {
-        number = "3".bodyRegular(alignment: .center)
-        title = "algorand-secure-backup-instruction-third-instruction-title".localized.bodyMedium()
-        subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-third-instruction-subtitle".localized.footnoteRegular())
-    }
+protocol ResultWithHyperlinkViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: ImageStyle { get }
+    var iconSize: CGSize? { get }
+    var title: TextStyle { get }
+    var titleTopMargin: LayoutMetric { get }
+    var body: TextStyle { get }
+    var bodyTopMargin: LayoutMetric { get }
 }

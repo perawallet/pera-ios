@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupInstructionItemViewModel.swift
+//   ResultWithHyperlinkViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider { get }
-    var title: TextProvider { get }
-    var subtitle: SubtitleTextProvider { get }
+protocol ResultWithHyperlinkViewModel: ViewModel {
+    var icon: Image? { get }
+    var title: TextProvider? { get }
+    var body: BodyTextProvider? { get }
 
-    typealias SubtitleTextProvider = AlgorandSecureBackupInstructionSubtitleTextProvider
-    typealias HighlightedText = AlgorandSecureBackupInstructionSubtitleTextProvider.HighlightedText
+    typealias BodyTextProvider = ResultWithHyperlinkViewBodyTextProvider
+    typealias HighlightedText = ResultWithHyperlinkViewBodyTextProvider.HighlightedText
 }
 
-struct AlgorandSecureBackupInstructionSubtitleTextProvider {
+struct ResultWithHyperlinkViewBodyTextProvider {
     var text: TextProvider
     var highlightedText: HighlightedText? = nil
 

@@ -12,19 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupFirstInstructionItemViewModel.swift
+//   FileInfoViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupFirstInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
+struct FileInfoViewModel: ViewModel {
+    var icon: Image?
+    var name: TextProvider?
+    var size: TextProvider?
 
     init() {
-        number = "1".bodyRegular(alignment: .center)
-        title = "algorand-secure-backup-instruction-first-instruction-title".localized.bodyMedium()
-        subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-first-instruction-subtitle".localized.footnoteRegular())
+        bindIcon()
+        bindName()
+        bindSize()
+    }
+}
+
+extension FileInfoViewModel {
+    mutating func bindIcon() {
+        icon = "icon-txt-file"
+    }
+
+    mutating func bindName() {
+        name = "19/01/2023_backup.txt".footnoteMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    mutating func bindSize() {
+        size = "239 KB".footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
