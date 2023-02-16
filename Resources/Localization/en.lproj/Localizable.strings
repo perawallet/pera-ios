@@ -1357,3 +1357,9 @@
 "bidali-introduction-title" = "Buy gift cards with Crypto";
 "bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
 "bidali-introduction-action-title" = "Buy gift cards";
+
+// MARK:  TransaK Introduction
+"transak-introduction-navigation-title" = "Buy USDC with TransaK";
+"transak-introduction-title" = "Buy USDC";
+"transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
+"transak-introduction-action-title" = "Buy USDC with TransaK";

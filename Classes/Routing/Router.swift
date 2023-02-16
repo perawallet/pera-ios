@@ -1412,6 +1412,8 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .transaKIntroduction:
+            viewController = TransaKIntroductionScreen()
         }
 
         return viewController as? T

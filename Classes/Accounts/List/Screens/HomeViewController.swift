@@ -49,6 +49,7 @@ final class HomeViewController:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
+    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
         presentingScreen: self,
@@ -618,7 +619,9 @@ extension HomeViewController {
         buyAlgoFlowCoordinator.launch()
     }
 
-    private func openBuyUSDCWithTransaK() {}
+    private func openBuyUSDCWithTransaK() {
+        transaKFlowCoordinator.launch()
+    }
 }
 
 extension HomeViewController {
