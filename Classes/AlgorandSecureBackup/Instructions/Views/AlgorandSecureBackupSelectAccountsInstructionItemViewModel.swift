@@ -17,14 +17,14 @@
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupFirstInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
+struct AlgorandSecureBackupSelectAccountsInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
+    var order: TextProvider?
+    var title: TextProvider?
+    var subtitle: SubtitleTextProvider?
 
-    init() {
-        number = "1".bodyRegular(alignment: .center)
-        title = "algorand-secure-backup-instruction-first-instruction-title".localized.bodyMedium()
-        subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-first-instruction-subtitle".localized.footnoteRegular())
+    init(order: Int) {
+        self.order = "\(order)".bodyRegular(alignment: .center)
+        self.title = "algorand-secure-backup-instruction-select-accounts-instruction-title".localized.bodyMedium()
+        self.subtitle = SubtitleTextProvider(text: "algorand-secure-backup-instruction-select-accounts-instruction-subtitle".localized.footnoteRegular())
     }
 }

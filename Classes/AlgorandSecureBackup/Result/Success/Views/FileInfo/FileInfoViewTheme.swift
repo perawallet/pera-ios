@@ -12,33 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupInstructionItemViewTheme.swift
+//   FileInfoViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AlgorandSecureBackupInstructionItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var number: TextStyle
-    var numberFirstShadow: MacaroonUIKit.Shadow
-    var numberSecondShadow: MacaroonUIKit.Shadow
-    var numberThirdShadow: MacaroonUIKit.Shadow
-    var numberSize: LayoutSize
-    var spacingBetweenNumberAndContent: LayoutMetric
-    var title: TextStyle
-    var spacingBetweenTitleAndSubtitle: LayoutMetric
-    var subtitle: TextStyle
+struct FileInfoViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var contentFirstShadow: MacaroonUIKit.Shadow
+    var contentSecondShadow: MacaroonUIKit.Shadow
+    var contentThirdShadow: MacaroonUIKit.Shadow
+    var contentPaddings: LayoutPaddings
+    var icon: ImageStyle
+    var spacingBetweenIconAndInfoContent: LayoutMetric
+    var infoName: TextStyle
+    var spacingBetweenInfoNameAndInfoSize: LayoutMetric
+    var infoSize: TextStyle
+    var spacingBetweenInfoContentAndCopyAccessory: LayoutMetric
+    var copyAccessory: ButtonStyle
 
     init(
         _ family: LayoutFamily
     ) {
-        self.number = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(SingleLineText()),
-        ]
-        self.numberFirstShadow = MacaroonUIKit.Shadow(
+        self.contentFirstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -48,7 +45,7 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberSecondShadow = MacaroonUIKit.Shadow(
+        self.contentSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -58,7 +55,7 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberThirdShadow = MacaroonUIKit.Shadow(
+        self.contentThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -68,16 +65,21 @@ struct AlgorandSecureBackupInstructionItemViewTheme:
             cornerRadii: (20, 20),
             corners: .allCorners
         )
-        self.numberSize = (40, 40)
-        self.spacingBetweenNumberAndContent = 20
-        self.title = [
+        self.contentPaddings = (20, 20, 20, 20)
+        self.icon = []
+        self.spacingBetweenIconAndInfoContent = 16
+        self.infoName = [
             .textColor(Colors.Text.main),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineText()),
         ]
-        self.spacingBetweenTitleAndSubtitle = 8
-        self.subtitle = [
+        self.spacingBetweenInfoNameAndInfoSize = 4
+        self.infoSize = [
             .textColor(Colors.Text.gray),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineText()),
+        ]
+        self.spacingBetweenInfoContentAndCopyAccessory = 16
+        self.copyAccessory = [
+            .backgroundImage([ .normal("icon-copy-circle"), .highlighted("icon-copy-circle")])
         ]
     }
 }

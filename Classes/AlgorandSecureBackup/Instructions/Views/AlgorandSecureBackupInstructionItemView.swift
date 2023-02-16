@@ -26,14 +26,14 @@ final class AlgorandSecureBackupInstructionItemView:
         .performHyperlinkAction: UIBlockInteraction()
     ]
 
-    private lazy var numberBackgroundView = TripleShadowView()
-    private lazy var numberView = UILabel()
+    private lazy var orderBackgroundView = TripleShadowView()
+    private lazy var orderView = UILabel()
     private lazy var contentView = UIView()
     private lazy var titleView = UILabel()
     private lazy var subtitleView = ALGActiveLabel()
 
     func customize(_ theme: AlgorandSecureBackupInstructionItemViewTheme) {
-        addNumber(theme)
+        addOrder(theme)
         addContent(theme)
     }
 
@@ -42,11 +42,11 @@ final class AlgorandSecureBackupInstructionItemView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bindData(_ viewModel: AlgorandSecureBackupInstructionItemViewModel?) {
-        if let number = viewModel?.number {
-            number.load(in: numberView)
+        if let order = viewModel?.order {
+            order.load(in: orderView)
         } else {
-            numberView.text = nil
-            numberView.attributedText = nil
+            orderView.text = nil
+            orderView.attributedText = nil
         }
 
         if let title = viewModel?.title {
@@ -80,21 +80,21 @@ final class AlgorandSecureBackupInstructionItemView:
 }
 
 extension AlgorandSecureBackupInstructionItemView {
-    private func addNumber(_ theme: AlgorandSecureBackupInstructionItemViewTheme) {
-        numberBackgroundView.drawAppearance(shadow: theme.numberFirstShadow)
-        numberBackgroundView.drawAppearance(secondShadow: theme.numberSecondShadow)
-        numberBackgroundView.drawAppearance(thirdShadow: theme.numberThirdShadow)
+    private func addOrder(_ theme: AlgorandSecureBackupInstructionItemViewTheme) {
+        orderBackgroundView.drawAppearance(shadow: theme.orderFirstShadow)
+        orderBackgroundView.drawAppearance(secondShadow: theme.orderSecondShadow)
+        orderBackgroundView.drawAppearance(thirdShadow: theme.orderThirdShadow)
 
-        addSubview(numberBackgroundView)
-        numberBackgroundView.snp.makeConstraints {
+        addSubview(orderBackgroundView)
+        orderBackgroundView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.fitToSize(theme.numberSize)
+            $0.fitToSize(theme.orderSize)
         }
 
-        numberBackgroundView.addSubview(numberView)
-        numberView.customizeAppearance(theme.number)
-        numberView.snp.makeConstraints {
+        orderBackgroundView.addSubview(orderView)
+        orderView.customizeAppearance(theme.order)
+        orderView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0
@@ -106,7 +106,7 @@ extension AlgorandSecureBackupInstructionItemView {
         addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == numberBackgroundView.snp.trailing + theme.spacingBetweenNumberAndContent
+            $0.leading == orderBackgroundView.snp.trailing + theme.spacingBetweenOrderAndContent
             $0.trailing == 0
             $0.bottom == 0
         }

@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AlgorandSecureBackupInstructionScreenTheme:
+struct AlgorandSecureBackupInstructionsScreenTheme:
     LayoutSheet,
     StyleSheet {
     var background: ViewStyle
