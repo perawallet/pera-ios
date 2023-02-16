@@ -354,6 +354,11 @@ extension ASADetailScreen {
             rightBarButtonItems.append(accountActionsBarButtonItem)
         }
 
+        if rightBarButtonItems.isEmpty {
+            let flexibleSpaceItem = ALGBarButtonItem.flexibleSpace()
+            rightBarButtonItems.append(flexibleSpaceItem)
+        }
+
         self.rightBarButtonItems = rightBarButtonItems
     }
 
