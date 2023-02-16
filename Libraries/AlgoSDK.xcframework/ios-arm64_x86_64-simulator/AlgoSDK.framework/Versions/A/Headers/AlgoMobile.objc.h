@@ -138,6 +138,21 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignature(NSData* _Nullable 
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignatureWithSigner(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSString* _Nullable signer, NSError* _Nullable* _Nullable error);
 
+/**
+ * BackupMnemonicFromKey converts a 16-byte key into a 12 word mnemonic. The generated
+mnemonic includes a checksum. Each word in the mnemonic represents 11 bits
+of data, and the last 11 bits are reserved for the checksum.
+ */
+FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileBackupMnemonicFromKey(NSData* _Nullable key, NSError* _Nullable* _Nullable error);
+
+/**
+ * BackupMnemonicToKey converts a mnemonic generated using this library into the
+source key used to create it. It returns an error if the passed mnemonic has
+an incorrect checksum, if the number of words is unexpected, or if one of the
+passed words is not found in the words list.
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoMobileBackupMnemonicToKey(NSString* _Nullable mnemonicStr, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT AlgoMobileEncryption* _Nullable AlgoMobileDecrypt(NSData* _Nullable data, NSData* _Nullable sk);
 
 FOUNDATION_EXPORT AlgoMobileEncryption* _Nullable AlgoMobileEncrypt(NSData* _Nullable data, NSData* _Nullable sk);
@@ -153,6 +168,17 @@ FOUNDATION_EXPORT AlgoMobileInt64Array* _Nullable AlgoMobileFindAndVerifyTxnGrou
 FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
+
+/**
+ * GenerateBackupCipherKey converts a 16-byte key into a 32-byte key
+using provided key through HMAC:SHA256 algorithm.
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoMobileGenerateBackupCipherKey(NSString* _Nullable key, NSData* _Nullable input);
+
+/**
+ * GenerateBackupPrivateKey creates a 16-byte random key
+ */
+FOUNDATION_EXPORT NSData* _Nullable AlgoMobileGenerateBackupPrivateKey(void);
 
 FOUNDATION_EXPORT NSData* _Nullable AlgoMobileGenerateSK(void);
 
