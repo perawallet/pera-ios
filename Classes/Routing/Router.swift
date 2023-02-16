@@ -1379,8 +1379,8 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .algorandSecureBackupInstruction(let eventHandler):
-            let screen = AlgorandSecureBackupInstructionScreen()
+        case .algorandSecureBackupInstructions(let eventHandler):
+            let screen = AlgorandSecureBackupInstructionsScreen()
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupAccountList(let eventHandler):
@@ -1395,6 +1395,10 @@ class Router:
             viewController = screen
         case .algorandSecureBackupSuccess(let eventHandler):
             let screen = AlgorandSecureBackupSuccessScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .algorandSecureBackupError(let eventHandler):
+            let screen = AlgorandSecureBackupErrorScreen()
             screen.eventHandler = eventHandler
             viewController = screen
         }

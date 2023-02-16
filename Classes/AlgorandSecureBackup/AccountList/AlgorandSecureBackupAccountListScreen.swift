@@ -190,6 +190,9 @@ extension AlgorandSecureBackupAccountListScreen {
         let selectedAccountsCount = selectedAccounts.count
 
         let title: String
+
+        /// <todo>:
+        /// Support singular/plural localization properly.
         if selectedAccountsCount == 0 {
             title = "algorand-secure-backup-account-list-action-title".localized
         } else if selectedAccountsCount == 1 {

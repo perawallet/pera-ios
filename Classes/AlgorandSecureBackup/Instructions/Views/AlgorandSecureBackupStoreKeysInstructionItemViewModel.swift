@@ -12,29 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupSecondInstructionItemViewModel.swift
+//   AlgorandSecureBackupStoreKeysInstructionItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupSecondInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider
-    var title: TextProvider
-    var subtitle: SubtitleTextProvider
+struct AlgorandSecureBackupStoreKeysInstructionItemViewModel: AlgorandSecureBackupInstructionItemViewModel {
+    var order: TextProvider?
+    var title: TextProvider?
+    var subtitle: SubtitleTextProvider?
 
-    init() {
-        number = "2".bodyRegular(alignment: .center)
-        title = "algorand-secure-backup-instruction-second-instruction-title".localized.bodyMedium()
+    init(order: Int) {
+        bindOrder(order)
+        bindTitle()
+        bindSubtitle()
+    }
+}
 
-        let subtitleText = "algorand-secure-backup-instruction-second-instruction-subtitle".localized.footnoteRegular()
+extension AlgorandSecureBackupStoreKeysInstructionItemViewModel {
+    private mutating func bindOrder(_ order: Int) {
+        self.order = "\(order)".bodyRegular(alignment: .center)
+    }
+
+    private mutating func bindTitle() {
+        title =
+            "algorand-secure-backup-instruction-store-keys-instruction-title"
+                .localized
+                .bodyMedium()
+    }
+
+    private mutating func bindSubtitle() {
+        let subtitleText = "algorand-secure-backup-instruction-store-keys-instruction-subtitle".localized.footnoteRegular()
         var subtitleHighlightedTextAttributes = Typography.footnoteMediumAttributes(
             alignment: .center
         )
         subtitleHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
         let subtitleHighlightedText = HighlightedText(
-            text: "algorand-secure-backup-instruction-second-instruction-subtitle-highlighted-text".localized,
+            text: "algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text".localized,
             attributes: subtitleHighlightedTextAttributes
         )
+
         subtitle = SubtitleTextProvider(text: subtitleText, highlightedText: subtitleHighlightedText)
     }
 }

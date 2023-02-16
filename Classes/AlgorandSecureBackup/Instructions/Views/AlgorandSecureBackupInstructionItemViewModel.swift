@@ -17,10 +17,12 @@
 import Foundation
 import MacaroonUIKit
 
-protocol AlgorandSecureBackupInstructionItemViewModel {
-    var number: TextProvider { get }
-    var title: TextProvider { get }
-    var subtitle: SubtitleTextProvider { get }
+protocol AlgorandSecureBackupInstructionItemViewModel: ViewModel {
+    var order: TextProvider? { get }
+    var title: TextProvider? { get }
+    var subtitle: SubtitleTextProvider? { get }
+
+    init(order: Int)
 
     typealias SubtitleTextProvider = AlgorandSecureBackupInstructionSubtitleTextProvider
     typealias HighlightedText = AlgorandSecureBackupInstructionSubtitleTextProvider.HighlightedText

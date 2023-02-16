@@ -12,41 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupInstructionScreenTheme.swift
+//   AlgorandSecureBackupErrorScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AlgorandSecureBackupInstructionScreenTheme:
+struct AlgorandSecureBackupErrorScreenTheme:
     LayoutSheet,
     StyleSheet {
     var background: ViewStyle
-    var navigationBarEdgeInset: LayoutMargins
     var contextPaddings: LayoutPaddings
-    var header: TextStyle
-    var spacingBetweenInstructionsAndHeader: LayoutMetric
-    var instruction: AlgorandSecureBackupInstructionItemViewTheme
-    var instructionsSpacing: LayoutMetric
-    var startAction: ButtonStyle
-    var startActionContentEdgeInsets: LayoutPaddings
-    var startActionEdgeInsets: LayoutPaddings
+    var result: ResultWithHyperlinkViewTheme
+    var tryAgainAction: ButtonStyle
+    var tryAgainActionContentEdgeInsets: LayoutPaddings
+    var tryAgainActionEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
-        self.contextPaddings = (12, 24, 12, 24)
-        self.header = [
-            .textOverflow(FittingText()),
-            .textColor(Colors.Text.gray),
-            .font(Typography.bodyRegular())
-        ]
-        self.spacingBetweenInstructionsAndHeader = 40
-        self.instruction = AlgorandSecureBackupInstructionItemViewTheme(family)
-        self.instructionsSpacing = 24
-        self.startAction = [
+        self.contextPaddings = (28, 24, 28, 24)
+        self.result = AlgorandSecureBackupErrorResultViewTheme(family)
+        self.tryAgainAction = [
+            .title("algorand-secure-backup-error-action-title".localized),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
@@ -56,7 +44,7 @@ struct AlgorandSecureBackupInstructionScreenTheme:
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
-        self.startActionContentEdgeInsets = (16, 24, 16, 24)
-        self.startActionEdgeInsets = (8, 24, 16, 24)
+        self.tryAgainActionContentEdgeInsets = (16, 24, 16, 24)
+        self.tryAgainActionEdgeInsets = (8, 24, 16, 24)
     }
 }

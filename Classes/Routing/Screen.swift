@@ -307,9 +307,10 @@ indirect enum Screen {
     case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
     case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
     case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
-    case algorandSecureBackupInstruction(eventHandler: AlgorandSecureBackupInstructionScreen.EventHandler)
+    case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
     case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupSuccess(eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
+    case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
 }
 
 extension Screen {
