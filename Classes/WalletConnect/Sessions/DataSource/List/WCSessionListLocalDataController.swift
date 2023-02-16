@@ -217,17 +217,11 @@ extension WCSessionListLocalDataController {
                 snapshot.appendSections([ .sessions ] )
             }
             
-            if let firstItemOnSection = snapshot.itemIdentifiers(inSection: .sessions).first {
-                snapshot.insertItems(
-                    [item],
-                    beforeItem: firstItemOnSection
-                )
-            } else {
-                snapshot.appendItems(
-                    [item],
-                    toSection: .sessions
-                )
-            }
+            snapshot.insertItem(
+                item,
+                to: .sessions,
+                at: 0
+            )
 
             if let session = item.session {
                 self.cachedSessionListItems[session] = item
