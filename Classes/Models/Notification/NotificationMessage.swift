@@ -17,6 +17,7 @@
 
 import Foundation
 import MagpieCore
+import MacaroonURLImage
 import MacaroonUtils
 
 final class NotificationMessage: ALGEntityModel {
@@ -107,13 +108,18 @@ extension NotificationIcon {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            self.shape = try container.decodeIfPresent(NotificationIconShape.self, forKey: .shape) ?? .circle
+            self.shape = try container.decode(NotificationIconShape.self, forKey: .shape)
             
-            if let logoString = try container.decodeIfPresent(String.self, forKey: .logo),
-               !logoString.isEmptyOrBlank {
-                self.logo = URL(string: logoString)
-            } else {
-                self.logo = nil
+            let logoString = try container.decodeIfPresent(
+                String.self,
+                forKey: .logo
+            )
+            self.logo = logoString
+                .unwrapNonEmptyString()
+                .unwrap(URL.init)
+            
+            if self.logo == nil {
+                self.shape = nil
             }
         }
         
@@ -126,12 +132,23 @@ extension NotificationIcon {
 
 enum NotificationIconShape:
     String,
-    ALGAPIModel {
+    Codable {
     case circle
     case rectangle
     
-    init() {
-        self = .circle
+    init?(rawValue: String) {
+        switch rawValue {
+        case "circle": self = .circle
+        case "rectangle": self = .rectangle
+        default: self = .circle
+        }
+    }
+    
+    func convertToImageShape() -> ImageShape {
+        switch self {
+        case .circle: return .circle
+        case .rectangle: return .rounded(4)
+        }
     }
 }
 
