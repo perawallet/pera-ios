@@ -30,7 +30,7 @@ final class BackupParameters: ALGAPIModel {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         deviceID = try container.decodeIfPresent(String.self, forKey: .deviceID)
-        providerName = try container.decodeIfPresent(String.self, forKey: .deviceID)
+        providerName = try container.decodeIfPresent(String.self, forKey: .providerName)
         let accountsApiModel = try container.decode([AccountImportParameters.APIModel].self, forKey: .accounts)
         accounts = accountsApiModel.map { .init($0) }
     }
