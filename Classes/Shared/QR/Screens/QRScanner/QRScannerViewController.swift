@@ -474,9 +474,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
     
     func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
-        guard let toastPresentationController = configuration.toastPresentationController else { return }
-        
-        toastPresentationController.present(message: WCSessionLimitToastViewModel())
+        delegate?.qrScannerViewControllerDidExceededMaximumWCSessionLimit(self)
     }
 
     private func startWCConnectionTimer() {
@@ -596,6 +594,7 @@ protocol QRScannerViewControllerDelegate: AnyObject {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrExportInformations: QRExportInformations, completionHandler: EmptyHandler?)
+    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController)
 }
 
 extension QRScannerViewControllerDelegate {
@@ -603,6 +602,7 @@ extension QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrExportInformations: QRExportInformations, completionHandler: EmptyHandler?) {}
+    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController) { }
 }
 
 enum QRScannerError: Swift.Error {
