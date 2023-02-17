@@ -52,7 +52,7 @@ extension BidaliFlowCoordinator {
             case .performCloseAction:
                 self.presentingScreen.dismiss(animated: true)
             case .performPrimaryAction:
-                guard self.isBidaliEnabled else {
+                guard self.isAvailable else {
                     self.presentNotAvailableAlert(on: screen)
                     return
                 }
@@ -110,7 +110,7 @@ extension BidaliFlowCoordinator {
     /// <note>
     /// In staging app, the Bidali is always enabled, but in store app, it is enabled only
     /// on mainnet.
-    private var isBidaliEnabled: Bool {
+    private var isAvailable: Bool {
         let isEnabled = !ALGAppTarget.current.isProduction || !api.isTestNet
         return isEnabled
     }
@@ -118,7 +118,7 @@ extension BidaliFlowCoordinator {
     private func presentNotAvailableAlert(on screen: UIViewController) {
         screen.displaySimpleAlertWith(
             title: "title-not-available".localized,
-            message: "bidali-not-available-description".localized /// <todo>: Change the description
+            message: "bidali-not-available-description".localized
         )
     }
 }
