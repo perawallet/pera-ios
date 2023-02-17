@@ -42,50 +42,44 @@ struct BidaliPaymentRequest: JSONModel {
 }
 
 enum BidaliPaymentCurrencyProtocol:
-    RawRepresentable,
-    CaseIterable,
-    Hashable,
-    JSONModel {
-    case algorand
-    case usdcalgorand
-    case usdtalgorand
-    case testnetusdcalgorand
+    JSONModel,
+    CaseIterable {
+    case algo
+    case usdc
+    case usdt
     case unknown(String)
 
-    var rawValue: String {
-        switch self {
-        case .algorand: return "algorand"
-        case .usdcalgorand: return "usdcalgorand"
-        case .usdtalgorand: return "usdtalgorand"
-        case .testnetusdcalgorand: return "testusdcalgorand"
-        case .unknown(let aRawValue): return aRawValue
-        }
-    }
-
-    static var allCases: [Self] = [
-        .algorand, .usdcalgorand, .usdtalgorand, .testnetusdcalgorand
+    static var allCases: [BidaliPaymentCurrencyProtocol] = [
+        .algo,
+        .usdc,
+        .usdt
     ]
 
-    init?(
-        rawValue: String
-    ) {
-        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .unknown(rawValue)
-    }
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try container.decode(String.self)
 
-    static func supportedProtocols(for network: ALGAPI.Network) -> [String] {
-        switch network {
-        case .testnet:
-            return [
-                BidaliPaymentCurrencyProtocol.algorand.rawValue,
-                BidaliPaymentCurrencyProtocol.testnetusdcalgorand.rawValue
-            ]
-        case .mainnet:
-            return [
-                BidaliPaymentCurrencyProtocol.algorand.rawValue,
-                BidaliPaymentCurrencyProtocol.usdcalgorand.rawValue,
-                BidaliPaymentCurrencyProtocol.usdtalgorand.rawValue
-            ]
+        switch rawValue {
+        case Self.algo.getRawValue(in: .mainnet):
+            self = .algo
+        case Self.usdc.getRawValue(in: .mainnet),
+             Self.usdc.getRawValue(in: .testnet):
+            self = .usdc
+        case Self.usdt.getRawValue(in: .mainnet):
+            self = .usdt
+        default:
+            self = .unknown(rawValue)
+        }
+    }
+}
+
+extension BidaliPaymentCurrencyProtocol {
+    func getRawValue(in network: ALGAPI.Network) -> String {
+        switch self {
+        case .algo: return "algorand"
+        case .usdc: return network == .mainnet ? "usdcalgorand" : "testusdcalgorand"
+        case .usdt: return "usdtalgorand"
+        case .unknown(let rawValue): return rawValue
         }
     }
 }

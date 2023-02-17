@@ -471,7 +471,7 @@ extension Account {
         let assetID: AssetID?
         switch network {
         case .mainnet: assetID = 312769
-        case .testnet: assetID = nil
+        case .testnet: assetID = nil /// In the testnet, we don't have a verified USDt, so we assume there is none for now.
         }
 
         if let assetID {

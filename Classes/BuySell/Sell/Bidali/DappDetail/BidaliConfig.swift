@@ -35,12 +35,19 @@ struct BidaliConfig {
             let key = Bundle.main.infoDictionary?["BIDALI_STAGING_API_KEY"] as? String ?? .empty
             self.key = key
             self.url = "https://commerce.staging.bidali.com/dapp?key=\(key)"
+            self.supportedCurrencyProtocols = [
+                BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network),
+                BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network)
+            ]
         case .mainnet:
             let key = Bundle.main.infoDictionary?["BIDALI_PROD_API_KEY"] as? String ?? .empty
             self.key = key
             self.url = "https://commerce.bidali.com/dapp?key=\(key)"
+            self.supportedCurrencyProtocols = [
+                BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network),
+                BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network),
+                BidaliPaymentCurrencyProtocol.usdt.getRawValue(in: network)
+            ]
         }
-
-        self.supportedCurrencyProtocols = BidaliPaymentCurrencyProtocol.supportedProtocols(for: network)
     }
 }

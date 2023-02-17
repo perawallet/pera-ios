@@ -300,19 +300,26 @@ extension BidaliDappDetailScreen {
     private func makeBalancesForTestnet(_ account: AccountHandle) -> BidaliBalances {
         let network = api!.network
         let aRawAccount = account.value
+
+        let algo = aRawAccount.algo.decimalAmount
+        let usdc = aRawAccount.usdc(network)?.decimalAmount
         return [
-            BidaliPaymentCurrencyProtocol.algorand.rawValue: aRawAccount.algo.decimalAmount.stringValue,
-            BidaliPaymentCurrencyProtocol.testnetusdcalgorand.rawValue: aRawAccount.usdc(network)?.decimalAmount.stringValue
+            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
+            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue
         ]
     }
 
     private func makeBalancesForMainnet(_ account: AccountHandle) -> BidaliBalances {
         let network = api!.network
         let aRawAccount = account.value
+
+        let algo = aRawAccount.algo.decimalAmount
+        let usdc = aRawAccount.usdc(network)?.decimalAmount
+        let usdt = aRawAccount.usdt(network)?.decimalAmount
         return [
-            BidaliPaymentCurrencyProtocol.algorand.rawValue: aRawAccount.algo.decimalAmount.stringValue,
-            BidaliPaymentCurrencyProtocol.usdcalgorand.rawValue: aRawAccount.usdc(network)?.decimalAmount.stringValue.rawValue,
-            BidaliPaymentCurrencyProtocol.usdtalgorand.rawValue: aRawAccount.usdt(network)?.decimalAmount.stringValue
+            BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network): algo.stringValue,
+            BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network): usdc?.stringValue,
+            BidaliPaymentCurrencyProtocol.usdt.getRawValue(in: network): usdt?.stringValue
         ]
     }
 }
@@ -325,21 +332,39 @@ extension BidaliDappDetailScreen {
     }
 
     private func shouldUpdateBalances(old: AccountHandle, new: AccountHandle) -> Bool {
-        if old.value.algo.decimalAmount != new.value.algo.decimalAmount {
+        if isAlgoBalanceChanged(old: old, new: new) {
             return true
         }
 
-        let network = api!.network
-
-        if old.value.usdc(network)?.decimalAmount != new.value.usdc(network)?.decimalAmount {
+        if isUSDCBalanceChanged(old: old, new: new) {
             return true
         }
 
-        if old.value.usdt(network)?.decimalAmount != new.value.usdt(network)?.decimalAmount {
+        if isUSDtBalanceChanged(old: old, new: new) {
             return true
         }
 
         return false
+    }
+
+    private func isAlgoBalanceChanged(old: AccountHandle, new: AccountHandle) -> Bool {
+        let oldAlgo = old.value.algo
+        let newAlgo = new.value.algo
+        return oldAlgo.decimalAmount != newAlgo.decimalAmount
+    }
+
+    private func isUSDCBalanceChanged(old: AccountHandle, new: AccountHandle) -> Bool {
+        let network = api!.network
+        let oldUSDC = old.value.usdc(network)
+        let newUSDC = new.value.usdc(network)
+        return oldUSDC?.decimalAmount != newUSDC?.decimalAmount
+    }
+
+    private func isUSDtBalanceChanged(old: AccountHandle, new: AccountHandle) -> Bool {
+        let network = api!.network
+        let oldUSDt = old.value.usdt(network)
+        let newUSDt = new.value.usdt(network)
+        return oldUSDt?.decimalAmount != newUSDt?.decimalAmount
     }
 
     private func updateBalance(_ account: AccountHandle) {
@@ -375,14 +400,13 @@ private extension Account {
         network: ALGAPI.Network
     ) -> Asset? {
         switch currencyProtocol {
-        case .algorand: return algo
-        case .usdcalgorand: return usdc(network)
-        case .usdtalgorand: return usdt(network)
-        case .testnetusdcalgorand: return usdc(network)
+        case .algo: return algo
+        case .usdc: return usdc(network)
+        case .usdt: return usdt(network)
         default: return nil
         }
     }
 }
 
-private typealias BidaliBalances = [BidaliPaymentCurrencyProtocol.RawValue: String?]
-extension BidaliBalances: JSONModel {}
+private typealias BidaliBalances = [String: String?]
+extension BidaliBalances: JSONModel  {}
