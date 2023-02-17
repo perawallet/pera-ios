@@ -18,6 +18,7 @@ import Foundation
 import MacaroonUIKit
 
 class ScrollScreen: MacaroonUIKit.ScrollScreen {
+    var hidesCloseBarButtonItem: Bool = false
     var leftBarButtonItems: [BarButtonItemRef] = []
     var rightBarButtonItems: [BarButtonItemRef] = []
 

@@ -48,6 +48,7 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
         presentingScreen: self,
@@ -600,7 +601,7 @@ extension HomeViewController {
         }
 
         transitionToBuySellOptions.perform(
-            .buySellOptions(eventHander: eventHandler),
+            .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
     }
@@ -610,8 +611,12 @@ extension HomeViewController {
 
         buyAlgoFlowCoordinator.launch()
     }
+}
 
-    private func openBuyGiftCardsWithBidali() {}
+extension HomeViewController {
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
+    }
 }
 
 extension HomeViewController {
@@ -1136,20 +1141,42 @@ extension HomeViewController {
         return [
             makeCopyAddressIntroductionAlertItem(),
             makeSwapIntroductionAlertItem(),
+            makeBuyGiftCardsWithCryptoIntroductionAlertItem()
         ]
+    }
+
+    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
+        return CopyAddressIntroductionAlertItem(delegate: self)
     }
 
     private func makeSwapIntroductionAlertItem() -> any AlertItem {
         return SwapIntroductionAlertItem(delegate: swapAssetFlowCoordinator)
     }
 
-    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
-        return CopyAddressIntroductionAlertItem(delegate: self)
+    private func makeBuyGiftCardsWithCryptoIntroductionAlertItem() -> any AlertItem {
+        return BuyGiftCardsWithCryptoIntroductionAlertItem(delegate: self)
     }
 }
 
 extension HomeViewController: CopyAddressIntroductionAlertItemDelegate {
     func copyAddressIntroductionAlertItemDidPerformGotIt(_ item: CopyAddressIntroductionAlertItem) {
+        dismiss(animated: true)
+    }
+}
+
+extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegate {
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
+        dismiss(animated: true) {
+            [unowned self] in
+            self.openBuyGiftCardsWithCrypto()
+        }
+    }
+
+    private func openBuyGiftCardsWithCrypto() {
+        openBuyGiftCardsWithBidali()
+    }
+
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
     }
 }

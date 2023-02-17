@@ -187,7 +187,6 @@ extension BuySellOptionsScreen {
  extension BuySellOptionsScreen {
      enum Event {
          case performBuyAlgoWithMoonpay
-         
          case performBuyGiftCardsWithBidali
      }
  }

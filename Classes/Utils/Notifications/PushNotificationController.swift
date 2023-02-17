@@ -114,7 +114,7 @@ extension PushNotificationController {
             return
         }
 
-        bannerController?.presentNotification(
+        bannerController?.presentInAppNotification(
             alert,
             handler
         )

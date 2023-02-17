@@ -189,7 +189,10 @@ extension TransactionsAPIDataController {
                 }
 
                 self.fetchAssets(from: transactionResults.transactions) {
-                    self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
+                    self.groupAndSetTransactionsByTypeIfNeeded(
+                        transactionResults.transactions,
+                        isPaginated: false
+                    )
                     self.deliverContentSnapshot()
                 }
             }
@@ -277,7 +280,10 @@ extension TransactionsAPIDataController {
 
 
                 self.fetchAssets(from: transactionResults.transactions) {
-                    self.groupTransactionsByType(transactionResults.transactions, isPaginated: true)
+                    self.groupAndSetTransactionsByTypeIfNeeded(
+                        transactionResults.transactions,
+                        isPaginated: true
+                    )
                     self.deliverContentSnapshot()
                 }
             }
@@ -312,19 +318,15 @@ extension TransactionsAPIDataController {
 }
 
 extension TransactionsAPIDataController {
-    private func groupTransactionsByType(
+    private func groupAndSetTransactionsByTypeIfNeeded(
         _ transactions: [Transaction],
         isPaginated: Bool
     ) {
         switch draft.type {
         case .algos:
-            let algoTransactionGrouping = AlgoTransactionListGrouping()
-            let groupedTransactions = algoTransactionGrouping.groupTransactions(transactions)
-            setTransactionItems(groupedTransactions)
+            setTransactionItems(transactions)
         case .asset:
-            let assetTransactionGrouping = AssetTransactionListGrouping(draft: draft)
-            let groupedTransactions = assetTransactionGrouping.groupTransactions(transactions)
-            setTransactionItems(groupedTransactions)
+            setTransactionItems(transactions)
         case .all:
             let allTransactionGrouping = AllTransactionListGrouping()
             let groupedTransactions = allTransactionGrouping.groupTransactions(transactions)
