@@ -59,29 +59,37 @@ extension BuyGiftCardsWithCryptoIntroductionAlertItem {
             theme: AlertScreenWithFillingImageTheme()
         )
 
-        let buyGiftCardsAction = AlertAction(
-            title: "buy-gift-cards-with-crypto-alert-primary-action".localized,
-            style: .primary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(self)
-        }
+        let buyGiftCardsAction = makeBuyGiftCardsAction()
         alert.addAction(buyGiftCardsAction)
 
-        let laterAction = AlertAction(
-            title: "title-later".localized,
-            style: .secondary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(self)
-        }
+        let laterAction = makeLaterAction()
         alert.addAction(laterAction)
         return alert
     }
 
     func cancel() {}
+}
+
+extension BuyGiftCardsWithCryptoIntroductionAlertItem {
+    private func makeBuyGiftCardsAction() -> AlertAction {
+        return AlertAction(
+            title: "buy-gift-cards-with-crypto-alert-primary-action".localized,
+            style: .primary
+        ) {
+            [unowned self] in
+            self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(self)
+        }
+    }
+
+    private func makeLaterAction() -> AlertAction {
+        return AlertAction(
+            title: "title-later".localized,
+            style: .secondary
+        ) {
+            [unowned self] in
+            self.delegate.buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(self)
+        }
+    }
 }
 
 extension BuyGiftCardsWithCryptoIntroductionAlertItem {

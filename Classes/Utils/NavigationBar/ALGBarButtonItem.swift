@@ -175,6 +175,11 @@ struct ALGBarButtonItem: BarButtonItem {
             }
         case .flexibleSpace:
             return nil
+        case .reload:
+            if let icon = img("icon-reload") {
+                return ImageContent(normal: icon, tintColor: Colors.Text.main.uiColor)
+            }
+            return nil
         }
         return nil
     }
@@ -269,6 +274,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .flexibleSpace:
             return .explicit(CGSize(width: 40, height: 40))
+        case .reload:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -302,7 +309,7 @@ extension ALGBarButtonItem {
         case add
         case notification
         case newNotification
-        case close(UIColor)
+        case close(UIColor? = nil)
         case closeTitle
         case save
         case qr
@@ -322,6 +329,7 @@ extension ALGBarButtonItem {
         case discoverPrevious
         case discoverHome
         case flexibleSpace
+        case reload
     }
 }
 

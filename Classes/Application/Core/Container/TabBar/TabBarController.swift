@@ -72,6 +72,7 @@ final class TabBarController: TabBarContainer {
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -401,7 +402,9 @@ extension TabBarController {
         analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
 
-    private func openBuyGiftCardsWithBidali() {}
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
+    }
 
     private func navigateToQRScanner() {
         toggleTransactionOptions()
