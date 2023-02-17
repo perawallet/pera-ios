@@ -65,11 +65,11 @@ extension AlgorandSDK {
         return AlgoMobileGenerateBackupCipherKey("Algorand export 1.0", data)
     }
 
-    func backupMnemnoicFrom(_ privateKey: Data, error: inout NSError?) -> String {
+    func backupMnemnoic(fromPrivateKey privateKey: Data, error: inout NSError?) -> String {
         return AlgoMobileBackupMnemonicFromKey(privateKey, &error)
     }
 
-    func backupPrivateKeyFrom(_ mnemonic: String, error: inout NSError?) -> Data? {
+    func backupPrivateKey(fromMnemonic mnemonic: String, error: inout NSError?) -> Data? {
         return AlgoMobileBackupMnemonicToKey(mnemonic, &error)
     }
 }
