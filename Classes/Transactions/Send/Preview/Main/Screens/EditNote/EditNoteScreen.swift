@@ -25,8 +25,6 @@ final class EditNoteScreen:
     BaseScrollViewController,
     BottomSheetScrollPresentable,
     MacaroonForm.KeyboardControllerDataSource {
-    let noteMaxByteSize = 1024
-    
     weak var delegate: EditNoteScreenDelegate?
 
     var modalBottomPadding: LayoutMetric {
@@ -49,7 +47,7 @@ final class EditNoteScreen:
     private var note: String?
     private let isLocked: Bool
     
-    private lazy var transactionNoteValidator = ByteSizeValidator()
+    private var transactionNoteValidator = NoteSizeValidator()
 
     init(
         note: String?,
@@ -72,12 +70,6 @@ final class EditNoteScreen:
 
         bindNavigationTitle()
         addNavigationActions()
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        
-        noteInputView.editingDelegate = self
     }
 
     override func viewDidLoad() {
@@ -122,6 +114,7 @@ extension EditNoteScreen {
         }
 
         noteInputView.delegate = self
+        noteInputView.editingDelegate = self
 
         bindNoteInput()
     }
@@ -169,7 +162,7 @@ extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
 
 extension EditNoteScreen: FormInputFieldViewEditingDelegate {
     func formInputFieldViewDidEdit(_ view: MacaroonForm.FormInputFieldView) {
-        validateNoteForSize()
+        updateNoteAfterValidation()
     }
     
     func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) {}
@@ -178,41 +171,25 @@ extension EditNoteScreen: FormInputFieldViewEditingDelegate {
 }
 
 extension EditNoteScreen {
-    private func validateNoteForSize() {
-        guard let noteByteArray = noteInputView.text?.convertToByteArray(),
-              !noteByteArray.isEmpty else {
-            return
-        }
+    private func updateNoteAfterValidation() {
+        let noteByteArray = noteInputView.text?.convertToByteArray()
         
-        let validation = transactionNoteValidator.validate(
-            byteArray: noteByteArray,
-            maxSize: 1024
-        )
+        let validation = transactionNoteValidator.validate(byteArray: noteByteArray)
         
         switch validation {
         case .success:
             return
         case .failure(let validationError):
-            switch validationError as? ByteSizeValidator.Error {
-            case .exceededSize(let amount):
-                setNoteWithoutExtraBytes(
-                    byteArray: noteByteArray,
-                    exceededBytes: amount
-                )
-            default:
-                return
+            switch validationError {
+            case .exceededSize(let extraSize):
+                if let noteByteArray = noteByteArray {
+                    noteInputView.text = String(
+                        decoding: noteByteArray.dropLast(extraSize),
+                        as: UTF8.self
+                    )
+                }
             }
         }
-    }
-    
-    private func setNoteWithoutExtraBytes(
-        byteArray: [UInt8],
-        exceededBytes: Int
-    ) {
-        noteInputView.text = String(
-            decoding: byteArray.dropLast(exceededBytes),
-            as: UTF8.self
-        )
     }
 }
 

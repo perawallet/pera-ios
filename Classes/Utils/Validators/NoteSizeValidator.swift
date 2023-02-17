@@ -17,21 +17,30 @@
 import Foundation
 import MacaroonForm
 
-struct ByteSizeValidator {
-    func validate(
-        byteArray: [UInt8],
-        maxSize: Int
-    ) -> Validation {
+struct NoteSizeValidator {
+    private let maxSize = 1024
+
+    func validate(byteArray: [UInt8]?) -> NoteSizeValidation {
+        guard let byteArray,
+              !byteArray.isEmpty else {
+            return .success
+        }
+        
         if byteArray.count > maxSize {
-            return .failure(Error.exceededSize(byteArray.count - maxSize))
+            return .failure(.exceededSize(extraSize: byteArray.count - maxSize))
         }
         
         return .success
     }
 }
 
-extension ByteSizeValidator {
-    enum Error: ValidationError {
-        case exceededSize(Int)
+extension NoteSizeValidator {
+    enum NoteSizeValidation {
+        case success
+        case failure(NoteSizeValidationError)
+    }
+    
+    enum NoteSizeValidationError {
+        case exceededSize(extraSize: Int)
     }
 }

@@ -2958,9 +2958,9 @@
 		2BCCB5BE27D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB5BD27D755E500C5E497 /* OptOutAssetListItemCell.swift */; };
 		2BCCB5BF27D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB5BD27D755E500C5E497 /* OptOutAssetListItemCell.swift */; };
 		2BCCB5C027D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB5BD27D755E500C5E497 /* OptOutAssetListItemCell.swift */; };
-		2BCCEE362996D45500DDD2BA /* ByteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* ByteSizeValidator.swift */; };
-		2BCCEE372996D45500DDD2BA /* ByteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* ByteSizeValidator.swift */; };
-		2BCCEE382996D45500DDD2BA /* ByteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* ByteSizeValidator.swift */; };
+		2BCCEE362996D45500DDD2BA /* NoteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* NoteSizeValidator.swift */; };
+		2BCCEE372996D45500DDD2BA /* NoteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* NoteSizeValidator.swift */; };
+		2BCCEE382996D45500DDD2BA /* NoteSizeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCEE352996D45500DDD2BA /* NoteSizeValidator.swift */; };
 		2BCE8F93284A43BD00C6FD6C /* ManagementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCE8F92284A43BD00C6FD6C /* ManagementOptionsViewController.swift */; };
 		2BCE8F94284A43BE00C6FD6C /* ManagementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCE8F92284A43BD00C6FD6C /* ManagementOptionsViewController.swift */; };
 		2BCE8F95284A43BE00C6FD6C /* ManagementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCE8F92284A43BD00C6FD6C /* ManagementOptionsViewController.swift */; };
@@ -7474,7 +7474,7 @@
 		2BCBF46627B557E0008814C7 /* MultilineTextInputFieldViewCommonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextInputFieldViewCommonTheme.swift; sourceTree = "<group>"; };
 		2BCCB5B927D755CA00C5E497 /* OptOutAssetListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemCellTheme.swift; sourceTree = "<group>"; };
 		2BCCB5BD27D755E500C5E497 /* OptOutAssetListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemCell.swift; sourceTree = "<group>"; };
-		2BCCEE352996D45500DDD2BA /* ByteSizeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteSizeValidator.swift; sourceTree = "<group>"; };
+		2BCCEE352996D45500DDD2BA /* NoteSizeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSizeValidator.swift; sourceTree = "<group>"; };
 		2BCE8F92284A43BD00C6FD6C /* ManagementOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementOptionsViewController.swift; sourceTree = "<group>"; };
 		2BCE8F96284A4DFC00C6FD6C /* AssetManagementViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetManagementViewController+Theme.swift"; sourceTree = "<group>"; };
 		2BCE8F9A284A5BA800C6FD6C /* RemoveAssetsListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetsListItemButtonViewModel.swift; sourceTree = "<group>"; };
@@ -10061,7 +10061,7 @@
 			isa = PBXGroup;
 			children = (
 				2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */,
-				2BCCEE352996D45500DDD2BA /* ByteSizeValidator.swift */,
+				2BCCEE352996D45500DDD2BA /* NoteSizeValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -21097,7 +21097,7 @@
 				F0D3371428F626C1003D2E01 /* ExportTransactionsDraft.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				95BB6C0927A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
-				2BCCEE382996D45500DDD2BA /* ByteSizeValidator.swift in Sources */,
+				2BCCEE382996D45500DDD2BA /* NoteSizeValidator.swift in Sources */,
 				F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */,
 				2B8CD5852906D379004A81B9 /* SwapAssetScreenTheme.swift in Sources */,
 				2B69AB3C28BFCF9400A8D65D /* SwapTransactionPreparationDraft.swift in Sources */,
@@ -21930,7 +21930,7 @@
 				D444EE912946BCED008AD374 /* HideAssetsWithNoBalanceInAssetListFilterItemViewModel.swift in Sources */,
 				D4E34CBD27F7162B00B0C3F4 /* SelectAssetViewControllerListLayout.swift in Sources */,
 				2BA4B4122678D8EF0041586B /* WCSession.swift in Sources */,
-				2BCCEE372996D45500DDD2BA /* ByteSizeValidator.swift in Sources */,
+				2BCCEE372996D45500DDD2BA /* NoteSizeValidator.swift in Sources */,
 				2B0F616724EC129D00DA22A6 /* PassphraseBackUpViewController.swift in Sources */,
 				2BA4B3C026735AA70041586B /* WalletConnectSession+Helpers.swift in Sources */,
 				D4241FC826E763F60064CDD0 /* FormInputFieldAssistiveView.swift in Sources */,
@@ -25736,7 +25736,7 @@
 				D45DFBC1273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */,
 				F07C3C3028B46D98003D55BC /* ASADetailLoadingViewTheme.swift in Sources */,
 				D4637D1A290708790068DC4C /* SubscribeToWalletConnectSessionDraft.swift in Sources */,
-				2BCCEE362996D45500DDD2BA /* ByteSizeValidator.swift in Sources */,
+				2BCCEE362996D45500DDD2BA /* NoteSizeValidator.swift in Sources */,
 				95A33AC2278B67B500812071 /* WCSingleTransactionRequestViewModel.swift in Sources */,
 				F011FCF828593B6200E42EA2 /* HomeAccountsHeader.swift in Sources */,
 				D45B19762936ABAD003058CA /* OptOutCollectibleAssetListItem.swift in Sources */,
