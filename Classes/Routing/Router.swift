@@ -960,16 +960,6 @@ class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = true
             viewController = resultScreen
-        case .transactionAccountSelect(let draft):
-            let dataController = AccountSelectScreenListAPIDataController(
-                configuration.sharedDataController,
-                api: configuration.api!
-            )
-            viewController = AccountSelectScreen(
-                draft: draft,
-                dataController: dataController,
-                configuration: configuration
-            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -1052,11 +1042,34 @@ class Router:
                 configuration: configuration
             )
             viewController = aViewController
-        case let .sendCollectibleAccountList(dataController):
-            viewController = SendCollectibleAccountListViewController(
+        case let .sendCollectibleReceiverAccountSelectionList(addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.navigationItem.title = "collectible-send-account-list-title".localized
+            viewController = aViewController
+        case let .sendAssetReceiverAccountSelectionList(asset, addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            let titleView = AssetDetailTitleView()
+            titleView.customize(AssetDetailTitleViewTheme())
+            titleView.bindData(AssetDetailTitleViewModel(asset))
+            aViewController.navigationItem.titleView = titleView
+
+            viewController = aViewController
         case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,
@@ -1180,7 +1193,7 @@ class Router:
             dataSource.registerSupportedCells(listView)
             dataSource.registerSupportedSupplementaryViews(listView)
 
-            viewController = AccountSelectionListScreen(
+            viewController = SwapAccountSelectionListScreen(
                 navigationBarTitle: "title-select-account".localized,
                 listView: listView,
                 dataController: dataController,
@@ -1369,6 +1382,48 @@ class Router:
         case .bidaliDappDetail(let account):
             viewController = BidaliDappDetailScreen(
                 account: account,
+                config: BidaliConfig(network: configuration.api!.network),
+                configuration: configuration
+            )
+        case .bidaliAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = BidaliAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = BidaliAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = BidaliAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<BidaliAccountSelectionListSectionIdentifier, BidaliAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: BidaliAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
                 configuration: configuration
             )
         }
