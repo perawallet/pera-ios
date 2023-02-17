@@ -57,6 +57,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       self.draft = draft
       super.init(configuration: configuration)
    }
+   
    override func didTapDismissBarButton() -> Bool {
       eventHandler?(.didPerformDismiss)
       return true
