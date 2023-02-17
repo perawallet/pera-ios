@@ -1457,6 +1457,47 @@ class Router:
             )
         case .transaKIntroduction:
             viewController = TransaKIntroductionScreen()
+        case .transaKAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = TransaKAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = TransaKAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = TransaKAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<TransaKAccountSelectionListSectionIdentifier, TransaKAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: TransaKAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
         }
 
         return viewController as? T
