@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BidaliOpenURLRequestMessage.swift
+//   BidaliOpenURLParameters.swift
 
 import Foundation
+import MacaroonUtils
 
-struct BidaliOpenURLRequestMessage: Decodable {
-    let openURLRequest: BidaliOpenURLRequest?
+struct BidaliOpenURLParameters: JSONModel {
+    let data: BidaliOpenURLRequest?
 }
 
-struct BidaliOpenURLRequest: Decodable {
+struct BidaliOpenURLRequest: JSONModel {
     /// URL to support docs, etc. Ideally should open in an external browser or a new in-app modal browser.
     let url: URL?
 }

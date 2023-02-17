@@ -1382,6 +1382,7 @@ class Router:
         case .bidaliDappDetail(let account):
             viewController = BidaliDappDetailScreen(
                 account: account,
+                config: BidaliConfig(network: configuration.api!.network),
                 configuration: configuration
             )
         case .bidaliAccountSelection(let eventHandler):

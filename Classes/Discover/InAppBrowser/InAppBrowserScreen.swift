@@ -40,8 +40,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
 
     private(set) var userAgent: String? = nil
 
-    private lazy var refreshControl = UIRefreshControl()
-
     private var sourceURL: URL?
 
     private var isViewLayoutLoaded = false
@@ -261,20 +259,10 @@ extension InAppBrowserScreen {
 }
 
 extension InAppBrowserScreen {
-    private func linkRefreshControlInteractionIfNeeded() {
-        if !allowsPullToRefresh { return }
-
-        refreshControl.addTarget(
-            self,
-            action: #selector(didPullToRefresh),
-            for: .valueChanged
-        )
-    }
-
     private func endRefreshingIfNeeded() {
         if !allowsPullToRefresh { return }
 
-        refreshControl.endRefreshing()
+        webView.scrollView.refreshControl?.endRefreshing()
     }
 }
 
@@ -381,10 +369,13 @@ extension InAppBrowserScreen {
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
-        addRefreshControl()
+        addRefreshControlIfNeeded()
     }
 
-    private func addRefreshControl() {
+    private func addRefreshControlIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        let refreshControl = UIRefreshControl()
         webView.scrollView.refreshControl = refreshControl
 
         refreshControl.addTarget(

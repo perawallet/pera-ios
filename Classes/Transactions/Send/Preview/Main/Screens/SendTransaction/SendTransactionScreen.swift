@@ -799,8 +799,10 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                 [weak self] event in
                 guard let self = self else { return }
                 switch event {
-                case .didCompleteTransaction: self.eventHandler?(.didCompleteTransaction)
-                case .didEditNote(let note): self.didEditNote(note: note)
+                case .didCompleteTransaction:
+                    self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.didEditNote(note: note)
                 default: break
                 }
             }
