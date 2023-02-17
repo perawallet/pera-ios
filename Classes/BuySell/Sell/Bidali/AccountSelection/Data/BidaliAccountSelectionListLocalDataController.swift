@@ -33,6 +33,8 @@ final class BidaliAccountSelectionListLocalDataController:
 
     var eventHandler: ((Event) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let snapshotQueue = DispatchQueue(label: "bidaliAccountSelectionListLocalDataController")
 
     private var accounts: [AccountHandle] = []
@@ -147,22 +149,30 @@ extension BidaliAccountSelectionListLocalDataController {
         _ snapshot: inout Snapshot,
         accounts: [AccountHandle]
     ) {
-        let accountItems: [BidaliAccountSelectionListItemIdentifier] =
-        accounts
-            .map { accountHandle in
-                let account = accountHandle.value
-                let draft = IconWithShortAddressDraft(account)
-                let viewModel = AccountListItemViewModel(draft)
-
-                self.accountItems[account.address] = viewModel
-
-                return .account(BidaliAccountSelectionListAccountItemIdentifier(account))
-            }
+        let items = accounts.map(makeAccountItem)
 
         snapshot.appendItems(
-            accountItems,
+            items,
             toSection: .accounts
         )
+    }
+
+    private func makeAccountItem(_ account: AccountHandle) -> BidaliAccountSelectionListItemIdentifier {
+        let currency = sharedDataController.currency
+        let currencyFormatter = currencyFormatter
+        let item = AccountPortfolioItem(
+            accountValue: account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+
+        let aRawAccount = account.value
+        let viewModel = AccountListItemViewModel(item)
+
+        self.accountItems[aRawAccount.address] = viewModel
+
+        let itemIdentifier = BidaliAccountSelectionListAccountItemIdentifier(aRawAccount)
+        return .account(itemIdentifier)
     }
 }
 
