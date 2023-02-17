@@ -132,8 +132,8 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
+        let buyAlgoDraft = BuyAlgoDraft()
         buyAlgoDraft.address = account.address
-
         openMoonPay(for: buyAlgoDraft)
     }
 

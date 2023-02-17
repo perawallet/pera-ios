@@ -48,6 +48,7 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
         presentingScreen: self,
@@ -600,7 +601,7 @@ extension HomeViewController {
         }
 
         transitionToBuySellOptions.perform(
-            .buySellOptions(eventHander: eventHandler),
+            .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
     }
@@ -610,8 +611,12 @@ extension HomeViewController {
 
         buyAlgoFlowCoordinator.launch()
     }
+}
 
-    private func openBuyGiftCardsWithBidali() {}
+extension HomeViewController {
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
+    }
 }
 
 extension HomeViewController {
@@ -1167,9 +1172,11 @@ extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegat
         }
     }
 
+    private func openBuyGiftCardsWithCrypto() {
+        openBuyGiftCardsWithBidali()
+    }
+
     func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
     }
-
-    private func openBuyGiftCardsWithCrypto() {}
 }
