@@ -1371,3 +1371,4 @@
 "sardine-introduction-title" = "Buy ALGO";
 "sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
 "sardine-introduction-action-title" = "Buy ALGO with Sardine";
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";

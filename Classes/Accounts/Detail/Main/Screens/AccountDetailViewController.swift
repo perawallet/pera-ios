@@ -39,7 +39,7 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self)
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
 

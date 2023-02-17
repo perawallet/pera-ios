@@ -1412,10 +1412,51 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .transaKIntroduction:
-            viewController = TransaKIntroductionScreen()
         case .sardineIntroduction:
             viewController = SardineIntroductionScreen()
+        case .sardineAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = SardineAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = SardineAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = SardineAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<SardineAccountSelectionListSectionIdentifier, SardineAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: SardineAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .transaKIntroduction:
+            viewController = TransaKIntroductionScreen()
         }
 
         return viewController as? T
