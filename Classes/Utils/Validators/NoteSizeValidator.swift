@@ -15,12 +15,11 @@
 //   ByteSizeValidator.swift
 
 import Foundation
-import MacaroonForm
 
 struct NoteSizeValidator {
     private let maxSize = 1024
 
-    func validate(byteArray: [UInt8]?) -> NoteSizeValidation {
+    func validate(byteArray: [UInt8]?) -> Validation {
         guard let byteArray,
               !byteArray.isEmpty else {
             return .success
@@ -35,12 +34,12 @@ struct NoteSizeValidator {
 }
 
 extension NoteSizeValidator {
-    enum NoteSizeValidation {
+    enum Validation {
         case success
-        case failure(NoteSizeValidationError)
+        case failure(ValidationError)
     }
     
-    enum NoteSizeValidationError {
+    enum ValidationError {
         case exceededSize(extraSize: Int)
     }
 }

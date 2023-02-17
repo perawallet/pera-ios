@@ -172,7 +172,10 @@ extension EditNoteScreen: FormInputFieldViewEditingDelegate {
 
 extension EditNoteScreen {
     private func updateNoteAfterValidation() {
-        let noteByteArray = noteInputView.text?.convertToByteArray()
+        guard let noteByteArray = noteInputView.text?.convertToByteArray(),
+              !noteByteArray.isEmpty else {
+            return
+        }
         
         let validation = transactionNoteValidator.validate(byteArray: noteByteArray)
         
@@ -182,12 +185,10 @@ extension EditNoteScreen {
         case .failure(let validationError):
             switch validationError {
             case .exceededSize(let extraSize):
-                if let noteByteArray = noteByteArray {
-                    noteInputView.text = String(
-                        decoding: noteByteArray.dropLast(extraSize),
-                        as: UTF8.self
-                    )
-                }
+                noteInputView.text = String(
+                    decoding: noteByteArray.dropLast(extraSize),
+                    as: UTF8.self
+                )
             }
         }
     }
