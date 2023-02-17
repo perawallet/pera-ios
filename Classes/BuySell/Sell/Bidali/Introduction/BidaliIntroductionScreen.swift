@@ -33,17 +33,32 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        customizeNavigationItemAppearance()
+        hidesCloseBarButtonItem = true
 
-        addBarButtons()
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = "bidali-introduction-navigation-title".localized
+
+        addNavigationBarButtonItems()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        recustomizeNavigationBarAppearance()
+        switchToTransparentNavigationBarAppearance()
 
         addUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        switchToTransparentNavigationBarAppearanceIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        switchToDefaultNavigationBarAppearanceIfNeeded()
     }
 
     override func addScroll() {
@@ -102,14 +117,7 @@ extension BidaliIntroductionScreen {
 }
 
 extension BidaliIntroductionScreen {
-    private func customizeNavigationItemAppearance() {
-        hidesCloseBarButtonItem = true
-
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "bidali-introduction-navigation-title".localized
-    }
-
-    private func recustomizeNavigationBarAppearance() {
+    private func switchToTransparentNavigationBarAppearance() {
         guard let navigationController else { return }
 
         let appearance = navigationController.navigationBar.standardAppearance.copy()
@@ -121,10 +129,26 @@ extension BidaliIntroductionScreen {
         navigationController.navigationBar.compactAppearance = appearance
         navigationController.navigationBar.scrollEdgeAppearance = appearance
     }
+
+    private func switchToTransparentNavigationBarAppearanceIfNeeded() {
+        guard let navigationController else { return }
+
+        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+            switchToTransparentNavigationBarAppearance()
+        }
+    }
+
+    private func switchToDefaultNavigationBarAppearanceIfNeeded() {
+        guard let navigationController else { return }
+
+        if !navigationController.isBeingDismissed {
+            switchToDefaultNavigationBarAppearance()
+        }
+    }
 }
 
 extension BidaliIntroductionScreen {
-    private func addBarButtons() {
+    private func addNavigationBarButtonItems() {
         leftBarButtonItems = [ makeCloseBarButtonItem() ]
     }
 

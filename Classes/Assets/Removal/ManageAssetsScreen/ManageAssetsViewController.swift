@@ -634,6 +634,11 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                 ),
                 by: .presentWithoutNavigationController
             )
+        case .optOutFromCreator:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "asset-creator-opt-out-error-message".localized
+            )
         default:
             break
         }

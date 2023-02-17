@@ -72,8 +72,9 @@ extension CollectibleDetailAPIDataController {
             
             if currentAccountCollectibleStatus != updatedAccountAssetStatus {
                 currentAccountCollectibleStatus = updatedAccountAssetStatus
-                
-                self.deliverContentSnapshot()
+
+                deliverLoadingSnapshot()
+                fetchAssetDetails()
             }
         }
     }
