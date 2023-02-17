@@ -110,6 +110,8 @@ class AppDelegate:
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
     
+    private lazy var walletConnectorV2 = WalletConnectorV2(api: appConfiguration.api)
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -124,6 +126,8 @@ class AppDelegate:
         makeNetworkBanner()
 
         launch(with: launchOptions)
+        
+        walletConnectorV2.setup()
 
         return true
     }

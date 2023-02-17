@@ -46,6 +46,8 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
         $0.showsConnectedAppsButton = self.isShowingConnectedAppsButton
     }
 
+    private lazy var walletConnectorV2 = WalletConnectorV2(api: api!)
+    
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
     private var previewLayer: AVCaptureVideoPreviewLayer?
@@ -295,7 +297,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-            if qrString.isWalletConnectConnection {
+            if walletConnectorV2.isValidSession(qrString) {
+                walletConnectorV2.pair(with: qrString)
+                return
+            } else if qrString.isWalletConnectConnection {
                 if !canReadWCSession {
                     bannerController?.presentErrorBanner(
                         title: "title-error".localized,

@@ -3393,6 +3393,20 @@
 		2BEEBF7429952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
 		2BEEBF7529952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
 		2BEEBF7629952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */; };
+		2BEEBF79299AA5B000DDD988 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF78299AA5B000DDD988 /* WalletConnect */; };
+		2BEEBF7B299AA5B000DDD988 /* WalletConnectNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */; };
+		2BEEBF7D299AA5B000DDD988 /* WalletConnectPairing in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */; };
+		2BEEBF7F299AA5B000DDD988 /* Web3Wallet in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF7E299AA5B000DDD988 /* Web3Wallet */; };
+		2BEEBF82299AB81700DDD988 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEEBF81299AB81700DDD988 /* Starscream */; };
+		2BEEBF84299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
+		2BEEBF85299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
+		2BEEBF86299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */; };
+		2BEEBF8929A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
+		2BEEBF8A29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
+		2BEEBF8B29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */; };
+		2BEEBF8D29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */; };
+		2BEEBF8E29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */; };
+		2BEEBF8F29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */; };
 		2BEF0B44294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
 		2BEF0B45294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
 		2BEF0B46294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */; };
@@ -7731,6 +7745,9 @@
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
 		2BEE062023E8572E004EBD6F /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
 		2BEEBF7329952D9B00DDD988 /* ALGAnalyticsParameterRegulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAnalyticsParameterRegulator.swift; sourceTree = "<group>"; };
+		2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorV2.swift; sourceTree = "<group>"; };
+		2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectV2SessionValidator.swift; sourceTree = "<group>"; };
+		2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSocketFactory.swift; sourceTree = "<group>"; };
 		2BEF0B43294A044B00D2677B /* NotificationFilterViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFilterViewControllerTheme.swift; sourceTree = "<group>"; };
 		2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTitleViewModel.swift; sourceTree = "<group>"; };
 		2BF0FB3D253D15EE00D704D5 /* TransactionViewModelDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModelDraft.swift; sourceTree = "<group>"; };
@@ -8870,6 +8887,7 @@
 				CBAD470A2745434A00C91946 /* MacaroonMedia in Frameworks */,
 				CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */,
 				D499D27E27C7D40B00641FF5 /* Prism in Frameworks */,
+				2BEEBF7F299AA5B000DDD988 /* Web3Wallet in Frameworks */,
 				17D0F89F28EC07D30061B55D /* OrderedCollections in Frameworks */,
 				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
@@ -8883,6 +8901,7 @@
 				CBAD47062745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD46FA2745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
+				2BEEBF7D299AA5B000DDD988 /* WalletConnectPairing in Frameworks */,
 				CBAD46F82745434A00C91946 /* MagpieAlamofire in Frameworks */,
 				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
 				CBAD47022745434A00C91946 /* Charts in Frameworks */,
@@ -8891,10 +8910,13 @@
 				CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
+				2BEEBF7B299AA5B000DDD988 /* WalletConnectNetworking in Frameworks */,
 				CBAD47052745434A00C91946 /* MacaroonApplication in Frameworks */,
+				2BEEBF79299AA5B000DDD988 /* WalletConnect in Frameworks */,
 				F0454221287D8C820081C01C /* MacaroonStorySheet in Frameworks */,
 				CBAD470B2745434A00C91946 /* MacaroonResources in Frameworks */,
 				CBAD46FF2745434A00C91946 /* SwiftDate in Frameworks */,
+				2BEEBF82299AB81700DDD988 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9593,8 +9615,9 @@
 				2B288AE42693A59300BC6FB6 /* Management */,
 				2B68A23B26A82F5C0076BD82 /* Present */,
 				2B68A24026A872370076BD82 /* Transaction */,
-				2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */,
+				2BEEBF8729A0139800DDD988 /* V2 */,
 				2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */,
+				2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */,
 				178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */,
 			);
 			path = WalletConnect;
@@ -15223,6 +15246,16 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
+		2BEEBF8729A0139800DDD988 /* V2 */ = {
+			isa = PBXGroup;
+			children = (
+				2BEEBF8C29A0140300DDD988 /* DefaultSocketFactory.swift */,
+				2BEEBF83299BBA6100DDD988 /* WalletConnectorV2.swift */,
+				2BEEBF8829A013AB00DDD988 /* WalletConnectV2SessionValidator.swift */,
+			);
+			path = V2;
+			sourceTree = "<group>";
+		};
 		2BF34C972239AAC10052CAD3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
@@ -19567,6 +19600,11 @@
 				F0454220287D8C820081C01C /* MacaroonStorySheet */,
 				17D0F89E28EC07D30061B55D /* OrderedCollections */,
 				2B8F78D0296D810B0013F7FF /* WalletConnectSwift */,
+				2BEEBF78299AA5B000DDD988 /* WalletConnect */,
+				2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */,
+				2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */,
+				2BEEBF7E299AA5B000DDD988 /* Web3Wallet */,
+				2BEEBF81299AB81700DDD988 /* Starscream */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -19653,6 +19691,8 @@
 				2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 				17D0F89D28EC07D20061B55D /* XCRemoteSwiftPackageReference "swift-collections" */,
 				2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
+				2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -20018,6 +20058,7 @@
 				2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				17D0FA8228EC28DF0061B55D /* ExportAccountsConfirmationListItemHeader.swift in Sources */,
 				D4A647A427847A15009DE241 /* TransactionHistoryTitleContextView.swift in Sources */,
+				2BEEBF8F29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */,
 				2BECB4AF25A0F09C0081870A /* ToggleTitleHeaderView.swift in Sources */,
 				2B8CD5812906D35D004A81B9 /* SwapQuickActionsView.swift in Sources */,
 				17D0FA4628EC28DE0061B55D /* ExportAccountListLocalDataController.swift in Sources */,
@@ -20623,6 +20664,7 @@
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				F0B0A5FB291E18580021EF8D /* InAppBrowserLoadingView.swift in Sources */,
 				2B4334A627C44C3200A3D9D6 /* Asset.swift in Sources */,
+				2BEEBF86299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
 				D444EE8E2946B670008AD374 /* AssetFilterOptions.swift in Sources */,
 				D48D11D5274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				D401FCB028E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift in Sources */,
@@ -21893,6 +21935,7 @@
 				17BD4EFA2292F1260003E49A /* BarButtonItem.swift in Sources */,
 				D4FDA57928258BA600BFB778 /* CollectibleFullScreenImageViewController.swift in Sources */,
 				D4CF67E428C7598C0007A727 /* AccountSelectionListScreenTheme.swift in Sources */,
+				2BEEBF8B29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */,
 				F022D1DF276365DE00D786CD /* BlockProcessor.swift in Sources */,
 				2B233B5327C4784600D16B82 /* BuyAlgoHomeScreen.swift in Sources */,
 				D4133D6328856BC5003EFB4F /* UISheetAction.swift in Sources */,
@@ -22442,6 +22485,7 @@
 				D49D77E22789FE9D001FD5F6 /* FloatingActionItemButtonTheme.swift in Sources */,
 				953DEE24279EF63700D76957 /* WCAlgosTransactionViewTheme.swift in Sources */,
 				F08708F72790877300BEE5C2 /* HomeDataController.swift in Sources */,
+				2BEEBF85299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
 				2B0F61B224EC129D00DA22A6 /* QRCreationDraft.swift in Sources */,
 				9568ADE127C7827300668053 /* BuyAlgoDraft.swift in Sources */,
 				2B69A9D128617D6D004014E2 /* QRAddWatchAccountOptionViewModel.swift in Sources */,
@@ -22620,6 +22664,7 @@
 				2BA979D9284E216800EDA5EA /* ManagementItemView.swift in Sources */,
 				2BC635E528870B6F00507AEA /* PrimaryTitleViewModel.swift in Sources */,
 				17AC729D286F44E8006919C3 /* AccountSelectScreenDataSource.swift in Sources */,
+				2BEEBF8A29A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */,
 				2BCBF46427B557C9008814C7 /* MultilineTextInputFieldViewTheme.swift in Sources */,
 				2B088518288EBBC80030D9CA /* AssetQuickActionViewTheme.swift in Sources */,
 				D4190060273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
@@ -23919,6 +23964,7 @@
 				2B0F62F724EC129D00DA22A6 /* ContactsView.swift in Sources */,
 				2B0F62F824EC129D00DA22A6 /* UIViewController+Additions.swift in Sources */,
 				95B0114E276A338800B5CA7B /* EditNoteScreen.swift in Sources */,
+				2BEEBF8E29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */,
 				D4DF3F7026F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift in Sources */,
 				2B5BE0712519356000324BEE /* AccountTypeViewModel.swift in Sources */,
 				2BE09A6F28F60A840059EEF0 /* SwapSummaryAccountView.swift in Sources */,
@@ -24235,6 +24281,7 @@
 				2BEE062123E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				D4AAB8B527D238E70011B004 /* CollectibleGridItemCell.swift in Sources */,
 				D47956892769D536003766D2 /* WCSessionItemViewTheme.swift in Sources */,
+				2BEEBF8D29A0140300DDD988 /* DefaultSocketFactory.swift in Sources */,
 				17A766782909586600A8746C /* DiscoverHomeScreenTheme.swift in Sources */,
 				9577909E278B2E600061FB9C /* WCSingleTransactionRequestMiddleViewModel.swift in Sources */,
 				D43A0C302790D634007430B9 /* NoContentViewModel.swift in Sources */,
@@ -24840,6 +24887,7 @@
 				D4999E0028919B1D00C7E05C /* TransactionFeeSecondaryListItemViewModel.swift in Sources */,
 				17AC7290286F3D96006919C3 /* AccountSelectScreenListLayout.swift in Sources */,
 				2B3088E127FF48510010AE49 /* ManagementItemWithSecondaryActionCell.swift in Sources */,
+				2BEEBF84299BBA6100DDD988 /* WalletConnectorV2.swift in Sources */,
 				2BB98FBA2979452300262D63 /* WCTransactionRequestSDKErrorEvent.swift in Sources */,
 				D4F72B6628E3938600907287 /* InsufficientAlgoBalanceDraft.swift in Sources */,
 				2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */,
@@ -26110,6 +26158,7 @@
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				F0C542F4291DE4F600596A0A /* DiscoverSearchNextListErrorViewTheme.swift in Sources */,
 				9565CF6D27ABE9D900A8095C /* AssetListViewAPIDataController.swift in Sources */,
+				2BEEBF8929A013AB00DDD988 /* WalletConnectV2SessionValidator.swift in Sources */,
 				D4C45BFB2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */,
 				2B2AACDC250BA4C200B8C5C5 /* DeveloperSettings.swift in Sources */,
 				2BE9371E246308D600322C1E /* SelectAssetViewController.swift in Sources */,
@@ -26953,6 +27002,22 @@
 				kind = branch;
 			};
 		};
+		2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Hipo/prism-ios";
@@ -27331,6 +27396,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B8F78CF296D810B0013F7FF /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
 			productName = WalletConnectSwift;
+		};
+		2BEEBF78299AA5B000DDD988 /* WalletConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnect;
+		};
+		2BEEBF7A299AA5B000DDD988 /* WalletConnectNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectNetworking;
+		};
+		2BEEBF7C299AA5B000DDD988 /* WalletConnectPairing */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnectPairing;
+		};
+		2BEEBF7E299AA5B000DDD988 /* Web3Wallet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF77299AA5B000DDD988 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = Web3Wallet;
+		};
+		2BEEBF81299AB81700DDD988 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEEBF80299AB81600DDD988 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
 		};
 		D499D27D27C7D40B00641FF5 /* Prism */ = {
 			isa = XCSwiftPackageProductDependency;
