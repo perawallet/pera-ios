@@ -197,6 +197,15 @@
 		178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
 		178330962955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
 		178330972955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
+		17899DF2299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
+		17899DF3299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
+		17899DF4299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */; };
+		17899DF6299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DF7299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DF8299E746E00DE6A72 /* BackupParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF5299E746E00DE6A72 /* BackupParameters.swift */; };
+		17899DFA299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
+		17899DFB299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
+		17899DFC299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -727,9 +736,6 @@
 		17D7F3BC294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17D7F3BD294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
-		17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
-		17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
-		17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF512C295ABAE700461347 /* AlgoSDK.xcframework */; };
 		17EF5133295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
 		17EF5134295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
 		17EF5135295B0EA500461347 /* ASADetailMarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF5132295B0EA500461347 /* ASADetailMarketView.swift */; };
@@ -6786,6 +6792,9 @@
 		1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscordDeeplink.swift; sourceTree = "<group>"; };
 		1783309029548D6900AD5B4E /* TelegramDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramDeeplink.swift; sourceTree = "<group>"; };
 		178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorPreferences.swift; sourceTree = "<group>"; };
+		17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
+		17899DF5299E746E00DE6A72 /* BackupParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupParameters.swift; sourceTree = "<group>"; };
+		17899DF9299E74AB00DE6A72 /* SecureBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackup.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		17924433288FD0450075F36F /* NotificationStatusFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationStatusFetchDraft.swift; sourceTree = "<group>"; };
@@ -6932,7 +6941,6 @@
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17D7F3BA294C96320011D9DA /* PeraInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
-		17EF512C295ABAE700461347 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		17EF5132295B0EA500461347 /* ASADetailMarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketView.swift; sourceTree = "<group>"; };
 		17EF5136295B1FAF00461347 /* ASADetailMarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketViewModel.swift; sourceTree = "<group>"; };
 		17EF513A295B1FB600461347 /* ASADetailMarketViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketViewTheme.swift; sourceTree = "<group>"; };
@@ -8983,7 +8991,7 @@
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
 				F05E6C552863009C004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EF512F295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
+				17899DF4299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
@@ -9019,7 +9027,7 @@
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				F05E6C57286300A7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EF512E295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
+				17899DF3299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
@@ -9055,7 +9063,7 @@
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
 				F05E6C59286300B7004E33D6 /* MacaroonToastUIKit in Frameworks */,
-				17EF512D295ABAE800461347 /* AlgoSDK.xcframework in Frameworks */,
+				17899DF2299E73DA00DE6A72 /* AlgoSDK.xcframework in Frameworks */,
 				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
@@ -9266,7 +9274,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				17EF512C295ABAE700461347 /* AlgoSDK.xcframework */,
+				17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -18538,6 +18546,8 @@
 				D41970EE29922C2A003FEEB1 /* Instructions */,
 				D4D87E6E29912170004F7BF2 /* AccountList */,
 				D419711129927D86003FEEB1 /* Result */,
+				17899DF5299E746E00DE6A72 /* BackupParameters.swift */,
+				17899DF9299E74AB00DE6A72 /* SecureBackup.swift */,
 			);
 			path = AlgorandSecureBackup;
 			sourceTree = "<group>";
@@ -21363,6 +21373,7 @@
 				2B7E586225866DA400731C97 /* LedgerAccountCellView.swift in Sources */,
 				D419711B2992F8E5003FEEB1 /* AlgorandSecureBackupSuccessScreen.swift in Sources */,
 				D4A70AF82878361700FB52B0 /* AssetInnerTransactionPreviewViewModel.swift in Sources */,
+				17899DFC299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				D47C4AB72791C3820012D7A6 /* WCSessionListNoContentViewModel.swift in Sources */,
 				D4DC26BD28B3A3C00068152E /* ASAAboutScreenASAProjectWebsiteSecondaryListItem.swift in Sources */,
 				D4A0DEA4289803F600CE3895 /* AssetStatisticsSectionViewModel.swift in Sources */,
@@ -22065,6 +22076,7 @@
 				D4B91DA52736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */,
 				F034521C28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */,
 				2B2DF28D28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
+				17899DF8299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
@@ -23039,6 +23051,7 @@
 				F0C542B8291C383800596A0A /* DiscoverSearchListLoadingView.swift in Sources */,
 				2B7E3066267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				2BED6572266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
+				17899DF7299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				F010638B28AC71A000AB6873 /* ASADetailScreenTheme.swift in Sources */,
 				2B83D05826C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				2B2AACAA250A6D6600B8C5C5 /* RekeyAccountEvent.swift in Sources */,
@@ -23747,6 +23760,7 @@
 				2B2AACAF250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B5739FA26F3F873007E0252 /* WCAssetConfigParameters.swift in Sources */,
 				D478AA9B28AB80AB001958C8 /* SwapIntroductionScreenTheme.swift in Sources */,
+				17899DFB299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				D43A0C292790D177007430B9 /* NoContentView.swift in Sources */,
 				D4E34CC127F71C5E00B0C3F4 /* SelectAssetViewControllerTheme.swift in Sources */,
 				17A7668B290999E900A8746C /* DiscoverNavigationBarViewTheme.swift in Sources */,
@@ -25675,6 +25689,7 @@
 				2BD36E052681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B8E5F952548318C001D8E30 /* ALGAnalyticsScreen.swift in Sources */,
 				F040FE0F2858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift in Sources */,
+				17899DFA299E74AB00DE6A72 /* SecureBackup.swift in Sources */,
 				046767812756A65F00C88F21 /* SingleSelectionView.swift in Sources */,
 				D4A0DEA2289803F600CE3895 /* AssetStatisticsSectionViewModel.swift in Sources */,
 				95266BFC27B538B800E99EC7 /* SelectAccountAPIDataController.swift in Sources */,
@@ -26377,6 +26392,7 @@
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6BFE27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				D47C4AA92791B5B90012D7A6 /* ListErrorViewModel.swift in Sources */,
+				17899DF6299E746E00DE6A72 /* BackupParameters.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */,
 				2BB350C425892BD900A03BAC /* WrappedStackView.swift in Sources */,
