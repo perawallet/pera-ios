@@ -3860,9 +3860,9 @@
 		D408699D299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408699C299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift */; };
 		D408699E299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408699C299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift */; };
 		D408699F299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408699C299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift */; };
-		D40869A12999A7E100D5797D /* BidaliConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfiguration.swift */; };
-		D40869A22999A7E100D5797D /* BidaliConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfiguration.swift */; };
-		D40869A32999A7E100D5797D /* BidaliConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfiguration.swift */; };
+		D40869A12999A7E100D5797D /* BidaliConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfig.swift */; };
+		D40869A22999A7E100D5797D /* BidaliConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfig.swift */; };
+		D40869A32999A7E100D5797D /* BidaliConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40869A02999A7E100D5797D /* BidaliConfig.swift */; };
 		D4092B9A276B48360009722D /* WCSessionShortListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092B99276B48360009722D /* WCSessionShortListViewController.swift */; };
 		D4092B9B276B48360009722D /* WCSessionShortListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092B99276B48360009722D /* WCSessionShortListViewController.swift */; };
 		D4092B9C276B48360009722D /* WCSessionShortListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4092B99276B48360009722D /* WCSessionShortListViewController.swift */; };
@@ -4631,12 +4631,12 @@
 		D46432E028B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
 		D46432E128B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
 		D46432E228B616FB00BF4EC2 /* OptOutAssetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */; };
-		D465C7EC299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentRequestMessage.swift */; };
-		D465C7ED299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentRequestMessage.swift */; };
-		D465C7EE299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentRequestMessage.swift */; };
-		D465C7F0299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLRequestMessage.swift */; };
-		D465C7F1299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLRequestMessage.swift */; };
-		D465C7F2299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLRequestMessage.swift */; };
+		D465C7EC299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
+		D465C7ED299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
+		D465C7EE299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
+		D465C7F0299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
+		D465C7F1299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
+		D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
 		D46954A4296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A5296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A6296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
@@ -5575,9 +5575,6 @@
 		D4DD3EA8298C72AC001941A2 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EA7298C72AC001941A2 /* Toggle.swift */; };
 		D4DD3EA9298C72AC001941A2 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EA7298C72AC001941A2 /* Toggle.swift */; };
 		D4DD3EAA298C72AC001941A2 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EA7298C72AC001941A2 /* Toggle.swift */; };
-		D4DD3EAC298D0D94001941A2 /* BidaliBalances.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EAB298D0D94001941A2 /* BidaliBalances.swift */; };
-		D4DD3EAD298D0D94001941A2 /* BidaliBalances.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EAB298D0D94001941A2 /* BidaliBalances.swift */; };
-		D4DD3EAE298D0D94001941A2 /* BidaliBalances.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DD3EAB298D0D94001941A2 /* BidaliBalances.swift */; };
 		D4DDF3B227395CAA00BC8F42 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */; };
 		D4DDF3B327395CAA00BC8F42 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */; };
 		D4DDF3B427395CAA00BC8F42 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */; };
@@ -7868,7 +7865,7 @@
 		D4086994299991C000D5797D /* BidaliAccountSelectionListHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliAccountSelectionListHeaderTheme.swift; sourceTree = "<group>"; };
 		D4086998299991EC00D5797D /* BidaliAccountSelectionListAccountListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliAccountSelectionListAccountListItemCell.swift; sourceTree = "<group>"; };
 		D408699C299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliAccountSelectionListAccountListItemCellTheme.swift; sourceTree = "<group>"; };
-		D40869A02999A7E100D5797D /* BidaliConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliConfiguration.swift; sourceTree = "<group>"; };
+		D40869A02999A7E100D5797D /* BidaliConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliConfig.swift; sourceTree = "<group>"; };
 		D4092B99276B48360009722D /* WCSessionShortListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListViewController.swift; sourceTree = "<group>"; };
 		D4092B9E276B495D0009722D /* WCSessionShortListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionShortListView.swift; sourceTree = "<group>"; };
 		D4092BAB276B522B0009722D /* WCSessionShortListViewTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCSessionShortListViewTheme.swift; sourceTree = "<group>"; };
@@ -8132,8 +8129,8 @@
 		D46432D328B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewTheme.swift; sourceTree = "<group>"; };
 		D46432DB28B614AC00BF4EC2 /* OptOutAssetListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItemViewModel.swift; sourceTree = "<group>"; };
 		D46432DF28B616FB00BF4EC2 /* OptOutAssetListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutAssetListItem.swift; sourceTree = "<group>"; };
-		D465C7EB299A35A800733A29 /* BidaliPaymentRequestMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentRequestMessage.swift; sourceTree = "<group>"; };
-		D465C7EF299A35C200733A29 /* BidaliOpenURLRequestMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLRequestMessage.swift; sourceTree = "<group>"; };
+		D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentParameters.swift; sourceTree = "<group>"; };
+		D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLParameters.swift; sourceTree = "<group>"; };
 		D46954A3296F3BF300D3D6C0 /* String+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
 		D469E70927A13DEC002D8342 /* AlgoPriceChartTimeFrameSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceChartTimeFrameSelectionView.swift; sourceTree = "<group>"; };
 		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
@@ -8439,7 +8436,6 @@
 		D4DC26C228B3A4C80068152E /* ASAAboutScreenInteractableSecondaryListItemTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASAAboutScreenInteractableSecondaryListItemTheme.swift; sourceTree = "<group>"; };
 		D4DD3EA1298C6086001941A2 /* ToggleTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTheme.swift; sourceTree = "<group>"; };
 		D4DD3EA7298C72AC001941A2 /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
-		D4DD3EAB298D0D94001941A2 /* BidaliBalances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliBalances.swift; sourceTree = "<group>"; };
 		D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetActionConfirmationViewControllerTheme.swift; sourceTree = "<group>"; };
 		D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerApprovalViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -14849,13 +14845,7 @@
 		2BD739E3223F9FF500B66EEF /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				95BB6C0527A2BAB000F2A2F1 /* VerticalTransactionAmount */,
-				D4BADD88277C8F280078FACB /* TransactionAmountView */,
-				171111B7225E0C8400DAF55C /* Toggle.swift */,
 				2BE9372F2464AEB600322C1E /* LineSeparatorView.swift */,
-				2BD739E4223FA07B00B66EEF /* MainButton.swift */,
-				95D11D042771CC0F001B2C37 /* TitleHeaderView.swift */,
-				95D11D082771D4D0001B2C37 /* TitleHeaderViewTheme.swift */,
 				2BB350C325892BD900A03BAC /* WrappedStackView.swift */,
 				D4BC072B2891436700001CDC /* SecondaryListItem */,
 				D4DD3EA6298C617E001941A2 /* Toggle */,
@@ -18222,11 +18212,10 @@
 		D4D56451298AA56100570610 /* DappDetail */ = {
 			isa = PBXGroup;
 			children = (
-				D4DD3EAB298D0D94001941A2 /* BidaliBalances.swift */,
-				D40869A02999A7E100D5797D /* BidaliConfiguration.swift */,
+				D40869A02999A7E100D5797D /* BidaliConfig.swift */,
 				D4D56452298AA57200570610 /* BidaliDappDetailScreen.swift */,
-				D465C7EF299A35C200733A29 /* BidaliOpenURLRequestMessage.swift */,
-				D465C7EB299A35A800733A29 /* BidaliPaymentRequestMessage.swift */,
+				D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */,
+				D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */,
 			);
 			path = DappDetail;
 			sourceTree = "<group>";
@@ -20056,7 +20045,6 @@
 				F063BE8D290C084200AEAEF7 /* SwapSlippageTolerancePercentageStore.swift in Sources */,
 				2BAAF4CB28E4B6F200FC59AF /* ConfirmSwapAPIDataController.swift in Sources */,
 				2B0E7CC327E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */,
-				D4DD3EAE298D0D94001941A2 /* BidaliBalances.swift in Sources */,
 				D4979448287CC766004FBF8E /* AppCallAssetPreviewViewTheme.swift in Sources */,
 				D4D9E66C299C13330043AD19 /* BidaliFlowCoordinator.swift in Sources */,
 				2BCE8FA1284A5C8F00C6FD6C /* SortListItemButtonViewModel.swift in Sources */,
@@ -20350,7 +20338,7 @@
 				2B69AADD28BE276300A8D65D /* AssetAmountInputView.swift in Sources */,
 				F06516912905C15E00ECE763 /* AdjustableSingleSelectionInputViewModel.swift in Sources */,
 				F0B5B0D127A1CBCA00BC3E2D /* AppLaunchUIHandler.swift in Sources */,
-				D465C7EE299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */,
+				D465C7EE299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */,
 				2BAAF4AC28E49C5100FC59AF /* SelectAssetDataController.swift in Sources */,
 				17BD4E1D2292F1260003E49A /* Router.swift in Sources */,
 				17BD4E1F2292F1260003E49A /* AccountRecoverViewController.swift in Sources */,
@@ -21535,7 +21523,7 @@
 				95609E3127B69A68008CE7FA /* NotificationsListLayout.swift in Sources */,
 				1792443A288FE1E30075F36F /* NotificationStatus.swift in Sources */,
 				D43A0C362790D647007430B9 /* NoContentViewTheme.swift in Sources */,
-				D40869A32999A7E100D5797D /* BidaliConfiguration.swift in Sources */,
+				D40869A32999A7E100D5797D /* BidaliConfig.swift in Sources */,
 				2B2DF29228103499008BC52D /* CurrencySelectionListLayout.swift in Sources */,
 				D48281CA27A0680A004412D5 /* LedgerPairWarningViewTheme.swift in Sources */,
 				D4C51B4427CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift in Sources */,
@@ -21632,7 +21620,7 @@
 				F034521C28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */,
 				2B2DF28D28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
-				D465C7F2299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */,
+				D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
@@ -23265,7 +23253,6 @@
 				D4919D2E27A15C12001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
 				2B0F626D24EC129D00DA22A6 /* TransactionFilterOptionView.swift in Sources */,
 				2B835B7A27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
-				D4DD3EAD298D0D94001941A2 /* BidaliBalances.swift in Sources */,
 				D4A647A327847A15009DE241 /* TransactionHistoryTitleContextView.swift in Sources */,
 				2B698269278DF652008EC669 /* TransactionsListLayout+Theme.swift in Sources */,
 				D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */,
@@ -23423,7 +23410,7 @@
 				F045BE4A286D21480069056B /* Portfolio.swift in Sources */,
 				2BAAF49C28E49C5100FC59AF /* SelectAssetDataSource.swift in Sources */,
 				D4999DF1289168E800C7E05C /* OptInAssetScreen.swift in Sources */,
-				D465C7F1299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */,
+				D465C7F1299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
 				F0DB416B27943C6D00EA437D /* PortfolioCalculationInfoViewController.swift in Sources */,
 				D4D7B35128D07CD2001E4062 /* AccountSelectionListNoContentViewModel.swift in Sources */,
 				F0431F27287781B20004CB7E /* PortfolioViewModel.swift in Sources */,
@@ -23531,7 +23518,7 @@
 				2BB860FD2889500D0026AF60 /* MailComposer.swift in Sources */,
 				2BB350BE2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				2BD36DFD2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
-				D465C7ED299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */,
+				D465C7ED299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */,
 				2B9FDE9228A4F9C300C8117D /* AssetVerificationInfoViewModel.swift in Sources */,
 				2B69AB0328BE842E00A8D65D /* SwapAssetSelectionEmptyViewDraft.swift in Sources */,
 				17D0FA8728EC28DF0061B55D /* ExportAccountsDomainConfirmationScreen.swift in Sources */,
@@ -23646,7 +23633,7 @@
 				F0F40F2329429082002EFBCC /* WatchAccountAdditionViewControllerTheme.swift in Sources */,
 				D4588AE9294293EE0012C12C /* ReceiverAccountSelectionListHeaderViewModel.swift in Sources */,
 				95609E3027B69A68008CE7FA /* NotificationsListLayout.swift in Sources */,
-				D40869A22999A7E100D5797D /* BidaliConfiguration.swift in Sources */,
+				D40869A22999A7E100D5797D /* BidaliConfig.swift in Sources */,
 				2BA4B41F26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2BBC2D4C278B6EDE0091B6FC /* ErrorViewTheme.swift in Sources */,
 				D4C51B4327CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift in Sources */,
@@ -24203,7 +24190,6 @@
 				2B3E39F4247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */,
 				D408699D299991F900D5797D /* BidaliAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				D48FDFE727CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */,
-				17AC7298286F3DB8006919C3 /* AccountSelectScreenListAPIDataController.swift in Sources */,
 				D40869822999908E00D5797D /* BidaliAccountSelectionListDataSource.swift in Sources */,
 				F010636E28AC339900AB6873 /* RekeyAccountListItemButtonViewModel.swift in Sources */,
 				F039CE832884565B008B4045 /* LocalCurrency.swift in Sources */,
@@ -24315,7 +24301,7 @@
 				F010636B28AC335000AB6873 /* ReceiveCollectibleInfoBoxCell.swift in Sources */,
 				D4E34CBC27F7162B00B0C3F4 /* SelectAssetViewControllerListLayout.swift in Sources */,
 				F0C542CE291C6DA900596A0A /* DiscoverSearchListNotFoundViewTheme.swift in Sources */,
-				D40869A12999A7E100D5797D /* BidaliConfiguration.swift in Sources */,
+				D40869A12999A7E100D5797D /* BidaliConfig.swift in Sources */,
 				2B288AEF2694E74B00BC6FB6 /* WCTransactionOption.swift in Sources */,
 				2BB350E5258A233800A03BAC /* AccountNameViewModel.swift in Sources */,
 				2BC35E842902D63100AFE7EE /* WCConnectionView.swift in Sources */,
@@ -25441,7 +25427,7 @@
 				2B2AACAE250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B262726284EB5EE00ADE371 /* PendingTransactionItemViewModel.swift in Sources */,
 				17C93260292B942D000EE03D /* DiscoverURLGenerator.swift in Sources */,
-				D465C7F0299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */,
+				D465C7F0299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
 				F010637028AC33BA00AB6873 /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				D43A0C2C2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
 				F034523B28B39474009467A0 /* ASADiscoveryScreenAPIDataController.swift in Sources */,
@@ -25477,7 +25463,6 @@
 				2BB93BCD25BEF364001F1D6C /* RekeyTransactionDataBuilder.swift in Sources */,
 				2BD36DBC267CCB8700C57728 /* WCAssetTransactionView.swift in Sources */,
 				2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */,
-				D4DD3EAC298D0D94001941A2 /* BidaliBalances.swift in Sources */,
 				F010639C28AD5CA100AB6873 /* ASADetailQuickActionsViewModel.swift in Sources */,
 				2B7A1F8D27DE64BA0010F52E /* CollectibleDescriptionCell.swift in Sources */,
 				17CADC7928531305001D19A8 /* AccountQuickActionsView.swift in Sources */,
@@ -25556,9 +25541,7 @@
 				2B71CBAD29008FBE00B1E1A0 /* SwapAvailableBalancePercentageValidator.swift in Sources */,
 				D4A0DEAE28980EC200CE3895 /* AssetStatisticsSectionTotalSupplyViewModel.swift in Sources */,
 				2B3088E627FF6A690010AE49 /* AssetTitleItemCell.swift in Sources */,
-				D4AEC3BE27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */,
-				D465C7EC299A35A800733A29 /* BidaliPaymentRequestMessage.swift in Sources */,
-				D4AEC3BE27CAF1B400507965 /* CollectibleGalleryGridLoadingCell.swift in Sources */,
+				D465C7EC299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */,
 				D4588AF4294293EE0012C12C /* SelectContactViewTheme.swift in Sources */,
 				F0E7218D284F6AA100865419 /* BuyAlgoFlowCoordinator.swift in Sources */,
 				D401FCAA28E640D100FBA85C /* CollectibleDetailAssetIDItemCellTheme.swift in Sources */,

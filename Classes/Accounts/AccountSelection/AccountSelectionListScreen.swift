@@ -101,18 +101,6 @@ class AccountSelectionListScreen<DataController: AccountSelectionListDataControl
 
         dataController.load()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        swapAssetFlowCoordinator?.add(self)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        swapAssetFlowCoordinator?.remove(self)
-    }
 
     override func setListeners() {
         super.setListeners()

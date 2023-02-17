@@ -454,3 +454,30 @@ extension Array where Self.Element == CollectibleAsset {
         return sorted(by: algorithm.getFormula)
     }
 }
+
+extension Account {
+    /// <todo>
+    /// Set the network in Account when it is fetched from the indexer, then we won't need to pass the network.
+    func usdc(_ network: ALGAPI.Network) -> Asset? {
+        let assetID: AssetID
+        switch network {
+        case .mainnet: assetID = 31566704
+        case .testnet: assetID = 10458941
+        }
+        return self[assetID]
+    }
+
+    func usdt(_ network: ALGAPI.Network) -> Asset? {
+        let assetID: AssetID?
+        switch network {
+        case .mainnet: assetID = 312769
+        case .testnet: assetID = nil
+        }
+
+        if let assetID {
+            return self[assetID]
+        }
+
+        return nil
+    }
+}

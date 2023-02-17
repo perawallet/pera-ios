@@ -19,9 +19,14 @@ import UIKit
 
 final class BidaliFlowCoordinator {
     private unowned let presentingScreen: UIViewController
+    private let api: ALGAPI
 
-    init(presentingScreen: UIViewController) {
+    init(
+        presentingScreen: UIViewController,
+        api: ALGAPI
+    ) {
         self.presentingScreen = presentingScreen
+        self.api =  api
     }
 }
 
@@ -47,10 +52,15 @@ extension BidaliFlowCoordinator {
             case .performCloseAction:
                 self.presentingScreen.dismiss(animated: true)
             case .performPrimaryAction:
+                guard self.isBidaliEnabled else {
+                    self.presentNotAvailableAlert(on: screen)
+                    return
+                }
+
                 if let account {
                     self.openDappDetail(
-                        from: screen,
-                        with: account
+                        with: account,
+                        from: screen
                     )
                     return
                 }
@@ -70,8 +80,8 @@ extension BidaliFlowCoordinator {
             switch event {
             case .didSelect(let account):
                 self.openDappDetail(
-                    from: screen,
-                    with: account
+                    with: account,
+                    from: screen
                 )
             default: break
             }
@@ -86,12 +96,29 @@ extension BidaliFlowCoordinator {
 
 extension BidaliFlowCoordinator {
     private func openDappDetail(
-        from screen: UIViewController,
-        with account: AccountHandle
+        with account: AccountHandle,
+        from screen: UIViewController
     ) {
         screen.open(
             .bidaliDappDetail(account: account),
             by: .push
+        )
+    }
+}
+
+extension BidaliFlowCoordinator {
+    /// <note>
+    /// In staging app, the Bidali is always enabled, but in store app, it is enabled only
+    /// on mainnet.
+    private var isBidaliEnabled: Bool {
+        let isEnabled = !ALGAppTarget.current.isProduction || !api.isTestNet
+        return isEnabled
+    }
+
+    private func presentNotAvailableAlert(on screen: UIViewController) {
+        screen.displaySimpleAlertWith(
+            title: "title-not-available".localized,
+            message: "bidali-not-available-description".localized /// <todo>: Change the description
         )
     }
 }

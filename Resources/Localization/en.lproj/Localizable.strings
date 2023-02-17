@@ -1356,3 +1356,4 @@
 "bidali-introduction-title" = "Buy gift cards with Crypto";
 "bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
 "bidali-introduction-action-title" = "Buy gift cards";
+"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
