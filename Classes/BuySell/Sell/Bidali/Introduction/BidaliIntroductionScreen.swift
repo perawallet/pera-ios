@@ -33,9 +33,12 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        customizeNavigationItemAppearance()
+        hidesCloseBarButtonItem = true
 
-        addBarButtons()
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = "bidali-introduction-navigation-title".localized
+
+        addNavigationBarButtonItems()
     }
 
     override func viewDidLoad() {
@@ -114,13 +117,6 @@ extension BidaliIntroductionScreen {
 }
 
 extension BidaliIntroductionScreen {
-    private func customizeNavigationItemAppearance() {
-        hidesCloseBarButtonItem = true
-
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "bidali-introduction-navigation-title".localized
-    }
-
     private func switchToTransparentNavigationBarAppearance() {
         guard let navigationController else { return }
 
@@ -152,7 +148,7 @@ extension BidaliIntroductionScreen {
 }
 
 extension BidaliIntroductionScreen {
-    private func addBarButtons() {
+    private func addNavigationBarButtonItems() {
         leftBarButtonItems = [ makeCloseBarButtonItem() ]
     }
 

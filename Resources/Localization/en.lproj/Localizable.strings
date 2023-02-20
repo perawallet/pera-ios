@@ -299,6 +299,7 @@
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
 "asset-detail-markets-title" = "Markets";
 
 // MARK: Algos Send
@@ -983,7 +984,7 @@
 "account-select-header-matched-accounts-title" = "Matched Accounts";
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
-"account-select-header-search-title" = "Search or enter wallet address";
+"account-select-header-search-title" = "Account address or short name";
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
@@ -1038,7 +1039,7 @@
 
 // MARK: Collectible Send
 "collectible-send-title" = "Send your NFT";
-"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+"collectible-send-input-placeholder" = "Account address";
 "collectible-send-action" = "Transfer";
 "collectible-send-account-list-title" = "Select the receiver account";
 
@@ -1359,6 +1360,7 @@
 "bidali-introduction-title" = "Buy gift cards with Crypto";
 "bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
 "bidali-introduction-action-title" = "Buy gift cards";
+"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
 
 // MARK:  Sardine Introduction
 "sardine-introduction-navigation-title" = "Buy ALGO with Sardine";

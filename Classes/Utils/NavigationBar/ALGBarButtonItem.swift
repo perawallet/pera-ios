@@ -309,7 +309,7 @@ extension ALGBarButtonItem {
         case add
         case notification
         case newNotification
-        case close(UIColor)
+        case close(UIColor? = nil)
         case closeTitle
         case save
         case qr

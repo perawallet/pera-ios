@@ -50,7 +50,20 @@ final class SwapAccountSelectionListScreen<
         self.swapAssetFlowCoordinator?.add(self)
     }
 
+
     deinit {
+        swapAssetFlowCoordinator?.remove(self)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        swapAssetFlowCoordinator?.add(self)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         swapAssetFlowCoordinator?.remove(self)
     }
 }
@@ -62,8 +75,10 @@ extension SwapAccountSelectionListScreen {
         didPublish event: SwapAssetFlowCoordinatorEvent
     ) {
         switch event {
-        case .didApproveOptInToAsset(let asset): continueToOptInAsset(asset: asset)
-        default: break
+        case .didApproveOptInToAsset(let asset):
+            continueToOptInAsset(asset: asset)
+        default:
+            break
         }
     }
 }
