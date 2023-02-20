@@ -99,10 +99,10 @@ extension SardineFlowCoordinator {
         with account: AccountHandle,
         from screen: UIViewController
     ) {
-//        screen.open(
-//            .sardineDappDetail(account: account),
-//            by: .push
-//        )
+        screen.open(
+            .sardineDappDetail(account: account),
+            by: .push
+        )
     }
 }
 

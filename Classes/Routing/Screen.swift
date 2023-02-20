@@ -319,6 +319,7 @@ indirect enum Screen {
     case sardineAccountSelection(
         eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
     )
+    case sardineDappDetail(account: AccountHandle)
     case transaKIntroduction
     case transaKAccountSelection(
         eventHandler: AccountSelectionListScreen<TransaKAccountSelectionListLocalDataController>.EventHandler

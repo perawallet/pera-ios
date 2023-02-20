@@ -1374,4 +1374,4 @@
 "transak-introduction-title" = "Buy USDC";
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
 "transak-introduction-action-title" = "Buy USDC with TransaK";
-"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use TransaK.";
+"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use TransaK.";

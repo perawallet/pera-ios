@@ -1469,6 +1469,12 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .sardineDappDetail(let account):
+            let config = SardineConfig(account: account, network: configuration.api!.network)
+            viewController = SardineDappDetailScreen(
+                config: config,
+                configuration: configuration
+            )
         case .transaKIntroduction:
             viewController = TransaKIntroductionScreen()
         case .transaKAccountSelection(let eventHandler):
