@@ -50,7 +50,7 @@ final class HomeViewController:
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self, api: api!)
-    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self)
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
         presentingScreen: self,
