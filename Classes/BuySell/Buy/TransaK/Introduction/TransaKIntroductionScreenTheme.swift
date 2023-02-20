@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BidaliIntroductionScreenTheme.swift
+//   TransaKIntroductionScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BidaliIntroductionScreenTheme:
+struct TransaKIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle
@@ -30,6 +30,9 @@ struct BidaliIntroductionScreenTheme:
     var spacingBetweenTitleAndBody: LayoutMetric
     var body: TextStyle
     var bodyHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
+    var spacingBetweenBodyAndSecuredByPaymentOptions: LayoutMetric
+    var securedByPaymentOptions: SecuredByPaymentOptionsViewTheme
+    var securedByPaymentOptionsHorizontalEdgeInsets: NSDirectionalHorizontalEdgeInsets
     var primaryAction: ButtonStyle
     var primaryActionContentEdgeInsets: UIEdgeInsets
     var primaryActionEdgeInsets: NSDirectionalEdgeInsets
@@ -38,7 +41,7 @@ struct BidaliIntroductionScreenTheme:
         _ family: LayoutFamily
     ) {
         self.illustration = [
-            .image("bidali-introduction-illustration"),
+            .image("transak-introduction-illustration"),
             .contentMode(.scaleAspectFill)
         ]
         self.illustrationMaxHeight = 294
@@ -61,8 +64,14 @@ struct BidaliIntroductionScreenTheme:
             leading: 24,
             trailing: 24
         )
+        self.spacingBetweenBodyAndSecuredByPaymentOptions = 32
+        self.securedByPaymentOptions = SecuredByPaymentOptionsViewTheme(family)
+        self.securedByPaymentOptionsHorizontalEdgeInsets = .init(
+            leading: 24,
+            trailing: 24
+        )
         self.primaryAction = [
-            .title("bidali-introduction-action-title".localized),
+            .title("transak-introduction-action-title".localized),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([

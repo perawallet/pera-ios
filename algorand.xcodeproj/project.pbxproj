@@ -3803,6 +3803,39 @@
 		D401FCAE28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401FCAD28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift */; };
 		D401FCAF28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401FCAD28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift */; };
 		D401FCB028E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401FCAD28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift */; };
+		D4027BF8299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BF7299D366100F59F15 /* TransaKIntroductionScreen.swift */; };
+		D4027BF9299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BF7299D366100F59F15 /* TransaKIntroductionScreen.swift */; };
+		D4027BFA299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BF7299D366100F59F15 /* TransaKIntroductionScreen.swift */; };
+		D4027BFC299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFB299D368100F59F15 /* TransaKIntroductionScreenTheme.swift */; };
+		D4027BFD299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFB299D368100F59F15 /* TransaKIntroductionScreenTheme.swift */; };
+		D4027BFE299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFB299D368100F59F15 /* TransaKIntroductionScreenTheme.swift */; };
+		D4027C00299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFF299D38B300F59F15 /* TransaKFlowCoordinator.swift */; };
+		D4027C01299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFF299D38B300F59F15 /* TransaKFlowCoordinator.swift */; };
+		D4027C02299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027BFF299D38B300F59F15 /* TransaKFlowCoordinator.swift */; };
+		D4027C04299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C03299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift */; };
+		D4027C05299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C03299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift */; };
+		D4027C06299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C03299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift */; };
+		D4027C08299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C07299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift */; };
+		D4027C09299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C07299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift */; };
+		D4027C0A299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C07299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift */; };
+		D4027C0C299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0B299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift */; };
+		D4027C0D299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0B299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift */; };
+		D4027C0E299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0B299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift */; };
+		D4027C10299E05C300F59F15 /* PaymentOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0F299E05C300F59F15 /* PaymentOption.swift */; };
+		D4027C11299E05C300F59F15 /* PaymentOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0F299E05C300F59F15 /* PaymentOption.swift */; };
+		D4027C12299E05C300F59F15 /* PaymentOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C0F299E05C300F59F15 /* PaymentOption.swift */; };
+		D4027C17299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C16299E0E1000F59F15 /* SardineFlowCoordinator.swift */; };
+		D4027C18299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C16299E0E1000F59F15 /* SardineFlowCoordinator.swift */; };
+		D4027C19299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C16299E0E1000F59F15 /* SardineFlowCoordinator.swift */; };
+		D4027C1C299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1B299E0E2800F59F15 /* SardineIntroductionScreen.swift */; };
+		D4027C1D299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1B299E0E2800F59F15 /* SardineIntroductionScreen.swift */; };
+		D4027C1E299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1B299E0E2800F59F15 /* SardineIntroductionScreen.swift */; };
+		D4027C20299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1F299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift */; };
+		D4027C21299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1F299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift */; };
+		D4027C22299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C1F299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift */; };
+		D4027C24299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C23299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift */; };
+		D4027C25299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C23299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift */; };
+		D4027C26299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4027C23299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift */; };
 		D405058326F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */; };
 		D405058426F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */; };
 		D405058526F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */; };
@@ -4589,6 +4622,54 @@
 		D45C47FF277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45C47FE277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift */; };
 		D45C4800277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45C47FE277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift */; };
 		D45C4801277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45C47FE277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift */; };
+		D45D7664299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7663299FB0950081735E /* SardineAccountSelectionListLayout.swift */; };
+		D45D7665299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7663299FB0950081735E /* SardineAccountSelectionListLayout.swift */; };
+		D45D7666299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7663299FB0950081735E /* SardineAccountSelectionListLayout.swift */; };
+		D45D7669299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7668299FB0C90081735E /* SardineAccountSelectionListDataSource.swift */; };
+		D45D766A299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7668299FB0C90081735E /* SardineAccountSelectionListDataSource.swift */; };
+		D45D766B299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7668299FB0C90081735E /* SardineAccountSelectionListDataSource.swift */; };
+		D45D766D299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D766C299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift */; };
+		D45D766E299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D766C299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift */; };
+		D45D766F299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D766C299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift */; };
+		D45D7673299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7672299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift */; };
+		D45D7674299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7672299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift */; };
+		D45D7675299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7672299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift */; };
+		D45D7677299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7676299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D7678299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7676299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D7679299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7676299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D767C299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767B299FB2600081735E /* SardineAccountSelectionListHeader.swift */; };
+		D45D767D299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767B299FB2600081735E /* SardineAccountSelectionListHeader.swift */; };
+		D45D767E299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767B299FB2600081735E /* SardineAccountSelectionListHeader.swift */; };
+		D45D7680299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767F299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift */; };
+		D45D7681299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767F299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift */; };
+		D45D7682299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D767F299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift */; };
+		D45D7684299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7683299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift */; };
+		D45D7685299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7683299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift */; };
+		D45D7686299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7683299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift */; };
+		D45D7689299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7688299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift */; };
+		D45D768A299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7688299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift */; };
+		D45D768B299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7688299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift */; };
+		D45D768E299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D768D299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift */; };
+		D45D768F299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D768D299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift */; };
+		D45D7690299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D768D299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift */; };
+		D45D7692299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7691299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift */; };
+		D45D7693299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7691299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift */; };
+		D45D7694299FBCDC0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7691299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift */; };
+		D45D7698299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7697299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift */; };
+		D45D7699299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7697299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift */; };
+		D45D769A299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D7697299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift */; };
+		D45D769C299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D769B299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D769D299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D769B299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D769E299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D769B299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift */; };
+		D45D76A1299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A0299FBDA20081735E /* TransaKAccountSelectionListHeader.swift */; };
+		D45D76A2299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A0299FBDA20081735E /* TransaKAccountSelectionListHeader.swift */; };
+		D45D76A3299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A0299FBDA20081735E /* TransaKAccountSelectionListHeader.swift */; };
+		D45D76A5299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A4299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift */; };
+		D45D76A6299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A4299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift */; };
+		D45D76A7299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A4299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift */; };
+		D45D76A9299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A8299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift */; };
+		D45D76AA299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A8299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift */; };
+		D45D76AB299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D76A8299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift */; };
 		D45DFBC1273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */; };
 		D45DFBC2273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */; };
 		D45DFBC3273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */; };
@@ -7849,6 +7930,17 @@
 		D4018CF327E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionableBannerControllerConfiguration.swift; sourceTree = "<group>"; };
 		D401FCA928E640D100FBA85C /* CollectibleDetailAssetIDItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAssetIDItemCellTheme.swift; sourceTree = "<group>"; };
 		D401FCAD28E6410000FBA85C /* CollectibleDetailAssetIDItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAssetIDItemViewModel.swift; sourceTree = "<group>"; };
+		D4027BF7299D366100F59F15 /* TransaKIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKIntroductionScreen.swift; sourceTree = "<group>"; };
+		D4027BFB299D368100F59F15 /* TransaKIntroductionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKIntroductionScreenTheme.swift; sourceTree = "<group>"; };
+		D4027BFF299D38B300F59F15 /* TransaKFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKFlowCoordinator.swift; sourceTree = "<group>"; };
+		D4027C03299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredByPaymentOptionsView.swift; sourceTree = "<group>"; };
+		D4027C07299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredByPaymentOptionsViewModel.swift; sourceTree = "<group>"; };
+		D4027C0B299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredByPaymentOptionsViewTheme.swift; sourceTree = "<group>"; };
+		D4027C0F299E05C300F59F15 /* PaymentOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOption.swift; sourceTree = "<group>"; };
+		D4027C16299E0E1000F59F15 /* SardineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineFlowCoordinator.swift; sourceTree = "<group>"; };
+		D4027C1B299E0E2800F59F15 /* SardineIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineIntroductionScreen.swift; sourceTree = "<group>"; };
+		D4027C1F299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineIntroductionScreenTheme.swift; sourceTree = "<group>"; };
+		D4027C23299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift; sourceTree = "<group>"; };
 		D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerDeviceListViewController+Theme.swift"; sourceTree = "<group>"; };
 		D405058626F0D18F001D0D11 /* LedgerDeviceCellViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceCellViewTheme.swift; sourceTree = "<group>"; };
 		D405058B26F0EE73001D0D11 /* LottieImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieImageView.swift; sourceTree = "<group>"; };
@@ -8118,6 +8210,22 @@
 		D45C47F6277E0CE2001853A3 /* RangeSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSelectionViewTheme.swift; sourceTree = "<group>"; };
 		D45C47FA277E1737001853A3 /* RangeSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSelectionViewModel.swift; sourceTree = "<group>"; };
 		D45C47FE277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCustomRangeSelectionViewTheme.swift; sourceTree = "<group>"; };
+		D45D7663299FB0950081735E /* SardineAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListLayout.swift; sourceTree = "<group>"; };
+		D45D7668299FB0C90081735E /* SardineAccountSelectionListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListDataSource.swift; sourceTree = "<group>"; };
+		D45D766C299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListLocalDataController.swift; sourceTree = "<group>"; };
+		D45D7672299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListAccountListItemCell.swift; sourceTree = "<group>"; };
+		D45D7676299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListAccountListItemCellTheme.swift; sourceTree = "<group>"; };
+		D45D767B299FB2600081735E /* SardineAccountSelectionListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListHeader.swift; sourceTree = "<group>"; };
+		D45D767F299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListHeaderTheme.swift; sourceTree = "<group>"; };
+		D45D7683299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SardineAccountSelectionListHeaderViewModel.swift; sourceTree = "<group>"; };
+		D45D7688299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListLayout.swift; sourceTree = "<group>"; };
+		D45D768D299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListLocalDataController.swift; sourceTree = "<group>"; };
+		D45D7691299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListDataSource.swift; sourceTree = "<group>"; };
+		D45D7697299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListAccountListItemCell.swift; sourceTree = "<group>"; };
+		D45D769B299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListAccountListItemCellTheme.swift; sourceTree = "<group>"; };
+		D45D76A0299FBDA20081735E /* TransaKAccountSelectionListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListHeader.swift; sourceTree = "<group>"; };
+		D45D76A4299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListHeaderTheme.swift; sourceTree = "<group>"; };
+		D45D76A8299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransaKAccountSelectionListHeaderViewModel.swift; sourceTree = "<group>"; };
 		D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsViewController+Theme.swift"; sourceTree = "<group>"; };
 		D45E77CA277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCustomRangeSelectionViewModel.swift; sourceTree = "<group>"; };
 		D45EC27727C38856004D5E46 /* BannerDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDraft.swift; sourceTree = "<group>"; };
@@ -16666,6 +16774,63 @@
 			path = AssetIDItem;
 			sourceTree = "<group>";
 		};
+		D4027BF5299D364600F59F15 /* TransaK */ = {
+			isa = PBXGroup;
+			children = (
+				D4027BFF299D38B300F59F15 /* TransaKFlowCoordinator.swift */,
+				D45D7687299FBB6E0081735E /* AccountSelection */,
+				D4027BF6299D365200F59F15 /* Introduction */,
+			);
+			path = TransaK;
+			sourceTree = "<group>";
+		};
+		D4027BF6299D365200F59F15 /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				D4027BF7299D366100F59F15 /* TransaKIntroductionScreen.swift */,
+				D4027BFB299D368100F59F15 /* TransaKIntroductionScreenTheme.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
+		D4027C13299E05F100F59F15 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D4027C14299E05F600F59F15 /* SecuredByPaymentOptions */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D4027C14299E05F600F59F15 /* SecuredByPaymentOptions */ = {
+			isa = PBXGroup;
+			children = (
+				D4027C0F299E05C300F59F15 /* PaymentOption.swift */,
+				D4027C03299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift */,
+				D4027C07299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift */,
+				D4027C0B299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift */,
+			);
+			path = SecuredByPaymentOptions;
+			sourceTree = "<group>";
+		};
+		D4027C15299E0E0200F59F15 /* Sardine */ = {
+			isa = PBXGroup;
+			children = (
+				D4027C16299E0E1000F59F15 /* SardineFlowCoordinator.swift */,
+				D45D7662299FB0690081735E /* AccountSelection */,
+				D4027C1A299E0E1400F59F15 /* Introduction */,
+			);
+			path = Sardine;
+			sourceTree = "<group>";
+		};
+		D4027C1A299E0E1400F59F15 /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				D4027C1B299E0E2800F59F15 /* SardineIntroductionScreen.swift */,
+				D4027C1F299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
 		D405058A26F0EE68001D0D11 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -17587,6 +17752,100 @@
 			path = TransactionCustomRangeSelection;
 			sourceTree = "<group>";
 		};
+		D45D7662299FB0690081735E /* AccountSelection */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7663299FB0950081735E /* SardineAccountSelectionListLayout.swift */,
+				D45D7667299FB0AE0081735E /* Data */,
+				D45D7670299FB1520081735E /* Views */,
+			);
+			path = AccountSelection;
+			sourceTree = "<group>";
+		};
+		D45D7667299FB0AE0081735E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7668299FB0C90081735E /* SardineAccountSelectionListDataSource.swift */,
+				D45D766C299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D45D7670299FB1520081735E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7671299FB1C70081735E /* AccountCell */,
+				D45D767A299FB2470081735E /* Header */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D45D7671299FB1C70081735E /* AccountCell */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7672299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift */,
+				D45D7676299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift */,
+			);
+			path = AccountCell;
+			sourceTree = "<group>";
+		};
+		D45D767A299FB2470081735E /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				D45D767B299FB2600081735E /* SardineAccountSelectionListHeader.swift */,
+				D45D767F299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift */,
+				D45D7683299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		D45D7687299FBB6E0081735E /* AccountSelection */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7688299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift */,
+				D45D768C299FBBC00081735E /* Data */,
+				D45D7695299FBD1C0081735E /* Views */,
+			);
+			path = AccountSelection;
+			sourceTree = "<group>";
+		};
+		D45D768C299FBBC00081735E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D45D768D299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift */,
+				D45D7691299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D45D7695299FBD1C0081735E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D45D769F299FBD5D0081735E /* Header */,
+				D45D7696299FBD230081735E /* AccountCell */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D45D7696299FBD230081735E /* AccountCell */ = {
+			isa = PBXGroup;
+			children = (
+				D45D7697299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift */,
+				D45D769B299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift */,
+			);
+			path = AccountCell;
+			sourceTree = "<group>";
+		};
+		D45D769F299FBD5D0081735E /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				D45D76A0299FBDA20081735E /* TransaKAccountSelectionListHeader.swift */,
+				D45D76A4299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift */,
+				D45D76A8299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
 		D45DF91C27F9D29C008076E6 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -17772,6 +18031,8 @@
 		D49E2402299514D90016F698 /* Buy */ = {
 			isa = PBXGroup;
 			children = (
+				D4027C15299E0E0200F59F15 /* Sardine */,
+				D4027BF5299D364600F59F15 /* TransaK */,
 			);
 			path = Buy;
 			sourceTree = "<group>";
@@ -17788,6 +18049,7 @@
 			isa = PBXGroup;
 			children = (
 				D49E24152995639E0016F698 /* Options */,
+				D4027C13299E05F100F59F15 /* Views */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -18254,6 +18516,7 @@
 			isa = PBXGroup;
 			children = (
 				D49E240D2995432E0016F698 /* BuySellOptionsBuyAlgoWithMoonpayOptionViewModel.swift */,
+				D4027C23299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift */,
 				D4D9E66D299CC4DD0043AD19 /* BuySellOptionsBuyUSDCWithTransaKOptionViewModel.swift */,
 			);
 			path = Buy;
@@ -20343,6 +20606,7 @@
 				2B71CBA229000E6400B1E1A0 /* ConfirmSwapAmountInInputViewModel.swift in Sources */,
 				D48D11E927429150000061CE /* ToggleTitleHeaderViewTheme.swift in Sources */,
 				2B9EF2FA25D5761E004BCCC4 /* TutorialView.swift in Sources */,
+				D45D7690299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */,
 				95AF1C6F27AD79AD001AB131 /* ShimmerView.swift in Sources */,
 				D4D656E3277CBAA3007C32F0 /* TransactionAmountInformationViewModel.swift in Sources */,
 				D4B0529128AEB5E100D53B20 /* SwapIntroductionDraft.swift in Sources */,
@@ -20382,6 +20646,7 @@
 				2B7E3041267A51ED00E89EE3 /* WCGroupTransactionItemView.swift in Sources */,
 				D431506127EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
 				F063BE80290BFCBD00AEAEF7 /* SwapSlippageTolerancePercentageInputViewModel.swift in Sources */,
+				D4027C1E299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */,
 				D4C601D62843705D00CDF6CB /* SortAccountListDataSource.swift in Sources */,
 				D4AC1FB8272D3AB10027353F /* AccountListViewTheme.swift in Sources */,
 				F01063AC28ADD32F00AB6873 /* ASADetailScreen+PageItems.swift in Sources */,
@@ -20566,6 +20831,7 @@
 				2B2AACD2250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
 				F07C3C2528B4692E003D55BC /* ASADetailDataController.swift in Sources */,
 				2B698238278C61C3008EC669 /* TransactionsDataSource.swift in Sources */,
+				D45D768B299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */,
 				2B80C549277322CB00BB071E /* AddAssetItemViewTheme.swift in Sources */,
 				D4588AD8294293ED0012C12C /* AccountClipboardViewTheme.swift in Sources */,
 				17BD4E3F2292F1260003E49A /* PassphraseBackUpView.swift in Sources */,
@@ -20649,6 +20915,7 @@
 				2B262720284E3A8700ADE371 /* AlgoTransactionItemViewModel.swift in Sources */,
 				2B71CB7928FDD80100B1E1A0 /* ConfirmSwapAmountInViewModel.swift in Sources */,
 				D4822743272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
+				D45D7686299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */,
 				95189D7F2778DD6200094107 /* UIPasteboard+Address.swift in Sources */,
 				2B69AAC428BE1E4400A8D65D /* SwapAssetSelectionViewTheme.swift in Sources */,
 				2B7E303B267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
@@ -20676,11 +20943,13 @@
 				2BAC072428F98194005CBB80 /* SwapDisplayStore.swift in Sources */,
 				2B69823C278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
+				D4027C0A299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				F010637528AC4AB800AB6873 /* ASAProfileViewTheme.swift in Sources */,
 				F0431F17287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B69A9CA28617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
 				D48FDFF927CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */,
 				F08708FC2790878900BEE5C2 /* HomeAPIDataController.swift in Sources */,
+				D4027BFA299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */,
 				1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				D462DEE62857457D0092DF5A /* CollectibleAscendingOptedInRoundAlgorithm.swift in Sources */,
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
@@ -20699,6 +20968,7 @@
 				F063BE7A290BF7BF00AEAEF7 /* EditSwapSlippageScreenTheme.swift in Sources */,
 				2BB64BDD240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
 				95189D872779CC7300094107 /* SendTransactionPreviewScreen.swift in Sources */,
+				D45D7682299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */,
 				F08708CE278C21EC00BEE5C2 /* SharedAPIDataController.swift in Sources */,
 				2B57D8F125587F4F006E6FCE /* TapReceiveAssetInDetailEvent.swift in Sources */,
 				17BD4E542292F1260003E49A /* Contact.swift in Sources */,
@@ -20743,6 +21013,7 @@
 				D46BB37E277CE66100F50F44 /* ContactDisplayViewModel.swift in Sources */,
 				2BAD6CAD27F884FB0016E869 /* Collectible3DCardDisplayable.swift in Sources */,
 				2B2359942794D1790006D259 /* TransactionsAPIDataController.swift in Sources */,
+				D4027C06299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */,
 				2B51A83F288AE9C6004E004C /* AssetQuickActionView.swift in Sources */,
 				2B4487292379653700C19FDE /* AssetActionConfirmationViewController.swift in Sources */,
 				958416E327B29612005B1627 /* HomeLoadingViewTheme.swift in Sources */,
@@ -20794,6 +21065,7 @@
 				2B982334231D396D009560CD /* Codable+JSON.swift in Sources */,
 				D4979474287D8AB3004FBF8E /* AppCallAssetPreviewWithImageCell.swift in Sources */,
 				D4C19D50273E9A0200AFDBCC /* PassphraseView.swift in Sources */,
+				D45D769E299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				F0C64B21277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */,
 				D40E8805294B8AE700B46054 /* CollectibleDetailCreatorAccountItemCellTheme.swift in Sources */,
 				17F8BF6328A2BAC500992F91 /* ALGAnalytics.swift in Sources */,
@@ -20801,6 +21073,7 @@
 				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				F0E7443627B45EBE0063DD83 /* AlgoPriceView.swift in Sources */,
 				D4FD4546296070D10015AD34 /* CollectibleAmountFormattingStandaloneContextHandler.swift in Sources */,
+				D45D76A3299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */,
 				D4C45BF52726C54800F4AE31 /* ContactInformationView.swift in Sources */,
 				D45A93E32936536F000DFCC8 /* CollectibleListItemView.swift in Sources */,
 				D4194310273541140055EC70 /* PageBarButton.swift in Sources */,
@@ -20828,6 +21101,7 @@
 				2B71CB8128FEA16B00B1E1A0 /* SwapInputAssetSelectionViewModel.swift in Sources */,
 				2B835B7B27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
 				2B7A1F3927DBF8150010F52E /* CollectibleDetailAPIDataController.swift in Sources */,
+				D4027C12299E05C300F59F15 /* PaymentOption.swift in Sources */,
 				F0C542FB291DF05C00596A0A /* DiscoverSearchNextListLoadingCell.swift in Sources */,
 				17A76676290936E300A8746C /* DiscoverDappDetailNavigationViewModel.swift in Sources */,
 				2B4FD1FC27C63F650097AB65 /* BuyAlgoTransactionView.swift in Sources */,
@@ -20859,6 +21133,7 @@
 				2B8D383826B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAB25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				D408699B299991EC00D5797D /* BidaliAccountSelectionListAccountListItemCell.swift in Sources */,
+				D4027C02299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */,
 				2B98E49127EB62AB000FA690 /* CollectibleMediaVideoPreviewViewTheme.swift in Sources */,
 				F045BE43286B9BE60069056B /* CurrencyFormattingStandaloneContextHandler.swift in Sources */,
 				17BD4E6B2292F1260003E49A /* BaseCollectionViewCell.swift in Sources */,
@@ -20922,6 +21197,7 @@
 				D478CDD6282C33DC0090032D /* CollectibleMediaPreviewViewController+ImageTransition.swift in Sources */,
 				D4979484287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
 				D4C601D228436F8800CDF6CB /* SortAccountListDataController.swift in Sources */,
+				D4027C19299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */,
 				2BF65839290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
 				17BD4E722292F1260003E49A /* BaseViewController.swift in Sources */,
 				D4979488287D9241004FBF8E /* AppCallAssetListViewControllerTheme.swift in Sources */,
@@ -21025,6 +21301,7 @@
 				D49E240C299526230016F698 /* BuySellOptionsScreenTheme.swift in Sources */,
 				D4DC26C528B3A4C80068152E /* ASAAboutScreenInteractableSecondaryListItemTheme.swift in Sources */,
 				2BC35E8A2902D65700AFE7EE /* WCConnectionViewTheme.swift in Sources */,
+				D45D7666299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */,
 				D4155E8B276C956300BCBFA4 /* ViewFactory.swift in Sources */,
 				F0D2C7E62935189B00222A46 /* PrimaryImageViewModel.swift in Sources */,
 				17C9328F2939299F000EE03D /* SwapQuickActionsGroupViewModel.swift in Sources */,
@@ -21035,6 +21312,7 @@
 				D49E24102995432E0016F698 /* BuySellOptionsBuyAlgoWithMoonpayOptionViewModel.swift in Sources */,
 				D459E27C27DCADF100F7FC33 /* FetchErrorActionableBannerViewModel.swift in Sources */,
 				D49D77E32789FE9D001FD5F6 /* FloatingActionItemButtonTheme.swift in Sources */,
+				D45D766B299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */,
 				F010638428AC582A00AB6873 /* RightAccessorizedLabelStyle.swift in Sources */,
 				1736FB7D28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift in Sources */,
 				D4C85B5827690F5000655238 /* ButtonStyles.swift in Sources */,
@@ -21082,6 +21360,7 @@
 				D41F934B2723038F00E9F2E7 /* RekeyInstructionsViewModel.swift in Sources */,
 				2BA63F7E26C1D551008E2B3C /* WCSessionHistory.swift in Sources */,
 				D4A70B002878364D00FB52B0 /* AppCallInnerTransactionPreviewViewModel.swift in Sources */,
+				D4027C0E299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
 				D4BC072228911FCE00001CDC /* SecondaryListItemViewModel.swift in Sources */,
 				D4999DF628916A7E00C7E05C /* OptInAssetScreenTheme.swift in Sources */,
 				17BD4E862292F1260003E49A /* Account.swift in Sources */,
@@ -21107,6 +21386,7 @@
 				2B2DF288281014E7008BC52D /* CurrencySelectionListAPIDataController.swift in Sources */,
 				D49D77E52789FF43001FD5F6 /* FloatingActionItemButton.swift in Sources */,
 				2BAAF4B828E49C5100FC59AF /* SelectAssetNoContentItemViewModel.swift in Sources */,
+				D45D76A7299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */,
 				2B6B424727BECE380036BF9E /* RemoveAccountListItemButtonViewModel.swift in Sources */,
 				CB3AEBD927452B4700F85246 /* PassphraseVerifyViewController.swift in Sources */,
 				D49B45762724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */,
@@ -21169,9 +21449,11 @@
 				D43A0C2A2790D177007430B9 /* NoContentView.swift in Sources */,
 				2B99D4BB28F58A6500323C11 /* SwapConfirmExchangeFeeInfoViewModel.swift in Sources */,
 				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
+				D45D766F299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
 				2BAAF4AF28E49C5100FC59AF /* SelectAssetListItemCell.swift in Sources */,
+				D45D7679299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				2BCBBAF324A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,
 				2B80C53327720F3300BB071E /* AccountAssetListViewController.swift in Sources */,
 				D4DC26B928B3A3860068152E /* ASAAboutScreenShowOnSecondaryListItem.swift in Sources */,
@@ -21190,6 +21472,7 @@
 				D4BADD8C277C8F3E0078FACB /* TransactionAmountViewModel.swift in Sources */,
 				2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				2BB350DC2589892300A03BAC /* LedgerAccountDetailViewModel.swift in Sources */,
+				D45D769A299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */,
 				D499D28E27C7DA8A00641FF5 /* CollectibleGridItemViewModel.swift in Sources */,
 				2BA4B400267819F50041586B /* WCSessionListViewController.swift in Sources */,
 				D4CF680728C87BDE0007A727 /* SwapAccountSelectionListDataSource.swift in Sources */,
@@ -21343,6 +21626,7 @@
 				2B71CB7528FDD70E00B1E1A0 /* SwapAssetAmountOutViewModel.swift in Sources */,
 				D40C295326E2A25C0037A0F4 /* BottomWarningViewController+Theme.swift in Sources */,
 				D439518B293540CD0052FEB9 /* CollectibleGalleryUIActionsView.swift in Sources */,
+				D45D767E299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */,
 				95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */,
 				17BD4EAD2292F1260003E49A /* TransactionDetailViewModel.swift in Sources */,
 				2B5739F326F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
@@ -21478,6 +21762,7 @@
 				2B69AB0428BE842E00A8D65D /* SwapAssetSelectionEmptyViewDraft.swift in Sources */,
 				D479D11326D51C4F00110E04 /* BannerViewTheme.swift in Sources */,
 				17BD4EBF2292F1260003E49A /* UIViewController+Flow.swift in Sources */,
+				D4027BFE299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */,
 				2BB350BF2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
 				2B0AD8212757D99600F83660 /* AccountPortfolioView.swift in Sources */,
 				2B5A277F27F6DBEB006C469B /* ManageAssetsListLayout.swift in Sources */,
@@ -21642,6 +21927,8 @@
 				F034521C28B374BC009467A0 /* ASADiscoveryScreen.swift in Sources */,
 				2B2DF28D28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
+				D4027C22299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */,
+				D465C7F2299A35C200733A29 /* BidaliOpenURLRequestMessage.swift in Sources */,
 				D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
@@ -21885,6 +22172,7 @@
 				2B0D84EF239488BD00F0EAA7 /* AssetTransferTransactionType.swift in Sources */,
 				2B9FDEBD28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */,
 				2BA4B3FB267819B20041586B /* WCSessionItemCell.swift in Sources */,
+				D45D76AB299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */,
 				D4A0DEA828980B7900CE3895 /* AssetStatisticsSectionTotalSupplyViewTheme.swift in Sources */,
 				959672E727BA4E3A00BFDE5D /* NotificationLoadingViewCommonTheme.swift in Sources */,
 				95AF1C8527B13EE1001AB131 /* TransactionHistoryLoadingItemView.swift in Sources */,
@@ -21955,6 +22243,7 @@
 				D48FDFD327CEBA1A00C39FC7 /* TitleViewModel.swift in Sources */,
 				17BD4EFA2292F1260003E49A /* BarButtonItem.swift in Sources */,
 				D4FDA57928258BA600BFB778 /* CollectibleFullScreenImageViewController.swift in Sources */,
+				D4027C26299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */,
 				D4CF67E428C7598C0007A727 /* AccountSelectionListScreenTheme.swift in Sources */,
 				F022D1DF276365DE00D786CD /* BlockProcessor.swift in Sources */,
 				2B233B5327C4784600D16B82 /* BuyAlgoHomeScreen.swift in Sources */,
@@ -22000,6 +22289,7 @@
 				F045421F287C13760081C01C /* AlgoAssetItem.swift in Sources */,
 				2B36FCC928B693FD001ECA57 /* OptOutBlockchainUpdate.swift in Sources */,
 				F0431F1F287577660004CB7E /* FiatCurrency.swift in Sources */,
+				D45D7675299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */,
 				95BB6C2627A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
 				17A766882909872D00A8746C /* DiscoverNavigationBarView.swift in Sources */,
 				D497945C287D7075004FBF8E /* AppCallTransactionAssetInformationViewTheme.swift in Sources */,
@@ -22044,6 +22334,7 @@
 				D41F4F21289417D300B59559 /* StandardAssetPreviewLoadingViewTheme.swift in Sources */,
 				2BCCB5BC27D755CA00C5E497 /* OptOutAssetListItemCellTheme.swift in Sources */,
 				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
+				D45D7694299FBCDC0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */,
 				D4D86C63293FDDF6001CE878 /* PendingCollectibleAssetListItemCell.swift in Sources */,
 				D473CA5226E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
 				D44500F6283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
@@ -22077,6 +22368,8 @@
 				2B69BD912785A836008BD8D0 /* HomeListLayout.swift in Sources */,
 				F034522A28B39023009467A0 /* ASAProfileViewModel.swift in Sources */,
 				2B26271B284E3A6600ADE371 /* TransactionListItemViewModel.swift in Sources */,
+				D45D7685299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */,
+				D4027C21299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */,
 				D497944F287CCDCD004FBF8E /* AppCallAssetPreviewViewStackViewModel.swift in Sources */,
 				17CADC992859C2CA001D19A8 /* SortAccountAssetListDataController.swift in Sources */,
 				95609E2727B69A44008CE7FA /* NotificationsDataController.swift in Sources */,
@@ -22090,6 +22383,7 @@
 				2B56B82D2505013600AC7B8D /* RekeyedAccountsResponse.swift in Sources */,
 				D4588ADD294293EE0012C12C /* AccountClipboardView.swift in Sources */,
 				2B69AADC28BE276300A8D65D /* AssetAmountInputView.swift in Sources */,
+				D45D766E299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */,
 				2BD95B052915527D005337E5 /* TapSwapInHomeEvent.swift in Sources */,
 				2B95415325AD04690098805B /* Once.swift in Sources */,
 				95BB6C0827A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
@@ -22139,6 +22433,7 @@
 				2B0322F7269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D4A647AB2784E1D9009DE241 /* TransactionHistoryTitleContextViewModel.swift in Sources */,
 				2B56B8352505013600AC7B8D /* RekeyConfirmationViewModel.swift in Sources */,
+				D45D7674299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */,
 				2BD36E332686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
 				95AF1C7727B13084001AB131 /* TransactionHistoryLoadingView.swift in Sources */,
@@ -22151,6 +22446,7 @@
 				2BC7DC2A286F3F7B00110A92 /* RewardDetailView.swift in Sources */,
 				F087091F27918FE400BEE5C2 /* HomePortfolioView.swift in Sources */,
 				2B56B83B2505013600AC7B8D /* RekeyConfirmationView.swift in Sources */,
+				D4027BFD299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */,
 				2BE8798728BD2CBD00A6C682 /* BuySellTransactionOptionListItemButtonViewModel.swift in Sources */,
 				2B7A1F6E27DE5EEE0010F52E /* CollectiblePropertyViewModel.swift in Sources */,
 				D4A0DE9F289803BC00CE3895 /* AssetStatisticsSectionViewTheme.swift in Sources */,
@@ -22239,11 +22535,14 @@
 				046767852756A65F00C88F21 /* SingleSelectionCell.swift in Sources */,
 				2B7A1F2827DBD2E20010F52E /* CollectibleDetailViewController.swift in Sources */,
 				2B0F617524EC129D00DA22A6 /* Codable+CoreData.swift in Sources */,
+				D45D767D299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */,
 				17CADC7E28531313001D19A8 /* AccountQuickActionsViewTheme.swift in Sources */,
 				2B1073AE28858F6800D465C1 /* AssetVerificationTier.swift in Sources */,
 				2B7A1FBA27DE79280010F52E /* CollectibleDetailInformationCell.swift in Sources */,
 				D4CF682028C8CB340007A727 /* SwapAccountSelectionListAccountListItemCell.swift in Sources */,
 				2B80C53627720F5300BB071E /* AccountCollectibleListViewController.swift in Sources */,
+				D4BAFA9727DF522C0077B781 /* SendCollectibleAccountListDataController.swift in Sources */,
+				D45D7693299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */,
 				95CA720227CD5EC300424626 /* BuyAlgoSignedResponse.swift in Sources */,
 				F0DB41622793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift in Sources */,
 				2BD95B11291552AE005337E5 /* TapSwapInAlgoDetailEvent.swift in Sources */,
@@ -22262,8 +22561,10 @@
 				F063BE88290C080200AEAEF7 /* EditSwapSlippageDataProvider.swift in Sources */,
 				2B71CB7428FDD70E00B1E1A0 /* SwapAssetAmountOutViewModel.swift in Sources */,
 				2B69A9C928617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
+				D4027BF9299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */,
 				2B0F617A24EC129D00DA22A6 /* LedgerDetail.swift in Sources */,
 				F08708D5278C275400BEE5C2 /* ALGBlockProcessor.swift in Sources */,
+				D45D7681299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */,
 				F03451EF28B284E7009467A0 /* OptInAssetListItemCellTheme.swift in Sources */,
 				D4822754272C67D4004CB9BF /* EditContactViewTheme.swift in Sources */,
 				D4CF680A28C87C1C0007A727 /* SwapAccountSelectionListLayout.swift in Sources */,
@@ -22274,6 +22575,7 @@
 				D405058426F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */,
 				2B0F617D24EC129D00DA22A6 /* Notification+Keyboard.swift in Sources */,
 				2B0F618024EC129D00DA22A6 /* Device.swift in Sources */,
+				D4027C1D299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */,
 				D4092BB2276B55D40009722D /* WCSessionShortListItemView.swift in Sources */,
 				D4588AD1294293ED0012C12C /* ReceiverAccountSelectionListDataController.swift in Sources */,
 				2BE09A4A28F6098F0059EEF0 /* SwapSummaryItemView.swift in Sources */,
@@ -22471,6 +22773,7 @@
 				F0CF6B5F2851637A007C30E4 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				95B388AC27F1725700A500B3 /* AnnouncementViewModel.swift in Sources */,
 				D45038E42842C81C009EDE44 /* String+Typography.swift in Sources */,
+				D45D76AA299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */,
 				2B0F61AA24EC129D00DA22A6 /* AlgosTransactionDraft.swift in Sources */,
 				D4372B2528D25ED30057532B /* UISheetActionScreenImageTheme.swift in Sources */,
 				2B6B423E27BECCA00036BF9E /* RenameAccountListItemButtonViewModel.swift in Sources */,
@@ -22506,6 +22809,7 @@
 				D41F4F1C2893FB0700B59559 /* AccountStandardAssetPreviewLoadingViewTheme.swift in Sources */,
 				D4A9954C290C255300E2D105 /* TitledToggleLoadingView.swift in Sources */,
 				2B0F61B724EC129D00DA22A6 /* LedgerBLEController.swift in Sources */,
+				D4027C0D299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
 				2B65602625CE1DDD0028FE12 /* PassphraseCellViewModel.swift in Sources */,
 				F011FCF928593B6200E42EA2 /* HomeAccountsHeader.swift in Sources */,
 				2BAAF49F28E49C5100FC59AF /* SelectAssetScreen.swift in Sources */,
@@ -22654,6 +22958,7 @@
 				D40D4565293A57E5006F9E5C /* CollectibleListItemViewTheme.swift in Sources */,
 				D443A07527E23A8900D2E52F /* SendCollectibleActionView.swift in Sources */,
 				D40ADD8F294521EE004C74E3 /* AccountCollectibleListFilterSelectionViewController.swift in Sources */,
+				D4027C01299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */,
 				F08708D9278C6BFA00BEE5C2 /* BlockEvent.swift in Sources */,
 				95AF1C8C27B13F38001AB131 /* TransactionHistoryLoadingItemViewCommonTheme.swift in Sources */,
 				2B57159E2634CA57002C876D /* AlgosUSDChartViewModel.swift in Sources */,
@@ -22729,6 +23034,7 @@
 				D4CF67E328C7598C0007A727 /* AccountSelectionListScreenTheme.swift in Sources */,
 				D4588AC2294293ED0012C12C /* ReceiverAccountSelectionListScreen.swift in Sources */,
 				2B0F61ED24EC129D00DA22A6 /* ChoosePasswordViewModel.swift in Sources */,
+				D4027C25299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */,
 				2B2BCC292936369400465720 /* SwapAssetFlowDraft.swift in Sources */,
 				D43A0C572790DA57007430B9 /* ResultViewModel.swift in Sources */,
 				D462DED9285744980092DF5A /* CollectibleDescendingTitleAlgorithm.swift in Sources */,
@@ -22763,6 +23069,7 @@
 				D48D11DC27428D31000061CE /* AccountNameSwitchViewTheme.swift in Sources */,
 				17CADCB6285A266E001D19A8 /* AccountAssetDescendingAmountAlgorithm.swift in Sources */,
 				2B0F61F824EC129D00DA22A6 /* TransactionList.swift in Sources */,
+				D45D7665299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */,
 				2BAAF4C028E4A9C000FC59AF /* ConfirmSwapScreenTheme.swift in Sources */,
 				2B0F61F924EC129D00DA22A6 /* TransactionHistoryCell.swift in Sources */,
 				17D0FA3928EC28DE0061B55D /* ExportAccountListScreenTheme.swift in Sources */,
@@ -22773,6 +23080,7 @@
 				F0431F16287577280004CB7E /* RemoteCurrency.swift in Sources */,
 				2B9FDE8828A4F97200C8117D /* AssetVerificationInfoView.swift in Sources */,
 				D40ADD8B294515BC004C74E3 /* CollectibleFilterOptions.swift in Sources */,
+				D45D766A299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */,
 				F0DB4174279440AD00EA437D /* ErrorViewModel.swift in Sources */,
 				D4155E8E276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				D46E5E2026EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift in Sources */,
@@ -22847,6 +23155,7 @@
 				2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2B51A83E288AE9C6004E004C /* AssetQuickActionView.swift in Sources */,
 				D4C19D4F273E9A0200AFDBCC /* PassphraseView.swift in Sources */,
+				D45D7699299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */,
 				2BAAF49928E49C5100FC59AF /* SelectAssetScreenTheme.swift in Sources */,
 				D4C3BD4C278CEB4100E898FD /* AssetDetailTitleViewTheme.swift in Sources */,
 				D41868E0287F0D8D0066DDC0 /* ManagementItemCell.swift in Sources */,
@@ -22918,6 +23227,7 @@
 				D4FC5F4227F500C50017E81F /* InfoBoxViewTheme.swift in Sources */,
 				2B69AAFB28BE35A000A8D65D /* SwapAssetSelectionEmptyViewTheme.swift in Sources */,
 				2B4FD1FB27C63F650097AB65 /* BuyAlgoTransactionView.swift in Sources */,
+				D4027C09299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				D48FDFD727CEBC5400C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift in Sources */,
@@ -23311,6 +23621,7 @@
 				2B0F627824EC129D00DA22A6 /* CIImage+Additions.swift in Sources */,
 				F07C3C1F28B44D65003D55BC /* ASAAboutLoadingViewTheme.swift in Sources */,
 				2B5BE134251B4EEC00324BEE /* UIView+Animation.swift in Sources */,
+				D4027C18299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */,
 				D435A93E28AD2D4F006B495A /* Alert.swift in Sources */,
 				2B71CB7028FDD6EB00B1E1A0 /* SwapAssetAmountInViewModel.swift in Sources */,
 				2B99D45428EC968200323C11 /* SwapConfirmPriceImpactInfoViewModel.swift in Sources */,
@@ -23385,6 +23696,7 @@
 				2B5BE06025190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2B6B3EFB2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				D4B91DA027369240009D3963 /* AssetListViewTheme.swift in Sources */,
+				D45D768A299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */,
 				2B26272F284EBC6D00ADE371 /* AppCallTransactionItemViewModel.swift in Sources */,
 				F010637428AC4AB800AB6873 /* ASAProfileViewTheme.swift in Sources */,
 				F045421A287C00370081C01C /* AssetItem.swift in Sources */,
@@ -23439,6 +23751,7 @@
 				2B0F629124EC129D00DA22A6 /* PassphraseDisplayViewController.swift in Sources */,
 				2B9FDEAB28A52C3700C8117D /* GroupedListItemButtonViewModel.swift in Sources */,
 				D4CF682E28C8E8890007A727 /* InfoBoxHeaderView.swift in Sources */,
+				D45D769D299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				D4F068A226EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
 				2BF90F2125FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
 				2B7E585E25866DA400731C97 /* LedgerAccountCell.swift in Sources */,
@@ -23579,11 +23892,13 @@
 				2B0F62AB24EC129D00DA22A6 /* AccountListLayoutBuilder.swift in Sources */,
 				2B119E8B296EE94300FE6962 /* JSONModel+Extensions.swift in Sources */,
 				2BE09A4428F609610059EEF0 /* SwapSummaryScreenViewModel.swift in Sources */,
+				D45D7678299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				955B617627848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
 				2B0F62AC24EC129D00DA22A6 /* Notification.Name+Additions.swift in Sources */,
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
 				2B5F6F852768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D40D5EB2287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
+				D4027C11299E05C300F59F15 /* PaymentOption.swift in Sources */,
 				2BE8799328BD2CBD00A6C682 /* ScanQRCodeTransactionOptionListItemButtonViewModel.swift in Sources */,
 				D40A9024283CEFCF0091A746 /* TooltipViewModel.swift in Sources */,
 				2B5A277E27F6DBEB006C469B /* ManageAssetsListLayout.swift in Sources */,
@@ -23643,6 +23958,8 @@
 				2B0BCCFF294B676A005F7C75 /* String+Shortening.swift in Sources */,
 				2B0F62BC24EC129D00DA22A6 /* PasswordInputCircleView.swift in Sources */,
 				2BA015882636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift in Sources */,
+				D412C19227F1BCFC00E79308 /* SendCollectibleContactCell.swift in Sources */,
+				D45D76A2299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */,
 				2BAD92A425B5F4A500DE56D5 /* AssetDisplayViewModel.swift in Sources */,
 				174A0F3428EF163D00D44019 /* PasswordMigration.swift in Sources */,
 				2B4FD1FF27C63F740097AB65 /* BuyAlgoTransactionViewTheme.swift in Sources */,
@@ -23668,6 +23985,7 @@
 				95189D8A2779D3F300094107 /* SendTransactionPreviewView.swift in Sources */,
 				17D0F89728EC05C80061B55D /* NavigationBarLargeTitleConfigurable.swift in Sources */,
 				2B7A1FD627DFF1A10010F52E /* CollectibleExternalSource.swift in Sources */,
+				D4027C05299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */,
 				1781CCE02860B275004B699A /* TransactionAmountValidator.swift in Sources */,
 				2BCCB5BF27D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */,
 				2B83D04C26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */,
@@ -23908,6 +24226,7 @@
 				D40E8816294C582A00B46054 /* CollectibleDetailAccountInformationView.swift in Sources */,
 				D446A746272AB3310081D60B /* ContactDetailViewController+Theme.swift in Sources */,
 				D4CF681C28C8CB120007A727 /* SwapAccountSelectionListHeader.swift in Sources */,
+				D45D76A6299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */,
 				2B69AB3728BFCF6100A8D65D /* SwapQuoteDraft.swift in Sources */,
 				D48D11D82742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
 				D4BCAD4B28B5188E0052DD74 /* TransferAssetBalanceNameViewModel.swift in Sources */,
@@ -24127,6 +24446,7 @@
 				2B0F631D24EC129D00DA22A6 /* Optional+Nil.swift in Sources */,
 				2BB3654028537EEB004F07E2 /* SortCollectibleListViewController.swift in Sources */,
 				D4372B1428D206DC0057532B /* AlertPresenter.swift in Sources */,
+				D45D768F299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */,
 				2B9FDE9628A4F9D800C8117D /* AssetLearnMoreListItemButtonViewModel.swift in Sources */,
 				F0600E3828A5B2250043B834 /* ALGAnalyticsCoordinator.swift in Sources */,
 				2B88F51027E2ADCD00E6E296 /* CollectibleMediaImagePreviewViewTheme.swift in Sources */,
@@ -24547,6 +24867,7 @@
 				F07C3C2C28B46D94003D55BC /* ASADetailLoadingView.swift in Sources */,
 				D48D11E727429150000061CE /* ToggleTitleHeaderViewTheme.swift in Sources */,
 				F09FAC872907346D008E3319 /* PercentageInputFormatter.swift in Sources */,
+				D45D768E299FBBD50081735E /* TransaKAccountSelectionListLocalDataController.swift in Sources */,
 				2B0A6A98265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				D4CC28D92875AC370082E038 /* InnerTransactionPreviewCell.swift in Sources */,
@@ -24586,6 +24907,7 @@
 				F096086C2795E36B00CFBB90 /* SingleLineIconTitleViewModel.swift in Sources */,
 				F0CF6B5E2851637A007C30E4 /* AccountAscendingTitleAlgorithm.swift in Sources */,
 				95B388AB27F1725700A500B3 /* AnnouncementViewModel.swift in Sources */,
+				D4027C1C299E0E2800F59F15 /* SardineIntroductionScreen.swift in Sources */,
 				2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				D431505F27EA62DF0084CA41 /* SendCollectibleViewModel.swift in Sources */,
 				17A766822909626400A8746C /* DiscoverDappParamaters.swift in Sources */,
@@ -24770,6 +25092,7 @@
 				2B2AACD0250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				95C9590E278A113A003D0D78 /* WCSingleTransactionRequestBottomViewTheme.swift in Sources */,
+				D45D7689299FBBBB0081735E /* TransaKAccountSelectionListLayout.swift in Sources */,
 				2BB0B11F277DAC8300A16494 /* HomeViewController.swift in Sources */,
 				2BAD6CBB27F907D00016E869 /* Collectible3DViewerTheme.swift in Sources */,
 				95AF1C8B27B13F38001AB131 /* TransactionHistoryLoadingItemViewCommonTheme.swift in Sources */,
@@ -24853,6 +25176,7 @@
 				95BB6C1C27A2CF0300F2A2F1 /* TransactionMultipleAmountInformationView.swift in Sources */,
 				D4822741272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				D4C75BCF272E8C87002BAA66 /* SearchInputViewTheme.swift in Sources */,
+				D45D7684299FB2A50081735E /* SardineAccountSelectionListHeaderViewModel.swift in Sources */,
 				D4EAECA02846678E00E69978 /* SortAccountListTitleSupplementaryHeader.swift in Sources */,
 				D41E83D7291500E20063C2E1 /* WatchAccountAdditionAPIDataController.swift in Sources */,
 				2B69AAC228BE1E4400A8D65D /* SwapAssetSelectionViewTheme.swift in Sources */,
@@ -24880,11 +25204,13 @@
 				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				D4FC5F5927F525AF0017E81F /* SelectedAccountPreviewView.swift in Sources */,
 				D43A0C3D2790D753007430B9 /* NoContentWithActionView.swift in Sources */,
+				D4027C08299DFC3300F59F15 /* SecuredByPaymentOptionsViewModel.swift in Sources */,
 				2B6B423127BEA7780036BF9E /* LearnMoreListItemButtonViewModel.swift in Sources */,
 				D48D11D3274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				0467678A2756A65F00C88F21 /* SingleSelectionListView.swift in Sources */,
 				2B68F3AB281685E300A7C9C4 /* CollectibleMediaGIFPreviewViewModel.swift in Sources */,
 				F010639428AD5C7200AB6873 /* ASADetailQuickActionsView.swift in Sources */,
+				D4027BF8299D366100F59F15 /* TransaKIntroductionScreen.swift in Sources */,
 				D40E881D294C59AB00B46054 /* CollectibleDetailAccountInformationCell.swift in Sources */,
 				F0B0A5F9291E18580021EF8D /* InAppBrowserLoadingView.swift in Sources */,
 				2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
@@ -24903,6 +25229,7 @@
 				2B57D8EF25587F4F006E6FCE /* TapReceiveAssetInDetailEvent.swift in Sources */,
 				955B617127848188005A5C7E /* WCScrollOverlayFragment.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
+				D45D7680299FB28A0081735E /* SardineAccountSelectionListHeaderTheme.swift in Sources */,
 				D4588AD9294293ED0012C12C /* ReceiverAccountSelectionPreviewCell.swift in Sources */,
 				D4AC1FBE272D56760027353F /* AccountListViewController+Theme.swift in Sources */,
 				D48D11DB27428D31000061CE /* AccountNameSwitchViewTheme.swift in Sources */,
@@ -24947,6 +25274,7 @@
 				D4CF683528C8EAB80007A727 /* InfoBoxHeaderViewModel.swift in Sources */,
 				958416E127B29612005B1627 /* HomeLoadingViewTheme.swift in Sources */,
 				046767842756A65F00C88F21 /* SingleSelectionCell.swift in Sources */,
+				D4027C04299DFB4500F59F15 /* SecuredByPaymentOptionsView.swift in Sources */,
 				2B9E2F3D26F0D2C8003D824A /* WCAssetCreationTransactionView.swift in Sources */,
 				D4092BB5276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
 				2B2359922794D1790006D259 /* TransactionsAPIDataController.swift in Sources */,
@@ -24997,6 +25325,7 @@
 				951E884127565D3A00FFEB69 /* SelectAccountViewController+Theme.swift in Sources */,
 				2B835B7F27A425380091E9F6 /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
 				2BECB4A625A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
+				D45D769C299FBD4C0081735E /* TransaKAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				2B71CB8328FEA18A00B1E1A0 /* ConfirmSwapAssetSelectionViewModel.swift in Sources */,
 				2BC636192889BACC00507AEA /* PrimaryListItemViewModel.swift in Sources */,
 				D4979472287D8AB3004FBF8E /* AppCallAssetPreviewWithImageCell.swift in Sources */,
@@ -25004,6 +25333,7 @@
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				D46E5E1B26EA904B00EFEF66 /* LedgerTutorialInstructionListViewTheme.swift in Sources */,
 				2B344B17268A0F8200DA7B25 /* WCTransactionDetail.swift in Sources */,
+				D45D76A1299FBDA20081735E /* TransaKAccountSelectionListHeader.swift in Sources */,
 				D45A93E12936536F000DFCC8 /* CollectibleListItemView.swift in Sources */,
 				2B7E302D267A4A2400E89EE3 /* WCAlgosTransactionViewModel.swift in Sources */,
 				17F8BF6128A2BAC500992F91 /* ALGAnalytics.swift in Sources */,
@@ -25030,6 +25360,7 @@
 				D4FC5F4127F500C50017E81F /* InfoBoxViewTheme.swift in Sources */,
 				D4D7C9A029537937005CC192 /* CollectibleFilterOptionsCache.swift in Sources */,
 				D4710B18276A526300F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
+				D4027C10299E05C300F59F15 /* PaymentOption.swift in Sources */,
 				F0877F80299AEEA700CD8D8A /* InAppBrowserUserContentController.swift in Sources */,
 				2B7A1F3727DBF8150010F52E /* CollectibleDetailAPIDataController.swift in Sources */,
 				F0C542F9291DF05C00596A0A /* DiscoverSearchNextListLoadingCell.swift in Sources */,
@@ -25063,6 +25394,7 @@
 				2B982333231D396D009560CD /* Codable+JSON.swift in Sources */,
 				2B98E49927EBC526000FA690 /* VideoPlayerView.swift in Sources */,
 				17CADCA5285A0243001D19A8 /* AccountAssetSortingAlgorithm.swift in Sources */,
+				D4027C00299D38B300F59F15 /* TransaKFlowCoordinator.swift in Sources */,
 				D4588AD0294293ED0012C12C /* ReceiverAccountSelectionListDataController.swift in Sources */,
 				D4F22126270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				F01063A128AD7A7A00AB6873 /* ScrollVerticalDirection.swift in Sources */,
@@ -25127,6 +25459,7 @@
 				2BA4B40C2678A9C70041586B /* WCSessionListLayout.swift in Sources */,
 				F040FE0B285778DD00A74993 /* ALGCopyToClipboardController.swift in Sources */,
 				D400858F271DC05D007C0C97 /* AlgoStatisticsFooterViewModel.swift in Sources */,
+				D4027C17299E0E1000F59F15 /* SardineFlowCoordinator.swift in Sources */,
 				955B617527848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
 				D4979482287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
 				2BF65837290EF99C00B28D1C /* AssetsFilterSelectionViewController.swift in Sources */,
@@ -25232,6 +25565,7 @@
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
 				D4DC26C328B3A4C80068152E /* ASAAboutScreenInteractableSecondaryListItemTheme.swift in Sources */,
+				D45D7664299FB0950081735E /* SardineAccountSelectionListLayout.swift in Sources */,
 				F05AA70228B3ECFB00AD449B /* AssetDescriptionViewModel.swift in Sources */,
 				D4150DCE27C4D3750064F736 /* CollectibleGalleryGridLoadingView.swift in Sources */,
 				2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
@@ -25242,6 +25576,7 @@
 				2B3D73BC23C3638900597D32 /* LimitQuery.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				1736FB7B28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift in Sources */,
+				D45D7669299FB0C90081735E /* SardineAccountSelectionListDataSource.swift in Sources */,
 				D443A07927E267BB00D2E52F /* SendCollectibleActionViewTheme.swift in Sources */,
 				2B57E45B2922C51300ED12E6 /* SlippageToleranceStore.swift in Sources */,
 				2B69A9C0285FE5A5004014E2 /* QRScanOptionsViewControllerTheme.swift in Sources */,
@@ -25290,6 +25625,7 @@
 				2B57BC4E280EE26B00F958C4 /* CurrencySelectionViewTheme.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* ALGAPI+Account.swift in Sources */,
 				D4A70AFE2878364D00FB52B0 /* AppCallInnerTransactionPreviewViewModel.swift in Sources */,
+				D4027C0C299DFC5C00F59F15 /* SecuredByPaymentOptionsViewTheme.swift in Sources */,
 				2B4334B027C5293300A3D9D6 /* Collectible.swift in Sources */,
 				D4BC072028911FCE00001CDC /* SecondaryListItemViewModel.swift in Sources */,
 				D4999DF428916A7E00C7E05C /* OptInAssetScreenTheme.swift in Sources */,
@@ -25315,6 +25651,7 @@
 				2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */,
 				F034521228B2CD9B009467A0 /* OptInAssetNameViewModel.swift in Sources */,
 				2BD36DB0267CCB4D00C57728 /* WCAlgosTransactionView.swift in Sources */,
+				D45D76A5299FBDC10081735E /* TransaKAccountSelectionListHeaderTheme.swift in Sources */,
 				2B5F6F982768DA0700C9B780 /* SettingsFooterViewTheme.swift in Sources */,
 				D4487A9827BD2B6C00B4B0AB /* AddAccountViewModel.swift in Sources */,
 				D4389355280428460038F7AD /* URLImageViewNoStyleLayoutSheet.swift in Sources */,
@@ -25376,8 +25713,11 @@
 				D43A0C282790D177007430B9 /* NoContentView.swift in Sources */,
 				2B9EF31B25D576A1004BCCC4 /* TutorialViewController.swift in Sources */,
 				95BB6BFA27A1501200F2A2F1 /* WCTransactionFullDappDetailViewTheme.swift in Sources */,
+				D45D766D299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */,
 				2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				2BB350DA2589892300A03BAC /* LedgerAccountDetailViewModel.swift in Sources */,
+				17AC72A0287075BE006919C3 /* AccountSelectNoContentViewModel.swift in Sources */,
+				D45D7677299FB2100081735E /* SardineAccountSelectionListAccountListItemCellTheme.swift in Sources */,
 				2B262711284D667C00ADE371 /* AssetConfigTransactionItemDraftComposer.swift in Sources */,
 				F045BE5928737A3D0069056B /* CurrencyProvider.swift in Sources */,
 				2BAAF49E28E49C5100FC59AF /* SelectAssetScreen.swift in Sources */,
@@ -25397,6 +25737,7 @@
 				2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				D4CF680528C87BDE0007A727 /* SwapAccountSelectionListDataSource.swift in Sources */,
 				2B28DB5C276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */,
+				D45D7698299FBD360081735E /* TransaKAccountSelectionListAccountListItemCell.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2B03D6AF25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
 				2B71CB6F28FDD6EB00B1E1A0 /* SwapAssetAmountInViewModel.swift in Sources */,
@@ -25552,6 +25893,7 @@
 				2BE8798628BD2CBD00A6C682 /* BuySellTransactionOptionListItemButtonViewModel.swift in Sources */,
 				F09E62A32767968300FEC701 /* ALGBlockOperationQueue.swift in Sources */,
 				D4395189293540CD0052FEB9 /* CollectibleGalleryUIActionsView.swift in Sources */,
+				D45D767C299FB2600081735E /* SardineAccountSelectionListHeader.swift in Sources */,
 				D4B91D9F27369240009D3963 /* AssetListViewTheme.swift in Sources */,
 				F06516932905C16300ECE763 /* AdjustableSingleSelectionInputViewTheme.swift in Sources */,
 				D48D11DF27428EA4000061CE /* ImageWithTitleViewTheme.swift in Sources */,
@@ -25684,6 +26026,7 @@
 				D43A0C192790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B119E8A296EE94300FE6962 /* JSONModel+Extensions.swift in Sources */,
+				D4027BFC299D368100F59F15 /* TransaKIntroductionScreenTheme.swift in Sources */,
 				2B69AB0228BE842E00A8D65D /* SwapAssetSelectionEmptyViewDraft.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
 				2BB8483227E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift in Sources */,
@@ -25847,6 +26190,7 @@
 				F0C542C1291C3A3300596A0A /* DiscoverSearchListLoadingViewTheme.swift in Sources */,
 				2B4EEECC24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
 				2BD95B002915526D005337E5 /* SwapBannerTryEvent.swift in Sources */,
+				D4027C20299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */,
 				F04BD2CC28611C4100F43878 /* ToastView.swift in Sources */,
 				D48D11CF27425368000061CE /* NotificationViewTheme.swift in Sources */,
 				D4B91DA32736BF21009D3963 /* AssetActionConfirmationViewTheme.swift in Sources */,
@@ -26087,6 +26431,7 @@
 				2B0D84EE239488BD00F0EAA7 /* AssetTransferTransactionType.swift in Sources */,
 				D4DC26AF28B3A22E0068152E /* ASAAboutScreenASAIDSecondaryListItem.swift in Sources */,
 				D48FDFDF27CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift in Sources */,
+				D45D76A9299FBDE70081735E /* TransaKAccountSelectionListHeaderViewModel.swift in Sources */,
 				2B5F6F942768D8CC00C9B780 /* SettingsToggleViewTheme.swift in Sources */,
 				2B9FDEBB28A55C0200C8117D /* AssetDiscordListItemButtonViewModel.swift in Sources */,
 				D40E8803294B8AE700B46054 /* CollectibleDetailCreatorAccountItemCellTheme.swift in Sources */,
@@ -26160,6 +26505,7 @@
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				F0C542F4291DE4F600596A0A /* DiscoverSearchNextListErrorViewTheme.swift in Sources */,
 				9565CF6D27ABE9D900A8095C /* AssetListViewAPIDataController.swift in Sources */,
+				D4027C24299E0F6A00F59F15 /* BuySellOptionsBuyAlgoWithSardineOptionViewModel.swift in Sources */,
 				D4C45BFB2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */,
 				2B2AACDC250BA4C200B8C5C5 /* DeveloperSettings.swift in Sources */,
 				2BE9371E246308D600322C1E /* SelectAssetViewController.swift in Sources */,
@@ -26203,6 +26549,7 @@
 				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,
 				17D0FA5628EC28DE0061B55D /* ExportAccountListItemAccessory.swift in Sources */,
 				F063BE82290BFD1500AEAEF7 /* SwapSlippageTolerancePercentage.swift in Sources */,
+				D45D7673299FB1D20081735E /* SardineAccountSelectionListAccountListItemCell.swift in Sources */,
 				17AC727A286A0A82006919C3 /* ALGUniversalLinkConfig.swift in Sources */,
 				2B80C543277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				17D0FA2C28EC28DE0061B55D /* QRExportInformations.swift in Sources */,
@@ -26247,6 +26594,7 @@
 				2BAD6CB327F88CDF0016E869 /* Collectible3DVideoViewController.swift in Sources */,
 				17EF5133295B0EA500461347 /* ASADetailMarketView.swift in Sources */,
 				D454904F29597DD90095E0D1 /* CollectibleListItemLoadingCell.swift in Sources */,
+				D45D7692299FBCDB0081735E /* TransaKAccountSelectionListDataSource.swift in Sources */,
 				D4D86C61293FDDF6001CE878 /* PendingCollectibleAssetListItemCell.swift in Sources */,
 				D44500F4283BA2A5003E9D59 /* TooltipUIController.swift in Sources */,
 				D4999E252891A74B00C7E05C /* TransactionFeeSecondaryListItemViewTheme.swift in Sources */,

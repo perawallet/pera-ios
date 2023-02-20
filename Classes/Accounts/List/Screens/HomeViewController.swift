@@ -48,6 +48,8 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
+    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
@@ -591,6 +593,12 @@ extension HomeViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyAlgoWithSardine:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithSardine()
+                }
             case .performBuyUSDCWithTransaK:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -612,13 +620,19 @@ extension HomeViewController {
         )
     }
 
+    private func openBuyAlgoWithSardine() {
+        sardineFlowCoordinator.launch()
+    }
+
     private func openBuyAlgoWithMoonpay() {
         analytics.track(.recordHomeScreen(type: .buyAlgo))
 
         buyAlgoFlowCoordinator.launch()
     }
 
-    private func openBuyUSDCWithTransaK() {}
+    private func openBuyUSDCWithTransaK() {
+        transaKFlowCoordinator.launch()
+    }
 }
 
 extension HomeViewController {

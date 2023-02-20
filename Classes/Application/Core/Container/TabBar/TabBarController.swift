@@ -72,7 +72,10 @@ final class TabBarController: TabBarContainer {
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api)
+    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self, api: api)
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api)
+
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -381,6 +384,12 @@ extension TabBarController {
                     guard let self else { return }
                     self.openBuyAlgoWithMoonpay()
                 }
+            case .performBuyAlgoWithSardine:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithSardine()
+                }
             case .performBuyUSDCWithTransaK:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -408,7 +417,13 @@ extension TabBarController {
         analytics.track(.moonpay(type: .tapBottomsheetBuy))
     }
 
-    private func openBuyUSDCWithTransaK() {}
+    private func openBuyAlgoWithSardine() {
+        sardineFlowCoordinator.launch()
+    }
+
+    private func openBuyUSDCWithTransaK() {
+        transaKFlowCoordinator.launch()
+    }
 
     private func openBuyGiftCardsWithBidali() {
         bidaliFlowCoordinator.launch()
