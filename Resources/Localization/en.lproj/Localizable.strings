@@ -1342,6 +1342,8 @@
 "buy-sell-options-buy-header-title" = "Buy crypto";
 "buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
 "buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with TransaK";
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
