@@ -172,8 +172,7 @@ extension EditNoteScreen: FormInputFieldViewEditingDelegate {
 
 extension EditNoteScreen {
     private func updateNoteAfterValidation() {
-        guard let noteByteArray = noteInputView.text?.convertToByteArray(),
-              !noteByteArray.isEmpty else {
+        guard let noteByteArray = noteInputView.text?.convertToByteArray() else {
             return
         }
         
