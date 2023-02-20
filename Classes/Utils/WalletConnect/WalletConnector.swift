@@ -28,6 +28,7 @@ class WalletConnector {
     }
 
     private lazy var sessionSource = WalletConnectSessionSource()
+    private lazy var sessionValidator = WalletConnectV1SessionValidator()
 
     weak var delegate: WalletConnectorDelegate?
     
@@ -55,6 +56,10 @@ class WalletConnector {
 }
 
 extension WalletConnector {
+    func isValidSession(_ uri: String) -> Bool {
+        return sessionValidator.isValidSession(uri)
+    }
+    
     func configureTransactionsIfNeeded() {
         if isRegisteredToTheTransactionRequests {
             return

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   String+QR.swift
+//   WalletConnectSessionValidator.swift
 
 import Foundation
 
-private let walletConnectPrefix = "wc:"
+protocol WalletConnectSessionValidator {
+    var sessionPrefix: String { get }
+    
+    func isValidSession(_ uri: String) -> Bool
+}
 
-extension String {
-    var isWalletConnectConnection: Bool {
-        return hasPrefix(walletConnectPrefix)
+extension WalletConnectSessionValidator {
+    var sessionPrefix: String {
+        return "wc:"
     }
 }

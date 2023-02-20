@@ -300,7 +300,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             if walletConnectorV2.isValidSession(qrString) {
                 walletConnectorV2.pair(with: qrString)
                 return
-            } else if qrString.isWalletConnectConnection {
+            } else if walletConnector.isValidSession(qrString) {
                 if !canReadWCSession {
                     bannerController?.presentErrorBanner(
                         title: "title-error".localized,
