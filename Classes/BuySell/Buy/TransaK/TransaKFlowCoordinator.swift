@@ -19,9 +19,14 @@ import UIKit
 
 final class TransaKFlowCoordinator {
     private unowned let presentingScreen: UIViewController
+    private let api: ALGAPI
 
-    init(presentingScreen: UIViewController) {
+    init(
+        presentingScreen: UIViewController,
+        api: ALGAPI
+    ) {
         self.presentingScreen = presentingScreen
+        self.api =  api
     }
 }
 
@@ -39,15 +44,81 @@ extension TransaKFlowCoordinator {
             by: .present
         ) as? TransaKIntroductionScreen
         screen?.eventHandler = {
-            [weak self] event in
-            guard let self else { return }
+            [weak self, weak screen] event in
+            guard let self,
+                  let screen else { return }
 
             switch event {
             case .performCloseAction:
                 self.presentingScreen.dismiss(animated: true)
             case .performPrimaryAction:
-                break
+                guard self.isAvailable else {
+                    self.presentNotAvailableAlert(on: screen)
+                    return
+                }
+
+                if let account {
+                    self.openDappDetail(
+                        with: account,
+                        from: screen
+                    )
+                    return
+                }
+
+                self.openAccountSelection(from: screen)
             }
         }
+    }
+}
+
+extension TransaKFlowCoordinator {
+    private func openAccountSelection(from screen: UIViewController) {
+        let accountSelectionScreen = Screen.transaKAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let account):
+                self.openDappDetail(
+                    with: account,
+                    from: screen
+                )
+            default: break
+            }
+        }
+
+        screen.open(
+            accountSelectionScreen,
+            by: .push
+        )
+    }
+}
+
+extension TransaKFlowCoordinator {
+    private func openDappDetail(
+        with account: AccountHandle,
+        from screen: UIViewController
+    ) {
+//        screen.open(
+//            .transaKDappDetail(account: account),
+//            by: .push
+//        )
+    }
+}
+
+extension TransaKFlowCoordinator {
+    /// <note>
+    /// In staging app, the TransaK is always enabled, but in store app, it is enabled only
+    /// on mainnet.
+    private var isAvailable: Bool {
+        let isAvailable = !ALGAppTarget.current.isProduction || !api.isTestNet
+        return isAvailable
+    }
+
+    private func presentNotAvailableAlert(on screen: UIViewController) {
+        screen.displaySimpleAlertWith(
+            title: "title-not-available".localized,
+            message: "transak-not-available-description".localized
+        )
     }
 }
