@@ -1341,6 +1341,8 @@
 "buy-sell-options-buy-header-title" = "Buy crypto";
 "buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
 "buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
 "buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with TransaK";
 "buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
 "buy-sell-options-sell-header-title" = "Sell crypto";
@@ -1358,8 +1360,16 @@
 "bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
 "bidali-introduction-action-title" = "Buy gift cards";
 
+// MARK:  Sardine Introduction
+"sardine-introduction-navigation-title" = "Buy ALGO with Sardine";
+"sardine-introduction-title" = "Buy ALGO";
+"sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
+"sardine-introduction-action-title" = "Buy ALGO with Sardine";
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
+
 // MARK:  TransaK Introduction
 "transak-introduction-navigation-title" = "Buy USDC with TransaK";
 "transak-introduction-title" = "Buy USDC";
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
 "transak-introduction-action-title" = "Buy USDC with TransaK";
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use TransaK.";

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKFlowCoordinator.swift
+//   SardineFlowCoordinator.swift
 
 import Foundation
 import UIKit
 
-final class TransaKFlowCoordinator {
+final class SardineFlowCoordinator {
     private unowned let presentingScreen: UIViewController
     private let api: ALGAPI
 
@@ -30,19 +30,19 @@ final class TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension SardineFlowCoordinator {
     /// When an account is not passed to the function, the account selection flow is triggered within the overall flow.
     func launch(_ account: AccountHandle? = nil) {
         openIntroduction(account)
     }
 }
 
-extension TransaKFlowCoordinator {
+extension SardineFlowCoordinator {
     private func openIntroduction(_ account: AccountHandle? = nil) {
         let screen = presentingScreen.open(
-            .transaKIntroduction,
+            .sardineIntroduction,
             by: .present
-        ) as? TransaKIntroductionScreen
+        ) as? SardineIntroductionScreen
         screen?.eventHandler = {
             [weak self, weak screen] event in
             guard let self,
@@ -71,9 +71,9 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension SardineFlowCoordinator {
     private func openAccountSelection(from screen: UIViewController) {
-        let accountSelectionScreen = Screen.transaKAccountSelection {
+        let accountSelectionScreen = Screen.sardineAccountSelection {
             [weak self] event, screen in
             guard let self else { return }
 
@@ -94,21 +94,21 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension SardineFlowCoordinator {
     private func openDappDetail(
         with account: AccountHandle,
         from screen: UIViewController
     ) {
 //        screen.open(
-//            .transaKDappDetail(account: account),
+//            .sardineDappDetail(account: account),
 //            by: .push
 //        )
     }
 }
 
-extension TransaKFlowCoordinator {
+extension SardineFlowCoordinator {
     /// <note>
-    /// In staging app, the TransaK is always enabled, but in store app, it is enabled only
+    /// In staging app, the Sardine is always enabled, but in store app, it is enabled only
     /// on mainnet.
     private var isAvailable: Bool {
         let isAvailable = !ALGAppTarget.current.isProduction || !api.isTestNet
@@ -118,7 +118,7 @@ extension TransaKFlowCoordinator {
     private func presentNotAvailableAlert(on screen: UIViewController) {
         screen.displaySimpleAlertWith(
             title: "title-not-available".localized,
-            message: "transak-not-available-description".localized
+            message: "sardine-not-available-description".localized
         )
     }
 }
