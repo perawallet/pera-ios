@@ -230,7 +230,7 @@ extension ManageAssetsListLocalDataController {
         var snapshot = Snapshot()
         snapshot.appendSections([.empty])
         snapshot.appendItems(
-            [.empty(AssetListSearchNoContentViewModel(hasBody: true))],
+            [.empty(AssetListSearchNoContentViewModel(hasBody: false))],
             toSection: .empty
         )
         
