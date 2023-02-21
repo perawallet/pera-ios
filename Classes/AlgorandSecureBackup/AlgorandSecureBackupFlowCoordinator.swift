@@ -40,7 +40,7 @@ extension AlgorandSecureBackupFlowCoordinator {
             guard let self else { return }
             self.openAccountSelection(from: screen)
         }
-        presentingScreen.open(screen, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
+        presentingScreen.open(screen, by: .present)
     }
 
     private func openAccountSelection(from viewController: UIViewController) {
