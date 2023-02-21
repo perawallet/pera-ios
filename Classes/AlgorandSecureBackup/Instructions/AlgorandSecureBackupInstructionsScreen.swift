@@ -21,7 +21,7 @@ import UIKit
 final class AlgorandSecureBackupInstructionsScreen:
     ScrollScreen,
     NavigationBarLargeTitleConfigurable {
-    typealias EventHandler = (Event) -> Void
+    typealias EventHandler = (Event, AlgorandSecureBackupInstructionsScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -45,8 +45,11 @@ final class AlgorandSecureBackupInstructionsScreen:
 
     private let theme: AlgorandSecureBackupInstructionsScreenTheme
 
+    private var isViewLayoutLoaded = false
+
     init(theme: AlgorandSecureBackupInstructionsScreenTheme = .init()) {
         self.theme = theme
+        super.init()
     }
 
     deinit {
@@ -63,9 +66,18 @@ final class AlgorandSecureBackupInstructionsScreen:
         super.configureNavigationBar()
 
         navigationBarLargeTitleController.title = "algorand-secure-backup-instruction-title".localized
+    }
 
-        let offset = theme.contextPaddings.top - theme.navigationBarEdgeInset.top
-        navigationBarLargeTitleController.additionalScrollEdgeOffset = offset
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isViewLayoutLoaded {
+            return
+        }
+
+        updateUIWhenViewDidLayoutSubviews()
+
+        isViewLayoutLoaded = true
     }
 
     override func viewDidLoad() {
@@ -82,7 +94,21 @@ final class AlgorandSecureBackupInstructionsScreen:
             Colors.Defaults.background.uiColor.withAlphaComponent(0),
             Colors.Defaults.background.uiColor
         ]
+        backgroundGradient.locations = [ 0, 0.2, 1 ]
+
         footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
+    }
+
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        navigationBarLargeTitleController.scrollViewWillEndDragging(
+            withVelocity: velocity,
+            targetContentOffset: targetContentOffset,
+            contentOffsetDeltaYBelowLargeTitle: 0
+        )
     }
 
     private func addUI() {
@@ -99,7 +125,7 @@ extension AlgorandSecureBackupInstructionsScreen {
     }
 
     private func addNavigationBarLargeTitle() {
-        contentView.addSubview(navigationBarLargeTitleView)
+        view.addSubview(navigationBarLargeTitleView)
         navigationBarLargeTitleView.snp.makeConstraints {
             $0.setPaddings(
                 theme.navigationBarEdgeInset
@@ -110,7 +136,7 @@ extension AlgorandSecureBackupInstructionsScreen {
     private func addContext() {
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.top == navigationBarLargeTitleView.snp.bottom + theme.contextPaddings.top
+            $0.top == theme.contextPaddings.top
             $0.leading == theme.contextPaddings.leading
             $0.bottom == theme.contextPaddings.bottom
             $0.trailing == theme.contextPaddings.trailing
@@ -181,7 +207,7 @@ extension AlgorandSecureBackupInstructionsScreen {
 
     private func addStartAction() {
         startActionView.customizeAppearance(theme.startAction)
-        startActionView.contentEdgeInsets = UIEdgeInsets(theme.startActionContentEdgeInsets)
+        startActionView.contentEdgeInsets = theme.startActionContentEdgeInsets
 
         footerView.addSubview(startActionView)
         startActionView.snp.makeConstraints {
@@ -214,9 +240,19 @@ extension AlgorandSecureBackupInstructionsScreen {
 }
 
 extension AlgorandSecureBackupInstructionsScreen {
+    private func updateUIWhenViewDidLayoutSubviews() {
+        updateAdditionalSafeAreaInetsWhenViewDidLayoutSubviews()
+    }
+
+    private func updateAdditionalSafeAreaInetsWhenViewDidLayoutSubviews() {
+        scrollView.contentInset.top = navigationBarLargeTitleView.bounds.height
+    }
+}
+
+extension AlgorandSecureBackupInstructionsScreen {
     @objc
     private func performStartAction() {
-        eventHandler?(.performStart)
+        eventHandler?(.performStart, self)
     }
 }
 

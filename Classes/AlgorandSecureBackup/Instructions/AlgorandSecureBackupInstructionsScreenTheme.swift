@@ -29,8 +29,8 @@ struct AlgorandSecureBackupInstructionsScreenTheme:
     var instruction: AlgorandSecureBackupInstructionItemViewTheme
     var instructionsSpacing: LayoutMetric
     var startAction: ButtonStyle
-    var startActionContentEdgeInsets: LayoutPaddings
-    var startActionEdgeInsets: LayoutPaddings
+    var startActionContentEdgeInsets: UIEdgeInsets
+    var startActionEdgeInsets: NSDirectionalEdgeInsets
 
     init(_ family: LayoutFamily) {
         self.background = [
@@ -56,7 +56,7 @@ struct AlgorandSecureBackupInstructionsScreenTheme:
                 .disabled("components/buttons/primary/bg-disabled")
             ])
         ]
-        self.startActionContentEdgeInsets = (16, 24, 16, 24)
-        self.startActionEdgeInsets = (8, 24, 16, 24)
+        self.startActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)
+        self.startActionEdgeInsets = .init(top: 36, leading: 24, bottom: 16, trailing: 24)
     }
 }
