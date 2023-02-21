@@ -90,6 +90,12 @@ extension ManageAssetsListLayout {
                 item: item,
                 forSectionAt: indexPath.section
             )
+        case .loading:
+            return sizeForLoading(
+                collectionView,
+                layout: collectionViewLayout,
+                forSectionAt: indexPath.section
+            )
         }
     }
 
@@ -162,6 +168,23 @@ extension ManageAssetsListLayout {
             item,
             for: NoContentCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+        
+        return newSize
+    }
+    
+    private func sizeForLoading(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        forSectionAt section: Int
+    ) -> CGSize{
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = AccountAssetListLoadingCell.calculatePreferredSize(
+            for: AccountAssetListLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
         )
         
         return newSize

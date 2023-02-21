@@ -40,8 +40,6 @@ final class ManageAssetsListLocalDataController:
 
     private var lastQuery: String? = nil
 
-    weak var dataSource: ManageAssetsListDataSource?
-
     init(
         account: Account,
         sharedDataController: SharedDataController
@@ -58,7 +56,7 @@ final class ManageAssetsListLocalDataController:
 }
 
 extension ManageAssetsListLocalDataController {
-    func fetchAssets() {
+    func load() {
         setRemovableAccountAssets()
         
         searchResults = accountAssets
@@ -101,7 +99,7 @@ extension ManageAssetsListLocalDataController {
 
     func resetSearch() {
         lastQuery = nil
-        fetchAssets()
+        load()
     }
 }
 
@@ -130,7 +128,7 @@ extension ManageAssetsListLocalDataController {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            fetchAssets()
+            load()
         }
     }
 
@@ -165,7 +163,7 @@ extension ManageAssetsListLocalDataController {
             
             var snapshot = Snapshot()
             
-            var optOutListItems: [ManageAssetSearchItem] = []
+            var optOutListItems: [ManageAssetsListItem] = []
 
             self.searchResults.forEach { asset in
                 if let collectibleAsset = asset as? CollectibleAsset {
@@ -204,7 +202,7 @@ extension ManageAssetsListLocalDataController {
         }
     }
 
-    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetSearchItem {
+    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetsListItem {
         let currency = sharedDataController.currency
         let currencyFormatter = currencyFormatter
         let item = AssetItem(
@@ -216,7 +214,7 @@ extension ManageAssetsListLocalDataController {
         return .asset(optOutAssetListItem)
     }
 
-    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetSearchItem {
+    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetsListItem {
         let item = CollectibleAssetItem(
             account: account,
             asset: asset,

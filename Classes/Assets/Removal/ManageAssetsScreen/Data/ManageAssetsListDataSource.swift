@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<ManageAssetSearchSection, ManageAssetSearchItem> {
+final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<ManageAssetsListSection, ManageAssetsListItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -46,12 +46,18 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
                 )
                 cell.bindData(item)
                 return cell
+            case .loading:
+                return collectionView.dequeue(
+                    AccountAssetListLoadingCell.self,
+                    at: indexPath
+                )
             }
         }
 
         [
             OptOutAssetListItemCell.self,
             OptOutCollectibleAssetListItemCell.self,
+            AccountAssetListLoadingCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

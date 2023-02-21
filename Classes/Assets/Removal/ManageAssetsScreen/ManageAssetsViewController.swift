@@ -86,7 +86,6 @@ final class ManageAssetsViewController:
     }
     
     override func setListeners() {
-        dataController.dataSource = dataSource
         contextView.assetsCollectionView.dataSource = dataSource
         contextView.assetsCollectionView.delegate = self
         contextView.setSearchInputDelegate(self)
@@ -281,7 +280,7 @@ extension ManageAssetsViewController {
             currencyFormatter: currencyFormatter
         )
         let optOutAssetListItem = OptOutAssetListItem(item: assetItem)
-        let listItem = ManageAssetSearchItem.asset(optOutAssetListItem)
+        let listItem = ManageAssetsListItem.asset(optOutAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
@@ -298,7 +297,7 @@ extension ManageAssetsViewController {
             amountFormatter: collectibleAmountFormatter
         )
         let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: collectibleAssetItem)
-        let listItem = ManageAssetSearchItem.collectibleAsset(optOutCollectibleAssetListItem)
+        let listItem = ManageAssetsListItem.collectibleAsset(optOutCollectibleAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
