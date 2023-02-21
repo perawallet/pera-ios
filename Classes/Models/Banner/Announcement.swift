@@ -90,6 +90,15 @@ final class Announcement: ALGAPIModel {
         buttonLabel = nil
         buttonUrl = nil
     }
+
+    init(type: AnnouncementType) {
+        self.id = 0
+        self.type = type
+        self.title = nil
+        self.subtitle = nil
+        self.buttonLabel = nil
+        self.buttonUrl = nil
+    }
     
     private enum CodingKeys: String, CodingKey {
         case id
@@ -105,11 +114,14 @@ final class Announcement: ALGAPIModel {
 enum AnnouncementType: String, Codable {
     case governance
     case generic
+    case backup
     
     init?(rawValue: String) {
         switch rawValue {
         case "governance":
             self = .governance
+        case "backup":
+            self = .backup
         default:
             self = .generic
         }

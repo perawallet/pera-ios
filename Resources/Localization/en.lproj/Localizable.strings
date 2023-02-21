@@ -1385,3 +1385,7 @@
 "algorand-secure-backup-error-result-body" = "An error occurred while generating your Algorand Secure Backup. Please try again or contact support.";
 "algorand-secure-backup-error-result-body-highlighted-text" =  "contact support";
 "algorand-secure-backup-error-action-title" = "Try again";
+
+"algorand-secure-backup-banner-title" = "Backup your accounts";
+"algorand-secure-backup-banner-subtitle" = "You will lose access to your funds forever if your device is lost or stolen.";
+"algorand-secure-backup-banner-cta-title" = "Backup Now (~2min)";

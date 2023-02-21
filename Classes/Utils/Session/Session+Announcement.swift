@@ -19,15 +19,17 @@ import Foundation
 extension Session {
     func setAnnouncementHidden(_ announcement: Announcement, isHidden: Bool) {
         let metadata = AnnouncementMetadata(isHidden: isHidden)
-        
         var states = self.announcementStates
-        states["\(announcement.id)"] = metadata
-
+        states[stateId(for: announcement)] = metadata
         self.announcementStates = states
     }
 
     func isAnnouncementHidden(_ announcement: Announcement) -> Bool {
-        announcementStates["\(announcement.id)"] != nil
+        return announcementStates[stateId(for: announcement)] != nil
+    }
+
+    private func stateId(for announcement: Announcement) -> String {
+        announcement.type == .backup ? "backup" : "\(announcement.id)"
     }
 }
 

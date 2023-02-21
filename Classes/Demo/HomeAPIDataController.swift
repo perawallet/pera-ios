@@ -265,7 +265,6 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         let announcementToDisplay = announcements.first { announcement in
             return !session.isAnnouncementHidden(announcement)
         }
-
         self.visibleAnnouncement = announcementToDisplay
     }
 }

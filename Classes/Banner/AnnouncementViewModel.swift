@@ -20,18 +20,40 @@ import MacaroonUIKit
 struct AnnouncementViewModel:
     PairedViewModel,
     Hashable {
+    let type: AnnouncementType
 
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var ctaTitle: String?
-    private(set) var isGeneric: Bool = false
     private(set) var ctaUrl: URL?
 
+    var shouldDisplayAction: Bool {
+        switch type {
+        case .backup:
+            return true
+        case .governance, .generic:
+            return ctaUrl != nil && ctaTitle != nil
+        }
+    }
+
     init(_ model: Announcement) {
+        type = model.type
+
+        if model.type == .backup {
+            populateBackupAnnouncement()
+            return
+        }
+
         title = model.title
         subtitle = model.subtitle
         ctaTitle = model.buttonLabel
-        isGeneric = model.type == .generic
         ctaUrl = model.buttonUrl
+    }
+
+    private mutating func populateBackupAnnouncement() {
+        title = "algorand-secure-backup-banner-title".localized
+        subtitle = "algorand-secure-backup-banner-subtitle".localized
+        ctaTitle = "algorand-secure-backup-banner-cta-title".localized
+        ctaUrl = nil
     }
 }
