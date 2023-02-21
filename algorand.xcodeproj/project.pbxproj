@@ -206,6 +206,12 @@
 		17899DFA299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
 		17899DFB299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
 		17899DFC299E74AB00DE6A72 /* SecureBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DF9299E74AB00DE6A72 /* SecureBackup.swift */; };
+		17899DFE29A3860500DE6A72 /* BackupMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DFD29A3860500DE6A72 /* BackupMetadata.swift */; };
+		17899DFF29A3860500DE6A72 /* BackupMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DFD29A3860500DE6A72 /* BackupMetadata.swift */; };
+		17899E0029A3860500DE6A72 /* BackupMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899DFD29A3860500DE6A72 /* BackupMetadata.swift */; };
+		17899E0229A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0129A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift */; };
+		17899E0329A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0129A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift */; };
+		17899E0429A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0129A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -6795,6 +6801,8 @@
 		17899DF1299E73DA00DE6A72 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		17899DF5299E746E00DE6A72 /* BackupParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupParameters.swift; sourceTree = "<group>"; };
 		17899DF9299E74AB00DE6A72 /* SecureBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackup.swift; sourceTree = "<group>"; };
+		17899DFD29A3860500DE6A72 /* BackupMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMetadata.swift; sourceTree = "<group>"; };
+		17899E0129A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupFlowCoordinator.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		17924433288FD0450075F36F /* NotificationStatusFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationStatusFetchDraft.swift; sourceTree = "<group>"; };
@@ -18548,6 +18556,8 @@
 				D419711129927D86003FEEB1 /* Result */,
 				17899DF5299E746E00DE6A72 /* BackupParameters.swift */,
 				17899DF9299E74AB00DE6A72 /* SecureBackup.swift */,
+				17899DFD29A3860500DE6A72 /* BackupMetadata.swift */,
+				17899E0129A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift */,
 			);
 			path = AlgorandSecureBackup;
 			sourceTree = "<group>";
@@ -20738,6 +20748,7 @@
 				2B9EF2FA25D5761E004BCCC4 /* TutorialView.swift in Sources */,
 				95AF1C6F27AD79AD001AB131 /* ShimmerView.swift in Sources */,
 				D4D656E3277CBAA3007C32F0 /* TransactionAmountInformationViewModel.swift in Sources */,
+				17899E0029A3860500DE6A72 /* BackupMetadata.swift in Sources */,
 				D4B0529128AEB5E100D53B20 /* SwapIntroductionDraft.swift in Sources */,
 				2B4EEEC924BF453500059A16 /* NotificationMessage.swift in Sources */,
 				F0D0716729831E8100817B43 /* AccountDetailAPIDataController.swift in Sources */,
@@ -21801,6 +21812,7 @@
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				95BB6C0927A2BB1700F2A2F1 /* VerticalTransactionAmountViewTheme.swift in Sources */,
 				F05E6C5328617C9E004E33D6 /* ToastViewModel.swift in Sources */,
+				17899E0429A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */,
 				2B8CD5852906D379004A81B9 /* SwapAssetScreenTheme.swift in Sources */,
 				2B69AB3C28BFCF9400A8D65D /* SwapTransactionPreparationDraft.swift in Sources */,
 				D48281C627A01AE6004412D5 /* TransactionTutorialViewTheme.swift in Sources */,
@@ -22805,6 +22817,7 @@
 				D46C648226E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				F0DB41562793826D00EA437D /* TitleWithAccessoryViewTheme.swift in Sources */,
 				2B05A676251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
+				17899E0329A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */,
 				2B0F618F24EC129D00DA22A6 /* Formatter+Additions.swift in Sources */,
 				2B0F619024EC129D00DA22A6 /* DeepLinkParser.swift in Sources */,
 				177072A0290AAC75009E02AE /* DiscoverSearchDataSource.swift in Sources */,
@@ -24570,6 +24583,7 @@
 				2B0F631224EC129D00DA22A6 /* TransactionSendDraft.swift in Sources */,
 				2B58CE1A27FBB9D500A95BB4 /* ManageAssetsListDataController.swift in Sources */,
 				D4241FD126E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
+				17899DFF29A3860500DE6A72 /* BackupMetadata.swift in Sources */,
 				D4092BB6276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
 				F034520C28B2A0F6009467A0 /* OptInAssetListItemAccessory.swift in Sources */,
 				F07C3C4E28B55EF7003D55BC /* BlockchainRequest.swift in Sources */,
@@ -25054,6 +25068,7 @@
 				2B80C54B2773241D00BB071E /* SearchBarItemView.swift in Sources */,
 				2B5BE0512518E4F200324BEE /* WatchAccountAdditionViewController.swift in Sources */,
 				2B2A49792850B79B00A5050F /* CurrencySelectionViewModel.swift in Sources */,
+				17899DFE29A3860500DE6A72 /* BackupMetadata.swift in Sources */,
 				2B9EF2F825D5761E004BCCC4 /* TutorialView.swift in Sources */,
 				2B4EEEC824BF453500059A16 /* NotificationMessage.swift in Sources */,
 				F03451CB28B23A39009467A0 /* ASAAboutScreenTheme.swift in Sources */,
@@ -26117,6 +26132,7 @@
 				D4F068A126EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
 				2BED6571266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
 				2BF90F2025FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
+				17899E0229A4B39E00DE6A72 /* AlgorandSecureBackupFlowCoordinator.swift in Sources */,
 				2BAD6CAB27F884FB0016E869 /* Collectible3DCardDisplayable.swift in Sources */,
 				17D0FA3B28EC28DE0061B55D /* ExportAccountListScreen.swift in Sources */,
 				D48281C427A01AE6004412D5 /* TransactionTutorialViewTheme.swift in Sources */,
