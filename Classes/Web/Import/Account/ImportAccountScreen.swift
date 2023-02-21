@@ -20,6 +20,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 import MagpieExceptions
+import UIKit
 
 final class ImportAccountScreen: BaseViewController {
     typealias EventHandler = (Event, ImportAccountScreen) -> Void
@@ -30,6 +31,7 @@ final class ImportAccountScreen: BaseViewController {
         return false
     }
 
+    private lazy var loadingView = UIView()
     private lazy var imageView = ImageView()
     private lazy var titleView = Label()
     private lazy var theme = ImportAccountScreenTheme()
@@ -57,8 +59,7 @@ final class ImportAccountScreen: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        addImage()
-        addTitle()
+        addLoading()
     }
 
     override func viewDidLoad() {
@@ -67,21 +68,31 @@ final class ImportAccountScreen: BaseViewController {
         fetchAccounts()
     }
     
+    private func addLoading() {
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.centerY == 0
+            $0.leading.trailing == theme.horizontalPadding
+        }
+        
+        addImage()
+        addTitle()
+    }
+    
     private func addImage() {
         imageView.customizeAppearance(theme.image)
-        view.addSubview(imageView)
+        loadingView.addSubview(imageView)
         imageView.snp.makeConstraints {
-            $0.top == theme.imageTopPadding
-            $0.leading.trailing == theme.imageHorizontalPadding
+            $0.top.leading.trailing == 0
         }
     }
     
     private func addTitle() {
         titleView.customizeAppearance(theme.title)
-        view.addSubview(titleView)
+        loadingView.addSubview(titleView)
         titleView.snp.makeConstraints {
             $0.top == imageView.snp.bottom + theme.titleTopPadding
-            $0.leading.trailing == theme.titleHorizontalPadding
+            $0.leading.trailing.bottom == 0
         }
     }
 }

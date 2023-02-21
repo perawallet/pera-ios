@@ -21,12 +21,11 @@ struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
     let background: ViewStyle
     
     let image: ImageStyle
-    let imageTopPadding: LayoutMetric
-    let imageHorizontalPadding: LayoutMetric
     
     let title: TextStyle
     let titleTopPadding: LayoutMetric
-    let titleHorizontalPadding: LayoutMetric
+    
+    let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         background = [
@@ -35,9 +34,8 @@ struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
         
         image = [
             .image("import-loading"),
+            .contentMode(.center)
         ]
-        imageTopPadding = 252
-        imageHorizontalPadding = 74
         
         title = [
             .textColor(Colors.Text.main),
@@ -46,6 +44,7 @@ struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
             .textAlignment(.center)
         ]
         titleTopPadding = 40
-        titleHorizontalPadding = 44
+        
+        horizontalPadding = 44
     }
 }
