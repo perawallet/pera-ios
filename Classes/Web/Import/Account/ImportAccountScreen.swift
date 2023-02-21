@@ -30,7 +30,8 @@ final class ImportAccountScreen: BaseViewController {
         return false
     }
 
-    private lazy var loadingView = Label()
+    private lazy var imageView = ImageView()
+    private lazy var titleView = Label()
     private lazy var theme = ImportAccountScreenTheme()
 
     private lazy var pushNotificationController = PushNotificationController(
@@ -55,7 +56,9 @@ final class ImportAccountScreen: BaseViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        addLoadingView()
+        
+        addImage()
+        addTitle()
     }
 
     override func viewDidLoad() {
@@ -63,13 +66,22 @@ final class ImportAccountScreen: BaseViewController {
 
         fetchAccounts()
     }
-
-    private func addLoadingView() {
-        loadingView.customizeAppearance(theme.loading)
-        view.addSubview(loadingView)
-        loadingView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(theme.loadingHorizontalInset)
-            make.centerY.equalToSuperview()
+    
+    private func addImage() {
+        imageView.customizeAppearance(theme.image)
+        view.addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.top == theme.imageTopPadding
+            $0.leading.trailing == theme.imageHorizontalPadding
+        }
+    }
+    
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+        view.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.top == imageView.snp.bottom + theme.titleTopPadding
+            $0.leading.trailing == theme.titleHorizontalPadding
         }
     }
 }

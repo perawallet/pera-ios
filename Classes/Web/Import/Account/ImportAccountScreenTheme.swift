@@ -19,19 +19,33 @@ import MacaroonUIKit
 
 struct ImportAccountScreenTheme: LayoutSheet, StyleSheet {
     let background: ViewStyle
-    let loading: TextStyle
-    let loadingHorizontalInset: LayoutMetric
+    
+    let image: ImageStyle
+    let imageTopPadding: LayoutMetric
+    let imageHorizontalPadding: LayoutMetric
+    
+    let title: TextStyle
+    let titleTopPadding: LayoutMetric
+    let titleHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        loading = [
+        
+        image = [
+            .image("import-loading"),
+        ]
+        imageTopPadding = 252
+        imageHorizontalPadding = 74
+        
+        title = [
             .textColor(Colors.Text.main),
             .text("backup-operation-loading-body".localized),
             .font(Typography.bodyLargeMedium()),
             .textAlignment(.center)
         ]
-        loadingHorizontalInset = 24
+        titleTopPadding = 40
+        titleHorizontalPadding = 44
     }
 }
