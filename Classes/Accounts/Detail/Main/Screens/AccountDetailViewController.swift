@@ -40,7 +40,14 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
-    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self, api: api!)
+    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        analytics: analytics
+    )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -269,11 +276,11 @@ extension AccountDetailViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithSardine()
                 }
-            case .performBuyUSDCWithTransaK:
+            case .performBuyWithTransaK:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyUSDCWithTransaK()
+                    self.openBuyWithTransaK()
                 }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
@@ -302,7 +309,7 @@ extension AccountDetailViewController {
         sardineFlowCoordinator.launch(accountHandle)
     }
 
-    private func openBuyUSDCWithTransaK() {
+    private func openBuyWithTransaK() {
         transaKFlowCoordinator.launch(accountHandle)
     }
 

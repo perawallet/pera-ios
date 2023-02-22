@@ -459,25 +459,15 @@ extension Account {
     /// <todo>
     /// Set the network in Account when it is fetched from the indexer, then we won't need to pass the network.
     func usdc(_ network: ALGAPI.Network) -> Asset? {
-        let assetID: AssetID
-        switch network {
-        case .mainnet: assetID = 31566704
-        case .testnet: assetID = 10458941
-        }
+        let assetID = ALGAsset.usdcAssetID(network)
         return self[assetID]
     }
 
     func usdt(_ network: ALGAPI.Network) -> Asset? {
-        let assetID: AssetID?
-        switch network {
-        case .mainnet: assetID = 312769
-        case .testnet: assetID = nil /// In the testnet, we don't have a verified USDt, so we assume there is none for now.
+        guard let assetID = ALGAsset.usdtAssetID(network) else {
+            return nil
         }
 
-        if let assetID {
-            return self[assetID]
-        }
-
-        return nil
+        return self[assetID]
     }
 }

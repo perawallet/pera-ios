@@ -103,7 +103,7 @@ extension BuySellOptionsScreen {
     private func addBuyOptions() {
         addBuyAlgoWithMoonpayOption()
         addBuyAlgoWithSardineOption()
-        addBuyUSDCWithTransaKOption()
+        addBuyWithTransaKOption()
     }
 
     private func addBuyAlgoWithMoonpayOption() {
@@ -122,10 +122,10 @@ extension BuySellOptionsScreen {
         )
     }
 
-    private func addBuyUSDCWithTransaKOption() {
+    private func addBuyWithTransaKOption() {
         addOption(
-            viewModel: BuySellOptionsBuyUSDCWithTransaKOptionViewModel(),
-            selector: #selector(performBuyUSDCWithTransaK),
+            viewModel: BuySellOptionsBuyWithTransaKOptionViewModel(),
+            selector: #selector(performBuyWithTransaK),
             to: buyContextView
         )
     }
@@ -143,8 +143,8 @@ extension BuySellOptionsScreen {
     }
 
     @objc
-    private func performBuyUSDCWithTransaK() {
-        eventHandler?(.performBuyUSDCWithTransaK)
+    private func performBuyWithTransaK() {
+        eventHandler?(.performBuyWithTransaK)
     }
 }
 
@@ -216,7 +216,7 @@ extension BuySellOptionsScreen {
      enum Event {
          case performBuyAlgoWithMoonpay
          case performBuyAlgoWithSardine
-         case performBuyUSDCWithTransaK
+         case performBuyWithTransaK
          case performBuyGiftCardsWithBidali
      }
  }

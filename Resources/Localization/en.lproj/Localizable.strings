@@ -98,6 +98,7 @@
 "title-try-again" = "Try Again";
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
+"opt-in-to-usdc" = "Opt-in to USDC";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -286,6 +287,7 @@
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-title-singular" = "Your account don't contain this asset";
 "asset-support-your-add-message" = "Please opt-in to this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";

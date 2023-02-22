@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuySellOptionsBuyUSDCWithTransaKOptionViewModel.swift
+//   BuySellOptionsBuyWithTransaKOptionViewModel.swift
 
 import MacaroonUIKit
 
-struct BuySellOptionsBuyUSDCWithTransaKOptionViewModel: ListItemButtonViewModel {
+struct BuySellOptionsBuyWithTransaKOptionViewModel: ListItemButtonViewModel {
     var icon: Image?
     var title: EditText?
     var subtitle: EditText?

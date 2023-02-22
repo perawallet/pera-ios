@@ -372,7 +372,6 @@ extension BidaliDappDetailScreen {
 
         guard let balancesJSONString = try? balances.encodedString() else { return }
 
-        /// <todo> It's not working, maybe we're doing something wrong on our side or there is something wrong on Bidali side.
         let script = "window.bidaliProvider.balances = \(balancesJSONString)"
         webView.evaluateJavaScript(script)
     }
