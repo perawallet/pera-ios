@@ -310,9 +310,9 @@ indirect enum Screen {
     case bidaliAccountSelection(
         eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
     )
-    case moonPayHome(
-        transactionDraft: MoonPayDraft,
-        delegate: MoonPayHomeScreenDelegate?
+    case moonPayIntroduction(
+        draft: MoonPayDraft,
+        delegate: MoonPayIntroductionScreenDelegate?
     )
     case moonPayTransaction(moonPayParams: MoonPayParams)
     case sardineIntroduction

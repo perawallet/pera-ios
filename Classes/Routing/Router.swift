@@ -330,9 +330,9 @@ class Router:
             )
             
         case .buyAlgoWithMoonPay(let draft):
-            self.route(
-                to: .moonPayHome(transactionDraft: draft, delegate: self),
-                from: self.findVisibleScreen(over: self.rootViewController),
+            route(
+                to: .moonPayIntroduction(draft: draft, delegate: self),
+                from: findVisibleScreen(over: self.rootViewController),
                 by: .present
             )
         case .accountSelect(let asset):
@@ -1417,13 +1417,16 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .moonPayHome(let draft, let delegate):
-            let moonPayHomeScreen = MoonPayHomeScreen(
+        case .moonPayIntroduction(let draft, let delegate):
+            let aViewController = MoonPayIntroductionScreen(
                 draft: draft,
-                configuration: configuration
+                api: configuration.api!,
+                target: ALGAppTarget.current,
+                analytics: configuration.analytics,
+                loadingController: configuration.loadingController!
             )
-            moonPayHomeScreen.delegate = delegate
-            viewController = moonPayHomeScreen
+            aViewController.delegate = delegate
+            viewController = aViewController
         case let .moonPayTransaction(moonPayParams):
             viewController = MoonPayTransactionViewController(
                 moonPayParams: moonPayParams,
@@ -2007,27 +2010,30 @@ extension Router {
 }
 
 
-extension Router: MoonPayHomeScreenDelegate {
-    func moonPayHomeScreenDidFailedTransaction(_ screen: MoonPayHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func moonPayHomeScreen(_ screen: MoonPayHomeScreen, didCompletedTransaction params: MoonPayParams) {
+extension Router: MoonPayIntroductionScreenDelegate {
+    func moonPayIntroductionScreen(
+        _ screen: MoonPayIntroductionScreen,
+        didCompletedTransaction params: MoonPayParams
+    ) {
         screen.dismissScreen(animated: true) {
             self.displayMoonPayTransactionScreen(for: params)
         }
     }
-    
+
     private func displayMoonPayTransactionScreen(for params: MoonPayParams) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-        
+
         ongoingTransitions.append(transition)
-        
+
         transition.perform(
             .moonPayTransaction(moonPayParams: params),
             by: .presentWithoutNavigationController
         )
+    }
+
+    func moonPayIntroductionScreenDidFailedTransaction(_ screen: MoonPayIntroductionScreen) {
+        screen.dismissScreen()
     }
 }
 
