@@ -12015,7 +12015,6 @@
 				2B4486F4237958AD00C19FDE /* Assets */,
 				2BF727D8274717BF00CCAC30 /* Authentication */,
 				170A650B27ED97EE006AC9DF /* Banner */,
-				95FE4BCE27BFB7FE00D8C38E /* BuyAlgo */,
 				D4150DD527C4F78D0064F736 /* Collectibles */,
 				2BF727B62747140B00CCAC30 /* Contacts */,
 				F0772B52275EB17F003A9329 /* Demo */,
@@ -16744,17 +16743,6 @@
 			path = UnsignedRequest;
 			sourceTree = "<group>";
 		};
-		95FE4BCE27BFB7FE00D8C38E /* BuyAlgo */ = {
-			isa = PBXGroup;
-			children = (
-				9568ADDF27C7827300668053 /* BuyAlgoDraft.swift */,
-				2B233B4327C4527000D16B82 /* BuyAlgoHome */,
-				95FE4BCF27BFB81400D8C38E /* BuyAlgoParams.swift */,
-				2B4FD1F427C63F3A0097AB65 /* BuyAlgoTransaction */,
-			);
-			path = BuyAlgo;
-			sourceTree = "<group>";
-		};
 		95FEED2E242A0843000E42EB /* Troubleshoot */ = {
 			isa = PBXGroup;
 			children = (
@@ -18049,6 +18037,7 @@
 		D49E2402299514D90016F698 /* Buy */ = {
 			isa = PBXGroup;
 			children = (
+				D4E6301D29A646DB00889A81 /* MoonPay */,
 				D4027C15299E0E0200F59F15 /* Sardine */,
 				D4027BF5299D364600F59F15 /* TransaK */,
 			);
@@ -18609,6 +18598,18 @@
 				D4E6301929A610FA00889A81 /* TransaKConfig.swift */,
 			);
 			path = DappDetail;
+			sourceTree = "<group>";
+		};
+		D4E6301D29A646DB00889A81 /* MoonPay */ = {
+			isa = PBXGroup;
+			children = (
+				9568ADDF27C7827300668053 /* BuyAlgoDraft.swift */,
+				F0E7218C284F6AA100865419 /* BuyAlgoFlowCoordinator.swift */,
+				95FE4BCF27BFB81400D8C38E /* BuyAlgoParams.swift */,
+				2B233B4327C4527000D16B82 /* BuyAlgoHome */,
+				2B4FD1F427C63F3A0097AB65 /* BuyAlgoTransaction */,
+			);
+			path = MoonPay;
 			sourceTree = "<group>";
 		};
 		D4F1AB4729466CB300FFB99C /* CollectibleAmount */ = {
@@ -19746,7 +19747,6 @@
 		F0E72183284F6A3600865419 /* QuickActions */ = {
 			isa = PBXGroup;
 			children = (
-				F0E7218C284F6AA100865419 /* BuyAlgoFlowCoordinator.swift */,
 				F0E72188284F6A7B00865419 /* ReceiveTransactionFlowCoordinator.swift */,
 				F0E72190284F6ABB00865419 /* ScanQRFlowCoordinator.swift */,
 				F0E72184284F6A6500865419 /* SendTransactionFlowCoordinator.swift */,
