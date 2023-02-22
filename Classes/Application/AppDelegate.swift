@@ -399,21 +399,21 @@ extension AppDelegate {
         if case .didFinishRunning = event {
             let monitor = sharedDataController.blockchainUpdatesMonitor
 
-            let optedInUpdates = monitor.filterOptedInAssetUpdates()
+            let optedInUpdates = monitor.filterOptedInAssetUpdatesForNotification()
             for update in optedInUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
-                monitor.finishMonitoringOptInUpdates(associatedWith: update)
+                monitor.stopMonitoringOptInUpdates(associatedWith: update)
             }
 
-            let optedOutUpdates = monitor.filterOptedOutAssetUpdates()
+            let optedOutUpdates = monitor.filterOptedOutAssetUpdatesForNotification()
             for update in optedOutUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
-                monitor.finishMonitoringOptOutUpdates(associatedWith: update)
+                monitor.stopMonitoringOptOutUpdates(associatedWith: update)
             }
 
-            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdates()
+            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdatesForNotification()
             for update in sentPureCollectibleAssetUpdates {
-                monitor.finishMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
+                monitor.stopMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
             }
         }
     }
