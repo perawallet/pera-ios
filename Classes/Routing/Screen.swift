@@ -189,11 +189,6 @@ indirect enum Screen {
     )
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
-    case buyAlgoHome(
-        transactionDraft: BuyAlgoDraft,
-        delegate: BuyAlgoHomeScreenDelegate?
-    )
-    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
@@ -315,6 +310,11 @@ indirect enum Screen {
     case bidaliAccountSelection(
         eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
     )
+    case moonPayHome(
+        transactionDraft: MoonPayDraft,
+        delegate: MoonPayHomeScreenDelegate?
+    )
+    case moonPayTransaction(moonPayParams: MoonPayParams)
     case sardineIntroduction
     case sardineAccountSelection(
         eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler

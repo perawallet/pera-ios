@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionView.swift
+//   MoonPayTransactionView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class BuyAlgoTransactionView:
+final class MoonPayTransactionView:
     View,
     ViewModelBindable,
     UIInteractable {
@@ -37,7 +37,7 @@ final class BuyAlgoTransactionView:
     private lazy var accountAddressTitleView = Label()
     private lazy var doneButton = MacaroonUIKit.Button()
     
-    func customize(_ theme: BuyAlgoTransactionViewTheme) {
+    func customize(_ theme: MoonPayTransactionViewTheme) {
         addImageView(theme)
         addTitleView(theme)
         addDescriptionView(theme)
@@ -49,7 +49,7 @@ final class BuyAlgoTransactionView:
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
-    func bindData(_ viewModel: BuyAlgoTransactionViewModel?) {
+    func bindData(_ viewModel: MoonPayTransactionViewModel?) {
         imageView.image = viewModel?.image?.uiImage
         titleView.editText = viewModel?.title
         descriptionView.editText = viewModel?.description
@@ -58,8 +58,8 @@ final class BuyAlgoTransactionView:
     }
 }
 
-extension BuyAlgoTransactionView {
-    private func addImageView(_ theme: BuyAlgoTransactionViewTheme) {
+extension MoonPayTransactionView {
+    private func addImageView(_ theme: MoonPayTransactionViewTheme) {
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topPadding)
@@ -68,7 +68,7 @@ extension BuyAlgoTransactionView {
         }
     }
     
-    private func addTitleView(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addTitleView(_ theme: MoonPayTransactionViewTheme) {
         titleView.customizeAppearance(theme.titleLabel)
         
         addSubview(titleView)
@@ -78,7 +78,7 @@ extension BuyAlgoTransactionView {
         }
     }
     
-    private func addDescriptionView(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addDescriptionView(_ theme: MoonPayTransactionViewTheme) {
         descriptionView.customizeAppearance(theme.descriptionLabel)
         addSubview(descriptionView)
         descriptionView.snp.makeConstraints {
@@ -88,7 +88,7 @@ extension BuyAlgoTransactionView {
         descriptionView.addSeparator(theme.separator, padding: -theme.descriptionSeparatorTopPadding)
     }
     
-    private func addAccountView(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addAccountView(_ theme: MoonPayTransactionViewTheme) {
         accountStackView.distribution = .equalSpacing
         addSubview(accountStackView)
         accountStackView.snp.makeConstraints {
@@ -99,12 +99,12 @@ extension BuyAlgoTransactionView {
         addAccountAddress(theme)
     }
     
-    private func addAccountTitle(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addAccountTitle(_ theme: MoonPayTransactionViewTheme) {
         accountTitleView.customizeAppearance(theme.accountLabel)
         accountStackView.addArrangedSubview(accountTitleView)
     }
 
-    private func addAccountAddress(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addAccountAddress(_ theme: MoonPayTransactionViewTheme) {
         accountStackView.addArrangedSubview(accountAddressView)
         
         accountAddressView.addSubview(accountIconView)
@@ -121,7 +121,7 @@ extension BuyAlgoTransactionView {
         }
     }
      
-    private func addDoneButton(_ theme: BuyAlgoTransactionViewTheme) {
+    private func addDoneButton(_ theme: MoonPayTransactionViewTheme) {
         doneButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
         doneButton.draw(corner: theme.buttonCorner)
         doneButton.customizeAppearance(theme.doneButton)
@@ -140,7 +140,7 @@ extension BuyAlgoTransactionView {
     }
 }
 
-extension BuyAlgoTransactionView {
+extension MoonPayTransactionView {
     enum Event {
         case close
     }

@@ -12,31 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoParams.swift
+//   MoonPayDraft.swift
 
 import Foundation
 
-struct BuyAlgoParams: Hashable {
-    let address: String
-    let amount: String?
-    let transactionStatus: TransactionStatus
-    let transactionId: String
+final class MoonPayDraft {
+    var address: String?
 
-    static var notificationObjectKey = "buy.algo.params"
-
-    enum TransactionStatus: String {
-        case completed
-        case pending
-        case failed
-        case waitingPayment
-        case waitingAuthorization
-    }
-}
-
-extension BuyAlgoParams {
-    enum Keys: String {
-        case amount = "amount"
-        case transactionStatus = "transactionStatus"
-        case transactionId = "transactionId"
+    func hasValidAddress() -> Bool {
+        address != nil
     }
 }

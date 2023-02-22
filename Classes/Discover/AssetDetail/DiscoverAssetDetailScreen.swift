@@ -29,7 +29,7 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen<DiscoverAssetDetai
         bannerController: bannerController!,
         presentingScreen: self
     )
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(
         presentingScreen: self
     )
 
@@ -83,7 +83,7 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen<DiscoverAssetDetai
 
 extension DiscoverAssetDetailScreen {
     private func launchBuyAlgo() {
-        buyAlgoFlowCoordinator.launch()
+        moonPayFlowCoordinator.launch()
     }
 
     private func launchSwap(with parameters: DiscoverSwapParameters) {

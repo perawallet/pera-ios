@@ -71,7 +71,7 @@ final class TabBarController: TabBarContainer {
 
     private lazy var transactionOptionsView = createTransactionOptions()
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api)
     private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(
         presentingScreen: self,
@@ -108,7 +108,6 @@ final class TabBarController: TabBarContainer {
         sharedDataController: sharedDataController
     )
 
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private var isTransactionOptionsVisible: Bool = false
@@ -385,11 +384,11 @@ extension TabBarController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonpay:
+            case .performBuyAlgoWithMoonPay:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithMoonpay()
+                    self.openBuyAlgoWithMoonPay()
                 }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
@@ -418,10 +417,10 @@ extension TabBarController {
         )
     }
 
-    private func openBuyAlgoWithMoonpay() {
-        buyAlgoFlowCoordinator.launch()
+    private func openBuyAlgoWithMoonPay() {
+        moonPayFlowCoordinator.launch()
 
-        analytics.track(.moonpay(type: .tapBottomsheetBuy))
+        analytics.track(.moonPay(type: .tapBottomsheetBuy))
     }
 
     private func openBuyAlgoWithSardine() {

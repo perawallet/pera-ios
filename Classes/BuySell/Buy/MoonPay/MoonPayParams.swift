@@ -12,19 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoSignDraft.swift
+//   MoonPayParams.swift
 
 import Foundation
-import MagpieCore
 
-struct BuyAlgoSignDraft: JSONObjectBody {
-    let walletAddress: String
-    let redirectUrl: String
+struct MoonPayParams: Hashable {
+    let address: String
+    let amount: String?
+    let transactionStatus: TransactionStatus
+    let transactionId: String
 
-    var bodyParams: [APIBodyParam] {
-        var params: [APIBodyParam] = []
-        params.append(.init(.walletAddress, walletAddress))
-        params.append(.init(.redirectUrl, redirectUrl))
-        return params
+    static var notificationObjectKey = "buy.algo.params"
+
+    enum TransactionStatus: String {
+        case completed
+        case pending
+        case failed
+        case waitingPayment
+        case waitingAuthorization
+    }
+}
+
+extension MoonPayParams {
+    enum Keys: String {
+        case amount = "amount"
+        case transactionStatus = "transactionStatus"
+        case transactionId = "transactionId"
     }
 }

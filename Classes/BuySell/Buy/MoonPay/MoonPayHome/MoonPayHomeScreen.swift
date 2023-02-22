@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoHomeScreen.swift
+//   MoonPayHomeScreen.swift
 
 import MacaroonUIKit
 import UIKit
 import SafariServices
 import MacaroonUtils
 
-final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
+final class MoonPayHomeScreen: BaseViewController, NotificationObserver {
     var notificationObservations: [NSObjectProtocol] = []
 
-    weak var delegate: BuyAlgoHomeScreenDelegate?
+    weak var delegate: MoonPayHomeScreenDelegate?
 
-    private lazy var contentView = BuyAlgoHomeView()
+    private lazy var contentView = MoonPayHomeView()
 
-    private var buyAlgoDraft: BuyAlgoDraft
+    private var moonPayDraft: MoonPayDraft
 
-    init(draft: BuyAlgoDraft, configuration: ViewControllerConfiguration) {
-        self.buyAlgoDraft = draft
+    init(draft: MoonPayDraft, configuration: ViewControllerConfiguration) {
+        self.moonPayDraft = draft
         super.init(configuration: configuration)
     }
 
@@ -76,10 +76,10 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 return
             }
 
-            self.analytics.track(.moonpay(type: .tapBuy))
+            self.analytics.track(.moonPay(type: .tapBuy))
 
-            if self.buyAlgoDraft.hasValidAddress() {
-                self.openMoonPay(for: self.buyAlgoDraft)
+            if self.moonPayDraft.hasValidAddress() {
+                self.openMoonPay(for: self.moonPayDraft)
                 return
             }
 
@@ -96,24 +96,24 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
     }
 }
 
-extension BuyAlgoHomeScreen {
+extension MoonPayHomeScreen {
     private func didRedirectFromMoonPay(_ notification: Notification) {
         guard
-            let buyAlgoParams = notification.userInfo?[BuyAlgoParams.notificationObjectKey] as? BuyAlgoParams
+            let moonPayParams = notification.userInfo?[MoonPayParams.notificationObjectKey] as? MoonPayParams
         else {
-            delegate?.buyAlgoHomeScreenDidFailedTransaction(self)
+            delegate?.moonPayHomeScreenDidFailedTransaction(self)
             return
         }
 
-        analytics.track(.moonpay(type: .completed))
-        delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: buyAlgoParams)
+        analytics.track(.moonPay(type: .completed))
+        delegate?.moonPayHomeScreen(self, didCompletedTransaction: moonPayParams)
     }
 }
 
-extension BuyAlgoHomeScreen {
+extension MoonPayHomeScreen {
     private func addContent() {
-        contentView.customize(BuyAlgoHomeViewTheme())
-        contentView.bindData(BuyAlgoHomeViewModel())
+        contentView.customize(MoonPayHomeViewTheme())
+        contentView.bindData(MoonPayHomeViewModel())
         
         view.addSubview(contentView)
         contentView.snp.makeConstraints {
@@ -122,7 +122,7 @@ extension BuyAlgoHomeScreen {
     }
 }
 
-extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
+extension MoonPayHomeScreen: SelectAccountViewControllerDelegate {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
@@ -132,22 +132,22 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        let buyAlgoDraft = BuyAlgoDraft()
-        buyAlgoDraft.address = account.address
-        openMoonPay(for: buyAlgoDraft)
+        let moonPayDraft = MoonPayDraft()
+        moonPayDraft.address = account.address
+        openMoonPay(for: moonPayDraft)
     }
 
-    private func openMoonPay(for draft: BuyAlgoDraft) {
+    private func openMoonPay(for draft: MoonPayDraft) {
         guard let address = draft.address else {
             return
         }
 
         let deeplinkURL = "\(target.deeplinkConfig.moonpay.scheme)://\(address)"
-        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: deeplinkURL)
+        let moonPaySignDraft = MoonPaySignDraft(walletAddress: address, redirectUrl: deeplinkURL)
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        api?.getSignedMoonpayURL(buyAlgoSignDraft) { [weak self] response in
+        api?.getSignedMoonPayURL(moonPaySignDraft) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -178,12 +178,12 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
     }
 }
 
-protocol BuyAlgoHomeScreenDelegate: AnyObject {
-    func buyAlgoHomeScreen(
-        _ screen: BuyAlgoHomeScreen,
-        didCompletedTransaction params: BuyAlgoParams
+protocol MoonPayHomeScreenDelegate: AnyObject {
+    func moonPayHomeScreen(
+        _ screen: MoonPayHomeScreen,
+        didCompletedTransaction params: MoonPayParams
     )
-    func buyAlgoHomeScreenDidFailedTransaction(
-        _ screen: BuyAlgoHomeScreen
+    func moonPayHomeScreenDidFailedTransaction(
+        _ screen: MoonPayHomeScreen
     )
 }

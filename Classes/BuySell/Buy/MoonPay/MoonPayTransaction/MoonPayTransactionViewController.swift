@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionViewController.swift
+//   MoonPayTransactionViewController.swift
 
 import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class BuyAlgoTransactionViewController: BaseViewController {
+final class MoonPayTransactionViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
     
-    private lazy var transactionView = BuyAlgoTransactionView()
+    private lazy var transactionView = MoonPayTransactionView()
     
-    private lazy var dataController =  BuyAlgoTransactionDataController(
+    private lazy var dataController =  MoonPayTransactionDataController(
         sharedDataController: sharedDataController,
-        accountAddress: buyAlgoParams.address
+        accountAddress: moonPayParams.address
     )
-    private let buyAlgoParams: BuyAlgoParams
+    private let moonPayParams: MoonPayParams
     
-    init(buyAlgoParams: BuyAlgoParams, configuration: ViewControllerConfiguration) {
-        self.buyAlgoParams = buyAlgoParams
+    init(moonPayParams: MoonPayParams, configuration: ViewControllerConfiguration) {
+        self.moonPayParams = moonPayParams
         super.init(configuration: configuration)
     }
     
@@ -57,9 +57,9 @@ final class BuyAlgoTransactionViewController: BaseViewController {
     }
 }
 
-extension BuyAlgoTransactionViewController {
+extension MoonPayTransactionViewController {
     private func addTransactionView() {
-        transactionView.customize(BuyAlgoTransactionViewTheme())
+        transactionView.customize(MoonPayTransactionViewTheme())
         
         view.addSubview(transactionView)
         transactionView.snp.makeConstraints {
@@ -68,21 +68,21 @@ extension BuyAlgoTransactionViewController {
     }
 }
 
-extension BuyAlgoTransactionViewController: BuyAlgoTransactionDataControllerDelegate {
-    func buyAlgoTransactionDataControllerDidLoad(
-        _ dataController: BuyAlgoTransactionDataController,
+extension MoonPayTransactionViewController: MoonPayTransactionDataControllerDelegate {
+    func moonPayTransactionDataControllerDidLoad(
+        _ dataController: MoonPayTransactionDataController,
         account: Account
     ) {
         transactionView.bindData(
-            BuyAlgoTransactionViewModel(
-                status: buyAlgoParams.transactionStatus,
+            MoonPayTransactionViewModel(
+                status: moonPayParams.transactionStatus,
                 account: account
             )
         )
     }
 }
 
-extension BuyAlgoTransactionViewController: BottomSheetPresentable {
+extension MoonPayTransactionViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

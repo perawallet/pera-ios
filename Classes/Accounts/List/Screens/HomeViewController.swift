@@ -26,9 +26,7 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
     var notificationObservations: [NSObjectProtocol] = []
 
-    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
@@ -47,7 +45,7 @@ final class HomeViewController:
         bannerController: bannerController
     )
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
     private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(
         presentingScreen: self,
@@ -594,11 +592,11 @@ extension HomeViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonpay:
+            case .performBuyAlgoWithMoonPay:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithMoonpay()
+                    self.openBuyAlgoWithMoonPay()
                 }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
@@ -631,10 +629,10 @@ extension HomeViewController {
         sardineFlowCoordinator.launch()
     }
 
-    private func openBuyAlgoWithMoonpay() {
+    private func openBuyAlgoWithMoonPay() {
         analytics.track(.recordHomeScreen(type: .buyAlgo))
 
-        buyAlgoFlowCoordinator.launch()
+        moonPayFlowCoordinator.launch()
     }
 
     private func openBuyWithTransaK() {

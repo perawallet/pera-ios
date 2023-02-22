@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionViewTheme.swift
+//   MoonPayTransactionViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct BuyAlgoTransactionViewTheme:
+struct MoonPayTransactionViewTheme:
     StyleSheet,
     LayoutSheet {
     let titleLabel: TextStyle

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoTransactionViewModel.swift
+//   MoonPayTransactionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BuyAlgoTransactionViewModel: ViewModel {
+struct MoonPayTransactionViewModel: ViewModel {
     private(set) var image: Image?
     private(set) var title: EditText?
     private(set) var description: EditText?
@@ -26,7 +26,7 @@ struct BuyAlgoTransactionViewModel: ViewModel {
     private(set) var accountIcon: Image?
     
     init(
-        status: BuyAlgoParams.TransactionStatus,
+        status: MoonPayParams.TransactionStatus,
         account: Account
     ) {
         bindImage(status)
@@ -39,8 +39,8 @@ struct BuyAlgoTransactionViewModel: ViewModel {
 
 /// <todo>
 /// Refactor image, title and description when the design gets an update.
-extension BuyAlgoTransactionViewModel {
-    private mutating func bindImage(_ type: BuyAlgoParams.TransactionStatus) {
+extension MoonPayTransactionViewModel {
+    private mutating func bindImage(_ type: MoonPayParams.TransactionStatus) {
         switch type {
         case .completed:
             image = "icon-moonpay-transaction-completed"
@@ -51,7 +51,7 @@ extension BuyAlgoTransactionViewModel {
         }
     }
     
-    private mutating func bindTitle(_ type: BuyAlgoParams.TransactionStatus) {
+    private mutating func bindTitle(_ type: MoonPayParams.TransactionStatus) {
         let titleString: String
         
         switch type {
@@ -75,7 +75,7 @@ extension BuyAlgoTransactionViewModel {
         )
     }
     
-    private mutating func bindDescription(_ type: BuyAlgoParams.TransactionStatus) {
+    private mutating func bindDescription(_ type: MoonPayParams.TransactionStatus) {
         let descriptionString: String
         
         switch type {

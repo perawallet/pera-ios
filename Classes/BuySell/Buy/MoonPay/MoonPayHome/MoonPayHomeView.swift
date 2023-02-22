@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoHomeView.swift
+//   MoonPayHomeView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class BuyAlgoHomeView:
+final class MoonPayHomeView:
     View,
     ViewModelBindable,
     UIInteractable {
@@ -27,7 +27,7 @@ final class BuyAlgoHomeView:
         .buyAlgo: TargetActionInteraction()
     ]
     
-    private var theme: BuyAlgoHomeViewTheme?
+    private var theme: MoonPayHomeViewTheme?
     
     private lazy var headerView = UIView()
     private lazy var logoView = ImageView()
@@ -51,7 +51,7 @@ final class BuyAlgoHomeView:
         linkInteractors()
     }
     
-    func customize(_ theme: BuyAlgoHomeViewTheme) {
+    func customize(_ theme: MoonPayHomeViewTheme) {
         self.theme = theme
         
         addScrollView(theme)
@@ -61,7 +61,7 @@ final class BuyAlgoHomeView:
         addSecurityImageView(theme)
         addSecurityLabel(theme)
         addPaymentOptionsView(theme)
-        addBuyAlgoButton(theme)
+        addMoonPayButton(theme)
         addHeaderView(theme)
         addHeaderBackgroundView(theme)
         addLogoView(theme)
@@ -73,7 +73,7 @@ final class BuyAlgoHomeView:
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
-    func bindData(_ viewModel: BuyAlgoHomeViewModel?) {
+    func bindData(_ viewModel: MoonPayHomeViewModel?) {
         logoView.image = viewModel?.logoImage?.uiImage
         headerBackgroundView.image = viewModel?.headerBackgroundImage?.uiImage
         titleLabel.editText = viewModel?.title
@@ -113,8 +113,8 @@ final class BuyAlgoHomeView:
     }
 }
 
-extension BuyAlgoHomeView {
-    private func addScrollView(_ theme: BuyAlgoHomeViewTheme){
+extension MoonPayHomeView {
+    private func addScrollView(_ theme: MoonPayHomeViewTheme){
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = true
@@ -133,7 +133,7 @@ extension BuyAlgoHomeView {
             $0.edges.equalToSuperview()
         }
     }
-    private func addSubtitleLabel(_ theme: BuyAlgoHomeViewTheme){
+    private func addSubtitleLabel(_ theme: MoonPayHomeViewTheme){
         subtitleLabel.customizeAppearance(theme.subtitleLabel)
         
         contentView.addSubview(subtitleLabel)
@@ -142,7 +142,7 @@ extension BuyAlgoHomeView {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    private func addDescriptionLabel(_ theme: BuyAlgoHomeViewTheme){
+    private func addDescriptionLabel(_ theme: MoonPayHomeViewTheme){
         descriptionLabel.customizeAppearance(theme.descriptionLabel)
         
         contentView.addSubview(descriptionLabel)
@@ -156,14 +156,14 @@ extension BuyAlgoHomeView {
             )
         }
     }
-    private func addSecurityImageView(_ theme: BuyAlgoHomeViewTheme) {
+    private func addSecurityImageView(_ theme: MoonPayHomeViewTheme) {
         contentView.addSubview(securityImageView)
         securityImageView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.securityImageTopPadding)
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    private func addSecurityLabel(_ theme: BuyAlgoHomeViewTheme){
+    private func addSecurityLabel(_ theme: MoonPayHomeViewTheme){
         securityLabel.customizeAppearance(theme.securityLabel)
         
         contentView.addSubview(securityLabel)
@@ -173,7 +173,7 @@ extension BuyAlgoHomeView {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    private func addPaymentOptionsView(_ theme: BuyAlgoHomeViewTheme){
+    private func addPaymentOptionsView(_ theme: MoonPayHomeViewTheme){
         paymentOptionsView.distribution = .fillProportionally
         paymentOptionsView.alignment = .top
         paymentOptionsView.spacing = theme.paymentViewSpacing
@@ -184,7 +184,7 @@ extension BuyAlgoHomeView {
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.paymentViewBottomPadding)
         }
     }
-    private func addBuyAlgoButton(_ theme: BuyAlgoHomeViewTheme){
+    private func addMoonPayButton(_ theme: MoonPayHomeViewTheme){
         addSubview(buyAlgoButtonContainer)
         buyAlgoButtonContainer.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
@@ -201,7 +201,7 @@ extension BuyAlgoHomeView {
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
     }
-    private func addHeaderView(_ theme: BuyAlgoHomeViewTheme){
+    private func addHeaderView(_ theme: MoonPayHomeViewTheme){
         headerView.customizeAppearance(theme.header)
         
         addSubview(headerView)
@@ -210,7 +210,7 @@ extension BuyAlgoHomeView {
             $0.fitToHeight(theme.headerMaxHeight)
         }
     }
-    private func addHeaderBackgroundView(_ theme: BuyAlgoHomeViewTheme) {
+    private func addHeaderBackgroundView(_ theme: MoonPayHomeViewTheme) {
         headerBackgroundView.customizeAppearance(theme.headerBackgroundView)
         headerView.addSubview(headerBackgroundView)
         headerBackgroundView.snp.makeConstraints {
@@ -218,7 +218,7 @@ extension BuyAlgoHomeView {
         }
         
     }
-    private func addLogoView(_ theme: BuyAlgoHomeViewTheme){
+    private func addLogoView(_ theme: MoonPayHomeViewTheme){
         logoView.customizeAppearance(theme.logoView)
         
         headerView.addSubview(logoView)
@@ -227,7 +227,7 @@ extension BuyAlgoHomeView {
             $0.center.equalToSuperview()
         }
     }
-    private func addCloseButton(_ theme: BuyAlgoHomeViewTheme){
+    private func addCloseButton(_ theme: MoonPayHomeViewTheme){
         closeButton.customizeAppearance(theme.closeButton)
         
         addSubview(closeButton)
@@ -237,7 +237,7 @@ extension BuyAlgoHomeView {
             $0.fitToSize(theme.closeButtonSize)
         }
     }
-    private func addTitleLabel(_ theme: BuyAlgoHomeViewTheme){
+    private func addTitleLabel(_ theme: MoonPayHomeViewTheme){
         titleLabel.customizeAppearance(theme.titleLabel)
         
         addSubview(titleLabel)
@@ -268,7 +268,7 @@ extension BuyAlgoHomeView {
 
 
 /// <note>: Parallax effect
-extension BuyAlgoHomeView: UIScrollViewDelegate {
+extension MoonPayHomeView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
 
@@ -302,7 +302,7 @@ extension BuyAlgoHomeView: UIScrollViewDelegate {
     }
 }
 
-extension BuyAlgoHomeView {
+extension MoonPayHomeView {
     enum Event {
         case close
         case buyAlgo

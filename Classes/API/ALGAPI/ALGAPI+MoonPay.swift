@@ -12,14 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoDraft.swift
+//   ALGAPI+MoonPay.swift
 
 import Foundation
+import MagpieCore
 
-final class BuyAlgoDraft {
-    var address: String?
-
-    func hasValidAddress() -> Bool {
-        address != nil
+extension ALGAPI {
+    @discardableResult
+    func getSignedMoonPayURL(
+        _ draft: MoonPaySignDraft,
+        onCompleted handler: @escaping (Response.ModelResult<MoonPaySignedResponse>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.signMoonPay)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2023 Pera Wallet, LDA
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuySellOptionsBuyAlgoWithMoonpayOptionViewModel.swift
+//   MoonPaySignedResponse.swift
 
-import MacaroonUIKit
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-struct BuySellOptionsBuyAlgoWithMoonpayOptionViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
-
+final class MoonPaySignedResponse: ALGAPIModel {
+    let url: URL?
+    
     init() {
-        self.icon = "icon-moonpay-option"
-        self.title = .attributedString("buy-sell-options-buy-algo-with-moonpay-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-algo-with-moonpay-option-subtitle".localized.footnoteRegular())
+        url = nil
+    }
+}
+
+extension MoonPaySignedResponse {
+    private enum CodingKeys: String, CodingKey {
+        case url = "url"
     }
 }

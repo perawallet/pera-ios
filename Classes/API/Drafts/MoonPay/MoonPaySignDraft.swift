@@ -12,25 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoCoordinator.swift
+//   MoonPaySignDraft.swift
 
 import Foundation
-import UIKit
+import MagpieCore
 
-/// <todo>
-/// This should be removed after the routing refactor.
-final class BuyAlgoFlowCoordinator {
-    private unowned let presentingScreen: UIViewController
+struct MoonPaySignDraft: JSONObjectBody {
+    let walletAddress: String
+    let redirectUrl: String
 
-    init(
-        presentingScreen: UIViewController
-    ) {
-        self.presentingScreen = presentingScreen
-    }
-}
-
-extension BuyAlgoFlowCoordinator {
-    func launch(draft: BuyAlgoDraft = .init()) {
-        presentingScreen.launchBuyAlgo(draft: draft)
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
+        params.append(.init(.walletAddress, walletAddress))
+        params.append(.init(.redirectUrl, redirectUrl))
+        return params
     }
 }

@@ -329,9 +329,9 @@ class Router:
                 animated: true
             )
             
-        case .buyAlgo(let draft):
+        case .buyAlgoWithMoonPay(let draft):
             self.route(
-                to: .buyAlgoHome(transactionDraft: draft, delegate: self),
+                to: .moonPayHome(transactionDraft: draft, delegate: self),
                 from: self.findVisibleScreen(over: self.rootViewController),
                 by: .present
             )
@@ -1107,15 +1107,6 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .buyAlgoHome(let draft, let delegate):
-            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
-                draft: draft,
-                configuration: configuration
-            )
-            buyAlgoHomeScreen.delegate = delegate
-            viewController = buyAlgoHomeScreen
-        case let .buyAlgoTransaction(buyAlgoParams):
-            viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -1424,6 +1415,18 @@ class Router:
                 listDataSource: diffableDataSource,
                 theme: theme,
                 eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .moonPayHome(let draft, let delegate):
+            let moonPayHomeScreen = MoonPayHomeScreen(
+                draft: draft,
+                configuration: configuration
+            )
+            moonPayHomeScreen.delegate = delegate
+            viewController = moonPayHomeScreen
+        case let .moonPayTransaction(moonPayParams):
+            viewController = MoonPayTransactionViewController(
+                moonPayParams: moonPayParams,
                 configuration: configuration
             )
         case .sardineIntroduction:
@@ -2004,25 +2007,25 @@ extension Router {
 }
 
 
-extension Router: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+extension Router: MoonPayHomeScreenDelegate {
+    func moonPayHomeScreenDidFailedTransaction(_ screen: MoonPayHomeScreen) {
         screen.dismissScreen()
     }
 
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+    func moonPayHomeScreen(_ screen: MoonPayHomeScreen, didCompletedTransaction params: MoonPayParams) {
         screen.dismissScreen(animated: true) {
-            self.displayAlgoTransactionScreen(for: params)
+            self.displayMoonPayTransactionScreen(for: params)
         }
     }
     
-    private func displayAlgoTransactionScreen(for params: BuyAlgoParams) {
+    private func displayMoonPayTransactionScreen(for params: MoonPayParams) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
         
         ongoingTransitions.append(transition)
         
         transition.perform(
-            .buyAlgoTransaction(buyAlgoParams: params),
+            .moonPayTransaction(moonPayParams: params),
             by: .presentWithoutNavigationController
         )
     }

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayIntroductionViewTheme.swift
+//   MoonPayHomeViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BuyAlgoHomeViewTheme:
+struct MoonPayHomeViewTheme:
     StyleSheet,
     LayoutSheet {
     let closeButton: ButtonStyle
@@ -61,7 +61,7 @@ struct BuyAlgoHomeViewTheme:
             .tintColor(UIColor.white)
         ]
         header = [
-            .backgroundColor(Colors.Dapp.moonpay)
+            .backgroundColor(Colors.Dapp.moonPay)
         ]
         headerBackgroundView = [
             .contentMode(.bottomLeft),

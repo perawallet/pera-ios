@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGAPI+BuyAlgo.swift
+//   MoonPayFlowCoordinator.swift
 
 import Foundation
-import MagpieCore
+import UIKit
 
-extension ALGAPI {
-    @discardableResult
-    func getSignedMoonpayURL(
-        _ draft: BuyAlgoSignDraft,
-        onCompleted handler: @escaping (Response.ModelResult<BuyAlgoSignedResponse>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.signBuyAlgo)
-            .method(.post)
-            .body(draft)
-            .completionHandler(handler)
-            .execute()
+/// <todo>
+/// This should be removed after the routing refactor.
+final class MoonPayFlowCoordinator {
+    private unowned let presentingScreen: UIViewController
+
+    init(
+        presentingScreen: UIViewController
+    ) {
+        self.presentingScreen = presentingScreen
+    }
+}
+
+extension MoonPayFlowCoordinator {
+    func launch(draft: MoonPayDraft = .init()) {
+        presentingScreen.launchBuyAlgoWithMoonPay(draft: draft)
     }
 }
