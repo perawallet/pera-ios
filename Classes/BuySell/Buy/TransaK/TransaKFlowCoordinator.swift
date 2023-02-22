@@ -76,8 +76,11 @@ extension TransaKFlowCoordinator {
            let address = accountAddressToObserveOptInUpdates,
            let upToDateAccount = sharedDataController.accountCollection[address] {
 
-            let isOptedInToUSDC = upToDateAccount.value.isOptedIn(to: usdcAssetID)
-            guard isOptedInToUSDC else { return }
+            let optedInStatus = sharedDataController.hasOptedIn(
+                assetID: usdcAssetID,
+                for: upToDateAccount.value
+            )
+            guard optedInStatus == .optedIn else { return }
 
             finishObservingOptInUpdates()
 
@@ -390,10 +393,10 @@ extension TransaKFlowCoordinator {
         account: AccountHandle,
         from screen: UIViewController
     ) {
-//        screen.open(
-//            .transaKDappDetail(account: account),
-//            by: .push
-//        )
+        screen.open(
+            .transaKDappDetail(account: account),
+            by: .push
+        )
     }
 }
 

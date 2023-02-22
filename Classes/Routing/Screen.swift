@@ -324,6 +324,7 @@ indirect enum Screen {
     case transaKAccountSelection(
         eventHandler: AccountSelectionListScreen<TransaKAccountSelectionListLocalDataController>.EventHandler
     )
+    case transaKDappDetail(account: AccountHandle)
 }
 
 extension Screen {

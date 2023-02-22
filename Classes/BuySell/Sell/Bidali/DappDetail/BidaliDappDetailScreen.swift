@@ -21,9 +21,6 @@ import WebKit
 final class BidaliDappDetailScreen:
     DiscoverDappDetailScreen,
     SharedDataControllerObserver {
-    override var allowsPullToRefresh: Bool {
-        return false
-    }
 
     private var account: AccountHandle {
         didSet { updateBalancesIfNeeded(old: oldValue, new: account) }
@@ -44,6 +41,7 @@ final class BidaliDappDetailScreen:
             favorites: nil
         )
         super.init(dappParameters: dappParameters, configuration: configuration)
+        self.allowsPullToRefresh = false
 
         self.sharedDataController.add(self)
     }
@@ -57,10 +55,6 @@ final class BidaliDappDetailScreen:
         }
 
         sharedDataController.remove(self)
-    }
-
-    override func addRightBarButtonItems() {
-        rightBarButtonItems = [ makeReloadBarButtonItem() ]
     }
 
     override func viewDidLoad() {
@@ -107,15 +101,6 @@ final class BidaliDappDetailScreen:
             handlePaymentRequestAction(message)
         case .openURLRequest:
             handleOpenURLRequestAction(message)
-        }
-    }
-}
-
-extension BidaliDappDetailScreen {
-    private func makeReloadBarButtonItem() -> ALGBarButtonItem {
-        return ALGBarButtonItem(kind: .reload) {
-            [unowned self] in
-            self.webView.reload()
         }
     }
 }

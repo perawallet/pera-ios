@@ -1471,10 +1471,17 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            viewController = SardineDappDetailScreen(
-                config: config,
+            let dappParameters = DiscoverDappParamaters(
+                name: nil,
+                url: config.url,
+                favorites: nil
+            )
+            let aViewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
                 configuration: configuration
             )
+            aViewController.allowsPullToRefresh = false
+            viewController = aViewController
         case .transaKIntroduction:
             viewController = TransaKIntroductionScreen()
         case .transaKAccountSelection(let eventHandler):
@@ -1518,6 +1525,19 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .transaKDappDetail(let account):
+            let config = TransaKConfig(account: account, network: configuration.api!.network)
+            let dappParameters = DiscoverDappParamaters(
+                name: nil,
+                url: config.url,
+                favorites: nil
+            )
+            let aViewController = DiscoverDappDetailScreen(
+                dappParameters: dappParameters,
+                configuration: configuration
+            )
+            aViewController.allowsPullToRefresh = false
+            viewController = aViewController
         }
 
         return viewController as? T
