@@ -59,7 +59,7 @@ extension AnnouncementList {
 }
 
 final class Announcement: ALGAPIModel {
-    let id: Int
+    let id: String
     let type: AnnouncementType
     let title: String?
     let subtitle: String?
@@ -68,7 +68,8 @@ final class Announcement: ALGAPIModel {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(Int.self, forKey: .id)
+        let id = try container.decode(Int.self, forKey: .id)
+        self.id = String(id)
         self.type = try container.decode(AnnouncementType.self, forKey: .type)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.subtitle = try container.decodeIfPresent(String.self, forKey: .subtitle)
@@ -83,7 +84,7 @@ final class Announcement: ALGAPIModel {
     }
     
     init() {
-        id = 0
+        id = "invalidID"
         type = .generic
         title = nil
         subtitle = nil
@@ -92,7 +93,7 @@ final class Announcement: ALGAPIModel {
     }
 
     init(type: AnnouncementType) {
-        self.id = 0
+        self.id = type.rawValue
         self.type = type
         self.title = nil
         self.subtitle = nil

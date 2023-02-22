@@ -20,16 +20,12 @@ extension Session {
     func setAnnouncementHidden(_ announcement: Announcement, isHidden: Bool) {
         let metadata = AnnouncementMetadata(isHidden: isHidden)
         var states = self.announcementStates
-        states[stateId(for: announcement)] = metadata
+        states[announcement.id] = metadata
         self.announcementStates = states
     }
 
     func isAnnouncementHidden(_ announcement: Announcement) -> Bool {
-        return announcementStates[stateId(for: announcement)] != nil
-    }
-
-    private func stateId(for announcement: Announcement) -> String {
-        announcement.type == .backup ? "backup" : "\(announcement.id)"
+        return announcementStates[announcement.id] != nil
     }
 }
 

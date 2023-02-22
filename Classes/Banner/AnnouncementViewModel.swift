@@ -39,21 +39,34 @@ struct AnnouncementViewModel:
     init(_ model: Announcement) {
         type = model.type
 
-        if model.type == .backup {
-            populateBackupAnnouncement()
-            return
+        switch model.type {
+        case .backup:
+            configureForBackup()
+        case .generic:
+            configureForGeneric(model)
+        case .governance:
+            configureForGovernance(model)
         }
-
-        title = model.title
-        subtitle = model.subtitle
-        ctaTitle = model.buttonLabel
-        ctaUrl = model.buttonUrl
     }
 
-    private mutating func populateBackupAnnouncement() {
+    private mutating func configureForBackup() {
         title = "algorand-secure-backup-banner-title".localized
         subtitle = "algorand-secure-backup-banner-subtitle".localized
         ctaTitle = "algorand-secure-backup-banner-cta-title".localized
         ctaUrl = nil
+    }
+
+    private mutating func configureForGovernance(_ announcement: Announcement) {
+        title = announcement.title
+        subtitle = announcement.subtitle
+        ctaTitle = announcement.buttonLabel
+        ctaUrl = announcement.buttonUrl
+    }
+
+    private mutating func configureForGeneric(_ announcement: Announcement) {
+        title = announcement.title
+        subtitle = announcement.subtitle
+        ctaTitle = announcement.buttonLabel
+        ctaUrl = announcement.buttonUrl
     }
 }

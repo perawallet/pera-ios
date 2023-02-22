@@ -18,9 +18,9 @@ import Foundation
 
 struct BackupMetadata: Codable, Equatable {
     let id: String
-    let createdDate: Date
+    let createdAtDate: Date
 
     static func == (lhs: BackupMetadata, rhs: BackupMetadata) -> Bool {
-        lhs.id == rhs.id && lhs.createdDate == rhs.createdDate
+        lhs.id == rhs.id && lhs.createdAtDate == rhs.createdAtDate
     }
 }
