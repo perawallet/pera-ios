@@ -3521,9 +3521,6 @@
 		9568ADE027C7827300668053 /* MoonPayDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADDF27C7827300668053 /* MoonPayDraft.swift */; };
 		9568ADE127C7827300668053 /* MoonPayDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADDF27C7827300668053 /* MoonPayDraft.swift */; };
 		9568ADE227C7827300668053 /* MoonPayDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADDF27C7827300668053 /* MoonPayDraft.swift */; };
-		9568ADE427C7D97000668053 /* AlgoAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADE327C7D97000668053 /* AlgoAccountViewModel.swift */; };
-		9568ADE527C7D97000668053 /* AlgoAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADE327C7D97000668053 /* AlgoAccountViewModel.swift */; };
-		9568ADE627C7D97000668053 /* AlgoAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568ADE327C7D97000668053 /* AlgoAccountViewModel.swift */; };
 		95779096278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95779095278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift */; };
 		95779097278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95779095278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift */; };
 		95779098278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95779095278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift */; };
@@ -7880,7 +7877,6 @@
 		9565CF6827ABE07600A8095C /* AssetListViewDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListViewDataController.swift; sourceTree = "<group>"; };
 		9565CF6C27ABE9D900A8095C /* AssetListViewAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListViewAPIDataController.swift; sourceTree = "<group>"; };
 		9568ADDF27C7827300668053 /* MoonPayDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPayDraft.swift; sourceTree = "<group>"; };
-		9568ADE327C7D97000668053 /* AlgoAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoAccountViewModel.swift; sourceTree = "<group>"; };
 		95779095278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSingleTransactionRequestMiddleView.swift; sourceTree = "<group>"; };
 		95779099278B07760061FB9C /* WCSingleTransactionRequestMiddleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSingleTransactionRequestMiddleViewTheme.swift; sourceTree = "<group>"; };
 		9577909D278B2E600061FB9C /* WCSingleTransactionRequestMiddleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSingleTransactionRequestMiddleViewModel.swift; sourceTree = "<group>"; };
@@ -14056,7 +14052,6 @@
 			children = (
 				2BB350E4258A233800A03BAC /* AccountNameViewModel.swift */,
 				2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */,
-				9568ADE327C7D97000668053 /* AlgoAccountViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -22128,7 +22123,6 @@
 				2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				1783308729548D0300AD5B4E /* SocialMediaDeeplink.swift in Sources */,
 				F07DAAA5290A746000DDBCF2 /* EditSwapAmountDataProvider.swift in Sources */,
-				9568ADE627C7D97000668053 /* AlgoAccountViewModel.swift in Sources */,
 				2B57158A263479BF002C876D /* AlgorandChartView.swift in Sources */,
 				F0431F23287643230004CB7E /* CurrencyID.swift in Sources */,
 				0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */,
@@ -24280,7 +24274,6 @@
 				2B0E7CBA27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2BD95B092915528E005337E5 /* TapSwapInAccountDetailEvent.swift in Sources */,
 				2B571589263479BF002C876D /* AlgorandChartView.swift in Sources */,
-				9568ADE527C7D97000668053 /* AlgoAccountViewModel.swift in Sources */,
 				F07C3C2D28B46D94003D55BC /* ASADetailLoadingView.swift in Sources */,
 				F0431F22287643230004CB7E /* CurrencyID.swift in Sources */,
 				D459E27327DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
@@ -26403,7 +26396,6 @@
 				D46432DC28B614AC00BF4EC2 /* OptOutAssetListItemViewModel.swift in Sources */,
 				F0431F21287643230004CB7E /* CurrencyID.swift in Sources */,
 				D4DC267728AF94F80068152E /* AlertScreenWithFillingImageTheme.swift in Sources */,
-				9568ADE427C7D97000668053 /* AlgoAccountViewModel.swift in Sources */,
 				F0CF6B6A285163D9007C30E4 /* AccountDescendingTotalPortfolioValueAlgorithm.swift in Sources */,
 				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				D4BAABC42770D73900FF3D22 /* TransactionAmountViewTheme.swift in Sources */,
