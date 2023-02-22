@@ -43,7 +43,13 @@ final class AnnouncementAPIDataController {
                 ///  If we support error handling necessary views, delegate will be called with errors
                 break
             case .success(let announcementList):
-                let announcements = announcementList.results + [Announcement(type: .backup)]
+                let isBackupAnnouncementVisible = self.session.backups.isEmpty
+                var announcements = announcementList.results
+
+                if isBackupAnnouncementVisible {
+                    announcements += [Announcement(type: .backup)]
+                }
+                
                 self.delegate?.announcementAPIDataController(
                     self,
                     didFetch: announcements
