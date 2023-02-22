@@ -64,7 +64,8 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func addScroll() {
         super.addScroll()
 
-        scrollView.contentInset.top = theme.illustrationMaxHeight
+        let safeAreaTop = view.compactSafeAreaInsets.top
+        scrollView.contentInset.top = theme.illustrationMaxHeight - safeAreaTop
     }
 
     override func addFooter() {
@@ -106,9 +107,8 @@ extension BidaliIntroductionScreen {
     }
 
     private func updateIllustrationWhenViewDidScroll() {
-        let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        let preferredHeight = theme.illustrationMaxHeight - contentY
+        let contentY = scrollView.contentOffset.y
+        let preferredHeight = -contentY
 
         illustrationView.snp.updateConstraints {
             $0.fitToHeight(max(preferredHeight, theme.illustrationMinHeight))
@@ -181,7 +181,24 @@ extension BidaliIntroductionScreen {
             $0.trailing == 0
         }
 
+        addIllustrationLogo()
         addIllustrationBackground()
+    }
+
+    private func addIllustrationLogo() {
+        let logoView = UIImageView()
+        logoView.customizeAppearance(theme.illustrationLogo)
+
+        illustrationView.addSubview(logoView)
+        logoView.snp.makeConstraints {
+            let safeAreaTop = view.compactSafeAreaInsets.top
+            let iconHeight = theme.illustrationLogo.image?.uiImage.height ?? .zero
+            let offset = safeAreaTop - iconHeight.ceil()
+            $0.centerY
+                .equalToSuperview()
+                .offset(offset)
+            $0.centerX == 0
+        }
     }
 
     private func addIllustrationBackground() {
