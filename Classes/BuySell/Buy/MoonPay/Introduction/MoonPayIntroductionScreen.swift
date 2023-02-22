@@ -320,6 +320,20 @@ extension MoonPayIntroductionScreen {
 }
 
 extension MoonPayIntroductionScreen {
+    private func didRedirectFromMoonPay(_ notification: Notification) {
+        guard
+            let moonPayParams = notification.userInfo?[MoonPayParams.notificationObjectKey] as? MoonPayParams
+        else {
+            delegate?.moonPayIntroductionScreenDidFailedTransaction(self)
+            return
+        }
+
+        analytics.track(.moonPay(type: .completed))
+        delegate?.moonPayIntroductionScreen(self, didCompletedTransaction: moonPayParams)
+    }
+}
+
+extension MoonPayIntroductionScreen {
     @objc
     private func performPrimaryAction() {
         if api.isTestNet {
@@ -334,47 +348,32 @@ extension MoonPayIntroductionScreen {
             return
         }
 
-        let draft = SelectAccountDraft(
-            transactionAction: .buyAlgo,
-            requiresAssetSelection: false
-        )
+        openAccountSelection()
+    }
+
+    private func openAccountSelection() {
+        let screen = Screen.transaKAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let account):
+                let moonPayDraft = MoonPayDraft()
+                moonPayDraft.address = account.value.address
+                self.openMoonPay(for: moonPayDraft)
+            default:
+                break
+            }
+        }
 
         open(
-            .accountSelection(draft: draft, delegate: self),
+            screen,
             by: .push
         )
     }
 }
 
 extension MoonPayIntroductionScreen {
-    private func didRedirectFromMoonPay(_ notification: Notification) {
-        guard
-            let moonPayParams = notification.userInfo?[MoonPayParams.notificationObjectKey] as? MoonPayParams
-        else {
-            delegate?.moonPayIntroductionScreenDidFailedTransaction(self)
-            return
-        }
-
-        analytics.track(.moonPay(type: .completed))
-        delegate?.moonPayIntroductionScreen(self, didCompletedTransaction: moonPayParams)
-    }
-}
-
-extension MoonPayIntroductionScreen: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        guard draft.transactionAction == .buyAlgo else {
-            return
-        }
-
-        let moonPayDraft = MoonPayDraft()
-        moonPayDraft.address = account.address
-        openMoonPay(for: moonPayDraft)
-    }
-
     private func openMoonPay(for draft: MoonPayDraft) {
         guard let address = draft.address else {
             return

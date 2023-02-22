@@ -314,6 +314,9 @@ indirect enum Screen {
         draft: MoonPayDraft,
         delegate: MoonPayIntroductionScreenDelegate?
     )
+    case moonPayAccountSelection(
+        eventHandler: AccountSelectionListScreen<MoonPayAccountSelectionListLocalDataController>.EventHandler
+    )
     case moonPayTransaction(moonPayParams: MoonPayParams)
     case sardineIntroduction
     case sardineAccountSelection(
