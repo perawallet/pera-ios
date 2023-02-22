@@ -14750,13 +14750,7 @@
 		2BD739E3223F9FF500B66EEF /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				95BB6C0527A2BAB000F2A2F1 /* VerticalTransactionAmount */,
-				D4BADD88277C8F280078FACB /* TransactionAmountView */,
-				171111B7225E0C8400DAF55C /* Toggle.swift */,
 				2BE9372F2464AEB600322C1E /* LineSeparatorView.swift */,
-				2BD739E4223FA07B00B66EEF /* MainButton.swift */,
-				95D11D042771CC0F001B2C37 /* TitleHeaderView.swift */,
-				95D11D082771D4D0001B2C37 /* TitleHeaderViewTheme.swift */,
 				2BB350C325892BD900A03BAC /* WrappedStackView.swift */,
 				D4BC072B2891436700001CDC /* SecondaryListItem */,
 				D4DD3EA6298C617E001941A2 /* Toggle */,
@@ -18879,8 +18873,8 @@
 				F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */,
 				2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */,
 				2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */,
-				D40D9C1C2964B5EF00D4D5F1 /* SendPureCollectibleAssetBlockchainUpdate.swift */,
 				D40D9C202964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift */,
+				D40D9C1C2964B5EF00D4D5F1 /* SendPureCollectibleAssetBlockchainUpdate.swift */,
 			);
 			path = Blockchain;
 			sourceTree = "<group>";
