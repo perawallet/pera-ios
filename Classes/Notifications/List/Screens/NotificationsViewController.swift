@@ -537,6 +537,7 @@ extension NotificationsViewController {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+        loadingController?.stopLoading()
     }
 }
 

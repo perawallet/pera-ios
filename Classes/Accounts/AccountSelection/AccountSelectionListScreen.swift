@@ -451,6 +451,7 @@ extension AccountSelectionListScreen {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
             }
         }
     }
@@ -461,10 +462,6 @@ extension AccountSelectionListScreen {
         loadingController?.stopLoading()
         ledgerApprovalViewController?.dismissScreen()
     }
-
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
 
     private func getAssetID(
         from transactionController: TransactionController

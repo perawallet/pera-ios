@@ -2007,6 +2007,7 @@ extension Router {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        appConfiguration.loadingController.stopLoading()
     }
 
     func transactionController(

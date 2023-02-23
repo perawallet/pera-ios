@@ -441,12 +441,6 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       ledgerApprovalViewController?.dismissScreen()
       loadingController?.stopLoading()
    }
-
-   func transactionControllerDidRejectedLedgerOperation(
-      _ transactionController: TransactionController
-   ) {
-      loadingController?.stopLoading()
-   }
 }
 
 extension SendTransactionPreviewScreen {

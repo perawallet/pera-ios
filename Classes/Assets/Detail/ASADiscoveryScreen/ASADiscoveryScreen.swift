@@ -1081,6 +1081,7 @@ extension ASADiscoveryScreen {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
+        loadingController?.stopLoading()
     }
 
     private func displayTransactionError(

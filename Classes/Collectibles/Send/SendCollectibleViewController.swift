@@ -668,11 +668,6 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
-    }
-
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
         loadingController?.stopLoading()
     }
 
@@ -705,6 +700,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        loadingController?.stopLoading()
         approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {

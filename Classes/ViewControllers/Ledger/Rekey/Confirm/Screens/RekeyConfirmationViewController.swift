@@ -111,6 +111,8 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+        loadingController?.stopLoading()
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -123,6 +125,8 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+        loadingController?.stopLoading()
+
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
@@ -154,6 +158,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+        loadingController?.stopLoading()
     }
 }
 

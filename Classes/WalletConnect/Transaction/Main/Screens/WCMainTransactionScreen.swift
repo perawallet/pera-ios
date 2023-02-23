@@ -356,17 +356,14 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
-    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
-
-    }
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
-    }
-
-    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         loadingController?.stopLoading()
     }
+
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {

@@ -504,6 +504,7 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        loadingController.stopLoading()
     }
 
     func transactionController(
