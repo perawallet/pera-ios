@@ -28,6 +28,15 @@ extension URL {
     var isWebURL: Bool {
         return (scheme?.lowercased() == "http" || scheme?.lowercased() == "https") && host != nil
     }
+    var isPeraURL: Bool {
+        let url = URL(string: Environment.current.discoverBaseUrl)
+
+        if #available(iOS 16.0, *) {
+            return host() == url?.host()
+        } else {
+            return host == url?.host
+        }
+    }
 }
 
 extension URL {

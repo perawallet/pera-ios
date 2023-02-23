@@ -98,6 +98,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 userContentController,
                 didReceive: message
             )
+        case .requestDeviceId:
+            handleRequestDeviceId(message)
         case .pushNewScreen:
             handleNewScreenAction(message)
         }
@@ -172,6 +174,24 @@ extension DiscoverInAppBrowserScreen {
             by: .push
         )
     }
+
+    private func handleRequestDeviceId(_ message: WKScriptMessage) {
+        let frameInfo = message.frameInfo
+        guard let api, frameInfo.isMainFrame, let url = frameInfo.request.url, url.isPeraURL else {
+            return
+        }
+
+        guard let deviceId = session?.authenticatedUser?.getDeviceId(on: api.network) else {
+            return
+        }
+
+        guard let deviceIdDetails = try? DiscoverDeviceIdDetails(deviceId: deviceId).encodedString() else {
+            return
+        }
+
+        let scriptString = "var message = '" + deviceIdDetails + "'; handleMessage(message);"
+        self.webView.evaluateJavaScript(scriptString)
+    }
 }
 
 extension UIUserInterfaceStyle {
@@ -189,4 +209,5 @@ enum DiscoverInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case pushNewScreen
+    case requestDeviceId = "getDeviceId"
 }
