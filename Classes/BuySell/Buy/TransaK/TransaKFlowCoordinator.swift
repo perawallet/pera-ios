@@ -461,6 +461,9 @@ extension TransaKFlowCoordinator {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        /// <warning>
+        /// Don't stop the loading process here, as it is managed within the observing method of the `SharedDataControllerObserver.`
+
         guard let account = transactionController.assetTransactionDraft?.from else {
             assertionFailure("assetTransactionDraft's shouldn't be nil.")
             return
@@ -543,8 +546,8 @@ extension TransaKFlowCoordinator {
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        loadingController.stopLoading()
         ledgerApprovalViewController?.dismissScreen()
+        loadingController.stopLoading()
     }
 
     func transactionControllerDidFailToSignWithLedger(
