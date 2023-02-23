@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "No se puede recuperar esa información.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "No puedes tener más de 50 favoritos.";
+"discover-error-favorites-max-limit" = "No puedes tener más de 100 favoritos.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Buscar un ASA";

@@ -372,7 +372,7 @@ extension DiscoverDappDetailScreen {
     }
     
     private func hasExceededFavouritesLimit() -> Bool {
-        return favoriteDapps.count >= 50
+        return favoriteDapps.count >= 100
     }
     
     private func removeFromFavorites(

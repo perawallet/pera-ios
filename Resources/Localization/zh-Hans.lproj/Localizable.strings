@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "我们目前无法获取这些信息。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "你所选的喜爱数量不得超过50。";
+"discover-error-favorites-max-limit" = "你所选的喜爱数量不得超过100。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "搜索任意ASA";
