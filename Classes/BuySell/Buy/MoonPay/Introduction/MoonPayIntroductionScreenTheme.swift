@@ -22,6 +22,7 @@ struct MoonPayIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle
+    var illustrationLogo: ImageStyle
     var illustrationMaxHeight: LayoutMetric
     var illustrationMinHeight: LayoutMetric
     var title: TextStyle
@@ -41,8 +42,12 @@ struct MoonPayIntroductionScreenTheme:
         _ family: LayoutFamily
     ) {
         self.illustration = [
-            .image("sardine-introduction-illustration"), /// <todo> Change the illustration.
-            .contentMode(.scaleAspectFill)
+            .image("moonpay-introduction-illustration"),
+            .backgroundColor(Colors.Dapp.moonPay),
+            .contentMode(.bottom)
+        ]
+        self.illustrationLogo = [
+            .image("moonpay-introduction-illustration-logo")
         ]
         self.illustrationMaxHeight = 294
         self.illustrationMinHeight = 132

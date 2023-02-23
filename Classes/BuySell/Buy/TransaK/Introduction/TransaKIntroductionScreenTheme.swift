@@ -22,6 +22,7 @@ struct TransaKIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle
+    var illustrationLogo: ImageStyle
     var illustrationMaxHeight: LayoutMetric
     var illustrationMinHeight: LayoutMetric
     var title: TextStyle
@@ -42,7 +43,11 @@ struct TransaKIntroductionScreenTheme:
     ) {
         self.illustration = [
             .image("transak-introduction-illustration"),
-            .contentMode(.scaleAspectFill)
+            .backgroundColor(Colors.Dapp.transak),
+            .contentMode(.bottom)
+        ]
+        self.illustrationLogo = [
+            .image("transak-introduction-illustration-logo")
         ]
         self.illustrationMaxHeight = 294
         self.illustrationMinHeight = 132
