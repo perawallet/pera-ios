@@ -50,6 +50,9 @@ final class CollectibleMediaPreviewViewController:
         collectionView.register(
             CollectibleMediaVideoPreviewCell.self
         )
+        collectionView.register(
+            CollectibleMediaAudioPreviewCell.self
+        )
         return collectionView
     }()
 
@@ -178,11 +181,11 @@ final class CollectibleMediaPreviewViewController:
         let visibleCells = listView.visibleCells
 
         for visibleCell in visibleCells {
-            guard let videoCell = visibleCell as? CollectibleMediaVideoPreviewCell else {
-                continue
+            if let videoCell = visibleCell as? CollectibleMediaVideoPreviewCell {
+                videoCell.stopVideo()
+            } else if let audioCell = visibleCell as? CollectibleMediaAudioPreviewCell {
+                audioCell.stopAudio()
             }
-
-            videoCell.stopVideo()
         }
     }
 }
@@ -282,6 +285,20 @@ extension CollectibleMediaPreviewViewController {
         }
 
         switch media.type {
+        case .audio:
+            guard let cell = cell as? CollectibleMediaAudioPreviewCell else {
+                return
+            }
+            
+            cell.playAudio()
+            
+            cell.startObserving(event: .perform3DModeAction) {
+                [weak self] in
+                guard let self else { return }
+                
+                self.open3DCard()
+            }
+            cell.startObserving(event: .performFullScreenAction) {}
         case .image:
             guard let cell = cell as? CollectibleMediaImagePreviewCell else {
                 return
@@ -325,7 +342,7 @@ extension CollectibleMediaPreviewViewController {
             guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
                 return
             }
-
+            
             cell.playVideo()
 
             cell.startObserving(event: .perform3DModeAction) {
@@ -333,6 +350,7 @@ extension CollectibleMediaPreviewViewController {
                 guard let self else {
                     return
                 }
+                
                 self.open3DCard()
             }
             cell.startObserving(event: .performFullScreenAction) {
@@ -341,7 +359,7 @@ extension CollectibleMediaPreviewViewController {
                       let cell else {
                     return
                 }
-
+                
                 let player = cell.contextView.currentPlayer
 
                 guard cell.isReadyForDisplay,
@@ -374,6 +392,12 @@ extension CollectibleMediaPreviewViewController {
         }
 
         switch media.type {
+        case .audio:
+            guard let cell = cell as? CollectibleMediaAudioPreviewCell else {
+                return
+            }
+            
+            cell.stopAudio()
         case .video:
             guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
                 return
@@ -427,6 +451,8 @@ extension CollectibleMediaPreviewViewController {
         }
 
         switch media.type {
+        case .audio:
+            return
         case .image:
             if let cell = currentVisibleCell as? CollectibleMediaImagePreviewCell,
                let image = cell.contextView.currentImage {
