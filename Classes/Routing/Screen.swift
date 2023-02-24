@@ -191,6 +191,7 @@ indirect enum Screen {
         image: UIImage?,
         url: URL
     )
+    case collectibleFullScreenAudio(draft: CollectibleFullScreenAudioDraft)
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
     case buyAlgoHome(

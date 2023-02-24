@@ -1103,6 +1103,11 @@ class Router:
                 url: url,
                 configuration: configuration
             )
+        case .collectibleFullScreenAudio(let draft):
+            viewController = CollectibleFullScreenAudioViewController(
+                draft: draft,
+                configuration: configuration
+            )
         case .collectibleFullScreenImage(let draft):
             viewController = CollectibleFullScreenImageViewController(
                 draft: draft,
