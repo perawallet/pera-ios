@@ -95,6 +95,7 @@ enum MediaType:
     CaseIterable,
     Codable,
     Equatable {
+    case audio
     case image
     case video
     case mixed
@@ -102,6 +103,7 @@ enum MediaType:
 
     var rawValue: String {
         switch self {
+        case .audio: return "audio"
         case .image: return "image"
         case .video: return "video"
         case .mixed: return "mixed"
@@ -110,7 +112,7 @@ enum MediaType:
     }
 
     static var allCases: [Self] = [
-        .image, .video, .mixed
+        .audio, .image, .video, .mixed
     ]
 
     init() {
@@ -175,7 +177,9 @@ enum MediaExtension:
     case jpg
     case jpeg
     case png
+    case mp3
     case mp4
+    case wav
     case webp
     case other(String)
 
@@ -185,14 +189,16 @@ enum MediaExtension:
         case .jpg: return ".jpg"
         case .jpeg: return ".jpeg"
         case .png: return ".png"
+        case .mp3: return ".mp3"
         case .mp4: return ".mp4"
+        case .wav: return ".wav"
         case .webp: return ".webp"
         case .other(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .gif, .jpg, .jpeg, .png, .mp4, .webp
+        .gif, .jpg, .jpeg, .png, .mp3, .mp4, .wav, .webp
     ]
 
     init() {
