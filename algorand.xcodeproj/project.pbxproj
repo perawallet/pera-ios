@@ -1291,9 +1291,6 @@
 		2B36FCCB28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
 		2B36FCCC28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
 		2B36FCCD28B69425001ECA57 /* OptOutBlockchainRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */; };
-		2B384DA629A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA529A8F0D2006BD6BD /* AudioPlayerView.swift */; };
-		2B384DA729A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA529A8F0D2006BD6BD /* AudioPlayerView.swift */; };
-		2B384DA829A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA529A8F0D2006BD6BD /* AudioPlayerView.swift */; };
 		2B384DAA29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA929A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift */; };
 		2B384DAB29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA929A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift */; };
 		2B384DAC29A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DA929A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift */; };
@@ -1306,6 +1303,9 @@
 		2B384DB629A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */; };
 		2B384DB729A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */; };
 		2B384DB829A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */; };
+		2B384DBE29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
+		2B384DBF29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
+		2B384DC029A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -6841,11 +6841,11 @@
 		2B344B1A268A223000DA7B25 /* WCTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransaction.swift; sourceTree = "<group>"; };
 		2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutBlockchainUpdate.swift; sourceTree = "<group>"; };
 		2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutBlockchainRequest.swift; sourceTree = "<group>"; };
-		2B384DA529A8F0D2006BD6BD /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		2B384DA929A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewCell.swift; sourceTree = "<group>"; };
 		2B384DAD29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewView.swift; sourceTree = "<group>"; };
 		2B384DB129A8F15C006BD6BD /* CollectibleMediaAudioPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewTheme.swift; sourceTree = "<group>"; };
 		2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewModel.swift; sourceTree = "<group>"; };
+		2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* InstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemView.swift; sourceTree = "<group>"; };
@@ -9998,10 +9998,10 @@
 		2B384DA429A8F073006BD6BD /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				2B384DA529A8F0D2006BD6BD /* AudioPlayerView.swift */,
 				2B384DA929A8F112006BD6BD /* CollectibleMediaAudioPreviewCell.swift */,
 				2B384DAD29A8F133006BD6BD /* CollectibleMediaAudioPreviewView.swift */,
 				2B384DB129A8F15C006BD6BD /* CollectibleMediaAudioPreviewViewTheme.swift */,
+				2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -19801,7 +19801,6 @@
 				2B288AE92693A5B700BC6FB6 /* WCSingleTransactionViewControllerAssetActionable.swift in Sources */,
 				D442E1BF27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				2BDDF18928F5693E00CA626F /* TransactionActionInformationViewModel.swift in Sources */,
-				2B384DA829A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */,
 				2B69AB0028BE35B200A8D65D /* SwapAssetSelectionEmptyViewModel.swift in Sources */,
 				D4BC640126DE22A3000CFD28 /* ButtonViewModel.swift in Sources */,
 				F0C542D4291C6E0D00596A0A /* DiscoverSearchListNotFoundViewModel.swift in Sources */,
@@ -21526,6 +21525,7 @@
 				2BE09A7928F60B6E0059EEF0 /* SwapSummaryStatusView.swift in Sources */,
 				17CADC922859C168001D19A8 /* SortAccountAssetListViewController.swift in Sources */,
 				D41699562790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
+				2B384DC029A8F81A006BD6BD /* AudioPlayerView.swift in Sources */,
 				F0A812E52837E16B00D27BD3 /* CollectibleFullScreenVideoViewController.swift in Sources */,
 				F0E7444727B465CA0063DD83 /* AlgoPriceAttributeViewModel.swift in Sources */,
 				17BD4EDF2292F1260003E49A /* ContactDetailViewController.swift in Sources */,
@@ -22496,6 +22496,7 @@
 				D4BCAD3D28B50ECB0052DD74 /* OptOutAssetNameViewModel.swift in Sources */,
 				17CADC842853A665001D19A8 /* TransactionOptionsScreen.swift in Sources */,
 				F0DB416627938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
+				2B384DBF29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */,
 				2B99D41628E6048F00323C11 /* SwapController.swift in Sources */,
 				2B0F61EC24EC129D00DA22A6 /* AssetDecoration.swift in Sources */,
 				17D7F3BC294C96320011D9DA /* PeraInAppBrowserScreen.swift in Sources */,
@@ -23338,7 +23339,6 @@
 				2BB8483327E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift in Sources */,
 				D48FDFF027CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */,
 				2B0F62AB24EC129D00DA22A6 /* AccountListLayoutBuilder.swift in Sources */,
-				2B384DA729A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */,
 				2B119E8B296EE94300FE6962 /* JSONModel+Extensions.swift in Sources */,
 				2BE09A4428F609610059EEF0 /* SwapSummaryScreenViewModel.swift in Sources */,
 				955B617627848226005A5C7E /* WCDetailOverlayFragment.swift in Sources */,
@@ -23966,7 +23966,6 @@
 				D4C3BD43278CE39E00E898FD /* AssetDetailTitleView.swift in Sources */,
 				F063BE78290BF7BF00AEAEF7 /* EditSwapSlippageScreenTheme.swift in Sources */,
 				2B3E39F4247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */,
-				2B384DA629A8F0D2006BD6BD /* AudioPlayerView.swift in Sources */,
 				D48FDFE727CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift in Sources */,
 				F010636E28AC339900AB6873 /* RekeyAccountListItemButtonViewModel.swift in Sources */,
 				F039CE832884565B008B4045 /* LocalCurrency.swift in Sources */,
@@ -25691,6 +25690,7 @@
 				2B968A8428869BD000184ED5 /* AsaVerificationInfoScreen.swift in Sources */,
 				2BD95B082915528E005337E5 /* TapSwapInAccountDetailEvent.swift in Sources */,
 				2BE09A7728F60B6E0059EEF0 /* SwapSummaryStatusView.swift in Sources */,
+				2B384DBE29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */,
 				2B0E7CB927E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				D459E27227DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
