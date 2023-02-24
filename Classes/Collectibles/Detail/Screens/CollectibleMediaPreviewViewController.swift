@@ -452,7 +452,15 @@ extension CollectibleMediaPreviewViewController {
 
         switch media.type {
         case .audio:
-            return
+            if let url = media.downloadURL {
+                open(
+                    .audio3DCard(
+                        image: thumbnailImage,
+                        url: url
+                    ),
+                    by: .presentWithoutNavigationController
+                )
+            }
         case .image:
             if let cell = currentVisibleCell as? CollectibleMediaImagePreviewCell,
                let image = cell.contextView.currentImage {

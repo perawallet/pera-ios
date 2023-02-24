@@ -1086,6 +1086,12 @@ class Router:
             ]
 
             viewController = activityController
+        case .audio3DCard(let image, let url):
+            viewController = Collectible3DAudioViewController(
+                image: image,
+                url: url,
+                configuration: configuration
+            )
         case .image3DCard(let image):
             viewController = Collectible3DImageViewController(
                 image: image,

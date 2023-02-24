@@ -1306,6 +1306,9 @@
 		2B384DBE29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
 		2B384DBF29A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
 		2B384DC029A8F81A006BD6BD /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */; };
+		2B384DC229A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
+		2B384DC329A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
+		2B384DC429A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -6846,6 +6849,7 @@
 		2B384DB129A8F15C006BD6BD /* CollectibleMediaAudioPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewTheme.swift; sourceTree = "<group>"; };
 		2B384DB529A8F1DF006BD6BD /* CollectibleMediaAudioPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaAudioPreviewViewModel.swift; sourceTree = "<group>"; };
 		2B384DBD29A8F81A006BD6BD /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectible3DAudioViewController.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* InstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemView.swift; sourceTree = "<group>"; };
@@ -14128,6 +14132,7 @@
 				2BAD6CAE27F88CAA0016E869 /* Collectible3DImageViewController.swift */,
 				2BAD6CB227F88CDF0016E869 /* Collectible3DVideoViewController.swift */,
 				2BAD6CBA27F907D00016E869 /* Collectible3DViewerTheme.swift */,
+				2B384DC129A8F98B006BD6BD /* Collectible3DAudioViewController.swift */,
 			);
 			path = 3DCard;
 			sourceTree = "<group>";
@@ -20270,6 +20275,7 @@
 				D419433F273570630055EC70 /* AssetListViewDataSource.swift in Sources */,
 				2B6B3F002774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
 				F045BE3F286B9BD70069056B /* CurrencyFormattingListItemContextHandler.swift in Sources */,
+				2B384DC429A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				D40D9C232964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift in Sources */,
 				F065169B2905E5D700ECE763 /* SwapAmountPercentageInputViewModel.swift in Sources */,
 				D4411D0828352DCE00080911 /* CollectibleFullScreenImageViewModel.swift in Sources */,
@@ -23269,6 +23275,7 @@
 				2B6B422A27BEA3A50036BF9E /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				2BB93BD625BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				D45564B029432A9A00A4F28C /* AssetFilterItemViewTheme.swift in Sources */,
+				2B384DC329A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				2B83D05426C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				F08A68E9292458B50039B085 /* DiscoverErrorViewTheme.swift in Sources */,
 				F034523828B3946B009467A0 /* ASADiscoveryScreenDataController.swift in Sources */,
@@ -24435,6 +24442,7 @@
 				F010638A28AC71A000AB6873 /* ASADetailScreenTheme.swift in Sources */,
 				2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				2BC1827423D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
+				2B384DC229A8F98B006BD6BD /* Collectible3DAudioViewController.swift in Sources */,
 				F045BE3D286B9BD70069056B /* CurrencyFormattingListItemContextHandler.swift in Sources */,
 				F0DB41A32794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				D4588ACD294293ED0012C12C /* NameServiceAPIStatus.swift in Sources */,
