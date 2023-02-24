@@ -98,8 +98,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 userContentController,
                 didReceive: message
             )
-        case .requestDeviceId:
-            handleRequestDeviceId(message)
+        case .requestDeviceID:
+            handleDeviceIDRequest(message)
         case .pushNewScreen:
             handleNewScreenAction(message)
         }
@@ -175,22 +175,27 @@ extension DiscoverInAppBrowserScreen {
         )
     }
 
-    private func handleRequestDeviceId(_ message: WKScriptMessage) {
+    private func handleDeviceIDRequest(_ message: WKScriptMessage) {
         let frameInfo = message.frameInfo
-        guard let api, frameInfo.isMainFrame, let url = frameInfo.request.url, url.isPeraURL else {
-            return
-        }
 
-        guard let deviceId = session?.authenticatedUser?.getDeviceId(on: api.network) else {
-            return
-        }
+        if frameInfo.isMainFrame { return }
 
-        guard let deviceIdDetails = try? DiscoverDeviceIdDetails(deviceId: deviceId).encodedString() else {
-            return
-        }
+        guard let api else { return }
+        guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return }
+
+        guard let deviceID = getDeviceID(from: api) else { return }
+        guard let deviceIdDetails = getDeviceIDDetails(with: deviceID) else { return }
 
         let scriptString = "var message = '" + deviceIdDetails + "'; handleMessage(message);"
         self.webView.evaluateJavaScript(scriptString)
+    }
+
+    private func getDeviceID(from api: ALGAPI) -> String? {
+        session?.authenticatedUser?.getDeviceId(on: api.network)
+    }
+
+    private func getDeviceIDDetails(with deviceID: String) -> String? {
+        try? DiscoverDeviceIdDetails(deviceId: deviceID).encodedString()
     }
 }
 
@@ -209,5 +214,5 @@ enum DiscoverInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case pushNewScreen
-    case requestDeviceId = "getDeviceId"
+    case requestDeviceID = "getDeviceId"
 }
