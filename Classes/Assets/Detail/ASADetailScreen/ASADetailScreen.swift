@@ -270,7 +270,7 @@ extension ASADetailScreen {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.removeAccount()
+                self?.removeAccountIfPossible()
             }
         )
 
@@ -280,7 +280,16 @@ extension ASADetailScreen {
         )
     }
 
-    private func removeAccount() {
+    private func removeAccountIfPossible() {
+        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: dataController.account).first?.value,
+           aRekeyedAccount.isPossiblyRekeyedToStandardAccount() {
+            bannerController?.presentErrorBanner(
+                title: "",
+                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
+            )
+            return
+        }
+        
         sharedDataController.resetPollingAfterRemoving(dataController.account)
         walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)

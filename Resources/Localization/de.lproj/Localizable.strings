@@ -1324,6 +1324,9 @@
 /* (No Comment) */
 "options-sort-title" = "Sortieren";
 
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
+
 /* MARK: Options */
 "options-title" = "KONTOEINSTELLUNGEN";
 
