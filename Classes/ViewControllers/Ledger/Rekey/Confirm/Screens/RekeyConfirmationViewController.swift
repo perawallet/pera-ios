@@ -240,19 +240,28 @@ extension TransactionSignChecking where Self: BaseViewController {
             if selectedAccount.rekeyDetail?[authAddress] != nil {
                 return true
             } else {
-                if let authAccount = accounts.first(where: { account -> Bool in
+                guard let authAccount = accounts.first(where: { account -> Bool in
                     authAddress == account.address
-                }),
-                let ledgerDetail = authAccount.ledgerDetail {
-                    selectedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
-                    return true
+                }) else {
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "ledger-rekey-error-add-auth".localized(
+                            params: authAddress.shortAddressDisplay
+                        )
+                    )
+                    
+                    return false
                 }
-            }
 
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay)
-            )
-            return false
+                if let ledgerDetail = authAccount.ledgerDetail {
+                    selectedAccount.addRekeyDetail(
+                        ledgerDetail,
+                        for: authAddress
+                    )
+                }
+                
+                return true
+            }
         }
 
         /// Check whether ledger details of the selected ledger account exists.
