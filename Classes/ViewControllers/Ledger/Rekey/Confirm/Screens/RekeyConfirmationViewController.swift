@@ -24,7 +24,7 @@ final class RekeyConfirmationViewController: BaseViewController {
 
     private var account: Account
     private let ledger: LedgerDetail?
-    private let ledgerAddress: String
+    private let newAuthAddress: String
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -42,10 +42,15 @@ final class RekeyConfirmationViewController: BaseViewController {
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
-    init(account: Account, ledger: LedgerDetail?, ledgerAddress: String, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        ledger: LedgerDetail?,
+        newAuthAddress: String,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
         self.ledger = ledger
-        self.ledgerAddress = ledgerAddress
+        self.newAuthAddress = newAuthAddress
         super.init(configuration: configuration)
     }
 
@@ -69,7 +74,12 @@ final class RekeyConfirmationViewController: BaseViewController {
     }
 
     override func bindData() {
-        rekeyConfirmationView.bindData(RekeyConfirmationViewModel(account: account, ledgerName: ledger?.name))
+        let viewModel = RekeyConfirmationViewModel(
+            account: account,
+            ledgerName: ledger?.name,
+            newAuthAddress: newAuthAddress
+        )
+        rekeyConfirmationView.bindData(viewModel)
     }
     
     override func prepareLayout() {
@@ -90,7 +100,10 @@ extension RekeyConfirmationViewController:
             return
         }
         
-        let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
+        let rekeyTransactionDraft = RekeyTransactionSendDraft(
+            account: account,
+            rekeyedTo: newAuthAddress
+        )
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
         
@@ -163,7 +176,10 @@ extension RekeyConfirmationViewController {
            let ledgerDetail = ledger {
             localAccount.type = .rekeyed
             account.type = .rekeyed
-            localAccount.addRekeyDetail(ledgerDetail, for: ledgerAddress)
+            localAccount.addRekeyDetail(
+                ledgerDetail,
+                for: newAuthAddress
+            )
 
             session?.authenticatedUser?.updateAccount(localAccount)
         }
