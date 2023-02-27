@@ -125,8 +125,8 @@ extension ExportAccountListLocalDataController {
                 .sortedAccounts()
                 .filter {
                     let isWatchAccount = $0.value.isWatchAccount()
-                    let isNonStandardAccount = $0.value.requiresLedgerConnection() || $0.value.isRekeyed()
-                    return !isWatchAccount && !isNonStandardAccount
+                    let requiresLedgerConnection = $0.value.requiresLedgerConnection()
+                    return !isWatchAccount && !requiresLedgerConnection
                 }.map {
                     $0.value
                 }
