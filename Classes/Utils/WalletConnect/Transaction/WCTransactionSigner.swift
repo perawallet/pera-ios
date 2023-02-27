@@ -71,15 +71,11 @@ extension WCTransactionSigner {
         ledgerTransactionOperation.delegate = self
         startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
-
-        // Needs a bit delay since the bluetooth scanning for the first time is working initially
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.ledgerTransactionOperation.startScan()
-        }
+        ledgerTransactionOperation.startScan()
     }
 
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
             guard let self = self else {
                 timer.invalidate()
                 return

@@ -50,6 +50,7 @@ final class CollectibleDetailViewController:
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
@@ -195,8 +196,8 @@ final class CollectibleDetailViewController:
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
     }
@@ -790,24 +791,7 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        if let transactionType = transactionController.currentTransactionType {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-
-            switch transactionType {
-            case .assetAddition:
-                monitor.cancelMonitoringOptInUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            case .assetRemoval:
-                monitor.cancelMonitoringOptOutUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            default:
-                break
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
 
@@ -823,24 +807,7 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        if let transactionType = transactionController.currentTransactionType {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-
-            switch transactionType {
-            case .assetAddition:
-                monitor.cancelMonitoringOptInUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            case .assetRemoval:
-                monitor.cancelMonitoringOptOutUpdates(
-                    forAssetID: asset.id,
-                    for: account
-                )
-            default:
-                break
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
 
@@ -880,6 +847,10 @@ extension CollectibleDetailViewController {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+                
+                self.cancelMonitoringOptInOutUpdates(for: transactionController)
+
                 self.loadingController?.stopLoading()
             }
         }
@@ -890,7 +861,37 @@ extension CollectibleDetailViewController {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInOutUpdates(for: transactionController)
+
         loadingController?.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        loadingController?.stopLoading()
+    }
+
+    private func cancelMonitoringOptInOutUpdates(for transactionController: TransactionController) {
+        if let transactionType = transactionController.currentTransactionType {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            switch transactionType {
+            case .assetAddition:
+                monitor.cancelMonitoringOptInUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.cancelMonitoringOptOutUpdates(
+                    forAssetID: asset.id,
+                    for: account
+                )
+            default:
+                break
+            }
+        }
     }
 }
 
@@ -915,9 +916,7 @@ extension CollectibleDetailViewController {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,

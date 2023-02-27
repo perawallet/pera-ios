@@ -108,8 +108,8 @@ final class SendCollectibleViewController:
         animateBottomSheetLayout()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
     }
@@ -659,6 +659,8 @@ extension SendCollectibleViewController {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
                 self.loadingController?.stopLoading()
             }
         }
@@ -668,6 +670,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+        
         loadingController?.stopLoading()
     }
 

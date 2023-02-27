@@ -30,7 +30,7 @@ class TransactionController {
     private var transactionDraft: TransactionSendDraft?
 
     private var timer: Timer?
-    
+
     private let transactionData = TransactionData()
     
     private lazy var ledgerTransactionOperation =
@@ -100,13 +100,13 @@ extension TransactionController {
 
         ledgerTransactionOperation.delegate = self
 
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
             guard let self = self else {
                 timer.invalidate()
                 return
             }
 
-            self.ledgerTransactionOperation.bleConnectionManager.stopScan()
+            self.ledgerTransactionOperation.stopScan()
 
             self.bannerController?.presentErrorBanner(
                 title: "ble-error-connection-title".localized,
@@ -332,6 +332,18 @@ extension TransactionController: LedgerTransactionOperationDelegate {
                 title: "title-error".localized,
                 message: "ledger-account-fetct-error".localized
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+
+            delegate?.transactionControllerDidResetLedgerOperation(self)
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
@@ -355,6 +367,10 @@ extension TransactionController: LedgerTransactionOperationDelegate {
 
     func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         stopTimer()
+    }
+
+    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.transactionControllerDidResetLedgerOperationOnSuccess(self)
     }
 
     func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
