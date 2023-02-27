@@ -235,7 +235,9 @@ extension ASADetailScreen {
     }
     
     private func isEnabledSoftRekeying(for account: Account) -> Bool {
-        return account.isRekeyedOrLedger() || account.isSameAccount(with: dataController.account.address)
+        return account.isLedger() ||
+            account.isRekeyed() ||
+            account.isSameAccount(with: dataController.account.address)
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -316,7 +318,7 @@ extension ASADetailScreen {
 
     private func removeAccountIfPossible() {
         if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: dataController.account).first?.value,
-           aRekeyedAccount.isPossiblyRekeyedToStandardAccount() {
+           aRekeyedAccount.isRekeyedToAnyAccount() {
             bannerController?.presentErrorBanner(
                 title: "",
                 message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
@@ -376,15 +378,19 @@ extension ASADetailScreen {
     ) {
         switch draft.transactionAction {
         case .softRekey:
-            selectAccountViewController.dismissScreen()
-            open(
-                .rekeyConfirmation(
-                    account: dataController.account,
-                    ledgerDetail: nil,
-                    newAuthAddress: account.address
-                ),
-                by: .present
-            )
+            selectAccountViewController.dismissScreen {
+                [weak self] in
+                guard let self else { return }
+                
+                self.open(
+                    .rekeyConfirmation(
+                        account: self.dataController.account,
+                        ledgerDetail: nil,
+                        newAuthAddress: account.address
+                    ),
+                    by: .present
+                )
+            }
         default: break
         }
     }

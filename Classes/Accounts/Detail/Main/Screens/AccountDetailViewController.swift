@@ -384,7 +384,9 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     private func isEnabledSoftRekeying(for account: Account) -> Bool {
-        return account.isRekeyedOrLedger() || account.isSameAccount(with: accountHandle.value.address)
+        return account.isRekeyed() ||
+            account.isLedger() ||
+            account.isSameAccount(with: accountHandle.value.address)
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -490,7 +492,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     private func removeAccountIfPossible() {
         if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: accountHandle.value).first?.value,
-           aRekeyedAccount.isPossiblyRekeyedToStandardAccount() {
+           aRekeyedAccount.isRekeyedToAnyAccount() {
             bannerController?.presentErrorBanner(
                 title: "",
                 message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
@@ -639,15 +641,20 @@ extension AccountDetailViewController {
     ) {
         switch draft.transactionAction {
         case .softRekey:
-            selectAccountViewController.dismissScreen()
-            open(
-                .rekeyConfirmation(
-                    account: accountHandle.value,
-                    ledgerDetail: nil,
-                    newAuthAddress: account.address
-                ),
-                by: .present
-            )
+            selectAccountViewController.dismissScreen {
+                [weak self] in
+                guard let self else { return }
+                
+                self.open(
+                    .rekeyConfirmation(
+                        account: self.accountHandle.value,
+                        ledgerDetail: nil,
+                        newAuthAddress: account.address
+                    ),
+                    by: .present
+                )
+            }
+
         default: break
         }
     }

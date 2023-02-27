@@ -1066,7 +1066,7 @@ extension HomeViewController {
     
     private func removeAccountIfPossible(_ account: Account) {
         if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: account).first?.value,
-           aRekeyedAccount.isPossiblyRekeyedToStandardAccount() {
+           aRekeyedAccount.isRekeyedToAnyAccount() {
             bannerController?.presentErrorBanner(
                 title: "",
                 message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)

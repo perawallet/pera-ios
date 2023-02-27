@@ -398,7 +398,7 @@ extension OptionsViewController {
 
             primaryOptions.append(.rekeyToLedger)
             
-            if !account.isRekeyed() {
+            if !account.isRekeyed() && !account.requiresLedgerConnection() {
                 primaryOptions.append(.rekeyToStandardAccount)
             }
 
