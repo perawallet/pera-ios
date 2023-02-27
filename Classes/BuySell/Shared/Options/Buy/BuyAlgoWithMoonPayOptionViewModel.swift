@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuySellOptionsBuyAlgoWithMoonPayOptionViewModel.swift
+//   BuyAlgoWithMoonPayOptionViewModel.swift
 
 import MacaroonUIKit
 
-struct BuySellOptionsBuyAlgoWithMoonPayOptionViewModel: ListItemButtonViewModel {
+struct BuyAlgoWithMoonPayOptionViewModel: ListItemButtonViewModel {
     var icon: Image?
     var title: EditText?
     var subtitle: EditText?

@@ -69,11 +69,6 @@ final class MoonPayIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        observe(notification: .didRedirectFromMoonPay) {
-            [unowned self] notification in
-            self.didRedirectFromMoonPay(notification)
-        }
-
         switchToTransparentNavigationBarAppearance()
 
         addUI()
@@ -89,6 +84,15 @@ final class MoonPayIntroductionScreen: ScrollScreen {
         super.viewDidDisappear(animated)
 
         switchToDefaultNavigationBarAppearanceIfNeeded()
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+            self.didRedirectFromMoonPay(notification)
+        }
     }
 
     override func addScroll() {
@@ -147,19 +151,6 @@ extension MoonPayIntroductionScreen {
 }
 
 extension MoonPayIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
@@ -372,7 +363,7 @@ extension MoonPayIntroductionScreen {
     }
 
     private func openAccountSelection() {
-        let screen = Screen.transaKAccountSelection {
+        let screen = Screen.transakAccountSelection {
             [weak self] event, screen in
             guard let self else { return }
 

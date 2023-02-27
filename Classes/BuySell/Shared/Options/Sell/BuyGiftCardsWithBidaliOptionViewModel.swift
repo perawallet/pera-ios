@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuySellOptionsBuyGiftCardsWithBidaliOptionViewModel.swift
+//   BuyGiftCardsWithBidaliOptionViewModel.swift
 
 import MacaroonUIKit
 
-struct BuySellOptionsBuyGiftCardsWithBidaliOptionViewModel: ListItemButtonViewModel {
+struct BuyGiftCardsWithBidaliOptionViewModel: ListItemButtonViewModel {
     var icon: Image?
     var title: EditText?
     var subtitle: EditText?

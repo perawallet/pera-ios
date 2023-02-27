@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKFlowCoordinator.swift
+//   TransakFlowCoordinator.swift
 
 import Foundation
 import UIKit
 
-final class TransaKFlowCoordinator:
+final class TransakFlowCoordinator:
     TransactionControllerDelegate,
     SharedDataControllerObserver {
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -30,6 +30,7 @@ final class TransaKFlowCoordinator:
 
     private var transitionToAssetActionConfirmation: BottomSheetTransition?
     private var transitionToOptInAsset: BottomSheetTransition?
+    private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
@@ -39,7 +40,7 @@ final class TransaKFlowCoordinator:
     private let loadingController: LoadingController
     private let analytics: ALGAnalytics
 
-    private var accountAddressToObserveOptInUpdates: PublicKey?
+    private var selectedAccountAddress: PublicKey?
 
     private var usdcAssetID: AssetID {
         return ALGAsset.usdcAssetID(api.network)
@@ -67,14 +68,14 @@ final class TransaKFlowCoordinator:
 }
 
 // MARK: SharedDataControllerObserver
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     func sharedDataController(
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
     ) {
         if case .didFinishRunning = event,
-           let address = accountAddressToObserveOptInUpdates,
-           let upToDateAccount = sharedDataController.accountCollection[address] {
+           let address = selectedAccountAddress,
+           let upToDateAccount = upToDateAccount(for: address) {
 
             let optedInStatus = sharedDataController.hasOptedIn(
                 assetID: usdcAssetID,
@@ -82,35 +83,45 @@ extension TransaKFlowCoordinator {
             )
             guard optedInStatus == .optedIn else { return }
 
-            finishObservingOptInUpdates()
-
-            loadingController.stopLoading()
-
-            let visibleScreen = presentingScreen.findVisibleScreen()
-            visibleScreen.dismiss(animated: true) {
-                let visibleScreen = self.presentingScreen.findVisibleScreen()
-                self.openDappDetail(
-                    account: upToDateAccount,
-                    from: visibleScreen
-                )
-            }
+            openDappDetailAfterOptingIn(upToDateAccount)
         }
     }
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
+    private func openDappDetailAfterOptingIn(_ account: AccountHandle) {
+        finishObservingOptInUpdates()
+
+        loadingController.stopLoading()
+
+        /// <todo>
+        /// This code should be refactored after routing refactor.
+        /// Firstly it dismisses the opt-in sheet, after that it pushes the `TransakDappDetailScreen` from
+        /// the visible screen (`TransakIntroductionScreen` or `TransakAccountSelectionScreen`).
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        visibleScreen.dismiss(animated: true) {
+            let visibleScreen = self.presentingScreen.findVisibleScreen()
+            self.openDappDetail(
+                account: account,
+                from: visibleScreen
+            )
+        }
+    }
+}
+
+extension TransakFlowCoordinator {
     /// When an account is not passed to the function, the account selection flow is triggered within the overall flow.
     func launch(_ account: AccountHandle? = nil) {
         openIntroduction(account)
     }
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func openIntroduction(_ account: AccountHandle?) {
         let screen = presentingScreen.open(
-            .transaKIntroduction,
+            .transakIntroduction,
             by: .present
-        ) as? TransaKIntroductionScreen
+        ) as? TransakIntroductionScreen
         screen?.eventHandler = {
             [weak self, weak screen] event in
             guard let self,
@@ -125,40 +136,13 @@ extension TransaKFlowCoordinator {
                     return
                 }
 
-                guard account != nil else {
+                guard let account = account else {
                     self.openAccountSelection(from: screen)
                     return
                 }
 
-                let address = account!.value.address
-                let upToDateAccount = self.sharedDataController.accountCollection[address]
-
-                guard let upToDateAccount else {
-                    self.presentAccountNotFoundError()
-                    return
-                }
-
-                if self.hasPendingOptInRequest(upToDateAccount) {
-                    self.presentTryingToActForAssetWithPendingOptInRequestError(upToDateAccount)
-                    return
-                }
-
-                if self.hasPendingOptOutRequest(upToDateAccount) {
-                    self.presentTryingToActForAssetWithPendingOptOutRequestError(upToDateAccount)
-                    return
-                }
-
-                let isOptedInToUSDC = upToDateAccount.value.isOptedIn(to: self.usdcAssetID)
-                guard isOptedInToUSDC else {
-                    self.openAssetActionConfirmation(
-                        account: upToDateAccount,
-                        from: screen
-                    )
-                    return
-                }
-
-                self.openDappDetail(
-                    account: upToDateAccount,
+                self.openDappDetailIfCan(
+                    account: account,
                     from: screen
                 )
             }
@@ -166,7 +150,82 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
+    /// <note>
+    /// In staging app, the Transak is always enabled, but in store app, it is enabled only
+    /// on mainnet.
+    private var isAvailable: Bool {
+        return !ALGAppTarget.current.isProduction || !api.isTestNet
+    }
+
+    private func presentNotAvailableAlert(on screen: UIViewController) {
+        screen.displaySimpleAlertWith(
+            title: "title-not-available".localized,
+            message: "transak-not-available-description".localized
+        )
+    }
+}
+
+extension TransakFlowCoordinator {
+    private func openAccountSelection(from screen: UIViewController) {
+        let accountSelectionScreen = Screen.transakAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let selectedAccount):
+                self.openDappDetailIfCan(
+                    account: selectedAccount,
+                    from: screen
+                )
+            default:
+                break
+            }
+        }
+
+        screen.open(
+            accountSelectionScreen,
+            by: .push
+        )
+    }
+
+    private func openDappDetailIfCan(
+        account: AccountHandle,
+        from screen: UIViewController
+    ) {
+        let upToDateAccount = upToDateAccount(for: account.value.address)
+        guard let upToDateAccount else {
+            presentAccountNotFoundError()
+            return
+        }
+
+        if hasPendingOptInRequest(upToDateAccount) {
+            presentTryingToActForAssetWithPendingOptInRequestError(upToDateAccount)
+            return
+        }
+
+        if hasPendingOptOutRequest(upToDateAccount) {
+            presentTryingToActForAssetWithPendingOptOutRequestError(upToDateAccount)
+            return
+        }
+
+        let isOptedInToUSDC = isOptedInToUSDC(upToDateAccount)
+        guard isOptedInToUSDC else {
+            self.openAssetActionConfirmation(
+                account: upToDateAccount,
+                from: screen
+            )
+            return
+        }
+
+        openDappDetail(
+            account: upToDateAccount,
+            from: screen
+        )
+    }
+}
+
+extension TransakFlowCoordinator {
     private func hasPendingOptInRequest(_ account: AccountHandle) -> Bool {
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let hasPendingOptInRequest = monitor.hasPendingOptInRequest(
@@ -202,7 +261,7 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func presentAccountNotFoundError() {
         bannerController.presentErrorBanner(
             title: "notifications-account-not-found-title".localized,
@@ -211,58 +270,7 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
-    private func openAccountSelection(from screen: UIViewController) {
-        let accountSelectionScreen = Screen.transaKAccountSelection {
-            [weak self] event, screen in
-            guard let self else { return }
-
-            switch event {
-            case .didSelect(let selectedAccount):
-                let address = selectedAccount.value.address
-                let upToDateAccount = self.sharedDataController.accountCollection[address]
-
-                guard let upToDateAccount else {
-                    self.presentAccountNotFoundError()
-                    return
-                }
-
-                if self.hasPendingOptInRequest(upToDateAccount) {
-                    self.presentTryingToActForAssetWithPendingOptInRequestError(upToDateAccount)
-                    return
-                }
-
-                if self.hasPendingOptOutRequest(upToDateAccount) {
-                    self.presentTryingToActForAssetWithPendingOptOutRequestError(upToDateAccount)
-                    return
-                }
-
-                let isOptedInToUSDC = upToDateAccount.value.isOptedIn(to: self.usdcAssetID)
-                guard isOptedInToUSDC else {
-                    self.openAssetActionConfirmation(
-                        account: upToDateAccount,
-                        from: screen
-                    )
-                    return
-                }
-
-                self.openDappDetail(
-                    account: upToDateAccount,
-                    from: screen
-                )
-            default:
-                break
-            }
-        }
-
-        screen.open(
-            accountSelectionScreen,
-            by: .push
-        )
-    }
-}
-
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func openAssetActionConfirmation(
         account: AccountHandle,
         from screen: UIViewController
@@ -289,7 +297,7 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator: AssetActionConfirmationViewControllerDelegate {
+extension TransakFlowCoordinator: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
@@ -306,24 +314,7 @@ extension TransaKFlowCoordinator: AssetActionConfirmationViewControllerDelegate 
     }
 }
 
-extension TransaKFlowCoordinator {
-    /// <note>
-    /// In staging app, the TransaK is always enabled, but in store app, it is enabled only
-    /// on mainnet.
-    private var isAvailable: Bool {
-        let isAvailable = !ALGAppTarget.current.isProduction || !api.isTestNet
-        return isAvailable
-    }
-
-    private func presentNotAvailableAlert(on screen: UIViewController) {
-        screen.displaySimpleAlertWith(
-            title: "title-not-available".localized,
-            message: "transak-not-available-description".localized
-        )
-    }
-}
-
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func openOptInAsset(
         account: Account,
         asset: AssetDecoration
@@ -388,20 +379,20 @@ extension TransaKFlowCoordinator {
     }
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func openDappDetail(
         account: AccountHandle,
         from screen: UIViewController
     ) {
         screen.open(
-            .transaKDappDetail(account: account),
+            .transakDappDetail(account: account),
             by: .push
         )
     }
 }
 
 // MARK: TransactionControllerDelegate
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
@@ -500,9 +491,9 @@ extension TransaKFlowCoordinator {
             )
         case .ledgerConnection:
             let visibleScreen = presentingScreen.findVisibleScreen()
-            let bottomTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+            transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: visibleScreen)
 
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning?.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -564,16 +555,26 @@ extension TransaKFlowCoordinator {
     ) {}
 }
 
-extension TransaKFlowCoordinator {
+extension TransakFlowCoordinator {
     private func startObservingOptInUpdates(for account: Account) {
-        accountAddressToObserveOptInUpdates = account.address
+        selectedAccountAddress = account.address
 
         sharedDataController.add(self)
     }
 
     private func finishObservingOptInUpdates() {
-        accountAddressToObserveOptInUpdates = nil
+        selectedAccountAddress = nil
 
         sharedDataController.remove(self)
+    }
+}
+
+extension TransakFlowCoordinator {
+    private func isOptedInToUSDC(_ account: AccountHandle) -> Bool {
+        return account.value.isOptedIn(to: usdcAssetID)
+    }
+
+    private func upToDateAccount(for address: PublicKey) -> AccountHandle? {
+        return sharedDataController.accountCollection[address]
     }
 }

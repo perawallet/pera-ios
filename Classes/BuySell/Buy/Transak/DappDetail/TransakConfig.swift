@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKConfig.swift
+//   TransakConfig.swift
 
 import Foundation
 
-struct TransaKConfig {
+struct TransakConfig {
     let url: String
 
     init(
@@ -32,5 +32,15 @@ struct TransaKConfig {
             let key = Bundle.main.infoDictionary?["TRANSAK_PROD_API_KEY"] as? String ?? .empty
             self.url =  "https://global.transak.com/?apiKey=\(key)&defaultCryptoCurrency=USDC&network=algorand&cryptoCurrencyList=ALGO,USDC&walletAddress=\(address)"
         }
+    }
+}
+
+extension DiscoverDappParamaters {
+    init(_ config: TransakConfig) {
+        self.init(
+            name: nil,
+            url: config.url,
+            favorites: nil
+        )
     }
 }

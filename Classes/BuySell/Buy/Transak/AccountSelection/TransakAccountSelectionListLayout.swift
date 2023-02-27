@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListLayout.swift
+//   TransakAccountSelectionListLayout.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class TransaKAccountSelectionListLayout: AccountSelectionListLayout {
-    typealias ListDataSource = TransaKAccountSelectionListDataSource.DataSource
+final class TransakAccountSelectionListLayout: AccountSelectionListLayout {
+    typealias ListDataSource = TransakAccountSelectionListDataSource.DataSource
 
     private var sizeCache: [String: CGSize] = [:]
 
     private unowned let listDataSource: ListDataSource
-    private unowned let itemDataSource: TransaKAccountSelectionListItemDataSource
+    private unowned let itemDataSource: TransakAccountSelectionListItemDataSource
 
     init(
         dataSource: ListDataSource,
-        itemDataSource: TransaKAccountSelectionListItemDataSource
+        itemDataSource: TransakAccountSelectionListItemDataSource
     ) {
         self.listDataSource = dataSource
         self.itemDataSource = itemDataSource
@@ -113,11 +113,11 @@ final class TransaKAccountSelectionListLayout: AccountSelectionListLayout {
     }
 }
 
-extension TransaKAccountSelectionListLayout {
+extension TransakAccountSelectionListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: TransaKAccountSelectionListEmptyItemIdentifier,
+        sizeForEmptyItem item: TransakAccountSelectionListEmptyItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         let width = calculateContentWidth(
@@ -150,7 +150,7 @@ extension TransaKAccountSelectionListLayout {
         sizeForAccountCellItem item: AccountListItemViewModel?,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = TransaKAccountSelectionListAccountListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = TransakAccountSelectionListAccountListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -164,9 +164,9 @@ extension TransaKAccountSelectionListLayout {
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
-        let newSize = TransaKAccountSelectionListAccountListItemCell.calculatePreferredSize(
+        let newSize = TransakAccountSelectionListAccountListItemCell.calculatePreferredSize(
             sampleAccountItem,
-            for: TransaKAccountSelectionListAccountListItemCell.theme.context,
+            for: TransakAccountSelectionListAccountListItemCell.theme.context,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -177,10 +177,10 @@ extension TransaKAccountSelectionListLayout {
 
     private func listView(
         _ listView: UICollectionView,
-        sizeForHeaderItem item: TransaKAccountSelectionListHeaderViewModel,
+        sizeForHeaderItem item: TransakAccountSelectionListHeaderViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = TransaKAccountSelectionListHeader.reuseIdentifier
+        let sizeCacheIdentifier = TransakAccountSelectionListHeader.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -190,9 +190,9 @@ extension TransaKAccountSelectionListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = TransaKAccountSelectionListHeader.calculatePreferredSize(
+        let newSize = TransakAccountSelectionListHeader.calculatePreferredSize(
             item,
-            for: TransaKAccountSelectionListHeader.theme,
+            for: TransakAccountSelectionListHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -202,7 +202,7 @@ extension TransaKAccountSelectionListLayout {
     }
 }
 
-extension TransaKAccountSelectionListLayout {
+extension TransakAccountSelectionListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView,
         forSectionAt section: Int

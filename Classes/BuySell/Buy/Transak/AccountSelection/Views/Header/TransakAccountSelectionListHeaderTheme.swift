@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuySellOptionsBuyWithTransaKOptionViewModel.swift
+//   TransakAccountSelectionListHeaderTheme.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct BuySellOptionsBuyWithTransaKOptionViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
+struct TransakAccountSelectionListHeaderTheme:
+    StyleSheet,
+    LayoutSheet {
+    private(set) var context: TextStyle
+    private(set) var contextEdgeInsets: LayoutPaddings
 
-    init() {
-        self.icon = "icon-transak-option"
-        self.title = .attributedString("buy-sell-options-buy-usdc-with-transak-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-usdc-with-transak-option-subtitle".localized.footnoteRegular())
+    init(_ family: LayoutFamily) {
+        self.context = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText())
+        ]
+        self.contextEdgeInsets = (0, 24, 0, 24)
     }
 }

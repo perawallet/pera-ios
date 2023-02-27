@@ -118,19 +118,6 @@ extension SardineIntroductionScreen {
 }
 
 extension SardineIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 

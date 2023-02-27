@@ -12,25 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListAccountListItemCellTheme.swift
+//   TransakAccountSelectionListHeaderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct TransaKAccountSelectionListAccountListItemCellTheme:
-    StyleSheet,
-    LayoutSheet {
-    private(set) var context: AccountListItemViewTheme
-    private(set) var contextEdgeInsets: LayoutPaddings
-    private(set) var separator: Separator
-
-    init(_ family: LayoutFamily) {
-        self.context = AccountListItemViewTheme(family)
-        self.contextEdgeInsets = (14, 24, 14, 24)
-        self.separator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 24))
-        )
-    }
+struct TransakAccountSelectionListHeaderViewModel: ViewModel {
+    let description: TextProvider =
+        "title-choose-account-to-proceed-with"
+            .localized
+            .bodyRegular()
 }

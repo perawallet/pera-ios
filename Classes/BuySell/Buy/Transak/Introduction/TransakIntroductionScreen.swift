@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKIntroductionScreen.swift
+//   TransakIntroductionScreen.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class TransaKIntroductionScreen: ScrollScreen {
+final class TransakIntroductionScreen: ScrollScreen {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -29,7 +29,7 @@ final class TransaKIntroductionScreen: ScrollScreen {
     private lazy var securedByPaymentOptionsView = SecuredByPaymentOptionsView()
     private lazy var primaryActionView = MacaroonUIKit.Button()
 
-    private lazy var theme = TransaKIntroductionScreenTheme()
+    private lazy var theme = TransakIntroductionScreenTheme()
 
     override func configureNavigationBar() {
         super.configureNavigationBar()
@@ -102,7 +102,7 @@ final class TransaKIntroductionScreen: ScrollScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     private func updateUIWhenViewDidScroll() {
         updateIllustrationWhenViewDidScroll()
     }
@@ -117,20 +117,7 @@ extension TransaKIntroductionScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
+extension TransakIntroductionScreen {
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
@@ -148,7 +135,7 @@ extension TransaKIntroductionScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     private func addNavigationBarButtonItems() {
         leftBarButtonItems = [ makeCloseNavigationBarButtonItem() ]
     }
@@ -161,7 +148,7 @@ extension TransaKIntroductionScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     private func addUI() {
         addIllustration()
         addTitle()
@@ -288,7 +275,7 @@ extension TransaKIntroductionScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     private func bindTitle() {
         titleView.attributedText =
             "transak-introduction-title"
@@ -310,14 +297,14 @@ extension TransaKIntroductionScreen {
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     @objc
     private func performPrimaryAction() {
         eventHandler?(.performPrimaryAction)
     }
 }
 
-extension TransaKIntroductionScreen {
+extension TransakIntroductionScreen {
     enum Event {
         case performCloseAction
         case performPrimaryAction
