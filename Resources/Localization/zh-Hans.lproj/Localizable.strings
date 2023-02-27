@@ -1307,7 +1307,10 @@
 "options-passphrase" = "助记词";
 
 /* (No Comment) */
-"options-rekey" = "密钥更新账户";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "移除账户";

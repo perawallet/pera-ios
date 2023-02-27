@@ -19,7 +19,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountDetailViewController: PageContainer {
+final class AccountDetailViewController:
+    PageContainer,
+    SelectAccountViewControllerDelegate {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?
@@ -340,8 +342,8 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         analytics.track(.showQRCopy(account: account))
         copyToClipboardController.copyAddress(account)
     }
-
-    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+    
+    func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
         open(
             .rekeyInstruction(account: accountHandle.value),
             by: .customPresent(
@@ -350,6 +352,39 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
                 transitioningDelegate: nil
             )
         )
+    }
+    
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
+        openSelectAccountForSoftRekeying()
+    }
+    
+    private func openSelectAccountForSoftRekeying() {
+        let draft = SelectAccountDraft(
+            transactionAction: .softRekey,
+            requiresAssetSelection: false
+        )
+        
+        let accountFilters: (Account) -> Bool = {
+            [weak self] account in
+            guard let self else { return false }
+            
+            return self.isEnabledSoftRekeying(for: account)
+        }
+
+        let screen: Screen = .accountSelection(
+            draft: draft,
+            delegate: self,
+            shouldFilterAccount: accountFilters
+        )
+
+        open(
+            screen,
+            by: .present
+        )
+    }
+    
+    private func isEnabledSoftRekeying(for account: Account) -> Bool {
+        return account.isRekeyedOrLedger() || account.isSameAccount(with: accountHandle.value.address)
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -593,6 +628,28 @@ extension AccountDetailViewController {
             copyToClipboardController: copyToClipboardController,
             configuration: configuration
         )
+    }
+}
+
+extension AccountDetailViewController {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for draft: SelectAccountDraft
+    ) {
+        switch draft.transactionAction {
+        case .softRekey:
+            selectAccountViewController.dismissScreen()
+            open(
+                .rekeyConfirmation(
+                    account: accountHandle.value,
+                    ledgerDetail: nil,
+                    newAuthAddress: account.address
+                ),
+                by: .present
+            )
+        default: break
+        }
     }
 }
 

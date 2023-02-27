@@ -1307,7 +1307,10 @@
 "options-passphrase" = "Frase Senha";
 
 /* (No Comment) */
-"options-rekey" = "Rechavear Conta";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "Remover Conta";

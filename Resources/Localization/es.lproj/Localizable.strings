@@ -1307,7 +1307,10 @@
 "options-passphrase" = "Frase secreta";
 
 /* (No Comment) */
-"options-rekey" = "Cambiar la clave de la cuenta";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "Eliminar cuenta";

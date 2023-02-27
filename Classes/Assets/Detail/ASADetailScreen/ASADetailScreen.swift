@@ -23,9 +23,10 @@ import UIKit
 final class ASADetailScreen:
     BaseViewController,
     Container,
-    OptionsViewControllerDelegate,
     ChoosePasswordViewControllerDelegate,
-    RenameAccountScreenDelegate {
+    OptionsViewControllerDelegate,
+    RenameAccountScreenDelegate,
+    SelectAccountViewControllerDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -192,8 +193,8 @@ extension ASADetailScreen {
             by: .present
         )
     }
-
-    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+    
+    func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
         open(
             .rekeyInstruction(account: dataController.account),
             by: .customPresent(
@@ -202,6 +203,39 @@ extension ASADetailScreen {
                 transitioningDelegate: nil
             )
         )
+    }
+    
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
+        openSelectAccountForSoftRekeying()
+    }
+    
+    private func openSelectAccountForSoftRekeying() {
+        let draft = SelectAccountDraft(
+            transactionAction: .softRekey,
+            requiresAssetSelection: false
+        )
+        
+        let accountFilters: (Account) -> Bool = {
+            [weak self] account in
+            guard let self else { return false }
+            
+            return self.isEnabledSoftRekeying(for: account)
+        }
+
+        let screen: Screen = .accountSelection(
+            draft: draft,
+            delegate: self,
+            shouldFilterAccount: accountFilters
+        )
+
+        open(
+            screen,
+            by: .present
+        )
+    }
+    
+    private func isEnabledSoftRekeying(for account: Account) -> Bool {
+        return account.isRekeyedOrLedger() || account.isSameAccount(with: dataController.account.address)
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -330,6 +364,28 @@ extension ASADetailScreen {
 
             self.updateUIWhenAccountDidRename()
             self.eventHandler?(.didRenameAccount)
+        }
+    }
+}
+
+extension ASADetailScreen {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for draft: SelectAccountDraft
+    ) {
+        switch draft.transactionAction {
+        case .softRekey:
+            selectAccountViewController.dismissScreen()
+            open(
+                .rekeyConfirmation(
+                    account: dataController.account,
+                    ledgerDetail: nil,
+                    newAuthAddress: account.address
+                ),
+                by: .present
+            )
+        default: break
         }
     }
 }
