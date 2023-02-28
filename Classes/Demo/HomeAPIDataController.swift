@@ -262,9 +262,6 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         _ dataController: AnnouncementAPIDataController,
         didFetch announcements: [Announcement]
     ) {
-        let announcementToDisplay = announcements.first { announcement in
-            return !session.isAnnouncementHidden(announcement)
-        }
-        self.visibleAnnouncement = announcementToDisplay
+        self.visibleAnnouncement = announcements.first
     }
 }
