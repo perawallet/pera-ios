@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "Comptes appariés";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Account address or short name";
+"account-select-header-search-title" = "Adresse du compte ou nom court";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Essayez un nom de compte différent";
@@ -239,7 +239,7 @@
 "asset-copy-id" = "Copier l'ID";
 
 /* (No Comment) */
-"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
+"asset-creator-opt-out-error-message" = "Les comptes de créateurs ne peuvent pas désactiver les actifs qu'ils ont créés.";
 
 /* (No Comment) */
 "asset-detail-id-title" = "ID %@";
@@ -602,7 +602,7 @@
 "collectible-send-action" = "Transfert";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Account address";
+"collectible-send-input-placeholder" = "Adresse du compte";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "Envoyer votre NFT";
@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "Nous ne pouvons pas obtenir ces informations pour le moment.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "Vous ne pouvez pas avoir plus de 50 favoris.";
+"discover-error-favorites-max-limit" = "Vous ne pouvez pas avoir plus de 100 favoris.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Rechercher n'importe quel ASA";

@@ -457,7 +457,7 @@ extension ReceiverAccountSelectionListAPIDataController {
     }
 
     private func makeNameServiceItem(_ nameService: NameService) -> ReceiverAccountSelectionListItem {
-        let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
+        let imageSource = DefaultURLImageSource(url: URL(string: nameService.service.logo))
         let nameServiceAccount = nameService.account.value
         let preview = NameServiceAccountListItem(
             address: nameServiceAccount.address,

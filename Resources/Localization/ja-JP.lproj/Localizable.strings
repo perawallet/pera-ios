@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "一致したアカウント";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Account address or short name";
+"account-select-header-search-title" = "アカウントアドレスまたは略称";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "別のアカウント名をお試しください";
@@ -239,7 +239,7 @@
 "asset-copy-id" = "IDをコピー";
 
 /* (No Comment) */
-"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
+"asset-creator-opt-out-error-message" = "クリエイターアカウントは、自分が作成した資産をオプトアウトすることはできません。";
 
 /* (No Comment) */
 "asset-detail-id-title" = "ID %@";
@@ -602,7 +602,7 @@
 "collectible-send-action" = "転送";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Account address";
+"collectible-send-input-placeholder" = "アカウントアドレス";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "NFTを送信する";
@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "現在、その情報を取得できません。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "お気に入りは50個を超えることはできません。";
+"discover-error-favorites-max-limit" = "お気に入りは100個を超えることはできません。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "任意のASAを検索する";

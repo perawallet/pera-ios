@@ -98,6 +98,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 userContentController,
                 didReceive: message
             )
+        case .requestDeviceID:
+            handleDeviceIDRequest(message)
         case .pushNewScreen:
             handleNewScreenAction(message)
         }
@@ -172,6 +174,29 @@ extension DiscoverInAppBrowserScreen {
             by: .push
         )
     }
+
+    private func handleDeviceIDRequest(_ message: WKScriptMessage) {
+        let frameInfo = message.frameInfo
+
+        guard frameInfo.isMainFrame else { return }
+
+        guard let api else { return }
+        guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return }
+
+        guard let deviceID = getDeviceID(from: api) else { return }
+        guard let deviceIDDetails = getDeviceIDDetails(with: deviceID) else { return }
+
+        let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
+        self.webView.evaluateJavaScript(scriptString)
+    }
+
+    private func getDeviceID(from api: ALGAPI) -> String? {
+        session?.authenticatedUser?.getDeviceId(on: api.network)
+    }
+
+    private func getDeviceIDDetails(with deviceID: String) -> String? {
+        try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
+    }
 }
 
 extension UIUserInterfaceStyle {
@@ -189,4 +214,5 @@ enum DiscoverInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case pushNewScreen
+    case requestDeviceID = "getDeviceId"
 }
