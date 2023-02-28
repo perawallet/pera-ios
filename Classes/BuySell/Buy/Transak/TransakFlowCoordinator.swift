@@ -75,7 +75,7 @@ extension TransakFlowCoordinator {
     ) {
         if case .didFinishRunning = event,
            let address = selectedAccountAddress,
-           let upToDateAccount = upToDateAccount(for: address) {
+           let upToDateAccount = getUpToDateAccount(for: address) {
 
             let optedInStatus = sharedDataController.hasOptedIn(
                 assetID: usdcAssetID,
@@ -83,13 +83,13 @@ extension TransakFlowCoordinator {
             )
             guard optedInStatus == .optedIn else { return }
 
-            openDappDetailAfterOptingIn(upToDateAccount)
+            openDappDetailAfterOptingIn(to: upToDateAccount)
         }
     }
 }
 
 extension TransakFlowCoordinator {
-    private func openDappDetailAfterOptingIn(_ account: AccountHandle) {
+    private func openDappDetailAfterOptingIn(to account: AccountHandle) {
         finishObservingOptInUpdates()
 
         loadingController.stopLoading()
@@ -141,7 +141,7 @@ extension TransakFlowCoordinator {
                     return
                 }
 
-                self.openDappDetailIfCan(
+                self.openDappDetailIfPossible(
                     account: account,
                     from: screen
                 )
@@ -174,7 +174,7 @@ extension TransakFlowCoordinator {
 
             switch event {
             case .didSelect(let selectedAccount):
-                self.openDappDetailIfCan(
+                self.openDappDetailIfPossible(
                     account: selectedAccount,
                     from: screen
                 )
@@ -189,11 +189,11 @@ extension TransakFlowCoordinator {
         )
     }
 
-    private func openDappDetailIfCan(
+    private func openDappDetailIfPossible(
         account: AccountHandle,
         from screen: UIViewController
     ) {
-        let upToDateAccount = upToDateAccount(for: account.value.address)
+        let upToDateAccount = getUpToDateAccount(for: account.value.address)
         guard let upToDateAccount else {
             presentAccountNotFoundError()
             return
@@ -574,7 +574,7 @@ extension TransakFlowCoordinator {
         return account.value.isOptedIn(to: usdcAssetID)
     }
 
-    private func upToDateAccount(for address: PublicKey) -> AccountHandle? {
+    private func getUpToDateAccount(for address: PublicKey) -> AccountHandle? {
         return sharedDataController.accountCollection[address]
     }
 }

@@ -44,8 +44,6 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -120,7 +118,7 @@ extension BidaliIntroductionScreen {
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }

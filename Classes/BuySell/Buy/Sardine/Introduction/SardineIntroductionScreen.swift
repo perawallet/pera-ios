@@ -45,8 +45,6 @@ final class SardineIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -121,7 +119,7 @@ extension SardineIntroductionScreen {
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }

@@ -69,8 +69,6 @@ final class MoonPayIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -84,6 +82,15 @@ final class MoonPayIntroductionScreen: ScrollScreen {
         super.viewDidDisappear(animated)
 
         switchToDefaultNavigationBarAppearanceIfNeeded()
+    }
+
+    override func startObservingNotifications() {
+        super.startObservingNotifications()
+
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+            self.didRedirectFromMoonPay(notification)
+        }
     }
 
     override func setListeners() {
@@ -154,7 +161,7 @@ extension MoonPayIntroductionScreen {
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }
