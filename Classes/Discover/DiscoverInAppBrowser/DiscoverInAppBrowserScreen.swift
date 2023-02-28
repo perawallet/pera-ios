@@ -178,7 +178,7 @@ extension DiscoverInAppBrowserScreen {
     private func handleDeviceIDRequest(_ message: WKScriptMessage) {
         let frameInfo = message.frameInfo
 
-        if frameInfo.isMainFrame { return }
+        guard frameInfo.isMainFrame else { return }
 
         guard let api else { return }
         guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return }
