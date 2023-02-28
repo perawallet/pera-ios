@@ -22,6 +22,7 @@ struct BidaliIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle
+    var illustrationLogo: ImageStyle
     var illustrationMaxHeight: LayoutMetric
     var illustrationMinHeight: LayoutMetric
     var title: TextStyle
@@ -39,7 +40,11 @@ struct BidaliIntroductionScreenTheme:
     ) {
         self.illustration = [
             .image("bidali-introduction-illustration"),
-            .contentMode(.scaleAspectFill)
+            .backgroundColor(Colors.Dapp.bidali),
+            .contentMode(.bottomRight)
+        ]
+        self.illustrationLogo = [
+            .image("bidali-introduction-illusration-logo")
         ]
         self.illustrationMaxHeight = 294
         self.illustrationMinHeight = 132

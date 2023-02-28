@@ -38,9 +38,16 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
-    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(presentingScreen: self, api: api!)
+    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        analytics: analytics
+    )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -257,11 +264,11 @@ extension AccountDetailViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonpay:
+            case .performBuyAlgoWithMoonPay:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithMoonpay()
+                    self.openBuyAlgoWithMoonPay()
                 }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
@@ -269,11 +276,11 @@ extension AccountDetailViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithSardine()
                 }
-            case .performBuyUSDCWithTransaK:
+            case .performBuyWithTransak:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyUSDCWithTransaK()
+                    self.openBuyWithTransak()
                 }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
@@ -290,20 +297,20 @@ extension AccountDetailViewController {
         )
     }
 
-    private func openBuyAlgoWithMoonpay() {
+    private func openBuyAlgoWithMoonPay() {
         analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
 
-        let draft = BuyAlgoDraft()
+        let draft = MoonPayDraft()
         draft.address = accountHandle.value.address
-        buyAlgoFlowCoordinator.launch(draft: draft)
+        moonPayFlowCoordinator.launch(draft: draft)
     }
 
     private func openBuyAlgoWithSardine() {
         sardineFlowCoordinator.launch(accountHandle)
     }
 
-    private func openBuyUSDCWithTransaK() {
-        transaKFlowCoordinator.launch(accountHandle)
+    private func openBuyWithTransak() {
+        transakFlowCoordinator.launch(accountHandle)
     }
 
     private func openBuyGiftCardsWithBidali() {

@@ -57,7 +57,7 @@ extension CollectibleTransactionInfoViewModel {
                 size: CGSize(width: 24, height: 24)
             ).process()
         case .nameService(let nameService):
-            self.icon = PNGImageSource(
+            self.icon = DefaultURLImageSource(
                 url: URL(string: nameService.service.logo),
                 size: .resize(CGSize(width: 24, height: 24), .aspectFit),
                 shape: .circle,

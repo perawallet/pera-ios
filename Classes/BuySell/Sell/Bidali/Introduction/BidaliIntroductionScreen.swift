@@ -44,8 +44,6 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -64,7 +62,8 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func addScroll() {
         super.addScroll()
 
-        scrollView.contentInset.top = theme.illustrationMaxHeight
+        let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+        scrollView.contentInset.top = theme.illustrationMaxHeight - navigationBarHeight
     }
 
     override func addFooter() {
@@ -106,9 +105,8 @@ extension BidaliIntroductionScreen {
     }
 
     private func updateIllustrationWhenViewDidScroll() {
-        let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        let preferredHeight = theme.illustrationMaxHeight - contentY
+        let contentY = scrollView.contentOffset.y
+        let preferredHeight = -contentY
 
         illustrationView.snp.updateConstraints {
             $0.fitToHeight(max(preferredHeight, theme.illustrationMinHeight))
@@ -117,23 +115,10 @@ extension BidaliIntroductionScreen {
 }
 
 extension BidaliIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }
@@ -181,7 +166,27 @@ extension BidaliIntroductionScreen {
             $0.trailing == 0
         }
 
+        addIllustrationLogo()
         addIllustrationBackground()
+    }
+
+    private func addIllustrationLogo() {
+        let canvasView = UIView()
+        let logoView = UIImageView()
+        logoView.customizeAppearance(theme.illustrationLogo)
+
+        illustrationView.addSubview(canvasView)
+        canvasView.snp.makeConstraints {
+            let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+            $0.top == navigationBarHeight
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+        canvasView.addSubview(logoView)
+        logoView.snp.makeConstraints {
+            $0.center == 0
+        }
     }
 
     private func addIllustrationBackground() {
