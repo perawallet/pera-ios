@@ -1031,14 +1031,15 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-        
-        guard let selectedAccountHandle = selectedAccountHandle else {
-            return
-        }
+        guard let selectedAccountHandle else { return }
 
-        if isConfirmed {
-            presentPassphraseView(selectedAccountHandle)
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.presentPassphraseView(selectedAccountHandle)
+            }
         }
     }
 
