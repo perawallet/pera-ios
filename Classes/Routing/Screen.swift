@@ -323,11 +323,11 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
     )
     case sardineDappDetail(account: AccountHandle)
-    case transaKIntroduction
-    case transaKAccountSelection(
-        eventHandler: AccountSelectionListScreen<TransaKAccountSelectionListLocalDataController>.EventHandler
+    case transakIntroduction
+    case transakAccountSelection(
+        eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
     )
-    case transaKDappDetail(account: AccountHandle)
+    case transakDappDetail(account: AccountHandle)
 }
 
 extension Screen {

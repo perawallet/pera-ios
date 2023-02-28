@@ -111,8 +111,7 @@ extension SardineFlowCoordinator {
     /// In staging app, the Sardine is always enabled, but in store app, it is enabled only
     /// on mainnet.
     private var isAvailable: Bool {
-        let isAvailable = !ALGAppTarget.current.isProduction || !api.isTestNet
-        return isAvailable
+        return !ALGAppTarget.current.isProduction || !api.isTestNet
     }
 
     private func presentNotAvailableAlert(on screen: UIViewController) {
