@@ -101,31 +101,31 @@ extension BuySellOptionsScreen {
     }
 
     private func addBuyOptions() {
-        addBuyAlgoWithMoonpayOption()
+        addBuyAlgoWithMoonPayOption()
         addBuyAlgoWithSardineOption()
-        addBuyWithTransaKOption()
+        addBuyWithTransakOption()
     }
 
-    private func addBuyAlgoWithMoonpayOption() {
+    private func addBuyAlgoWithMoonPayOption() {
         addOption(
-            viewModel: BuySellOptionsBuyAlgoWithMoonpayOptionViewModel(),
-            selector: #selector(performBuyAlgoWithMoonpay),
+            viewModel: BuyAlgoWithMoonPayOptionViewModel(),
+            selector: #selector(performBuyAlgoWithMoonPay),
             to: buyContextView
         )
     }
 
     private func addBuyAlgoWithSardineOption() {
         addOption(
-            viewModel: BuySellOptionsBuyAlgoWithSardineOptionViewModel(),
+            viewModel: BuyAlgoWithSardineOptionViewModel(),
             selector: #selector(performBuyAlgoWithSardine),
             to: buyContextView
         )
     }
 
-    private func addBuyWithTransaKOption() {
+    private func addBuyWithTransakOption() {
         addOption(
-            viewModel: BuySellOptionsBuyWithTransaKOptionViewModel(),
-            selector: #selector(performBuyWithTransaK),
+            viewModel: BuyWithTransakOptionViewModel(),
+            selector: #selector(performBuyWithTransak),
             to: buyContextView
         )
     }
@@ -133,8 +133,8 @@ extension BuySellOptionsScreen {
 
 extension BuySellOptionsScreen {
     @objc
-    private func performBuyAlgoWithMoonpay() {
-        eventHandler?(.performBuyAlgoWithMoonpay)
+    private func performBuyAlgoWithMoonPay() {
+        eventHandler?(.performBuyAlgoWithMoonPay)
     }
 
     @objc
@@ -143,8 +143,8 @@ extension BuySellOptionsScreen {
     }
 
     @objc
-    private func performBuyWithTransaK() {
-        eventHandler?(.performBuyWithTransaK)
+    private func performBuyWithTransak() {
+        eventHandler?(.performBuyWithTransak)
     }
 }
 
@@ -179,7 +179,7 @@ extension BuySellOptionsScreen {
 
     private func addBuyGiftCardWithBidaliOption() {
         addOption(
-            viewModel: BuySellOptionsBuyGiftCardsWithBidaliOptionViewModel(),
+            viewModel: BuyGiftCardsWithBidaliOptionViewModel(),
             selector: #selector(performBuyGiftCardsWithBidali),
             to: sellContextView
         )
@@ -214,9 +214,9 @@ extension BuySellOptionsScreen {
 
  extension BuySellOptionsScreen {
      enum Event {
-         case performBuyAlgoWithMoonpay
+         case performBuyAlgoWithMoonPay
          case performBuyAlgoWithSardine
-         case performBuyWithTransaK
+         case performBuyWithTransak
          case performBuyGiftCardsWithBidali
      }
  }
