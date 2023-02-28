@@ -44,8 +44,6 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -64,8 +62,8 @@ final class BidaliIntroductionScreen: ScrollScreen {
     override func addScroll() {
         super.addScroll()
 
-        let safeAreaTop = view.compactSafeAreaInsets.top
-        scrollView.contentInset.top = theme.illustrationMaxHeight - safeAreaTop
+        let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+        scrollView.contentInset.top = theme.illustrationMaxHeight - navigationBarHeight
     }
 
     override func addFooter() {
@@ -117,23 +115,10 @@ extension BidaliIntroductionScreen {
 }
 
 extension BidaliIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }
@@ -186,18 +171,21 @@ extension BidaliIntroductionScreen {
     }
 
     private func addIllustrationLogo() {
+        let canvasView = UIView()
         let logoView = UIImageView()
         logoView.customizeAppearance(theme.illustrationLogo)
 
-        illustrationView.addSubview(logoView)
+        illustrationView.addSubview(canvasView)
+        canvasView.snp.makeConstraints {
+            let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+            $0.top == navigationBarHeight
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+        canvasView.addSubview(logoView)
         logoView.snp.makeConstraints {
-            let safeAreaTop = view.compactSafeAreaInsets.top
-            let iconHeight = theme.illustrationLogo.image?.uiImage.height ?? .zero
-            let offset = safeAreaTop - iconHeight.ceil()
-            $0.centerY
-                .equalToSuperview()
-                .offset(offset)
-            $0.centerX == 0
+            $0.center == 0
         }
     }
 

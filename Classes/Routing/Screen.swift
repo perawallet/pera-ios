@@ -310,9 +310,12 @@ indirect enum Screen {
     case bidaliAccountSelection(
         eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
     )
-    case moonPayHome(
-        transactionDraft: MoonPayDraft,
-        delegate: MoonPayHomeScreenDelegate?
+    case moonPayIntroduction(
+        draft: MoonPayDraft,
+        delegate: MoonPayIntroductionScreenDelegate?
+    )
+    case moonPayAccountSelection(
+        eventHandler: AccountSelectionListScreen<MoonPayAccountSelectionListLocalDataController>.EventHandler
     )
     case moonPayTransaction(moonPayParams: MoonPayParams)
     case sardineIntroduction
@@ -320,11 +323,11 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
     )
     case sardineDappDetail(account: AccountHandle)
-    case transaKIntroduction
-    case transaKAccountSelection(
-        eventHandler: AccountSelectionListScreen<TransaKAccountSelectionListLocalDataController>.EventHandler
+    case transakIntroduction
+    case transakAccountSelection(
+        eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
     )
-    case transaKDappDetail(account: AccountHandle)
+    case transakDappDetail(account: AccountHandle)
 }
 
 extension Screen {
