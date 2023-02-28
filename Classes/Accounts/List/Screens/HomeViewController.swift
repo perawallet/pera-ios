@@ -26,9 +26,7 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
     var notificationObservations: [NSObjectProtocol] = []
 
-    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
@@ -47,9 +45,9 @@ final class HomeViewController:
         bannerController: bannerController
     )
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
-    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(
+    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
         presentingScreen: self,
         api: api!,
         sharedDataController: sharedDataController,
@@ -594,11 +592,11 @@ extension HomeViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonpay:
+            case .performBuyAlgoWithMoonPay:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithMoonpay()
+                    self.openBuyAlgoWithMoonPay()
                 }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
@@ -606,11 +604,11 @@ extension HomeViewController {
                     guard let self else { return }
                     self.openBuyAlgoWithSardine()
                 }
-            case .performBuyWithTransaK:
+            case .performBuyWithTransak:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyWithTransaK()
+                    self.openBuyWithTransak()
                 }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
@@ -631,14 +629,14 @@ extension HomeViewController {
         sardineFlowCoordinator.launch()
     }
 
-    private func openBuyAlgoWithMoonpay() {
+    private func openBuyAlgoWithMoonPay() {
         analytics.track(.recordHomeScreen(type: .buyAlgo))
 
-        buyAlgoFlowCoordinator.launch()
+        moonPayFlowCoordinator.launch()
     }
 
-    private func openBuyWithTransaK() {
-        transaKFlowCoordinator.launch()
+    private func openBuyWithTransak() {
+        transakFlowCoordinator.launch()
     }
 }
 

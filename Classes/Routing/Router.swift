@@ -329,10 +329,10 @@ class Router:
                 animated: true
             )
             
-        case .buyAlgo(let draft):
-            self.route(
-                to: .buyAlgoHome(transactionDraft: draft, delegate: self),
-                from: self.findVisibleScreen(over: self.rootViewController),
+        case .buyAlgoWithMoonPay(let draft):
+            route(
+                to: .moonPayIntroduction(draft: draft, delegate: self),
+                from: findVisibleScreen(over: self.rootViewController),
                 by: .present
             )
         case .accountSelect(let asset):
@@ -1107,15 +1107,6 @@ class Router:
                 draft: draft,
                 configuration: configuration
             )
-        case .buyAlgoHome(let draft, let delegate):
-            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
-                draft: draft,
-                configuration: configuration
-            )
-            buyAlgoHomeScreen.delegate = delegate
-            viewController = buyAlgoHomeScreen
-        case let .buyAlgoTransaction(buyAlgoParams):
-            viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -1426,6 +1417,62 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .moonPayIntroduction(let draft, let delegate):
+            let aViewController = MoonPayIntroductionScreen(
+                draft: draft,
+                api: configuration.api!,
+                target: ALGAppTarget.current,
+                analytics: configuration.analytics,
+                loadingController: configuration.loadingController!
+            )
+            aViewController.delegate = delegate
+            viewController = aViewController
+        case .moonPayAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = MoonPayAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = MoonPayAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = MoonPayAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<MoonPayAccountSelectionListSectionIdentifier, MoonPayAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: MoonPayAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case let .moonPayTransaction(moonPayParams):
+            viewController = MoonPayTransactionViewController(
+                moonPayParams: moonPayParams,
+                configuration: configuration
+            )
         case .sardineIntroduction:
             viewController = SardineIntroductionScreen()
         case .sardineAccountSelection(let eventHandler):
@@ -1471,25 +1518,21 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(
-                name: nil,
-                url: config.url,
-                favorites: nil
-            )
+            let dappParameters = DiscoverDappParamaters(config)
             let aViewController = DiscoverDappDetailScreen(
                 dappParameters: dappParameters,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
-        case .transaKIntroduction:
-            viewController = TransaKIntroductionScreen()
-        case .transaKAccountSelection(let eventHandler):
+        case .transakIntroduction:
+            viewController = TransakIntroductionScreen()
+        case .transakAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
 
             let listView: UICollectionView = {
-                let collectionViewLayout = TransaKAccountSelectionListLayout.build()
+                let collectionViewLayout = TransakAccountSelectionListLayout.build()
                 let collectionView = UICollectionView(
                     frame: .zero,
                     collectionViewLayout: collectionViewLayout
@@ -1501,10 +1544,10 @@ class Router:
                 return collectionView
             }()
 
-            let dataController = TransaKAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+            let dataController = TransakAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
 
-            let dataSource = TransaKAccountSelectionListDataSource(dataController)
-            let diffableDataSource = UICollectionViewDiffableDataSource<TransaKAccountSelectionListSectionIdentifier, TransaKAccountSelectionListItemIdentifier>(
+            let dataSource = TransakAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<TransakAccountSelectionListSectionIdentifier, TransakAccountSelectionListItemIdentifier>(
                 collectionView: listView,
                 cellProvider: dataSource.getCellProvider()
             )
@@ -1516,7 +1559,7 @@ class Router:
                 navigationBarTitle: "title-select-account".localized,
                 listView: listView,
                 dataController: dataController,
-                listLayout: TransaKAccountSelectionListLayout(
+                listLayout: TransakAccountSelectionListLayout(
                     dataSource: diffableDataSource,
                     itemDataSource: dataController
                 ),
@@ -1525,13 +1568,9 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .transaKDappDetail(let account):
-            let config = TransaKConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(
-                name: nil,
-                url: config.url,
-                favorites: nil
-            )
+        case .transakDappDetail(let account):
+            let config = TransakConfig(account: account, network: configuration.api!.network)
+            let dappParameters = DiscoverDappParamaters(config)
             let aViewController = DiscoverDappDetailScreen(
                 dappParameters: dappParameters,
                 configuration: configuration
@@ -2004,27 +2043,30 @@ extension Router {
 }
 
 
-extension Router: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+extension Router: MoonPayIntroductionScreenDelegate {
+    func moonPayIntroductionScreen(
+        _ screen: MoonPayIntroductionScreen,
+        didCompletedTransaction params: MoonPayParams
+    ) {
         screen.dismissScreen(animated: true) {
-            self.displayAlgoTransactionScreen(for: params)
+            self.displayMoonPayTransactionScreen(for: params)
         }
     }
-    
-    private func displayAlgoTransactionScreen(for params: BuyAlgoParams) {
+
+    private func displayMoonPayTransactionScreen(for params: MoonPayParams) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-        
+
         ongoingTransitions.append(transition)
-        
+
         transition.perform(
-            .buyAlgoTransaction(buyAlgoParams: params),
+            .moonPayTransaction(moonPayParams: params),
             by: .presentWithoutNavigationController
         )
+    }
+
+    func moonPayIntroductionScreenDidFailedTransaction(_ screen: MoonPayIntroductionScreen) {
+        screen.dismissScreen()
     }
 }
 

@@ -164,7 +164,9 @@ extension Colors {
     enum Dapp:
         String,
         Color {
-        case moonpay = "Dapp/moonpay"
+        case moonPay = "Dapp/moonpay"
+        case sardine = "Dapp/sardine"
+        case transak = "Dapp/transak"
         case bidali = "Dapp/bidali"
     }
 }

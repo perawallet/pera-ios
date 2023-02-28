@@ -41,7 +41,6 @@ final class AccountAssetListViewController:
 
     private lazy var listDataSource = AccountAssetListDataSource(listView)
 
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
