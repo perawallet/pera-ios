@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListHeader.swift
+//   TransakAccountSelectionListHeader.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class TransaKAccountSelectionListHeader:
+final class TransakAccountSelectionListHeader:
     CollectionSupplementaryView<UILabel>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
     }
 
-    static let theme = TransaKAccountSelectionListHeaderTheme()
+    static let theme = TransakAccountSelectionListHeaderTheme()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class TransaKAccountSelectionListHeader:
         contextView.customizeAppearance(Self.theme.context)
     }
 
-    func bindData(_ viewModel: TransaKAccountSelectionListHeaderViewModel?) {
+    func bindData(_ viewModel: TransakAccountSelectionListHeaderViewModel?) {
         if let description = viewModel?.description {
             description.load(in: contextView)
         } else {
@@ -41,7 +41,7 @@ final class TransaKAccountSelectionListHeader:
     }
 
     public static func calculatePreferredSize(
-        _ viewModel: TransaKAccountSelectionListHeaderViewModel?,
+        _ viewModel: TransakAccountSelectionListHeaderViewModel?,
         for layoutSheet: LayoutSheet,
         fittingIn size: CGSize
     ) -> CGSize {

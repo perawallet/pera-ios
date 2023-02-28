@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListAccountListItemCell.swift
+//   TransakAccountSelectionListAccountListItemCell.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class TransaKAccountSelectionListAccountListItemCell:
+final class TransakAccountSelectionListAccountListItemCell:
     CollectionCell<AccountListItemView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
     }
 
-    static let theme = TransaKAccountSelectionListAccountListItemCellTheme()
+    static let theme = TransakAccountSelectionListAccountListItemCellTheme()
 
     override init(
         frame: CGRect

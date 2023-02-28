@@ -12,35 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListLocalDataController.swift
+//   TransakAccountSelectionListLocalDataController.swift
 
 import Foundation
 import MacaroonUtils
 
-protocol TransaKAccountSelectionListItemDataSource: AnyObject {
+protocol TransakAccountSelectionListItemDataSource: AnyObject {
     var noContentItem: NoContentViewModel { get }
-    var headerItem: TransaKAccountSelectionListHeaderViewModel { get }
+    var headerItem: TransakAccountSelectionListHeaderViewModel { get }
 
     typealias AccountAddress = String
     var accountItems: [AccountAddress: AccountListItemViewModel] { get }
 }
 
-final class TransaKAccountSelectionListLocalDataController:
+final class TransakAccountSelectionListLocalDataController:
     AccountSelectionListDataController,
-    TransaKAccountSelectionListItemDataSource {
-    typealias SectionIdentifierType = TransaKAccountSelectionListSectionIdentifier
-    typealias ItemIdentifierType = TransaKAccountSelectionListItemIdentifier
+    TransakAccountSelectionListItemDataSource {
+    typealias SectionIdentifierType = TransakAccountSelectionListSectionIdentifier
+    typealias ItemIdentifierType = TransakAccountSelectionListItemIdentifier
 
     var eventHandler: ((Event) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let snapshotQueue = DispatchQueue(label: "transaKAccountSelectionListLocalDataController")
+    private let snapshotQueue = DispatchQueue(label: "transakAccountSelectionListLocalDataController")
 
     private var accounts: [AccountHandle] = []
 
     private(set) var noContentItem: NoContentViewModel = AccountSelectionListNoContentViewModel()
-    private(set) var headerItem = TransaKAccountSelectionListHeaderViewModel()
+    private(set) var headerItem = TransakAccountSelectionListHeaderViewModel()
     private(set) var accountItems: [AccountAddress: AccountListItemViewModel] = [:]
 
     private let sharedDataController: SharedDataController
@@ -62,7 +62,7 @@ final class TransaKAccountSelectionListLocalDataController:
     }
 }
 
-extension TransaKAccountSelectionListLocalDataController {
+extension TransakAccountSelectionListLocalDataController {
     func load() {
         asyncBackground(qos: .userInitiated) {
             [weak self] in
@@ -86,13 +86,13 @@ extension TransaKAccountSelectionListLocalDataController {
     }
 }
 
-extension TransaKAccountSelectionListLocalDataController {
+extension TransakAccountSelectionListLocalDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
             snapshot.appendSections([.loading])
 
-            let items: [TransaKAccountSelectionListItemIdentifier] = [
+            let items: [TransakAccountSelectionListItemIdentifier] = [
                 .loading(.account(UUID())),
                 .loading(.account(UUID())),
                 .loading(.account(UUID()))
@@ -157,7 +157,7 @@ extension TransaKAccountSelectionListLocalDataController {
         )
     }
 
-    private func makeAccountItem(_ account: AccountHandle) -> TransaKAccountSelectionListItemIdentifier {
+    private func makeAccountItem(_ account: AccountHandle) -> TransakAccountSelectionListItemIdentifier {
         let currency = sharedDataController.currency
         let currencyFormatter = currencyFormatter
         let item = AccountPortfolioItem(
@@ -171,12 +171,12 @@ extension TransaKAccountSelectionListLocalDataController {
 
         self.accountItems[aRawAccount.address] = viewModel
 
-        let itemIdentifier = TransaKAccountSelectionListAccountItemIdentifier(aRawAccount)
+        let itemIdentifier = TransakAccountSelectionListAccountItemIdentifier(aRawAccount)
         return .account(itemIdentifier)
     }
 }
 
-extension TransaKAccountSelectionListLocalDataController {
+extension TransakAccountSelectionListLocalDataController {
     private func deliverSnapshot(_ snapshot: @escaping () -> Snapshot?) {
         snapshotQueue.async {
             [weak self] in
@@ -205,27 +205,27 @@ extension TransaKAccountSelectionListLocalDataController {
     }
 }
 
-enum TransaKAccountSelectionListSectionIdentifier: Hashable {
+enum TransakAccountSelectionListSectionIdentifier: Hashable {
     case empty
     case loading
     case accounts
 }
 
-enum TransaKAccountSelectionListItemIdentifier: Hashable {
-    case empty(TransaKAccountSelectionListEmptyItemIdentifier)
-    case loading(TransaKAccountSelectionListLoadingItemIdentifier)
-    case account(TransaKAccountSelectionListAccountItemIdentifier)
+enum TransakAccountSelectionListItemIdentifier: Hashable {
+    case empty(TransakAccountSelectionListEmptyItemIdentifier)
+    case loading(TransakAccountSelectionListLoadingItemIdentifier)
+    case account(TransakAccountSelectionListAccountItemIdentifier)
 }
 
-enum TransaKAccountSelectionListEmptyItemIdentifier: Hashable {
+enum TransakAccountSelectionListEmptyItemIdentifier: Hashable {
     case noContent
 }
 
-enum TransaKAccountSelectionListLoadingItemIdentifier: Hashable {
+enum TransakAccountSelectionListLoadingItemIdentifier: Hashable {
     case account(UUID)
 }
 
-struct TransaKAccountSelectionListAccountItemIdentifier: Hashable {
+struct TransakAccountSelectionListAccountItemIdentifier: Hashable {
     private(set) var accountAddress: String
 
     init(_ account: Account) {

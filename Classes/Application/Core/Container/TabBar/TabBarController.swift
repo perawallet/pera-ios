@@ -73,7 +73,7 @@ final class TabBarController: TabBarContainer {
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api)
-    private lazy var transaKFlowCoordinator = TransaKFlowCoordinator(
+    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
         presentingScreen: self,
         api: api,
         sharedDataController: sharedDataController,
@@ -396,11 +396,11 @@ extension TabBarController {
                     guard let self else { return }
                     self.openBuyAlgoWithSardine()
                 }
-            case .performBuyWithTransaK:
+            case .performBuyWithTransak:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyWithTransaK()
+                    self.openBuyWithTransak()
                 }
             case .performBuyGiftCardsWithBidali:
                 self.dismiss(animated: true) {
@@ -427,8 +427,8 @@ extension TabBarController {
         sardineFlowCoordinator.launch()
     }
 
-    private func openBuyWithTransaK() {
-        transaKFlowCoordinator.launch()
+    private func openBuyWithTransak() {
+        transakFlowCoordinator.launch()
     }
 
     private func openBuyGiftCardsWithBidali() {

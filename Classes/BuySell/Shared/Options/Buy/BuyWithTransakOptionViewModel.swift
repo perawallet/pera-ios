@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListHeaderViewModel.swift
+//   BuyWithTransakOptionViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 
-struct TransaKAccountSelectionListHeaderViewModel: ViewModel {
-    let description: TextProvider =
-        "title-choose-account-to-proceed-with"
-            .localized
-            .bodyRegular()
+struct BuyWithTransakOptionViewModel: ListItemButtonViewModel {
+    var icon: Image?
+    var title: EditText?
+    var subtitle: EditText?
+
+    init() {
+        self.icon = "icon-transak-option"
+        self.title = .attributedString("buy-sell-options-buy-usdc-with-transak-option-title".localized.bodyMedium())
+        self.subtitle = .attributedString("buy-sell-options-buy-usdc-with-transak-option-subtitle".localized.footnoteRegular())
+    }
 }

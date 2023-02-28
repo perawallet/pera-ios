@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKIntroductionScreenTheme.swift
+//   TransakIntroductionScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct TransaKIntroductionScreenTheme:
+struct TransakIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle

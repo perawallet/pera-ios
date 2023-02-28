@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransaKAccountSelectionListDataSource.swift
+//   TransakAccountSelectionListDataSource.swift
 
 import Foundation
 import UIKit
 
-final class TransaKAccountSelectionListDataSource: AccountSelectionListDataSource {
-    typealias SectionIdentifierType = TransaKAccountSelectionListSectionIdentifier
-    typealias ItemIdentifierType = TransaKAccountSelectionListItemIdentifier
+final class TransakAccountSelectionListDataSource: AccountSelectionListDataSource {
+    typealias SectionIdentifierType = TransakAccountSelectionListSectionIdentifier
+    typealias ItemIdentifierType = TransakAccountSelectionListItemIdentifier
 
-    private unowned let itemDataSource: TransaKAccountSelectionListItemDataSource
+    private unowned let itemDataSource: TransakAccountSelectionListItemDataSource
 
-    init(_ itemDataSource: TransaKAccountSelectionListItemDataSource) {
+    init(_ itemDataSource: TransakAccountSelectionListItemDataSource) {
         self.itemDataSource = itemDataSource
     }
 
     var supportedCells: [UICollectionViewCell.Type] = [
         AccountSelectionListLoadingAccountItemCell.self,
         AccountSelectionListNoContentCell.self,
-        TransaKAccountSelectionListAccountListItemCell.self
+        TransakAccountSelectionListAccountListItemCell.self
     ]
 
     func getCellProvider() -> CellProvider {
@@ -58,7 +58,7 @@ final class TransaKAccountSelectionListDataSource: AccountSelectionListDataSourc
                 }
             case .account(let item):
                 let cell = collectionView.dequeue(
-                    TransaKAccountSelectionListAccountListItemCell.self,
+                    TransakAccountSelectionListAccountListItemCell.self,
                     at: indexPath
                 )
                 let viewModel = self.itemDataSource.accountItems[item.accountAddress]
@@ -69,14 +69,14 @@ final class TransaKAccountSelectionListDataSource: AccountSelectionListDataSourc
     }
 
     var supportedSupplementaryViews: [UICollectionReusableView.Type] = [
-        TransaKAccountSelectionListHeader.self
+        TransakAccountSelectionListHeader.self
     ]
 
     func getSupplementaryViewProvider(_ dataSource: DataSource) -> SupplementaryViewProvider? {
         return { collectionView, elementKind, indexPath in
 
             let header = collectionView.dequeueHeader(
-                TransaKAccountSelectionListHeader.self,
+                TransakAccountSelectionListHeader.self,
                 at: indexPath
             )
             let viewModel = self.itemDataSource.headerItem
