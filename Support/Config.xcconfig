@@ -25,3 +25,5 @@ STAGING_API_KEY = pera-mobile-ios-staging-P-VdFuy3-a-L5HnW991-L-w7fzPZU1Xr
 BIDALI_PROD_API_KEY = pk_obszzygjjzbp9oqewl44rq
 BIDALI_STAGING_API_KEY = pk_6ppze8rn448cr1xc5rj0ki
 SARDINE_PROD_API_KEY = dca4e1cf-461f-4a4c-a3c5-4c60fff03400
+TRANSAK_PROD_API_KEY = 2d88f921-a7cd-4ad2-a02b-80cad34b1bf6
+TRANSAK_STAGING_API_KEY = cd6892f1-eeea-4563-a45b-d6de19d1056a

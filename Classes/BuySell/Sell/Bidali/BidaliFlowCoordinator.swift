@@ -111,8 +111,7 @@ extension BidaliFlowCoordinator {
     /// In staging app, the Bidali is always enabled, but in store app, it is enabled only
     /// on mainnet.
     private var isAvailable: Bool {
-        let isEnabled = !ALGAppTarget.current.isProduction || !api.isTestNet
-        return isEnabled
+        return !ALGAppTarget.current.isProduction || !api.isTestNet
     }
 
     private func presentNotAvailableAlert(on screen: UIViewController) {

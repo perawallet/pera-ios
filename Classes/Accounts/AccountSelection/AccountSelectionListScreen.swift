@@ -295,7 +295,7 @@ extension AccountSelectionListScreen {
         if let assetID = getAssetID(from: transactionController),
            let selectedAccount {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: selectedAccount
             )
@@ -321,7 +321,7 @@ extension AccountSelectionListScreen {
         if let assetID = getAssetID(from: transactionController),
            let selectedAccount {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: selectedAccount
             )

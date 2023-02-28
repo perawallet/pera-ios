@@ -22,6 +22,13 @@ import MacaroonUIKit
 final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
+   override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+      return .automatic
+   }
+   override var contentSizeBehaviour: BaseScrollViewController.ContentSizeBehaviour {
+      return .intrinsic
+   }
+
    var eventHandler: EventHandler?
    
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
@@ -29,7 +36,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
-   private lazy var nextButtonContainer = UIView()
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
@@ -68,8 +74,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
       if !isLayoutFinalized {
          isLayoutFinalized = true
-
-         addLinearGradient()
       }
    }
 
@@ -112,6 +116,19 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       super.viewDidLoad()
 
       fetchTransactionParams()
+   }
+
+   override func addFooter() {
+      super.addFooter()
+
+      var backgroundGradient = Gradient()
+      backgroundGradient.colors = [
+          Colors.Defaults.background.uiColor.withAlphaComponent(0),
+          Colors.Defaults.background.uiColor
+      ]
+      backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+      footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
    }
 
    private func fetchTransactionParams() {
@@ -259,7 +276,10 @@ extension SendTransactionPreviewScreen {
    private func addTransactionDetailView() {
       contentView.addSubview(transactionDetailView)
       transactionDetailView.snp.makeConstraints {
-         $0.edges.equalToSuperview()
+         $0.top == 0
+         $0.leading == 0
+         $0.bottom == theme.contentBottomEdgeInset
+         $0.trailing == 0
       }
       
       transactionDetailView.startObserving(event: .performEditNote) {
@@ -285,38 +305,16 @@ extension SendTransactionPreviewScreen {
    }
 
    private func addNextButton() {
-      view.addSubview(nextButtonContainer)
-      nextButtonContainer.snp.makeConstraints {
-         $0.leading.trailing.bottom.equalToSuperview()
-         $0.fitToHeight(theme.linearGradientHeight + view.safeAreaBottom)
-      }
-
       nextButton.customize(theme.nextButtonStyle)
       nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
-      nextButtonContainer.addSubview(nextButton)
-      
+
+      footerView.addSubview(nextButton)
       nextButton.snp.makeConstraints {
-         $0.leading.trailing.equalToSuperview().inset(theme.nextButtonLeadingInset)
-         $0.bottom.equalToSuperview().inset(theme.nextButtonBottomInset + view.safeAreaBottom)
-         $0.height.equalTo(theme.nextButtonHeight)
+         $0.top == theme.nextButtonContentEdgeInsets.top
+         $0.leading == theme.nextButtonContentEdgeInsets.leading
+         $0.bottom == theme.nextButtonContentEdgeInsets.bottom
+         $0.trailing == theme.nextButtonContentEdgeInsets.trailing
       }
-   }
-
-   private func addLinearGradient() {
-      let layer = CAGradientLayer()
-      layer.frame = CGRect(
-         origin: .zero,
-         size: CGSize(
-            width: view.bounds.width,
-            height: theme.linearGradientHeight + view.safeAreaBottom
-         )
-      )
-
-      let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
-      let color1 = Colors.Defaults.background.uiColor.cgColor
-
-      layer.colors = [color0, color1]
-      nextButtonContainer.layer.insertSublayer(layer, at: 0)
    }
 }
 

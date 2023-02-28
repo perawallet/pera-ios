@@ -591,7 +591,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
             break
         }
 
-        finishMonitoringOptOutUpdates(for: transactionController)
+        cancelMonitoringOptOutUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
     }
@@ -661,7 +661,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
             )
         }
 
-        finishMonitoringOptOutUpdates(for: transactionController)
+        cancelMonitoringOptOutUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
     }
@@ -701,11 +701,11 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 }
 
 extension ManageAssetsViewController {
-    private func finishMonitoringOptOutUpdates(for transactionController: TransactionController) {
+    private func cancelMonitoringOptOutUpdates(for transactionController: TransactionController) {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptOutUpdates(
+            monitor.cancelMonitoringOptOutUpdates(
                 forAssetID: assetID,
                 for: account
             )

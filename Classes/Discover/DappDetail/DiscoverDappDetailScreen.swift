@@ -137,11 +137,18 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
 
         bindNavigationTitle(with: dappParameters)
 
-        addRightBarButtonItems()
+        addNavigationBarButtonItems()
     }
 
-    func addRightBarButtonItems() {
-        self.rightBarButtonItems = [ ALGBarButtonItem.flexibleSpace() ]
+    private func addNavigationBarButtonItems() {
+        self.rightBarButtonItems = [ makeReloadBarButtonItem() ]
+    }
+
+    private func makeReloadBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .reload) {
+            [unowned self] in
+            self.webView.reload()
+        }
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {
