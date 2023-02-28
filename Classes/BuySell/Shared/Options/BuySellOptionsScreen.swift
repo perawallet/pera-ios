@@ -103,12 +103,12 @@ extension BuySellOptionsScreen {
     private func addBuyOptions() {
         addBuyAlgoWithMoonPayOption()
         addBuyAlgoWithSardineOption()
-        addBuyWithTransaKOption()
+        addBuyWithTransakOption()
     }
 
     private func addBuyAlgoWithMoonPayOption() {
         addOption(
-            viewModel: BuySellOptionsBuyAlgoWithMoonPayOptionViewModel(),
+            viewModel: BuyAlgoWithMoonPayOptionViewModel(),
             selector: #selector(performBuyAlgoWithMoonPay),
             to: buyContextView
         )
@@ -116,16 +116,16 @@ extension BuySellOptionsScreen {
 
     private func addBuyAlgoWithSardineOption() {
         addOption(
-            viewModel: BuySellOptionsBuyAlgoWithSardineOptionViewModel(),
+            viewModel: BuyAlgoWithSardineOptionViewModel(),
             selector: #selector(performBuyAlgoWithSardine),
             to: buyContextView
         )
     }
 
-    private func addBuyWithTransaKOption() {
+    private func addBuyWithTransakOption() {
         addOption(
-            viewModel: BuySellOptionsBuyWithTransaKOptionViewModel(),
-            selector: #selector(performBuyWithTransaK),
+            viewModel: BuyWithTransakOptionViewModel(),
+            selector: #selector(performBuyWithTransak),
             to: buyContextView
         )
     }
@@ -143,8 +143,8 @@ extension BuySellOptionsScreen {
     }
 
     @objc
-    private func performBuyWithTransaK() {
-        eventHandler?(.performBuyWithTransaK)
+    private func performBuyWithTransak() {
+        eventHandler?(.performBuyWithTransak)
     }
 }
 
@@ -179,7 +179,7 @@ extension BuySellOptionsScreen {
 
     private func addBuyGiftCardWithBidaliOption() {
         addOption(
-            viewModel: BuySellOptionsBuyGiftCardsWithBidaliOptionViewModel(),
+            viewModel: BuyGiftCardsWithBidaliOptionViewModel(),
             selector: #selector(performBuyGiftCardsWithBidali),
             to: sellContextView
         )
@@ -216,7 +216,7 @@ extension BuySellOptionsScreen {
      enum Event {
          case performBuyAlgoWithMoonPay
          case performBuyAlgoWithSardine
-         case performBuyWithTransaK
+         case performBuyWithTransak
          case performBuyGiftCardsWithBidali
      }
  }

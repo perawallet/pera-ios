@@ -69,13 +69,6 @@ final class MoonPayIntroductionScreen: ScrollScreen {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        observe(notification: .didRedirectFromMoonPay) {
-            [unowned self] notification in
-            self.didRedirectFromMoonPay(notification)
-        }
-
-        switchToTransparentNavigationBarAppearance()
-
         addUI()
     }
 
@@ -91,10 +84,29 @@ final class MoonPayIntroductionScreen: ScrollScreen {
         switchToDefaultNavigationBarAppearanceIfNeeded()
     }
 
+    override func startObservingNotifications() {
+        super.startObservingNotifications()
+
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+            self.didRedirectFromMoonPay(notification)
+        }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+            self.didRedirectFromMoonPay(notification)
+        }
+    }
+
     override func addScroll() {
         super.addScroll()
 
-        scrollView.contentInset.top = theme.illustrationMaxHeight
+        let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+        scrollView.contentInset.top = theme.illustrationMaxHeight - navigationBarHeight
     }
 
     override func addFooter() {
@@ -136,9 +148,8 @@ extension MoonPayIntroductionScreen {
     }
 
     private func updateIllustrationWhenViewDidScroll() {
-        let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        let preferredHeight = theme.illustrationMaxHeight - contentY
+        let contentY = scrollView.contentOffset.y
+        let preferredHeight = -contentY
 
         illustrationView.snp.updateConstraints {
             $0.fitToHeight(max(preferredHeight, theme.illustrationMinHeight))
@@ -147,23 +158,10 @@ extension MoonPayIntroductionScreen {
 }
 
 extension MoonPayIntroductionScreen {
-    private func switchToTransparentNavigationBarAppearance() {
-        guard let navigationController else { return }
-
-        let appearance = navigationController.navigationBar.standardAppearance.copy()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes[NSAttributedString.Key.foregroundColor] = UIColor.white
-
-        navigationController.navigationBar.isTranslucent = true
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-    }
-
     private func switchToTransparentNavigationBarAppearanceIfNeeded() {
         guard let navigationController else { return }
 
-        if !navigationController.isBeingPresented && !isViewFirstAppeared {
+        if !navigationController.isBeingPresented || isViewFirstAppeared {
             switchToTransparentNavigationBarAppearance()
         }
     }
@@ -212,9 +210,29 @@ extension MoonPayIntroductionScreen {
             $0.trailing == 0
         }
 
+        addIllustrationLogo()
         addIllustrationBackground()
     }
 
+    private func addIllustrationLogo() {
+        let canvasView = UIView()
+        let logoView = UIImageView()
+        logoView.customizeAppearance(theme.illustrationLogo)
+
+        illustrationView.addSubview(canvasView)
+        canvasView.snp.makeConstraints {
+            let navigationBarHeight = navigationController?.navigationBar.frame.height ?? .zero
+            $0.top == navigationBarHeight
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+        canvasView.addSubview(logoView)
+        logoView.snp.makeConstraints {
+            $0.center == 0
+        }
+    }
+    
     private func addIllustrationBackground() {
         let backgroundView = GradientView()
         backgroundView.colors = [
@@ -320,6 +338,20 @@ extension MoonPayIntroductionScreen {
 }
 
 extension MoonPayIntroductionScreen {
+    private func didRedirectFromMoonPay(_ notification: Notification) {
+        guard
+            let moonPayParams = notification.userInfo?[MoonPayParams.notificationObjectKey] as? MoonPayParams
+        else {
+            delegate?.moonPayIntroductionScreenDidFailedTransaction(self)
+            return
+        }
+
+        analytics.track(.moonPay(type: .completed))
+        delegate?.moonPayIntroductionScreen(self, didCompletedTransaction: moonPayParams)
+    }
+}
+
+extension MoonPayIntroductionScreen {
     @objc
     private func performPrimaryAction() {
         if api.isTestNet {
@@ -334,47 +366,32 @@ extension MoonPayIntroductionScreen {
             return
         }
 
-        let draft = SelectAccountDraft(
-            transactionAction: .buyAlgo,
-            requiresAssetSelection: false
-        )
+        openAccountSelection()
+    }
+
+    private func openAccountSelection() {
+        let screen = Screen.transakAccountSelection {
+            [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .didSelect(let account):
+                let moonPayDraft = MoonPayDraft()
+                moonPayDraft.address = account.value.address
+                self.openMoonPay(for: moonPayDraft)
+            default:
+                break
+            }
+        }
 
         open(
-            .accountSelection(draft: draft, delegate: self),
+            screen,
             by: .push
         )
     }
 }
 
 extension MoonPayIntroductionScreen {
-    private func didRedirectFromMoonPay(_ notification: Notification) {
-        guard
-            let moonPayParams = notification.userInfo?[MoonPayParams.notificationObjectKey] as? MoonPayParams
-        else {
-            delegate?.moonPayIntroductionScreenDidFailedTransaction(self)
-            return
-        }
-
-        analytics.track(.moonPay(type: .completed))
-        delegate?.moonPayIntroductionScreen(self, didCompletedTransaction: moonPayParams)
-    }
-}
-
-extension MoonPayIntroductionScreen: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        guard draft.transactionAction == .buyAlgo else {
-            return
-        }
-
-        let moonPayDraft = MoonPayDraft()
-        moonPayDraft.address = account.address
-        openMoonPay(for: moonPayDraft)
-    }
-
     private func openMoonPay(for draft: MoonPayDraft) {
         guard let address = draft.address else {
             return

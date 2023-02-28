@@ -65,7 +65,7 @@ extension NotificationsViewModel {
             .build()
         let placeholder = ImagePlaceholder(image: .init(asset: "asset-image-placeholder-border".uiImage))
         
-        icon = PNGImageSource(
+        icon = DefaultURLImageSource(
             url: url,
             shape: shape,
             placeholder: placeholder
