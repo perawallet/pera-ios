@@ -27,9 +27,7 @@ class InAppBrowserScreen<ScriptMessage>:
     WKUIDelegate,
     WKScriptMessageHandler
 where ScriptMessage: InAppBrowserScriptMessage {
-    var allowsPullToRefresh: Bool {
-        return true
-    }
+    var allowsPullToRefresh: Bool = true
     
     var notificationObservations: [NSObjectProtocol] = []
     
