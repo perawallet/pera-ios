@@ -23,6 +23,9 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var shouldShowNavigationBar: Bool {
         return true
     }
+    var prefersLargeTitle: Bool {
+        return false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +52,21 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
 
     private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
         navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+        customizeNavigationBarTitle()
+    }
+
+    private func customizeNavigationBarTitle() {
+        guard shouldShowNavigationBar else { return }
+
+        if prefersLargeTitle {
+            navigationItem.largeTitleDisplayMode = .always
+            let navigationBar = navigationController?.navigationBar
+            navigationBar?.prefersLargeTitles = true
+            navigationBar?.layoutMargins.left = 24
+            navigationBar?.layoutMargins.right = 24
+        } else {
+            navigationItem.largeTitleDisplayMode =  .never
+        }
     }
 }
 

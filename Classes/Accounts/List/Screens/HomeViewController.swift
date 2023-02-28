@@ -78,6 +78,7 @@ final class HomeViewController:
         session: session!,
         sharedDataController: sharedDataController
     )
+    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(presentingScreen: self)
 
     private let copyToClipboardController: CopyToClipboardController
 
@@ -503,6 +504,25 @@ extension HomeViewController {
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
     }
+
+    private func linkBackupInteractors(
+        _ cell: GenericAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self else { return }
+
+            self.algorandSecureBackupFlowCoordinator.launch()
+        }
+    }
     
     private func linkInteractors(
         _ cell: HomeAccountsHeader,
@@ -747,10 +767,13 @@ extension HomeViewController {
                 linkInteractors(cell)
             }
         case .announcement(let item):
-            if item.isGeneric {
-                linkInteractors(cell as! GenericAnnouncementCell, for: item)
-            } else {
+            switch item.type {
+            case .governance:
                 linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+            case .generic:
+                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+            case .backup:
+                linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {
@@ -1008,14 +1031,15 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-        
-        guard let selectedAccountHandle = selectedAccountHandle else {
-            return
-        }
+        guard let selectedAccountHandle else { return }
 
-        if isConfirmed {
-            presentPassphraseView(selectedAccountHandle)
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.presentPassphraseView(selectedAccountHandle)
+            }
         }
     }
 

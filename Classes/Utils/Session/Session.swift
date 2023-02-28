@@ -37,6 +37,7 @@ class Session: Storable {
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     private let announcementStateKey = "com.algorand.algorand.announcement.state"
+    private let backupsKey = "com.algorand.algorand.secure.backups"
     private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
     
     let algorandSDK = AlgorandSDK()
@@ -170,6 +171,29 @@ class Session: Storable {
             do {
                 let data = try newValue.encoded()
                 save(data, for: announcementStateKey, to: .defaults)
+            } catch {
+                return
+            }
+        }
+    }
+
+    var backups: [String: BackupMetadata] {
+        get {
+            guard let data = data(with: backupsKey, to: .defaults) else {
+                return [:]
+            }
+
+            do {
+                return try [String: BackupMetadata].decoded(data, using: JSONDecodingStrategy())
+            } catch {
+                return [:]
+            }
+        }
+        set {
+            do {
+                /// <todo>: It may be saved as object instead of data to make it more efficient
+                let data = try newValue.encoded()
+                save(data, for: backupsKey, to: .defaults)
             } catch {
                 return
             }
