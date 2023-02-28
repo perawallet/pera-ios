@@ -1880,7 +1880,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -1903,7 +1903,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )

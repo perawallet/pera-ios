@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "Conti abbinati";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Account address or short name";
+"account-select-header-search-title" = "Indirizzo dell'account o nome breve";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Prova con un nome conto diverso";
@@ -239,7 +239,7 @@
 "asset-copy-id" = "Copia ID";
 
 /* (No Comment) */
-"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
+"asset-creator-opt-out-error-message" = "Gli account creator non possono disattivare (opt-out) le risorse che hanno creato.";
 
 /* (No Comment) */
 "asset-detail-id-title" = "ID %@";
@@ -602,7 +602,7 @@
 "collectible-send-action" = "Trasferimento";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Account address";
+"collectible-send-input-placeholder" = "Indirizzo dell'account";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "Invia il tuo NFT";

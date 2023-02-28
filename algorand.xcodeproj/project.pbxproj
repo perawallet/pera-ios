@@ -18888,8 +18888,8 @@
 				F07C3C3728B50B3D003D55BC /* OptInBlockchainUpdate.swift */,
 				2B36FCCA28B69425001ECA57 /* OptOutBlockchainRequest.swift */,
 				2B36FCC628B693FD001ECA57 /* OptOutBlockchainUpdate.swift */,
-				D40D9C1C2964B5EF00D4D5F1 /* SendPureCollectibleAssetBlockchainUpdate.swift */,
 				D40D9C202964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift */,
+				D40D9C1C2964B5EF00D4D5F1 /* SendPureCollectibleAssetBlockchainUpdate.swift */,
 			);
 			path = Blockchain;
 			sourceTree = "<group>";

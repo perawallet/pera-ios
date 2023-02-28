@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "일치하는 계정";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Account address or short name";
+"account-select-header-search-title" = "계정 주소 또는 약식 이름";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "다른 계정 이름을 사용해보세요";
@@ -239,7 +239,7 @@
 "asset-copy-id" = "ID 복사";
 
 /* (No Comment) */
-"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
+"asset-creator-opt-out-error-message" = "크리에이터 계정은 자신이 만든 자산을 옵트아웃할 수 없습니다.";
 
 /* (No Comment) */
 "asset-detail-id-title" = "ID %@";
@@ -602,7 +602,7 @@
 "collectible-send-action" = "전송";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Account address";
+"collectible-send-input-placeholder" = "계정 주소";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "NFT 보내기";

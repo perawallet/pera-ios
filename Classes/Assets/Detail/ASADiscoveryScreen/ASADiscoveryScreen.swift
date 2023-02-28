@@ -986,12 +986,12 @@ extension ASADiscoveryScreen {
 
                 switch transactionType {
                 case .assetAddition:
-                    monitor.finishMonitoringOptInUpdates(
+                    monitor.cancelMonitoringOptInUpdates(
                         forAssetID: asset.id,
                         for: account
                     )
                 case .assetRemoval:
-                    monitor.finishMonitoringOptOutUpdates(
+                    monitor.cancelMonitoringOptOutUpdates(
                         forAssetID: asset.id,
                         for: account
                     )
@@ -1022,12 +1022,12 @@ extension ASADiscoveryScreen {
 
                 switch transactionType {
                 case .assetAddition:
-                    monitor.finishMonitoringOptInUpdates(
+                    monitor.cancelMonitoringOptInUpdates(
                         forAssetID: asset.id,
                         for: account
                     )
                 case .assetRemoval:
-                    monitor.finishMonitoringOptOutUpdates(
+                    monitor.cancelMonitoringOptOutUpdates(
                         forAssetID: asset.id,
                         for: account
                     )

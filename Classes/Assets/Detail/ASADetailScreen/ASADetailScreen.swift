@@ -301,10 +301,13 @@ extension ASADetailScreen {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-
-        if isConfirmed {
-            navigateToViewPassphrase()
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.navigateToViewPassphrase()
+            }
         }
     }
 }
