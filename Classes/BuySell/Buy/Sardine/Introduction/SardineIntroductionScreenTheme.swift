@@ -22,6 +22,7 @@ struct SardineIntroductionScreenTheme:
     LayoutSheet,
     StyleSheet {
     var illustration: ImageStyle
+    var illustrationLogo: ImageStyle
     var illustrationMaxHeight: LayoutMetric
     var illustrationMinHeight: LayoutMetric
     var title: TextStyle
@@ -42,7 +43,11 @@ struct SardineIntroductionScreenTheme:
     ) {
         self.illustration = [
             .image("sardine-introduction-illustration"),
+            .backgroundColor(Colors.Dapp.sardine),
             .contentMode(.scaleAspectFill)
+        ]
+        self.illustrationLogo = [
+            .image("sardine-introduction-illustration-logo")
         ]
         self.illustrationMaxHeight = 294
         self.illustrationMinHeight = 132
