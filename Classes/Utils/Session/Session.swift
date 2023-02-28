@@ -191,6 +191,7 @@ class Session: Storable {
         }
         set {
             do {
+                /// <todo>: It may be saved as object instead of data to make it more efficient
                 let data = try newValue.encoded()
                 save(data, for: backupsKey, to: .defaults)
             } catch {

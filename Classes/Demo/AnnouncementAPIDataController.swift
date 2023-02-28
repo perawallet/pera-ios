@@ -43,10 +43,11 @@ final class AnnouncementAPIDataController {
                 ///  If we support error handling necessary views, delegate will be called with errors
                 break
             case .success(let announcementList):
-                let isBackupAnnouncementVisible = self.session.backups.isEmpty
-                var announcements = announcementList.results
+                var announcements = announcementList.results.filter { announcement in
+                    !self.session.isAnnouncementHidden(announcement)
+                }
 
-                if isBackupAnnouncementVisible {
+                if self.isBackupAnnouncementVisible(of: self.session) {
                     announcements += [Announcement(type: .backup)]
                 }
                 
@@ -60,6 +61,11 @@ final class AnnouncementAPIDataController {
 
     func hideAnnouncement(_ announcement: Announcement) {
         session.setAnnouncementHidden(announcement, isHidden: true)
+    }
+
+    private func isBackupAnnouncementVisible(of session: Session) -> Bool {
+//        let isThereABackupCompleted = !session.backups.isEmpty
+        return false
     }
 }
 
