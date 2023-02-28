@@ -78,7 +78,10 @@ final class HomeViewController:
         session: session!,
         sharedDataController: sharedDataController
     )
-    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(presentingScreen: self)
+    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
+        session: session!,
+        presentingScreen: self
+    )
 
     private let copyToClipboardController: CopyToClipboardController
 

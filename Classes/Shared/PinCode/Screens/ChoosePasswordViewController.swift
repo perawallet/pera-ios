@@ -90,7 +90,7 @@ extension ChoosePasswordViewController {
 
 extension ChoosePasswordViewController {
     private func displayPinLimitScreenIfNeeded() {
-        if shouldDisplayPinLimitScreen(isFirstLaunch: true) && mode == .login {
+        if shouldDisplayPinLimitScreen(isFirstLaunch: true), case .login = mode {
             displayPinLimitScreen()
         } else {
             checkLoginFlow()
@@ -98,13 +98,19 @@ extension ChoosePasswordViewController {
     }
 
     private func checkLoginFlow() {
-        if mode == .login {
+        if case let .login(flow) = mode {
             if localAuthenticator.localAuthenticationStatus == .allowed {
                 localAuthenticator.authenticate { error in
                     guard error == nil else {
                         return
                     }
-                    self.launchHome()
+
+                    switch flow {
+                    case .initial:
+                        self.launchHome()
+                    case .custom:
+                        self.delegate?.choosePasswordViewController(self, didConfirmPassword: true)
+                    }
                 }
             }
             return
@@ -148,8 +154,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             openVerifyPassword(with: value)
         case let .verify(previousPassword):
             verifyPassword(with: value, and: previousPassword)
-        case .login:
-            login(with: value)
+        case .login(let flow):
+            login(with: value, flow: flow)
         case .deletePassword:
             deletePassword(with: value)
         case .resetPassword(let flow):
@@ -218,12 +224,18 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func login(with value: NumpadButton.NumpadKey) {
+    private func login(with value: NumpadButton.NumpadKey, flow: Mode.LoginFlow) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
                 pinLimitStore.resetPinAttemptCount()
-                launchHome()
+
+                switch flow {
+                case .initial:
+                    launchHome()
+                case .custom:
+                    delegate?.choosePasswordViewController(self, didConfirmPassword: true)
+                }
             } else {
                 pinLimitStore.increasePinAttemptCount()
                 handleInvalidPassword()
@@ -338,12 +350,17 @@ extension ChoosePasswordViewController {
     enum Mode: Equatable {
         case setup
         case verify(password: String)
-        case login
+        case login(flow: LoginFlow)
         case deletePassword
         case verifyOld
         case resetPassword(flow: ResetFlow)
         case resetVerify(password: String, flow: ResetFlow)
         case confirm(flow: ConfirmFlow)
+
+        enum LoginFlow {
+            case initial
+            case custom
+        }
 
         enum ResetFlow {
             case fromVerifyOld

@@ -23,9 +23,13 @@ final class AlgorandSecureBackupFlowCoordinator {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
+    private let session: Session
     private unowned let presentingScreen: UIViewController
 
-    init(presentingScreen: UIViewController) {
+    private var instructionScreen: UIViewController?
+
+    init(session: Session, presentingScreen: UIViewController) {
+        self.session = session
         self.presentingScreen = presentingScreen
     }
 }
@@ -38,9 +42,9 @@ extension AlgorandSecureBackupFlowCoordinator {
     private func openInstructions() {
         let screen: Screen = .algorandSecureBackupInstructions { [weak self] event, screen in
             guard let self else { return }
-            self.openAccountSelection(from: screen)
+            self.openPasswordScreenIfNeeded(from: screen)
         }
-        presentingScreen.open(screen, by: .present)
+        instructionScreen = presentingScreen.open(screen, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 
     private func openAccountSelection(from viewController: UIViewController) {
@@ -52,6 +56,36 @@ extension AlgorandSecureBackupFlowCoordinator {
             }
         }
         viewController.open(screen, by: .push)
+    }
+
+    private func openPasswordScreenIfNeeded(from viewController: UIViewController) {
+        guard session.hasPassword() else {
+            openAccountSelection(from: viewController)
+            return
+        }
+
+        let controller = viewController.open(
+            .choosePassword(
+                mode: .login(flow: .custom),
+                flow: nil
+            ),
+            by: .push
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
+    }
+}
+
+extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDelegate {
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        guard let viewController = instructionScreen, isConfirmed else {
+            return
+        }
+
+        choosePasswordViewController.popScreen()
+        openAccountSelection(from: viewController)
     }
 }
 
