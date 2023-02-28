@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDeviceIdDetails.swift
+//   DiscoverDeviceIDDetails.swift
 
 import Foundation
 import MacaroonUtils
 
-struct DiscoverDeviceIdDetails: JSONModel {
+struct DiscoverDeviceIDDetails: JSONModel {
     let action: String
     let payload: String
 

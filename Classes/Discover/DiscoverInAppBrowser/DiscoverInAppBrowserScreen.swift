@@ -184,9 +184,9 @@ extension DiscoverInAppBrowserScreen {
         guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return }
 
         guard let deviceID = getDeviceID(from: api) else { return }
-        guard let deviceIdDetails = getDeviceIDDetails(with: deviceID) else { return }
+        guard let deviceIDDetails = getDeviceIDDetails(with: deviceID) else { return }
 
-        let scriptString = "var message = '" + deviceIdDetails + "'; handleMessage(message);"
+        let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
         self.webView.evaluateJavaScript(scriptString)
     }
 
@@ -195,7 +195,7 @@ extension DiscoverInAppBrowserScreen {
     }
 
     private func getDeviceIDDetails(with deviceID: String) -> String? {
-        try? DiscoverDeviceIdDetails(deviceId: deviceID).encodedString()
+        try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
     }
 }
 

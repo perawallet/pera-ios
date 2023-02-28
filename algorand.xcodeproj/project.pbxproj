@@ -167,9 +167,9 @@
 		178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
 		178330962955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
 		178330972955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */; };
-		17899E0629A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift */; };
-		17899E0729A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift */; };
-		17899E0829A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift */; };
+		17899E0629A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */; };
+		17899E0729A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */; };
+		17899E0829A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */; };
 		179085DA2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DB2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
 		179085DC2833BDFC0098D53F /* AlertUITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179085D92833BDFC0098D53F /* AlertUITransition.swift */; };
@@ -6557,7 +6557,7 @@
 		1783308C29548D5300AD5B4E /* DiscordDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscordDeeplink.swift; sourceTree = "<group>"; };
 		1783309029548D6900AD5B4E /* TelegramDeeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramDeeplink.swift; sourceTree = "<group>"; };
 		178330942955CE6F00AD5B4E /* WalletConnectorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectorPreferences.swift; sourceTree = "<group>"; };
-		17899E0529A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDeviceIdDetails.swift; sourceTree = "<group>"; };
+		17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDeviceIDDetails.swift; sourceTree = "<group>"; };
 		179085D92833BDFC0098D53F /* AlertUITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransition.swift; sourceTree = "<group>"; };
 		179085DD2833BE0C0098D53F /* AlertUITransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUITransitionController.swift; sourceTree = "<group>"; };
 		17924433288FD0450075F36F /* NotificationStatusFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationStatusFetchDraft.swift; sourceTree = "<group>"; };
@@ -9036,7 +9036,7 @@
 				2B834931296E062F001BA824 /* DiscoverFavouriteDappDetails.swift */,
 				F0877F79299ADA8400CD8D8A /* DiscoverGenericParameters.swift */,
 				17C93290293F2495000EE03D /* DiscoverSwapParameters.swift */,
-				17899E0529A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift */,
+				17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -21547,7 +21547,7 @@
 				2BAAF4B528E49C5100FC59AF /* SelectAssetErrorItemViewModel.swift in Sources */,
 				D43A0C1B2790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
 				D497946C287D88F8004FBF8E /* AppCallAssetPreviewViewWithImageTheme.swift in Sources */,
-				17899E0829A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */,
+				17899E0829A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */,
 				D48281BE27A00470004412D5 /* PinLimitViewModel.swift in Sources */,
 				D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
@@ -22979,7 +22979,7 @@
 				D43A0C122790C9FB007430B9 /* LoadingCell.swift in Sources */,
 				2B0F626524EC129D00DA22A6 /* Double.swift in Sources */,
 				2B99D42D28E9DA7700323C11 /* TitleSeparatorViewModel.swift in Sources */,
-				17899E0729A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */,
+				17899E0729A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */,
 				2B77FAAA280D73E70020376D /* WebPImageSource.swift in Sources */,
 				2BD4E5102855EBF5003D57A4 /* CollectibleSortingAlgorithm.swift in Sources */,
 				D4592908276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
@@ -25708,7 +25708,7 @@
 				2BA979E0284E281E00EDA5EA /* ManagementItemViewModel.swift in Sources */,
 				2BECB4DD25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F635624ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */,
-				17899E0629A79BEB00DE6A72 /* DiscoverDeviceIdDetails.swift in Sources */,
+				17899E0629A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift in Sources */,
 				2BAAF4B328E49C5100FC59AF /* SelectAssetErrorItemViewModel.swift in Sources */,
 				2BD5A6BA26334BB80048FA5E /* AlgoPriceTimeFrameSelection.swift in Sources */,
 				D4A647AA2784E1D9009DE241 /* TransactionHistoryTitleContextViewModel.swift in Sources */,
