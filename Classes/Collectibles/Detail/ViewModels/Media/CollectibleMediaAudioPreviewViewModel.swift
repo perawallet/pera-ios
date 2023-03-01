@@ -47,6 +47,7 @@ extension CollectibleMediaAudioPreviewViewModel {
     
     private mutating func bindURL(_ media: Media) {
         if media.type != .audio {
+            self.url = nil
             return
         }
         

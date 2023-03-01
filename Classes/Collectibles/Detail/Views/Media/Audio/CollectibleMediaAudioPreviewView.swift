@@ -35,8 +35,6 @@ final class CollectibleMediaAudioPreviewView:
     private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var fullScreenActionView = MacaroonUIKit.Button()
     
-    private var playerStateObserver: NSKeyValueObservation?
-    
     var currentPlayer: AVPlayer? {
         return audioPlayerView.player
     }
@@ -125,6 +123,7 @@ extension CollectibleMediaAudioPreviewView {
         
         guard let viewModel,
               let url = viewModel.url else {
+            prepareForReuse()
             return
         }
         
@@ -151,7 +150,6 @@ extension CollectibleMediaAudioPreviewView {
 extension CollectibleMediaAudioPreviewView {
     func prepareForReuse() {
         removeObservers()
-        playerStateObserver?.invalidate()
         stopAudio()
         audioPlayerView.player = nil
         placeholderView.prepareForReuse()
