@@ -106,9 +106,9 @@ extension ChoosePasswordViewController {
                     }
 
                     switch flow {
-                    case .initial:
+                    case .app:
                         self.launchHome()
-                    case .custom:
+                    case .feature:
                         self.delegate?.choosePasswordViewController(self, didConfirmPassword: true)
                     }
                 }
@@ -231,9 +231,9 @@ extension ChoosePasswordViewController {
                 pinLimitStore.resetPinAttemptCount()
 
                 switch flow {
-                case .initial:
+                case .app:
                     launchHome()
-                case .custom:
+                case .feature:
                     delegate?.choosePasswordViewController(self, didConfirmPassword: true)
                 }
             } else {
@@ -357,9 +357,13 @@ extension ChoosePasswordViewController {
         case resetVerify(password: String, flow: ResetFlow)
         case confirm(flow: ConfirmFlow)
 
+        /// <todo>: Will be changed when this screen refactored
+        /// LoginFlow is created for separating launch logics
+        /// For some features, we should ask the authorization to user but it shouldn't invoke the launch operation
+        /// If developer use feature-specific login, feature case should be used.
         enum LoginFlow {
-            case initial
-            case custom
+            case app
+            case feature
         }
 
         enum ResetFlow {

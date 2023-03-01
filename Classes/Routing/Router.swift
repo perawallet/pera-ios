@@ -68,7 +68,7 @@ class Router:
         }
         
         route(
-            to: .choosePassword(mode: .login(flow: .initial), flow: nil),
+            to: .choosePassword(mode: .login(flow: .app), flow: nil),
             from: findVisibleScreen(over: rootViewController),
             by: .customPresent(
                 presentationStyle: .fullScreen,
