@@ -1236,10 +1236,20 @@
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 "swap-price-impact-warning-message" = "Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-grater-than-10-warning-message" = "Caution! Price impact is greater than 10%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-greater-than-15-warning-message" = "This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works here.";
+"swap-price-impact-greater-than-15-warning-message-highlighted-text" = "here";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
 "swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
+/// MARK: Swap High Price Impact Warning
+"swap-high-price-impact-warning-title" = "High Price impact detected!";
+"swap-high-price-impact-warning-body" = "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\n
+To learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s
+FAQ section.";
+"swap-high-price-impact-warning-body-highlighted-text" = "FAQ section";
 
 /// MARK: Swap Slippage
 "swap-slippage-title" = "Slippage Tolerance";

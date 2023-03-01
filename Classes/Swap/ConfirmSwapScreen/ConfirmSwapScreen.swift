@@ -31,7 +31,6 @@ final class ConfirmSwapScreen:
     private lazy var userAssetView = SwapAssetAmountView()
     private lazy var toSeparatorView = TitleSeparatorView()
     private lazy var poolAssetView = SwapAssetAmountView()
-    private lazy var warningView = SwapErrorView()
     private lazy var priceInfoView = SwapInfoActionItemView()
     private lazy var slippageInfoView = SwapInfoActionItemView()
     private var poolAssetBottomSeparator: UIView?
@@ -39,11 +38,14 @@ final class ConfirmSwapScreen:
     private lazy var minimumReceivedInfoView = SwapInfoItemView()
     private lazy var exchangeFeeInfoView = SwapInfoItemView()
     private lazy var peraFeeInfoView = SwapInfoItemView()
+    private lazy var warningView = SwapErrorView()
     private lazy var confirmActionView: LoadingButton = {
         let loadingIndicator = ViewLoadingIndicator()
         loadingIndicator.applyStyle(theme.confirmActionIndicator)
         return LoadingButton(loadingIndicator: loadingIndicator)
     }()
+
+    private lazy var transitionToHighPriceImpactWarning = BottomSheetTransition(presentingViewController: self)
 
     private var viewModel: ConfirmSwapScreenViewModel?
     private var isPriceReversed = false
@@ -98,13 +100,13 @@ final class ConfirmSwapScreen:
         super.prepareLayout()
         addUserAsset()
         addToSeparator()
+        addWarning()
         addPeraFeeInfo()
         addExchangeFeeInfo()
         addMinimumReceivedInfo()
         addPriceImpactInfo()
         addSlippageInfo()
         addPriceInfo()
-        addWarning()
         addPoolAsset()
         addConfirmAction()
     }
@@ -228,8 +230,25 @@ extension ConfirmSwapScreen {
 
         confirmActionView.addTouch(
             target: self,
-            action: #selector(confirmSwap)
+            action: #selector(didTapConfirmSwap)
         )
+    }
+
+    private func addWarning() {
+        warningView.customize(theme.warning)
+
+        contentView.addSubview(warningView)
+        warningView.fitToIntrinsicSize()
+        warningView.snp.makeConstraints {
+            $0.leading == theme.infoSectionPaddings.leading
+            $0.bottom == theme.confirmActionEdgeInsets.top
+            $0.trailing == theme.infoSectionPaddings.trailing
+        }
+
+        warningView.eventHandlers.messageHyperlinkHandler = {
+            [unowned self] url in
+            self.open(url)
+        }
     }
 
     private func addPeraFeeInfo() {
@@ -239,7 +258,7 @@ extension ConfirmSwapScreen {
         peraFeeInfoView.fitToIntrinsicSize()
         peraFeeInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == theme.confirmActionEdgeInsets.top
+            $0.bottom == warningView.snp.top - theme.warningTopInset
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -345,21 +364,9 @@ extension ConfirmSwapScreen {
         )
     }
 
-    private func addWarning() {
-        guard let poolAssetBottomSeparator else { return }
-        warningView.customize(theme.warning)
-
-        contentView.addSubview(warningView)
-        warningView.fitToIntrinsicSize()
-        warningView.snp.makeConstraints {
-            $0.leading == theme.assetHorizontalInset
-            $0.bottom >= poolAssetBottomSeparator.snp.top - theme.warningSeparatorPadding
-            $0.bottom <= poolAssetBottomSeparator.snp.top - theme.minimumPoolAssetPadding
-            $0.trailing == theme.assetHorizontalInset
-        }
-    }
-
     private func addPoolAsset() {
+        guard let poolAssetBottomSeparator else { return }
+
         poolAssetView.customize(theme.poolAsset)
 
         contentView.addSubview(poolAssetView)
@@ -367,7 +374,7 @@ extension ConfirmSwapScreen {
         poolAssetView.snp.makeConstraints {
             $0.top == toSeparatorView.snp.bottom + theme.poolAssetTopInset
             $0.leading == theme.assetHorizontalInset
-            $0.bottom == warningView.snp.top - theme.assetWarningPadding
+            $0.bottom == poolAssetBottomSeparator.snp.top - theme.spacingBetweenToPoolAssetAndInfoSeparator
             $0.trailing == theme.assetHorizontalInset
         }
     }
@@ -426,13 +433,14 @@ extension ConfirmSwapScreen {
         userAssetView.bindData(viewModel?.userAsset)
         toSeparatorView.bindData(viewModel?.toSeparator)
         poolAssetView.bindData(viewModel?.poolAsset)
-        warningView.bindData(viewModel?.warning)
         priceInfoView.bindData(viewModel?.priceInfo)
         slippageInfoView.bindData(viewModel?.slippageInfo)
         priceImpactInfoView.bindData(viewModel?.priceImpactInfo)
         minimumReceivedInfoView.bindData(viewModel?.minimumReceivedInfo)
         exchangeFeeInfoView.bindData(viewModel?.exchangeFeeInfo)
         peraFeeInfoView.bindData(viewModel?.peraFeeInfo)
+        warningView.bindData(viewModel?.warning)
+        confirmActionView.isEnabled = viewModel?.isConfirmActionEnabled ?? true
     }
 
     private func switchPriceValuePresentation() {
@@ -497,8 +505,101 @@ extension ConfirmSwapScreen {
     }
 
     @objc
+    private func didTapConfirmSwap() {
+        if shouldPresentWarningForHighPriceImpact {
+            presentWarningForHighPriceImpact()
+            return
+        }
+
+        confirmSwap()
+    }
+
     private func confirmSwap() {
         dataController.confirmSwap()
+    }
+}
+
+extension ConfirmSwapScreen {
+    private var shouldPresentWarningForHighPriceImpact: Bool {
+        guard let priceImpact = dataController.quote.priceImpact else {
+            return false
+        }
+
+        return priceImpact > 0.10 && priceImpact <= 0.15
+    }
+
+    private func presentWarningForHighPriceImpact() {
+        let title =
+            "swap-high-price-impact-warning-title"
+                .localized
+                .bodyLargeMedium(alignment: .center)
+        let body = makeHighPriceImpactWarningBody()
+
+        let uiSheet = UISheet(
+            image: "icon-info-red",
+            title: title,
+            body: body
+        )
+
+        uiSheet.bodyHyperlinkHandler = {
+            [unowned self] in
+            let visibleScreen = self.findVisibleScreen()
+            visibleScreen.open(AlgorandWeb.tinymanSwapPriceImpact.link)
+        }
+
+        let confirmAction = makeHighPriceImpactWarningConfirmAction()
+        uiSheet.addAction(confirmAction)
+
+        let cancelAction = makeHighPriceImpactWarningCancelAction()
+        uiSheet.addAction(cancelAction)
+
+        transitionToHighPriceImpactWarning.perform(
+            .sheetAction(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func makeHighPriceImpactWarningBody() -> UISheetBodyTextProvider {
+        let body = "swap-high-price-impact-warning-body".localized
+        let bodyHighlightedText = "swap-high-price-impact-warning-body-highlighted-text".localized
+
+        var bodyHighlightedTextAttributes = Typography.bodyMediumAttributes(alignment: .center)
+        bodyHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
+
+        let uiSheetBodyHighlightedText = UISheet.HighlightedText(
+            text: bodyHighlightedText,
+            attributes: bodyHighlightedTextAttributes
+        )
+        let uiSheetBody = UISheetBodyTextProvider(
+            text: body.bodyRegular(alignment: .center),
+            highlightedText: uiSheetBodyHighlightedText
+        )
+
+        return uiSheetBody
+    }
+
+    private func makeHighPriceImpactWarningConfirmAction() -> UISheetAction {
+        return UISheetAction(
+            title: "swap-confirm-title".localized,
+            style: .default
+        ) { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true) {
+                self.confirmSwap()
+            }
+        }
+    }
+
+    private func makeHighPriceImpactWarningCancelAction() -> UISheetAction {
+        return UISheetAction(
+            title: "title-cancel".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
     }
 }
 
