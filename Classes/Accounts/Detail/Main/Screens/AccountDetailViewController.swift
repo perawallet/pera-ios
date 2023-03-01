@@ -361,7 +361,11 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
                 case .ledger:
                     self.open(
                         .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
-                        by: .push
+                        by: .customPresent(
+                            presentationStyle: .fullScreen,
+                            transitionStyle: nil,
+                            transitioningDelegate: nil
+                        )
                     )
                 case .soft:
                     self.openSelectAccountForSoftRekeying()
