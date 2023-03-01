@@ -1246,8 +1246,7 @@
 
 /// MARK: Swap High Price Impact Warning
 "swap-high-price-impact-warning-title" = "High Price impact detected!";
-"swap-high-price-impact-warning-body" = "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\n
-To learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s
+"swap-high-price-impact-warning-body" = "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\nTo learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s
 FAQ section.";
 "swap-high-price-impact-warning-body-highlighted-text" = "FAQ section";
 
