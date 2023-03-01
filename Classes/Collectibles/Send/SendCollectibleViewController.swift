@@ -464,16 +464,14 @@ extension SendCollectibleViewController {
     }
 }
 
-extension SendCollectibleViewController: TransactionSignChecking {
+extension SendCollectibleViewController {
     private func composeCollectibleAssetTransactionData(
         isOptingOut: Bool
     ) {
         var fromAccount = draft.fromAccount
-
-        if !canSignTransaction(for: &fromAccount) {
-            return
-        }
-
+        
+        if !transactionController.canSignTransaction(for: &fromAccount) { return }
+        
         let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
 
         let transactionDraft = AssetTransactionSendDraft(

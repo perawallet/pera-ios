@@ -25,8 +25,7 @@ final class ASADiscoveryScreen:
     BaseViewController,
     Container,
     SelectAccountViewControllerDelegate,
-    TransactionControllerDelegate,
-    TransactionSignChecking {
+    TransactionControllerDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -765,8 +764,8 @@ extension ASADiscoveryScreen {
             guard let self = self else { return }
 
             guard var account = self.dataController.account else { return }
-
-            if !self.canSignTransaction(for: &account) { return }
+            
+            if !self.transactionController.canSignTransaction(for: &account) { return }
 
             let asset = self.dataController.asset
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
@@ -863,8 +862,8 @@ extension ASADiscoveryScreen {
                   var account = self.dataController.account else {
                 return
             }
-
-            if !self.canSignTransaction(for: &account) { return }
+            
+            if !self.transactionController.canSignTransaction(for: &account) { return }
 
             let asset = self.dataController.asset
 

@@ -20,7 +20,6 @@ import MagpieCore
 
 final class NotificationsViewController:
     BaseViewController,
-    TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
 

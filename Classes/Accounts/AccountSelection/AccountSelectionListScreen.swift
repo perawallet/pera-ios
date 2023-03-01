@@ -22,7 +22,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     NavigationBarLargeTitleConfigurable,
     SwapAssetFlowCoordinatorObserver,
     TransactionControllerDelegate,
-    TransactionSignChecking,
     UICollectionViewDelegateFlowLayout  {
     var navigationBarScrollView: UIScrollView {
         return listView
@@ -278,10 +277,9 @@ extension AccountSelectionListScreen {
     ) {
         guard var account = selectedAccount else { return }
 
+        if !transactionController.canSignTransaction(for: &account) { return }
+        
         loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        if !canSignTransaction(for: &account) { return }
-
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(
             account: account,

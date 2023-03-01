@@ -21,8 +21,7 @@ import MacaroonURLImage
 final class CollectibleDetailViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    TransactionControllerDelegate,
-    TransactionSignChecking {
+    TransactionControllerDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -735,8 +734,6 @@ extension CollectibleDetailViewController {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            if !self.canSignTransaction(for: &self.account) { return }
 
             self.collectibleDetailTransactionController.optInToAsset()
         }

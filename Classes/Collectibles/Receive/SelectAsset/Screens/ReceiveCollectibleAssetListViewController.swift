@@ -22,8 +22,7 @@ final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     NotificationObserver,
-    UIContextMenuInteractionDelegate,
-    TransactionSignChecking {
+    UIContextMenuInteractionDelegate {
     var notificationObservations: [NSObjectProtocol] = []
 
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
@@ -448,8 +447,13 @@ extension ReceiveCollectibleAssetListViewController {
             guard let self = self else { return }
 
             var account = self.dataController.account
-
-            if !self.canSignTransaction(for: &account) { return }
+            
+            let transactionController = self.createNewTransactionController(for: asset)
+            
+            if !transactionController.canSignTransaction(for: &account) {
+                self.clearTransactionCache(transactionController)
+                return
+            }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let request = OptInBlockchainRequest(account: account, asset: asset)
@@ -459,7 +463,6 @@ extension ReceiveCollectibleAssetListViewController {
                 from: account,
                 assetIndex: asset.id
             )
-            let transactionController = self.createNewTransactionController(for: asset)
             transactionController.setTransactionDraft(assetTransactionDraft)
             transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 

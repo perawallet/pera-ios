@@ -92,13 +92,9 @@ final class RekeyConfirmationViewController: BaseViewController {
     }
 }
 
-extension RekeyConfirmationViewController:
-    RekeyConfirmationViewDelegate,
-    TransactionSignChecking {
+extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
-        if !canSignTransaction(for: &account) {
-            return
-        }
+        if !transactionController.canSignTransaction(for: &account) { return }
         
         let rekeyTransactionDraft = RekeyTransactionSendDraft(
             account: account,
@@ -235,70 +231,5 @@ extension RekeyConfirmationViewController {
         default:
             break
         }
-    }
-}
-
-protocol TransactionSignChecking {
-    func canSignTransaction(for selectedAccount: inout Account) -> Bool
-}
-
-extension TransactionSignChecking where Self: BaseViewController {
-    func canSignTransaction(for selectedAccount: inout Account) -> Bool {
-        /// Check whether account is a watch account
-        if selectedAccount.isWatchAccount() {
-           return false
-        }
-
-        let accounts = sharedDataController.sortedAccounts().map { $0.value }
-
-        /// Check whether auth address exists for the selected account.
-        if let authAddress = selectedAccount.authAddress {
-            if selectedAccount.rekeyDetail?[authAddress] != nil {
-                return true
-            } else {
-                guard let authAccount = accounts.first(where: { account -> Bool in
-                    authAddress == account.address
-                }) else {
-                    bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "ledger-rekey-error-not-found".localized
-                    )
-                    
-                    return false
-                }
-
-                if let ledgerDetail = authAccount.ledgerDetail {
-                    selectedAccount.addRekeyDetail(
-                        ledgerDetail,
-                        for: authAddress
-                    )
-                }
-                
-                return true
-            }
-        }
-
-        /// Check whether ledger details of the selected ledger account exists.
-        if selectedAccount.isLedger() {
-            if selectedAccount.ledgerDetail == nil {
-                AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "ledger-rekey-error-not-found".localized
-                )
-                return false
-            }
-            return true
-        }
-
-        /// Check whether private key of the selected account exists.
-        if session?.privateData(for: selectedAccount.address) == nil {
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-rekey-error-not-found".localized
-            )
-            return false
-        }
-
-        return true
     }
 }

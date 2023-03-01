@@ -22,7 +22,6 @@ import MagpieExceptions
 final class AssetAdditionViewController:
     BaseViewController,
     TestNetTitleDisplayable,
-    TransactionSignChecking,
     UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
 
@@ -463,15 +462,19 @@ extension AssetAdditionViewController {
             guard let self = self else { return }
 
             var account = self.dataController.account
-
-            if !self.canSignTransaction(for: &account) { return }
+            
+            let transactionController = self.createNewTransactionController(for: asset)
+            
+            if !transactionController.canSignTransaction(for: &account) {
+                self.clearTransactionCache(transactionController)
+                return
+            }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let request = OptInBlockchainRequest(account: account, asset: asset)
             monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
-            let transactionController = self.createNewTransactionController(for: asset)
             transactionController.setTransactionDraft(assetTransactionDraft)
             transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 

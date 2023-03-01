@@ -1442,11 +1442,10 @@ extension Router {
     ) {
         let draft = assetActionConfirmationViewController.draft
 
-        guard let account = draft.account,
-              !account.isWatchAccount() else {
-            return
-        }
-
+        guard var account = draft.account  else { return }
+        
+        if !transactionController.canSignTransaction(for: &account) { return }
+        
         let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
         monitor.startMonitoringOptInUpdates(request)
@@ -1792,17 +1791,17 @@ extension Router {
         visibleScreen.dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            guard !account.isWatchAccount() else {
-                return
-            }
+            
+            var anAccount = account
+            
+            if !self.transactionController.canSignTransaction(for: &anAccount) { return }
 
             let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(account: account, asset: asset)
+            let request = OptInBlockchainRequest(account: anAccount, asset: asset)
             monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(
-                from: account,
+                from: anAccount,
                 assetIndex: asset.id
             )
 
@@ -1812,7 +1811,7 @@ extension Router {
             self.transactionController.setTransactionDraft(assetTransactionDraft)
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
-            if account.requiresLedgerConnection() {
+            if anAccount.requiresLedgerConnection() {
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }

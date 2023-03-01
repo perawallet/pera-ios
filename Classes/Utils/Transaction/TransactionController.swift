@@ -37,6 +37,11 @@ class TransactionController {
         LedgerTransactionOperation(api: api, analytics: analytics)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api, sharedDataController: sharedDataController)
+    
+    private lazy var transactionSignatureErrorResolver = TransactionSignatureErrorResolver(
+        session: api.session,
+        sharedDataController: sharedDataController
+    )
 
     private var isLedgerRequiredTransaction: Bool {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
@@ -80,6 +85,16 @@ extension TransactionController {
 }
 
 extension TransactionController {
+    func canSignTransaction(for account: inout Account) -> Bool {
+        if let transactionSignatureError = transactionSignatureErrorResolver.findTransactionSignatureErrorIfPresent(for: &account) {
+            transactionSignatureError.present(on: bannerController)
+            return false
+        }
+        
+        return true
+    }
+    
+    
     func setTransactionDraft(_ transactionDraft: TransactionSendDraft) {
         self.transactionDraft = transactionDraft
     }
