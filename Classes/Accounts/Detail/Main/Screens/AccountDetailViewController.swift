@@ -355,12 +355,12 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openSelectAccountForSoftRekeying()
+        openSelectAccountForRekeyingToAStandardAccount()
     }
     
-    private func openSelectAccountForSoftRekeying() {
+    private func openSelectAccountForRekeyingToAStandardAccount() {
         let draft = SelectAccountDraft(
-            transactionAction: .softRekey,
+            transactionAction: .rekeyToStandardAccount,
             requiresAssetSelection: false
         )
         
@@ -368,7 +368,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledSoftRekeying(for: account)
+            return self.isEnabledRekeyingToAStandardAccount(for: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -383,7 +383,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         )
     }
     
-    private func isEnabledSoftRekeying(for account: Account) -> Bool {
+    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
         return account.isRekeyed() ||
             account.isLedger() ||
             account.isSameAccount(with: accountHandle.value.address)
@@ -640,7 +640,7 @@ extension AccountDetailViewController {
         for draft: SelectAccountDraft
     ) {
         switch draft.transactionAction {
-        case .softRekey:
+        case .rekeyToStandardAccount:
             selectAccountViewController.dismissScreen {
                 [weak self] in
                 guard let self else { return }
