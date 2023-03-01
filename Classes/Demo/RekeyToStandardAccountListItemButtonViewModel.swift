@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyToLedgerAccountListItemButtonViewModel.swift
+//   RekeyToStandardAccountListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct RekeyToLedgerAccountListItemButtonViewModel: ListItemButtonViewModel {
+struct RekeyToStandardAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
     
     init() {
         icon = "icon-options-rekey"
-        title = Self.getTitle("options-rekey-ledger".localized)
+        title = Self.getTitle("options-rekey-standard".localized)
         subtitle = nil
     }
 }
