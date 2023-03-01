@@ -643,6 +643,10 @@
 "rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
 "rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
 "ledger-rekey-confirm-title" = "Confirm Rekeying";

@@ -195,18 +195,43 @@ extension ASADetailScreen {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
+        openRekeyInstructions(for: .ledger)
+    }
+    
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
+        openRekeyInstructions(for: .soft)
+    }
+    
+    private func openRekeyInstructions(for type: RekeyInstructionsViewController.RekeyType) {
+        let eventHandler: RekeyInstructionsViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            if case let .performRekey(type) = event {
+                switch type {
+                case .ledger:
+                    self.open(
+                        .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
+                        by: .push
+                    )
+                case .soft:
+                    self.openSelectAccountForSoftRekeying()
+                }
+            }
+        }
+        
         open(
-            .rekeyInstruction(account: dataController.account),
+            .rekeyInstruction(
+                account: dataController.account,
+                rekeyType: type,
+                eventHandler: eventHandler
+            ),
             by: .customPresent(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,
                 transitioningDelegate: nil
             )
         )
-    }
-    
-    func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openSelectAccountForSoftRekeying()
     }
     
     private func openSelectAccountForSoftRekeying() {

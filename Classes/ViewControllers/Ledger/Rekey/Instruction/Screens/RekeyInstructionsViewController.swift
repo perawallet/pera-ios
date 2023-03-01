@@ -18,12 +18,22 @@
 import UIKit
 
 final class RekeyInstructionsViewController: BaseScrollViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+    
     private lazy var rekeyInstructionsView = RekeyInstructionsView()
     
     private let account: Account
+    private let rekeyType: RekeyType
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        rekeyType: RekeyType,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
+        self.rekeyType = rekeyType
         super.init(configuration: configuration)
     }
     
@@ -55,12 +65,35 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        rekeyInstructionsView.bindData(RekeyInstructionsViewModel(account.requiresLedgerConnection()))
+        
+        switch rekeyType {
+        case .ledger:
+            rekeyInstructionsView.bindData(LedgerRekeyInstructionsViewModel(account.requiresLedgerConnection()))
+        case .soft:
+            rekeyInstructionsView.bindData(SoftRekeyInstructionsViewModel())
+        }
     }
 }
 
 extension RekeyInstructionsViewController: RekeyInstructionsViewDelegate {
     func rekeyInstructionsViewDidStartRekeying(_ rekeyInstructionsView: RekeyInstructionsView) {
-        open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
+        self.dismiss(animated: true) {
+            [weak self] in
+            guard let self else { return }
+            
+            self.eventHandler?(.performRekey(self.rekeyType))
+        }
+    }
+}
+extension RekeyInstructionsViewController {
+    enum RekeyType {
+        case ledger
+        case soft
+    }
+}
+
+extension RekeyInstructionsViewController {
+    enum Event {
+        case performRekey(RekeyType)
     }
 }

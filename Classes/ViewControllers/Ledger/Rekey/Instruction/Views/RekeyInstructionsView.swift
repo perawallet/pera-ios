@@ -147,7 +147,13 @@ extension RekeyInstructionsView: ViewModelBindable {
         firstInstructionView.bindTitle(viewModel?.firstInstructionViewTitle)
         secondInstructionView.bindTitle(viewModel?.secondInstructionViewTitle)
         thirdInstructionView.bindTitle(viewModel?.thirdInstructionViewTitle)
-        fourthInstructionView.bindTitle(viewModel?.fourthInstructionViewTitle)
+        
+        if let fourtItem = viewModel?.fourthInstructionViewTitle {
+            fourthInstructionView.bindTitle(fourtItem)
+            return
+        }
+        
+        fourthInstructionView.removeFromSuperview()
     }
 }
 
