@@ -42,8 +42,7 @@ final class HomeViewController:
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
@@ -152,8 +151,6 @@ final class HomeViewController:
                 self.totalPortfolioValue = totalPortfolioItem?.portfolioValue
 
                 self.bindNavigation(totalPortfolioItem)
-
-                self.configureWalletConnectIfNeeded()
 
                 self.listDataSource.apply(
                     updates.snapshot,
@@ -632,35 +629,6 @@ extension HomeViewController {
                 passcodeSettingDisplayStore.disableAskingPasscode()
             }
         }
-    }
-}
-
-extension HomeViewController {
-    private func configureWalletConnectIfNeeded() {
-        onceWhenViewDidAppear.execute { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.completeWalletConnectConfiguration()
-        }
-    }
-
-    private func completeWalletConnectConfiguration() {
-        reconnectToOldWCSessions()
-        registerWCRequests()
-    }
-    
-    private func reconnectToOldWCSessions() {
-        walletConnector.reconnectToSavedSessionsIfPossible()
-    }
-
-    private func registerWCRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
     }
 }
 

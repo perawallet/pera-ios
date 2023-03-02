@@ -777,8 +777,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -1562,8 +1561,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1573,6 +1570,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
