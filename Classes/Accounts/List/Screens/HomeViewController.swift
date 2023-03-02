@@ -79,7 +79,7 @@ final class HomeViewController:
         sharedDataController: sharedDataController
     )
     private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
-        session: session!,
+        configuration: configuration,
         presentingScreen: self
     )
 

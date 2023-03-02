@@ -23,11 +23,11 @@ final class AlgorandSecureBackupFlowCoordinator {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
-    private let session: Session
+    private let configuration: ViewControllerConfiguration
     private unowned let presentingScreen: UIViewController
 
-    init(session: Session, presentingScreen: UIViewController) {
-        self.session = session
+    init(configuration: ViewControllerConfiguration, presentingScreen: UIViewController) {
+        self.configuration = configuration
         self.presentingScreen = presentingScreen
     }
 }
@@ -46,18 +46,28 @@ extension AlgorandSecureBackupFlowCoordinator {
     }
 
     @discardableResult
-    private func openAccountSelection(from viewController: UIViewController) -> UIViewController? {
-        let screen: Screen = .algorandSecureBackupAccountList { [weak self] event, screen  in
+    private func makeAccountSelectionScreen() -> AlgorandSecureBackupAccountListScreen {
+        let dataController = AlgorandSecureBackupAccountListLocalDataController(
+            sharedDataController: configuration.sharedDataController
+        )
+        let screen = AlgorandSecureBackupAccountListScreen(
+            dataController: dataController,
+            configuration: configuration
+        )
+        screen.eventHandler = {
+            [weak self] event, screen  in
             guard let self else { return }
             switch event {
             case .performContinue(let accounts):
                 print(accounts)
             }
         }
-        return viewController.open(screen, by: .push)
+        return screen
     }
 
     private func openPasswordScreenIfNeeded(from viewController: UIViewController) {
+        guard let session = configuration.session else { return }
+
         guard session.hasPassword() else {
             openAccountSelection(from: viewController)
             return
@@ -72,6 +82,11 @@ extension AlgorandSecureBackupFlowCoordinator {
         ) as? ChoosePasswordViewController
         controller?.delegate = self
     }
+
+    private func openAccountSelection(from viewController: UIViewController) {
+        let screen = makeAccountSelectionScreen()
+        viewController.navigationController?.pushViewController(screen, animated: true)
+    }
 }
 
 extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDelegate {
@@ -85,14 +100,15 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
         }
 
         var viewControllers = navigationController.viewControllers
-        guard viewControllers.last == choosePasswordViewController else { return }
 
-        viewControllers.removeLast()
+        _ = viewControllers.remove { viewController in
+            viewController == choosePasswordViewController
+        }
 
-        guard let lastViewController = viewControllers.last else { return }
-        guard let nextViewController = openAccountSelection(from: lastViewController) else { return }
+        let accountSelectionScreen = makeAccountSelectionScreen()
+        viewControllers.append(accountSelectionScreen)
 
-        navigationController.setViewControllers(viewControllers + [nextViewController], animated: true)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 
