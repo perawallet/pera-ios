@@ -506,7 +506,8 @@ extension ConfirmSwapScreen {
 
     @objc
     private func didTapConfirmSwap() {
-        if shouldPresentWarningForHighPriceImpact {
+        if let priceImpact = dataController.quote.priceImpact,
+           priceImpact > 0.10 && priceImpact <= 0.15 {
             presentWarningForHighPriceImpact()
             return
         }
@@ -520,14 +521,6 @@ extension ConfirmSwapScreen {
 }
 
 extension ConfirmSwapScreen {
-    private var shouldPresentWarningForHighPriceImpact: Bool {
-        guard let priceImpact = dataController.quote.priceImpact else {
-            return false
-        }
-
-        return priceImpact > 0.10 && priceImpact <= 0.15
-    }
-
     private func presentWarningForHighPriceImpact() {
         let title =
             "swap-high-price-impact-warning-title"
