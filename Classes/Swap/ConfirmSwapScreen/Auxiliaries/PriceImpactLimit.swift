@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SwapInfoItemViewModel.swift
+//   PriceImpactLimit.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-protocol SwapInfoItemViewModel: ViewModel {
-    var title: TextProvider? { get }
-    var icon: Image? { get }
-    var iconTintColor: Color? { get }
-    var detail: TextProvider?  { get }
-    var action: Image? { get }
+enum PriceImpactLimit {
+    /// <note>
+    /// Percents are in Decimal type to prevent the conversion of `SwapQuote`'s Decimal `priceImpact` to Double.
+    static let fivePercent: Decimal = 0.05
+    static let tenPercent: Decimal = 0.10
+    static let fifteenPercent: Decimal = 0.15
 }

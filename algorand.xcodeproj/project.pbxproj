@@ -3833,6 +3833,9 @@
 		D4008593271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008592271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift */; };
 		D4008594271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008592271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift */; };
 		D4008595271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008592271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift */; };
+		D400AE5A29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */; };
+		D400AE5B29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */; };
+		D400AE5C29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */; };
 		D4012365287330AC00E45D30 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4012364287330AC00E45D30 /* TooltipView.swift */; };
 		D4012366287330AC00E45D30 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4012364287330AC00E45D30 /* TooltipView.swift */; };
 		D4012367287330AC00E45D30 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4012364287330AC00E45D30 /* TooltipView.swift */; };
@@ -7833,6 +7836,7 @@
 		D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D400858E271DC05D007C0C97 /* AlgoStatisticsFooterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsFooterViewModel.swift; sourceTree = "<group>"; };
 		D4008592271DC363007C0C97 /* AlgoStatisticsInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsInfoViewModel.swift; sourceTree = "<group>"; };
+		D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceImpactLimit.swift; sourceTree = "<group>"; };
 		D4012364287330AC00E45D30 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerErrorViewModel.swift; sourceTree = "<group>"; };
 		D4018CF327E88E7100C0FC33 /* BottomActionableBannerControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionableBannerControllerConfiguration.swift; sourceTree = "<group>"; };
@@ -14088,6 +14092,7 @@
 				2BAAF4BA28E4A81E00FC59AF /* ConfirmSwapScreen.swift */,
 				2BAAF4BE28E4A9C000FC59AF /* ConfirmSwapScreenTheme.swift */,
 				2B99D45E28ECA75D00323C11 /* ConfirmSwapScreenViewModel.swift */,
+				D400AE5D29B0E3A9005C6CDB /* Auxiliaries */,
 				2BAAF4C228E4B60E00FC59AF /* Data */,
 				2BAAF4C328E4B61300FC59AF /* Views */,
 			);
@@ -16645,6 +16650,14 @@
 				2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D400AE5D29B0E3A9005C6CDB /* Auxiliaries */ = {
+			isa = PBXGroup;
+			children = (
+				D400AE5929B0E391005C6CDB /* PriceImpactLimit.swift */,
+			);
+			path = Auxiliaries;
 			sourceTree = "<group>";
 		};
 		D401FCB128E6416000FBA85C /* AssetIDItem */ = {
@@ -21261,6 +21274,7 @@
 				046767A22756A7DE00C88F21 /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				D44265CE2774C1F10094E2CA /* PendingTransactionViewTheme.swift in Sources */,
 				F0DB419D279496A600EA437D /* ShowQrCodeListItemButtonViewModel.swift in Sources */,
+				D400AE5C29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */,
 				17BD4EB72292F1260003E49A /* ApplicationConfiguration.swift in Sources */,
 				2BE1766B2902F605008E95D9 /* WCConnectionAccountListLayout.swift in Sources */,
 				17D0FA4028EC28DE0061B55D /* ExportAccountListDataController.swift in Sources */,
@@ -22085,6 +22099,7 @@
 				046767852756A65F00C88F21 /* SingleSelectionCell.swift in Sources */,
 				2B7A1F2827DBD2E20010F52E /* CollectibleDetailViewController.swift in Sources */,
 				2B0F617524EC129D00DA22A6 /* Codable+CoreData.swift in Sources */,
+				D400AE5B29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */,
 				17CADC7E28531313001D19A8 /* AccountQuickActionsViewTheme.swift in Sources */,
 				2B1073AE28858F6800D465C1 /* AssetVerificationTier.swift in Sources */,
 				2B7A1FBA27DE79280010F52E /* CollectibleDetailInformationCell.swift in Sources */,
@@ -25449,6 +25464,7 @@
 				2B32A25F2552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				D482274A272C57D9004CB9BF /* EditContactViewController+Theme.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
+				D400AE5A29B0E391005C6CDB /* PriceImpactLimit.swift in Sources */,
 				D4AEDD3C271C711100AD2725 /* AlgoStatisticsInfoViewTheme.swift in Sources */,
 				2BD95B20291552FC005337E5 /* SwapStatusEventMapper.swift in Sources */,
 				F045BE45286C91D40069056B /* NumberRounder.swift in Sources */,
