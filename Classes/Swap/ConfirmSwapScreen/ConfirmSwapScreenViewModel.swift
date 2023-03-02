@@ -145,16 +145,16 @@ extension ConfirmSwapScreenViewModel {
         let messageHighlightedTextURL: URL?
 
         switch priceImpact {
-        case ...0.05:
+        case ...PriceImpactLimit.fivePercent:
             message = nil
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
-        case 0.05...0.10:
+        case PriceImpactLimit.fivePercent...PriceImpactLimit.tenPercent:
             message = "swap-price-impact-warning-message".localized
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
-        case 0.10...0.15:
-            message = "swap-price-impact-grater-than-10-warning-message".localized
+        case PriceImpactLimit.tenPercent...PriceImpactLimit.fifteenPercent:
+            message = "swap-price-impact-greater-than-10-warning-message".localized
             messageHighlightedText = nil
             messageHighlightedTextURL = nil
         default:
@@ -235,6 +235,6 @@ extension ConfirmSwapScreenViewModel {
             return
         }
 
-        isConfirmActionEnabled = priceImpact <= 0.15
+        isConfirmActionEnabled = priceImpact <= PriceImpactLimit.fifteenPercent
     }
 }

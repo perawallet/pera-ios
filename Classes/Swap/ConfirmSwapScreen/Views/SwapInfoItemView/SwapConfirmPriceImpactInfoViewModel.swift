@@ -48,7 +48,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
 
         let attributes: TextAttributeGroup
 
-        if priceImpact > 0.05 {
+        if priceImpact > PriceImpactLimit.fivePercent {
             var someAttributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
             someAttributes.insert(.textColor(Colors.Helpers.negative))
             attributes = someAttributes
@@ -72,7 +72,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
 
         icon = "icon-info-20"
 
-        if priceImpact > 0.05 {
+        if priceImpact > PriceImpactLimit.fivePercent {
             iconTintColor = Colors.Helpers.negative
         } else {
             iconTintColor = Colors.Text.grayLighter
@@ -93,7 +93,7 @@ extension SwapConfirmPriceImpactInfoViewModel {
 
         let attributes: TextAttributeGroup
 
-        if priceImpact > 0.05 {
+        if priceImpact > PriceImpactLimit.fivePercent {
             var someAttributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
             someAttributes.insert(.textColor(Colors.Helpers.negative))
             attributes = someAttributes

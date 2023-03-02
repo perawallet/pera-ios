@@ -47,7 +47,10 @@ final class ConfirmSwapScreen:
 
     private lazy var transitionToHighPriceImpactWarning = BottomSheetTransition(presentingViewController: self)
 
-    private var viewModel: ConfirmSwapScreenViewModel?
+    private var viewModel: ConfirmSwapScreenViewModel?  {
+        didSet { updateWarningConstraintsIfNeeded(old: oldValue) }
+    }
+
     private var isPriceReversed = false
 
     private let dataStore: DataStore
@@ -241,7 +244,7 @@ extension ConfirmSwapScreen {
         warningView.fitToIntrinsicSize()
         warningView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == theme.confirmActionEdgeInsets.top
+            $0.bottom == 0
             $0.trailing == theme.infoSectionPaddings.trailing
         }
 
@@ -258,7 +261,7 @@ extension ConfirmSwapScreen {
         peraFeeInfoView.fitToIntrinsicSize()
         peraFeeInfoView.snp.makeConstraints {
             $0.leading == theme.infoSectionPaddings.leading
-            $0.bottom == warningView.snp.top - theme.warningTopInset
+            $0.bottom == warningView.snp.top
             $0.trailing == theme.infoSectionPaddings.trailing
         }
     }
@@ -495,6 +498,22 @@ extension ConfirmSwapScreen {
 }
 
 extension ConfirmSwapScreen {
+    private func updateWarningConstraintsIfNeeded(old: ConfirmSwapScreenViewModel?) {
+        let isOldWarningVisible = old?.warning != nil
+        let isNewWarningVisible = viewModel?.warning != nil
+
+        if isOldWarningVisible == isNewWarningVisible {
+            return
+        }
+
+        peraFeeInfoView.snp.updateConstraints {
+            let topInset = isNewWarningVisible ? theme.warningTopInset : .zero
+            $0.bottom == warningView.snp.top - topInset
+        }
+    }
+}
+
+extension ConfirmSwapScreen {
     @objc
     private func copyAccountAddress(
         _ recognizer: UILongPressGestureRecognizer
@@ -507,7 +526,7 @@ extension ConfirmSwapScreen {
     @objc
     private func didTapConfirmSwap() {
         if let priceImpact = dataController.quote.priceImpact,
-           priceImpact > 0.10 && priceImpact <= 0.15 {
+           priceImpact > PriceImpactLimit.tenPercent && priceImpact <= PriceImpactLimit.fifteenPercent {
             presentWarningForHighPriceImpact()
             return
         }

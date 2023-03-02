@@ -69,7 +69,7 @@ extension ConfirmSwapAmountOutInputViewModel {
             let attributes: TextAttributeGroup
 
             if let priceImpact = swapQuote.priceImpact,
-               priceImpact > 0.05 {
+               priceImpact > PriceImpactLimit.fivePercent {
                 var someAttributes = Typography.bodyLargeMediumAttributes()
                 someAttributes.insert(.textColor(Colors.Helpers.negative))
                 attributes = someAttributes

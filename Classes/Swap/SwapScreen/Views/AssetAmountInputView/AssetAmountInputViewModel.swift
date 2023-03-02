@@ -119,7 +119,7 @@ extension AssetAmountInputViewModel {
         let attributes: TextAttributeGroup
 
         if let priceImpact,
-           priceImpact > 0.05 {
+           priceImpact > PriceImpactLimit.fivePercent {
             var someAttributes = Typography.footnoteRegularAttributes()
             someAttributes.insert(.textColor(Colors.Helpers.negative))
             attributes = someAttributes
