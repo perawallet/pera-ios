@@ -24,16 +24,13 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
     
     private lazy var rekeyInstructionsView = RekeyInstructionsView()
     
-    private let account: Account
-    private let rekeyType: RekeyType
+    private let viewModel: RekeyToAnyInstructionsViewModel
     
     init(
-        account: Account,
-        rekeyType: RekeyType,
+        viewModel: RekeyToAnyInstructionsViewModel,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
-        self.rekeyType = rekeyType
+        self.viewModel = viewModel
         super.init(configuration: configuration)
     }
     
@@ -66,12 +63,7 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
     override func bindData() {
         super.bindData()
         
-        switch rekeyType {
-        case .ledger:
-            rekeyInstructionsView.bindData(LedgerRekeyInstructionsViewModel(account.requiresLedgerConnection()))
-        case .soft:
-            rekeyInstructionsView.bindData(SoftRekeyInstructionsViewModel())
-        }
+        rekeyInstructionsView.bindData(viewModel)
     }
 }
 
@@ -81,7 +73,12 @@ extension RekeyInstructionsViewController: RekeyInstructionsViewDelegate {
             [weak self] in
             guard let self else { return }
             
-            self.eventHandler?(.performRekey(self.rekeyType))
+            if self.viewModel is RekeyToLedgerInstructionsViewModel {
+                self.eventHandler?(.performRekeyToLedger)
+                return
+            }
+            
+            self.eventHandler?(.performRekeyToStandardAccount)
         }
     }
 }
@@ -94,6 +91,7 @@ extension RekeyInstructionsViewController {
 
 extension RekeyInstructionsViewController {
     enum Event {
-        case performRekey(RekeyType)
+        case performRekeyToStandardAccount
+        case performRekeyToLedger
     }
 }

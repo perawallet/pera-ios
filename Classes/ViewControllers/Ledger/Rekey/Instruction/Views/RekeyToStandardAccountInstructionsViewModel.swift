@@ -17,12 +17,12 @@
 import Foundation
 import MacaroonUIKit
 
-final class SoftRekeyInstructionsViewModel: RekeyInstructionsViewModel {
+final class RekeyToStandardAccountInstructionsViewModel: RekeyToAnyInstructionsViewModel {
     private(set) var subtitle: String?
-    private(set)var firstInstructionViewTitle: EditText?
-    private(set)var secondInstructionViewTitle: EditText?
-    private(set)var thirdInstructionViewTitle: EditText?
-    private(set)var fourthInstructionViewTitle: EditText?
+    private(set) var firstInstructionViewTitle: EditText?
+    private(set) var secondInstructionViewTitle: EditText?
+    private(set) var thirdInstructionViewTitle: EditText?
+    private(set) var fourthInstructionViewTitle: EditText?
     
     init() {
         bindSubtitle()
@@ -33,7 +33,7 @@ final class SoftRekeyInstructionsViewModel: RekeyInstructionsViewModel {
 }
 
 
-extension SoftRekeyInstructionsViewModel {
+extension RekeyToStandardAccountInstructionsViewModel {
     private func bindSubtitle() {
         subtitle = "rekey-instruction-soft-subtitle".localized
     }

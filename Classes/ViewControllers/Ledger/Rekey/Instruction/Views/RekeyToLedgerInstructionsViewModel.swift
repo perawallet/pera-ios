@@ -17,7 +17,7 @@
 
 import MacaroonUIKit
 
-final class LedgerRekeyInstructionsViewModel: RekeyInstructionsViewModel {
+final class RekeyToLedgerInstructionsViewModel: RekeyToAnyInstructionsViewModel {
     private(set) var subtitle: String?
     private(set) var firstInstructionViewTitle: EditText?
     private(set) var secondInstructionViewTitle: EditText?
@@ -33,7 +33,7 @@ final class LedgerRekeyInstructionsViewModel: RekeyInstructionsViewModel {
     }
 }
 
-extension LedgerRekeyInstructionsViewModel {
+extension RekeyToLedgerInstructionsViewModel {
     private func bindSubtitle(_ requiresLedgerConnection: Bool) {
         if requiresLedgerConnection {
             subtitle = "rekey-instruction-subtitle-ledger".localized

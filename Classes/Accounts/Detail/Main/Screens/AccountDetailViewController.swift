@@ -344,39 +344,36 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        openRekeyInstructions(for: .ledger)
+        openRekeyInstructions(with: RekeyToLedgerInstructionsViewModel(accountHandle.value.requiresLedgerConnection()))
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openRekeyInstructions(for: .soft)
+        openRekeyInstructions(with: RekeyToStandardAccountInstructionsViewModel())
     }
     
-    private func openRekeyInstructions(for type: RekeyInstructionsViewController.RekeyType) {
+    private func openRekeyInstructions(with viewModel: RekeyToAnyInstructionsViewModel) {
         let eventHandler: RekeyInstructionsViewController.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
-
-            if case let .performRekey(type) = event {
-                switch type {
-                case .ledger:
-                    self.open(
-                        .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
-                        by: .customPresent(
-                            presentationStyle: .fullScreen,
-                            transitionStyle: nil,
-                            transitioningDelegate: nil
-                        )
+            
+            switch event {
+            case .performRekeyToLedger:
+                self.open(
+                    .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
                     )
-                case .soft:
-                    self.openSelectAccountForSoftRekeying()
-                }
+                )
+            case .performRekeyToStandardAccount:
+                self.openSelectAccountForSoftRekeying()
             }
         }
         
         open(
             .rekeyInstruction(
-                account: accountHandle.value,
-                rekeyType: type,
+                viewModel: viewModel,
                 eventHandler: eventHandler
             ),
             by: .customPresent(

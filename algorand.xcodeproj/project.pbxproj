@@ -1634,12 +1634,12 @@
 		2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAA2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAB2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
-		2B612E0529AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyInstructionsViewModel.swift */; };
-		2B612E0629AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyInstructionsViewModel.swift */; };
-		2B612E0729AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyInstructionsViewModel.swift */; };
-		2B612E0929AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift */; };
-		2B612E0A29AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift */; };
-		2B612E0B29AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift */; };
+		2B612E0529AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
+		2B612E0629AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
+		2B612E0729AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
+		2B612E0929AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
+		2B612E0A29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
+		2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
 		2B648615276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
 		2B648616276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
 		2B648617276A04EC009E29D0 /* SettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */; };
@@ -4202,9 +4202,9 @@
 		D41F93452722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */; };
 		D41F93462722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */; };
 		D41F93472722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */; };
-		D41F93492723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift */; };
-		D41F934A2723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift */; };
-		D41F934B2723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift */; };
+		D41F93492723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift */; };
+		D41F934A2723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift */; };
+		D41F934B2723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93482723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift */; };
 		D41F934D272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
 		D41F934E272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
 		D41F934F272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */; };
@@ -7000,8 +7000,8 @@
 		2B5F6FA02768EC8600C9B780 /* SingleGrayTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderView.swift; sourceTree = "<group>"; };
 		2B5F6FA42768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewTheme.swift; sourceTree = "<group>"; };
 		2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewModel.swift; sourceTree = "<group>"; };
-		2B612E0429AF82970068D902 /* RekeyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewModel.swift; sourceTree = "<group>"; };
-		2B612E0829AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftRekeyInstructionsViewModel.swift; sourceTree = "<group>"; };
+		2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToAnyInstructionsViewModel.swift; sourceTree = "<group>"; };
+		2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToStandardAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
 		2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
@@ -7961,7 +7961,7 @@
 		D41F4F1E289417D200B59559 /* StandardAssetPreviewLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardAssetPreviewLoadingViewTheme.swift; sourceTree = "<group>"; };
 		D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Extension.swift"; sourceTree = "<group>"; };
 		D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewTheme.swift; sourceTree = "<group>"; };
-		D41F93482723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerRekeyInstructionsViewModel.swift; sourceTree = "<group>"; };
+		D41F93482723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToLedgerInstructionsViewModel.swift; sourceTree = "<group>"; };
 		D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionItemViewTheme.swift; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
@@ -13587,12 +13587,12 @@
 			isa = PBXGroup;
 			children = (
 				2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */,
-				D41F93482723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift */,
+				D41F93482723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift */,
 				D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */,
-				2B612E0829AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift */,
+				2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */,
 				2B38C92F24D436F20059AB02 /* InstructionItemView.swift */,
 				D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */,
-				2B612E0429AF82970068D902 /* RekeyInstructionsViewModel.swift */,
+				2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -20684,7 +20684,7 @@
 				D48FDFCB27CEBA0B00C39FC7 /* ReceiveCollectibleAccountListViewControllerTheme.swift in Sources */,
 				D4F22128270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				2B98E49B27EBC526000FA690 /* VideoPlayerView.swift in Sources */,
-				2B612E0B29AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */,
+				2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */,
 				2B44872D2379663C00C19FDE /* ManageAssetsView.swift in Sources */,
 				F040FE112858D67400A74993 /* UIContextMenuConfiguration+Extensions.swift in Sources */,
 				D48FDFC327CEBA0000C39FC7 /* ReceiveCollectibleAccountListDataController.swift in Sources */,
@@ -20912,7 +20912,7 @@
 				D4A59BB528E35CB000BACB4F /* CollectibleDetailAssetIDItemCell.swift in Sources */,
 				D4142AE527E8CE9100AFF4BE /* SendCollectibleDraft.swift in Sources */,
 				2BB350EE258A64D400A03BAC /* LedgerMessage.swift in Sources */,
-				D41F934B2723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */,
+				D41F934B2723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */,
 				2BA63F7E26C1D551008E2B3C /* WCSessionHistory.swift in Sources */,
 				D4A70B002878364D00FB52B0 /* AppCallInnerTransactionPreviewViewModel.swift in Sources */,
 				D4BC072228911FCE00001CDC /* SecondaryListItemViewModel.swift in Sources */,
@@ -21315,7 +21315,7 @@
 				D40D5EB3287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				2BD36DFE2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
 				2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
-				2B612E0729AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */,
+				2B612E0729AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
 				D40E8812294B9CA300B46054 /* CollectibleDetailNameViewModel.swift in Sources */,
 				D4DC269928B145160068152E /* TransactionOptionsScreenTheme.swift in Sources */,
 				2B38C92D24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
@@ -22960,7 +22960,7 @@
 				2BA63F7D26C1D551008E2B3C /* WCSessionHistory.swift in Sources */,
 				1736FB7C28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift in Sources */,
 				2BB350ED258A64D400A03BAC /* LedgerMessage.swift in Sources */,
-				D41F934A2723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */,
+				D41F934A2723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */,
 				D4155E96276CDB5400BCBFA4 /* AccountCheckmarkSelectionViewCell.swift in Sources */,
 				D48281B9279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				2B9E2F4C26F0DDCD003D824A /* WCAssetConfigTransactionItemCell.swift in Sources */,
@@ -23008,7 +23008,7 @@
 				D48FDFC427CEBA0300C39FC7 /* ReceiveCollectibleAccountListHeaderViewModel.swift in Sources */,
 				D4CF683628C8EAB80007A727 /* InfoBoxHeaderViewModel.swift in Sources */,
 				2B5715C02635EB6B002C876D /* AlgorandChartViewModel.swift in Sources */,
-				2B612E0A29AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */,
+				2B612E0A29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */,
 				2B9FDEA728A52C2A00C8117D /* GroupedListItemButtonTheme.swift in Sources */,
 				F0D2C7E52935189B00222A46 /* PrimaryImageViewModel.swift in Sources */,
 				2BB8482E27E8ECD1004F2E39 /* Constants.swift in Sources */,
@@ -23779,7 +23779,7 @@
 				D4CEEC12280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				2BE09A5228F60A070059EEF0 /* SwapSummaryReceivedItemViewModel.swift in Sources */,
 				D4A70B032878647B00FB52B0 /* AppCallTransactionDetailViewTheme.swift in Sources */,
-				2B612E0629AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */,
+				2B612E0629AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
 				95631BBE2760C0A5002FB831 /* TransactionShadowButtonTheme.swift in Sources */,
 				D4CF683E28C9286C0007A727 /* SwapAccountSelectionListHeaderTheme.swift in Sources */,
 				D45DFBC2273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */,
@@ -25114,7 +25114,7 @@
 				2B9FDEA628A52C2A00C8117D /* GroupedListItemButtonTheme.swift in Sources */,
 				2BD063E425CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
 				2BB350EC258A64D400A03BAC /* LedgerMessage.swift in Sources */,
-				D41F93492723038F00E9F2E7 /* LedgerRekeyInstructionsViewModel.swift in Sources */,
+				D41F93492723038F00E9F2E7 /* RekeyToLedgerInstructionsViewModel.swift in Sources */,
 				2BE176642902F56B008E95D9 /* WCConnectionAccountListDataSource.swift in Sources */,
 				D4999DF828916DD100C7E05C /* OptInAssetViewModel.swift in Sources */,
 				D46432D428B6135500BF4EC2 /* OptOutAssetListItemViewTheme.swift in Sources */,
@@ -25665,7 +25665,7 @@
 				D48FDFAF27CE327700C39FC7 /* TitleViewTheme.swift in Sources */,
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6BFE27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
-				2B612E0529AF82970068D902 /* RekeyInstructionsViewModel.swift in Sources */,
+				2B612E0529AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
 				D47C4AA92791B5B90012D7A6 /* ListErrorViewModel.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */,
@@ -25951,7 +25951,7 @@
 				D44265CC2774C1F10094E2CA /* PendingTransactionViewTheme.swift in Sources */,
 				D4DC26B728B3A3860068152E /* ASAAboutScreenShowOnSecondaryListItem.swift in Sources */,
 				17A7666C290934B800A8746C /* DiscoverDappDetailNavigationView.swift in Sources */,
-				2B612E0929AF839D0068D902 /* SoftRekeyInstructionsViewModel.swift in Sources */,
+				2B612E0929AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */,
 				955B617D27848454005A5C7E /* BottomOverlayTheme.swift in Sources */,
 				954DFF2B2794607A0066FFF6 /* WCUnsignedRequestViewTheme.swift in Sources */,
 				2B99D47A28F55C9000323C11 /* LoadingScreenViewModel.swift in Sources */,

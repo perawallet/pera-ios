@@ -742,8 +742,8 @@ class Router:
             viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
-        case let .rekeyInstruction(account, rekeyType, eventHandler):
-            let aViewController = RekeyInstructionsViewController(account: account, rekeyType: rekeyType, configuration: configuration)
+        case let .rekeyInstruction(viewModel, eventHandler):
+            let aViewController = RekeyInstructionsViewController(viewModel: viewModel, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):

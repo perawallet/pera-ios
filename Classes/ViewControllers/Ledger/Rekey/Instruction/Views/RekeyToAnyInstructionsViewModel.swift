@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-protocol RekeyInstructionsViewModel {
+protocol RekeyToAnyInstructionsViewModel {
     var subtitle: String? { get }
     var firstInstructionViewTitle: EditText? { get }
     var secondInstructionViewTitle: EditText? { get }
