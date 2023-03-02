@@ -792,12 +792,12 @@ extension CollectibleDetailViewController {
 
             switch transactionType {
             case .assetAddition:
-                monitor.finishMonitoringOptInUpdates(
+                monitor.cancelMonitoringOptInUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
             case .assetRemoval:
-                monitor.finishMonitoringOptOutUpdates(
+                monitor.cancelMonitoringOptOutUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
@@ -825,12 +825,12 @@ extension CollectibleDetailViewController {
 
             switch transactionType {
             case .assetAddition:
-                monitor.finishMonitoringOptInUpdates(
+                monitor.cancelMonitoringOptInUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
             case .assetRemoval:
-                monitor.finishMonitoringOptOutUpdates(
+                monitor.cancelMonitoringOptOutUpdates(
                     forAssetID: asset.id,
                     for: account
                 )
@@ -929,6 +929,11 @@ extension CollectibleDetailViewController {
                     )
                 ),
                 by: .presentWithoutNavigationController
+            )
+        case .optOutFromCreator:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "asset-creator-opt-out-error-message".localized
             )
         default:
             break

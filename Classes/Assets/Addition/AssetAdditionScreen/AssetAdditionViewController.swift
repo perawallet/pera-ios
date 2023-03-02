@@ -90,39 +90,20 @@ final class AssetAdditionViewController:
             }
 
             switch event {
-            case .didUpdate(let snapshot):
-                if #available(iOS 15, *) {
-                    self.dataSource.applySnapshotUsingReloadData(snapshot) {
-                        [weak self] in
-                        guard let self = self else { return }
-
-                        self.assetListView.collectionView.scrollToTop(animated: true)
-                    }
-                } else {
-                    self.dataSource.apply(
-                        snapshot,
-                        animatingDifferences: self.isViewAppeared
-                    ) { [weak self] in
-                        guard let self = self else { return }
-
-                        self.assetListView.collectionView.scrollToTop(animated: true)
-                    }
+            case .didUpdateAccount:
+                self.configureAccessoryOfVisibleCells()
+            case .didUpdateAssets(let snapshot):
+                self.dataSource.reload(snapshot) {
+                    [weak self] in
+                    guard let self = self else { return }
+                    
+                    self.assetListView.collectionView.scrollToTop(animated: true)
                 }
-            case .didUpdateNext(let snapshot):
+            case .didUpdateNextAssets(let snapshot):
                 self.dataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
                 )
-            case .didOptInAssets(let items):
-                for item in items {
-                    if let indexPath = self.dataSource.indexPath(for: .asset(item)),
-                       let cell = self.assetListView.collectionView.cellForItem(at: indexPath) {
-                        self.configureAccessory(
-                            cell as? OptInAssetListItemCell,
-                            for: item
-                        )
-                    }
-                }
             }
         }
 
@@ -408,6 +389,22 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
+    private func configureAccessoryOfVisibleCells() {
+        let listView = assetListView.collectionView
+
+        listView.indexPathsForVisibleItems.forEach {
+            indexPath in
+            guard let listItem = dataSource.itemIdentifier(for: indexPath) else { return }
+            guard case let AssetListViewItem.asset(item) = listItem else { return }
+
+            let cell = listView.cellForItem(at: indexPath) as? OptInAssetListItemCell
+            configureAccessory(
+                cell,
+                for: item
+            )
+        }
+    }
+
     private func configureAccessory(
         _ cell: OptInAssetListItemCell?,
         for item: OptInAssetListItem
@@ -519,7 +516,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -543,7 +540,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )

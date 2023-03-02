@@ -78,8 +78,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         self.theme = theme
 
         super.init(configuration: configuration)
-
-        self.swapAssetFlowCoordinator?.add(self)
     }
 
     deinit {
@@ -106,6 +104,18 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         }
 
         dataController.load()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        swapAssetFlowCoordinator?.add(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func setListeners() {
@@ -311,7 +321,7 @@ extension AccountSelectionListScreen {
         if let assetID = getAssetID(from: transactionController),
            let selectedAccount {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: selectedAccount
             )
@@ -337,7 +347,7 @@ extension AccountSelectionListScreen {
         if let assetID = getAssetID(from: transactionController),
            let selectedAccount {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: selectedAccount
             )
