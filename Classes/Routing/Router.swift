@@ -744,11 +744,11 @@ class Router:
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
-        case let .rekeyConfirmation(account, ledgerDetail, ledgerAddress):
+        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
                 ledger: ledgerDetail,
-                ledgerAddress: ledgerAddress,
+                newAuthAddress: newAuthAddress,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):
@@ -777,8 +777,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -1562,8 +1561,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1573,6 +1570,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
@@ -1875,7 +1873,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -1898,7 +1896,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )

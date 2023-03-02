@@ -151,6 +151,7 @@ enum TransactionAction: Equatable {
     case receive
     case buyAlgo
     case optIn(asset: AssetID)
+    case softRekey
 }
 
 protocol SelectAccountViewControllerDelegate: AnyObject {
