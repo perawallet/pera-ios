@@ -172,17 +172,40 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 
 extension RekeyConfirmationViewController {
     private func saveRekeyedAccountDetails() {
-        if let localAccount = session?.accountInformation(from: account.address),
-           let ledgerDetail = ledger {
-            localAccount.type = .rekeyed
-            account.type = .rekeyed
-            localAccount.addRekeyDetail(
-                ledgerDetail,
-                for: newAuthAddress
-            )
-
-            session?.authenticatedUser?.updateAccount(localAccount)
+        guard var localAccount = session?.accountInformation(from: account.address),
+              let ledgerDetail = ledger else {
+            return
         }
+        
+        updateAccountTypeAndRekeyDetailsIfNeeded(
+            &localAccount,
+            with: ledgerDetail
+        )
+        
+        saveAccount(localAccount)
+    }
+    
+    private func updateAccountTypeAndRekeyDetailsIfNeeded(
+        _ localAccount: inout AccountInformation,
+        with ledgerDetail: LedgerDetail
+    ) {
+        if account.isSameAccount(with: newAuthAddress) {
+            localAccount.type = .ledger
+            account.type = .ledger
+            return
+        }
+        
+        localAccount.type = .rekeyed
+        account.type = .rekeyed
+        
+        localAccount.addRekeyDetail(
+            ledgerDetail,
+            for: newAuthAddress
+        )
+    }
+    
+    private func saveAccount(_ localAccount: AccountInformation) {
+        session?.authenticatedUser?.updateAccount(localAccount)
     }
 
     private func openRekeyConfirmationAlert() {
