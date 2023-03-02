@@ -355,10 +355,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openSelectAccountForRekeyingToAStandardAccount()
+        openSelectAccountForRekeyingToStandardAccount()
     }
     
-    private func openSelectAccountForRekeyingToAStandardAccount() {
+    private func openSelectAccountForRekeyingToStandardAccount() {
         let draft = SelectAccountDraft(
             transactionAction: .rekeyToStandardAccount,
             requiresAssetSelection: false
