@@ -3990,8 +3990,6 @@
 		D411B36F26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */; };
 		D411B37426EA1043004FF980 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
 		D411B37626EA1043004FF980 /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37326EA1043004FF980 /* AccountListItemView.swift */; };
-		D411B37826EA1070004FF980 /* AccountListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37726EA1070004FF980 /* AccountListItemViewModel.swift */; };
-		D411B37926EA1070004FF980 /* AccountListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37726EA1070004FF980 /* AccountListItemViewModel.swift */; };
 		D411B37C26EA126D004FF980 /* AccountListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37B26EA126D004FF980 /* AccountListItemViewTheme.swift */; };
 		D411B37D26EA126D004FF980 /* AccountListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37B26EA126D004FF980 /* AccountListItemViewTheme.swift */; };
 		D411B37E26EA126D004FF980 /* AccountListItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37B26EA126D004FF980 /* AccountListItemViewTheme.swift */; };
@@ -6060,7 +6058,7 @@
 		F06FF4DE27E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
 		F06FF4DF27E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
 		F06FF4E027E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
-		F073ED1A299464020076ECFD /* AccountListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B37726EA1070004FF980 /* AccountListItemViewModel.swift */; };
+		F073ED1A299464020076ECFD /* (null) in Sources */ = {isa = PBXBuildFile; };
 		F0772B54275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B55275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B56275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
@@ -20838,7 +20836,7 @@
 				17D0FA1F28EC28DE0061B55D /* ExportAccountsResultScreenTheme.swift in Sources */,
 				2BF65834290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift in Sources */,
 				F07CD2FD276A1E39006665FE /* AccountCollection.swift in Sources */,
-				F073ED1A299464020076ECFD /* AccountListItemViewModel.swift in Sources */,
+				F073ED1A299464020076ECFD /* (null) in Sources */,
 				2BB64BF12404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
 				D4C601DE2843813100CDF6CB /* SortAccountListLocalDataController.swift in Sources */,
 				17BD4E7A2292F1260003E49A /* Session.swift in Sources */,
@@ -22406,7 +22404,6 @@
 				17CADC76285312FB001D19A8 /* AccountQuickActionsCell.swift in Sources */,
 				D4588AD4294293ED0012C12C /* ReceiverAccountSelectionListDataSource.swift in Sources */,
 				D472B324271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
-				D4BAFA8F27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift in Sources */,
 				2B7CAD6129ACF01400A507EF /* RekeyToStandardAccountListItemButtonViewModel.swift in Sources */,
 				D49D77E42789FF42001FD5F6 /* FloatingActionItemButton.swift in Sources */,
 				2B69823B278C6D5F008EC669 /* TransactionsDataController.swift in Sources */,
@@ -24920,7 +24917,6 @@
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				D4CC28C52875A4280082E038 /* InnerTransactionListLocalDataController.swift in Sources */,
 				959647B4277CA60A00C89163 /* SendTransactionPreviewScreen+Theme.swift in Sources */,
-				95D11CF82770A3ED001B2C37 /* SelectAccountView.swift in Sources */,
 				2B7CAD6029ACF01400A507EF /* RekeyToStandardAccountListItemButtonViewModel.swift in Sources */,
 				D4A9954F290C25B900E2D105 /* TitledToggleLoadingViewTheme.swift in Sources */,
 				2B69AB3228BFCF4E00A8D65D /* PeraSwapFeeDraft.swift in Sources */,
@@ -26196,7 +26192,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -26224,7 +26220,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -26252,7 +26248,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -26282,7 +26278,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26311,7 +26307,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26340,7 +26336,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26492,7 +26488,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26521,7 +26517,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -26677,7 +26673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.7.1;
+				MARKETING_VERSION = 5.7.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
