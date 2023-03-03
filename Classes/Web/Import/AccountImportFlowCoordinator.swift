@@ -148,11 +148,6 @@ extension AccountImportFlowCoordinator {
 
             switch event {
             case let .didCompleteImport(importedAccounts, unimportedAccounts):
-                if importedAccounts.isEmpty {
-                    self.continueErrorScreen(error: .notImportableAccountFound, from: importAccountScreen)
-                    return
-                }
-
                 self.continueSuccessScreen(
                     importedAccounts: importedAccounts,
                     unimportedAccounts: unimportedAccounts,
