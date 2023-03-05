@@ -349,22 +349,23 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
                 self.loadingController?.stopLoading()
             }
         }
     }
 
-    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
-
-    }
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
-    }
+        ledgerApprovalViewController = nil
 
-    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         loadingController?.stopLoading()
     }
+
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
@@ -386,6 +387,21 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
                 title: "title-error".localized,
                 message: "ledger-account-fetct-error".localized
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+
+            ledgerApprovalViewController?.dismissScreen()
+            ledgerApprovalViewController = nil
+
+            loadingController?.stopLoading()
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,

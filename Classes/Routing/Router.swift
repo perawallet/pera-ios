@@ -1868,16 +1868,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -1891,16 +1884,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -1996,6 +1982,10 @@ extension Router {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
                 self.appConfiguration.loadingController.stopLoading()
             }
         }
@@ -2005,6 +1995,20 @@ extension Router {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
+        appConfiguration.loadingController.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        appConfiguration.loadingController.stopLoading()
     }
 
     func transactionController(
@@ -2019,4 +2023,27 @@ extension Router {
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController),
+           let account = getAccount(from: transactionController) {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func getAccount(
+        from transactionController: TransactionController
+    ) -> Account? {
+        return transactionController.assetTransactionDraft?.from
+    }
 }

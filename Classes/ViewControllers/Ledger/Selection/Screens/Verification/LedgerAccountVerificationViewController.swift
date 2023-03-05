@@ -128,6 +128,7 @@ extension LedgerAccountVerificationViewController {
         currentVerificationAccount = account
         setVerificationLedgerDetail(for: account)
         ledgerAccountVerificationOperation.delegate = self
+        ledgerAccountVerificationOperation.startScan()
     }
 
     private func setAddButtonHidden(_ isHidden: Bool) {
@@ -250,6 +251,16 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
             return
         case .cancelled:
             break
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,

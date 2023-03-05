@@ -26,8 +26,6 @@ final class ReceiveCollectibleAssetListViewController:
     TransactionSignChecking {
     var notificationObservations: [NSObjectProtocol] = []
 
-    weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
-
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = ReceiveCollectibleAssetListLayout.build()
         let collectionView =
@@ -44,6 +42,7 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var selectedAccountPreviewView = SelectedAccountPreviewView()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
@@ -111,12 +110,15 @@ final class ReceiveCollectibleAssetListViewController:
         restartLoadingOfVisibleCellsIfNeeded()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
         transactionControllers.forEach { controller in
             controller.stopBLEScan()
             controller.stopTimer()
+            cancelMonitoringOptInUpdates(for: controller)
+            restoreCellState(for: controller)
+            clearTransactionCache(controller)
         }
     }
 
@@ -148,8 +150,17 @@ final class ReceiveCollectibleAssetListViewController:
             self.openQRGenerator()
         }
 
-        observeWhenKeyboardWillShow(using: didReceive(keyboardWillShow:))
-        observeWhenKeyboardWillHide(using: didReceive(keyboardWillHide:))
+        observeWhenKeyboardWillShow {
+            [weak self] notification in
+            guard let self else { return }
+            self.didReceive(keyboardWillShow: notification)
+        }
+
+        observeWhenKeyboardWillHide {
+            [weak self] notification in
+            guard let self  else { return }
+            self.didReceive(keyboardWillHide: notification)
+        }
     }
 
     override func linkInteractors() {
@@ -518,7 +529,7 @@ extension ReceiveCollectibleAssetListViewController {
             let asset = item.model
             let draft = OptInAssetDraft(account: account, asset: asset)
             let screen = Screen.optInAsset(draft: draft) {
-                [weak self] event in
+                [weak self, weak cell] event in
                 guard let self = self else { return }
 
                 switch event {
@@ -569,15 +580,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
+        cancelMonitoringOptInUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -593,15 +596,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
+        cancelMonitoringOptInUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -620,11 +615,6 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didAddCollectible,
             object: self
-        )
-
-        delegate?.receiveCollectibleAssetListViewController(
-            self,
-            didCompleteTransaction: dataController.account
         )
 
         clearTransactionCache(transactionController)
@@ -657,9 +647,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -694,6 +682,11 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+                self.restoreCellState(for: transactionController)
+                self.clearTransactionCache(transactionController)
             }
         }
     }
@@ -701,12 +694,28 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController?.dismiss(animated: true)
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
     }
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+    }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
 }
 
 extension ReceiveCollectibleAssetListViewController {
@@ -824,11 +833,4 @@ extension ReceiveCollectibleAssetListViewController {
 
         updateLayoutWhenKeyboardHeightDidChange(isShowing: false)
     }
-}
-
-protocol ReceiveCollectibleAssetListViewControllerDelegate: AnyObject {
-    func receiveCollectibleAssetListViewController(
-        _ controller: ReceiveCollectibleAssetListViewController,
-        didCompleteTransaction account: Account
-    )
 }

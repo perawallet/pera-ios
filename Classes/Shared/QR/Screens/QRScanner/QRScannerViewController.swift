@@ -37,6 +37,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     var notificationObservations: [NSObjectProtocol] = []
 
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToWCConnectionError = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
         [weak self] in
@@ -505,9 +506,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 
     private func openWCConnectionError() {
-        let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-        bottomTransition.perform(
+        transitionToWCConnectionError.perform(
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-red".uiImage,
