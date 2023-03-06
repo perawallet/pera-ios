@@ -28,15 +28,14 @@ final class SendCollectibleViewController:
     KeyboardControllerDataSource {
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
-    private lazy var bottomTransition = BottomSheetTransition(
+    private lazy var transitionToTransferFailedWithRetryWarning = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
     )
-    private lazy var approveModalTransition = BottomSheetTransition(
-        presentingViewController: approveCollectibleTransactionViewController!,
+    private lazy var transitionToApproveTransaction = BottomSheetTransition(
+        presentingViewController: self,
         interactable: false
     )
-
     private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
@@ -45,6 +44,9 @@ final class SendCollectibleViewController:
         presentingViewController: self,
         interactable: false
     )
+
+    private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
+    private var transitionToTransferFailedWarning: BottomSheetTransition?
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
 
@@ -78,6 +80,8 @@ final class SendCollectibleViewController:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
+    private var askReceiverToOptInViewController: BottomWarningViewController?
+    private var optInInformationScreen: UISheetActionScreen?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
 
@@ -325,13 +329,15 @@ extension SendCollectibleViewController {
                 word: "collectible-recipient-opt-in-description-marked".localized,
                 handler: {
                     [weak self] in
-                    guard let self = self else {
-                        return
-                    }
+                    guard let self else { return }
 
-                    self.dismiss(animated: true) {
+                    self.askReceiverToOptInViewController?.dismiss(animated: true) {
                         [weak self] in
-                        self?.openOptInInformation()
+                        guard let self else { return }
+
+                        self.askReceiverToOptInViewController = nil
+
+                        self.openOptInInformation()
                     }
                 }
             )
@@ -353,12 +359,12 @@ extension SendCollectibleViewController {
             }
         )
 
-        transitionToAskReceiverToOptIn.perform(
+        askReceiverToOptInViewController = transitionToAskReceiverToOptIn.perform(
             .bottomWarning(
                 configurator: configurator
             ),
             by: .presentWithoutNavigationController
-        )
+        ) as? BottomWarningViewController
     }
 
     private func cancelOngoingFetchAccountsEnpoint() {
@@ -432,7 +438,7 @@ extension SendCollectibleViewController {
     }
 
     private func openApproveTransaction() {
-        approveCollectibleTransactionViewController = bottomTransition.perform(
+        approveCollectibleTransactionViewController = transitionToApproveTransaction.perform(
             .approveCollectibleTransaction(
                 draft: draft
             ),
@@ -450,7 +456,12 @@ extension SendCollectibleViewController {
                     isOptingOut: true
                 )
             case .approvedSend:
+                self.isRecreatingTransaction = false
                 self.transactionController.uploadTransaction()
+            case .cancelledSend:
+                self.isRecreatingTransaction = false
+                self.approveCollectibleTransactionViewController?.dismiss(animated: true)
+                self.approveCollectibleTransactionViewController = nil
             }
         }
     }
@@ -484,6 +495,8 @@ extension SendCollectibleViewController: TransactionSignChecking {
             return
         }
 
+        sendCollectibleActionView.startLoading()
+
         let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
 
         let transactionDraft = AssetTransactionSendDraft(
@@ -514,15 +527,17 @@ extension SendCollectibleViewController: TransactionSignChecking {
         let closeAction = UISheetAction(
             title: "title-close".localized,
             style: .cancel
-        ) { [unowned self] in
-            self.dismiss(animated: true)
+        ) { [weak self] in
+            guard let self else { return }
+            self.optInInformationScreen?.dismiss(animated: true)
+            self.optInInformationScreen = nil
         }
         uiSheet.addAction(closeAction)
 
-        transitionToOptInInformation.perform(
+        optInInformationScreen = transitionToOptInInformation.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
-        )
+        ) as? UISheetActionScreen
     }
 
     private func sendOptInRequestToReceiver() {
@@ -556,7 +571,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        loadingController?.stopLoading()
+        sendCollectibleActionView.stopLoading()
+
         self.draft.fee = draft?.fee
 
         if isRecreatingTransaction {
@@ -571,7 +587,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        sendCollectibleActionView.stopLoading()
+        approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {
         case .network:
@@ -611,13 +628,8 @@ extension SendCollectibleViewController {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let transition: BottomSheetTransition
-            if isRecreatingTransaction {
-                transition = approveModalTransition
-            } else {
-                transition = bottomTransition
-            }
-
+            let visibleScreen = findVisibleScreen()
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
             transition.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
@@ -629,6 +641,8 @@ extension SendCollectibleViewController {
                 ),
                 by: .presentWithoutNavigationController
             )
+
+            transitionToLedgerConnectionIssuesWarning = transition
         default:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
@@ -641,12 +655,11 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition: BottomSheetTransition
-        if isRecreatingTransaction {
-            transition = approveModalTransition
-        } else {
-            transition = bottomTransition
-        }
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
@@ -658,10 +671,14 @@ extension SendCollectibleViewController {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 
-                self.loadingController?.stopLoading()
+                self.sendCollectibleActionView.stopLoading()
+                self.approveCollectibleTransactionViewController?.stopLoading()
             }
         }
     }
@@ -671,8 +688,9 @@ extension SendCollectibleViewController {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
-        
-        loadingController?.stopLoading()
+
+        sendCollectibleActionView.stopLoading()
+        approveCollectibleTransactionViewController?.stopLoading()
     }
 
     func transactionController(
@@ -696,7 +714,11 @@ extension SendCollectibleViewController {
         approveCollectibleTransactionViewController?.stopLoading()
         approveCollectibleTransactionViewController?.dismissScreen {
             [weak self] in
-            self?.openSuccessScreen()
+            guard let self else { return }
+
+            self.approveCollectibleTransactionViewController = nil
+
+            self.openSuccessScreen()
         }
     }
 
@@ -704,7 +726,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        sendCollectibleActionView.stopLoading()
         approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {
@@ -737,12 +759,8 @@ extension SendCollectibleViewController {
         title: String,
         description: String
     ) {
-        let transition: BottomSheetTransition
-        if isRecreatingTransaction {
-            transition = approveModalTransition
-        } else {
-            transition = bottomTransition
-        }
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let configurator = BottomWarningViewConfigurator(
             title: title,
@@ -756,6 +774,8 @@ extension SendCollectibleViewController {
             ),
             by: .presentWithoutNavigationController
         )
+
+        transitionToTransferFailedWarning = transition
     }
 
     private func openTransferFailedWithRetry() {
@@ -767,9 +787,10 @@ extension SendCollectibleViewController {
             secondaryActionButtonTitle: "title-close".localized,
             primaryAction: {
                 [weak self] in
-                guard let self = self else {
-                    return
-                }
+                guard let self else { return }
+
+                self.approveCollectibleTransactionViewController?.startLoading()
+
                 self.transactionController.uploadTransaction()
             }
         )
@@ -777,7 +798,10 @@ extension SendCollectibleViewController {
         approveCollectibleTransactionViewController?.dismissScreen {
             [weak self] in
             guard let self = self else { return }
-            self.bottomTransition.perform(
+
+            self.approveCollectibleTransactionViewController = nil
+
+            self.transitionToTransferFailedWithRetryWarning.perform(
                 .bottomWarning(
                     configurator: configurator
                 ),
