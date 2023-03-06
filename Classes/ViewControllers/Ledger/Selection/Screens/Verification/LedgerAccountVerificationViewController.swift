@@ -31,6 +31,8 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+
     private var currentVerificationStatusView: LedgerAccountVerificationStatusView?
     private var currentVerificationAccount: Account?
     private var isVerificationCompleted = false {
@@ -267,9 +269,7 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
                 message: message
             )
         case .ledgerConnectionWarning:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
