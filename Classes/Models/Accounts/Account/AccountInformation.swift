@@ -122,4 +122,8 @@ enum AccountType: String, Codable {
     case watch = "watch"
     case ledger = "ledger"
     case rekeyed = "rekeyed"
+    
+    var isRekeyed: Bool {
+        return self == .rekeyed
+    }
 }

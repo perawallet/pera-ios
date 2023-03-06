@@ -177,31 +177,26 @@ extension RekeyConfirmationViewController {
             return
         }
         
-        updateAccountTypeAndRekeyDetailsIfNeeded(
-            &localAccount,
-            with: ledgerDetail
-        )
+        let accountType = getNewAccountTypeAfterRekeying()
+        localAccount.type = accountType
+        account.type = accountType
         
+        if accountType.isRekeyed {
+            localAccount.addRekeyDetail(
+                ledgerDetail,
+                for: newAuthAddress
+            )
+        }
+
         saveAccount(localAccount)
     }
     
-    private func updateAccountTypeAndRekeyDetailsIfNeeded(
-        _ localAccount: inout AccountInformation,
-        with ledgerDetail: LedgerDetail
-    ) {
+    private func getNewAccountTypeAfterRekeying() -> AccountType {
         if account.isSameAccount(with: newAuthAddress) {
-            localAccount.type = .ledger
-            account.type = .ledger
-            return
+            return .ledger
         }
         
-        localAccount.type = .rekeyed
-        account.type = .rekeyed
-        
-        localAccount.addRekeyDetail(
-            ledgerDetail,
-            for: newAuthAddress
-        )
+        return .rekeyed
     }
     
     private func saveAccount(_ localAccount: AccountInformation) {
