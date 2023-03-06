@@ -744,11 +744,11 @@ class Router:
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
-        case let .rekeyConfirmation(account, ledgerDetail, ledgerAddress):
+        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
                 ledger: ledgerDetail,
-                ledgerAddress: ledgerAddress,
+                newAuthAddress: newAuthAddress,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):
@@ -777,8 +777,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -960,16 +959,6 @@ class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = false
             viewController = resultScreen
-        case .transactionAccountSelect(let draft):
-            let dataController = AccountSelectScreenListAPIDataController(
-                configuration.sharedDataController,
-                api: configuration.api!
-            )
-            viewController = AccountSelectScreen(
-                draft: draft,
-                dataController: dataController,
-                configuration: configuration
-            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -1052,11 +1041,34 @@ class Router:
                 configuration: configuration
             )
             viewController = aViewController
-        case let .sendCollectibleAccountList(dataController):
-            viewController = SendCollectibleAccountListViewController(
+        case let .sendCollectibleReceiverAccountSelectionList(addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.navigationItem.title = "collectible-send-account-list-title".localized
+            viewController = aViewController
+        case let .sendAssetReceiverAccountSelectionList(asset, addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            let titleView = AssetDetailTitleView()
+            titleView.customize(AssetDetailTitleViewTheme())
+            titleView.bindData(AssetDetailTitleViewModel(asset))
+            aViewController.navigationItem.titleView = titleView
+
+            viewController = aViewController
         case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,
@@ -1576,8 +1588,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1587,6 +1597,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
@@ -1889,7 +1900,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -1912,7 +1923,7 @@ extension Router {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
