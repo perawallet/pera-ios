@@ -70,7 +70,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         }
         return WCTransactionSigner(api: api, analytics: analytics)
     }()
-
+    
     private var transactionParams: TransactionParams?
     private var signedTransactions: [Data?] = []
 
@@ -95,7 +95,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
+        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: transactionRequest.url.topic)
         self.dataSource = WCMainTransactionDataSource(
             sharedDataController: configuration.sharedDataController,
             transactions: transactions,
@@ -139,28 +139,13 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         dappMessageView.delegate = self
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        loadingController?.stopLoading()
-
-        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
-            return
-        }
-
-        wcTransactionSigner.disonnectFromLedger()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        presentInitialWarningAlertIfNeeded()
-    }
-
     override func viewDidLoad() {
         dataSource.load()
 
         super.viewDidLoad()
-
+        
+        logScreenWhenViewDidLoad()
+        
         guard dataSource.hasValidGroupTransaction else {
             /// <note>: This check prevents to show multiple reject sheet
             /// When data source load function called, it will call delegate function to let us know if group transaction is not validated
@@ -172,7 +157,20 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         getAssetDetailsIfNeeded()
         getTransactionParams()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentInitialWarningAlertIfNeeded()
+        logScreenWhenViewDidAppear()
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        loadingController?.stopLoading()
+        disconnectFromTheLedgerIfNeeeded()
+    }
+    
     override func bindData() {
         super.bindData()
 
@@ -351,22 +349,23 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
                 self.loadingController?.stopLoading()
             }
         }
     }
 
-    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
-
-    }
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
-    }
+        ledgerApprovalViewController = nil
 
-    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         loadingController?.stopLoading()
     }
+
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
@@ -388,6 +387,21 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
                 title: "title-error".localized,
                 message: "ledger-account-fetct-error".localized
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+
+            ledgerApprovalViewController?.dismissScreen()
+            ledgerApprovalViewController = nil
+
+            loadingController?.stopLoading()
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
@@ -453,12 +467,43 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         )
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
     }
+    
+    private func logScreenWhenViewDidLoad() {
+        analytics.record(
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
+        )
+        
+        analytics.track(
+            .wcTransactionRequestDidLoad(transactionRequest: transactionRequest)
+        )
+    }
+    
+    private func logScreenWhenViewDidAppear() {
+        if !isViewFirstAppeared {
+            return
+        }
+        
+        analytics.record(
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+        )
+        
+        analytics.track(
+            .wcTransactionRequestDidAppear(transactionRequest: transactionRequest)
+        )
+    }
+    
+    private func disconnectFromTheLedgerIfNeeeded() {
+        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
+            return
+        }
+
+        wcTransactionSigner.disonnectFromLedger()
+    }
 }
 
 extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
     func wcSingleTransactionRequestScreenDidReject(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
         rejectSigning()
-        dismissScreen()
 
     }
 
@@ -470,7 +515,6 @@ extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
 extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
     func wcUnsignedRequestScreenDidReject(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
         rejectSigning()
-        dismissScreen()
     }
 
     func wcUnsignedRequestScreenDidConfirm(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {

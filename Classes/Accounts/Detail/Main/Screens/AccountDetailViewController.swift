@@ -365,7 +365,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         openRekeyInstructions(viewModel: viewModel) {
             [weak self] in
             guard let self else { return }
-            self.openSelectAccountForSoftRekeying()
+            self.openSelectAccountForRekeyingToStandardAccount()
         }
     }
     
@@ -394,10 +394,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             )
         )
     }
-    
-    private func openSelectAccountForSoftRekeying() {
+
+    private func openSelectAccountForRekeyingToStandardAccount() {
         let draft = SelectAccountDraft(
-            transactionAction: .softRekey,
+            transactionAction: .rekeyToStandardAccount,
             requiresAssetSelection: false
         )
         
@@ -405,7 +405,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledSoftRekeying(for: account)
+            return self.isEnabledRekeyingToAStandardAccount(for: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -420,7 +420,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         )
     }
     
-    private func isEnabledSoftRekeying(for account: Account) -> Bool {
+    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
         return account.isRekeyed() ||
             account.isLedger() ||
             account.isSameAccount(with: accountHandle.value.address)
@@ -548,9 +548,13 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-        if isConfirmed {
-            presentPassphraseView()
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.presentPassphraseView()
+            }
         }
     }
 }
@@ -677,7 +681,7 @@ extension AccountDetailViewController {
         for draft: SelectAccountDraft
     ) {
         switch draft.transactionAction {
-        case .softRekey:
+        case .rekeyToStandardAccount:
             selectAccountViewController.dismissScreen {
                 [weak self] in
                 guard let self else { return }
