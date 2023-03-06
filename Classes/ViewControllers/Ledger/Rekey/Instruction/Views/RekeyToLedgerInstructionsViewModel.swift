@@ -17,7 +17,7 @@
 
 import MacaroonUIKit
 
-final class RekeyToLedgerInstructionsViewModel: RekeyToAnyInstructionsViewModel {
+final class RekeyToLedgerInstructionsViewModel: RekeyToAnyAccountInstructionsViewModel {
     private(set) var subtitle: String?
     private(set) var firstInstructionViewTitle: EditText?
     private(set) var secondInstructionViewTitle: EditText?

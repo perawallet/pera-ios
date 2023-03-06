@@ -89,7 +89,7 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(
-        viewModel: RekeyToAnyInstructionsViewModel,
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
         eventHandler: RekeyInstructionsViewController.EventHandler
     )
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)

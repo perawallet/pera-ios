@@ -142,7 +142,7 @@ extension RekeyInstructionsView {
 }
 
 extension RekeyInstructionsView: ViewModelBindable {
-    func bindData(_ viewModel: RekeyToAnyInstructionsViewModel?) {
+    func bindData(_ viewModel: RekeyToAnyAccountInstructionsViewModel?) {
         subtitleLabel.text = viewModel?.subtitle
         firstInstructionView.bindTitle(viewModel?.firstInstructionViewTitle)
         secondInstructionView.bindTitle(viewModel?.secondInstructionViewTitle)
@@ -150,7 +150,6 @@ extension RekeyInstructionsView: ViewModelBindable {
         
         if let fourtItem = viewModel?.fourthInstructionViewTitle {
             fourthInstructionView.bindTitle(fourtItem)
-            return
         } else {
             fourthInstructionView.removeFromSuperview()
         }

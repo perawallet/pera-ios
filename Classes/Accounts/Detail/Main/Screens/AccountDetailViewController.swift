@@ -344,30 +344,41 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        openRekeyInstructions(with: RekeyToLedgerInstructionsViewModel(accountHandle.value.requiresLedgerConnection()))
+        let viewModel = RekeyToLedgerInstructionsViewModel(accountHandle.value.requiresLedgerConnection())
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
+
+            self.open(
+                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+        }
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openRekeyInstructions(with: RekeyToStandardAccountInstructionsViewModel())
+        let viewModel = RekeyToStandardAccountInstructionsViewModel()
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
+            self.openSelectAccountForSoftRekeying()
+        }
     }
     
-    private func openRekeyInstructions(with viewModel: RekeyToAnyInstructionsViewModel) {
+    private func openRekeyInstructions(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        rekeyHandler: @escaping () -> Void
+    ) {
         let eventHandler: RekeyInstructionsViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            
+            event in
+
             switch event {
-            case .performRekeyToLedger:
-                self.open(
-                    .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.accountHandle.value))),
-                    by: .customPresent(
-                        presentationStyle: .fullScreen,
-                        transitionStyle: nil,
-                        transitioningDelegate: nil
-                    )
-                )
-            case .performRekeyToStandardAccount:
-                self.openSelectAccountForSoftRekeying()
+            case .performRekey:
+                rekeyHandler()
             }
         }
         

@@ -1634,9 +1634,9 @@
 		2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAA2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
 		2B5F6FAB2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */; };
-		2B612E0529AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
-		2B612E0629AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
-		2B612E0729AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */; };
+		2B612E0529AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
+		2B612E0629AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
+		2B612E0729AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */; };
 		2B612E0929AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
 		2B612E0A29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
 		2B612E0B29AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */; };
@@ -7000,7 +7000,7 @@
 		2B5F6FA02768EC8600C9B780 /* SingleGrayTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderView.swift; sourceTree = "<group>"; };
 		2B5F6FA42768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewTheme.swift; sourceTree = "<group>"; };
 		2B5F6FA82768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleGrayTitleHeaderViewModel.swift; sourceTree = "<group>"; };
-		2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToAnyInstructionsViewModel.swift; sourceTree = "<group>"; };
+		2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToAnyAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
 		2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToStandardAccountInstructionsViewModel.swift; sourceTree = "<group>"; };
 		2B648614276A04EC009E29D0 /* SettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B64861C276A1459009E29D0 /* DeveloperSettingsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsViewTheme.swift; sourceTree = "<group>"; };
@@ -13592,7 +13592,7 @@
 				2B612E0829AF839D0068D902 /* RekeyToStandardAccountInstructionsViewModel.swift */,
 				2B38C92F24D436F20059AB02 /* InstructionItemView.swift */,
 				D41F934C272309F000E9F2E7 /* InstructionItemViewTheme.swift */,
-				2B612E0429AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift */,
+				2B612E0429AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -21315,7 +21315,7 @@
 				D40D5EB3287725DE0051A92B /* AppCallTransactionDetailView.swift in Sources */,
 				2BD36DFE2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
 				2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
-				2B612E0729AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
+				2B612E0729AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */,
 				D40E8812294B9CA300B46054 /* CollectibleDetailNameViewModel.swift in Sources */,
 				D4DC269928B145160068152E /* TransactionOptionsScreenTheme.swift in Sources */,
 				2B38C92D24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
@@ -23779,7 +23779,7 @@
 				D4CEEC12280848A00010F978 /* CollectibleDetailCollectionViewFlowLayout.swift in Sources */,
 				2BE09A5228F60A070059EEF0 /* SwapSummaryReceivedItemViewModel.swift in Sources */,
 				D4A70B032878647B00FB52B0 /* AppCallTransactionDetailViewTheme.swift in Sources */,
-				2B612E0629AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
+				2B612E0629AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */,
 				95631BBE2760C0A5002FB831 /* TransactionShadowButtonTheme.swift in Sources */,
 				D4CF683E28C9286C0007A727 /* SwapAccountSelectionListHeaderTheme.swift in Sources */,
 				D45DFBC2273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */,
@@ -25665,7 +25665,7 @@
 				D48FDFAF27CE327700C39FC7 /* TitleViewTheme.swift in Sources */,
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				95BB6BFE27A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
-				2B612E0529AF82970068D902 /* RekeyToAnyInstructionsViewModel.swift in Sources */,
+				2B612E0529AF82970068D902 /* RekeyToAnyAccountInstructionsViewModel.swift in Sources */,
 				D47C4AA92791B5B90012D7A6 /* ListErrorViewModel.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2B5F6FA92768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */,

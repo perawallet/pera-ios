@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyInstructionsViewModel.swift
+//   RekeyToAnyAccountInstructionsViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol RekeyToAnyInstructionsViewModel {
+protocol RekeyToAnyAccountInstructionsViewModel {
     var subtitle: String? { get }
     var firstInstructionViewTitle: EditText? { get }
     var secondInstructionViewTitle: EditText? { get }

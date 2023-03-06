@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SoftRekeyInstructionsViewModel.swift
+//   RekeyToStandardAccountInstructionsViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-final class RekeyToStandardAccountInstructionsViewModel: RekeyToAnyInstructionsViewModel {
+final class RekeyToStandardAccountInstructionsViewModel: RekeyToAnyAccountInstructionsViewModel {
     private(set) var subtitle: String?
     private(set) var firstInstructionViewTitle: EditText?
     private(set) var secondInstructionViewTitle: EditText?
