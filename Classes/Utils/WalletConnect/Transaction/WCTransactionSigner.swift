@@ -60,7 +60,7 @@ class WCTransactionSigner {
 extension WCTransactionSigner {
     private func signLedgerTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
         guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
-            delegate?.wcTransactionSigner(self, didFailedWith: .unparsedTransactionDetail)
+            delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
             return
         }
 
@@ -108,7 +108,7 @@ extension WCTransactionSigner {
         signer.delegate = self
 
         guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
-            delegate?.wcTransactionSigner(self, didFailedWith: .unparsedTransactionDetail)
+            delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
             return
         }
 
@@ -166,7 +166,7 @@ extension WCTransactionSigner {
     enum WCSignError: Error {
         case ledger(error: LedgerOperationError)
         case api(error: HIPTransactionError)
-        case unparsedTransactionDetail
+        case missingUnparsedTransactionDetail
     }
 }
 

@@ -338,7 +338,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             rejectSigning(reason: .rejected(.unsignable))
         case let .ledger(ledgerError):
             showLedgerError(ledgerError)
-        case .unparsedTransactionDetail:
+        case .missingUnparsedTransactionDetail:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "title-generic-error".localized
