@@ -39,8 +39,7 @@ final class ImportAccountScreen: BaseViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private let backupParameters: QRBackupParameters
