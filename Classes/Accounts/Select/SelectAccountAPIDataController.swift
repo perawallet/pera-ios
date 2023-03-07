@@ -158,8 +158,7 @@ extension SelectAccountAPIDataController {
 
             var snapshot = Snapshot()
             
-            if self.transactionAction == .softRekey,
-               accounts.isEmpty {
+            if accounts.isEmpty {
                 snapshot.appendSections([.empty])
                 snapshot.appendItems(
                     [.empty(.noContent(
@@ -167,7 +166,7 @@ extension SelectAccountAPIDataController {
                     )],
                     toSection: .empty
                 )
-            } else if !accounts.isEmpty {
+            } else {
                 snapshot.appendSections([.accounts])
                 snapshot.appendItems(
                     accountItems,

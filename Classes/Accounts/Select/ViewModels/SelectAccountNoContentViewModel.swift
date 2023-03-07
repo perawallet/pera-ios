@@ -33,53 +33,62 @@ struct SelectAccountNoContentViewModel:
 
 extension SelectAccountNoContentViewModel {
     private mutating func bindIcon(_ type: TransactionAction) {
-        switch type {
-        case .softRekey:
+        if type == .softRekey {
             self.icon = nil
-        default:
+        } else {
             self.icon = "img-accounts-empty"
         }
     }
     
     private mutating func bindTitle(_ type: TransactionAction) {
-        switch type {
-        case .softRekey:
-            self.title = .attributedString(
-                "account-select-soft-rekey-empty-title"
-                    .localized
-                    .bodyLargeMedium(
-                        alignment: .center
-                    )
-            )
-        default:
-            self.title = .attributedString(
-                "empty-accounts-title"
-                    .localized
-                    .bodyLargeMedium(
-                        alignment: .center
-                    )
-            )
+        let titleText: String
+        
+        if type == .softRekey {
+            titleText = "account-select-soft-rekey-empty-title"
+        } else {
+            titleText = "empty-accounts-title"
         }
+        
+        self.title = .attributedString(
+            titleText
+                .localized
+                .bodyLargeMedium(
+                    alignment: .center
+                )
+        )
     }
     
     private mutating func bindBody(_ type: TransactionAction) {
-        switch type {
-        case .softRekey:
-            self.body = .attributedString(
-                "account-select-soft-rekey-empty-detail"
-                    .localized
-                    .bodyRegular(
-                        alignment: .center
-                    )
-            )
-        default:
-            self.body = .attributedString(
-                "empty-accounts-detail"
-                    .localized
-                    .bodyRegular(
-                        alignment: .center
-                    )
-            )
+        let bodyText: String
+        
+        if type == .softRekey {
+            bodyText = "account-select-soft-rekey-empty-detail"
+        } else {
+            bodyText = "empty-accounts-detail"
         }
+        
+        self.body = .attributedString(
+            bodyText
+                .localized
+                .bodyRegular(
+                    alignment: .center
+                )
+        )
+    }
+}
+
+extension SelectAccountNoContentViewModel {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title?.string)
+        hasher.combine(body?.string)
+    }
+    
+    static func == (
+        lhs: SelectAccountNoContentViewModel,
+        rhs: SelectAccountNoContentViewModel
+    ) -> Bool {
+        return
+            lhs.title?.string == rhs.title?.string &&
+            lhs.body?.string == rhs.body?.string
     }
 }
