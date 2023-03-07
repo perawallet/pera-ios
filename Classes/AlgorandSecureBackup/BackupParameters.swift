@@ -27,6 +27,12 @@ final class BackupParameters: ALGAPIModel {
         accounts = []
     }
 
+    init(deviceID: String?, accounts: [AccountImportParameters]) {
+        self.deviceID = deviceID
+        self.providerName = "Pera Wallet"
+        self.accounts = accounts
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         deviceID = try container.decodeIfPresent(String.self, forKey: .deviceID)

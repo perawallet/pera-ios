@@ -45,7 +45,6 @@ extension AlgorandSecureBackupFlowCoordinator {
         presentingScreen.open(screen, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 
-    @discardableResult
     private func makeAccountSelectionScreen() -> AlgorandSecureBackupAccountListScreen {
         let dataController = AlgorandSecureBackupAccountListLocalDataController(
             sharedDataController: configuration.sharedDataController
@@ -59,7 +58,7 @@ extension AlgorandSecureBackupFlowCoordinator {
             guard let self else { return }
             switch event {
             case .performContinue(let accounts):
-                print(accounts)
+                self.openMnemonicsScreen(with: accounts, from: screen)
             }
         }
         return screen
@@ -86,6 +85,33 @@ extension AlgorandSecureBackupFlowCoordinator {
     private func openAccountSelection(from viewController: UIViewController) {
         let screen = makeAccountSelectionScreen()
         viewController.navigationController?.pushViewController(screen, animated: true)
+    }
+
+    private func openMnemonicsScreen(with accounts: [Account], from viewController: UIViewController) {
+        let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
+        screen.eventHandler = { [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .performBackup(let encryptedBackupData):
+                self.openSuccessScreen(with: encryptedBackupData, from: screen)
+            }
+        }
+        viewController.navigationController?.pushViewController(screen, animated: true)
+    }
+
+    private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
+        let successScreen: Screen = .algorandSecureBackupSuccess(encryptedData: data) { [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .performDone:
+                print("done")
+            case .performSave:
+                print("save")
+            }
+        }
+        viewController.open(successScreen, by: .push)
     }
 }
 

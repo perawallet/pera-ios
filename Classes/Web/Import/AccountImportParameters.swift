@@ -30,6 +30,13 @@ struct AccountImportParameters: ALGEntityModel {
         privateKey = nil
     }
 
+    init(address: String, name: String?, accountType: AccountType, privateKey: Data?) {
+        self.address = address
+        self.name = name
+        self.accountType = accountType
+        self.privateKey = privateKey
+    }
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {

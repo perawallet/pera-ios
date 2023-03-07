@@ -38,6 +38,7 @@ class Session: Storable {
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     private let announcementStateKey = "com.algorand.algorand.announcement.state"
     private let backupsKey = "com.algorand.algorand.secure.backups"
+    private let backupPrivateKey = "com.algorand.algorand.secure.backup.private.key"
     private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
     
     let algorandSDK = AlgorandSDK()
@@ -296,6 +297,16 @@ extension Session {
     func removePrivateData(for account: String) {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
+    }
+}
+
+extension Session {
+    func privateDataForBackup() -> Data? {
+        privateData(for: backupPrivateKey)
+    }
+
+    func saveBackupPrivateData(_ data: Data) {
+        savePrivate(data, for: backupPrivateKey)
     }
 }
 

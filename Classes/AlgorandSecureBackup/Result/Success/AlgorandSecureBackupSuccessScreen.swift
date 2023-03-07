@@ -21,6 +21,10 @@ import MacaroonUIKit
 final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     typealias EventHandler = (Event, AlgorandSecureBackupSuccessScreen) -> Void
 
+    override var hidesCloseBarButtonItem: Bool {
+        return true
+    }
+
     var eventHandler: EventHandler?
 
     private lazy var contextView = UIView()
@@ -29,10 +33,12 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var saveActionView = MacaroonUIKit.Button(theme.saveActionLayout)
     private lazy var doneActionView = MacaroonUIKit.Button()
 
-    private let theme: AlgorandSecureBackupSuccessScreenTheme
+    private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
 
-    init(theme: AlgorandSecureBackupSuccessScreenTheme = .init()) {
-        self.theme = theme
+    private let encryptedData: Data
+
+    init(encryptedData: Data) {
+        self.encryptedData = encryptedData
     }
 
     override func viewDidLoad() {
@@ -41,6 +47,28 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
         addUI()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+
+        let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            guard let self else { return }
+            self.eventHandler?(.performDone, self)
+        }
+
+        leftBarButtonItems = [closeButtonItem]
+    }
     override func addFooter() {
         super.addFooter()
 
@@ -154,7 +182,7 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func bindFileInfo() {
-        let viewModel = FileInfoViewModel()
+        let viewModel = FileInfoViewModel(data: self.encryptedData)
         fileInfoView.bindData(viewModel)
     }
 }
