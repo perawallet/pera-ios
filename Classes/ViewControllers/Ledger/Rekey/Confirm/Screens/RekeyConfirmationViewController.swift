@@ -92,7 +92,9 @@ extension RekeyConfirmationViewController:
         if !canSignTransaction(for: &account) {
             return
         }
-        
+
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
         let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
