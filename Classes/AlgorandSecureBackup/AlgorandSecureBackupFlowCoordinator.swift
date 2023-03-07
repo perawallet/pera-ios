@@ -95,6 +95,8 @@ extension AlgorandSecureBackupFlowCoordinator {
             switch event {
             case .performBackup(let encryptedBackupData):
                 self.openSuccessScreen(with: encryptedBackupData, from: screen)
+            case .performBackupError(let error):
+                break
             }
         }
         viewController.navigationController?.pushViewController(screen, animated: true)
