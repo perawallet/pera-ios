@@ -1304,8 +1304,8 @@
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nDo not proceed if you did not initiate this request.";
-"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web!\nDo not proceed if you did not initiate this request.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web!";
 "web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
 "web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
 "web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
@@ -1320,19 +1320,18 @@
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
 "web-export-result-title-singular" = "Account exported successfully!";
-"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
-"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+"web-export-result-body" = "You can now use these accounts on Pera Web.";
+"web-export-result-body-singular" = "You can now use this account on Pera Web.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
 
 // MARK: Web Import
-"web-import-instruction-navigation-title" = "Import from Pera Web Wallet";
 "web-import-instruction-start-button-title" = "Start";
-"web-import-instruction-title" = "Get your QR ready on Pera Web Wallet";
+"web-import-instruction-title" = "Get your QR ready on Pera Web";
 "web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
 "web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
 "web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
 "web-import-instruction-fourth-message" = "Tap Start to scan the QR";
-"web-import-qr-scanner-title" = "Scan QR code on Pera Web Wallet";
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
 "web-import-error-body" = "Your accounts could not be imported. Please try again later.";
 "web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
 
