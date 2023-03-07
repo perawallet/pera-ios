@@ -1325,14 +1325,13 @@
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
 
 // MARK: Web Import
-"web-import-instruction-navigation-title" = "Import from Pera Web Wallet";
 "web-import-instruction-start-button-title" = "Start";
-"web-import-instruction-title" = "Get your QR ready on Pera Web Wallet";
+"web-import-instruction-title" = "Get your QR ready on Pera Web";
 "web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
 "web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
 "web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
 "web-import-instruction-fourth-message" = "Tap Start to scan the QR";
-"web-import-qr-scanner-title" = "Scan QR code on Pera Web Wallet";
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
 "web-import-error-body" = "Your accounts could not be imported. Please try again later.";
 "web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
 
