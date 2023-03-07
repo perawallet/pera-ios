@@ -335,15 +335,14 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         loadingController?.stopLoading()
 
         switch error {
-        case .api:
+        case .api(let error):
+            displaySigningError(error)
+
             rejectSigning(reason: .rejected(.unsignable))
-        case let .ledger(ledgerError):
-            showLedgerError(ledgerError)
+        case .ledger(let error):
+            displayLedgerError(error)
         case .missingUnparsedTransactionDetail:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "title-generic-error".localized
-            )
+            displayGenericError()
         }
     }
 
@@ -386,7 +385,72 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
-    private func showLedgerError(_ ledgerError: LedgerOperationError) {
+    private func confirmTransaction() {
+        let containsFutureTransaction = transactions.contains {
+            guard let params = transactionParams else {
+                return false
+            }
+
+            return $0.isFutureTransaction(with: params)
+        }
+
+        if containsFutureTransaction {
+            presentSigningFutureTransactionAlert()
+            return
+        }
+
+        confirmSigning()
+    }
+
+    private func presentSigningFutureTransactionAlert() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "wallet-connect-transaction-request-signing-future-transaction-alert-title".localized,
+            description: .plain("wallet-connect-transaction-request-signing-future-transaction-alert-description".localized),
+            primaryActionButtonTitle: "title-accept".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                self?.confirmSigning()
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func presentInitialWarningAlertIfNeeded() {
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
+            return
+        }
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green-large".uiImage,
+            title: "wallet-connect-transaction-warning-initial-title".localized,
+            description: .plain("wallet-connect-transaction-warning-initial-description".localized),
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
+    }
+}
+
+extension WCMainTransactionScreen {
+    private func displaySigningError(_ error: HIPTransactionError) {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: error.debugDescription
+        )
+    }
+
+    private func displayLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:
             bannerController?.presentErrorBanner(
@@ -447,60 +511,11 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
-    private func confirmTransaction() {
-        let containsFutureTransaction = transactions.contains {
-            guard let params = transactionParams else {
-                return false
-            }
-
-            return $0.isFutureTransaction(with: params)
-        }
-
-        if containsFutureTransaction {
-            presentSigningFutureTransactionAlert()
-            return
-        }
-
-        confirmSigning()
-    }
-
-    private func presentSigningFutureTransactionAlert() {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "wallet-connect-transaction-request-signing-future-transaction-alert-title".localized,
-            description: .plain("wallet-connect-transaction-request-signing-future-transaction-alert-description".localized),
-            primaryActionButtonTitle: "title-accept".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
-            primaryAction: { [weak self] in
-                self?.confirmSigning()
-            }
+    private func displayGenericError() {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "title-generic-error".localized
         )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func presentInitialWarningAlertIfNeeded() {
-        let oneTimeDisplayStorage = OneTimeDisplayStorage()
-
-        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
-            return
-        }
-
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-green-large".uiImage,
-            title: "wallet-connect-transaction-warning-initial-title".localized,
-            description: .plain("wallet-connect-transaction-warning-initial-description".localized),
-            secondaryActionButtonTitle: "title-close".localized
-        )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
     }
 }
 

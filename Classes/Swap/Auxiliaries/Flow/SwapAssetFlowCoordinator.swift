@@ -641,7 +641,7 @@ extension SwapAssetFlowCoordinator {
     ) {
         bannerController.presentErrorBanner(
             title: "title-error".localized,
-            message: error.localizedDescription
+            message: error.debugDescription
         )
     }
 
