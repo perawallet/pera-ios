@@ -88,7 +88,10 @@ indirect enum Screen {
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
-    case rekeyInstruction(account: Account)
+    case rekeyInstruction(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        eventHandler: RekeyInstructionsViewController.EventHandler
+    )
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
