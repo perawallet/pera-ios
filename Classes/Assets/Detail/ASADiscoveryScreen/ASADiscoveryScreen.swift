@@ -63,6 +63,7 @@ final class ASADiscoveryScreen:
         presentingViewController: self,
         interactable: false
     )
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
     private var isDisplayStateInteractiveTransitionInProgress = false
@@ -979,30 +980,10 @@ extension ASADiscoveryScreen {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        if let account = dataController.account {
-            if let transactionType = transactionController.currentTransactionType {
-                let monitor = self.sharedDataController.blockchainUpdatesMonitor
-                let asset = dataController.asset
-
-                switch transactionType {
-                case .assetAddition:
-                    monitor.finishMonitoringOptInUpdates(
-                        forAssetID: asset.id,
-                        for: account
-                    )
-                case .assetRemoval:
-                    monitor.finishMonitoringOptOutUpdates(
-                        forAssetID: asset.id,
-                        for: account
-                    )
-                default:
-                    break
-                }
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
-
+        
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(transactionError)
@@ -1015,27 +996,7 @@ extension ASADiscoveryScreen {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        if let account = dataController.account {
-            if let transactionType = transactionController.currentTransactionType {
-                let monitor = self.sharedDataController.blockchainUpdatesMonitor
-                let asset = dataController.asset
-
-                switch transactionType {
-                case .assetAddition:
-                    monitor.finishMonitoringOptInUpdates(
-                        forAssetID: asset.id,
-                        for: account
-                    )
-                case .assetRemoval:
-                    monitor.finishMonitoringOptOutUpdates(
-                        forAssetID: asset.id,
-                        for: account
-                    )
-                default:
-                    break
-                }
-            }
-        }
+        cancelMonitoringOptInOutUpdates(for: transactionController)
 
         loadingController?.stopLoading()
 
@@ -1071,6 +1032,10 @@ extension ASADiscoveryScreen {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInOutUpdates(for: transactionController)
+
                 self.loadingController?.stopLoading()
             }
         }
@@ -1081,6 +1046,17 @@ extension ASADiscoveryScreen {
     ) {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInOutUpdates(for: transactionController)
+
+        loadingController?.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        loadingController?.stopLoading()
     }
 
     private func displayTransactionError(
@@ -1105,9 +1081,7 @@ extension ASADiscoveryScreen {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let warningTransition = BottomSheetTransition(presentingViewController: self)
-
-            warningTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -1118,8 +1092,36 @@ extension ASADiscoveryScreen {
                 ),
                 by: .presentWithoutNavigationController
             )
+        case .optOutFromCreator:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "asset-creator-opt-out-error-message".localized
+            )
         default:
             break
+        }
+    }
+
+    private func cancelMonitoringOptInOutUpdates(for transactionController: TransactionController) {
+        if let account = dataController.account,
+           let transactionType = transactionController.currentTransactionType {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            let assetID = dataController.asset.id
+
+            switch transactionType {
+            case .assetAddition:
+                monitor.cancelMonitoringOptInUpdates(
+                    forAssetID: assetID,
+                    for: account
+                )
+            case .assetRemoval:
+                monitor.cancelMonitoringOptOutUpdates(
+                    forAssetID: assetID,
+                    for: account
+                )
+            default:
+                break
+            }
         }
     }
 }

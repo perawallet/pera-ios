@@ -777,8 +777,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -960,16 +959,6 @@ class Router:
             let resultScreen = TransactionResultScreen(configuration: configuration)
             resultScreen.isModalInPresentation = false
             viewController = resultScreen
-        case .transactionAccountSelect(let draft):
-            let dataController = AccountSelectScreenListAPIDataController(
-                configuration.sharedDataController,
-                api: configuration.api!
-            )
-            viewController = AccountSelectScreen(
-                draft: draft,
-                dataController: dataController,
-                configuration: configuration
-            )
         case .sendTransactionPreview(let draft):
             viewController = SendTransactionPreviewScreen(
                 draft: draft,
@@ -1052,11 +1041,34 @@ class Router:
                 configuration: configuration
             )
             viewController = aViewController
-        case let .sendCollectibleAccountList(dataController):
-            viewController = SendCollectibleAccountListViewController(
+        case let .sendCollectibleReceiverAccountSelectionList(addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.navigationItem.title = "collectible-send-account-list-title".localized
+            viewController = aViewController
+        case let .sendAssetReceiverAccountSelectionList(asset, addressInputViewText):
+            let dataController = ReceiverAccountSelectionListAPIDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                api: appConfiguration.api,
+                addressInputViewText: addressInputViewText
+            )
+            let aViewController = ReceiverAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            let titleView = AssetDetailTitleView()
+            titleView.customize(AssetDetailTitleViewTheme())
+            titleView.bindData(AssetDetailTitleViewModel(asset))
+            aViewController.navigationItem.titleView = titleView
+
+            viewController = aViewController
         case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,
@@ -1549,8 +1561,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1560,6 +1570,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 
@@ -1857,16 +1868,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -1880,16 +1884,9 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        appConfiguration.loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        appConfiguration.loadingController.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -1985,6 +1982,10 @@ extension Router {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
                 self.appConfiguration.loadingController.stopLoading()
             }
         }
@@ -1994,6 +1995,20 @@ extension Router {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
+        appConfiguration.loadingController.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        appConfiguration.loadingController.stopLoading()
     }
 
     func transactionController(
@@ -2008,4 +2023,27 @@ extension Router {
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController),
+           let account = getAccount(from: transactionController) {
+            let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func getAccount(
+        from transactionController: TransactionController
+    ) -> Account? {
+        return transactionController.assetTransactionDraft?.from
+    }
 }

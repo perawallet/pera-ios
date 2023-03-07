@@ -397,10 +397,7 @@ extension OptionsViewController {
             }
 
             primaryOptions.append(.rekeyToLedger)
-            
-            if !account.isRekeyed() && !account.requiresLedgerConnection() {
-                primaryOptions.append(.rekeyToStandardAccount)
-            }
+            primaryOptions.append(.rekeyToStandardAccount)
 
             let secondaryOptions: [Option] = [
                 .renameAccount,

@@ -36,6 +36,7 @@ final class SendCollectibleViewController:
         presentingViewController: approveCollectibleTransactionViewController!,
         interactable: false
     )
+
     private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
@@ -107,8 +108,8 @@ final class SendCollectibleViewController:
         animateBottomSheetLayout()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
     }
@@ -313,7 +314,7 @@ extension SendCollectibleViewController {
     private func openAskReceiverToOptIn() {
         let asset = draft.collectibleAsset
         let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
-        let to = draft.toContact?.address ?? draft.toAccount?.address
+        let to = draft.toContact?.address ?? draft.toNameService?.name ?? draft.toAccount?.address
 
         let description = "collectible-recipient-opt-in-description".localized(title, to!)
 
@@ -371,14 +372,11 @@ extension SendCollectibleViewController {
         closeKeyboard()
 
         let screen = open(
-            .sendCollectibleAccountList(
-                dataController: SendCollectibleAccountListAPIDataController(
-                    sharedDataController,
-                    addressInputViewText: sendCollectibleActionView.addressInputViewText
-                )
+            .sendCollectibleReceiverAccountSelectionList(
+                addressInputViewText: sendCollectibleActionView.addressInputViewText
             ),
             by: .present
-        ) as? SendCollectibleAccountListViewController
+        ) as? ReceiverAccountSelectionListScreen
         screen?.eventHandler = {
             [weak self, weak screen] event in
             guard let self = self else { return }
@@ -389,13 +387,25 @@ extension SendCollectibleViewController {
 
             switch event {
             case .didSelectAccount(let account):
+                self.draft.resetReceiver()
+
                 self.sendCollectibleActionView.addressInputViewText = account.address
                 self.draft.toAccount = account
 
                 screen?.dismissScreen()
             case .didSelectContact(let contact):
+                self.draft.resetReceiver()
+
                 self.sendCollectibleActionView.addressInputViewText = contact.address
                 self.draft.toContact = contact
+
+                screen?.dismissScreen()
+            case .didSelectNameService(let nameService):
+                self.draft.resetReceiver()
+
+                self.sendCollectibleActionView.addressInputViewText = nameService.address
+                self.draft.toAccount = nameService.account.value
+                self.draft.toNameService = nameService
 
                 screen?.dismissScreen()
             }
@@ -481,12 +491,14 @@ extension SendCollectibleViewController: TransactionSignChecking {
             toAccount: draft.toAccount,
             amount: 1,
             assetIndex: draft.collectibleAsset.id,
-            assetCreator: creatorAddress
+            assetCreator: creatorAddress,
+            toContact: draft.toContact,
+            toNameService: draft.toNameService
         )
 
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
-        
+
         if fromAccount.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -514,18 +526,27 @@ extension SendCollectibleViewController: TransactionSignChecking {
     }
 
     private func sendOptInRequestToReceiver() {
-        let receiverAddress = sendCollectibleActionView.addressInputViewText
-
-        if let receiverAddress = receiverAddress {
+        if let receiverAddress = draft.receiverAddress {
             let draft = AssetSupportDraft(
                 sender: draft.fromAccount.address,
                 receiver: receiverAddress,
                 assetId: draft.collectibleAsset.id
             )
 
-            api?.sendAssetSupportRequest(
-                draft
-            )
+            api?.sendAssetSupportRequest(draft) {
+                [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .success:
+                    return
+                case let .failure(apiError, errorModel):
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: errorModel?.message() ?? apiError.description
+                    )
+                }
+            }
         }
     }
 }
@@ -638,6 +659,8 @@ extension SendCollectibleViewController {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
                 self.loadingController?.stopLoading()
             }
         }
@@ -647,11 +670,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
-    }
-    
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
+        ledgerApprovalViewController = nil
+        
         loadingController?.stopLoading()
     }
 
@@ -684,6 +704,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        loadingController?.stopLoading()
         approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {
@@ -907,7 +928,7 @@ extension SendCollectibleViewController {
     ) -> UIView {
         return contentView
     }
-    
+
     func bottomInsetWhenKeyboardDismissed(
         for keyboardController: KeyboardController
     ) -> CGFloat {

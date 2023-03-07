@@ -29,6 +29,7 @@ final class ManageAssetsViewController:
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private lazy var contextView = ManageAssetsView()
     
@@ -76,12 +77,15 @@ final class ManageAssetsViewController:
         restartLoadingOfVisibleCellsIfNeeded()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
         transactionControllers.forEach { controller in
             controller.stopBLEScan()
             controller.stopTimer()
+
+
+            cancelMonitoringOptOutUpdates(for: controller)
         }
     }
     
@@ -591,7 +595,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
             break
         }
 
-        finishMonitoringOptOutUpdates(for: transactionController)
+        cancelMonitoringOptOutUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
     }
@@ -621,9 +625,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -633,6 +635,11 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                     )
                 ),
                 by: .presentWithoutNavigationController
+            )
+        case .optOutFromCreator:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "asset-creator-opt-out-error-message".localized
             )
         default:
             break
@@ -656,7 +663,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
             )
         }
 
-        finishMonitoringOptOutUpdates(for: transactionController)
+        cancelMonitoringOptOutUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
     }
@@ -680,6 +687,11 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptOutUpdates(for: transactionController)
+                self.restoreCellState(for: transactionController)
+                self.clearTransactionCache(transactionController)
             }
         }
     }
@@ -688,6 +700,15 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptOutUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
@@ -696,11 +717,11 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 }
 
 extension ManageAssetsViewController {
-    private func finishMonitoringOptOutUpdates(for transactionController: TransactionController) {
+    private func cancelMonitoringOptOutUpdates(for transactionController: TransactionController) {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptOutUpdates(
+            monitor.cancelMonitoringOptOutUpdates(
                 forAssetID: assetID,
                 for: account
             )

@@ -40,6 +40,7 @@ final class ScanQRFlowCoordinator:
     private var assetConfirmationTransition: BottomSheetTransition?
     private var accountQRTransition: BottomSheetTransition?
     private var optInRequestTransition: BottomSheetTransition?
+    private var ledgerConnectionIssuesWarningTransition: BottomSheetTransition?
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
@@ -373,16 +374,9 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        loadingController.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -396,16 +390,9 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        loadingController.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -457,9 +444,9 @@ extension ScanQRFlowCoordinator {
             )
         case .ledgerConnection:
             let visibleScreen = presentingScreen.findVisibleScreen()
-            let bottomTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+            ledgerConnectionIssuesWarningTransition = BottomSheetTransition(presentingViewController: visibleScreen)
 
-            bottomTransition.perform(
+            ledgerConnectionIssuesWarningTransition?.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -495,6 +482,10 @@ extension ScanQRFlowCoordinator {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
                 self.loadingController.stopLoading()
             }
         }
@@ -504,6 +495,20 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
+        loadingController.stopLoading()
+    }
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        loadingController.stopLoading()
     }
 
     func transactionController(
@@ -518,6 +523,29 @@ extension ScanQRFlowCoordinator {
     func transactionControllerDidRejectedLedgerOperation(
         _ transactionController: TransactionController
     ) { }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController),
+           let account = getAccount(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func getAccount(
+        from transactionController: TransactionController
+    ) -> Account? {
+        return transactionController.assetTransactionDraft?.from
+    }
 }
 
 extension ScanQRFlowCoordinator {

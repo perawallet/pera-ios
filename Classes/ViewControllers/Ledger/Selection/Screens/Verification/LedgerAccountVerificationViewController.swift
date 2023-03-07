@@ -25,12 +25,13 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
+
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private var currentVerificationStatusView: LedgerAccountVerificationStatusView?
     private var currentVerificationAccount: Account?
@@ -129,6 +130,7 @@ extension LedgerAccountVerificationViewController {
         currentVerificationAccount = account
         setVerificationLedgerDetail(for: account)
         ledgerAccountVerificationOperation.delegate = self
+        ledgerAccountVerificationOperation.startScan()
     }
 
     private func setAddButtonHidden(_ isHidden: Bool) {
@@ -251,15 +253,23 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
             return
         case .cancelled:
             break
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
                 message: message
             )
         case .ledgerConnectionWarning:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,

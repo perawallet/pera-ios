@@ -206,12 +206,12 @@ extension ASADetailScreen {
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openSelectAccountForSoftRekeying()
+        openSelectAccountForRekeyingToStandardAccount()
     }
     
-    private func openSelectAccountForSoftRekeying() {
+    private func openSelectAccountForRekeyingToStandardAccount() {
         let draft = SelectAccountDraft(
-            transactionAction: .softRekey,
+            transactionAction: .rekeyToStandardAccount,
             requiresAssetSelection: false
         )
         
@@ -219,7 +219,7 @@ extension ASADetailScreen {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledSoftRekeying(for: account)
+            return self.isEnabledRekeyingToAStandardAccount(for: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -234,7 +234,7 @@ extension ASADetailScreen {
         )
     }
     
-    private func isEnabledSoftRekeying(for account: Account) -> Bool {
+    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
         return account.isLedger() ||
             account.isRekeyed() ||
             account.isSameAccount(with: dataController.account.address)
@@ -346,10 +346,13 @@ extension ASADetailScreen {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-
-        if isConfirmed {
-            navigateToViewPassphrase()
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.navigateToViewPassphrase()
+            }
         }
     }
 }
@@ -377,7 +380,7 @@ extension ASADetailScreen {
         for draft: SelectAccountDraft
     ) {
         switch draft.transactionAction {
-        case .softRekey:
+        case .rekeyToStandardAccount:
             selectAccountViewController.dismissScreen {
                 [weak self] in
                 guard let self else { return }
@@ -423,6 +426,11 @@ extension ASADetailScreen {
         if dataController.configuration.shouldDisplayAccountActionsBarButtonItem {
             let accountActionsBarButtonItem = makeAccountActionsBarButtonItem()
             rightBarButtonItems.append(accountActionsBarButtonItem)
+        }
+
+        if rightBarButtonItems.isEmpty {
+            let flexibleSpaceItem = ALGBarButtonItem.flexibleSpace()
+            rightBarButtonItems.append(flexibleSpaceItem)
         }
 
         self.rightBarButtonItems = rightBarButtonItems
