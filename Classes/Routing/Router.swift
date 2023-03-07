@@ -1463,6 +1463,8 @@ extension Router {
             return
         }
 
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
         let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
         monitor.startMonitoringOptInUpdates(request)
