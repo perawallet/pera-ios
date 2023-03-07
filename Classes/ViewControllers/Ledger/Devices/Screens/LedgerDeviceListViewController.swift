@@ -34,6 +34,8 @@ final class LedgerDeviceListViewController: BaseViewController {
 
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var transitionToLedgerApproval: BottomSheetTransition?
+
     private var timer: Timer?
 
     private let accountSetupFlow: AccountSetupFlow
@@ -204,7 +206,7 @@ extension LedgerDeviceListViewController {
                 return
             }
 
-            self.ledgerAccountFetchOperation.bleConnectionManager.stopScan()
+            self.ledgerAccountFetchOperation.stopScan()
 
             self.bannerController?.presentErrorBanner(
                 title: "ble-error-connection-title".localized,
@@ -294,13 +296,13 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
         didRequestUserApprovalFor ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+        ledgerApprovalViewController = transition.perform(
+            .ledgerApproval(mode: .connection, deviceName: ledger),
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -309,8 +311,14 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.ledgerAccountFetchOperation.disconnectFromCurrentDevice()
+                self.stopTimer()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {

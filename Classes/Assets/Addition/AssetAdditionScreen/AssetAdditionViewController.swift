@@ -30,6 +30,7 @@ final class AssetAdditionViewController:
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
 
@@ -598,14 +599,17 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
 
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let transition = BottomSheetTransition(
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -613,6 +617,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 
@@ -621,6 +628,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 self.clearTransactionCache(transactionController)
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

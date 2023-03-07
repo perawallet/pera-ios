@@ -1023,7 +1023,7 @@ extension ASADiscoveryScreen {
                 mode: .approve,
                 deviceName: ledger
             ),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -1031,6 +1031,9 @@ extension ASADiscoveryScreen {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 

@@ -41,6 +41,7 @@ final class ScanQRFlowCoordinator:
     private var accountQRTransition: BottomSheetTransition?
     private var optInRequestTransition: BottomSheetTransition?
     private var ledgerConnectionIssuesWarningTransition: BottomSheetTransition?
+    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
@@ -467,13 +468,13 @@ extension ScanQRFlowCoordinator {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = presentingScreen.findVisibleScreen()
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: visibleScreen,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -481,6 +482,9 @@ extension ScanQRFlowCoordinator {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 
@@ -489,6 +493,8 @@ extension ScanQRFlowCoordinator {
                 self.loadingController.stopLoading()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

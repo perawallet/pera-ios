@@ -45,6 +45,7 @@ final class SendCollectibleViewController:
         interactable: false
     )
 
+    private var transitionToLedgerApproval: BottomSheetTransition?
     private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
     private var transitionToTransferFailedWarning: BottomSheetTransition?
 
@@ -615,7 +616,7 @@ extension SendCollectibleViewController {
                 title: "collectible-transfer-failed-title".localized,
                 description: "send-algos-minimum-amount-custom-error".localized(
                     params: amountText.someString
-                                                                               )
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -663,7 +664,7 @@ extension SendCollectibleViewController {
 
         ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -671,8 +672,8 @@ extension SendCollectibleViewController {
             guard let self = self else { return }
             switch event {
             case .didCancel:
-                self.transactionController.stopBLEScan()
-                self.transactionController.stopTimer()
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
 
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
@@ -681,6 +682,8 @@ extension SendCollectibleViewController {
                 self.approveCollectibleTransactionViewController?.stopLoading()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

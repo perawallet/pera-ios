@@ -40,7 +40,10 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
 
     private lazy var transactionController = createTransactionController()
     private lazy var currencyFormatter = CurrencyFormatter()
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var transitionToLedgerApproval: BottomSheetTransition?
+
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
 
     private var selectedAccount: Account?
@@ -422,13 +425,13 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -436,6 +439,9 @@ extension AccountSelectionListScreen {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 
@@ -444,6 +450,8 @@ extension AccountSelectionListScreen {
                 self.loadingController?.stopLoading()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

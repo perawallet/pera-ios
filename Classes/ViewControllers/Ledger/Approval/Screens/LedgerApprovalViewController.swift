@@ -19,67 +19,74 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class LedgerApprovalViewController: BaseViewController {
+final class LedgerApprovalViewController:
+    MacaroonUIKit.ScrollScreen,
+    BottomSheetScrollPresentable {
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
-    private lazy var ledgerApprovalView = LedgerApprovalView()
+    private lazy var contextView = LedgerApprovalView()
     private lazy var theme = Theme()
 
     private let mode: Mode
     private let deviceName: String
 
-    init(mode: Mode, deviceName: String, configuration: ViewControllerConfiguration) {
+    init(
+        mode: Mode,
+        deviceName: String
+    ) {
         self.mode = mode
         self.deviceName = deviceName
-        super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        hidesCloseBarButtonItem = true
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        contextView.startConnectionAnimation()
     }
 
-    override func configureAppearance() {
-        customizeBackground()
-    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
-    private func customizeBackground() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    override func setListeners() {
-        ledgerApprovalView.setListeners()
-        ledgerApprovalView.delegate = self
+        contextView.stopConnectionAnimation()
     }
     
     override func prepareLayout() {
-        ledgerApprovalView.customize(theme.ledgerApprovalViewTheme)
+        super.prepareLayout()
 
-        view.addSubview(ledgerApprovalView)
-        ledgerApprovalView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
-    override func bindData() {
-        ledgerApprovalView.bindData(LedgerApprovalViewModel(mode: mode, deviceName: deviceName))
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        ledgerApprovalView.startConnectionAnimation()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        ledgerApprovalView.stopConnectionAnimation()
+        addUI()
     }
 }
 
-extension LedgerApprovalViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+extension LedgerApprovalViewController {
+    private func addUI() {
+        addBackground()
+        addContext()
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addContext() {
+        contextView.customize(theme.context)
+
+        contentView.addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        let viewModel = LedgerApprovalViewModel(mode: mode, deviceName: deviceName)
+        contextView.bindData(viewModel)
+
+        contextView.delegate = self
     }
 }
 

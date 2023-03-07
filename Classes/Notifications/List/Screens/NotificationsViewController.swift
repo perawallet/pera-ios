@@ -53,6 +53,7 @@ final class NotificationsViewController:
     private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var transitionToLedgerApproval: BottomSheetTransition?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -500,16 +501,16 @@ extension NotificationsViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(
                 mode: .approve,
                 deviceName: ledger
             ),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -517,6 +518,9 @@ extension NotificationsViewController {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 
@@ -525,6 +529,8 @@ extension NotificationsViewController {
                 self.loadingController?.stopLoading()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

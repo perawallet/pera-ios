@@ -723,7 +723,10 @@ class Router:
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerApproval(mode, deviceName):
-            viewController = LedgerApprovalViewController(mode: mode, deviceName: deviceName, configuration: configuration)
+            viewController = LedgerApprovalViewController(
+                mode: mode,
+                deviceName: deviceName
+            )
         case let .tutorialSteps(step):
             viewController = TutorialStepsViewController(
                 step: step,
@@ -1975,7 +1978,7 @@ extension Router {
 
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
+            by: .presentWithoutNavigationController
         )
 
         ledgerApprovalViewController?.eventHandler = {
@@ -1983,6 +1986,9 @@ extension Router {
             guard let self = self else { return }
             switch event {
             case .didCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
                 self.ledgerApprovalViewController?.dismissScreen()
                 self.ledgerApprovalViewController = nil
 

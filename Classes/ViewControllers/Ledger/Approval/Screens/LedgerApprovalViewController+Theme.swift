@@ -19,14 +19,14 @@ import MacaroonUIKit
 
 extension LedgerApprovalViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let ledgerApprovalViewTheme: LedgerApprovalViewTheme
-        let backgroundColor: Color
-        let modalHeight: LayoutMetric
+        let background: ViewStyle
+        let context: LedgerApprovalViewTheme
 
         init(_ family: LayoutFamily) {
-            ledgerApprovalViewTheme = LedgerApprovalViewTheme()
-            backgroundColor = Colors.Defaults.background
-            modalHeight = 362
+            self.background = [
+                .backgroundColor(Colors.Defaults.background)
+            ]
+            self.context = LedgerApprovalViewTheme()
         }
     }
 }

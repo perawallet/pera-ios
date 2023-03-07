@@ -38,10 +38,6 @@ final class LedgerApprovalView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func setListeners() {
-        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancel), for: .touchUpInside)
-    }
 }
 
 extension LedgerApprovalView {
@@ -91,11 +87,15 @@ extension LedgerApprovalView {
         addSubview(cancelButton)
         cancelButton.fitToVerticalIntrinsicSize()
         cancelButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
         }
+
+        cancelButton.addTouch(
+            target: self,
+            action: #selector(notifyDelegateToCancel)
+        )
     }
 }
 
