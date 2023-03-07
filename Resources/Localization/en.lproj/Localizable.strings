@@ -993,6 +993,8 @@
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
+"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";

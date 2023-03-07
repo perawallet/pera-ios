@@ -157,10 +157,17 @@ extension SelectAccountAPIDataController {
             }
 
             var snapshot = Snapshot()
-
-            snapshot.appendSections([.accounts])
-
-            if !accounts.isEmpty {
+            
+            if accounts.isEmpty {
+                snapshot.appendSections([.empty])
+                snapshot.appendItems(
+                    [.empty(.noContent(
+                        SelectAccountNoContentViewModel(self.transactionAction))
+                    )],
+                    toSection: .empty
+                )
+            } else {
+                snapshot.appendSections([.accounts])
                 snapshot.appendItems(
                     accountItems,
                     toSection: .accounts
@@ -176,7 +183,9 @@ extension SelectAccountAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.empty(.noContent)],
+                [.empty(.noContent(
+                    SelectAccountNoContentViewModel(self.transactionAction))
+                )],
                 toSection: .empty
             )
             return snapshot
