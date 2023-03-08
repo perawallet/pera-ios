@@ -192,11 +192,7 @@ extension RekeyConfirmationViewController {
     }
     
     private func getNewAccountTypeAfterRekeying() -> AccountType {
-        if account.isSameAccount(with: newAuthAddress) {
-            return .ledger
-        }
-        
-        return .rekeyed
+        return account.isSameAccount(with: newAuthAddress) ? .ledger : .rekeyed
     }
     
     private func saveAccount(_ localAccount: AccountInformation) {
