@@ -182,8 +182,8 @@ extension ManageAssetsListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = AccountAssetListLoadingCell.calculatePreferredSize(
-            for: AccountAssetListLoadingCell.theme,
+        let newSize = ManageAssetsListItemLoadingCell.calculatePreferredSize(
+            for: ManageAssetsListItemLoadingCell.theme,
             fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
         )
         

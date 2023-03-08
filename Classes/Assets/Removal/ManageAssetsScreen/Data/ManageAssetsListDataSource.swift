@@ -48,7 +48,7 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
                 return cell
             case .loading:
                 return collectionView.dequeue(
-                    AccountAssetListLoadingCell.self,
+                    ManageAssetsListItemLoadingCell.self,
                     at: indexPath
                 )
             }
@@ -57,7 +57,7 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
         [
             OptOutAssetListItemCell.self,
             OptOutCollectibleAssetListItemCell.self,
-            AccountAssetListLoadingCell.self,
+            ManageAssetsListItemLoadingCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

@@ -45,7 +45,7 @@ enum ManageAssetsListItem: Hashable {
     case asset(OptOutAssetListItem)
     case collectibleAsset(OptOutCollectibleAssetListItem)
     case empty(AssetListSearchNoContentViewModel)
-    case loading
+    case loading(String)
 }
 
 extension ManageAssetsListItem {

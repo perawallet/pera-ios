@@ -1,4 +1,19 @@
-//  ManageAssetsViewController.swift
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   ManageAssetsViewController.swift
 
 import UIKit
 import MagpieHipo
@@ -60,7 +75,7 @@ final class ManageAssetsViewController:
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        restartLoadingOfVisibleCellsIfNeeded()
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +85,12 @@ final class ManageAssetsViewController:
             controller.stopBLEScan()
             controller.stopTimer()
         }
+    }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
     
     override func setListeners() {
@@ -145,6 +166,25 @@ extension ManageAssetsViewController {
                 cell as? OptOutCollectibleAssetListItemCell,
                 for: item
             )
+        case .loading:
+            startAnimatingLoadingCellIfNeeded(cell as? ManageAssetsListItemLoadingCell)
+        default:
+            break
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        
+        switch itemIdentifier {
+        case .loading:
+            stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetsListItemLoadingCell)
         default:
             break
         }
@@ -333,8 +373,12 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 }
 
 extension ManageAssetsViewController {
-    private func restartLoadingOfVisibleCellsIfNeeded() {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
         for cell in contextView.assetsCollectionView.visibleCells {
+            if let loadingCell = cell as? ManageAssetsListItemLoadingCell {
+                loadingCell.startAnimating()
+            }
+            
             if let assetCell = cell as? OptOutAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
@@ -347,6 +391,23 @@ extension ManageAssetsViewController {
                 return
             }
         }
+    }
+    
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in contextView.assetsCollectionView.visibleCells {
+            if let loadingCell = cell as? ManageAssetsListItemLoadingCell {
+                loadingCell.stopAnimating()
+                return
+            }
+        }
+    }
+    
+    private func startAnimatingLoadingCellIfNeeded(_ cell: ManageAssetsListItemLoadingCell?) {
+        cell?.startAnimating()
+    }
+    
+    private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetsListItemLoadingCell?) {
+        cell?.stopAnimating()
     }
 }
 

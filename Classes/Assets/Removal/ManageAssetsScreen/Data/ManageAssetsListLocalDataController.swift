@@ -193,10 +193,9 @@ extension ManageAssetsListLocalDataController {
     
     private func makeSnapshotForLoading() -> Snapshot {
         var snapshot = Snapshot()
-        let items: [ManageAssetsListItem] = [.loading]
         snapshot.appendSections([.assets])
         snapshot.appendItems(
-            items,
+            [.loading("1"), .loading("2")],
             toSection: .assets
         )
         
