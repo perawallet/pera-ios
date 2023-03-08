@@ -47,12 +47,15 @@ final class ManageAssetsViewController:
     private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
+    private var query: ManageAssetsListQuery
     private let dataController: ManageAssetsListDataController
 
     init(
+        query: ManageAssetsListQuery,
         dataController: ManageAssetsListDataController,
         configuration: ViewControllerConfiguration
     ) {
+        self.query = query
         self.dataController = dataController
         super.init(configuration: configuration)
     }
@@ -65,12 +68,15 @@ final class ManageAssetsViewController:
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didUpdate(let update):
+                self.dataSource.apply(
+                    update.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
             }
         }
         
-        dataController.load()
+        dataController.load(query: query)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -355,16 +361,8 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        guard let query = view.text else {
-            return
-        }
-        
-        if query.isEmpty {
-            dataController.resetSearch()
-            return
-        }
-        
-        dataController.search(for: query)
+        query.keyword = view.text
+        dataController.load(query: query)
     }
     
     func searchInputViewDidReturn(_ view: SearchInputView) {

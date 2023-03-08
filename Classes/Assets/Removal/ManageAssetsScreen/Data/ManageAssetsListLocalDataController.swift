@@ -28,11 +28,12 @@ final class ManageAssetsListLocalDataController:
     private lazy var searchThrottler = createSearchThrottler()
     
     private(set) var account: Account
-    private var allAssets: [Asset] = []
-    private var displayedAssets: [Asset] = []
     
+    private var nextQuery: ManageAssetsListQuery?
+    private var lastQuery: ManageAssetsListQuery?
     private var lastSnapshot: Snapshot?
-    private var lastQuery: String?
+    
+    private var canDeliverUpdatesForAssets = false
     
     private let sharedDataController: SharedDataController
 
@@ -48,36 +49,56 @@ final class ManageAssetsListLocalDataController:
         cancelOngoingSearching()
         sharedDataController.remove(self)
     }
-    
-    func load() {
-        sharedDataController.add(self)
-    }
-    
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        if case .didFinishRunning = event {
-            guard let upToDateAccount = sharedDataController.accountCollection[account.address] else {
-                return
-            }
-            
-            if case .failed = upToDateAccount.status {
-                return
-            }
-            
-            self.account = upToDateAccount.value
-            
-            reload()
-        }
-    }
 }
 
 extension ManageAssetsListLocalDataController {
-    func search(for query: String) {
-        lastQuery = query
+    func load(query: ManageAssetsListQuery?) {
+        nextQuery = query
+        
+        if canDeliverUpdatesForAssets {
+            loadNext(query: query)
+        } else {
+            loadFirst(query: query)
+        }
+    }
+    
+    func loadNext(query: ManageAssetsListQuery?) {
+        if query == lastQuery {
+            nextQuery = nil
+            return
+        }
+        
+        if query?.keyword == lastQuery?.keyword {
+            customize(query: query)
+        } else {
+            search(query: query)
+        }
+    }
+    
+    func customize(query: ManageAssetsListQuery?) {
+        cancelOngoingSearching()
+        deliverUpdatesForLoading()
+        
+        let task = AsyncTask {
+            [weak self] completionBlock in
+            guard let self else { return }
+            
+            defer {
+                completionBlock()
+            }
+            
+            self.deliverUpdatesForContent(
+                when: { query == self.nextQuery },
+                query: query
+            )
+        }
+        asyncLoadingQueue.add(task)
+        asyncLoadingQueue.resume()
+    }
+    
+    func search(query: ManageAssetsListQuery?) {
         cancelOngoingLoading()
-        deliverLoadingSnapshot()
+        deliverUpdatesForLoading()
         
         searchThrottler.performNext {
             [weak self] in
@@ -91,34 +112,26 @@ extension ManageAssetsListLocalDataController {
                     completionBlock()
                 }
                 
-                self.configureDisplayedAssets()
-                self.deliverContentSnapshot()
+                self.deliverUpdatesForContent(
+                    when: { query == self.nextQuery },
+                    query: query
+                )
             }
             self.asyncLoadingQueue.add(task)
             self.asyncLoadingQueue.resume()
         }
     }
     
-    func resetSearch() {
-        lastQuery = nil
-        cancelOngoingSearching()
-        
-        let task = AsyncTask {
-            [weak self] completionBlock in
-            guard let self else { return }
-            
-            defer {
-                completionBlock()
-            }
-            self.configureDisplayedAssets()
-            self.deliverContentSnapshot()
-        }
-        
-        asyncLoadingQueue.add(task)
-        asyncLoadingQueue.resume()
-        
+    private func loadFirst(query: ManageAssetsListQuery?) {
+        deliverUpdatesForLoading()
+
+        lastQuery = query
+        nextQuery = nil
+        sharedDataController.add(self)
     }
-    
+}
+
+extension ManageAssetsListLocalDataController {
     private func reload() {
         let task = AsyncTask {
             [weak self] completionBlock in
@@ -128,49 +141,12 @@ extension ManageAssetsListLocalDataController {
                 completionBlock()
             }
             
-            self.configureAccountAssets()
-            self.configureDisplayedAssets()
-            self.deliverContentSnapshot()
+            self.deliverUpdatesForContent(
+                when: { self.nextQuery == nil },
+                query: self.lastQuery
+            )
         }
-        
         asyncLoadingQueue.add(task)
-    }
-    
-    private func configureAccountAssets() {
-        guard let accountAssets = account.allAssets else {
-            allAssets.removeAll()
-            return
-        }
-        
-        allAssets = accountAssets.filter {
-            $0.creator?.address != account.address
-        }
-    }
-
-    private func configureDisplayedAssets() {
-        guard let searchQuery = lastQuery,
-              !searchQuery.isEmpty else {
-            displayedAssets = allAssets
-            return
-        }
-        
-        displayedAssets = allAssets.filter { asset in
-            isAssetContainsID(asset, query: searchQuery) ||
-            isAssetContainsName(asset, query: searchQuery) ||
-            isAssetContainsUnitName(asset, query: searchQuery)
-        }
-    }
-    
-    private func isAssetContainsID(_ asset: Asset, query: String) -> Bool {
-        return String(asset.id).localizedCaseInsensitiveContains(query)
-    }
-
-    private func isAssetContainsName(_ asset: Asset, query: String) -> Bool {
-        return asset.naming.name.someString.localizedCaseInsensitiveContains(query)
-    }
-
-    private func isAssetContainsUnitName(_ asset: Asset, query: String) -> Bool {
-        return asset.naming.unitName.someString.localizedCaseInsensitiveContains(query)
     }
     
     private func cancelOngoingSearching() {
@@ -184,121 +160,187 @@ extension ManageAssetsListLocalDataController {
 }
 
 extension ManageAssetsListLocalDataController {
-    private func deliverLoadingSnapshot() {
-        let loadingSnapshot = makeSnapshotForLoading()
-        lastSnapshot = loadingSnapshot
-        
-        publish(event: .didUpdate(loadingSnapshot))
-    }
-    
-    private func makeSnapshotForLoading() -> Snapshot {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.assets])
-        snapshot.appendItems(
-            [.loading("1"), .loading("2")],
-            toSection: .assets
-        )
-        
-        return snapshot
-    }
-    
-    private func deliverContentSnapshot() {
-        guard !allAssets.isEmpty else {
-            deliverNoContentSnapshot()
-            return
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            canDeliverUpdatesForAssets = true
+            
+            if let upToDateAccount = sharedDataController.accountCollection[account.address]?.value {
+                account = upToDateAccount
+                reload()
+            }
         }
-        
-        guard !displayedAssets.isEmpty else {
-            deliverEmptyContentSnapshot()
-            return
-        }
-        
-        let contentSnapshot = makeSnapshotForContent()
-        lastSnapshot = contentSnapshot
-        self.publish(event: .didUpdate(contentSnapshot))
     }
-    
-    private func deliverNoContentSnapshot() {
-        let noContentSnapshot = makeNoContentSnapshot()
-        lastSnapshot = noContentSnapshot
-        
-        publish(event: .didUpdate(noContentSnapshot))
-    }
-    
-    private func makeNoContentSnapshot() -> Snapshot {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.empty])
-        snapshot.appendItems(
-            [.empty(AssetListSearchNoContentViewModel(hasBody: false))],
-            toSection: .empty
-        )
-        
-        return snapshot
-    }
-    
-    private func deliverEmptyContentSnapshot() {
-        let emptyContentSnapshot = makeSnapshotForEmptyContent()
-        lastSnapshot = emptyContentSnapshot
-        
-        publish(event: .didUpdate(emptyContentSnapshot))
-    }
-    
-    private func makeSnapshotForEmptyContent() -> Snapshot {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.empty])
-        snapshot.appendItems(
-            [.empty(AssetListSearchNoContentViewModel(hasBody: true))],
-            toSection: .empty
-        )
-        
-        return snapshot
-    }
-    
-    private func makeSnapshotForContent() -> Snapshot {
-        let listItems = configureListItems()
-        
-        var snapshot = Snapshot()
-        snapshot.appendSections([.assets])
-        snapshot.appendItems(
-            listItems,
-            toSection: .assets
-        )
+}
 
-        return snapshot
+extension ManageAssetsListLocalDataController {
+    private func deliverUpdatesForLoading() {
+        let updates = makeUpdatesForLoading()
+        publish(updates: updates)
     }
     
-    private func configureListItems() -> [ManageAssetsListItem] {
-        var items: [ManageAssetsListItem] = []
+    private func makeUpdatesForLoading() -> Updates {
+        var snapshot = Snapshot()
+        appendSectionForAssetsLoading(into: &snapshot)
+        return Updates(snapshot: snapshot)
+    }
+    
+    private func appendSectionForAssetsLoading(into snapshot: inout Snapshot) {
+        let items: [ManageAssetsListItem] = [.loading("1"), .loading("2")]
+        snapshot.appendSections([.assets])
+        snapshot.appendItems(
+            items,
+            toSection: .assets
+        )
+    }
+}
+
+extension ManageAssetsListLocalDataController {
+    private func deliverUpdatesForNoContent() {
+        let updates = makeUpdatesForNoContent()
+        publish(updates: updates)
+    }
+    
+    private func makeUpdatesForNoContent() -> Updates {
+        var snapshot = Snapshot()
+        appendSectionForNoContent(into: &snapshot)
+        return Updates(snapshot: snapshot)
+    }
+    
+    private func appendSectionForNoContent(into snapshot: inout Snapshot) {
+        snapshot.appendSections([.empty])
+        snapshot.appendItems(
+            [.empty(.noContent)],
+            toSection: .empty
+        )
+    }
+}
+
+extension ManageAssetsListLocalDataController {
+    private func deliverUpdatesForSearchNoContent() {
+        let updates = makeUpdatesForSearchNoContent()
+        publish(updates: updates)
+    }
+    
+    private func makeUpdatesForSearchNoContent() -> Updates {
+        var snapshot = Snapshot()
+        appendSectionForSearchNoContent(into: &snapshot)
+        return Updates(snapshot: snapshot)
+    }
+    
+    private func appendSectionForSearchNoContent(into snapshot: inout Snapshot) {
+        snapshot.appendSections([.empty])
+        snapshot.appendItems(
+            [.empty(.noContentSearch)],
+            toSection: .empty
+        )
+    }
+}
+
+extension ManageAssetsListLocalDataController {
+    private func deliverUpdatesForContent(
+        when condition: () -> Bool,
+        query: ManageAssetsListQuery?
+    ) {
+        let updates = makeUpdatesForContent(query: query)
         
-        self.displayedAssets.forEach { asset in
+        if !condition() { return }
+        
+        self.lastQuery = query
+        self.nextQuery = nil
+        
+        self.publish(updates: updates)
+    }
+    
+    private func makeUpdatesForContent(
+        query: ManageAssetsListQuery?
+    ) -> Updates {
+        let listItems = makeOptOutListItems(query)
+        
+        let shouldShowEmptyContent = listItems.isEmpty
+        
+        if shouldShowEmptyContent {
+            let isSearching = !(query?.keyword.isNilOrEmpty ?? true)
+            return isSearching ? makeUpdatesForSearchNoContent() : makeUpdatesForNoContent()
+        }
+        
+        var snapshot = Snapshot()
+        
+        appendSectionContent(
+            query: query,
+            items: listItems,
+            into: &snapshot
+        )
+        
+        return Updates(snapshot: snapshot)
+    }
+    
+    private func appendSectionContent(
+        query: ManageAssetsListQuery?,
+        items: [ManageAssetsListItem],
+        into snapshot: inout Snapshot
+    ) {
+        snapshot.appendSections([.assets])
+        snapshot.appendItems(
+            items,
+            toSection: .assets
+        )
+    }
+    
+    private func makeOptOutListItems(
+        _ query: ManageAssetsListQuery?
+    ) -> [ManageAssetsListItem] {
+        let assets = account.allAssets
+        
+        let assetItems: [ManageAssetsListItem] = assets.someArray.compactMap {
+            asset in
+            
+            if let query,
+               !query.matches(
+                asset: asset,
+                account: account
+               ) {
+                return nil
+            }
+            
             if let collectibleAsset = asset as? CollectibleAsset {
-                let collectibleAssetItem = self.makeCollectibleAssetItem(collectibleAsset)
-                items.append(collectibleAssetItem)
-                return
+                return makeCollectibleAssetItem(collectibleAsset)
             }
-
+            
             if let standardAsset = asset as? StandardAsset {
-                let assetItem = self.makeStandardAssetItem(standardAsset)
-                items.append(assetItem)
-                return
+                return makeStandardAssetItem(standardAsset)
             }
+            
+            return nil
         }
         
-        if let selectedAccountAssetSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
-            items.sort {
-                guard let firstItem = $0.asset,
-                      let secondItem = $1.asset else {
-                    return false
-                }
-                
-                return selectedAccountAssetSortingAlgorithm.getFormula(
-                    asset: firstItem,
-                    otherAsset: secondItem
-                )
-            }
+        guard let sortingAlgorithm = query?.sortingAlgorithm else {
+            return assetItems
         }
         
-        return items
+        return assetItems.sorted {
+            guard let firstItem = $0.asset,
+                  let secondItem = $1.asset else {
+                return false
+            }
+            
+            return sortingAlgorithm.getFormula(
+                asset: firstItem,
+                otherAsset: secondItem
+            )
+        }
+    }
+    
+    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetsListItem {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let listItem = OptOutCollectibleAssetListItem(item: item)
+        return .collectibleAsset(listItem)
     }
     
     private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetsListItem {
@@ -312,19 +354,14 @@ extension ManageAssetsListLocalDataController {
         let listItem = OptOutAssetListItem(item: item)
         return .asset(listItem)
     }
-
-    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetsListItem {
-        let item = CollectibleAssetItem(
-            account: account,
-            asset: asset,
-            amountFormatter: collectibleAmountFormatter
-        )
-        let listItem = OptOutCollectibleAssetListItem(item: item)
-        return .collectibleAsset(listItem)
-    }
 }
 
 extension ManageAssetsListLocalDataController {
+    private func publish(updates: Updates) {
+        lastSnapshot = updates.snapshot
+        publish(event: .didUpdate(updates))
+    }
+    
     private func publish(event: ManageAssetsListDataControllerEvent) {
         asyncMain { [weak self] in
             guard let self else { return }
@@ -375,4 +412,9 @@ extension ManageAssetsListLocalDataController {
     private func createSearchThrottler() -> Throttler {
         return .init(intervalInSeconds: 0.4)
     }
+}
+
+extension ManageAssetsListLocalDataController {
+    typealias Updates = ManageAssetsListUpdates
+    typealias Snapshot = ManageAssetsListUpdates.Snapshot
 }

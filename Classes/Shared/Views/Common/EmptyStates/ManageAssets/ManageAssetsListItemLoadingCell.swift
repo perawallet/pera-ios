@@ -19,14 +19,22 @@ import MacaroonUIKit
 
 final class ManageAssetsListItemLoadingCell: CollectionCell<ManageAssetsListItemLoadingView> {
     override class var contextPaddings: LayoutPaddings {
-        return (8, 24, 8, 24)
+        return (20, 24, 20, 24)
     }
     
     static let theme = ManageAssetsListItemLoadingViewTheme()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         contextView.customize(Self.theme)
+        
+        let separator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((80, 24))
+        )
+        separatorStyle = .single(separator)
     }
 }
 

@@ -40,12 +40,22 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
                 cell.bindData(item.viewModel)
                 return cell
             case .empty(let item):
-                let cell = collectionView.dequeue(
-                    NoContentCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+                switch item {
+                case .noContent:
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(AssetListSearchNoContentViewModel(hasBody: false))
+                    return cell
+                case .noContentSearch:
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(AssetListSearchNoContentViewModel(hasBody: true))
+                    return cell
+                }
             case .loading:
                 return collectionView.dequeue(
                     ManageAssetsListItemLoadingCell.self,

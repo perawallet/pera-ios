@@ -84,6 +84,7 @@ extension ManageAssetsListItemLoadingView {
         textContainer.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.textContainerLeadingMargin)
             $0.centerY.equalToSuperview()
+            $0.fitToWidth(theme.titleViewSize.w)
         }
         
         addTitleView(theme)
@@ -95,7 +96,7 @@ extension ManageAssetsListItemLoadingView {
 
         textContainer.addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
             $0.size.equalTo(
                 CGSize(
                     width: theme.titleViewSize.w,

@@ -44,7 +44,7 @@ struct ManageAssetsListItemLoadingViewTheme: StyleSheet, LayoutSheet {
 
         self.subtitleViewCorner = 4
         self.subtitleViewSize = (44, 16)
-        self.subtitleTopPadding = 8
+        self.subtitleTopPadding = 10
 
         self.actionViewCorner = 8
         self.actionViewSize = (36, 36)

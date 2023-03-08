@@ -18,20 +18,12 @@ import Foundation
 import UIKit
 
 protocol ManageAssetsListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetsListSection, ManageAssetsListItem>
-
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)? { get set }
 
     var account: Account { get }
 
-    func load()
-    func search(for query: String)
-    func resetSearch()
+    func load(query: ManageAssetsListQuery?)
     func hasOptedOut(_ asset: Asset) -> OptOutStatus
-}
-
-enum ManageAssetsListDataControllerEvent {
-    case didUpdate(ManageAssetsListDataController.Snapshot)
 }
 
 enum ManageAssetsListSection:
@@ -44,8 +36,13 @@ enum ManageAssetsListSection:
 enum ManageAssetsListItem: Hashable {
     case asset(OptOutAssetListItem)
     case collectibleAsset(OptOutCollectibleAssetListItem)
-    case empty(AssetListSearchNoContentViewModel)
+    case empty(ManageAssetsListEmptyItem)
     case loading(String)
+}
+
+enum ManageAssetsListEmptyItem: Hashable {
+    case noContent
+    case noContentSearch
 }
 
 extension ManageAssetsListItem {
@@ -57,4 +54,16 @@ extension ManageAssetsListItem {
         case .loading: return nil
         }
     }
+}
+
+enum ManageAssetsListDataControllerEvent {
+    case didUpdate(ManageAssetsListUpdates)
+}
+
+struct ManageAssetsListUpdates {
+    let snapshot: Snapshot
+}
+
+extension ManageAssetsListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetsListSection, ManageAssetsListItem>
 }

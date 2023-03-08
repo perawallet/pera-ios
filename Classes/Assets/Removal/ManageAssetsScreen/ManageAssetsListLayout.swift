@@ -84,10 +84,9 @@ extension ManageAssetsListLayout {
                 sizeForCollectibleAssetCellItem: item,
                 forSectionAt: indexPath.section
             )
-        case .empty(let item):
+        case .empty:
             return sizeForNoContent(
                 collectionView,
-                item: item,
                 forSectionAt: indexPath.section
             )
         case .loading:
@@ -157,7 +156,6 @@ extension ManageAssetsListLayout {
     
     private func sizeForNoContent(
         _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel,
         forSectionAt section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = NoContentCell.reuseIdentifier
@@ -170,6 +168,7 @@ extension ManageAssetsListLayout {
             listView,
             forSectionAt: section
         )
+        let item = AssetListSearchNoContentViewModel(hasBody: true)
         let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let newSize = NoContentCell.calculatePreferredSize(
             item,
