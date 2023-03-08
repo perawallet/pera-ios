@@ -160,15 +160,24 @@ extension ManageAssetsListLayout {
         item: AssetListSearchNoContentViewModel,
         forSectionAt section: Int
     ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
         let width = calculateContentWidth(
             listView,
             forSectionAt: section
         )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            fittingIn: maxSize
         )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
     }
@@ -178,14 +187,23 @@ extension ManageAssetsListLayout {
         layout listViewLayout: UICollectionViewLayout,
         forSectionAt section: Int
     ) -> CGSize{
+        let sizeCacheIdentifier = ManageAssetsListItemLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
         let width = calculateContentWidth(
             listView,
             forSectionAt: section
         )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let newSize = ManageAssetsListItemLoadingCell.calculatePreferredSize(
             for: ManageAssetsListItemLoadingCell.theme,
-            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+            fittingIn: maxSize
         )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
     }
