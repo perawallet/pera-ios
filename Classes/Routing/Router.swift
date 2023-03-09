@@ -1372,6 +1372,11 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .discoverGeneric(let params):
+            viewController = DiscoverGenericScreen(
+                params: params,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "現在、その情報を取得できません。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "お気に入りは50個を超えることはできません。";
+"discover-error-favorites-max-limit" = "お気に入りは100個を超えることはできません。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "任意のASAを検索する";

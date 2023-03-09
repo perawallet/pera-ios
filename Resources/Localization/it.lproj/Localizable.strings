@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "Non possiamo ottenere queste informazioni in questo momento.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "Non puoi avere più di 50 preferiti.";
+"discover-error-favorites-max-limit" = "Non puoi avere più di 100 preferiti.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Cerca qualsiasi ASA";

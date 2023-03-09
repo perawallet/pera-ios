@@ -111,18 +111,27 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScrip
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        self.updateButtonsStateIfNeeded()
-        self.updateTitle()
-        self.routeWalletConnectIfNeeded(with: message)
+        updateButtonsStateIfNeeded()
+        updateTitle()
+
+        let inAppMessage = DiscoverDappDetailScriptMessage(rawValue: message.name)
+
+        switch inAppMessage {
+        case .none:
+            super.userContentController(
+                userContentController,
+                didReceive: message
+            )
+        case .navigation:
+            break
+        case .peraconnect:
+            handlePeraConnectAction(message)
+        }
     }
 
     private func initializeWebView() {
-        guard let url = URL(string: dappParameters.url) else {
-            return
-        }
-
-        let generatedUrl = DiscoverURLGenerator.generateUrl(
-            discoverUrl: .other(url: url),
+        let generatedUrl = DiscoverURLGenerator.generateURL(
+            destination: .dappDetail(dappParameters),
             theme: traitCollection.userInterfaceStyle,
             session: session
         )
@@ -302,21 +311,14 @@ extension DiscoverDappDetailScreen {
             addToFavorites(url: url, dapp: dappDetails)
         }
     }
-    
-    private func routeWalletConnectIfNeeded(with message: WKScriptMessage) {
-        if DiscoverDappDetailScriptMessage(rawValue: message.name) != .peraconnect { return }
 
-        guard let jsonString = message.body as? String, let url = URL(string: jsonString) else {
-            return
-        }
+    private func handlePeraConnectAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let url = URL(string: jsonString) else { return }
+        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
 
-        let deeplinkQR = DeeplinkQR(url: url)
-
-        guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
-            return
-        }
-
-        launchController.receive(deeplinkWithSource: .walletConnectSessionRequestForDiscover(walletConnectURL))
+        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
+        launchController.receive(deeplinkWithSource: src)
     }
 
     private func recordAnalyticsEvent() {
@@ -370,7 +372,7 @@ extension DiscoverDappDetailScreen {
     }
     
     private func hasExceededFavouritesLimit() -> Bool {
-        return favoriteDapps.count >= 50
+        return favoriteDapps.count >= 100
     }
     
     private func removeFromFavorites(

@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "Bu bilgileri şu anda alamıyoruz.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "50'den fazla favoriniz olamaz.";
+"discover-error-favorites-max-limit" = "100'den fazla favoriniz olamaz.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Herhangi bir ASA varlığını arayın";
