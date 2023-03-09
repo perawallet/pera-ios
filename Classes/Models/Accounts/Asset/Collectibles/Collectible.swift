@@ -173,24 +173,60 @@ enum MediaExtension:
     CaseIterable,
     Codable,
     Equatable {
+    case aac
+    case adts
+    case aif
+    case aifc
+    case aiff
+    case ass
+    case au
     case gif
     case jpg
     case jpeg
-    case png
+    case loas
+    case mid
+    case midi
+    case mp2
     case mp3
     case mp4
+    case opus
+    case png
+    case ra
+    case snd
+    case threeGp
+    case threeGpp
+    case threeG2
+    case threeGpp2
     case wav
     case webp
     case other(String)
 
     var rawValue: String {
         switch self {
+        case .aac: return ".aac"
+        case .adts: return ".adts"
+        case .aif: return ".aif"
+        case .aifc: return ".aifc"
+        case .aiff: return ".aiff"
+        case .ass: return ".ass"
+        case .au: return ".au"
         case .gif: return ".gif"
         case .jpg: return ".jpg"
         case .jpeg: return ".jpeg"
-        case .png: return ".png"
+        case .loas: return ".loas"
+        case .mid: return ".mid"
+        case .midi: return ".midi"
+        case .mp2: return ".mp2"
         case .mp3: return ".mp3"
         case .mp4: return ".mp4"
+        case .opus: return ".opus"
+        case .png: return ".png"
+        case .ra: return ".ra"
+        case .snd: return ".snd"
+        case .threeGp: return ".3gp"
+        case .threeGpp: return ".3gpp"
+        case .threeG2: return ".3g2"
+        case .threeGpp2: return ".3gpp2"
         case .wav: return ".wav"
         case .webp: return ".webp"
         case .other(let aRawValue): return aRawValue
@@ -198,7 +234,11 @@ enum MediaExtension:
     }
 
     static var allCases: [Self] = [
-        .gif, .jpg, .jpeg, .png, .mp3, .mp4, .wav, .webp
+        .aac, .adts, .aif, .aifc, .aiff,
+        .ass, .au, .gif, .jpg, .jpeg,
+        .loas, .mid, .midi, .mp2, .mp3,
+        .mp4, .opus, .png, .ra, .threeGp,
+        .threeGpp, .threeG2, .threeGpp2, .snd, .wav, .webp,
     ]
 
     init() {
