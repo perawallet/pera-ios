@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//  Screen.swifta
+//  Screen.swift
 
 import UIKit
 
@@ -182,11 +182,16 @@ indirect enum Screen {
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
+    case audio3DCard(
+        image: UIImage?,
+        url: URL
+    )
     case image3DCard(image: UIImage)
     case video3DCard(
         image: UIImage?,
         url: URL
     )
+    case collectibleFullScreenAudio(draft: CollectibleFullScreenAudioDraft)
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
     case buyAlgoHome(

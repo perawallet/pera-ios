@@ -58,6 +58,7 @@ final class CollectibleMediaPreviewViewController:
 
     private lazy var imageTransitionDelegate = ImageTransitionDelegate()
     private lazy var videoTransitionDelegate = VideoTransitionDelegate()
+    private lazy var audioTransitionDelegate = AudioTransitionDelegate()
 
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -298,7 +299,27 @@ extension CollectibleMediaPreviewViewController {
                 
                 self.open3DCard()
             }
-            cell.startObserving(event: .performFullScreenAction) {}
+            cell.startObserving(event: .performFullScreenAction) {
+                [weak self, weak cell] in
+                guard let self,
+                      let cell else { return }
+                                
+                let player = cell.contextView.currentPlayer
+                
+                guard let player = player else {
+                    return
+                }
+                                
+                cell.stopAudio()
+                
+                self.openFullScreenAudioPreview(
+                    with: player,
+                    didDismiss: {
+                        [weak cell] in
+                        cell?.playAudio()
+                    }
+                )
+            }
         case .image:
             guard let cell = cell as? CollectibleMediaImagePreviewCell else {
                 return
@@ -444,6 +465,24 @@ extension CollectibleMediaPreviewViewController {
             )
         )
     }
+    
+    private func openFullScreenAudioPreview(
+        with player: AVPlayer,
+        didDismiss: @escaping (() -> Void)
+    ) {
+        audioTransitionDelegate.didFinishDismissalTransition = didDismiss
+        
+        let draft = CollectibleFullScreenAudioDraft(player: player)
+        
+        open(
+            .collectibleFullScreenAudio(draft: draft),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: audioTransitionDelegate
+            )
+        )
+    }
 
     private func open3DCard() {
         guard let media = selectedMedia else {
@@ -452,7 +491,15 @@ extension CollectibleMediaPreviewViewController {
 
         switch media.type {
         case .audio:
-            return
+            if let url = media.downloadURL {
+                open(
+                    .audio3DCard(
+                        image: thumbnailImage,
+                        url: url
+                    ),
+                    by: .presentWithoutNavigationController
+                )
+            }
         case .image:
             if let cell = currentVisibleCell as? CollectibleMediaImagePreviewCell,
                let image = cell.contextView.currentImage {
