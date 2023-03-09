@@ -1346,7 +1346,7 @@
 "buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
 "buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
 "buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
-"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with TransaK";
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
 "buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
@@ -1371,9 +1371,9 @@
 "sardine-introduction-action-title" = "Buy ALGO with Sardine";
 "sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
 
-// MARK:  TransaK Introduction
-"transak-introduction-navigation-title" = "Buy USDC with TransaK";
+// MARK:  Transak Introduction
+"transak-introduction-navigation-title" = "Buy USDC with Transak";
 "transak-introduction-title" = "Buy USDC";
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
-"transak-introduction-action-title" = "Buy USDC with TransaK";
-"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use TransaK.";
+"transak-introduction-action-title" = "Buy USDC with Transak";
+"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
