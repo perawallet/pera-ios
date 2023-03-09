@@ -309,6 +309,7 @@ indirect enum Screen {
         DiscoverDappParamaters,
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
+    case discoverGeneric(DiscoverGenericParameters)
     case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
     case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)

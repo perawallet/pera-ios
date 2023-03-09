@@ -1372,6 +1372,11 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .discoverGeneric(let params):
+            viewController = DiscoverGenericScreen(
+                params: params,
+                configuration: configuration
+            )
         case .importAccountIntroduction(let eventHandler):
             let screen = WebImportInstructionScreen()
             screen.eventHandler = eventHandler
