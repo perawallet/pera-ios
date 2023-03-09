@@ -130,7 +130,7 @@ extension AssetAmountInputViewModel {
         }
 
         if let text = text.unwrapNonEmptyString() {
-            return "≈\(text)".attributed(attributes)
+            return text.attributed(attributes)
         } else {
             return nil
         }
