@@ -744,11 +744,11 @@ class Router:
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
-        case let .rekeyConfirmation(account, ledgerDetail, ledgerAddress):
+        case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
                 ledger: ledgerDetail,
-                ledgerAddress: ledgerAddress,
+                newAuthAddress: newAuthAddress,
                 configuration: configuration
             )
         case let .ledgerAccountSelection(flow, accounts):
@@ -777,8 +777,7 @@ class Router:
             let pushNotificationController = PushNotificationController(
                 target: ALGAppTarget.current,
                 session: appConfiguration.session,
-                api: appConfiguration.api,
-                bannerController: appConfiguration.bannerController
+                api: appConfiguration.api
             )
             let dataController = WatchAccountAdditionAPIDataController(
                 sharedDataController: appConfiguration.sharedDataController,
@@ -1364,6 +1363,38 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .discoverGeneric(let params):
+            viewController = DiscoverGenericScreen(
+                params: params,
+                configuration: configuration
+            )
+        case .importAccountIntroduction(let eventHandler):
+            let screen = WebImportInstructionScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountQRScanner(let eventHandler):
+            let screen = ImportQRScannerScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .importAccount(backupParameters, eventHandler):
+            let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountError(let error, let eventHandler):
+            let screen = WebImportErrorScreen(error: error)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
+            let dataController = WebImportSuccessScreenLocalDataController(
+                importedAccounts: importedAccounts,
+                unimportedAccounts: unimportedAccounts
+            )
+            let screen = WebImportSuccessScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         case .buySellOptions(let eventHandler):
             let screen = BuySellOptionsScreen(configuration: configuration)
             screen.eventHandler = eventHandler
@@ -1766,8 +1797,6 @@ extension Router {
                 }
             }
             
-
-            
             self.ongoingTransitions.append(transition)
         }
     }
@@ -1777,6 +1806,7 @@ extension Router {
         didConnectTo session: WCSession
     ) {
         walletConnector.saveConnectedWCSession(session)
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 }
 

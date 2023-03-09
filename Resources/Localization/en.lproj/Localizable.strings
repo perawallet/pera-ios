@@ -111,6 +111,8 @@
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
+"account-type-selection-import-web" = "Import from Pera Web";
+"account-type-selection-import-web-detail" = "I want to import Algorand accounts from Pera Web";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
@@ -345,7 +347,8 @@
 // MARK: Options
 "options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show Address";
-"options-rekey" = "Rekey Account";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-standard" = "Rekey to Standard Account";
 "options-view-passphrase" = "View Passphrase";
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
@@ -360,6 +363,7 @@
 "options-manage-assets" = "Manage Assets";
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -818,6 +822,9 @@
 "wallet-connect-session-connection-approved-title" = "You are Connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 "wallet-connect-select-accounts" = "Select Accounts";
+"wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
+"wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
+"wallet-connect-session-limit-info-detail" = "At 51 sessions, your oldest session will be automatically disconnected.";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
@@ -890,6 +897,7 @@
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
 "wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
 "wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
+"wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
 "wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
 "wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
 "wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
@@ -1300,8 +1308,8 @@
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nDo not proceed if you did not initiate this request.";
-"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web!\nDo not proceed if you did not initiate this request.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web!";
 "web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
 "web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
 "web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
@@ -1316,9 +1324,34 @@
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
 "web-export-result-title-singular" = "Account exported successfully!";
-"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
-"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+"web-export-result-body" = "You can now use these accounts on Pera Web.";
+"web-export-result-body-singular" = "You can now use this account on Pera Web.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+// MARK: Web Import
+"web-import-instruction-start-button-title" = "Start";
+"web-import-instruction-title" = "Get your QR ready on Pera Web";
+"web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
+"web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
+"web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
+"web-import-instruction-fourth-message" = "Tap Start to scan the QR";
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
+"web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+"web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
+
+"backup-operation-loading-body" = "Importing your accounts";
+
+"web-import-error-action" = "Go to Home";
+
+"web-import-success-header-title" = "Accounts imported";
+"web-import-success-header-singular-title" = "Account imported";
+"web-import-success-header-body" = "%@ accounts were imported from Pera Web";
+"web-import-success-header-singular-body" = "%@ account was imported from Pera Web";
+"web-import-success-unimported-title" = "Unimported Accounts";
+"web-import-success-unimported-singular-title" = "Unimported Account";
+"web-import-success-unimported-body" = "%@ accounts were not imported because they were previously imported.";
+"web-import-success-unimported-singular-body" = "%@ account was not imported because it was previously imported.";
+"web-import-success-button-title" = "Explore Pera Mobile";
 
 // MARK: Minimum Balance
 "minimum-balance-title" = "Minimum balance";
@@ -1338,7 +1371,7 @@
 "discover-error-fallback-body" = "We can't get that information right now.";
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "You cannot have more than 100 favourites.";
 
 // MARK: Buy / Sell Options
 "buy-sell-options-buy-header-title" = "Buy crypto";

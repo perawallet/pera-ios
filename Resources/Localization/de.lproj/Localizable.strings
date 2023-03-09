@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "Wir können diese Informationen im Moment nicht abrufen.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "Sie können nicht mehr als 50 Favoriten haben.";
+"discover-error-favorites-max-limit" = "Sie können nicht mehr als 100 Favoriten haben.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Suchen Sie nach einem beliebigen ASA";
@@ -1310,7 +1310,10 @@
 "options-passphrase" = "Passphrase";
 
 /* (No Comment) */
-"options-rekey" = "Konto-Rekeying";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "Konto entfernen";
@@ -1326,6 +1329,9 @@
 
 /* (No Comment) */
 "options-sort-title" = "Sortieren";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "KONTOEINSTELLUNGEN";

@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "現在、その情報を取得できません。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "お気に入りは50個を超えることはできません。";
+"discover-error-favorites-max-limit" = "お気に入りは100個を超えることはできません。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "任意のASAを検索する";
@@ -1310,7 +1310,10 @@
 "options-passphrase" = "パスフレーズ";
 
 /* (No Comment) */
-"options-rekey" = "アカウントの再キー化";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "アカウントの削除";
@@ -1326,6 +1329,9 @@
 
 /* (No Comment) */
 "options-sort-title" = "ソート";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "アカウント設定";

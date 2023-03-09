@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "Bu bilgileri şu anda alamıyoruz.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "50'den fazla favoriniz olamaz.";
+"discover-error-favorites-max-limit" = "100'den fazla favoriniz olamaz.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Herhangi bir ASA varlığını arayın";
@@ -1310,7 +1310,10 @@
 "options-passphrase" = "Parola";
 
 /* (No Comment) */
-"options-rekey" = "Hesabı Yeniden Anahtarla";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "Hesabı Kaldır";
@@ -1326,6 +1329,9 @@
 
 /* (No Comment) */
 "options-sort-title" = "Sırala";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "HESAP AYARLARI";

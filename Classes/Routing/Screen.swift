@@ -89,7 +89,7 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(account: Account)
-    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
+    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
@@ -125,7 +125,7 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
+    case accountListOptions(accountType: AccountInformation.AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case sortAccountList(
         dataController: SortAccountListDataController,
         eventHandler: SortAccountListViewController.EventHandler
@@ -304,6 +304,12 @@ indirect enum Screen {
         DiscoverDappParamaters,
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
+    case discoverGeneric(DiscoverGenericParameters)
+    case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
+    case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
+    case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
+    case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
+    case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
     case bidaliIntroduction
     case bidaliDappDetail(account: AccountHandle)

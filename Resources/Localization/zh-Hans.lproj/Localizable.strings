@@ -734,7 +734,7 @@
 "discover-error-fallback-body" = "我们目前无法获取这些信息。";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "你所选的喜爱数量不得超过50。";
+"discover-error-favorites-max-limit" = "你所选的喜爱数量不得超过100。";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "搜索任意ASA";
@@ -1310,7 +1310,10 @@
 "options-passphrase" = "助记词";
 
 /* (No Comment) */
-"options-rekey" = "密钥更新账户";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "移除账户";
@@ -1326,6 +1329,9 @@
 
 /* (No Comment) */
 "options-sort-title" = "分类";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "账户设置";
