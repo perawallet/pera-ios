@@ -245,10 +245,35 @@ enum MediaExtension:
         self = .other("")
     }
 
-    init?(
-        rawValue: String
-    ) {
-        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .other(rawValue)
+    init?( rawValue: String) {
+        switch rawValue {
+        case Self.aac.rawValue: self = .aac
+        case Self.adts.rawValue: self = .adts
+        case Self.aif.rawValue: self = .aif
+        case Self.aifc.rawValue: self = .aifc
+        case Self.aiff.rawValue: self = .aiff
+        case Self.ass.rawValue: self = .ass
+        case Self.au.rawValue: self = .au
+        case Self.gif.rawValue: self = .gif
+        case Self.jpg.rawValue: self = .jpg
+        case Self.jpeg.rawValue: self = .jpeg
+        case Self.loas.rawValue: self = .loas
+        case Self.mid.rawValue: self = .mid
+        case Self.midi.rawValue: self = .midi
+        case Self.mp2.rawValue: self = .mp2
+        case Self.mp3.rawValue: self = .mp3
+        case Self.mp4.rawValue: self = .mp4
+        case Self.opus.rawValue: self = .opus
+        case Self.png.rawValue: self = .png
+        case Self.ra.rawValue: self = .ra
+        case Self.snd.rawValue: self = .snd
+        case Self.threeGp.rawValue: self = .threeGp
+        case Self.threeGpp.rawValue: self = .threeGpp
+        case Self.threeG2.rawValue: self = .threeG2
+        case Self.threeGpp2.rawValue: self = .threeGpp2
+        case Self.wav.rawValue: self = .wav
+        case Self.webp.rawValue: self = .webp
+        default: self = .other(rawValue)
+        }
     }
 }
