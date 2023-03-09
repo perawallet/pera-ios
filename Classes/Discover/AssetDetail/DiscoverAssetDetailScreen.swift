@@ -29,7 +29,7 @@ final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetD
         bannerController: bannerController!,
         presentingScreen: self
     )
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(
         presentingScreen: self
     )
 
@@ -94,7 +94,7 @@ extension DiscoverAssetDetailScreen {
     }
 
     private func navigateToBuyAlgo() {
-        buyAlgoFlowCoordinator.launch()
+        moonPayFlowCoordinator.launch()
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {

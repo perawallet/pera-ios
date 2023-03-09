@@ -19,7 +19,7 @@ import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessage> {
+class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessage> {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
     
@@ -146,7 +146,18 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScrip
 
         bindNavigationTitle(with: dappParameters)
 
-        self.rightBarButtonItems = [ ALGBarButtonItem.flexibleSpace() ]
+        addNavigationBarButtonItems()
+    }
+
+    private func addNavigationBarButtonItems() {
+        self.rightBarButtonItems = [ makeReloadBarButtonItem() ]
+    }
+
+    private func makeReloadBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .reload) {
+            [unowned self] in
+            self.webView.reload()
+        }
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {

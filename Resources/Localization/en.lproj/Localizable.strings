@@ -54,7 +54,7 @@
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-retry-later" = "Please try later.";
 "title-press-hold-copy-address" = "Press and hold to copy address";
-"title-buy-algo" = "Buy ALGO";
+"title-buy-sell" = "Buy / Sell";
 "title-sort" = "Sort";
 "title-alphabetically-a-to-z" = "Alphabetically A to Z";
 "title-alphabetically-z-to-a" =  "Alphabetically Z to A";
@@ -97,6 +97,8 @@
 "title-to" = "To";
 "title-try-again" = "Try Again";
 "filter" = "Filter";
+"title-choose-account-to-proceed-with" = "Choose an account to proceed with";
+"opt-in-to-usdc" = "Opt-in to USDC";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -287,6 +289,7 @@
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts don't contain this asset";
+"asset-support-your-add-title-singular" = "Your account don't contain this asset";
 "asset-support-your-add-message" = "Please opt-in to this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
@@ -1112,9 +1115,9 @@
 
 // MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
-"moonpay-introduction-title"="Buy ALGO with Moonpay";
-"moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
-"moonpay-introduction-security"="Secured by";
+"moonpay-introduction-title" = "Buy ALGO with MoonPay";
+"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-security" = "Secured by";
 "moonpay-transaction-completed-title" = "Your Algos are on their way!";
 "moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
 "moonpay-transaction-pending-title" = "Your Algos are on their way!";
@@ -1132,6 +1135,7 @@
 "story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
 
 //MARK: QuickActions
+"quick-actions-buy-sell-title" = "Buy / Sell";
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
 "quick-actions-scan-qr-title" = "Scan QR";
@@ -1140,7 +1144,7 @@
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
-"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
 "transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
@@ -1368,3 +1372,41 @@
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
 "discover-error-favorites-max-limit" = "You cannot have more than 100 favourites.";
+
+// MARK: Buy / Sell Options
+"buy-sell-options-buy-header-title" = "Buy crypto";
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+"buy-sell-options-sell-header-title" = "Sell crypto";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
+
+// MARK: Buy Gift Cards with Crypto Alert Item
+"buy-gift-cards-with-crypto-alert-title" = "Buy gift cards with Crypto";
+"buy-gift-cards-with-crypto-alert-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";
+
+// MARK: Bidali Introduction
+"bidali-introduction-navigation-title" = "Buy gift cards with Bidali";
+"bidali-introduction-title" = "Buy gift cards with Crypto";
+"bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"bidali-introduction-action-title" = "Buy gift cards";
+"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
+
+// MARK:  Sardine Introduction
+"sardine-introduction-navigation-title" = "Buy ALGO with Sardine";
+"sardine-introduction-title" = "Buy ALGO";
+"sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
+"sardine-introduction-action-title" = "Buy ALGO with Sardine";
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
+
+// MARK:  Transak Introduction
+"transak-introduction-navigation-title" = "Buy USDC with Transak";
+"transak-introduction-title" = "Buy USDC";
+"transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
+"transak-introduction-action-title" = "Buy USDC with Transak";
+"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";

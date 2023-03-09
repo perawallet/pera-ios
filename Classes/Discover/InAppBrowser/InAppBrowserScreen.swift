@@ -30,6 +30,8 @@ class InAppBrowserScreen<ScriptMessage>:
     WKUIDelegate,
     WKScriptMessageHandler
 where ScriptMessage: InAppBrowserScriptMessage {
+    var allowsPullToRefresh: Bool = true
+    
     var notificationObservations: [NSObjectProtocol] = []
     
     private(set) lazy var webView: WKWebView = createWebView()
@@ -38,8 +40,6 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private(set) lazy var userContentController = createUserContentController()
 
     private(set) var userAgent: String? = nil
-
-    private lazy var refreshControl = UIRefreshControl()
 
     private var sourceURL: URL?
 
@@ -146,7 +146,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
         didFinish navigation: WKNavigation!
     ) {
         updateUIForURL()
-        refreshControl.endRefreshing()
+        endRefreshingIfNeeded()
     }
 
     func webView(
@@ -219,6 +219,13 @@ extension InAppBrowserScreen {
     }
 }
 
+extension InAppBrowserScreen {
+    private func endRefreshingIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        webView.scrollView.refreshControl?.endRefreshing()
+    }
+}
 
 extension InAppBrowserScreen {
     private func addUI() {
@@ -234,7 +241,7 @@ extension InAppBrowserScreen {
 
     private func updateUIForError(_ error: Error) {
         defer {
-            refreshControl.endRefreshing()
+            endRefreshingIfNeeded()
         }
 
         if !isPresentable(error) {
@@ -332,10 +339,13 @@ extension InAppBrowserScreen {
         webView.navigationDelegate = self
         webView.uiDelegate = self
 
-        addRefreshControl()
+        addRefreshControlIfNeeded()
     }
 
-    private func addRefreshControl() {
+    private func addRefreshControlIfNeeded() {
+        if !allowsPullToRefresh { return }
+
+        let refreshControl = UIRefreshControl()
         webView.scrollView.refreshControl = refreshControl
 
         refreshControl.addTarget(
