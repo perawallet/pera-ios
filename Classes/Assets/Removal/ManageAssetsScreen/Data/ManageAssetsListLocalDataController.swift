@@ -198,11 +198,6 @@ extension ManageAssetsListLocalDataController {
 }
 
 extension ManageAssetsListLocalDataController {
-    private func deliverUpdatesForNoContent() {
-        let updates = makeUpdatesForNoContent()
-        publish(updates: updates)
-    }
-    
     private func makeUpdatesForNoContent() -> Updates {
         var snapshot = Snapshot()
         appendSectionForNoContent(into: &snapshot)
@@ -215,13 +210,6 @@ extension ManageAssetsListLocalDataController {
             [.empty(.noContent)],
             toSection: .empty
         )
-    }
-}
-
-extension ManageAssetsListLocalDataController {
-    private func deliverUpdatesForSearchNoContent() {
-        let updates = makeUpdatesForSearchNoContent()
-        publish(updates: updates)
     }
     
     private func makeUpdatesForSearchNoContent() -> Updates {
