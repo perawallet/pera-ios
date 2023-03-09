@@ -1377,6 +1377,33 @@ class Router:
                 params: params,
                 configuration: configuration
             )
+        case .importAccountIntroduction(let eventHandler):
+            let screen = WebImportInstructionScreen()
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountQRScanner(let eventHandler):
+            let screen = ImportQRScannerScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .importAccount(backupParameters, eventHandler):
+            let screen = ImportAccountScreen(configuration: configuration, backupParameters: backupParameters)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountError(let error, let eventHandler):
+            let screen = WebImportErrorScreen(error: error)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
+            let dataController = WebImportSuccessScreenLocalDataController(
+                importedAccounts: importedAccounts,
+                unimportedAccounts: unimportedAccounts
+            )
+            let screen = WebImportSuccessScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

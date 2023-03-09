@@ -125,7 +125,7 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
+    case accountListOptions(accountType: AccountInformation.AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case sortAccountList(
         dataController: SortAccountListDataController,
         eventHandler: SortAccountListViewController.EventHandler
@@ -310,6 +310,11 @@ indirect enum Screen {
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
     case discoverGeneric(DiscoverGenericParameters)
+    case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
+    case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
+    case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
+    case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
+    case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
 }
 
 extension Screen {
