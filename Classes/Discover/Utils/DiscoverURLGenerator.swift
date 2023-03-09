@@ -95,10 +95,14 @@ final class DiscoverURLGenerator {
         session: Session?
     ) -> URL? {
         var components = URLComponents(url: params.url, resolvingAgainstBaseURL: false)
-        components?.queryItems = makeInHouseQueryItems(
+
+        let presentQueryItems = (components?.queryItems).someArray
+        let additionalQueryItems = makeInHouseQueryItems(
             theme: theme,
             session: session
         )
+        components?.queryItems = presentQueryItems + additionalQueryItems
+
         return components?.url
     }
 
