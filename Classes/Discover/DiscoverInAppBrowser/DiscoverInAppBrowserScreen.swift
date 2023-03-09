@@ -98,10 +98,10 @@ where ScriptMessage: InAppBrowserScriptMessage {
                 userContentController,
                 didReceive: message
             )
-        case .requestDeviceID:
-            handleDeviceIDRequest(message)
         case .pushNewScreen:
             handleNewScreenAction(message)
+        case .requestDeviceID:
+            handleDeviceIDRequest(message)
         }
     }
 }
@@ -162,6 +162,7 @@ extension DiscoverInAppBrowserScreen {
 
 extension DiscoverInAppBrowserScreen {
     private func handleNewScreenAction(_ message: WKScriptMessage) {
+        if !isAcceptable(message) { return }
         guard let jsonString = message.body as? String else { return }
         guard let jsonData = jsonString.data(using: .utf8) else { return }
         guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
@@ -176,26 +177,26 @@ extension DiscoverInAppBrowserScreen {
     }
 
     private func handleDeviceIDRequest(_ message: WKScriptMessage) {
-        let frameInfo = message.frameInfo
-
-        guard frameInfo.isMainFrame else { return }
-
-        guard let api else { return }
-        guard frameInfo.request.url.unwrap(where: \.isPeraURL) != nil else { return }
-
-        guard let deviceID = getDeviceID(from: api) else { return }
-        guard let deviceIDDetails = getDeviceIDDetails(with: deviceID) else { return }
+        if !isAcceptable(message) { return }
+        guard let deviceIDDetails = makeDeviceIDDetails() else { return }
 
         let scriptString = "var message = '" + deviceIDDetails + "'; handleMessage(message);"
         self.webView.evaluateJavaScript(scriptString)
     }
 
-    private func getDeviceID(from api: ALGAPI) -> String? {
-        session?.authenticatedUser?.getDeviceId(on: api.network)
+    private func makeDeviceIDDetails() -> String? {
+        guard let api else { return nil }
+        guard let deviceID = session?.authenticatedUser?.getDeviceId(on: api.network) else { return nil }
+        return try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
     }
 
-    private func getDeviceIDDetails(with deviceID: String) -> String? {
-        try? DiscoverDeviceIDDetails(deviceId: deviceID).encodedString()
+    private func isAcceptable(_ message: WKScriptMessage) -> Bool {
+        let frameInfo = message.frameInfo
+
+        if !frameInfo.isMainFrame { return false }
+        if frameInfo.request.url.unwrap(where: \.isPeraURL) == nil { return false }
+
+        return true
     }
 }
 

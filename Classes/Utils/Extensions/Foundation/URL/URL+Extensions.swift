@@ -29,12 +29,15 @@ extension URL {
         return (scheme?.lowercased() == "http" || scheme?.lowercased() == "https") && host != nil
     }
     var isPeraURL: Bool {
-        let url = URL(string: Environment.current.discoverBaseUrl)
+        let pattern = #"^(https?:\/\/)?([\da-z\.-]+\.)*perawallet\.app([\/\w \.-]*)*\/?.*$"#
 
         if #available(iOS 16.0, *) {
-            return host() == url?.host()
+            let regex = try! Regex(pattern)
+            return absoluteString.contains(regex)
         } else {
-            return host == url?.host
+            let regex = try! NSRegularExpression(pattern: pattern)
+            let range = NSRange(location: 0, length: absoluteString.utf16.count)
+            return regex.firstMatch(in: absoluteString, options: [], range: range) != nil
         }
     }
 }
