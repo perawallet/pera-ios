@@ -175,6 +175,12 @@ extension SwapTransactionSigner {
         eventHandler?(.didLedgerReset)
     }
 
+    func ledgerTransactionOperationDidResetOperationOnSuccess(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
+        eventHandler?(.didLedgerResetOnSuccess)
+    }
+
     func ledgerTransactionOperationDidRejected(
         _ ledgerTransactionOperation: LedgerTransactionOperation
     ) {
@@ -205,6 +211,7 @@ extension SwapTransactionSigner {
         case didLedgerRequestUserApproval(ledger: String)
         case didFinishTiming
         case didLedgerReset
+        case didLedgerResetOnSuccess
         case didLedgerRejectSigning
     }
 }
