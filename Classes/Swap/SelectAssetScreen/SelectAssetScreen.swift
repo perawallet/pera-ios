@@ -311,11 +311,10 @@ extension SelectAssetScreen {
     private func continueToOptInAsset(
         asset: AssetDecoration
     ) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
         var account = dataController.account
-
         if !transactionController.canSignTransaction(for: &account) { return }
+        
+        loadingController?.startLoadingWithMessage("title-loading".localized)
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(

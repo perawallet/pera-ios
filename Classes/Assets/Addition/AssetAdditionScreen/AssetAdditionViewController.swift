@@ -464,6 +464,7 @@ extension AssetAdditionViewController {
             
             if !transactionController.canSignTransaction(for: &account) {
                 self.clearTransactionCache(transactionController)
+                self.restoreCellState(for: transactionController)
                 return
             }
 

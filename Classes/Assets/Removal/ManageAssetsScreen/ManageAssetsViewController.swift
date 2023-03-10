@@ -472,12 +472,12 @@ extension ManageAssetsViewController {
             
             let transactionController = self.createNewTransactionController(for: asset)
             
-            if !transactionController.canSignTransaction(for: &account) {
+            guard transactionController.canSignTransaction(for: &account),
+                  let creator = asset.creator else {
                 self.clearTransactionCache(transactionController)
+                self.restoreCellState(for: transactionController)
                 return
             }
-            
-            guard let creator = asset.creator else { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let request = OptOutBlockchainRequest(account: account, asset: asset)
