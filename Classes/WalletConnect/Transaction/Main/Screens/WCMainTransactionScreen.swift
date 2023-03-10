@@ -519,8 +519,6 @@ extension WCMainTransactionScreen {
 extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
     func wcSingleTransactionRequestScreenDidReject(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
         rejectSigning()
-        dismissScreen()
-
     }
 
     func wcSingleTransactionRequestScreenDidConfirm(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
@@ -531,7 +529,6 @@ extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
 extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
     func wcUnsignedRequestScreenDidReject(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
         rejectSigning()
-        dismissScreen()
     }
 
     func wcUnsignedRequestScreenDidConfirm(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
