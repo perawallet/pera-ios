@@ -67,7 +67,7 @@ extension TransactionSignatureValidator {
             return false
         }
         
-        return account.rekeyDetail?[authAddress] != nil
+        return account.rekeyDetail?[safe: authAddress] != nil
     }
     
     private func hasAuthorizationAccount(_ authAddress: PublicKey) -> Bool {
