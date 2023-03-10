@@ -43,7 +43,11 @@ final class ReceiveCollectibleAssetListViewController:
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
 
@@ -62,7 +66,6 @@ final class ReceiveCollectibleAssetListViewController:
     private let copyToClipboardController: CopyToClipboardController
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private let dataController: ReceiveCollectibleAssetListDataController
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
@@ -668,11 +671,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -693,8 +692,6 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
                 self.clearTransactionCache(transactionController)
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

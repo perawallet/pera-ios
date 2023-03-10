@@ -33,10 +33,13 @@ final class SelectAssetScreen:
     var eventHandler: Screen.EventHandler<SelectAssetScreenEvent>?
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
@@ -456,11 +459,7 @@ extension SelectAssetScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -481,8 +480,6 @@ extension SelectAssetScreen {
                 self.loadingController?.stopLoading()
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

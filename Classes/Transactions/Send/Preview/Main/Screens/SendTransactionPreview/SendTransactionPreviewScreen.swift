@@ -35,7 +35,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
    
    private var ledgerApprovalViewController: LedgerApprovalViewController?
-   private var transitionToLedgerApproval: BottomSheetTransition?
+   private lazy var transitionToLedgerApproval = BottomSheetTransition(
+      presentingViewController: self,
+      interactable: false
+   )
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
    private lazy var nextButton = Button()
@@ -419,11 +422,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didRequestUserApprovalFrom ledger: String
    ) {
-      let transition = BottomSheetTransition(
-         presentingViewController: self,
-         interactable: false
-      )
-      ledgerApprovalViewController = transition.perform(
+      ledgerApprovalViewController = transitionToLedgerApproval.perform(
          .ledgerApproval(mode: .approve, deviceName: ledger),
          by: .present
       )
@@ -442,8 +441,6 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
             self.loadingController?.stopLoading()
          }
       }
-
-      transitionToLedgerApproval = transition
    }
 
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

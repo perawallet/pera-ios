@@ -30,7 +30,10 @@ final class ManageAssetsViewController:
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private lazy var contextView = ManageAssetsView()
     
@@ -39,7 +42,6 @@ final class ManageAssetsViewController:
     }
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
     
     private var optOutTransactions: [AssetID: AssetOptOutTransaction] = [:]
 
@@ -674,11 +676,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -699,8 +697,6 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                 self.clearTransactionCache(transactionController)
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(

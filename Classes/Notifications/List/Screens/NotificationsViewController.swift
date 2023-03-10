@@ -47,13 +47,16 @@ final class NotificationsViewController:
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -501,11 +504,7 @@ extension NotificationsViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(
                 mode: .approve,
                 deviceName: ledger
@@ -529,8 +528,6 @@ extension NotificationsViewController {
                 self.loadingController?.stopLoading()
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

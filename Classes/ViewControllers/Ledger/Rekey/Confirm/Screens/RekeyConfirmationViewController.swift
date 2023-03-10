@@ -27,9 +27,12 @@ final class RekeyConfirmationViewController: BaseViewController {
     private let ledgerAddress: String
 
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -144,11 +147,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -167,8 +166,6 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
                 self.loadingController?.stopLoading()
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

@@ -28,9 +28,12 @@ final class AssetAdditionViewController:
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
 
     private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
 
@@ -603,11 +606,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -628,8 +627,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 self.clearTransactionCache(transactionController)
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

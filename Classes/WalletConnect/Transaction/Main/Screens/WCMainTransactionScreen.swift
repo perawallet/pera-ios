@@ -61,7 +61,10 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
     private var headerTransaction: WCTransaction?
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
@@ -350,11 +353,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         _ wcTransactionSigner: WCTransactionSigner,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
+        ledgerApprovalViewController = transitionToLedgerApproval.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .presentWithoutNavigationController
         )
@@ -372,8 +371,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
                 self.loadingController?.stopLoading()
             }
         }
-
-        transitionToLedgerApproval = transition
     }
 
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
