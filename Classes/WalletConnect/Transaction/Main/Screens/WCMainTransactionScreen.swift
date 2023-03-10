@@ -63,6 +63,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
     private lazy var wcTransactionSigner: WCTransactionSigner = {
         guard let api = api else {
@@ -249,6 +250,8 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     private func confirmSigning() {
         if let transaction = getFirstSignableTransaction(),
            let index = transactions.firstIndex(of: transaction) {
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+
             fillInitialUnsignedTransactions(until: index)
             signTransaction(transaction)
         }
@@ -292,6 +295,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
 
         if transactions.count != signedTransactions.count {
+            loadingController?.stopLoading()
             rejectSigning(reason: .invalidInput(.unsignable))
             return
         }
@@ -302,6 +306,9 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     private func sendSignedTransactions() {
         dataSource.signTransactionRequest(signature: signedTransactions)
         logAllTransactions()
+
+        loadingController?.stopLoading()
+
         delegate?.wcMainTransactionScreen(self, didSigned: transactionRequest, in: wcSession)
     }
 
@@ -322,11 +329,18 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didFailedWith error: WCTransactionSigner.WCSignError) {
+        loadingController?.stopLoading()
+
         switch error {
         case .api:
             rejectSigning(reason: .rejected(.unsignable))
         case let .ledger(ledgerError):
             showLedgerError(ledgerError)
+        case .missingUnparsedTransactionDetail:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "title-generic-error".localized
+            )
         }
     }
 
@@ -349,28 +363,28 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
                 self.loadingController?.stopLoading()
             }
         }
     }
 
-    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
-
-    }
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
     }
 
-    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
-        loadingController?.stopLoading()
-    }
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:
             bannerController?.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized, message: "ble-error-fail-sign-transaction".localized
+                title: "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
             bannerController?.presentErrorBanner(
@@ -385,6 +399,36 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "ledger-account-fetct-error".localized
+            )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+
+            ledgerApprovalViewController?.dismissScreen()
+            ledgerApprovalViewController = nil
+        case .ledgerConnectionWarning:
+            bannerController?.presentErrorBanner(
+                title: "ble-error-connection-title".localized,
+                message: ""
+            )
+
+            transitionToLedgerConnectionIssuesWarning.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
             )
         case let .custom(title, message):
             bannerController?.presentErrorBanner(

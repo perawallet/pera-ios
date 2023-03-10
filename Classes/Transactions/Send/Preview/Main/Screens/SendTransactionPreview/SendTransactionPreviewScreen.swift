@@ -32,7 +32,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    var eventHandler: EventHandler?
    
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
-
+   private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+   
    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
@@ -434,6 +435,8 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
          switch event {
          case .didCancel:
             self.ledgerApprovalViewController?.dismissScreen()
+            self.ledgerApprovalViewController = nil
+
             self.loadingController?.stopLoading()
          }
       }
@@ -441,12 +444,8 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
 
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
       ledgerApprovalViewController?.dismissScreen()
-      loadingController?.stopLoading()
-   }
+      ledgerApprovalViewController = nil
 
-   func transactionControllerDidRejectedLedgerOperation(
-      _ transactionController: TransactionController
-   ) {
       loadingController?.stopLoading()
    }
 }
@@ -477,9 +476,7 @@ extension SendTransactionPreviewScreen {
             message: error.debugDescription
          )
       case .ledgerConnection:
-         let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-         bottomTransition.perform(
+         transitionToLedgerConnectionIssuesWarning.perform(
             .bottomWarning(
                configurator: BottomWarningViewConfigurator(
                   image: "icon-info-green".uiImage,

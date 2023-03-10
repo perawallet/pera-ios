@@ -33,6 +33,8 @@ final class SelectAssetScreen:
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
@@ -106,13 +108,6 @@ final class SelectAssetScreen:
         dataController.load()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
@@ -120,6 +115,9 @@ final class SelectAssetScreen:
             let loadingCell = $0 as? PreviewLoadingCell
             loadingCell?.stopAnimating()
         }
+
+        transactionController.stopBLEScan()
+        transactionController.stopTimer()
     }
 
     override func configureAppearance() {
@@ -353,15 +351,9 @@ extension SelectAssetScreen {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: dataController.account
-            )
-        }
+        loadingController?.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -378,15 +370,9 @@ extension SelectAssetScreen {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: dataController.account
-            )
-        }
+        loadingController?.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -447,9 +433,7 @@ extension SelectAssetScreen {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
+            transitionToLedgerConnectionIssuesWarning.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -484,6 +468,11 @@ extension SelectAssetScreen {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
+                self.loadingController?.stopLoading()
             }
         }
     }
@@ -491,13 +480,30 @@ extension SelectAssetScreen {
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        loadingController?.stopLoading()
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
+        loadingController?.stopLoading()
     }
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        loadingController?.stopLoading()
+    }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: dataController.account
+            )
+        }
+    }
 
     private func getAssetID(
         from transactionController: TransactionController

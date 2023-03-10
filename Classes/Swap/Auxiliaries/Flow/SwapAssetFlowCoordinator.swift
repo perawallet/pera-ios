@@ -674,6 +674,16 @@ extension SwapAssetFlowCoordinator {
                 title: title,
                 message: message
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
         default:
             break
         }
