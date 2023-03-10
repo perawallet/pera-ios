@@ -333,16 +333,14 @@ extension ScanQRFlowCoordinator {
             [weak self] in
             guard let self = self else { return }
 
-            var anAccount = account
-            
-            if !self.transactionController.canSignTransaction(for: &anAccount) { return }
+            if !self.transactionController.canSignTransaction(for: account) { return }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let request = OptInBlockchainRequest(account: anAccount, asset: asset)
+            let request = OptInBlockchainRequest(account: account, asset: asset)
             monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(
-                from: anAccount,
+                from: account,
                 assetIndex: asset.id
             )
 
@@ -352,7 +350,7 @@ extension ScanQRFlowCoordinator {
             self.transactionController.setTransactionDraft(assetTransactionDraft)
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
-            if anAccount.requiresLedgerConnection() {
+            if account.requiresLedgerConnection() {
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }

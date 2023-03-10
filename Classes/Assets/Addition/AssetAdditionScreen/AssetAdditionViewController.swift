@@ -458,11 +458,10 @@ extension AssetAdditionViewController {
             [weak self] in
             guard let self = self else { return }
 
-            var account = self.dataController.account
-            
+            let account = self.dataController.account
             let transactionController = self.createNewTransactionController(for: asset)
             
-            if !transactionController.canSignTransaction(for: &account) {
+            if !transactionController.canSignTransaction(for: account) {
                 self.clearTransactionCache(transactionController)
                 self.restoreCellState(for: transactionController)
                 return

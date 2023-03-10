@@ -468,11 +468,10 @@ extension ManageAssetsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            var account = self.dataController.account
-            
+            let account = self.dataController.account
             let transactionController = self.createNewTransactionController(for: asset)
             
-            guard transactionController.canSignTransaction(for: &account),
+            guard transactionController.canSignTransaction(for: account),
                   let creator = asset.creator else {
                 self.clearTransactionCache(transactionController)
                 self.restoreCellState(for: transactionController)

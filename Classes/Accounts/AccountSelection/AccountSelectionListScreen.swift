@@ -285,9 +285,9 @@ extension AccountSelectionListScreen {
     private func continueToOptInAsset(
         asset: AssetDecoration
     ) {
-        guard var account = selectedAccount else { return }
+        guard let account = selectedAccount else { return }
 
-        if !transactionController.canSignTransaction(for: &account) { return }
+        if !transactionController.canSignTransaction(for: account) { return }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
         let monitor = sharedDataController.blockchainUpdatesMonitor

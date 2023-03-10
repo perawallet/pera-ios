@@ -763,9 +763,9 @@ extension ASADiscoveryScreen {
             [weak self] in
             guard let self = self else { return }
 
-            guard var account = self.dataController.account else { return }
+            guard let account = self.dataController.account else { return }
             
-            if !self.transactionController.canSignTransaction(for: &account) { return }
+            if !self.transactionController.canSignTransaction(for: account) { return }
 
             let asset = self.dataController.asset
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
@@ -859,11 +859,11 @@ extension ASADiscoveryScreen {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self,
-                  var account = self.dataController.account else {
+                  let account = self.dataController.account else {
                 return
             }
             
-            if !self.transactionController.canSignTransaction(for: &account) { return }
+            if !self.transactionController.canSignTransaction(for: account) { return }
 
             let asset = self.dataController.asset
 

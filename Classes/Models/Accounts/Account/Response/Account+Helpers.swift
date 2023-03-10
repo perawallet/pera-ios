@@ -102,6 +102,10 @@ extension Account {
         return authAddress != nil
     }
     
+    func hasLedgerDetail() -> Bool {
+        return ledgerDetail != nil
+    }
+    
     func isWatchAccount() -> Bool {
         return type == .watch
     }

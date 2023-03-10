@@ -311,8 +311,8 @@ extension SelectAssetScreen {
     private func continueToOptInAsset(
         asset: AssetDecoration
     ) {
-        var account = dataController.account
-        if !transactionController.canSignTransaction(for: &account) { return }
+        let account = dataController.account
+        if !transactionController.canSignTransaction(for: account) { return }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
 

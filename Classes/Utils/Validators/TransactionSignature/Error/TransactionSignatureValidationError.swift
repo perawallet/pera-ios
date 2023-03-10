@@ -18,16 +18,5 @@ import Foundation
 
 protocol TransactionSignatureValidationError {
     var title: String { get }
-    var message: String { get }
-    
-    func present(on bannerController: BannerController?)
-}
-
-extension TransactionSignatureValidationError {
-    func present(on bannerController: BannerController?) {
-        bannerController?.presentErrorBanner(
-            title: title,
-            message: message
-        )
-    }
+    var message: String? { get }
 }

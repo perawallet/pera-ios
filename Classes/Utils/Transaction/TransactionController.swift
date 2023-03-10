@@ -38,7 +38,7 @@ class TransactionController {
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api, sharedDataController: sharedDataController)
     
-    private lazy var transactionSignatureErrorResolver = TransactionSignatureErrorResolver(
+    private lazy var transactionSignatureValidator = TransactionSignatureValidator(
         session: api.session,
         sharedDataController: sharedDataController
     )
@@ -85,18 +85,38 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    func canSignTransaction(for account: inout Account) -> Bool {
-        if let transactionSignatureError = transactionSignatureErrorResolver.findTransactionSignatureErrorIfPresent(for: &account) {
-            transactionSignatureError.present(on: bannerController)
+    func canSignTransaction(for account: Account) -> Bool {
+        let signatureValidationResult = transactionSignatureValidator.validateTransactionSignature(for: account)
+        
+        switch signatureValidationResult {
+        case .success:
+            return true
+        case .failure(let error):
+            bannerController?.present(error)
             return false
         }
-        
-        return true
     }
-    
     
     func setTransactionDraft(_ transactionDraft: TransactionSendDraft) {
         self.transactionDraft = transactionDraft
+        
+        var account = transactionDraft.from
+        updateLedgerDetailOfRekeyedAccountIfNeeded(for: &account)
+        self.transactionDraft?.from = account
+    }
+    
+    private func updateLedgerDetailOfRekeyedAccountIfNeeded(for account: inout Account) {
+        guard let authAddress = account.authAddress,
+              let authAccount = sharedDataController.accountCollection[authAddress],
+              let ledgerDetail = authAccount.value.ledgerDetail else {
+            return
+            
+        }
+        
+        account.addRekeyDetail(
+            ledgerDetail,
+            for: authAddress
+        )
     }
     
     func stopBLEScan() {

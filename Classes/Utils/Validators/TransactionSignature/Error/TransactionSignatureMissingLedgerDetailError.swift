@@ -18,5 +18,5 @@ import Foundation
 
 struct TransactionSignatureMissingLedgerDetailError: TransactionSignatureValidationError {
     let title = "title-error".localized
-    let message = "ledger-rekey-error-not-found".localized
+    let message: String? = "ledger-rekey-error-not-found".localized
 }

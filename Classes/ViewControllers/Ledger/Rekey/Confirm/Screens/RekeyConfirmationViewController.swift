@@ -94,7 +94,7 @@ final class RekeyConfirmationViewController: BaseViewController {
 
 extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
-        if !transactionController.canSignTransaction(for: &account) { return }
+        if !transactionController.canSignTransaction(for: account) { return }
         
         let rekeyTransactionDraft = RekeyTransactionSendDraft(
             account: account,

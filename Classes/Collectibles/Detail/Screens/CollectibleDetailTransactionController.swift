@@ -43,7 +43,7 @@ extension CollectibleDetailTransactionController {
             return
         }
         
-        if !transactionController.canSignTransaction(for: &account) { return }
+        if !transactionController.canSignTransaction(for: account) { return }
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptOutBlockchainRequest(account: account, asset: asset)
@@ -68,7 +68,7 @@ extension CollectibleDetailTransactionController {
     }
 
     func optInToAsset() {
-        if !transactionController.canSignTransaction(for: &account) { return }
+        if !transactionController.canSignTransaction(for: account) { return }
         
         let monitor = self.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)

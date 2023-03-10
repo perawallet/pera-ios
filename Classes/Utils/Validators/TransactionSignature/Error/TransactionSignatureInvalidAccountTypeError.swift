@@ -18,8 +18,5 @@ import Foundation
 
 struct TransactionSignatureInvalidAccountTypeError: TransactionSignatureValidationError {
     let title = "title-error".localized
-    let message = "ledger-rekey-error-not-found".localized
-    
-    /// <note> We should not display an error if the account type is invalid.
-    func present(on bannerController: BannerController?) { }
+    let message: String? = nil
 }

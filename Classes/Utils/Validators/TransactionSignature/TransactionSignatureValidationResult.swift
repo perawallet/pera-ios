@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionSignatureErrorResolving.swift
+//   TransactionSignatureValidationResult.swift
 
 import Foundation
 
-protocol TransactionSignatureErrorResolving {
-    func findTransactionSignatureErrorIfPresent(for account: inout Account) -> TransactionSignatureValidationError?
+enum TransactionSignatureValidationResult {
+    case success
+    case failure(TransactionSignatureValidationError)
 }

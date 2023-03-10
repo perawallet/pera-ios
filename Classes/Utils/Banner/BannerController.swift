@@ -102,6 +102,15 @@ final class BannerController: MacaroonBanner.BannerController {
 
         enqueue(view)
     }
+    
+    func present(_ error: TransactionSignatureValidationError) {
+        guard let message = error.message else { return }
+        
+        presentErrorBanner(
+            title: error.title,
+            message: message
+        )
+    }
 }
 
 extension BannerController {
