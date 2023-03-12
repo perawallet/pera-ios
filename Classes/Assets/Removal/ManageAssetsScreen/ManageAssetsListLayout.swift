@@ -89,7 +89,7 @@ extension ManageAssetsListLayout {
                 collectionView,
                 forSectionAt: indexPath.section
             )
-        case .loading:
+        case .assetLoading:
             return sizeForLoading(
                 collectionView,
                 layout: collectionViewLayout,
@@ -186,7 +186,7 @@ extension ManageAssetsListLayout {
         layout listViewLayout: UICollectionViewLayout,
         forSectionAt section: Int
     ) -> CGSize{
-        let sizeCacheIdentifier = ManageAssetsListItemLoadingCell.reuseIdentifier
+        let sizeCacheIdentifier = ManageAssetListLoadingCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -197,8 +197,8 @@ extension ManageAssetsListLayout {
             forSectionAt: section
         )
         let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let newSize = ManageAssetsListItemLoadingCell.calculatePreferredSize(
-            for: ManageAssetsListItemLoadingCell.theme,
+        let newSize = ManageAssetListLoadingCell.calculatePreferredSize(
+            for: ManageAssetListLoadingCell.theme,
             fittingIn: maxSize
         )
         

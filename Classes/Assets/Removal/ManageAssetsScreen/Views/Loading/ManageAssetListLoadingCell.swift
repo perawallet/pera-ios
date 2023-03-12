@@ -12,35 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListItemLoadingCell.swift
+//   ManageAssetListLoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
 
-final class ManageAssetsListItemLoadingCell: CollectionCell<ManageAssetsListItemLoadingView> {
+final class ManageAssetListLoadingCell: CollectionCell<ManageAssetListLoadingView> {
     override class var contextPaddings: LayoutPaddings {
-        return (20, 24, 20, 24)
+        return (0, 24, 0, 24)
     }
     
-    static let theme = ManageAssetsListItemLoadingViewTheme()
+    static let theme = ManageAssetListLoadingViewTheme()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        contextView.customize(Self.theme)
-        
-        let separator = Separator(
-            color: Colors.Layer.grayLighter,
-            size: 1,
-            position: .bottom((80, 24))
-        )
-        separatorStyle = .single(separator)
+    override func getContextView() -> ManageAssetListLoadingView {
+        return ManageAssetListLoadingView(Self.theme)
     }
 }
 
-extension ManageAssetsListItemLoadingCell {
+extension ManageAssetListLoadingCell {
     static func calculatePreferredSize(
-        for theme: ManageAssetsListItemLoadingViewTheme,
+        for theme: ManageAssetListLoadingViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let contextHorizontalPaddings = contextPaddings.leading + contextPaddings.trailing
@@ -51,11 +42,12 @@ extension ManageAssetsListItemLoadingCell {
         )
         let width = (preferredSize.width + contextHorizontalPaddings).ceil()
         let height = (preferredSize.height + contextPaddings.top + contextPaddings.bottom).ceil()
+        
         return CGSize(width: width, height: height)
     }
 }
 
-extension ManageAssetsListItemLoadingCell {
+extension ManageAssetListLoadingCell {
     func startAnimating() {
         contextView.startAnimating()
     }

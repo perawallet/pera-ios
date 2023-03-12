@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   ManageAssetsViewController.swift
+//  ManageAssetsViewController.swift
 
 import UIKit
 import MagpieHipo
@@ -57,6 +57,7 @@ final class ManageAssetsViewController:
     ) {
         self.query = query
         self.dataController = dataController
+        
         super.init(configuration: configuration)
     }
 
@@ -81,6 +82,7 @@ final class ManageAssetsViewController:
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
@@ -93,9 +95,9 @@ final class ManageAssetsViewController:
         }
     }
     
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        
         stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
     
@@ -172,8 +174,8 @@ extension ManageAssetsViewController {
                 cell as? OptOutCollectibleAssetListItemCell,
                 for: item
             )
-        case .loading:
-            startAnimatingLoadingCellIfNeeded(cell as? ManageAssetsListItemLoadingCell)
+        case .assetLoading:
+            startAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
         default:
             break
         }
@@ -189,8 +191,8 @@ extension ManageAssetsViewController {
         }
         
         switch itemIdentifier {
-        case .loading:
-            stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetsListItemLoadingCell)
+        case .assetLoading:
+            stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
         default:
             break
         }
@@ -373,8 +375,9 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 extension ManageAssetsViewController {
     private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
         for cell in contextView.assetsCollectionView.visibleCells {
-            if let loadingCell = cell as? ManageAssetsListItemLoadingCell {
+            if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.startAnimating()
+                return
             }
             
             if let assetCell = cell as? OptOutAssetListItemCell,
@@ -393,18 +396,18 @@ extension ManageAssetsViewController {
     
     private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
         for cell in contextView.assetsCollectionView.visibleCells {
-            if let loadingCell = cell as? ManageAssetsListItemLoadingCell {
+            if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.stopAnimating()
                 return
             }
         }
     }
     
-    private func startAnimatingLoadingCellIfNeeded(_ cell: ManageAssetsListItemLoadingCell?) {
+    private func startAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
         cell?.startAnimating()
     }
     
-    private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetsListItemLoadingCell?) {
+    private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
         cell?.stopAnimating()
     }
 }

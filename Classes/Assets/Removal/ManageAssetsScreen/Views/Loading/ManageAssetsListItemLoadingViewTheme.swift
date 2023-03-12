@@ -18,35 +18,37 @@ import Foundation
 import MacaroonUIKit
 
 struct ManageAssetsListItemLoadingViewTheme: StyleSheet, LayoutSheet {
-    var imageViewCorner: LayoutMetric
-    var imageViewSize: LayoutSize
+    var imageCorner: LayoutMetric
+    var imageSize: LayoutSize
 
+    var textContainerWidth: LayoutMetric
     var textContainerLeadingMargin: LayoutMetric
     
-    var titleViewCorner: LayoutMetric
-    var titleViewSize: LayoutSize
+    var titleCorner: LayoutMetric
+    var titleSize: LayoutSize
     
-    var subtitleViewCorner: LayoutMetric
-    var subtitleViewSize: LayoutSize
+    var subtitleCorner: LayoutMetric
+    var subtitleSize: LayoutSize
     var subtitleTopPadding: LayoutMetric
     
-    var actionViewCorner: LayoutMetric
-    var actionViewSize: LayoutSize
+    var actionCorner: LayoutMetric
+    var actionSize: LayoutSize
     
     init(_ family: LayoutFamily) {
-        self.imageViewCorner = 20
-        self.imageViewSize = (40, 40)
+        self.imageCorner = 20
+        self.imageSize = (40, 40)
         
+        self.textContainerWidth = 114
         self.textContainerLeadingMargin = 16
         
-        self.titleViewCorner = 4
-        self.titleViewSize = (114, 20)
+        self.titleCorner = 4
+        self.titleSize = (114, 20)
 
-        self.subtitleViewCorner = 4
-        self.subtitleViewSize = (44, 16)
+        self.subtitleCorner = 4
+        self.subtitleSize = (44, 16)
         self.subtitleTopPadding = 10
 
-        self.actionViewCorner = 8
-        self.actionViewSize = (36, 36)
+        self.actionCorner = 8
+        self.actionSize = (36, 36)
     }
 }

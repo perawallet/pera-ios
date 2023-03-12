@@ -37,7 +37,7 @@ enum ManageAssetsListItem: Hashable {
     case asset(OptOutAssetListItem)
     case collectibleAsset(OptOutCollectibleAssetListItem)
     case empty(ManageAssetsListEmptyItem)
-    case loading(String)
+    case assetLoading
 }
 
 enum ManageAssetsListEmptyItem: Hashable {
@@ -51,7 +51,7 @@ extension ManageAssetsListItem {
         case .asset(let item): return item.model
         case .collectibleAsset(let item): return item.model
         case .empty: return nil
-        case .loading: return nil
+        case .assetLoading: return nil
         }
     }
 }

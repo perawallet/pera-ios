@@ -22,116 +22,90 @@ final class ManageAssetsListItemLoadingView:
     ListReusable,
     ShimmerAnimationDisplaying {
     private lazy var imageView = ShimmerView()
-    private lazy var textContainer = UIView()
+    private lazy var textContainerView = UIView()
     private lazy var titleView = ShimmerView()
     private lazy var subtitleView = ShimmerView()
     private lazy var actionView = ShimmerView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        isUserInteractionEnabled = false
-        customize(ManageAssetsListItemLoadingViewTheme())
-    }
-    
     func customize(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        addImageView(theme)
+        addImage(theme)
         addTextContainer(theme)
-        addActionView(theme)
+        addAction(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-    
-    class func calculatePreferredSize(
-        for theme: ManageAssetsListItemLoadingViewTheme,
-        fittingIn size: CGSize
-    ) -> CGSize {
-        let width = size.width
-        
-        let imageHeight = theme.imageViewSize.h
-        let textContainerHeight =
-            theme.titleViewSize.h +
-            theme.subtitleTopPadding +
-            theme.subtitleViewSize.h
-        let actionHeight = theme.actionViewSize.h
-        
-        let contentHeight = max(textContainerHeight.ceil(), actionHeight.ceil())
-        let preferredHeight = max(imageHeight.ceil(), contentHeight)
-        
-        return CGSize((width, min(preferredHeight.ceil(), size.height)))
-    }
 }
 
 extension ManageAssetsListItemLoadingView {
-    private func addImageView(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        imageView.draw(corner: Corner(radius: theme.imageViewCorner))
+    private func addImage(_ theme: ManageAssetsListItemLoadingViewTheme) {
+        imageView.draw(corner: Corner(radius: theme.imageCorner))
         
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.size.equalTo(
-                CGSize(width: theme.imageViewSize.w,
-                       height: theme.imageViewSize.h)
+                CGSize(width: theme.imageSize.w,
+                       height: theme.imageSize.h)
             )
         }
     }
     
     private func addTextContainer(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        addSubview(textContainer)
-        textContainer.snp.makeConstraints {
+        addSubview(textContainerView)
+        textContainerView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.textContainerLeadingMargin)
             $0.centerY.equalToSuperview()
-            $0.fitToWidth(theme.titleViewSize.w)
+            $0.fitToWidth(theme.textContainerWidth)
         }
         
-        addTitleView(theme)
-        addSubtitleView(theme)
+        addTitle(theme)
+        addSubtitle(theme)
     }
     
-    private func addTitleView(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        titleView.draw(corner: Corner(radius: theme.titleViewCorner))
+    private func addTitle(_ theme: ManageAssetsListItemLoadingViewTheme) {
+        titleView.draw(corner: Corner(radius: theme.titleCorner))
 
-        textContainer.addSubview(titleView)
+        textContainerView.addSubview(titleView)
         titleView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.size.equalTo(
                 CGSize(
-                    width: theme.titleViewSize.w,
-                    height: theme.titleViewSize.h
+                    width: theme.titleSize.w,
+                    height: theme.titleSize.h
                 )
             )
         }
     }
     
-    private func addSubtitleView(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        subtitleView.draw(corner: Corner(radius: theme.subtitleViewCorner))
+    private func addSubtitle(_ theme: ManageAssetsListItemLoadingViewTheme) {
+        subtitleView.draw(corner: Corner(radius: theme.subtitleCorner))
 
-        textContainer.addSubview(subtitleView)
+        textContainerView.addSubview(subtitleView)
         subtitleView.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(theme.subtitleTopPadding)
             $0.leading.bottom.equalToSuperview()
             $0.size.equalTo(
                 CGSize(
-                    width: theme.subtitleViewSize.w,
-                    height: theme.subtitleViewSize.h
+                    width: theme.subtitleSize.w,
+                    height: theme.subtitleSize.h
                 )
             )
         }
     }
     
-    private func addActionView(_ theme: ManageAssetsListItemLoadingViewTheme) {
-        actionView.draw(corner: Corner(radius: theme.actionViewCorner))
+    private func addAction(_ theme: ManageAssetsListItemLoadingViewTheme) {
+        actionView.draw(corner: Corner(radius: theme.actionCorner))
 
         addSubview(actionView)
         actionView.snp.makeConstraints {
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.size.equalTo(
-                CGSize(width: theme.actionViewSize.w,
-                       height: theme.actionViewSize.h)
+                CGSize(width: theme.actionSize.w,
+                       height: theme.actionSize.h)
             )
         }
     }
