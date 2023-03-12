@@ -19,15 +19,12 @@ import Foundation
 struct ManageAssetListQuery: Equatable {
     var keyword: String?
     
-    let hideCreatedAssets = true
-    
     var sortingAlgorithm: AccountAssetSortingAlgorithm?
     
     init(
-        filteringBy filters: AssetFilterOptions? = nil,
         sortingBy order: AccountAssetSortingAlgorithm? = nil
     ) {
-        update(withSort: order)
+        sortingAlgorithm = order
     }
     
     static func == (
@@ -41,20 +38,18 @@ struct ManageAssetListQuery: Equatable {
 }
 
 extension ManageAssetListQuery {
-    mutating func update(withSort order: AccountAssetSortingAlgorithm?) {
-        sortingAlgorithm = order
-    }
-}
-
-extension ManageAssetListQuery {
     func matches(
         asset: Asset,
         account: Account
     ) -> Bool {
-        return matchesByKeyword(asset)
+        return matchesByKeyword(asset) &&
+            matchesByFilters(
+                asset: asset,
+                account: account
+            )
     }
     
-    func matchesByKeyword(_ asset: Asset) -> Bool {
+    private func matchesByKeyword(_ asset: Asset) -> Bool {
         guard let keyword = keyword.unwrapNonEmptyString() else {
             return true
         }
@@ -77,17 +72,20 @@ extension ManageAssetListQuery {
         return false
     }
     
-    func matchesByFilters(
-        _ asset: Asset,
-        _ account: Account
+    private func matchesByFilters(
+        asset: Asset,
+        account: Account
     ) -> Bool {
-        return shouldDisplayNonCreatedAsset(asset, account)
+        return shouldDisplayAssetCreatedByAccount(
+            asset: asset,
+            account: account
+        )
     }
     
-    private func shouldDisplayNonCreatedAsset(
-        _ asset: Asset,
-        _ account: Account
+    private func shouldDisplayAssetCreatedByAccount(
+        asset: Asset,
+        account: Account
     ) -> Bool {
-        return asset.creator?.address != account.address
+        return !account.isCreator(of: asset)
     }
 }

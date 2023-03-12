@@ -4040,9 +4040,9 @@
 		D419005B273FBA0E00F7829D /* ManageAssetViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005A273FBA0E00F7829D /* ManageAssetViewTheme.swift */; };
 		D419005C273FBA0E00F7829D /* ManageAssetViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005A273FBA0E00F7829D /* ManageAssetViewTheme.swift */; };
 		D419005D273FBA0E00F7829D /* ManageAssetViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005A273FBA0E00F7829D /* ManageAssetViewTheme.swift */; };
-		D419005F273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */; };
-		D4190060273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */; };
-		D4190061273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */; };
+		D419005F273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetViewController+Theme.swift */; };
+		D4190060273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetViewController+Theme.swift */; };
+		D4190061273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419005E273FBF7F00F7829D /* ManageAssetViewController+Theme.swift */; };
 		D419430027353FE80055EC70 /* PageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41942FF27353FE80055EC70 /* PageContainer.swift */; };
 		D4194302273540BE0055EC70 /* PageBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4194301273540BE0055EC70 /* PageBarButton.swift */; };
 		D4194304273540DA0055EC70 /* PageBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4194303273540DA0055EC70 /* PageBarItem.swift */; };
@@ -7874,7 +7874,7 @@
 		D4176C2426F340590017A4AB /* LedgerAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountViewTheme.swift; sourceTree = "<group>"; };
 		D41868DE287F0D8C0066DDC0 /* ManagementItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementItemCell.swift; sourceTree = "<group>"; };
 		D419005A273FBA0E00F7829D /* ManageAssetViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAssetViewTheme.swift; sourceTree = "<group>"; };
-		D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManageAssetsViewController+Theme.swift"; sourceTree = "<group>"; };
+		D419005E273FBF7F00F7829D /* ManageAssetViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManageAssetViewController+Theme.swift"; sourceTree = "<group>"; };
 		D41942FF27353FE80055EC70 /* PageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageContainer.swift; sourceTree = "<group>"; };
 		D4194301273540BE0055EC70 /* PageBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageBarButton.swift; sourceTree = "<group>"; };
 		D4194303273540DA0055EC70 /* PageBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageBarItem.swift; sourceTree = "<group>"; };
@@ -13002,7 +13002,7 @@
 				2BCE8F96284A4DFC00C6FD6C /* AssetManagementViewController+Theme.swift */,
 				2B5A277C27F6DBEB006C469B /* ManageAssetListLayout.swift */,
 				2B448722237964D700C19FDE /* ManageAssetViewController.swift */,
-				D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */,
+				D419005E273FBF7F00F7829D /* ManageAssetViewController+Theme.swift */,
 				2BCE8F92284A43BD00C6FD6C /* ManagementOptionsViewController.swift */,
 				2B5A278427F6EB0C006C469B /* Data */,
 				D46432E328B61C8100BF4EC2 /* Views */,
@@ -20398,7 +20398,7 @@
 				F034520D28B2A0F6009467A0 /* OptInAssetListItemAccessory.swift in Sources */,
 				17A7666A290859C400A8746C /* DiscoverDappDetailScreen.swift in Sources */,
 				2B0E00C027881AB800D6B2E2 /* SecuritySettings.swift in Sources */,
-				D4190061273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
+				D4190061273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */,
 				F012643B2836FACE00380C4E /* WalletConnectConfig.swift in Sources */,
 				D4A875A327C9A2E700550935 /* ShimmerAnimationConfiguration.swift in Sources */,
 				F0DB416727938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
@@ -22418,7 +22418,7 @@
 				2BC635E528870B6F00507AEA /* PrimaryTitleViewModel.swift in Sources */,
 				2BCBF46427B557C9008814C7 /* MultilineTextInputFieldViewTheme.swift in Sources */,
 				2B088518288EBBC80030D9CA /* AssetQuickActionViewTheme.swift in Sources */,
-				D4190060273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
+				D4190060273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */,
 				D4D09B7A27EE6DCE00DEEECA /* SendCollectibleViewController+Layout.swift in Sources */,
 				D4F72B7F28E4CAC000907287 /* AccountNameTitleViewTheme.swift in Sources */,
 				95BB6BEF27A0096200F2A2F1 /* TitledTransactionAccountNameViewTheme.swift in Sources */,
@@ -24553,7 +24553,7 @@
 				F01264392836FACE00380C4E /* WalletConnectConfig.swift in Sources */,
 				2B69A9C828617D46004014E2 /* QRAddContactOptionViewModel.swift in Sources */,
 				2BA9F012268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift in Sources */,
-				D419005F273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
+				D419005F273FBF7F00F7829D /* ManageAssetViewController+Theme.swift in Sources */,
 				2B270391263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				F0DB416527938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
 				17A76668290859C400A8746C /* DiscoverDappDetailScreen.swift in Sources */,

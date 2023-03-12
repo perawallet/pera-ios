@@ -241,4 +241,8 @@ extension Account {
 
         return false
     }
+    
+    func isCreator(of asset: Asset) -> Bool {
+        return self.address == asset.creator?.address
+    }
 }

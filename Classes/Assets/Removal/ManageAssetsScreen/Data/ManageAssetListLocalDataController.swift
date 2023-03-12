@@ -245,9 +245,9 @@ extension ManageAssetListLocalDataController {
     private func makeUpdatesForContent(
         query: ManageAssetListQuery?
     ) -> Updates {
-        let listItems = makeOptOutListItems(query)
+        let assetlistItems = makeAssetListItems(query)
         
-        let shouldShowEmptyContent = listItems.isEmpty
+        let shouldShowEmptyContent = assetlistItems.isEmpty
         
         if shouldShowEmptyContent {
             let isSearching = !(query?.keyword.isNilOrEmpty ?? true)
@@ -256,16 +256,16 @@ extension ManageAssetListLocalDataController {
         
         var snapshot = Snapshot()
         
-        appendSectionContent(
+        appendSectionsForContent(
             query: query,
-            items: listItems,
+            items: assetlistItems,
             into: &snapshot
         )
         
         return Updates(snapshot: snapshot)
     }
     
-    private func appendSectionContent(
+    private func appendSectionsForContent(
         query: ManageAssetListQuery?,
         items: [ManageAssetListItem],
         into snapshot: inout Snapshot
@@ -277,7 +277,7 @@ extension ManageAssetListLocalDataController {
         )
     }
     
-    private func makeOptOutListItems(
+    private func makeAssetListItems(
         _ query: ManageAssetListQuery?
     ) -> [ManageAssetListItem] {
         let assets = account.allAssets
@@ -293,15 +293,7 @@ extension ManageAssetListLocalDataController {
                 return nil
             }
             
-            if let collectibleAsset = asset as? CollectibleAsset {
-                return makeCollectibleAssetItem(collectibleAsset)
-            }
-            
-            if let standardAsset = asset as? StandardAsset {
-                return makeStandardAssetItem(standardAsset)
-            }
-            
-            return nil
+            return makeItemForAsset(asset)
         }
         
         guard let sortingAlgorithm = query?.sortingAlgorithm else {
@@ -309,15 +301,18 @@ extension ManageAssetListLocalDataController {
         }
         
         return assetItems.sorted {
-            guard let firstItem = $0.asset,
-                  let secondItem = $1.asset else {
-                return false
-            }
-            
             return sortingAlgorithm.getFormula(
-                asset: firstItem,
-                otherAsset: secondItem
+                asset: $0.asset!,
+                otherAsset: $1.asset!
             )
+        }
+    }
+    
+    private func makeItemForAsset(_ asset: Asset) -> ManageAssetListItem? {
+        switch asset {
+        case let nonNFTasset as StandardAsset: return makeStandardAssetItem(nonNFTasset)
+        case let nftAsset as CollectibleAsset: return makeCollectibleAssetItem(nftAsset)
+        default: return nil
         }
     }
     

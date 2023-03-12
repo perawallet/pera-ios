@@ -693,7 +693,6 @@ class Router:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(dataController):
             let query = ManageAssetListQuery(
-                filteringBy: .init(),
                 sortingBy: appConfiguration.sharedDataController.selectedAccountAssetSortingAlgorithm
             )
             viewController = ManageAssetViewController(
