@@ -16,6 +16,7 @@
 //  ManageAssetViewController.swift
 
 import UIKit
+import MacaroonUIKit
 import MagpieHipo
 
 final class ManageAssetViewController:
@@ -25,12 +26,19 @@ final class ManageAssetViewController:
     private lazy var theme = Theme()
     
     private lazy var listLayout = ManageAssetListLayout(dataSource)
-    private lazy var dataSource = ManageAssetListDataSource(contextView.assetsCollectionView)
+    private lazy var dataSource = ManageAssetListDataSource(listView)
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var contextView = ManageAssetView()
+    private lazy var titleView = Label()
+    private lazy var subtitleView = Label()
+    private lazy var searchInputView = SearchInputView()
+    private lazy var searchInputBackgroundView: EffectView = .init()
+    private lazy var listView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: ManageAssetListLayout.build()
+    )
     
     private var account: Account {
         return dataController.account
@@ -63,6 +71,8 @@ final class ManageAssetViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addUI()
 
         dataController.eventHandler = {
             [weak self] event in
@@ -101,19 +111,83 @@ final class ManageAssetViewController:
         stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
     
-    override func setListeners() {
-        contextView.assetsCollectionView.dataSource = dataSource
-        contextView.assetsCollectionView.delegate = self
-        contextView.setSearchInputDelegate(self)
+    private func addUI() {
+        addBackground()
+        addTitle()
+        addSubtitle()
+        addSearchInput()
+        addList()
     }
+}
 
-    override func prepareLayout() {
-        contextView.customize(theme.contextViewTheme)
-        
-        view.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+extension ManageAssetViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+
+        view.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.leading.trailing == theme.horizontalPadding
+            $0.top == theme.titleTopPadding
         }
+    }
+    
+    private func addSubtitle() {
+        subtitleView.customizeAppearance(theme.subtitle)
+        subtitleView.editText = theme.subtitleText
+        
+        view.addSubview(subtitleView)
+        subtitleView.snp.makeConstraints {
+            $0.leading.trailing == theme.horizontalPadding
+            $0.top == titleView.snp.bottom + theme.subtitleTopPadding
+        }
+    }
+    
+    private func addSearchInput() {
+        searchInputView.customize(theme.searchInputTheme)
+        
+        view.addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
+            $0.top == subtitleView.snp.bottom + theme.searchInputTopPadding
+            $0.leading.trailing == theme.horizontalPadding
+        }
+        
+        searchInputView.delegate = self
+        
+        searchInputBackgroundView.effect = theme.searchInputBackground
+        searchInputBackgroundView.isUserInteractionEnabled = false
+
+        view.insertSubview(
+            searchInputBackgroundView,
+            belowSubview: searchInputView
+        )
+        searchInputBackgroundView.snp.makeConstraints {
+            $0.top == searchInputView.snp.top
+            $0.leading.trailing == 0
+            $0.bottom == searchInputView + theme.spacingBetweenSearchInputAndSearchInputBackground
+        }
+    }
+    
+    private func addList() {
+        listView.customizeBaseAppearance(backgroundColor: theme.listViewBackgroundColor)
+        
+        view.insertSubview(
+            listView,
+            belowSubview: searchInputBackgroundView
+        )
+        listView.snp.makeConstraints {
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing.bottom == 0
+        }
+        
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.keyboardDismissMode = .interactive
+        listView.delegate = self
     }
 }
 
@@ -319,7 +393,7 @@ extension ManageAssetViewController {
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
-            contextView.assetsCollectionView.cellForItem(at: $0)
+            listView.cellForItem(at: $0)
         } as? OptOutAssetListItemCell
     }
 
@@ -336,7 +410,7 @@ extension ManageAssetViewController {
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
-            contextView.assetsCollectionView.cellForItem(at: $0)
+            listView.cellForItem(at: $0)
         } as? OptOutCollectibleAssetListItemCell
     }
 
@@ -374,7 +448,7 @@ extension ManageAssetViewController: SearchInputViewDelegate {
 
 extension ManageAssetViewController {
     private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
-        for cell in contextView.assetsCollectionView.visibleCells {
+        for cell in listView.visibleCells {
             if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.startAnimating()
                 return
@@ -395,7 +469,7 @@ extension ManageAssetViewController {
     }
     
     private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
-        for cell in contextView.assetsCollectionView.visibleCells {
+        for cell in listView.visibleCells {
             if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.stopAnimating()
                 return

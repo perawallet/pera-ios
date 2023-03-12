@@ -28,6 +28,12 @@ final class ManageAssetListLayout: NSObject {
     ) {
         self.dataSource = dataSource
     }
+    
+    static func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
+    }
 }
 
 extension ManageAssetListLayout {
@@ -51,12 +57,7 @@ extension ManageAssetListLayout {
                 right: 24
             )
         case .assets:
-            return UIEdgeInsets(
-                top: 20,
-                left: 0,
-                bottom: 0,
-                right: 0
-            )
+            return .zero
         }
     }
     
