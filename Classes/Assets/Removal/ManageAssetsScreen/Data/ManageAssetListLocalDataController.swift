@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListLocalDataController.swift
+//   ManageAssetListLocalDataController.swift
 
 import Foundation
 import MacaroonUtils
 
-final class ManageAssetsListLocalDataController:
-    ManageAssetsListDataController,
+final class ManageAssetListLocalDataController:
+    ManageAssetListDataController,
     SharedDataControllerObserver {
-    var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)?
+    var eventHandler: ((ManageAssetListDataControllerEvent) -> Void)?
 
     private lazy var asyncLoadingQueue = createAsyncLoadingQueue()
     private lazy var collectibleAmountFormatter = createCollectibleAmountFormatter()
@@ -29,8 +29,8 @@ final class ManageAssetsListLocalDataController:
     
     private(set) var account: Account
     
-    private var nextQuery: ManageAssetsListQuery?
-    private var lastQuery: ManageAssetsListQuery?
+    private var nextQuery: ManageAssetListQuery?
+    private var lastQuery: ManageAssetListQuery?
     private var lastSnapshot: Snapshot?
     
     private var canDeliverUpdatesForAssets = false
@@ -51,8 +51,8 @@ final class ManageAssetsListLocalDataController:
     }
 }
 
-extension ManageAssetsListLocalDataController {
-    func load(query: ManageAssetsListQuery?) {
+extension ManageAssetListLocalDataController {
+    func load(query: ManageAssetListQuery?) {
         nextQuery = query
         
         if canDeliverUpdatesForAssets {
@@ -62,7 +62,7 @@ extension ManageAssetsListLocalDataController {
         }
     }
     
-    func loadNext(query: ManageAssetsListQuery?) {
+    func loadNext(query: ManageAssetListQuery?) {
         if query == lastQuery {
             nextQuery = nil
             return
@@ -75,7 +75,7 @@ extension ManageAssetsListLocalDataController {
         }
     }
     
-    func customize(query: ManageAssetsListQuery?) {
+    func customize(query: ManageAssetListQuery?) {
         cancelOngoingSearching()
         deliverUpdatesForLoading()
         
@@ -96,7 +96,7 @@ extension ManageAssetsListLocalDataController {
         asyncLoadingQueue.resume()
     }
     
-    func search(query: ManageAssetsListQuery?) {
+    func search(query: ManageAssetListQuery?) {
         cancelOngoingLoading()
         deliverUpdatesForLoading()
         
@@ -122,7 +122,7 @@ extension ManageAssetsListLocalDataController {
         }
     }
     
-    private func loadFirst(query: ManageAssetsListQuery?) {
+    private func loadFirst(query: ManageAssetListQuery?) {
         deliverUpdatesForLoading()
 
         lastQuery = query
@@ -131,7 +131,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func reload() {
         let task = AsyncTask {
             [weak self] completionBlock in
@@ -159,7 +159,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     func sharedDataController(
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
@@ -175,7 +175,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func deliverUpdatesForLoading() {
         let updates = makeUpdatesForLoading()
         publish(updates: updates)
@@ -188,7 +188,7 @@ extension ManageAssetsListLocalDataController {
     }
     
     private func appendSectionForAssetsLoading(into snapshot: inout Snapshot) {
-        let items: [ManageAssetsListItem] = [.assetLoading]
+        let items: [ManageAssetListItem] = [.assetLoading]
         snapshot.appendSections([.assets])
         snapshot.appendItems(
             items,
@@ -197,7 +197,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func makeUpdatesForNoContent() -> Updates {
         var snapshot = Snapshot()
         appendSectionForNoContent(into: &snapshot)
@@ -227,10 +227,10 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func deliverUpdatesForContent(
         when condition: () -> Bool,
-        query: ManageAssetsListQuery?
+        query: ManageAssetListQuery?
     ) {
         let updates = makeUpdatesForContent(query: query)
         
@@ -243,7 +243,7 @@ extension ManageAssetsListLocalDataController {
     }
     
     private func makeUpdatesForContent(
-        query: ManageAssetsListQuery?
+        query: ManageAssetListQuery?
     ) -> Updates {
         let listItems = makeOptOutListItems(query)
         
@@ -266,8 +266,8 @@ extension ManageAssetsListLocalDataController {
     }
     
     private func appendSectionContent(
-        query: ManageAssetsListQuery?,
-        items: [ManageAssetsListItem],
+        query: ManageAssetListQuery?,
+        items: [ManageAssetListItem],
         into snapshot: inout Snapshot
     ) {
         snapshot.appendSections([.assets])
@@ -278,11 +278,11 @@ extension ManageAssetsListLocalDataController {
     }
     
     private func makeOptOutListItems(
-        _ query: ManageAssetsListQuery?
-    ) -> [ManageAssetsListItem] {
+        _ query: ManageAssetListQuery?
+    ) -> [ManageAssetListItem] {
         let assets = account.allAssets
         
-        let assetItems: [ManageAssetsListItem] = assets.someArray.compactMap {
+        let assetItems: [ManageAssetListItem] = assets.someArray.compactMap {
             asset in
             
             if let query,
@@ -321,7 +321,7 @@ extension ManageAssetsListLocalDataController {
         }
     }
     
-    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetsListItem {
+    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetListItem {
         let item = CollectibleAssetItem(
             account: account,
             asset: asset,
@@ -331,7 +331,7 @@ extension ManageAssetsListLocalDataController {
         return .collectibleAsset(listItem)
     }
     
-    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetsListItem {
+    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetListItem {
         let currency = sharedDataController.currency
         let currencyFormatter = currencyFormatter
         let item = AssetItem(
@@ -344,13 +344,13 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func publish(updates: Updates) {
         lastSnapshot = updates.snapshot
         publish(event: .didUpdate(updates))
     }
     
-    private func publish(event: ManageAssetsListDataControllerEvent) {
+    private func publish(event: ManageAssetListDataControllerEvent) {
         asyncMain { [weak self] in
             guard let self else { return }
 
@@ -359,7 +359,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     func hasOptedOut(_ asset: Asset) -> OptOutStatus {
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let hasPendingOptedOut = monitor.hasPendingOptOutRequest(
@@ -377,14 +377,14 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
+extension ManageAssetListLocalDataController {
     private func createAsyncLoadingQueue() -> AsyncSerialQueue {
         let underlyingQueue = DispatchQueue(
-            label: "pera.queue.manageAssets.updates",
+            label: "pera.queue.manageAsset.updates",
             qos: .userInitiated
         )
         return .init(
-            name: "manageAssetsListDataController.asyncLoadingQueue",
+            name: "manageAssetListDataController.asyncLoadingQueue",
             underlyingQueue: underlyingQueue
         )
     }
@@ -402,7 +402,7 @@ extension ManageAssetsListLocalDataController {
     }
 }
 
-extension ManageAssetsListLocalDataController {
-    typealias Updates = ManageAssetsListUpdates
-    typealias Snapshot = ManageAssetsListUpdates.Snapshot
+extension ManageAssetListLocalDataController {
+    typealias Updates = ManageAssetListUpdates
+    typealias Snapshot = ManageAssetListUpdates.Snapshot
 }

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListItemLoadingView.swift
+//   ManageAssetListItemLoadingView.swift
 
 import MacaroonUIKit
 import UIKit
 
-final class ManageAssetsListItemLoadingView:
+final class ManageAssetListItemLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
@@ -27,7 +27,7 @@ final class ManageAssetsListItemLoadingView:
     private lazy var subtitleView = ShimmerView()
     private lazy var actionView = ShimmerView()
     
-    func customize(_ theme: ManageAssetsListItemLoadingViewTheme) {
+    func customize(_ theme: ManageAssetListItemLoadingViewTheme) {
         addImage(theme)
         addTextContainer(theme)
         addAction(theme)
@@ -38,8 +38,8 @@ final class ManageAssetsListItemLoadingView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
-extension ManageAssetsListItemLoadingView {
-    private func addImage(_ theme: ManageAssetsListItemLoadingViewTheme) {
+extension ManageAssetListItemLoadingView {
+    private func addImage(_ theme: ManageAssetListItemLoadingViewTheme) {
         imageView.draw(corner: Corner(radius: theme.imageCorner))
         
         addSubview(imageView)
@@ -53,7 +53,7 @@ extension ManageAssetsListItemLoadingView {
         }
     }
     
-    private func addTextContainer(_ theme: ManageAssetsListItemLoadingViewTheme) {
+    private func addTextContainer(_ theme: ManageAssetListItemLoadingViewTheme) {
         addSubview(textContainerView)
         textContainerView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.textContainerLeadingMargin)
@@ -65,7 +65,7 @@ extension ManageAssetsListItemLoadingView {
         addSubtitle(theme)
     }
     
-    private func addTitle(_ theme: ManageAssetsListItemLoadingViewTheme) {
+    private func addTitle(_ theme: ManageAssetListItemLoadingViewTheme) {
         titleView.draw(corner: Corner(radius: theme.titleCorner))
 
         textContainerView.addSubview(titleView)
@@ -80,7 +80,7 @@ extension ManageAssetsListItemLoadingView {
         }
     }
     
-    private func addSubtitle(_ theme: ManageAssetsListItemLoadingViewTheme) {
+    private func addSubtitle(_ theme: ManageAssetListItemLoadingViewTheme) {
         subtitleView.draw(corner: Corner(radius: theme.subtitleCorner))
 
         textContainerView.addSubview(subtitleView)
@@ -96,7 +96,7 @@ extension ManageAssetsListItemLoadingView {
         }
     }
     
-    private func addAction(_ theme: ManageAssetsListItemLoadingViewTheme) {
+    private func addAction(_ theme: ManageAssetListItemLoadingViewTheme) {
         actionView.draw(corner: Corner(radius: theme.actionCorner))
 
         addSubview(actionView)

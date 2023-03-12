@@ -541,7 +541,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let dataController = ManageAssetsListLocalDataController(
+        let dataController = ManageAssetListLocalDataController(
             account: accountHandle.value,
             sharedDataController: sharedDataController
         )
@@ -549,7 +549,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         let controller = open(
             .removeAsset(dataController: dataController),
             by: .present
-        ) as? ManageAssetsViewController
+        ) as? ManageAssetViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
     

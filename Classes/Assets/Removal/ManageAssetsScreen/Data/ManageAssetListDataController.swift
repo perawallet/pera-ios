@@ -12,40 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListDataController.swift
+//   ManageAssetListDataController.swift
 
 import Foundation
 import UIKit
 
-protocol ManageAssetsListDataController: AnyObject {
-    var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)? { get set }
+protocol ManageAssetListDataController: AnyObject {
+    var eventHandler: ((ManageAssetListDataControllerEvent) -> Void)? { get set }
 
     var account: Account { get }
 
-    func load(query: ManageAssetsListQuery?)
+    func load(query: ManageAssetListQuery?)
     func hasOptedOut(_ asset: Asset) -> OptOutStatus
 }
 
-enum ManageAssetsListSection:
+enum ManageAssetListSection:
     Int,
     Hashable {
     case assets
     case empty
 }
 
-enum ManageAssetsListItem: Hashable {
+enum ManageAssetListItem: Hashable {
     case asset(OptOutAssetListItem)
     case collectibleAsset(OptOutCollectibleAssetListItem)
-    case empty(ManageAssetsListEmptyItem)
+    case empty(ManageAssetListEmptyItem)
     case assetLoading
 }
 
-enum ManageAssetsListEmptyItem: Hashable {
+enum ManageAssetListEmptyItem: Hashable {
     case noContent
     case noContentSearch
 }
 
-extension ManageAssetsListItem {
+extension ManageAssetListItem {
     var asset: Asset? {
         switch self {
         case .asset(let item): return item.model
@@ -56,14 +56,14 @@ extension ManageAssetsListItem {
     }
 }
 
-enum ManageAssetsListDataControllerEvent {
-    case didUpdate(ManageAssetsListUpdates)
+enum ManageAssetListDataControllerEvent {
+    case didUpdate(ManageAssetListUpdates)
 }
 
-struct ManageAssetsListUpdates {
+struct ManageAssetListUpdates {
     let snapshot: Snapshot
 }
 
-extension ManageAssetsListUpdates {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetsListSection, ManageAssetsListItem>
+extension ManageAssetListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetListSection, ManageAssetListItem>
 }

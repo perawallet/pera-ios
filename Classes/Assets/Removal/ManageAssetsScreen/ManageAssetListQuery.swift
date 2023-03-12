@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListQuery.swift
+//   ManageAssetListQuery.swift
 
 import Foundation
 
-struct ManageAssetsListQuery: Equatable {
+struct ManageAssetListQuery: Equatable {
     var keyword: String?
     
     let hideCreatedAssets = true
@@ -31,8 +31,8 @@ struct ManageAssetsListQuery: Equatable {
     }
     
     static func == (
-        lhs: ManageAssetsListQuery,
-        rhs: ManageAssetsListQuery
+        lhs: ManageAssetListQuery,
+        rhs: ManageAssetListQuery
     ) -> Bool {
         return
             lhs.keyword == rhs.keyword &&
@@ -40,13 +40,13 @@ struct ManageAssetsListQuery: Equatable {
     }
 }
 
-extension ManageAssetsListQuery {
+extension ManageAssetListQuery {
     mutating func update(withSort order: AccountAssetSortingAlgorithm?) {
         sortingAlgorithm = order
     }
 }
 
-extension ManageAssetsListQuery {
+extension ManageAssetListQuery {
     func matches(
         asset: Asset,
         account: Account

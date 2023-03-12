@@ -66,7 +66,7 @@ extension ManageAssetListLoadingView {
         }
         
         (1...theme.numberOfAssets).forEach { assetNumber in
-            let view = ManageAssetsListItemLoadingView()
+            let view = ManageAssetListItemLoadingView()
             view.customize(theme.asset)
             view.snp.makeConstraints {
                 $0.fitToHeight(theme.assetHeight)

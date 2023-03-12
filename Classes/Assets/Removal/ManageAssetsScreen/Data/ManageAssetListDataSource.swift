@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListDataSource.swift
+//   ManageAssetListDataSource.swift
 
 import Foundation
 import UIKit
 
-final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<ManageAssetsListSection, ManageAssetsListItem> {
+final class ManageAssetListDataSource: UICollectionViewDiffableDataSource<ManageAssetListSection, ManageAssetListItem> {
     init(
         _ collectionView: UICollectionView
     ) {

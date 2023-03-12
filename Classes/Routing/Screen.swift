@@ -68,7 +68,7 @@ indirect enum Screen {
         dataController: AppCallAssetListDataController
     )
     case addAsset(account: Account)
-    case removeAsset(dataController: ManageAssetsListDataController)
+    case removeAsset(dataController: ManageAssetListDataController)
     case managementOptions(
         managementType: ManagementOptionsViewController.ManagementType,
         delegate: ManagementOptionsViewControllerDelegate

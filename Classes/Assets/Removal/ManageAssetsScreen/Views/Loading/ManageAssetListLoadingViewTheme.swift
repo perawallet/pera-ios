@@ -20,13 +20,13 @@ import UIKit
 struct ManageAssetListLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
-    let asset: ManageAssetsListItemLoadingViewTheme
+    let asset: ManageAssetListItemLoadingViewTheme
     let assetHeight: CGFloat
     let assetSeparator: Separator
     let numberOfAssets: Int
     
     init(_ family: LayoutFamily) {
-        self.asset = ManageAssetsListItemLoadingViewTheme(family)
+        self.asset = ManageAssetListItemLoadingViewTheme(family)
         self.assetHeight = 87
         self.assetSeparator = Separator(
             color: Colors.Layer.grayLighter,

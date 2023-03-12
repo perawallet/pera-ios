@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListLayout.swift
+//   ManageAssetListLayout.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class ManageAssetsListLayout: NSObject {
-    private let dataSource: ManageAssetsListDataSource
+final class ManageAssetListLayout: NSObject {
+    private let dataSource: ManageAssetListDataSource
     
     private var sizeCache: [String: CGSize] = [:]
     
     init(
-        _ dataSource: ManageAssetsListDataSource
+        _ dataSource: ManageAssetListDataSource
     ) {
         self.dataSource = dataSource
     }
 }
 
-extension ManageAssetsListLayout {
+extension ManageAssetListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -208,7 +208,7 @@ extension ManageAssetsListLayout {
     }
 }
 
-extension ManageAssetsListLayout {
+extension ManageAssetListLayout {
     private func calculateContentWidth(
         _ collectionView: UICollectionView,
         forSectionAt section: Int

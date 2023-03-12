@@ -13,24 +13,24 @@
 // limitations under the License.
 
 //
-//  ManageAssetsViewController.swift
+//  ManageAssetViewController.swift
 
 import UIKit
 import MagpieHipo
 
-final class ManageAssetsViewController:
+final class ManageAssetViewController:
     BaseViewController,
     TransactionSignChecking,
     UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
     
-    private lazy var listLayout = ManageAssetsListLayout(dataSource)
-    private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
+    private lazy var listLayout = ManageAssetListLayout(dataSource)
+    private lazy var dataSource = ManageAssetListDataSource(contextView.assetsCollectionView)
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var contextView = ManageAssetsView()
+    private lazy var contextView = ManageAssetView()
     
     private var account: Account {
         return dataController.account
@@ -47,12 +47,12 @@ final class ManageAssetsViewController:
     private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
-    private var query: ManageAssetsListQuery
-    private let dataController: ManageAssetsListDataController
+    private var query: ManageAssetListQuery
+    private let dataController: ManageAssetListDataController
 
     init(
-        query: ManageAssetsListQuery,
-        dataController: ManageAssetsListDataController,
+        query: ManageAssetListQuery,
+        dataController: ManageAssetListDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.query = query
@@ -119,7 +119,7 @@ final class ManageAssetsViewController:
 
 /// <mark>
 /// UICollectionViewDelegateFlowLayout
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -147,7 +147,7 @@ extension ManageAssetsViewController {
 
 /// <mark>
 /// UICollectionViewDelegate
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -228,7 +228,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func openCollectibleDetail(
         _ asset: CollectibleAsset,
         from cell: OptOutCollectibleAssetListItemCell? = nil
@@ -274,7 +274,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func createNewTransactionController(
         for asset: Asset
     ) -> TransactionController {
@@ -315,7 +315,7 @@ extension ManageAssetsViewController {
             currencyFormatter: currencyFormatter
         )
         let optOutAssetListItem = OptOutAssetListItem(item: assetItem)
-        let listItem = ManageAssetsListItem.asset(optOutAssetListItem)
+        let listItem = ManageAssetListItem.asset(optOutAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
@@ -332,7 +332,7 @@ extension ManageAssetsViewController {
             amountFormatter: collectibleAmountFormatter
         )
         let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: collectibleAssetItem)
-        let listItem = ManageAssetsListItem.collectibleAsset(optOutCollectibleAssetListItem)
+        let listItem = ManageAssetListItem.collectibleAsset(optOutCollectibleAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
@@ -361,7 +361,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController: SearchInputViewDelegate {
+extension ManageAssetViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         query.keyword = view.text
         dataController.load(query: query)
@@ -372,7 +372,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
         for cell in contextView.assetsCollectionView.visibleCells {
             if let loadingCell = cell as? ManageAssetListLoadingCell {
@@ -412,7 +412,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func configureAccessory(
         _ cell: OptOutAssetListItemCell?,
         for item: OptOutAssetListItem
@@ -445,7 +445,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func linkInteractors(
         _ cell: OptOutAssetListItemCell?,
         for item: OptOutAssetListItem
@@ -550,7 +550,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func openTransferAssetBalance(
         asset: Asset
     ) {
@@ -606,13 +606,13 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func isValidAssetDeletion(_ asset: Asset) -> Bool {
         return asset.amountWithFraction == 0
     }
 }
 
-extension ManageAssetsViewController: TransactionControllerDelegate {
+extension ManageAssetViewController: TransactionControllerDelegate {
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
@@ -748,7 +748,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetViewController {
     private func finishMonitoringOptOutUpdates(for transactionController: TransactionController) {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = sharedDataController.blockchainUpdatesMonitor

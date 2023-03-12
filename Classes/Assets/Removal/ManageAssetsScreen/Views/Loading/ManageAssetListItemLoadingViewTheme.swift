@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListItemLoadingViewTheme.swift
+//   ManageAssetListItemLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct ManageAssetsListItemLoadingViewTheme: StyleSheet, LayoutSheet {
+struct ManageAssetListItemLoadingViewTheme: StyleSheet, LayoutSheet {
     var imageCorner: LayoutMetric
     var imageSize: LayoutSize
 

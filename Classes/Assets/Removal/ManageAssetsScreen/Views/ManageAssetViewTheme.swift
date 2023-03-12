@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   ManageAssetsViewTheme.swift
+//   ManageAssetViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
+struct ManageAssetViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     
     let noContentViewTheme: NoContentViewTheme

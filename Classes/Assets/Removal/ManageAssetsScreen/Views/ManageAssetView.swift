@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//  ManageAssetsView.swift
+//  ManageAssetView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class ManageAssetsView: View {
-    private lazy var theme = ManageAssetsViewTheme()
+final class ManageAssetView: View {
+    private lazy var theme = ManageAssetViewTheme()
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
     private lazy var searchInputView = SearchInputView()
@@ -35,7 +35,7 @@ final class ManageAssetsView: View {
         return collectionView
     }()
     
-    func customize(_ theme: ManageAssetsViewTheme) {
+    func customize(_ theme: ManageAssetViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addTitleLabel(theme)
@@ -49,8 +49,8 @@ final class ManageAssetsView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
-extension ManageAssetsView {
-    private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
+extension ManageAssetView {
+    private func addTitleLabel(_ theme: ManageAssetViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -60,7 +60,7 @@ extension ManageAssetsView {
         }
     }
 
-    private func addSubitleLabel(_ theme: ManageAssetsViewTheme) {
+    private func addSubitleLabel(_ theme: ManageAssetViewTheme) {
         subtitleLabel.customizeAppearance(theme.subtitle)
         subtitleLabel.editText = theme.subtitleText
         
@@ -71,7 +71,7 @@ extension ManageAssetsView {
         }
     }
     
-    private func addSearchInputView(_ theme: ManageAssetsViewTheme) {
+    private func addSearchInputView(_ theme: ManageAssetViewTheme) {
         searchInputView.customize(theme.searchInputViewTheme)
         
         addSubview(searchInputView)
@@ -81,7 +81,7 @@ extension ManageAssetsView {
         }
     }
 
-    private func addAssetsCollectionView(_ theme: ManageAssetsViewTheme) {
+    private func addAssetsCollectionView(_ theme: ManageAssetViewTheme) {
         addSubview(assetsCollectionView)
         assetsCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchInputView.snp.bottom)
@@ -90,7 +90,7 @@ extension ManageAssetsView {
     }
 }
 
-extension ManageAssetsView {
+extension ManageAssetView {
     func setSearchInputDelegate(_ delegate: SearchInputViewDelegate?) {
         searchInputView.delegate = delegate
     }
