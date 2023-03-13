@@ -67,8 +67,11 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindSubtitle(
         _ asset: Asset
     ) {
+        let components = [asset.naming.unitName, String(asset.id)]
+        let subtitleText = components.compound(", ")
+
         subtitle = .attributedString(
-            String(asset.id)
+            subtitleText
                 .footnoteRegular(
                     lineBreakMode: .byTruncatingTail
                 )

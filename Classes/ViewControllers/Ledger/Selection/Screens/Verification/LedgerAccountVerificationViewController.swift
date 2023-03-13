@@ -25,8 +25,7 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
@@ -140,13 +139,32 @@ extension LedgerAccountVerificationViewController {
     @objc
     private func addVerifiedAccounts() {
         saveVerifiedAccounts()
+        
+        print("deneme xx \(accountSetupFlow)")
 
         let controller = open(
-            .tutorial(flow: .none, tutorial: .ledgerSuccessfullyConnected),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            .tutorial(
+                flow: .none,
+                tutorial: .ledgerSuccessfullyConnected(flow: accountSetupFlow)
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
         ) as? TutorialViewController
+        
         controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome()
+            self.launchMain {
+                [weak self] in
+                guard let self = self else { return }
+                
+                self.launchBuyAlgo()
+            }
+        }
+        
+        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+            self.launchMain()
         }
     }
 

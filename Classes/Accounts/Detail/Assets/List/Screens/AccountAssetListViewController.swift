@@ -753,7 +753,7 @@ extension AccountAssetListViewController {
     private func openMinimumBalanceInfo() {
         let uiSheet = UISheet(
             title: "minimum-balance-title".localized.bodyLargeMedium(),
-            body: "minimum-balance-description".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "minimum-balance-description".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(
