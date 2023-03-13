@@ -57,7 +57,12 @@ extension ManageAssetListLayout {
                 right: 24
             )
         case .assets:
-            return .zero
+            return UIEdgeInsets(
+                top: 16,
+                left: 0,
+                bottom: 0,
+                right: 0
+            )
         }
     }
     

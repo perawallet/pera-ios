@@ -695,7 +695,7 @@ class Router:
             let query = ManageAssetListQuery(
                 sortingBy: appConfiguration.sharedDataController.selectedAccountAssetSortingAlgorithm
             )
-            viewController = ManageAssetViewController(
+            viewController = ManageAssetListViewController(
                 query: query,
                 dataController: dataController,
                 configuration: configuration

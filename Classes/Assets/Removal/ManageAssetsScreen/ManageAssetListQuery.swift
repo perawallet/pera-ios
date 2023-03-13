@@ -42,11 +42,12 @@ extension ManageAssetListQuery {
         asset: Asset,
         account: Account
     ) -> Bool {
-        return matchesByKeyword(asset) &&
-            matchesByFilters(
-                asset: asset,
-                account: account
-            )
+        let matchesByKeyword = matchesByKeyword(asset)
+        let matchesByFilters = matchesByFilters(
+            asset: asset,
+            account: account
+        )
+        return matchesByKeyword && matchesByFilters
     }
     
     private func matchesByKeyword(_ asset: Asset) -> Bool {

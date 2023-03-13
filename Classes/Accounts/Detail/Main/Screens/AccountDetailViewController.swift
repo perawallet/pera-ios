@@ -549,7 +549,7 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         let controller = open(
             .removeAsset(dataController: dataController),
             by: .present
-        ) as? ManageAssetViewController
+        ) as? ManageAssetListViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
     

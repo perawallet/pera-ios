@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   ManageAssetViewController+Theme.swift
+//   ManageAssetViewListController+Theme.swift
 
 import MacaroonUIKit
 import UIKit
 
-extension ManageAssetViewController {
+extension ManageAssetListViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let background: ViewStyle
         let horizontalPadding: LayoutMetric
@@ -83,13 +83,10 @@ extension ManageAssetViewController {
             var gradient = Gradient()
             gradient.colors = [
                 Colors.Defaults.background.uiColor,
-                Colors.Defaults.background.uiColor.withAlphaComponent(0.8),
                 Colors.Defaults.background.uiColor.withAlphaComponent(0)
             ]
-            gradient.startPoint = .init(x: 0.5, y: 0.82)
-            gradient.endPoint = .init(x: 0.5, y: 1.0)
             self.searchInputBackground = LinearGradientEffect(gradient: gradient)
-            self.spacingBetweenSearchInputAndSearchInputBackground = 20
+            self.spacingBetweenSearchInputAndSearchInputBackground = 36
             
             self.listViewBackgroundColor = Colors.Defaults.background
             self.listTopPadding = 20
