@@ -60,8 +60,10 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }()
 
     private var headerTransaction: WCTransaction?
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
     )
@@ -284,6 +286,8 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didSign transaction: WCTransaction, signedTransaction: Data) {
+        signWithLedgerProcessScreen?.increaseProgress()
+
         signedTransactions.append(signedTransaction)
         continueSigningTransactions(after: transaction)
     }
@@ -299,6 +303,9 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             }
             return
         }
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         if transactions.count != signedTransactions.count {
             loadingController?.stopLoading()
@@ -353,32 +360,19 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         _ wcTransactionSigner: WCTransactionSigner,
         didRequestUserApprovalFrom ledger: String
     ) {
-        ledgerApprovalViewController = transitionToLedgerApproval.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .presentWithoutNavigationController
-        )
+        if signWithLedgerProcessScreen != nil { return }
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.wcTransactionSigner.disonnectFromLedger()
-
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.loadingController?.stopLoading()
-            }
-        }
+        openSignWithLedgerProcess(ledgerDeviceName: ledger)
     }
 
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
     }
+
+    func wcTransactionSignerDidResetLedgerOperationOnSuccess(_ wcTransactionSigner: WCTransactionSigner) { }
 
     func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) { }
 
@@ -479,8 +473,8 @@ extension WCMainTransactionScreen {
                 message: errorSubtitle
             )
 
-            ledgerApprovalViewController?.dismissScreen()
-            ledgerApprovalViewController = nil
+            signWithLedgerProcessScreen?.dismissScreen()
+            signWithLedgerProcessScreen = nil
         case .ledgerConnectionWarning:
             bannerController?.presentErrorBanner(
                 title: "ble-error-connection-title".localized,
@@ -513,6 +507,38 @@ extension WCMainTransactionScreen {
             title: "title-error".localized,
             message: "title-generic-error".localized
         )
+    }
+}
+
+extension WCMainTransactionScreen {
+    private func openSignWithLedgerProcess(ledgerDeviceName: String) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: dataSource.totalTransactionCountToSign
+        )
+
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancelApproval:
+                self.wcTransactionSigner.disonnectFromLedger()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }
 

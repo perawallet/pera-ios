@@ -41,18 +41,15 @@ final class SignWithLedgerProcessScreen:
 
     private lazy var progress = ALGProgress(totalUnitCount: draft.totalTransactionCount)
 
-    private let transactionSigner: SwapTransactionSigner
     private let draft: SignWithLedgerProcessDraft
 
     typealias EventHandler = (Event) -> Void
     private let eventHandler: EventHandler
 
     init(
-        transactionSigner: SwapTransactionSigner,
         draft: SignWithLedgerProcessDraft,
         eventHandler: @escaping EventHandler
     ) {
-        self.transactionSigner = transactionSigner
         self.draft = draft
         self.eventHandler = eventHandler
         super.init()
@@ -68,11 +65,6 @@ final class SignWithLedgerProcessScreen:
         super.viewWillAppear(animated)
 
         startAnimatingImage()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        transactionSigner.disonnectFromLedger()
     }
 
     override func viewDidChangePreferredUserInterfaceStyle() {

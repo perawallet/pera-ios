@@ -379,7 +379,6 @@ extension SwapAssetFlowCoordinator {
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
                 self.openSignWithLedgerProcess(
-                    transactionSigner: transactionSigner,
                     swapController: swapController,
                     ledger: ledger,
                     transactionGroups: transactionGroups
@@ -614,7 +613,6 @@ extension SwapAssetFlowCoordinator {
     }
 
     private func openSignWithLedgerProcess(
-        transactionSigner: SwapTransactionSigner,
         swapController: SwapController,
         ledger: String,
         transactionGroups: [SwapTransactionGroup]
@@ -645,14 +643,14 @@ extension SwapAssetFlowCoordinator {
                 swapController.disconnectFromLedger()
 
                 self.visibleScreen.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
 
                 self.stopLoading()
             }
         }
 
         signWithLedgerProcessScreen = transition.perform(
-            .swapSignWithLedgerProcess(
-                transactionSigner: transactionSigner,
+            .signWithLedgerProcess(
                 draft: draft,
                 eventHandler: eventHandler
             ),
