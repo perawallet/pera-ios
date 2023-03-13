@@ -59,6 +59,13 @@ final class SwapTransactionGroupSigner {
                         at: index,
                         in: transactionGroup
                     )
+
+                    /// <note>
+                    /// If an account requires a Ledger connection, one transaction should be signed at a time
+                    /// since the signing process happens on the Ledger one by one.
+                    if account.requiresLedgerConnection() {
+                        return
+                    }
                 }
             }
         }
