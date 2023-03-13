@@ -85,25 +85,31 @@ extension AlgorandSecureBackupFlowCoordinator {
             switch event {
             case .backupCompleted(let encryptedBackupData):
                 self.openSuccessScreen(with: encryptedBackupData, from: screen)
-            case .backupFailed(let error):
-                break
+            case .backupFailed:
+                self.openErrorScreen(from: screen)
             }
         }
         viewController.open(screen, by: .push)
     }
 
     private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
-        let successScreen: Screen = .algorandSecureBackupSuccess(encryptedData: data) { [weak self] event, screen in
-            guard let self else { return }
-
+        let successScreen: Screen = .algorandSecureBackupSuccess(encryptedData: data) { event, screen in
             switch event {
             case .complete:
-                print("done")
-            case .saveBackup:
-                print("save")
+                screen.dismissScreen()
             }
         }
         viewController.open(successScreen, by: .root)
+    }
+
+    private func openErrorScreen(from viewController: UIViewController) {
+        let errorScreen: Screen = .algorandSecureBackupError { event, screen in
+            switch event {
+            case .performTryAgain:
+                screen.popScreen()
+            }
+        }
+        viewController.open(errorScreen, by: .set)
     }
 }
 

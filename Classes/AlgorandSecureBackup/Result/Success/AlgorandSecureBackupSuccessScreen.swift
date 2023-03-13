@@ -33,12 +33,21 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var saveActionView = MacaroonUIKit.Button(theme.saveActionLayout)
     private lazy var doneActionView = MacaroonUIKit.Button()
 
+    private lazy var transitionToNotifyForStoringBackup = BottomSheetTransition(presentingViewController: self)
+
     private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
 
-    private let encryptedData: Data
+    private lazy var documentURL = getDocumentsDirectory()
+    private lazy var fileInfoViewModel = FileInfoViewModel(data: self.encryptedData)
 
-    init(encryptedData: Data) {
+    private let encryptedData: Data
+    private let bannerController: BannerController?
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(encryptedData: Data, configuration: ViewControllerConfiguration) {
         self.encryptedData = encryptedData
+        self.bannerController = configuration.bannerController
+        self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
     }
 
     override func viewDidLoad() {
@@ -137,6 +146,11 @@ extension AlgorandSecureBackupSuccessScreen {
             $0.trailing == 0
         }
 
+        fileInfoView.startObserving(event: .performCopyAction) { [weak self] in
+            guard let self else { return }
+            self.copyBackup()
+        }
+
         bindFileInfo()
     }
 
@@ -183,29 +197,70 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func bindFileInfo() {
-        let viewModel = FileInfoViewModel(data: self.encryptedData)
-        fileInfoView.bindData(viewModel)
+        fileInfoView.bindData(fileInfoViewModel)
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
-    @objc
-    private func performCopy() {}
+    private func copyBackup() {
+        let copyText = encryptedData.base64EncodedString()
+        let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
+        let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
+
+        copyToClipboardController.copy(item)
+    }
 
     @objc
     private func performSave() {
-        eventHandler?(.saveBackup, self)
+        let fileName = fileInfoViewModel.name.unwrap { textProvider in
+            textProvider.string
+        } ?? "backup.txt"
+
+        let url = documentURL.appendingPathComponent(fileName)
+        do {
+            try encryptedData.base64EncodedString().write(to: url, atomically: true, encoding: .utf8)
+
+            open(
+                .shareActivity(
+                    items: [url]
+                ),
+                by: .presentWithoutNavigationController
+            )
+        } catch {
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+        }
     }
 
     @objc
     private func performDone() {
-        eventHandler?(.complete, self)
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "algorand-secure-backup-success-confirmation-title".localized,
+            description: .plain("algorand-secure-backup-success-confirmation-message".localized),
+            primaryActionButtonTitle: "algorand-secure-backup-success-confirmation-primary-action-title".localized,
+            secondaryActionButtonTitle: "algorand-secure-backup-success-confirmation-secondary-action-title".localized,
+            primaryAction: { [weak self] in
+                guard let self else { return }
+                self.dismissScreen()
+            }
+        )
+
+        transitionToNotifyForStoringBackup.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension AlgorandSecureBackupSuccessScreen {
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
     enum Event {
-        case saveBackup
         case complete
     }
 }

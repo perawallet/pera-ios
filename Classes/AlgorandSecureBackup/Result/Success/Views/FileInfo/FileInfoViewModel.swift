@@ -35,7 +35,7 @@ extension FileInfoViewModel {
     }
 
     mutating func bindName() {
-        let dateString = Date().toFormat(.date)
+        let dateString = Date().toFormat(.fileDate)
         name = "\(dateString)_backup.txt".footnoteMedium(lineBreakMode: .byTruncatingTail)
     }
 

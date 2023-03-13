@@ -1383,6 +1383,13 @@
 "algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
 "algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";
 "algorand-secure-backup-success-save-action-title" = "Save backup file";
+"algorand-secure-backup-success-copy-action-message" = "Backup file copied to clipboard as text";
+"algorand-secure-backup-success-confirmation-title" = "Have you stored your backup file?";
+"algorand-secure-backup-success-confirmation-message" = "If you lose your Algorand Secure Backup file, you cannot restore your accounts.";
+
+"algorand-secure-backup-success-confirmation-primary-action-title" = "Yes, I stored my file";
+"algorand-secure-backup-success-confirmation-secondary-action-title" = "Show backup file again";
+
 "algorand-secure-backup-error-result-body" = "An error occurred while generating your Algorand Secure Backup. Please try again or contact support.";
 "algorand-secure-backup-error-result-body-highlighted-text" =  "contact support";
 "algorand-secure-backup-error-action-title" = "Try again";

@@ -1419,7 +1419,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case let .algorandSecureBackupSuccess(encryptedData, eventHandler):
-            let screen = AlgorandSecureBackupSuccessScreen(encryptedData: encryptedData)
+            let screen = AlgorandSecureBackupSuccessScreen(encryptedData: encryptedData, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupError(let eventHandler):
