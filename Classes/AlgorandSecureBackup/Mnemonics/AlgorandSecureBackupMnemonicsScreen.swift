@@ -37,16 +37,18 @@ final class AlgorandSecureBackupMnemonicsScreen:
     private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToNotifyForStoringKey = BottomSheetTransition(presentingViewController: self)
 
     private lazy var headerView = UILabel()
     private lazy var peraLearnView = ALGActiveLabel()
-    private lazy var actionsView = makeActionsView()
+    private lazy var passphraseBackupView = PassphraseView()
+    private lazy var actionsView = VStackView()
     private lazy var copyActionView = MacaroonUIKit.Button()
     private lazy var regeneratePassphraseActionView = MacaroonUIKit.Button()
     private lazy var storeActionView = MacaroonUIKit.Button()
+
     private lazy var theme: AlgorandSecureBackupMnemonicsScreenTheme = .init()
-    private lazy var passphraseBackupView = PassphraseView()
+
     private lazy var viewModel = AlgorandSecureBackupMnemonicViewModel(session: session!)
 
     private lazy var mnemonics = createMnemonics()
@@ -144,16 +146,12 @@ extension AlgorandSecureBackupMnemonicsScreen {
             return nil
         }
 
-        let mnemonics = initializeMnemonics(from: privateKey)
+        let mnemonics = generateMnemonics(from: privateKey)
         return mnemonics
     }
 
     private func fetchPrivateKey() -> Data? {
         session?.privateDataForBackup()
-    }
-
-    private func saveBackupPrivateKey(data: Data) {
-        session?.saveBackupPrivateData(data)
     }
 
     /// <note>: Returning Optional Data
@@ -164,11 +162,11 @@ extension AlgorandSecureBackupMnemonicsScreen {
             return nil
         }
 
-        saveBackupPrivateKey(data: data)
+        session?.saveBackupPrivateData(data)
         return data
     }
 
-    private func initializeMnemonics(from privateKey: Data) -> [String] {
+    private func generateMnemonics(from privateKey: Data) -> [String] {
         var error: NSError?
         let mnemonicsString = AlgorandSDK().backupMnemnoic(fromPrivateKey: privateKey, error: &error)
 
@@ -235,14 +233,9 @@ extension AlgorandSecureBackupMnemonicsScreen {
         }
     }
 
-    private func makeActionsView() -> VStackView {
-        let actionsView = VStackView()
-        actionsView.spacing = theme.actionsPadding
-        return actionsView
-    }
-
     private func addActions() {
         contentView.addSubview(actionsView)
+        actionsView.spacing = theme.actionsPadding
         actionsView.snp.makeConstraints {
             $0.top.equalTo(passphraseBackupView.snp.bottom).offset(theme.actionsTopOffset)
             $0.leading == theme.defaultInset
@@ -295,8 +288,6 @@ extension AlgorandSecureBackupMnemonicsScreen {
             target: self,
             action: #selector(performStoreAction)
         )
-
-        bindStoreAction()
     }
 }
 
@@ -325,17 +316,11 @@ extension AlgorandSecureBackupMnemonicsScreen {
         }
     }
 
-    private func bindStoreAction() {
-        storeActionView.editTitle = .string("algorand-secure-backup-mnemonics-store-action-title".localized)
-    }
-
     private func bindCopyAction() {
-        copyActionView.editTitle = .string("algorand-secure-backup-mnemonics-copy-action-title".localized)
     }
 
     private func bindRegeneratePassphraseAction() {
-        regeneratePassphraseActionView.editTitle = .string("algorand-secure-backup-mnemonics-regenerate-action-title".localized)
-        regeneratePassphraseActionView.isHidden = !viewModel.isRegenerationMnemonicVisible
+        regeneratePassphraseActionView.isHidden = !viewModel.isGenerationAvailable
     }
 }
 
@@ -376,26 +361,6 @@ extension AlgorandSecureBackupMnemonicsScreen {
 
 extension AlgorandSecureBackupMnemonicsScreen {
     @objc
-    private func performStoreAction() {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-green".uiImage,
-            title: "algorand-secure-backup-mnemonics-confirmation-title".localized,
-            description: .plain("algorand-secure-backup-mnemonics-confirmation-message".localized),
-            primaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-primary-action-title".localized,
-            secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-secondary-action-title".localized,
-            primaryAction: { [weak self] in
-                guard let self else { return }
-                self.generateBackup()
-            }
-        )
-
-        modalTransition.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    @objc
     private func performCopyAction() {
         guard let mnemonics else { return }
         let copyText = mnemonics.joined(separator: " ")
@@ -415,23 +380,43 @@ extension AlgorandSecureBackupMnemonicsScreen {
             secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title".localized,
             primaryAction: { [weak self] in
                 guard let self else { return }
-                self.regenerateKey()
+                self.generateNewKey()
             }
         )
 
-        modalTransition.perform(
+        transitionToNotifyForStoringKey.perform(
             .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
     }
 
-    private func regenerateKey() {
+    private func generateNewKey() {
         guard let generatedData = generateBackupPrivateKey() else {
             return
         }
 
-        mnemonics = initializeMnemonics(from: generatedData)
+        mnemonics = generateMnemonics(from: generatedData)
         passphraseBackupView.reloadData()
+    }
+
+    @objc
+    private func performStoreAction() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "algorand-secure-backup-mnemonics-confirmation-title".localized,
+            description: .plain("algorand-secure-backup-mnemonics-confirmation-message".localized),
+            primaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-primary-action-title".localized,
+            secondaryActionButtonTitle: "algorand-secure-backup-mnemonics-confirmation-secondary-action-title".localized,
+            primaryAction: { [weak self] in
+                guard let self else { return }
+                self.generateBackup()
+            }
+        )
+
+        transitionToNotifyForStoringKey.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func generateBackup() {
@@ -440,6 +425,7 @@ extension AlgorandSecureBackupMnemonicsScreen {
               let cipherText = algorandSDK.generateBackupCipherKey(data: privateKey),
               let network = api?.network,
               let deviceId = session?.authenticatedUser?.getDeviceId(on: network) else {
+            eventHandler?(.backupFailed(.missingData), self)
             return
         }
 
@@ -448,18 +434,14 @@ extension AlgorandSecureBackupMnemonicsScreen {
         do {
             let encryptedData = try cryptor.encrypt(data: backupParameters.encoded())
 
-            guard let data = encryptedData.data else {
-                if let error = encryptedData.error {
-                    self.eventHandler?(.performBackupError(.encryption(error)), self)
-                } else {
-                    self.eventHandler?(.performBackupError(.unknown), self)
-                }
-                return
+            if let data = encryptedData.data {
+                eventHandler?(.backupCompleted(data), self)
+            } else {
+                let error: Event.Error = encryptedData.error.unwrap { .encryption($0) } ?? .unknown
+                eventHandler?(.backupFailed(error), self)
             }
-
-            self.eventHandler?(.performBackup(data), self)
         } catch {
-            self.eventHandler?(.performBackupError(.other(error)), self)
+            self.eventHandler?(.backupFailed(.other(error)), self)
         }
     }
 
@@ -467,9 +449,7 @@ extension AlgorandSecureBackupMnemonicsScreen {
         accounts.map { account in
             let privateKey = session?.privateData(for: account.address)
             return .init(
-                address: account.address,
-                name: account.name,
-                accountType: .init(rawAccountType: account.type),
+                account: account,
                 privateKey: privateKey
             )
         }
@@ -478,14 +458,15 @@ extension AlgorandSecureBackupMnemonicsScreen {
 
 extension AlgorandSecureBackupMnemonicsScreen {
     enum Event {
-        case performBackup(Data)
-        case performBackupError(EventError)
-    }
+        case backupCompleted(Data)
+        case backupFailed(Error)
 
-    enum EventError {
-        case encryption(EncryptionError)
-        case other(Error)
-        case unknown
+        enum Error {
+            case encryption(EncryptionError)
+            case other(Swift.Error)
+            case unknown
+            case missingData
+        }
     }
 }
 

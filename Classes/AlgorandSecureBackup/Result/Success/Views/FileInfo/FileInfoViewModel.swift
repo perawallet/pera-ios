@@ -22,14 +22,10 @@ struct FileInfoViewModel: ViewModel {
     var name: TextProvider?
     var size: TextProvider?
 
-    private let data: Data
-
     init(data: Data) {
-        self.data = data
-
         bindIcon()
         bindName()
-        bindSize()
+        bindSize(using: data)
     }
 }
 
@@ -39,11 +35,11 @@ extension FileInfoViewModel {
     }
 
     mutating func bindName() {
-        let dateString = Date().toFormat("dd/MM/yyyy")
+        let dateString = Date().toFormat(.date)
         name = "\(dateString)_backup.txt".footnoteMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindSize() {
+    mutating func bindSize(using data: Data) {
         let dataByteFormatter = ByteCountFormatter()
         dataByteFormatter.allowedUnits = [.useKB]
         dataByteFormatter.countStyle = .file

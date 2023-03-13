@@ -45,25 +45,6 @@ extension AlgorandSecureBackupFlowCoordinator {
         presentingScreen.open(screen, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 
-    private func makeAccountSelectionScreen() -> AlgorandSecureBackupAccountListScreen {
-        let dataController = AlgorandSecureBackupAccountListLocalDataController(
-            sharedDataController: configuration.sharedDataController
-        )
-        let screen = AlgorandSecureBackupAccountListScreen(
-            dataController: dataController,
-            configuration: configuration
-        )
-        screen.eventHandler = {
-            [weak self] event, screen  in
-            guard let self else { return }
-            switch event {
-            case .performContinue(let accounts):
-                self.openMnemonicsScreen(with: accounts, from: screen)
-            }
-        }
-        return screen
-    }
-
     private func openPasswordScreenIfNeeded(from viewController: UIViewController) {
         guard let session = configuration.session else { return }
 
@@ -82,24 +63,33 @@ extension AlgorandSecureBackupFlowCoordinator {
         controller?.delegate = self
     }
 
-    private func openAccountSelection(from viewController: UIViewController) {
-        let screen = makeAccountSelectionScreen()
-        viewController.navigationController?.pushViewController(screen, animated: true)
-    }
-
-    private func openMnemonicsScreen(with accounts: [Account], from viewController: UIViewController) {
-        let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
-        screen.eventHandler = { [weak self] event, screen in
+    private func makeAccountSelection() -> Screen {
+        .algorandSecureBackupAccountList { [weak self] event, screen in
             guard let self else { return }
 
             switch event {
-            case .performBackup(let encryptedBackupData):
+            case .performContinue(let accounts):
+                self.openMnemonicsScreen(with: accounts, from: screen)
+            }
+        }
+    }
+
+    private func openAccountSelection(from viewController: UIViewController) {
+        viewController.open(makeAccountSelection(), by: .push)
+    }
+
+    private func openMnemonicsScreen(with accounts: [Account], from viewController: UIViewController) {
+        let screen: Screen = .algorandSecureBackupMnemonic(accounts: accounts) { [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .backupCompleted(let encryptedBackupData):
                 self.openSuccessScreen(with: encryptedBackupData, from: screen)
-            case .performBackupError(let error):
+            case .backupFailed(let error):
                 break
             }
         }
-        viewController.navigationController?.pushViewController(screen, animated: true)
+        viewController.open(screen, by: .push)
     }
 
     private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
@@ -107,13 +97,13 @@ extension AlgorandSecureBackupFlowCoordinator {
             guard let self else { return }
 
             switch event {
-            case .performDone:
+            case .complete:
                 print("done")
-            case .performSave:
+            case .saveBackup:
                 print("save")
             }
         }
-        viewController.open(successScreen, by: .push)
+        viewController.open(successScreen, by: .root)
     }
 }
 
@@ -123,20 +113,8 @@ extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDeleg
         didConfirmPassword isConfirmed: Bool
     ) {
         guard isConfirmed else { return }
-        guard let navigationController = choosePasswordViewController.navigationController else {
-            return
-        }
 
-        var viewControllers = navigationController.viewControllers
-
-        _ = viewControllers.remove { viewController in
-            viewController == choosePasswordViewController
-        }
-
-        let accountSelectionScreen = makeAccountSelectionScreen()
-        viewControllers.append(accountSelectionScreen)
-
-        navigationController.setViewControllers(viewControllers, animated: true)
+        choosePasswordViewController.open(makeAccountSelection(), by: .set)
     }
 }
 

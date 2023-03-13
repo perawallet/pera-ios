@@ -33,6 +33,7 @@ enum DateFormat {
     case fullNumericWithoutTimezone
     case shortNumeric(separator: String = "/")
     case shortNumericReversed(separator: String = "-")
+    case date
     case dateAndTime
     case time
     case creditCardExpire
@@ -46,6 +47,7 @@ extension DateFormat {
         case .shortNumeric(let separator): return "MM\(separator)dd\(separator)yyyy"
         case .shortNumericReversed(let separator): return "yyyy\(separator)MM\(separator)dd"
         case .dateAndTime: return "dd/MM/yyyy, hh:mm:ss a"
+        case .date: return "dd/MM/yyyy"
         case .time: return "h:mm a"
         case .creditCardExpire: return "MM/yyyy"
         }

@@ -26,7 +26,7 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var prefersLargeTitle: Bool {
         return false
     }
-    var hidesCloseBarButtonItem: Bool {
+    var hidesCloseBarButtonItem: Bool {
         return false
     }
 

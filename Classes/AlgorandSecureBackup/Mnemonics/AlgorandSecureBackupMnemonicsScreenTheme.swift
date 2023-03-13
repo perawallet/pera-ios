@@ -74,7 +74,8 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
             ]),
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Helpers.positive) ]),
-            .tintColor(Colors.Helpers.positive)
+            .tintColor(Colors.Helpers.positive),
+            .title("algorand-secure-backup-mnemonics-copy-action-title".localized)
         ]
         copyActionTitleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
         regenerateKeyAction = [
@@ -84,7 +85,8 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
             ]),
             .font(Typography.bodyMedium()),
             .titleColor([ .normal(Colors.Helpers.positive) ]),
-            .tintColor(Colors.Helpers.positive)
+            .tintColor(Colors.Helpers.positive),
+            .title("algorand-secure-backup-mnemonics-regenerate-action-title".localized)
         ]
         regenerateKeyActionTitleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
         storeAction = [
@@ -95,7 +97,8 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
                 .highlighted("components/buttons/primary/bg-highlighted"),
                 .selected("components/buttons/primary/bg-highlighted"),
                 .disabled("components/buttons/primary/bg-disabled")
-            ])
+            ]),
+            .title("algorand-secure-backup-mnemonics-store-action-title".localized)
         ]
         storeActionContentEdgeInsets = .init(top: 14, left: 0, bottom: 14, right: 0)
         storeActionEdgeInsets = .init(top: 36, leading: 24, bottom: 16, trailing: 24)

@@ -316,6 +316,7 @@ indirect enum Screen {
     case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
     case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
+    case algorandSecureBackupMnemonic(accounts: [Account], eventHandler: AlgorandSecureBackupMnemonicsScreen.EventHandler)
     case algorandSecureBackupSuccess(encryptedData: Data, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
 }

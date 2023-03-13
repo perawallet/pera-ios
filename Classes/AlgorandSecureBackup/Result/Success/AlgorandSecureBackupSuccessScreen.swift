@@ -50,13 +50,13 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        disableInteractivePopGesture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        enableInteractivePopGesture()
     }
 
     override func configureNavigationBar() {
@@ -64,11 +64,12 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
 
         let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
             guard let self else { return }
-            self.eventHandler?(.performDone, self)
+            self.eventHandler?(.complete, self)
         }
 
         leftBarButtonItems = [closeButtonItem]
     }
+    
     override func addFooter() {
         super.addFooter()
 
@@ -193,18 +194,18 @@ extension AlgorandSecureBackupSuccessScreen {
 
     @objc
     private func performSave() {
-        eventHandler?(.performSave, self)
+        eventHandler?(.saveBackup, self)
     }
 
     @objc
     private func performDone() {
-        eventHandler?(.performDone, self)
+        eventHandler?(.complete, self)
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
     enum Event {
-        case performSave
-        case performDone
+        case saveBackup
+        case complete
     }
 }

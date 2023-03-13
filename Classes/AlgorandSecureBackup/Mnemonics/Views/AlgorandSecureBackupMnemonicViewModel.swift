@@ -21,17 +21,17 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
     private(set) var title: String?
     private(set) var header: TextProvider?
     private(set) var peraLearn: TextLinkProvider?
-    let isRegenerationMnemonicVisible: Bool
+    let isGenerationAvailable: Bool
 
     init(session: Session) {
         let isFirstBackup = session.backups.isEmpty
-        isRegenerationMnemonicVisible = !isFirstBackup
-        configureTitle(isFirstBackup: isFirstBackup)
-        configureHeader(isFirstBackup: isFirstBackup)
-        configurePeraLearn(isFirstBackup: isFirstBackup)
+        isGenerationAvailable = !isFirstBackup
+        bindTitle(isFirstBackup: isFirstBackup)
+        bindHeader(isFirstBackup: isFirstBackup)
+        bindPeraLearn(isFirstBackup: isFirstBackup)
     }
 
-    private mutating func configureTitle(isFirstBackup: Bool) {
+    private mutating func bindTitle(isFirstBackup: Bool) {
         if isFirstBackup {
             title = "algorand-secure-backup-mnemonics-title".localized
         } else {
@@ -39,7 +39,7 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
         }
     }
 
-    private mutating func configureHeader(isFirstBackup: Bool) {
+    private mutating func bindHeader(isFirstBackup: Bool) {
         if isFirstBackup {
             header = "algorand-secure-backup-mnemonics-header".localized.bodyRegular()
         } else {
@@ -47,7 +47,7 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
         }
     }
 
-    private mutating func configurePeraLearn(isFirstBackup: Bool) {
+    private mutating func bindPeraLearn(isFirstBackup: Bool) {
         let text: String
         let highlightedText: String
 
