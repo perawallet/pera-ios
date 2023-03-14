@@ -4409,6 +4409,12 @@
 		D450DE6B2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
 		D450DE6C2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
 		D450DE6D2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */; };
+		D451A2F029C07E5600752543 /* LedgerConnectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */; };
+		D451A2F129C07E5600752543 /* LedgerConnectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */; };
+		D451A2F229C07E5600752543 /* LedgerConnectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */; };
+		D451A2F429C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */; };
+		D451A2F529C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */; };
+		D451A2F629C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */; };
 		D454904329590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904229590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift */; };
 		D454904429590D140095E0D1 /* CollectibleGalleryListLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904229590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift */; };
 		D454904529590D150095E0D1 /* CollectibleGalleryListLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D454904229590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift */; };
@@ -7986,6 +7992,8 @@
 		D45038E22842C81C009EDE44 /* String+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Typography.swift"; sourceTree = "<group>"; };
 		D450DE662701C131008CC094 /* LedgerAccountVerificationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationViewTheme.swift; sourceTree = "<group>"; };
 		D450DE6A2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountVerificationViewController+Theme.swift"; sourceTree = "<group>"; };
+		D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreen.swift; sourceTree = "<group>"; };
+		D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerConnectionScreenTheme.swift; sourceTree = "<group>"; };
 		D454904229590CEC0095E0D1 /* CollectibleGalleryListLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingCell.swift; sourceTree = "<group>"; };
 		D454904629590E110095E0D1 /* CollectibleGalleryListLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingView.swift; sourceTree = "<group>"; };
 		D454904A29590E760095E0D1 /* CollectibleGalleryListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleGalleryListLoadingViewTheme.swift; sourceTree = "<group>"; };
@@ -10658,6 +10666,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA7137B2748669F00B8A907 /* Approval */,
+				D451A2EE29C07E3400752543 /* Connection */,
 				2BA7137F274866CE00B8A907 /* Devices */,
 				2B38C92E24D436130059AB02 /* Rekey */,
 				2B0F5F0624E19A5900DA22A6 /* Selection */,
@@ -17224,6 +17233,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		D451A2EE29C07E3400752543 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				D451A2EF29C07E5600752543 /* LedgerConnectionScreen.swift */,
+				D451A2F329C07E8100752543 /* LedgerConnectionScreenTheme.swift */,
+			);
+			path = Connection;
+			sourceTree = "<group>";
+		};
 		D452F75B2832D1EB00439221 /* FullScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -20173,6 +20191,7 @@
 				2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				2B7A1F9327DE64C80010F52E /* CollectibleDescriptionCellTheme.swift in Sources */,
 				17BD4E262292F1260003E49A /* UIImage+Size.swift in Sources */,
+				D451A2F629C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */,
 				17BD4E272292F1260003E49A /* DBStorable.swift in Sources */,
 				F08708DE278C9DB500BEE5C2 /* ALGBlockRequest.swift in Sources */,
 				2BED6575266FA23800EC089B /* WalletConnectRequestHandler.swift in Sources */,
@@ -20880,6 +20899,7 @@
 				95BB6C2227A2D0A500F2A2F1 /* TransactionMultipleAmountInformationViewTheme.swift in Sources */,
 				D419AFA828D0B47800673C39 /* AccountSelectionListNoContentCell.swift in Sources */,
 				D49D31DD2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
+				D451A2F229C07E5600752543 /* LedgerConnectionScreen.swift in Sources */,
 				17CADCB3285A16D6001D19A8 /* AccountAssetAscendingAmountAlgorithm.swift in Sources */,
 				D4D656DB277CB959007C32F0 /* TransactionTextInformationViewModel.swift in Sources */,
 				D4D656E7277CC5A7007C32F0 /* TransactionStatusInformationViewModel.swift in Sources */,
@@ -22540,6 +22560,7 @@
 				2B8CD5832906D370004A81B9 /* SwapQuickActionsViewModel.swift in Sources */,
 				2B0AD8402757E1B600F83660 /* AccountPortfolioViewTheme.swift in Sources */,
 				17C9328E2939299F000EE03D /* SwapQuickActionsGroupViewModel.swift in Sources */,
+				D451A2F129C07E5600752543 /* LedgerConnectionScreen.swift in Sources */,
 				2B0F620324EC129D00DA22A6 /* ALGAPI+Notification.swift in Sources */,
 				2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
 				17EF513C295B1FB600461347 /* ASADetailMarketViewTheme.swift in Sources */,
@@ -23257,6 +23278,7 @@
 				F0DB41A82794B62800EA437D /* HomeLoadingCell.swift in Sources */,
 				2B2DF29128103499008BC52D /* CurrencySelectionListLayout.swift in Sources */,
 				95E77550276DEFBE004E13F2 /* TransactionResultScreen+Theme.swift in Sources */,
+				D451A2F529C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */,
 				D4588AF5294293EE0012C12C /* SelectContactViewTheme.swift in Sources */,
 				2BB860FD2889500D0026AF60 /* MailComposer.swift in Sources */,
 				2BB350BE2588E0D900A03BAC /* LedgerAccountDetailViewController.swift in Sources */,
@@ -24328,6 +24350,7 @@
 				D48FDF9927CD765300C39FC7 /* ReceiveCollectibleAccountListViewController.swift in Sources */,
 				9568ADE027C7827300668053 /* BuyAlgoDraft.swift in Sources */,
 				F01063AA28ADD32F00AB6873 /* ASADetailScreen+PageItems.swift in Sources */,
+				D451A2F429C07E8100752543 /* LedgerConnectionScreenTheme.swift in Sources */,
 				2B233B5127C4784600D16B82 /* BuyAlgoHomeScreen.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				D4BADD8A277C8F3E0078FACB /* TransactionAmountViewModel.swift in Sources */,
@@ -25035,6 +25058,7 @@
 				D419AFA628D0B47800673C39 /* AccountSelectionListNoContentCell.swift in Sources */,
 				D41F93452722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
 				2BC8105B295341F000DB9B6D /* WCTransactionRequestedSigner.swift in Sources */,
+				D451A2F029C07E5600752543 /* LedgerConnectionScreen.swift in Sources */,
 				2BD5A68B2632FA850048FA5E /* AlgoPriceHistory.swift in Sources */,
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
 				0467678D2756A65F00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,

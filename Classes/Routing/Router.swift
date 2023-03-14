@@ -1210,6 +1210,8 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
+        case .ledgerConnection(let eventHandler):
+            viewController = LedgerConnectionScreen(eventHandler: eventHandler)
         case .signWithLedgerProcess(let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
                 draft: draft,
