@@ -2030,9 +2030,9 @@
 		2B7CAD6E29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD6D29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift */; };
 		2B7CAD6F29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD6D29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift */; };
 		2B7CAD7029AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD6D29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift */; };
-		2B7CAD7229AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift */; };
-		2B7CAD7329AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift */; };
-		2B7CAD7429AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift */; };
+		2B7CAD7229AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift */; };
+		2B7CAD7329AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift */; };
+		2B7CAD7429AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift */; };
 		2B7CAD7629AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7529AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift */; };
 		2B7CAD7729AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7529AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift */; };
 		2B7CAD7829AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CAD7529AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift */; };
@@ -7188,7 +7188,7 @@
 		2B7CAD5F29ACF01400A507EF /* RekeyToStandardAccountListItemButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyToStandardAccountListItemButtonViewModel.swift; sourceTree = "<group>"; };
 		2B7CAD6929AE839900A507EF /* TransactionSignatureValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureValidationError.swift; sourceTree = "<group>"; };
 		2B7CAD6D29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureInvalidAccountTypeError.swift; sourceTree = "<group>"; };
-		2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureMissingAuthAddressError.swift; sourceTree = "<group>"; };
+		2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureMissingAuthAccountError.swift; sourceTree = "<group>"; };
 		2B7CAD7529AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureMissingPrivateKeyError.swift; sourceTree = "<group>"; };
 		2B7CAD7929AE83E300A507EF /* TransactionSignatureMissingLedgerDetailError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureMissingLedgerDetailError.swift; sourceTree = "<group>"; };
 		2B7CAD7D29AE83FB00A507EF /* TransactionSignatureValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignatureValidator.swift; sourceTree = "<group>"; };
@@ -11644,7 +11644,7 @@
 			isa = PBXGroup;
 			children = (
 				2B7CAD6D29AE83B300A507EF /* TransactionSignatureInvalidAccountTypeError.swift */,
-				2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift */,
+				2B7CAD7129AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift */,
 				2B7CAD7929AE83E300A507EF /* TransactionSignatureMissingLedgerDetailError.swift */,
 				2B7CAD7529AE83D200A507EF /* TransactionSignatureMissingPrivateKeyError.swift */,
 				2B7CAD6929AE839900A507EF /* TransactionSignatureValidationError.swift */,
@@ -20002,7 +20002,7 @@
 				D4AAB8B727D238E70011B004 /* CollectibleGridItemCell.swift in Sources */,
 				2BE9374E2464C66800322C1E /* TransactionTextInformationView.swift in Sources */,
 				17A7667A2909586600A8746C /* DiscoverHomeScreenTheme.swift in Sources */,
-				2B7CAD7429AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */,
+				2B7CAD7429AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */,
 				D4B6EA68276FAC46005E2D2C /* TransactionStatusViewTheme.swift in Sources */,
 				2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				17D0FA8228EC28DF0061B55D /* ExportAccountsConfirmationListItemHeader.swift in Sources */,
@@ -23198,7 +23198,7 @@
 				F0261A9D27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */,
 				D4588AE3294293EE0012C12C /* SelectContactView.swift in Sources */,
 				2B7CA298290168B6005C3F3F /* TransactionUploadAndWaitOperation.swift in Sources */,
-				2B7CAD7329AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */,
+				2B7CAD7329AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */,
 				D4919D2E27A15C12001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */,
 				2B0F626D24EC129D00DA22A6 /* TransactionFilterOptionView.swift in Sources */,
 				2B835B7A27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
@@ -25935,7 +25935,7 @@
 				F096086F2795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
 				95004BB427BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */,
 				D48D11D72742878A000061CE /* TitledToggleViewTheme.swift in Sources */,
-				2B7CAD7229AE83C500A507EF /* TransactionSignatureMissingAuthAddressError.swift in Sources */,
+				2B7CAD7229AE83C500A507EF /* TransactionSignatureMissingAuthAccountError.swift in Sources */,
 				2BE936FC24534F5600322C1E /* NumpadButton.swift in Sources */,
 				2BE8799228BD2CBD00A6C682 /* ScanQRCodeTransactionOptionListItemButtonViewModel.swift in Sources */,
 				F0DB4159279382EC00EA437D /* TitleWithAccessoryViewModel.swift in Sources */,

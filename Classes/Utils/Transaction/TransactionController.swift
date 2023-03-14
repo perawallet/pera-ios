@@ -100,6 +100,9 @@ extension TransactionController {
     func setTransactionDraft(_ transactionDraft: TransactionSendDraft) {
         self.transactionDraft = transactionDraft
         
+        /// <note>
+        /// We need to update the ledger information of a rekeyed account so that we can use ledger information
+        /// of its auth account while signing the transaction.
         var account = transactionDraft.from
         updateLedgerDetailOfRekeyedAccountIfNeeded(for: &account)
         self.transactionDraft?.from = account

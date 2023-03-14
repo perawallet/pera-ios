@@ -18,8 +18,9 @@
 import Foundation
 
 extension Dictionary {
-    subscript(safe key: Key) -> Value? {
-        guard let value = self[key] else {
+    subscript(safe key: Key?) -> Value? {
+        guard let key,
+              let value = self[key] else {
             return nil
         }
         

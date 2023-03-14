@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TransactionSignatureMissingAuthAddressError.swift
+//   TransactionSignatureMissingAuthAccountError.swift
 
 import Foundation
 
-struct TransactionSignatureMissingAuthAddressError: TransactionSignatureValidationError {
+struct TransactionSignatureMissingAuthAccountError: TransactionSignatureValidationError {
     let title = "title-error".localized
     let message: String? = "ledger-rekey-error-not-found".localized
 }

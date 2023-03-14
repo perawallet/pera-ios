@@ -48,7 +48,7 @@ struct TransactionSignatureValidator {
 extension TransactionSignatureValidator {
     private func validateTransactionSignatureErrorForRekeyedAccount(_ account: Account) -> TransactionSignatureValidationResult {
         guard let authAddress = account.authAddress else {
-            return .failure(TransactionSignatureMissingAuthAddressError())
+            return .failure(TransactionSignatureMissingAuthAccountError())
         }
         
         if hasRekeyedLedgerInformation(for: account) {
@@ -56,22 +56,30 @@ extension TransactionSignatureValidator {
         }
         
         if !hasAuthorizationAccount(authAddress) {
-            return .failure(TransactionSignatureMissingAuthAddressError())
+            return .failure(TransactionSignatureMissingAuthAccountError())
         }
         
         return .success
     }
     
     private func hasRekeyedLedgerInformation(for account: Account) -> Bool {
-        guard let authAddress = account.authAddress else {
-            return false
-        }
-        
-        return account.rekeyDetail?[safe: authAddress] != nil
+        return account.rekeyDetail?[safe: account.authAddress] != nil
     }
     
     private func hasAuthorizationAccount(_ authAddress: PublicKey) -> Bool {
-        return sharedDataController.accountCollection[authAddress] != nil
+        guard let authAccount = sharedDataController.accountCollection[authAddress] else {
+            return false
+        }
+        
+        if !hasAuthroizationOfStandardAuthAccount(authAccount.value) {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func hasAuthroizationOfStandardAuthAccount(_ authAccount: Account) -> Bool {
+        return authAccount.type.isStandard && session.hasPrivateData(for: authAccount.address)
     }
 }
 
