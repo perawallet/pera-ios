@@ -179,7 +179,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 
 extension RekeyConfirmationViewController {
     private func saveRekeyedAccountDetails() {
-        guard var localAccount = session?.accountInformation(from: account.address),
+        guard let localAccount = session?.accountInformation(from: account.address),
               let ledgerDetail = ledger else {
             return
         }
@@ -198,7 +198,7 @@ extension RekeyConfirmationViewController {
         saveAccount(localAccount)
     }
     
-    private func getNewAccountTypeAfterRekeying() -> AccountType {
+    private func getNewAccountTypeAfterRekeying() -> AccountInformation.AccountType {
         return account.isSameAccount(with: newAuthAddress) ? .ledger : .rekeyed
     }
     
