@@ -228,7 +228,7 @@
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions";
-"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for the selected period";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
