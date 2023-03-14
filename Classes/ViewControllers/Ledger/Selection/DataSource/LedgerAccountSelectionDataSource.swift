@@ -23,17 +23,35 @@ final class LedgerAccountSelectionDataSource: NSObject {
     private let accountsFetchGroup = DispatchGroup()
     
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
     private var accounts = [Account]()
-
     private let ledgerAccounts: [Account]
     private let isMultiSelect: Bool
+    private let rekeyFromAccount: Account?
+    
+    var isRekeyingAnAccount: Bool {
+        return rekeyFromAccount != nil
+    }
     
     private var rekeyedAccounts: [String: [Account]] = [:]
     
-    init(api: ALGAPI, accounts: [Account], isMultiSelect: Bool) {
+    private lazy var rekeyingValidator = RekeyingValidator(
+        session: api.session,
+        sharedDataController: sharedDataController
+    )
+    
+    init(
+        api: ALGAPI,
+        sharedDataController: SharedDataController,
+        accounts: [Account],
+        isMultiSelect: Bool,
+        rekeyFromAccount: Account?
+    ) {
         self.api = api
+        self.sharedDataController = sharedDataController
         self.ledgerAccounts = accounts
         self.isMultiSelect = isMultiSelect
+        self.rekeyFromAccount = rekeyFromAccount
         super.init()
     }
 }
@@ -43,12 +61,31 @@ extension LedgerAccountSelectionDataSource {
         for account in ledgerAccounts {
             account.type = .ledger
             account.assets = account.nonDeletedAssets()
-            accounts.append(account)
-            fetchRekeyedAccounts(of: account)
+            
+            if isRekeyingAnAccount {
+                filterAvailableAccountsToRekey(account)
+            } else {
+                fetchRekeyedAccounts(of: account)
+                accounts.append(account)
+            }
         }
         
         accountsFetchGroup.notify(queue: .main) {
             self.delegate?.ledgerAccountSelectionDataSource(self, didFetch: self.accounts)
+        }
+    }
+    
+    private func filterAvailableAccountsToRekey(_ account: Account) {
+        guard let rekeyFromAccount else { return }
+        
+        
+        let rekeyingValidationResult = rekeyingValidator.validateRekeying(
+            fromAccount: rekeyFromAccount,
+            toAccount: account
+        )
+        
+        if rekeyingValidationResult.canCompleteRekeying {
+            accounts.append(account)
         }
     }
     

@@ -81,6 +81,10 @@ final class ASADetailScreen:
 
     private lazy var localAuthenticator = LocalAuthenticator()
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var rekeyingValidator = RekeyingValidator(
+        session: session!,
+        sharedDataController: sharedDataController
+    )
 
     private var lastDisplayState = DisplayState.normal
     private var lastFrameOfFoldableArea = CGRect.zero
@@ -272,9 +276,15 @@ extension ASADetailScreen {
     }
     
     private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
-        return account.isLedger() ||
-            account.isRekeyed() ||
-            account.isSameAccount(with: dataController.account.address)
+        let rekeyingValidationResult = rekeyingValidator.validateRekeying(
+            fromAccount: dataController.account,
+            toAccount: account
+        )
+        
+        /// <note>
+        /// Rekeying a standard account to ledger account should not be handled from this flow.
+        /// So, the ledger accounts are filtered separately.
+        return !rekeyingValidationResult.canCompleteRekeying || account.hasLedgerDetail()
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -343,7 +353,7 @@ extension ASADetailScreen {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.removeAccountIfPossible()
+                self?.removeAccount()
             }
         )
 
@@ -353,16 +363,7 @@ extension ASADetailScreen {
         )
     }
 
-    private func removeAccountIfPossible() {
-        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: dataController.account).first?.value,
-           aRekeyedAccount.isRekeyedToAnyAccount() {
-            bannerController?.presentErrorBanner(
-                title: "",
-                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
-            )
-            return
-        }
-        
+    private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(dataController.account)
         walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)

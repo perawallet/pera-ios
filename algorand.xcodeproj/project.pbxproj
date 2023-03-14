@@ -844,6 +844,9 @@
 		2B0E7CC127E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
 		2B0E7CC227E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
 		2B0E7CC327E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
+		2B0F0B7729C08E5C00DDE607 /* RekeyingValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F0B7629C08E5C00DDE607 /* RekeyingValidator.swift */; };
+		2B0F0B7829C08E5C00DDE607 /* RekeyingValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F0B7629C08E5C00DDE607 /* RekeyingValidator.swift */; };
+		2B0F0B7929C08E5C00DDE607 /* RekeyingValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F0B7629C08E5C00DDE607 /* RekeyingValidator.swift */; };
 		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F5EED24DD4F7100DA22A6 /* RekeyConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */; };
@@ -7089,6 +7092,7 @@
 		2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewTheme.swift; sourceTree = "<group>"; };
 		2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewModel.swift; sourceTree = "<group>"; };
 		2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewModel.swift; sourceTree = "<group>"; };
+		2B0F0B7629C08E5C00DDE607 /* RekeyingValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyingValidator.swift; sourceTree = "<group>"; };
 		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
 		2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationView.swift; sourceTree = "<group>"; };
 		2B0F5EF624DD507000DA22A6 /* RekeyConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -10143,6 +10147,14 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
+		2B0F0B7529C08E4B00DDE607 /* Rekeying */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F0B7629C08E5C00DDE607 /* RekeyingValidator.swift */,
+			);
+			path = Rekeying;
+			sourceTree = "<group>";
+		};
 		2B0F5EE824DD4D9000DA22A6 /* Instruction */ = {
 			isa = PBXGroup;
 			children = (
@@ -10635,8 +10647,9 @@
 		2B3F6BD128CB3030009DF7E6 /* Validators */ = {
 			isa = PBXGroup;
 			children = (
-				2B7CAD6729AE7EBC00A507EF /* TransactionSignature */,
+				2B0F0B7529C08E4B00DDE607 /* Rekeying */,
 				2B3F6BD228CB305C009DF7E6 /* SlippageToleranceValidator.swift */,
+				2B7CAD6729AE7EBC00A507EF /* TransactionSignature */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -21904,6 +21917,7 @@
 				2BD063E625CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
 				2B69AAE028BE276300A8D65D /* SwapAssetAmountViewTheme.swift in Sources */,
 				2B69AB2628BFA16B00A8D65D /* SwapTransactionPreparation.swift in Sources */,
+				2B0F0B7929C08E5C00DDE607 /* RekeyingValidator.swift in Sources */,
 				D4061A382961F35B00EC9AE5 /* CollectibleDescriptionView.swift in Sources */,
 				D4F72B5F28E392CF00907287 /* InsufficientAlgoBalanceScreen.swift in Sources */,
 				D48A5F84284115FE0009E6DB /* AssetPreviewWithActionViewModel.swift in Sources */,
@@ -24493,6 +24507,7 @@
 				2BE09A7C28F60B820059EEF0 /* SwapSummaryStatusViewTheme.swift in Sources */,
 				2B69AAE528BE276800A8D65D /* SwapAssetAmountViewModel.swift in Sources */,
 				2B0F62A824EC129D00DA22A6 /* QRScannerViewController.swift in Sources */,
+				2B0F0B7829C08E5C00DDE607 /* RekeyingValidator.swift in Sources */,
 				D41699552790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
 				2B0E7CBE27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */,
 				17AEC577297530D7002B3B23 /* WebImportSuccessScreenListLayout.swift in Sources */,
@@ -25686,6 +25701,7 @@
 				2BE09A7F28F6F1670059EEF0 /* SwapSummaryItemViewTheme.swift in Sources */,
 				D473CA4C26E15F0C00558598 /* PassphraseCellViewTheme.swift in Sources */,
 				2B3E227526C0837700ED0AAF /* WCAppCallTransactionItemView.swift in Sources */,
+				2B0F0B7729C08E5C00DDE607 /* RekeyingValidator.swift in Sources */,
 				D444EE982946BD58008AD374 /* DisplayCollectibleAssetsInAssetListFilterItemViewModel.swift in Sources */,
 				D48FDF7A27CB7D9F00C39FC7 /* AssetPreviewCell.swift in Sources */,
 				2B8E5F0825471F60001D8E30 /* ShowQRCopyEvent.swift in Sources */,

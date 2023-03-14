@@ -34,19 +34,19 @@ struct TransactionSignatureValidator {
         }
         
         if account.hasAuthAccount() {
-            return validateTransactionSignatureErrorForRekeyedAccount(account)
+            return validateTransactionSignatureForRekeyedAccount(account)
         }
         
         if account.isLedger() {
-            return validateTransactionSignatureErrorForLedgerAccount(account)
+            return validateTransactionSignatureForLedgerAccount(account)
         }
         
-        return validateTransactionSignatureErrorForStandardAccount(account)
+        return validateTransactionSignatureForStandardAccount(account)
     }
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureErrorForRekeyedAccount(_ account: Account) -> TransactionSignatureValidationResult {
+    private func validateTransactionSignatureForRekeyedAccount(_ account: Account) -> TransactionSignatureValidationResult {
         guard let authAddress = account.authAddress else {
             return .failure(TransactionSignatureMissingAuthAccountError())
         }
@@ -79,12 +79,12 @@ extension TransactionSignatureValidator {
     }
     
     private func hasAuthroizationOfStandardAuthAccount(_ authAccount: Account) -> Bool {
-        return authAccount.type.isStandard && session.hasPrivateData(for: authAccount.address)
+        return session.hasPrivateData(for: authAccount.address)
     }
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureErrorForLedgerAccount(_ account: Account) -> TransactionSignatureValidationResult {
+    private func validateTransactionSignatureForLedgerAccount(_ account: Account) -> TransactionSignatureValidationResult {
         if !account.hasLedgerDetail() {
             return .failure(TransactionSignatureMissingLedgerDetailError())
         }
@@ -94,7 +94,7 @@ extension TransactionSignatureValidator {
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureErrorForStandardAccount(_ account: Account) -> TransactionSignatureValidationResult {
+    private func validateTransactionSignatureForStandardAccount(_ account: Account) -> TransactionSignatureValidationResult {
         if !session.hasPrivateData(for: account.address) {
             return .failure(TransactionSignatureMissingPrivateKeyError())
         }
