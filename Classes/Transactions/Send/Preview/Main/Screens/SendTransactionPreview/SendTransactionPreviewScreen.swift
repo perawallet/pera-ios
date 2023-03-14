@@ -34,8 +34,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
    
-   private var ledgerApprovalViewController: LedgerApprovalViewController?
-   private lazy var transitionToLedgerApproval = BottomSheetTransition(
+   private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
+   private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
       presentingViewController: self,
       interactable: false
    )
@@ -422,30 +422,15 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       _ transactionController: TransactionController,
       didRequestUserApprovalFrom ledger: String
    ) {
-      ledgerApprovalViewController = transitionToLedgerApproval.perform(
-         .ledgerApproval(mode: .approve, deviceName: ledger),
-         by: .present
+      openSignWithLedgerProcess(
+         transactionController: transactionController,
+         ledgerDeviceName: ledger
       )
-
-      ledgerApprovalViewController?.eventHandler = {
-         [weak self] event in
-         guard let self = self else { return }
-         switch event {
-         case .didCancel:
-            transactionController.stopBLEScan()
-            transactionController.stopTimer()
-
-            self.ledgerApprovalViewController?.dismissScreen()
-            self.ledgerApprovalViewController = nil
-
-            self.loadingController?.stopLoading()
-         }
-      }
    }
 
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-      ledgerApprovalViewController?.dismissScreen()
-      ledgerApprovalViewController = nil
+      signWithLedgerProcessScreen?.dismissScreen()
+      signWithLedgerProcessScreen = nil
 
       loadingController?.stopLoading()
    }
@@ -495,6 +480,39 @@ extension SendTransactionPreviewScreen {
          )
       }
    }
+}
+
+extension SendTransactionPreviewScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+               transactionController.stopBLEScan()
+               transactionController.stopTimer()
+
+               self.signWithLedgerProcessScreen?.dismissScreen()
+               self.signWithLedgerProcessScreen = nil
+
+               self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
 }
 
 extension SendTransactionPreviewScreen {

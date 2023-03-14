@@ -37,7 +37,7 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
 
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
     )
@@ -45,7 +45,7 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     private lazy var transactionController = createTransactionController()
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
 
@@ -428,34 +428,17 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        transitionToLedgerApproval.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .presentWithoutNavigationController
+        openSignWithLedgerProcess(
+            transactionController: transactionController,
+            ledgerDeviceName: ledger
         )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                transactionController.stopBLEScan()
-                transactionController.stopTimer()
-
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInUpdates(for: transactionController)
-
-                self.loadingController?.stopLoading()
-            }
-        }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInUpdates(for: transactionController)
 
@@ -463,8 +446,8 @@ extension AccountSelectionListScreen {
     }
 
     func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         loadingController?.stopLoading()
     }
@@ -484,6 +467,41 @@ extension AccountSelectionListScreen {
         from transactionController: TransactionController
     ) -> AssetID? {
         return transactionController.assetTransactionDraft?.assetIndex
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }
 

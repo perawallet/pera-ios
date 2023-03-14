@@ -46,7 +46,7 @@ class Router:
 
     /// <todo>
     /// Change after refactoring routing
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     
     init(
         rootViewController: RootViewController,
@@ -722,11 +722,6 @@ class Router:
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .ledgerApproval(mode, deviceName):
-            viewController = LedgerApprovalViewController(
-                mode: mode,
-                deviceName: deviceName
-            )
         case let .tutorialSteps(step):
             viewController = TutorialStepsViewController(
                 step: step,
@@ -1971,42 +1966,17 @@ extension Router {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
+        openSignWithLedgerProcess(
+            transactionController: transactionController,
+            ledgerDeviceName: ledger
         )
-
-        ongoingTransitions.append(ledgerApprovalTransition)
-
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .presentWithoutNavigationController
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                transactionController.stopBLEScan()
-                transactionController.stopTimer()
-
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInUpdates(for: self.transactionController)
-
-                self.appConfiguration.loadingController.stopLoading()
-            }
-        }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInUpdates(for: transactionController)
 
@@ -2016,8 +1986,8 @@ extension Router {
     func transactionControllerDidResetLedgerOperationOnSuccess(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         appConfiguration.loadingController.stopLoading()
     }
@@ -2056,5 +2026,48 @@ extension Router {
         from transactionController: TransactionController
     ) -> Account? {
         return transactionController.assetTransactionDraft?.from
+    }
+}
+
+extension Router {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        ongoingTransitions.append(ledgerApprovalTransition)
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = ledgerApprovalTransition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }

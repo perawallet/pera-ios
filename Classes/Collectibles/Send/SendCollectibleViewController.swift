@@ -45,7 +45,7 @@ final class SendCollectibleViewController:
         interactable: false
     )
 
-    private var transitionToLedgerApproval: BottomSheetTransition?
+    private var transitionToSignWithLedgerProcess: BottomSheetTransition?
     private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
     private var transitionToTransferFailedWarning: BottomSheetTransition?
 
@@ -79,7 +79,7 @@ final class SendCollectibleViewController:
 
     let theme: SendCollectibleViewControllerTheme
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
     private var askReceiverToOptInViewController: BottomWarningViewController?
     private var optInInformationScreen: UISheetActionScreen?
@@ -656,41 +656,17 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = findVisibleScreen()
-        let transition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
+        openSignWithLedgerProcess(
+            transactionController: transactionController,
+            ledgerDeviceName: ledger
         )
-
-        ledgerApprovalViewController = transition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .presentWithoutNavigationController
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                transactionController.stopBLEScan()
-                transactionController.stopTimer()
-
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.sendCollectibleActionView.stopLoading()
-                self.approveCollectibleTransactionViewController?.stopLoading()
-            }
-        }
-
-        transitionToLedgerApproval = transition
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         sendCollectibleActionView.stopLoading()
         approveCollectibleTransactionViewController?.stopLoading()
@@ -754,6 +730,48 @@ extension SendCollectibleViewController {
                 message: error.localizedDescription
             )
         }
+    }
+}
+
+extension SendCollectibleViewController {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.sendCollectibleActionView.stopLoading()
+                self.approveCollectibleTransactionViewController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+
+        transitionToSignWithLedgerProcess = transition
     }
 }
 

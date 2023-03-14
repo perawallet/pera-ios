@@ -81,7 +81,6 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
-    case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
     case passphraseDisplay(address: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
