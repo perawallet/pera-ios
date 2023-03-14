@@ -26,6 +26,7 @@ final class RecoverAccountView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var recoverWithPassphraseView = AccountTypeView()
+    private lazy var importFromSecureBackupView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
     private lazy var importFromWebView = AccountTypeView()
 
@@ -47,6 +48,11 @@ final class RecoverAccountView:
             for: .touchUpInside
         )
 
+        importFromSecureBackupView.addTouch(
+            target: self,
+            action: #selector(notifyDelegateToImportFromSecureBackup)
+        )
+
         recoverWithLedgerView.addTarget(
             self,
             action: #selector(notifyDelegateToRecoverWithLedger),
@@ -62,6 +68,7 @@ final class RecoverAccountView:
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
         recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        importFromSecureBackupView.bindData(viewModel?.importFromSecureBackupViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
         importFromWebView.bindData(viewModel?.importFromWebViewModel)
     }
@@ -71,6 +78,11 @@ extension RecoverAccountView {
     @objc
     private func notifyDelegateToRecoverWithPassphrase() {
         delegate?.recoverAccountView(self, didSelect: .passphrase)
+    }
+
+    @objc
+    private func notifyDelegateToImportFromSecureBackup() {
+        delegate?.recoverAccountView(self, didSelect: .importFromSecureBackup)
     }
 
     @objc
@@ -109,6 +121,8 @@ extension RecoverAccountView {
 
         recoverWithPassphraseView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithPassphraseView)
+        importFromSecureBackupView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importFromSecureBackupView)
         recoverWithLedgerView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithLedgerView)
         importFromWebView.customize(theme.accountTypeViewTheme)

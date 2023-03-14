@@ -115,6 +115,8 @@
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-import-secure-backup" = "Algorand Secure Backup";
+"account-type-selection-import-secure-backup-detail" = "I want to restore my accounts using an Algorand Secure Backup file and 12-word key";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
 

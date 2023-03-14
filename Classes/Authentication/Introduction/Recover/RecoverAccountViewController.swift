@@ -22,7 +22,10 @@ final class RecoverAccountViewController: BaseViewController {
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
         presentingScreen: self
     )
-
+    private lazy var secureBackupCoordinator = AlgorandSecureBackupFlowCoordinator(
+        configuration: configuration,
+        presentingScreen: self
+    )
     private let flow: AccountSetupFlow
 
     private var initializeAccount: Bool {
@@ -91,6 +94,8 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
         switch type {
         case .passphrase:
             open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase), by: .push)
+        case .importFromSecureBackup:
+            secureBackupCoordinator.launch()
         case .ledger:
             open(.tutorial(flow: flow, tutorial: .recoverWithLedger), by: .push)
         case .importFromWeb:
