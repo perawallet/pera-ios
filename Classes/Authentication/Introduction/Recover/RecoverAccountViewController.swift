@@ -22,7 +22,7 @@ final class RecoverAccountViewController: BaseViewController {
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
         presentingScreen: self
     )
-    private lazy var secureBackupCoordinator = AlgorandSecureBackupFlowCoordinator(
+    private lazy var secureBackupCoordinator = AlgorandSecureBackupImportFlowCoordinator(
         configuration: configuration,
         presentingScreen: self
     )

@@ -1425,3 +1425,7 @@
 
 "algorand-secure-backup-mnemonics-confirmation-primary-action-title" = "Create backup file";
 "algorand-secure-backup-mnemonics-confirmation-secondary-action-title" = "Show key again";
+
+"algorand-secure-backup-import-backup-title" = "Select your backup file";
+"algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
+"algorand-secure-backup-import-backup-paste" = "Paste backup file text";"

@@ -1426,6 +1426,10 @@ class Router:
             let screen = AlgorandSecureBackupErrorScreen()
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupImportBackup(let eventHandler):
+            let screen = AlgorandSecureBackupImportBackupScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
