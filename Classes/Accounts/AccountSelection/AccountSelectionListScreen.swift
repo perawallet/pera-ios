@@ -36,6 +36,10 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
 
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
         presentingViewController: self,
@@ -45,6 +49,7 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
     private lazy var transactionController = createTransactionController()
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private weak var swapAssetFlowCoordinator: SwapAssetFlowCoordinator?
@@ -317,6 +322,8 @@ extension AccountSelectionListScreen {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
         if account.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -408,17 +415,9 @@ extension AccountSelectionListScreen {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            transitionToLedgerConnectionIssuesWarning.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -428,15 +427,22 @@ extension AccountSelectionListScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        openSignWithLedgerProcess(
-            transactionController: transactionController,
-            ledgerDeviceName: ledger
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
         signWithLedgerProcessScreen?.dismissScreen()
         signWithLedgerProcessScreen = nil
 
@@ -502,6 +508,49 @@ extension AccountSelectionListScreen {
             ),
             by: .present
         ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension AccountSelectionListScreen {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

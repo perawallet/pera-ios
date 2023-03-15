@@ -50,6 +50,10 @@ final class CollectibleDetailViewController:
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
         presentingViewController: self,
@@ -63,6 +67,7 @@ final class CollectibleDetailViewController:
         sharedDataController: sharedDataController
     )
 
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private lazy var listView: UICollectionView = {
@@ -229,6 +234,10 @@ final class CollectibleDetailViewController:
             guard let self = self else { return }
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+            }
         }
 
         collectibleDetailTransactionController.eventHandlers.didStartOptingInToAsset = {
@@ -236,6 +245,10 @@ final class CollectibleDetailViewController:
             guard let self = self else { return }
 
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            if self.account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+            }
         }
     }
 
@@ -833,15 +846,22 @@ extension CollectibleDetailViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        openSignWithLedgerProcess(
-            transactionController: transactionController,
-            ledgerDeviceName: ledger
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
+
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
         signWithLedgerProcessScreen?.dismissScreen()
         signWithLedgerProcessScreen = nil
 
@@ -875,6 +895,48 @@ extension CollectibleDetailViewController {
                 break
             }
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInOutUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -934,17 +996,9 @@ extension CollectibleDetailViewController {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            transitionToLedgerConnectionIssuesWarning.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.openLedgerConnectionIssues()
+            }
         case .optOutFromCreator:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
