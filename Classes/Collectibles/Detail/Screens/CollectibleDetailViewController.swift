@@ -536,7 +536,7 @@ extension CollectibleDetailViewController {
                     draft: draft
                 ),
                 by: .customPresent(
-                    presentationStyle: .overCurrentContext,
+                    presentationStyle: .fullScreen,
                     transitionStyle: .crossDissolve,
                     transitioningDelegate: nil
                 ),

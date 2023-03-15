@@ -26,6 +26,10 @@ final class SendCollectibleViewController:
     SendCollectibleActionViewDelegate,
     UIScrollViewDelegate,
     KeyboardControllerDataSource {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return api!.isTestNet ? .darkContent : .lightContent
+    }
+
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
     private lazy var transitionToTransferFailedWithRetryWarning = BottomSheetTransition(
@@ -83,8 +87,6 @@ final class SendCollectibleViewController:
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
-    private var askReceiverToOptInViewController: BottomWarningViewController?
-    private var optInInformationScreen: UISheetActionScreen?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
 
@@ -334,11 +336,9 @@ extension SendCollectibleViewController {
                     [weak self] in
                     guard let self else { return }
 
-                    self.askReceiverToOptInViewController?.dismiss(animated: true) {
+                    self.dismiss(animated: true) {
                         [weak self] in
                         guard let self else { return }
-
-                        self.askReceiverToOptInViewController = nil
 
                         self.openOptInInformation()
                     }
@@ -362,12 +362,12 @@ extension SendCollectibleViewController {
             }
         )
 
-        askReceiverToOptInViewController = transitionToAskReceiverToOptIn.perform(
+        transitionToAskReceiverToOptIn.perform(
             .bottomWarning(
                 configurator: configurator
             ),
             by: .presentWithoutNavigationController
-        ) as? BottomWarningViewController
+        )
     }
 
     private func cancelOngoingFetchAccountsEnpoint() {
@@ -534,15 +534,14 @@ extension SendCollectibleViewController: TransactionSignChecking {
             style: .cancel
         ) { [weak self] in
             guard let self else { return }
-            self.optInInformationScreen?.dismiss(animated: true)
-            self.optInInformationScreen = nil
+            self.dismiss(animated: true)
         }
         uiSheet.addAction(closeAction)
 
-        optInInformationScreen = transitionToOptInInformation.perform(
+        transitionToOptInInformation.perform(
             .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
-        ) as? UISheetActionScreen
+        )
     }
 
     private func sendOptInRequestToReceiver() {
