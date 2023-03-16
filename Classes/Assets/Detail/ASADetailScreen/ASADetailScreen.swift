@@ -260,7 +260,7 @@ extension ASADetailScreen {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledRekeyingToAStandardAccount(for: account)
+            return self.isRekeyingRestricted(to: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -275,16 +275,16 @@ extension ASADetailScreen {
         )
     }
     
-    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
-        let rekeyingValidationResult = rekeyingValidator.validateRekeying(
-            fromAccount: dataController.account,
-            toAccount: account
+    private func isRekeyingRestricted(to account: Account) -> Bool {
+        let validation = rekeyingValidator.validateRekeying(
+            from: dataController.account,
+            to: account
         )
         
         /// <note>
         /// Rekeying a standard account to ledger account should not be handled from this flow.
         /// So, the ledger accounts are filtered separately.
-        return !rekeyingValidationResult.canCompleteRekeying || account.hasLedgerDetail()
+        return validation.isFailure || account.hasLedgerDetail()
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {

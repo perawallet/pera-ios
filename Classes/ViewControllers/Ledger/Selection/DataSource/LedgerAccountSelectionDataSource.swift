@@ -19,6 +19,10 @@ import UIKit
 
 final class LedgerAccountSelectionDataSource: NSObject {
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
+
+    private var hasOngoingRekeying: Bool {
+        return rekeyingAccount != nil
+    }
     
     private let accountsFetchGroup = DispatchGroup()
     
@@ -27,11 +31,7 @@ final class LedgerAccountSelectionDataSource: NSObject {
     private var accounts = [Account]()
     private let ledgerAccounts: [Account]
     private let isMultiSelect: Bool
-    private let rekeyFromAccount: Account?
-    
-    var isRekeyingAnAccount: Bool {
-        return rekeyFromAccount != nil
-    }
+    private let rekeyingAccount: Account?
     
     private var rekeyedAccounts: [String: [Account]] = [:]
     
@@ -44,14 +44,14 @@ final class LedgerAccountSelectionDataSource: NSObject {
         api: ALGAPI,
         sharedDataController: SharedDataController,
         accounts: [Account],
-        isMultiSelect: Bool,
-        rekeyFromAccount: Account?
+        rekeyingAccount: Account?,
+        isMultiSelect: Bool
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
         self.ledgerAccounts = accounts
+        self.rekeyingAccount = rekeyingAccount
         self.isMultiSelect = isMultiSelect
-        self.rekeyFromAccount = rekeyFromAccount
         super.init()
     }
 }
@@ -62,8 +62,8 @@ extension LedgerAccountSelectionDataSource {
             account.type = .ledger
             account.assets = account.nonDeletedAssets()
             
-            if isRekeyingAnAccount {
-                filterAvailableAccountsToRekey(account)
+            if hasOngoingRekeying {
+                filterAvailableAccountsForRekeying(account)
             } else {
                 fetchRekeyedAccounts(of: account)
                 accounts.append(account)
@@ -75,16 +75,14 @@ extension LedgerAccountSelectionDataSource {
         }
     }
     
-    private func filterAvailableAccountsToRekey(_ account: Account) {
-        guard let rekeyFromAccount else { return }
+    private func filterAvailableAccountsForRekeying(_ account: Account) {
+        guard let rekeyingAccount else { return }
         
-        
-        let rekeyingValidationResult = rekeyingValidator.validateRekeying(
-            fromAccount: rekeyFromAccount,
-            toAccount: account
+        let validation = rekeyingValidator.validateRekeying(
+            from: rekeyingAccount,
+            to: account
         )
-        
-        if rekeyingValidationResult.canCompleteRekeying {
+        if validation.isSuccess {
             accounts.append(account)
         }
     }

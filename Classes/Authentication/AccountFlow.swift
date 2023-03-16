@@ -22,16 +22,14 @@ enum AccountSetupFlow: Equatable {
     case addNewAccount(mode: AccountSetupMode)
     case none
     
-    var rekeyFromAccount: Account? {
+    var rekeyingAccount: Account? {
         switch self {
         case .addNewAccount(let mode):
-            if case .rekey(let account) = mode {
-                return account
+            switch mode {
+            case .rekey(let account): return account
+            default: return nil
             }
-            
-            return nil
-        default:
-            return nil
+        default: return nil
         }
     }
 }

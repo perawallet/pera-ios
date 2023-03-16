@@ -31,7 +31,20 @@ final class BannerController: MacaroonBanner.BannerController {
 
         activate()
     }
+}
 
+extension BannerController {
+    func present(_ error: ErrorDisplayable) {
+        if !error.isValid { return }
+
+        presentErrorBanner(
+            title: error.title,
+            message: error.message
+        )
+    }
+}
+
+extension BannerController {
     func presentErrorBanner(
         title: String,
         message: String,
@@ -94,15 +107,6 @@ final class BannerController: MacaroonBanner.BannerController {
 
         enqueue(view)
     }
-    
-    func present(_ error: TransactionSignatureValidationError) {
-        guard let message = error.message else { return }
-        
-        presentErrorBanner(
-            title: error.title,
-            message: message
-        )
-    }
 }
 
 extension BannerController {
@@ -135,5 +139,16 @@ extension BannerController {
         theme.configureForInfo()
         view.customize(theme)
         return view
+    }
+}
+
+protocol ErrorDisplayable {
+    var title: String { get }
+    var message: String { get }
+}
+
+extension ErrorDisplayable {
+    var isValid: Bool {
+        return !message.isEmpty
     }
 }

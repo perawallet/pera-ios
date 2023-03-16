@@ -27,6 +27,10 @@ extension Account {
 }
 
 extension Account {
+    func isSameAccount(with otherAcc: Account) -> Bool {
+        return isSameAccount(with: otherAcc.address)
+    }
+
     func isSameAccount(with address: String) -> Bool {
         return self.address == address
     }

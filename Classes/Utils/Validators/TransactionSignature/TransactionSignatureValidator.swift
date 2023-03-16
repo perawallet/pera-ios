@@ -27,78 +27,67 @@ struct TransactionSignatureValidator {
         self.session = session
         self.sharedDataController = sharedDataController
     }
-    
-    func validateTransactionSignature(for account: Account) -> TransactionSignatureValidationResult {
-        if account.isWatchAccount() {
-            return .failure(TransactionSignatureInvalidAccountTypeError())
+}
+
+extension TransactionSignatureValidator {
+    func validateTxnSignature(_ acc: Account) -> TransactionSignatureValidation {
+        if acc.isWatchAccount() {
+            return .failure(.invalidAccountType)
         }
-        
-        if account.hasAuthAccount() {
-            return validateTransactionSignatureForRekeyedAccount(account)
+
+        if acc.hasAuthAccount() {
+            return validateTxnSignatureForRekeyedAccount(acc)
         }
-        
-        if account.isLedger() {
-            return validateTransactionSignatureForLedgerAccount(account)
+
+        if acc.isLedger() {
+            return validateTxnSignatureForLedgerAccount(acc)
         }
-        
-        return validateTransactionSignatureForStandardAccount(account)
+
+        return validateTxnSignatureForStandardAccount(acc)
     }
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureForRekeyedAccount(_ account: Account) -> TransactionSignatureValidationResult {
-        guard let authAddress = account.authAddress else {
-            return .failure(TransactionSignatureMissingAuthAccountError())
+    private func validateTxnSignatureForRekeyedAccount(_ acc: Account) -> TransactionSignatureValidation {
+        if !isRekeyedToAnyAccount(acc) {
+            return .failure(.missingAuthAccount)
         }
-        
-        if hasRekeyedLedgerInformation(for: account) {
+
+        if isRekeyedToLedgerAccountInLocal(acc) {
             return .success
         }
-        
-        if !hasAuthorizationAccount(authAddress) {
-            return .failure(TransactionSignatureMissingAuthAccountError())
+
+        if isRekeyedToStandardAccountInLocal(acc) {
+            return .success
         }
-        
-        return .success
+
+        return .failure(.missingAuthAccount)
     }
-    
-    private func hasRekeyedLedgerInformation(for account: Account) -> Bool {
-        return account.rekeyDetail?[safe: account.authAddress] != nil
+
+    private func isRekeyedToAnyAccount(_ acc: Account) -> Bool {
+        return acc.authAddress != nil
     }
-    
-    private func hasAuthorizationAccount(_ authAddress: PublicKey) -> Bool {
-        guard let authAccount = sharedDataController.accountCollection[authAddress] else {
-            return false
-        }
-        
-        if !hasAuthroizationOfStandardAuthAccount(authAccount.value) {
-            return false
-        }
-        
-        return true
+
+    private func isRekeyedToLedgerAccountInLocal(_ acc: Account) -> Bool {
+        return acc.rekeyDetail?[safe: acc.authAddress] != nil
     }
-    
-    private func hasAuthroizationOfStandardAuthAccount(_ authAccount: Account) -> Bool {
-        return session.hasPrivateData(for: authAccount.address)
+
+    private func isRekeyedToStandardAccountInLocal(_ acc: Account) -> Bool {
+        guard let authAddress = acc.authAddress else { return false }
+        guard let authAccount = sharedDataController.accountCollection[authAddress] else { return false }
+
+        return session.hasPrivateData(for: authAccount.value.address)
     }
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureForLedgerAccount(_ account: Account) -> TransactionSignatureValidationResult {
-        if !account.hasLedgerDetail() {
-            return .failure(TransactionSignatureMissingLedgerDetailError())
-        }
-        
-        return .success
+    private func validateTxnSignatureForLedgerAccount(_ acc: Account) -> TransactionSignatureValidation {
+        return acc.hasLedgerDetail() ? .success : .failure(.missingLedgerDetail)
     }
 }
 
 extension TransactionSignatureValidator {
-    private func validateTransactionSignatureForStandardAccount(_ account: Account) -> TransactionSignatureValidationResult {
-        if !session.hasPrivateData(for: account.address) {
-            return .failure(TransactionSignatureMissingPrivateKeyError())
-        }
-        
-        return .success
+    private func validateTxnSignatureForStandardAccount(_ acc: Account) -> TransactionSignatureValidation {
+        return session.hasPrivateData(for: acc.address) ? .success : .failure(.missingPrivateKey)
     }
 }

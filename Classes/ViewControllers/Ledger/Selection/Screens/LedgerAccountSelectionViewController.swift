@@ -49,8 +49,8 @@ final class LedgerAccountSelectionViewController: BaseViewController {
         api: api!,
         sharedDataController: sharedDataController,
         accounts: ledgerAccounts,
-        isMultiSelect: isMultiSelect,
-        rekeyFromAccount: accountSetupFlow.rekeyFromAccount
+        rekeyingAccount: accountSetupFlow.rekeyingAccount,
+        isMultiSelect: isMultiSelect
     )
     
     private lazy var listLayout = LedgerAccountSelectionListLayout(theme: theme, dataSource: dataSource)

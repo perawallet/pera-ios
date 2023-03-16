@@ -15,6 +15,7 @@
 //   RekeyingValidator.swift
 
 import Foundation
+import MacaroonUtils
 
 struct RekeyingValidator {
     private let transactionSignatureValidator: TransactionSignatureValidator
@@ -28,58 +29,60 @@ struct RekeyingValidator {
             sharedDataController: sharedDataController
         )
     }
-    
+}
+
+extension RekeyingValidator {
     func validateRekeying(
-        fromAccount: Account,
-        toAccount: Account
-    ) -> RekeyingValidationResult {
-        if isRekeyingToTheSameAccount(
-            fromAccount: fromAccount,
-            toAccount: toAccount
-        ) {
-            return validateUndoRekeying(for: fromAccount)
+        from srcAcc: Account,
+        to authAcc: Account
+    ) -> RekeyingValidation {
+        let isSelfRekeying = self.isSelfRekeying(
+            from: srcAcc,
+            to: authAcc
+        )
+        if isSelfRekeying {
+            return validateRekeyingForUndo(srcAcc)
         }
-        
-        if canCreateRekeyingChain(for: toAccount) {
-            return .failure
+
+        let isChainRekeying = self.isChainRekeying(
+            from: srcAcc,
+            to: authAcc
+        )
+        if isChainRekeying {
+            return .failure(.invalid)
         }
-        
-        return canSignTransactionForAccount(fromAccount)
+
+        return validateRekeyingForTxnSignature(srcAcc)
+    }
+
+    private func validateRekeyingForUndo(_ acc: Account) -> RekeyingValidation {
+        return acc.isRekeyed() ? .success : .failure(.invalid)
+    }
+
+    private func validateRekeyingForTxnSignature(_ acc: Account) -> RekeyingValidation {
+        let result = transactionSignatureValidator.validateTxnSignature(acc)
+        return result.isSuccess ? .success : .failure(.invalid)
     }
 }
 
 extension RekeyingValidator {
-    private func isRekeyingToTheSameAccount(
-        fromAccount: Account,
-        toAccount: Account
+    private func isSelfRekeying(
+        from srcAcc: Account,
+        to authAcc: Account
     ) -> Bool {
-        return fromAccount.isSameAccount(with: toAccount.address)
+        return srcAcc.isSameAccount(with: authAcc)
     }
-    
-    private func validateUndoRekeying(for account: Account) -> RekeyingValidationResult {
-        return account.isRekeyed() ? .success : .failure
-    }
-    
-    private func canCreateRekeyingChain(for account: Account) -> Bool {
-        return account.isRekeyed()
-    }
-    
-    private func canSignTransactionForAccount(_ fromAccount: Account) -> RekeyingValidationResult {
-        let transactionSignatureValidationResult = transactionSignatureValidator.validateTransactionSignature(for: fromAccount)
-       
-        if case .success = transactionSignatureValidationResult {
-            return .success
-        }
-        
-        return .failure
+
+    private func isChainRekeying(
+        from srcAcc: Account,
+        to authAcc: Account
+    ) -> Bool {
+        return authAcc.isRekeyed()
     }
 }
 
-enum RekeyingValidationResult {
-    case success
-    case failure
-    
-    var canCompleteRekeying: Bool {
-        return self == .success
-    }
+typealias RekeyingValidation = Result<Void, RekeyingValidationError>
+
+enum RekeyingValidationError: Error {
+    case invalid
 }

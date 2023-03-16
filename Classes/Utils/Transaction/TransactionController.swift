@@ -86,9 +86,9 @@ extension TransactionController {
 
 extension TransactionController {
     func canSignTransaction(for account: Account) -> Bool {
-        let signatureValidationResult = transactionSignatureValidator.validateTransactionSignature(for: account)
+        let validation = transactionSignatureValidator.validateTxnSignature(account)
         
-        switch signatureValidationResult {
+        switch validation {
         case .success:
             return true
         case .failure(let error):
