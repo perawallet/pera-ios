@@ -12,25 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ManageAssetsListLayout.swift
+//   ManageAssetListLayout.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class ManageAssetsListLayout: NSObject {
-    private let dataSource: ManageAssetsListDataSource
+final class ManageAssetListLayout: NSObject {
+    private let dataSource: ManageAssetListDataSource
     
     private var sizeCache: [String: CGSize] = [:]
     
     init(
-        _ dataSource: ManageAssetsListDataSource
+        _ dataSource: ManageAssetListDataSource
     ) {
         self.dataSource = dataSource
     }
+    
+    static func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
+    }
 }
 
-extension ManageAssetsListLayout {
+extension ManageAssetListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -52,7 +58,7 @@ extension ManageAssetsListLayout {
             )
         case .assets:
             return UIEdgeInsets(
-                top: 20,
+                top: 16,
                 left: 0,
                 bottom: 0,
                 right: 0
@@ -84,10 +90,15 @@ extension ManageAssetsListLayout {
                 sizeForCollectibleAssetCellItem: item,
                 forSectionAt: indexPath.section
             )
-        case .empty(let item):
+        case .empty:
             return sizeForNoContent(
                 collectionView,
-                item: item,
+                forSectionAt: indexPath.section
+            )
+        case .assetLoading:
+            return sizeForLoading(
+                collectionView,
+                layout: collectionViewLayout,
                 forSectionAt: indexPath.section
             )
         }
@@ -151,24 +162,59 @@ extension ManageAssetsListLayout {
     
     private func sizeForNoContent(
         _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel,
         forSectionAt section: Int
     ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
         let width = calculateContentWidth(
             listView,
             forSectionAt: section
         )
+        let item = AssetListSearchNoContentViewModel(hasBody: true)
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            fittingIn: maxSize
         )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
+    
+    private func sizeForLoading(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        forSectionAt section: Int
+    ) -> CGSize{
+        let sizeCacheIdentifier = ManageAssetListLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = ManageAssetListLoadingCell.calculatePreferredSize(
+            for: ManageAssetListLoadingCell.theme,
+            fittingIn: maxSize
+        )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
     }
 }
 
-extension ManageAssetsListLayout {
+extension ManageAssetListLayout {
     private func calculateContentWidth(
         _ collectionView: UICollectionView,
         forSectionAt section: Int

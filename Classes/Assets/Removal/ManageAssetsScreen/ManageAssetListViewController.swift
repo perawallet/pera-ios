@@ -13,24 +13,32 @@
 // limitations under the License.
 
 //
-//  ManageAssetsViewController.swift
+//  ManageAssetListViewController.swift
 
 import UIKit
+import MacaroonUIKit
 import MagpieHipo
 
-final class ManageAssetsViewController:
+final class ManageAssetListViewController:
     BaseViewController,
     TransactionSignChecking,
-    UICollectionViewDelegateFlowLayout {    
+    UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
     
-    private lazy var listLayout = ManageAssetsListLayout(dataSource)
-    private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
+    private lazy var listLayout = ManageAssetListLayout(dataSource)
+    private lazy var dataSource = ManageAssetListDataSource(listView)
 
     private lazy var transitionToOptOutAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToTransferAssetBalance = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var contextView = ManageAssetsView()
+    private lazy var titleView = UILabel()
+    private lazy var subtitleView = UILabel()
+    private lazy var searchInputView = SearchInputView()
+    private lazy var searchInputBackgroundView: EffectView = .init()
+    private lazy var listView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: ManageAssetListLayout.build()
+    )
     
     private var account: Account {
         return dataController.account
@@ -47,33 +55,45 @@ final class ManageAssetsViewController:
     private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
-    private let dataController: ManageAssetsListDataController
+    private var query: ManageAssetListQuery
+    private let dataController: ManageAssetListDataController
 
     init(
-        dataController: ManageAssetsListDataController,
+        query: ManageAssetListQuery,
+        dataController: ManageAssetListDataController,
         configuration: ViewControllerConfiguration
     ) {
+        self.query = query
         self.dataController = dataController
+        
         super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addUI()
 
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didUpdate(let update):
+                self.dataSource.apply(
+                    update.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
             }
         }
+        
+        dataController.load(query: query)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        restartLoadingOfVisibleCellsIfNeeded()
+        
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,26 +105,95 @@ final class ManageAssetsViewController:
         }
     }
     
-    override func setListeners() {
-        dataController.dataSource = dataSource
-        contextView.assetsCollectionView.dataSource = dataSource
-        contextView.assetsCollectionView.delegate = self
-        contextView.setSearchInputDelegate(self)
-    }
-
-    override func prepareLayout() {
-        contextView.customize(theme.contextViewTheme)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         
-        view.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
+    }
+    
+    private func addUI() {
+        addBackground()
+        addTitle()
+        addSubtitle()
+        addSearchInput()
+        addList()
+    }
+}
+
+extension ManageAssetListViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+
+        view.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.leading.trailing == theme.horizontalPadding
+            $0.top == theme.titleTopPadding
         }
+    }
+    
+    private func addSubtitle() {
+        subtitleView.customizeAppearance(theme.subtitle)
+        subtitleView.editText = theme.subtitleText
+        
+        view.addSubview(subtitleView)
+        subtitleView.snp.makeConstraints {
+            $0.leading.trailing == theme.horizontalPadding
+            $0.top == titleView.snp.bottom + theme.subtitleTopPadding
+        }
+    }
+    
+    private func addSearchInput() {
+        searchInputView.customize(theme.searchInputTheme)
+        
+        view.addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
+            $0.top == subtitleView.snp.bottom + theme.searchInputTopPadding
+            $0.leading.trailing == theme.horizontalPadding
+        }
+        
+        searchInputView.delegate = self
+        
+        searchInputBackgroundView.effect = theme.searchInputBackground
+        searchInputBackgroundView.isUserInteractionEnabled = false
+
+        view.insertSubview(
+            searchInputBackgroundView,
+            belowSubview: searchInputView
+        )
+        searchInputBackgroundView.snp.makeConstraints {
+            $0.fitToHeight(theme.spacingBetweenSearchInputAndSearchInputBackground)
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing == 0
+        }
+    }
+    
+    private func addList() {
+        listView.customizeBaseAppearance(backgroundColor: theme.listViewBackgroundColor)
+        
+        view.insertSubview(
+            listView,
+            belowSubview: searchInputBackgroundView
+        )
+        listView.snp.makeConstraints {
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing.bottom == 0
+        }
+        
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.keyboardDismissMode = .onDrag
+        listView.delegate = self
     }
 }
 
 /// <mark>
 /// UICollectionViewDelegateFlowLayout
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -132,7 +221,7 @@ extension ManageAssetsViewController {
 
 /// <mark>
 /// UICollectionViewDelegate
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -159,6 +248,25 @@ extension ManageAssetsViewController {
                 cell as? OptOutCollectibleAssetListItemCell,
                 for: item
             )
+        case .assetLoading:
+            startAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
+        default:
+            break
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        
+        switch itemIdentifier {
+        case .assetLoading:
+            stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
         default:
             break
         }
@@ -194,7 +302,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func openCollectibleDetail(
         _ asset: CollectibleAsset,
         from cell: OptOutCollectibleAssetListItemCell? = nil
@@ -240,7 +348,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func createNewTransactionController(
         for asset: Asset
     ) -> TransactionController {
@@ -281,11 +389,11 @@ extension ManageAssetsViewController {
             currencyFormatter: currencyFormatter
         )
         let optOutAssetListItem = OptOutAssetListItem(item: assetItem)
-        let listItem = ManageAssetSearchItem.asset(optOutAssetListItem)
+        let listItem = ManageAssetListItem.asset(optOutAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
-            contextView.assetsCollectionView.cellForItem(at: $0)
+            listView.cellForItem(at: $0)
         } as? OptOutAssetListItemCell
     }
 
@@ -298,11 +406,11 @@ extension ManageAssetsViewController {
             amountFormatter: collectibleAmountFormatter
         )
         let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: collectibleAssetItem)
-        let listItem = ManageAssetSearchItem.collectibleAsset(optOutCollectibleAssetListItem)
+        let listItem = ManageAssetListItem.collectibleAsset(optOutCollectibleAssetListItem)
         let indexPath = dataSource.indexPath(for: listItem)
 
         return indexPath.unwrap {
-            contextView.assetsCollectionView.cellForItem(at: $0)
+            listView.cellForItem(at: $0)
         } as? OptOutCollectibleAssetListItemCell
     }
 
@@ -327,18 +435,10 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController: SearchInputViewDelegate {
+extension ManageAssetListViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        guard let query = view.text else {
-            return
-        }
-        
-        if query.isEmpty {
-            dataController.resetSearch()
-            return
-        }
-        
-        dataController.search(for: query)
+        query.keyword = view.text
+        dataController.load(query: query)
     }
     
     func searchInputViewDidReturn(_ view: SearchInputView) {
@@ -346,9 +446,14 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     }
 }
 
-extension ManageAssetsViewController {
-    private func restartLoadingOfVisibleCellsIfNeeded() {
-        for cell in contextView.assetsCollectionView.visibleCells {
+extension ManageAssetListViewController {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
+        for cell in listView.visibleCells {
+            if let loadingCell = cell as? ManageAssetListLoadingCell {
+                loadingCell.startAnimating()
+                return
+            }
+            
             if let assetCell = cell as? OptOutAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
@@ -362,9 +467,26 @@ extension ManageAssetsViewController {
             }
         }
     }
+    
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let loadingCell = cell as? ManageAssetListLoadingCell {
+                loadingCell.stopAnimating()
+                return
+            }
+        }
+    }
+    
+    private func startAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
+        cell?.startAnimating()
+    }
+    
+    private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
+        cell?.stopAnimating()
+    }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func configureAccessory(
         _ cell: OptOutAssetListItemCell?,
         for item: OptOutAssetListItem
@@ -397,7 +519,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func linkInteractors(
         _ cell: OptOutAssetListItemCell?,
         for item: OptOutAssetListItem
@@ -502,7 +624,7 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func openTransferAssetBalance(
         asset: Asset
     ) {
@@ -558,13 +680,13 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func isValidAssetDeletion(_ asset: Asset) -> Bool {
         return asset.amountWithFraction == 0
     }
 }
 
-extension ManageAssetsViewController: TransactionControllerDelegate {
+extension ManageAssetListViewController: TransactionControllerDelegate {
     func transactionController(
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
@@ -700,7 +822,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     }
 }
 
-extension ManageAssetsViewController {
+extension ManageAssetListViewController {
     private func cancelMonitoringOptOutUpdates(for transactionController: TransactionController) {
         if let assetID = getAssetID(from: transactionController) {
             let monitor = sharedDataController.blockchainUpdatesMonitor
