@@ -4876,7 +4876,6 @@
 		D465C7EE299A35A800733A29 /* BidaliPaymentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */; };
 		D465C7F0299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
 		D465C7F1299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
-		D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
 		D46954A4296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A5296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
 		D46954A6296F3BF300D3D6C0 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46954A3296F3BF300D3D6C0 /* String+Additions.swift */; };
@@ -6778,6 +6777,7 @@
 		F0E8CCA22880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA32880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
 		F0E8CCA42880496E00398803 /* CurrencySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8CCA12880496E00398803 /* CurrencySelectionCell.swift */; };
+		F0E9B3D129C3F49400AADED1 /* BidaliOpenURLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */; };
 		F0F40F1E2942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F40F1D2942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift */; };
 		F0F40F1F2942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F40F1D2942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift */; };
 		F0F40F202942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F40F1D2942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift */; };
@@ -21231,6 +21231,7 @@
 				F045BE3F286B9BD70069056B /* CurrencyFormattingListItemContextHandler.swift in Sources */,
 				D40D9C232964B61B00D4D5F1 /* SendPureCollectibleAssetBlockchainRequest.swift in Sources */,
 				F065169B2905E5D700ECE763 /* SwapAmountPercentageInputViewModel.swift in Sources */,
+				F0E9B3D129C3F49400AADED1 /* BidaliOpenURLParameters.swift in Sources */,
 				D4411D0828352DCE00080911 /* CollectibleFullScreenImageViewModel.swift in Sources */,
 				2BC1827523D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
 				D4092BAE276B522C0009722D /* WCSessionShortListViewTheme.swift in Sources */,
@@ -21943,7 +21944,6 @@
 				D43A0C2A2790D177007430B9 /* NoContentView.swift in Sources */,
 				17AEC566297521E6002B3B23 /* AccountImportParameters.swift in Sources */,
 				2B99D4BB28F58A6500323C11 /* SwapConfirmExchangeFeeInfoViewModel.swift in Sources */,
-				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
 				D45D766F299FB0EB0081735E /* SardineAccountSelectionListLocalDataController.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
@@ -22433,8 +22433,6 @@
 				2B2DF28D28102B5C008BC52D /* CurrencySelectionNoContentViewModel.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				D4027C22299E0E3100F59F15 /* SardineIntroductionScreenTheme.swift in Sources */,
-				D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
-				D465C7F2299A35C200733A29 /* BidaliOpenURLParameters.swift in Sources */,
 				95BB6C0027A15EF000F2A2F1 /* WCTransactionFullDappDetailConfigurator.swift in Sources */,
 				F04BD2CE28611C4100F43878 /* ToastView.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
