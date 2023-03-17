@@ -151,6 +151,10 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
         delegate?.wcTransactionSignerDidResetLedgerOperation(self)
     }
 
+    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.wcTransactionSignerDidResetLedgerOperationOnSuccess(self)
+    }
+
     func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         delegate?.wcTransactionSignerDidRejectedLedgerOperation(self)
     }
@@ -176,5 +180,6 @@ protocol WCTransactionSignerDelegate: AnyObject {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didRequestUserApprovalFrom ledger: String)
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner)
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
+    func wcTransactionSignerDidResetLedgerOperationOnSuccess(_ wcTransactionSigner: WCTransactionSigner)
     func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
 }

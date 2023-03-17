@@ -58,6 +58,8 @@ extension TutorialViewModel {
             image = img("faceid")
         case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected, .accountSuccessfullyRekeyed:
             image = img("check")
+        case .failedToImportLedgerAccounts:
+            image = img("icon-error-close")
         case .passphraseVerified:
             image = img("shield-check")
         case .recoverWithLedger:
@@ -91,6 +93,8 @@ extension TutorialViewModel {
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             title = "tutorial-title-ledger-connected".localized
+        case .failedToImportLedgerAccounts:
+            title = "tutorial-title-failed-to-import-ledger-accounts".localized
         case .accountSuccessfullyRekeyed:
             title = "ledger-rekey-success-title".localized
         case .collectibleTransferConfirmed:
@@ -122,6 +126,8 @@ extension TutorialViewModel {
             description = "tutorial-description-ledger".localized
         case .ledgerSuccessfullyConnected:
             description = "tutorial-description-ledger-connected".localized
+        case .failedToImportLedgerAccounts:
+            description = "tutorial-description-failed-to-import-ledger-accounts".localized
         case .accountSuccessfullyRekeyed(let accountName):
             description = "ledger-rekey-success-message".localized(params: accountName)
         case .collectibleTransferConfirmed:
@@ -152,6 +158,8 @@ extension TutorialViewModel {
         case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
+            primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
+        case .failedToImportLedgerAccounts:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
             primaryActionButtonTitle = "title-start-using-pera-wallet".localized

@@ -43,9 +43,12 @@ final class ScanQRFlowCoordinator:
     private var assetConfirmationTransition: BottomSheetTransition?
     private var accountQRTransition: BottomSheetTransition?
     private var optInRequestTransition: BottomSheetTransition?
+    private var transitionToLedgerConnection: BottomSheetTransition?
     private var ledgerConnectionIssuesWarningTransition: BottomSheetTransition?
+    private var transitionToSignWithLedgerProcess: BottomSheetTransition?
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private unowned let presentingScreen: UIViewController
     private let analytics: ALGAnalytics
@@ -381,6 +384,8 @@ extension ScanQRFlowCoordinator {
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
@@ -470,20 +475,11 @@ extension ScanQRFlowCoordinator {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let visibleScreen = presentingScreen.findVisibleScreen()
-            ledgerConnectionIssuesWarningTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
 
-            ledgerConnectionIssuesWarningTransition?.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -493,36 +489,24 @@ extension ScanQRFlowCoordinator {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = presentingScreen.findVisibleScreen()
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInUpdates(for: transactionController)
-
-                self.loadingController.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInUpdates(for: transactionController)
 
@@ -532,8 +516,8 @@ extension ScanQRFlowCoordinator {
     func transactionControllerDidResetLedgerOperationOnSuccess(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         loadingController.stopLoading()
     }
@@ -572,6 +556,104 @@ extension ScanQRFlowCoordinator {
         from transactionController: TransactionController
     ) -> Account? {
         return transactionController.assetTransactionDraft?.from
+    }
+}
+
+extension ScanQRFlowCoordinator {
+    private func openLedgerConnection() {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
+    }
+}
+
+extension ScanQRFlowCoordinator {
+    private func openLedgerConnectionIssues() {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        ledgerConnectionIssuesWarningTransition = transition
+    }
+}
+
+extension ScanQRFlowCoordinator {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
+                self.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+
+        transitionToSignWithLedgerProcess = transition
     }
 }
 

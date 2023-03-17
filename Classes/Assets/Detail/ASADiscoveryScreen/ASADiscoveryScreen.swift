@@ -58,7 +58,11 @@ final class ASADiscoveryScreen:
     }()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
     )
@@ -78,7 +82,8 @@ final class ASADiscoveryScreen:
         return displayStateInteractiveTransitionAnimator?.state == .active
     }
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private let quickAction: AssetQuickAction?
     private let dataController: ASADiscoveryScreenDataController
@@ -783,6 +788,8 @@ extension ASADiscoveryScreen {
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
@@ -888,6 +895,8 @@ extension ASADiscoveryScreen {
             self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
@@ -1017,34 +1026,24 @@ extension ASADiscoveryScreen {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        ledgerApprovalViewController = transitionToLedgerApproval.perform(
-            .ledgerApproval(
-                mode: .approve,
-                deviceName: ledger
-            ),
-            by: .present
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInOutUpdates(for: transactionController)
-
-                self.loadingController?.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInOutUpdates(for: transactionController)
 
@@ -1052,8 +1051,8 @@ extension ASADiscoveryScreen {
     }
 
     func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         loadingController?.stopLoading()
     }
@@ -1080,17 +1079,11 @@ extension ASADiscoveryScreen {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            transitionToLedgerConnectionIssuesWarning.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
+
+                self.openLedgerConnectionIssues()
+            }
         case .optOutFromCreator:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
@@ -1122,6 +1115,83 @@ extension ASADiscoveryScreen {
                 break
             }
         }
+    }
+}
+
+extension ASADiscoveryScreen {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInOutUpdates(for: transactionController)
+
+                self.loadingController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension ASADiscoveryScreen {
+    private func openLedgerConnection() {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInOutUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension ASADiscoveryScreen {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

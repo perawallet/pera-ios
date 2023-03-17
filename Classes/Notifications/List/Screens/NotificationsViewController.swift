@@ -30,8 +30,6 @@ final class NotificationsViewController: BaseViewController {
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
-    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
-
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
