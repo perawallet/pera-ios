@@ -36,6 +36,7 @@ final class SignWithLedgerProcessScreen:
     private lazy var titleView = Label()
     private lazy var bodyView = Label()
     private lazy var actionView = MacaroonUIKit.Button()
+    private lazy var infoView = UILabel()
 
     private lazy var theme = SignWithLedgerProcessScreenTheme()
 
@@ -132,6 +133,7 @@ extension SignWithLedgerProcessScreen {
         addTitle()
         addBody()
         addAction()
+        addInfo()
     }
 
     private func addImage() {
@@ -183,10 +185,9 @@ extension SignWithLedgerProcessScreen {
 
         footerView.addSubview(actionView)
         actionView.snp.makeConstraints {
-            $0.top == theme.actionEdgeInsets.top
-            $0.leading == theme.actionEdgeInsets.leading
-            $0.trailing == theme.actionEdgeInsets.trailing
-            $0.bottom == theme.actionEdgeInsets.bottom
+            $0.top == theme.footerEdgeInsets.top
+            $0.leading == theme.footerEdgeInsets.leading
+            $0.trailing == theme.footerEdgeInsets.trailing
         }
 
         actionView.addTouch(
@@ -195,6 +196,20 @@ extension SignWithLedgerProcessScreen {
         )
 
         bindAction()
+    }
+
+    private func addInfo() {
+        infoView.customizeAppearance(theme.info)
+
+        footerView.addSubview(infoView)
+        infoView.snp.makeConstraints {
+            $0.top == actionView.snp.bottom + theme.spacingBetweenActionAndInfo
+            $0.leading == theme.footerEdgeInsets.leading
+            $0.trailing == theme.footerEdgeInsets.trailing
+            $0.bottom == theme.footerEdgeInsets.bottom
+        }
+
+        bindInfo()
     }
 }
 
@@ -257,7 +272,14 @@ extension SignWithLedgerProcessScreen {
     }
 
     private func bindAction() {
-        actionView.editTitle = .string("ledger-approval-cancel-title".localized)
+        actionView.editTitle = .string("title-close".localized)
+    }
+
+    private func bindInfo() {
+        infoView.attributedText =
+            "ledger-approval-sign-info-message"
+                .localized
+                .footnoteRegular(alignment: .center)
     }
 }
 
