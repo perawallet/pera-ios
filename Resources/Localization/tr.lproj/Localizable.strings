@@ -68,10 +68,10 @@
 "account-type-selection-create-detail" = "Yeni bir Algorand hesabı oluşturun veya bir izleme hesabı ekleyin";
 
 /* (No Comment) */
-"account-type-selection-import-web" = "Import from Pera Web";
+"account-type-selection-import-web" = "Pera Web'den İçe Aktarın";
 
 /* (No Comment) */
-"account-type-selection-import-web-detail" = "I want to import Algorand accounts from Pera Web";
+"account-type-selection-import-web-detail" = "Algorand hesaplarını Pera Web'den içe aktarmak istiyorum";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledger Cihazını Eşleştir";
@@ -362,7 +362,7 @@
 "asset-support-your-add-title" = "Hesaplarınız bu varlığı içermiyor";
 
 /* (No Comment) */
-"asset-support-your-add-title-singular" = "Your account don't contain this asset";
+"asset-support-your-add-title-singular" = "Hesaplarınız bu varlığı içermiyor";
 
 /* MARK: Asset */
 "asset-title" = "Varlık";
@@ -386,22 +386,22 @@
 "back-up-phrase-qr" = "QR Kodunu Göster";
 
 /* (No Comment) */
-"backup-operation-loading-body" = "Importing your accounts";
+"backup-operation-loading-body" = "Hesaplarınız içe aktarılıyor";
 
 /* (No Comment) */
-"bidali-introduction-action-title" = "Buy gift cards";
+"bidali-introduction-action-title" = "Hediye kartı alın";
 
 /* (No Comment) */
-"bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"bidali-introduction-body" = "Dünya çapında binlerce markadan mobil yükleme işlemi yapmak ve hediye kartları satın almak veya için Algo, USDC veya USDt bakiyenizi kullanabilirsiniz.";
 
 /* MARK: Bidali Introduction */
-"bidali-introduction-navigation-title" = "Buy gift cards with Bidali";
+"bidali-introduction-navigation-title" = "Bidali ile hediye kartı alın";
 
 /* (No Comment) */
-"bidali-introduction-title" = "Buy gift cards with Crypto";
+"bidali-introduction-title" = "Kripto ile hediye kartı alın";
 
 /* (No Comment) */
-"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
+"bidali-not-available-description" = "TestNet'te satın alma işlemi gerçekleştiremezsiniz. Bidali'yi kullanmak için lütfen Ayarlar'a giderek MainNet'e geçiş yapın.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth Hatası";
@@ -458,43 +458,43 @@
 "ble-error-unsupported-device-title" = "Desteklenmeyen Cihaz";
 
 /* (No Comment) */
-"buy-gift-cards-with-crypto-alert-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+"buy-gift-cards-with-crypto-alert-body" = "Dünya çapında binlerce markadan mobil yükleme işlemi yapmak ve hediye kartları satın almak veya için Algo, USDC veya USDt bakiyenizi kullanabilirsiniz.";
 
 /* (No Comment) */
-"buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";
+"buy-gift-cards-with-crypto-alert-primary-action" = "Hediye kartı alın";
 
 /* MARK: Buy Gift Cards with Crypto Alert Item */
-"buy-gift-cards-with-crypto-alert-title" = "Buy gift cards with Crypto";
+"buy-gift-cards-with-crypto-alert-title" = "Kripto ile hediye kartı alın";
 
 /* (No Comment) */
-"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Apple Pay'i, kredi kartlarını veya banka transferi seçeneğini kullanın";
 
 /* (No Comment) */
-"buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "MoonPay ile ALGO Alın";
 
 /* (No Comment) */
-"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "ABD banka hesabınızla Instant ACH'yi kullanın";
 
 /* (No Comment) */
-"buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Sardine ile ALGO Alın";
 
 /* (No Comment) */
-"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "Algo, USDC veya USDt bakiyenizi kullanabilirsiniz";
 
 /* (No Comment) */
-"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Bidali ile hediye kartı alın";
 
 /* MARK: Buy / Sell Options */
-"buy-sell-options-buy-header-title" = "Buy crypto";
+"buy-sell-options-buy-header-title" = "Kripto alın";
 
 /* (No Comment) */
-"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "150'den fazla ülkede kredi kartlarını veya banka transferlerini kullanın";
 
 /* (No Comment) */
-"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Transak ile USDC Alın";
 
 /* (No Comment) */
-"buy-sell-options-sell-header-title" = "Sell crypto";
+"buy-sell-options-sell-header-title" = "Kripto satın";
 
 /* (No Comment) */
 "chart-no-data-text" = "Fiyat API'si şu anda kullanılamıyor. Lütfen daha sonra tekrar kontrol edin.";
@@ -1355,7 +1355,7 @@
 "opt-in-title-adding-nft" = "NFT'ye Katılım";
 
 /* (No Comment) */
-"opt-in-to-usdc" = "Opt-in to USDC";
+"opt-in-to-usdc" = "USDC'ye Katılım Sağlayın";
 
 /* (No Comment) */
 "options-auth-account" = "Hesap Adresini Doğrula";
@@ -1379,16 +1379,16 @@
 "options-passphrase" = "Parola";
 
 /* (No Comment) */
-"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-ledger" = "Ledger Hesabına Yeniden Anahtarlandı";
 
 /* (No Comment) */
-"options-rekey-standard" = "Rekey to Standard Account";
+"options-rekey-standard" = "Standart Hesaba Yeniden Anahtarlandı";
 
 /* (No Comment) */
 "options-remove-account" = "Hesabı Kaldır";
 
 /* (No Comment) */
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
+"options-remove-account-auth-address-error" = "Yeniden anahtarlanan %@ ögesini kaldırmadan bu hesabı kaldıramazsınız";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "Ana hesabınızı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?";
@@ -1628,7 +1628,7 @@
 "quick-actions-buy-algo-title" = "ALGO Al";
 
 /* MARK: QuickActions */
-"quick-actions-buy-sell-title" = "Buy / Sell";
+"quick-actions-buy-sell-title" = "Alım / Satım";
 
 /* (No Comment) */
 "quick-actions-more-title" = "Diğer";
@@ -1757,19 +1757,19 @@
 "rewards-title" = "Ödüller";
 
 /* (No Comment) */
-"sardine-introduction-action-title" = "Buy ALGO with Sardine";
+"sardine-introduction-action-title" = "Sardine ile ALGO Alın";
 
 /* (No Comment) */
-"sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
+"sardine-introduction-body" = "Instant ACH transferlerini kullandığınızda Algo'lar düşük işlem ücretleriyle anında hesaba geçer. Sardine, 180'i aşkın ülkede yerel bankalar ile kart ödemelerini, Apple Pay ile GPay'i de destekler.";
 
 /* MARK:  Sardine Introduction */
-"sardine-introduction-navigation-title" = "Buy ALGO with Sardine";
+"sardine-introduction-navigation-title" = "Sardine ile ALGO Alın";
 
 /* (No Comment) */
-"sardine-introduction-title" = "Buy ALGO";
+"sardine-introduction-title" = "ALGO Alın";
 
 /* (No Comment) */
-"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
+"sardine-not-available-description" = "TestNet'te satın alma işlemi gerçekleştiremezsiniz. Sardine'i kullanmak için lütfen Ayarlar'a giderek MainNet'e geçiş yapın.";
 
 /* (No Comment) */
 "screenshot-description" = "Kurtarma parolanızı ekran görüntüsü alarak yedeklemeyin. Parolanızı içeren bir görüntünün olması bir güvenlik riskidir.";
@@ -2306,13 +2306,13 @@
 "title-asset-id" = "Varlık Kimliği";
 
 /* (No Comment) */
-"title-buy-sell" = "Buy / Sell";
+"title-buy-sell" = "Alım / Satım";
 
 /* (No Comment) */
 "title-cancel" = "İptal";
 
 /* (No Comment) */
-"title-choose-account-to-proceed-with" = "Choose an account to proceed with";
+"title-choose-account-to-proceed-with" = "Devam etmek istediğiniz hesabı seçin";
 
 /* (No Comment) */
 "title-close" = "Kapat";
@@ -2771,7 +2771,7 @@
 "transaction-option-list-add-asset-title" = "Varlık Ekle";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
+"transaction-option-list-buy-sell-subtitle" = "Kripto almak veya satmak için kullanabileceğiniz tüm seçenekleri görün";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "Diğer işlemleri göster";
@@ -2825,19 +2825,19 @@
 "transaction-tutorial-title" = "İşlemlere Yönelik İpuçları";
 
 /* (No Comment) */
-"transak-introduction-action-title" = "Buy USDC with Transak";
+"transak-introduction-action-title" = "Transak ile USDC Alın";
 
 /* (No Comment) */
-"transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
+"transak-introduction-body" = "Transak, 800'ü aşkın uygulama üzerinden kullanıcıların itibari paradan kriptoya geçmelerini sağlar. 150'den fazla ülkede kredi kartlarını, banka kartlarını veya banka transferlerini destekler.";
 
 /* MARK:  Transak Introduction */
-"transak-introduction-navigation-title" = "Buy USDC with Transak";
+"transak-introduction-navigation-title" = "Transak ile USDC Alın";
 
 /* (No Comment) */
-"transak-introduction-title" = "Buy USDC";
+"transak-introduction-title" = "USDC Alın";
 
 /* (No Comment) */
-"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
+"transak-not-available-description" = "TestNet'te satın alma işlemi gerçekleştiremezsiniz. Transak'ı kullanmak için lütfen Ayarlar'a giderek MainNet'e geçiş yapın.";
 
 /* (No Comment) */
 "tutorial-action-title-ledger" = "Nasıl çalışır?";
@@ -3029,13 +3029,13 @@
 "wallet-connect-session-invalid-qr-message" = "WalletConnect'te oturum oluşturulamadı. Lütfen geçerli bir QR ile deneyin.";
 
 /* (No Comment) */
-"wallet-connect-session-limit-info-detail" = "At 51 sessions, your oldest session will be automatically disconnected.";
+"wallet-connect-session-limit-info-detail" = "Oturum sayısı 51 olduğunda, en eski oturumunuzun bağlantısı otomatik olarak kesilecektir.";
 
 /* (No Comment) */
-"wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
+"wallet-connect-session-limit-info-title" = "Oturum sayısı 50 ile sınırlıdır";
 
 /* (No Comment) */
-"wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
+"wallet-connect-session-limit-warning-message" = "Maksimum WalletConnect oturumu sayısı aşıldı. En eski oturumunuzun bağlantısı otomatik olarak kesildi.";
 
 /* (No Comment) */
 "wallet-connect-session-list-empty" = "Henüz herhangi bir uygulama bağlamadınız.";
@@ -3119,7 +3119,7 @@
 "wallet-connect-transaction-error-rejected-user" = "İşlem İsteği Reddedildi: Kullanıcı işlem isteğini reddetti.";
 
 /* (No Comment) */
-"wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
+"wallet-connect-transaction-error-session-not-found" = "Geçerli WalletConnect oturumu bulunamadı. Lütfen cüzdanınızla dApp'e bağlamayı yeniden deneyin";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "Geçersiz Giriş: İşlem isteği 64'ten fazla işlemi içeriyor";
@@ -3374,59 +3374,59 @@
 "web-export-result-title-singular" = "Hesap başarıyla dışa aktarıldı!";
 
 /* (No Comment) */
-"web-import-error-action" = "Go to Home";
+"web-import-error-action" = "Ana Sayfaya Git";
 
 /* (No Comment) */
-"web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+"web-import-error-body" = "Hesaplarınız içe aktarılamadı. Lütfen daha sonra tekrar deneyin.";
 
 /* (No Comment) */
-"web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
+"web-import-error-unsupported-version-body" = "Bu uygulama, QR kodu biçimini (sürüm: %@) tanımıyor. İki cihazın da Pera'nın son sürümünü kullandığından lütfen emin olun.";
 
 /* (No Comment) */
-"web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
+"web-import-instruction-first-message" = "Masaüstünüzde “web.perawallet.app” adresine gidin";
 
 /* (No Comment) */
-"web-import-instruction-fourth-message" = "Tap Start to scan the QR";
+"web-import-instruction-fourth-message" = "QR kodunu taramak için Başla'ya dokunun";
 
 /* (No Comment) */
-"web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
+"web-import-instruction-second-message" = "Ayarlar > Hesapları Aktar bölümüne gidin";
 
 /* MARK: Web Import */
-"web-import-instruction-start-button-title" = "Start";
+"web-import-instruction-start-button-title" = "Başla";
 
 /* (No Comment) */
-"web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
+"web-import-instruction-third-message" = "Pera Mobile'a aktarmak istediğiniz hesapları seçin ve QR kodunuzu oluşturun";
 
 /* (No Comment) */
-"web-import-instruction-title" = "Get your QR ready on Pera Web";
+"web-import-instruction-title" = "Pera Web'de QR kodunuzu hazırlayın";
 
 /* (No Comment) */
-"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
+"web-import-qr-scanner-title" = "Pera Web'de QR kodunu tarayın";
 
 /* (No Comment) */
-"web-import-success-button-title" = "Explore Pera Mobile";
+"web-import-success-button-title" = "Pera Mobile'ı Keşfedin";
 
 /* (No Comment) */
-"web-import-success-header-body" = "%@ accounts were imported from Pera Web";
+"web-import-success-header-body" = "%@ hesap Pera Web'den içe aktarıldı";
 
 /* (No Comment) */
-"web-import-success-header-singular-body" = "%@ account was imported from Pera Web";
+"web-import-success-header-singular-body" = "%@ hesap Pera Web'den içe aktarıldı";
 
 /* (No Comment) */
-"web-import-success-header-singular-title" = "Account imported";
+"web-import-success-header-singular-title" = "İçe aktarılan hesap";
 
 /* (No Comment) */
-"web-import-success-header-title" = "Accounts imported";
+"web-import-success-header-title" = "İçe aktarılan hesaplar";
 
 /* (No Comment) */
-"web-import-success-unimported-body" = "%@ accounts were not imported because they were previously imported.";
+"web-import-success-unimported-body" = "Daha önceden içe aktarıldığından, %@ hesap içe aktarılamadı.";
 
 /* (No Comment) */
-"web-import-success-unimported-singular-body" = "%@ account was not imported because it was previously imported.";
+"web-import-success-unimported-singular-body" = "Daha önceden içe aktarıldığından, %@ hesap içe aktarılamadı.";
 
 /* (No Comment) */
-"web-import-success-unimported-singular-title" = "Unimported Account";
+"web-import-success-unimported-singular-title" = "İçe Aktarılmamış Hesap";
 
 /* (No Comment) */
-"web-import-success-unimported-title" = "Unimported Accounts";
+"web-import-success-unimported-title" = "İçe Aktarılmamış Hesaplar";
 
