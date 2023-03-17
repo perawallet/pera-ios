@@ -37,6 +37,11 @@ class TransactionController {
         LedgerTransactionOperation(api: api, analytics: analytics)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api, sharedDataController: sharedDataController)
+    
+    private lazy var transactionSignatureValidator = TransactionSignatureValidator(
+        session: api.session,
+        sharedDataController: sharedDataController
+    )
 
     private var isLedgerRequiredTransaction: Bool {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
@@ -80,8 +85,41 @@ extension TransactionController {
 }
 
 extension TransactionController {
+    func canSignTransaction(for account: Account) -> Bool {
+        let validation = transactionSignatureValidator.validateTxnSignature(account)
+        
+        switch validation {
+        case .success:
+            return true
+        case .failure(let error):
+            bannerController?.present(error)
+            return false
+        }
+    }
+    
     func setTransactionDraft(_ transactionDraft: TransactionSendDraft) {
         self.transactionDraft = transactionDraft
+        
+        /// <note>
+        /// We need to update the ledger information of a rekeyed account so that we can use ledger information
+        /// of its auth account while signing the transaction.
+        var account = transactionDraft.from
+        updateLedgerDetailOfRekeyedAccountIfNeeded(for: &account)
+        self.transactionDraft?.from = account
+    }
+    
+    private func updateLedgerDetailOfRekeyedAccountIfNeeded(for account: inout Account) {
+        guard let authAddress = account.authAddress,
+              let authAccount = sharedDataController.accountCollection[authAddress],
+              let ledgerDetail = authAccount.value.ledgerDetail else {
+            return
+            
+        }
+        
+        account.addRekeyDetail(
+            ledgerDetail,
+            for: authAddress
+        )
     }
     
     func stopBLEScan() {

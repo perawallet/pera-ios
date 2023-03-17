@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class AccountDetailViewController:
@@ -73,6 +74,11 @@ final class AccountDetailViewController:
     )
 
     private lazy var localAuthenticator = LocalAuthenticator()
+    
+    private lazy var rekeyingValidator = RekeyingValidator(
+        session: session!,
+        sharedDataController: sharedDataController
+    )
 
     private lazy var navigationTitleView = AccountNameTitleView()
 
@@ -469,7 +475,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledRekeyingToAStandardAccount(for: account)
+            return self.isRekeyingRestricted(to: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -484,10 +490,16 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         )
     }
     
-    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
-        return account.isRekeyed() ||
-            account.isLedger() ||
-            account.isSameAccount(with: accountHandle.value.address)
+    private func isRekeyingRestricted(to account: Account) -> Bool {
+        let validation = rekeyingValidator.validateRekeying(
+            from: accountHandle.value,
+            to: account
+        )
+        
+        /// <note>
+        /// Rekeying a standard account to ledger account should not be handled from this flow.
+        /// So, the ledger accounts are filtered separately.
+        return validation.isFailure || account.hasLedgerDetail()
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -581,7 +593,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.removeAccountIfPossible()
+                self?.removeAccount()
             }
         )
 
@@ -591,16 +603,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         )
     }
 
-    private func removeAccountIfPossible() {
-        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: accountHandle.value).first?.value,
-           aRekeyedAccount.isRekeyedToAnyAccount() {
-            bannerController?.presentErrorBanner(
-                title: "",
-                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
-            )
-            return
-        }
-        
+    private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(accountHandle.value)
         walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
         eventHandler?(.didRemove)

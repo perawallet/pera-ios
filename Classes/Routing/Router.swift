@@ -1696,6 +1696,8 @@ extension Router {
               !account.isWatchAccount() else {
             return
         }
+        
+        if !transactionController.canSignTransaction(for: account) { return }
 
         appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
 
@@ -2045,10 +2047,8 @@ extension Router {
         visibleScreen.dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-
-            guard !account.isWatchAccount() else {
-                return
-            }
+            
+            if !self.transactionController.canSignTransaction(for: account) { return }
 
             let monitor = self.appConfiguration.sharedDataController.blockchainUpdatesMonitor
             let request = OptInBlockchainRequest(account: account, asset: asset)

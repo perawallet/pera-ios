@@ -28,7 +28,6 @@ final class SelectAssetScreen:
     SearchInputViewDelegate,
     SwapAssetFlowCoordinatorObserver,
     TransactionControllerDelegate,
-    TransactionSignChecking,
     MacaroonForm.KeyboardControllerDataSource {
     var eventHandler: Screen.EventHandler<SelectAssetScreenEvent>?
 
@@ -319,11 +318,10 @@ extension SelectAssetScreen {
     private func continueToOptInAsset(
         asset: AssetDecoration
     ) {
+        let account = dataController.account
+        if !transactionController.canSignTransaction(for: account) { return }
+        
         loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        var account = dataController.account
-
-        if !canSignTransaction(for: &account) { return }
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(

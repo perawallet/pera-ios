@@ -488,15 +488,13 @@ extension SendCollectibleViewController {
     }
 }
 
-extension SendCollectibleViewController: TransactionSignChecking {
+extension SendCollectibleViewController {
     private func composeCollectibleAssetTransactionData(
         isOptingOut: Bool
     ) {
-        var fromAccount = draft.fromAccount
-
-        if !canSignTransaction(for: &fromAccount) {
-            return
-        }
+        let fromAccount = draft.fromAccount
+        
+        if !transactionController.canSignTransaction(for: fromAccount) { return }
 
         sendCollectibleActionView.startLoading()
 

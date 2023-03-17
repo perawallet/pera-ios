@@ -107,6 +107,10 @@ extension AccountInformation {
         case watch = "watch"
         case ledger = "ledger"
         case rekeyed = "rekeyed"
+        
+        var isStandard: Bool {
+            return self == .standard
+        }
 
         var isRekeyed: Bool {
             return self == .rekeyed

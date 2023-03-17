@@ -20,7 +20,6 @@ import MagpieHipo
 
 final class ManageAssetsViewController:
     BaseViewController,
-    TransactionSignChecking,
     UICollectionViewDelegateFlowLayout {    
     private lazy var theme = Theme()
     
@@ -482,11 +481,15 @@ extension ManageAssetsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            var account = self.dataController.account
-
-            if !self.canSignTransaction(for: &account) { return }
-
-            guard let creator = asset.creator else { return }
+            let account = self.dataController.account
+            let transactionController = self.createNewTransactionController(for: asset)
+            
+            guard transactionController.canSignTransaction(for: account),
+                  let creator = asset.creator else {
+                self.clearTransactionCache(transactionController)
+                self.restoreCellState(for: transactionController)
+                return
+            }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let request = OptOutBlockchainRequest(account: account, asset: asset)
@@ -499,7 +502,6 @@ extension ManageAssetsViewController {
                 assetIndex: asset.id,
                 assetCreator: creator.address
             )
-            let transactionController = self.createNewTransactionController(for: asset)
             transactionController.setTransactionDraft(assetTransactionDraft)
             transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
 

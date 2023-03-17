@@ -266,6 +266,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 extension SendTransactionPreviewScreen {
    @objc
    private func didTapNext() {
+      if !transactionController.canSignTransaction(for: draft.from) { return }
+      
       loadingController?.startLoadingWithMessage("title-loading".localized)
 
       let composedTransacation = composeTransaction()

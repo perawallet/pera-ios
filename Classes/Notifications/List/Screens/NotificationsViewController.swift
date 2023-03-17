@@ -18,9 +18,7 @@
 import UIKit
 import MagpieCore
 
-final class NotificationsViewController:
-    BaseViewController,
-    TransactionControllerDelegate {
+final class NotificationsViewController: BaseViewController {
     private var isInitialFetchCompleted = false
 
     private lazy var notificationsView = NotificationsView()
@@ -31,13 +29,6 @@ final class NotificationsViewController:
         lastSeenNotificationController: lastSeenNotificationController
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
-
-    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToLedgerApproval = BottomSheetTransition(
-        presentingViewController: self,
-        interactable: false
-    )
 
     private lazy var currencyFormatter = CurrencyFormatter()
 

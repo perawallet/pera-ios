@@ -30,9 +30,12 @@ final class TransakFlowCoordinator:
 
     private var transitionToAssetActionConfirmation: BottomSheetTransition?
     private var transitionToOptInAsset: BottomSheetTransition?
+    private var transitionToLedgerConnection: BottomSheetTransition?
     private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
-    private var transitionToLedgerApproval: BottomSheetTransition?
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var transitionToSignWithLedgerProcess: BottomSheetTransition?
+
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private unowned let presentingScreen: UIViewController
     private let api: ALGAPI
@@ -350,8 +353,8 @@ extension TransakFlowCoordinator {
         asset: AssetDecoration,
         account: Account
     ) {
-        /// <todo>
-        /// Add `canSignTransaction` check.
+        if !self.transactionController.canSignTransaction(for: account) { return }
+
         loadingController.startLoadingWithMessage("title-loading".localized)
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
@@ -371,6 +374,8 @@ extension TransakFlowCoordinator {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
         if account.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -379,6 +384,104 @@ extension TransakFlowCoordinator {
     private func cancelOptInAsset() {
         let visibleScreen = presentingScreen.findVisibleScreen()
         visibleScreen.dismiss(animated: true)
+    }
+}
+
+extension TransakFlowCoordinator {
+    private func openLedgerConnection() {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
+    }
+}
+
+extension TransakFlowCoordinator {
+    private func openLedgerConnectionIssues() {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnectionIssuesWarning = transition
+    }
+}
+
+extension TransakFlowCoordinator {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = presentingScreen.findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
+                self.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+
+        transitionToSignWithLedgerProcess = transition
     }
 }
 
@@ -479,20 +582,13 @@ extension TransakFlowCoordinator {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let visibleScreen = presentingScreen.findVisibleScreen()
-            transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: visibleScreen)
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                [weak self] in
+                guard let self else { return }
 
-            transitionToLedgerConnectionIssuesWarning?.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.ledgerConnectionScreen = nil
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -502,38 +598,27 @@ extension TransakFlowCoordinator {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = presentingScreen.findVisibleScreen()
-        let transition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
-        )
-        ledgerApprovalViewController = transition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            [weak self] in
+            guard let self else { return }
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
+            self.ledgerConnectionScreen = nil
 
-                self.cancelMonitoringOptInUpdates(for: transactionController)
-
-                self.loadingController.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
-
-        transitionToLedgerApproval = transition
     }
     
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInUpdates(for: transactionController)
 
@@ -556,8 +641,8 @@ extension TransakFlowCoordinator {
     func transactionControllerDidResetLedgerOperationOnSuccess(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
     }
 }
 
