@@ -594,6 +594,7 @@
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 "ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
+"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
