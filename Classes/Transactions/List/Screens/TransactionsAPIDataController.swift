@@ -203,36 +203,23 @@ extension TransactionsAPIDataController {
         from transactions: [Transaction],
         completion handler: @escaping EmptyHandler
     ) {
-        var assetsToBeFetched: [AssetID] = []
+        /// <todo>
+        /// This may turn out an expensive operation depending on the how complex transactions are;
+        /// thus, we should consider this constraint when refactoring the screen.
+        let assetIDs = formUniqueAssetIDs(for: transactions)
 
-        let assets = transactions.compactMap {
-            $0.assetTransfer?.assetId
-        }
-
-        if assets.isEmpty {
+        if assetIDs.isEmpty {
             handler()
             return
         }
 
-        for asset in assets {
-            if sharedDataController.assetDetailCollection[asset] == nil {
-                assetsToBeFetched.append(asset)
-            }
-        }
-
-        if assetsToBeFetched.isEmpty {
-            handler()
-            return
-        }
-
+        let draft = AssetFetchQuery(ids: assetIDs, includeDeleted: true)
         api.fetchAssetDetails(
-            AssetFetchQuery(ids: assetsToBeFetched, includeDeleted: true),
+            draft,
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] assetResponse in
-            guard let self = self else {
-                return
-            }
+            guard let self else { return }
 
             switch assetResponse {
             case let .success(assetDetailResponse):
@@ -245,6 +232,41 @@ extension TransactionsAPIDataController {
                 handler()
             }
         }
+    }
+
+    private func formUniqueAssetIDs(for transactions: [Transaction]) -> [AssetID] {
+        let uniqueAssetIDs = transactions.reduce(into: Set<AssetID>()) {
+            let uniqueAssetIDsPerTransaction = formUniqueAssetIDs(for: $1)
+            $0.formUnion(uniqueAssetIDsPerTransaction)
+        }
+        return Array(uniqueAssetIDs)
+    }
+
+    private func formUniqueAssetIDs(for transaction: Transaction) -> [AssetID] {
+        func assetNotExists(forID id: AssetID) -> Bool {
+            return sharedDataController.assetDetailCollection[id] == nil
+        }
+
+        var uniqueAssetIDs = Set<AssetID>()
+
+        if let assetID = (transaction.assetFreeze?.assetId).unwrap(where: assetNotExists) {
+            uniqueAssetIDs.insert(assetID)
+        }
+
+        if let assetID = (transaction.assetTransfer?.assetId).unwrap(where: assetNotExists) {
+            uniqueAssetIDs.insert(assetID)
+        }
+
+        if let assetIDs = transaction.applicationCall?.foreignAssets?.filter(assetNotExists) {
+            uniqueAssetIDs.formUnion(assetIDs)
+        }
+
+        if let innerTransactions = transaction.innerTransactions.unwrap(where: \.isNonEmpty) {
+            let assetIDs = formUniqueAssetIDs(for: innerTransactions)
+            uniqueAssetIDs.formUnion(assetIDs)
+        }
+
+        return Array(uniqueAssetIDs)
     }
 
     func loadNextTransactions() {

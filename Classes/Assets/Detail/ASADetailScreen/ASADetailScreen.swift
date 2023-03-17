@@ -23,9 +23,10 @@ import UIKit
 final class ASADetailScreen:
     BaseViewController,
     Container,
-    OptionsViewControllerDelegate,
     ChoosePasswordViewControllerDelegate,
-    RenameAccountScreenDelegate {
+    OptionsViewControllerDelegate,
+    RenameAccountScreenDelegate,
+    SelectAccountViewControllerDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -55,7 +56,7 @@ final class ASADetailScreen:
     private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
             account: dataController.account,
@@ -192,16 +193,88 @@ extension ASADetailScreen {
             by: .present
         )
     }
+    
+    func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
+        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
 
-    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+            self.open(
+                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+        }
+    }
+    
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
+        let viewModel = RekeyToStandardAccountInstructionsViewModel()
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
+            self.openSelectAccountForRekeyingToStandardAccount()
+        }
+    }
+    
+    private func openRekeyInstructions(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        rekeyHandler: @escaping () -> Void
+    ) {
+        let eventHandler: RekeyInstructionsViewController.EventHandler = {
+            event in
+
+            switch event {
+            case .performRekey:
+                rekeyHandler()
+            }
+        }
+        
         open(
-            .rekeyInstruction(account: dataController.account),
+            .rekeyInstruction(
+                viewModel: viewModel,
+                eventHandler: eventHandler
+            ),
             by: .customPresent(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,
                 transitioningDelegate: nil
             )
         )
+    }
+    
+    private func openSelectAccountForRekeyingToStandardAccount() {
+        let draft = SelectAccountDraft(
+            transactionAction: .rekeyToStandardAccount,
+            requiresAssetSelection: false
+        )
+        
+        let accountFilters: (Account) -> Bool = {
+            [weak self] account in
+            guard let self else { return false }
+            
+            return self.isEnabledRekeyingToAStandardAccount(for: account)
+        }
+
+        let screen: Screen = .accountSelection(
+            draft: draft,
+            delegate: self,
+            shouldFilterAccount: accountFilters
+        )
+
+        open(
+            screen,
+            by: .present
+        )
+    }
+    
+    private func isEnabledRekeyingToAStandardAccount(for account: Account) -> Bool {
+        return account.isLedger() ||
+            account.isRekeyed() ||
+            account.isSameAccount(with: dataController.account.address)
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -270,7 +343,7 @@ extension ASADetailScreen {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.removeAccount()
+                self?.removeAccountIfPossible()
             }
         )
 
@@ -280,7 +353,16 @@ extension ASADetailScreen {
         )
     }
 
-    private func removeAccount() {
+    private func removeAccountIfPossible() {
+        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: dataController.account).first?.value,
+           aRekeyedAccount.isRekeyedToAnyAccount() {
+            bannerController?.presentErrorBanner(
+                title: "",
+                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
+            )
+            return
+        }
+        
         sharedDataController.resetPollingAfterRemoving(dataController.account)
         walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)
@@ -301,10 +383,13 @@ extension ASADetailScreen {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-
-        if isConfirmed {
-            navigateToViewPassphrase()
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.navigateToViewPassphrase()
+            }
         }
     }
 }
@@ -321,6 +406,32 @@ extension ASADetailScreen {
 
             self.updateUIWhenAccountDidRename()
             self.eventHandler?(.didRenameAccount)
+        }
+    }
+}
+
+extension ASADetailScreen {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for draft: SelectAccountDraft
+    ) {
+        switch draft.transactionAction {
+        case .rekeyToStandardAccount:
+            selectAccountViewController.dismissScreen {
+                [weak self] in
+                guard let self else { return }
+                
+                self.open(
+                    .rekeyConfirmation(
+                        account: self.dataController.account,
+                        ledgerDetail: nil,
+                        newAuthAddress: account.address
+                    ),
+                    by: .present
+                )
+            }
+        default: break
         }
     }
 }
@@ -1067,9 +1178,9 @@ extension ASADetailScreen {
 
 extension ASADetailScreen {
     private func navigateToBuyAlgo() {
-        let draft = BuyAlgoDraft()
+        let draft = MoonPayDraft()
         draft.address = dataController.account.address
-        buyAlgoFlowCoordinator.launch(draft: draft)
+        moonPayFlowCoordinator.launch(draft: draft)
     }
 
     private func navigateToSwapAsset() {

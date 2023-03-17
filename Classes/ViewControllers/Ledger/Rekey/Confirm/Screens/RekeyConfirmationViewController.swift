@@ -24,7 +24,7 @@ final class RekeyConfirmationViewController: BaseViewController {
 
     private var account: Account
     private let ledger: LedgerDetail?
-    private let ledgerAddress: String
+    private let newAuthAddress: String
 
     private lazy var transitionToLedgerConnection = BottomSheetTransition(
         presentingViewController: self,
@@ -53,10 +53,15 @@ final class RekeyConfirmationViewController: BaseViewController {
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
-    init(account: Account, ledger: LedgerDetail?, ledgerAddress: String, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        ledger: LedgerDetail?,
+        newAuthAddress: String,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
         self.ledger = ledger
-        self.ledgerAddress = ledgerAddress
+        self.newAuthAddress = newAuthAddress
         super.init(configuration: configuration)
     }
 
@@ -80,7 +85,12 @@ final class RekeyConfirmationViewController: BaseViewController {
     }
 
     override func bindData() {
-        rekeyConfirmationView.bindData(RekeyConfirmationViewModel(account: account, ledgerName: ledger?.name))
+        let viewModel = RekeyConfirmationViewModel(
+            account: account,
+            ledgerName: ledger?.name,
+            newAuthAddress: newAuthAddress
+        )
+        rekeyConfirmationView.bindData(viewModel)
     }
     
     override func prepareLayout() {
@@ -103,7 +113,11 @@ extension RekeyConfirmationViewController:
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
+        let rekeyTransactionDraft = RekeyTransactionSendDraft(
+            account: account,
+            rekeyedTo: newAuthAddress
+        )
+
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
         
@@ -177,14 +191,31 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 
 extension RekeyConfirmationViewController {
     private func saveRekeyedAccountDetails() {
-        if let localAccount = session?.accountInformation(from: account.address),
-           let ledgerDetail = ledger {
-            localAccount.type = .rekeyed
-            account.type = .rekeyed
-            localAccount.addRekeyDetail(ledgerDetail, for: ledgerAddress)
-
-            session?.authenticatedUser?.updateAccount(localAccount)
+        guard let localAccount = session?.accountInformation(from: account.address),
+              let ledgerDetail = ledger else {
+            return
         }
+        
+        let accountType = getNewAccountTypeAfterRekeying()
+        localAccount.type = accountType
+        account.type = accountType
+        
+        if accountType.isRekeyed {
+            localAccount.addRekeyDetail(
+                ledgerDetail,
+                for: newAuthAddress
+            )
+        }
+
+        saveAccount(localAccount)
+    }
+    
+    private func getNewAccountTypeAfterRekeying() -> AccountInformation.AccountType {
+        return account.isSameAccount(with: newAuthAddress) ? .ledger : .rekeyed
+    }
+    
+    private func saveAccount(_ localAccount: AccountInformation) {
+        session?.authenticatedUser?.updateAccount(localAccount)
     }
 
     private func openRekeyConfirmationAlert() {
@@ -324,19 +355,26 @@ extension TransactionSignChecking where Self: BaseViewController {
             if selectedAccount.rekeyDetail?[authAddress] != nil {
                 return true
             } else {
-                if let authAccount = accounts.first(where: { account -> Bool in
+                guard let authAccount = accounts.first(where: { account -> Bool in
                     authAddress == account.address
-                }),
-                let ledgerDetail = authAccount.ledgerDetail {
-                    selectedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
-                    return true
+                }) else {
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "ledger-rekey-error-not-found".localized
+                    )
+                    
+                    return false
                 }
-            }
 
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay)
-            )
-            return false
+                if let ledgerDetail = authAccount.ledgerDetail {
+                    selectedAccount.addRekeyDetail(
+                        ledgerDetail,
+                        for: authAddress
+                    )
+                }
+                
+                return true
+            }
         }
 
         /// Check whether ledger details of the selected ledger account exists.

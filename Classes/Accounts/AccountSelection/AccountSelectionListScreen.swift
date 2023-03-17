@@ -17,10 +17,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class AccountSelectionListScreen<DataController: AccountSelectionListDataController>:
+class AccountSelectionListScreen<DataController: AccountSelectionListDataController>:
     BaseViewController,
     NavigationBarLargeTitleConfigurable,
-    SwapAssetFlowCoordinatorObserver,
     TransactionControllerDelegate,
     TransactionSignChecking,
     UICollectionViewDelegateFlowLayout  {
@@ -77,7 +76,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         dataController: DataController,
         listLayout: AccountSelectionListLayout,
         listDataSource: DataSource,
-        swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
         theme: AccountSelectionListScreenTheme,
         eventHandler: @escaping EventHandler,
         configuration: ViewControllerConfiguration
@@ -87,7 +85,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         self.dataController = dataController
         self.listLayout = listLayout
         self.listDataSource = listDataSource
-        self.swapAssetFlowCoordinator = swapAssetFlowCoordinator
         self.eventHandler = eventHandler
         self.theme = theme
 
@@ -96,7 +93,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
 
     deinit {
         navigationBarLargeTitleController.deactivate()
-        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func viewDidLoad() {
@@ -118,18 +114,6 @@ final class AccountSelectionListScreen<DataController: AccountSelectionListDataC
         }
 
         dataController.load()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        swapAssetFlowCoordinator?.add(self)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        swapAssetFlowCoordinator?.remove(self)
     }
 
     override func setListeners() {
@@ -276,17 +260,6 @@ extension AccountSelectionListScreen {
 }
 
 extension AccountSelectionListScreen {
-    func swapAssetFlowCoordinator(
-        _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
-        didPublish event: SwapAssetFlowCoordinatorEvent
-    ) {
-        switch event {
-        case .didApproveOptInToAsset(let asset):
-            self.continueToOptInAsset(asset: asset)
-        default: break
-        }
-    }
-
     private func createTransactionController() -> TransactionController {
         return TransactionController(
             api: api!,
@@ -296,7 +269,7 @@ extension AccountSelectionListScreen {
         )
     }
 
-    private func continueToOptInAsset(
+    func continueToOptInAsset(
         asset: AssetDecoration
     ) {
         guard var account = selectedAccount else { return }

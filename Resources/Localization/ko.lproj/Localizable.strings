@@ -68,6 +68,12 @@
 "account-type-selection-create-detail" = "새 알고랜드 계정을 만들거나 읽기 전용 계정을 추가합니다";
 
 /* (No Comment) */
+"account-type-selection-import-web" = "Import from Pera Web";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "I want to import Algorand accounts from Pera Web";
+
+/* (No Comment) */
 "account-type-selection-ledger" = "Ledger 기기 페어링";
 
 /* (No Comment) */
@@ -355,6 +361,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "계정에 해당 자산이 없습니다.";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "Your account don't contain this asset";
+
 /* MARK: Asset */
 "asset-title" = "자산";
 
@@ -375,6 +384,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QR 표시";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "Importing your accounts";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "Buy gift cards";
+
+/* (No Comment) */
+"bidali-introduction-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "Buy gift cards with Bidali";
+
+/* (No Comment) */
+"bidali-introduction-title" = "Buy gift cards with Crypto";
+
+/* (No Comment) */
+"bidali-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth 오류";
@@ -429,6 +456,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "지원되지 않는 기기";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "You can use your Algo, USDC or USDt balance to buy gift cards and mobile top-ups from thousand of brands worldwide!";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "Buy gift cards";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "Buy gift cards with Crypto";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Use Apple Pay, credit cards or bank transfer";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "Buy ALGO with MoonPay";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Buy ALGO with Sardine";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "Buy crypto";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "Sell crypto";
 
 /* (No Comment) */
 "chart-no-data-text" = "현재 가격 API를 사용할 수 없습니다. 잠시 후 다시 확인해 주십시오.";
@@ -1289,6 +1355,9 @@
 "opt-in-title-adding-nft" = "NFT 옵트인";
 
 /* (No Comment) */
+"opt-in-to-usdc" = "Opt-in to USDC";
+
+/* (No Comment) */
 "options-auth-account" = "계정 주소 인증";
 
 /* (No Comment) */
@@ -1310,10 +1379,16 @@
 "options-passphrase" = "비밀문구";
 
 /* (No Comment) */
-"options-rekey" = "계정 키 재지정";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "계정 삭제";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "메인 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
@@ -1549,8 +1624,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "주소";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "알고 구매";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "Buy / Sell";
 
 /* (No Comment) */
 "quick-actions-more-title" = "추가";
@@ -1665,6 +1743,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "보상";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "Buy ALGO with Sardine";
+
+/* (No Comment) */
+"sardine-introduction-body" = "Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "Buy ALGO with Sardine";
+
+/* (No Comment) */
+"sardine-introduction-title" = "Buy ALGO";
+
+/* (No Comment) */
+"sardine-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.";
 
 /* (No Comment) */
 "screenshot-description" = "스크린샷을 찍어 복구 비밀문구를 백업하지 마세요. 비밀문구가 포함된 이미지가 존재하면 보안상의 위험이 있습니다.";
@@ -2201,10 +2294,13 @@
 "title-asset-id" = "자산 ID";
 
 /* (No Comment) */
-"title-buy-algo" = "알고 구매";
+"title-buy-sell" = "Buy / Sell";
 
 /* (No Comment) */
 "title-cancel" = "취소";
+
+/* (No Comment) */
+"title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 
 /* (No Comment) */
 "title-close" = "닫기";
@@ -2663,7 +2759,7 @@
 "transaction-option-list-add-asset-title" = "자산 추가";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "신용카드 또는 은행 계좌 이체로 암호화폐 구매";
+"transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "더 많은 액션 보기";
@@ -2715,6 +2811,21 @@
 
 /* (No Comment) */
 "transaction-tutorial-title" = "트랜잭션 팁";
+
+/* (No Comment) */
+"transak-introduction-action-title" = "Buy USDC with Transak";
+
+/* (No Comment) */
+"transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "Buy USDC with Transak";
+
+/* (No Comment) */
+"transak-introduction-title" = "Buy USDC";
+
+/* (No Comment) */
+"transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
 
 /* (No Comment) */
 "tutorial-action-title-ledger" = "사용 방법";
@@ -2906,6 +3017,15 @@
 "wallet-connect-session-invalid-qr-message" = "WalletConnect에서 세션을 생성할 수 없습니다. 유효한 QR 코드를 사용해 주세요.";
 
 /* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "At 51 sessions, your oldest session will be automatically disconnected.";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
+
+/* (No Comment) */
 "wallet-connect-session-list-empty" = "아직 연동된 앱이 없습니다.";
 
 /* (No Comment) */
@@ -2985,6 +3105,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-rejected-user" = "트랜잭션 요청 거부: 사용자가 트랜잭션 요청을 거부했습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "잘못된 입력: 트랜잭션 요청에 64개 이상의 트랜잭션이 포함되었습니다.";
@@ -3237,4 +3360,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "계정을 내보냈습니다!";
+
+/* (No Comment) */
+"web-import-error-action" = "Go to Home";
+
+/* (No Comment) */
+"web-import-error-body" = "Your accounts could not be imported. Please try again later.";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "This application does not recognize the QR code format (version: %@). Please make sure that both devices are using the latest version of Pera.";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "Go to “web.perawallet.app” on your desktop";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "Tap Start to scan the QR";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "Go to Settings > Transfer Accounts";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "Start";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "Select the accounts you want to import to Pera Mobile and generate your QR";
+
+/* (No Comment) */
+"web-import-instruction-title" = "Get your QR ready on Pera Web";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "Scan QR code on Pera Web";
+
+/* (No Comment) */
+"web-import-success-button-title" = "Explore Pera Mobile";
+
+/* (No Comment) */
+"web-import-success-header-body" = "%@ accounts were imported from Pera Web";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "%@ account was imported from Pera Web";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "Account imported";
+
+/* (No Comment) */
+"web-import-success-header-title" = "Accounts imported";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "%@ accounts were not imported because they were previously imported.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "%@ account was not imported because it was previously imported.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "Unimported Account";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "Unimported Accounts";
 

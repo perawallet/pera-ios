@@ -87,8 +87,11 @@ indirect enum Screen {
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
-    case rekeyInstruction(account: Account)
-    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
+    case rekeyInstruction(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        eventHandler: RekeyInstructionsViewController.EventHandler
+    )
+    case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
     case securitySettings
@@ -124,7 +127,7 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
+    case accountListOptions(accountType: AccountInformation.AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case sortAccountList(
         dataController: SortAccountListDataController,
         eventHandler: SortAccountListViewController.EventHandler
@@ -188,11 +191,6 @@ indirect enum Screen {
     )
     case collectibleFullScreenImage(draft: CollectibleFullScreenImageDraft)
     case collectibleFullScreenVideo(draft: CollectibleFullScreenVideoDraft)
-    case buyAlgoHome(
-        transactionDraft: BuyAlgoDraft,
-        delegate: BuyAlgoHomeScreenDelegate?
-    )
-    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
@@ -308,6 +306,36 @@ indirect enum Screen {
         DiscoverDappParamaters,
         eventHandler: DiscoverDappDetailScreen.EventHandler?
     )
+    case discoverGeneric(DiscoverGenericParameters)
+    case importAccountIntroduction(WebImportInstructionScreen.EventHandler)
+    case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
+    case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
+    case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
+    case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
+    case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
+    case bidaliIntroduction
+    case bidaliDappDetail(account: AccountHandle)
+    case bidaliAccountSelection(
+        eventHandler: AccountSelectionListScreen<BidaliAccountSelectionListLocalDataController>.EventHandler
+    )
+    case moonPayIntroduction(
+        draft: MoonPayDraft,
+        delegate: MoonPayIntroductionScreenDelegate?
+    )
+    case moonPayAccountSelection(
+        eventHandler: AccountSelectionListScreen<MoonPayAccountSelectionListLocalDataController>.EventHandler
+    )
+    case moonPayTransaction(moonPayParams: MoonPayParams)
+    case sardineIntroduction
+    case sardineAccountSelection(
+        eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
+    )
+    case sardineDappDetail(account: AccountHandle)
+    case transakIntroduction
+    case transakAccountSelection(
+        eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
+    )
+    case transakDappDetail(account: AccountHandle)
 }
 
 extension Screen {

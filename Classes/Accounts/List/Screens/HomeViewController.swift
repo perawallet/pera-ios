@@ -26,9 +26,8 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
     var notificationObservations: [NSObjectProtocol] = []
 
-    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
         presentingScreen: self,
@@ -42,11 +41,20 @@ final class HomeViewController:
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api!)
+    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        analytics: analytics
+    )
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
         presentingScreen: self,
@@ -152,8 +160,6 @@ final class HomeViewController:
                 self.totalPortfolioValue = totalPortfolioItem?.portfolioValue
 
                 self.bindNavigation(totalPortfolioItem)
-
-                self.configureWalletConnectIfNeeded()
 
                 self.listDataSource.apply(
                     updates.snapshot,
@@ -433,11 +439,10 @@ extension HomeViewController {
     private func linkInteractors(
         _ cell: HomeQuickActionsCell
     ) {
-        cell.startObserving(event: .buyAlgo) {
+        cell.startObserving(event: .buySell) {
             [weak self] in
             guard let self = self else { return }
-            self.analytics.track(.recordHomeScreen(type: .buyAlgo))
-            self.buyAlgoFlowCoordinator.launch()
+            self.openBuySellOptions()
         }
 
         cell.startObserving(event: .swap) {
@@ -580,6 +585,65 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func openBuySellOptions() {
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyAlgoWithMoonPay:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithMoonPay()
+                }
+            case .performBuyAlgoWithSardine:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithSardine()
+                }
+            case .performBuyWithTransak:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyWithTransak()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyAlgoWithSardine() {
+        sardineFlowCoordinator.launch()
+    }
+
+    private func openBuyAlgoWithMoonPay() {
+        analytics.track(.recordHomeScreen(type: .buyAlgo))
+
+        moonPayFlowCoordinator.launch()
+    }
+
+    private func openBuyWithTransak() {
+        transakFlowCoordinator.launch()
+    }
+}
+
+extension HomeViewController {
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
+    }
+}
+
+extension HomeViewController {
     private func observeWhenUserIsOnboardedToSwap() {
         observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
             [weak self] notification in
@@ -632,35 +696,6 @@ extension HomeViewController {
                 passcodeSettingDisplayStore.disableAskingPasscode()
             }
         }
-    }
-}
-
-extension HomeViewController {
-    private func configureWalletConnectIfNeeded() {
-        onceWhenViewDidAppear.execute { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.completeWalletConnectConfiguration()
-        }
-    }
-
-    private func completeWalletConnectConfiguration() {
-        reconnectToOldWCSessions()
-        registerWCRequests()
-    }
-    
-    private func reconnectToOldWCSessions() {
-        walletConnector.reconnectToSavedSessionsIfPossible()
-    }
-
-    private func registerWCRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
     }
 }
 
@@ -1008,14 +1043,15 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-        
-        guard let selectedAccountHandle = selectedAccountHandle else {
-            return
-        }
+        guard let selectedAccountHandle else { return }
 
-        if isConfirmed {
-            presentPassphraseView(selectedAccountHandle)
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.presentPassphraseView(selectedAccountHandle)
+            }
         }
     }
 
@@ -1038,7 +1074,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.dataController.removeAccount(account)
+                self?.removeAccountIfPossible(account)
             }
         )
 
@@ -1062,6 +1098,19 @@ extension HomeViewController {
         }
 
         return dataController[item.address]
+    }
+    
+    private func removeAccountIfPossible(_ account: Account) {
+        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: account).first?.value,
+           aRekeyedAccount.isRekeyedToAnyAccount() {
+            bannerController?.presentErrorBanner(
+                title: "",
+                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
+            )
+            return
+        }
+        
+        dataController.removeAccount(account)
     }
 }
 
@@ -1101,20 +1150,42 @@ extension HomeViewController {
         return [
             makeCopyAddressIntroductionAlertItem(),
             makeSwapIntroductionAlertItem(),
+            makeBuyGiftCardsWithCryptoIntroductionAlertItem()
         ]
+    }
+
+    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
+        return CopyAddressIntroductionAlertItem(delegate: self)
     }
 
     private func makeSwapIntroductionAlertItem() -> any AlertItem {
         return SwapIntroductionAlertItem(delegate: swapAssetFlowCoordinator)
     }
 
-    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
-        return CopyAddressIntroductionAlertItem(delegate: self)
+    private func makeBuyGiftCardsWithCryptoIntroductionAlertItem() -> any AlertItem {
+        return BuyGiftCardsWithCryptoIntroductionAlertItem(delegate: self)
     }
 }
 
 extension HomeViewController: CopyAddressIntroductionAlertItemDelegate {
     func copyAddressIntroductionAlertItemDidPerformGotIt(_ item: CopyAddressIntroductionAlertItem) {
+        dismiss(animated: true)
+    }
+}
+
+extension HomeViewController: BuyGiftCardsWithCryptoIntroductionAlertItemDelegate {
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformBuyGiftCardsAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
+        dismiss(animated: true) {
+            [unowned self] in
+            self.openBuyGiftCardsWithCrypto()
+        }
+    }
+
+    private func openBuyGiftCardsWithCrypto() {
+        openBuyGiftCardsWithBidali()
+    }
+
+    func buyGiftCardsWithCryptoIntroductionAlertItemDidPerformLaterAction(_ item: BuyGiftCardsWithCryptoIntroductionAlertItem) {
         dismiss(animated: true)
     }
 }
