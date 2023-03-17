@@ -30,7 +30,7 @@ class WCMainTransactionDataSource: NSObject {
 
     lazy var totalTransactionCountToSign: Int = {
         return transactions
-            .filter { $0.requestedSigner.account != nil }
+            .filter(\.hasSignerAccount)
             .count
     }()
 
