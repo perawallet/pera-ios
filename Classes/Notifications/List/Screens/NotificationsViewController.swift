@@ -20,7 +20,6 @@ import MagpieCore
 
 final class NotificationsViewController:
     BaseViewController,
-    TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
 
@@ -33,26 +32,16 @@ final class NotificationsViewController:
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            sharedDataController: sharedDataController,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
-
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToLedgerApproval = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
-    
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,13 +138,6 @@ final class NotificationsViewController:
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -178,14 +160,9 @@ final class NotificationsViewController:
                 let loadingCell = $0 as? NotificationLoadingCell
                 loadingCell?.stopAnimating()
             }
-
-        transactionController.stopBLEScan()
-        transactionController.stopTimer()
     }
     
     override func setListeners() {
-        transactionController.delegate = self
-
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didReceiveNotification(notification:)),
@@ -411,159 +388,6 @@ extension NotificationsViewController {
             title: "notifications-asset-not-found-title".localized,
             message: "notifications-asset-not-found-description".localized
         )
-    }
-}
-
-extension NotificationsViewController {
-    func transactionController(
-        _ transactionController: TransactionController,
-        didFailedComposing error: HIPTransactionError
-    ) {
-        cancelMonitoringOptInUpdates(for: transactionController)
-
-        loadingController?.stopLoading()
-
-        switch error {
-        case let .inapp(transactionError):
-            displayTransactionError(from: transactionError)
-        default:
-            break
-        }
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didFailedTransaction error: HIPTransactionError
-    ) {
-        cancelMonitoringOptInUpdates(for: transactionController)
-
-        loadingController?.stopLoading()
-
-        switch error {
-        case let .network(apiError):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: apiError.debugDescription
-            )
-        default:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.localizedDescription
-            )
-        }
-    }
-
-    private func displayTransactionError(from transactionError: TransactionError) {
-        switch transactionError {
-        case let .minimumAmount(amount):
-            let amountText = currencyFormatter.format(amount.toAlgos)
-
-            bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amountText.someString)
-            )
-        case .invalidAddress:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
-            )
-        case let .sdkError(error):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.debugDescription
-            )
-        case .ledgerConnection:
-            transitionToLedgerConnectionIssuesWarning.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
-        default:
-            break
-        }
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {
-        loadingController?.stopLoading()
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didRequestUserApprovalFrom ledger: String
-    ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(
-                mode: .approve,
-                deviceName: ledger
-            ),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInUpdates(for: transactionController)
-
-                self.loadingController?.stopLoading()
-            }
-        }
-    }
-
-    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
-
-        cancelMonitoringOptInUpdates(for: transactionController)
-
-        loadingController?.stopLoading()
-    }
-
-    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
-
-        loadingController?.stopLoading()
-    }
-
-    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
-        if let assetID = getAssetID(from: transactionController),
-           let account = getAccount(from: transactionController) {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-    }
-
-    private func getAssetID(
-        from transactionController: TransactionController
-    ) -> AssetID? {
-        return transactionController.assetTransactionDraft?.assetIndex
-    }
-
-    private func getAccount(
-        from transactionController: TransactionController
-    ) -> Account? {
-        return transactionController.assetTransactionDraft?.from
     }
 }
 
