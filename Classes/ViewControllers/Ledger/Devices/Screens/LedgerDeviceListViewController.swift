@@ -33,8 +33,8 @@ final class LedgerDeviceListViewController: BaseViewController {
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var transitionToLedgerApproval: BottomSheetTransition?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var transitionToLedgerConnection: BottomSheetTransition?
 
     private var timer: Timer?
 
@@ -235,7 +235,7 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             return
         }
         
-        ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+        ledgerConnectionScreen?.closeScreen(by: .dismiss, animated: true) {
             self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, accounts: accounts), by: .push)
         }
     }
@@ -280,8 +280,8 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
                 message: errorSubtitle
             )
 
-            ledgerApprovalViewController?.dismissScreen()
-            ledgerApprovalViewController = nil
+            ledgerConnectionScreen?.dismissScreen()
+            ledgerConnectionScreen = nil
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
@@ -300,25 +300,26 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = transition.perform(
-            .ledgerApproval(mode: .connection, deviceName: ledger),
-            by: .presentWithoutNavigationController
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
+
             switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
+            case .performCancel:
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
 
                 self.ledgerAccountFetchOperation.disconnectFromCurrentDevice()
                 self.stopTimer()
             }
         }
 
-        transitionToLedgerApproval = transition
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
     }
 
     func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
@@ -326,7 +327,7 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     }
 
     func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
     }
 }
