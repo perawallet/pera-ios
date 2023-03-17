@@ -46,7 +46,8 @@ class Router:
 
     /// <todo>
     /// Change after refactoring routing
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     
     init(
         rootViewController: RootViewController,
@@ -722,8 +723,6 @@ class Router:
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .ledgerApproval(mode, deviceName):
-            viewController = LedgerApprovalViewController(mode: mode, deviceName: deviceName, configuration: configuration)
         case let .tutorialSteps(step):
             viewController = TutorialStepsViewController(
                 step: step,
@@ -1207,9 +1206,10 @@ class Router:
                 eventHandler: eventHandler,
                 configuration: configuration
             )
-        case .swapSignWithLedgerProcess(let transactionSigner, let draft, let eventHandler):
+        case .ledgerConnection(let eventHandler):
+            viewController = LedgerConnectionScreen(eventHandler: eventHandler)
+        case .signWithLedgerProcess(let draft, let eventHandler):
             viewController = SignWithLedgerProcessScreen(
-                transactionSigner: transactionSigner,
                 draft: draft,
                 eventHandler: eventHandler
             )
@@ -1460,6 +1460,8 @@ extension Router {
             return
         }
 
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
         let monitor = appConfiguration.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
         monitor.startMonitoringOptInUpdates(request)
@@ -1474,6 +1476,8 @@ extension Router {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
         if account.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -1826,6 +1830,8 @@ extension Router {
             self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection()
+
                 self.transactionController.initializeLedgerTransactionAccount()
                 self.transactionController.startTimer()
             }
@@ -1940,22 +1946,11 @@ extension Router {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let visibleScreen = findVisibleScreen(over: rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
 
-            ongoingTransitions.append(transition)
-
-            transition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -1965,39 +1960,24 @@ extension Router {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: visibleScreen,
-            interactable: false
-        )
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ongoingTransitions.append(ledgerApprovalTransition)
-
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.ledgerApprovalViewController = nil
-
-                self.cancelMonitoringOptInUpdates(for: self.transactionController)
-
-                self.appConfiguration.loadingController.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         cancelMonitoringOptInUpdates(for: transactionController)
 
@@ -2007,8 +1987,8 @@ extension Router {
     func transactionControllerDidResetLedgerOperationOnSuccess(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-        ledgerApprovalViewController = nil
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
 
         appConfiguration.loadingController.stopLoading()
     }
@@ -2047,5 +2027,103 @@ extension Router {
         from transactionController: TransactionController
     ) -> Account? {
         return transactionController.assetTransactionDraft?.from
+    }
+}
+
+extension Router {
+    private func openLedgerConnection() {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        ongoingTransitions.append(transition)
+    }
+}
+
+extension Router {
+    private func openLedgerConnectionIssues() {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        ongoingTransitions.append(transition)
+    }
+}
+
+extension Router {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        ongoingTransitions.append(ledgerApprovalTransition)
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: self.transactionController)
+
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = ledgerApprovalTransition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
     }
 }
