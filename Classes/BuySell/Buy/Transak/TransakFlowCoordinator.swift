@@ -31,6 +31,7 @@ final class TransakFlowCoordinator:
     private var transitionToAssetActionConfirmation: BottomSheetTransition?
     private var transitionToOptInAsset: BottomSheetTransition?
     private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
+    private var transitionToLedgerApproval: BottomSheetTransition?
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
@@ -349,6 +350,8 @@ extension TransakFlowCoordinator {
         asset: AssetDecoration,
         account: Account
     ) {
+        /// <todo>
+        /// Add `canSignTransaction` check.
         loadingController.startLoadingWithMessage("title-loading".localized)
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
@@ -397,16 +400,9 @@ extension TransakFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        loadingController.stopLoading()
 
         switch error {
         case let .inapp(transactionError):
@@ -423,16 +419,9 @@ extension TransakFlowCoordinator {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
-        loadingController.stopLoading()
+        cancelMonitoringOptInUpdates(for: transactionController)
 
-        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
-           let account = transactionController.assetTransactionDraft?.from {
-            let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
+        loadingController.stopLoading()
 
         switch error {
         case let .network(apiError):
@@ -514,11 +503,11 @@ extension TransakFlowCoordinator {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = presentingScreen.findVisibleScreen()
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: visibleScreen,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
@@ -529,15 +518,25 @@ extension TransakFlowCoordinator {
             switch event {
             case .didCancel:
                 self.ledgerApprovalViewController?.dismissScreen()
+                self.ledgerApprovalViewController = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+
                 self.loadingController.stopLoading()
             }
         }
+
+        transitionToLedgerApproval = transition
     }
     
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+
         loadingController.stopLoading()
     }
 
@@ -573,6 +572,31 @@ extension TransakFlowCoordinator {
         selectedAccountAddress = nil
 
         sharedDataController.remove(self)
+    }
+
+    private func cancelMonitoringOptInUpdates(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let account = getAccount(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func getAccount(
+        from transactionController: TransactionController
+    ) -> Account? {
+        return transactionController.assetTransactionDraft?.from
     }
 }
 

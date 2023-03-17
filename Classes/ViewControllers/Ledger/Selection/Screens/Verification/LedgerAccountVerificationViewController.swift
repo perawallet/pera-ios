@@ -141,14 +141,51 @@ extension LedgerAccountVerificationViewController {
 extension LedgerAccountVerificationViewController {
     @objc
     private func addVerifiedAccounts() {
+        let verifiedAccounts = dataController.getVerifiedAccounts()
+
+        if verifiedAccounts.isEmpty {
+            openFailureScreen()
+            return
+        }
+
         saveVerifiedAccounts()
 
+        openSuccessScreen()
+    }
+
+    private func openFailureScreen() {
         let controller = open(
-            .tutorial(flow: .none, tutorial: .ledgerSuccessfullyConnected),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            .tutorial(
+                flow: .none,
+                tutorial: .failedToImportLedgerAccounts
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome()
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
+            [weak self] _ in
+            self?.launchHome()
+        }
+    }
+
+    private func openSuccessScreen() {
+        let controller = open(
+            .tutorial(
+                flow: .none,
+                tutorial: .ledgerSuccessfullyConnected
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
+            [weak self] _ in
+            self?.launchHome()
         }
     }
 

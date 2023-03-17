@@ -744,6 +744,8 @@
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
 "tutorial-description-ledger-connected" = "Welcome to Pera Wallet! Your account is\nready to use";
+"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
