@@ -321,6 +321,7 @@ indirect enum Screen {
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
     case algorandSecureBackupImportBackup(eventHandler: AlgorandSecureBackupImportBackupScreen.EventHandler)
     case algorandSecureBackupImportSuccess(configuration: ImportAccountScreen.Configuration, eventHandler: WebImportSuccessScreen.EventHandler)
+    case algorandSecureBackupRestoreAccountList(accounts: [Account], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
 }
 
 extension Screen {

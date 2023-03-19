@@ -64,5 +64,19 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
         viewController.open(screen, by: .push)
     }
+
+    private func openRestoreAccountListScreen(
+        with accounts: [Account],
+        from viewController: UIViewController
+    ) {
+        let screen: Screen = .algorandSecureBackupRestoreAccountList(accounts: accounts) { event, screen in
+            switch event {
+            case .performContinue(let accounts):
+                print(accounts)
+            }
+        }
+
+        viewController.open(screen, by: .push)
+    }
 }
 

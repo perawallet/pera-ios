@@ -64,12 +64,15 @@ final class AlgorandSecureBackupAccountListScreen:
     private var isLayoutFinalized = false
 
     private let dataController: AlgorandSecureBackupAccountListDataController
+    private let mode: AlgorandSecureBackupAccountListScreen.Mode
 
     init(
         dataController: AlgorandSecureBackupAccountListDataController,
+        mode: AlgorandSecureBackupAccountListScreen.Mode,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.mode = mode
 
         super.init(configuration: configuration)
     }
@@ -80,9 +83,9 @@ final class AlgorandSecureBackupAccountListScreen:
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-
-        navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-title".localized
         navigationBarLargeTitleController.additionalScrollEdgeOffset = theme.listContentTopInset
+
+        configureNavigationBarTitle()
     }
 
     override func viewDidLoad() {
@@ -131,6 +134,15 @@ final class AlgorandSecureBackupAccountListScreen:
         super.prepareLayout()
 
         addUI()
+    }
+
+    private func configureNavigationBarTitle() {
+        switch mode {
+        case .export:
+            navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-title".localized
+        case .restore:
+            navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-restore-title".localized
+        }
     }
 
     private func addUI() {
@@ -191,17 +203,34 @@ extension AlgorandSecureBackupAccountListScreen {
 
         let title: String
 
-        /// <todo>:
-        /// Support singular/plural localization properly.
-        if selectedAccountsCount == 0 {
-            title = "algorand-secure-backup-account-list-action-title".localized
-        } else if selectedAccountsCount == 1 {
-            title = "algorand-secure-backup-account-list-action-title-singular".localized
-        } else {
-            title = "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(selectedAccountsCount)")
+        switch mode {
+        case .export:
+            title = continueActionTitleForExport(selectedAccountsCount)
+        case .restore:
+            title = continueActionTitleForRestore(selectedAccountsCount)
         }
 
         continueActionView.editTitle = .string(title)
+    }
+
+    private func continueActionTitleForExport(_ selectedAccountsCount: Int) -> String {
+        if selectedAccountsCount == 0 {
+            return "algorand-secure-backup-account-list-action-title".localized
+        } else if selectedAccountsCount == 1 {
+            return "algorand-secure-backup-account-list-action-title-singular".localized
+        } else {
+            return "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(selectedAccountsCount)")
+        }
+    }
+
+    private func continueActionTitleForRestore(_ selectedAccountsCount: Int) -> String {
+        if selectedAccountsCount == 0 {
+            return "algorand-secure-backup-account-list-restore-action-title".localized
+        } else if selectedAccountsCount == 1 {
+            return "algorand-secure-backup-account-list-restore-action-title-singular".localized
+        } else {
+            return "algorand-secure-backup-account-list-restore-action-title-plural".localized(params: "\(selectedAccountsCount)")
+        }
     }
 
     private func addContinueActionViewGradient() {
@@ -458,5 +487,12 @@ extension AlgorandSecureBackupAccountListScreen {
 extension AlgorandSecureBackupAccountListScreen {
     enum Event {
         case performContinue(with: [Account])
+    }
+}
+
+extension AlgorandSecureBackupAccountListScreen {
+    enum Mode {
+        case export
+        case restore
     }
 }

@@ -1410,6 +1410,7 @@ class Router:
             )
             let screen = AlgorandSecureBackupAccountListScreen(
                 dataController: dataController,
+                mode: .export,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
@@ -1437,6 +1438,17 @@ class Router:
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupRestoreAccountList(accounts, eventHandler):
+            let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
+                restoredAccounts: accounts
+            )
+            let screen = AlgorandSecureBackupAccountListScreen(
+                dataController: dataController,
+                mode: .restore,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
