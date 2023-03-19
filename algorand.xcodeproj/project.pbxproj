@@ -613,6 +613,12 @@
 		17CE519529C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE519429C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift */; };
 		17CE519629C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE519429C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift */; };
 		17CE519729C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE519429C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift */; };
+		17CE51A929C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
+		17CE51AA29C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
+		17CE51AB29C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */; };
+		17CE51AD29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
+		17CE51AE29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
+		17CE51AF29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */; };
 		17D04F4C225F90D70051BC43 /* NodeTestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */; };
 		17D04F4F225FACED0051BC43 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F4E225FACED0051BC43 /* Int.swift */; };
 		17D04F51225FAD920051BC43 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F50225FAD920051BC43 /* Double.swift */; };
@@ -6886,6 +6892,8 @@
 		17CE518A29C0716B00155489 /* AlgorandSecureBackupImportFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportFlowCoordinator.swift; sourceTree = "<group>"; };
 		17CE519029C07A4700155489 /* AlgorandSecureBackupImportBackupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportBackupScreen.swift; sourceTree = "<group>"; };
 		17CE519429C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportBackupScreenTheme.swift; sourceTree = "<group>"; };
+		17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportSuccessHeaderViewModel.swift; sourceTree = "<group>"; };
+		17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift; sourceTree = "<group>"; };
 		17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeTestDraft.swift; sourceTree = "<group>"; };
 		17D04F4E225FACED0051BC43 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		17D04F50225FAD920051BC43 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -9700,6 +9708,7 @@
 		17CE518E29C07A0200155489 /* Import */ = {
 			isa = PBXGroup;
 			children = (
+				17CE51A629C72AF400155489 /* Success */,
 				17CE518F29C07A0900155489 /* Backup */,
 			);
 			path = Import;
@@ -9712,6 +9721,23 @@
 				17CE519429C17EB600155489 /* AlgorandSecureBackupImportBackupScreenTheme.swift */,
 			);
 			path = Backup;
+			sourceTree = "<group>";
+		};
+		17CE51A629C72AF400155489 /* Success */ = {
+			isa = PBXGroup;
+			children = (
+				17CE51A729C72AFA00155489 /* Views */,
+			);
+			path = Success;
+			sourceTree = "<group>";
+		};
+		17CE51A729C72AFA00155489 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				17CE51A829C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift */,
+				17CE51AC29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		17D04F4D225FACDC0051BC43 /* Numbers */ = {
@@ -20361,6 +20387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17CE51AF29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
 				F0261AA027C56F1B009D8BF4 /* WelcomeViewModel.swift in Sources */,
 				046767A52756AB1E00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,
 				F011FCF62859399A00E42EA2 /* HomeAccountCell.swift in Sources */,
@@ -20612,6 +20639,7 @@
 				D45C4801277E1BF5001853A3 /* TransactionCustomRangeSelectionViewTheme.swift in Sources */,
 				2BAD559823A29C9C0037079F /* String+Empty.swift in Sources */,
 				F07DAA9D2909E60900DDBCF2 /* SwapAmountPercentageStore.swift in Sources */,
+				17CE51AB29C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				D405058526F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */,
 				D4A6479827846367009DE241 /* TransactionsViewController+Theme.swift in Sources */,
 				17BD4E0C2292F1260003E49A /* SettingsToggleCell.swift in Sources */,
@@ -23982,6 +24010,7 @@
 				D4487AA627BD372B00B4B0AB /* RecoverAccountViewController+Theme.swift in Sources */,
 				D419433627356EA10055EC70 /* AssetListView.swift in Sources */,
 				2B0F629C24EC129D00DA22A6 /* AccountListView.swift in Sources */,
+				17CE51AA29C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				D401293526D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */,
 				2B6B422A27BEA3A50036BF9E /* PasteFullPassphraseListItemButtonViewModel.swift in Sources */,
 				2BB93BD625BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
@@ -24253,6 +24282,7 @@
 				F06516942905C16300ECE763 /* AdjustableSingleSelectionInputViewTheme.swift in Sources */,
 				D4A6479727846367009DE241 /* TransactionsViewController+Theme.swift in Sources */,
 				D450DE6C2701CF73008CC094 /* LedgerAccountVerificationViewController+Theme.swift in Sources */,
+				17CE51AE29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
 				2B5BE06825190B7D00324BEE /* AccountTypeView.swift in Sources */,
 				2B69A9CD28617D55004014E2 /* QRSendTransactionOptionViewModel.swift in Sources */,
 				F09608702795E36B00CFBB90 /* SingleLineIconTitleView.swift in Sources */,
@@ -24804,6 +24834,7 @@
 				17A766702909361B00A8746C /* DiscoverDappDetailNavigationViewTheme.swift in Sources */,
 				D4194321273541870055EC70 /* PageBarStyleSheet.swift in Sources */,
 				2B9DDA35297FEE0D00E4BE12 /* RegexValidator+Extensions.swift in Sources */,
+				17CE51AD29C72C6E00155489 /* AlgorandSecureBackupImportSuccessInfoBoxViewModel.swift in Sources */,
 				178330952955CE6F00AD5B4E /* WalletConnectorPreferences.swift in Sources */,
 				D497947A287D8D61004FBF8E /* AppCallAssetListLayout.swift in Sources */,
 				F0E7445E27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
@@ -26312,6 +26343,7 @@
 				2B57BC57280EF45A00F958C4 /* CurrencySelectionDataController.swift in Sources */,
 				F0C542C6291C6D9600596A0A /* DiscoverSearchListNotFoundCell.swift in Sources */,
 				F07C3C5128B55F12003D55BC /* OptInBlockchainRequest.swift in Sources */,
+				17CE51A929C72B0F00155489 /* AlgorandSecureBackupImportSuccessHeaderViewModel.swift in Sources */,
 				2BCCB5BE27D755E500C5E497 /* OptOutAssetListItemCell.swift in Sources */,
 				F07C3C3828B50B3D003D55BC /* OptInBlockchainUpdate.swift in Sources */,
 				D4CC28D52875AC0B0082E038 /* InnerTransactionPreviewView.swift in Sources */,

@@ -1428,4 +1428,16 @@
 
 "algorand-secure-backup-import-backup-title" = "Select your backup file";
 "algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
-"algorand-secure-backup-import-backup-paste" = "Paste backup file text";"
+"algorand-secure-backup-import-backup-paste" = "Paste backup file text";
+
+"algorand-secure-backup-import-success-header-title" = "Accounts restored";
+"algorand-secure-backup-import-success-header-singular-title" = "Account restored";
+"algorand-secure-backup-import-success-header-body" = "%@ accounts were restored from backup file";
+"algorand-secure-backup-import-success-header-singular-body" = "%@ account was restored from backup file";
+"algorand-secure-backup-import-success-unimported-title" = "Unimported Accounts";
+"algorand-secure-backup-import-success-unimported-singular-title" = "Unimported Account";
+"algorand-secure-backup-import-success-unimported-body" = "%@ accounts were not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unimported-singular-body" = "%@ account was not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unsupported-body" = "%@ accounts were not restored because they have an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-singular-body" = "%@ account was not restored because it has an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-and-unimported-body" = "%@ accounts were not restored. They may already exist in your wallet or be unsupported account types";

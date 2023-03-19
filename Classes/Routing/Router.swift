@@ -1389,10 +1389,10 @@ class Router:
             let screen = WebImportErrorScreen(error: error)
             screen.eventHandler = eventHandler
             viewController = screen
-        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
+        case let .importAccountSuccess(importConfiguration, eventHandler):
             let dataController = WebImportSuccessScreenLocalDataController(
-                importedAccounts: importedAccounts,
-                unimportedAccounts: unimportedAccounts
+                configuration: importConfiguration,
+                mode: .webImport
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
@@ -1428,6 +1428,17 @@ class Router:
             viewController = screen
         case .algorandSecureBackupImportBackup(let eventHandler):
             let screen = AlgorandSecureBackupImportBackupScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupImportSuccess(importConfiguration, eventHandler):
+            let dataController = WebImportSuccessScreenLocalDataController(
+                configuration: importConfiguration,
+                mode: .algorandSecureBackup
+            )
+            let screen = WebImportSuccessScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
             screen.eventHandler = eventHandler
             viewController = screen
         }

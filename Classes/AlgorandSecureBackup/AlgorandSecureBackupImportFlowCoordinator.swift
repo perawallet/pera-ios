@@ -20,9 +20,6 @@ import MacaroonUIKit
 import MacaroonUtils
 
 final class AlgorandSecureBackupImportFlowCoordinator {
-    typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
-
     private let configuration: ViewControllerConfiguration
     private unowned let presentingScreen: UIViewController
 
@@ -53,10 +50,19 @@ extension AlgorandSecureBackupImportFlowCoordinator {
     private func openImportMnemonic(with data: Data, from viewController: UIViewController) {
         print(data)
     }
-}
 
-extension AlgorandSecureBackupImportFlowCoordinator {
-    enum Event {
-        case didFinish
+    private func openSuccessScreen(
+        with configuration: ImportAccountScreen.Configuration,
+        from viewController: UIViewController
+    ) {
+        let screen: Screen = .algorandSecureBackupImportSuccess(configuration: configuration) { event, screen in
+            switch event {
+            case .didGoToHome:
+                screen.dismissScreen()
+            }
+        }
+
+        viewController.open(screen, by: .push)
     }
 }
+

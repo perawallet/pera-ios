@@ -157,7 +157,14 @@ extension ImportAccountScreen {
         }
 
         saveAccounts(importableAccounts)
-        completeImporting(imported: importableAccounts, unimported: unimportedAccounts)
+
+        let unsupportedAccountCount = parameters.count - importableAccounts.count - unimportedAccounts.count
+
+        completeImporting(
+            imported: importableAccounts,
+            unimported: unimportedAccounts,
+            unsupportedAccountCount: unsupportedAccountCount
+        )
     }
 
     private func saveAccounts(_ accounts: [AccountInformation]) {
@@ -180,12 +187,16 @@ extension ImportAccountScreen {
 
     private func completeImporting(
         imported: [AccountInformation],
-        unimported: [AccountInformation]
+        unimported: [AccountInformation],
+        unsupportedAccountCount: Int
     ) {
         eventHandler?(
             .didCompleteImport(
-                importedAccounts: imported.map({.init(localAccount: $0)}),
-                unimportedAccounts: unimported.map({.init(localAccount: $0)})
+                Configuration(
+                    importedAccounts: imported.map({.init(localAccount: $0)}),
+                    unimportedAccounts: unimported.map({.init(localAccount: $0)}),
+                    unsupportedAccountCount: unsupportedAccountCount
+                )
             ),
             self
         )
@@ -241,8 +252,14 @@ extension ImportAccountScreen {
 
 extension ImportAccountScreen {
     enum Event {
-        case didCompleteImport(importedAccounts: [Account], unimportedAccounts: [Account])
+        case didCompleteImport(Configuration)
         case didFailToImport(ImportAccountScreenError)
+    }
+
+    struct Configuration {
+        let importedAccounts: [Account]
+        let unimportedAccounts: [Account]
+        let unsupportedAccountCount: Int
     }
 }
 
