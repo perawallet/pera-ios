@@ -65,28 +65,6 @@ extension PushNotificationController {
         deviceRegistrationController.sendDeviceDetails(completion: handler)
     }
     
-    private func updateDevice(
-        with id: String,
-        for user: User,
-        completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
-    ) {
-        deviceRegistrationController.updateDevice(
-            with: id,
-            for: user,
-            completion: handler
-        )
-    }
-    
-    private func registerDevice(
-        for user: User,
-        completion handler: ((HIPNetworkError<HIPAPIError>?) -> Void)? = nil
-    ) {
-        deviceRegistrationController.registerDevice(
-            for: user,
-            completion: handler
-        )
-    }
-    
     func unregisterDevice(
         from network: ALGAPI.Network
     ) {
