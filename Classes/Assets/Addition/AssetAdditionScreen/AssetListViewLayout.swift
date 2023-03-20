@@ -20,18 +20,22 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetListViewLayout: NSObject {
-    private lazy var theme = AssetAdditionViewController.Theme()
-
     private var sizeCache: [String: CGSize] = [:]
 
-    private let listDataSource: AssetListViewDataSource
+    private let dataSource: AssetListViewDataSource
 
     init(
-        listDataSource: AssetListViewDataSource
+        _ dataSource: AssetListViewDataSource
     ) {
-        self.listDataSource = listDataSource
+        self.dataSource = dataSource
 
         super.init()
+    }
+    
+    static func build() -> UICollectionViewFlowLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = .zero
+        return flowLayout
     }
 }
 
@@ -41,7 +45,7 @@ extension AssetListViewLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: section] else {
             return .zero
@@ -51,7 +55,7 @@ extension AssetListViewLayout {
         case .empty:
             return UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         case .assets:
-            return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         }
     }
 
@@ -60,17 +64,19 @@ extension AssetListViewLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
             return CGSize((collectionView.bounds.width, 0))
         }
 
         switch itemIdentifier {
         case .loading:
-            return CGSize(theme.cellSize)
+            return sizeForLoading(
+                collectionView,
+                forSectionAt: indexPath.section
+            )
         case .asset(let item):
             return listView(
                 collectionView,
-                layout: collectionViewLayout,
                 sizeForAssetCellItem: item,
                 forSectionAt: indexPath.section
             )
@@ -125,10 +131,34 @@ extension AssetListViewLayout {
 
         return newSize
     }
+    
+    private func sizeForLoading(
+        _ listView: UICollectionView,
+        forSectionAt section: Int
+    ) -> CGSize{
+        let sizeCacheIdentifier = ManageAssetListLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = ManageAssetListLoadingCell.calculatePreferredSize(
+            for: ManageAssetListLoadingCell.theme,
+            fittingIn: maxSize
+        )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
 
     private func listView(
         _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
         sizeForAssetCellItem item: OptInAssetListItem,
         forSectionAt section: Int
     ) -> CGSize {

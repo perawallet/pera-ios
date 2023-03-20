@@ -16,6 +16,7 @@
 //  AssetAdditionViewController.swift
 
 import UIKit
+import MacaroonUIKit
 import MagpieHipo
 import MagpieExceptions
 
@@ -26,6 +27,18 @@ final class AssetAdditionViewController:
     UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
 
+    private lazy var dataSource = AssetListViewDataSource(listView)
+    private lazy var listLayout = AssetListViewLayout(dataSource)
+    
+    private lazy var searchInputView = SearchInputView()
+    private lazy var searchInputBackgroundView = EffectView()
+    private lazy var listView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: AssetListViewLayout.build()
+    )
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+    
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -36,60 +49,35 @@ final class AssetAdditionViewController:
         return Array(optInTransactions.values.map { $0.transactionController })
     }
 
-    private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
-    private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
-
-    private lazy var assetSearchInput = SearchInputView()
-    private lazy var assetListView = AssetListView()
-
-    private lazy var currencyFormatter = CurrencyFormatter()
-
     private let dataController: AssetListViewDataController
+    
+    private var query = AssetAdditionQuery()
 
     init(
         dataController: AssetListViewDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        
         super.init(configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
-    }
-
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        title = "title-add-asset".localized
-    }
-
-    override func prepareLayout() {
-        super.prepareLayout()
-
-        addAssetSearchInput()
-        addAssetList()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-
-        assetSearchInput.delegate = self
-
-        assetListView.collectionView.dataSource = dataSource
-        assetListView.collectionView.delegate = self
+        bindNavigationItemTitle()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addUI()
 
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else {
                 return
             }
-
+            
             switch event {
             case .didUpdateAccount:
                 self.configureAccessoryOfVisibleCells()
@@ -98,7 +86,7 @@ final class AssetAdditionViewController:
                     [weak self] in
                     guard let self else { return }
                     
-                    self.assetListView.collectionView.scrollToTop(animated: true)
+                    self.listView.scrollToTop(animated: true)
                 }
             case .didLoadNext(let snapshot):
                 self.dataSource.apply(
@@ -113,6 +101,7 @@ final class AssetAdditionViewController:
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         restartLoadingOfVisibleCellsIfNeeded()
     }
 
@@ -128,10 +117,89 @@ final class AssetAdditionViewController:
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        assetListView.collectionView.visibleCells.forEach {
-            let loadingCell = $0 as? ManageAssetListLoadingCell
-            loadingCell?.stopAnimating()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
+    }
+    
+    private func addUI() {
+        addBackground()
+        addSearchInput()
+        addList()
+    }
+}
+
+extension AssetAdditionViewController {
+    private func addBarButtons() {
+        let infoBarButton = ALGBarButtonItem(kind: .info) {
+            [unowned self] in
+            let screen = Screen.asaVerificationInfo {
+                [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .cancel:
+                    self.dismiss(animated: true)
+                }
+            }
+            self.open(
+                screen,
+                by: .present
+            )
         }
+
+        rightBarButtonItems = [infoBarButton]
+    }
+    
+    private func bindNavigationItemTitle() {
+        title = "title-add-asset".localized
+    }
+}
+
+extension AssetAdditionViewController {
+    private func addBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+    
+    private func addSearchInput() {
+        searchInputView.customize(theme.searchInputTheme)
+        
+        view.addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
+            $0.top == theme.searchInputTopPadding
+            $0.leading.trailing == theme.searchInputHorizontalPadding
+        }
+        
+        searchInputView.delegate = self
+        
+        searchInputBackgroundView.effect = theme.searchInputBackground
+        searchInputBackgroundView.isUserInteractionEnabled = false
+
+        view.insertSubview(
+            searchInputBackgroundView,
+            belowSubview: searchInputView
+        )
+        searchInputBackgroundView.snp.makeConstraints {
+            $0.fitToHeight(theme.searchInputBackgroundHeight)
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing == 0
+        }
+    }
+    
+    private func addList() {
+        view.insertSubview(
+            listView,
+            belowSubview: searchInputBackgroundView
+        )
+        listView.snp.makeConstraints {
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing.bottom == 0
+        }
+        
+        listView.backgroundColor = theme.listBackgroundColor.uiColor
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.keyboardDismissMode = .onDrag
+        listView.delegate = self
     }
 }
 
@@ -173,7 +241,7 @@ extension AssetAdditionViewController {
         let item = AssetListViewItem.asset(OptInAssetListItem(asset: asset))
         let indexPath = dataSource.indexPath(for: item)
         return indexPath.unwrap {
-            assetListView.collectionView.cellForItem(at: $0)
+            listView.cellForItem(at: $0)
         } as? OptInAssetListItemCell
     }
 
@@ -243,8 +311,7 @@ extension AssetAdditionViewController {
                 for: item
             )
         case .loading:
-            let loadingCell = cell as? ManageAssetListLoadingCell
-            loadingCell?.startAnimating()
+            startAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
         default:
             break
         }
@@ -261,8 +328,7 @@ extension AssetAdditionViewController {
 
         switch itemIdentifier {
         case .loading:
-            let loadingCell = cell as? ManageAssetListLoadingCell
-            loadingCell?.stopAnimating()
+            stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
         default:
             break
         }
@@ -347,52 +413,7 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
-    private func addBarButtons() {
-        let infoBarButton = ALGBarButtonItem(kind: .info) {
-            [unowned self] in
-            let screen = Screen.asaVerificationInfo {
-                [weak self] event in
-                guard let self = self else { return }
-
-                switch event {
-                case .cancel:
-                    self.dismiss(animated: true)
-                }
-            }
-            self.open(
-                screen,
-                by: .present
-            )
-        }
-
-        rightBarButtonItems = [infoBarButton]
-    }
-}
-
-extension AssetAdditionViewController {
-    private func addAssetSearchInput() {
-        assetSearchInput.customize(theme.searchInputViewTheme)
-        view.addSubview(assetSearchInput)
-        assetSearchInput.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.searchInputTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.searchInputHorizontalPadding)
-        }
-    }
-
-    private func addAssetList() {
-        assetListView.customize(AssetListViewTheme())
-        view.addSubview(assetListView)
-        assetListView.snp.makeConstraints {
-            $0.top.equalTo(assetSearchInput.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-}
-
-extension AssetAdditionViewController {
     private func configureAccessoryOfVisibleCells() {
-        let listView = assetListView.collectionView
-
         listView.indexPathsForVisibleItems.forEach {
             indexPath in
             guard let listItem = dataSource.itemIdentifier(for: indexPath) else { return }
@@ -411,6 +432,11 @@ extension AssetAdditionViewController {
         for item: OptInAssetListItem
     ) {
         let asset = item.model
+        let accessory = determineAccessory(asset)
+        cell?.accessory = accessory
+    }
+    
+    private func determineAccessory(_ asset: AssetDecoration) -> OptInAssetListItemAccessory {
         let status = dataController.hasOptedIn(asset)
 
         let accessory: OptInAssetListItemAccessory
@@ -419,8 +445,8 @@ extension AssetAdditionViewController {
         case .optedIn: accessory = .check
         case .rejected: accessory = .add
         }
-
-        cell?.accessory = accessory
+        
+        return accessory
     }
 }
 
@@ -486,7 +512,7 @@ extension AssetAdditionViewController {
 
 extension AssetAdditionViewController {
     private func restartLoadingOfVisibleCellsIfNeeded() {
-        for cell in assetListView.collectionView.visibleCells {
+        for cell in listView.visibleCells {
             if let assetCell = cell as? OptInAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
@@ -495,11 +521,27 @@ extension AssetAdditionViewController {
             }
         }
     }
+    
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let loadingCell = cell as? ManageAssetListLoadingCell {
+                loadingCell.stopAnimating()
+                return
+            }
+        }
+    }
+    
+    private func startAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
+        cell?.startAnimating()
+    }
+    
+    private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
+        cell?.stopAnimating()
+    }
 }
 
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        let query = view.text
         dataController.loadData(keyword: view.text)
     }
 
@@ -510,18 +552,6 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
-        restoreCellState(for: transactionController)
-        clearTransactionCache(transactionController)
-
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -531,21 +561,13 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 message: apiError.debugDescription
             )
         }
+        
+        cancelMonitoringOptOutUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
-        restoreCellState(for: transactionController)
-        clearTransactionCache(transactionController)
-
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(
@@ -558,6 +580,10 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 message: error.localizedDescription
             )
         }
+        
+        cancelMonitoringOptOutUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
+        clearTransactionCache(transactionController)
     }
 
     func transactionController(
@@ -642,10 +668,19 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
     }
+}
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
+extension AssetAdditionViewController {
+    private func cancelMonitoringOptOutUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
 }
 
 struct AssetOptInTransaction: Equatable {
