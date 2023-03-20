@@ -25,10 +25,8 @@ protocol AssetListViewDataController: AnyObject {
 
     var account: Account { get }
 
-    func load()
-    func loadNextPageIfNeeded(for indexPath: IndexPath)
-    func search(for query: String?)
-
+    func loadData(keyword: String?)
+    func loadNextData(for indexPath: IndexPath)
     func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus
 }
 
@@ -41,12 +39,12 @@ enum AssetListViewSection:
 
 enum AssetListViewItem: Hashable {
     case asset(OptInAssetListItem)
-    case loading(String)
+    case loading
     case noContent
 }
 
 enum AssetListViewDataControllerEvent {
     case didUpdateAccount
-    case didUpdateAssets(AssetListViewDataController.Snapshot)
-    case didUpdateNextAssets(AssetListViewDataController.Snapshot)
+    case didLoad(AssetListViewDataController.Snapshot)
+    case didLoadNext(AssetListViewDataController.Snapshot)
 }

@@ -93,14 +93,14 @@ final class AssetAdditionViewController:
             switch event {
             case .didUpdateAccount:
                 self.configureAccessoryOfVisibleCells()
-            case .didUpdateAssets(let snapshot):
+            case .didLoad(let snapshot):
                 self.dataSource.reload(snapshot) {
                     [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     
                     self.assetListView.collectionView.scrollToTop(animated: true)
                 }
-            case .didUpdateNextAssets(let snapshot):
+            case .didLoadNext(let snapshot):
                 self.dataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
@@ -108,7 +108,7 @@ final class AssetAdditionViewController:
             }
         }
 
-        dataController.load()
+        dataController.loadData(keyword: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +129,7 @@ final class AssetAdditionViewController:
         super.viewDidDisappear(animated)
 
         assetListView.collectionView.visibleCells.forEach {
-            let loadingCell = $0 as? PreviewLoadingCell
+            let loadingCell = $0 as? ManageAssetListLoadingCell
             loadingCell?.stopAnimating()
         }
     }
@@ -225,7 +225,7 @@ extension AssetAdditionViewController {
         forItemAt indexPath: IndexPath
     ) {
         defer {
-            dataController.loadNextPageIfNeeded(for: indexPath)
+            dataController.loadNextData(for: indexPath)
         }
 
         guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
@@ -243,7 +243,7 @@ extension AssetAdditionViewController {
                 for: item
             )
         case .loading:
-            let loadingCell = cell as? PreviewLoadingCell
+            let loadingCell = cell as? ManageAssetListLoadingCell
             loadingCell?.startAnimating()
         default:
             break
@@ -261,7 +261,7 @@ extension AssetAdditionViewController {
 
         switch itemIdentifier {
         case .loading:
-            let loadingCell = cell as? PreviewLoadingCell
+            let loadingCell = cell as? ManageAssetListLoadingCell
             loadingCell?.stopAnimating()
         default:
             break
@@ -490,7 +490,7 @@ extension AssetAdditionViewController {
             if let assetCell = cell as? OptInAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
-            } else if let loadingCell = cell as? PreviewLoadingCell {
+            } else if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.startAnimating()
             }
         }
@@ -500,7 +500,7 @@ extension AssetAdditionViewController {
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         let query = view.text
-        dataController.search(for: query)
+        dataController.loadData(keyword: view.text)
     }
 
     func searchInputViewDidReturn(_ view: SearchInputView) {

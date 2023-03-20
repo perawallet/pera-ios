@@ -36,7 +36,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
                 return cell
             case .loading:
                 return collectionView.dequeue(
-                    PreviewLoadingCell.self,
+                    ManageAssetListLoadingCell.self,
                     at: indexPath
                 )
             case .noContent:
@@ -52,7 +52,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
         }
 
         [
-            PreviewLoadingCell.self,
+            ManageAssetListLoadingCell.self,
             OptInAssetListItemCell.self,
             NoContentCell.self
         ].forEach {
