@@ -16,7 +16,7 @@
 
 import Foundation
 
-class AssetAdditionQuery: Equatable {
+struct AssetAdditionQuery: Equatable {
     var keyword: String?
     var cursor: String?
     
