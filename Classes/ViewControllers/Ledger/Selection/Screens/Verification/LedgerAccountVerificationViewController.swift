@@ -140,8 +140,6 @@ extension LedgerAccountVerificationViewController {
     private func addVerifiedAccounts() {
         saveVerifiedAccounts()
         
-        print("deneme xx \(accountSetupFlow)")
-
         let controller = open(
             .tutorial(
                 flow: .none,
