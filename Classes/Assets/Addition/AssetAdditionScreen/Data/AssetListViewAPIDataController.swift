@@ -78,17 +78,8 @@ extension AssetListViewAPIDataController {
     }
     
     func apply(keyword: String?) -> AssetSearchQuery? {
-        if query?.keyword != nil && keyword == nil {
-            query?.keyword = nil
-            query?.cursor = nil
-            return query?.draft
-        }
-        
-        guard let keyword = keyword.unwrapNonEmptyString() else {
-            return AssetSearchQuery()
-        }
-        
         query?.keyword = keyword
+        query?.cursor = nil
         return query?.draft
     }
     
@@ -127,14 +118,15 @@ extension AssetListViewAPIDataController {
     }
     
     func loadNextData(for indexPath: IndexPath) {
+        print("deneme 0")
         if !ongoingEndpoint.isNilOrFinished { return }
-                
+        print("deneme 1")
         if query?.cursor == nil { return }
-                
+        print("deneme 2")
         if indexPath.item < assets.count - 3 { return }
-                
+        print("deneme 3")
         guard let draft = query?.draft else { return }
-                
+        print("deneme 4")
         ongoingEndpoint = api.searchAssets(
             draft,
             ignoreResponseOnCancelled: false
