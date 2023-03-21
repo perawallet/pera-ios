@@ -19,9 +19,8 @@ import Foundation
 import MagpieExceptions
 import MagpieHipo
 import UIKit
-import UserNotifications
 
-class PushNotificationController: NSObject {
+final class PushNotificationController {
     var token: String? {
         return deviceRegistrationController.token
     }
@@ -31,8 +30,7 @@ class PushNotificationController: NSObject {
         session: session,
         api: api
     )
-    private lazy var currencyFormatter = CurrencyFormatter()
-    
+
     private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
