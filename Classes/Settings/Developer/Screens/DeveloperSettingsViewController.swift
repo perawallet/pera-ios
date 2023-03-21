@@ -128,13 +128,12 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
 
             if nonWatchAccounts.count > 1 {
                 openAccountSelection()
-                return
+            } else {
+                openDispenser(
+                    for: nonWatchAccounts.first?.value,
+                    from: self
+                )
             }
-
-            openDispenser(
-                for: nonWatchAccounts.first?.value,
-                from: self
-            )
         }
     }
 }
@@ -167,22 +166,19 @@ extension DeveloperSettingsViewController {
         for account: Account?,
         from screen: UIViewController
     ) {
+        let url = makeDispenserURL(account)
+        screen.open(url)
+    }
+
+    private func makeDispenserURL(_ account: Account?) -> URL? {
         let url = AlgorandWeb.dispenser.link
 
         guard let account else {
-            screen.open(url)
-            return
+            return url
         }
 
-        let params = [
-            URLQueryItem(
-                name: "account",
-                value: account.address
-            )
-        ]
-        let newURL = url?.appendQueryParameters(params)
-
-        screen.open(newURL)
+        let params = ["account": account.address]
+        return url?.appendingQueryParameters(params)
     }
 }
 
