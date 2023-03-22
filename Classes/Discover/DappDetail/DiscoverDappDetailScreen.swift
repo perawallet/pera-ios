@@ -31,7 +31,7 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
-    private lazy var favoriteButton = MacaroonUIKit.Button()
+    private lazy var favoriteButton = makeFavoriteButton()
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
@@ -84,10 +84,15 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
         controller.addUserScript(peraConnectScript)
         return controller
     }
+    
+    override func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        favoriteButton.isEnabled = false
+    }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         super.webView(webView, didFinish: navigation)
 
+        favoriteButton.isEnabled = true
         updateButtonsStateIfNeeded()
         updateTitle()
         updateFavouriteActionStateForCurrentURL()
@@ -233,20 +238,22 @@ extension DiscoverDappDetailScreen {
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
-        favoriteButton.customizeAppearance([
+        let button = MacaroonUIKit.Button()
+        
+        button.customizeAppearance([
             .icon([
                 .normal("icon-favourite"),
                 .selected("icon-favourite-filled"),
+                .disabled("icon-favorite-disabled")
             ]),
         ])
-        
-        favoriteButton.snp.makeConstraints {
+        button.snp.makeConstraints {
             $0.fitToSize((40, 40))
         }
+        button.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
+        button.isEnabled = false
         
-        favoriteButton.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: favoriteButton)
+        return UIBarButtonItem(customView: button)
     }
 
     private func addNavigationToolbar() {
@@ -269,7 +276,7 @@ extension DiscoverDappDetailScreen {
         
         if shouldAllowFavoriteAction() {
             items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            items.append(makeFavoriteButton())
+            items.append( favoriteButton )
         }
 
         toolbar.items = items
@@ -406,7 +413,9 @@ extension DiscoverDappDetailScreen {
     }
     
     private func setFavoriteActionSelected(_ selected: Bool) {
-        favoriteButton.isSelected = selected
+        if let view = favoriteButton.customView as? MacaroonUIKit.Button {
+            view.isSelected = selected
+        }
     }
 }
 
