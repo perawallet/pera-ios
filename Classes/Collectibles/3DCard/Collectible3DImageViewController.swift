@@ -33,6 +33,7 @@ final class Collectible3DImageViewController:
     private lazy var closeButton = UIButton(type: .custom)
 
     private let image: UIImage
+    private lazy var imageView = UIImageView(image: image)
 
     init(
         image: UIImage,
@@ -123,8 +124,10 @@ extension Collectible3DImageViewController {
                 material.roughness.intensity = 0.4
             }
         }
-
-        material.diffuse.contents = image
+        
+        sceneView?.rendersContinuously = true
+        
+        material.diffuse.contents = imageView.layer
     }
 
     private func addCloseButton() {
