@@ -12,28 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetAdditionQuery.swift
+//   AssetOptInListNextErrorCell.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct AssetAdditionQuery: Equatable {
-    var keyword: String?
-    var cursor: String?
+final class AssetOptInListNextErrorCell:
+    CollectionCell<AssetOptInListNextErrorView>,
+    ViewModelBindable,
+    UIInteractable {
+    static let theme = AssetOptInListNextErrorViewTheme()
     
-    var draft: AssetSearchQuery {
-        var draft = AssetSearchQuery()
-        draft.query = keyword
-        draft.cursor = cursor
-
-        return draft
-    }
-    
-    static func ==(
-        lhs: AssetAdditionQuery,
-        rhs: AssetAdditionQuery
-    ) -> Bool {
-        return
-            lhs.keyword == rhs.keyword &&
-            lhs.cursor == rhs.cursor
+    override func getContextView() -> AssetOptInListNextErrorView {
+        return AssetOptInListNextErrorView(Self.theme)
     }
 }

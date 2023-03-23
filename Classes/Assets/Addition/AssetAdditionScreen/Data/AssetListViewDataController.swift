@@ -26,25 +26,33 @@ protocol AssetListViewDataController: AnyObject {
     var account: Account { get }
 
     func loadData(keyword: String?)
-    func loadNextData(for indexPath: IndexPath)
+    func loadNextData()
     func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus
 }
 
 enum AssetListViewSection:
     Int,
     Hashable {
-    case assets
+    case assetList
     case empty
+    case nextList
 }
 
 enum AssetListViewItem: Hashable {
     case asset(OptInAssetListItem)
+    case error(AssetListErrorItem)
     case loading
+    case nextListError(AssetListErrorItem)
+    case nextListLoading
     case noContent
+}
+
+struct AssetListErrorItem: Hashable {
+    let title: String?
+    let body: String?
 }
 
 enum AssetListViewDataControllerEvent {
     case didUpdateAccount
-    case didLoad(AssetListViewDataController.Snapshot)
-    case didLoadNext(AssetListViewDataController.Snapshot)
+    case didUpdateAssets(AssetListViewDataController.Snapshot)
 }

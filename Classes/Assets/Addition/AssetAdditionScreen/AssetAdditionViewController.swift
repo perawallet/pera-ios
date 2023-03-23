@@ -51,8 +51,6 @@ final class AssetAdditionViewController:
 
     private let dataController: AssetListViewDataController
     
-    private var query = AssetAdditionQuery()
-
     init(
         dataController: AssetListViewDataController,
         configuration: ViewControllerConfiguration
@@ -81,14 +79,7 @@ final class AssetAdditionViewController:
             switch event {
             case .didUpdateAccount:
                 self.configureAccessoryOfVisibleCells()
-            case .didLoad(let snapshot):
-                self.dataSource.reload(snapshot) {
-                    [weak self] in
-                    guard let self else { return }
-                    
-                    self.listView.scrollToTop(animated: true)
-                }
-            case .didLoadNext(let snapshot):
+            case .didUpdateAssets(let snapshot):
                 self.dataSource.apply(
                     snapshot,
                     animatingDifferences: self.isViewAppeared
@@ -257,6 +248,20 @@ extension AssetAdditionViewController {
 }
 
 /// <mark>
+/// UIScrollViewDelegate
+extension AssetAdditionViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let scrollHeight = scrollView.bounds.height
+
+        if contentHeight <= scrollHeight ||
+           contentHeight - scrollView.contentOffset.y < 2 * scrollHeight {
+            dataController.loadNextData()
+        }
+    }
+}
+
+/// <mark>
 /// UICollectionViewDelegateFlowLayout
 extension AssetAdditionViewController {
     func collectionView(
@@ -292,10 +297,6 @@ extension AssetAdditionViewController {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        defer {
-            dataController.loadNextData(for: indexPath)
-        }
-
         guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
             return
         }
@@ -310,8 +311,19 @@ extension AssetAdditionViewController {
                 cell as? OptInAssetListItemCell,
                 for: item
             )
+        case .error(let errorItem):
+            linkInteractors(
+                cell as? AssetOptInListErrorCell,
+                for: errorItem)
         case .loading:
             startAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
+        case .nextListError(let errorItem):
+            linkIteractors(
+                cell as? AssetOptInListNextErrorCell,
+                for: errorItem
+            )
+        case .nextListLoading:
+            startAnimatingLoadingCellIfNeeded(cell as? DiscoverSearchNextListLoadingCell)
         default:
             break
         }
@@ -329,6 +341,8 @@ extension AssetAdditionViewController {
         switch itemIdentifier {
         case .loading:
             stopAnimatingLoadingCellIfNeeded(cell as? ManageAssetListLoadingCell)
+        case .nextListLoading:
+            stopAnimatingLoadingCellIfNeeded(cell as? DiscoverSearchNextListLoadingCell)
         default:
             break
         }
@@ -479,6 +493,29 @@ extension AssetAdditionViewController {
             )
         }
     }
+    
+    private func linkInteractors(
+        _ cell: AssetOptInListErrorCell?,
+        for item: AssetListErrorItem
+    ) {
+        cell?.startObserving(event: .retry) {
+            [unowned self] in
+            
+            let keyword = searchInputView.text
+            self.dataController.loadData(keyword: keyword)
+        }
+    }
+    
+    private func linkIteractors(
+        _ cell: AssetOptInListNextErrorCell?,
+        for item: AssetListErrorItem
+    ) {
+        cell?.startObserving(event: .retry) {
+            [unowned self] in
+            
+            self.dataController.loadNextData()
+        }
+    }
 
     private func continueToOptInAsset(asset: AssetDecoration) {
         dismiss(animated: true) {
@@ -518,6 +555,8 @@ extension AssetAdditionViewController {
                 assetCell.accessory = .loading
             } else if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.startAnimating()
+            } else if let loadingCell = cell as? DiscoverSearchNextListLoadingCell {
+                loadingCell.startAnimating()
             }
         }
     }
@@ -526,7 +565,12 @@ extension AssetAdditionViewController {
         for cell in listView.visibleCells {
             if let loadingCell = cell as? ManageAssetListLoadingCell {
                 loadingCell.stopAnimating()
-                return
+                break
+            }
+            
+            if let loadingCell = cell as? DiscoverSearchNextListLoadingCell {
+                loadingCell.stopAnimating()
+                break
             }
         }
     }
@@ -535,7 +579,15 @@ extension AssetAdditionViewController {
         cell?.startAnimating()
     }
     
+    private func startAnimatingLoadingCellIfNeeded(_ cell: DiscoverSearchNextListLoadingCell?) {
+        cell?.startAnimating()
+    }
+    
     private func stopAnimatingLoadingCellIfNeeded(_ cell: ManageAssetListLoadingCell?) {
+        cell?.stopAnimating()
+    }
+    
+    private func stopAnimatingLoadingCellIfNeeded(_ cell: DiscoverSearchNextListLoadingCell?) {
         cell?.stopAnimating()
     }
 }

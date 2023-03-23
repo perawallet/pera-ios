@@ -54,8 +54,10 @@ extension AssetListViewLayout {
         switch listSection {
         case .empty:
             return UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        case .assets:
+        case .assetList:
             return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        case .nextList:
+            return UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         }
     }
 
@@ -69,15 +71,32 @@ extension AssetListViewLayout {
         }
 
         switch itemIdentifier {
+        case .asset(let item):
+            return listView(
+                collectionView,
+                sizeForAssetCellItem: item,
+                forSectionAt: indexPath.section
+            )
+        case .error(let errorItem):
+            return listView(
+                collectionView,
+                sizeForErrorItem: errorItem,
+                forSectionAt: indexPath.section
+            )
         case .loading:
             return sizeForLoading(
                 collectionView,
                 forSectionAt: indexPath.section
             )
-        case .asset(let item):
+        case .nextListError(let errorItem):
             return listView(
                 collectionView,
-                sizeForAssetCellItem: item,
+                sizeForNextErrorItem: errorItem,
+                forSectionAt: indexPath.section
+            )
+        case .nextListLoading:
+            return sizeForNextLoading(
+                collectionView,
                 forSectionAt: indexPath.section
             )
         case .noContent:
@@ -156,6 +175,27 @@ extension AssetListViewLayout {
         
         return newSize
     }
+    
+    private func sizeForNextLoading(
+        _ listView: UICollectionView,
+        forSectionAt section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = DiscoverSearchNextListLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = CGSize(width: width, height: 120)
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
 
     private func listView(
         _ listView: UICollectionView,
@@ -181,6 +221,60 @@ extension AssetListViewLayout {
 
         sizeCache[sizeCacheIdentifier] = newSize
 
+        return newSize
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        sizeForErrorItem item: AssetListErrorItem,
+        forSectionAt section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetOptInListErrorCell.reuseIdentifier
+        
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = AssetOptInListErrorCell.calculatePreferredSize(
+            AssetOptInListErrorViewModel(error: item),
+            for: AssetOptInListErrorCell.theme,
+            fittingIn: maxSize
+        )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        sizeForNextErrorItem item: AssetListErrorItem,
+        forSectionAt section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetOptInListNextErrorCell.reuseIdentifier
+        
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = AssetOptInListNextErrorCell.calculatePreferredSize(
+            AssetOptInListNextErrorViewModel(error: item),
+            for: AssetOptInListNextErrorCell.theme,
+            fittingIn: maxSize
+        )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
         return newSize
     }
 }

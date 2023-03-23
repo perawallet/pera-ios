@@ -34,9 +34,30 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
                 )
                 cell.bindData(item.viewModel)
                 return cell
+            case let .error(item):
+                let cell = collectionView.dequeue(
+                    AssetOptInListErrorCell.self,
+                    at: indexPath
+                )
+                let viewModel = AssetOptInListErrorViewModel(error: item)
+                cell.bindData(viewModel)
+                return cell
             case .loading:
                 return collectionView.dequeue(
                     ManageAssetListLoadingCell.self,
+                    at: indexPath
+                )
+            case let .nextListError(item):
+                let cell = collectionView.dequeue(
+                    AssetOptInListNextErrorCell.self,
+                    at: indexPath
+                )
+                let viewModel = AssetOptInListNextErrorViewModel(error: item)
+                cell.bindData(viewModel)
+                return cell
+            case .nextListLoading:
+                return collectionView.dequeue(
+                    DiscoverSearchNextListLoadingCell.self,
                     at: indexPath
                 )
             case .noContent:
@@ -52,9 +73,12 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
         }
 
         [
+            AssetOptInListErrorCell.self,
+            AssetOptInListNextErrorCell.self,
+            DiscoverSearchNextListLoadingCell.self,
             ManageAssetListLoadingCell.self,
-            OptInAssetListItemCell.self,
-            NoContentCell.self
+            NoContentCell.self,
+            OptInAssetListItemCell.self
         ].forEach {
             collectionView.register($0)
         }
