@@ -1419,8 +1419,8 @@ class Router:
             let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupSuccess(encryptedData, eventHandler):
-            let screen = AlgorandSecureBackupSuccessScreen(encryptedData: encryptedData, configuration: configuration)
+        case let .algorandSecureBackupSuccess(backupFile, eventHandler):
+            let screen = AlgorandSecureBackupSuccessScreen(backupFile: backupFile, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupError(let eventHandler):

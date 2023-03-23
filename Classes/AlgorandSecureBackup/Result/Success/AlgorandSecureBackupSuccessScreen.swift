@@ -38,14 +38,18 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
 
     private lazy var documentURL = getDocumentsDirectory()
-    private lazy var fileInfoViewModel = FileInfoViewModel(data: self.encryptedData)
+    private lazy var fileInfoViewModel = FileInfoViewModel(file: backupFile)
 
-    private let encryptedData: Data
+    private let backupFile: AlgorandSecureBackupFile
     private let bannerController: BannerController?
     private let copyToClipboardController: CopyToClipboardController
 
-    init(encryptedData: Data, configuration: ViewControllerConfiguration) {
-        self.encryptedData = encryptedData
+    deinit {
+        clearFile()
+    }
+
+    init(backupFile: AlgorandSecureBackupFile, configuration: ViewControllerConfiguration) {
+        self.backupFile = backupFile
         self.bannerController = configuration.bannerController
         self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
     }
@@ -203,7 +207,8 @@ extension AlgorandSecureBackupSuccessScreen {
 
 extension AlgorandSecureBackupSuccessScreen {
     private func copyBackup() {
-        let copyText = encryptedData.base64EncodedString()
+        guard let backupData = backupFile.data else { return }
+        let copyText = backupData.base64EncodedString()
         let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
         let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
 
@@ -212,13 +217,11 @@ extension AlgorandSecureBackupSuccessScreen {
 
     @objc
     private func performSave() {
-        let fileName = fileInfoViewModel.name.unwrap { textProvider in
-            textProvider.string
-        } ?? "backup.txt"
-
+        guard let backupData = backupFile.data, let fileName = backupFile.filePath else { return }
         let url = documentURL.appendingPathComponent(fileName)
+
         do {
-            try encryptedData.base64EncodedString().write(to: url, atomically: true, encoding: .utf8)
+            try backupData.base64EncodedString().write(to: url, atomically: true, encoding: .utf8)
 
             open(
                 .shareActivity(
@@ -227,7 +230,10 @@ extension AlgorandSecureBackupSuccessScreen {
                 by: .presentWithoutNavigationController
             )
         } catch {
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
     }
 
@@ -249,6 +255,12 @@ extension AlgorandSecureBackupSuccessScreen {
             .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func clearFile() {
+        guard let fileName = backupFile.filePath else { return }
+        let url = documentURL.appendingPathComponent(fileName)
+        try? FileManager.default.removeItem(at: url)
     }
 }
 

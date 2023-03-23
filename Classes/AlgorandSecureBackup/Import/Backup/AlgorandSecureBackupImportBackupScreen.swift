@@ -14,6 +14,7 @@
 
 //   AlgorandSecureBackupImportBackupScreen.swift
 
+import CoreServices
 import Foundation
 import MacaroonUIKit
 import UIKit
@@ -38,7 +39,7 @@ final class AlgorandSecureBackupImportBackupScreen:
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
     private lazy var headerView = UILabel()
-    private lazy var uploadView = UIView()
+    private lazy var uploadView = AlgorandSecureBackupImportFileView()
     private lazy var actionsView = VStackView()
     private lazy var pasteActionView = MacaroonUIKit.Button()
     private lazy var nextActionView = MacaroonUIKit.Button()
@@ -47,7 +48,7 @@ final class AlgorandSecureBackupImportBackupScreen:
 
     private var isViewLayoutLoaded = false
 
-    private var encryptedData: Data?
+    private var selectedBackup: AlgorandSecureBackupFile?
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -81,6 +82,24 @@ final class AlgorandSecureBackupImportBackupScreen:
         super.viewDidLoad()
 
         addUI()
+        bindData()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        uploadView.startObserving(event: .performClick) {
+            let documentPicker: UIDocumentPickerViewController
+            if #available(iOS 14.0, *) {
+                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
+            } else {
+                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
+            }
+            documentPicker.allowsMultipleSelection = false
+            documentPicker.shouldShowFileExtensions = true
+            documentPicker.delegate = self
+            self.present(documentPicker, animated: true)
+        }
     }
 
     override func addFooter() {
@@ -115,6 +134,12 @@ final class AlgorandSecureBackupImportBackupScreen:
         addActions()
         addNextAction()
     }
+
+    override func bindData() {
+        super.bindData()
+
+        bindUploadView(for: .empty)
+    }
 }
 
 // MARK: UI functions
@@ -144,6 +169,8 @@ extension AlgorandSecureBackupImportBackupScreen {
     }
 
     private func addActions() {
+        uploadView.customize(AlgorandSecureBackupImportFileViewTheme())
+        
         contentView.addSubview(uploadView)
         uploadView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom).offset(theme.uploadTopOffset)
@@ -190,7 +217,7 @@ extension AlgorandSecureBackupImportBackupScreen {
             target: self,
             action: #selector(performNextAction)
         )
-        
+
         updateNextActionEnable()
     }
 }
@@ -209,31 +236,97 @@ extension AlgorandSecureBackupImportBackupScreen {
 extension AlgorandSecureBackupImportBackupScreen {
     @objc
     private func performPasteAction() {
+        defer {
+            updateNextActionEnable()
+        }
+
         guard
             let pasteBoardText = UIPasteboard.general.string,
             let data = Data(base64Encoded: pasteBoardText)
         else {
+            bannerController?.presentErrorBanner(
+                title: "algorand-secure-backup-import-backup-clipboard-failed-title".localized,
+                message: "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+            )
             return
         }
 
-        encryptedData = data
-        performNextAction()
+        let backup = AlgorandSecureBackupFile(data: data)
+
+        selectedBackup = backup
+        bindUploadView(for: .uploaded(backup))
     }
 
     @objc
     private func performNextAction() {
-        guard let encryptedData else { return }
-        eventHandler?(.backupImported(encryptedData), self)
+        guard let selectedBackup, hasValidData() else { return }
+        eventHandler?(.backupSelected(selectedBackup), self)
     }
 
     private func updateNextActionEnable() {
-        self.nextActionView.isEnabled = self.encryptedData != nil
+        self.nextActionView.isEnabled = hasValidData()
+    }
+
+    private func hasValidData() -> Bool {
+        guard let selectedBackup, selectedBackup.data != nil else { return false }
+        return true
+    }
+}
+
+extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        pickBackupData(from: urls)
+        updateNextActionEnable()
+    }
+
+    private func pickBackupData(from urls: [URL]) {
+        do {
+            let file = try createFile(from: urls.first!)
+            self.selectedBackup = file
+            bindUploadView(for: .uploaded(file))
+        } catch {
+            self.selectedBackup = nil
+
+            if let fileError = error as? FileError {
+                bindUploadView(for: .uploadFailed(fileError))
+            } else {
+                bindUploadView(for: .uploadFailed(.other(error)))
+            }
+        }
+    }
+
+    private func createFile(from url: URL) throws -> AlgorandSecureBackupFile {
+        do {
+            let urlDataInString = try String(contentsOf: url)
+            guard Data(base64Encoded: urlDataInString) != nil else {
+                throw FileError.invalid
+            }
+            return AlgorandSecureBackupFile(url: url)
+        } catch {
+            if let fileError = error as? FileError {
+                throw fileError
+            } else {
+                throw FileError.other(error)
+            }
+        }
+    }
+
+    private func bindUploadView(for state: AlgorandSecureBackupImportFileViewModel.State) {
+        let viewModel = AlgorandSecureBackupImportFileViewModel(state: state)
+        uploadView.bindData(viewModel)
     }
 }
 
 extension AlgorandSecureBackupImportBackupScreen {
     enum Event {
-        case backupImported(Data)
+        case backupSelected(AlgorandSecureBackupFile)
     }
 }
 
+extension AlgorandSecureBackupImportBackupScreen {
+    enum FileError: Error {
+        case unsupported
+        case invalid
+        case other(Error)
+    }
+}

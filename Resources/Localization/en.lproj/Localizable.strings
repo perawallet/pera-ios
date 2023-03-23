@@ -1431,8 +1431,15 @@
 "algorand-secure-backup-mnemonics-confirmation-secondary-action-title" = "Show key again";
 
 "algorand-secure-backup-import-backup-title" = "Select your backup file";
+"algorand-secure-backup-import-backup-action-title" = "Select File";
 "algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
 "algorand-secure-backup-import-backup-paste" = "Paste backup file text";
+"algorand-secure-backup-import-backup-upload-successful-title" = "Upload Successful";
+"algorand-secure-backup-import-backup-upload-failed-title" = "Upload Failed";
+"algorand-secure-backup-import-backup-upload-failed-subtitle" = "This file type isn’t supported";
+"algorand-secure-backup-import-backup-upload-failed-invalid-subtitle" = "This file doesn't contain valid data";
+"algorand-secure-backup-import-backup-clipboard-failed-title" = "Nothing to paste";
+"algorand-secure-backup-import-backup-clipboard-failed-subtitle" = "Nothing is copied from the clipboard. Make sure you have copied your backup file.";
 
 "algorand-secure-backup-import-success-header-title" = "Accounts restored";
 "algorand-secure-backup-import-success-header-singular-title" = "Account restored";
