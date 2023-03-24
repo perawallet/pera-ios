@@ -247,7 +247,7 @@ extension AlgorandSecureBackupSuccessScreen {
             secondaryActionButtonTitle: "algorand-secure-backup-success-confirmation-secondary-action-title".localized,
             primaryAction: { [weak self] in
                 guard let self else { return }
-                self.dismissScreen()
+                self.eventHandler?(.complete, self)
             }
         )
 

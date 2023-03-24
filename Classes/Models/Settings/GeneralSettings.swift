@@ -24,6 +24,7 @@ enum GeneralSettings {
 }
 
 enum AccountSettings: Settings {
+    case secureBackup(numberOfAccountsNotBackedUp: Int)
     case security
     case contacts
     case notifications
@@ -31,6 +32,8 @@ enum AccountSettings: Settings {
     
     var image: UIImage? {
         switch self {
+        case .secureBackup:
+            return img("icon-backup")
         case .security:
             return img("icon-settings-security")
         case .contacts:
@@ -44,6 +47,8 @@ enum AccountSettings: Settings {
     
     var name: String {
         switch self {
+        case .secureBackup:
+            return "settings-secure-backup-title".localized
         case .security:
             return "settings-security-title".localized
         case .contacts:
@@ -52,6 +57,21 @@ enum AccountSettings: Settings {
             return "notifications-title".localized
         case .walletConnect:
             return "settings-wallet-connect-title".localized
+        }
+    }
+
+    var subtitle: String? {
+        switch self {
+        case .secureBackup(let numberOfAccountsNotBackedUp):
+            /// <note>: -1 means that if account collection is not empty and there is a backup covering all accounts
+            /// We should not show the subtitle
+            if numberOfAccountsNotBackedUp == -1 {
+                return nil
+            } else {
+                return "settings-secure-backup-subtitle".localized("\(numberOfAccountsNotBackedUp)")
+            }
+        default:
+            return nil
         }
     }
 }
@@ -81,6 +101,10 @@ enum AppPreferenceSettings: Settings {
         case .appearance:
             return "settings-theme-set".localized
         }
+    }
+
+    var subtitle: String? {
+        return nil
     }
 }
 
@@ -120,5 +144,9 @@ enum SupportSettings: Settings {
         case .developer:
             return "settings-developer".localized
         }
+    }
+
+    var subtitle: String? {
+        return nil
     }
 }

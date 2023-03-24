@@ -141,7 +141,7 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
                 return cell
             case .pinCodeChange:
                 let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-                cell.bindData(SettingsDetailViewModel(setting: setting))
+                cell.bindData(SettingsDetailViewModel(settings: setting))
                 return cell
             case .localAuthentication:
                 let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed

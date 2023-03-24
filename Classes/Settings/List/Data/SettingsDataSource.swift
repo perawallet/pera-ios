@@ -28,9 +28,9 @@ final class SettingsDataSource: NSObject {
         accountSettings, appPreferenceSettings, supportSettings
     ]
 
-    private(set) lazy var accountSettings: [AccountSettings] = [
-        .security, .contacts, .notifications, .walletConnect
-    ]
+    var accountSettings: [AccountSettings] {
+        createAccountSettings()
+    }
 
     private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [
         .language, .currency, .appearance
@@ -45,6 +45,35 @@ final class SettingsDataSource: NSObject {
     init(session: Session?) {
         super.init()
         self.session = session
+    }
+}
+
+extension SettingsDataSource {
+    private func createAccountSettings() -> [AccountSettings] {
+        let accounts = session?.authenticatedUser?.accounts.filter { accountInformation in
+            accountInformation.type == .standard
+        } ?? []
+
+        var numberOfAccountsNotBackedUp = 0
+        for account in accounts {
+            if session?.backups[account.address] == nil {
+                numberOfAccountsNotBackedUp = numberOfAccountsNotBackedUp.advanced(by: 1)
+            }
+        }
+
+        if !accounts.isEmpty && numberOfAccountsNotBackedUp == 0 {
+            /// <note>: When account collection is not empty and there is a backup covering all accounts
+            /// We are setting `numberOfAccountsNotBackedUp` as -1 to hide subtitle
+            numberOfAccountsNotBackedUp = -1
+        }
+
+        return [
+            .secureBackup(numberOfAccountsNotBackedUp: numberOfAccountsNotBackedUp),
+            .security,
+            .contacts,
+            .notifications,
+            .walletConnect
+        ]
     }
 }
 
@@ -87,7 +116,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> SettingsDetailCell {
         let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-        cell.bindData(SettingsDetailViewModel(setting: setting))
+        cell.bindData(SettingsDetailViewModel(settings: setting))
         return cell
     }
     

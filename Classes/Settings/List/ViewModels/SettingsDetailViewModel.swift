@@ -15,22 +15,54 @@
 //
 //  SettingsDetailViewModel.swift
 
+import Foundation
 import UIKit
+import MacaroonUIKit
 
-final class SettingsDetailViewModel {
-    private(set) var image: UIImage?
-    private(set) var title: String?
-    
-    init(setting: Settings) {
-        setImage(setting)
-        setTitle(setting)
+struct SettingsDetailViewModel:
+    PrimaryTitleViewModel,
+    Hashable {
+    private(set) var primaryTitleAccessory: MacaroonUIKit.Image?
+
+    private(set) var image: ImageProvider?
+    private(set) var primaryTitle: TextProvider?
+    private(set) var secondaryTitle: TextProvider?
+
+    init(settings: Settings) {
+        bindImage(settings: settings)
+        bindPrimaryTitle(settings: settings)
+        bindSecondaryTitle(settings: settings)
     }
-    
-    private func setImage(_ settings: Settings) {
-        self.image = settings.image
+}
+
+extension SettingsDetailViewModel {
+    private mutating func bindImage(settings: Settings) {
+        image = settings.image
     }
-    
-    private func setTitle(_ settings: Settings) {
-        self.title = settings.name
+
+    private mutating func bindPrimaryTitle(settings: Settings) {
+        primaryTitle = getPrimaryTitle(settings.name)
+    }
+
+    private mutating func bindSecondaryTitle(settings: Settings) {
+        secondaryTitle = getSecondaryTitle(settings.subtitle)
+    }
+}
+
+extension SettingsDetailViewModel {
+    func getPrimaryTitle(_ aTitle: String?) -> TextProvider? {
+        guard let aTitle = aTitle else {
+            return nil
+        }
+
+        return aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
+    }
+
+    func getSecondaryTitle(_ aTitle: String?) -> TextProvider? {
+        guard let aTitle = aTitle else {
+            return nil
+        }
+
+        return aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

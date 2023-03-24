@@ -27,6 +27,11 @@ final class SettingsViewController: BaseViewController {
         api: api!,
         bannerController: bannerController
     )
+
+    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
+        configuration: configuration,
+        presentingScreen: self
+    )
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
@@ -39,6 +44,12 @@ final class SettingsViewController: BaseViewController {
 
     override func customizeTabBarAppearence() {
         tabBarHidden = false
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        settingsView.collectionView.reloadData()
     }
     
     override func linkInteractors() {
@@ -133,6 +144,8 @@ extension SettingsViewController {
     
     private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
+        case .secureBackup:
+            algorandSecureBackupFlowCoordinator.launchByPush()
         case .security:
             open(.securitySettings, by: .push)
         case .contacts:
