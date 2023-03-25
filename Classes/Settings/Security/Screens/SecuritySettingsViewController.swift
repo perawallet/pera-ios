@@ -23,8 +23,8 @@ final class SecuritySettingsViewController: BaseViewController {
     
     private lazy var settings: [[SecuritySettings]] = [[.pinCodeActivation]]
     private lazy var pinActiveSettings: [SecuritySettings] = [.pinCodeChange, .localAuthentication]
-    
-    private let localAuthenticator = LocalAuthenticator()
+
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -144,10 +144,10 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
                 cell.bindData(SettingsDetailViewModel(settings: setting))
                 return cell
             case .localAuthentication:
-                let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
+                let hasBiometricAuthentication = localAuthenticator.hasAuthentication()
                 let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
                 cell.delegate = self
-                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: localAuthenticationStatus))
+                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasBiometricAuthentication))
                 return cell
             }
         }
@@ -194,18 +194,22 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
                 controller?.delegate = self
                 return
             }
-            
-            if localAuthenticator.isLocalAuthenticationAvailable {
-                localAuthenticator.authenticate { error in
-                    guard error == nil else {
-                        settingsToggleCell.contextView.setToggleOn(false, animated: true)
-                        return
-                    }
-                    
-                    self.localAuthenticator.localAuthenticationStatus = .allowed
+
+            do {
+                try localAuthenticator.setBiometricPassword()
+            } catch {
+                defer {
+                    settingsToggleCell.contextView.setToggleOn(false, animated: true)
                 }
-            } else {
-                presentDisabledLocalAuthenticationAlert()
+
+                guard let laError = error as? LAError else { return }
+
+                switch laError {
+                case .other:
+                    presentDisabledLocalAuthenticationAlert()
+                default:
+                    break
+                }
             }
 
         default:
@@ -228,7 +232,7 @@ extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
                 }
 
         if isConfirmed {
-            localAuthenticator.localAuthenticationStatus = .notAllowed
+            try? localAuthenticator.removeBiometricPassword()
             cell.contextView.setToggleOn(false, animated: true)
         } else {
             cell.contextView.setToggleOn(true, animated: true)

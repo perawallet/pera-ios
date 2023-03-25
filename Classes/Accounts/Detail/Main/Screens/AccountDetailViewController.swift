@@ -58,7 +58,7 @@ final class AccountDetailViewController: PageContainer {
         account: accountHandle.value
     )
 
-    private lazy var localAuthenticator = LocalAuthenticator()
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
 
     private lazy var navigationTitleView = AccountNameTitleView()
 
@@ -388,23 +388,17 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             return
         }
 
-        if localAuthenticator.localAuthenticationStatus != .allowed {
-            let controller = open(
-                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
-                by: .present
-            ) as? ChoosePasswordViewController
-            controller?.delegate = self
+        if localAuthenticator.hasAuthentication() {
+            do {
+                try localAuthenticator.authenticate()
+                presentPassphraseView()
+            } catch {
+                presentPasswordConfirmScreen()
+            }
             return
         }
 
-        localAuthenticator.authenticate { [weak self] error in
-            guard let self = self,
-                  error == nil else {
-                return
-            }
-
-            self.presentPassphraseView()
-        }
+        presentPasswordConfirmScreen()
     }
 
     private func presentPassphraseView() {
@@ -412,6 +406,14 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
+    }
+
+    private func presentPasswordConfirmScreen() {
+        let controller = open(
+            .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
+            by: .present
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {

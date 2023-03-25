@@ -15,110 +15,68 @@
 //
 //  LocalAuthenticator.swift
 
-import LocalAuthentication
+import Foundation
 
+/// <todo>: Change name as `BiometricAuthenticator`
+/// <mark>: LocalAuthenticator
+/// Local authenticator does biometric authentication with using KeychainAccess through `session`
 class LocalAuthenticator {
+    private let session: Session?
 
-    private var context = LAContext()
-    
-    var authenticationError: NSError?
-
-    var isLocalAuthenticationAvailable: Bool {
-        return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authenticationError)
-    }
-    
-    var localAuthenticationStatus: Status {
-        get {
-            guard let status = string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults),
-                let localAuthenticationStatus = Status(rawValue: status) else {
-                    return .none
-            }
-            
-            return localAuthenticationStatus
-        }
-        
-        set {
-            self.save(newValue.rawValue, for: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
-        }
-    }
-    
-    var localAuthenticationType: Type {
-        if !isLocalAuthenticationAvailable {
-            return .none
-        }
-        
-        switch context.biometryType {
-        case .faceID:
-            return .faceID
-        case .touchID:
-            return .touchID
-        case .none:
-            return .none
-        @unknown default:
-            return .none
-        }
-    }
-    
-    init() {
-        awakeLocalAuthenticationStatusFromStorage()
-    }
-    
-    private func awakeLocalAuthenticationStatusFromStorage() {
-        guard let status = string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults),
-            let localAuthenticationStatus = Status(rawValue: status) else {
-            return
-        }
-        
-        self.localAuthenticationStatus = localAuthenticationStatus
-    }
-    
-    func authenticate(then handler: @escaping (_ error: Error?) -> Void) {
-        if !isLocalAuthenticationAvailable {
-            return
-        }
-        
-        let reasonMessage: String
-        
-        if localAuthenticationType == .faceID {
-            reasonMessage = "local-authentication-reason-face-id-title".localized
-        } else {
-            reasonMessage = "local-authentication-reason-touch-id-title".localized
-        }
-        
-        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonMessage) { success, error in
-            if success {
-                DispatchQueue.main.async {
-                    handler(nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    handler(error)
-                }
-            }
-        }
-    }
-
-    func reset() {
-        context = LAContext()
+    init(session: Session?) {
+        self.session = session
     }
 }
 
+/// <mark>: API
 extension LocalAuthenticator {
-    
-    enum `Type` {
-        case none
-        case touchID
-        case faceID
+    func hasAuthentication() -> Bool {
+        guard let session else {
+            return false
+        }
+
+        return session.hasBiometricPassword()
+    }
+
+    func authenticate() throws {
+        guard let session else {
+            throw LAError.invalidSession
+        }
+
+        if session.hasBiometricPassword() {
+            try session.checkBiometricPassword()
+            return
+        }
+
+        throw LAError.biometricNotSet
+    }
+
+    func setBiometricPassword() throws {
+        guard let session else {
+            throw LAError.invalidSession
+        }
+
+        try session.setBiometricPassword()
+    }
+
+    func removeBiometricPassword() throws {
+        guard let session else {
+            throw LAError.invalidSession
+        }
+
+        try session.removeBiometricPassword()
     }
 }
 
-extension LocalAuthenticator: Storable {
-    
-    enum Status: String {
-        case allowed = "enabled"
-        case notAllowed = "disabled"
-        case none = "none"
-    }
-    
-    typealias Object = String
+enum LAError: Error {
+    /// <note> Thrown when a session object is not passed in `LocalAuthenticator`.
+    case invalidSession
+    /// <note> Thrown when the app password is not set.
+    case passwordNotSet
+    /// <note> Thrown when the app password does not match the password in biometric storage.
+    case passwordMismatch
+    /// <note> Thrown when biometric authentication is not set
+    case biometricNotSet
+    /// <note> Thrown when other errors are thrown by the system.
+    case other(Error)
 }

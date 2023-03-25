@@ -24,7 +24,8 @@ import SwiftDate
 
 class Session: Storable {
     typealias Object = Any
-    
+
+    private let biometricStorageKey = "com.algorand.algorand.biometric.storage"
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
@@ -40,9 +41,14 @@ class Session: Storable {
     private let backupsKey = "com.algorand.algorand.secure.backups"
     private let backupPrivateKey = "com.algorand.algorand.secure.backup.privateKey"
     private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
+    private let hasBiometricAuthenticationKey = "com.algorand.algorand.biometric.authentication"
     
     let algorandSDK = AlgorandSDK()
-    
+
+    private var biometricStorage: KeychainAccess.Keychain {
+        return KeychainAccess.Keychain(service: biometricStorageKey).accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: [.biometryAny])
+    }
+
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }
@@ -280,6 +286,44 @@ extension Session {
 
     func createUser(with accounts: [AccountInformation] = []) {
         authenticatedUser = User(accounts: accounts)
+    }
+}
+
+extension Session {
+    func setBiometricPassword() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            try biometricStorage.set(passwordOnKeychain, key: passwordKey)
+            try privateStorage.set("test", key: hasBiometricAuthenticationKey)
+        } catch {
+            throw LAError.other(error)
+        }
+    }
+
+    func checkBiometricPassword() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            let passwordOnBiometricStorage = try biometricStorage.get(passwordKey)
+            if passwordOnKeychain != passwordOnBiometricStorage {
+                throw LAError.passwordMismatch
+            }
+        } catch {
+            throw LAError.other(error)
+        }
+    }
+
+    func removeBiometricPassword() throws {
+        privateStorage.remove(for: hasBiometricAuthenticationKey)
+    }
+
+    func hasBiometricPassword() -> Bool {
+        (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
     }
 }
 
