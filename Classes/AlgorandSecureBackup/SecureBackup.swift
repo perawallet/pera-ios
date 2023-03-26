@@ -26,6 +26,12 @@ final class SecureBackup: ALGAPIModel {
         suite = ""
         cipherText = Data()
     }
+
+    init(data: Data) {
+        version = "1.0"
+        suite = "HMAC-SHA256:sodium_secretbox_easy"
+        cipherText = data.base64EncodedData()
+    }
 }
 
 extension SecureBackup {

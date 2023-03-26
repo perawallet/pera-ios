@@ -52,6 +52,7 @@ enum Mnemonics {
     case zero
     case one(Word)
     case full([Word])
+    case asbFull([Word])
 
     init?(
         _ words: [Word]
@@ -59,6 +60,7 @@ enum Mnemonics {
         switch words.count {
         case 0: self = .zero
         case 1: self = .one(words[0])
+        case Self.asbFullCount: self = .asbFull(words)
         case Self.fullCount: self = .full(words)
         default: return nil
         }
@@ -69,6 +71,11 @@ extension Mnemonics {
     /// Returns the number of words in a full set of mnemonics
     static var fullCount: Int {
         return 25
+    }
+
+    /// Returns the number of wors in a full set of Algorand Secure Backup mnemonics
+    static var asbFullCount: Int {
+        return 12
     }
 }
 

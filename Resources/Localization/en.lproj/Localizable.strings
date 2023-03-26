@@ -1436,6 +1436,7 @@
 "algorand-secure-backup-import-backup-action-title" = "Select File";
 "algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
 "algorand-secure-backup-import-backup-paste" = "Paste backup file text";
+
 "algorand-secure-backup-import-backup-upload-successful-title" = "Upload Successful";
 "algorand-secure-backup-import-backup-upload-failed-title" = "Upload Failed";
 "algorand-secure-backup-import-backup-upload-failed-subtitle" = "This file type isn’t supported";
@@ -1454,3 +1455,5 @@
 "algorand-secure-backup-import-success-unsupported-body" = "%@ accounts were not restored because they have an unsupported account type";
 "algorand-secure-backup-import-success-unsupported-singular-body" = "%@ account was not restored because it has an unsupported account type";
 "algorand-secure-backup-import-success-unsupported-and-unimported-body" = "%@ accounts were not restored. They may already exist in your wallet or be unsupported account types";
+
+"algorand-secure-backup-import-recover-mnemonic-title" = "Enter 12-word key";

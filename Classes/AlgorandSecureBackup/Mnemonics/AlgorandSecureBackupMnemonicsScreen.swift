@@ -435,7 +435,9 @@ extension AlgorandSecureBackupMnemonicsScreen {
             let encryptedData = try cryptor.encrypt(data: backupParameters.encoded())
 
             if let data = encryptedData.data {
-                eventHandler?(.backupCompleted(data), self)
+                let secureBackup = SecureBackup(data: data)
+                let secureBackupData = try secureBackup.encoded()
+                eventHandler?(.backupCompleted(secureBackupData), self)
             } else {
                 let error: Event.Error = encryptedData.error.unwrap { .encryption($0) } ?? .unknown
                 eventHandler?(.backupFailed(error), self)

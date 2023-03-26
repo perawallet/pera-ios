@@ -1453,6 +1453,13 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupRecoverMnemonic(let backupFile, let eventHandler):
+            let screen = AlgorandSecureBackupImportRecoverMnemonicScreen(
+                backupFile: backupFile,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

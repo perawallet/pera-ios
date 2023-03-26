@@ -99,7 +99,7 @@ extension ImportAccountScreen {
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
-            guard let decryptedData = decryptedContent?.data else {
+            guard let decryptedData = decryptedContent.data else {
                 self.publish(.didFailToImport(.decryption))
                 return
             }
@@ -243,11 +243,9 @@ extension ImportAccountScreen {
     }
 }
 
-extension ImportAccountScreen {
-    private struct TransferAccount {
-        let privateKey: Data
-        let accountInformation: AccountInformation
-    }
+struct TransferAccount {
+    let privateKey: Data
+    let accountInformation: AccountInformation
 }
 
 extension ImportAccountScreen {

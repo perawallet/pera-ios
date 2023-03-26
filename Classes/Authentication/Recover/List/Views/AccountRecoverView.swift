@@ -29,7 +29,7 @@ final class AccountRecoverView: View {
 
     private(set) var recoverInputViews = [RecoverInputView]()
 
-    private(set) lazy var constants = Constants()
+    lazy var constants = Constants(firstColumnCount: 13, secondColumnCount: 12)
 
     func customize(_ theme: AccountRecoverViewTheme) {
         addTitle(theme)
@@ -169,8 +169,8 @@ extension AccountRecoverView: RecoverInputViewDelegate {
 
 extension AccountRecoverView {
     struct Constants {
-        let firstColumnCount = 13
-        let secondColumnCount = 12
+        let firstColumnCount: Int
+        let secondColumnCount: Int
     }
 }
 

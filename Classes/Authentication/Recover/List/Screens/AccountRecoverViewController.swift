@@ -329,6 +329,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                 fillMnemonics(words)
                 recoverButton.isEnabled = true
                 return false
+            case .asbFull:
+                return false
             }
         } catch {
             /// <note>
@@ -401,6 +403,8 @@ extension AccountRecoverViewController {
             case .full(let words):
                 fillMnemonics(words)
                 recoverButton.isEnabled = true
+            case .asbFull:
+                break
             }
         } catch {
             /// <note>

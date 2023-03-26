@@ -108,7 +108,8 @@ struct AlgorandSecureBackupFile {
 
     init(url: URL) {
         do {
-            data = try Data(contentsOf: url)
+            let base64EncodedData = try Data(contentsOf: url)
+            data = Data(base64Encoded: base64EncodedData)
             filePath = url.lastPathComponent
         } catch {
             data = nil
