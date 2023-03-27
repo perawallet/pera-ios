@@ -381,10 +381,8 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 
     private func processSecureBackup(_ secureBackup: SecureBackup) {
-        guard let data = Data(base64Encoded: secureBackup.cipherText) else {
-            return
-        }
-
+        let data = secureBackup.cipherText
+        
         let algorandSDK = AlgorandSDK()
         var error: NSError?
 
@@ -401,7 +399,9 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
         processDecryptedBackup(decryptedData)
     }
 
-    private func processDecryptedBackup(_ decryptedData: Cryptor.EncryptionData) {
+    private func processDecryptedBackup(
+        _ decryptedData: Cryptor.EncryptionData
+    ) {
         guard
             let data = decryptedData.data,
             let backupParameters = try? BackupParameters.decoded(data)

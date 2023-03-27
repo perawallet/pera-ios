@@ -297,7 +297,7 @@ extension Session {
 
         do {
             try biometricStorage.set(passwordOnKeychain, key: passwordKey)
-            try privateStorage.set("test", key: hasBiometricAuthenticationKey)
+            self.setBiometricPasswordEnable()
         } catch {
             throw LAError.other(error)
         }
@@ -324,6 +324,10 @@ extension Session {
 
     func hasBiometricPassword() -> Bool {
         (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
+    }
+
+    func setBiometricPasswordEnable() {
+        try? privateStorage.set("hasBiometricAuthentication", key: hasBiometricAuthenticationKey)
     }
 }
 

@@ -242,7 +242,8 @@ extension AlgorandSecureBackupImportBackupScreen {
 
         guard
             let pasteBoardText = UIPasteboard.general.string,
-            let data = Data(base64Encoded: pasteBoardText)
+            let data = Data(base64Encoded: pasteBoardText),
+            isDataValid(data)
         else {
             bannerController?.presentErrorBanner(
                 title: "algorand-secure-backup-import-backup-clipboard-failed-title".localized,
@@ -298,10 +299,13 @@ extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
     private func createFile(from url: URL) throws -> AlgorandSecureBackupFile {
         do {
             let urlDataInString = try String(contentsOf: url)
-            guard Data(base64Encoded: urlDataInString) != nil else {
+            guard
+                let data = Data(base64Encoded: urlDataInString),
+                isDataValid(data)
+            else {
                 throw FileError.invalid
             }
-            return AlgorandSecureBackupFile(url: url)
+            return AlgorandSecureBackupFile(data: data)
         } catch {
             if let fileError = error as? FileError {
                 throw fileError
@@ -314,6 +318,10 @@ extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
     private func bindUploadView(for state: AlgorandSecureBackupImportFileViewModel.State) {
         let viewModel = AlgorandSecureBackupImportFileViewModel(state: state)
         uploadView.bindData(viewModel)
+    }
+
+    private func isDataValid(_ data: Data) -> Bool {
+        return (try? SecureBackup.decoded(data)) != nil
     }
 }
 

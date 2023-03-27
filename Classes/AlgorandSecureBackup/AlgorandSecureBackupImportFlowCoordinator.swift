@@ -28,6 +28,7 @@ final class AlgorandSecureBackupImportFlowCoordinator {
     )
 
     private let configuration: ViewControllerConfiguration
+    private let algorandSDK = AlgorandSDK()
     private unowned let presentingScreen: UIViewController
 
     init(configuration: ViewControllerConfiguration, presentingScreen: UIViewController) {
@@ -128,7 +129,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         var transferAccounts: [TransferAccount] = []
 
         for accountParameter in accountParameters {
-            guard let privateKey = accountParameter.privateKey else {
+            guard isAccountParameterImportable(accountParameter),
+                  let privateKey = accountParameter.privateKey else {
                 continue
             }
 
@@ -184,7 +186,7 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         saveAccounts(importableAccounts)
 
         let unsupportedAccountCount = accountParameters.filter { importParameters in
-            importParameters.accountType != .single
+            !isAccountParameterImportable(importParameters)
         }.count
 
         return ImportAccountScreen.Configuration(
@@ -210,6 +212,19 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         )
 
         session.authenticatedUser = authenticatedUser
+    }
+
+    private func isAccountParameterImportable(_ importParameters: AccountImportParameters) -> Bool {
+        guard let privateKey = importParameters.privateKey else {
+            return false
+        }
+
+        var error: NSError?
+        let address = algorandSDK.addressFrom(privateKey, error: &error)
+        let accountAddress = importParameters.address
+        return importParameters.accountType == .single &&
+        address == accountAddress &&
+        algorandSDK.isValidAddress(accountAddress)
     }
 }
 

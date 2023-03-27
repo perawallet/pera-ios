@@ -37,6 +37,13 @@ struct AccountImportParameters: ALGEntityModel {
         self.privateKey = privateKey
     }
 
+    init(accountImportParameters: AccountImportParameters, privateKey: Data?) {
+        self.address = accountImportParameters.address
+        self.name = accountImportParameters.name
+        self.accountType = accountImportParameters.accountType
+        self.privateKey = privateKey
+    }
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {
