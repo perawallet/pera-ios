@@ -1608,6 +1608,74 @@ class Router:
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
+        case .standardAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = StandardAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .ledgerAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = LedgerAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .noAuthAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = NoAuthAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .standardToStandardRekeyedAccountInformation(let from, let to):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = StandardToStandardRekeyedAccountInformationScreen(
+                from: from,
+                to: to,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .standardToLedgerRekeyedAccountInformation(let from, let to):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = StandardToLedgerRekeyedAccountInformationScreen(
+                from: from,
+                to: to,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .ledgerToLedgerRekeyedAccountInformation(let from, let to):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = LedgerToLedgerRekeyedAccountInformationScreen(
+                from: from,
+                to: to,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .ledgerToStandardRekeyedAccountInformation(let from, let to):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = LedgerToStandardRekeyedAccountInformationScreen(
+                from: from,
+                to: to,
+                copyToClipboardController: copyToClipboardController
+            )
+        case .anyToNoAuthRekeyedAccountInformation(let account):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = AnyToNoAuthRekeyedAccountInformationScreen(
+                account: account,
+                copyToClipboardController: copyToClipboardController
+            )
         }
 
         return viewController as? T

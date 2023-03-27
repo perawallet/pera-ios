@@ -73,6 +73,11 @@
 "title-watch-account" = "Watch Account";
 "title-ledger-account" = "Ledger Account";
 "title-rekeyed-account" = "Rekeyed Account";
+"title-no-auth-account-capitalized-sentence" = "No Auth account";
+"title-standard-account-capitalized-sentence" = "Standard account";
+"title-ledger-account-capitalized-sentence" = "Ledger account";
+"title-rekeyed-account-capitalized-sentence" = "Rekeyed account";
+"title-no-auth-account-capitalized-sentence" = "No Auth account";
 "title-more" = "More";
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
@@ -99,6 +104,16 @@
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 "opt-in-to-usdc" = "Opt-in to USDC";
+"title-undo-rekey" = "Undo Rekey";
+"title-account-type" = "Account type";
+"title-standard" = "Standard";
+"title-ledger" = "Ledger";
+"title-standard-to-standard-rekeyed" = "Rekeyed (Standard to Standard)";
+"title-standard-to-ledger-rekeyed" = "Rekeyed (Standard to Ledger)";
+"title-ledger-to-standard-rekeyed" = "Rekeyed (Ledger to Standard)";
+"title-ledger-to-ledger-rekeyed" = "Rekeyed (Ledger to Ledger)";
+"title-no-auth" = "No Auth";
+"title-rekeyed-to" = "REKEYED TO";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -1410,3 +1425,21 @@
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
 "transak-introduction-action-title" = "Buy USDC with Transak";
 "transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
+
+// MARK: Account Information
+"standard-account-type-description" = "Your account is a standard Algorand account. It has not been rekeyed and it is not associated with a Ledger device. It was added to your wallet with its keys. Learn more";
+"standard-account-type-description-highlighted-text" = "Learn more";
+"ledger-account-type-description" = "Your account is a Ledger account. It was added to your wallet directly from the hardware device. All transactions for this account must be confirmed on your Ledger. Learn more";
+"ledger-account-type-description-highlighted-text" = "Learn more";
+"no-auth-account-type-description" = "Your account doesn’t have any Auth information. You can't send assets or sign transactions. Learn more";
+"no-auth-account-type-description-highlighted-text" = "Learn more";
+"standard-to-standard-rekeyed-account-type-description" = "Your account is rekeyed to another standard Algorand account. Transactions for this account will be authorized by the other account. Learn more";
+"standard-to-standard-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"standard-to-ledger-rekeyed-account-type-description" = "Your account is rekeyed to an account on a Ledger hardware device. Transactions for this account must be authorized on the Ledger device. Learn more";
+"standard-to-ledger-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"ledger-to-standard-rekeyed-account-type-description" = "Your account is rekeyed to a standard Algorand account. Transactions for this account will be authorized by the standard account, not by your Ledger (Not recommended). Learn more";
+"ledger-to-standard-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"ledger-to-ledger-rekeyed-account-type-description" = "Your Ledger account is rekeyed to an account on another Ledger hardware device. Transactions for this account will be authorized by the other Ledger device. Learn more";
+"ledger-to-ledger-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"any-to-no-auth-rekeyed-account-type-description" = "Your account is rekeyed to an Algorand account that is not in your wallet. You can't send assets or sign transactions. Learn more";
+"any-to-no-auth-rekeyed-account-type-description-highlighted-text" = "Learn more";
