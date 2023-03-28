@@ -17,10 +17,47 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
 struct ALGBarButtonItem: BarButtonItem {
     
     var handler: EmptyHandler?
+    
+    var backgroundColor: UIColor? {
+        switch kind {
+        case .account(let account):
+            let backgroundColor: UIColor?
+            /// <todo>: Handle all types properly.
+            switch account.type {
+            case .rekeyed:
+                backgroundColor = Colors.Helpers.negativeLighter.uiColor
+            default:
+                backgroundColor = nil
+            }
+
+            return backgroundColor
+        default:
+            return nil
+        }
+    }
+    
+    var corner: Corner? {
+        switch kind {
+        case .account(let account):
+            let corner: Corner?
+            /// <todo>: Handle all types properly.
+            switch account.type {
+            case .rekeyed:
+                corner = Corner(radius: 8)
+            default:
+                corner = nil
+            }
+
+            return corner
+        default:
+            return nil
+        }
+    }
     
     var title: TitleContent? {
         switch kind {
@@ -60,6 +97,21 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Link.primary.uiColor,
                 font: UIFont.font(withWeight: .medium(size: 16.0))
             )
+        case .account(let account):
+            let titleContent: BarButtonItemTitleContent?
+            /// <todo>: Handle all types properly.
+            switch account.type {
+            case .rekeyed:
+                titleContent = BarButtonItemTitleContent(
+                    text: "title-rekeyed".localized,
+                    textColor: Colors.Text.main.uiColor,
+                    font: Typography.captionMedium()
+                )
+            default:
+                titleContent = nil
+            }
+
+            return titleContent
         default:
             return nil
         }
@@ -154,7 +206,16 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .account(let image):
+        case .account(let account):
+            let image: UIImage
+            /// <todo>: Handle all types properly.
+            switch account.type {
+            case .rekeyed:
+                image = "icon-payment-security".uiImage
+            default:
+                image = account.typeImage
+            }
+
             return ImageContent(normal: image)
         case .discoverHome:
             if let icon = img("icon-homepage") {
@@ -264,8 +325,27 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .search:
             return .explicit(CGSize(width: 40, height: 40))
-        case .account:
-            return .explicit(CGSize(width: 28, height: 28))
+        case .account(let account):
+            let size: ALGBarButtonItem.Size
+            /// <todo>: Handle all types properly.
+            switch account.type {
+            case .rekeyed:
+                let spacing = 4 / 2.0
+                let contentInsets = UIEdgeInsets((6, spacing + 6, 6, spacing + 8))
+                let titleInsets = UIEdgeInsets((0, spacing, 0, -spacing))
+                let imageInsets = UIEdgeInsets((0, -spacing, 0, spacing))
+                size = .compressed(
+                    BarButtonCompressedSizeInsets(
+                        contentInsets: contentInsets,
+                        titleInsets: titleInsets,
+                        imageInsets: imageInsets
+                    )
+                )
+            default:
+                size = .explicit(CGSize(width: 28, height: 28))
+            }
+
+            return size
         case .discoverHome:
             return .explicit(CGSize(width: 40, height: 40))
         case .discoverNext:
@@ -324,7 +404,7 @@ extension ALGBarButtonItem {
         case filter
         case troubleshoot
         case search
-        case account(UIImage)
+        case account(Account)
         case discoverNext
         case discoverPrevious
         case discoverHome
