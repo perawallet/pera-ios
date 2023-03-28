@@ -49,7 +49,10 @@ final class NotificationsViewController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
+    private lazy var deeplinkParser = DeepLinkParser(
+        sharedDataController: sharedDataController,
+        walletConnector: walletConnector
+    )
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 

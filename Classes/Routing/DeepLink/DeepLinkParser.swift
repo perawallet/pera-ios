@@ -21,11 +21,14 @@ import UIKit
 
 final class DeepLinkParser {
     private let sharedDataController: SharedDataController
+    private let walletConnector: WalletConnector
     
     init(
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        walletConnector: WalletConnector
     ) {
         self.sharedDataController = sharedDataController
+        self.walletConnector = walletConnector
     }
 }
 
@@ -499,10 +502,14 @@ extension DeepLinkParser {
         let urlComponents =
             URLComponents(url: walletConnectSessionRequest, resolvingAgainstBaseURL: true)
         let queryItems = urlComponents?.queryItems
-        let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value
-        return maybeWalletConnectSessionKey
-            .unwrap(where: \.isWalletConnectConnection)
-            .unwrap({ .success($0) })
+        guard let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value.unwrap(or: "") else {
+            return nil
+        }
+        
+        return
+            walletConnector.isValidSession(maybeWalletConnectSessionKey) ?
+            .success(maybeWalletConnectSessionKey) :
+            nil
     }
     
     func discover(

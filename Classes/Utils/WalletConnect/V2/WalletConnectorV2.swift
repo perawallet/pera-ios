@@ -238,8 +238,9 @@ extension WalletConnectorV2 {
                 sessionProposal.requiredNamespaces.forEach {
                     let caip2Namespace = $0.key
                     let proposalNamespace = $0.value
+                    guard let chains = proposalNamespace.chains else { return }
                     let accounts = Set(
-                        proposalNamespace.chains.compactMap { chain in
+                        chains.compactMap { chain in
                             WalletConnectUtils.Account(
                                 "\(chain.absoluteString):\(self.accountAddress)"
                             )

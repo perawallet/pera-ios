@@ -52,7 +52,10 @@ final class ALGAppLaunchController:
         self.session = session
         self.api = api
         self.sharedDataController = sharedDataController
-        self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
+        self.deeplinkParser = DeepLinkParser(
+            sharedDataController: sharedDataController,
+            walletConnector: walletConnector
+        )
         self.authChecker = authChecker
         self.walletConnector = walletConnector
         self.uiHandler = uiHandler
