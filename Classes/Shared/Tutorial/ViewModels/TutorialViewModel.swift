@@ -162,7 +162,7 @@ extension TutorialViewModel {
         case .failedToImportLedgerAccounts:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
-            primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+            primaryActionButtonTitle = "title-go-home".localized
         case .collectibleTransferConfirmed:
             primaryActionButtonTitle = "collectible-transfer-confirmed-action-title".localized
         }
