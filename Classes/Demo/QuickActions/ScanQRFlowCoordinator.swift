@@ -29,6 +29,9 @@ final class ScanQRFlowCoordinator:
         api: api,
         session: session
     )
+    private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
+        presentingScreen: presentingScreen
+    )
 
     private lazy var transactionController = TransactionController(
         api: api,
@@ -136,11 +139,37 @@ extension ScanQRFlowCoordinator {
 
     func qrScannerViewController(
         _ controller: QRScannerViewController,
-        didRead qrExportInformations: QRExportInformations,
+        didRead qrBackupParameters: QRBackupParameters,
         completionHandler: EmptyHandler?
     ) {
-        accountExportCoordinator.populate(qrExportInformations: qrExportInformations)
-        accountExportCoordinator.launch()
+        if !qrBackupParameters.isSupported() {
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
+        }
+
+        switch qrBackupParameters.action {
+        case .export:
+            accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
+        case .import:
+            controller.dismissScreen {
+                [weak self] in
+                guard let self = self else { return }
+                
+                self.accountImportCoordinator.launch(qrBackupParameters: qrBackupParameters)
+            }
+        case .unsupported:
+            showUnsupportedQRError(on: controller, using: qrBackupParameters)
+            return
+        }
+    }
+
+    private func showUnsupportedQRError(
+        on controller: QRScannerViewController,
+        using qrBackupParameters: QRBackupParameters
+    ) {
+        let message = "web-import-error-unsupported-version-body"
+            .localized(qrBackupParameters.version)
+        controller.bannerController?.presentErrorBanner(title: "Error", message: message)
     }
 }
 
@@ -378,7 +407,7 @@ extension ScanQRFlowCoordinator {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -401,7 +430,7 @@ extension ScanQRFlowCoordinator {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )

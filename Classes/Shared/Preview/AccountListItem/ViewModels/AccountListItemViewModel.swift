@@ -313,11 +313,11 @@ extension AccountListItemViewModel {
     }
 
     mutating func bindTitle(
-        _ nameServiceAccountPreview: NameServiceAccountListItem
+        _ nameServiceAccountListItem: NameServiceAccountListItem
     ) {
         title = AccountPreviewTitleViewModel(
-            primaryTitle: nameServiceAccountPreview.title,
-            secondaryTitle: nameServiceAccountPreview.subtitle
+            primaryTitle: nameServiceAccountListItem.title,
+            secondaryTitle: nameServiceAccountListItem.subtitle
         )
     }
 }
@@ -392,18 +392,6 @@ struct CustomAccountListItem {
         subtitle = nil
         accessory = nil
     }
-
-    init(
-        _ viewModel: AlgoAccountViewModel,
-        address: String?
-    ) {
-        self.address = address
-
-        icon = viewModel.image
-        title = viewModel.address
-        subtitle = nil
-        accessory = viewModel.amount
-    }
 }
 
 struct IconWithShortAddressDraft {
@@ -425,13 +413,13 @@ struct NameServiceAccountListItem {
     /// For uniqueness purposes, we need to store the address of the account.
     let address: String?
 
-    let icon: PNGImageSource?
+    let icon: DefaultURLImageSource?
     let title: String?
     let subtitle: String?
 
     init(
         address: String?,
-        icon: PNGImageSource?,
+        icon: DefaultURLImageSource?,
         title: String?,
         subtitle: String?
     ) {

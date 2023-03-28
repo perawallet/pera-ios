@@ -19,7 +19,7 @@ import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class DiscoverDappDetailScreen: InAppBrowserScreen {
+class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessage> {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
     
@@ -40,9 +40,6 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
     private let dappParameters: DiscoverDappParamaters
 
-    private static let navigationScriptKey = "navigation"
-    private static let peraConnectScriptKey = "peraconnect"
-
     init(
         dappParameters: DiscoverDappParamaters,
         configuration: ViewControllerConfiguration
@@ -52,29 +49,19 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         super.init(configuration: configuration)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        contentController.removeScriptMessageHandler(forName: Self.navigationScriptKey)
-        contentController.removeScriptMessageHandler(forName: Self.peraConnectScriptKey)
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addNavigation()
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-
-        addNavigation()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeWebView()
         addNavigationToolbar()
-        executeNavigationScript()
-        executePeraConnectScript()
         recordAnalyticsEvent()
     }
 
@@ -87,6 +74,15 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
             isViewLayoutLoaded = true
             updateWebViewLayout()
         }
+    }
+
+    override func createUserContentController() -> InAppBrowserUserContentController {
+        let controller = super.createUserContentController()
+        /// <note>
+        /// App listens this script in order to catch html5 navigation process
+        controller.addUserScript(navigationScript)
+        controller.addUserScript(peraConnectScript)
+        return controller
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -109,13 +105,33 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
         updateButtonsStateIfNeeded()
     }
 
-    private func initializeWebView() {
-        guard let url = URL(string: dappParameters.url) else {
-            return
-        }
+    /// <mark>
+    /// WKScriptMessageHandler
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        updateButtonsStateIfNeeded()
+        updateTitle()
 
-        let generatedUrl = DiscoverURLGenerator.generateUrl(
-            discoverUrl: .other(url: url),
+        let inAppMessage = DiscoverDappDetailScriptMessage(rawValue: message.name)
+
+        switch inAppMessage {
+        case .none:
+            super.userContentController(
+                userContentController,
+                didReceive: message
+            )
+        case .navigation:
+            break
+        case .peraconnect:
+            handlePeraConnectAction(message)
+        }
+    }
+
+    private func initializeWebView() {
+        let generatedUrl = DiscoverURLGenerator.generateURL(
+            destination: .dappDetail(dappParameters),
             theme: traitCollection.userInterfaceStyle,
             session: session
         )
@@ -130,7 +146,18 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
 
         bindNavigationTitle(with: dappParameters)
 
-        self.rightBarButtonItems = [ ALGBarButtonItem.flexibleSpace() ]
+        addNavigationBarButtonItems()
+    }
+
+    private func addNavigationBarButtonItems() {
+        self.rightBarButtonItems = [ makeReloadBarButtonItem() ]
+    }
+
+    private func makeReloadBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .reload) {
+            [unowned self] in
+            self.webView.reload()
+        }
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {
@@ -143,18 +170,6 @@ final class DiscoverDappDetailScreen: InAppBrowserScreen {
     
     private func bindNavigationTitleForCurrentURL() {
         navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
-    }
-
-    /// <note>
-    /// App listens this script in order to catch html5 navigation process
-    private func executeNavigationScript() {
-        contentController.addUserScript(navigationScript)
-        contentController.add(self, name: Self.navigationScriptKey)
-    }
-
-    private func executePeraConnectScript() {
-        contentController.addUserScript(peraConnectScript)
-        contentController.add(self, name: Self.peraConnectScriptKey)
     }
 }
 
@@ -173,7 +188,7 @@ extension DiscoverDappDetailScreen {
 
     private func createPeraConnectScript() -> WKUserScript {
         let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(Self.peraConnectScriptKey).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
+function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverDappDetailScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
 """
 
         return WKUserScript(
@@ -181,17 +196,6 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: false
         )
-    }
-}
-
-extension DiscoverDappDetailScreen: WKScriptMessageHandler {
-    func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        self.updateButtonsStateIfNeeded()
-        self.updateTitle()
-        self.routeWalletConnectIfNeeded(with: message)
     }
 }
 
@@ -318,21 +322,14 @@ extension DiscoverDappDetailScreen {
             addToFavorites(url: url, dapp: dappDetails)
         }
     }
-    
-    private func routeWalletConnectIfNeeded(with message: WKScriptMessage) {
-        guard message.name == Self.peraConnectScriptKey else { return }
 
-        guard let jsonString = message.body as? String, let url = URL(string: jsonString) else {
-            return
-        }
+    private func handlePeraConnectAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let url = URL(string: jsonString) else { return }
+        guard let walletConnectURL = DeeplinkQR(url: url).walletConnectUrl() else { return }
 
-        let deeplinkQR = DeeplinkQR(url: url)
-
-        guard let walletConnectURL = deeplinkQR.walletConnectUrl() else {
-            return
-        }
-
-        launchController.receive(deeplinkWithSource: .walletConnectSessionRequestForDiscover(walletConnectURL))
+        let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
+        launchController.receive(deeplinkWithSource: src)
     }
 
     private func recordAnalyticsEvent() {
@@ -386,7 +383,7 @@ extension DiscoverDappDetailScreen {
     }
     
     private func hasExceededFavouritesLimit() -> Bool {
-        return favoriteDapps.count >= 50
+        return favoriteDapps.count >= 100
     }
     
     private func removeFromFavorites(
@@ -418,4 +415,11 @@ extension DiscoverDappDetailScreen {
         case addToFavorites(DiscoverFavouriteDappDetails)
         case removeFromFavorites(DiscoverFavouriteDappDetails)
     }
+}
+
+enum DiscoverDappDetailScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case navigation
+    case peraconnect
 }

@@ -301,10 +301,9 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                 [weak self] event in
                 guard let self = self else { return }
                 switch event {
-                case .didCompleteTransaction:
-                    self.eventHandler?(.didCompleteTransaction)
-                case .didEditNote(let note):
-                    self.eventHandler?(.didEditNote(note: note))
+                case .didCompleteTransaction: self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note): self.eventHandler?(.didEditNote(note: note))
+                default: break
                 }
             }
         }
@@ -450,9 +449,21 @@ extension AccountSelectScreen {
             receiver: receiverAddress,
             assetId: draft.asset!.id
         )
-        api?.sendAssetSupportRequest(
-            draft
-        )
+        
+        api?.sendAssetSupportRequest(draft) {
+            [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success:
+                return
+            case let .failure(apiError, errorModel):
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: errorModel?.message() ?? apiError.description
+                )
+            }
+        }
     }
 
     private func openOptInInformation() {

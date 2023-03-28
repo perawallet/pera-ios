@@ -18,7 +18,7 @@ import Foundation
 import WebKit
 import MacaroonUtils
 
-final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHandler {
+final class DiscoverAssetDetailScreen: DiscoverInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -29,7 +29,7 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
         bannerController: bannerController!,
         presentingScreen: self
     )
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(
         presentingScreen: self
     )
 
@@ -40,8 +40,6 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
     /// routing approach hasn't been refactored yet.
     private let swapDataStore: SwapDataStore
 
-    private var events: [Event] = [.detailAction]
-
     init(
         assetParameters: DiscoverAssetParameters,
         swapDataStore: SwapDataStore,
@@ -49,74 +47,61 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
     ) {
         self.assetParameters = assetParameters
         self.swapDataStore = swapDataStore
-        super.init(configuration: configuration, discoverURL: .assetDetail(parameters: assetParameters))
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        events.forEach { event in
-            contentController.removeScriptMessageHandler(forName: event.rawValue)
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        listenEvents()
+        super.init(
+            destination: .assetDetail(assetParameters),
+            configuration: configuration
+        )
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
     }
-}
 
-extension DiscoverAssetDetailScreen {
-    enum Event: String {
-        case detailAction = "handleTokenDetailActionButtonClick"
-    }
-
-    private func listenEvents() {
-        events.forEach { event in
-            contentController.add(self, name: event.rawValue)
-        }
-    }
-
-    func userContentController(
+    /// <mark>
+    /// WKScriptMessageHandler
+    override func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8) else {
-            return
+        let inAppMessage = DiscoverAssetDetailScriptMessage(rawValue: message.name)
+
+        switch inAppMessage {
+        case .none:
+            super.userContentController(
+                userContentController,
+                didReceive: message
+            )
+        case .handleTokenDetailActionButtonClick:
+            handleTokenAction(message)
         }
+    }
+}
 
-        let jsonDecoder = JSONDecoder()
+extension DiscoverAssetDetailScreen {
+    private func handleTokenAction(_ message: WKScriptMessage) {
+        guard let jsonString = message.body as? String else { return }
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
+        guard let params = try? DiscoverSwapParameters.decoded(jsonData) else { return }
 
-        guard let swapParameters = try? jsonDecoder.decode(DiscoverSwapParameters.self, from: jsonData) else {
-            return
-        }
-
-        sendAnalyticsEvent(with: swapParameters)
-        switch swapParameters.action {
+        switch params.action {
         case .buyAlgo:
-            launchBuyAlgo()
+            navigateToBuyAlgo()
         default:
-            launchSwap(with: swapParameters)
+            navigateToSwap(with: params)
         }
+
+        sendAnalyticsEvent(with: params)
     }
 
-    private func launchBuyAlgo() {
-        buyAlgoFlowCoordinator.launch()
+    private func navigateToBuyAlgo() {
+        moonPayFlowCoordinator.launch()
     }
 
-    private func launchSwap(with parameters: DiscoverSwapParameters) {
+    private func navigateToSwap(with parameters: DiscoverSwapParameters) {
         let draft = SwapAssetFlowDraft()
-
         if let assetInID = parameters.assetIn {
             draft.assetInID = assetInID
         }
-
         if let assetOutID = parameters.assetOut {
             draft.assetOutID = assetOutID
         }
@@ -144,4 +129,10 @@ extension DiscoverAssetDetailScreen {
             self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
         }
     }
+}
+
+enum DiscoverAssetDetailScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case handleTokenDetailActionButtonClick
 }
