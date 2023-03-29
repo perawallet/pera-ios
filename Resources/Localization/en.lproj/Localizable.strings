@@ -1434,6 +1434,7 @@
 
 "algorand-secure-backup-import-backup-title" = "Select your backup file";
 "algorand-secure-backup-import-backup-action-title" = "Select File";
+"algorand-secure-backup-import-backup-action-replace-title" = "Replace File";
 "algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
 "algorand-secure-backup-import-backup-paste" = "Paste backup file text";
 
@@ -1441,8 +1442,12 @@
 "algorand-secure-backup-import-backup-upload-failed-title" = "Upload Failed";
 "algorand-secure-backup-import-backup-upload-failed-subtitle" = "This file type isn’t supported";
 "algorand-secure-backup-import-backup-upload-failed-invalid-subtitle" = "This file doesn't contain valid data";
+"algorand-secure-backup-import-backup-clipboard-success-title" = "Backup file successfully pasted";
 "algorand-secure-backup-import-backup-clipboard-failed-title" = "Nothing to paste";
 "algorand-secure-backup-import-backup-clipboard-failed-subtitle" = "Nothing is copied from the clipboard. Make sure you have copied your backup file.";
+"algorand-secure-backup-import-backup-clipboard-json-failed-title" = "Unable to parse the backup file: JSON formatting error.";
+"algorand-secure-backup-import-backup-clipboard-version-failed-title" = "Backup file was generated with an unsupported version of Algorand Secure Backup Format.";
+"algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title" = "Unable to parse the backup file: Cipher Suite unknown";
 
 "algorand-secure-backup-import-success-header-title" = "Accounts restored";
 "algorand-secure-backup-import-success-header-singular-title" = "Account restored";

@@ -46,10 +46,10 @@ final class AlgorandSecureBackupImportRecoverMnemonicScreen: ScrollScreen {
         return accountRecoverView.recoverInputViews
     }
 
-    private let backupFile: AlgorandSecureBackupFile
+    private let backupFile: SecureBackup
     private let configuration: ViewControllerConfiguration
 
-    init(backupFile: AlgorandSecureBackupFile, configuration: ViewControllerConfiguration) {
+    init(backupFile: SecureBackup, configuration: ViewControllerConfiguration) {
         self.backupFile = backupFile
         self.configuration = configuration
         super.init()
@@ -370,18 +370,13 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
 extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     @objc
     private func performNext() {
-        guard
-            let backupData = backupFile.data,
-            let secureBackup = try? SecureBackup.decoded(backupData)
-        else {
-            return
-        }
-
-        processSecureBackup(secureBackup)
+        processSecureBackup(backupFile)
     }
 
     private func processSecureBackup(_ secureBackup: SecureBackup) {
-        let data = secureBackup.cipherText
+        guard let data = secureBackup.cipherText else {
+            return
+        }
         
         let algorandSDK = AlgorandSDK()
         var error: NSError?

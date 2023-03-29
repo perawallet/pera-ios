@@ -23,6 +23,8 @@ struct AlgorandSecureBackupImportFileViewModel: ViewModel {
     var title: TextProvider?
     var subtitle: TextProvider?
     var isActionVisible: Bool = false
+    var actionTheme: ButtonStyle?
+
 
     init(state: State) {
         bindImage(for: state)
@@ -59,15 +61,20 @@ extension AlgorandSecureBackupImportFileViewModel {
             title = "algorand-secure-backup-import-backup-title".localized.bodyMedium(alignment: .center)
         case .uploaded:
             title = "algorand-secure-backup-import-backup-upload-successful-title".localized.bodyMedium(alignment: .center)
-        case .uploadFailed(let error):
+        case .uploadFailed(let validationError):
             let errorTitle: String
-            switch error {
-            case .unsupported:
-                errorTitle = "algorand-secure-backup-import-backup-upload-failed-subtitle".localized
-            case .invalid:
-                errorTitle = "algorand-secure-backup-import-backup-upload-failed-invalid-subtitle".localized
-            case .other(let internalError):
-                errorTitle = internalError.localizedDescription
+
+            switch validationError {
+            case .emptySource:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+            case .wrongFormat:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            case .unsupportedVersion:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
+            case .cipherSuiteUnknown, .cipherSuiteInvalid:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
+            case .jsonSerialization:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
             }
             title = errorTitle.bodyMedium(alignment: .center)
         }
@@ -77,19 +84,25 @@ extension AlgorandSecureBackupImportFileViewModel {
         switch state {
         case .empty:
             subtitle = nil
-        case .uploaded(let uploadedFile):
-            subtitle = uploadedFile.filePath?.footnoteRegular(alignment: .center)
+        case .uploaded(let fileName):
+            subtitle = fileName.footnoteRegular(alignment: .center)
         case .uploadFailed:
             subtitle = nil
         }
     }
 
     private mutating func bindActionVisibility(for state: State) {
+        let theme = AlgorandSecureBackupImportFileViewTheme()
+
         switch state {
         case .empty:
             isActionVisible = false
-        case .uploaded, .uploadFailed:
+        case .uploaded:
             isActionVisible = true
+            actionTheme = theme.replaceAction
+        case .uploadFailed:
+            isActionVisible = true
+            actionTheme = theme.action
         }
     }
 }
@@ -97,29 +110,24 @@ extension AlgorandSecureBackupImportFileViewModel {
 extension AlgorandSecureBackupImportFileViewModel {
     enum State {
         case empty
-        case uploaded(AlgorandSecureBackupFile)
-        case uploadFailed(AlgorandSecureBackupImportBackupScreen.FileError)
+        case uploaded(fileName: String)
+        case uploadFailed(AlgorandSecureBackupImportBackupScreen.ValidationError)
     }
 }
 
 struct AlgorandSecureBackupFile {
     let data: Data?
-    let filePath: String?
+    let fileName: String
 
-    init(url: URL) {
-        do {
-            let base64EncodedData = try Data(contentsOf: url)
-            data = Data(base64Encoded: base64EncodedData)
-            filePath = url.lastPathComponent
-        } catch {
-            data = nil
-            filePath = nil
-        }
+    init(url: URL) throws {
+        let base64EncodedData = try Data(contentsOf: url)
+        data = Data(base64Encoded: base64EncodedData)
+        fileName = url.lastPathComponent
     }
 
     init(data: Data) {
         self.data = data
         let dateString = Date().toFormat(.fileDate)
-        self.filePath = "\(dateString)_backup.txt"
+        self.fileName = "\(dateString)_backup.txt"
     }
 }

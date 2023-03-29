@@ -81,6 +81,10 @@ final class AlgorandSecureBackupImportFileView:
 
         let isActionVisible = viewModel?.isActionVisible ?? false
         actionView.isHidden = !isActionVisible
+
+        if let style = viewModel?.actionTheme {
+            actionView.customizeAppearance(style)
+        }
     }
 }
 

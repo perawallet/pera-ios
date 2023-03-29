@@ -217,7 +217,8 @@ extension AlgorandSecureBackupSuccessScreen {
 
     @objc
     private func performSave() {
-        guard let backupData = backupFile.data, let fileName = backupFile.filePath else { return }
+        guard let backupData = backupFile.data else { return }
+        let fileName = backupFile.fileName
         let url = documentURL.appendingPathComponent(fileName)
 
         do {
@@ -258,7 +259,7 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func clearFile() {
-        guard let fileName = backupFile.filePath else { return }
+        let fileName = backupFile.fileName
         let url = documentURL.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: url)
     }

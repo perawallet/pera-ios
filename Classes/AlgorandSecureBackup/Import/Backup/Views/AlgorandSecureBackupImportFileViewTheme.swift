@@ -32,6 +32,7 @@ struct AlgorandSecureBackupImportFileViewTheme:
     var spacingBetweenTitleAndSubtitle: LayoutMetric
     var subtitle: TextStyle
     var action: ButtonStyle
+    var replaceAction: ButtonStyle
     var actionBottomInset: LayoutMetric
 
     init(
@@ -86,6 +87,11 @@ struct AlgorandSecureBackupImportFileViewTheme:
             .font(Typography.bodyMedium()),
             .titleColor([.normal(Colors.Helpers.positive)]),
             .title("algorand-secure-backup-import-backup-action-title".localized)
+        ]
+        self.replaceAction = [
+            .font(Typography.bodyMedium()),
+            .titleColor([.normal(Colors.Helpers.positive)]),
+            .title("algorand-secure-backup-import-backup-action-replace-title".localized)
         ]
         self.actionBottomInset = 20
     }

@@ -55,7 +55,7 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 }
 
 extension AlgorandSecureBackupImportFlowCoordinator {
-    private func openImportMnemonic(with file: AlgorandSecureBackupFile, from viewController: UIViewController) {
+    private func openImportMnemonic(with file: SecureBackup, from viewController: UIViewController) {
         let screen: Screen = .algorandSecureBackupRecoverMnemonic(backupFile: file) { [weak self] event, screen in
             guard let self else { return }
 

@@ -17,20 +17,40 @@
 import Foundation
 
 final class SecureBackup: ALGAPIModel {
-    let version: String
-    let suite: String
-    let cipherText: Data
+    private let supportedVersion = "1.0"
+    let version: String?
+    let suite: String?
+    let cipherText: Data?
 
     init() {
-        version = ""
-        suite = ""
-        cipherText = Data()
+        version = nil
+        suite = nil
+        cipherText = nil
     }
 
+    /// <note>: Initializer with data produce a secure backup object for export
     init(data: Data) {
         version = "1.0"
         suite = "HMAC-SHA256:sodium_secretbox_easy"
         cipherText = data
+    }
+
+    func hasValidVersion() -> Bool {
+        version == supportedVersion
+    }
+
+    /// <note>: It is currently checking the suite is not empty or blank
+    /// It may be updated in the future.
+    func hasValidSuite() -> Bool {
+        guard let suite else {
+            return false
+        }
+
+        return !suite.isEmptyOrBlank
+    }
+
+    func hasValidCipherText() -> Bool {
+        cipherText != nil
     }
 }
 
