@@ -23,6 +23,9 @@ import SceneKit
 final class Collectible3DAudioViewController:
     BaseViewController,
     Collectible3DCardDisplayable {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+    
     var sceneMaterial: SCNMaterial?
     var sceneView: SCNView?
     
@@ -167,6 +170,12 @@ extension Collectible3DAudioViewController {
 extension Collectible3DAudioViewController {
     @objc
     private func didTapCloseButton() {
-        dismissScreen()
+        eventHandler?(.didClose)
+    }
+}
+
+extension Collectible3DAudioViewController {
+    enum Event {
+        case didClose
     }
 }

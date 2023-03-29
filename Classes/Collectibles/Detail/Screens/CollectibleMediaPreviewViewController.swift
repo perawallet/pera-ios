@@ -219,11 +219,6 @@ extension CollectibleMediaPreviewViewController {
 
 extension CollectibleMediaPreviewViewController {
     @objc
-    private func didTap3DActionView() {
-        open3DCard()
-    }
-
-    @objc
     private func didTapPageControl(_ sender: UIPageControl) {
         if selectedIndex == sender.currentPage {
             return
@@ -297,7 +292,14 @@ extension CollectibleMediaPreviewViewController {
                 [weak self] in
                 guard let self else { return }
                 
-                self.open3DCard()
+                guard let mediaURL = media.downloadURL else {
+                    return
+                }
+                
+                self.open3DCardForAudio(
+                    url: mediaURL,
+                    cell: cell
+                )
             }
             cell.startObserving(event: .performFullScreenAction) {
                 [weak self, weak cell] in
@@ -338,8 +340,12 @@ extension CollectibleMediaPreviewViewController {
                 guard let self = self else {
                     return
                 }
+                
+                guard let image = cell.contextView.currentImage else {
+                    return
+                }
 
-                self.open3DCard()
+                self.open3DCardForImage(image: image)
             }
             cell.handlers.didTapFullScreenAction = {
                 [weak self, weak cell] in
@@ -372,7 +378,14 @@ extension CollectibleMediaPreviewViewController {
                     return
                 }
                 
-                self.open3DCard()
+                guard let mediaURL = media.downloadURL else {
+                    return
+                }
+                
+                self.open3DCardForVideo(
+                    url: mediaURL,
+                    cell: cell
+                )
             }
             cell.startObserving(event: .performFullScreenAction) {
                 [weak self, weak cell] in
@@ -483,44 +496,63 @@ extension CollectibleMediaPreviewViewController {
             )
         )
     }
-
-    private func open3DCard() {
-        guard let media = selectedMedia else {
-            return
+    
+    private func open3DCardForAudio(
+        url: URL,
+        cell: CollectibleMediaAudioPreviewCell
+    ) {
+        cell.stopAudio()
+        
+        let screen = open(
+            .audio3DCard(
+                image: thumbnailImage,
+                url: url
+            ),
+            by: .presentWithoutNavigationController
+        ) as? Collectible3DAudioViewController
+        
+        screen?.eventHandler = {
+            [weak screen] event in
+            
+            switch event {
+            case .didClose:
+                screen?.dismissScreen()
+                cell.playAudio()
+            }
         }
+    }
 
-        switch media.type {
-        case .audio:
-            if let url = media.downloadURL {
-                open(
-                    .audio3DCard(
-                        image: thumbnailImage,
-                        url: url
-                    ),
-                    by: .presentWithoutNavigationController
-                )
+    private func open3DCardForImage(
+        image: UIImage
+    ) {
+        open(
+            .image3DCard(image: image),
+            by: .presentWithoutNavigationController
+        )
+    }
+    
+    private func open3DCardForVideo(
+        url: URL,
+        cell: CollectibleMediaVideoPreviewCell
+    ) {
+        cell.stopVideo()
+        
+        let screen = open(
+            .video3DCard(
+                image: thumbnailImage,
+                url: url
+            ),
+            by: .presentWithoutNavigationController
+        ) as? Collectible3DVideoViewController
+        
+        screen?.eventHandler = {
+            [weak screen] event in
+            
+            switch event {
+            case .didClose:
+                screen?.dismissScreen()
+                cell.playVideo()
             }
-        case .image:
-            if let cell = currentVisibleCell as? CollectibleMediaImagePreviewCell,
-               let image = cell.contextView.currentImage {
-                open(
-                    .image3DCard(
-                        image: image
-                    ),
-                    by: .presentWithoutNavigationController
-                )
-            }
-        case .video:
-            if let url = media.downloadURL {
-                open(
-                    .video3DCard(
-                        image: thumbnailImage,
-                        url: url
-                    ),
-                    by: .presentWithoutNavigationController
-                )
-            }
-        default: break
         }
     }
 
