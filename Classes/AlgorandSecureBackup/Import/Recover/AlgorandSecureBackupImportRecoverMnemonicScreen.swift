@@ -20,7 +20,9 @@ import MacaroonUtils
 import MacaroonUIKit
 import UIKit
 
-final class AlgorandSecureBackupImportRecoverMnemonicScreen: ScrollScreen {
+final class AlgorandSecureBackupImportRecoverMnemonicScreen:
+    BaseScrollViewController,
+    MacaroonForm.KeyboardControllerDataSource {
     typealias EventHandler = (Event, AlgorandSecureBackupImportRecoverMnemonicScreen) -> Void
 
     var eventHandler: EventHandler?
@@ -46,17 +48,20 @@ final class AlgorandSecureBackupImportRecoverMnemonicScreen: ScrollScreen {
         return accountRecoverView.recoverInputViews
     }
 
+    private lazy var keyboardController =
+        MacaroonForm.KeyboardController(scrollView: scrollView, screen: self)
+
     private let backupFile: SecureBackup
-    private let configuration: ViewControllerConfiguration
 
     init(backupFile: SecureBackup, configuration: ViewControllerConfiguration) {
         self.backupFile = backupFile
-        self.configuration = configuration
-        super.init()
+        super.init(configuration: configuration)
+        isAutoScrollingToEditingTextFieldEnabled = false
+        keyboardController.activate()
     }
 
     deinit {
-        stopObservingNotifications()
+        keyboardController.deactivate()
     }
 
     override func viewDidLoad() {
@@ -104,6 +109,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
         contentView.addSubview(accountRecoverView)
         accountRecoverView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.greaterThanOrEqualTo(view)
         }
     }
 
@@ -313,7 +319,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
         _ keyboardController: MacaroonForm.KeyboardController
     ) -> LayoutMetric {
         if let keyboard = keyboardController.keyboard {
-            footerBackgroundView.snp.updateConstraints {
+            footerView.snp.updateConstraints {
                 $0.bottom == keyboard.height
             }
 
@@ -344,7 +350,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
             return scrollView.contentInset.bottom
         }
 
-        footerBackgroundView.snp.updateConstraints {
+        footerView.snp.updateConstraints {
             $0.bottom == 0
         }
 
@@ -360,11 +366,11 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
         return .zero
     }
 
-//    func spacingBetweenEditingRectAndKeyboard(
-//        _ keyboardController: MacaroonForm.KeyboardController
-//    ) -> LayoutMetric {
-//        return 90
-//    }
+    func spacingBetweenEditingRectAndKeyboard(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        return theme.keyboardInset
+    }
 }
 
 extension AlgorandSecureBackupImportRecoverMnemonicScreen {
@@ -414,9 +420,8 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
         guard let currentInputView = accountRecoverView.currentInputView else {
             return nil
         }
-        let point = currentInputView.convert(accountRecoverView.frame.origin, from: scrollView)
 
-        return CGRect(x: 0, y: -point.y, width: currentInputView.frame.width, height: currentInputView.frame.height)
+        return currentInputView.frame
     }
 }
 
