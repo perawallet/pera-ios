@@ -1448,6 +1448,7 @@
 "algorand-secure-backup-import-backup-clipboard-json-failed-title" = "Unable to parse the backup file: JSON formatting error.";
 "algorand-secure-backup-import-backup-clipboard-version-failed-title" = "Backup file was generated with an unsupported version of Algorand Secure Backup Format.";
 "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title" = "Unable to parse the backup file: Cipher Suite unknown";
+"algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title" = "Please allow Pera Wallet to access photos and media on your device to read your file.";
 
 "algorand-secure-backup-import-success-header-title" = "Accounts restored";
 "algorand-secure-backup-import-success-header-singular-title" = "Account restored";

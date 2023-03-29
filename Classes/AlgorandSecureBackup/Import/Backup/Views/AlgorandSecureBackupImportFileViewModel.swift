@@ -75,6 +75,8 @@ extension AlgorandSecureBackupImportFileViewModel {
                 errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
             case .jsonSerialization:
                 errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            case .unauthorized:
+                errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
             }
             title = errorTitle.bodyMedium(alignment: .center)
         }

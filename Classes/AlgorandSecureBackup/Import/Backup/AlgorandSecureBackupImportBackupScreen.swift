@@ -275,12 +275,18 @@ extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
         nextActionView.isEnabled = false
 
         do {
+            let hasAccess = url.startAccessingSecurityScopedResource()
+            guard hasAccess else {
+                bindUploadView(for: .uploadFailed(.unauthorized))
+                return
+            }
             let string = try? String(contentsOf: url)
             let secureBackup = try validateSecureBackup(from: string)
             let fileName = try AlgorandSecureBackupFile(url: url).fileName
             bindUploadView(for: .uploaded(fileName: fileName))
             nextActionView.isEnabled = true
             selectedSecureBackup = secureBackup
+            url.stopAccessingSecurityScopedResource()
         } catch let error as ValidationError {
             bindUploadView(for: .uploadFailed(error))
         } catch {
@@ -344,6 +350,9 @@ extension AlgorandSecureBackupImportBackupScreen {
         case .jsonSerialization:
             title = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
             message = ""
+        case .unauthorized:
+            title = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+            message = ""
         }
 
         bannerController?.presentErrorBanner(
@@ -367,5 +376,6 @@ extension AlgorandSecureBackupImportBackupScreen {
         case unsupportedVersion
         case cipherSuiteUnknown
         case cipherSuiteInvalid
+        case unauthorized
     }
 }
