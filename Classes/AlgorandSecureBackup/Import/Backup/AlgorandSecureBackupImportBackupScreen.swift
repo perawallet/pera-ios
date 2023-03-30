@@ -131,7 +131,8 @@ final class AlgorandSecureBackupImportBackupScreen:
         addBackground()
         addNavigationBarLargeTitle()
         addHeader()
-        addActions()
+        addUploadView()
+        addPasteAction()
         addNextAction()
     }
 
@@ -168,9 +169,9 @@ extension AlgorandSecureBackupImportBackupScreen {
         }
     }
 
-    private func addActions() {
+    private func addUploadView() {
         uploadView.customize(AlgorandSecureBackupImportFileViewTheme())
-        
+
         contentView.addSubview(uploadView)
         uploadView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom).offset(theme.uploadTopOffset)
@@ -178,15 +179,6 @@ extension AlgorandSecureBackupImportBackupScreen {
             $0.trailing == theme.defaultInset
             $0.height.equalTo(theme.uploadHeight)
         }
-        contentView.addSubview(actionsView)
-        actionsView.spacing = theme.actionsPadding
-        actionsView.snp.makeConstraints {
-            $0.top.equalTo(uploadView.snp.bottom).offset(theme.actionsTopOffset)
-            $0.leading == theme.defaultInset
-            $0.trailing == theme.defaultInset
-            $0.bottom.greaterThanOrEqualToSuperview().inset(theme.defaultInset)
-        }
-        addPasteAction()
     }
 
     private func addPasteAction() {
@@ -198,7 +190,13 @@ extension AlgorandSecureBackupImportBackupScreen {
             action: #selector(performPasteAction)
         )
 
-        actionsView.addArrangedSubview(pasteActionView)
+        contentView.addSubview(pasteActionView)
+        pasteActionView.snp.makeConstraints {
+            $0.top.equalTo(uploadView.snp.bottom).offset(theme.actionsTopOffset)
+            $0.leading == theme.defaultInset
+            $0.trailing == theme.defaultInset
+            $0.bottom.greaterThanOrEqualToSuperview().inset(theme.defaultInset)
+        }
     }
 
     private func addNextAction() {
@@ -236,16 +234,20 @@ extension AlgorandSecureBackupImportBackupScreen {
 extension AlgorandSecureBackupImportBackupScreen {
     @objc
     private func performPasteAction() {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         let pasteBoardText = UIPasteboard.general.string
         do {
             let secureBackup = try validateSecureBackup(from: pasteBoardText)
+            loadingController?.stopLoading()
             eventHandler?(.backupSelected(secureBackup), self)
             bannerController?.presentSuccessBanner(
                 title: "algorand-secure-backup-import-backup-clipboard-success-title".localized
             )
         } catch let error as ValidationError {
+            loadingController?.stopLoading()
             presentErrorBanner(error: error)
         } catch {
+            loadingController?.stopLoading()
             presentErrorBanner(error: .jsonSerialization)
         }
     }
