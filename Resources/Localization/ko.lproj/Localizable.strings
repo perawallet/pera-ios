@@ -1699,6 +1699,18 @@
 /* (No Comment) */
 "rekey-instruction-second-standard" = "계정에 설정된 비밀문구는 더 이상 이 계정에서 사용할 수 없습니다.";
 
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+
+/* (No Comment) */
+"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
+
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "절차 시작";
 
