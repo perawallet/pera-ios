@@ -35,7 +35,7 @@ extension FileInfoViewModel {
     }
 
     mutating func bindName(using file: AlgorandSecureBackupFile) {
-        let dateString = Date().toFormat(.fileDate)
+        let dateString = Date().toFormat(.backupCreationDate)
         name = file.fileName.footnoteMedium(lineBreakMode: .byTruncatingTail)
     }
 

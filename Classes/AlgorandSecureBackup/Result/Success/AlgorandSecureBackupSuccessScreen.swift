@@ -217,19 +217,9 @@ extension AlgorandSecureBackupSuccessScreen {
 
     @objc
     private func performSave() {
-        guard let backupData = backupFile.data else { return }
-        let fileName = backupFile.fileName
-        let url = documentURL.appendingPathComponent(fileName)
-
         do {
-            try backupData.base64EncodedString().write(to: url, atomically: true, encoding: .utf8)
-
-            open(
-                .shareActivity(
-                    items: [url]
-                ),
-                by: .presentWithoutNavigationController
-            )
+            let url = try createFile()
+            openShareSheet(url)
         } catch {
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
@@ -258,6 +248,32 @@ extension AlgorandSecureBackupSuccessScreen {
         )
     }
 
+    private func createFile() throws -> URL {
+        guard let backupData = backupFile.data else {
+            throw FileError.missingData
+        }
+
+        let fileName = backupFile.fileName
+        let url = documentURL.appendingPathComponent(fileName)
+        let backupString = backupData.base64EncodedString()
+
+        do {
+            try backupString.write(to: url, atomically: true, encoding: .utf8)
+            return url
+        } catch {
+            throw error
+        }
+    }
+
+    private func openShareSheet(_ url: URL) {
+        open(
+            .shareActivity(
+                items: [url]
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
     private func clearFile() {
         let fileName = backupFile.fileName
         let url = documentURL.appendingPathComponent(fileName)
@@ -276,4 +292,8 @@ extension AlgorandSecureBackupSuccessScreen {
     enum Event {
         case complete
     }
+}
+
+enum FileError: Error {
+    case missingData
 }
