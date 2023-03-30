@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "未找到账户";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "我想要创建一个账户";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "请在您的Ledger设备上验证账户地址（%@）";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "请在Ledger设备上%@，检查和签署交易。";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "连接的Ledger设备无法为此账户签署交易。如有需要，请连接%@。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "账户已完成密钥更新。请使用助记词或Ledger设备恢复该账户。";
+"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "最终确认密钥更新";
@@ -1700,13 +1709,13 @@
 "rekey-instruction-second-standard" = "该账户将不再支持这些助记词。";
 
 /* (No Comment) */
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
-
-/* (No Comment) */
 "rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
 
 /* (No Comment) */
 "rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
 
 /* (No Comment) */
 "rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
@@ -2387,6 +2396,9 @@
 "title-generic-response-description" = "我们无法获取某些资产。请再次尝试。";
 
 /* (No Comment) */
+"title-go-home" = "Go to Home";
+
+/* (No Comment) */
 "title-go-to-accounts" = "回到账户";
 
 /* (No Comment) */
@@ -2849,6 +2861,9 @@
 "tutorial-description-back-up" = "创建恢复助记词备份能让您恢复账户。若您在无助记词的情况下丢失设备，一旦您移除账户或删除APP，那么您将永远无法再访问您的Algorand账号！";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "请确认您的Ledger设备已开启，并启用了蓝牙功能。";
 
 /* (No Comment) */
@@ -2895,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "为账户创建密码备份";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "成功连接Ledger";

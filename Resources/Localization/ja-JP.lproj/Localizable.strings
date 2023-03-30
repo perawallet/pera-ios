@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "アカウントが見つかりません";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "アカウントを作成したい";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Ledgerデバイス%@でトランザクションを確認して署名してください。";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、%@を接続してください。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "このアカウントは再キー化されました。パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。";
+"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "再キー化を完了する";
@@ -1700,13 +1709,13 @@
 "rekey-instruction-second-standard" = "このアカウントのパスフレーズは、このアカウントでは機能しなくなります";
 
 /* (No Comment) */
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
-
-/* (No Comment) */
 "rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
 
 /* (No Comment) */
 "rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
 
 /* (No Comment) */
 "rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
@@ -2387,6 +2396,9 @@
 "title-generic-response-description" = "一部の資産を取得できませんでした。もう一度お試しください。";
 
 /* (No Comment) */
+"title-go-home" = "Go to Home";
+
+/* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
 
 /* (No Comment) */
@@ -2849,6 +2861,9 @@
 "tutorial-description-back-up" = "パスフレーズのバックアップを作成することで、アカウントを回復できます。パスフレーズ無しでは、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失ってしまいます！";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "Ledgerのロックが解除され、Bluetoothが有効になっていることを確認してください";
 
 /* (No Comment) */
@@ -2895,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "アカウントのパスフレーズのバックアップを作成する";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledgerが正常に接続されました";
