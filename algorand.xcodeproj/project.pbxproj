@@ -78,6 +78,9 @@
 		171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */; };
 		171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B3225E091A00DAF55C /* SettingsToggleCell.swift */; };
 		171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */; };
+		1730E84F29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
+		1730E85029D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
+		1730E85129D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */; };
 		1736FB7728ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7628ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift */; };
 		1736FB7828ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7628ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift */; };
 		1736FB7928ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736FB7628ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift */; };
@@ -6763,6 +6766,7 @@
 		171111B3225E091A00DAF55C /* SettingsToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
 		171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsViewController.swift; sourceTree = "<group>"; };
 		1717CE1528B7BCBE0093F415 /* String+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Data.swift"; sourceTree = "<group>"; };
+		1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupImportSuccessScreenLocalDataController.swift; sourceTree = "<group>"; };
 		1736FB7628ABA6F7002BB713 /* OnboardWelcomeScreenEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardWelcomeScreenEvent.swift; sourceTree = "<group>"; };
 		1736FB7A28ACE1F6002BB713 /* OnboardCreateAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCreateAccountEvent.swift; sourceTree = "<group>"; };
 		1736FB7E28ACEF65002BB713 /* OnboardWatchAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardWatchAccountEvent.swift; sourceTree = "<group>"; };
@@ -9247,6 +9251,14 @@
 			path = Discover;
 			sourceTree = "<group>";
 		};
+		1730E84D29D5C9FB0086EFB6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1730E84E29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		173C1125296C10E300FF6217 /* Web */ = {
 			isa = PBXGroup;
 			children = (
@@ -9779,6 +9791,7 @@
 		17CE51A629C72AF400155489 /* Success */ = {
 			isa = PBXGroup;
 			children = (
+				1730E84D29D5C9FB0086EFB6 /* Data */,
 				17CE51A729C72AFA00155489 /* Views */,
 			);
 			path = Success;
@@ -21777,6 +21790,7 @@
 				D4487AA927BD372E00B4B0AB /* RecoverAccountView.swift in Sources */,
 				F08A68E2292458A20039B085 /* DiscoverErrorView.swift in Sources */,
 				2B5739FB26F3F873007E0252 /* WCAssetConfigParameters.swift in Sources */,
+				1730E85129D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				2B2AACB0250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				17BD4E992292F1260003E49A /* CIImage+Additions.swift in Sources */,
 				D473CA5626E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */,
@@ -22680,6 +22694,7 @@
 				D4588AC8294293ED0012C12C /* ReceiverAccountSelectionListAPIDataController.swift in Sources */,
 				1736FB9028AD017A002BB713 /* RecordHomeScreenEvent.swift in Sources */,
 				2BEF0B45294A044B00D2677B /* NotificationFilterViewControllerTheme.swift in Sources */,
+				1730E85029D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				2B7E3083267BC0A100E89EE3 /* WCSingleTransactionViewController.swift in Sources */,
 				D4F72B7728E4A26700907287 /* AccountNameTitleViewModel.swift in Sources */,
 				2BE4D10D2594E82C005F5764 /* AppStoreReviewer.swift in Sources */,
@@ -25666,6 +25681,7 @@
 				D4CDF92128B5A036006F140E /* OptOutAssetListItemAccessory.swift in Sources */,
 				D48FDFA927CE2AE200C39FC7 /* TitleSupplementaryCell.swift in Sources */,
 				D4A6B53D2955C3AA00140266 /* CollectibleGalleryUIStyleCache.swift in Sources */,
+				1730E84F29D5CA210086EFB6 /* AlgorandSecureBackupImportSuccessScreenLocalDataController.swift in Sources */,
 				D4FC5F4127F500C50017E81F /* InfoBoxViewTheme.swift in Sources */,
 				D4D7C9A029537937005CC192 /* CollectibleFilterOptionsCache.swift in Sources */,
 				D4710B18276A526300F35F74 /* BottomWarningViewConfigurator.swift in Sources */,

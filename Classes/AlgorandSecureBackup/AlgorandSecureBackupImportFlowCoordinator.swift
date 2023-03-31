@@ -69,10 +69,10 @@ extension AlgorandSecureBackupImportFlowCoordinator {
     }
 
     private func openSuccessScreen(
-        with configuration: ImportAccountScreen.Configuration,
+        with result: ImportAccountScreen.Result,
         from viewController: UIViewController
     ) {
-        let screen: Screen = .algorandSecureBackupImportSuccess(configuration: configuration) { event, screen in
+        let screen: Screen = .algorandSecureBackupImportSuccess(result: result) { event, screen in
             switch event {
             case .didGoToHome:
                 screen.dismissScreen()
@@ -127,9 +127,10 @@ extension AlgorandSecureBackupImportFlowCoordinator {
     ) -> [TransferAccount] {
         var currentPreferredOrder = configuration.sharedDataController.getPreferredOrderForNewAccount()
         var transferAccounts: [TransferAccount] = []
+        let algorandSDK = AlgorandSDK()
 
         for accountParameter in accountParameters {
-            guard isAccountParameterImportable(accountParameter),
+            guard accountParameter.isImportable(using: algorandSDK),
                   let privateKey = accountParameter.privateKey else {
                 continue
             }
@@ -157,15 +158,15 @@ extension AlgorandSecureBackupImportFlowCoordinator {
     private func saveTransferAccounts(
         from accountParameters: [AccountImportParameters],
         transferAccounts: [TransferAccount]
-    ) -> ImportAccountScreen.Configuration {
+    ) -> ImportAccountScreen.Result {
         let session = configuration.session
         let sharedDataController = configuration.sharedDataController
 
         guard let session, !transferAccounts.isEmpty else {
-            return ImportAccountScreen.Configuration(
+            return ImportAccountScreen.Result(
                 importedAccounts: [],
                 unimportedAccounts: [],
-                unsupportedAccountCount: accountParameters.count
+                parameters: accountParameters
             )
         }
 
@@ -185,14 +186,10 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 
         saveAccounts(importableAccounts)
 
-        let unsupportedAccountCount = accountParameters.filter { importParameters in
-            !isAccountParameterImportable(importParameters)
-        }.count
-
-        return ImportAccountScreen.Configuration(
+        return ImportAccountScreen.Result(
             importedAccounts: importableAccounts.map { .init(localAccount: $0) },
             unimportedAccounts: unimportedAccounts.map { .init(localAccount: $0) },
-            unsupportedAccountCount: unsupportedAccountCount
+            parameters: accountParameters
         )
     }
 
@@ -212,19 +209,6 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         )
 
         session.authenticatedUser = authenticatedUser
-    }
-
-    private func isAccountParameterImportable(_ importParameters: AccountImportParameters) -> Bool {
-        guard let privateKey = importParameters.privateKey else {
-            return false
-        }
-
-        var error: NSError?
-        let address = algorandSDK.addressFrom(privateKey, error: &error)
-        let accountAddress = importParameters.address
-        return importParameters.accountType == .single &&
-        address == accountAddress &&
-        algorandSDK.isValidAddress(accountAddress)
     }
 }
 
