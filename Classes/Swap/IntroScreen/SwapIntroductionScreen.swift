@@ -44,8 +44,8 @@ final class SwapIntroductionScreen: ScrollScreen {
         super.init()
     }
 
-    override func configureNavigationBar() {
-        navigationBarController.isNavigationBarHidden = true
+    override var shouldShowNavigationBar: Bool {
+        return false
     }
 
     override func viewDidLoad() {
