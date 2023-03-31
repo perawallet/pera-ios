@@ -989,7 +989,7 @@ class Router:
                 currencyFormatter: currencyFormatter
             )
         case .asaVerificationInfo(let eventHandler):
-            let aViewController = AsaVerificationInfoScreen()
+            let aViewController = AsaVerificationInfoScreen(api: configuration.api)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
@@ -1000,11 +1000,11 @@ class Router:
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case let .collectiblesFilterSelection(uiInteractions):
-            let aViewController = CollectiblesFilterSelectionViewController()
+            let aViewController = CollectiblesFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .accountCollectibleListFilterSelection(uiInteractions):
-            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            let aViewController = AccountCollectibleListFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
@@ -1125,7 +1125,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case let .assetsFilterSelection(uiInteractions):
-            let aViewController = AssetsFilterSelectionViewController()
+            let aViewController = AssetsFilterSelectionViewController(api: configuration.api)
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
@@ -1205,7 +1205,8 @@ class Router:
             viewController = SignWithLedgerProcessScreen(
                 transactionSigner: transactionSigner,
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .loading(let viewModel, let theme):
             viewController = LoadingScreen(
@@ -1229,12 +1230,18 @@ class Router:
             viewController = SwapSummaryScreen(
                 swapController: swapController,
                 theme: theme,
-                configuration: configuration
+                api: configuration.api
             )
         case .alert(let alert):
-            viewController = AlertScreen(alert: alert)
+            viewController = AlertScreen(
+                alert: alert,
+                api: configuration.api
+            )
         case .swapIntroduction(let draft, let eventHandler):
-            let aViewController = SwapIntroductionScreen(draft: draft)
+            let aViewController = SwapIntroductionScreen(
+                draft: draft,
+                api: configuration.api
+            )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .optInAsset(let draft, let eventHandler):
@@ -1244,7 +1251,8 @@ class Router:
             viewController = OptInAssetScreen(
                 draft: draft,
                 copyToClipboardController: copyToClipboardController,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .optOutAsset(let draft, let theme, let eventHandler):
             viewController = OptOutAssetScreen(
@@ -1253,7 +1261,8 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .transferAssetBalance(let draft, let theme, let eventHandler):
             viewController = TransferAssetBalanceScreen(
@@ -1262,17 +1271,20 @@ class Router:
                 eventHandler: eventHandler,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
-                )
+                ),
+                api: configuration.api
             )
         case .sheetAction(let sheet, let theme):
             viewController = UISheetActionScreen(
                 sheet: sheet,
-                theme: theme
+                theme: theme,
+                api: configuration.api
             )
         case .insufficientAlgoBalance(let draft, let eventHandler):
             viewController = InsufficientAlgoBalanceScreen(
                 draft: draft,
-                eventHandler: eventHandler
+                eventHandler: eventHandler,
+                api: configuration.api
             )
         case .exportAccountList(let eventHandler):
             let dataController = ExportAccountListLocalDataController(
@@ -1286,7 +1298,8 @@ class Router:
             viewController = screen
         case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
             let screen = ExportAccountsDomainConfirmationScreen(
-                theme: .init(hasSingularAccount: hasSingularAccount, .current)
+                theme: .init(hasSingularAccount: hasSingularAccount, .current),
+                api: configuration.api
             )
             screen.eventHandler = eventHandler
             viewController = screen
@@ -1373,7 +1386,7 @@ class Router:
                 configuration: configuration
             )
         case .importAccountIntroduction(let eventHandler):
-            let screen = WebImportInstructionScreen()
+            let screen = WebImportInstructionScreen(api: configuration.api)
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountQRScanner(let eventHandler):
@@ -1385,7 +1398,10 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountError(let error, let eventHandler):
-            let screen = WebImportErrorScreen(error: error)
+            let screen = WebImportErrorScreen(
+                error: error,
+                api: configuration.api
+            )
             screen.eventHandler = eventHandler
             viewController = screen
         case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
@@ -1404,7 +1420,7 @@ class Router:
             screen.eventHandler = eventHandler
             viewController = screen
         case .bidaliIntroduction:
-            viewController = BidaliIntroductionScreen()
+            viewController = BidaliIntroductionScreen(api: configuration.api)
         case .bidaliDappDetail(let account):
             viewController = BidaliDappDetailScreen(
                 account: account,
@@ -1509,7 +1525,7 @@ class Router:
                 configuration: configuration
             )
         case .sardineIntroduction:
-            viewController = SardineIntroductionScreen()
+            viewController = SardineIntroductionScreen(api: configuration.api)
         case .sardineAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16
@@ -1561,7 +1577,7 @@ class Router:
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
         case .transakIntroduction:
-            viewController = TransakIntroductionScreen()
+            viewController = TransakIntroductionScreen(api: configuration.api)
         case .transakAccountSelection(let eventHandler):
             var theme = AccountSelectionListScreenTheme()
             theme.listContentTopInset = 16

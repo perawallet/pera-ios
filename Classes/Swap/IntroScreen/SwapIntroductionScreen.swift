@@ -38,10 +38,12 @@ final class SwapIntroductionScreen: ScrollScreen {
     private let draft: SwapIntroductionDraft
 
     init(
-        draft: SwapIntroductionDraft
+        draft: SwapIntroductionDraft,
+        api: ALGAPI?
     ) {
         self.draft = draft
-        super.init()
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {
