@@ -408,14 +408,8 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        open(
-            .rekeyInstruction(account: accountHandle.value),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
+        /// <todo> Open rekey instruction according to account type.
+        /// open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {

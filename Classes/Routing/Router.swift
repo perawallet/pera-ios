@@ -742,8 +742,18 @@ class Router:
             viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
-        case let .rekeyInstruction(account):
-            viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
+        case .rekeyStandardToStandardAccountInstructions:
+            viewController = RekeyStandardToStandardAccountInstructionsScreen()
+        case .rekeyStandardToLedgerAccountInstructions:
+            viewController = RekeyStandardToLedgerAccountInstructionsScreen()
+        case .rekeyLedgerToLedgerAccountInstructions:
+            viewController = RekeyLedgerToLedgerAccountInstructionsScreen()
+        case .rekeyLedgerToStandardAccountInstructions:
+            viewController = RekeyLedgerToStandardAccountInstructionsScreen()
+        case .rekeyedToLedgerAccountInstructions:
+            viewController = RekeyedToStandardAccountInstructionsScreen()
+        case .rekeyedToStandardAccountInstructions:
+            viewController = RekeyedToStandardAccountInstructionsScreen()
         case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
