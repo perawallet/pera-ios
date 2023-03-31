@@ -118,8 +118,8 @@ extension InstructionItemView {
             $0.height >= orderBackgroundView
             $0.top == 0
             $0.leading == orderBackgroundView.snp.trailing + theme.spacingBetweenOrderAndContent
-            $0.trailing == 0
             $0.bottom == 0
+            $0.trailing == 0
         }
 
         addTitle(theme)
@@ -130,6 +130,10 @@ extension InstructionItemView {
         titleView.customizeAppearance(theme.title)
 
         contentView.addSubview(titleView)
+        titleView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
         titleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -141,6 +145,7 @@ extension InstructionItemView {
         subtitleView.customizeAppearance(theme.subtitle)
 
         contentView.addSubview(subtitleView)
+        subtitleView.fitToVerticalIntrinsicSize()
         subtitleView.snp.makeConstraints {
             $0.top == titleView.snp.bottom
             $0.leading == 0
