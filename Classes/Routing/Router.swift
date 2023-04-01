@@ -1407,9 +1407,8 @@ class Router:
             let dataController = AlgorandSecureBackupAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController
             )
-            let screen = AlgorandSecureBackupAccountListScreen(
+            let screen = AlgorandSecureBackupAccountExportListScreen(
                 dataController: dataController,
-                mode: .export,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
@@ -1444,9 +1443,8 @@ class Router:
             let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
                 restoredAccounts: accounts
             )
-            let screen = AlgorandSecureBackupAccountListScreen(
+            let screen = AlgorandSecureBackupAccountRecoverListScreen(
                 dataController: dataController,
-                mode: .restore,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler

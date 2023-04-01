@@ -50,4 +50,48 @@ struct AlgorandSecureBackupAccountListScreenTheme:
         self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
         self.listContentTopInset = 40
     }
+
+    func continueActionForExport(accountCount: Int) -> ButtonStyle {
+        let font = continueAction.font!
+        let titleColor = continueAction.titleColor!
+        let backgroundImage = continueAction.backgroundImage!
+        let title: String
+
+        if accountCount == 0 {
+            title = "algorand-secure-backup-account-list-action-title".localized
+        } else if accountCount == 1 {
+            title = "algorand-secure-backup-account-list-action-title-singular".localized
+        } else {
+            title = "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(accountCount)")
+        }
+
+        return [
+            .font(font),
+            .titleColor(titleColor),
+            .backgroundImage(backgroundImage),
+            .title(title)
+        ]
+    }
+
+    func continueActionForRestore(accountCount: Int) -> ButtonStyle {
+        let font = continueAction.font!
+        let titleColor = continueAction.titleColor!
+        let backgroundImage = continueAction.backgroundImage!
+        let title: String
+
+        if accountCount == 0 {
+            title = "algorand-secure-backup-account-list-restore-action-title".localized
+        } else if accountCount == 1 {
+            title = "algorand-secure-backup-account-list-restore-action-title-singular".localized
+        } else {
+            title = "algorand-secure-backup-account-list-restore-action-title-plural".localized(params: "\(accountCount)")
+        }
+
+        return [
+            .font(font),
+            .titleColor(titleColor),
+            .backgroundImage(backgroundImage),
+            .title(title)
+        ]
+    }
 }
