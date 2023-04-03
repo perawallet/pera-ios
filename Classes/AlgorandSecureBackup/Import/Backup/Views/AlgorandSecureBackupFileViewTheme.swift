@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportFileViewTheme.swift
+//   AlgorandSecureBackupFileViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AlgorandSecureBackupImportFileViewTheme:
+struct AlgorandSecureBackupFileViewTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var stateFirstShadow: MacaroonUIKit.Shadow
-    var stateSecondShadow: MacaroonUIKit.Shadow
-    var stateThirdShadow: MacaroonUIKit.Shadow
-    var stateSize: LayoutSize
-    var stateTopInset: LayoutMetric
-    var spacingBetweenStateAndTitle: LayoutMetric
+    var corner: Corner
+    var iconFirstShadow: MacaroonUIKit.Shadow
+    var iconSecondShadow: MacaroonUIKit.Shadow
+    var iconThirdShadow: MacaroonUIKit.Shadow
+    var iconBackgroundSize: LayoutSize
+    var iconSize: LayoutSize
+    var iconTopInset: LayoutMetric
+    var spacingBetweenIconAndTitle: LayoutMetric
     var title: TextStyle
     var spacingBetweenTitleAndSubtitle: LayoutMetric
     var subtitle: TextStyle
@@ -41,7 +43,8 @@ struct AlgorandSecureBackupImportFileViewTheme:
         self.background = [
             .backgroundColor(Colors.Layer.grayLightest)
         ]
-        self.stateFirstShadow = MacaroonUIKit.Shadow(
+        self.corner = Corner(radius: 8)
+        self.iconFirstShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow3.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -51,7 +54,7 @@ struct AlgorandSecureBackupImportFileViewTheme:
             cornerRadii: (22, 22),
             corners: .allCorners
         )
-        self.stateSecondShadow = MacaroonUIKit.Shadow(
+        self.iconSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -61,7 +64,7 @@ struct AlgorandSecureBackupImportFileViewTheme:
             cornerRadii: (22, 22),
             corners: .allCorners
         )
-        self.stateThirdShadow = MacaroonUIKit.Shadow(
+        self.iconThirdShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
@@ -71,9 +74,10 @@ struct AlgorandSecureBackupImportFileViewTheme:
             cornerRadii: (22, 22),
             corners: .allCorners
         )
-        self.stateSize = (44, 44)
-        self.stateTopInset = 65
-        self.spacingBetweenStateAndTitle = 12
+        self.iconBackgroundSize = (44, 44)
+        self.iconSize = (24, 24)
+        self.iconTopInset = 65
+        self.spacingBetweenIconAndTitle = 12
         self.title = [
             .textColor(Colors.Text.main),
             .textOverflow(FittingText())

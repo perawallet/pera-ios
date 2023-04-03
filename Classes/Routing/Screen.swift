@@ -317,12 +317,13 @@ indirect enum Screen {
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
     case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupMnemonic(accounts: [Account], eventHandler: AlgorandSecureBackupMnemonicsScreen.EventHandler)
-    case algorandSecureBackupSuccess(backupFile: AlgorandSecureBackupFile, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
+    case algorandSecureBackupSuccess(backup: AlgorandSecureBackup, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
     case algorandSecureBackupImportBackup(eventHandler: AlgorandSecureBackupImportBackupScreen.EventHandler)
     case algorandSecureBackupImportSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupRestoreAccountList(accounts: [Account], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupRecoverMnemonic(backupFile: SecureBackup, eventHandler: AlgorandSecureBackupImportRecoverMnemonicScreen.EventHandler)
+    case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
 }
 
 extension Screen {

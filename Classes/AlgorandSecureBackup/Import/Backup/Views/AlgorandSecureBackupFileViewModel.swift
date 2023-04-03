@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportFileViewModel.swift
+//   AlgorandSecureBackupFileViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AlgorandSecureBackupImportFileViewModel: ViewModel {
-    var image: ImageProvider?
-    var imageStyle: ImageStyle?
-    var title: TextProvider?
-    var subtitle: TextProvider?
-    var isActionVisible: Bool = false
-    var actionTheme: ButtonStyle?
+struct AlgorandSecureBackupFileViewModel: ViewModel {
+    private(set) var image: ImageProvider?
+    private(set) var imageStyle: ImageStyle?
+    private(set) var title: TextProvider?
+    private(set) var subtitle: TextProvider?
+    private(set) var isActionVisible: Bool = false
+    private(set) var actionTheme: ButtonStyle?
 
 
     init(state: State) {
@@ -34,7 +34,7 @@ struct AlgorandSecureBackupImportFileViewModel: ViewModel {
     }
 }
 
-extension AlgorandSecureBackupImportFileViewModel {
+extension AlgorandSecureBackupFileViewModel {
     private mutating func bindImage(for state: State) {
         switch state {
         case .empty:
@@ -94,7 +94,7 @@ extension AlgorandSecureBackupImportFileViewModel {
     }
 
     private mutating func bindActionVisibility(for state: State) {
-        let theme = AlgorandSecureBackupImportFileViewTheme()
+        let theme = AlgorandSecureBackupFileViewTheme()
 
         switch state {
         case .empty:
@@ -109,7 +109,7 @@ extension AlgorandSecureBackupImportFileViewModel {
     }
 }
 
-extension AlgorandSecureBackupImportFileViewModel {
+extension AlgorandSecureBackupFileViewModel {
     enum State {
         case empty
         case uploaded(fileName: String)
@@ -117,7 +117,7 @@ extension AlgorandSecureBackupImportFileViewModel {
     }
 }
 
-struct AlgorandSecureBackupFile {
+struct AlgorandSecureBackup {
     let data: Data?
     let fileName: String
 

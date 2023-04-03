@@ -61,14 +61,16 @@ extension SettingsDataSource {
             }
         }
 
+        let secureBackupSettings: AccountSettings
+
         if !accounts.isEmpty && numberOfAccountsNotBackedUp == 0 {
-            /// <note>: When account collection is not empty and there is a backup covering all accounts
-            /// We are setting `numberOfAccountsNotBackedUp` as -1 to hide subtitle
-            numberOfAccountsNotBackedUp = -1
+            secureBackupSettings = .secureBackup(numberOfAccountsNotBackedUp: nil)
+        } else {
+            secureBackupSettings = .secureBackup(numberOfAccountsNotBackedUp: numberOfAccountsNotBackedUp)
         }
 
         return [
-            .secureBackup(numberOfAccountsNotBackedUp: numberOfAccountsNotBackedUp),
+            secureBackupSettings,
             .security,
             .contacts,
             .notifications,

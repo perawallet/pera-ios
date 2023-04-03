@@ -129,9 +129,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         var transferAccounts: [TransferAccount] = []
         let algorandSDK = AlgorandSDK()
 
-        for accountParameter in accountParameters {
-            guard accountParameter.isImportable(using: algorandSDK),
-                  let privateKey = accountParameter.privateKey else {
+        for accountParameter in accountParameters where accountParameter.isImportable(using: algorandSDK) {
+            guard let privateKey = accountParameter.privateKey else {
                 continue
             }
 

@@ -15,6 +15,7 @@
 //
 //  Router.swift
 
+import CoreServices
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
@@ -1417,8 +1418,8 @@ class Router:
             let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupSuccess(backupFile, eventHandler):
-            let screen = AlgorandSecureBackupSuccessScreen(backupFile: backupFile, configuration: configuration)
+        case let .algorandSecureBackupSuccess(backup, eventHandler):
+            let screen = AlgorandSecureBackupSuccessScreen(backup: backup, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupError(let eventHandler):
@@ -1456,6 +1457,17 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .importTextDocumentPicker(let delegate):
+            let documentPicker: UIDocumentPickerViewController
+            if #available(iOS 14.0, *) {
+                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
+            } else {
+                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
+            }
+            documentPicker.allowsMultipleSelection = false
+            documentPicker.shouldShowFileExtensions = true
+            documentPicker.delegate = delegate
+            viewController = documentPicker
         }
 
         return viewController as? T

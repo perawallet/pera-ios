@@ -278,6 +278,12 @@ extension Session {
 }
 
 extension Session {
+    var legacyLocalAuthenticationStatus: String? {
+        get {
+            return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
+        }
+    }
+
     func accountInformation(from address: String) -> AccountInformation? {
         return applicationConfiguration?.authenticatedUser()?.accounts.first { account -> Bool in
             account.address == address
@@ -297,7 +303,7 @@ extension Session {
 
         do {
             try biometricStorage.set(passwordOnKeychain, key: passwordKey)
-            self.setBiometricPasswordEnable()
+            setBiometricPasswordEnabled()
         } catch {
             throw LAError.other(error)
         }
@@ -326,7 +332,7 @@ extension Session {
         (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
     }
 
-    func setBiometricPasswordEnable() {
+    func setBiometricPasswordEnabled() {
         try? privateStorage.set("hasBiometricAuthentication", key: hasBiometricAuthenticationKey)
     }
 }

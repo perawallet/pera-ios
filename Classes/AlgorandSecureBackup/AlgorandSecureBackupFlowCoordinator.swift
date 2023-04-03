@@ -100,8 +100,8 @@ extension AlgorandSecureBackupFlowCoordinator {
     }
 
     private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
-        let secrueBackupFile = AlgorandSecureBackupFile(data: data)
-        let successScreen: Screen = .algorandSecureBackupSuccess(backupFile: secrueBackupFile) { event, screen in
+        let secureBackup = AlgorandSecureBackup(data: data)
+        let successScreen: Screen = .algorandSecureBackupSuccess(backup: secureBackup) { event, screen in
             switch event {
             case .complete:
                 self.dismissScreen(from: screen)

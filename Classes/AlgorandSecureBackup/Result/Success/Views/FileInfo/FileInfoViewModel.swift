@@ -22,7 +22,7 @@ struct FileInfoViewModel: ViewModel {
     var name: TextProvider?
     var size: TextProvider?
 
-    init(file: AlgorandSecureBackupFile) {
+    init(file: AlgorandSecureBackup) {
         bindIcon()
         bindName(using: file)
         bindSize(using: file)
@@ -34,13 +34,12 @@ extension FileInfoViewModel {
         icon = "icon-txt-file"
     }
 
-    mutating func bindName(using file: AlgorandSecureBackupFile) {
-        let dateString = Date().toFormat(.backupCreationDate)
-        name = file.fileName.footnoteMedium(lineBreakMode: .byTruncatingTail)
+    mutating func bindName(using backup: AlgorandSecureBackup) {
+        name = backup.fileName.footnoteMedium(lineBreakMode: .byTruncatingTail)
     }
 
-    mutating func bindSize(using file: AlgorandSecureBackupFile) {
-        guard let data = file.data else { return }
+    mutating func bindSize(using backup: AlgorandSecureBackup) {
+        guard let data = backup.data else { return }
         let dataByteFormatter = ByteCountFormatter()
         dataByteFormatter.allowedUnits = [.useKB]
         dataByteFormatter.countStyle = .binary

@@ -25,16 +25,19 @@ final class BiometricAuthenticationMigration {
 
     func migratePasswordToKeychain() {
         guard
-            let status = session.string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults),
+            let status = session.legacyLocalAuthenticationStatus,
             let localAuthenticationStatus = Status(rawValue: status)
         else {
             return
         }
 
+        defer {
+            session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
+        }
+
         switch localAuthenticationStatus {
         case .allowed:
-            session.setBiometricPasswordEnable()
-            session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
+            session.setBiometricPasswordEnabled()
         default:
             break
         }
@@ -48,7 +51,7 @@ fileprivate enum Status: String {
 }
 
 extension Session {
-    fileprivate func savePasswordToKeychain() {
+    private func savePasswordToKeychain() {
         guard let password = passwordOnDatabase() else {
             return
         }
@@ -61,7 +64,7 @@ extension Session {
         applicationConfiguration?.password
     }
 
-    fileprivate func deletePasswordFromDatabase() {
+    private func deletePasswordFromDatabase() {
         guard hasPasswordOnDatabase() else {
             return
         }

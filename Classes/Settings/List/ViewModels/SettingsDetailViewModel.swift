@@ -41,28 +41,10 @@ extension SettingsDetailViewModel {
     }
 
     private mutating func bindPrimaryTitle(settings: Settings) {
-        primaryTitle = getPrimaryTitle(settings.name)
+        primaryTitle = settings.name.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
     private mutating func bindSecondaryTitle(settings: Settings) {
-        secondaryTitle = getSecondaryTitle(settings.subtitle)
-    }
-}
-
-extension SettingsDetailViewModel {
-    func getPrimaryTitle(_ aTitle: String?) -> TextProvider? {
-        guard let aTitle = aTitle else {
-            return nil
-        }
-
-        return aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
-    }
-
-    func getSecondaryTitle(_ aTitle: String?) -> TextProvider? {
-        guard let aTitle = aTitle else {
-            return nil
-        }
-
-        return aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
+        secondaryTitle = settings.subtitle?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

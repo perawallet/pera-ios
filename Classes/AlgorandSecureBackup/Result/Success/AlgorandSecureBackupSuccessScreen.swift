@@ -38,18 +38,17 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
 
     private lazy var documentURL = getDocumentsDirectory()
-    private lazy var fileInfoViewModel = FileInfoViewModel(file: backupFile)
 
-    private let backupFile: AlgorandSecureBackupFile
+    private let backup: AlgorandSecureBackup
     private let bannerController: BannerController?
     private let copyToClipboardController: CopyToClipboardController
 
     deinit {
-        clearFile()
+        removeFile()
     }
 
-    init(backupFile: AlgorandSecureBackupFile, configuration: ViewControllerConfiguration) {
-        self.backupFile = backupFile
+    init(backup: AlgorandSecureBackup, configuration: ViewControllerConfiguration) {
+        self.backup = backup
         self.bannerController = configuration.bannerController
         self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
     }
@@ -201,13 +200,13 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func bindFileInfo() {
-        fileInfoView.bindData(fileInfoViewModel)
+        fileInfoView.bindData(FileInfoViewModel(file: backup))
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
     private func copyBackup() {
-        guard let backupData = backupFile.data else { return }
+        guard let backupData = backup.data else { return }
         let copyText = backupData.base64EncodedString()
         let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
         let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
@@ -249,11 +248,11 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func createFile() throws -> URL {
-        guard let backupData = backupFile.data else {
+        guard let backupData = backup.data else {
             throw FileError.missingData
         }
 
-        let fileName = backupFile.fileName
+        let fileName = backup.fileName
         let url = documentURL.appendingPathComponent(fileName)
         let backupString = backupData.base64EncodedString()
 
@@ -274,8 +273,8 @@ extension AlgorandSecureBackupSuccessScreen {
         )
     }
 
-    private func clearFile() {
-        let fileName = backupFile.fileName
+    private func removeFile() {
+        let fileName = backup.fileName
         let url = documentURL.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: url)
     }
