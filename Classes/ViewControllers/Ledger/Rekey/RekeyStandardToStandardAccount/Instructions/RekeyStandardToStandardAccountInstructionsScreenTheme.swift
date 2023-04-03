@@ -46,7 +46,7 @@ struct RekeyStandardToStandardAccountInstructionsScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.illustration = [
-            .image("Image"),
+            .image("rekey-standard-to-standard-account-illustration"),
             .contentMode(.scaleAspectFill)
         ]
         self.illustrationMaxHeight = 180
