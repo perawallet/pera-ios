@@ -145,7 +145,7 @@ extension SettingsViewController {
     private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
         case .secureBackup:
-            algorandSecureBackupFlowCoordinator.launchByPush()
+            algorandSecureBackupFlowCoordinator.launch(by: .push)
         case .security:
             open(.securitySettings, by: .push)
         case .contacts:

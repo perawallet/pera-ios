@@ -118,7 +118,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> SettingsDetailCell {
         let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-        cell.bindData(SettingsDetailViewModel(settings: setting))
+        cell.bindData(SettingsDetailViewModel(settingsItem: setting))
         return cell
     }
     

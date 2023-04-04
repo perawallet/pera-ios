@@ -28,23 +28,23 @@ struct SettingsDetailViewModel:
     private(set) var primaryTitle: TextProvider?
     private(set) var secondaryTitle: TextProvider?
 
-    init(settings: Settings) {
-        bindImage(settings: settings)
-        bindPrimaryTitle(settings: settings)
-        bindSecondaryTitle(settings: settings)
+    init(settingsItem: Settings) {
+        bindImage(settingsItem: settingsItem)
+        bindPrimaryTitle(settingsItem: settingsItem)
+        bindSecondaryTitle(settingsItem: settingsItem)
     }
 }
 
 extension SettingsDetailViewModel {
-    private mutating func bindImage(settings: Settings) {
-        image = settings.image
+    private mutating func bindImage(settingsItem: Settings) {
+        image = settingsItem.image
     }
 
-    private mutating func bindPrimaryTitle(settings: Settings) {
-        primaryTitle = settings.name.bodyRegular(lineBreakMode: .byTruncatingTail)
+    private mutating func bindPrimaryTitle(settingsItem: Settings) {
+        primaryTitle = settingsItem.name.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindSecondaryTitle(settings: Settings) {
-        secondaryTitle = settings.subtitle?.footnoteRegular(lineBreakMode: .byTruncatingTail)
+    private mutating func bindSecondaryTitle(settingsItem: Settings) {
+        secondaryTitle = settingsItem.subtitle?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
