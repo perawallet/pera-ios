@@ -544,6 +544,7 @@
 // MARK: Ledger Device List
 "ledger-device-list-title" = "Pair Ledger Device";
 "ledger-device-list-looking" = "Looking for devices";
+"ledger-device-list-body" = "Please make sure that your Ledger device is unlocked with Bluetooth enabled. On your Ledger, launch the Algorand app to see it in the list:";
 "ledger-device-list-connect" = "Connect";
 "ledger-device-list-troubleshoot" = "Troubleshoot";
 
