@@ -104,6 +104,9 @@
 "title-rekeyed-to-standard-account-capitalized-sentence" = "Rekeyed to standard account";
 "title-rekeyed-to-ledger-account-capitalized-sentence" = "Rekeyed to ledger account";
 "account-continue-unable-to-sign-transactions-itself" = "This account will continue to be unable to sign transactions for itself.";
+"summary-of-rekey-title" = "Summary of rekey";
+"currently-rekeyed-title" = "Currently Rekeyed";
+"undo-rekey-title" = "Undo rekey";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -656,12 +659,11 @@
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
-"ledger-rekey-confirm-title" = "Confirm Rekeying";
+"ledger-rekey-confirm-title" = "Confirm rekeying";
 "ledger-rekey-transaction-title" = "Rekeying transaction";
 "ledger-rekey-ledger-old" = "Old Ledger";
 "ledger-rekey-ledger-passphrase" = "Passphrase";
 "ledger-rekey-ledger-new" = "New Ledger";
-"ledger-rekey-finalize" = "Finalize Rekeying";
 "ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account successfully\nrekeyed";
@@ -1444,3 +1446,15 @@
 "rekeyed-to-ledger-account-future-transactions-sign-instruction-title" = "Future transactions will be signed by the new account.";
 "rekeyed-to-ledger-account-instructions-body" = "Rekey your account to a different account that is backed by a Ledger device. Learn more";
 "rekeyed-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Any to Any Account Confirmation
+"rekey-any-to-any-account-confirmation-body" = "You are about to rekey this account. It will no longer be able to sign transactions for itself. Learn more";
+"rekey-any-to-any-account-confirmation-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Any Account Confirmation
+"rekeyed-to-any-account-confirmation-body" = "You are about to rekey this account to another authorized address. The new address will be able to sign transactions on its behalf. Learn more";
+"rekeyed-to-any-account-confirmation-body-highlighted-text" = "Learn more";
+
+// MARK: Undo Any Account Rekey
+"undo-any-account-rekey-body" = "You are about to undo this account's rekey operation. You will rekey the account back to itself using its authorized address. Learn more";
+"undo-any-account-rekey-body-highlighted-text" = "Learn more";

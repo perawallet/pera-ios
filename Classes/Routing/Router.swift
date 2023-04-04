@@ -754,6 +754,50 @@ class Router:
             viewController = RekeyedToStandardAccountInstructionsScreen()
         case .rekeyedToStandardAccountInstructions:
             viewController = RekeyedToStandardAccountInstructionsScreen()
+        case let .rekeyStandardToStandardAccountConfirmation(sourceAccount, authAccount):
+            viewController = RekeyStandardToStandardAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount
+            )
+        case let .rekeyStandardToLedgerAccountConfirmation(sourceAccount, authAccount):
+            viewController = RekeyStandardToLedgerAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount
+            )
+        case let .rekeyLedgerToLedgerAccountConfirmation(sourceAccount, authAccount):
+            viewController = RekeyLedgerToLedgerAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount
+            )
+        case let .rekeyLedgerToStandardAccountConfirmation(sourceAccount, authAccount):
+            viewController = RekeyLedgerToStandardAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount
+            )
+        case let .rekeyedToLedgerAccountConfirmation(sourceAccount, authAccount, newAuthAccount):
+            viewController = RekeyedToLedgerAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: newAuthAccount
+            )
+        case let .rekeyedToStandardAccountConfirmation(sourceAccount, authAccount, newAuthAccount):
+            viewController = RekeyedToStandardAccountConfirmationScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: newAuthAccount
+            )
+        case let .undoStandardAccountRekey(sourceAccount, authAccount):
+            viewController = UndoStandardAccountRekeyScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: sourceAccount
+            )
+        case let .undoLedgerAccountRekey(sourceAccount, authAccount):
+            viewController = UndoLedgerAccountRekeyScreen(
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
+                newAuthAccount: sourceAccount
+            )
         case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,

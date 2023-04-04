@@ -94,6 +94,14 @@ indirect enum Screen {
     case rekeyLedgerToStandardAccountInstructions
     case rekeyedToLedgerAccountInstructions
     case rekeyedToStandardAccountInstructions
+    case rekeyStandardToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
+    case rekeyStandardToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
+    case rekeyLedgerToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account)
+    case rekeyLedgerToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account)
+    case rekeyedToLedgerAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
+    case rekeyedToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
+    case undoStandardAccountRekey(sourceAccount: Account, authAccount: Account)
+    case undoLedgerAccountRekey(sourceAccount: Account, authAccount: Account)
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
