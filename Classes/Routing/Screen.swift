@@ -320,9 +320,13 @@ indirect enum Screen {
     case algorandSecureBackupSuccess(backup: AlgorandSecureBackup, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
     case algorandSecureBackupImportBackup(eventHandler: AlgorandSecureBackupImportBackupScreen.EventHandler)
-    case algorandSecureBackupImportSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
-    case algorandSecureBackupRestoreAccountList(accounts: [Account], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
-    case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupImportRecoverMnemonicScreen.EventHandler)
+    case algorandSecureBackupImportSuccess(
+        accountImportParameters: [AccountImportParameters],
+        selectedAccounts: [Account],
+        eventHandler: WebImportSuccessScreen.EventHandler
+    )
+    case algorandSecureBackupRestoreAccountList(accountImportParameters: [AccountImportParameters], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
+    case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupRecoverMnemonicScreen.EventHandler)
     case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
 }
 

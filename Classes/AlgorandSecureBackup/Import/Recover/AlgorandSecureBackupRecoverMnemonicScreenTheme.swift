@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportRecoverMnemonicScreenTheme.swift
+//   AlgorandSecureBackupRecoverMnemonicScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AlgorandSecureBackupImportRecoverMnemonicScreenTheme: LayoutSheet, StyleSheet {
+struct AlgorandSecureBackupRecoverMnemonicScreenTheme: LayoutSheet, StyleSheet {
     let accountRecoverViewTheme: AccountRecoverViewTheme
     let background: ViewStyle
 

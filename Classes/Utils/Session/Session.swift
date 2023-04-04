@@ -305,11 +305,16 @@ extension Session {
             try biometricStorage.set(passwordOnKeychain, key: passwordKey)
             setBiometricPasswordEnabled()
         } catch {
-            throw LAError.other(error)
+            try? biometricStorage.remove(passwordKey)
+            throw LAError.unexpected(error)
         }
     }
 
     func checkBiometricPassword() throws {
+        guard hasBiometricPassword() else {
+            throw LAError.biometricNotSet
+        }
+
         guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
             throw LAError.passwordNotSet
         }
@@ -320,12 +325,13 @@ extension Session {
                 throw LAError.passwordMismatch
             }
         } catch {
-            throw LAError.other(error)
+            throw LAError.unexpected(error)
         }
     }
 
     func removeBiometricPassword() throws {
         privateStorage.remove(for: hasBiometricAuthenticationKey)
+        try? biometricStorage.remove(passwordKey)
     }
 
     func hasBiometricPassword() -> Bool {
@@ -333,7 +339,7 @@ extension Session {
     }
 
     func setBiometricPasswordEnabled() {
-        try? privateStorage.set("hasBiometricAuthentication", key: hasBiometricAuthenticationKey)
+        try? privateStorage.set("ok", key: hasBiometricAuthenticationKey)
     }
 }
 

@@ -18,13 +18,15 @@ import Foundation
 
 final class MnemonicsParser {
     let separators: CharacterSet
+    let wordCount: Int
 
-    init() {
+    init(wordCount: Int) {
         var separators = CharacterSet()
         separators.formUnion(.whitespacesAndNewlines)
         separators.formUnion(.punctuationCharacters)
         separators.formUnion(.symbols)
         self.separators = separators
+        self.wordCount = wordCount
     }
 }
 
@@ -40,7 +42,7 @@ extension MnemonicsParser {
         /// The signature of the one in 'Macaroon' may change.
         words.removeAll(where: \.isEmpty) as Void
 
-        guard let mnemonics = Mnemonics(words) else {
+        guard let mnemonics = Mnemonics(words, wordLimit: wordCount) else {
             throw MnemonicsError.missingWords
         }
 
@@ -52,30 +54,17 @@ enum Mnemonics {
     case zero
     case one(Word)
     case full([Word])
-    case asbFull([Word])
 
     init?(
-        _ words: [Word]
+        _ words: [Word],
+        wordLimit: Int
     ) {
         switch words.count {
         case 0: self = .zero
         case 1: self = .one(words[0])
-        case Self.asbFullCount: self = .asbFull(words)
-        case Self.fullCount: self = .full(words)
+        case wordLimit: self = .full(words)
         default: return nil
         }
-    }
-}
-
-extension Mnemonics {
-    /// Returns the number of words in a full set of mnemonics
-    static var fullCount: Int {
-        return 25
-    }
-
-    /// Returns the number of wors in a full set of Algorand Secure Backup mnemonics
-    static var asbFullCount: Int {
-        return 12
     }
 }
 

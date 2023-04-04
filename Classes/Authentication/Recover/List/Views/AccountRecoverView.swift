@@ -29,7 +29,13 @@ final class AccountRecoverView: View {
 
     private(set) var recoverInputViews = [RecoverInputView]()
 
-    lazy var constants = Constants(firstColumnCount: 13, secondColumnCount: 12)
+    lazy var constants = Constants()
+
+    static func mnemonicsForSecureBackup() -> AccountRecoverView {
+        let recoverView = AccountRecoverView()
+        recoverView.constants = Constants(firstColumnCount: 6, secondColumnCount: 6)
+        return recoverView
+    }
 
     func customize(_ theme: AccountRecoverViewTheme) {
         addTitle(theme)
@@ -116,7 +122,7 @@ extension AccountRecoverView {
         inputView.bindData(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
         recoverInputViews.append(inputView)
 
-        if recoverInputViews.count == Mnemonics.fullCount {
+        if recoverInputViews.count == constants.firstColumnCount + constants.secondColumnCount {
             inputView.returnKey = .go
         } else {
             inputView.returnKey = .next
@@ -171,6 +177,16 @@ extension AccountRecoverView {
     struct Constants {
         let firstColumnCount: Int
         let secondColumnCount: Int
+
+        init() {
+            firstColumnCount = 13
+            secondColumnCount = 12
+        }
+
+        init(firstColumnCount: Int, secondColumnCount: Int) {
+            self.firstColumnCount = firstColumnCount
+            self.secondColumnCount = secondColumnCount
+        }
     }
 }
 
