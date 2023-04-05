@@ -89,7 +89,19 @@ final class AlgorandSecureBackupImportBackupScreen:
     override func linkInteractors() {
         super.linkInteractors()
 
-        fileView.startObserving(event: .performClick) { [weak self] in
+        fileView.startObserving(event: .performClickContent) { [weak self] in
+            guard let self else { return }
+
+            // It prevents opening document picker if there is already a selected backup
+            // In this state, action will be only tappable.
+            if selectedSecureBackup != nil {
+                return
+            }
+
+            self.open(.importTextDocumentPicker(delegate: self), by: .presentWithoutNavigationController)
+        }
+
+        fileView.startObserving(event: .performClickAction) { [weak self] in
             guard let self else { return }
             self.open(.importTextDocumentPicker(delegate: self), by: .presentWithoutNavigationController)
         }
