@@ -56,10 +56,10 @@
 "account-select-search-empty-title" = "Hesap Bulunamadı";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
+"account-select-soft-rekey-empty-detail" = "Devam etmek için lütfen standart (Ledger dışı) bir hesap ekleyin.";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-title" = "Standart Hesap Bulunamadı";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Bir hesap oluşturmak istiyorum";
@@ -977,7 +977,7 @@
 "ledger-approval-message" = "Lütfen hesap adresini Ledger cihazınızda doğrulayın (%@)";
 
 /* (No Comment) */
-"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
+"ledger-approval-sign-info-message" = "Doğrulama, Ledger'da devam edecek. Doğrulamayı iptal etmek için işlemi Ledger'dan iptal edin.";
 
 /* (No Comment) */
 "ledger-approval-sign-message" = "Lütfen işlemi %@ adlı Ledger cihazınızda önizleyin ve imzalayın.";
@@ -1031,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "Bağlanan Ledger cihazı, bu hesabın işlemlerini imzalayamaz. İmzalamak için, lütfen %@ bağlanın.";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
+"ledger-rekey-error-not-found" = "İmzalayan hesap, cüzdanınızda olmayan veya yanlış yapılandırılmış bir hesap için yeniden anahtarlandı. Lütfen yetkilendirme hesabının cüzdanınıza eklendiğinden ve bu bir Ledger hesabıysa doğru şekilde bağlandığından emin olun.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "Yeniden Anahtarlamayı Bitir";
@@ -1709,16 +1709,16 @@
 "rekey-instruction-second-standard" = "Bu hesabın parolası, bu hesap için artık çalışmayacak";
 
 /* (No Comment) */
-"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-first" = "Gelecekteki işlemler yalnızca yetki verilen hesap tarafından imzalanabilir.";
 
 /* (No Comment) */
-"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-second" = "Bu hesap artık işlemleri imzalayamayacak.";
 
 /* (No Comment) */
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-subtitle" = "İmzaları başka bir hesaba devrederek hesabınızı koruyun.";
 
 /* (No Comment) */
-"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-third" = "Hesabınızın ortak anahtarı, bakiyeleri ve yapılandırması değişmeyecek.";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "Süreci Başlat";
@@ -2396,7 +2396,7 @@
 "title-generic-response-description" = "Varlıkların bazılarını getiremedik. Lütfen tekrar deneyin.";
 
 /* (No Comment) */
-"title-go-home" = "Go to Home";
+"title-go-home" = "Ana Sayfaya Git";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Hesaplara Git";
@@ -2861,7 +2861,7 @@
 "tutorial-description-back-up" = "Bir parola yedeği oluşturmanız hesabınızı kurtarmanızı sağlayacak. Parolaya sahip olmadığınızda cihazınızı kaybeder, hesabı kaldırır veya uygulamayı silerseniz, Algorand hesabınıza erişiminizi kalıcı olarak kaybedebilirsiniz!";
 
 /* (No Comment) */
-"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
+"tutorial-description-failed-to-import-ledger-accounts" = "Doğrulama adımını tamamlamadığınız için hesaplarınız içe aktarılamadı. Lütfen tekrar deneyin.";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Ledger'ınızın kilidinin açık ve Bluetooth özelliğinin etkin olduğundan lütfen emin olun";
@@ -2912,7 +2912,7 @@
 "tutorial-title-back-up" = "Hesabınız için bir parola yedeği oluşturun";
 
 /* (No Comment) */
-"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-title-failed-to-import-ledger-accounts" = "Hesap içe aktarılmadı";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger başarıyla bağlandı";
