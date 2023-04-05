@@ -252,9 +252,9 @@ extension AlgorandSecureBackupSuccessScreen {
             throw FileError.missingData
         }
 
-        let fileName = backup.fileName
-        let url = documentURL.appendingPathComponent(fileName)
         let backupString = backupData.base64EncodedString()
+
+        let url = fileUrl()
 
         do {
             try backupString.write(to: url, atomically: true, encoding: .utf8)
@@ -274,9 +274,13 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func removeFile() {
+        try? FileManager.default.removeItem(at: fileUrl())
+    }
+
+    private func fileUrl() -> URL {
         let fileName = backup.fileName
         let url = documentURL.appendingPathComponent(fileName)
-        try? FileManager.default.removeItem(at: url)
+        return url
     }
 }
 
