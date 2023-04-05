@@ -279,9 +279,7 @@ extension Session {
 
 extension Session {
     var legacyLocalAuthenticationStatus: String? {
-        get {
-            return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
-        }
+        return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
     }
 
     func accountInformation(from address: String) -> AccountInformation? {

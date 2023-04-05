@@ -49,28 +49,3 @@ fileprivate enum Status: String {
     case notAllowed = "disabled"
     case none = "none"
 }
-
-extension Session {
-    private func savePasswordToKeychain() {
-        guard let password = passwordOnDatabase() else {
-            return
-        }
-
-        deletePasswordFromDatabase()
-        savePassword(password)
-    }
-
-    private func passwordOnDatabase() -> String? {
-        applicationConfiguration?.password
-    }
-
-    private func deletePasswordFromDatabase() {
-        guard hasPasswordOnDatabase() else {
-            return
-        }
-
-        if let config = applicationConfiguration {
-            config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
-        }
-    }
-}
