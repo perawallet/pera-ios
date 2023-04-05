@@ -56,10 +56,10 @@
 "account-select-search-empty-title" = "Nessun conto trovato";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
+"account-select-soft-rekey-empty-detail" = "Aggiungi un conto standard (non contabile) per continuare.";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-title" = "Nessun conto standard trovato";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Voglio creare un conto";
@@ -977,7 +977,7 @@
 "ledger-approval-message" = "Verifica l'indirizzo del conto sul tuo dispositivo Ledger (%@)";
 
 /* (No Comment) */
-"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
+"ledger-approval-sign-info-message" = "La verifica continuerà su Ledger. Per annullare la verifica, annulla da Ledger.";
 
 /* (No Comment) */
 "ledger-approval-sign-message" = "Controlla e firma la transazione sul tuo dispositivo Ledger %@.";
@@ -1031,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "Il dispositivo Ledger connesso non può firmare transazioni per questo conto. Per farlo, connetti %@.";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
+"ledger-rekey-error-not-found" = "Il conto di firma è stato ricodificato in un conto che non è presente nel portafoglio o è configurato in modo errato. Assicurati che il conto di autorizzazione sia aggiunto al tuo portafoglio e, se si tratta di un conto Ledger, assicurati che sia collegato correttamente.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "Concludi ricodifica";
@@ -1709,16 +1709,16 @@
 "rekey-instruction-second-standard" = "La passphrase di questo conto non funzionerà più per questo conto";
 
 /* (No Comment) */
-"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-first" = "Le transazioni future possono essere firmate solo dal conto delegato.";
 
 /* (No Comment) */
-"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-second" = "Questo conto non potrà più firmare transazioni.";
 
 /* (No Comment) */
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-subtitle" = "Proteggi il tuo conto delegando le firme a un altro conto.";
 
 /* (No Comment) */
-"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-third" = "La chiave pubblica, i saldi e la configurazione del tuo conto non cambieranno.";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "Avvia processo";
@@ -2396,7 +2396,7 @@
 "title-generic-response-description" = "Non siamo riusciti a recuperare alcune delle risorse. Per favore riprova.";
 
 /* (No Comment) */
-"title-go-home" = "Go to Home";
+"title-go-home" = "Vai alla Home";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Vai a Conti";
@@ -2861,7 +2861,7 @@
 "tutorial-description-back-up" = "La creazione di un backup della passphrase ti consentirà di recuperare il tuo conto. Senza la passphrase, se perdi il dispositivo, rimuovi l'account o elimini l'app, potresti perdere definitivamente l'accesso al tuo conto Algorand!";
 
 /* (No Comment) */
-"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
+"tutorial-description-failed-to-import-ledger-accounts" = "Non è stato possibile importare i tuoi conti perché non hai completato il passaggio di verifica. Per favore riprova.";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Assicurati che il tuo Ledger sia sbloccato e conBluetooth abilitato";
@@ -2912,7 +2912,7 @@
 "tutorial-title-back-up" = "Crea un backup della passphrase per il tuo conto";
 
 /* (No Comment) */
-"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-title-failed-to-import-ledger-accounts" = "Conti non importati";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger connesso correttamente";

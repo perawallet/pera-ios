@@ -56,10 +56,10 @@
 "account-select-search-empty-title" = "Kein Konto gefunden";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
+"account-select-soft-rekey-empty-detail" = "Bitte fügen Sie ein Standardkonto (nicht Ledger) hinzu, um fortzufahren.";
 
 /* (No Comment) */
-"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-title" = "Keine Standardkonten gefunden";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Ich möchte ein Konto erstellen";
@@ -977,7 +977,7 @@
 "ledger-approval-message" = "Bitte verifizieren Sie die Kontoadresse auf Ihrem Ledger-Gerät (%@)";
 
 /* (No Comment) */
-"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
+"ledger-approval-sign-info-message" = "Die Verifizierung wird in Ledger fortgesetzt. Um die Verifizierung abzubrechen, brechen Sie sie in Ledger ab.";
 
 /* (No Comment) */
 "ledger-approval-sign-message" = "Bitte überprüfen und signieren Sie die Transaktion auf Ihrem Ledger-Gerät %@.";
@@ -1031,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "Das verbundene Ledger-Gerät kann für dieses Konto keine Transaktionen signieren. Verbinden Sie zu diesem Zweck bitte %@.";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
+"ledger-rekey-error-not-found" = "Das signierende Konto wurde mittels Rekeying auf ein Konto umgeschrieben, das sich nicht in Ihrer Wallet befindet oder falsch konfiguriert ist. Bitte vergewissern Sie sich, dass das autorisierende Konto zu Ihrer Wallet hinzugefügt wurde. Wenn es ein Ledger-Konto ist, stellen Sie sicher, dass es korrekt verbunden ist.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "Rekeying abschließen";
@@ -1709,16 +1709,16 @@
 "rekey-instruction-second-standard" = "Die Passphrase dieses Kontos wird für dieses Konto nicht mehr funktionieren.";
 
 /* (No Comment) */
-"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-first" = "Zukünftige Transaktionen können nur von dem delegierten Konto signiert werden.";
 
 /* (No Comment) */
-"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-second" = "Dieses Konto wird nicht mehr in der Lage sein, Transaktionen zu signieren.";
 
 /* (No Comment) */
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-subtitle" = "Schützen Sie Ihr Konto, indem Sie Signaturen an ein anderes Konto delegieren.";
 
 /* (No Comment) */
-"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-third" = "Der öffentliche Schlüssel, das Kontoguthaben und die Konfiguration Ihres Kontos sind vom Rekeying nicht betroffen.";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "Prozess starten";
@@ -2396,7 +2396,7 @@
 "title-generic-response-description" = "Wir konnten einige der Assets nicht abrufen. Bitte versuchen Sie es erneut.";
 
 /* (No Comment) */
-"title-go-home" = "Go to Home";
+"title-go-home" = "Zu Startseite gehen";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Zu Konten gehen";
@@ -2861,7 +2861,7 @@
 "tutorial-description-back-up" = "Durch die Erstellung eines Passphrase-Backups können Sie Ihr Konto wiederherstellen. Wenn Sie Ihr Gerät verlieren, das Konto entfernen oder die App löschen, können Sie den Zugang zu Ihrem Algorand-Konto ohne die Passphrase dauerhaft verlieren!";
 
 /* (No Comment) */
-"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
+"tutorial-description-failed-to-import-ledger-accounts" = "Ihre Konten konnten nicht importiert werden, weil Sie den Verifizierungsschritt nicht abgeschlossen haben. Bitte versuchen Sie es erneut.";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Vergewissern Sie sich, dass Ihr Ledger freigeschaltet und Bluetooth aktiviert ist.";
@@ -2912,7 +2912,7 @@
 "tutorial-title-back-up" = "Erstellen Sie einen Passphrase-Backup für Ihr Konto";
 
 /* (No Comment) */
-"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-title-failed-to-import-ledger-accounts" = "Konten nicht importiert";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger erfolgreich verbunden";
