@@ -70,6 +70,12 @@ final class SettingsViewController: BaseViewController, NotificationObserver {
             self.dataSource.updateAccountSettings()
             self.settingsView.collectionView.reloadData()
         }
+
+        observe(notification: .backupCreated) { [weak self] _ in
+            guard let self else { return }
+            self.dataSource.updateAccountSettings()
+            self.settingsView.collectionView.reloadData()
+        }
     }
 
     override func configureAppearance() {

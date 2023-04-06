@@ -201,6 +201,7 @@ class Session: Storable {
                 /// <todo>: It may be saved as object instead of data to make it more efficient
                 let data = try newValue.encoded()
                 save(data, for: backupsKey, to: .defaults)
+                NotificationCenter.default.post(name: .backupCreated, object: self)
             } catch {
                 return
             }
