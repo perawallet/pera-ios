@@ -150,6 +150,7 @@
 "local-authentication-no" = "Do not use Face ID/Touch ID";
 "local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 "local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"local-authentication-disabled-error-message" = "Unable to disable Face ID/Touch ID, please try again later";
 "title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up

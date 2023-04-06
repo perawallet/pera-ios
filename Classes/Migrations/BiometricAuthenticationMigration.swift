@@ -31,16 +31,19 @@ final class BiometricAuthenticationMigration {
             return
         }
 
-        defer {
-            session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
-        }
-
         switch localAuthenticationStatus {
         case .allowed:
-            session.setBiometricPasswordEnabled()
+            do {
+                try session.setBiometricPasswordEnabled()
+            } catch {
+                return
+            }
+
         default:
             break
         }
+
+        session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
     }
 }
 

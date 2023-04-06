@@ -233,8 +233,16 @@ extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
                 }
 
         if isConfirmed {
-            try? localAuthenticator.removeBiometricPassword()
-            cell.contextView.setToggleOn(false, animated: true)
+            do {
+                try localAuthenticator.removeBiometricPassword()
+                cell.contextView.setToggleOn(false, animated: true)
+            } catch {
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "local-authentication-disabled-error-message".localized
+                )
+                cell.contextView.setToggleOn(true, animated: false)
+            }
         } else {
             cell.contextView.setToggleOn(true, animated: true)
         }

@@ -302,10 +302,11 @@ extension Session {
 
         do {
             try biometricStorage.set(passwordOnKeychain, key: passwordKey)
-            setBiometricPasswordEnabled()
+            // Note: To trigger Biometric Auth Dialog, we need to get it from biometric storage
+            let _ = try biometricStorage.get(passwordKey)
+            try setBiometricPasswordEnabled()
         } catch {
-            try? biometricStorage.remove(passwordKey)
-            throw LAError.unexpected(error)
+            try removeBiometricPassword()
         }
     }
 
@@ -330,15 +331,15 @@ extension Session {
 
     func removeBiometricPassword() throws {
         privateStorage.remove(for: hasBiometricAuthenticationKey)
-        try? biometricStorage.remove(passwordKey)
+        try biometricStorage.remove(passwordKey)
     }
 
     func hasBiometricPassword() -> Bool {
         (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
     }
 
-    func setBiometricPasswordEnabled() {
-        try? privateStorage.set("ok", key: hasBiometricAuthenticationKey)
+    func setBiometricPasswordEnabled() throws {
+        try privateStorage.set("ok", key: hasBiometricAuthenticationKey)
     }
 }
 
