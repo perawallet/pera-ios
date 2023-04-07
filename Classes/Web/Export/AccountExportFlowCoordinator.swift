@@ -103,31 +103,14 @@ extension AccountExportFlowCoordinator {
     }
 
     private func navigateToPasswordScreen(on viewController: UIViewController) {
-        let localAuthenticator = LocalAuthenticator()
-
-        if localAuthenticator.localAuthenticationStatus != .allowed {
-            let controller = viewController.open(
-                .choosePassword(
-                    mode: .confirm(flow: .viewPassphrase),
-                    flow: nil
-                ),
-                by: .push
-            ) as? ChoosePasswordViewController
-            controller?.isModalInPresentation = true
-            controller?.delegate = self
-            return
-        }
-
-        localAuthenticator.authenticate {
-            [weak self] error in
-
-            guard let self = self,
-                  error == nil else {
-                return
-            }
-
-            self.navigateToConfirmSelection(on: viewController)
-        }
+        let controller = viewController.open(
+            .choosePassword(
+                mode: .login(flow: .feature),
+                flow: nil
+            ),
+            by: .push
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
     }
 
     private func navigateToConfirmSelection(on viewController: UIViewController) {

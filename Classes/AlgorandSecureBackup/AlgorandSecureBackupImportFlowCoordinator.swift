@@ -20,14 +20,9 @@ import MacaroonUIKit
 import MacaroonUtils
 
 final class AlgorandSecureBackupImportFlowCoordinator {
-    typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
-
-    private let configuration: ViewControllerConfiguration
     private unowned let presentingScreen: UIViewController
 
-    init(configuration: ViewControllerConfiguration, presentingScreen: UIViewController) {
-        self.configuration = configuration
+    init(presentingScreen: UIViewController) {
         self.presentingScreen = presentingScreen
     }
 }
@@ -41,8 +36,8 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         let screen: Screen = .algorandSecureBackupImportBackup { [weak self] event, screen in
             guard let self else { return }
             switch event {
-            case .backupImported(let backupData):
-                self.openImportMnemonic(with: backupData, from: screen)
+            case .backupSelected(let file):
+                self.openImportMnemonic(with: file, from: screen)
             }
         }
         presentingScreen.open(screen, by: .push)
@@ -50,13 +45,56 @@ extension AlgorandSecureBackupImportFlowCoordinator {
 }
 
 extension AlgorandSecureBackupImportFlowCoordinator {
-    private func openImportMnemonic(with data: Data, from viewController: UIViewController) {
-        print(data)
-    }
-}
+    private func openImportMnemonic(with backup: SecureBackup, from viewController: UIViewController) {
+        let screen: Screen = .algorandSecureBackupRecoverMnemonic(backup: backup) { [weak self] event, screen in
+            guard let self else { return }
 
-extension AlgorandSecureBackupImportFlowCoordinator {
-    enum Event {
-        case didFinish
+            switch event {
+            case .decryptedBackup(let backupParameters):
+                self.openRestoreAccountListScreen(with: backupParameters.accounts, from: screen)
+            }
+        }
+
+        viewController.open(screen, by: .push)
+    }
+
+    private func openSuccessScreen(
+        accountImportParameters: [AccountImportParameters],
+        selectedAccounts: [Account],
+        from viewController: UIViewController
+    ) {
+        let screen: Screen = .algorandSecureBackupImportSuccess(
+            accountImportParameters: accountImportParameters,
+            selectedAccounts: selectedAccounts
+        ) { event, screen in
+            switch event {
+            case .didGoToHome:
+                screen.dismissScreen()
+            }
+        }
+
+        viewController.open(screen, by: .push)
+    }
+
+    private func openRestoreAccountListScreen(
+        with importedAccounts: [AccountImportParameters],
+        from viewController: UIViewController
+    ) {
+        let screen: Screen = .algorandSecureBackupRestoreAccountList(
+            accountImportParameters: importedAccounts
+        ) { [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .performContinue(let accounts):
+                self.openSuccessScreen(
+                    accountImportParameters: importedAccounts,
+                    selectedAccounts: accounts,
+                    from: screen
+                )
+            }
+        }
+
+        viewController.open(screen, by: .push)
     }
 }

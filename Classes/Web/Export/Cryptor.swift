@@ -37,7 +37,7 @@ final class Cryptor {
         return (encryptedContent?.encryptedData, error)
     }
 
-    func decrypt(data: Data) -> EncryptionData? {
+    func decrypt(data: Data) -> EncryptionData {
         let decryptedContent = AlgoMobileDecrypt(data, keyData)
         let error = EncryptionError(rawValue: decryptedContent?.errorCode ?? EncryptionError.unknown.rawValue)
         return (decryptedContent?.decryptedData, error)
