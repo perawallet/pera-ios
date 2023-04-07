@@ -31,7 +31,7 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
-    private lazy var favoriteButton = MacaroonUIKit.Button()
+    private lazy var favoriteButton = makeFavoriteButton()
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
@@ -60,8 +60,10 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         initializeWebView()
-        addNavigationToolbar()
+        addToolbarActions()
+
         recordAnalyticsEvent()
     }
 
@@ -85,24 +87,23 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
         return controller
     }
 
-    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        super.webView(webView, didFinish: navigation)
+    override func updateUIForLoading() {
+        super.updateUIForLoading()
+        updateToolbarActionsForLoading()
+    }
 
-        updateButtonsStateIfNeeded()
+    override func updateUIForURL() {
+        super.updateUIForURL()
+
         updateTitle()
-        updateFavouriteActionStateForCurrentURL()
+        updateToolbarActionsForURL()
     }
 
-    override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        super.webView(webView, didFail: navigation, withError: error)
+    override func updateUIForError(_ error: Error) {
+        super.updateUIForError(error)
 
-        updateButtonsStateIfNeeded()
-    }
-
-    override func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        super.webView(webView, didFailProvisionalNavigation: navigation, withError: error)
-
-        updateButtonsStateIfNeeded()
+        updateTitle()
+        updateToolbarActionsForError()
     }
 
     /// <mark>
@@ -111,8 +112,8 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        updateButtonsStateIfNeeded()
         updateTitle()
+        updateToolbarNavigationActions()
 
         let inAppMessage = DiscoverDappDetailScriptMessage(rawValue: message.name)
 
@@ -122,8 +123,6 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
                 userContentController,
                 didReceive: message
             )
-        case .navigation:
-            break
         case .peraconnect:
             handlePeraConnectAction(message)
         }
@@ -203,13 +202,13 @@ extension DiscoverDappDetailScreen {
     private func makeHomeButton() -> UIBarButtonItem {
         let button = ALGBarButtonItem(kind: .discoverHome) {
             [unowned self] in
-            guard let homePage = self.webView.backForwardList.backList.first else {
-                self.updateButtonsStateIfNeeded()
-                return
+            defer {
+                self.updateToolbarNavigationActions()
             }
 
-            self.webView.go(to: homePage)
-            self.updateButtonsStateIfNeeded()
+            if let homePage = self.webView.backForwardList.backList.first {
+                self.webView.go(to: homePage)
+            }
         }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
@@ -218,7 +217,7 @@ extension DiscoverDappDetailScreen {
         let button = ALGBarButtonItem(kind: .discoverPrevious) {
             [unowned self] in
             self.webView.goBack()
-            self.updateButtonsStateIfNeeded()
+            self.updateToolbarNavigationActions()
         }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
@@ -227,29 +226,23 @@ extension DiscoverDappDetailScreen {
         let button = ALGBarButtonItem(kind: .discoverNext) {
             [unowned self] in
             self.webView.goForward()
-            self.updateButtonsStateIfNeeded()
+            self.updateToolbarNavigationActions()
         }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
-        favoriteButton.customizeAppearance([
-            .icon([
-                .normal("icon-favourite"),
-                .selected("icon-favourite-filled"),
-            ]),
-        ])
-        
-        favoriteButton.snp.makeConstraints {
+        let button = MacaroonUIKit.Button()
+
+        button.snp.makeConstraints {
             $0.fitToSize((40, 40))
         }
+        button.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
         
-        favoriteButton.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: favoriteButton)
+        return UIBarButtonItem(customView: button)
     }
 
-    private func addNavigationToolbar() {
+    private func addToolbarActions() {
         view.addSubview(toolbar)
         toolbar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -269,13 +262,40 @@ extension DiscoverDappDetailScreen {
         
         if shouldAllowFavoriteAction() {
             items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            items.append(makeFavoriteButton())
+            items.append( favoriteButton )
         }
 
         toolbar.items = items
+    }
 
-        setToolbarItems(items, animated: true)
-        updateButtonsStateIfNeeded()
+    private func updateToolbarActionsForLoading() {
+        updateToolbarNavigationActions()
+
+        if shouldAllowFavoriteAction() {
+            updateFavoriteActionForLoading()
+        }
+    }
+
+    private func updateToolbarActionsForURL() {
+        updateToolbarNavigationActions()
+
+        if shouldAllowFavoriteAction() {
+            updateFavouriteActionForURL()
+        }
+    }
+
+    private func updateToolbarActionsForError() {
+        updateToolbarNavigationActions()
+
+        if shouldAllowFavoriteAction() {
+            updateFavoriteActionForError()
+        }
+    }
+
+    private func updateToolbarNavigationActions() {
+        homeButton.isEnabled = webView.canGoBack
+        previousButton.isEnabled = webView.canGoBack
+        nextButton.isEnabled = webView.canGoForward
     }
     
     private func updateWebViewLayout() {
@@ -291,16 +311,6 @@ extension DiscoverDappDetailScreen {
         }
 
         bindNavigationTitle(with: item)
-    }
-
-    private func updateButtonsStateIfNeeded() {
-        let canGoBack = webView.canGoBack
-        let canGoForward = webView.canGoForward
-        let isHomeEnabled = canGoBack
-
-        homeButton.isEnabled = isHomeEnabled
-        previousButton.isEnabled = canGoBack
-        nextButton.isEnabled = canGoForward
     }
 }
 
@@ -394,19 +404,35 @@ extension DiscoverDappDetailScreen {
         setFavoriteActionSelected(false)
         eventHandler?(.removeFromFavorites(dapp))
     }
-    
-    private func updateFavouriteActionStateForCurrentURL() {
-        let url = createURLToAddFavorites()
-        updateFavouriteActionState(for: url)
+
+    private func updateFavoriteActionForLoading() {
+        updateFavoriteStatusForURL()
+        favoriteButton.isEnabled = false
     }
     
-    private func updateFavouriteActionState(for url: URL?) {
+    private func updateFavouriteActionForURL() {
+        updateFavoriteStatusForURL()
+        favoriteButton.isEnabled = true
+    }
+
+    private func updateFavoriteActionForError() {
+        setFavoriteActionSelected(false)
+        favoriteButton.isEnabled = false
+    }
+
+    private func updateFavoriteStatusForURL() {
+        let url = createURLToAddFavorites()
         let isSelected = url.unwrap(isFavorite) ?? false
         setFavoriteActionSelected(isSelected)
     }
     
     private func setFavoriteActionSelected(_ selected: Bool) {
-        favoriteButton.isSelected = selected
+        let actionView = favoriteButton.customView as? UIButton
+        let image = (selected ? "icon-favourite-filled" : "icon-favourite").uiImage
+        actionView?.setImage(
+            image,
+            for: .normal
+        )
     }
 }
 
@@ -420,6 +446,5 @@ extension DiscoverDappDetailScreen {
 enum DiscoverDappDetailScriptMessage:
     String,
     InAppBrowserScriptMessage {
-    case navigation
     case peraconnect
 }
