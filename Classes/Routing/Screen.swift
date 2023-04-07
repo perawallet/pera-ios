@@ -347,6 +347,14 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
     )
     case transakDappDetail(account: AccountHandle)
+    case standardAccountInformation(account: Account)
+    case ledgerAccountInformation(account: Account)
+    case noAuthAccountInformation(account: Account)
+    case standardToStandardRekeyedAccountInformation(from: Account, to: Account)
+    case standardToLedgerRekeyedAccountInformation(from: Account, to: Account)
+    case ledgerToLedgerRekeyedAccountInformation(from: Account, to: Account)
+    case ledgerToStandardRekeyedAccountInformation(from: Account, to: Account)
+    case anyToNoAuthRekeyedAccountInformation(account: Account)
 }
 
 extension Screen {
