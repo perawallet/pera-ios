@@ -22,7 +22,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView(isMultiSelect: isMultiSelect)
     private lazy var theme = Theme()
 
-    private let ledgerAccounts: [Account]
+    private var accounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
 
     private var selectedAccountCount: Int {
@@ -57,10 +57,10 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     
     init(accountSetupFlow: AccountSetupFlow, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
-        self.ledgerAccounts = accounts
+        self.accounts = accounts
         super.init(configuration: configuration)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         loadingController?.startLoadingWithMessage("title-loading".localized)
@@ -75,7 +75,8 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = ledgerAccounts.first?.ledgerDetail?.name
+
+        title = accounts.first?.ledgerDetail?.name
 
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
@@ -89,13 +90,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     }
 
     override func bindData() {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
-        )
+        bindLedgerAccountSelectionView()
     }
     
     override func prepareLayout() {
@@ -111,9 +106,13 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
         didFetch accounts: [Account]
     ) {
+        self.accounts = accounts
+
         loadingController?.stopLoading()
         ledgerAccountSelectionView.setNormalState()
         ledgerAccountSelectionView.reloadData()
+
+        bindLedgerAccountSelectionView()
     }
     
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
@@ -193,25 +192,24 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayout
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
-        )
+        bindLedgerAccountSelectionView()
     }
     
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
+        bindLedgerAccountSelectionView()
+    }
+}
+
+extension LedgerAccountSelectionViewController {
+    private func bindLedgerAccountSelectionView() {
+        let viewModel = LedgerAccountSelectionViewModel(
+            accounts: accounts,
+            isMultiSelect: isMultiSelect,
+            selectedCount: selectedAccountCount
         )
+        ledgerAccountSelectionView.bindData(viewModel)
     }
 }

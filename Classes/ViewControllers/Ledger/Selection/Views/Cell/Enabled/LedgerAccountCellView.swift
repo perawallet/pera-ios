@@ -27,19 +27,11 @@ final class LedgerAccountCellView: View, TripleShadowDrawable {
 
     weak var delegate: LedgerAccountViewDelegate?
 
-    private lazy var theme = LedgerAccountCellViewTheme()
+    private var theme: LedgerAccountCellViewTheme?
+
     private lazy var checkboxImageView = UIImageView()
-    private lazy var verticalStackView = UIStackView()
-    private lazy var deviceNameLabel = UILabel()
-    private lazy var assetInfoLabel = UILabel()
+    private lazy var accountItemView = AccountListItemView()
     private lazy var infoButton = UIButton()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(theme)
-        setListeners()
-    }
 
     override func preferredUserInterfaceStyleDidChange() {
         super.preferredUserInterfaceStyleDidChange()
@@ -69,30 +61,29 @@ final class LedgerAccountCellView: View, TripleShadowDrawable {
     }
 
     func customize(_ theme: LedgerAccountCellViewTheme) {
+        self.theme = theme
+
         drawAppearance(corner: theme.corner)
         drawAppearance(shadow: theme.firstShadow)
         drawAppearance(secondShadow: theme.secondShadow)
         drawAppearance(thirdShadow: theme.thirdShadow)
 
-        addCheckboxImageView(theme)
+        addCheckboxImage(theme)
         addInfo(theme)
-        addVerticalStackView(theme)
+        addAccountItem(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-
-    func setListeners() {
-        infoButton.addTarget(self, action: #selector(notifyDelegateToOpenMoreInfo), for: .touchUpInside)
-    }
 }
 
 extension LedgerAccountCellView {
-    private func addCheckboxImageView(_ theme: LedgerAccountCellViewTheme) {
+    private func addCheckboxImage(_ theme: LedgerAccountCellViewTheme) {
         checkboxImageView.customizeAppearance(theme.unselectedStateCheckbox)
 
         addSubview(checkboxImageView)
+        checkboxImageView.fitToIntrinsicSize()
         checkboxImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.centerY.equalToSuperview()
@@ -104,39 +95,28 @@ extension LedgerAccountCellView {
         infoButton.customizeAppearance(theme.infoButtonStyle)
 
         addSubview(infoButton)
+        infoButton.fitToIntrinsicSize()
         infoButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.fitToSize(theme.infoIconSize)
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
+
+        infoButton.addTouch(
+            target: self,
+            action: #selector(notifyDelegateToOpenMoreInfo)
+        )
     }
 
-    private func addVerticalStackView(_ theme: LedgerAccountCellViewTheme) {
-        addSubview(verticalStackView)
-        verticalStackView.axis = .vertical
-        verticalStackView.distribution = .fillProportionally
+    private func addAccountItem(_ theme: LedgerAccountCellViewTheme) {
+        accountItemView.customize(theme.accountItem)
 
-        verticalStackView.snp.makeConstraints {
-            $0.leading.equalTo(checkboxImageView.snp.trailing).offset(theme.nameHorizontalOffset)
-            $0.trailing.lessThanOrEqualTo(infoButton.snp.leading).offset(-theme.nameHorizontalOffset)
+        addSubview(accountItemView)
+        accountItemView.snp.makeConstraints {
+            $0.leading.equalTo(checkboxImageView.snp.trailing).offset(theme.horizontalInset)
+            $0.trailing.equalTo(infoButton.snp.leading).offset(-theme.horizontalInset)
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
         }
-
-        addDeviceNameLabel(theme)
-        addAssetInfoLabel(theme)
-    }
-
-    private func addDeviceNameLabel(_ theme: LedgerAccountCellViewTheme) {
-        deviceNameLabel.customizeAppearance(theme.nameLabel)
-
-        verticalStackView.addArrangedSubview(deviceNameLabel)
-    }
-
-    private func addAssetInfoLabel(_ theme: LedgerAccountCellViewTheme) {
-        assetInfoLabel.customizeAppearance(theme.assetInfoLabel)
-
-        assetInfoLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        verticalStackView.addArrangedSubview(assetInfoLabel)
     }
 }
 
@@ -149,18 +129,14 @@ extension LedgerAccountCellView {
 
 extension LedgerAccountCellView: ViewModelBindable {
     func bindData(_ viewModel: LedgerAccountViewModel?) {
-        deviceNameLabel.text = viewModel?.accountNameViewModel?.name
-
-        if let assetCount = viewModel?.accountAssetCountViewModel?.assetCount {
-            assetInfoLabel.text = assetCount
-        } else {
-            assetInfoLabel.isHidden = true
-        }
+        accountItemView.bindData(viewModel?.accountItem)
     }
 }
 
 extension LedgerAccountCellView {
     func didSelectCell(_ selected: Bool) {
+        guard let theme else { return }
+
         if selected {
             draw(border: theme.selectedStateBorder)
             checkboxImageView.customizeAppearance(theme.selectedStateCheckbox)
