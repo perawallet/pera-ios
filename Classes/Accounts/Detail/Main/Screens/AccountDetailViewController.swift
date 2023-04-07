@@ -322,7 +322,8 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     private func addNavigationActions() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) {
+        let account = accountHandle.value
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(account)) {
             [unowned self] in
 
             self.endEditing()

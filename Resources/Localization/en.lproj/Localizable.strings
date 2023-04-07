@@ -114,6 +114,7 @@
 "title-ledger-to-ledger-rekeyed" = "Rekeyed (Ledger to Ledger)";
 "title-no-auth" = "No Auth";
 "title-rekeyed-to" = "REKEYED TO";
+"title-rekeyed" = "Rekeyed";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -559,6 +560,7 @@
 // MARK: Ledger Device List
 "ledger-device-list-title" = "Pair Ledger Device";
 "ledger-device-list-looking" = "Looking for devices";
+"ledger-device-list-body" = "Please make sure that your Ledger device is unlocked with Bluetooth enabled. On your Ledger, launch the Algorand app to see it in the list:";
 "ledger-device-list-connect" = "Connect";
 "ledger-device-list-troubleshoot" = "Troubleshoot";
 
