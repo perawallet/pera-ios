@@ -94,7 +94,7 @@ final class AlgorandSecureBackupImportBackupScreen:
 
             // It prevents opening document picker if there is already a selected backup
             // In this state, action will be only tappable.
-            if selectedSecureBackup != nil {
+            if self.selectedSecureBackup != nil {
                 return
             }
 
