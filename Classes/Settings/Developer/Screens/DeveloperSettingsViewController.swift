@@ -90,7 +90,7 @@ extension DeveloperSettingsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
         
         if let setting = settings[safe: indexPath.item] {
-            cell.bindData(SettingsDetailViewModel(setting: setting))
+            cell.bindData(SettingsDetailViewModel(settingsItem: setting))
             return cell
         }
         

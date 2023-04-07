@@ -99,7 +99,7 @@ extension ImportAccountScreen {
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
-            guard let decryptedData = decryptedContent?.data else {
+            guard let decryptedData = decryptedContent.data else {
                 self.publish(.didFailToImport(.decryption))
                 return
             }
@@ -158,12 +158,10 @@ extension ImportAccountScreen {
 
         saveAccounts(importableAccounts)
 
-        let unsupportedAccountCount = parameters.count - importableAccounts.count - unimportedAccounts.count
-
         completeImporting(
             imported: importableAccounts,
             unimported: unimportedAccounts,
-            unsupportedAccountCount: unsupportedAccountCount
+            parameters: parameters
         )
     }
 
@@ -188,14 +186,14 @@ extension ImportAccountScreen {
     private func completeImporting(
         imported: [AccountInformation],
         unimported: [AccountInformation],
-        unsupportedAccountCount: Int
+        parameters: [AccountImportParameters]
     ) {
         eventHandler?(
             .didCompleteImport(
-                Configuration(
+                Result(
                     importedAccounts: imported.map({.init(localAccount: $0)}),
                     unimportedAccounts: unimported.map({.init(localAccount: $0)}),
-                    unsupportedAccountCount: unsupportedAccountCount
+                    parameters: parameters
                 )
             ),
             self
@@ -244,22 +242,15 @@ extension ImportAccountScreen {
 }
 
 extension ImportAccountScreen {
-    private struct TransferAccount {
-        let privateKey: Data
-        let accountInformation: AccountInformation
-    }
-}
-
-extension ImportAccountScreen {
     enum Event {
-        case didCompleteImport(Configuration)
+        case didCompleteImport(Result)
         case didFailToImport(ImportAccountScreenError)
     }
 
-    struct Configuration {
+    struct Result {
         let importedAccounts: [Account]
         let unimportedAccounts: [Account]
-        let unsupportedAccountCount: Int
+        let parameters: [AccountImportParameters]
     }
 }
 
