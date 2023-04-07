@@ -195,14 +195,8 @@ extension ASADetailScreen {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        open(
-            .rekeyInstruction(account: dataController.account),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
+        /// <todo> Open rekey instruction according to account type.
+        /// open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {

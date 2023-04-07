@@ -104,6 +104,11 @@
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 "opt-in-to-usdc" = "Opt-in to USDC";
+"title-rekey-to-standard-account-capitalized-sentence" = "Rekey to standard account";
+"title-rekey-to-ledger-account-capitalized-sentence" = "Rekey to Ledger";
+"title-rekeyed-to-standard-account-capitalized-sentence" = "Rekeyed to standard account";
+"title-rekeyed-to-ledger-account-capitalized-sentence" = "Rekeyed to ledger account";
+"account-continue-unable-to-sign-transactions-itself" = "This account will continue to be unable to sign transactions for itself.";
 "title-undo-rekey" = "Undo Rekey";
 "title-account-type" = "Account type";
 "title-standard" = "Standard";
@@ -657,14 +662,14 @@
 "pin-limit-reset-all" = "Reset All Data";
 
 // MARK: Rekey Instruction
-"rekey-instruction-start" = "Start Process";
+"rekey-instruction-start" = "Start process";
 "rekey-instruction-title" = "Rekey Account";
 "rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
 "rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
-"rekey-instruction-header" = "What to expect";
+"rekey-instruction-header" = "WHAT TO EXPECT";
 "rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
-"rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
-"rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
+"rekey-instruction-second-ledger" = "If you already have a Ledger device keyed to this account, your old Ledger will no longer be connected to it.";
+"rekey-instruction-second-standard" = "This account will no longer be able to sign transactions.";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
@@ -1427,6 +1432,35 @@
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
 "transak-introduction-action-title" = "Buy USDC with Transak";
 "transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
+
+// MARK: Rekey Standard to Standard Account Instructions
+"rekey-standard-to-standard-account-instructions-body" = "Use another account's private key to sign transactions for this account. Learn more";
+"rekey-standard-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+"rekey-standard-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions can only be signed by the delegated account.";
+
+// MARK: Rekey Standard to Ledger Account Instructions
+"rekey-standard-to-ledger-account-instructions-body" = "Back your standard account with a Ledger device for extra security. Learn more";
+"rekey-standard-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Ledger to Ledger Account Instructions
+"rekey-ledger-to-ledger-account-instructions-body" = "Change the ledger account signing for your wallet. Learn more";
+"rekey-ledger-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Ledger to Standard Account Instructions
+"rekey-ledger-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions can only be signed by the new delegated account.";
+"rekey-ledger-to-standard-account-instruction-title" = "Your ledger device will no longer be required to sign transactions. This removes a layer of security.";
+"rekey-ledger-to-standard-account-instructions-body" = "Remove a Ledger device from your account. Learn more";
+"rekey-ledger-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Standard Account Instructions
+"rekeyed-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions will be signed by the new standard account.";
+"rekeyed-to-standard-account-instructions-body" = "Rekey your account to a different standard account. Learn more";
+"rekeyed-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Ledger Account Instructions
+"rekeyed-to-ledger-account-future-transactions-sign-instruction-title" = "Future transactions will be signed by the new account.";
+"rekeyed-to-ledger-account-instructions-body" = "Rekey your account to a different account that is backed by a Ledger device. Learn more";
+"rekeyed-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
 
 // MARK: Account Information
 "standard-account-type-description" = "Your account is a standard Algorand account. It has not been rekeyed and it is not associated with a Ledger device. It was added to your wallet with its keys. Learn more";
