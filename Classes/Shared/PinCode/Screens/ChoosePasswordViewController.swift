@@ -28,7 +28,7 @@ final class ChoosePasswordViewController: BaseViewController {
     private lazy var choosePasswordView = ChoosePasswordView()
     private lazy var theme = Theme()
     
-    private let localAuthenticator = LocalAuthenticator()
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
     
     private var pinLimitStore = PinLimitStore()
 
@@ -44,6 +44,12 @@ final class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         displayPinLimitScreenIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        checkLoginFlow()
     }
 
     override func configureNavigationBarAppearance() {
@@ -92,18 +98,14 @@ extension ChoosePasswordViewController {
     private func displayPinLimitScreenIfNeeded() {
         if shouldDisplayPinLimitScreen(isFirstLaunch: true), case .login = mode {
             displayPinLimitScreen()
-        } else {
-            checkLoginFlow()
         }
     }
 
     private func checkLoginFlow() {
         if case let .login(flow) = mode {
-            if localAuthenticator.localAuthenticationStatus == .allowed {
-                localAuthenticator.authenticate { error in
-                    guard error == nil else {
-                        return
-                    }
+            if localAuthenticator.hasAuthentication() {
+                do {
+                    try localAuthenticator.authenticate()
 
                     switch flow {
                     case .app:
@@ -111,9 +113,9 @@ extension ChoosePasswordViewController {
                     case .feature:
                         self.delegate?.choosePasswordViewController(self, didConfirmPassword: true)
                     }
-                }
+                } catch {}
+                return
             }
-            return
         }
     }
     

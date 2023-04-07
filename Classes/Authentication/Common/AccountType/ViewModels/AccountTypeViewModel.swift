@@ -47,6 +47,8 @@ extension AccountTypeViewModel {
             switch type {
             case .none, .passphrase:
                 image = img("icon-recover-passphrase")
+            case .importFromSecureBackup:
+                image = img("icon-import-from-secure-backup")
             case .ledger:
                 image = img("icon-pair-ledger-account")
             case .importFromWeb:
@@ -73,6 +75,8 @@ extension AccountTypeViewModel {
             switch type {
             case .passphrase:
                 title = "account-type-selection-passphrase".localized
+            case .importFromSecureBackup:
+                title = "account-type-selection-import-secure-backup".localized
             case .ledger:
                 title = "account-type-selection-ledger".localized
             case .importFromWeb:
@@ -90,7 +94,7 @@ extension AccountTypeViewModel {
         switch mode {
         case let .recover(type):
             switch type {
-            case .importFromWeb:
+            case .importFromWeb, .importFromSecureBackup:
                 badge = "title-new-uppercased".localized
             default:
                 break
@@ -115,6 +119,8 @@ extension AccountTypeViewModel {
             switch type {
             case .passphrase:
                 detail = "account-type-selection-passphrase-detail".localized
+            case .importFromSecureBackup:
+                detail = "account-type-selection-import-secure-backup-detail".localized
             case .ledger:
                 detail = "account-type-selection-ledger-detail".localized
             case .importFromWeb:
