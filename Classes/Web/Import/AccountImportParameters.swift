@@ -127,6 +127,20 @@ extension AccountImportParameters {
             self.init(stringRawValue: rawValue)
         }
     }
+
+    func isImportable(using algorandSDK: AlgorandSDK) -> Bool {
+        guard let privateKey = privateKey else {
+            return false
+        }
+
+        guard accountType == .single else {
+            return false
+        }
+
+        var error: NSError?
+        let address = algorandSDK.addressFrom(privateKey, error: &error)
+        return address == self.address && algorandSDK.isValidAddress(self.address)
+    }
 }
 
 extension AccountImportParameters {

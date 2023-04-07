@@ -31,10 +31,10 @@ final class AlgorandSecureBackupRestoreAccountListLocalDataController:
         qos: .userInitiated
     )
 
-    private let restoredAccounts: [Account]
+    private let accountImportParameters: [AccountImportParameters]
 
-    init(restoredAccounts: [Account]) {
-        self.restoredAccounts = restoredAccounts
+    init(accountImportParameters: [AccountImportParameters]) {
+        self.accountImportParameters = accountImportParameters
     }
 }
 
@@ -117,6 +117,23 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
     private func addAccountsSection(
         _ snapshot: inout Snapshot
     ) {
+        var accountsDictionary: [String: AccountImportParameters] = [:]
+
+        accountImportParameters.forEach { accountParameter in
+            accountsDictionary[accountParameter.address] = accountParameter
+        }
+
+        let restoredAccounts = accountImportParameters.map { accountParameter in
+            let accountAddress = accountParameter.address
+
+            let accountInformation = AccountInformation(
+                address: accountAddress,
+                name: accountParameter.name ?? accountAddress.shortAddressDisplay,
+                type: accountParameter.accountType.rawAccountType
+            )
+
+            return Account(localAccount: accountInformation)
+        }
         let accounts: [Account] =
             restoredAccounts
                 .filter {

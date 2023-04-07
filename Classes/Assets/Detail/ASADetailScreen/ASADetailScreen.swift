@@ -233,10 +233,10 @@ extension ASADetailScreen {
             } catch {
                 presentPasswordConfirmScreen()
             }
-            return
+        } else {
+            presentPasswordConfirmScreen()
         }
 
-        presentPasswordConfirmScreen()
     }
 
     private func presentPasswordConfirmScreen() {

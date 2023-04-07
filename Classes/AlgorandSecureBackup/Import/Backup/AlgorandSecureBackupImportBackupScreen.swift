@@ -14,7 +14,6 @@
 
 //   AlgorandSecureBackupImportBackupScreen.swift
 
-import CoreServices
 import Foundation
 import MacaroonUIKit
 import UIKit
@@ -39,7 +38,7 @@ final class AlgorandSecureBackupImportBackupScreen:
     private lazy var navigationBarLargeTitleController = NavigationBarLargeTitleController(screen: self)
 
     private lazy var headerView = UILabel()
-    private lazy var uploadView = AlgorandSecureBackupImportFileView()
+    private lazy var fileView = AlgorandSecureBackupFileView()
     private lazy var actionsView = VStackView()
     private lazy var pasteActionView = MacaroonUIKit.Button()
     private lazy var nextActionView = MacaroonUIKit.Button()
@@ -48,7 +47,9 @@ final class AlgorandSecureBackupImportBackupScreen:
 
     private var isViewLayoutLoaded = false
 
-    private var selectedBackup: AlgorandSecureBackupFile?
+    private var selectedSecureBackup: SecureBackup?
+
+    private let backupValidator = BackupValidator()
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -88,17 +89,21 @@ final class AlgorandSecureBackupImportBackupScreen:
     override func linkInteractors() {
         super.linkInteractors()
 
-        uploadView.startObserving(event: .performClick) {
-            let documentPicker: UIDocumentPickerViewController
-            if #available(iOS 14.0, *) {
-                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
-            } else {
-                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
+        fileView.startObserving(event: .performClickContent) { [weak self] in
+            guard let self else { return }
+
+            // It prevents opening document picker if there is already a selected backup
+            // In this state, action will be only tappable.
+            if selectedSecureBackup != nil {
+                return
             }
-            documentPicker.allowsMultipleSelection = false
-            documentPicker.shouldShowFileExtensions = true
-            documentPicker.delegate = self
-            self.present(documentPicker, animated: true)
+
+            self.open(.importTextDocumentPicker(delegate: self), by: .presentWithoutNavigationController)
+        }
+
+        fileView.startObserving(event: .performClickAction) { [weak self] in
+            guard let self else { return }
+            self.open(.importTextDocumentPicker(delegate: self), by: .presentWithoutNavigationController)
         }
     }
 
@@ -131,14 +136,15 @@ final class AlgorandSecureBackupImportBackupScreen:
         addBackground()
         addNavigationBarLargeTitle()
         addHeader()
-        addActions()
+        addFileView()
+        addPasteAction()
         addNextAction()
     }
 
     override func bindData() {
         super.bindData()
 
-        bindUploadView(for: .empty)
+        bindFile(for: .empty)
     }
 }
 
@@ -168,25 +174,16 @@ extension AlgorandSecureBackupImportBackupScreen {
         }
     }
 
-    private func addActions() {
-        uploadView.customize(AlgorandSecureBackupImportFileViewTheme())
-        
-        contentView.addSubview(uploadView)
-        uploadView.snp.makeConstraints {
+    private func addFileView() {
+        fileView.customize(AlgorandSecureBackupFileViewTheme())
+
+        contentView.addSubview(fileView)
+        fileView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom).offset(theme.uploadTopOffset)
             $0.leading == theme.defaultInset
             $0.trailing == theme.defaultInset
             $0.height.equalTo(theme.uploadHeight)
         }
-        contentView.addSubview(actionsView)
-        actionsView.spacing = theme.actionsPadding
-        actionsView.snp.makeConstraints {
-            $0.top.equalTo(uploadView.snp.bottom).offset(theme.actionsTopOffset)
-            $0.leading == theme.defaultInset
-            $0.trailing == theme.defaultInset
-            $0.bottom.greaterThanOrEqualToSuperview().inset(theme.defaultInset)
-        }
-        addPasteAction()
     }
 
     private func addPasteAction() {
@@ -198,7 +195,13 @@ extension AlgorandSecureBackupImportBackupScreen {
             action: #selector(performPasteAction)
         )
 
-        actionsView.addArrangedSubview(pasteActionView)
+        contentView.addSubview(pasteActionView)
+        pasteActionView.snp.makeConstraints {
+            $0.top.equalTo(fileView.snp.bottom).offset(theme.actionsTopOffset)
+            $0.leading == theme.defaultInset
+            $0.trailing == theme.defaultInset
+            $0.bottom.greaterThanOrEqualToSuperview().inset(theme.defaultInset)
+        }
     }
 
     private func addNextAction() {
@@ -218,7 +221,7 @@ extension AlgorandSecureBackupImportBackupScreen {
             action: #selector(performNextAction)
         )
 
-        updateNextActionEnable()
+        nextActionView.isEnabled = false
     }
 }
 
@@ -236,105 +239,133 @@ extension AlgorandSecureBackupImportBackupScreen {
 extension AlgorandSecureBackupImportBackupScreen {
     @objc
     private func performPasteAction() {
-        defer {
-            updateNextActionEnable()
-        }
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        let pasteBoardText = UIPasteboard.general.string
+        loadingController?.stopLoading()
 
-        guard
-            let pasteBoardText = UIPasteboard.general.string,
-            let data = Data(base64Encoded: pasteBoardText),
-            isDataValid(data)
-        else {
-            bannerController?.presentErrorBanner(
-                title: "algorand-secure-backup-import-backup-clipboard-failed-title".localized,
-                message: "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+        let validation = backupValidator.validate(invalidatedString: pasteBoardText)
+
+        switch validation {
+        case .success(let secureBackup):
+            eventHandler?(.backupSelected(secureBackup), self)
+            bannerController?.presentSuccessBanner(
+                title: "algorand-secure-backup-import-backup-clipboard-success-title".localized
             )
-            return
+        case .failure(let backupValidationError):
+            presentErrorBanner(error: backupValidationError)
         }
-
-        let backup = AlgorandSecureBackupFile(data: data)
-
-        selectedBackup = backup
-        bindUploadView(for: .uploaded(backup))
     }
 
     @objc
     private func performNextAction() {
-        guard let selectedBackup, hasValidData() else { return }
-        eventHandler?(.backupSelected(selectedBackup), self)
-    }
+        guard let selectedSecureBackup else {
+            presentErrorBanner(error: .jsonSerialization)
+            return
+        }
 
-    private func updateNextActionEnable() {
-        self.nextActionView.isEnabled = hasValidData()
-    }
-
-    private func hasValidData() -> Bool {
-        guard let selectedBackup, selectedBackup.data != nil else { return false }
-        return true
+        eventHandler?(.backupSelected(selectedSecureBackup), self)
     }
 }
 
 extension AlgorandSecureBackupImportBackupScreen: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        pickBackupData(from: urls)
-        updateNextActionEnable()
+        guard let url = urls.first else {
+            presentErrorBanner(error: .emptySource)
+            return
+        }
+        processBackupFile(at: url)
     }
 
-    private func pickBackupData(from urls: [URL]) {
-        do {
-            let file = try createFile(from: urls.first!)
-            self.selectedBackup = file
-            bindUploadView(for: .uploaded(file))
-        } catch {
-            self.selectedBackup = nil
+    private func processBackupFile(at url: URL) {
+        nextActionView.isEnabled = false
 
-            if let fileError = error as? FileError {
-                bindUploadView(for: .uploadFailed(fileError))
-            } else {
-                bindUploadView(for: .uploadFailed(.other(error)))
+        let hasAccess = url.startAccessingSecurityScopedResource()
+
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
+
+        guard hasAccess else {
+            bindFile(for: .uploadFailed(.unauthorized))
+            return
+        }
+
+        let invalidatedString = try? String(contentsOf: url)
+        let validation = backupValidator.validate(invalidatedString: invalidatedString)
+
+        switch validation {
+        case .success(let secureBackup):
+            let fileName: String
+
+            do {
+                fileName = try AlgorandSecureBackup(url: url).fileName
+            } catch {
+                bindFile(for: .uploadFailed(.cipherSuiteInvalid))
+                return
             }
+
+            bindFile(for: .uploaded(fileName: fileName))
+            nextActionView.isEnabled = true
+            selectedSecureBackup = secureBackup
+        case .failure(let backupValidationError):
+            bindFile(for: .uploadFailed(backupValidationError))
         }
     }
 
-    private func createFile(from url: URL) throws -> AlgorandSecureBackupFile {
-        do {
-            let urlDataInString = try String(contentsOf: url)
-            guard
-                let data = Data(base64Encoded: urlDataInString),
-                isDataValid(data)
-            else {
-                throw FileError.invalid
-            }
-            return AlgorandSecureBackupFile(data: data)
-        } catch {
-            if let fileError = error as? FileError {
-                throw fileError
-            } else {
-                throw FileError.other(error)
-            }
+    private func bindFile(for state: AlgorandSecureBackupFileViewModel.State) {
+        let viewModel = AlgorandSecureBackupFileViewModel(state: state)
+        fileView.bindData(viewModel)
+    }
+}
+
+/// <mark>: Error Handling
+extension AlgorandSecureBackupImportBackupScreen {
+    private func presentErrorBanner(error: BackupValidationError) {
+        let title: String
+        let message: String
+
+        switch error {
+        case .emptySource:
+            title = "algorand-secure-backup-import-backup-clipboard-failed-title".localized
+            message = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+        case .wrongFormat:
+            title = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            message = ""
+        case .unsupportedVersion:
+            title = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
+            message = ""
+        case .cipherSuiteUnknown, .cipherSuiteInvalid:
+            title = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
+            message = ""
+        case .jsonSerialization:
+            title = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+            message = ""
+        case .unauthorized:
+            title = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+            message = ""
         }
-    }
 
-    private func bindUploadView(for state: AlgorandSecureBackupImportFileViewModel.State) {
-        let viewModel = AlgorandSecureBackupImportFileViewModel(state: state)
-        uploadView.bindData(viewModel)
-    }
-
-    private func isDataValid(_ data: Data) -> Bool {
-        return (try? SecureBackup.decoded(data)) != nil
+        bannerController?.presentErrorBanner(
+            title: title,
+            message: message
+        )
     }
 }
 
 extension AlgorandSecureBackupImportBackupScreen {
     enum Event {
-        case backupSelected(AlgorandSecureBackupFile)
+        case backupSelected(SecureBackup)
     }
 }
 
 extension AlgorandSecureBackupImportBackupScreen {
-    enum FileError: Error {
-        case unsupported
-        case invalid
-        case other(Error)
+    enum ValidationError: Error {
+        case emptySource
+        case wrongFormat // It should be base 64
+        case jsonSerialization
+        case unsupportedVersion
+        case cipherSuiteUnknown
+        case cipherSuiteInvalid
+        case unauthorized
     }
 }

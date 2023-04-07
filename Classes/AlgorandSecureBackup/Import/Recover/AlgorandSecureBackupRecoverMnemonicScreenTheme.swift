@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportRecoverMnemonicScreenTheme.swift
+//   AlgorandSecureBackupRecoverMnemonicScreenTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AlgorandSecureBackupImportRecoverMnemonicScreenTheme: LayoutSheet, StyleSheet {
+struct AlgorandSecureBackupRecoverMnemonicScreenTheme: LayoutSheet, StyleSheet {
     let accountRecoverViewTheme: AccountRecoverViewTheme
     let background: ViewStyle
 
@@ -40,7 +40,7 @@ struct AlgorandSecureBackupImportRecoverMnemonicScreenTheme: LayoutSheet, StyleS
         self.horizontalPadding = 24
         self.bottomInset = 16
         self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
-        self.keyboardInset = 92
+        self.keyboardInset = 76
         self.inputViewHeight = 732
         self.nextAction = [
             .titleColor([ .normal(Colors.Button.Primary.text), .disabled(Colors.Button.Primary.disabledText) ]),

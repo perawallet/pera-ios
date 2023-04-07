@@ -17,7 +17,7 @@
 import UIKit
 import MacaroonUIKit
 
-final class AlgorandSecureBackupAccountListScreen:
+class AlgorandSecureBackupAccountListScreen:
     BaseViewController,
     NavigationBarLargeTitleConfigurable,
     UICollectionViewDelegateFlowLayout {
@@ -34,7 +34,7 @@ final class AlgorandSecureBackupAccountListScreen:
         return isViewAppeared
     }
 
-    private lazy var theme = AlgorandSecureBackupAccountListScreenTheme()
+    fileprivate private(set) lazy var theme = AlgorandSecureBackupAccountListScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
     private(set) lazy var navigationBarLargeTitleView = createNavigationBarLargeTitleView()
@@ -53,26 +53,23 @@ final class AlgorandSecureBackupAccountListScreen:
     }()
 
     private lazy var continueActionEffectView = EffectView()
-    private lazy var continueActionView = MacaroonUIKit.Button()
+    fileprivate private(set) lazy var continueActionView = MacaroonUIKit.Button()
 
     private lazy var listLayout = AlgorandSecureBackupAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = AlgorandSecureBackupAccountListDataSource(listView)
 
-    private lazy var navigationBarLargeTitleController =
+    fileprivate private(set) lazy var navigationBarLargeTitleController =
     NavigationBarLargeTitleController(screen: self)
 
     private var isLayoutFinalized = false
 
-    private let dataController: AlgorandSecureBackupAccountListDataController
-    private let mode: AlgorandSecureBackupAccountListScreen.Mode
+    fileprivate let dataController: AlgorandSecureBackupAccountListDataController
 
     init(
         dataController: AlgorandSecureBackupAccountListDataController,
-        mode: AlgorandSecureBackupAccountListScreen.Mode,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
-        self.mode = mode
 
         super.init(configuration: configuration)
     }
@@ -136,14 +133,9 @@ final class AlgorandSecureBackupAccountListScreen:
         addUI()
     }
 
-    private func configureNavigationBarTitle() {
-        switch mode {
-        case .export:
-            navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-title".localized
-        case .restore:
-            navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-restore-title".localized
-        }
-    }
+    func bindContinueActionTitle() { }
+
+    func configureNavigationBarTitle() { }
 
     private func addUI() {
         addBackground()
@@ -195,42 +187,6 @@ extension AlgorandSecureBackupAccountListScreen {
         continueActionView.isEnabled = dataController.isContinueActionEnabled
 
         bindContinueActionTitle()
-    }
-
-    private func bindContinueActionTitle() {
-        let selectedAccounts = dataController.getSelectedAccounts()
-        let selectedAccountsCount = selectedAccounts.count
-
-        let title: String
-
-        switch mode {
-        case .export:
-            title = continueActionTitleForExport(selectedAccountsCount)
-        case .restore:
-            title = continueActionTitleForRestore(selectedAccountsCount)
-        }
-
-        continueActionView.editTitle = .string(title)
-    }
-
-    private func continueActionTitleForExport(_ selectedAccountsCount: Int) -> String {
-        if selectedAccountsCount == 0 {
-            return "algorand-secure-backup-account-list-action-title".localized
-        } else if selectedAccountsCount == 1 {
-            return "algorand-secure-backup-account-list-action-title-singular".localized
-        } else {
-            return "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(selectedAccountsCount)")
-        }
-    }
-
-    private func continueActionTitleForRestore(_ selectedAccountsCount: Int) -> String {
-        if selectedAccountsCount == 0 {
-            return "algorand-secure-backup-account-list-restore-action-title".localized
-        } else if selectedAccountsCount == 1 {
-            return "algorand-secure-backup-account-list-restore-action-title-singular".localized
-        } else {
-            return "algorand-secure-backup-account-list-restore-action-title-plural".localized(params: "\(selectedAccountsCount)")
-        }
     }
 
     private func addContinueActionViewGradient() {
@@ -490,9 +446,39 @@ extension AlgorandSecureBackupAccountListScreen {
     }
 }
 
-extension AlgorandSecureBackupAccountListScreen {
-    enum Mode {
-        case export
-        case restore
+final class AlgorandSecureBackupAccountRecoverListScreen: AlgorandSecureBackupAccountListScreen {
+    override func configureNavigationBarTitle() {
+        navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-restore-title".localized
+    }
+    override func bindContinueActionTitle() {
+        bindContinueActionTitleForRestore()
+    }
+
+    private func bindContinueActionTitleForRestore() {
+        let selectedAccounts = dataController.getSelectedAccounts()
+        let selectedAccountsCount = selectedAccounts.count
+
+        let style = theme.continueActionForRestore(accountCount: selectedAccountsCount)
+
+        continueActionView.customizeAppearance(style)
+    }
+}
+
+final class AlgorandSecureBackupAccountExportListScreen: AlgorandSecureBackupAccountListScreen {
+    override func configureNavigationBarTitle() {
+        navigationBarLargeTitleController.title = "algorand-secure-backup-account-list-title".localized
+    }
+
+    override func bindContinueActionTitle() {
+        bindContinueActionTitleForExport()
+    }
+
+    private func bindContinueActionTitleForExport() {
+        let selectedAccounts = dataController.getSelectedAccounts()
+        let selectedAccountsCount = selectedAccounts.count
+
+        let style = theme.continueActionForExport(accountCount: selectedAccountsCount)
+
+        continueActionView.customizeAppearance(style)
     }
 }
