@@ -26,7 +26,7 @@ final class TutorialViewController: BaseScrollViewController {
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
 
-    private let localAuthenticator = LocalAuthenticator()
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
 
     init(flow: AccountSetupFlow, tutorial: Tutorial, configuration: ViewControllerConfiguration) {
         self.flow = flow
@@ -218,18 +218,12 @@ extension TutorialViewController {
     }
 
     private func askLocalAuthentication() {
-        if localAuthenticator.isLocalAuthenticationAvailable {
-            localAuthenticator.authenticate { error in
-                guard error == nil else {
-                    return
-                }
-                self.localAuthenticator.localAuthenticationStatus = .allowed
-                self.openModalWhenAuthenticationUpdatesCompleted()
-            }
-            return
+        do {
+            try localAuthenticator.setBiometricPassword()
+            openModalWhenAuthenticationUpdatesCompleted()
+        } catch {
+            presentDisabledLocalAuthenticationAlert()
         }
-
-        presentDisabledLocalAuthenticationAlert()
     }
 
     private func presentDisabledLocalAuthenticationAlert() {

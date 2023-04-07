@@ -21,6 +21,10 @@ import MacaroonUIKit
 final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     typealias EventHandler = (Event, AlgorandSecureBackupSuccessScreen) -> Void
 
+    override var hidesCloseBarButtonItem: Bool {
+        return true
+    }
+
     var eventHandler: EventHandler?
 
     private lazy var contextView = UIView()
@@ -29,10 +33,24 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var saveActionView = MacaroonUIKit.Button(theme.saveActionLayout)
     private lazy var doneActionView = MacaroonUIKit.Button()
 
-    private let theme: AlgorandSecureBackupSuccessScreenTheme
+    private lazy var transitionToNotifyForStoringBackup = BottomSheetTransition(presentingViewController: self)
 
-    init(theme: AlgorandSecureBackupSuccessScreenTheme = .init()) {
-        self.theme = theme
+    private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
+
+    private lazy var documentURL = getDocumentsDirectory()
+
+    private let backup: AlgorandSecureBackup
+    private let bannerController: BannerController?
+    private let copyToClipboardController: CopyToClipboardController
+
+    deinit {
+        removeFile()
+    }
+
+    init(backup: AlgorandSecureBackup, configuration: ViewControllerConfiguration) {
+        self.backup = backup
+        self.bannerController = configuration.bannerController
+        self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
     }
 
     override func viewDidLoad() {
@@ -41,6 +59,29 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
         addUI()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        disableInteractivePopGesture()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        enableInteractivePopGesture()
+    }
+
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+
+        let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            guard let self else { return }
+            self.eventHandler?(.complete, self)
+        }
+
+        leftBarButtonItems = [closeButtonItem]
+    }
+    
     override func addFooter() {
         super.addFooter()
 
@@ -108,6 +149,11 @@ extension AlgorandSecureBackupSuccessScreen {
             $0.trailing == 0
         }
 
+        fileInfoView.startObserving(event: .performCopyAction) { [weak self] in
+            guard let self else { return }
+            self.copyBackup()
+        }
+
         bindFileInfo()
     }
 
@@ -154,29 +200,103 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func bindFileInfo() {
-        let viewModel = FileInfoViewModel()
-        fileInfoView.bindData(viewModel)
+        fileInfoView.bindData(FileInfoViewModel(file: backup))
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
-    @objc
-    private func performCopy() {}
+    private func copyBackup() {
+        guard let backupData = backup.data else { return }
+        let copyText = backupData.base64EncodedString()
+        let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
+        let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
+
+        copyToClipboardController.copy(item)
+    }
 
     @objc
     private func performSave() {
-        eventHandler?(.performSave, self)
+        do {
+            let url = try createFile()
+            openShareSheet(url)
+        } catch {
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
     }
 
     @objc
     private func performDone() {
-        eventHandler?(.performDone, self)
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "algorand-secure-backup-success-confirmation-title".localized,
+            description: .plain("algorand-secure-backup-success-confirmation-message".localized),
+            primaryActionButtonTitle: "algorand-secure-backup-success-confirmation-primary-action-title".localized,
+            secondaryActionButtonTitle: "algorand-secure-backup-success-confirmation-secondary-action-title".localized,
+            primaryAction: { [weak self] in
+                guard let self else { return }
+                self.eventHandler?(.complete, self)
+            }
+        )
+
+        transitionToNotifyForStoringBackup.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func createFile() throws -> URL {
+        guard let backupData = backup.data else {
+            throw FileError.missingData
+        }
+
+        let backupString = backupData.base64EncodedString()
+
+        let url = fileUrl()
+
+        do {
+            try backupString.write(to: url, atomically: true, encoding: .utf8)
+            return url
+        } catch {
+            throw error
+        }
+    }
+
+    private func openShareSheet(_ url: URL) {
+        open(
+            .shareActivity(
+                items: [url]
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func removeFile() {
+        try? FileManager.default.removeItem(at: fileUrl())
+    }
+
+    private func fileUrl() -> URL {
+        let fileName = backup.fileName
+        let url = documentURL.appendingPathComponent(fileName)
+        return url
+    }
+}
+
+extension AlgorandSecureBackupSuccessScreen {
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
     enum Event {
-        case performSave
-        case performDone
+        case complete
     }
+}
+
+enum FileError: Error {
+    case missingData
 }

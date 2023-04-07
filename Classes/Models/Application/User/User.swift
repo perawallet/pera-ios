@@ -105,6 +105,7 @@ extension User {
             return
         }
         
+        removeBackup(from: account.address)
         accounts.remove(at: index)
         syncronize()
     }
@@ -188,6 +189,10 @@ extension User {
 extension User {
     private func accountFrom(address: String) -> AccountInformation? {
         return accounts.first { $0.address == address }
+    }
+
+    private func removeBackup(from address: String) {
+        UIApplication.shared.appConfiguration?.session.backups[address] = nil
     }
 }
 

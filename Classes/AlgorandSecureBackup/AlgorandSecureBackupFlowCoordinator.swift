@@ -23,35 +23,130 @@ final class AlgorandSecureBackupFlowCoordinator {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
 
-    private unowned let presentingScreen: UIViewController
+    private var launchTransition: Screen.Transition.Open?
+    private let configuration: ViewControllerConfiguration
+    private let presentingScreen: UIViewController
 
-    init(presentingScreen: UIViewController) {
+    init(configuration: ViewControllerConfiguration, presentingScreen: UIViewController) {
+        self.configuration = configuration
         self.presentingScreen = presentingScreen
     }
 }
 
 extension AlgorandSecureBackupFlowCoordinator {
-    func launch() {
-        openInstructions()
+    func launch(
+        by transition: Screen.Transition.Open =
+            .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+    ) {
+        openInstructions(by: transition)
     }
 
-    private func openInstructions() {
+    private func openInstructions(by transition: Screen.Transition.Open) {
         let screen: Screen = .algorandSecureBackupInstructions { [weak self] event, screen in
             guard let self else { return }
-            self.openAccountSelection(from: screen)
+            self.openPasswordScreenIfNeeded(from: screen)
         }
-        presentingScreen.open(screen, by: .present)
+        presentingScreen.open(screen, by: transition)
+        self.launchTransition = transition
+    }
+
+    private func openPasswordScreenIfNeeded(from viewController: UIViewController) {
+        guard let session = configuration.session else { return }
+
+        guard session.hasPassword() else {
+            openAccountSelection(from: viewController)
+            return
+        }
+
+        let controller = viewController.open(
+            .choosePassword(
+                mode: .login(flow: .feature),
+                flow: nil
+            ),
+            by: .push
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
+    }
+
+    private func makeAccountSelection() -> Screen {
+        .algorandSecureBackupAccountList { [weak self] event, screen in
+            guard let self else { return }
+
+            switch event {
+            case .performContinue(let accounts):
+                self.openMnemonicsScreen(with: accounts, from: screen)
+            }
+        }
     }
 
     private func openAccountSelection(from viewController: UIViewController) {
-        let screen: Screen = .algorandSecureBackupAccountList { [weak self] event, screen  in
+        viewController.open(makeAccountSelection(), by: .push)
+    }
+
+    private func openMnemonicsScreen(with accounts: [Account], from viewController: UIViewController) {
+        let screen: Screen = .algorandSecureBackupMnemonic(accounts: accounts) { [weak self] event, screen in
             guard let self else { return }
+
             switch event {
-            case .performContinue(let accounts):
-                print(accounts)
+            case .backupCompleted(let encryptedBackupData):
+                self.saveBackupMetadata(for: accounts)
+                self.openSuccessScreen(with: encryptedBackupData, from: screen)
+            case .backupFailed:
+                self.openErrorScreen(from: screen)
             }
         }
         viewController.open(screen, by: .push)
+    }
+
+    private func openSuccessScreen(with data: Data, from viewController: UIViewController) {
+        let secureBackup = AlgorandSecureBackup(data: data)
+        let successScreen: Screen = .algorandSecureBackupSuccess(backup: secureBackup) { event, screen in
+            switch event {
+            case .complete:
+                self.dismissScreen(from: screen)
+            }
+        }
+        viewController.open(successScreen, by: .root)
+    }
+
+    private func openErrorScreen(from viewController: UIViewController) {
+        let errorScreen: Screen = .algorandSecureBackupError { event, screen in
+            switch event {
+            case .performTryAgain:
+                screen.popScreen()
+            }
+        }
+        viewController.open(errorScreen, by: .set)
+    }
+
+    private func dismissScreen(from: UIViewController) {
+        if launchTransition == .push {
+            from.navigationController?.setViewControllers([presentingScreen], animated: true)
+        } else {
+            from.dismissScreen()
+        }
+    }
+}
+
+extension AlgorandSecureBackupFlowCoordinator: ChoosePasswordViewControllerDelegate {
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        guard isConfirmed else { return }
+
+        choosePasswordViewController.open(makeAccountSelection(), by: .set)
+    }
+}
+
+// MARK: Helpers
+extension AlgorandSecureBackupFlowCoordinator {
+    private func saveBackupMetadata(for accounts: [Account]) {
+        for account in accounts {
+            let address = account.address
+            let metadata = BackupMetadata(id: address, createdAtDate: Date())
+            self.configuration.session?.backups[address] = metadata
+        }
     }
 }
 
