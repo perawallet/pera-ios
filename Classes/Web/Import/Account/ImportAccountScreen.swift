@@ -99,7 +99,7 @@ extension ImportAccountScreen {
             let cryptor = Cryptor(key: encryptionKey)
             let decryptedContent = cryptor.decrypt(data: encryptedData)
 
-            guard let decryptedData = decryptedContent?.data else {
+            guard let decryptedData = decryptedContent.data else {
                 self.publish(.didFailToImport(.decryption))
                 return
             }
@@ -157,7 +157,12 @@ extension ImportAccountScreen {
         }
 
         saveAccounts(importableAccounts)
-        completeImporting(imported: importableAccounts, unimported: unimportedAccounts)
+
+        completeImporting(
+            imported: importableAccounts,
+            unimported: unimportedAccounts,
+            parameters: parameters
+        )
     }
 
     private func saveAccounts(_ accounts: [AccountInformation]) {
@@ -180,12 +185,16 @@ extension ImportAccountScreen {
 
     private func completeImporting(
         imported: [AccountInformation],
-        unimported: [AccountInformation]
+        unimported: [AccountInformation],
+        parameters: [AccountImportParameters]
     ) {
         eventHandler?(
             .didCompleteImport(
-                importedAccounts: imported.map({.init(localAccount: $0)}),
-                unimportedAccounts: unimported.map({.init(localAccount: $0)})
+                Result(
+                    importedAccounts: imported.map({.init(localAccount: $0)}),
+                    unimportedAccounts: unimported.map({.init(localAccount: $0)}),
+                    parameters: parameters
+                )
             ),
             self
         )
@@ -233,16 +242,15 @@ extension ImportAccountScreen {
 }
 
 extension ImportAccountScreen {
-    private struct TransferAccount {
-        let privateKey: Data
-        let accountInformation: AccountInformation
-    }
-}
-
-extension ImportAccountScreen {
     enum Event {
-        case didCompleteImport(importedAccounts: [Account], unimportedAccounts: [Account])
+        case didCompleteImport(Result)
         case didFailToImport(ImportAccountScreenError)
+    }
+
+    struct Result {
+        let importedAccounts: [Account]
+        let unimportedAccounts: [Account]
+        let parameters: [AccountImportParameters]
     }
 }
 

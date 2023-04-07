@@ -50,4 +50,72 @@ struct AlgorandSecureBackupAccountListScreenTheme:
         self.navigationBarEdgeInset = (8, 24, .noMetric, 24)
         self.listContentTopInset = 40
     }
+
+    func continueActionForExport(accountCount: Int) -> ButtonStyle {
+        let title: String
+
+        if accountCount == 0 {
+            title = "algorand-secure-backup-account-list-action-title".localized
+        } else if accountCount == 1 {
+            title = "algorand-secure-backup-account-list-action-title-singular".localized
+        } else {
+            title = "algorand-secure-backup-account-list-action-title-plural".localized(params: "\(accountCount)")
+        }
+
+        var buttonStyleAttributes = [ButtonStyle.Attribute]()
+
+        if let font = continueAction.font {
+            buttonStyleAttributes.append(.font(font))
+        }
+
+        if let titleColor = continueAction.titleColor {
+            buttonStyleAttributes.append(.titleColor(titleColor))
+        }
+
+        if let backgroundImage = continueAction.backgroundImage {
+            buttonStyleAttributes.append(.backgroundImage(backgroundImage))
+        }
+
+        if let titleColor = continueAction.titleColor {
+            buttonStyleAttributes.append(.titleColor(titleColor))
+        }
+
+        buttonStyleAttributes.append(.title(title))
+
+        return ButtonStyle(attributes: buttonStyleAttributes)
+    }
+
+    func continueActionForRestore(accountCount: Int) -> ButtonStyle {
+        let title: String
+
+        if accountCount == 0 {
+            title = "algorand-secure-backup-account-list-restore-action-title".localized
+        } else if accountCount == 1 {
+            title = "algorand-secure-backup-account-list-restore-action-title-singular".localized
+        } else {
+            title = "algorand-secure-backup-account-list-restore-action-title-plural".localized(params: "\(accountCount)")
+        }
+
+        var buttonStyleAttributes = [ButtonStyle.Attribute]()
+
+        if let font = continueAction.font {
+            buttonStyleAttributes.append(.font(font))
+        }
+
+        if let titleColor = continueAction.titleColor {
+            buttonStyleAttributes.append(.titleColor(titleColor))
+        }
+
+        if let backgroundImage = continueAction.backgroundImage {
+            buttonStyleAttributes.append(.backgroundImage(backgroundImage))
+        }
+
+        if let titleColor = continueAction.titleColor {
+            buttonStyleAttributes.append(.titleColor(titleColor))
+        }
+
+        buttonStyleAttributes.append(.title(title))
+
+        return ButtonStyle(attributes: buttonStyleAttributes)
+    }
 }
