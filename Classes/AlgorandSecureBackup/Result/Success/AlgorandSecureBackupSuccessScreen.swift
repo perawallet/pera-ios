@@ -21,10 +21,6 @@ import MacaroonUIKit
 final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     typealias EventHandler = (Event, AlgorandSecureBackupSuccessScreen) -> Void
 
-    override var hidesCloseBarButtonItem: Bool {
-        return true
-    }
-
     var eventHandler: EventHandler?
 
     private lazy var contextView = UIView()
@@ -74,10 +70,12 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+        let closeButtonItem = ALGBarButtonItem(kind: .close(nil)) { [weak self] in
             guard let self else { return }
             self.eventHandler?(.complete, self)
         }
+
+        hidesCloseBarButtonItem = true
 
         leftBarButtonItems = [closeButtonItem]
     }

@@ -21,8 +21,8 @@ struct SelectAccountNoContentViewModel:
     NoContentViewModel,
     Hashable {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init(_ type: TransactionAction) {
         bindIcon(type)
@@ -49,13 +49,11 @@ extension SelectAccountNoContentViewModel {
             titleText = "empty-accounts-title"
         }
         
-        self.title = .attributedString(
-            titleText
-                .localized
-                .bodyLargeMedium(
-                    alignment: .center
-                )
-        )
+        self.title = titleText
+            .localized
+            .bodyLargeMedium(
+                alignment: .center
+            )
     }
     
     private mutating func bindBody(_ type: TransactionAction) {
@@ -67,13 +65,11 @@ extension SelectAccountNoContentViewModel {
             bodyText = "empty-accounts-detail"
         }
         
-        self.body = .attributedString(
-            bodyText
-                .localized
-                .bodyRegular(
-                    alignment: .center
-                )
-        )
+        self.body = bodyText
+            .localized
+            .bodyRegular(
+                alignment: .center
+            )
     }
 }
 

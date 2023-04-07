@@ -21,10 +21,6 @@ import UIKit
 final class AlgorandSecureBackupErrorScreen: ScrollScreen {
     typealias EventHandler = (Event, AlgorandSecureBackupErrorScreen) -> Void
 
-    override var hidesCloseBarButtonItem: Bool {
-        return true
-    }
-
     var eventHandler: EventHandler?
 
     private lazy var contextView = UIView()
@@ -58,10 +54,12 @@ final class AlgorandSecureBackupErrorScreen: ScrollScreen {
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+        let closeButtonItem = ALGBarButtonItem(kind: .close(nil)) { [weak self] in
             guard let self else { return }
             self.dismissScreen()
         }
+        
+        hidesCloseBarButtonItem = true
 
         leftBarButtonItems = [closeButtonItem]
     }

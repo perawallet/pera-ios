@@ -177,8 +177,7 @@ final class AlgorandSecureBackupImportSuccessScreenLocalDataController:
         let pushNotificationController = PushNotificationController(
             target: ALGAppTarget.current,
             session: configuration.session!,
-            api: configuration.api!,
-            bannerController: configuration.bannerController
+            api: configuration.api!
         )
 
         let authenticatedUser = session.authenticatedUser ?? User()

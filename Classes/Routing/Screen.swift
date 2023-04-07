@@ -326,7 +326,6 @@ indirect enum Screen {
     case algorandSecureBackupRestoreAccountList(accountImportParameters: [AccountImportParameters], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupRecoverMnemonicScreen.EventHandler)
     case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
-    case importAccountSuccess(importedAccounts: [Account], unimportedAccounts: [Account], eventHandler: WebImportSuccessScreen.EventHandler)
     case buySellOptions(eventHandler: BuySellOptionsScreen.EventHandler)
     case bidaliIntroduction
     case bidaliDappDetail(account: AccountHandle)
