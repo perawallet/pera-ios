@@ -127,6 +127,11 @@ extension AlgorandSecureBackupAccountListLocalDataController {
                     $0.value
                 }
 
+        if accounts.isEmpty {
+            addEmptySection(&snapshot)
+            return
+        }
+
         addAccountItems(&snapshot, accounts: accounts)
     }
 
@@ -185,6 +190,16 @@ extension AlgorandSecureBackupAccountListLocalDataController {
         snapshot.appendItems(
             accountItems,
             toSection: .accounts
+        )
+    }
+
+    private func addEmptySection(
+        _ snapshot: inout Snapshot
+    ) {
+        snapshot.appendSections([.empty])
+        snapshot.appendItems(
+            [ .noContent ],
+            toSection: .empty
         )
     }
 }

@@ -1407,6 +1407,7 @@
 "algorand-secure-backup-account-list-restore-action-title" = "Restore account";
 "algorand-secure-backup-account-list-restore-action-title-singular" = "Restore account (1)";
 "algorand-secure-backup-account-list-restore-action-title-plural" = "Restore accounts (%@)";
+"algorand-secure-backup-account-list-no-content-body" = "We couldn't find any accounts\neligible for backup.";
 "algorand-secure-backup-success-header-title" = "Your backup file is ready";
 "algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
 "algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";

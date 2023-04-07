@@ -46,13 +46,20 @@ final class AlgorandSecureBackupAccountListDataSource:
                     cell.bindData(cellItem.viewModel)
                     return cell
                 }
+            case .noContent:
+                let cell = collectionView.dequeue(
+                    NoContentCell.self,
+                    at: indexPath
+                )
+                cell.bindData(NoAccountCellViewModel())
+                return cell
             }
         }
-
 
         [
             AlgorandSecureBackupAccountListAccountsHeader.self,
             AlgorandSecureBackupAccountListAccountCell.self,
+            NoContentCell.self
         ].forEach {
             collectionView.register($0)
         }

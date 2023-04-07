@@ -117,13 +117,15 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
     private func addAccountsSection(
         _ snapshot: inout Snapshot
     ) {
-        var accountsDictionary: [String: AccountImportParameters] = [:]
+        let algorandSDK = AlgorandSDK()
+        let filteredAccounts = accountImportParameters.filter { $0.isImportable(using: algorandSDK) }
 
-        accountImportParameters.forEach { accountParameter in
-            accountsDictionary[accountParameter.address] = accountParameter
+        if filteredAccounts.isEmpty {
+            addEmptySection(&snapshot)
+            return
         }
 
-        let restoredAccounts = accountImportParameters.map { accountParameter in
+        let restoredAccounts = filteredAccounts.map { accountParameter in
             let accountAddress = accountParameter.address
 
             let accountInformation = AccountInformation(
@@ -200,6 +202,15 @@ extension AlgorandSecureBackupRestoreAccountListLocalDataController {
         snapshot.appendItems(
             accountItems,
             toSection: .accounts
+        )
+    }
+
+    private func addEmptySection(
+        _ snapshot: inout Snapshot
+    ) {
+        snapshot.appendItems(
+            [ .noContent ],
+            toSection: .empty
         )
     }
 }
