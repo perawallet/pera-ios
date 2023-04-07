@@ -20,6 +20,11 @@ import Foundation
 /// <todo>: Change name as `BiometricAuthenticator`
 /// <mark>: LocalAuthenticator
 /// Local authenticator does biometric authentication with using KeychainAccess through `session`
+/// Refactor the approach for local authentication.
+/// - We should decouple the session and authenticator, there is no point to involve the session for this approach.
+/// - We should decouple the keychain access internally, and have a protocol-based approach for storage.
+/// - We should handle both the biometric authentication and pinched authentication with the new approach, and it should be easy to use, preferably one function whenever we need the local authentication for a task. Chain of responsibility design pattern may be used for authentication methods like biometric, pincode etc.
+/// - Rename as Authenticator or InDeviceAuthenticator
 class LocalAuthenticator {
     private let session: Session?
 
@@ -39,16 +44,15 @@ extension LocalAuthenticator {
     }
 
     func authenticate() throws {
+        guard hasAuthentication() else {
+            throw LAError.biometricNotSet
+        }
+
         guard let session else {
             throw LAError.invalidSession
         }
 
-        if session.hasBiometricPassword() {
-            try session.checkBiometricPassword()
-            return
-        }
-
-        throw LAError.biometricNotSet
+        try session.checkBiometricPassword()
     }
 
     func setBiometricPassword() throws {
@@ -78,5 +82,5 @@ enum LAError: Error {
     /// <note> Thrown when biometric authentication is not set
     case biometricNotSet
     /// <note> Thrown when other errors are thrown by the system.
-    case other(Error)
+    case unexpected(Error)
 }

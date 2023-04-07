@@ -430,7 +430,7 @@ extension AlgorandSecureBackupMnemonicsScreen {
         }
 
         let cryptor = Cryptor(data: cipherText)
-        let backupParameters = BackupParameters(deviceID: deviceId, accounts: getAccountImportParameters())
+        let backupParameters = BackupParameters(accounts: getAccountImportParameters(), deviceID: deviceId)
         do {
             let encryptedData = try cryptor.encrypt(data: backupParameters.encoded())
 

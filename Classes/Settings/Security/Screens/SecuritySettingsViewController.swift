@@ -141,7 +141,7 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
                 return cell
             case .pinCodeChange:
                 let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-                cell.bindData(SettingsDetailViewModel(settings: setting))
+                cell.bindData(SettingsDetailViewModel(settingsItem: setting))
                 return cell
             case .localAuthentication:
                 let hasBiometricAuthentication = localAuthenticator.hasAuthentication()
@@ -197,19 +197,20 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
 
             do {
                 try localAuthenticator.setBiometricPassword()
-            } catch {
+            } catch let error as LAError {
                 defer {
                     settingsToggleCell.contextView.setToggleOn(false, animated: true)
                 }
 
-                guard let laError = error as? LAError else { return }
-
-                switch laError {
-                case .other:
+                switch error {
+                case .unexpected:
                     presentDisabledLocalAuthenticationAlert()
                 default:
                     break
                 }
+            } catch {
+                presentDisabledLocalAuthenticationAlert()
+                settingsToggleCell.contextView.setToggleOn(false, animated: true)
             }
 
         default:
@@ -232,8 +233,16 @@ extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
                 }
 
         if isConfirmed {
-            try? localAuthenticator.removeBiometricPassword()
-            cell.contextView.setToggleOn(false, animated: true)
+            do {
+                try localAuthenticator.removeBiometricPassword()
+                cell.contextView.setToggleOn(false, animated: true)
+            } catch {
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "local-authentication-disabled-error-message".localized
+                )
+                cell.contextView.setToggleOn(true, animated: false)
+            }
         } else {
             cell.contextView.setToggleOn(true, animated: true)
         }

@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUtils
 
-final class WebImportSuccessScreenLocalDataController:
+class WebImportSuccessScreenLocalDataController:
     WebImportSuccessScreenDataController {
 
     var eventHandler: ((WebImportSuccessScreenDataControllerEvent) -> Void)?
@@ -32,9 +32,7 @@ final class WebImportSuccessScreenLocalDataController:
     private var accountModelsCache: [String: Account] = [:]
     private var accountViewModelsCache: [String: AccountListItemViewModel] = [:]
 
-
-    private let configuration: ImportAccountScreen.Configuration
-    private let mode: WebImportSuccessScreenLocalDataController.Mode
+    private let result: ImportAccountScreen.Result
 
     subscript(address: String) -> Account? {
         findModel(for: address)
@@ -44,13 +42,28 @@ final class WebImportSuccessScreenLocalDataController:
         findViewModel(for: address)
     }
 
-    init(
-        configuration: ImportAccountScreen.Configuration,
-        mode: WebImportSuccessScreenLocalDataController.Mode
-    ) {
-        self.configuration = configuration
-        self.mode = mode
+    init(result: ImportAccountScreen.Result) {
+        self.result = result
     }
+
+    func createHeaderItem(importedAccountCount: Int) -> [WebImportSuccessListViewItem]{
+        return [.header(.init(importedAccountCount: importedAccountCount))]
+    }
+
+    func createMissingAccountItem(
+        unimportedAccountCount: Int,
+        unsupportedAccountCount: Int
+    ) -> [WebImportSuccessListViewItem] {
+        return [
+            .missingAccounts(
+                .init(
+                    unimportedAccountCount: unimportedAccountCount,
+                    unsupportedAccountCount: unsupportedAccountCount
+                )
+            )
+        ]
+    }
+
 }
 
 extension WebImportSuccessScreenLocalDataController {
@@ -82,10 +95,13 @@ extension WebImportSuccessScreenLocalDataController {
 
             snapshot.appendSections([.accounts])
 
-            let importedAccounts = self.configuration.importedAccounts
+            let importedAccounts = self.result.importedAccounts
             let importedAccountCount = importedAccounts.count
-            let unimportedAccountCount = self.configuration.unimportedAccounts.count
-            let unsupportedAccountCount = self.configuration.unsupportedAccountCount
+            let unimportedAccountCount = self.result.unimportedAccounts.count
+            let algorandSDK = AlgorandSDK()
+            let unsupportedAccountCount = self.result.parameters.filter {
+                !$0.isImportable(using: algorandSDK)
+            }.count
 
             snapshot.appendItems(self.createHeaderItem(importedAccountCount: importedAccountCount))
 
@@ -111,41 +127,6 @@ extension WebImportSuccessScreenLocalDataController {
             [weak self] in
             guard let self = self else { return }
             self.publish(.didUpdate(snapshot()))
-        }
-    }
-
-    private func createHeaderItem(importedAccountCount: Int) -> [WebImportSuccessListViewItem]{
-        switch mode {
-        case .webImport:
-            return [.header(.init(importedAccountCount: importedAccountCount))]
-        case .algorandSecureBackup:
-            return [.asbHeader(.init(importedAccountCount: importedAccountCount))]
-        }
-    }
-
-    private func createMissingAccountItem(
-        unimportedAccountCount: Int,
-        unsupportedAccountCount: Int
-    ) -> [WebImportSuccessListViewItem] {
-        switch mode {
-        case .webImport:
-            return [
-                .missingAccounts(
-                    .init(
-                        unimportedAccountCount: unimportedAccountCount,
-                        unsupportedAccountCount: unsupportedAccountCount
-                    )
-                )
-            ]
-        case .algorandSecureBackup:
-            return [
-                .asbMissingAccounts(
-                    .init(
-                        unimportedAccountCount: unimportedAccountCount,
-                        unsupportedAccountCount: unsupportedAccountCount
-                    )
-                )
-            ]
         }
     }
 
@@ -193,12 +174,5 @@ extension WebImportSuccessScreenLocalDataController {
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
-    }
-}
-
-extension WebImportSuccessScreenLocalDataController {
-    enum Mode {
-        case webImport
-        case algorandSecureBackup
     }
 }

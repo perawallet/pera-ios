@@ -23,7 +23,6 @@ final class RecoverAccountViewController: BaseViewController {
         presentingScreen: self
     )
     private lazy var secureBackupCoordinator = AlgorandSecureBackupImportFlowCoordinator(
-        configuration: configuration,
         presentingScreen: self
     )
     private let flow: AccountSetupFlow

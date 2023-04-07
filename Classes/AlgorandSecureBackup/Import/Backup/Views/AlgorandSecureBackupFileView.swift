@@ -12,43 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportFileView.swift
+//   AlgorandSecureBackupFileView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AlgorandSecureBackupImportFileView:
+final class AlgorandSecureBackupFileView:
     View,
     ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performClick: GestureInteraction()
+        .performClickAction: GestureInteraction(),
+        .performClickContent: GestureInteraction(),
     ]
 
-    private lazy var stateBackgroundView = TripleShadowView()
-    private lazy var stateImageView = UIImageView()
+    private lazy var iconBackgroundView = TripleShadowView()
+    private lazy var iconView = UIImageView()
     private lazy var titleView = UILabel()
     private lazy var subtitleView = UILabel()
     private lazy var actionView = UIButton()
 
-    func customize(_ theme: AlgorandSecureBackupImportFileViewTheme) {
-        draw(corner: Corner(radius: 8))
+    func customize(_ theme: AlgorandSecureBackupFileViewTheme) {
+        draw(corner: theme.corner)
 
         addBackground(theme)
-        addStateBackground(theme)
-        addStateImage(theme)
-        addTitle(theme)
-        addSubtitle(theme)
-        addAction(theme)
+        addIcon(theme)
+        addContent(theme)
 
         startPublishing(
-            event: .performClick,
+            event: .performClickContent,
             for: self
         )
 
         startPublishing(
-            event: .performClick,
+            event: .performClickAction,
             for: actionView
         )
     }
@@ -57,13 +55,16 @@ final class AlgorandSecureBackupImportFileView:
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bindData(_ viewModel: AlgorandSecureBackupImportFileViewModel?) {
+    func bindData(_ viewModel: AlgorandSecureBackupFileViewModel?) {
+
         if let style = viewModel?.imageStyle {
-            stateImageView.customizeAppearance(style)
+            iconView.customizeAppearance(style)
+        } else {
+            iconView.customizeAppearance([])
         }
 
         let image = viewModel?.image
-        image?.load(in: stateImageView)
+        image?.load(in: iconView)
 
         if let title = viewModel?.title {
             title.load(in: titleView)
@@ -81,47 +82,61 @@ final class AlgorandSecureBackupImportFileView:
 
         let isActionVisible = viewModel?.isActionVisible ?? false
         actionView.isHidden = !isActionVisible
+
+        if let style = viewModel?.actionTheme {
+            actionView.customizeAppearance(style)
+        } else {
+            actionView.customizeAppearance(NoStyleSheet())
+        }
     }
 }
 
-extension AlgorandSecureBackupImportFileView {
-    private func addBackground(_ theme: AlgorandSecureBackupImportFileViewTheme) {
+extension AlgorandSecureBackupFileView {
+    private func addBackground(_ theme: AlgorandSecureBackupFileViewTheme) {
         customizeAppearance(theme.background)
     }
 
-    private func addStateBackground(_ theme: AlgorandSecureBackupImportFileViewTheme) {
-        stateBackgroundView.drawAppearance(shadow: theme.stateFirstShadow)
-        stateBackgroundView.drawAppearance(secondShadow: theme.stateSecondShadow)
-        stateBackgroundView.drawAppearance(thirdShadow: theme.stateThirdShadow)
+    private func addIcon(_ theme: AlgorandSecureBackupFileViewTheme) {
+        addIconBackground(theme)
 
-        addSubview(stateBackgroundView)
-        stateBackgroundView.snp.makeConstraints {
-            $0.top == theme.stateTopInset
-            $0.centerX == 0
-            $0.fitToSize(theme.stateSize)
-        }
-    }
-
-    private func addStateImage(_ theme: AlgorandSecureBackupImportFileViewTheme) {
-        stateBackgroundView.addSubview(stateImageView)
-        stateImageView.snp.makeConstraints {
+        iconBackgroundView.addSubview(iconView)
+        iconView.snp.makeConstraints {
             $0.center == 0
-            $0.fitToSize((24, 24))
+            $0.fitToSize(theme.iconSize)
         }
     }
 
-    private func addTitle(_ theme: AlgorandSecureBackupImportFileViewTheme) {
+    private func addIconBackground(_ theme: AlgorandSecureBackupFileViewTheme) {
+        iconBackgroundView.drawAppearance(shadow: theme.iconFirstShadow)
+        iconBackgroundView.drawAppearance(secondShadow: theme.iconSecondShadow)
+        iconBackgroundView.drawAppearance(thirdShadow: theme.iconThirdShadow)
+
+        addSubview(iconBackgroundView)
+        iconBackgroundView.snp.makeConstraints {
+            $0.top == theme.iconTopInset
+            $0.centerX == 0
+            $0.fitToSize(theme.iconBackgroundSize)
+        }
+    }
+
+    private func addContent(_ theme: AlgorandSecureBackupFileViewTheme) {
+        addTitle(theme)
+        addSubtitle(theme)
+        addAction(theme)
+    }
+
+    private func addTitle(_ theme: AlgorandSecureBackupFileViewTheme) {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.top == stateBackgroundView.snp.bottom + theme.spacingBetweenStateAndTitle
+            $0.top == iconBackgroundView.snp.bottom + theme.spacingBetweenIconAndTitle
             $0.leading == 0
             $0.trailing == 0
         }
     }
 
-    private func addSubtitle(_ theme: AlgorandSecureBackupImportFileViewTheme) {
+    private func addSubtitle(_ theme: AlgorandSecureBackupFileViewTheme) {
         subtitleView.customizeAppearance(theme.subtitle)
 
         addSubview(subtitleView)
@@ -132,7 +147,7 @@ extension AlgorandSecureBackupImportFileView {
         }
     }
 
-    private func addAction(_ theme: AlgorandSecureBackupImportFileViewTheme) {
+    private func addAction(_ theme: AlgorandSecureBackupFileViewTheme) {
         actionView.customizeAppearance(theme.action)
 
         addSubview(actionView)
@@ -143,8 +158,9 @@ extension AlgorandSecureBackupImportFileView {
     }
 }
 
-extension AlgorandSecureBackupImportFileView {
+extension AlgorandSecureBackupFileView {
     enum Event {
-        case performClick
+        case performClickContent
+        case performClickAction
     }
 }
