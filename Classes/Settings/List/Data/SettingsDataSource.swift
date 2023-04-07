@@ -28,9 +28,7 @@ final class SettingsDataSource: NSObject {
         accountSettings, appPreferenceSettings, supportSettings
     ]
 
-    var accountSettings: [AccountSettings] {
-        createAccountSettings()
-    }
+    private(set) lazy var accountSettings: [AccountSettings] = createAccountSettings()
 
     private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [
         .language, .currency, .appearance
@@ -49,13 +47,31 @@ final class SettingsDataSource: NSObject {
 }
 
 extension SettingsDataSource {
+    func updateAccountSettings() {
+        self.accountSettings = createAccountSettings()
+    }
+
     private func createAccountSettings() -> [AccountSettings] {
-        let accounts = session?.authenticatedUser?.accounts.filter { accountInformation in
-            accountInformation.type == .standard
-        } ?? []
+        let secureBackupSettings = createSecureBackupSettings()
+
+        return [
+            secureBackupSettings,
+            .security,
+            .contacts,
+            .notifications,
+            .walletConnect
+        ]
+    }
+
+    private func createSecureBackupSettings() -> AccountSettings {
+        let accounts = session?.authenticatedUser?.accounts ?? []
 
         var numberOfAccountsNotBackedUp = 0
         for account in accounts {
+            guard account.type == .standard else {
+                continue
+            }
+
             if session?.backups[account.address] == nil {
                 numberOfAccountsNotBackedUp = numberOfAccountsNotBackedUp.advanced(by: 1)
             }
@@ -69,13 +85,7 @@ extension SettingsDataSource {
             secureBackupSettings = .secureBackup(numberOfAccountsNotBackedUp: numberOfAccountsNotBackedUp)
         }
 
-        return [
-            secureBackupSettings,
-            .security,
-            .contacts,
-            .notifications,
-            .walletConnect
-        ]
+        return secureBackupSettings
     }
 }
 
@@ -118,7 +128,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> SettingsDetailCell {
         let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
-        cell.bindData(SettingsDetailViewModel(settings: setting))
+        cell.bindData(SettingsDetailViewModel(settingsItem: setting))
         return cell
     }
     

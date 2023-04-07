@@ -57,7 +57,7 @@ final class AccountRecoverViewController: BaseScrollViewController {
         return dataController
     }()
 
-    private lazy var mnemonicsParser = MnemonicsParser()
+    private lazy var mnemonicsParser = MnemonicsParser(wordCount: 25)
 
     private var recoverInputViews: [RecoverInputView] {
         return accountRecoverView.recoverInputViews
@@ -329,8 +329,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                 fillMnemonics(words)
                 recoverButton.isEnabled = true
                 return false
-            case .asbFull:
-                return false
             }
         } catch {
             /// <note>
@@ -359,7 +357,7 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController {
     private func getMnemonics() -> String? {
         let inputs = recoverInputViews.compactMap { $0.input }.filter { !$0.isEmpty }
-        if inputs.count == Mnemonics.fullCount {
+        if inputs.count == mnemonicsParser.wordCount {
             return inputs.joined(separator: " ")
         }
         return nil
@@ -403,8 +401,6 @@ extension AccountRecoverViewController {
             case .full(let words):
                 fillMnemonics(words)
                 recoverButton.isEnabled = true
-            case .asbFull:
-                break
             }
         } catch {
             /// <note>

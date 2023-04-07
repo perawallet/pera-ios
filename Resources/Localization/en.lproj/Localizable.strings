@@ -150,6 +150,7 @@
 "local-authentication-no" = "Do not use Face ID/Touch ID";
 "local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 "local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"local-authentication-disabled-error-message" = "Unable to disable Face ID/Touch ID, please try again later";
 "title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up
@@ -1422,6 +1423,8 @@
 "algorand-secure-backup-mnemonics-regenerate-action-title" = "Create New 12-Word Key";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-title" = "Create new key";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-message" = "You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\n\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding.";
+"algorand-secure-backup-mnemonics-error-title" = "Wrong 12-word key";
+"algorand-secure-backup-mnemonics-error-message" = "Please try again by entering the correct 12-word key.";
 
 "algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title" = "I understand, proceed";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title" = "Cancel";

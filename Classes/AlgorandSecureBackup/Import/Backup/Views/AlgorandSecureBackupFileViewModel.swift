@@ -18,19 +18,21 @@ import Foundation
 import MacaroonUIKit
 
 struct AlgorandSecureBackupFileViewModel: ViewModel {
+    var isActionVisible: Bool {
+        actionTheme != nil
+    }
+
     private(set) var image: ImageProvider?
     private(set) var imageStyle: ImageStyle?
     private(set) var title: TextProvider?
     private(set) var subtitle: TextProvider?
-    private(set) var isActionVisible: Bool = false
     private(set) var actionTheme: ButtonStyle?
-
 
     init(state: State) {
         bindImage(for: state)
         bindTitle(for: state)
         bindSubtitle(for: state)
-        bindActionVisibility(for: state)
+        bindActionTheme(for: state)
     }
 }
 
@@ -62,24 +64,31 @@ extension AlgorandSecureBackupFileViewModel {
         case .uploaded:
             title = "algorand-secure-backup-import-backup-upload-successful-title".localized.bodyMedium(alignment: .center)
         case .uploadFailed(let validationError):
-            let errorTitle: String
-
-            switch validationError {
-            case .emptySource:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
-            case .wrongFormat:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
-            case .unsupportedVersion:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
-            case .cipherSuiteUnknown, .cipherSuiteInvalid:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
-            case .jsonSerialization:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
-            case .unauthorized:
-                errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
-            }
-            title = errorTitle.bodyMedium(alignment: .center)
+            bindValidationError(validationError)
         }
+    }
+
+    private mutating func bindValidationError(
+        _ validationError: BackupValidationError
+    ) {
+        let errorTitle: String
+
+        switch validationError {
+        case .emptySource:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-failed-subtitle".localized
+        case .wrongFormat:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+        case .unsupportedVersion:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
+        case .cipherSuiteUnknown, .cipherSuiteInvalid:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
+        case .jsonSerialization:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
+        case .unauthorized:
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+        }
+
+        title = errorTitle.bodyMedium(alignment: .center)
     }
 
     private mutating func bindSubtitle(for state: State) {
@@ -93,17 +102,15 @@ extension AlgorandSecureBackupFileViewModel {
         }
     }
 
-    private mutating func bindActionVisibility(for state: State) {
+    private mutating func bindActionTheme(for state: State) {
         let theme = AlgorandSecureBackupFileViewTheme()
 
         switch state {
         case .empty:
-            isActionVisible = false
+            actionTheme = nil
         case .uploaded:
-            isActionVisible = true
             actionTheme = theme.replaceAction
         case .uploadFailed:
-            isActionVisible = true
             actionTheme = theme.action
         }
     }
@@ -113,7 +120,7 @@ extension AlgorandSecureBackupFileViewModel {
     enum State {
         case empty
         case uploaded(fileName: String)
-        case uploadFailed(AlgorandSecureBackupImportBackupScreen.ValidationError)
+        case uploadFailed(BackupValidationError)
     }
 }
 

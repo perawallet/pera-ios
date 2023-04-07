@@ -241,11 +241,6 @@ extension ImportAccountScreen {
     }
 }
 
-struct TransferAccount {
-    let privateKey: Data
-    let accountInformation: AccountInformation
-}
-
 extension ImportAccountScreen {
     enum Event {
         case didCompleteImport(Result)

@@ -31,16 +31,19 @@ final class BiometricAuthenticationMigration {
             return
         }
 
-        defer {
-            session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
-        }
-
         switch localAuthenticationStatus {
         case .allowed:
-            session.setBiometricPasswordEnabled()
+            do {
+                try session.setBiometricPasswordEnabled()
+            } catch {
+                return
+            }
+
         default:
             break
         }
+
+        session.remove(with: StorableKeys.localAuthenticationStatus.rawValue, from: .defaults)
     }
 }
 
@@ -48,29 +51,4 @@ fileprivate enum Status: String {
     case allowed = "enabled"
     case notAllowed = "disabled"
     case none = "none"
-}
-
-extension Session {
-    private func savePasswordToKeychain() {
-        guard let password = passwordOnDatabase() else {
-            return
-        }
-
-        deletePasswordFromDatabase()
-        savePassword(password)
-    }
-
-    private func passwordOnDatabase() -> String? {
-        applicationConfiguration?.password
-    }
-
-    private func deletePasswordFromDatabase() {
-        guard hasPasswordOnDatabase() else {
-            return
-        }
-
-        if let config = applicationConfiguration {
-            config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
-        }
-    }
 }

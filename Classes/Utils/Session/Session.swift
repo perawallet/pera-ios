@@ -201,6 +201,7 @@ class Session: Storable {
                 /// <todo>: It may be saved as object instead of data to make it more efficient
                 let data = try newValue.encoded()
                 save(data, for: backupsKey, to: .defaults)
+                NotificationCenter.default.post(name: .backupCreated, object: self)
             } catch {
                 return
             }
@@ -279,9 +280,7 @@ extension Session {
 
 extension Session {
     var legacyLocalAuthenticationStatus: String? {
-        get {
-            return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
-        }
+        return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
     }
 
     func accountInformation(from address: String) -> AccountInformation? {
@@ -303,13 +302,19 @@ extension Session {
 
         do {
             try biometricStorage.set(passwordOnKeychain, key: passwordKey)
-            setBiometricPasswordEnabled()
+            // Note: To trigger Biometric Auth Dialog, we need to get it from biometric storage
+            let _ = try biometricStorage.get(passwordKey)
+            try setBiometricPasswordEnabled()
         } catch {
-            throw LAError.other(error)
+            try removeBiometricPassword()
         }
     }
 
     func checkBiometricPassword() throws {
+        guard hasBiometricPassword() else {
+            throw LAError.biometricNotSet
+        }
+
         guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
             throw LAError.passwordNotSet
         }
@@ -320,20 +325,21 @@ extension Session {
                 throw LAError.passwordMismatch
             }
         } catch {
-            throw LAError.other(error)
+            throw LAError.unexpected(error)
         }
     }
 
     func removeBiometricPassword() throws {
         privateStorage.remove(for: hasBiometricAuthenticationKey)
+        try biometricStorage.remove(passwordKey)
     }
 
     func hasBiometricPassword() -> Bool {
         (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
     }
 
-    func setBiometricPasswordEnabled() {
-        try? privateStorage.set("hasBiometricAuthentication", key: hasBiometricAuthenticationKey)
+    func setBiometricPasswordEnabled() throws {
+        try privateStorage.set("ok", key: hasBiometricAuthenticationKey)
     }
 }
 

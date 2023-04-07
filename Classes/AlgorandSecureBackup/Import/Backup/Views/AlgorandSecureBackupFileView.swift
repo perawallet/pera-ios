@@ -23,7 +23,8 @@ final class AlgorandSecureBackupFileView:
     ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performClick: GestureInteraction()
+        .performClickAction: GestureInteraction(),
+        .performClickContent: GestureInteraction(),
     ]
 
     private lazy var iconBackgroundView = TripleShadowView()
@@ -40,12 +41,12 @@ final class AlgorandSecureBackupFileView:
         addContent(theme)
 
         startPublishing(
-            event: .performClick,
+            event: .performClickContent,
             for: self
         )
 
         startPublishing(
-            event: .performClick,
+            event: .performClickAction,
             for: actionView
         )
     }
@@ -159,6 +160,7 @@ extension AlgorandSecureBackupFileView {
 
 extension AlgorandSecureBackupFileView {
     enum Event {
-        case performClick
+        case performClickContent
+        case performClickAction
     }
 }

@@ -1430,9 +1430,11 @@ class Router:
             let screen = AlgorandSecureBackupImportBackupScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupImportSuccess(result, eventHandler):
+        case let .algorandSecureBackupImportSuccess(accountImportParameters, selectedAccounts, eventHandler):
             let dataController = AlgorandSecureBackupImportSuccessScreenLocalDataController(
-                result: result
+                configuration: configuration,
+                accountImportParameters: accountImportParameters,
+                selectedAccounts: selectedAccounts
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
@@ -1440,9 +1442,9 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupRestoreAccountList(accounts, eventHandler):
+        case let .algorandSecureBackupRestoreAccountList(accountImportParameters, eventHandler):
             let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
-                restoredAccounts: accounts
+                accountImportParameters: accountImportParameters
             )
             let screen = AlgorandSecureBackupAccountRecoverListScreen(
                 dataController: dataController,
@@ -1450,9 +1452,9 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .algorandSecureBackupRecoverMnemonic(let backupFile, let eventHandler):
-            let screen = AlgorandSecureBackupImportRecoverMnemonicScreen(
-                backupFile: backupFile,
+        case .algorandSecureBackupRecoverMnemonic(let backup, let eventHandler):
+            let screen = AlgorandSecureBackupRecoverMnemonicScreen(
+                backup: backup,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler

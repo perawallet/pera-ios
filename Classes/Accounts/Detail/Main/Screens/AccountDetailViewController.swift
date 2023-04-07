@@ -395,10 +395,9 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             } catch {
                 presentPasswordConfirmScreen()
             }
-            return
+        } else {
+            presentPasswordConfirmScreen()
         }
-
-        presentPasswordConfirmScreen()
     }
 
     private func presentPassphraseView() {
