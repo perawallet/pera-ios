@@ -15,6 +15,7 @@
 //
 //  Router.swift
 
+import CoreServices
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
@@ -1389,10 +1390,9 @@ class Router:
             let screen = WebImportErrorScreen(error: error)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .importAccountSuccess(importConfiguration, eventHandler):
+        case let .importAccountSuccess(result, eventHandler):
             let dataController = WebImportSuccessScreenLocalDataController(
-                configuration: importConfiguration,
-                mode: .webImport
+                result: result
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
@@ -1408,9 +1408,8 @@ class Router:
             let dataController = AlgorandSecureBackupAccountListLocalDataController(
                 sharedDataController: appConfiguration.sharedDataController
             )
-            let screen = AlgorandSecureBackupAccountListScreen(
+            let screen = AlgorandSecureBackupAccountExportListScreen(
                 dataController: dataController,
-                mode: .export,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
@@ -1419,8 +1418,8 @@ class Router:
             let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupSuccess(backupFile, eventHandler):
-            let screen = AlgorandSecureBackupSuccessScreen(backupFile: backupFile, configuration: configuration)
+        case let .algorandSecureBackupSuccess(backup, eventHandler):
+            let screen = AlgorandSecureBackupSuccessScreen(backup: backup, configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
         case .algorandSecureBackupError(let eventHandler):
@@ -1431,10 +1430,11 @@ class Router:
             let screen = AlgorandSecureBackupImportBackupScreen(configuration: configuration)
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupImportSuccess(importConfiguration, eventHandler):
-            let dataController = WebImportSuccessScreenLocalDataController(
-                configuration: importConfiguration,
-                mode: .algorandSecureBackup
+        case let .algorandSecureBackupImportSuccess(accountImportParameters, selectedAccounts, eventHandler):
+            let dataController = AlgorandSecureBackupImportSuccessScreenLocalDataController(
+                configuration: configuration,
+                accountImportParameters: accountImportParameters,
+                selectedAccounts: selectedAccounts
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
@@ -1442,17 +1442,34 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case let .algorandSecureBackupRestoreAccountList(accounts, eventHandler):
+        case let .algorandSecureBackupRestoreAccountList(accountImportParameters, eventHandler):
             let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
-                restoredAccounts: accounts
+                accountImportParameters: accountImportParameters
             )
-            let screen = AlgorandSecureBackupAccountListScreen(
+            let screen = AlgorandSecureBackupAccountRecoverListScreen(
                 dataController: dataController,
-                mode: .restore,
                 configuration: configuration
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupRecoverMnemonic(let backup, let eventHandler):
+            let screen = AlgorandSecureBackupRecoverMnemonicScreen(
+                backup: backup,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importTextDocumentPicker(let delegate):
+            let documentPicker: UIDocumentPickerViewController
+            if #available(iOS 14.0, *) {
+                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
+            } else {
+                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
+            }
+            documentPicker.allowsMultipleSelection = false
+            documentPicker.shouldShowFileExtensions = true
+            documentPicker.delegate = delegate
+            viewController = documentPicker
         }
 
         return viewController as? T

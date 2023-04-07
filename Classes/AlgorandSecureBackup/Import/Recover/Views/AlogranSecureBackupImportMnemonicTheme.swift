@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountRecoverViewTheme.swift
+//   AlogranSecureBackupImportMnemonicTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol AccountRecoverViewTheme: StyleSheet, LayoutSheet {
-    var title: TextStyle { get }
-
-    var horizontalStackViewTopInset: LayoutMetric { get }
-    var horizontalStackViewSpacing: LayoutMetric { get }
-    var horizontalInset: LayoutMetric { get }
-    var topInset: LayoutMetric { get }
-    var verticalStackViewSpacing: LayoutMetric { get }
-}
-
-struct AccountRecoverViewCommonTheme: AccountRecoverViewTheme {
+struct AlogranSecureBackupImportMnemonicTheme: AccountRecoverViewTheme {
     let title: TextStyle
 
     let horizontalStackViewTopInset: LayoutMetric
@@ -43,8 +31,8 @@ struct AccountRecoverViewCommonTheme: AccountRecoverViewTheme {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .text("recover-from-seed-title".localized)
+            .font(Typography.titleMedium()),
+            .text("algorand-secure-backup-import-recover-mnemonic-title".localized)
         ]
 
         self.horizontalStackViewTopInset = 37

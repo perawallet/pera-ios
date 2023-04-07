@@ -63,7 +63,7 @@ struct AlgorandSecureBackupImportBackupScreenTheme: LayoutSheet, StyleSheet {
         ]
         pasteActionTitleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
         nextAction = [
-            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .titleColor([ .normal(Colors.Button.Primary.text), .disabled(Colors.Button.Primary.disabledText) ]),
             .font(Typography.bodyMedium()),
             .backgroundImage([
                 .normal("components/buttons/primary/bg"),
