@@ -19,7 +19,11 @@ import MacaroonUIKit
 import UIKit
 
 final class AlgorandSecureBackupErrorScreen: ScrollScreen {
-    typealias EventHandler = (Event) -> Void
+    typealias EventHandler = (Event, AlgorandSecureBackupErrorScreen) -> Void
+
+    override var hidesCloseBarButtonItem: Bool {
+        return true
+    }
 
     var eventHandler: EventHandler?
 
@@ -37,6 +41,29 @@ final class AlgorandSecureBackupErrorScreen: ScrollScreen {
         super.viewDidLoad()
 
         addUI()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        disableInteractivePopGesture()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        enableInteractivePopGesture()
+    }
+
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+
+        let closeButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            guard let self else { return }
+            self.dismissScreen()
+        }
+
+        leftBarButtonItems = [closeButtonItem]
     }
 
     override func addFooter() {
@@ -123,7 +150,7 @@ extension AlgorandSecureBackupErrorScreen {
 extension AlgorandSecureBackupErrorScreen {
     @objc
     private func performTryAgainAction() {
-        eventHandler?(.performTryAgain)
+        eventHandler?(.performTryAgain, self)
     }
 }
 

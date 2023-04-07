@@ -160,3 +160,13 @@ extension UIViewController {
         view.endEditing(force)
     }
 }
+
+extension UIViewController {
+    func disableInteractivePopGesture() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+
+    func enableInteractivePopGesture() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+}

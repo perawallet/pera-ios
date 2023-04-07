@@ -23,7 +23,7 @@ final class FileInfoView:
     ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performCopyAction: UIBlockInteraction()
+        .performCopyAction: GestureInteraction()
     ]
 
     private lazy var iconView = UIImageView()
@@ -68,6 +68,11 @@ extension FileInfoView {
         addIcon(theme)
         addInfoContent(theme)
         addCopyAccessory(theme)
+        
+        startPublishing(
+            event: .performCopyAction,
+            for: self
+        )
     }
 
     private func addIcon(_ theme: FileInfoViewTheme) {
