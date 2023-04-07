@@ -19,29 +19,29 @@ import UIKit
 import MacaroonUIKit
 
 struct RekeyedAccountInformationAccountItemViewModel: ViewModel {
-    private(set) var from: AccountListItemWithActionViewModel?
-    private(set) var to: AccountListItemWithActionViewModel?
+    private(set) var sourceAccount: AccountListItemWithActionViewModel?
+    private(set) var authAccount: AccountListItemWithActionViewModel?
 
     init(
-        from: Account,
-        to: Account?
+        sourceAccount: Account,
+        authAccount: Account?
     ) {
-        bindFrom(from)
-        bindTo(from: from, to: to)
+        bindSourceAccount(sourceAccount)
+        bindAuthAccount(sourceAccount: sourceAccount, authAccount: authAccount)
     }
 }
 
 extension RekeyedAccountInformationAccountItemViewModel {
-    private mutating func bindFrom(_ from: Account) {
-        self.from = AccountInformationCopyAccountItemViewModel(from)
+    private mutating func bindSourceAccount(_ sourceAccount: Account) {
+        self.sourceAccount = AccountInformationCopyAccountItemViewModel(sourceAccount)
     }
 
-    private mutating func bindTo(from: Account, to: Account?) {
-        if let to {
-            self.to = AccountInformationUndoRekeyAccountItemViewModel(to)
+    private mutating func bindAuthAccount(sourceAccount: Account, authAccount: Account?) {
+        if let authAccount {
+            self.authAccount = AccountInformationUndoRekeyAccountItemViewModel(authAccount)
         } else {
-            let authAddress = from.authAddress.someString
-            self.to = AccountInformationNoAuthAccountItemViewModel(authAddress)
+            let authAddress = sourceAccount.authAddress.someString
+            self.authAccount = AccountInformationNoAuthAccountItemViewModel(authAddress)
         }
     }
 }

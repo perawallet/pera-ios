@@ -23,21 +23,21 @@ final class RekeyedAccountInformationAccountItemView:
     ViewModelBindable,
     UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .performFromAccountAction: UIBlockInteraction(),
-        .performToAccountAction: UIBlockInteraction()
+        .performSourceAccountAction: UIBlockInteraction(),
+        .performAuthAccountAction: UIBlockInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.VStackView()
-    private lazy var fromAccountItemView = AccountListItemWithActionView()
-    private lazy var toAccountItemView = AccountListItemWithActionView()
+    private lazy var sourceAccountItemView = AccountListItemWithActionView()
+    private lazy var authAccountItemView = AccountListItemWithActionView()
 
     func customize(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
         addContent(theme)
     }
 
     func bindData(_ viewModel: RekeyedAccountInformationAccountItemViewModel?) {
-        fromAccountItemView.bindData(viewModel?.from)
-        toAccountItemView.bindData(viewModel?.to)
+        sourceAccountItemView.bindData(viewModel?.sourceAccount)
+        authAccountItemView.bindData(viewModel?.authAccount)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -55,23 +55,23 @@ extension RekeyedAccountInformationAccountItemView {
             $0.trailing == 0
         }
 
-        addFromAccountItem(theme)
+        addSourceAccountItem(theme)
         addDivider(theme)
-        addToAccountItem(theme)
+        addAuthAccountItem(theme)
     }
 
-    private func addFromAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
-        fromAccountItemView.customize(theme.accountItem)
+    private func addSourceAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
+        sourceAccountItemView.customize(theme.accountItem)
 
-        contentView.addArrangedSubview(fromAccountItemView)
+        contentView.addArrangedSubview(sourceAccountItemView)
 
-        fromAccountItemView.snp.makeConstraints {
+        sourceAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
 
-        fromAccountItemView.startObserving(event: .performAction) {
+        sourceAccountItemView.startObserving(event: .performAction) {
             [unowned self] in
-            let interaction = self.uiInteractions[.performFromAccountAction]
+            let interaction = self.uiInteractions[.performSourceAccountAction]
             interaction?.publish()
         }
     }
@@ -115,18 +115,18 @@ extension RekeyedAccountInformationAccountItemView {
         }
     }
 
-    private func addToAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
-        toAccountItemView.customize(theme.accountItem)
+    private func addAuthAccountItem(_ theme: RekeyedAccountInformationAccountItemViewTheme) {
+        authAccountItemView.customize(theme.accountItem)
 
-        contentView.addArrangedSubview(toAccountItemView)
+        contentView.addArrangedSubview(authAccountItemView)
 
-        toAccountItemView.snp.makeConstraints {
+        authAccountItemView.snp.makeConstraints {
             $0.greaterThanHeight(theme.accountItemMinHeight)
         }
 
-        toAccountItemView.startObserving(event: .performAction) {
+        authAccountItemView.startObserving(event: .performAction) {
             [unowned self] in
-            let interaction = self.uiInteractions[.performToAccountAction]
+            let interaction = self.uiInteractions[.performAuthAccountAction]
             interaction?.publish()
         }
     }
@@ -134,7 +134,7 @@ extension RekeyedAccountInformationAccountItemView {
 
 extension RekeyedAccountInformationAccountItemView {
     enum Event {
-        case performFromAccountAction
-        case performToAccountAction
+        case performSourceAccountAction
+        case performAuthAccountAction
     }
 }

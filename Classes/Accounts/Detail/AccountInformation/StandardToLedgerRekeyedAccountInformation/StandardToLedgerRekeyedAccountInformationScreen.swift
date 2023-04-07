@@ -36,19 +36,19 @@ final class StandardToLedgerRekeyedAccountInformationScreen:
     private lazy var accountTypeInformationView = AccountTypeInformationView()
     private lazy var optionsView = AccountInformationOptionsView()
 
-    private let from: Account
-    private let to: Account
+    private let sourceAccount: Account
+    private let authAccount: Account
     private let copyToClipboardController: CopyToClipboardController
 
     private lazy var theme = StandardToLedgerRekeyedAccountInformationScreenTheme()
 
     init(
-        from: Account,
-        to: Account,
+        sourceAccount: Account,
+        authAccount: Account,
         copyToClipboardController: CopyToClipboardController
     ) {
-        self.from = from
-        self.to = to
+        self.sourceAccount = sourceAccount
+        self.authAccount = authAccount
         self.copyToClipboardController = copyToClipboardController
     }
 
@@ -117,12 +117,12 @@ extension StandardToLedgerRekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountItemView.startObserving(event: .performFromAccountAction) {
+        accountItemView.startObserving(event: .performSourceAccountAction) {
             [unowned self] in
-            self.copyToClipboardController.copyAddress(self.from)
+            self.copyToClipboardController.copyAddress(self.sourceAccount)
         }
 
-        accountItemView.startObserving(event: .performToAccountAction) {
+        accountItemView.startObserving(event: .performAuthAccountAction) {
             [unowned self] in
             self.eventHandler?(.performUndoRekey)
         }
@@ -193,8 +193,8 @@ extension StandardToLedgerRekeyedAccountInformationScreen {
 
     private func bindAccountItem() {
         let viewModel = RekeyedAccountInformationAccountItemViewModel(
-            from: from,
-            to: to
+            sourceAccount: sourceAccount,
+            authAccount: authAccount
         )
         accountItemView.bindData(viewModel)
     }

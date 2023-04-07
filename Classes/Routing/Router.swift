@@ -1632,40 +1632,40 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
-        case .standardToStandardRekeyedAccountInformation(let from, let to):
+        case .standardToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             viewController = StandardToStandardRekeyedAccountInformationScreen(
-                from: from,
-                to: to,
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
             )
-        case .standardToLedgerRekeyedAccountInformation(let from, let to):
+        case .standardToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             viewController = StandardToLedgerRekeyedAccountInformationScreen(
-                from: from,
-                to: to,
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
             )
-        case .ledgerToLedgerRekeyedAccountInformation(let from, let to):
+        case .ledgerToLedgerRekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             viewController = LedgerToLedgerRekeyedAccountInformationScreen(
-                from: from,
-                to: to,
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
             )
-        case .ledgerToStandardRekeyedAccountInformation(let from, let to):
+        case .ledgerToStandardRekeyedAccountInformation(let sourceAccount, let authAccount):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             viewController = LedgerToStandardRekeyedAccountInformationScreen(
-                from: from,
-                to: to,
+                sourceAccount: sourceAccount,
+                authAccount: authAccount,
                 copyToClipboardController: copyToClipboardController
             )
         case .anyToNoAuthRekeyedAccountInformation(let account):

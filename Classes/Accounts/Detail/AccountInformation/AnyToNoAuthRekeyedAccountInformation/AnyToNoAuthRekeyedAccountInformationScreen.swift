@@ -109,7 +109,7 @@ extension AnyToNoAuthRekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountItemView.startObserving(event: .performFromAccountAction) {
+        accountItemView.startObserving(event: .performSourceAccountAction) {
             [unowned self] in
             self.copyToClipboardController.copyAddress(self.account)
         }
@@ -147,8 +147,8 @@ extension AnyToNoAuthRekeyedAccountInformationScreen {
 
     private func bindAccountItem() {
         let viewModel = RekeyedAccountInformationAccountItemViewModel(
-            from: account,
-            to: nil
+            sourceAccount: account,
+            authAccount: nil
         )
         accountItemView.bindData(viewModel)
     }
