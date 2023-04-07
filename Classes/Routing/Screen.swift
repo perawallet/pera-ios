@@ -313,15 +313,21 @@ indirect enum Screen {
     case importAccountQRScanner(ImportQRScannerScreen.EventHandler)
     case importAccount(QRBackupParameters, ImportAccountScreen.EventHandler)
     case importAccountError(ImportAccountScreenError, WebImportErrorScreen.EventHandler)
-    case importAccountSuccess(configuration: ImportAccountScreen.Configuration, eventHandler: WebImportSuccessScreen.EventHandler)
+    case importAccountSuccess(result: ImportAccountScreen.Result, eventHandler: WebImportSuccessScreen.EventHandler)
     case algorandSecureBackupInstructions(eventHandler: AlgorandSecureBackupInstructionsScreen.EventHandler)
     case algorandSecureBackupAccountList(eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
     case algorandSecureBackupMnemonic(accounts: [Account], eventHandler: AlgorandSecureBackupMnemonicsScreen.EventHandler)
-    case algorandSecureBackupSuccess(encryptedData: Data, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
+    case algorandSecureBackupSuccess(backup: AlgorandSecureBackup, eventHandler: AlgorandSecureBackupSuccessScreen.EventHandler)
     case algorandSecureBackupError(eventHandler: AlgorandSecureBackupErrorScreen.EventHandler)
     case algorandSecureBackupImportBackup(eventHandler: AlgorandSecureBackupImportBackupScreen.EventHandler)
-    case algorandSecureBackupImportSuccess(configuration: ImportAccountScreen.Configuration, eventHandler: WebImportSuccessScreen.EventHandler)
-    case algorandSecureBackupRestoreAccountList(accounts: [Account], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
+    case algorandSecureBackupImportSuccess(
+        accountImportParameters: [AccountImportParameters],
+        selectedAccounts: [Account],
+        eventHandler: WebImportSuccessScreen.EventHandler
+    )
+    case algorandSecureBackupRestoreAccountList(accountImportParameters: [AccountImportParameters], eventHandler: AlgorandSecureBackupAccountListScreen.EventHandler)
+    case algorandSecureBackupRecoverMnemonic(backup: SecureBackup, eventHandler: AlgorandSecureBackupRecoverMnemonicScreen.EventHandler)
+    case importTextDocumentPicker(delegate: UIDocumentPickerDelegate)
 }
 
 extension Screen {
