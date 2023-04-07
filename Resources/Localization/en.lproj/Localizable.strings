@@ -690,8 +690,8 @@
 "ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
 
 // MARK: Ledger Account Selection
-"ledger-account-selection-title-singular" = "%d Account Found";
-"ledger-account-selection-title-plural" = "%d Accounts Found";
+"ledger-account-selection-title-singular" = "%d account found";
+"ledger-account-selection-title-plural" = "%d accounts found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
 "ledger-account-selection-detail-rekey" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
