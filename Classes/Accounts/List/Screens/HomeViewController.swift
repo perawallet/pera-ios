@@ -977,30 +977,18 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            let localAuthenticator = LocalAuthenticator()
+            let localAuthenticator = LocalAuthenticator(session: session)
 
-            if localAuthenticator.localAuthenticationStatus != .allowed {
-                let controller = self.open(
-                    .choosePassword(
-                        mode: .confirm(flow: .viewPassphrase),
-                        flow: nil
-                    ),
-                    by: .present
-                ) as? ChoosePasswordViewController
-                controller?.delegate = self
+            if localAuthenticator.hasAuthentication() {
+                do {
+                    try localAuthenticator.authenticate()
+                    self.presentPassphraseView(accountHandle)
+                } catch {
+                    self.presentPasswordConfirmScreen()
+                }
                 return
             }
-
-            localAuthenticator.authenticate {
-                [weak self] error in
-
-                guard let self = self,
-                      error == nil else {
-                          return
-                      }
-
-                self.presentPassphraseView(accountHandle)
-            }
+            self.presentPasswordConfirmScreen()
         }
 
         uiInteractions.didTapCopyAddress = {
@@ -1028,6 +1016,17 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         }
 
         return uiInteractions
+    }
+
+    private func presentPasswordConfirmScreen() {
+        let controller = self.open(
+            .choosePassword(
+                mode: .confirm(flow: .viewPassphrase),
+                flow: nil
+            ),
+            by: .present
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
     }
 
     func choosePasswordViewController(
