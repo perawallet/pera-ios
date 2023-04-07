@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "radio-selected.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "radio-selected-dark.pdf",
+      "filename" : "icon-radio-selected.pdf",
       "idiom" : "universal"
     }
   ],
