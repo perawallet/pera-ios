@@ -58,7 +58,7 @@ extension LedgerDeviceListView {
     private func addVerticalStackView(_ theme: LedgerDeviceListViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.axis = .vertical
-        verticalStackView.alignment = .center
+        verticalStackView.alignment = .leading
         verticalStackView.spacing = theme.verticalStackViewSpacing
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(theme.verticalStackViewTopPadding)
