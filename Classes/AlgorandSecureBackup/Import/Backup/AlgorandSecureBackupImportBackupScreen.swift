@@ -357,15 +357,3 @@ extension AlgorandSecureBackupImportBackupScreen {
         case backupSelected(SecureBackup)
     }
 }
-
-extension AlgorandSecureBackupImportBackupScreen {
-    enum ValidationError: Error {
-        case emptySource
-        case wrongFormat // It should be base 64
-        case jsonSerialization
-        case unsupportedVersion
-        case cipherSuiteUnknown
-        case cipherSuiteInvalid
-        case unauthorized
-    }
-}
