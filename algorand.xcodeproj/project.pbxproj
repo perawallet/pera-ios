@@ -18379,8 +18379,8 @@
 				D44AFD7429946F5C00934998 /* FileInfoViewTheme.swift */,
 			);
 			path = FileInfo;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		D451A2EE29C07E3400752543 /* Connection */ = {
 			isa = PBXGroup;
 			children = (
@@ -19452,8 +19452,8 @@
 				D4D87EA429914837004F7BF2 /* AlgorandSecureBackupAccountListItemAccessory.swift */,
 			);
 			path = AccountCell;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		D4D9E671299CC5330043AD19 /* Buy */ = {
 			isa = PBXGroup;
 			children = (
@@ -22314,7 +22314,7 @@
 				D4822737272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
 				2B968A8C2886A31D00184ED5 /* AsaVerificationInfoScreenTheme.swift in Sources */,
 				171A167429DB3118000C8A62 /* BackupValidator.swift in Sources */,
-				1736FB9528AD1EDB002BB713 /* MoonpayEvent.swift in Sources */,
+				1736FB9528AD1EDB002BB713 /* MoonPayEvent.swift in Sources */,
 				F051836328FF7AC500BDA46F /* EditSwapAmountScreen.swift in Sources */,
 				17D0FA1F28EC28DE0061B55D /* ExportAccountsResultScreenTheme.swift in Sources */,
 				2BF65834290EE72A00B28D1C /* FilterAssetsListItemButtonViewModel.swift in Sources */,
@@ -23028,7 +23028,7 @@
 				F06516952905C16300ECE763 /* AdjustableSingleSelectionInputViewTheme.swift in Sources */,
 				D4CF67F628C75C7B0007A727 /* AccountSelectionListDataController.swift in Sources */,
 				17CE51C229C7B6FB00155489 /* AlgorandSecureBackupFileViewTheme.swift in Sources */,
-				2B4FD20C27C654A60097AB65 /* BuyAlgoTransactionDataController.swift in Sources */,
+				2B4FD20C27C654A60097AB65 /* MoonPayTransactionDataController.swift in Sources */,
 				2B4FD20C27C654A60097AB65 /* MoonPayTransactionDataController.swift in Sources */,
 				2B5BE06925190B7D00324BEE /* AccountTypeView.swift in Sources */,
 				2B69AB4428C01D5600A8D65D /* SwapAssetFlowCoordinator.swift in Sources */,
@@ -25669,7 +25669,7 @@
 				2B9FDE9628A4F9D800C8117D /* AssetLearnMoreListItemButtonViewModel.swift in Sources */,
 				F0600E3828A5B2250043B834 /* ALGAnalyticsCoordinator.swift in Sources */,
 				2B88F51027E2ADCD00E6E296 /* CollectibleMediaImagePreviewViewTheme.swift in Sources */,
-				2B233B4A27C452B200D16B82 /* BuyAlgoHomeViewTheme.swift in Sources */,
+				2B233B4A27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */,
 				D419710629925A2E003FEEB1 /* AlgorandSecureBackupSelectAccountsInstructionItemViewModel.swift in Sources */,
 				2B233B4A27C452B200D16B82 /* MoonPayIntroductionScreenTheme.swift in Sources */,
 				2B69AB1028BEC19400A8D65D /* ALGAPI+Swap.swift in Sources */,
@@ -28057,7 +28057,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -28085,7 +28085,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -28113,7 +28113,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
@@ -28143,7 +28143,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28172,7 +28172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28201,7 +28201,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28353,7 +28353,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28382,7 +28382,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -28538,7 +28538,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 99.10.1;
+				MARKETING_VERSION = 99.9.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
