@@ -694,6 +694,8 @@
 "ledger-account-selection-title-plural" = "%d accounts found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
 "ledger-account-selection-detail-rekey" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
+"ledger-account-selection-verify" = "Verify selected account";
+"ledger-account-selection-verify-plural" = "Verify selected accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
