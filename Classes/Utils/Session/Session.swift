@@ -358,6 +358,10 @@ extension Session {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
     }
+    
+    func hasPrivateData(for account: PublicKey) -> Bool {
+        return privateData(for: account) != nil
+    }
 }
 
 extension Session {

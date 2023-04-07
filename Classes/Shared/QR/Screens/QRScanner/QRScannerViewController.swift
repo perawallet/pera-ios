@@ -37,6 +37,7 @@ final class QRScannerViewController: BaseViewController, NotificationObserver {
     var notificationObservations: [NSObjectProtocol] = []
 
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToWCConnectionError = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
         [weak self] in
@@ -444,9 +445,10 @@ extension QRScannerViewController: WalletConnectorDelegate {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self, session: session)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
+        walletConnector.clearExpiredSessionsIfNeeded()
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.WCError) {
         switch error {
         case .failedToConnect,
                 .failedToCreateSession:
@@ -466,6 +468,10 @@ extension QRScannerViewController: WalletConnectorDelegate {
         default:
             break
         }
+    }
+    
+    func walletConnectorDidExceededMaximumSessionLimit(_ walletConnector: WalletConnector) {
+        delegate?.qrScannerViewControllerDidExceededMaximumWCSessionLimit(self)
     }
 
     private func startWCConnectionTimer() {
@@ -501,9 +507,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 
     private func openWCConnectionError() {
-        let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-        bottomTransition.perform(
+        transitionToWCConnectionError.perform(
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-red".uiImage,
@@ -585,6 +589,7 @@ protocol QRScannerViewControllerDelegate: AnyObject {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrBackupParameters: QRBackupParameters, completionHandler: EmptyHandler?)
+    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController)
 }
 
 extension QRScannerViewControllerDelegate {
@@ -592,6 +597,7 @@ extension QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrBackupParameters: QRBackupParameters, completionHandler: EmptyHandler?) {}
+    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController) { }
 }
 
 enum QRScannerError: Swift.Error {

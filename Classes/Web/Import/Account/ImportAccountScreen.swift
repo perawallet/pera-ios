@@ -20,6 +20,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 import MagpieExceptions
+import UIKit
 
 final class ImportAccountScreen: BaseViewController {
     typealias EventHandler = (Event, ImportAccountScreen) -> Void
@@ -30,14 +31,15 @@ final class ImportAccountScreen: BaseViewController {
         return false
     }
 
-    private lazy var loadingView = Label()
+    private lazy var loadingView = UIView()
+    private lazy var imageView = ImageView()
+    private lazy var titleView = Label()
     private lazy var theme = ImportAccountScreenTheme()
 
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private let backupParameters: QRBackupParameters
@@ -55,7 +57,8 @@ final class ImportAccountScreen: BaseViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        addLoadingView()
+        
+        addLoading()
     }
 
     override func viewDidLoad() {
@@ -63,13 +66,32 @@ final class ImportAccountScreen: BaseViewController {
 
         fetchAccounts()
     }
-
-    private func addLoadingView() {
-        loadingView.customizeAppearance(theme.loading)
+    
+    private func addLoading() {
         view.addSubview(loadingView)
-        loadingView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(theme.loadingHorizontalInset)
-            make.centerY.equalToSuperview()
+        loadingView.snp.makeConstraints {
+            $0.centerY == 0
+            $0.leading.trailing == theme.horizontalPadding
+        }
+        
+        addImage()
+        addTitle()
+    }
+    
+    private func addImage() {
+        imageView.customizeAppearance(theme.image)
+        loadingView.addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.top.leading.trailing == 0
+        }
+    }
+    
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+        loadingView.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.top == imageView.snp.bottom + theme.titleTopPadding
+            $0.leading.trailing.bottom == 0
         }
     }
 }

@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "アカウントが見つかりません";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "続けるには、スタンダード（Ledgerではない）アカウントを追加してください。";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "スタンダードアカウントが見つかりません";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "アカウントを作成したい";
 
@@ -66,6 +72,12 @@
 
 /* (No Comment) */
 "account-type-selection-create-detail" = "Algorandアカウントの新規作成、またはウォッチアカウントの追加";
+
+/* (No Comment) */
+"account-type-selection-import-web" = "Pera Webからインポート";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "Pera WebからAlgorandアカウントをインポートしたい";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledgerデバイスのペアリング";
@@ -355,6 +367,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "この資産はアカウントに含まれていません";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "この資産はアカウントに存在しません";
+
 /* MARK: Asset */
 "asset-title" = "資産";
 
@@ -375,6 +390,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QRを表示";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "アカウントのインポート";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "ギフトカードを購入する";
+
+/* (No Comment) */
+"bidali-introduction-body" = "Algo、USDC、USDtの残高を使って、世界中の数多くのブランドからギフトカードやモバイルトップアップを購入することができます！";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "Bidaliでギフトカードを購入する";
+
+/* (No Comment) */
+"bidali-introduction-title" = "仮想通貨でギフトを購入する";
+
+/* (No Comment) */
+"bidali-not-available-description" = "TestNetでは購入できません。Bidaliをご利用になるには、設定からMainNetに切り替えてください。";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetoothエラー";
@@ -429,6 +462,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "サポートされていないデバイス";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "Algo、USDC、USDtの残高を使って、世界中の数多くのブランドからギフトカードやモバイルトップアップを購入することができます。";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "ギフトカードを購入する";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "仮想通貨でギフトを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Apple Pay、クレジットカード、銀行振込を利用可能です";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "MoonPayでALGOを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "米国の銀行口座でInstant ACHを使用する";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "Algo、USDC、USDt残高を使用可能です";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Bidaliでギフトカードを購入する";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "仮想通貨の購入";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "クレジットカードや150カ国以上での銀行振込を使用可能";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "TransakでのUSDCの購入";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "仮想通貨の売却";
 
 /* (No Comment) */
 "chart-no-data-text" = "価格APIは現在利用できません、改めてご確認ください。";
@@ -905,6 +977,9 @@
 "ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Ledgerで引き続き認証できます。認証をキャンセルする場合は、Ledgerから行ってください。";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Ledgerデバイス%@でトランザクションを確認して署名してください。";
 
 /* MARK: Ledger Approval */
@@ -956,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、%@を接続してください。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "このアカウントは再キー化されました。パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。";
+"ledger-rekey-error-not-found" = "署名するアカウントがウォレットに無いアカウントで再キー化されたか、設定が間違っています。認証アカウントがウォレットに追加されていることをご確認ください。Ledgerアカウントをお使いの場合は、正しく接続されていることをご確認ください。";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "再キー化を完了する";
@@ -1289,6 +1364,9 @@
 "opt-in-title-adding-nft" = "NFTをオプトインする";
 
 /* (No Comment) */
+"opt-in-to-usdc" = "USDCのオプトイン";
+
+/* (No Comment) */
 "options-auth-account" = "Authアカウントアドレス";
 
 /* (No Comment) */
@@ -1310,10 +1388,16 @@
 "options-passphrase" = "パスフレーズ";
 
 /* (No Comment) */
-"options-rekey" = "アカウントの再キー化";
+"options-rekey-ledger" = "Ledger Accountへの再キー化";
+
+/* (No Comment) */
+"options-rekey-standard" = "標準アカウントへの再キー化";
 
 /* (No Comment) */
 "options-remove-account" = "アカウントの削除";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "再キー化された%@を削除する前に、このアカウントを削除することはできません";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "メインアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
@@ -1549,8 +1633,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "アドレス";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "ALGOを購入する";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "購入 / 売却";
 
 /* (No Comment) */
 "quick-actions-more-title" = "さらに詳しく";
@@ -1621,6 +1708,18 @@
 /* (No Comment) */
 "rekey-instruction-second-standard" = "このアカウントのパスフレーズは、このアカウントでは機能しなくなります";
 
+/* (No Comment) */
+"rekey-instruction-soft-first" = "今後のトランザクションは、委任されたアカウントによってのみ署名できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "このアカウントでは、トランザクションに署名することはできなくなります。";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "署名を別のアカウントに委任することで、アカウントを保護できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "アカウントの公開鍵、残高、設定は変更されません。";
+
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "プロセスの開始";
 
@@ -1665,6 +1764,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "リワード";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"sardine-introduction-body" = "Instant ACH送金を使用したAlgoの即時決済を低料金で行えます。Sardineは、180か国以上の地元銀行でのカード決済、Apple PayやGPayにも対応しています。";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "SardineでALGOを購入する";
+
+/* (No Comment) */
+"sardine-introduction-title" = "ALGOを購入する";
+
+/* (No Comment) */
+"sardine-not-available-description" = "TestNetでは購入できません。Sardineをご利用になるには、設定からMainNetに切り替えてください。";
 
 /* (No Comment) */
 "screenshot-description" = "リカバリーパスフレーズをスクリーンショットでバックアップしないでください。パスフレーズを含む画像があると、セキュリティ上のリスクとなります。";
@@ -2201,10 +2315,13 @@
 "title-asset-id" = "資産ID";
 
 /* (No Comment) */
-"title-buy-algo" = "ALGOを購入する";
+"title-buy-sell" = "購入 / 売却";
 
 /* (No Comment) */
 "title-cancel" = "キャンセル";
+
+/* (No Comment) */
+"title-choose-account-to-proceed-with" = "手続きを行うアカウントを選択してください";
 
 /* (No Comment) */
 "title-close" = "閉じる";
@@ -2277,6 +2394,9 @@
 
 /* (No Comment) */
 "title-generic-response-description" = "一部の資産を取得できませんでした。もう一度お試しください。";
+
+/* (No Comment) */
+"title-go-home" = "ホームに移動";
 
 /* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
@@ -2663,7 +2783,7 @@
 "transaction-option-list-add-asset-title" = "資産の追加";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "クレジットカードまたは銀行振込で暗号通貨を購入する";
+"transaction-option-list-buy-sell-subtitle" = "仮想通貨売買に関するすべてのオプションを見る";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "その他のアクションを表示する";
@@ -2717,6 +2837,21 @@
 "transaction-tutorial-title" = "トランザクションのヒント";
 
 /* (No Comment) */
+"transak-introduction-action-title" = "TransakでUSDCを購入する";
+
+/* (No Comment) */
+"transak-introduction-body" = "Transak は、800以上のアプリで法定通貨と仮想通貨の交換をサポートします。 150か国以上でクレジットカード、デビットカード、銀行振込を利用可能です。";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "TransakでUSDCを購入する";
+
+/* (No Comment) */
+"transak-introduction-title" = "USDCを購入する";
+
+/* (No Comment) */
+"transak-not-available-description" = "TestNetでは購入できません。Transakをご利用になるには、設定からMainNetに切り替えてください。";
+
+/* (No Comment) */
 "tutorial-action-title-ledger" = "うまく作動していますか？";
 
 /* (No Comment) */
@@ -2724,6 +2859,9 @@
 
 /* (No Comment) */
 "tutorial-description-back-up" = "パスフレーズのバックアップを作成することで、アカウントを回復できます。パスフレーズ無しでは、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失ってしまいます！";
+
+/* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "認証手順を完了していないため、アカウントをインポートできませんでした。もう一度やり直してください。";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Ledgerのロックが解除され、Bluetoothが有効になっていることを確認してください";
@@ -2772,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "アカウントのパスフレーズのバックアップを作成する";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "アカウントがインポートされていません";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledgerが正常に接続されました";
@@ -2906,6 +3047,15 @@
 "wallet-connect-session-invalid-qr-message" = "WalletConnectでセッションを作成できませんでした。有効なQRでお試しください。";
 
 /* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "セッション数が51になると、最も古いセッションが自動的に切断されます。";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "セッションは50に制限されています";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "WalletConnectセッションの最大数を超えました。最も古いセッションは自動的に切断されました。";
+
+/* (No Comment) */
 "wallet-connect-session-list-empty" = "まだどのアプリも接続していません。";
 
 /* (No Comment) */
@@ -2985,6 +3135,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-rejected-user" = "トランザクションリクエストが拒否されました：ユーザーがトランザクションリクエストを拒否しました。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "有効な WalletConnect セッションが見つかりません。ウォレットを dApp に再接続してみてください。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています";
@@ -3237,4 +3390,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "アカウントは正常にエクスポートされました！";
+
+/* (No Comment) */
+"web-import-error-action" = "ホームに移動";
+
+/* (No Comment) */
+"web-import-error-body" = "アカウントをインポートできませんでした。後でもう一度やり直してください。";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "アプリケーションがQRコード形式 (バージョン: %@) を認識しません。両方のデバイスが最新バージョンのPeraを使用していることをご確認ください。";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "デスクトップの “web.perawallet.app” に移動します";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "開始 をタップしてQRコードをスキャンします";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "設定 > アカウントの移行 に移動します";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "開始";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "Pera Mobileにインポートするアカウントを選択し、QRコードを生成します";
+
+/* (No Comment) */
+"web-import-instruction-title" = "Pera WebでQRコードを準備する";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "Pera WebでQRコードを読み取る";
+
+/* (No Comment) */
+"web-import-success-button-title" = "Pera Mobileについて調べる";
+
+/* (No Comment) */
+"web-import-success-header-body" = "%@アカウントはPera Webからインポートされました";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "%@アカウントはPera Webからインポートされました";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "インポートされたアカウント";
+
+/* (No Comment) */
+"web-import-success-header-title" = "インポートされたアカウント";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "%@アカウントは以前にインポートされたため、インポートされませんでした。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "%@アカウントは以前にインポートされたため、インポートされませんでした。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "インポートしていないアカウント";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "インポートしていないアカウント";
 
