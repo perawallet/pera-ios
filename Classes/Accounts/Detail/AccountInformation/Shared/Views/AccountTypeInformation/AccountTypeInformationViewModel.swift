@@ -21,6 +21,7 @@ protocol AccountTypeInformationViewModel: ViewModel {
     var title: TextProvider? { get }
     var typeIcon: Image? { get }
     var typeTitle: TextProvider? { get }
+    var typeFootnote: TextProvider? { get }
     var typeDescription: TypeDescriptionTextProvider? { get }
 
     typealias TypeDescriptionTextProvider = AccountTypeInformationTypeDescriptionTextProvider

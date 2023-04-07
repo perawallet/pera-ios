@@ -21,6 +21,7 @@ struct AnyToNoAuthRekeyedAccountTypeInformationViewModel: AccountTypeInformation
     private(set) var title: TextProvider?
     private(set) var typeIcon: Image?
     private(set) var typeTitle: TextProvider?
+    private(set) var typeFootnote: TextProvider?
     private(set) var typeDescription: TypeDescriptionTextProvider?
 
     init() {

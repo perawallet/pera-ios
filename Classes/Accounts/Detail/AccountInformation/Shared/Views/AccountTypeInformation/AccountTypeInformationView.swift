@@ -29,12 +29,14 @@ final class AccountTypeInformationView:
     private lazy var titleView = UILabel()
     private lazy var typeIconView = UIImageView()
     private lazy var typeTitleView = UILabel()
+    private lazy var typeFootnoteView = Label()
     private lazy var typeDescriptionView = ALGActiveLabel()
 
     func customize(_ theme: AccountTypeInformationViewTheme) {
         addTitle(theme)
         addTypeIcon(theme)
         addTypeTitle(theme)
+        addTypeFootnote(theme)
         addTypeDescription(theme)
     }
 
@@ -57,6 +59,13 @@ final class AccountTypeInformationView:
         } else {
             typeTitleView.text = nil
             typeTitleView.attributedText = nil
+        }
+
+        if let typeFootnote = viewModel?.typeFootnote {
+            typeFootnote.load(in: typeFootnoteView)
+        } else {
+            typeFootnoteView.text = nil
+            typeFootnoteView.attributedText = nil
         }
 
         if let typeDescription = viewModel?.typeDescription {
@@ -119,12 +128,24 @@ extension AccountTypeInformationView {
         }
     }
 
+    private func addTypeFootnote(_ theme: AccountTypeInformationViewTheme) {
+        typeFootnoteView.customizeAppearance(theme.typeFootnote)
+
+        addSubview(typeFootnoteView)
+        typeFootnoteView.contentEdgeInsets.top = theme.spacingBetweenTypeTitleAndTypeFoonote
+        typeFootnoteView.snp.makeConstraints {
+            $0.top == typeIconView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
+        }
+    }
+
     private func addTypeDescription(_ theme: AccountTypeInformationViewTheme) {
         typeDescriptionView.customizeAppearance(theme.typeDescription)
 
         addSubview(typeDescriptionView)
         typeDescriptionView.snp.makeConstraints {
-            $0.top == typeIconView.snp.bottom + theme.spacingBetweenTypeIconAndTypeDescription
+            $0.top == typeFootnoteView.snp.bottom + theme.spacingBetweenTypeFoonoteAndTypeDescription
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0

@@ -25,7 +25,9 @@ struct AccountTypeInformationViewTheme:
     var spacingBetweenTypeIconAndTitle: LayoutMetric
     var spacingBetweenTypeIconAndTypeTitle: LayoutMetric
     var typeTitle: TextStyle
-    var spacingBetweenTypeIconAndTypeDescription: LayoutMetric
+    var spacingBetweenTypeTitleAndTypeFoonote: LayoutMetric
+    var typeFootnote: TextStyle
+    var spacingBetweenTypeFoonoteAndTypeDescription: LayoutMetric
     var typeDescription: TextStyle
 
     init(_ family: LayoutFamily) {
@@ -40,7 +42,12 @@ struct AccountTypeInformationViewTheme:
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
-        self.spacingBetweenTypeIconAndTypeDescription = 12
+        self.spacingBetweenTypeTitleAndTypeFoonote = 12
+        self.typeFootnote = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.gray)
+        ]
+        self.spacingBetweenTypeFoonoteAndTypeDescription = 12
         self.typeDescription = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
