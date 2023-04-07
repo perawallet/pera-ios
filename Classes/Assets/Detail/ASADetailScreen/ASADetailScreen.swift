@@ -81,6 +81,10 @@ final class ASADetailScreen:
 
     private lazy var localAuthenticator = LocalAuthenticator()
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var rekeyingValidator = RekeyingValidator(
+        session: session!,
+        sharedDataController: sharedDataController
+    )
 
     private var lastDisplayState = DisplayState.normal
     private var lastFrameOfFoldableArea = CGRect.zero
@@ -195,17 +199,60 @@ extension ASADetailScreen {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        /// <todo> Open rekey instruction according to account type.
-        /// open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
+        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
+
+            self.open(
+                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+        }
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        openSelectAccountForSoftRekeying()
+        let viewModel = RekeyToStandardAccountInstructionsViewModel()
+        openRekeyInstructions(viewModel: viewModel) {
+            [weak self] in
+            guard let self else { return }
+            self.openSelectAccountForRekeyingToStandardAccount()
+        }
     }
     
-    private func openSelectAccountForSoftRekeying() {
+    private func openRekeyInstructions(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        rekeyHandler: @escaping () -> Void
+    ) {
+        let eventHandler: RekeyInstructionsViewController.EventHandler = {
+            event in
+
+            switch event {
+            case .performRekey:
+                rekeyHandler()
+            }
+        }
+        
+        open(
+            .rekeyInstruction(
+                viewModel: viewModel,
+                eventHandler: eventHandler
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
+    }
+    
+    private func openSelectAccountForRekeyingToStandardAccount() {
         let draft = SelectAccountDraft(
-            transactionAction: .softRekey,
+            transactionAction: .rekeyToStandardAccount,
             requiresAssetSelection: false
         )
         
@@ -213,7 +260,7 @@ extension ASADetailScreen {
             [weak self] account in
             guard let self else { return false }
             
-            return self.isEnabledSoftRekeying(for: account)
+            return self.isRekeyingRestricted(to: account)
         }
 
         let screen: Screen = .accountSelection(
@@ -228,10 +275,16 @@ extension ASADetailScreen {
         )
     }
     
-    private func isEnabledSoftRekeying(for account: Account) -> Bool {
-        return account.isLedger() ||
-            account.isRekeyed() ||
-            account.isSameAccount(with: dataController.account.address)
+    private func isRekeyingRestricted(to account: Account) -> Bool {
+        let validation = rekeyingValidator.validateRekeying(
+            from: dataController.account,
+            to: account
+        )
+        
+        /// <note>
+        /// Rekeying a standard account to ledger account should not be handled from this flow.
+        /// So, the ledger accounts are filtered separately.
+        return validation.isFailure || account.hasLedgerDetail()
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -300,7 +353,7 @@ extension ASADetailScreen {
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in
-                self?.removeAccountIfPossible()
+                self?.removeAccount()
             }
         )
 
@@ -310,16 +363,7 @@ extension ASADetailScreen {
         )
     }
 
-    private func removeAccountIfPossible() {
-        if let aRekeyedAccount = sharedDataController.rekeyedAccounts(of: dataController.account).first?.value,
-           aRekeyedAccount.isRekeyedToAnyAccount() {
-            bannerController?.presentErrorBanner(
-                title: "",
-                message: "options-remove-account-auth-address-error".localized(aRekeyedAccount.primaryDisplayName)
-            )
-            return
-        }
-        
+    private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(dataController.account)
         walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)
@@ -374,7 +418,7 @@ extension ASADetailScreen {
         for draft: SelectAccountDraft
     ) {
         switch draft.transactionAction {
-        case .softRekey:
+        case .rekeyToStandardAccount:
             selectAccountViewController.dismissScreen {
                 [weak self] in
                 guard let self else { return }
