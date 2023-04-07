@@ -38,14 +38,17 @@ final class AlgorandSecureBackupSuccessScreen: ScrollScreen  {
     private lazy var theme: AlgorandSecureBackupSuccessScreenTheme = .init()
 
     private lazy var documentURL = getDocumentsDirectory()
-    private lazy var fileInfoViewModel = FileInfoViewModel(data: self.encryptedData)
 
-    private let encryptedData: Data
+    private let backup: AlgorandSecureBackup
     private let bannerController: BannerController?
     private let copyToClipboardController: CopyToClipboardController
 
-    init(encryptedData: Data, configuration: ViewControllerConfiguration) {
-        self.encryptedData = encryptedData
+    deinit {
+        removeFile()
+    }
+
+    init(backup: AlgorandSecureBackup, configuration: ViewControllerConfiguration) {
+        self.backup = backup
         self.bannerController = configuration.bannerController
         self.copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: configuration.toastPresentationController!)
     }
@@ -197,13 +200,14 @@ extension AlgorandSecureBackupSuccessScreen {
     }
 
     private func bindFileInfo() {
-        fileInfoView.bindData(fileInfoViewModel)
+        fileInfoView.bindData(FileInfoViewModel(file: backup))
     }
 }
 
 extension AlgorandSecureBackupSuccessScreen {
     private func copyBackup() {
-        let copyText = encryptedData.base64EncodedString()
+        guard let backupData = backup.data else { return }
+        let copyText = backupData.base64EncodedString()
         let copyInteraction = CopyToClipboardInteraction(title: "algorand-secure-backup-success-copy-action-message".localized, body: nil)
         let item = ClipboardItem(copy: copyText, interaction: copyInteraction)
 
@@ -212,22 +216,14 @@ extension AlgorandSecureBackupSuccessScreen {
 
     @objc
     private func performSave() {
-        let fileName = fileInfoViewModel.name.unwrap { textProvider in
-            textProvider.string
-        } ?? "backup.txt"
-
-        let url = documentURL.appendingPathComponent(fileName)
         do {
-            try encryptedData.base64EncodedString().write(to: url, atomically: true, encoding: .utf8)
-
-            open(
-                .shareActivity(
-                    items: [url]
-                ),
-                by: .presentWithoutNavigationController
-            )
+            let url = try createFile()
+            openShareSheet(url)
         } catch {
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
         }
     }
 
@@ -241,7 +237,7 @@ extension AlgorandSecureBackupSuccessScreen {
             secondaryActionButtonTitle: "algorand-secure-backup-success-confirmation-secondary-action-title".localized,
             primaryAction: { [weak self] in
                 guard let self else { return }
-                self.dismissScreen()
+                self.eventHandler?(.complete, self)
             }
         )
 
@@ -249,6 +245,42 @@ extension AlgorandSecureBackupSuccessScreen {
             .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func createFile() throws -> URL {
+        guard let backupData = backup.data else {
+            throw FileError.missingData
+        }
+
+        let backupString = backupData.base64EncodedString()
+
+        let url = fileUrl()
+
+        do {
+            try backupString.write(to: url, atomically: true, encoding: .utf8)
+            return url
+        } catch {
+            throw error
+        }
+    }
+
+    private func openShareSheet(_ url: URL) {
+        open(
+            .shareActivity(
+                items: [url]
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func removeFile() {
+        try? FileManager.default.removeItem(at: fileUrl())
+    }
+
+    private func fileUrl() -> URL {
+        let fileName = backup.fileName
+        let url = documentURL.appendingPathComponent(fileName)
+        return url
     }
 }
 
@@ -263,4 +295,8 @@ extension AlgorandSecureBackupSuccessScreen {
     enum Event {
         case complete
     }
+}
+
+enum FileError: Error {
+    case missingData
 }

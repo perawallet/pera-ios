@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class AlgorandSecureBackupInstructionsScreen:
-    ScrollScreen,
+    BaseScrollViewController,
     NavigationBarLargeTitleConfigurable {
     typealias EventHandler = (Event, AlgorandSecureBackupInstructionsScreen) -> Void
 
@@ -43,14 +43,9 @@ final class AlgorandSecureBackupInstructionsScreen:
     private lazy var instructionsView = VStackView()
     private lazy var startActionView = MacaroonUIKit.Button()
 
-    private let theme: AlgorandSecureBackupInstructionsScreenTheme
+    private lazy var theme = AlgorandSecureBackupInstructionsScreenTheme()
 
     private var isViewLayoutLoaded = false
-
-    init(theme: AlgorandSecureBackupInstructionsScreenTheme = .init()) {
-        self.theme = theme
-        super.init()
-    }
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -62,10 +57,14 @@ final class AlgorandSecureBackupInstructionsScreen:
         navigationBarLargeTitleController.activate()
     }
 
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
 
         navigationBarLargeTitleController.title = "algorand-secure-backup-instruction-title".localized
+    }
+
+    override func customizeTabBarAppearence() {
+        tabBarHidden = true
     }
 
     override func viewDidLayoutSubviews() {

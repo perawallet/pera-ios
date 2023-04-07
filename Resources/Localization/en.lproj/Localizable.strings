@@ -150,6 +150,7 @@
 "local-authentication-no" = "Do not use Face ID/Touch ID";
 "local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 "local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"local-authentication-disabled-error-message" = "Unable to disable Face ID/Touch ID, please try again later";
 "title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up
@@ -426,6 +427,8 @@
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 "settings-support-title" = "Get Help";
 "settings-security-title" = "Security";
+"settings-secure-backup-title" = "Algorand Secure Backup";
+"settings-secure-backup-subtitle" = "Not backed up (%@)";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
 // MARK: Security Settings
@@ -1378,9 +1381,13 @@
 "algorand-secure-backup-instruction-save-backup-file-instruction-title" = "Save your backup file";
 "algorand-secure-backup-instruction-save-backup-file-instruction-subtitle" = "Download your backup to a secure location on your device.";
 "algorand-secure-backup-account-list-title" = "Choose accounts to backup";
+"algorand-secure-backup-account-list-restore-title" = "Choose accounts to restore";
 "algorand-secure-backup-account-list-action-title" = "Backup account";
 "algorand-secure-backup-account-list-action-title-singular" = "Backup account (1)";
 "algorand-secure-backup-account-list-action-title-plural" = "Backup accounts (%@)";
+"algorand-secure-backup-account-list-restore-action-title" = "Restore account";
+"algorand-secure-backup-account-list-restore-action-title-singular" = "Restore account (1)";
+"algorand-secure-backup-account-list-restore-action-title-plural" = "Restore accounts (%@)";
 "algorand-secure-backup-success-header-title" = "Your backup file is ready";
 "algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
 "algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";
@@ -1416,6 +1423,8 @@
 "algorand-secure-backup-mnemonics-regenerate-action-title" = "Create New 12-Word Key";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-title" = "Create new key";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-message" = "You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\n\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding.";
+"algorand-secure-backup-mnemonics-error-title" = "Wrong 12-word key";
+"algorand-secure-backup-mnemonics-error-message" = "Please try again by entering the correct 12-word key.";
 
 "algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title" = "I understand, proceed";
 "algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title" = "Cancel";
@@ -1425,3 +1434,35 @@
 
 "algorand-secure-backup-mnemonics-confirmation-primary-action-title" = "Create backup file";
 "algorand-secure-backup-mnemonics-confirmation-secondary-action-title" = "Show key again";
+
+"algorand-secure-backup-import-backup-title" = "Select your backup file";
+"algorand-secure-backup-import-backup-action-title" = "Select File";
+"algorand-secure-backup-import-backup-action-replace-title" = "Replace File";
+"algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
+"algorand-secure-backup-import-backup-paste" = "Paste backup file text";
+
+"algorand-secure-backup-import-backup-upload-successful-title" = "Upload Successful";
+"algorand-secure-backup-import-backup-upload-failed-title" = "Upload Failed";
+"algorand-secure-backup-import-backup-upload-failed-subtitle" = "This file type isn’t supported";
+"algorand-secure-backup-import-backup-upload-failed-invalid-subtitle" = "This file doesn't contain valid data";
+"algorand-secure-backup-import-backup-clipboard-success-title" = "Backup file successfully pasted";
+"algorand-secure-backup-import-backup-clipboard-failed-title" = "Nothing to paste";
+"algorand-secure-backup-import-backup-clipboard-failed-subtitle" = "Nothing is copied from the clipboard. Make sure you have copied your backup file.";
+"algorand-secure-backup-import-backup-clipboard-json-failed-title" = "Unable to parse the backup file: JSON formatting error.";
+"algorand-secure-backup-import-backup-clipboard-version-failed-title" = "Backup file was generated with an unsupported version of Algorand Secure Backup Format.";
+"algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title" = "Unable to parse the backup file: Cipher Suite unknown";
+"algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title" = "Please allow Pera Wallet to access photos and media on your device to read your file.";
+
+"algorand-secure-backup-import-success-header-title" = "Accounts restored";
+"algorand-secure-backup-import-success-header-singular-title" = "Account restored";
+"algorand-secure-backup-import-success-header-body" = "%@ accounts were restored from backup file";
+"algorand-secure-backup-import-success-header-singular-body" = "%@ account was restored from backup file";
+"algorand-secure-backup-import-success-unimported-title" = "Unimported Accounts";
+"algorand-secure-backup-import-success-unimported-singular-title" = "Unimported Account";
+"algorand-secure-backup-import-success-unimported-body" = "%@ accounts were not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unimported-singular-body" = "%@ account was not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unsupported-body" = "%@ accounts were not restored because they have an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-singular-body" = "%@ account was not restored because it has an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-and-unimported-body" = "%@ accounts were not restored. They may already exist in your wallet or be unsupported account types";
+
+"algorand-secure-backup-import-recover-mnemonic-title" = "Enter 12-word key";

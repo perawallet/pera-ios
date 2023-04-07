@@ -24,7 +24,8 @@ import SwiftDate
 
 class Session: Storable {
     typealias Object = Any
-    
+
+    private let biometricStorageKey = "com.algorand.algorand.biometric.storage"
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
@@ -40,9 +41,14 @@ class Session: Storable {
     private let backupsKey = "com.algorand.algorand.secure.backups"
     private let backupPrivateKey = "com.algorand.algorand.secure.backup.privateKey"
     private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
+    private let hasBiometricAuthenticationKey = "com.algorand.algorand.biometric.authentication"
     
     let algorandSDK = AlgorandSDK()
-    
+
+    private var biometricStorage: KeychainAccess.Keychain {
+        return KeychainAccess.Keychain(service: biometricStorageKey).accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: [.biometryAny])
+    }
+
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }
@@ -195,6 +201,7 @@ class Session: Storable {
                 /// <todo>: It may be saved as object instead of data to make it more efficient
                 let data = try newValue.encoded()
                 save(data, for: backupsKey, to: .defaults)
+                NotificationCenter.default.post(name: .backupCreated, object: self)
             } catch {
                 return
             }
@@ -272,6 +279,10 @@ extension Session {
 }
 
 extension Session {
+    var legacyLocalAuthenticationStatus: String? {
+        return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
+    }
+
     func accountInformation(from address: String) -> AccountInformation? {
         return applicationConfiguration?.authenticatedUser()?.accounts.first { account -> Bool in
             account.address == address
@@ -280,6 +291,55 @@ extension Session {
 
     func createUser(with accounts: [AccountInformation] = []) {
         authenticatedUser = User(accounts: accounts)
+    }
+}
+
+extension Session {
+    func setBiometricPassword() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            try biometricStorage.set(passwordOnKeychain, key: passwordKey)
+            // Note: To trigger Biometric Auth Dialog, we need to get it from biometric storage
+            let _ = try biometricStorage.get(passwordKey)
+            try setBiometricPasswordEnabled()
+        } catch {
+            try removeBiometricPassword()
+        }
+    }
+
+    func checkBiometricPassword() throws {
+        guard hasBiometricPassword() else {
+            throw LAError.biometricNotSet
+        }
+
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            let passwordOnBiometricStorage = try biometricStorage.get(passwordKey)
+            if passwordOnKeychain != passwordOnBiometricStorage {
+                throw LAError.passwordMismatch
+            }
+        } catch {
+            throw LAError.unexpected(error)
+        }
+    }
+
+    func removeBiometricPassword() throws {
+        privateStorage.remove(for: hasBiometricAuthenticationKey)
+        try biometricStorage.remove(passwordKey)
+    }
+
+    func hasBiometricPassword() -> Bool {
+        (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
+    }
+
+    func setBiometricPasswordEnabled() throws {
+        try privateStorage.set("ok", key: hasBiometricAuthenticationKey)
     }
 }
 

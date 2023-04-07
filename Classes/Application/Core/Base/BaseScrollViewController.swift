@@ -28,10 +28,11 @@ class BaseScrollViewController: BaseViewController {
     }
 
     private(set) lazy var scrollView: UIScrollView = {
-        let scrollView = TouchDetectingScrollView()
+        let scrollView = ScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.isAutoScrollingToEditingTextFieldEnabled = isAutoScrollingToEditingTextFieldEnabled
         return scrollView
     }()
     
@@ -50,6 +51,7 @@ class BaseScrollViewController: BaseViewController {
     var contentSizeBehaviour: ContentSizeBehaviour {
         return .scrollableAreaAtMinumum
     }
+    var isAutoScrollingToEditingTextFieldEnabled: Bool = true
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -106,7 +108,7 @@ class BaseScrollViewController: BaseViewController {
         footerView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.bottom == footerBackgroundView.safeAreaLayoutGuide.snp.bottom
+            $0.bottom == footerBackgroundView.safeAreaBottom
             $0.trailing == 0
         }
     }
@@ -163,5 +165,17 @@ extension BottomSheetScrollPresentable where Self: BaseScrollViewController {
             verticalFittingPriority: .defaultLow
         )
         return contentSize.height + footerSize.height
+    }
+}
+
+final class ScrollView: UIScrollView {
+    var isAutoScrollingToEditingTextFieldEnabled: Bool = true
+
+    override func scrollRectToVisible(_ rect: CGRect, animated: Bool) {
+        guard isAutoScrollingToEditingTextFieldEnabled else {
+            return
+        }
+
+        super.scrollRectToVisible(rect, animated: animated)
     }
 }

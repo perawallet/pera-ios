@@ -69,4 +69,8 @@ extension Notification.Name {
     static var newNotificationReceieved: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.status.receieved")
     }
+
+    static var backupCreated: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.backup.update")
+    }
 }

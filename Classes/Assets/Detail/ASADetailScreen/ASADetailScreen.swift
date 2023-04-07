@@ -78,7 +78,7 @@ final class ASADetailScreen:
     private lazy var receiveTransactionFlowCoordinator =
         ReceiveTransactionFlowCoordinator(presentingScreen: self, account: dataController.account)
 
-    private lazy var localAuthenticator = LocalAuthenticator()
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private var lastDisplayState = DisplayState.normal
@@ -226,24 +226,25 @@ extension ASADetailScreen {
             return
         }
 
-        if localAuthenticator.localAuthenticationStatus != .allowed {
-            let screen = open(
-                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
-                by: .present
-            ) as? ChoosePasswordViewController
-            screen?.delegate = self
-
-            return
+        if localAuthenticator.hasAuthentication() {
+            do {
+                try localAuthenticator.authenticate()
+                navigateToViewPassphrase()
+            } catch {
+                presentPasswordConfirmScreen()
+            }
+        } else {
+            presentPasswordConfirmScreen()
         }
 
-        localAuthenticator.authenticate {
-            [weak self] error in
-            guard let self = self else { return }
+    }
 
-            if error != nil { return }
-
-            self.navigateToViewPassphrase()
-        }
+    private func presentPasswordConfirmScreen() {
+        let controller = open(
+            .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
+            by: .present
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
