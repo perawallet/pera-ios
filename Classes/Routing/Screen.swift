@@ -101,6 +101,10 @@ indirect enum Screen {
     case rekeyedToStandardAccountConfirmation(sourceAccount: Account, authAccount: Account, newAuthAccount: Account)
     case undoStandardAccountRekey(sourceAccount: Account, authAccount: Account)
     case undoLedgerAccountRekey(sourceAccount: Account, authAccount: Account)
+    case rekeyAccountSelection(
+        eventHandler: AccountSelectionListScreen<RekeyAccountSelectionListLocalDataController>.EventHandler,
+        account: Account
+    )
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating

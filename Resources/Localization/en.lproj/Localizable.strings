@@ -99,7 +99,7 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
-"title-select-account" = "Select Account";
+"title-select-account" = "Select account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
 "filter" = "Filter";
@@ -1497,3 +1497,7 @@
 "ledger-to-ledger-rekeyed-account-type-description-highlighted-text" = "Learn more";
 "any-to-no-auth-rekeyed-account-type-description" = "Your account is rekeyed to an Algorand account that is not in your wallet. You can't send assets or sign transactions. Learn more";
 "any-to-no-auth-rekeyed-account-type-description-highlighted-text" = "Learn more";
+
+// MARK: Rekey Account Selection List
+"rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
+"rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";

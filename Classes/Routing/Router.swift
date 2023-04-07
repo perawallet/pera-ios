@@ -797,6 +797,50 @@ class Router:
                 authAccount: authAccount,
                 newAuthAccount: sourceAccount
             )
+        case let .rekeyAccountSelection(eventHandler, account):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = RekeyAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = RekeyAccountSelectionListLocalDataController(
+                sharedDataController: configuration.sharedDataController,
+                account: account
+            )
+
+            let dataSource = RekeyAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<RekeyAccountSelectionListSectionIdentifier, RekeyAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: RekeyAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
         case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
