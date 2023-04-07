@@ -438,7 +438,7 @@ extension ASADetailScreen {
 
     private func makeAccountActionsBarButtonItem() ->  ALGBarButtonItem {
         let account = dataController.account
-        let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
+        let accountActionsItem = ALGBarButtonItem(kind: .account(account)) {
             [unowned self] in
 
             self.transitionToAccountActions.perform(
