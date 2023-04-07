@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AlgorandSecureBackupImportRecoverMnemonicScreen.swift
+//   AlgorandSecureBackupRecoverMnemonicScreen.swift
 
 import Foundation
 import MacaroonForm
@@ -20,10 +20,10 @@ import MacaroonUtils
 import MacaroonUIKit
 import UIKit
 
-final class AlgorandSecureBackupImportRecoverMnemonicScreen:
+final class AlgorandSecureBackupRecoverMnemonicScreen:
     BaseScrollViewController,
     MacaroonForm.KeyboardControllerDataSource {
-    typealias EventHandler = (Event, AlgorandSecureBackupImportRecoverMnemonicScreen) -> Void
+    typealias EventHandler = (Event, AlgorandSecureBackupRecoverMnemonicScreen) -> Void
 
     var eventHandler: EventHandler?
 
@@ -33,12 +33,12 @@ final class AlgorandSecureBackupImportRecoverMnemonicScreen:
         return inputSuggestionViewController
     }()
 
-    private lazy var accountRecoverView = AccountRecoverView()
+    private lazy var accountRecoverView = AccountRecoverView.mnemonicsForSecureBackup()
     private lazy var nextActionView = MacaroonUIKit.Button()
 
-    private lazy var theme = AlgorandSecureBackupImportRecoverMnemonicScreenTheme()
+    private lazy var theme = AlgorandSecureBackupRecoverMnemonicScreenTheme()
 
-    private lazy var mnemonicsParser = MnemonicsParser()
+    private lazy var mnemonicsParser = MnemonicsParser(wordCount: 12)
 
     private var isRecoverEnabled: Bool {
         return getMnemonics() != nil
@@ -51,10 +51,10 @@ final class AlgorandSecureBackupImportRecoverMnemonicScreen:
     private lazy var keyboardController =
         MacaroonForm.KeyboardController(scrollView: scrollView, screen: self)
 
-    private let backupFile: SecureBackup
+    private let backup: SecureBackup
 
-    init(backupFile: SecureBackup, configuration: ViewControllerConfiguration) {
-        self.backupFile = backupFile
+    init(backup: SecureBackup, configuration: ViewControllerConfiguration) {
+        self.backup = backup
         super.init(configuration: configuration)
         isAutoScrollingToEditingTextFieldEnabled = false
         keyboardController.activate()
@@ -91,7 +91,7 @@ final class AlgorandSecureBackupImportRecoverMnemonicScreen:
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func addUI() {
         addBackground()
         addAccountRecoverView()
@@ -103,7 +103,6 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 
     private func addAccountRecoverView() {
-        accountRecoverView.constants = AccountRecoverView.Constants(firstColumnCount: 6, secondColumnCount: 6)
         accountRecoverView.customize(theme.accountRecoverViewTheme)
 
         contentView.addSubview(accountRecoverView)
@@ -125,12 +124,16 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
             $0.bottom == theme.nextActionEdgeInsets.bottom
         }
 
-        nextActionView.isEnabled = false
+        enableImport(false)
         nextActionView.addTouch(target: self, action: #selector(performNext))
+    }
+
+    private func enableImport(_ isEnabled: Bool) {
+        nextActionView.isEnabled = isEnabled
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen: AccountRecoverViewDelegate {
+extension AlgorandSecureBackupRecoverMnemonicScreen: AccountRecoverViewDelegate {
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView) {
         if let index = view.index(of: recoverInputView) {
             customizeRecoverInputViewWhenInputDidChange(recoverInputView)
@@ -143,15 +146,10 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen: AccountRecoverViewDel
     }
 
     private func customizeRecoverInputViewWhenInputDidChange(_ view: RecoverInputView) {
-        nextActionView.isEnabled = isRecoverEnabled
+        enableImport(isRecoverEnabled)
         inputSuggestionsViewController.findTopSuggestions(for: view.input)
         updateRecoverInputSuggestor(in: view)
         updateRecoverInputViewStateForSuggestions(view)
-
-//        keyboardController.scrollToEditingRect(
-//            afterContentDidChange: false,
-//            animated: true
-//        )
     }
 
     private func updateRecoverInputSuggestor(in view: RecoverInputView) {
@@ -217,11 +215,9 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen: AccountRecoverViewDel
                 return true
             case .one:
                 return true
-            case .full:
-                return true
-            case .asbFull(let words):
+            case .full(let words):
                 fillMnemonics(words)
-                nextActionView.isEnabled = true
+                enableImport(true)
                 return false
             }
         } catch {
@@ -233,7 +229,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen: AccountRecoverViewDel
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func hasValidSuggestion(for view: RecoverInputView) -> Bool {
         guard let input = view.input,
               !input.isEmptyOrBlank else {
@@ -244,10 +240,10 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func getMnemonics() -> String? {
         let inputs = recoverInputViews.compactMap { $0.input }.filter { !$0.isEmpty }
-        if inputs.count == Mnemonics.asbFullCount {
+        if inputs.count == mnemonicsParser.wordCount {
             return inputs.joined(separator: " ")
         }
         return nil
@@ -277,7 +273,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func updateMnemonics(_ text: String) {
         do {
             let mnemonics = try mnemonicsParser.parse(text)
@@ -287,11 +283,9 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
                 break
             case .one(let word):
                 updateCurrentInputView(with: word)
-            case .full:
-                break
-            case .asbFull(let words):
+            case .full(let words):
                 fillMnemonics(words)
-                nextActionView.isEnabled = true
+                enableImport(true)
             }
         } catch {
             /// <note>
@@ -301,13 +295,13 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
 }
 
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen: InputSuggestionViewControllerDelegate {
+extension AlgorandSecureBackupRecoverMnemonicScreen: InputSuggestionViewControllerDelegate {
     func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String) {
         updateCurrentInputView(with: mnemonic)
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     func keyboardController(
         _ keyboardController: MacaroonForm.KeyboardController,
         editingRectIn view: UIView
@@ -323,6 +317,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
                 $0.bottom == keyboard.height
             }
 
+            // TODO: There is a side effect here. It will be replaced in future.
             let animator = UIViewPropertyAnimator(
                 duration: keyboard.animationDuration,
                 curve: keyboard.animationCurve
@@ -354,6 +349,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
             $0.bottom == 0
         }
 
+        // TODO: There is a side effect here. It will be replaced in future.
         let animator = UIViewPropertyAnimator(
             duration:  0.25,
             curve: .easeOut
@@ -373,14 +369,15 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     @objc
     private func performNext() {
-        processSecureBackup(backupFile)
+        processSecureBackup(backup)
     }
 
-    private func processSecureBackup(_ secureBackup: SecureBackup) {
-        guard let data = secureBackup.cipherText else {
+    private func processSecureBackup(_ backup: SecureBackup) {
+        guard let data = backup.cipherText else {
+            presentErrorBanner()
             return
         }
         
@@ -392,6 +389,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
             let privateKey = algorandSDK.backupPrivateKey(fromMnemonic: mnemonics, error: &error),
             let cipherText = algorandSDK.generateBackupCipherKey(data: privateKey)
         else {
+            presentErrorBanner()
             return
         }
 
@@ -407,15 +405,23 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
             let data = decryptedData.data,
             let backupParameters = try? BackupParameters.decoded(data)
         else {
+            presentErrorBanner()
             return
         }
 
         eventHandler?(.decryptedBackup(backupParameters), self)
     }
+
+    private func presentErrorBanner() {
+        bannerController?.presentErrorBanner(
+            title: "algorand-secure-backup-mnemonics-error-title".localized,
+            message: "algorand-secure-backup-mnemonics-error-message".localized
+        )
+    }
 }
 
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     private func getEditingRectOfSearchInputField() -> CGRect? {
         guard let currentInputView = accountRecoverView.currentInputView else {
             return nil
@@ -425,7 +431,7 @@ extension AlgorandSecureBackupImportRecoverMnemonicScreen {
     }
 }
 
-extension AlgorandSecureBackupImportRecoverMnemonicScreen {
+extension AlgorandSecureBackupRecoverMnemonicScreen {
     enum Event {
         case decryptedBackup(BackupParameters)
     }

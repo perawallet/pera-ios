@@ -28,41 +28,23 @@ struct SettingsDetailViewModel:
     private(set) var primaryTitle: TextProvider?
     private(set) var secondaryTitle: TextProvider?
 
-    init(settings: Settings) {
-        bindImage(settings: settings)
-        bindPrimaryTitle(settings: settings)
-        bindSecondaryTitle(settings: settings)
+    init(settingsItem: Settings) {
+        bindImage(settingsItem: settingsItem)
+        bindPrimaryTitle(settingsItem: settingsItem)
+        bindSecondaryTitle(settingsItem: settingsItem)
     }
 }
 
 extension SettingsDetailViewModel {
-    private mutating func bindImage(settings: Settings) {
-        image = settings.image
+    private mutating func bindImage(settingsItem: Settings) {
+        image = settingsItem.image
     }
 
-    private mutating func bindPrimaryTitle(settings: Settings) {
-        primaryTitle = getPrimaryTitle(settings.name)
+    private mutating func bindPrimaryTitle(settingsItem: Settings) {
+        primaryTitle = settingsItem.name.bodyRegular(lineBreakMode: .byTruncatingTail)
     }
 
-    private mutating func bindSecondaryTitle(settings: Settings) {
-        secondaryTitle = getSecondaryTitle(settings.subtitle)
-    }
-}
-
-extension SettingsDetailViewModel {
-    func getPrimaryTitle(_ aTitle: String?) -> TextProvider? {
-        guard let aTitle = aTitle else {
-            return nil
-        }
-
-        return aTitle.bodyRegular(lineBreakMode: .byTruncatingTail)
-    }
-
-    func getSecondaryTitle(_ aTitle: String?) -> TextProvider? {
-        guard let aTitle = aTitle else {
-            return nil
-        }
-
-        return aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
+    private mutating func bindSecondaryTitle(settingsItem: Settings) {
+        secondaryTitle = settingsItem.subtitle?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

@@ -24,7 +24,7 @@ enum GeneralSettings {
 }
 
 enum AccountSettings: Settings {
-    case secureBackup(numberOfAccountsNotBackedUp: Int)
+    case secureBackup(numberOfAccountsNotBackedUp: Int?)
     case security
     case contacts
     case notifications
@@ -63,13 +63,11 @@ enum AccountSettings: Settings {
     var subtitle: String? {
         switch self {
         case .secureBackup(let numberOfAccountsNotBackedUp):
-            /// <note>: -1 means that if account collection is not empty and there is a backup covering all accounts
-            /// We should not show the subtitle
-            if numberOfAccountsNotBackedUp == -1 {
+            guard let numberOfAccountsNotBackedUp else {
                 return nil
-            } else {
-                return "settings-secure-backup-subtitle".localized("\(numberOfAccountsNotBackedUp)")
             }
+            
+            return "settings-secure-backup-subtitle".localized("\(numberOfAccountsNotBackedUp)")
         default:
             return nil
         }
