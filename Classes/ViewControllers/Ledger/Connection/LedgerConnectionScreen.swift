@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,75 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SignWithLedgerProcessScreen.swift
+//   LedgerConnectionScreen.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-final class SignWithLedgerProcessScreen:
+final class LedgerConnectionScreen:
     MacaroonUIKit.ScrollScreen,
     BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
-    }
-    
-    var isProgressFinished: Bool {
-        return progress.isFinished
-    }
-    var api: ALGAPI?
-
-    private lazy var progressView = UIProgressView()
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = LottieImageView()
-    private lazy var titleView = Label()
-    private lazy var bodyView = Label()
+    private lazy var titleView = UILabel()
+    private lazy var bodyView = UILabel()
     private lazy var actionView = MacaroonUIKit.Button()
 
-    private lazy var theme = SignWithLedgerProcessScreenTheme()
-
-    private lazy var progress = ALGProgress(totalUnitCount: draft.totalTransactionCount)
-
-    private let transactionSigner: SwapTransactionSigner
-    private let draft: SignWithLedgerProcessDraft
+    private lazy var theme = LedgerConnectionScreenTheme()
 
     typealias EventHandler = (Event) -> Void
     private let eventHandler: EventHandler
 
     init(
-        transactionSigner: SwapTransactionSigner,
-        draft: SignWithLedgerProcessDraft,
-        eventHandler: @escaping EventHandler,
-        api: ALGAPI?
+        eventHandler: @escaping EventHandler
     ) {
-        self.transactionSigner = transactionSigner
-        self.draft = draft
         self.eventHandler = eventHandler
-        self.api = api
-        
         super.init()
-    }
-
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
-
-        navigationItem.largeTitleDisplayMode =  .never
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         startAnimatingImage()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        transactionSigner.disonnectFromLedger()
     }
 
     override func viewDidChangePreferredUserInterfaceStyle() {
@@ -92,7 +59,6 @@ final class SignWithLedgerProcessScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        addProgress()
         addContext()
     }
 
@@ -110,30 +76,7 @@ final class SignWithLedgerProcessScreen:
     }
 }
 
-extension SignWithLedgerProcessScreen {
-    func increaseProgress() {
-        progress()
-
-        bindProgress(animated: true)
-    }
-}
-
-extension SignWithLedgerProcessScreen {
-    private func addProgress() {
-        progressView.progressViewStyle = .bar
-        progressView.progressTintColor = theme.progressTintColor.uiColor
-        progressView.trackTintColor = theme.trackTintColor.uiColor
-
-        view.addSubview(progressView)
-        progressView.snp.makeConstraints {
-            $0.top == theme.progressTopInset
-            $0.leading == 0
-            $0.trailing == 0
-        }
-
-        bindProgress(animated: false)
-    }
-
+extension LedgerConnectionScreen {
     private func addContext() {
         contentView.addSubview(contextView)
 
@@ -181,10 +124,9 @@ extension SignWithLedgerProcessScreen {
         contextView.addSubview(bodyView)
         bodyView.customizeAppearance(theme.body)
 
-        bodyView.contentEdgeInsets.top = theme.spacingBetweenTitleAndBody
         bodyView.fitToIntrinsicSize()
         bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndBody
             $0.leading == 0
             $0.trailing == 0
             $0.bottom == 0
@@ -214,7 +156,7 @@ extension SignWithLedgerProcessScreen {
     }
 }
 
-extension SignWithLedgerProcessScreen {
+extension LedgerConnectionScreen {
     func startAnimatingImage() {
         imageView.play(with: LottieImageView.Configuration())
     }
@@ -224,32 +166,21 @@ extension SignWithLedgerProcessScreen {
     }
 }
 
-extension SignWithLedgerProcessScreen {
+extension LedgerConnectionScreen {
     private func updateImageWhenViewDidChangePreferredUserInterfaceStyle() {
         bindImage()
         startAnimatingImage()
     }
 }
 
-extension SignWithLedgerProcessScreen {
+extension LedgerConnectionScreen {
     @objc
     private func performAction() {
-        eventHandler(.performCancelApproval)
+        eventHandler(.performCancel)
     }
 }
 
-extension SignWithLedgerProcessScreen {
-    private func bindProgress(animated: Bool) {
-        title =
-            "swap-sign-with-ledger-process-title"
-                .localized(params: "\(progress.currentUnitCount)", "\(progress.totalUnitCount)")
-
-        progressView.setProgress(
-            progress.fractionCompleted,
-            animated: animated
-        )
-    }
-
+extension LedgerConnectionScreen {
     private func bindImage() {
         let animation =
             traitCollection.userInterfaceStyle == .dark
@@ -260,25 +191,25 @@ extension SignWithLedgerProcessScreen {
 
     private func bindTitle() {
         titleView.attributedText =
-            "ledger-approval-title"
+            "ledger-approval-connection-title"
                 .localized
                 .bodyLargeMedium(alignment: .center)
     }
 
     private func bindBody() {
         bodyView.attributedText =
-            "ledger-approval-sign-message"
-                .localized(params: "\(draft.ledgerDeviceName)")
+            "ledger-approval-connection-message"
+                .localized
                 .bodyRegular(alignment: .center)
     }
 
     private func bindAction() {
-        actionView.editTitle = .string("ledger-approval-cancel-title".localized)
+        actionView.editTitle = .string("title-cancel".localized)
     }
 }
 
-extension SignWithLedgerProcessScreen {
+extension LedgerConnectionScreen {
     enum Event {
-        case performCancelApproval
+        case performCancel
     }
 }
