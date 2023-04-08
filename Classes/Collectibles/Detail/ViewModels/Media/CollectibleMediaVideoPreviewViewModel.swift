@@ -65,10 +65,10 @@ extension CollectibleMediaVideoPreviewViewModel {
         switch accountCollectibleStatus {
         case .notOptedIn,
              .optingOut,
+             .optingIn,
              .owned:
             overlayImage = nil
-        case .optingIn,
-             .optedIn:
+        case .optedIn:
             overlayImage = "overlay-bg".uiImage
         }
     }

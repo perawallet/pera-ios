@@ -196,6 +196,42 @@ extension CollectibleAsset {
         algoPriceChangePercentage = asset.algoPriceChangePercentage
         isAvailableOnDiscover = asset.isAvailableOnDiscover
     }
+
+    func update(with asset: CollectibleAsset) {
+        if id != asset.id { return }
+
+        isFrozen = asset.isFrozen ?? isFrozen
+        isDeleted = asset.isDeleted ?? isDeleted
+        optedInAtRound = asset.optedInAtRound ?? optedInAtRound
+        creator = asset.creator ?? creator
+        name = asset.naming.name ?? name
+        unitName = asset.naming.unitName ?? unitName
+        total = asset.total ?? total
+        totalSupply = asset.totalSupply ?? totalSupply
+        verificationTier = asset.verificationTier
+        thumbnailImage = asset.thumbnailImage ?? thumbnailImage
+        mediaType = asset.mediaType
+        standard = asset.standard ?? standard
+        media = asset.media.isEmpty ? media : asset.media
+        title = asset.title ?? title
+        collection = asset.collection ?? collection
+        url = asset.url ?? url
+        description = asset.description ?? description
+        properties = asset.properties.isNilOrEmpty ? properties : asset.properties
+        projectURL = asset.projectURL ?? projectURL
+        explorerURL = asset.explorerURL ?? explorerURL
+        logoURL = asset.logoURL ?? logoURL
+        discordURL = asset.discordURL ?? discordURL
+        telegramURL = asset.telegramURL ?? telegramURL
+        twitterURL = asset.twitterURL ?? twitterURL
+        amount = asset.amount
+        decimals = asset.decimals
+        decimalAmount = asset.decimalAmount
+        usdValue = asset.usdValue ?? usdValue
+        totalUSDValue = asset.totalUSDValue ?? totalUSDValue
+        algoPriceChangePercentage = asset.algoPriceChangePercentage
+        isAvailableOnDiscover = asset.isAvailableOnDiscover
+    }
 }
 
 extension CollectibleAsset: Hashable {

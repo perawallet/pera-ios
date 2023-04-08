@@ -54,13 +54,24 @@ final class AssetDecoration: ALGEntityModel {
     init(
         _ apiModel: APIModel = APIModel()
     ) {
+        let decimals = apiModel.fractionDecimals ?? 0
+
         self.id = apiModel.assetId
         self.name = apiModel.name
         self.unitName = apiModel.unitName
-        self.decimals = apiModel.fractionDecimals ?? 0
+        self.decimals = decimals
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.total = apiModel.total.unwrap { UInt64($0) }
-        self.totalSupply = apiModel.totalSupply
+
+        if let totalSupply = apiModel.totalSupply {
+            self.totalSupply = totalSupply
+        } else {
+            /// totalSupply = total * 10^-(decimals)
+            self.totalSupply = apiModel.total
+                .unwrap { Decimal(string: $0) }
+                .unwrap { Decimal(sign: .plus, exponent: -decimals, significand: $0) }
+        }
+
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.projectURL = apiModel.projectURL
             .unwrapNonEmptyString()
@@ -107,6 +118,29 @@ final class AssetDecoration: ALGEntityModel {
         self.isAvailableOnDiscover = false
     }
 
+    init(asset: Asset) {
+        self.id = asset.id
+        self.name = asset.naming.name
+        self.unitName = asset.naming.unitName
+        self.decimals = asset.decimals
+        self.usdValue = asset.usdValue
+        self.total = asset.total
+        self.totalSupply = asset.totalSupply
+        self.creator = asset.creator
+        self.projectURL = asset.projectURL
+        self.explorerURL = asset.explorerURL
+        self.collectible = nil
+        self.url = asset.url
+        self.verificationTier = asset.verificationTier
+        self.logoURL = asset.logoURL
+        self.description = asset.description
+        self.discordURL = asset.discordURL
+        self.telegramURL = asset.telegramURL
+        self.twitterURL = asset.twitterURL
+        self.algoPriceChangePercentage = asset.algoPriceChangePercentage
+        self.isAvailableOnDiscover = asset.isAvailableOnDiscover
+    }
+
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.assetId = id
@@ -130,29 +164,6 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.algoPriceChangePercentage = algoPriceChangePercentage
         apiModel.isAvailableOnDiscover = isAvailableOnDiscover
         return apiModel
-    }
-
-    init(asset: Asset) {
-        self.id = asset.id
-        self.name = asset.naming.name
-        self.unitName = asset.naming.unitName
-        self.decimals = asset.decimals
-        self.usdValue = asset.usdValue
-        self.total = asset.total
-        self.totalSupply = asset.totalSupply
-        self.creator = asset.creator
-        self.projectURL = asset.projectURL
-        self.explorerURL = asset.explorerURL
-        self.collectible = nil
-        self.url = asset.url
-        self.verificationTier = asset.verificationTier
-        self.logoURL = asset.logoURL
-        self.description = asset.description
-        self.discordURL = asset.discordURL
-        self.telegramURL = asset.telegramURL
-        self.twitterURL = asset.twitterURL
-        self.algoPriceChangePercentage = asset.algoPriceChangePercentage
-        self.isAvailableOnDiscover = asset.isAvailableOnDiscover
     }
 }
 
