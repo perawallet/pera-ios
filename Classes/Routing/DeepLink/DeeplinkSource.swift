@@ -29,6 +29,7 @@ enum DeeplinkSource {
     case walletConnectRequest(WalletConnectRequestDraft)
     case buyAlgoWithMoonPay(MoonPayDraft)
     case qrText(QRText)
+    case discoverBrowser(URL)
 
     static func walletConnectSessionRequestForDiscover(_ url: URL) -> DeeplinkSource {
         return .walletConnectSessionRequest(url, prefersConnectionApproval: false)

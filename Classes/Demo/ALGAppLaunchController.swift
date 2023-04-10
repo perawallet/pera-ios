@@ -300,6 +300,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forMoonPay: draft)
         case .qrText(let qrText):
             result = determineUIStateIfPossible(forQRText: qrText)
+        case .discoverBrowser(let url):
+            result = determineUIStateIfPossible(forDiscoverURL: url)
         }
         
         switch result {
@@ -420,6 +422,10 @@ extension ALGAppLaunchController {
         case .success(let screen): return .success(.deeplink(screen))
         case .failure(let error): return .failure(error)
         }
+    }
+
+    private func determineUIStateIfPossible(forDiscoverURL url: URL) -> DeeplinkResult {
+        return .success(.deeplink(.discoverBrowser(url: url)))
     }
     
     private func suspend(

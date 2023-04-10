@@ -349,6 +349,12 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
+        case .discoverBrowser(let url):
+            route(
+                to: .discoverBrowser(url: url),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
     }
     
@@ -1610,6 +1616,8 @@ class Router:
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
+        case .discoverBrowser(let url):
+            viewController = DeeplinkBrowserScreen(url: url, configuration: configuration)
         }
 
         return viewController as? T

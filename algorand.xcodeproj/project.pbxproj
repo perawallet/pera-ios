@@ -145,6 +145,12 @@
 		175CE59922955CEE003F7C02 /* WaitRoundDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */; };
 		175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59A2295709F003F7C02 /* RoundDetail.swift */; };
 		175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59A2295709F003F7C02 /* RoundDetail.swift */; };
+		175D90E129E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90E029E16E120006CF96 /* DeeplinkBrowserScreen.swift */; };
+		175D90E229E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90E029E16E120006CF96 /* DeeplinkBrowserScreen.swift */; };
+		175D90E329E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90E029E16E120006CF96 /* DeeplinkBrowserScreen.swift */; };
+		175D90EE29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90ED29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift */; };
+		175D90EF29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90ED29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift */; };
+		175D90F029E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175D90ED29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift */; };
 		1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
 		1770728E290A8DE7009E02AE /* DiscoverSearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770728D290A8DE7009E02AE /* DiscoverSearchScreen.swift */; };
 		1770728F290A8DE7009E02AE /* DiscoverSearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770728D290A8DE7009E02AE /* DiscoverSearchScreen.swift */; };
@@ -6859,6 +6865,8 @@
 		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitRoundDraft.swift; sourceTree = "<group>"; };
 		175CE59A2295709F003F7C02 /* RoundDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundDetail.swift; sourceTree = "<group>"; };
+		175D90E029E16E120006CF96 /* DeeplinkBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkBrowserScreen.swift; sourceTree = "<group>"; };
+		175D90ED29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverDeeplinkParameters.swift; sourceTree = "<group>"; };
 		1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Crypto.swift"; sourceTree = "<group>"; };
 		1770728D290A8DE7009E02AE /* DiscoverSearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchScreen.swift; sourceTree = "<group>"; };
 		17707292290AAC23009E02AE /* DiscoverSearchDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchDataController.swift; sourceTree = "<group>"; };
@@ -9323,6 +9331,7 @@
 		1710831C29066B7800A80CC0 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
+				175D90DF29E16DE40006CF96 /* DeeplinkBrowser */,
 				D458082F2917BFD80031AF5B /* AssetDetail */,
 				17A7667B2909587000A8746C /* DappDetail */,
 				F0877F73299AD06900CD8D8A /* DiscoverInAppBrowser */,
@@ -9392,6 +9401,14 @@
 				17EF512C295ABAE700461347 /* AlgoSDK.xcframework */,
 			);
 			path = Libraries;
+			sourceTree = "<group>";
+		};
+		175D90DF29E16DE40006CF96 /* DeeplinkBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				175D90E029E16E120006CF96 /* DeeplinkBrowserScreen.swift */,
+			);
+			path = DeeplinkBrowser;
 			sourceTree = "<group>";
 		};
 		1770728C290A8DD9009E02AE /* Search */ = {
@@ -9508,6 +9525,7 @@
 				F0877F79299ADA8400CD8D8A /* DiscoverGenericParameters.swift */,
 				17C93290293F2495000EE03D /* DiscoverSwapParameters.swift */,
 				17899E0529A79BEB00DE6A72 /* DiscoverDeviceIDDetails.swift */,
+				175D90ED29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -21480,6 +21498,7 @@
 				2B835B6727A424C10091E9F6 /* WCAlgosTransactionViewController.swift in Sources */,
 				2B56716324008B590037FCFA /* LedgerTutorialInstructionView.swift in Sources */,
 				D49B4C7D28B634DD00254B6B /* OptOutAssetListItemView.swift in Sources */,
+				175D90E329E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */,
 				2B7A1FC727DEA4B80010F52E /* CollectibleDetailHeaderViewModel.swift in Sources */,
 				D4B7655228B3E70F00A70DC6 /* InfoBoxView.swift in Sources */,
 				17D0FA2828EC28DE0061B55D /* ExportAccountsResultViewTheme.swift in Sources */,
@@ -21684,6 +21703,7 @@
 				2BD36E1B2684650400C57728 /* WCGroupTransactionItemCell.swift in Sources */,
 				F0F40F202942904E002EFBCC /* AccountNameSetupViewControllerTheme.swift in Sources */,
 				2BA172922649580000A613C4 /* AlgorandLineChartDataComposer.swift in Sources */,
+				175D90F029E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */,
 				2BCBBAFC24AB9B18002CD56F /* TransactionCustomRangeSelectionViewController.swift in Sources */,
 				D478CDD6282C33DC0090032D /* CollectibleMediaPreviewViewController+ImageTransition.swift in Sources */,
 				D4979484287D8DF1004FBF8E /* AppCallAssetListDataSource.swift in Sources */,
@@ -23673,6 +23693,7 @@
 				955B618C27858E1B005A5C7E /* WCSingleTransactionRequestViewTheme.swift in Sources */,
 				D446A742272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift in Sources */,
 				17D0FA2728EC28DE0061B55D /* ExportAccountsResultViewTheme.swift in Sources */,
+				175D90E229E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */,
 				958416E227B29612005B1627 /* HomeLoadingViewTheme.swift in Sources */,
 				2BECB4A725A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
 				2B69AAE228BE276300A8D65D /* SwapAssetAmountView.swift in Sources */,
@@ -24675,6 +24696,7 @@
 				D48FDFDC27CF4FB700C39FC7 /* ReceiveCollectibleAssetListViewController.swift in Sources */,
 				D49E241E299684DE0016F698 /* BidaliIntroductionScreen.swift in Sources */,
 				D411B36E26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
+				175D90EF29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */,
 				D499D28527C7DA7800641FF5 /* CollectibleGridItemLoadingView.swift in Sources */,
 				D4F068BA26EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift in Sources */,
 				2B3E226A26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
@@ -25956,6 +25978,7 @@
 				2B7A1F3727DBF8150010F52E /* CollectibleDetailAPIDataController.swift in Sources */,
 				F0C542F9291DF05C00596A0A /* DiscoverSearchNextListLoadingCell.swift in Sources */,
 				17A76674290936E300A8746C /* DiscoverDappDetailNavigationViewModel.swift in Sources */,
+				175D90EE29E2FD350006CF96 /* DiscoverDeeplinkParameters.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,
 				F010637328AC4AB800AB6873 /* ASAProfileViewTheme.swift in Sources */,
 				D4588AD6294293ED0012C12C /* AccountClipboardViewTheme.swift in Sources */,
@@ -26609,6 +26632,7 @@
 				2B97787329943AA500F88C7C /* NavigationPrimaryTitleItemViewTheme.swift in Sources */,
 				2BF90F3D25FA3B100033F348 /* RecoverInputView.swift in Sources */,
 				2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */,
+				175D90E129E16E120006CF96 /* DeeplinkBrowserScreen.swift in Sources */,
 				2B7A1F5927DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */,
 				95C0BD1727F2220A00FF010D /* Session+Announcement.swift in Sources */,
 				2B8CD59829074DE2004A81B9 /* SwapAPIErrorViewModel.swift in Sources */,

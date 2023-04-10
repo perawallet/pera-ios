@@ -227,6 +227,11 @@ class AppDelegate:
             return true
         }
 
+        if let browserURL = deeplinkQR.browserURL() {
+            receive(deeplinkWithSource: .discoverBrowser(browserURL))
+            return true
+        }
+
         return false
     }
 
@@ -254,6 +259,11 @@ class AppDelegate:
             return true
         }
 
+        if let browserURL = deeplinkQR.browserURL() {
+            receive(deeplinkWithSource: .discoverBrowser(browserURL))
+            return true
+        }
+
         return false
     }
 }
@@ -275,6 +285,8 @@ extension AppDelegate {
 
             if let qrText = deeplinkQR.qrText() {
                 src = .qrText(qrText)
+            } else if let browserURL = deeplinkQR.browserURL() {
+                src = .discoverBrowser(browserURL)
             } else {
                 src = nil
             }

@@ -336,6 +336,7 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler
     )
     case transakDappDetail(account: AccountHandle)
+    case discoverBrowser(url: URL)
 }
 
 extension Screen {

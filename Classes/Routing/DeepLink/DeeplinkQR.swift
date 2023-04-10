@@ -51,6 +51,21 @@ struct DeeplinkQR {
         return nil
     }
 
+    func browserURL() -> URL? {
+        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig
+        let universalLinkConfig = ALGAppTarget.current.universalLinkConfig
+
+        guard let scheme = url.scheme else {
+            return nil
+        }
+
+        if deeplinkConfig.qr.canAcceptScheme(scheme) {
+            return generateBrowserURLFromDeepLink()
+        }
+
+        return nil
+    }
+
     private func generateQRTextFromUniversalLink() -> QRText? {
         let address = url.pathComponents.last
         let queryParams = url.queryParameters
@@ -63,5 +78,20 @@ struct DeeplinkQR {
         let queryParams = url.queryParameters
 
         return QRText.build(for: address, with: queryParams)
+    }
+
+    private func generateBrowserURLFromDeepLink() -> URL? {
+        let browserValidationHost = "in-app-browser"
+        let urlHost = url.host
+
+        guard urlHost == browserValidationHost else {
+            return nil
+        }
+
+        guard let openingUrlString = url.queryParameters?["url"] else {
+            return nil
+        }
+
+        return URL(string: openingUrlString)
     }
 }
