@@ -782,9 +782,9 @@
 		17D0FA8728EC28DF0061B55D /* ExportAccountsDomainConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0FA1C28EC28DE0061B55D /* ExportAccountsDomainConfirmationScreen.swift */; };
 		17D0FA8828EC28DF0061B55D /* ExportAccountsDomainConfirmationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D0FA1C28EC28DE0061B55D /* ExportAccountsDomainConfirmationScreen.swift */; };
 		17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */; };
-		17D6B06529E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* NoAccountCellViewModel.swift */; };
-		17D6B06629E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* NoAccountCellViewModel.swift */; };
-		17D6B06729E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* NoAccountCellViewModel.swift */; };
+		17D6B06529E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift */; };
+		17D6B06629E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift */; };
+		17D6B06729E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6B06429E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift */; };
 		17D7F3BB294C96320011D9DA /* DiscoverInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* DiscoverInAppBrowserScreen.swift */; };
 		17D7F3BC294C96320011D9DA /* DiscoverInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* DiscoverInAppBrowserScreen.swift */; };
 		17D7F3BD294C96320011D9DA /* DiscoverInAppBrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D7F3BA294C96320011D9DA /* DiscoverInAppBrowserScreen.swift */; };
@@ -7222,7 +7222,7 @@
 		17D0FA1B28EC28DE0061B55D /* ExportAccountsDomainConfirmationScreenTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountsDomainConfirmationScreenTheme.swift; sourceTree = "<group>"; };
 		17D0FA1C28EC28DE0061B55D /* ExportAccountsDomainConfirmationScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportAccountsDomainConfirmationScreen.swift; sourceTree = "<group>"; };
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
-		17D6B06429E055CD007E0FB1 /* NoAccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAccountCellViewModel.swift; sourceTree = "<group>"; };
+		17D6B06429E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSecureBackupNoAccountCellViewModel.swift; sourceTree = "<group>"; };
 		17D7F3BA294C96320011D9DA /* DiscoverInAppBrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverInAppBrowserScreen.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
 		17EF5132295B0EA500461347 /* ASADetailMarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailMarketView.swift; sourceTree = "<group>"; };
@@ -10329,7 +10329,7 @@
 		17D6B06329E055B0007E0FB1 /* NoAccountCell */ = {
 			isa = PBXGroup;
 			children = (
-				17D6B06429E055CD007E0FB1 /* NoAccountCellViewModel.swift */,
+				17D6B06429E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift */,
 			);
 			path = NoAccountCell;
 			sourceTree = "<group>";
@@ -23163,7 +23163,7 @@
 				2BD95B1E291552E7005337E5 /* SwapFailedEvent.swift in Sources */,
 				2BAAF4A328E49C5100FC59AF /* SelectAssetListLayout.swift in Sources */,
 				F040FE0D285778DD00A74993 /* ALGCopyToClipboardController.swift in Sources */,
-				17D6B06729E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */,
+				17D6B06729E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */,
 				2BA979E2284E281E00EDA5EA /* ManagementItemViewModel.swift in Sources */,
 				2BAAF4B528E49C5100FC59AF /* SelectAssetErrorItemViewModel.swift in Sources */,
 				D43A0C1B2790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
@@ -24938,7 +24938,7 @@
 				2B9FDEAB28A52C3700C8117D /* GroupedListItemButtonViewModel.swift in Sources */,
 				D4CF682E28C8E8890007A727 /* InfoBoxHeaderView.swift in Sources */,
 				D45D769D299FBD4C0081735E /* TransakAccountSelectionListAccountListItemCellTheme.swift in Sources */,
-				17D6B06629E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */,
+				17D6B06629E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */,
 				D4F068A226EF1F8500C26F43 /* TutorialStepsView.swift in Sources */,
 				2BF90F2125FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
 				2B7E585E25866DA400731C97 /* LedgerAccountCell.swift in Sources */,
@@ -26309,7 +26309,7 @@
 				D472B323271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
 				D419005B273FBA0E00F7829D /* ManageAssetsViewTheme.swift in Sources */,
 				95631BBD2760C0A5002FB831 /* TransactionShadowButtonTheme.swift in Sources */,
-				17D6B06529E055CD007E0FB1 /* NoAccountCellViewModel.swift in Sources */,
+				17D6B06529E055CD007E0FB1 /* AlgorandSecureBackupNoAccountCellViewModel.swift in Sources */,
 				2B69AAD828BE276300A8D65D /* AssetAmountInputViewTheme.swift in Sources */,
 				D4086991299991A400D5797D /* BidaliAccountSelectionListHeader.swift in Sources */,
 				17CADC8B2853DC43001D19A8 /* MoreTransactionOptionListItemButtonViewModel.swift in Sources */,

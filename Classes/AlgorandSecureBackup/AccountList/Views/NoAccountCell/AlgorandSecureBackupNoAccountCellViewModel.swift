@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NoAccountCellViewModel.swift
+//   AlgorandSecureBackupNoAccountCellViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct NoAccountCellViewModel: NoContentViewModel {
+struct AlgorandSecureBackupNoAccountCellViewModel: NoContentViewModel {
     var icon: Image?
     var title: TextProvider?
     var body: TextProvider?

@@ -51,7 +51,7 @@ final class AlgorandSecureBackupAccountListDataSource:
                     NoContentCell.self,
                     at: indexPath
                 )
-                cell.bindData(NoAccountCellViewModel())
+                cell.bindData(AlgorandSecureBackupNoAccountCellViewModel())
                 return cell
             }
         }
