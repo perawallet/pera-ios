@@ -34,6 +34,10 @@ final class RekeyAccountSelectionListLocalDataController:
     var eventHandler: ((Event) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var rekeyingValidator = RekeyingValidator(
+        session: session,
+        sharedDataController: sharedDataController
+    )
 
     private let snapshotQueue = DispatchQueue(label: "rekeyAccountSelectionListLocalDataController")
 
@@ -44,15 +48,18 @@ final class RekeyAccountSelectionListLocalDataController:
     private(set) var accountItems: [AccountAddress: AccountListItemViewModel] = [:]
 
     private let sharedDataController: SharedDataController
+    private let session: Session
     private let account: Account
 
     private var lastSnapshot: Snapshot?
 
     init(
         sharedDataController: SharedDataController,
+        session: Session,
         account: Account
     ) {
         self.sharedDataController = sharedDataController
+        self.session = session
         self.account = account
     }
 
@@ -79,11 +86,8 @@ extension RekeyAccountSelectionListLocalDataController {
 
             let filteredAccounts = sortedAccounts.filter {
                 let rawAccount = $0.value
-                let isWatchAccount = rawAccount.isWatchAccount()
-                let isRekeyed = rawAccount.isRekeyed()
-                let isLedger = rawAccount.isLedger()
-                let isSameAccount = $0.value.address == self.account.address
-                return !isWatchAccount && !isRekeyed && !isLedger && !isSameAccount
+                let isRekeyingRestricted = self.isRekeyingRestricted(to: rawAccount)
+                return !isRekeyingRestricted
             }
             self.accounts = filteredAccounts
 
@@ -251,5 +255,19 @@ struct RekeyAccountSelectionListAccountItemIdentifier: Hashable {
         rhs: Self
     ) -> Bool {
         return lhs.accountAddress == rhs.accountAddress
+    }
+}
+
+extension RekeyAccountSelectionListLocalDataController {
+    private func isRekeyingRestricted(to account: Account) -> Bool {
+        let validation = rekeyingValidator.validateRekeying(
+            from: self.account,
+            to: account
+        )
+
+        /// <note>
+        /// Rekeying a standard account to ledger account should not be handled from this flow.
+        /// So, the ledger accounts are filtered separately.
+        return validation.isFailure || account.hasLedgerDetail()
     }
 }

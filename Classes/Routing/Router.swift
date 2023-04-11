@@ -816,6 +816,7 @@ class Router:
 
             let dataController = RekeyAccountSelectionListLocalDataController(
                 sharedDataController: configuration.sharedDataController,
+                session: configuration.session!,
                 account: account
             )
 

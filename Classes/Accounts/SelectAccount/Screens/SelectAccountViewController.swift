@@ -150,7 +150,6 @@ enum TransactionAction: Equatable {
     case send
     case receive
     case optIn(asset: AssetID)
-    case rekeyToStandardAccount
 }
 
 protocol SelectAccountViewControllerDelegate: AnyObject {

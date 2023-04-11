@@ -25,8 +25,7 @@ final class ASADetailScreen:
     Container,
     ChoosePasswordViewControllerDelegate,
     OptionsViewControllerDelegate,
-    RenameAccountScreenDelegate,
-    SelectAccountViewControllerDelegate {
+    RenameAccountScreenDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -249,32 +248,31 @@ extension ASADetailScreen {
 //            )
 //        )
 //    }
-    
-    private func openSelectAccountForRekeyingToStandardAccount() {
-        let draft = SelectAccountDraft(
-            transactionAction: .rekeyToStandardAccount,
-            requiresAssetSelection: false
-        )
-        
-        let accountFilters: (Account) -> Bool = {
-            [weak self] account in
-            guard let self else { return false }
-            
-            return self.isRekeyingRestricted(to: account)
-        }
+//    private func openSelectAccountForRekeyingToStandardAccount() {
+//        let draft = SelectAccountDraft(
+//            transactionAction: .rekeyToStandardAccount,
+//            requiresAssetSelection: false
+//        )
+//
+//        let accountFilters: (Account) -> Bool = {
+//            [weak self] account in
+//            guard let self else { return false }
+//
+//            return self.isRekeyingRestricted(to: account)
+//        }
+//
+//        let screen: Screen = .accountSelection(
+//            draft: draft,
+//            delegate: self,
+//            shouldFilterAccount: accountFilters
+//        )
+//
+//        open(
+//            screen,
+//            by: .present
+//        )
+//    }
 
-        let screen: Screen = .accountSelection(
-            draft: draft,
-            delegate: self,
-            shouldFilterAccount: accountFilters
-        )
-
-        open(
-            screen,
-            by: .present
-        )
-    }
-    
     private func isRekeyingRestricted(to account: Account) -> Bool {
         let validation = rekeyingValidator.validateRekeying(
             from: dataController.account,
@@ -411,31 +409,31 @@ extension ASADetailScreen {
     }
 }
 
-extension ASADetailScreen {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        switch draft.transactionAction {
-        case .rekeyToStandardAccount:
-            selectAccountViewController.dismissScreen {
-                [weak self] in
-                guard let self else { return }
-                
-                self.open(
-                    .rekeyConfirmation(
-                        account: self.dataController.account,
-                        ledgerDetail: nil,
-                        newAuthAddress: account.address
-                    ),
-                    by: .present
-                )
-            }
-        default: break
-        }
-    }
-}
+//extension ASADetailScreen {
+//    func selectAccountViewController(
+//        _ selectAccountViewController: SelectAccountViewController,
+//        didSelect account: Account,
+//        for draft: SelectAccountDraft
+//    ) {
+//        switch draft.transactionAction {
+//        case .rekeyToStandardAccount:
+//            selectAccountViewController.dismissScreen {
+//                [weak self] in
+//                guard let self else { return }
+//
+//                self.open(
+//                    .rekeyConfirmation(
+//                        account: self.dataController.account,
+//                        ledgerDetail: nil,
+//                        newAuthAddress: account.address
+//                    ),
+//                    by: .present
+//                )
+//            }
+//        default: break
+//        }
+//    }
+//}
 
 extension ASADetailScreen {
     private func addNavigationTitle() {

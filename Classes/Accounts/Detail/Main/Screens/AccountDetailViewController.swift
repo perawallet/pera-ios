@@ -20,9 +20,7 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-final class AccountDetailViewController:
-    PageContainer,
-    SelectAccountViewControllerDelegate {
+final class AccountDetailViewController: PageContainer {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?
@@ -466,42 +464,42 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 //        )
 //    }
 
-    private func openSelectAccountForRekeyingToStandardAccount() {
-        let draft = SelectAccountDraft(
-            transactionAction: .rekeyToStandardAccount,
-            requiresAssetSelection: false
-        )
-        
-        let accountFilters: (Account) -> Bool = {
-            [weak self] account in
-            guard let self else { return false }
-            
-            return self.isRekeyingRestricted(to: account)
-        }
-
-        let screen: Screen = .accountSelection(
-            draft: draft,
-            delegate: self,
-            shouldFilterAccount: accountFilters
-        )
-
-        open(
-            screen,
-            by: .present
-        )
-    }
+//    private func openSelectAccountForRekeyingToStandardAccount() {
+//        let draft = SelectAccountDraft(
+//            transactionAction: .rekeyToStandardAccount,
+//            requiresAssetSelection: false
+//        )
+//
+//        let accountFilters: (Account) -> Bool = {
+//            [weak self] account in
+//            guard let self else { return false }
+//
+//            return self.isRekeyingRestricted(to: account)
+//        }
+//
+//        let screen: Screen = .accountSelection(
+//            draft: draft,
+//            delegate: self,
+//            shouldFilterAccount: accountFilters
+//        )
+//
+//        open(
+//            screen,
+//            by: .present
+//        )
+//    }
     
-    private func isRekeyingRestricted(to account: Account) -> Bool {
-        let validation = rekeyingValidator.validateRekeying(
-            from: accountHandle.value,
-            to: account
-        )
-        
-        /// <note>
-        /// Rekeying a standard account to ledger account should not be handled from this flow.
-        /// So, the ledger accounts are filtered separately.
-        return validation.isFailure || account.hasLedgerDetail()
-    }
+//    private func isRekeyingRestricted(to account: Account) -> Bool {
+//        let validation = rekeyingValidator.validateRekeying(
+//            from: accountHandle.value,
+//            to: account
+//        )
+//
+//        /// <note>
+//        /// Rekeying a standard account to ledger account should not be handled from this flow.
+//        /// So, the ledger accounts are filtered separately.
+//        return validation.isFailure || account.hasLedgerDetail()
+//    }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
         guard let authAddress = accountHandle.value.authAddress else {
@@ -742,32 +740,32 @@ extension AccountDetailViewController {
     }
 }
 
-extension AccountDetailViewController {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        switch draft.transactionAction {
-        case .rekeyToStandardAccount:
-            selectAccountViewController.dismissScreen {
-                [weak self] in
-                guard let self else { return }
-                
-                self.open(
-                    .rekeyConfirmation(
-                        account: self.accountHandle.value,
-                        ledgerDetail: nil,
-                        newAuthAddress: account.address
-                    ),
-                    by: .present
-                )
-            }
-
-        default: break
-        }
-    }
-}
+//extension AccountDetailViewController {
+//    func selectAccountViewController(
+//        _ selectAccountViewController: SelectAccountViewController,
+//        didSelect account: Account,
+//        for draft: SelectAccountDraft
+//    ) {
+//        switch draft.transactionAction {
+//        case .rekeyToStandardAccount:
+//            selectAccountViewController.dismissScreen {
+//                [weak self] in
+//                guard let self else { return }
+//
+//                self.open(
+//                    .rekeyConfirmation(
+//                        account: self.accountHandle.value,
+//                        ledgerDetail: nil,
+//                        newAuthAddress: account.address
+//                    ),
+//                    by: .present
+//                )
+//            }
+//
+//        default: break
+//        }
+//    }
+//}
 
 extension AccountDetailViewController {
     struct AssetListPageBarItem: PageBarItem {
