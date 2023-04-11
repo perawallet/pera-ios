@@ -19,7 +19,7 @@ import MacaroonUtils
 import WebKit
 
 final class BidaliDappDetailScreen:
-    DiscoverDappDetailScreen,
+    DiscoverExternalInAppBrowserScreen,
     SharedDataControllerObserver {
 
     private var account: AccountHandle {
@@ -37,10 +37,10 @@ final class BidaliDappDetailScreen:
         self.config = config
         let dappParameters = DiscoverDappParamaters(
             name: nil,
-            url: config.url,
+            url: URL(string: config.url)!,
             favorites: nil
         )
-        super.init(dappParameters: dappParameters, configuration: configuration)
+        super.init(parameters: dappParameters, configuration: configuration)
         self.allowsPullToRefresh = false
 
         self.sharedDataController.add(self)

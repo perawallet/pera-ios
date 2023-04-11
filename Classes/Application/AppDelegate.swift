@@ -215,6 +215,12 @@ class AppDelegate:
             return true
         }
 
+        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+            let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
+            receive(deeplinkWithSource: .discoverBrowser(redirectedURL))
+            return true
+        }
+
         let deeplinkQR = DeeplinkQR(url: url)
 
         if let walletConnectURL = deeplinkQR.walletConnectUrl() {
@@ -224,11 +230,6 @@ class AppDelegate:
 
         if let qrText = deeplinkQR.qrText() {
             receive(deeplinkWithSource: .qrText(qrText))
-            return true
-        }
-
-        if let browserURL = deeplinkQR.browserURL() {
-            receive(deeplinkWithSource: .discoverBrowser(browserURL))
             return true
         }
 
@@ -247,6 +248,12 @@ class AppDelegate:
             return false
         }
 
+        if let inAppBrowserDeeplinkURL = incomingURL.inAppBrowserDeeplinkURL {
+            let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
+            receive(deeplinkWithSource: .discoverBrowser(redirectedURL))
+            return true
+        }
+
         let deeplinkQR = DeeplinkQR(url: incomingURL)
 
         if let walletConnectURL = deeplinkQR.walletConnectUrl() {
@@ -256,11 +263,6 @@ class AppDelegate:
 
         if let qrText = deeplinkQR.qrText() {
             receive(deeplinkWithSource: .qrText(qrText))
-            return true
-        }
-
-        if let browserURL = deeplinkQR.browserURL() {
-            receive(deeplinkWithSource: .discoverBrowser(browserURL))
             return true
         }
 
@@ -281,14 +283,17 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            let deeplinkQR = DeeplinkQR(url: url)
-
-            if let qrText = deeplinkQR.qrText() {
-                src = .qrText(qrText)
-            } else if let browserURL = deeplinkQR.browserURL() {
-                src = .discoverBrowser(browserURL)
+            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+                let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
+                src = .discoverBrowser(redirectedURL)
             } else {
-                src = nil
+                let deeplinkQR = DeeplinkQR(url: url)
+
+                if let qrText = deeplinkQR.qrText() {
+                    src = .qrText(qrText)
+                } else {
+                    src = nil
+                }
             }
         } else {
             src = nil

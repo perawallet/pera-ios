@@ -1,4 +1,4 @@
-// Copyright 2023 Pera Wallet, LDA
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DeeplinkBrowserScreen.swift
+//   DiscoverExternalInAppBrowserScreen.swift
 
 import Foundation
 import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-class DeeplinkBrowserScreen: InAppBrowserScreen<DeeplinkBrowserScriptMessage> {
-    private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
+class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
+    typealias EventHandler = (Event) -> Void
 
-    private lazy var toolbar = UIToolbar(frame: .zero)
+    var eventHandler: EventHandler?
+
+    private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
+
+    private(set) lazy var toolbar = UIToolbar(frame: .zero)
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
@@ -32,13 +36,13 @@ class DeeplinkBrowserScreen: InAppBrowserScreen<DeeplinkBrowserScriptMessage> {
 
     private var isViewLayoutLoaded = false
 
-    private let deeplinkParameters: DiscoverDeeplinkParameters
+    private let parameters: DiscoverExternalParameters
 
     init(
-        url: URL,
+        parameters: DiscoverExternalParameters,
         configuration: ViewControllerConfiguration
     ) {
-        self.deeplinkParameters = DiscoverDeeplinkParameters(url: url)
+        self.parameters = parameters
 
         super.init(configuration: configuration)
     }
@@ -107,7 +111,7 @@ class DeeplinkBrowserScreen: InAppBrowserScreen<DeeplinkBrowserScriptMessage> {
         updateTitle()
         updateToolbarNavigationActions()
 
-        let inAppMessage = DiscoverDappDetailScriptMessage(rawValue: message.name)
+        let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: message.name)
 
         switch inAppMessage {
         case .none:
@@ -120,18 +124,24 @@ class DeeplinkBrowserScreen: InAppBrowserScreen<DeeplinkBrowserScriptMessage> {
         }
     }
 
-    private func initializeWebView() {
-        let generatedUrl = DiscoverURLGenerator.generateURL(
-            destination: .deeplink(deeplinkParameters),
-            theme: traitCollection.userInterfaceStyle,
-            session: session
-        )
+    func updateToolbarActionsForLoading() {
+        updateToolbarNavigationActions()
+    }
 
-        load(url: generatedUrl)
+    func updateToolbarActionsForURL() {
+        updateToolbarNavigationActions()
+    }
+
+    func updateToolbarActionsForError() {
+        updateToolbarNavigationActions()
+    }
+
+    private func initializeWebView() {
+        load(url: parameters.url)
     }
 
     private func addNavigation() {
-        navigationTitleView.customize(DiscoverDappDetailNavigationViewTheme())
+        navigationTitleView.customize(DiscoverExternalInAppBrowserNavigationViewTheme())
 
         navigationItem.titleView = navigationTitleView
 
@@ -150,19 +160,15 @@ class DeeplinkBrowserScreen: InAppBrowserScreen<DeeplinkBrowserScriptMessage> {
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(item, title: webView.title))
+        navigationTitleView.bindData(DiscoverExternalInAppBrowserNavigationViewModel(item, title: webView.title))
     }
-
-    private func bindNavigationTitle(with dappParameters: DiscoverDappParamaters) {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
-    }
-
+    
     private func bindNavigationTitleForCurrentURL() {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
+        navigationTitleView.bindData(DiscoverExternalInAppBrowserNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
     }
 }
 
-extension DeeplinkBrowserScreen {
+extension DiscoverExternalInAppBrowserScreen {
     private func createNavigationScript() -> WKUserScript {
         let navigationScript = """
 !function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
@@ -177,7 +183,7 @@ extension DeeplinkBrowserScreen {
 
     private func createPeraConnectScript() -> WKUserScript {
         let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverDappDetailScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
+function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverExternalInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
 """
 
         return WKUserScript(
@@ -188,7 +194,7 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
     }
 }
 
-extension DeeplinkBrowserScreen {
+extension DiscoverExternalInAppBrowserScreen {
     private func makeHomeButton() -> UIBarButtonItem {
         let button = ALGBarButtonItem(kind: .discoverHome) {
             [unowned self] in
@@ -242,30 +248,18 @@ extension DeeplinkBrowserScreen {
         toolbar.items = items
     }
 
-    private func updateToolbarActionsForLoading() {
-        updateToolbarNavigationActions()
-    }
-
-    private func updateToolbarActionsForURL() {
-        updateToolbarNavigationActions()
-    }
-
-    private func updateToolbarActionsForError() {
-        updateToolbarNavigationActions()
-    }
-
     private func updateToolbarNavigationActions() {
         homeButton.isEnabled = webView.canGoBack
         previousButton.isEnabled = webView.canGoBack
         nextButton.isEnabled = webView.canGoForward
     }
-
+    
     private func updateWebViewLayout() {
         webView.snp.updateConstraints { make in
             make.bottom.equalToSuperview().inset(view.safeAreaBottom + toolbar.bounds.height)
         }
     }
-
+    
     private func updateTitle() {
         guard let item = webView.backForwardList.currentItem else {
             bindNavigationTitleForCurrentURL()
@@ -276,7 +270,7 @@ extension DeeplinkBrowserScreen {
     }
 }
 
-extension DeeplinkBrowserScreen {
+extension DiscoverExternalInAppBrowserScreen {
     private func handlePeraConnectAction(_ message: WKScriptMessage) {
         guard let jsonString = message.body as? String else { return }
         guard let url = URL(string: jsonString) else { return }
@@ -287,7 +281,7 @@ extension DeeplinkBrowserScreen {
     }
 }
 
-enum DeeplinkBrowserScriptMessage:
+enum DiscoverExternalInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case peraconnect

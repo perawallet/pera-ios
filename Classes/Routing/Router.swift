@@ -1557,9 +1557,9 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let parameters = DiscoverExternalLinkParameters(config)
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                parameters: parameters,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1609,15 +1609,19 @@ class Router:
             )
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
-            let dappParameters = DiscoverDappParamaters(config)
-            let aViewController = DiscoverDappDetailScreen(
-                dappParameters: dappParameters,
+            let parameters = DiscoverExternalLinkParameters(config)
+            let aViewController = DiscoverExternalInAppBrowserScreen(
+                parameters: parameters,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
         case .discoverBrowser(let url):
-            viewController = DeeplinkBrowserScreen(url: url, configuration: configuration)
+            let parameters = DiscoverExternalLinkParameters(url: url)
+            viewController = DiscoverExternalInAppBrowserScreen(
+                parameters: parameters,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

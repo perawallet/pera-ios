@@ -35,20 +35,12 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
-        case .dappDetail(let params):
-            return generateURLForDappDetail(
-                params: params,
-                theme: theme,
-                session: session
-            )
         case .generic(let params):
             return generateGenericURL(
                 params: params,
                 theme: theme,
                 session: session
             )
-        case .deeplink(let params):
-            return generateDeeplinkURL(params: params)
         }
     }
 
@@ -81,14 +73,6 @@ final class DiscoverURLGenerator {
         components?.path = "/token-detail/\(params.assetID)/"
         components?.queryItems = queryItems
         return components?.url
-    }
-
-    private static func generateURLForDappDetail(
-        params: DiscoverDappParamaters,
-        theme: UIUserInterfaceStyle,
-        session: Session?
-    ) -> URL? {
-        return URL(string: params.url)
     }
 
     private static func generateGenericURL(
@@ -129,28 +113,10 @@ final class DiscoverURLGenerator {
         }
         return queryItems
     }
-
-    private static func generateDeeplinkURL(
-        params: DiscoverDeeplinkParameters
-    ) -> URL? {
-        let encodedUrl = params.url.absoluteString
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)?
-            .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-
-        guard let encodedUrl else {
-            return nil
-        }
-
-        let redirectURL = "https://api.perawallet.app/v1/discover/redirect-if-allowed/?url=\(encodedUrl)"
-
-        return URL(string: redirectURL)
-    }
 }
 
 enum DiscoverDestination {
     case home
     case assetDetail(DiscoverAssetParameters)
-    case dappDetail(DiscoverDappParamaters)
     case generic(DiscoverGenericParameters)
-    case deeplink(DiscoverDeeplinkParameters)
 }
