@@ -199,56 +199,56 @@ extension ASADetailScreen {
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
-        openRekeyInstructions(viewModel: viewModel) {
-            [weak self] in
-            guard let self else { return }
-
-            self.open(
-                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
-        }
+//        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
+//        openRekeyInstructions(viewModel: viewModel) {
+//            [weak self] in
+//            guard let self else { return }
+//
+//            self.open(
+//                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
+//                by: .customPresent(
+//                    presentationStyle: .fullScreen,
+//                    transitionStyle: nil,
+//                    transitioningDelegate: nil
+//                )
+//            )
+//        }
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        let viewModel = RekeyToStandardAccountInstructionsViewModel()
-        openRekeyInstructions(viewModel: viewModel) {
-            [weak self] in
-            guard let self else { return }
-            self.openSelectAccountForRekeyingToStandardAccount()
-        }
+//        let viewModel = RekeyToStandardAccountInstructionsViewModel()
+//        openRekeyInstructions(viewModel: viewModel) {
+//            [weak self] in
+//            guard let self else { return }
+//            self.openSelectAccountForRekeyingToStandardAccount()
+//        }
     }
     
-    private func openRekeyInstructions(
-        viewModel: RekeyToAnyAccountInstructionsViewModel,
-        rekeyHandler: @escaping () -> Void
-    ) {
-        let eventHandler: RekeyInstructionsViewController.EventHandler = {
-            event in
-
-            switch event {
-            case .performRekey:
-                rekeyHandler()
-            }
-        }
-        
-        open(
-            .rekeyInstruction(
-                viewModel: viewModel,
-                eventHandler: eventHandler
-            ),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
-    }
+//    private func openRekeyInstructions(
+//        viewModel: RekeyToAnyAccountInstructionsViewModel,
+//        rekeyHandler: @escaping () -> Void
+//    ) {
+//        let eventHandler: RekeyInstructionsViewController.EventHandler = {
+//            event in
+//
+//            switch event {
+//            case .performRekey:
+//                rekeyHandler()
+//            }
+//        }
+//
+//        open(
+//            .rekeyInstruction(
+//                viewModel: viewModel,
+//                eventHandler: eventHandler
+//            ),
+//            by: .customPresent(
+//                presentationStyle: .fullScreen,
+//                transitionStyle: nil,
+//                transitioningDelegate: nil
+//            )
+//        )
+//    }
     
     private func openSelectAccountForRekeyingToStandardAccount() {
         let draft = SelectAccountDraft(

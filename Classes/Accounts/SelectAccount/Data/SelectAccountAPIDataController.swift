@@ -142,13 +142,7 @@ extension SelectAccountAPIDataController {
             var snapshot = Snapshot()
             
             if accounts.isEmpty {
-                snapshot.appendSections([.empty])
-                snapshot.appendItems(
-                    [.empty(.noContent(
-                        SelectAccountNoContentViewModel(self.transactionAction))
-                    )],
-                    toSection: .empty
-                )
+                self.appendSectionsForNoContent(into: &snapshot)
             } else {
                 snapshot.appendSections([.accounts])
                 snapshot.appendItems(
@@ -163,16 +157,29 @@ extension SelectAccountAPIDataController {
 
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
-            snapshot.appendItems(
-                [.empty(.noContent(
-                    SelectAccountNoContentViewModel(self.transactionAction))
-                )],
-                toSection: .empty
-            )
+            self.appendSectionsForNoContent(into: &snapshot)
             return snapshot
         }
+    }
+
+    private func appendSectionsForNoContent(
+        into snapshot: inout Snapshot
+    ) {
+        let items = makeNoContentItems()
+        snapshot.appendSections([.empty])
+        snapshot.appendItems(
+            items,
+            toSection: .empty
+        )
+    }
+
+    private func makeNoContentItems() -> [SelectAccountListViewItem] {
+        let viewModel = SelectAccountNoContentViewModel()
+        return [ .empty(.noContent(viewModel)) ]
     }
 
     private func deliverSnapshot(

@@ -113,7 +113,7 @@
 "summary-of-rekey-title" = "Summary of rekey";
 "currently-rekeyed-title" = "Currently Rekeyed";
 "undo-rekey-title" = "Undo rekey";
-"title-undo-rekey" = "Undo Rekey";
+"title-undo-rekey-capitalized-sentence" = "Undo Rekey";
 "title-account-type" = "Account type";
 "title-standard" = "Standard";
 "title-ledger" = "Ledger";
@@ -676,10 +676,7 @@
 "rekey-instruction-second-ledger" = "If you already have a Ledger device keyed to this account, your old Ledger will no longer be connected to it.";
 "rekey-instruction-second-standard" = "This account will no longer be able to sign transactions.";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
 "rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
-"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
-"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
 "ledger-rekey-confirm-title" = "Confirm rekeying";
@@ -1030,8 +1027,6 @@
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
-"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
-"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
@@ -1448,7 +1443,6 @@
 // MARK: Rekey Standard to Standard Account Instructions
 "rekey-standard-to-standard-account-instructions-body" = "Use another account's private key to sign transactions for this account. Learn more";
 "rekey-standard-to-standard-account-instructions-body-highlighted-text" = "Learn more";
-"rekey-standard-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions can only be signed by the delegated account.";
 
 // MARK: Rekey Standard to Ledger Account Instructions
 "rekey-standard-to-ledger-account-instructions-body" = "Back your standard account with a Ledger device for extra security. Learn more";

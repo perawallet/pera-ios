@@ -797,10 +797,6 @@ class Router:
                 authAccount: authAccount,
                 newAuthAccount: sourceAccount
             )
-        case let .rekeyInstruction(viewModel, eventHandler):
-            let aViewController = RekeyInstructionsViewController(viewModel: viewModel, configuration: configuration)
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
         case let .rekeyConfirmation(account, ledgerDetail, newAuthAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,

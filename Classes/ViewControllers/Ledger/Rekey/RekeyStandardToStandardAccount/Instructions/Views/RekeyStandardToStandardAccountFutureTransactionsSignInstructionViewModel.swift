@@ -24,6 +24,6 @@ struct RekeyStandardToStandardAccountFutureTransactionsSignInstructionViewModel:
 
     init(order: Int) {
         self.order = "\(order)".bodyRegular(alignment: .center)
-        self.title = "rekey-standard-to-standard-account-future-transactions-sign-instruction-title".localized.bodyRegular()
+        self.title = "rekey-instruction-soft-first".localized.bodyRegular()
     }
 }
