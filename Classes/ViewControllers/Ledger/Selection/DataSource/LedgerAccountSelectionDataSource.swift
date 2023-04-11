@@ -17,7 +17,12 @@
 
 import UIKit
 
-final class LedgerAccountSelectionDataSource: NSObject {
+typealias LedgerAccountCell = BaseCollectionViewCell<LedgerAccountCellView>
+
+final class LedgerAccountSelectionDataSource:
+    NSObject,
+    SingleSelectionLedgerAccountCellDelegate,
+    MultipleSelectionLedgerAccountCellDelegate {
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
 
     private var hasOngoingRekeying: Bool {
@@ -134,19 +139,68 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let account = accounts[safe: indexPath.item] {
-            let cell = collectionView.dequeue(LedgerAccountCell.self, at: indexPath)
-            cell.delegate = self
-            cell.bind(LedgerAccountViewModel(account))
-            return cell
+        guard let account = accounts[safe: indexPath.item] else {
+            fatalError("Index path is out of bounds")
         }
 
-        fatalError("Index path is out of bounds")
+        return makeLedgerAccountCell(
+            collectionView: collectionView,
+            account: account,
+            indexPath: indexPath
+        )
+    }
+
+    private func makeLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        if isMultiSelect {
+            return makeMultipleSelectionLedgerAccountCell(
+                collectionView: collectionView,
+                account: account,
+                indexPath: indexPath
+            )
+        } else {
+            return makeSingleSelectionLedgerAccountCell(
+                collectionView: collectionView,
+                account: account,
+                indexPath: indexPath
+            )
+        }
+    }
+
+    private func makeMultipleSelectionLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(MultipleSelectionLedgerAccountCell.self, at: indexPath)
+        cell.delegate = self
+        let viewModel = LedgerAccountViewModel(account)
+        cell.bind(viewModel)
+        return cell
+    }
+
+    private func makeSingleSelectionLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(SingleSelectionLedgerAccountCell.self, at: indexPath)
+        cell.delegate = self
+        let viewModel = LedgerAccountViewModel(account)
+        cell.bind(viewModel)
+        return cell
     }
 }
 
-extension LedgerAccountSelectionDataSource: LedgerAccountCellDelegate {
-    func ledgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: LedgerAccountCell) {
+extension LedgerAccountSelectionDataSource {
+    func singleSelectionLedgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: SingleSelectionLedgerAccountCell) {
+        delegate?.ledgerAccountSelectionDataSource(self, didTapMoreInfoFor: ledgerAccountCell)
+    }
+
+    func multipleSelectionLedgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: MultipleSelectionLedgerAccountCell) {
         delegate?.ledgerAccountSelectionDataSource(self, didTapMoreInfoFor: ledgerAccountCell)
     }
 }
