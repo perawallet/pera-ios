@@ -567,7 +567,7 @@ extension HomeViewController {
     private func triggerBannerCTA(item: AnnouncementViewModel) {
         if let url = item.ctaUrl {
             self.open(
-                .discoverBrowser(url: url),
+                .externalInAppBrowser(url: url),
                 by: .push
             )
         }

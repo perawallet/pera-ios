@@ -35,12 +35,8 @@ final class BidaliDappDetailScreen:
     ) {
         self.account = account
         self.config = config
-        let dappParameters = DiscoverDappParamaters(
-            name: nil,
-            url: URL(string: config.url)!,
-            favorites: nil
-        )
-        super.init(parameters: dappParameters, configuration: configuration)
+        let inAppBrowserParameters = DiscoverExternalLinkParameters(config)
+        super.init(parameters: inAppBrowserParameters, configuration: configuration)
         self.allowsPullToRefresh = false
 
         self.sharedDataController.add(self)

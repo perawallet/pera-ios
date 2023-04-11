@@ -561,7 +561,7 @@ extension DeepLinkParser {
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
         case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
-        case discoverBrowser(url: URL)
+        case externalInAppBrowser(url: URL)
     }
     
     enum Error:

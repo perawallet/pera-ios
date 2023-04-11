@@ -217,7 +217,7 @@ class AppDelegate:
 
         if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
             let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-            receive(deeplinkWithSource: .discoverBrowser(redirectedURL))
+            receive(deeplinkWithSource: .externalInAppBrowser(redirectedURL))
             return true
         }
 
@@ -250,7 +250,7 @@ class AppDelegate:
 
         if let inAppBrowserDeeplinkURL = incomingURL.inAppBrowserDeeplinkURL {
             let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-            receive(deeplinkWithSource: .discoverBrowser(redirectedURL))
+            receive(deeplinkWithSource: .externalInAppBrowser(redirectedURL))
             return true
         }
 
@@ -285,7 +285,7 @@ extension AppDelegate {
         } else if let url = options?[.url] as? URL {
             if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
                 let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-                src = .discoverBrowser(redirectedURL)
+                src = .externalInAppBrowser(redirectedURL)
             } else {
                 let deeplinkQR = DeeplinkQR(url: url)
 

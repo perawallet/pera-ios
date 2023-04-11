@@ -349,9 +349,9 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-        case .discoverBrowser(let url):
+        case .externalInAppBrowser(let url):
             route(
-                to: .discoverBrowser(url: url),
+                to: .externalInAppBrowser(url: url),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -1616,7 +1616,7 @@ class Router:
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
-        case .discoverBrowser(let url):
+        case .externalInAppBrowser(let url):
             let parameters = DiscoverExternalLinkParameters(url: url)
             viewController = DiscoverExternalInAppBrowserScreen(
                 parameters: parameters,
