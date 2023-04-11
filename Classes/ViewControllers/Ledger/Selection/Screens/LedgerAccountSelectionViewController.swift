@@ -48,7 +48,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     private lazy var dataSource = LedgerAccountSelectionDataSource(
         api: api!,
         sharedDataController: sharedDataController,
-        accounts: ledgerAccounts,
+        accounts: accounts,
         rekeyingAccount: accountSetupFlow.rekeyingAccount,
         isMultiSelect: isMultiSelect
     )
