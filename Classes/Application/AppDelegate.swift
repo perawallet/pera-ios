@@ -215,9 +215,11 @@ class AppDelegate:
             return true
         }
 
-        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
-            let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-            receive(deeplinkWithSource: .externalInAppBrowser(redirectedURL))
+        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL,
+            let generatedURL = inAppBrowserDeeplinkURL.createInAppBrowserDeeplinkURL(on: api.network) {
+
+            let parameters = DiscoverExternalLinkParameters(url: generatedURL)
+            receive(deeplinkWithSource: .redirectionToInAppBrowser(parameters))
             return true
         }
 
@@ -246,12 +248,6 @@ class AppDelegate:
             let incomingURL = userActivity.webpageURL
         else {
             return false
-        }
-
-        if let inAppBrowserDeeplinkURL = incomingURL.inAppBrowserDeeplinkURL {
-            let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-            receive(deeplinkWithSource: .externalInAppBrowser(redirectedURL))
-            return true
         }
 
         let deeplinkQR = DeeplinkQR(url: incomingURL)
@@ -283,9 +279,11 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
-                let redirectedURL = inAppBrowserDeeplinkURL.makeRedirectionURLForBrowser(on: api.network)
-                src = .externalInAppBrowser(redirectedURL)
+            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL,
+                let generatedURL = inAppBrowserDeeplinkURL.createInAppBrowserDeeplinkURL(on: api.network) {
+
+                let parameters = DiscoverExternalLinkParameters(url: generatedURL)
+                src = .redirectionToInAppBrowser(parameters)
             } else {
                 let deeplinkQR = DeeplinkQR(url: url)
 

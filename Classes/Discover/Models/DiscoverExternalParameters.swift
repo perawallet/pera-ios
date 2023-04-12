@@ -40,24 +40,13 @@ extension URL {
         return URL(string: urlString)
     }
 
-    func makeRedirectionURLForBrowser(on network: ALGAPI.Network) -> URL {
-        var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "url", value: self.absoluteString))
+    func createInAppBrowserDeeplinkURL(on network: ALGAPI.Network) -> URL? {
+        let parameters = DiscoverExternalLinkParameters(url: self)
 
-        let base: String
-
-        switch network {
-        case .testnet:
-            base = Environment.current.testNetMobileAPIV1
-        case .mainnet:
-            base = Environment.current.mainNetMobileAPIV1
-        }
-
-        var urlComponents = URLComponents(string: base)
-        // Note: We are adding v1 because when URLComponents used and set the path, it's overrided.
-        urlComponents?.path = "/v1/discover/redirect-if-allowed/"
-        urlComponents?.queryItems = queryItems
-
-        return urlComponents?.url ?? self
+        return DiscoverURLGenerator.generateURL(
+            destination: .redirection(parameters, network),
+            theme: .unspecified,
+            session: nil
+        )
     }
 }

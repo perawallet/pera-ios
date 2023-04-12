@@ -41,6 +41,8 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
+        case .redirection(let params, let network):
+            return generateRedirectionURL(params: params, on: network)
         }
     }
 
@@ -113,10 +115,35 @@ final class DiscoverURLGenerator {
         }
         return queryItems
     }
+
+    private static func generateRedirectionURL(
+        params: DiscoverExternalParameters,
+        on network: ALGAPI.Network
+    ) -> URL? {
+        var queryItems: [URLQueryItem] = []
+        queryItems.append(.init(name: "url", value: params.url.absoluteString))
+
+        let base: String
+
+        switch network {
+        case .testnet:
+            base = Environment.current.testNetMobileAPIV1
+        case .mainnet:
+            base = Environment.current.mainNetMobileAPIV1
+        }
+
+        var urlComponents = URLComponents(string: base)
+        // Note: We are adding v1 because when URLComponents used and set the path, it's overrided.
+        urlComponents?.path = "/v1/discover/redirect-if-allowed/"
+        urlComponents?.queryItems = queryItems
+
+        return urlComponents?.url
+    }
 }
 
 enum DiscoverDestination {
     case home
     case assetDetail(DiscoverAssetParameters)
     case generic(DiscoverGenericParameters)
+    case redirection(DiscoverExternalParameters, ALGAPI.Network)
 }
