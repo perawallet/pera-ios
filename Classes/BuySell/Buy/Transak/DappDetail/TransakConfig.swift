@@ -34,9 +34,3 @@ struct TransakConfig {
         }
     }
 }
-
-extension DiscoverExternalLinkParameters {
-    init(_ config: TransakConfig) {
-        self.init(url: URL(string: config.url)!)
-    }
-}

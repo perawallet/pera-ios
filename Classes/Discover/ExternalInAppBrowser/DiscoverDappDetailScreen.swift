@@ -25,7 +25,7 @@ final class DiscoverDappDetailScreen: DiscoverExternalInAppBrowserScreen {
 
     init(dappParameters: DiscoverDappParamaters, configuration: ViewControllerConfiguration) {
         self.dappParameters = dappParameters
-        super.init(parameters: dappParameters, configuration: configuration)
+        super.init(destination: .external(dappParameters.url), configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {

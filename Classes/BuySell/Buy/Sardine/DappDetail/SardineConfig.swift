@@ -33,9 +33,3 @@ struct SardineConfig {
         }
     }
 }
-
-extension DiscoverExternalLinkParameters {
-    init(_ config: SardineConfig) {
-        self.init(url: URL(string: config.url)!)
-    }
-}

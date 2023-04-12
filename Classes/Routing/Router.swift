@@ -349,9 +349,9 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-        case .redirectionToInAppBrowser(let parameters):
+        case .externalInAppBrowser(let destination):
             route(
-                to: .redirectionToInAppBrowser(parameters: parameters),
+                to: .externalInAppBrowser(destination: destination),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
@@ -1557,9 +1557,11 @@ class Router:
             )
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
-            let parameters = DiscoverExternalLinkParameters(config)
+            let url = URL(string: config.url)
+            let destination = DiscoverDestination.external(url)
+
             let aViewController = DiscoverExternalInAppBrowserScreen(
-                parameters: parameters,
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
@@ -1609,16 +1611,18 @@ class Router:
             )
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
-            let parameters = DiscoverExternalLinkParameters(config)
+            let url = URL(string: config.url)
+            let destination = DiscoverDestination.external(url)
+
             let aViewController = DiscoverExternalInAppBrowserScreen(
-                parameters: parameters,
+                destination: destination,
                 configuration: configuration
             )
             aViewController.allowsPullToRefresh = false
             viewController = aViewController
-        case .redirectionToInAppBrowser(let parameters):
+        case .externalInAppBrowser(let destination):
             viewController = DiscoverExternalInAppBrowserScreen(
-                parameters: parameters,
+                destination: destination,
                 configuration: configuration
             )
         }

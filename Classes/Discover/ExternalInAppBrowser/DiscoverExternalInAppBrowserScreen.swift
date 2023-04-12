@@ -36,13 +36,13 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
 
     private var isViewLayoutLoaded = false
 
-    private let parameters: DiscoverExternalParameters
+    private let destination: DiscoverDestination
 
     init(
-        parameters: DiscoverExternalParameters,
+        destination: DiscoverDestination,
         configuration: ViewControllerConfiguration
     ) {
-        self.parameters = parameters
+        self.destination = destination
 
         super.init(configuration: configuration)
     }
@@ -137,7 +137,12 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     }
 
     private func initializeWebView() {
-        load(url: parameters.url)
+        let generatedURL = DiscoverURLGenerator.generateURL(
+            destination: destination,
+            theme: traitCollection.userInterfaceStyle,
+            session: session
+        )
+        load(url: generatedURL)
     }
 
     private func addNavigation() {

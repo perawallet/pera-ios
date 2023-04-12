@@ -215,11 +215,9 @@ class AppDelegate:
             return true
         }
 
-        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL,
-            let generatedURL = inAppBrowserDeeplinkURL.createInAppBrowserDeeplinkURL(on: api.network) {
-
-            let parameters = DiscoverExternalLinkParameters(url: generatedURL)
-            receive(deeplinkWithSource: .redirectionToInAppBrowser(parameters))
+        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+            let destination = DiscoverDestination.redirection(inAppBrowserDeeplinkURL, api.network)
+            receive(deeplinkWithSource: .externalInAppBrowser(destination))
             return true
         }
 
@@ -279,11 +277,10 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL,
-                let generatedURL = inAppBrowserDeeplinkURL.createInAppBrowserDeeplinkURL(on: api.network) {
+            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+                let destination = DiscoverDestination.redirection(inAppBrowserDeeplinkURL, api.network)
 
-                let parameters = DiscoverExternalLinkParameters(url: generatedURL)
-                src = .redirectionToInAppBrowser(parameters)
+                src = .externalInAppBrowser(destination)
             } else {
                 let deeplinkQR = DeeplinkQR(url: url)
 

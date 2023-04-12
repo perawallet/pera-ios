@@ -41,8 +41,10 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
-        case .redirection(let params, let network):
-            return generateRedirectionURL(params: params, on: network)
+        case .redirection(let url, let network):
+            return generateRedirectionURL(redirectionURL: url, on: network)
+        case .external(let url):
+            return url
         }
     }
 
@@ -117,11 +119,15 @@ final class DiscoverURLGenerator {
     }
 
     private static func generateRedirectionURL(
-        params: DiscoverExternalParameters,
+        redirectionURL: URL?,
         on network: ALGAPI.Network
     ) -> URL? {
+        guard let redirectionURL else {
+            return nil
+        }
+
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "url", value: params.url.absoluteString))
+        queryItems.append(.init(name: "url", value: redirectionURL.absoluteString))
 
         let base: String
 
@@ -145,5 +151,6 @@ enum DiscoverDestination {
     case home
     case assetDetail(DiscoverAssetParameters)
     case generic(DiscoverGenericParameters)
-    case redirection(DiscoverExternalParameters, ALGAPI.Network)
+    case redirection(URL?, ALGAPI.Network)
+    case external(URL?)
 }

@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUtils
 
-struct DiscoverDappParamaters: DiscoverExternalParameters, JSONModel {
+struct DiscoverDappParamaters: JSONModel {
     let name: String?
     let url: URL
     let favorites: [FavoriteDapp]?

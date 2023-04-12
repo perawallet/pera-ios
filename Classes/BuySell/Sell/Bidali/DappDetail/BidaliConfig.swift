@@ -51,9 +51,3 @@ struct BidaliConfig {
         }
     }
 }
-
-extension DiscoverExternalLinkParameters {
-    init(_ config: BidaliConfig) {
-        self.init(url: URL(string: config.url)!)
-    }
-}
