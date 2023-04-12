@@ -282,6 +282,8 @@ extension AlgorandSecureBackupAccountListScreen {
             case .header:
                 break
             }
+        case .noContent:
+            break
         }
     }
 
@@ -310,6 +312,8 @@ extension AlgorandSecureBackupAccountListScreen {
                     forItemAt: indexPath
                 )
             }
+        case .noContent:
+            break
         }
     }
 }

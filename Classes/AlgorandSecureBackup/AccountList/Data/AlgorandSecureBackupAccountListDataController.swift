@@ -44,10 +44,12 @@ protocol AlgorandSecureBackupAccountListDataController: AnyObject {
 enum AlgorandSecureBackupAccountListSectionIdentifier:
     Hashable {
     case accounts
+    case empty
 }
 
 enum AlgorandSecureBackupAccountListItemIdentifier: Hashable {
     case account(AlgorandSecureBackupAccountListAccountItemIdentifier)
+    case noContent
 }
 
 enum AlgorandSecureBackupAccountListAccountItemIdentifier: Hashable {

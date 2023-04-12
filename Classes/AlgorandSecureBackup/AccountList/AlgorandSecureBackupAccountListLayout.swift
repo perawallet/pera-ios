@@ -57,6 +57,8 @@ extension AlgorandSecureBackupAccountListLayout {
                 bottom: 8,
                 right: 0
             )
+        case .empty:
+            return .zero
         }
     }
 
@@ -76,6 +78,11 @@ extension AlgorandSecureBackupAccountListLayout {
                 layout: collectionViewLayout,
                 sizeForAccountItem: item,
                 atSection: indexPath.section
+            )
+        case .noContent:
+            return sizeForNoContent(
+                collectionView,
+                layout: collectionViewLayout
             )
         }
     }
@@ -159,6 +166,33 @@ extension AlgorandSecureBackupAccountListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
 
         return newSize
+    }
+
+    private func sizeForNoContent(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let theme = AlgorandSecureBackupAccountListScreenTheme()
+        let verticalInsets = theme.listContentTopInset +
+            theme.spacingBetweenListAndContinueAction +
+            theme.continueActionContentEdgeInsets.bottom +
+            theme.continueActionEdgeInsets.top +
+            theme.continueActionEdgeInsets.bottom
+        
+        let width = listView.bounds.width
+        let height = listView.bounds.height - listView.contentInset.vertical - verticalInsets
+
+        let size = CGSize(width: width, height: height)
+
+        sizeCache[sizeCacheIdentifier] = size
+
+        return size
     }
 }
 
