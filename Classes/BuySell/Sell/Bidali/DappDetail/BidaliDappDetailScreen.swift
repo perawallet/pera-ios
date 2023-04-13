@@ -36,7 +36,7 @@ final class BidaliDappDetailScreen:
         self.account = account
         self.config = config
         let url = URL(string: config.url)
-        super.init(destination: .external(url), configuration: configuration)
+        super.init(destination: .url(url), configuration: configuration)
         self.allowsPullToRefresh = false
 
         self.sharedDataController.add(self)

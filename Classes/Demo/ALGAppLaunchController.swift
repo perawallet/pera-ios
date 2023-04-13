@@ -425,7 +425,7 @@ extension ALGAppLaunchController {
     }
 
     private func determineUIStateIfPossible(
-        forRedirectedDestination destination: DiscoverDestination
+        forRedirectedDestination destination: DiscoverExternalDestination
     ) -> DeeplinkResult {
         return .success(.deeplink(.externalInAppBrowser(destination: destination)))
     }

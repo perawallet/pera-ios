@@ -41,10 +41,14 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
-        case .redirection(let url, let network):
-            return generateRedirectionURL(redirectionURL: url, on: network)
-        case .external(let url):
-            return url
+        case .external(let externalDestination):
+            switch externalDestination {
+            case .redirection(let url, let network):
+                return generateRedirectionURL(redirectionURL: url, on: network)
+            case .url(let url):
+                return url
+            }
+
         }
     }
 
@@ -151,6 +155,10 @@ enum DiscoverDestination {
     case home
     case assetDetail(DiscoverAssetParameters)
     case generic(DiscoverGenericParameters)
+    case external(DiscoverExternalDestination)
+}
+
+enum DiscoverExternalDestination {
     case redirection(URL?, ALGAPI.Network)
-    case external(URL?)
+    case url(URL?)
 }

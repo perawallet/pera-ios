@@ -36,10 +36,10 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
 
     private var isViewLayoutLoaded = false
 
-    private let destination: DiscoverDestination
+    private let destination: DiscoverExternalDestination
 
     init(
-        destination: DiscoverDestination,
+        destination: DiscoverExternalDestination,
         configuration: ViewControllerConfiguration
     ) {
         self.destination = destination
@@ -138,7 +138,7 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
 
     private func initializeWebView() {
         let generatedURL = DiscoverURLGenerator.generateURL(
-            destination: destination,
+            destination: .external(destination),
             theme: traitCollection.userInterfaceStyle,
             session: session
         )

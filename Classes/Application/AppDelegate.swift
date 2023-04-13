@@ -216,7 +216,7 @@ class AppDelegate:
         }
 
         if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
-            let destination = DiscoverDestination.redirection(inAppBrowserDeeplinkURL, api.network)
+            let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
             receive(deeplinkWithSource: .externalInAppBrowser(destination))
             return true
         }
@@ -278,7 +278,7 @@ extension AppDelegate {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
             if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
-                let destination = DiscoverDestination.redirection(inAppBrowserDeeplinkURL, api.network)
+                let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
 
                 src = .externalInAppBrowser(destination)
             } else {

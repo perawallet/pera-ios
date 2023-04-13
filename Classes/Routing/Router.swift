@@ -1558,7 +1558,7 @@ class Router:
         case .sardineDappDetail(let account):
             let config = SardineConfig(account: account, network: configuration.api!.network)
             let url = URL(string: config.url)
-            let destination = DiscoverDestination.external(url)
+            let destination = DiscoverExternalDestination.url(url)
 
             let aViewController = DiscoverExternalInAppBrowserScreen(
                 destination: destination,
@@ -1612,7 +1612,7 @@ class Router:
         case .transakDappDetail(let account):
             let config = TransakConfig(account: account, network: configuration.api!.network)
             let url = URL(string: config.url)
-            let destination = DiscoverDestination.external(url)
+            let destination = DiscoverExternalDestination.url(url)
 
             let aViewController = DiscoverExternalInAppBrowserScreen(
                 destination: destination,
