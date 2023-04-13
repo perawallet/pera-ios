@@ -136,7 +136,7 @@ struct AlgorandSecureBackup {
 
     init(data: Data) {
         self.data = data
-        let dateString = Date().toFormat(.backupCreationDate)
+        let dateString = Date().toFormat(.shortNumericReversed(separator: "-"))
         self.fileName = "\(dateString)_backup.txt"
     }
 }
