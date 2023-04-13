@@ -34,6 +34,8 @@ final class Collectible: ALGEntityModel {
         self.standard = apiModel.standard
         self.mediaType = apiModel.mediaType
         self.thumbnailImage = apiModel.primaryImage
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
         self.title = apiModel.title
         self.collection = apiModel.collection
         self.media = apiModel.media.unwrapMap(Media.init)
@@ -45,7 +47,7 @@ final class Collectible: ALGEntityModel {
         var apiModel = APIModel()
         apiModel.standard = standard
         apiModel.mediaType = mediaType
-        apiModel.primaryImage = thumbnailImage
+        apiModel.primaryImage = thumbnailImage?.absoluteString
         apiModel.title = title
         apiModel.collection = collection
         apiModel.media = media.map { $0.encode() }
@@ -59,7 +61,7 @@ extension Collectible {
     struct APIModel: ALGAPIModel {
         var standard: CollectibleStandard?
         var mediaType: MediaType?
-        var primaryImage: URL?
+        var primaryImage: String?
         var title: String?
         var collection: CollectibleCollection?
         var media: [Media.APIModel]?

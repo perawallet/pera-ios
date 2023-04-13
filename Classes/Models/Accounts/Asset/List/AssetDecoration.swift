@@ -77,10 +77,14 @@ final class AssetDecoration: ALGEntityModel {
             .unwrapNonEmptyString()
             .unwrap(URL.init)
         self.explorerURL = apiModel.explorerURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
         self.verificationTier = apiModel.verificationTier ?? .unverified
         self.logoURL = apiModel.logo
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
         self.description = apiModel.description
         self.discordURL = apiModel.discordURL
             .unwrapNonEmptyString()
@@ -152,11 +156,11 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.totalSupply = totalSupply
         apiModel.creator = creator?.encode()
         apiModel.projectURL = projectURL?.absoluteString
-        apiModel.explorerURL = explorerURL
+        apiModel.explorerURL = explorerURL?.absoluteString
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
         apiModel.verificationTier = verificationTier
-        apiModel.logo = logoURL
+        apiModel.logo = logoURL?.absoluteString
         apiModel.description = description
         apiModel.discordURL = discordURL?.absoluteString
         apiModel.telegramURL = telegramURL?.absoluteString
@@ -176,13 +180,13 @@ extension AssetDecoration {
         var usdValue: String?
         var creator: AssetCreator.APIModel?
         var projectURL: String?
-        var explorerURL: URL?
+        var explorerURL: String?
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
         var totalSupply: Decimal?
         var verificationTier: AssetVerificationTier?
-        var logo: URL?
+        var logo: String?
         var description: String?
         var discordURL: String?
         var telegramURL: String?
