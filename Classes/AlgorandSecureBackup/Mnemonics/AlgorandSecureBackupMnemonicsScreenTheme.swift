@@ -63,7 +63,7 @@ struct AlgorandSecureBackupMnemonicsScreenTheme: LayoutSheet, StyleSheet {
             .font(Typography.bodyBold().uiFont)
         ]
         peraLearnTopOffset = 12
-        passphraseTopOffset = 87
+        passphraseTopOffset = 48
         passphraseHeight = 232
         actionsTopOffset = 20
         actionsPadding = 16

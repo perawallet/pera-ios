@@ -24,7 +24,7 @@ struct AlgorandSecureBackupMnemonicViewModel: ViewModel {
     let isGenerationAvailable: Bool
 
     init(session: Session) {
-        let isFirstBackup = session.backups.isEmpty
+        let isFirstBackup = !session.hasAlreadyCreatedBackupPrivateKey()
         isGenerationAvailable = !isFirstBackup
         bindTitle(isFirstBackup: isFirstBackup)
         bindHeader(isFirstBackup: isFirstBackup)

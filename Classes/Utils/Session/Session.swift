@@ -365,6 +365,10 @@ extension Session {
 }
 
 extension Session {
+    func hasAlreadyCreatedBackupPrivateKey() -> Bool {
+        privateDataForBackup() != nil
+    }
+
     func privateDataForBackup() -> Data? {
         privateData(for: backupPrivateKey)
     }
