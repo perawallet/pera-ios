@@ -20,11 +20,14 @@ import MacaroonUtils
 import UIKit
 
 final class DeepLinkParser {
+    private let api: ALGAPI
     private let sharedDataController: SharedDataController
     
     init(
+        api: ALGAPI,
         sharedDataController: SharedDataController
     ) {
+        self.api = api
         self.sharedDataController = sharedDataController
     }
 }
@@ -40,6 +43,8 @@ extension DeepLinkParser {
             return makeAssetTransactionRequestScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
+        case .inAppBrowser:
+            return makeExternalBrowserScreen(for: notification)
         default:
             return nil
         }
@@ -65,6 +70,8 @@ extension DeepLinkParser {
             return makeAssetOptInScreen(for: notification)
         case .assetTransactions:
             return makeAssetTransactionDetailScreen(for: notification)
+        case .inAppBrowser:
+            return makeExternalBrowserScreen(for: notification)
         default:
             return nil
         }
@@ -353,6 +360,27 @@ extension DeepLinkParser {
         )
         return .success(.assetActionConfirmation(draft: draft))
     }
+
+    private func makeExternalBrowserScreen(for notificationMessage: NotificationMessage) -> Result? {
+        let url = notificationMessage.url
+        return makeExternalBrowserScreen(from: url)
+    }
+
+    private func makeExternalBrowserScreen(for notification: AlgorandNotification) -> Result? {
+        let url = notification.detail?.url
+        return makeExternalBrowserScreen(from: url)
+    }
+
+    private func makeExternalBrowserScreen(from url: URL?) -> Result? {
+        let params = url?.queryParameters
+        guard let redirectedUrlString = params?["url"],
+              let redirectedURL = URL(string: redirectedUrlString) else {
+            return nil
+        }
+
+        let destination = DiscoverExternalDestination.redirection(redirectedURL, api.network)
+        return .success(.externalInAppBrowser(destination: destination))
+    }
 }
 
 extension DeepLinkParser {
@@ -637,5 +665,6 @@ extension DeepLinkParser {
     enum NotificationAction: String {
         case assetOptIn = "asset/opt-in"
         case assetTransactions = "asset/transactions"
+        case inAppBrowser = "in-app-browser"
     }
 }
