@@ -22,13 +22,25 @@ struct AlgorandSecureBackupFileViewModel: ViewModel {
         actionTheme != nil
     }
 
+    var isEmptyState: Bool {
+        switch state {
+        case .empty:
+            return true
+        default:
+            return false
+        }
+    }
+
     private(set) var image: ImageProvider?
     private(set) var imageStyle: ImageStyle?
     private(set) var title: TextProvider?
     private(set) var subtitle: TextProvider?
     private(set) var actionTheme: ButtonStyle?
 
+    private let state: State
+
     init(state: State) {
+        self.state = state
         bindImage(for: state)
         bindTitle(for: state)
         bindSubtitle(for: state)
@@ -80,12 +92,14 @@ extension AlgorandSecureBackupFileViewModel {
             errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
         case .unsupportedVersion:
             errorTitle = "algorand-secure-backup-import-backup-clipboard-version-failed-title".localized
-        case .cipherSuiteUnknown, .cipherSuiteInvalid:
+        case .cipherSuiteUnknown:
             errorTitle = "algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title".localized
         case .jsonSerialization:
             errorTitle = "algorand-secure-backup-import-backup-clipboard-json-failed-title".localized
         case .unauthorized:
             errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
+        case .keyNotFound(let key):
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(key)
         }
 
         title = errorTitle.bodyMedium(alignment: .center)

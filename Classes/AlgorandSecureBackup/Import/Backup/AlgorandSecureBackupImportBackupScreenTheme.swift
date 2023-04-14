@@ -40,7 +40,7 @@ struct AlgorandSecureBackupImportBackupScreenTheme: LayoutSheet, StyleSheet {
         ]
         defaultInset = 24
         navigationBarEdgeInset = (8, 24, .noMetric, 24)
-        navigationTitle = "algorand-secure-backup-import-backup-title".localized
+        navigationTitle = "algorand-secure-backup-import-backup-navigation-title".localized
         header = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),

@@ -29,6 +29,7 @@ struct AlgorandSecureBackupFileViewTheme:
     var iconBackgroundSize: LayoutSize
     var iconSize: LayoutSize
     var iconTopInset: LayoutMetric
+    var iconAlignedTopInset: LayoutMetric
     var spacingBetweenIconAndTitle: LayoutMetric
     var title: TextStyle
     var spacingBetweenTitleAndSubtitle: LayoutMetric
@@ -77,6 +78,7 @@ struct AlgorandSecureBackupFileViewTheme:
         self.iconBackgroundSize = (44, 44)
         self.iconSize = (24, 24)
         self.iconTopInset = 65
+        self.iconAlignedTopInset = 36
         self.spacingBetweenIconAndTitle = 12
         self.title = [
             .textColor(Colors.Text.main),
