@@ -46,7 +46,7 @@ struct RekeyedToStandardAccountInstructionsScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.illustration = [
-            .image("rekeyed-to-ledger-account-illustration"),
+            .image("rekeyed-to-any-account-illustration"),
             .contentMode(.scaleAspectFill)
         ]
         self.illustrationMaxHeight = 180
