@@ -1775,6 +1775,17 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case .rekeyedAccountSelectionList(let accounts, let eventHandler):
+            let dataController = RekeyedAccountSelectionListLocalDataController(
+                rekeyedAccounts: accounts,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = RekeyedAccountSelectionListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T

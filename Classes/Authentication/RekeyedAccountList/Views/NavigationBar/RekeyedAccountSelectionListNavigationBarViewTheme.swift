@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomePortfolioCell.swift
+//   RekeyedAccountSelectionListNavigationBarViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class HomePortfolioCell:
-    CollectionCell<HomePortfolioView>,
-    ViewModelBindable,
-    UIInteractable {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
-    }
+struct RekeyedAccountSelectionListNavigationBarViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var icon: ImageStyle
+    var title: TextStyle
+    var titleTopMargin: MacaroonUIKit.LayoutMetric
 
-    static let theme = HomePortfolioViewTheme()
-    
-    override init(
-        frame: CGRect
+    init(
+        _ family: LayoutFamily
     ) {
-        super.init(frame: frame)
-
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-
-        contextView.customize(Self.theme)
+        self.icon = [
+            .adjustsImageForContentSizeCategory(false),
+            .contentMode(.left)
+        ]
+        self.title = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.main)
+        ]
+        self.titleTopMargin = 24
     }
 }

@@ -29,7 +29,7 @@ extension LedgerAccountDetailSectionHeaderViewModel {
     private func bindHeaderTitle(section: LedgerAccountDetailDataSource.Section, account: Account) {
         switch section {
         case .ledgerAccount:
-            headerTitle = "ledger-account-detail-title".localized
+            headerTitle = "title-account-details".localized
         case .assets:
             headerTitle = "ledger-account-detail-assets".localized
         case .rekeyedAccounts:

@@ -18,7 +18,11 @@
 import MacaroonUIKit
 import UIKit
 
-final class LedgerAccountCellView: View, TripleShadowDrawable {
+final class LedgerAccountCellView:
+    View,
+    TripleShadowDrawable,
+    ViewModelBindable,
+    ListReusable {
     var thirdShadow: MacaroonUIKit.Shadow?
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
 
@@ -76,6 +80,36 @@ final class LedgerAccountCellView: View, TripleShadowDrawable {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    static func calculatePreferredSize(
+        _ viewModel: LedgerAccountViewModel?,
+        for theme: LedgerAccountCellViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+        let accountItemWidth =
+            width -
+            theme.horizontalInset -
+            theme.checkboxIconSize.w -
+            theme.horizontalInset -
+            theme.infoIconSize.w -
+            theme.horizontalInset
+        let maxAccountItemSize = CGSize(width: accountItemWidth, height: .greatestFiniteMagnitude)
+        let accountItemSize = AccountListItemView.calculatePreferredSize(
+            viewModel?.accountItem,
+            for: theme.accountItem,
+            fittingIn: maxAccountItemSize
+        )
+        let preferredHeight =
+            theme.verticalInset +
+            accountItemSize.height +
+            theme.verticalInset
+        return CGSize((width, min(preferredHeight, size.height)))
+    }
+
+    func bindData(_ viewModel: LedgerAccountViewModel?) {
+        accountItemView.bindData(viewModel?.accountItem)
+    }
 }
 
 extension LedgerAccountCellView {
@@ -124,12 +158,6 @@ extension LedgerAccountCellView {
     @objc
     private func notifyDelegateToOpenMoreInfo() {
         delegate?.ledgerAccountViewDidOpenMoreInfo(self)
-    }
-}
-
-extension LedgerAccountCellView: ViewModelBindable {
-    func bindData(_ viewModel: LedgerAccountViewModel?) {
-        accountItemView.bindData(viewModel?.accountItem)
     }
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomePortfolioCell.swift
+//   RekeyedAccountSelectionListAccountCellTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class HomePortfolioCell:
-    CollectionCell<HomePortfolioView>,
-    ViewModelBindable,
-    UIInteractable {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
-    }
+struct RekeyedAccountSelectionListAccountCellTheme:
+    StyleSheet,
+    LayoutSheet {
+    var context: LedgerAccountCellViewTheme
 
-    static let theme = HomePortfolioViewTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
-
-        contextView.customize(Self.theme)
+    init(_ family: LayoutFamily) {
+        self.context = LedgerAccountCellViewTheme(family)
     }
 }
