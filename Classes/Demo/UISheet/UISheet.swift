@@ -21,17 +21,20 @@ final class UISheet {
     let image: Image?
     let title: TextProvider?
     let body: TextProvider?
+    let info: TextProvider?
 
     private(set) var actions: [UISheetAction] = []
 
     init(
         image: Image? = nil,
         title: TextProvider? = nil,
-        body: TextProvider? = nil
+        body: TextProvider? = nil,
+        info: TextProvider? = nil
     ) {
         self.image = image
         self.title = title
         self.body = body
+        self.info = info
     }
 
     func addAction(

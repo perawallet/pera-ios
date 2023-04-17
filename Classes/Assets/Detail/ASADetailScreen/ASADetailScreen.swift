@@ -340,23 +340,22 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                dataController.account.isWatchAccount()
-                    ? "options-remove-watch-account-explanation".localized
-                    : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount()
+        let confirmCompletion = {
+            [unowned self] in
+            self.dismiss(animated: true) {
+                self.removeAccount()
             }
-        )
-
+        }
+        let cancelCompletion = {
+            [unowned self] in
+            self.dismiss(animated: true)
+        }
         transitionToConfirmToDeleteAccount.perform(
-            .bottomWarning(configurator: configurator),
+            .removeAccount(
+                account: dataController.account,
+                confirmCompletion: confirmCompletion,
+                cancelCompletion: cancelCompletion
+            ),
             by: .presentWithoutNavigationController
         )
     }

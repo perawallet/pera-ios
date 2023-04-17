@@ -1499,3 +1499,6 @@
 // MARK: Rekey Account Selection List
 "rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
 "rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
+
+// MARK: Remove Account
+"remove-account-has-rekeyed-accounts-info-message" = "There are accounts rekeyed to this account. If you remove this account, you will no longer be able to sign transactions or control these rekeyed accounts.";

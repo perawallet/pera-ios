@@ -1775,6 +1775,74 @@ class Router:
                 account: account,
                 copyToClipboardController: copyToClipboardController
             )
+        case let .removeAccount(account, confirmCompletion, cancelCompletion):
+            let uiSheet = makeUISheet()
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme()
+            )
+
+            func makeUISheet() -> UISheet {
+                let title =
+                    "options-remove-account"
+                        .localized
+                        .bodyLargeMedium(alignment: .center)
+                let body = makeRemoveAccountConfirmationBody()
+                let info = makeRemoveAccountConfirmationInfo()
+
+                let uiSheet = UISheet(
+                    image: "icon-trash-red",
+                    title: title,
+                    body: body,
+                    info: info
+                )
+
+                let confirmAction = makeRemoveAccountConfirmationConfirmAction()
+                uiSheet.addAction(confirmAction)
+
+                let cancelAction = makeRemoveAccountConfirmationCancelAction()
+                uiSheet.addAction(cancelAction)
+
+                return uiSheet
+            }
+
+            func makeRemoveAccountConfirmationBody() -> TextProvider {
+                let aBody =
+                    account.isWatchAccount()
+                    ? "options-remove-watch-account-explanation".localized
+                    : "options-remove-main-account-explanation".localized
+
+                return aBody.bodyRegular(alignment: .center)
+            }
+
+            func makeRemoveAccountConfirmationInfo() -> TextProvider? {
+                let sharedDataController = appConfiguration.sharedDataController
+                let hasAnyRekeyedAccounts =
+                    sharedDataController.rekeyedAccounts(of: account).isNonEmpty
+
+                guard hasAnyRekeyedAccounts else {
+                    return nil
+                }
+
+                let anInfo = "remove-account-has-rekeyed-accounts-info-message".localized
+                return anInfo.footnoteMedium()
+            }
+
+            func makeRemoveAccountConfirmationConfirmAction() -> UISheetAction {
+                return UISheetAction(
+                    title: "title-remove".localized,
+                    style: .default,
+                    handler: confirmCompletion
+                )
+            }
+
+            func makeRemoveAccountConfirmationCancelAction() -> UISheetAction {
+                return UISheetAction(
+                    title: "title-keep".localized,
+                    style: .cancel,
+                    handler: cancelCompletion
+                )
+            }
         }
 
         return viewController as? T
