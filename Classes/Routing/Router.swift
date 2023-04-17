@@ -1787,8 +1787,8 @@ class Router:
                     "options-remove-account"
                         .localized
                         .bodyLargeMedium(alignment: .center)
-                let body = makeRemoveAccountConfirmationBody()
-                let info = makeRemoveAccountConfirmationInfo()
+                let body = makeBody()
+                let info = makeInfo()
 
                 let uiSheet = UISheet(
                     image: "icon-trash-red",
@@ -1797,16 +1797,16 @@ class Router:
                     info: info
                 )
 
-                let confirmAction = makeRemoveAccountConfirmationConfirmAction()
+                let confirmAction = makeConfirmAction()
                 uiSheet.addAction(confirmAction)
 
-                let cancelAction = makeRemoveAccountConfirmationCancelAction()
+                let cancelAction = makeCancelAction()
                 uiSheet.addAction(cancelAction)
 
                 return uiSheet
             }
 
-            func makeRemoveAccountConfirmationBody() -> TextProvider {
+            func makeBody() -> TextProvider {
                 let aBody =
                     account.isWatchAccount()
                     ? "options-remove-watch-account-explanation".localized
@@ -1815,7 +1815,7 @@ class Router:
                 return aBody.bodyRegular(alignment: .center)
             }
 
-            func makeRemoveAccountConfirmationInfo() -> TextProvider? {
+            func makeInfo() -> TextProvider? {
                 let sharedDataController = appConfiguration.sharedDataController
                 let hasAnyRekeyedAccounts =
                     sharedDataController.rekeyedAccounts(of: account).isNonEmpty
@@ -1828,15 +1828,24 @@ class Router:
                 return anInfo.footnoteMedium()
             }
 
-            func makeRemoveAccountConfirmationConfirmAction() -> UISheetAction {
+            func makeConfirmAction() -> UISheetAction {
                 return UISheetAction(
                     title: "title-remove".localized,
-                    style: .default,
-                    handler: confirmCompletion
-                )
+                    style: .default
+                ) { [weak self] in
+                    guard let self else { return }
+
+                    let sharedDataController = self.appConfiguration.sharedDataController
+                    sharedDataController.resetPollingAfterRemoving(account)
+
+                    let walletConnector = self.appConfiguration.walletConnector
+                    walletConnector.updateSessionsWithRemovingAccount(account)
+
+                    confirmCompletion()
+                }
             }
 
-            func makeRemoveAccountConfirmationCancelAction() -> UISheetAction {
+            func makeCancelAction() -> UISheetAction {
                 return UISheetAction(
                     title: "title-keep".localized,
                     style: .cancel,

@@ -585,12 +585,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         presentRemoveAccountConfirmation()
     }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(accountHandle.value)
-        walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
-        eventHandler?(.didRemove)
-    }
 }
 
 extension AccountDetailViewController {
@@ -598,7 +592,7 @@ extension AccountDetailViewController {
         let confirmCompletion = {
             [unowned self] in
             self.dismiss(animated: true) {
-                self.removeAccount()
+                self.eventHandler?(.didRemove)
             }
         }
         let cancelCompletion = {

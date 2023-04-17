@@ -1069,7 +1069,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         let confirmCompletion = {
             [unowned self] in
             self.dismiss(animated: true) {
-                self.removeAccount(account)
+                self.dataController.reload()
             }
         }
         let cancelCompletion = {
@@ -1100,10 +1100,6 @@ extension HomeViewController {
         }
 
         return dataController[item.address]
-    }
-    
-    private func removeAccount(_ account: Account) {
-        dataController.removeAccount(account)
     }
 }
 

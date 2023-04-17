@@ -343,7 +343,7 @@ extension ASADetailScreen {
         let confirmCompletion = {
             [unowned self] in
             self.dismiss(animated: true) {
-                self.removeAccount()
+                self.eventHandler?(.didRemoveAccount)
             }
         }
         let cancelCompletion = {
@@ -358,12 +358,6 @@ extension ASADetailScreen {
             ),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(dataController.account)
-        walletConnector.updateSessionsWithRemovingAccount(dataController.account)
-        eventHandler?(.didRemoveAccount)
     }
 
     private func navigateToViewPassphrase() {
