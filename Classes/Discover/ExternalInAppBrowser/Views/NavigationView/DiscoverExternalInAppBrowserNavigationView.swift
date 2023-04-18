@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappDetailNavigationView.swift
+//   DiscoverExternalInAppBrowserNavigationView.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class DiscoverDappDetailNavigationView:
+final class DiscoverExternalInAppBrowserNavigationView:
     View,
     ViewModelBindable {
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
 
-    func customize(_ theme: DiscoverDappDetailNavigationViewTheme) {
+    func customize(_ theme: DiscoverExternalInAppBrowserNavigationViewTheme) {
         addTitle(theme)
         addSubtitle(theme)
     }
@@ -33,14 +33,14 @@ final class DiscoverDappDetailNavigationView:
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func bindData(_ viewModel: DiscoverDappDetailNavigationViewModel?) {
+    func bindData(_ viewModel: DiscoverExternalInAppBrowserNavigationViewModel?) {
         viewModel?.title?.load(in: titleView)
         viewModel?.subtitle?.load(in: subtitleView)
     }
 }
 
-extension DiscoverDappDetailNavigationView {
-    private func addTitle(_ theme: DiscoverDappDetailNavigationViewTheme) {
+extension DiscoverExternalInAppBrowserNavigationView {
+    private func addTitle(_ theme: DiscoverExternalInAppBrowserNavigationViewTheme) {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
@@ -50,7 +50,7 @@ extension DiscoverDappDetailNavigationView {
         }
     }
 
-    private func addSubtitle(_ theme: DiscoverDappDetailNavigationViewTheme) {
+    private func addSubtitle(_ theme: DiscoverExternalInAppBrowserNavigationViewTheme) {
         subtitleView.customizeAppearance(theme.subtitle)
 
         addSubview(subtitleView)

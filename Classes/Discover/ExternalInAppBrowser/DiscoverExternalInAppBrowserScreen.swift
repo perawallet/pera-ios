@@ -12,39 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   DiscoverDappDetailScreen.swift
+//   DiscoverExternalInAppBrowserScreen.swift
 
 import Foundation
 import WebKit
 import MacaroonUtils
 import MacaroonUIKit
 
-class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessage> {
+class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInAppBrowserScriptMessage> {
     typealias EventHandler = (Event) -> Void
-    var eventHandler: EventHandler?
-    
-    private lazy var favoriteDapps = createFavoriteDapps()
-    
-    private lazy var navigationTitleView = DiscoverDappDetailNavigationView()
 
-    private lazy var toolbar = UIToolbar(frame: .zero)
+    var eventHandler: EventHandler?
+
+    private(set) lazy var navigationTitleView = DiscoverExternalInAppBrowserNavigationView()
+
+    private(set) lazy var toolbar = UIToolbar(frame: .zero)
     private lazy var homeButton = makeHomeButton()
     private lazy var previousButton = makePreviousButton()
     private lazy var nextButton = makeNextButton()
-    private lazy var favoriteButton = makeFavoriteButton()
 
     private lazy var navigationScript = createNavigationScript()
     private lazy var peraConnectScript = createPeraConnectScript()
 
     private var isViewLayoutLoaded = false
 
-    private let dappParameters: DiscoverDappParamaters
+    private let destination: DiscoverExternalDestination
 
     init(
-        dappParameters: DiscoverDappParamaters,
+        destination: DiscoverExternalDestination,
         configuration: ViewControllerConfiguration
     ) {
-        self.dappParameters = dappParameters
+        self.destination = destination
 
         super.init(configuration: configuration)
     }
@@ -63,8 +61,6 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
 
         initializeWebView()
         addToolbarActions()
-
-        recordAnalyticsEvent()
     }
 
     override func viewDidLayoutSubviews() {
@@ -115,7 +111,7 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
         updateTitle()
         updateToolbarNavigationActions()
 
-        let inAppMessage = DiscoverDappDetailScriptMessage(rawValue: message.name)
+        let inAppMessage = DiscoverExternalInAppBrowserScriptMessage(rawValue: message.name)
 
         switch inAppMessage {
         case .none:
@@ -128,22 +124,31 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
         }
     }
 
+    func updateToolbarActionsForLoading() {
+        updateToolbarNavigationActions()
+    }
+
+    func updateToolbarActionsForURL() {
+        updateToolbarNavigationActions()
+    }
+
+    func updateToolbarActionsForError() {
+        updateToolbarNavigationActions()
+    }
+
     private func initializeWebView() {
-        let generatedUrl = DiscoverURLGenerator.generateURL(
-            destination: .dappDetail(dappParameters),
+        let generatedURL = DiscoverURLGenerator.generateURL(
+            destination: .external(destination),
             theme: traitCollection.userInterfaceStyle,
             session: session
         )
-
-        load(url: generatedUrl)
+        load(url: generatedURL)
     }
 
     private func addNavigation() {
-        navigationTitleView.customize(DiscoverDappDetailNavigationViewTheme())
+        navigationTitleView.customize(DiscoverExternalInAppBrowserNavigationViewTheme())
 
         navigationItem.titleView = navigationTitleView
-
-        bindNavigationTitle(with: dappParameters)
 
         addNavigationBarButtonItems()
     }
@@ -160,19 +165,15 @@ class DiscoverDappDetailScreen: InAppBrowserScreen<DiscoverDappDetailScriptMessa
     }
 
     private func bindNavigationTitle(with item: WKBackForwardListItem) {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(item, title: webView.title))
-    }
-
-    private func bindNavigationTitle(with dappParameters: DiscoverDappParamaters) {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(dappParameters))
+        navigationTitleView.bindData(DiscoverExternalInAppBrowserNavigationViewModel(item, title: webView.title))
     }
     
     private func bindNavigationTitleForCurrentURL() {
-        navigationTitleView.bindData(DiscoverDappDetailNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
+        navigationTitleView.bindData(DiscoverExternalInAppBrowserNavigationViewModel(title: webView.title, subtitle: webView.url?.presentationString))
     }
 }
 
-extension DiscoverDappDetailScreen {
+extension DiscoverExternalInAppBrowserScreen {
     private func createNavigationScript() -> WKUserScript {
         let navigationScript = """
 !function(t){function e(t){setTimeout((function(){window.webkit.messageHandlers.navigation.postMessage(t)}),0)}function n(n){return function(){return e("other"),n.apply(t,arguments)}}t.pushState=n(t.pushState),t.replaceState=n(t.replaceState),window.addEventListener("popstate",(function(){e("backforward")}))}(window.history);
@@ -187,7 +188,7 @@ extension DiscoverDappDetailScreen {
 
     private func createPeraConnectScript() -> WKUserScript {
         let peraConnectScript = """
-function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverDappDetailScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
+function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById("pera-wallet-connect-modal-wrapper"),e=document.getElementById("pera-wallet-redirect-modal-wrapper");if(e&&e.remove(),t){const o=t.getElementsByTagName("pera-wallet-connect-modal");let e="";if(o&&o[0]&&o[0].shadowRoot){const a=o[0].shadowRoot.querySelector("pera-wallet-modal-touch-screen-mode").shadowRoot.querySelector("#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button");alert("LINK_ELEMENT_V1"+a),a&&(e=a.getAttribute("href"))}else{const r=t.getElementsByClassName("pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button");alert("LINK_ELEMENT_V0"+r),r&&(e=r[0].getAttribute("href"))}alert("WC_URI "+e),e&&(window.webkit.messageHandlers.\(DiscoverExternalInAppBrowserScriptMessage.peraconnect.rawValue).postMessage(e),alert("Message sent to App"+e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();
 """
 
         return WKUserScript(
@@ -198,7 +199,7 @@ function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=do
     }
 }
 
-extension DiscoverDappDetailScreen {
+extension DiscoverExternalInAppBrowserScreen {
     private func makeHomeButton() -> UIBarButtonItem {
         let button = ALGBarButtonItem(kind: .discoverHome) {
             [unowned self] in
@@ -230,17 +231,6 @@ extension DiscoverDappDetailScreen {
         }
         return UIBarButtonItem(customView: BarButton(barButtonItem: button))
     }
-    
-    private func makeFavoriteButton() -> UIBarButtonItem {
-        let button = MacaroonUIKit.Button()
-
-        button.snp.makeConstraints {
-            $0.fitToSize((40, 40))
-        }
-        button.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: button)
-    }
 
     private func addToolbarActions() {
         view.addSubview(toolbar)
@@ -259,37 +249,8 @@ extension DiscoverDappDetailScreen {
         items.append( nextButton )
         items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         items.append( homeButton )
-        
-        if shouldAllowFavoriteAction() {
-            items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            items.append( favoriteButton )
-        }
 
         toolbar.items = items
-    }
-
-    private func updateToolbarActionsForLoading() {
-        updateToolbarNavigationActions()
-
-        if shouldAllowFavoriteAction() {
-            updateFavoriteActionForLoading()
-        }
-    }
-
-    private func updateToolbarActionsForURL() {
-        updateToolbarNavigationActions()
-
-        if shouldAllowFavoriteAction() {
-            updateFavouriteActionForURL()
-        }
-    }
-
-    private func updateToolbarActionsForError() {
-        updateToolbarNavigationActions()
-
-        if shouldAllowFavoriteAction() {
-            updateFavoriteActionForError()
-        }
     }
 
     private func updateToolbarNavigationActions() {
@@ -314,25 +275,7 @@ extension DiscoverDappDetailScreen {
     }
 }
 
-extension DiscoverDappDetailScreen {
-    @objc
-    private func didTapFavorite() {
-        guard let url = createURLToAddFavorites() else {
-            return
-        }
-        
-        let dappDetails = DiscoverFavouriteDappDetails(
-            name: webView.title,
-            url: url
-        )
-        
-        if isFavorite(url) {
-            removeFromFavorites(url: url, dapp: dappDetails)
-        } else {
-            addToFavorites(url: url, dapp: dappDetails)
-        }
-    }
-
+extension DiscoverExternalInAppBrowserScreen {
     private func handlePeraConnectAction(_ message: WKScriptMessage) {
         guard let jsonString = message.body as? String else { return }
         guard let url = URL(string: jsonString) else { return }
@@ -341,109 +284,9 @@ extension DiscoverDappDetailScreen {
         let src: DeeplinkSource = .walletConnectSessionRequestForDiscover(walletConnectURL)
         launchController.receive(deeplinkWithSource: src)
     }
-
-    private func recordAnalyticsEvent() {
-        self.analytics.track(.discoverDappDetail(dappParameters: dappParameters))
-    }
 }
 
-extension DiscoverDappDetailScreen {
-    private func createFavoriteDapps() -> Set<URL> {
-        return dappParameters.favorites?.reduce(into: Set<URL>(), {
-            guard let url = URL(string: $1.url) else { return }
-            $0.insert(url)
-        }) ?? []
-    }
-    
-    private func shouldAllowFavoriteAction() -> Bool {
-        return dappParameters.favorites != nil
-    }
-    
-    private func createURLToAddFavorites() -> URL? {
-        guard let currentUrl = webView.url else {
-            return nil
-        }
-        
-        var urlComponents = URLComponents()
-        urlComponents.scheme = currentUrl.scheme
-        urlComponents.host = currentUrl.host
-        
-        return urlComponents.url
-    }
-
-    private func isFavorite(_ url: URL) -> Bool {
-        return favoriteDapps.contains(url)
-    }
-    
-    private func addToFavorites(
-        url: URL,
-        dapp: DiscoverFavouriteDappDetails
-    ) {
-        if hasExceededFavouritesLimit() {
-            self.bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "discover-error-favorites-max-limit".localized
-            )
-            return
-        }
-        
-        favoriteDapps.insert(url)
-        setFavoriteActionSelected(true)
-        eventHandler?(.addToFavorites(dapp))
-    }
-    
-    private func hasExceededFavouritesLimit() -> Bool {
-        return favoriteDapps.count >= 100
-    }
-    
-    private func removeFromFavorites(
-        url: URL,
-        dapp: DiscoverFavouriteDappDetails
-    ) {
-        favoriteDapps.remove(url)
-        setFavoriteActionSelected(false)
-        eventHandler?(.removeFromFavorites(dapp))
-    }
-
-    private func updateFavoriteActionForLoading() {
-        updateFavoriteStatusForURL()
-        favoriteButton.isEnabled = false
-    }
-    
-    private func updateFavouriteActionForURL() {
-        updateFavoriteStatusForURL()
-        favoriteButton.isEnabled = true
-    }
-
-    private func updateFavoriteActionForError() {
-        setFavoriteActionSelected(false)
-        favoriteButton.isEnabled = false
-    }
-
-    private func updateFavoriteStatusForURL() {
-        let url = createURLToAddFavorites()
-        let isSelected = url.unwrap(isFavorite) ?? false
-        setFavoriteActionSelected(isSelected)
-    }
-    
-    private func setFavoriteActionSelected(_ selected: Bool) {
-        let actionView = favoriteButton.customView as? UIButton
-        let image = (selected ? "icon-favourite-filled" : "icon-favourite").uiImage
-        actionView?.setImage(
-            image,
-            for: .normal
-        )
-    }
-}
-
-extension DiscoverDappDetailScreen {
-    enum Event {
-        case addToFavorites(DiscoverFavouriteDappDetails)
-        case removeFromFavorites(DiscoverFavouriteDappDetails)
-    }
-}
-
-enum DiscoverDappDetailScriptMessage:
+enum DiscoverExternalInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case peraconnect
