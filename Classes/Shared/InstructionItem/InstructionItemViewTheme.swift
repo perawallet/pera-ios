@@ -27,6 +27,7 @@ struct InstructionItemViewTheme:
     var orderSecondShadow: MacaroonUIKit.Shadow
     var orderThirdShadow: MacaroonUIKit.Shadow
     var orderSize: LayoutSize
+    var orderAlignment: OrderAlignment
     var spacingBetweenOrderAndContent: LayoutMetric
     var title: TextStyle
     var spacingBetweenTitleAndSubtitle: LayoutMetric
@@ -70,6 +71,7 @@ struct InstructionItemViewTheme:
             corners: .allCorners
         )
         self.orderSize = (40, 40)
+        self.orderAlignment = .center
         self.spacingBetweenOrderAndContent = 20
         self.title = [
             .textColor(Colors.Text.main),
@@ -80,5 +82,12 @@ struct InstructionItemViewTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
+    }
+}
+
+extension InstructionItemViewTheme {
+    enum OrderAlignment {
+        case top
+        case center
     }
 }
