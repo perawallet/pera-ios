@@ -303,7 +303,7 @@ extension RekeyedToStandardAccountInstructionsScreen {
 extension RekeyedToStandardAccountInstructionsScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "title-rekeyed-to-standard-account-capitalized-sentence"
+            "title-rekey-to-standard-account-capitalized-sentence"
                 .localized
                 .titleMedium()
     }

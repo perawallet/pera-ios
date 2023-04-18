@@ -309,7 +309,7 @@ extension RekeyedToLedgerAccountInstructionsScreen {
 extension RekeyedToLedgerAccountInstructionsScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "title-rekeyed-to-ledger-account-capitalized-sentence"
+            "title-rekey-to-ledger-account-capitalized-sentence"
                 .localized
                 .titleMedium()
     }

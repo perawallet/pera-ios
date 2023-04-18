@@ -187,7 +187,7 @@ extension UndoLedgerAccountRekeyScreen {
 extension UndoLedgerAccountRekeyScreen {
     private func bindTitle() {
         titleView.attributedText =
-            "undo-rekey-title"
+            "title-undo-rekey-capitalized-sentence"
                 .localized
                 .titleMedium()
     }
