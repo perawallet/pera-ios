@@ -97,10 +97,11 @@ extension InstructionItemView {
 
         addSubview(orderBackgroundView)
         orderBackgroundView.snp.makeConstraints {
-            $0.top == 0
             $0.leading == 0
             $0.fitToSize(theme.orderSize)
         }
+
+        alignOrder(orderBackgroundView, with: theme)
 
         orderBackgroundView.addSubview(orderView)
         orderView.customizeAppearance(theme.order)
@@ -109,6 +110,19 @@ extension InstructionItemView {
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
+        }
+    }
+
+    private func alignOrder(_ view: UIView, with theme: InstructionItemViewTheme) {
+        switch theme.orderAlignment {
+        case .top:
+            view.snp.makeConstraints {
+                $0.top == 0
+            }
+        case .center:
+            view.snp.makeConstraints {
+                $0.centerY == 0
+            }
         }
     }
 
