@@ -211,7 +211,7 @@ struct ALGBarButtonItem: BarButtonItem {
             /// <todo>: Handle all types properly.
             switch account.type {
             case .rekeyed:
-                image = "icon-payment-security".uiImage
+                image = "icon-shield-16".uiImage
             default:
                 image = account.typeImage
             }
