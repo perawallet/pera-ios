@@ -285,7 +285,7 @@ extension OptionsViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.delegate?.optionsViewControllerDidOpenUndoRekey(self)
+            self.delegate?.optionsViewControllerDidUndoRekey(self)
         }
     }
     
@@ -527,7 +527,7 @@ protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidShowQR(
         _ optionsViewController: OptionsViewController
     )
-    func optionsViewControllerDidOpenUndoRekey(
+    func optionsViewControllerDidUndoRekey(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeyingToLedger(

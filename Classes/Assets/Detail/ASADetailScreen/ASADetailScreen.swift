@@ -197,7 +197,7 @@ extension ASADetailScreen {
         )
     }
 
-    func optionsViewControllerDidOpenUndoRekey(_ optionsViewController: OptionsViewController) {
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
         /// <todo> Undo Rekey
     }
     

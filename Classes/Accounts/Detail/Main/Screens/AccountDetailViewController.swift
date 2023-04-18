@@ -412,7 +412,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         copyToClipboardController.copyAddress(account)
     }
 
-    func optionsViewControllerDidOpenUndoRekey(_ optionsViewController: OptionsViewController) {
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
         /// <todo> Undo Rekey
     }
     

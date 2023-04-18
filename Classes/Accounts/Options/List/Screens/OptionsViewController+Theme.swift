@@ -41,7 +41,7 @@ struct OptionsViewControllerTheme:
         canvasPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
         primaryContextPaddings = (0, 0, 0, 0)
         secondaryContextPaddings = (verticalPadding, 0, 0, 0)
-        tertiaryContextPaddings = (0, 0, 0, 0)
+        tertiaryContextPaddings = (verticalPadding, 0, 0, 0)
         separator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
