@@ -18,11 +18,6 @@ import Foundation
 import WebKit
 
 final class InAppBrowserUserContentController: WKUserContentController {
-    /// <warning>
-    /// It isn't enough to guarantee that there won't be a memory leak because of a retain cycle
-    /// between the user content controller and the script message handler; thus, the message
-    /// handlers should be removed just in case in `deinit` of the scrip message handler, which is
-    /// probably a view controller.
     func add<T>(
         secureScriptMessageHandler: WKScriptMessageHandler,
         forMessage msg: T
@@ -33,18 +28,12 @@ final class InAppBrowserUserContentController: WKUserContentController {
         )
     }
 
-    /// <warning>
-    /// It isn't enough to guarantee that there won't be a memory leak because of a retain cycle
-    /// between the user content controller and the script message handler; thus, the message
-    /// handlers should be removed just in case in `deinit` of the scrip message handler, which is
-    /// probably a view controller.
     func add(
         secureScriptMessageHandler: WKScriptMessageHandler,
         forName name: String
     ) {
-        let handler = InAppBrowserSecureScriptMessageHandler(handler: secureScriptMessageHandler)
         add(
-            handler,
+            secureScriptMessageHandler,
             name: name
         )
     }
@@ -64,28 +53,6 @@ protocol InAppBrowserScriptMessage:
     RawRepresentable,
     CaseIterable
 where RawValue == String {}
-
-final class InAppBrowserSecureScriptMessageHandler:
-    NSObject,
-    WKScriptMessageHandler {
-    private weak var handler: WKScriptMessageHandler?
-
-    init(handler: WKScriptMessageHandler) {
-        self.handler = handler
-    }
-
-    /// <mark>
-    /// WKScriptMessageHandler
-    func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        handler?.userContentController(
-            userContentController,
-            didReceive: message
-        )
-    }
-}
 
 struct NoInAppBrowserScriptMessage: InAppBrowserScriptMessage {
     var rawValue: String = ""
