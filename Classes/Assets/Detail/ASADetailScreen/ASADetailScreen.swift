@@ -196,6 +196,10 @@ extension ASADetailScreen {
             by: .present
         )
     }
+
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
+        /// <todo> Undo Rekey
+    }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
 //        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
