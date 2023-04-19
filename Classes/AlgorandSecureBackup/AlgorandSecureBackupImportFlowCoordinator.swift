@@ -69,7 +69,9 @@ extension AlgorandSecureBackupImportFlowCoordinator {
         ) { event, screen in
             switch event {
             case .didGoToHome:
-                screen.dismissScreen()
+                asyncMain {
+                    AppDelegate.shared?.launchMain()
+                }
             }
         }
 
