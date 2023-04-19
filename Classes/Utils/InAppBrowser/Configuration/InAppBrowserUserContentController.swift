@@ -18,6 +18,8 @@ import Foundation
 import WebKit
 
 final class InAppBrowserUserContentController: WKUserContentController {
+    private var handlers: [String: InAppBrowserSecureScriptMessageHandler] = [:]
+
     func add<T>(
         secureScriptMessageHandler: WKScriptMessageHandler,
         forMessage msg: T
@@ -32,8 +34,10 @@ final class InAppBrowserUserContentController: WKUserContentController {
         secureScriptMessageHandler: WKScriptMessageHandler,
         forName name: String
     ) {
+        let handler = InAppBrowserSecureScriptMessageHandler(handler: secureScriptMessageHandler)
+        handlers[name] = handler
         add(
-            secureScriptMessageHandler,
+            handler,
             name: name
         )
     }
@@ -45,6 +49,7 @@ final class InAppBrowserUserContentController: WKUserContentController {
 
     func removeScriptMessageHandler<T>(forMessage msg: T)
     where T: InAppBrowserScriptMessage {
+        handlers[msg.rawValue] = nil
         removeScriptMessageHandler(forName: msg.rawValue)
     }
 }
@@ -61,5 +66,27 @@ struct NoInAppBrowserScriptMessage: InAppBrowserScriptMessage {
 
     init?(rawValue: String) {
         return nil
+    }
+}
+
+final class InAppBrowserSecureScriptMessageHandler:
+    NSObject,
+    WKScriptMessageHandler {
+    private weak var handler: WKScriptMessageHandler?
+
+    init(handler: WKScriptMessageHandler) {
+        self.handler = handler
+    }
+
+    /// <mark>
+    /// WKScriptMessageHandler
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        handler?.userContentController(
+            userContentController,
+            didReceive: message
+        )
     }
 }
